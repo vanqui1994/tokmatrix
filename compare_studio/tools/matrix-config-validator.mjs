@@ -4,6 +4,8 @@ import { fileURLToPath } from "node:url";
 import Ajv from "ajv";
 import YAML from "yaml";
 import { getVoice } from "./voices.mjs";
+import { getVariant } from "../matrix/render/variants/index.mjs";
+import { validateDna } from "../matrix/render/variants/dna.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../config");
 const CATEGORY_SCHEMAS = {
@@ -101,6 +103,8 @@ function validateRelations(documents, errors) {
     }
   }
 
+  for (const { data, relativePath } of channels) errors.push(...validateChannelCreative(data).map((error) => `${relativePath}: ${error}`));
+
   for (const [nicheId, count] of channelCounts) {
     if (count < 10) errors.push(`${nicheId}: expected at least 10 channel configs, found ${count}`);
   }
@@ -132,6 +136,29 @@ function validateRelations(documents, errors) {
       }
     }
   }
+}
+
+/**
+ * Luật Creative DNA của một kênh (docs/MATRIX_VARIANT_SYSTEM_V2.md mục 12). Kênh không có creative.variant_id
+ * không bị kiểm gì thêm (đường legacy). Variant "reference" chỉ hợp lệ khi MATRIX_ALLOW_REFERENCE_VARIANTS=1.
+ */
+export function validateChannelCreative(data) {
+  const errors = [];
+  const fx = data.audio?.voice_fx;
+  // FX giọng chưa có trong audio-orchestrator (Phase 1): chấp nhận giá trị khác "none" sẽ ghi sai meta.creative.
+  if (fx && fx !== "none") errors.push(`audio.voice_fx "${fx}" is not implemented yet (only "none")`);
+  const variantId = data.creative?.variant_id;
+  if (!variantId) return errors;
+  const variant = getVariant(variantId);
+  if (!variant) return [...errors, `creative.variant_id ${variantId} is unknown or not active`];
+  const engines = data.creative.preferred_engines || [];
+  if (engines.length !== 1 || engines[0] !== variant.engine) {
+    errors.push(`creative.preferred_engines must be exactly [${variant.engine}] for variant ${variantId}`);
+  }
+  const niches = variant.compatibility.niches;
+  if (Array.isArray(niches) && !niches.includes(data.niche_id)) errors.push(`variant ${variantId} does not allow niche ${data.niche_id}`);
+  errors.push(...validateDna(data.creative.dna, variant, data.publishing?.language).map((error) => `creative.${error}`));
+  return errors;
 }
 
 export function validateConfigObject(category, data, schemas) {

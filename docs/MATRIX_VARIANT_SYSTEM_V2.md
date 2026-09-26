@@ -4,7 +4,7 @@
 > (10 engine, danh mục concept, Antigravity là nguồn ảnh chính, sản xuất trước – đăng sau). Tài liệu này là nguồn sự
 > thật về **kiến trúc triển khai**.
 >
-> Ngày: 26/09/2026. Trạng thái: V2 đã tự review (mục 22). Phase 0 được phép triển khai; Phase ≥ 1 chờ duyệt.
+> Ngày: 26/09/2026. Trạng thái: V2 đã tự review 2 vòng (mục 22). Phase 0 đã triển khai (mục 23); Phase ≥ 1 chờ duyệt.
 > Người đọc: chủ dự án + các coding agent (Claude Code / Codex / Gemini). Đọc kèm `AGENTS.md`,
 > `compare_studio/matrix/render/engines/README.md`.
 
@@ -65,12 +65,12 @@
 | C3 | **Đổi engine âm thầm**: `resolveChannelsForTopic` → `topicEngine` (ép compare cho topic "A vs B") → `pickEngine` → `fallbackEngine()` | `template-selector.mjs:26` | Kênh có variant: engine khoá theo variant, bị chặn thì **không lùi** (bỏ qua kênh, ghi log) |
 | C4 | Loại asset cố định theo engine ở 3 chỗ | `visual-director.mjs ENGINE_DEFAULTS`, `native-engine-adapter.mjs IMAGE_ENGINES/usesSceneImages`, `hashJobInputs` (science) | Variant khai `assetProfile`; Phase 0 chỉ cho phép variant dùng đúng asset type của engine (không phá hash); override thật ở Phase 1 |
 | C5 | Schema kênh `additionalProperties:false`; validator đòi mỗi niche ≥ 10 kênh; `config_version` chỉ bị kiểm khi sync DB (`bkt_web/matrix_config.py:78-82`); app **tự sửa YAML trên VPS** (`channels.apply_language_to_channel_config`, `auto_link_channels`) | — | Mở rộng schema (optional field); migration phải khoá các bộ ghi YAML khác (mục 12). Hôm nay 237/237 YAML ở repo = VPS |
-| C6 | Giọng: `voices.mjs` chỉ khai 2 Edge/ngôn ngữ + 24 CapCut; validator từ chối giọng không có trong `voices.mjs`; `audioRenderKey` chưa có `fx`; `synthesizeAudio` (đường Studio) tự đổi giọng khi lỗi | `voices.mjs:150-200`, `audio-orchestrator.mjs:35` | Catalog giọng mới từ nguồn thật (mục 8); Matrix vẫn dùng `createVoiceSynthesizer` (ném lỗi, không đổi giọng) |
+| C6 | Giọng: `voices.mjs` chỉ khai 2 Edge/ngôn ngữ + 24 CapCut (giọng **đã đăng ký** hôm nay: de 4, en 7, ja 5, ko 2); validator từ chối giọng không có trong `voices.mjs`; `audioRenderKey` chưa có `fx`; `synthesizeAudio` (đường Studio) tự đổi giọng khi lỗi | `voices.mjs:150-200`, `audio-orchestrator.mjs:35` | Catalog giọng mới từ nguồn thật (mục 8); Matrix vẫn dùng `createVoiceSynthesizer` (ném lỗi, không đổi giọng) |
 | C7 | Fingerprint chỉ có pHash khung + khung trung bình + audio + md5 nhạc nền + giọng; trọng số `score()` tuỳ ý | `bkt_web/video_fingerprint.py:253-282` | Giữ làm tín hiệu `visual`/`audio` v1; thêm registry tín hiệu (mục 10) |
 | C8 | `tools/themes` gồm bảng màu + HTML/CSS linh vật đặt tuyệt đối (`top:1280px`), gắn chặt layout compare; không có font theo hệ chữ | `tools/themes/index.mjs` | Kit theme chỉ lấy **họ màu + linh vật**; font theo hệ chữ nằm ở kit (mục 4.3) |
 | C9 | `applyMatrixLayoutFixes` co chữ theo id cố định (`#story-content`, `#live-punchline`) | `native-engine-adapter.mjs:91` | Variant dùng `kit/fit` theo thuộc tính `data-fit` |
 | C10 | Compare trộn logic (tách A/B, luật hiệp, fallback) với trình bày trong một file 637 dòng | `engines/compare.mjs` | Tách model/view ở Phase 4 |
-| C11 | Font CJK không có trong repo; VPS có `Noto Serif CJK JP/KR` hệ thống (201 font) | `fc-list` trên VPS | Kit khai font stack local; kiểm font tồn tại trước khi render (Phase 1) |
+| C11 | Font CJK không có trong repo; mỗi máy có font hệ thống khác nhau (VPS: `Noto Serif CJK JP/KR`; container: IPA/WenQuanYi; Mac: Hiragino). `hyperframes check` **từ chối** font hệ thống (`font_family_without_font_face`, đo 26/09 với 0.8.75/0.8.78) | `fc-list`, `hyperframes check` | Mỗi style chữ = **một** họ font offline từ gói `@fontsource/*` ghim version (`kit/fonts.mjs`, TYPOGRAPHY v2). Khi dựng video chỉ chép các lát unicode-range chứa ký tự thật của trang (~36 KB Latin, ~320 KB tiếng Hàn) và khai `@font-face` nội tuyến |
 | C12 | Survival dùng mặt Mr. Incredible (IP bên thứ ba) | `shared/assets/survival/mrincredible/` | Reactor gốc (mục 9.4) |
 | C13 | `tools/find-image.mjs` có cả Pollinations (bị cấm trong pipeline video) | đầu file | Chỉ được gọi phần Wikimedia (`searchWikiImages`) |
 
@@ -265,7 +265,8 @@ seed_file: topics/packs/cold_case.txt
   - Giọng CapCut chỉ được đăng ký sau khi **tổng hợp thử đúng ngôn ngữ** (Phase 1).
 - **Voice DNA** = `{provider, voice_id, rate, pitch, fx, fx_version}`, nằm trong `audio` của YAML (voice_id / voice_speed / voice_pitch
   đã có; thêm `voice_fx`).
-- **Capacity thật:** DE có 9 giọng cho 125 acc, nên **không thể mỗi acc một giọng**. Luật gán, theo thứ tự ưu tiên:
+- **Capacity thật:** DE hiện chỉ có 4 giọng đã đăng ký (2 Edge + 2 CapCut); tối đa khoảng 9 khi đăng ký thêm 4 Edge + 1 CapCut
+  đã thử. 125 acc nên **không thể mỗi acc một giọng**. Luật gán, theo thứ tự ưu tiên:
   1. Không trùng giọng với nearest visual neighbor.
   2. Ít trùng nhất trong (nước, engine).
   3. Cân bằng nam/nữ theo `audioProfile.gender`.
@@ -384,6 +385,11 @@ flowchart TB
 ```
 
 - **Tất định:** không đọc đồng hồ, không random; mọi tie-break dùng `sha256(channel_id|…)`.
+- **Chọn DNA theo từng trục** (ít bị dùng nhất trong cùng variant, tie-break hash), không duyệt tích Descartes của mọi trục
+  (tránh bùng nổ tổ hợp khi variant có 4–6 giá trị/trục).
+- **Phase 0 là greedy** theo thứ tự (nước, niche, channel). Greedy có thể báo `hard:capacity` dù vẫn tồn tại cách gán
+  (niche hẹp như `ancient_mythology` chỉ có 4 engine). Phase 6 thay bằng matching tối đa (max-flow) giữa acc và
+  structural identity của từng nước, rồi mới tối ưu khoảng cách trục.
 - **Dry-run** không ghi gì. Nó in ra bảng
   `ACCOUNT · COUNTRY · OLD ENGINE · OLD NICHE → NEW ENGINE · VARIANT · COMPOSITION · MOTION · TYPOGRAPHY · VOICE · DNA SIGNATURE · COLLISION STATUS`
   và file plan JSON có `plan_sha256`.
@@ -483,7 +489,7 @@ flowchart TB
 | Cross-engine giống nhau (ô cửa tàu ngầm, CCTV/VHS…) | Cao | Mục 20 + cảnh báo cross-engine |
 | Dual writer YAML trên VPS | Cao | Khoá migration + sửa writer (Phase 6) |
 | HyperFrames `@latest` đổi luật | Trung bình | Ghi version, đề xuất ghim; lint `.clip` |
-| Font CJK khác máy | Trung bình | Font stack + kiểm tồn tại; render production chỉ trên VPS |
+| Font CJK khác máy | Trung bình | Font offline từ `@fontsource` (npm ci), `@font-face` nội tuyến; test chặn tên font hệ thống và họ font không có gói |
 | Antigravity quota | Cao | Sản xuất trước, cache ACCOUNT, reactor một lần, stock cho wildlife |
 | Giọng ít (JP 2 Edge) | Trung bình | CapCut ja 19 giọng (sau khi thử) |
 | Tăng hash cấu hình → batch cũ lỗi | Thấp | Snapshot trong manifest; apply khi paused |
@@ -498,28 +504,30 @@ flowchart TB
 
 ## 19. Exact files expected to change
 
-**Phase 0 (lần này):**
+**Phase 0 (đã làm, xem mục 23):**
 
 - Mới:
   - `compare_studio/matrix/render/variants/{index,schema,dna}.mjs`
-  - `compare_studio/matrix/render/variants/kit/{VERSION,profiles,theme,resolve,rng,runtime,fit,lint,primitives}.mjs`
+  - `compare_studio/matrix/render/variants/kit/{VERSION,profiles,theme,resolve,rng,runtime,fit,lint,primitives,fonts}.mjs`
   - `compare_studio/matrix/render/variants/<10 engine>/index.mjs`
   - `compare_studio/matrix/render/variants/mystery/reference-dossier.mjs`
   - `compare_studio/tools/list-variants.mjs`, `compare_studio/tools/preview-variants.mjs`, `compare_studio/tools/variant_contact_sheet.py`
-  - `compare_studio/config/voices/edge_voices.snapshot.json`
-  - `compare_studio/tests/matrix-variants.test.mjs`
+  - `compare_studio/tests/matrix-variants.test.mjs`, `compare_studio/tests/variant-fixtures.mjs`
   - `bkt_web/autopilot/creative_dna.py`, `tests/test_creative_dna.py`
 - Sửa:
   - `compare_studio/matrix/render/native-engine-adapter.mjs` (nhánh variant + `meta.creative`)
   - `compare_studio/matrix/planner/template-selector.mjs` (khoá engine theo variant)
   - `compare_studio/config/schemas/channel-dna.schema.json`
-  - `compare_studio/tools/matrix-config-validator.mjs`
+  - `compare_studio/package.json` + `package-lock.json` (gói font `@fontsource/*` ghim version)
+  - `compare_studio/tools/matrix-config-validator.mjs` (`validateChannelCreative`)
+  - `compare_studio/tools/matrix-pick-engine.mjs` (đường hồi sinh job của Autopilot cũng phải khoá engine theo variant)
   - `AGENTS.md`
 
 **Phase 1+ (dự kiến):**
 
 - `matrix/creative/visual-director.mjs`, `asset-manager.mjs`, `audio-orchestrator.mjs` (fx)
-- `tools/voices.mjs` (đăng ký giọng đã thử)
+- `tools/voices.mjs` (đăng ký giọng đã thử) + `config/voices/edge_voices.snapshot.json` (chụp trên máy có mạng tới Edge;
+  container cloud của Phase 0 không gọi được `listVoices()`)
 - `bkt_web/creative_similarity/**`, `bkt_web/autopilot/{topics,planner,dupguard,channels}.py`
 - `config/topic_packs/**`
 - `bkt_web/stock_video.py` + ledger, `bkt_web/tiktok_publisher.py` (setting nhãn AI 3 giá trị, production `off`)
@@ -539,7 +547,7 @@ flowchart TB
 | `mystery/ufo-radar` · `chalk/night-vision` | HUD xanh | chalk night-vision → ảnh nhiệt đỏ/cam |
 | `compare/tier-duel` · `tierlist/*` | Cột thanh | Giữ, nhưng compare dùng thanh ngang đối xứng |
 | `folklore/japanese-yokai-scroll` | Chữ dọc không hợp Latin | Composition Latin: cuộn ngang, chữ ngang; ja: chữ dọc |
-| `newspaper/german-*` Fraktur | Chỉ hợp de | Typography `blackletter` chỉ có trong allowed khi script = latin và nước = de |
+| `newspaper/german-*` Fraktur | Chỉ hợp de | Cần thêm họ font Fraktur (vd UnifrakturMaguntia) vào `kit/fonts.mjs` qua proposal core; chỉ cho vào allowed khi script = latin và nước = de |
 | Science 10 concept | lab-notebook / periodic / quiz khác cấu trúc thật; infographic / timeline / blueprint dễ trùng engine khác | Làm lab-notebook, microscope-zoom, space-hud, xray, periodic, quiz trước; 4 cái còn lại làm sau khi so cross-engine |
 
 Tổng sau gộp: khoảng 70–75 base variant × 2–4 composition, tức khoảng 200+ structural identity (đủ cho DE 125 trong các niche,
@@ -585,3 +593,68 @@ dry-run Phase 6 sẽ tính chính xác).
 10. **Hash cache audio:** thêm `fx` vào khoá sẽ làm mất cache của mọi job cũ. → Chỉ thêm khi fx ≠ none.
 11. **Phase 0 asset:** nếu variant override asset type ngay thì làm lệch 3 chỗ trong code (C4). → Phase 0 ép variant dùng đúng
     asset type của engine; override để Phase 1.
+
+**Vòng 2 (sau khi đối chiếu với code lúc làm Phase 0):**
+
+12. **Đường hồi sinh job bỏ sót khoá engine:** `bkt_web/autopilot/revive.py` chọn lại engine qua `tools/matrix-pick-engine.mjs`
+    (`pickEngine`/`fallbackEngine`), không qua `resolveChannelsForTopic`. → `matrix-pick-engine` dùng `variantEngine`; engine bị chặn
+    thì không trả engine nào (job giữ engine cũ), không lùi.
+13. **Cấu hình nói dối:** schema có `audio.voice_fx` nhưng `audio-orchestrator` chưa áp FX → `meta.creative.voice.fx` sẽ ghi "creepy" cho
+    audio không có FX. → Validator từ chối mọi giá trị khác `none` cho tới khi Phase 1 làm FX + cache key.
+14. **Mơ hồ `variant_id` / `dna`:** một field có mà thiếu field kia. → Schema JSON bắt buộc cả hai (`dependencies`).
+15. **Signature theo ngôn ngữ, không theo nước:** `resolveCreativeContext` đưa `lang` vào signature và `meta.creative.country`.
+    Hôm nay nước ↔ ngôn ngữ là 1:1 (DE/de, GB/en, JP/ja, KR/ko) nên không sai. Nếu có acc US hoặc AT, hai nước sẽ trùng
+    signature. → Ghi rõ ở đây; structural key trong dry-run đã dùng nước thật. Phase 6: thêm `publishing.country` vào YAML
+    và vào signature (tăng `DNA_VERSION`).
+16. **Tổ hợp DNA khi gán:** duyệt đủ tích các trục (tới 6⁵ × composition) cho 200 acc là thừa. → Chọn từng trục (mục 11).
+17. **Greedy capacity:** xem mục 11. Dry-run đánh `hard:capacity`, không gán lệch luật.
+18. **Chuyển cảnh đè header:** `hyperframes check` (0.8.75) báo info `content_overlap` giữa tiêu đề và cảnh đang trượt
+    (`folder_flip`/`slide` di chuyển cả lớp cảnh toàn màn qua vùng tiêu đề). Không phải lỗi, nhưng Phase 1 kit phải cho transition
+    chỉ chạy trong vùng cảnh của composition (khung cha `overflow:hidden`), không trên toàn màn.
+19. **Font là lỗi kiến trúc, không phải lỗi hiển thị:** Phase 0 ban đầu khai font hệ thống cho ja/ko (theo C11 cũ) và dựa vào
+    HyperFrames tự nạp font Latin. Đo trong container: `hyperframes check` (0.8.75, 0.8.78) **trượt với ja/ko**
+    (`font_family_without_font_face`). Đọc mã HyperFrames: lint chỉ nhận họ font có `@font-face`, có trong bảng alias
+    của nó, hoặc nạp bằng `<link>` Google Fonts (mạng). Với mọi họ khác, compiler **tải từ Google Fonts lúc compile**
+    rồi cache — tức là cả font Latin cũng phụ thuộc mạng và máy. → Đã dừng phần phụ thuộc và sửa kit:
+    - `kit/fonts.mjs`: 13 họ font từ gói `@fontsource/*` ghim version trong `compare_studio/package.json` (OFL). Khi dựng
+      video, chỉ các lát unicode-range chứa ký tự của trang được chép vào `assets/kit/fonts/` và khai `@font-face` nội tuyến.
+      Không tải mạng lúc compile/render, cùng chữ trên mọi máy, `hyperframes check` nhận.
+    - TYPOGRAPHY v2 (bỏ `handwritten`, `blackletter`; thêm `display_serif`, `heavy`), `KIT_VERSION` 2.
+    - Test chặn tên font hệ thống và họ font không có gói offline.
+    - Chi phí: `node_modules/@fontsource` khoảng 336 MB trên máy render (gói có đủ weight + woff cũ). Nếu đĩa VPS chật, Phase 1
+      có thể thay bằng thư mục font đã lọc (chỉ woff2 400/700, khoảng 35 MB) — cần chủ dự án chọn.
+    - Hệ quả: với CJK trục `typography` yếu hơn Latin (chỉ Noto Sans / Noto Serif mỗi ngôn ngữ). Validator vẫn đếm là khác
+      trục, nên khi review variant cho ja/ko đừng dựa vào trục typography để đạt 4/6. Phase 1: luật "typography chỉ tính khác
+      nếu họ font thật khác theo hệ chữ" và thêm họ CJK (M PLUS, Klee One, Nanum…) qua proposal core.
+    - Deploy (khi được bảo): chạy `npm ci` trong `compare_studio/` trên VPS để có các gói font.
+
+## 23. Phase 0 — trạng thái triển khai
+
+| Hạng mục | Trạng thái | Nơi |
+|---|---|---|
+| Registry + API (`listVariants`, `getVariant`, `validateVariant`, `getVariantsForCountry`, `getVariantCreativeCapacity`) | xong | `matrix/render/variants/index.mjs` |
+| Schema variant + luật trục 4/6 và 2/6 bằng code | xong | `variants/schema.mjs` |
+| Creative DNA (version, signature, seed, capacity) | xong | `variants/dna.mjs` |
+| Kit: profiles có version, theme nước, resolve (thứ tự trộn), rng, runtime local, fit, lint, primitives | xong | `variants/kit/` |
+| Dispatch tương thích ngược + `meta.creative` + cờ `MATRIX_VARIANTS=0` | xong | `native-engine-adapter.mjs` |
+| Khoá engine theo variant (batch + hồi sinh) | xong | `template-selector.mjs` (`variantEngine`), `tools/matrix-pick-engine.mjs` |
+| Schema YAML (`creative.variant_id`, `creative.dna`, `audio.voice_fx`) + validator | xong | `channel-dna.schema.json`, `matrix-config-validator.mjs` |
+| Dry-run gán DNA | xong (greedy, không ghi file) | `bkt_web/autopilot/creative_dna.py` |
+| Preview + contact sheet có nhãn DNA | xong | `tools/preview-variants.mjs`, `tools/variant_contact_sheet.py` |
+| JSON registry/giọng/chi phí cho Python | xong | `tools/list-variants.mjs` |
+| 1 variant tham chiếu (2 composition, status `reference`) | xong | `variants/mystery/reference-dossier.mjs` |
+| Font offline (Latin/ja/ko) cho variant | xong | `variants/kit/fonts.mjs`, gói `@fontsource/*` |
+| Snapshot giọng Edge | **hoãn Phase 1** | cần mạng tới Edge |
+| FX giọng, override asset type, topic pack, similarity đa tín hiệu, asset ledger, apply migration | Phase 1–6 | mục 15 |
+
+Nghiệm thu (mục 21, Phase 0):
+
+- Kênh legacy dựng **y hệt** trước khi sửa: hash `index.html` của fixture mystery de `ad1f63c6…`, ja `ae62e285…`,
+  compare `68095774…` trùng với hash chụp trước khi sửa adapter (trên Mac và trong container Linux). Test giữ luật này bằng
+  cách so đường legacy với `MATRIX_VARIANTS=0`.
+- Kênh có variant dựng được, HTML byte-identical giữa 2 lần dựng, không URL mạng, không id media trùng, cảnh cuối tới
+  `totalDuration`, thời điểm cảnh giữ đúng TTS.
+- `hyperframes check` qua với variant tham chiếu (kết quả từng bản/ngôn ngữ ghi trong PR).
+- Chữ dài tiếng Đức + smoke ja/ko: dựng được, font offline đúng hệ chữ, `data-fit` co chữ; contact sheet dựng được.
+- Dry-run: tất định (cùng `plan_sha256`), không đổi file nào trong `config/`, `--apply` bị từ chối.
+

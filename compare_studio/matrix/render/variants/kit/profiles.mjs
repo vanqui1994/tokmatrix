@@ -3,43 +3,27 @@
 // bố cục là việc của composition preset trong variant.
 import { rngRange } from "./rng.mjs";
 
-// --- Typography: style trừu tượng → font stack theo hệ chữ (chỉ font local/hệ thống, không tải mạng). ----------
-// Be Vietnam Pro / JetBrains Mono nằm trong tools/template-kinetic/assets (kit/runtime chép vào video).
-// CJK dùng font hệ thống của máy render (VPS có Noto Serif/Sans CJK JP/KR); kiểm tồn tại ở Phase 1.
+// --- Typography: style trừu tượng → MỘT họ font offline (kit/fonts.mjs, gói @fontsource ghim version) + generic. ---
+// Không dùng font hệ thống: `hyperframes check` từ chối (font_family_without_font_face) và chữ khác nhau giữa các máy
+// (đo 26/09, 0.8.75 + 0.8.78). CJK không có đủ họ font cho mọi style: kiểu không chân → Noto Sans, có chân → Noto Serif
+// (trục typography với ja/ko yếu hơn Latin — V2 mục 22 #19).
 const LATIN = {
-  typewriter: '"JetBrains Mono", "Courier New", monospace',
-  mono: '"JetBrains Mono", "DejaVu Sans Mono", monospace',
-  serif: '"Noto Serif", "DejaVu Serif", Georgia, serif',
-  grotesk: '"Be Vietnam Pro", "DejaVu Sans", Arial, sans-serif',
-  condensed: '"Be Vietnam Pro", "Arial Narrow", sans-serif',
-  slab: '"Noto Serif", "Rockwell", "DejaVu Serif", serif',
-  handwritten: '"Comic Neue", "Segoe Print", "DejaVu Sans", cursive',
-  blackletter: '"UnifrakturMaguntia", "Noto Serif", serif',
-  rounded: '"Be Vietnam Pro", "Nunito", sans-serif',
+  typewriter: '"IBM Plex Mono", monospace',
+  mono: '"JetBrains Mono", monospace',
+  serif: '"EB Garamond", serif',
+  display_serif: '"Playfair Display", serif',
+  slab: '"Roboto Slab", serif',
+  grotesk: '"Inter", sans-serif',
+  condensed: '"Oswald", sans-serif',
+  rounded: '"Nunito", sans-serif',
+  heavy: '"Archivo Black", sans-serif',
 };
-const JA = {
-  typewriter: '"Noto Sans Mono CJK JP", "Noto Sans CJK JP", "Hiragino Sans", monospace',
-  mono: '"Noto Sans Mono CJK JP", "Noto Sans CJK JP", monospace',
-  serif: '"Noto Serif CJK JP", "Hiragino Mincho ProN", serif',
-  grotesk: '"Noto Sans CJK JP", "Hiragino Sans", sans-serif',
-  condensed: '"Noto Sans CJK JP", "Hiragino Sans", sans-serif',
-  slab: '"Noto Serif CJK JP", "Hiragino Mincho ProN", serif',
-  handwritten: '"Noto Sans CJK JP", "Hiragino Maru Gothic ProN", sans-serif',
-  blackletter: '"Noto Serif CJK JP", serif',
-  rounded: '"Noto Sans CJK JP", "Hiragino Maru Gothic ProN", sans-serif',
-};
-const KO = {
-  typewriter: '"Noto Sans Mono CJK KR", "Noto Sans CJK KR", "Apple SD Gothic Neo", monospace',
-  mono: '"Noto Sans Mono CJK KR", "Noto Sans CJK KR", monospace',
-  serif: '"Noto Serif CJK KR", "AppleMyungjo", serif',
-  grotesk: '"Noto Sans CJK KR", "Apple SD Gothic Neo", sans-serif',
-  condensed: '"Noto Sans CJK KR", "Apple SD Gothic Neo", sans-serif',
-  slab: '"Noto Serif CJK KR", "AppleMyungjo", serif',
-  handwritten: '"Noto Sans CJK KR", "Apple SD Gothic Neo", sans-serif',
-  blackletter: '"Noto Serif CJK KR", serif',
-  rounded: '"Noto Sans CJK KR", "Apple SD Gothic Neo", sans-serif',
-};
-export const TYPOGRAPHY = Object.freeze({ version: 1, stacks: { latin: LATIN, ja: JA, ko: KO } });
+const cjk = (sans, serif) => ({
+  typewriter: sans, mono: sans, serif, display_serif: serif, slab: serif, grotesk: sans, condensed: sans, rounded: sans, heavy: sans,
+});
+const JA = cjk('"Noto Sans JP", sans-serif', '"Noto Serif JP", serif');
+const KO = cjk('"Noto Sans KR", sans-serif', '"Noto Serif KR", serif');
+export const TYPOGRAPHY = Object.freeze({ version: 2, stacks: { latin: LATIN, ja: JA, ko: KO } });
 
 export function fontStack(style, script) {
   const table = TYPOGRAPHY.stacks[script] || TYPOGRAPHY.stacks.latin;

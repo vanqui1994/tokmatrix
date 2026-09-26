@@ -13,6 +13,7 @@ import { getVariant, variantsEnabled } from "./variants/index.mjs";
 import { lintVariantHtml } from "./variants/kit/lint.mjs";
 import { resolveCreativeContext } from "./variants/kit/resolve.mjs";
 import { prepareKitAssets } from "./variants/kit/runtime.mjs";
+import { embedFonts } from "./variants/kit/fonts.mjs";
 
 const execFileAsync = promisify(execFile);
 const COMPARE_DIR = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
@@ -294,7 +295,7 @@ async function createEngineHtml({ engineType, slug, title, lang, scenes, channel
     });
     const problems = lintVariantHtml(built.html);
     if (problems.length) throw new Error(`variant ${variant.id} produced forbidden HTML: ${problems.join("; ")}`);
-    return { ...built, creative: creative.observability };
+    return { ...built, creative: creative.observability, fontFamilies: creative.fonts.families };
   }
   if (extended) {
     const extras = manifest.script?.engine_extras?.engine === engineType && manifest.script.engine_extras.data
@@ -501,6 +502,12 @@ export async function buildNativeVideoProject({ job, manifest = job?.manifest, p
   const composed = await createEngineHtml({ engineType, slug, title, lang, scenes, channel, manifest, media, totalDuration, variant });
   // Variant tự co chữ bằng kit/fit (data-fit); bản sửa bố cục legacy chỉ dành cho template legacy.
   if (!variant) composed.html = applyMatrixLayoutFixes(composed.html, engineType);
+  else {
+    // Font offline: chỉ các lát unicode-range chứa ký tự của trang (kit/fonts.mjs).
+    const fonts = embedFonts({ html: composed.html, families: composed.fontFamilies, targetDir, compareDir: COMPARE_DIR });
+    composed.html = fonts.html;
+    staticAssets.push(...fonts.copied);
+  }
   // HyperFrames ≥ 0.8.77 từ chối media trùng id; bắt ngay khi dựng để lỗi chỉ đúng nguồn (engine vs auto-sfx).
   const duplicates = duplicateMediaIds(composed.html);
   if (duplicates.length) throw new Error(`composition has duplicate media ids: ${duplicates.join(", ")}`);

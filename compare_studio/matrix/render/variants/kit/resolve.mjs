@@ -3,6 +3,7 @@
 import { KIT_VERSION } from "./VERSION.mjs";
 import { PROFILE_VERSIONS, fontStack, treatmentCss } from "./profiles.mjs";
 import { countryTheme } from "./theme.mjs";
+import { stackFamily } from "./fonts.mjs";
 import { createRng } from "./rng.mjs";
 import { accountSeed, dnaSignature, normalizeDna, structuralKey, validateDna, videoSeed } from "../dna.mjs";
 import { effectiveAxes } from "../schema.mjs";
@@ -27,13 +28,14 @@ export function resolveCreativeContext({ variant, dna, lang, channelId, slug }) 
   const seed = accountSeed(channelId, variant.id, normalized.dna_version);
   const perVideo = videoSeed(seed, slug);
   const composition = variant.visualProfile.compositions[normalized.composition];
+  const bodyStack = fontStack(normalized.typography, theme.script);
   return {
     variant,
     composition: { id: normalized.composition, ...composition },
     theme,
     dna: normalized,
     axes: effectiveAxes(variant, normalized.composition, normalized),
-    fonts: { body: fontStack(normalized.typography, theme.script) },
+    fonts: { body: bodyStack, families: [stackFamily(bodyStack)] },
     treatmentCss: treatmentCss(normalized.treatment, perVideo),
     seeds: { account: seed, video: perVideo },
     rng: createRng(perVideo),
@@ -47,6 +49,7 @@ export function resolveCreativeContext({ variant, dna, lang, channelId, slug }) 
       creative_signature: dnaSignature(normalized, { variantId: variant.id, country: lang }),
       structural_key: structuralKey(variant.id, normalized.composition),
       country: theme.lang,
+      font_families: [stackFamily(bodyStack)],
       renderer_version: rendererVersion(variant),
     },
   };
