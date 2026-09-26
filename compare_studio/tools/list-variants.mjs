@@ -13,6 +13,7 @@ import { listVariants, validateRegistry } from "../matrix/render/variants/index.
 import { DNA_FIELDS, DNA_VERSION, dnaSignature, variantCreativeCapacity } from "../matrix/render/variants/dna.mjs";
 import { AXES, MIN_AXIS_DIFF_COMPOSITION, MIN_AXIS_DIFF_SAME_ENGINE, effectiveAxes } from "../matrix/render/variants/schema.mjs";
 import { COUNTRIES } from "./voices.mjs";
+import { getCapCutCatalog } from "./capcut-tts.mjs";
 
 export function variantsJson({ includeReference = false } = {}) {
   const variants = listVariants().filter((v) => v.status === "active" || (includeReference && v.status === "reference"));
@@ -44,11 +45,20 @@ export function variantsJson({ includeReference = false } = {}) {
   };
 }
 
+/**
+ * Giọng dùng để gán Voice DNA: Edge + CapCut đã đăng ký trong voices.mjs (validator nhận). `capcut_candidates` là
+ * phần còn lại của tools/capcut_tts_api/Voice.json theo ngôn ngữ — chỉ được gán sau khi tổng hợp thử đúng ngôn ngữ
+ * và đăng ký vào voices.mjs (Phase 1).
+ */
 export function voicesJson() {
-  return {
-    source: "tools/voices.mjs (registered voices only; CapCut candidates need a language test first)",
-    voices: COUNTRIES.flatMap((c) => c.voices.map((v) => ({ id: v.id, lang: c.code, provider: v.provider, gender: v.gender }))),
-  };
+  const voices = COUNTRIES.flatMap((c) => c.voices.map((v) => ({ id: v.id, lang: c.code, provider: v.provider, gender: v.gender })));
+  const registered = new Set(voices.map((v) => v.id));
+  const langs = new Set(COUNTRIES.map((c) => c.code));
+  const capcut_candidates = getCapCutCatalog()
+    .map((v) => ({ id: v.voice_type, lang: String(v.lang || v.lan || "").slice(0, 2).toLowerCase(), locale: v.lang, name: v.display_name }))
+    .filter((v) => langs.has(v.lang) && !registered.has(v.id))
+    .sort((a, b) => a.lang.localeCompare(b.lang) || a.id.localeCompare(b.id));
+  return { source: "tools/voices.mjs (registered Edge + CapCut) + tools/capcut_tts_api/Voice.json (candidates)", voices, capcut_candidates };
 }
 
 export function costJson({ scenes = 12, includeReference = false } = {}) {

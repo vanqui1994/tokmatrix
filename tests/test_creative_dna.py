@@ -72,6 +72,9 @@ class CreativeDnaDryRunTest(unittest.TestCase):
         registered = {(v["id"], v["lang"]) for v in self.registry["voices"]}
         for row in rows:
             self.assertIn((row["voice"], row["lang"]), registered)
+        # CapCut là một phần của Voice DNA (chủ dự án: "nhớ dùng capcut tts"), không chỉ Edge.
+        providers = {v["id"]: v["provider"] for v in self.registry["voices"]}
+        self.assertIn("capcut", {providers[r["voice"]] for r in rows})
 
     def test_existing_valid_dna_is_kept(self):
         channels = json.loads(json.dumps(self.channels))

@@ -263,6 +263,9 @@ seed_file: topics/packs/cold_case.txt
   - Trạng thái mỗi giọng: `registered` (có trong `voices.mjs`, validator nhận), `candidate` (chưa đăng ký hoặc chưa thử),
     `excluded` (giọng nhân vật có IP như "Deadpool", sai ngôn ngữ).
   - Giọng CapCut chỉ được đăng ký sau khi **tổng hợp thử đúng ngôn ngữ** (Phase 1).
+  - Phase 0: dry-run gán giọng từ **cả Edge và CapCut đã đăng ký** (de: 2 Edge + 2 CapCut, en: 2 + 5, ja: 2 + 3, ko: 2 Edge).
+    `list-variants.mjs --voices` còn liệt kê `capcut_candidates` lấy thẳng từ `Voice.json` (en 35, ja 16, de 1 chưa đăng ký).
+    Lưu ý: `Voice.json` ghi một số giọng Nhật là `lan: "jp"`; ngôn ngữ phải lấy từ locale (`ja-JP`), không từ `lan`.
 - **Voice DNA** = `{provider, voice_id, rate, pitch, fx, fx_version}`, nằm trong `audio` của YAML (voice_id / voice_speed / voice_pitch
   đã có; thêm `voice_fx`).
 - **Capacity thật:** DE hiện chỉ có 4 giọng đã đăng ký (2 Edge + 2 CapCut); tối đa khoảng 9 khi đăng ký thêm 4 Edge + 1 CapCut

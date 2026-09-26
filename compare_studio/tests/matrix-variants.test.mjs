@@ -17,7 +17,7 @@ import { TYPOGRAPHY } from "../matrix/render/variants/kit/profiles.mjs";
 import { FONT_PACKAGES, fontFacesFor, stackFamily } from "../matrix/render/variants/kit/fonts.mjs";
 import { variantEngine } from "../matrix/planner/template-selector.mjs";
 import { validateChannelCreative, validateConfigs } from "../tools/matrix-config-validator.mjs";
-import { costJson, variantsJson } from "../tools/list-variants.mjs";
+import { costJson, variantsJson, voicesJson } from "../tools/list-variants.mjs";
 import { buildPreview } from "../tools/preview-variants.mjs";
 import { createMysteryFixture } from "./variant-fixtures.mjs";
 
@@ -291,6 +291,12 @@ test("list-variants exposes registry, rules and a cost estimate for Python and r
   assert.equal(cost.ai_images_per_video, 12);
   assert.equal(cost.ai_images_per_100_videos, 1200);
   assert.equal(cost.measured, null);
+  // Voice DNA dùng cả CapCut (không chỉ Edge); ứng viên CapCut lấy từ Voice.json, không gõ tay tên giọng.
+  const voices = voicesJson();
+  assert.ok(voices.voices.some((v) => v.provider === "capcut" && v.lang === "de"));
+  assert.ok(voices.capcut_candidates.some((v) => v.lang === "ja"));
+  const registered = new Set(voices.voices.map((v) => v.id));
+  assert.ok(voices.capcut_candidates.every((v) => !registered.has(v.id)));
 });
 
 test("preview builds labelled, lint-clean projects for every composition and language", async () => {
