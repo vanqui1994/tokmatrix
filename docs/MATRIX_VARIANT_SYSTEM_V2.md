@@ -661,3 +661,8 @@ Nghiệm thu (mục 21, Phase 0):
 - Chữ dài tiếng Đức + smoke ja/ko: dựng được, font offline đúng hệ chữ, `data-fit` co chữ; contact sheet dựng được.
 - Dry-run: tất định (cùng `plan_sha256`), không đổi file nào trong `config/`, `--apply` bị từ chối.
 
+- Contact sheet 16 preview (2 composition × 4 ngôn ngữ × 2 DNA) dựng xong; `--check-determinism` render cùng một frame 2 lần
+  cho ra PNG giống hệt (`determinism: true`).
+- Phát hiện từ contact sheet (chưa sửa, làm ở Phase 1): câu tiếng Đức có từ ghép rất dài không có khoảng trắng
+  (fixture cảnh 3) bị `data-fit` co tới cỡ chữ quá nhỏ. Cần `hyphens: auto` + `lang="de"` hoặc cỡ chữ tối thiểu kèm
+  xuống dòng cứng trong `kit/fit`, rồi thêm test cỡ chữ tối thiểu.
