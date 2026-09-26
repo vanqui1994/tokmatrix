@@ -2,7 +2,7 @@
   "id": "vector-library-showreel",
   "renderer": "native-vector-v1",
   "fidelity": "technical-demo",
-  "duration": 113.0,
+  "duration": 118.0,
   "characters": [
     {
       "id": "watermelon-left",
@@ -704,6 +704,36 @@
       "name": "Bàn tay trái",
       "asset": "hand",
       "face": false
+    },
+    {
+      "id": "giant_radish-radish",
+      "name": "Củ cải khổng lồ",
+      "asset": "giant_radish"
+    },
+    {
+      "id": "giant_radish-farmer",
+      "name": "Nông dân",
+      "asset": "farmer"
+    },
+    {
+      "id": "giant_radish-woman",
+      "name": "Nông dân nữ",
+      "asset": "farmer_woman"
+    },
+    {
+      "id": "giant_radish-dog",
+      "name": "Con chó",
+      "asset": "dog"
+    },
+    {
+      "id": "giant_radish-cat",
+      "name": "Con mèo",
+      "asset": "cat"
+    },
+    {
+      "id": "giant_radish-mouse",
+      "name": "Chuột đồng",
+      "asset": "mouse"
     }
   ],
   "scenes": [
@@ -5211,13 +5241,345 @@
     },
     {
       "renderer": "native-vector-v1",
-      "kind": "title",
+      "kind": "scene",
       "start_time": 111.5,
-      "end_time": 113.0,
+      "end_time": 113.0625,
+      "characters_present": [
+        "giant_radish-radish",
+        "giant_radish-farmer"
+      ],
+      "poses": {
+        "giant_radish-radish": [
+          {
+            "time": 111.5,
+            "x": 140,
+            "y": 810,
+            "height": 440,
+            "growth": 1.0
+          },
+          {
+            "time": 113.0625,
+            "x": 140,
+            "y": 810,
+            "height": 440,
+            "growth": 1.0
+          }
+        ],
+        "giant_radish-farmer": [
+          {
+            "time": 111.5,
+            "x": 245,
+            "y": 810,
+            "height": 360,
+            "expression": "happy"
+          },
+          {
+            "time": 112.6875,
+            "x": 245,
+            "y": 810,
+            "height": 360,
+            "expression": "worried"
+          },
+          {
+            "time": 113.0625,
+            "x": 245,
+            "y": 810,
+            "height": 360,
+            "expression": "worried"
+          }
+        ]
+      },
+      "actions": [
+        {
+          "type": "tug",
+          "start": 111.8125,
+          "end": 112.75,
+          "target": "giant_radish-radish",
+          "actor": "giant_radish-farmer"
+        },
+        {
+          "type": "emote",
+          "start": 112.78125,
+          "end": 113.0625,
+          "actor": "giant_radish-farmer",
+          "emote": "!"
+        }
+      ],
+      "background": {
+        "preset": "farmyard_barn"
+      },
+      "index": 50
+    },
+    {
+      "renderer": "native-vector-v1",
+      "kind": "scene",
+      "start_time": 113.0625,
+      "end_time": 114.9375,
+      "characters_present": [
+        "giant_radish-radish",
+        "giant_radish-farmer",
+        "giant_radish-woman",
+        "giant_radish-dog",
+        "giant_radish-cat",
+        "giant_radish-mouse"
+      ],
+      "poses": {
+        "giant_radish-radish": [
+          {
+            "time": 113.0625,
+            "x": 100,
+            "y": 810,
+            "height": 440,
+            "growth": 1.0
+          },
+          {
+            "time": 114.9375,
+            "x": 100,
+            "y": 810,
+            "height": 440,
+            "growth": 1.0
+          }
+        ],
+        "giant_radish-farmer": [
+          {
+            "time": 113.0625,
+            "x": 190,
+            "y": 810,
+            "height": 360
+          },
+          {
+            "time": 114.9375,
+            "x": 190,
+            "y": 810,
+            "height": 360
+          }
+        ],
+        "giant_radish-woman": [
+          {
+            "time": 113.0625,
+            "x": 275,
+            "y": 810,
+            "height": 350
+          },
+          {
+            "time": 114.9375,
+            "x": 275,
+            "y": 810,
+            "height": 350
+          }
+        ],
+        "giant_radish-dog": [
+          {
+            "time": 113.0625,
+            "x": 355,
+            "y": 810,
+            "height": 170
+          },
+          {
+            "time": 114.9375,
+            "x": 355,
+            "y": 810,
+            "height": 170
+          }
+        ],
+        "giant_radish-cat": [
+          {
+            "time": 113.0625,
+            "x": 430,
+            "y": 810,
+            "height": 140
+          },
+          {
+            "time": 114.9375,
+            "x": 430,
+            "y": 810,
+            "height": 140
+          }
+        ],
+        "giant_radish-mouse": [
+          {
+            "time": 113.0625,
+            "x": 500,
+            "y": 810,
+            "height": 90
+          },
+          {
+            "time": 114.9375,
+            "x": 500,
+            "y": 810,
+            "height": 90
+          }
+        ]
+      },
+      "actions": [
+        {
+          "type": "tug",
+          "start": 113.21875,
+          "end": 114.9375,
+          "target": "giant_radish-radish",
+          "actor": "giant_radish-farmer",
+          "helpers": [
+            "giant_radish-woman",
+            "giant_radish-dog",
+            "giant_radish-cat",
+            "giant_radish-mouse"
+          ],
+          "pop_at": 114.5
+        }
+      ],
+      "background": {
+        "preset": "farmyard_barn"
+      },
+      "index": 51
+    },
+    {
+      "renderer": "native-vector-v1",
+      "kind": "scene",
+      "start_time": 114.9375,
+      "end_time": 116.5,
+      "characters_present": [
+        "giant_radish-radish",
+        "giant_radish-farmer",
+        "giant_radish-woman",
+        "giant_radish-dog",
+        "giant_radish-cat",
+        "giant_radish-mouse"
+      ],
+      "poses": {
+        "giant_radish-radish": [
+          {
+            "time": 114.9375,
+            "x": 140,
+            "y": 810,
+            "height": 440,
+            "expression": "happy",
+            "growth": 1.0
+          },
+          {
+            "time": 116.5,
+            "x": 140,
+            "y": 810,
+            "height": 440,
+            "expression": "happy",
+            "growth": 1.0
+          }
+        ],
+        "giant_radish-farmer": [
+          {
+            "time": 114.9375,
+            "x": 280,
+            "y": 810,
+            "height": 360,
+            "expression": "happy"
+          },
+          {
+            "time": 116.5,
+            "x": 280,
+            "y": 810,
+            "height": 360,
+            "expression": "happy"
+          }
+        ],
+        "giant_radish-woman": [
+          {
+            "time": 114.9375,
+            "x": 360,
+            "y": 810,
+            "height": 350,
+            "expression": "happy"
+          },
+          {
+            "time": 116.5,
+            "x": 360,
+            "y": 810,
+            "height": 350,
+            "expression": "happy"
+          }
+        ],
+        "giant_radish-dog": [
+          {
+            "time": 114.9375,
+            "x": 435,
+            "y": 810,
+            "height": 170,
+            "expression": "happy"
+          },
+          {
+            "time": 116.5,
+            "x": 435,
+            "y": 810,
+            "height": 170,
+            "expression": "happy"
+          }
+        ],
+        "giant_radish-cat": [
+          {
+            "time": 114.9375,
+            "x": 495,
+            "y": 810,
+            "height": 140,
+            "expression": "happy"
+          },
+          {
+            "time": 116.5,
+            "x": 495,
+            "y": 810,
+            "height": 140,
+            "expression": "happy"
+          }
+        ],
+        "giant_radish-mouse": [
+          {
+            "time": 114.9375,
+            "x": 545,
+            "y": 810,
+            "height": 90,
+            "expression": "happy"
+          },
+          {
+            "time": 116.5,
+            "x": 545,
+            "y": 810,
+            "height": 90,
+            "expression": "happy"
+          }
+        ]
+      },
+      "actions": [
+        {
+          "type": "celebrate",
+          "start": 115.0,
+          "end": 116.4375,
+          "actor": "giant_radish-farmer"
+        },
+        {
+          "type": "bounce",
+          "start": 115.09375,
+          "end": 116.34375,
+          "actor": "giant_radish-dog"
+        },
+        {
+          "type": "emote",
+          "start": 115.25,
+          "end": 116.34375,
+          "actor": "giant_radish-radish",
+          "emote": "heart"
+        }
+      ],
+      "background": {
+        "preset": "village_market"
+      },
+      "index": 52
+    },
+    {
+      "renderer": "native-vector-v1",
+      "kind": "title",
+      "start_time": 116.5,
+      "end_time": 118.0,
       "text": "Rig + hành động + timeline · Không phải bản remake đã duyệt",
       "characters_present": [],
       "poses": {},
-      "index": 50
+      "index": 53
     }
   ],
   "cues": [
@@ -5373,6 +5735,13 @@
       "end": 111.5,
       "character_id": "narrator",
       "text": "6 · An toàn hoá chất: bảo hộ, gió tạt sương độc và rửa sạch nông sản",
+      "offscreen": true
+    },
+    {
+      "start": 111.5,
+      "end": 116.5,
+      "character_id": "narrator",
+      "text": "1 · Củ cải khổng lồ: kéo co tập thể, ngã lăn và pháo hoa ăn mừng",
       "offscreen": true
     }
   ]

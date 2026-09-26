@@ -5647,5 +5647,402 @@
         "expression": "happy"
       }
     ]
+  },
+  {
+    "id": "giant_radish",
+    "name": "1 · Củ cải khổng lồ: kéo co tập thể, ngã lăn và pháo hoa ăn mừng",
+    "renderer": "native-vector-v1",
+    "fidelity": "technical-demo",
+    "note": "Mẫu kỹ thuật Phase G: củ cải khổng lồ giant_radish, kéo co tug đồng đội, bật tung pop_at, rơi giấy celebrate và hình nền farmyard_barn, village_market.",
+    "duration": 16.0,
+    "characters": [
+      {
+        "id": "radish",
+        "name": "Củ cải khổng lồ",
+        "asset": "giant_radish"
+      },
+      {
+        "id": "farmer",
+        "name": "Nông dân",
+        "asset": "farmer"
+      },
+      {
+        "id": "woman",
+        "name": "Nông dân nữ",
+        "asset": "farmer_woman"
+      },
+      {
+        "id": "dog",
+        "name": "Con chó",
+        "asset": "dog"
+      },
+      {
+        "id": "cat",
+        "name": "Con mèo",
+        "asset": "cat"
+      },
+      {
+        "id": "mouse",
+        "name": "Chuột đồng",
+        "asset": "mouse"
+      }
+    ],
+    "scenes": [
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 0,
+        "end_time": 5.0,
+        "characters_present": [
+          "radish",
+          "farmer"
+        ],
+        "poses": {
+          "radish": [
+            {
+              "time": 0,
+              "x": 140,
+              "y": 810,
+              "height": 440,
+              "growth": 1.0
+            },
+            {
+              "time": 5.0,
+              "x": 140,
+              "y": 810,
+              "height": 440,
+              "growth": 1.0
+            }
+          ],
+          "farmer": [
+            {
+              "time": 0,
+              "x": 245,
+              "y": 810,
+              "height": 360,
+              "expression": "happy"
+            },
+            {
+              "time": 3.8,
+              "x": 245,
+              "y": 810,
+              "height": 360,
+              "expression": "worried"
+            },
+            {
+              "time": 5.0,
+              "x": 245,
+              "y": 810,
+              "height": 360,
+              "expression": "worried"
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "tug",
+            "start": 1.0,
+            "end": 4.0,
+            "target": "radish",
+            "actor": "farmer"
+          },
+          {
+            "type": "emote",
+            "start": 4.1,
+            "end": 5.0,
+            "actor": "farmer",
+            "emote": "!"
+          }
+        ],
+        "background": {
+          "preset": "farmyard_barn"
+        },
+        "index": 0
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 5.0,
+        "end_time": 11.0,
+        "characters_present": [
+          "radish",
+          "farmer",
+          "woman",
+          "dog",
+          "cat",
+          "mouse"
+        ],
+        "poses": {
+          "radish": [
+            {
+              "time": 5.0,
+              "x": 100,
+              "y": 810,
+              "height": 440,
+              "growth": 1.0
+            },
+            {
+              "time": 11.0,
+              "x": 100,
+              "y": 810,
+              "height": 440,
+              "growth": 1.0
+            }
+          ],
+          "farmer": [
+            {
+              "time": 5.0,
+              "x": 190,
+              "y": 810,
+              "height": 360
+            },
+            {
+              "time": 11.0,
+              "x": 190,
+              "y": 810,
+              "height": 360
+            }
+          ],
+          "woman": [
+            {
+              "time": 5.0,
+              "x": 275,
+              "y": 810,
+              "height": 350
+            },
+            {
+              "time": 11.0,
+              "x": 275,
+              "y": 810,
+              "height": 350
+            }
+          ],
+          "dog": [
+            {
+              "time": 5.0,
+              "x": 355,
+              "y": 810,
+              "height": 170
+            },
+            {
+              "time": 11.0,
+              "x": 355,
+              "y": 810,
+              "height": 170
+            }
+          ],
+          "cat": [
+            {
+              "time": 5.0,
+              "x": 430,
+              "y": 810,
+              "height": 140
+            },
+            {
+              "time": 11.0,
+              "x": 430,
+              "y": 810,
+              "height": 140
+            }
+          ],
+          "mouse": [
+            {
+              "time": 5.0,
+              "x": 500,
+              "y": 810,
+              "height": 90
+            },
+            {
+              "time": 11.0,
+              "x": 500,
+              "y": 810,
+              "height": 90
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "tug",
+            "start": 5.5,
+            "end": 11.0,
+            "target": "radish",
+            "actor": "farmer",
+            "helpers": [
+              "woman",
+              "dog",
+              "cat",
+              "mouse"
+            ],
+            "pop_at": 9.6
+          }
+        ],
+        "background": {
+          "preset": "farmyard_barn"
+        },
+        "index": 1
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 11.0,
+        "end_time": 16.0,
+        "characters_present": [
+          "radish",
+          "farmer",
+          "woman",
+          "dog",
+          "cat",
+          "mouse"
+        ],
+        "poses": {
+          "radish": [
+            {
+              "time": 11.0,
+              "x": 140,
+              "y": 810,
+              "height": 440,
+              "expression": "happy",
+              "growth": 1.0
+            },
+            {
+              "time": 16.0,
+              "x": 140,
+              "y": 810,
+              "height": 440,
+              "expression": "happy",
+              "growth": 1.0
+            }
+          ],
+          "farmer": [
+            {
+              "time": 11.0,
+              "x": 280,
+              "y": 810,
+              "height": 360,
+              "expression": "happy"
+            },
+            {
+              "time": 16.0,
+              "x": 280,
+              "y": 810,
+              "height": 360,
+              "expression": "happy"
+            }
+          ],
+          "woman": [
+            {
+              "time": 11.0,
+              "x": 360,
+              "y": 810,
+              "height": 350,
+              "expression": "happy"
+            },
+            {
+              "time": 16.0,
+              "x": 360,
+              "y": 810,
+              "height": 350,
+              "expression": "happy"
+            }
+          ],
+          "dog": [
+            {
+              "time": 11.0,
+              "x": 435,
+              "y": 810,
+              "height": 170,
+              "expression": "happy"
+            },
+            {
+              "time": 16.0,
+              "x": 435,
+              "y": 810,
+              "height": 170,
+              "expression": "happy"
+            }
+          ],
+          "cat": [
+            {
+              "time": 11.0,
+              "x": 495,
+              "y": 810,
+              "height": 140,
+              "expression": "happy"
+            },
+            {
+              "time": 16.0,
+              "x": 495,
+              "y": 810,
+              "height": 140,
+              "expression": "happy"
+            }
+          ],
+          "mouse": [
+            {
+              "time": 11.0,
+              "x": 545,
+              "y": 810,
+              "height": 90,
+              "expression": "happy"
+            },
+            {
+              "time": 16.0,
+              "x": 545,
+              "y": 810,
+              "height": 90,
+              "expression": "happy"
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "celebrate",
+            "start": 11.2,
+            "end": 15.8,
+            "actor": "farmer"
+          },
+          {
+            "type": "bounce",
+            "start": 11.5,
+            "end": 15.5,
+            "actor": "dog"
+          },
+          {
+            "type": "emote",
+            "start": 12.0,
+            "end": 15.5,
+            "actor": "radish",
+            "emote": "heart"
+          }
+        ],
+        "background": {
+          "preset": "village_market"
+        },
+        "index": 2
+      }
+    ],
+    "cues": [
+      {
+        "start": 0.5,
+        "end": 3.5,
+        "character_id": "farmer",
+        "text": "Củ cải to quá, một mình ta nhổ mãi không lay chuyển được!",
+        "expression": "worried"
+      },
+      {
+        "start": 6.0,
+        "end": 9.2,
+        "character_id": "woman",
+        "text": "Nào cả nhà cùng chung sức, một hai ba kéo lên nào!",
+        "expression": "happy"
+      },
+      {
+        "start": 11.5,
+        "end": 14.5,
+        "character_id": "farmer",
+        "text": "Hoan hô, củ cải lên rồi! Cả nhà cùng vui múa ăn mừng thôi!",
+        "expression": "happy"
+      }
+    ]
   }
 ]

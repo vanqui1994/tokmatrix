@@ -2418,6 +2418,74 @@
         "a2398eeffa36ecca",
         "308320eff4289766"
       ]
+    },
+    "farmyard_barn": {
+      "day": [
+        "0e8b2def08a65469",
+        "0e8b2def08a65469"
+      ],
+      "night": [
+        "b7c066ef609d08e4",
+        "b7c066ef609d08e4"
+      ],
+      "rain": [
+        "c8a212efa823931f",
+        "f2f312efc0931c4e"
+      ],
+      "snow": [
+        "d9f716efbd354283",
+        "6215c4ef0d3637fb"
+      ],
+      "wind": [
+        "199d62ef219bf44f",
+        "273ce3ef3a44c873"
+      ],
+      "fog": [
+        "d3698bef48ef365c",
+        "0501e0ef1208a277"
+      ],
+      "storm": [
+        "c3d72fef175b57b9",
+        "163438effa9a48b0"
+      ],
+      "hot": [
+        "28621bef9f8cdf21",
+        "3d47e6ef9fa2af2f"
+      ]
+    },
+    "village_market": {
+      "day": [
+        "0e4988ef64ae4921",
+        "0e4988ef64ae4921"
+      ],
+      "night": [
+        "0a6981efb63269b6",
+        "0a6981efb63269b6"
+      ],
+      "rain": [
+        "bcc1b0ef7c83ef9c",
+        "4cf38bef924084ec"
+      ],
+      "snow": [
+        "b9284bef96a3f20a",
+        "c5c4c4efa5303674"
+      ],
+      "wind": [
+        "6527f0efc103c641",
+        "9c95e2ef4388433b"
+      ],
+      "fog": [
+        "db70d6ef4b5408eb",
+        "a66c2fef48513b6b"
+      ],
+      "storm": [
+        "ba93abef9df15671",
+        "e53834efde0ac70d"
+      ],
+      "hot": [
+        "721e7fef8efdc296",
+        "044504efb3de7c2b"
+      ]
     }
   },
   "stories": {
@@ -2574,6 +2642,13 @@
       "d5f223efea70bab4",
       "6fbeb2ef171c6a15",
       "892991ef5b54c9e7"
+    ],
+    "giant_radish": [
+      "5ef582ef572d4883",
+      "047d42ef4e1377ce",
+      "4f92d5ef0fd6babb",
+      "e638abef995dc218",
+      "46ccacefdfabd163"
     ]
   }
 }
