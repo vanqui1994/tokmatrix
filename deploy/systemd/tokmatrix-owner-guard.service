@@ -1,0 +1,8 @@
+[Unit]
+Description=Tra quyen so huu /opt/tokmatrix ve tokmatrix (tranh loi SQLite readonly sau trien khai bang root)
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/tokmatrix-owner-guard
+Nice=19
+IOSchedulingClass=idle

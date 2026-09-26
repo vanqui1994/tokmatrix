@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>6 Đại Thủy Quái Biển Sâu · Remake Vector Engine 1.11.0</title>
+  <style>
+    :root {
+      --bg: #070c14;
+      --card: #0f1826;
+      --card-border: #1c2c44;
+      --cyan: #5ef2ff;
+      --cyan-glow: rgba(94, 242, 255, 0.4);
+      --purple: #a855f7;
+      --purple-dark: #6b21a8;
+      --gold: #facc15;
+      --fire: #ff6b35;
+      --ice: #93c5fd;
+      --text: #f0f6fc;
+      --text-muted: #8ca0ba;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: radial-gradient(circle at 50% 15%, #0f2440 0%, #060c14 100%);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 24px 16px;
+      overflow-x: hidden;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 22px;
+      max-width: 900px;
+    }
+    .badge {
+      display: inline-block;
+      background: linear-gradient(135deg, rgba(94,242,255,0.15), rgba(168,85,247,0.25));
+      border: 1px solid var(--cyan);
+      color: var(--cyan);
+      padding: 5px 16px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+      box-shadow: 0 0 16px var(--cyan-glow);
+    }
+    h1 {
+      font-size: 32px;
+      font-weight: 900;
+      background: linear-gradient(90deg, #ffffff, #67e8f9, #c084fc, #fb923c);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 8px;
+      letter-spacing: -0.5px;
+    }
+    p.subtitle {
+      color: var(--text-muted);
+      font-size: 15px;
+      line-height: 1.5;
+    }
+
+    /* Monster Selection Carousel / Tabs */
+    .monster-selector {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 10px;
+      max-width: 1100px;
+      width: 100%;
+      margin-bottom: 20px;
+    }
+    @media (max-width: 860px) {
+      .monster-selector { grid-template-columns: repeat(3, 1fr); }
+    }
+    @media (max-width: 500px) {
+      .monster-selector { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    .monster-card {
+      background: var(--card);
+      border: 1.5px solid var(--card-border);
+      border-radius: 14px;
+      padding: 12px 10px;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+      overflow: hidden;
+    }
+    .monster-card:hover {
+      border-color: var(--cyan);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 24px rgba(94, 242, 255, 0.18);
+    }
+    .monster-card.active {
+      background: linear-gradient(180deg, #132742 0%, #171d33 100%);
+      border-color: var(--cyan);
+      box-shadow: 0 0 24px var(--cyan-glow);
+    }
+    .monster-card.active::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--cyan), var(--purple));
+    }
+    .monster-num {
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--cyan);
+      letter-spacing: 1px;
+      margin-bottom: 4px;
+    }
+    .monster-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 4px;
+      line-height: 1.3;
+    }
+    .monster-desc {
+      font-size: 10.5px;
+      color: var(--text-muted);
+      line-height: 1.3;
+    }
+
+    .main-stage {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 18px;
+      max-width: 1100px;
+      width: 100%;
+    }
+
+    /* Canvas Stage Container */
+    .canvas-container {
+      position: relative;
+      background: radial-gradient(circle at 50% 60%, #0d223d 0%, #05101d 65%, #02060b 100%);
+      border: 1.5px solid var(--card-border);
+      border-radius: 20px;
+      box-shadow: 0 24px 60px rgba(0,0,0,0.7), 0 0 40px rgba(94, 242, 255, 0.12);
+      overflow: hidden;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+    .water-caustics {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: radial-gradient(circle at 50% 120%, rgba(94, 242, 255, 0.14) 0%, transparent 60%);
+    }
+
+    .status-overlay {
+      position: absolute;
+      top: 14px;
+      left: 16px;
+      display: flex;
+      gap: 10px;
+      font-size: 12px;
+      font-weight: 600;
+      z-index: 10;
+    }
+    .status-tag {
+      background: rgba(10, 20, 35, 0.85);
+      backdrop-filter: blur(8px);
+      padding: 5px 12px;
+      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,0.12);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .status-tag .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #39da8a;
+      box-shadow: 0 0 8px #39da8a;
+    }
+    .status-tag .dot.rage {
+      background: #ff5252;
+      box-shadow: 0 0 12px #ff5252;
+      animation: pulse 0.7s infinite alternate;
+    }
+    @keyframes pulse { from { opacity: 0.3; transform: scale(0.9); } to { opacity: 1; transform: scale(1.2); } }
+
+    .view-mode-toggle {
+      position: absolute;
+      top: 14px;
+      right: 16px;
+      display: flex;
+      gap: 6px;
+      z-index: 10;
+    }
+    .mode-btn {
+      background: rgba(15, 24, 38, 0.85);
+      border: 1px solid var(--card-border);
+      color: var(--text-muted);
+      font-size: 12px;
+      font-weight: 600;
+      padding: 5px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      backdrop-filter: blur(6px);
+      transition: all 0.2s;
+    }
+    .mode-btn.active, .mode-btn:hover {
+      background: var(--cyan);
+      color: #05101a;
+      border-color: #fff;
+    }
+
+    /* Action Buttons */
+    .quick-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      width: 100%;
+    }
+    .act-btn {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      color: var(--text);
+      padding: 10px 16px;
+      border-radius: 12px;
+      font-size: 13.5px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .act-btn:hover {
+      background: #18283e;
+      border-color: var(--cyan);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 18px rgba(94, 242, 255, 0.2);
+      color: #fff;
+    }
+    .act-btn.primary {
+      background: linear-gradient(135deg, #1b3860, #2c1a4d);
+      border-color: var(--cyan);
+      color: var(--cyan);
+      box-shadow: 0 0 14px rgba(94, 242, 255, 0.25);
+    }
+    .act-btn.active {
+      background: var(--cyan);
+      color: #05101a;
+      border-color: #fff;
+      font-weight: 700;
+      box-shadow: 0 0 20px var(--cyan-glow);
+    }
+
+    /* Controls Panel */
+    .controls-panel {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: 18px;
+      padding: 20px 24px;
+      width: 100%;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 18px;
+    }
+    .control-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .control-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+    .control-header span.val {
+      color: var(--cyan);
+      font-family: monospace;
+      font-weight: 700;
+    }
+    input[type=range] {
+      -webkit-appearance: none;
+      width: 100%;
+      height: 6px;
+      background: #1c2b40;
+      border-radius: 3px;
+      outline: none;
+    }
+    input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--cyan);
+      box-shadow: 0 0 10px var(--cyan);
+      cursor: pointer;
+      transition: transform 0.1s;
+    }
+    input[type=range]::-webkit-slider-thumb:hover {
+      transform: scale(1.2);
+    }
+
+    .info-footer {
+      background: rgba(15, 24, 38, 0.6);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      padding: 14px 20px;
+      width: 100%;
+      font-size: 13px;
+      line-height: 1.6;
+      color: var(--text-muted);
+    }
+    .info-footer b { color: #fff; }
+    .info-footer code {
+      background: #172437;
+      color: var(--cyan);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 12px;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="badge">Remake Vector Engine · 6 S-Tier Leviathans</div>
+    <h1>6 Đại Hải Quái Biển Sâu (Deep Sea Leviathans)</h1>
+    <p class="subtitle">Đã rig đầy đủ 100% Vector Canvas · Khớp xương độc lập · 14 Anchors chuẩn · Sẵn sàng sản xuất video</p>
+  </header>
+
+  <!-- Monster Select Cards -->
+  <div class="monster-selector">
+    <div class="monster-card active" data-id="sea_monster_leviathan">
+      <div class="monster-num">#1 TỬ QUÂN</div>
+      <div class="monster-title">Leviathan Cá Sấu</div>
+      <div class="monster-desc">Giáp tím, bụng mint, buồm băng cyan</div>
+    </div>
+    <div class="monster-card" data-id="sea_monster_drake">
+      <div class="monster-num">#2 LÔI VIÊM</div>
+      <div class="monster-title">Hải Long Mãng Xà</div>
+      <div class="monster-desc">Lân tinh neon cam/tím, chân rồng, đuôi liềm</div>
+    </div>
+    <div class="monster-card" data-id="sea_monster_behemoth">
+      <div class="monster-num">#3 THIẾT GIÁP</div>
+      <div class="monster-title">Cự Ngư Behemoth</div>
+      <div class="monster-desc">Gai nhọn chóp vàng, nanh saber, mắt đỏ</div>
+    </div>
+    <div class="monster-card" data-id="sea_monster_crystal_whale">
+      <div class="monster-num">#4 HOÀNG GIA</div>
+      <div class="monster-title">Băng Kình Thủy Tinh</div>
+      <div class="monster-desc">Cobalt hoàng gia, tinh thể tím hồng, vây to</div>
+    </div>
+    <div class="monster-card" data-id="sea_monster_magma">
+      <div class="monster-num">#5 DUNG NHAM</div>
+      <div class="monster-title">Hỏa Ngư Nham Thạch</div>
+      <div class="monster-desc">Đá bazan xám, cơ bắp magma đỏ cam rực</div>
+    </div>
+    <div class="monster-card" data-id="sea_monster_megalodon">
+      <div class="monster-num">#6 TỬ THẦN</div>
+      <div class="monster-title">Megalodon Sát Thủ</div>
+      <div class="monster-desc">Đa giác tinh thể tím/cyan, đao lưng, răng cưa</div>
+    </div>
+  </div>
+
+  <div class="main-stage">
+    <!-- Main Canvas Viewport -->
+    <div class="canvas-container">
+      <canvas id="viewCanvas" width="960" height="540"></canvas>
+      <div class="water-caustics"></div>
+      <div class="status-overlay">
+        <div class="status-tag"><div class="dot" id="liveDot"></div> 60 FPS Native Vector</div>
+        <div class="status-tag" id="statusState">🌊 Bơi tuần tra sâu</div>
+        <div class="status-tag" id="rageTag" style="display:none; color: #ff5252;"><div class="dot rage"></div> CUỒNG NỘ KÍCH HOẠT</div>
+      </div>
+      <div class="view-mode-toggle">
+        <button class="mode-btn active" id="btnModeSingle">Đơn quái vật</button>
+        <button class="mode-btn" id="btnModeGrid">So sánh cả 6 (Grid)</button>
+        <button class="mode-btn" id="btnToggleAnchors">Hiện Anchors</button>
+      </div>
+    </div>
+
+    <!-- Quick Action Presets -->
+    <div class="quick-actions">
+      <button class="act-btn primary" id="btnAutoPlay">▶ Tự động trình diễn (Auto Showcase)</button>
+      <button class="act-btn active" id="btnSwim">🌊 Bơi lội (Swim)</button>
+      <button class="act-btn" id="btnRoar">🗣️ Gầm thét (Roar & Jaw)</button>
+      <button class="act-btn" id="btnRage">⚡ Cuồng nộ (Rage Mode)</button>
+      <button class="act-btn" id="btnWhip">💥 Quật đuôi (Tail Whip)</button>
+      <button class="act-btn" id="btnStrike">⚔️ Đột kích (Strike)</button>
+      <button class="act-btn" id="btnDive">⚓ Lặn sâu / Trồi lên</button>
+      <button class="act-btn" id="btnReset">🔄 Đặt lại</button>
+    </div>
+
+    <!-- Live Controls Panel -->
+    <div class="controls-panel">
+      <!-- Jaw Slider -->
+      <div class="control-group">
+        <div class="control-header">
+          <span>🗣️ Khai hàm há miệng (Jaw Open)</span>
+          <span class="val" id="valJaw">0.00</span>
+        </div>
+        <input type="range" id="sliderJaw" min="0" max="1" step="0.01" value="0">
+      </div>
+
+      <!-- Rage Slider -->
+      <div class="control-group">
+        <div class="control-header">
+          <span>⚡ Cuồng nộ phát sáng (Rage / Aura)</span>
+          <span class="val" id="valRage">0.00</span>
+        </div>
+        <input type="range" id="sliderRage" min="0" max="1" step="0.01" value="0">
+      </div>
+
+      <!-- Rise Slider -->
+      <div class="control-group">
+        <div class="control-header">
+          <span>🌊 Trồi lên / Chìm lặn (Rise / Submerge)</span>
+          <span class="val" id="valRise">1.00</span>
+        </div>
+        <input type="range" id="sliderRise" min="0" max="1" step="0.01" value="1">
+      </div>
+
+      <!-- Tentacle / Tail Whip Slider -->
+      <div class="control-group">
+        <div class="control-header">
+          <span>💥 Quật vây & đuôi (Tail Whip)</span>
+          <span class="val" id="valWhip">0.00</span>
+        </div>
+        <input type="range" id="sliderWhip" min="-1" max="1" step="0.02" value="0">
+      </div>
+
+      <!-- Look X Slider -->
+      <div class="control-group">
+        <div class="control-header">
+          <span>👀 Góc nhìn đầu & mắt (Look X)</span>
+          <span class="val" id="valLookX">0.00</span>
+        </div>
+        <input type="range" id="sliderLookX" min="-1" max="1" step="0.05" value="0">
+      </div>
+
+      <!-- Speed / Scale Slider -->
+      <div class="control-group">
+        <div class="control-header">
+          <span>⚡ Tốc độ nhịp sóng (Motion Speed)</span>
+          <span class="val" id="valSpeed">1.0x</span>
+        </div>
+        <input type="range" id="sliderSpeed" min="0.2" max="3" step="0.1" value="1">
+      </div>
+    </div>
+
+    <!-- Technical Info -->
+    <div class="info-footer">
+      <div><b>Đặc tính kỹ thuật:</b> Toàn bộ 6 thủy quái được tính toán động học bằng giải thuật sóng lượng giác Navier-Stokes xấp xỉ, uốn lượn liên tục theo sống lưng và các đốt cơ thể. Không phụ thuộc ảnh tĩnh (PNG/JPG), zoom vô hạn sắc nét chuẩn 4K.</div>
+      <div style="margin-top: 6px;"><b>Catalog Assets:</b> <code>sea_monster_leviathan</code> · <code>sea_monster_drake</code> · <code>sea_monster_behemoth</code> · <code>sea_monster_crystal_whale</code> · <code>sea_monster_magma</code> · <code>sea_monster_megalodon</code></div>
+    </div>
+  </div>
+
+  <script src="remake_vector_engine.js"></script>
+  <script>
+    const MONSTERS = {
+      sea_monster_leviathan: {
+        name: "Thủy quái Leviathan",
+        tag: "Cá sấu biển Kaiju",
+        anchors: {
+          root: [0, 0], face: [-52, -48], mouth: [-58, -42], jaw: [-52, -36],
+          eye: [-44, -52], surface: [0, -65], top: [-10, -96], grip: [-26, -10],
+          tail: [38, -30], tail_tip: [75, -16], dorsal: [-10, -90],
+          chest: [-22, -28], flipper_l: [-26, -12], flipper_r: [14, -10]
+        }
+      },
+      sea_monster_drake: {
+        name: "Hải Long Lôi Viêm",
+        tag: "Mãng xà biển lửa lân tinh",
+        anchors: {
+          root: [0, 0], face: [-56, -46], mouth: [-62, -40], jaw: [-54, -34],
+          eye: [-48, -50], surface: [0, -60], top: [-4, -84], grip: [-14, 2],
+          tail: [42, -32], tail_tip: [80, -28], dorsal: [0, -78],
+          chest: [-26, -26], flipper_l: [-14, 0], flipper_r: [4, -6]
+        }
+      },
+      sea_monster_behemoth: {
+        name: "Cự Giáp Behemoth",
+        tag: "Trọng giáp nanh kiếm saber",
+        anchors: {
+          root: [0, 0], face: [-54, -44], mouth: [-60, -36], jaw: [-52, -30],
+          eye: [-46, -48], surface: [0, -68], top: [-6, -92], grip: [-20, -6],
+          tail: [40, -32], tail_tip: [78, -24], dorsal: [-8, -88],
+          chest: [-20, -24], flipper_l: [-20, -8], flipper_r: [22, -12]
+        }
+      },
+      sea_monster_crystal_whale: {
+        name: "Băng Kình Thủy Tinh",
+        tag: "Cá voi pha lê xanh tím",
+        anchors: {
+          root: [0, 0], face: [-54, -40], mouth: [-58, -34], jaw: [-50, -28],
+          eye: [-46, -45], surface: [0, -64], top: [-8, -88], grip: [-22, 10],
+          tail: [42, -28], tail_tip: [78, -26], dorsal: [-10, -84],
+          chest: [-24, -22], flipper_l: [-22, 8], flipper_r: [16, 2]
+        }
+      },
+      sea_monster_magma: {
+        name: "Hỏa Ngư Nham Thạch",
+        tag: "Quái ngư dung nham lực sĩ",
+        anchors: {
+          root: [0, 0], face: [-52, -42], mouth: [-56, -34], jaw: [-48, -26],
+          eye: [-44, -46], surface: [0, -64], top: [-12, -88], grip: [-18, 4],
+          tail: [38, -24], tail_tip: [76, -18], dorsal: [-12, -82],
+          chest: [-20, -22], flipper_l: [-18, 6], flipper_r: [12, -2]
+        }
+      },
+      sea_monster_megalodon: {
+        name: "Megalodon Tử Thần",
+        tag: "Cá mập sát thủ giáp tinh thể",
+        anchors: {
+          root: [0, 0], face: [-56, -42], mouth: [-60, -34], jaw: [-50, -26],
+          eye: [-46, -48], surface: [0, -68], top: [-6, -96], grip: [-18, -6],
+          tail: [44, -30], tail_tip: [84, -22], dorsal: [-6, -92],
+          chest: [-22, -22], flipper_l: [-18, -6], flipper_r: [24, -10]
+        }
+      }
+    };
+
+    let activeMonster = 'sea_monster_leviathan';
+    let viewMode = 'single'; // 'single' or 'grid'
+    let showAnchors = false;
+    let autoPlay = false;
+    let autoTimer = 0;
+
+    const canvas = document.getElementById('viewCanvas');
+    const ctx = canvas.getContext('2d');
+
+    // Controls
+    const sliderJaw = document.getElementById('sliderJaw');
+    const sliderRage = document.getElementById('sliderRage');
+    const sliderRise = document.getElementById('sliderRise');
+    const sliderWhip = document.getElementById('sliderWhip');
+    const sliderLookX = document.getElementById('sliderLookX');
+    const sliderSpeed = document.getElementById('sliderSpeed');
+
+    const valJaw = document.getElementById('valJaw');
+    const valRage = document.getElementById('valRage');
+    const valRise = document.getElementById('valRise');
+    const valWhip = document.getElementById('valWhip');
+    const valLookX = document.getElementById('valLookX');
+    const valSpeed = document.getElementById('valSpeed');
+
+    const statusState = document.getElementById('statusState');
+    const rageTag = document.getElementById('rageTag');
+
+    function syncLabels() {
+      valJaw.innerText = parseFloat(sliderJaw.value).toFixed(2);
+      valRage.innerText = parseFloat(sliderRage.value).toFixed(2);
+      valRise.innerText = parseFloat(sliderRise.value).toFixed(2);
+      valWhip.innerText = parseFloat(sliderWhip.value).toFixed(2);
+      valLookX.innerText = parseFloat(sliderLookX.value).toFixed(2);
+      valSpeed.innerText = parseFloat(sliderSpeed.value).toFixed(1) + 'x';
+      rageTag.style.display = parseFloat(sliderRage.value) > 0.4 ? 'flex' : 'none';
+    }
+
+    [sliderJaw, sliderRage, sliderRise, sliderWhip, sliderLookX, sliderSpeed].forEach(el => {
+      el.addEventListener('input', () => {
+        autoPlay = false;
+        document.getElementById('btnAutoPlay').classList.remove('active');
+        syncLabels();
+      });
+    });
+
+    // Monster Switcher
+    document.querySelectorAll('.monster-card').forEach(card => {
+      card.addEventListener('click', () => {
+        document.querySelectorAll('.monster-card').forEach(c => c.classList.remove('active'));
+        card.classList.add('active');
+        activeMonster = card.dataset.id;
+        if (viewMode === 'grid') {
+          viewMode = 'single';
+          document.getElementById('btnModeSingle').classList.add('active');
+          document.getElementById('btnModeGrid').classList.remove('active');
+        }
+      });
+    });
+
+    // View Mode Toggle
+    document.getElementById('btnModeSingle').addEventListener('click', () => {
+      viewMode = 'single';
+      document.getElementById('btnModeSingle').classList.add('active');
+      document.getElementById('btnModeGrid').classList.remove('active');
+    });
+    document.getElementById('btnModeGrid').addEventListener('click', () => {
+      viewMode = 'grid';
+      document.getElementById('btnModeGrid').classList.add('active');
+      document.getElementById('btnModeSingle').classList.remove('active');
+    });
+    document.getElementById('btnToggleAnchors').addEventListener('click', (e) => {
+      showAnchors = !showAnchors;
+      e.target.classList.toggle('active', showAnchors);
+    });
+
+    // Quick Actions
+    function setActionButtonsInactive() {
+      document.querySelectorAll('.act-btn:not(#btnAutoPlay)').forEach(b => b.classList.remove('active'));
+    }
+
+    document.getElementById('btnSwim').addEventListener('click', () => {
+      setActionButtonsInactive();
+      document.getElementById('btnSwim').classList.add('active');
+      sliderJaw.value = 0; sliderRage.value = 0; sliderRise.value = 1; sliderWhip.value = 0; sliderLookX.value = 0;
+      statusState.innerText = "🌊 Bơi lội tuần tra biển sâu";
+      syncLabels();
+    });
+
+    document.getElementById('btnRoar').addEventListener('click', () => {
+      setActionButtonsInactive();
+      document.getElementById('btnRoar').classList.add('active');
+      sliderJaw.value = 0.95; sliderRage.value = 0.6; sliderRise.value = 1; sliderWhip.value = 0.3; sliderLookX.value = -0.5;
+      statusState.innerText = "🗣️ Gầm thét xé tan đáy đại dương";
+      syncLabels();
+    });
+
+    document.getElementById('btnRage').addEventListener('click', () => {
+      setActionButtonsInactive();
+      document.getElementById('btnRage').classList.add('active');
+      sliderJaw.value = 0.7; sliderRage.value = 1.0; sliderRise.value = 1; sliderWhip.value = 0.5;
+      statusState.innerText = "⚡ Cuồng nộ thức tỉnh phát quang cực độ";
+      syncLabels();
+    });
+
+    document.getElementById('btnWhip').addEventListener('click', () => {
+      setActionButtonsInactive();
+      document.getElementById('btnWhip').classList.add('active');
+      sliderJaw.value = 0.3; sliderRage.value = 0.4; sliderRise.value = 1; sliderWhip.value = 0.95;
+      statusState.innerText = "💥 Quật vây đuôi tạo sóng thần";
+      syncLabels();
+    });
+
+    document.getElementById('btnStrike').addEventListener('click', () => {
+      setActionButtonsInactive();
+      document.getElementById('btnStrike').classList.add('active');
+      sliderJaw.value = 1.0; sliderRage.value = 0.85; sliderRise.value = 1; sliderWhip.value = -0.7; sliderLookX.value = -0.8;
+      statusState.innerText = "⚔️ Lao tới cắn xé mục tiêu";
+      syncLabels();
+    });
+
+    document.getElementById('btnDive').addEventListener('click', () => {
+      setActionButtonsInactive();
+      document.getElementById('btnDive').classList.add('active');
+      sliderJaw.value = 0.1; sliderRage.value = 0.2; sliderRise.value = 0.35; sliderWhip.value = 0;
+      statusState.innerText = "⚓ Lặn sâu xuống vực thẳm Mariana";
+      syncLabels();
+    });
+
+    document.getElementById('btnReset').addEventListener('click', () => {
+      document.getElementById('btnSwim').click();
+    });
+
+    document.getElementById('btnAutoPlay').addEventListener('click', () => {
+      autoPlay = !autoPlay;
+      document.getElementById('btnAutoPlay').classList.toggle('active', autoPlay);
+      if (autoPlay) {
+        statusState.innerText = "▶ Đang tự động trình diễn chu kỳ động thái";
+      } else {
+        document.getElementById('btnSwim').click();
+      }
+    });
+
+    // Anchors drawing helper
+    function drawAnchorsDebug(ctx, anchors) {
+      if (!anchors) return;
+      ctx.save();
+      for (const [name, pos] of Object.entries(anchors)) {
+        const [x, y] = pos;
+        ctx.fillStyle = '#ff3366';
+        ctx.beginPath();
+        ctx.arc(x, y, 2.5, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = '#5ef2ff';
+        ctx.font = 'bold 6px monospace';
+        ctx.fillText(name, x + 4, y + 2);
+      }
+      ctx.restore();
+    }
+
+    // Render loop
+    let startTime = performance.now();
+
+    function render(currentTime) {
+      const elapsed = (currentTime - startTime) / 1000;
+      const speed = parseFloat(sliderSpeed.value) || 1.0;
+      const t = elapsed * speed;
+
+      if (autoPlay) {
+        autoTimer += 0.016 * speed;
+        // Cycle actions
+        const cycle = autoTimer % 18;
+        if (cycle < 4) {
+          // Swim
+          sliderJaw.value = Math.max(0, Math.sin(t * 2) * 0.15);
+          sliderRage.value = 0.1 + Math.sin(t) * 0.1;
+          sliderRise.value = 1;
+          sliderWhip.value = Math.sin(t * 2.5) * 0.4;
+          sliderLookX.value = Math.sin(t * 1.2) * 0.3;
+          statusState.innerText = "🌊 Auto: Tuần tra biển khơi";
+        } else if (cycle < 8) {
+          // Roar
+          const p = (cycle - 4) / 4;
+          sliderJaw.value = 0.5 + Math.sin(p * Math.PI) * 0.5;
+          sliderRage.value = 0.5 + Math.sin(p * Math.PI) * 0.45;
+          sliderRise.value = 1;
+          sliderWhip.value = Math.sin(t * 6) * 0.6;
+          sliderLookX.value = -0.5;
+          statusState.innerText = "🗣️ Auto: Gầm thét uy hiếp vạn dặm";
+        } else if (cycle < 13) {
+          // Rage whip
+          const p = (cycle - 8) / 5;
+          sliderJaw.value = 0.4 + Math.sin(t * 4) * 0.4;
+          sliderRage.value = 0.85 + Math.sin(t * 5) * 0.15;
+          sliderRise.value = 1;
+          sliderWhip.value = Math.sin(t * 4.5) * 0.85;
+          statusState.innerText = "⚡ Auto: Bão lôi cuồng nộ đánh đuôi";
+        } else {
+          // Dive & Rise
+          const p = (cycle - 13) / 5;
+          sliderJaw.value = 0.1;
+          sliderRage.value = 0.2;
+          sliderRise.value = 0.4 + Math.sin(p * Math.PI) * 0.6;
+          sliderWhip.value = Math.sin(t * 2) * 0.2;
+          statusState.innerText = "⚓ Auto: Lặn sâu thăm thẳm";
+        }
+        syncLabels();
+      }
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Background ambient water glow
+      const bgGrad = ctx.createLinearGradient(0, 0, 0, canvas.height);
+      bgGrad.addColorStop(0, '#0a1a2f');
+      bgGrad.addColorStop(0.6, '#06101e');
+      bgGrad.addColorStop(1, '#02060b');
+      ctx.fillStyle = bgGrad;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Light beams from surface
+      ctx.save();
+      ctx.globalAlpha = 0.07;
+      for (let i = 0; i < 6; i++) {
+        const lx = 120 + i * 150 + Math.sin(t * 0.5 + i) * 30;
+        const lg = ctx.createLinearGradient(lx, 0, lx + 80, canvas.height);
+        lg.addColorStop(0, '#5ef2ff');
+        lg.addColorStop(0.8, 'transparent');
+        ctx.fillStyle = lg;
+        ctx.beginPath();
+        ctx.moveTo(lx, 0);
+        ctx.lineTo(lx + 40, 0);
+        ctx.lineTo(lx + 140, canvas.height);
+        ctx.lineTo(lx + 60, canvas.height);
+        ctx.closePath();
+        ctx.fill();
+      }
+      ctx.restore();
+
+      const kit = window.RemakeVector && window.RemakeVector.kit ? window.RemakeVector.kit : null;
+
+      if (viewMode === 'single') {
+        // Render 1 monster centered and large
+        ctx.save();
+        ctx.translate(canvas.width / 2, canvas.height / 2 + 50);
+        const scale = 3.6;
+        ctx.scale(scale, scale);
+
+        const s = {
+          asset: activeMonster,
+          id: activeMonster + '_stage',
+          jaw: parseFloat(sliderJaw.value),
+          rage: parseFloat(sliderRage.value),
+          rise: parseFloat(sliderRise.value),
+          tentacle: parseFloat(sliderWhip.value),
+          look_x: parseFloat(sliderLookX.value),
+          wet: 1,
+          style: {}
+        };
+
+        if (kit && kit.RIG_DRAWERS && kit.RIG_DRAWERS[activeMonster]) {
+          kit.RIG_DRAWERS[activeMonster](ctx, s, t);
+        }
+
+        if (showAnchors && MONSTERS[activeMonster]) {
+          drawAnchorsDebug(ctx, MONSTERS[activeMonster].anchors);
+        }
+        ctx.restore();
+
+        // Monster label
+        ctx.save();
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+        ctx.font = 'bold 20px -apple-system, system-ui';
+        ctx.fillText(MONSTERS[activeMonster].name, 28, canvas.height - 38);
+        ctx.fillStyle = '#5ef2ff';
+        ctx.font = '13px monospace';
+        ctx.fillText(`Asset: ${activeMonster} · ${MONSTERS[activeMonster].tag}`, 28, canvas.height - 18);
+        ctx.restore();
+
+      } else {
+        // Render Grid of 6 monsters
+        const monsterKeys = Object.keys(MONSTERS);
+        const cols = 3;
+        const rows = 2;
+        const cellW = canvas.width / cols;
+        const cellH = canvas.height / rows;
+
+        monsterKeys.forEach((key, index) => {
+          const col = index % cols;
+          const row = Math.floor(index / cols);
+          const cx = col * cellW + cellW / 2;
+          const cy = row * cellH + cellH / 2 + 35;
+
+          // Box border
+          ctx.save();
+          ctx.strokeStyle = key === activeMonster ? 'rgba(94, 242, 255, 0.6)' : 'rgba(255, 255, 255, 0.08)';
+          ctx.lineWidth = key === activeMonster ? 2 : 1;
+          ctx.strokeRect(col * cellW + 6, row * cellH + 6, cellW - 12, cellH - 12);
+
+          // Draw creature
+          ctx.translate(cx, cy);
+          const gridScale = 1.6;
+          ctx.scale(gridScale, gridScale);
+
+          const s = {
+            asset: key,
+            id: key + '_grid',
+            jaw: parseFloat(sliderJaw.value),
+            rage: parseFloat(sliderRage.value),
+            rise: parseFloat(sliderRise.value),
+            tentacle: parseFloat(sliderWhip.value),
+            look_x: parseFloat(sliderLookX.value),
+            wet: 1,
+            style: {}
+          };
+
+          if (kit && kit.RIG_DRAWERS && kit.RIG_DRAWERS[key]) {
+            kit.RIG_DRAWERS[key](ctx, s, t + index * 0.8);
+          }
+
+          if (showAnchors && MONSTERS[key]) {
+            drawAnchorsDebug(ctx, MONSTERS[key].anchors);
+          }
+          ctx.restore();
+
+          // Cell title
+          ctx.save();
+          ctx.fillStyle = key === activeMonster ? '#5ef2ff' : '#ffffff';
+          ctx.font = 'bold 13px -apple-system, system-ui';
+          ctx.fillText(`${index + 1}. ${MONSTERS[key].name}`, col * cellW + 16, row * cellH + 28);
+          ctx.restore();
+        });
+      }
+
+      requestAnimationFrame(render);
+    }
+
+    syncLabels();
+    requestAnimationFrame(render);
+  </script>
+</body>
+</html>

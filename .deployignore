@@ -1,0 +1,47 @@
+.venv/
+venv/
+__pycache__/
+*.pyc
+.DS_Store
+.git/
+scratch/
+docs/
+tests/
+compare_studio/videos/*/renders/
+compare_studio/videos/*/snapshots/
+bkt_web/bin/wireproxy
+bkt_web/quy.txt
+bkt_web/store_emails.txt
+bkt_web/store_emails_simple.txt
+37 uk.txt
+*.mp4
+
+# --- Dữ liệu vận hành: thuộc về máy chủ, KHÔNG đồng bộ từ máy dev ---
+# Đẩy những thứ này lên sẽ ghi đè dữ liệu VPS đang dùng bằng bản cũ trên máy Mac.
+# Lần dựng máy chủ đầu tiên thì copy tay một lần (.secret.key phải đi cùng DB,
+# mất key là không giải mã được cookie).
+bkt_web/*.db
+bkt_web/*.db-wal
+bkt_web/*.db-shm
+*.db
+data/*.db
+bkt_web/.secret.key
+bkt_web/*.fernet
+bkt_web/profiles/
+bkt_web/vpn_configs/
+bkt_web/nuoinick_settings.json
+bkt_web/storage/remake_uploads/
+bkt_web/storage/rendered/
+bkt_web/storage/*.db
+.env
+last_location/api_cookie.json
+
+# --- Không bao giờ đẩy lên máy chủ ---
+# Tệp này chứa mật khẩu SSH/VNC/web của chính VPS. Đẩy lên đó nghĩa là ai vào
+# được máy chủ sẽ đọc luôn được mọi mật khẩu còn lại.
+VPS_CREDENTIALS.md
+
+# node_modules build trên macOS chứa binary sai nền tảng (lightningcss-darwin-arm64).
+# Ghi đè lên bản Linux đã npm ci trên VPS sẽ làm Compare Studio chết.
+compare_studio/node_modules/
+compare_studio/studio/node_modules/

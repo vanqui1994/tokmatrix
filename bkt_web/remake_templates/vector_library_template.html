@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>{{PROJECT_NAME}}</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#132321;color:#f4f4dc;font:15px system-ui;display:grid;justify-items:center}canvas{display:block;width:min(100vw,56.25vh);height:auto;background:#d3eeee}.controls{width:min(576px,100%);padding:12px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}button{min-height:44px;padding:8px 20px;background:#e2efc8;color:#1d352c;border:0;border-radius:8px;font:inherit;cursor:pointer}input[type=range]{flex:1;min-width:140px;min-height:44px;accent-color:#b7e291}audio{width:100%}:focus-visible{outline:3px solid #edbf64;outline-offset:3px}output{font-variant-numeric:tabular-nums;min-width:105px}
+</style>
+</head>
+<body>
+<canvas id="stage" width="576" height="1024" aria-label="Bản dựng từ thư viện vector"></canvas>
+<section class="controls" aria-label="Điều khiển phát">
+<button id="play" type="button" aria-pressed="false">Phát</button>
+<input id="seek" type="range" min="0" step="0.033333" aria-label="Thời gian video">
+<output id="time" for="seek">0 giây</output>
+<audio id="voice" src="{{AUDIO_URL}}" controls preload="auto"></audio>
+</section>
+<script>{{VECTOR_ENGINE_JS}}</script>
+<script>
+const story={characters:{{CHARACTERS_JSON}},scenes:{{SCENES_JSON}},cues:{{CUES_JSON}},duration:Number('{{DURATION}}')};
+const renderer=new RemakeVector.Renderer(document.getElementById('stage'),{{VECTOR_CATALOG_JSON}},story);
+const audio=document.getElementById('voice'),seek=document.getElementById('seek'),play=document.getElementById('play'),time=document.getElementById('time');
+const hasAudio=Boolean(audio.getAttribute('src'));
+let playing=false,raf=0,position=0,origin=0;
+seek.max=story.duration;
+audio.hidden=!hasAudio;
+window.renderFrame=t=>renderer.render(t);
+window.remakeTimeline=story;
+function draw(t){position=Math.max(0,Math.min(story.duration,t));seek.value=position;time.textContent=`${position.toFixed(2)} / ${story.duration.toFixed(2)}s`;window.renderFrame(position);}
+function stop(){playing=false;cancelAnimationFrame(raf);play.textContent='Phát';play.setAttribute('aria-pressed','false');if(hasAudio)audio.pause();}
+function tick(now){if(!playing)return;draw(hasAudio?audio.currentTime:(now-origin)/1000);if(position>=story.duration-.02){stop();return;}raf=requestAnimationFrame(tick);}
+async function start(){if(new URLSearchParams(location.search).has('render'))return;if(position>=story.duration-.02)draw(0);if(hasAudio){audio.currentTime=position;try{await audio.play();}catch{time.textContent='Không phát được audio';return;}}playing=true;origin=performance.now()-position*1000;play.textContent='Tạm dừng';play.setAttribute('aria-pressed','true');cancelAnimationFrame(raf);raf=requestAnimationFrame(tick);}
+play.onclick=()=>playing?stop():start();
+seek.oninput=()=>{stop();draw(Number(seek.value));if(hasAudio)audio.currentTime=position;};
+audio.addEventListener('seeked',()=>{if(!playing)draw(audio.currentTime);});
+audio.addEventListener('ended',stop);
+audio.addEventListener('pause',()=>{if(playing)stop();});
+audio.addEventListener('play',()=>{if(!playing){playing=true;play.textContent='Tạm dừng';play.setAttribute('aria-pressed','true');raf=requestAnimationFrame(tick);}});
+if(new URLSearchParams(location.search).has('render'))document.querySelector('.controls').hidden=true;
+draw(0);
+</script>
+</body>
+</html>

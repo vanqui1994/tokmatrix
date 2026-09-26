@@ -1,0 +1,14 @@
+blueprint_id: science_explainer
+name: Science Explainer
+description: Explain a counterintuitive science question with a clear mechanism and a grounded takeaway.
+beats:
+  - id: impossible_question
+    purpose: Pose a concise question that challenges intuition.
+  - id: scale_comparison
+    purpose: Make the scale tangible with a defensible comparison.
+  - id: underlying_mechanism
+    purpose: Explain the physical mechanism in plain language.
+  - id: cosmic_consequence
+    purpose: Show what the mechanism means at a larger scale.
+  - id: mind_blown_fact
+    purpose: End on a memorable verified fact and invite discussion.

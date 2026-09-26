@@ -1,0 +1,5 @@
+niche_id: military_arsenal
+name: Vũ Khí & Khí Tài
+language: vi
+summary: Lịch sử, kỹ thuật và bối cảnh của khí tài quân sự; không hướng dẫn sử dụng.
+allowed_engines: [newspaper, vox, chalk, science, survival, tierlist, kinetic, wildlife]

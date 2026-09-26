@@ -1,0 +1,43 @@
+audio:
+  music_family: deep_space_editorial
+  sfx_density: medium
+  soundscape_id: science
+  voice_id: de-DE-ConradNeural
+  voice_pitch: -1
+  voice_speed: 1.02
+channel_id: deep_space_12
+config_version: 4
+creative:
+  cut_cadence_seconds: 2.9
+  palette:
+    accent: '#66FCF1'
+    primary: '#0B0C10'
+    text: '#C5C6C7'
+  preferred_engines:
+  - mystery
+  - tierlist
+  - survival
+  visual_style_id: cosmic_space_v1
+name: Kosmos & Physik 12
+niche_id: deep_space
+persona:
+  catchphrase_prefix: 'Điều đáng chú ý trong câu chuyện này là:'
+  energy_level: 0.7000000000000001
+  target_demographic: Vietnamese viewers aged 18-34
+  tone: evidence_first_editorial
+publishing:
+  default_schedule_window: 19:30-20:30
+  hashtags:
+  - deepspace
+  - khampha
+  - facts
+  language: de
+story:
+  pacing_beats: 12
+  preferred_blueprints:
+  - science_explainer
+  preferred_hook_types:
+  - evidence_hook
+  - paradox_question
+  target_duration_seconds: 53
+tiktok_account_ref: null

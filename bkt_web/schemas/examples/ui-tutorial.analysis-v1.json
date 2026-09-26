@@ -1,0 +1,183 @@
+{
+  "schema_version": "1.0.0",
+  "analysis_id": "analysis_ui_tutorial",
+  "source": {
+    "source_id": "source_ui_tutorial",
+    "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "media_type": "video/mp4",
+    "width": 1920,
+    "height": 1080,
+    "frame_rate": 60.0
+  },
+  "timebase": {
+    "unit": "seconds",
+    "origin_seconds": 0,
+    "precision": 3
+  },
+  "duration_seconds": 4.0,
+  "analyzers": [
+    {
+      "analyzer_id": "analyzer_screen",
+      "kind": "multi",
+      "name": "fixture-screen-reader",
+      "version": "1.0.0"
+    }
+  ],
+  "evidence": [
+    {
+      "evidence_id": "evidence_button",
+      "kind": "ocr_region",
+      "source_id": "source_ui_tutorial",
+      "interval": {
+        "start": 0.5,
+        "end": 2.0
+      },
+      "region": {
+        "space": "normalized_source",
+        "x": 0.62,
+        "y": 0.44,
+        "width": 0.16,
+        "height": 0.06
+      },
+      "quote": "Export"
+    },
+    {
+      "evidence_id": "evidence_cursor",
+      "kind": "frame_range",
+      "source_id": "source_ui_tutorial",
+      "interval": {
+        "start": 0.5,
+        "end": 2.4
+      }
+    }
+  ],
+  "observations": [
+    {
+      "observation_id": "observation_screen_shot",
+      "kind": "shot",
+      "analyzer_id": "analyzer_screen",
+      "source_interval": {
+        "start": 0,
+        "end": 4
+      },
+      "confidence": 0.99,
+      "evidence_ids": [
+        "evidence_cursor"
+      ],
+      "index": 0,
+      "boundary": "unknown"
+    },
+    {
+      "observation_id": "observation_button_label",
+      "kind": "ocr",
+      "analyzer_id": "analyzer_screen",
+      "source_interval": {
+        "start": 0.5,
+        "end": 2.0
+      },
+      "confidence": 0.93,
+      "evidence_ids": [
+        "evidence_button"
+      ],
+      "text": "Export",
+      "language": "en",
+      "region": {
+        "space": "normalized_source",
+        "x": 0.62,
+        "y": 0.44,
+        "width": 0.16,
+        "height": 0.06
+      }
+    },
+    {
+      "observation_id": "observation_cursor_track",
+      "kind": "track",
+      "analyzer_id": "analyzer_screen",
+      "source_interval": {
+        "start": 0.5,
+        "end": 2.4
+      },
+      "confidence": 0.9,
+      "evidence_ids": [
+        "evidence_cursor"
+      ],
+      "label": "pointer",
+      "category": "screen",
+      "identity_resolved": true,
+      "samples": [
+        {
+          "time": 0.5,
+          "region": {
+            "space": "normalized_source",
+            "x": 0.3,
+            "y": 0.7,
+            "width": 0.02,
+            "height": 0.03
+          },
+          "confidence": 0.9
+        },
+        {
+          "time": 1.5,
+          "region": {
+            "space": "normalized_source",
+            "x": 0.55,
+            "y": 0.52,
+            "width": 0.02,
+            "height": 0.03
+          },
+          "confidence": 0.92
+        },
+        {
+          "time": 2.4,
+          "region": {
+            "space": "normalized_source",
+            "x": 0.68,
+            "y": 0.46,
+            "width": 0.02,
+            "height": 0.03
+          },
+          "confidence": 0.88
+        }
+      ]
+    },
+    {
+      "observation_id": "observation_click",
+      "kind": "action",
+      "analyzer_id": "analyzer_screen",
+      "source_interval": {
+        "start": 2.3,
+        "end": 2.5
+      },
+      "confidence": 0.61,
+      "evidence_ids": [
+        "evidence_cursor",
+        "evidence_button"
+      ],
+      "label": "click",
+      "actor_track_ref": "observation_cursor_track",
+      "alternatives": [
+        {
+          "label": "hover",
+          "confidence": 0.37
+        }
+      ],
+      "notes": "No pressed state is visible; the click is inferred from the cursor stopping on the control."
+    },
+    {
+      "observation_id": "observation_room_tone",
+      "kind": "audio_event",
+      "analyzer_id": "analyzer_screen",
+      "source_interval": {
+        "start": 0,
+        "end": 4
+      },
+      "confidence": 0.95,
+      "evidence_ids": [
+        "evidence_cursor"
+      ],
+      "category": "silence",
+      "loudness_lufs": -70.0
+    }
+  ],
+  "failures": []
+}

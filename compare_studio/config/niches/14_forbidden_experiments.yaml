@@ -1,0 +1,5 @@
+niche_id: forbidden_experiments
+name: Thí Nghiệm Điên Rồ
+language: vi
+summary: Lịch sử các thí nghiệm gây tranh cãi cùng chuẩn mực đạo đức khoa học.
+allowed_engines: [mystery, newspaper, vox, science, survival, tierlist, kinetic]

@@ -1,0 +1,85 @@
+{
+  "schema_version": "2.0.0",
+  "project_id": "project_ui_tutorial_demo",
+  "title": "Export button tutorial",
+  "source": {
+    "source_id": "source_ui_tutorial_demo",
+    "sha256": "3333333333333333333333333333333333333333333333333333333333333333",
+    "media_type": "video/webm",
+    "width": 1440,
+    "height": 900,
+    "frame_rate": 30
+  },
+  "duration_seconds": 5,
+  "timebase": { "unit": "seconds", "origin_seconds": 0, "precision": 3 },
+  "tracks": [
+    { "track_id": "track_screen", "kind": "visual", "items": [{ "item_id": "item_export_scene", "target_type": "scene", "target_id": "scene_export", "start": 0, "end": 5, "layer": 0 }] },
+    { "track_id": "track_voiceover", "kind": "dialogue", "items": [{ "item_id": "item_export_voiceover", "target_type": "audio_event", "target_id": "audio_export_voiceover", "start": 0.4, "end": 4.4 }] }
+  ],
+  "scenes": [
+    {
+      "scene_id": "scene_export",
+      "start": 0,
+      "end": 5,
+      "summary": "The pointer opens Export and selects MP4.",
+      "entities": [
+        { "entity_id": "narrator_01", "kind": "person", "role": "speaker", "components": [], "provenance_id": "provenance_ui_analysis" },
+        { "entity_id": "ui_export_button", "kind": "ui_control", "label": "Export", "components": [{ "component_id": "ui_export_button_surface", "kind": "button", "state": "visible", "anchors": [{ "anchor_id": "ui_export_button_center", "name": "center", "semantic": "click_target" }] }], "analysis": { "confidence": 0.97, "evidence_ids": ["evidence_export_button"], "model": "fixture-ui-analyzer-1", "review_status": "accepted" }, "provenance_id": "provenance_ui_analysis" },
+        { "entity_id": "ui_format_menu", "kind": "ui_menu", "label": "Format menu", "components": [{ "component_id": "ui_format_menu_surface", "kind": "menu", "state": "hidden", "anchors": [] }], "provenance_id": "provenance_ui_analysis" },
+        { "entity_id": "pointer_01", "kind": "pointer", "components": [{ "component_id": "pointer_01_tip", "kind": "pointer_tip", "state": "visible", "anchors": [{ "anchor_id": "pointer_01_hotspot", "name": "hotspot", "semantic": "point" }] }], "provenance_id": "provenance_ui_analysis" }
+      ],
+      "relations": [],
+      "actions": [
+        { "action_id": "action_pointer_move", "type": "point_at", "actor_ids": ["pointer_01"], "target_ids": ["ui_export_button"], "start": 1, "end": 2, "provenance_id": "provenance_ui_analysis" },
+        { "action_id": "action_export_click", "type": "click", "actor_ids": ["pointer_01"], "target_ids": ["ui_export_button"], "start": 2, "end": 2.15, "analysis": { "confidence": 0.94, "evidence_ids": ["evidence_export_button"], "model": "fixture-ui-analyzer-1", "review_status": "accepted" }, "provenance_id": "provenance_ui_analysis" },
+        { "action_id": "action_menu_reveal", "type": "reveal", "actor_ids": ["ui_export_button"], "target_ids": ["ui_format_menu"], "start": 2.15, "end": 2.45, "provenance_id": "provenance_ui_analysis" }
+      ],
+      "constraints": [
+        { "constraint_id": "constraint_click_contact", "type": "anchor_contact", "subject_ids": ["pointer_01_hotspot", "ui_export_button_center"], "start": 2, "end": 2.15, "strength": "hard", "provenance_id": "provenance_ui_analysis" }
+      ],
+      "camera": {
+        "camera_id": "camera_screen",
+        "shots": [{ "shot_id": "shot_screen_capture", "start": 0, "end": 5, "framing": "screen_capture", "movement": "static", "subject_ids": ["ui_export_button", "ui_format_menu"], "provenance_id": "provenance_ui_analysis" }]
+      },
+      "environment": { "environment_id": "environment_desktop_app", "kind": "software_interface", "attributes": { "theme": "dark" } },
+      "style": { "style_id": "style_ui_exact", "tags": ["instructional", "high-contrast"], "typography": ["system-ui"] },
+      "audio_events": [
+        { "audio_event_id": "audio_export_voiceover", "kind": "dialogue", "start": 0.4, "end": 4.4, "speaker_id": "narrator_01", "text": "Chọn Export, sau đó chọn định dạng MP4.", "language": "vi", "provenance_id": "provenance_ui_analysis" }
+      ],
+      "render_requirements": {
+        "required": [
+          { "requirement_id": "requirement_ui_text", "capability": "ui.text_exact", "target_ids": ["ui_export_button"] },
+          { "requirement_id": "requirement_click_timing", "capability": "action.click", "target_ids": ["action_export_click"], "metric": "timing_error_seconds", "tolerance": 0.03 }
+        ],
+        "preferred": [{ "requirement_id": "requirement_pointer_path", "capability": "pointer.path_preserve", "target_ids": ["action_pointer_move"] }],
+        "optional": [{ "requirement_id": "requirement_click_ripple", "capability": "effect.click_ripple", "target_ids": ["action_export_click"] }]
+      },
+      "analysis": { "confidence": 0.95, "evidence_ids": ["evidence_export_button"], "model": "fixture-ui-analyzer-1", "review_status": "accepted" },
+      "provenance_id": "provenance_ui_analysis"
+    }
+  ],
+  "render_plan": {
+    "render_plan_id": "render_plan_ui_tutorial",
+    "status": "needs-review",
+    "selections": [
+      { "selection_id": "selection_ui_tutorial", "scene_id": "scene_export", "start": 0, "end": 5, "renderer_id": "screen_ui_v1", "renderer_version": "1.0.0", "status": "needs-review", "satisfied_requirement_ids": ["requirement_click_timing", "requirement_pointer_path"], "fallback_ids": ["fallback_ui_text"], "explanation": "Click behavior is supported, but exact proprietary UI text cannot yet be reconstructed safely." }
+    ],
+    "fallbacks": [
+      { "fallback_id": "fallback_ui_text", "scene_id": "scene_export", "type": "source_composite", "reason_code": "EXACT_UI_TEXT_UNAVAILABLE", "disclosure": "The source screen region would be composited to preserve required UI text; this is not a full reconstruction.", "source_media_usage": "visual", "approval_required": true, "affected_requirement_ids": ["requirement_ui_text"] }
+    ]
+  },
+  "provenance": [
+    {
+      "provenance_id": "provenance_ui_analysis",
+      "kind": "analysis",
+      "created_at": "2026-09-18T08:20:00Z",
+      "agent": "fixture-ui-analyzer",
+      "tool_version": "1.0.0",
+      "source_refs": ["source_ui_tutorial_demo"],
+      "evidence": [
+        { "evidence_id": "evidence_export_button", "kind": "ocr_region", "source_id": "source_ui_tutorial_demo", "interval": { "start": 1.8, "end": 2.2 }, "region": { "space": "normalized_source", "x": 0.82, "y": 0.04, "width": 0.12, "height": 0.07 }, "quote": "Export" }
+      ]
+    }
+  ],
+  "extensions": { "com.ssmatool.fixture:category": "ui_tutorial" }
+}

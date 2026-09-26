@@ -1,0 +1,10 @@
+fastapi==0.139.0
+uvicorn==0.50.2
+pydantic==2.13.4
+python-multipart>=0.0.20,<1
+curl-cffi==0.16.3
+playwright>=1.52,<2
+cryptography>=49,<50
+httpx>=0.28,<1
+Pillow>=10,<13
+faster-whisper>=1.2,<2

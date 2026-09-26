@@ -1,0 +1,1396 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vật Liệu Hoạt Hình & Character Rigging Studio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    :root {
+      --bg: #0b0f19;
+      --surface: #111827;
+      --surface-border: #1f293d;
+      --card-bg: rgba(22, 30, 49, 0.7);
+      --accent: #3b82f6;
+      --accent-glow: rgba(59, 130, 246, 0.35);
+      --accent-hover: #2563eb;
+      --accent-pink: #ec4899;
+      --accent-yellow: #f59e0b;
+      --accent-green: #10b981;
+      --text: #f3f4f6;
+      --text-muted: #9ca3af;
+      --radius: 12px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+      background-image: 
+        radial-gradient(circle at 15% 15%, rgba(59, 130, 246, 0.08) 0%, transparent 40%),
+        radial-gradient(circle at 85% 75%, rgba(236, 72, 153, 0.06) 0%, transparent 40%);
+    }
+
+    /* Header */
+    header {
+      background: rgba(17, 24, 39, 0.85);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--surface-border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      padding: 12px 24px;
+    }
+    .header-inner {
+      max-width: 1600px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+    }
+    .logo-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .logo-badge {
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #3b82f6, #ec4899);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      color: #fff;
+      box-shadow: 0 4px 14px var(--accent-glow);
+    }
+    .logo-text h1 {
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: -0.3px;
+      background: linear-gradient(90deg, #fff, #93c5fd);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .logo-text p {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    /* Nav Tabs */
+    .nav-tabs {
+      display: flex;
+      gap: 6px;
+      background: #090d16;
+      padding: 4px;
+      border-radius: 10px;
+      border: 1px solid var(--surface-border);
+    }
+    .nav-tab {
+      padding: 8px 16px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-muted);
+      border-radius: 8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s;
+    }
+    .nav-tab:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.05);
+    }
+    .nav-tab.active {
+      color: #fff;
+      background: var(--accent);
+      box-shadow: 0 2px 10px var(--accent-glow);
+    }
+
+    /* Main Container */
+    main {
+      flex: 1;
+      max-width: 1600px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 20px 24px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    /* STUDIO LAYOUT */
+    .studio-container {
+      display: grid;
+      grid-template-columns: 320px 1fr 340px;
+      gap: 20px;
+      height: calc(100vh - 120px);
+      min-height: 680px;
+    }
+
+    .panel {
+      background: var(--surface);
+      border: 1px solid var(--surface-border);
+      border-radius: var(--radius);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+    }
+    .panel-header {
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--surface-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(255, 255, 255, 0.02);
+    }
+    .panel-title {
+      font-size: 14px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      color: #e5e7eb;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .panel-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px;
+    }
+
+    /* Character Roster Grid */
+    .char-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+    .char-card {
+      background: var(--card-bg);
+      border: 1px solid var(--surface-border);
+      border-radius: 10px;
+      padding: 8px;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.2s;
+      position: relative;
+    }
+    .char-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-2px);
+    }
+    .char-card.active {
+      border-color: var(--accent);
+      background: rgba(59, 130, 246, 0.15);
+      box-shadow: 0 0 14px rgba(59, 130, 246, 0.3);
+    }
+    .char-card { min-width: 0; }
+    .char-card img {
+      width: 100%;
+      max-width: 100%;
+      height: 100px;
+      object-fit: contain;
+      border-radius: 6px;
+    }
+    .char-card-name {
+      font-size: 11px;
+      font-weight: 600;
+      margin-top: 6px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      color: #e5e7eb;
+    }
+
+    /* Center Viewport */
+    .viewport-panel {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      background: #060911;
+      border: 1px solid var(--surface-border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .viewport-toolbar {
+      padding: 10px 16px;
+      background: rgba(17, 24, 39, 0.7);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--surface-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 10;
+    }
+    .toolbar-left, .toolbar-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .btn {
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      border: 1px solid var(--surface-border);
+      background: var(--surface);
+      color: #fff;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+    .btn:hover {
+      background: #1f293d;
+      border-color: #3b82f6;
+    }
+    .btn-primary {
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+    .btn-primary:hover {
+      background: var(--accent-hover);
+    }
+    .btn-active {
+      background: rgba(59, 130, 246, 0.2);
+      border-color: var(--accent);
+      color: #93c5fd;
+    }
+
+    .canvas-container {
+      flex: 1;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: 
+        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+    canvas#rigCanvas {
+      display: block;
+      cursor: grab;
+    }
+    canvas#rigCanvas:active {
+      cursor: grabbing;
+    }
+
+    /* Bottom Playback Control */
+    .playback-bar {
+      padding: 12px 18px;
+      background: rgba(17, 24, 39, 0.85);
+      border-top: 1px solid var(--surface-border);
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      z-index: 10;
+    }
+    .play-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--accent);
+      border: none;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      cursor: pointer;
+      transition: transform 0.15s, background 0.15s;
+    }
+    .play-btn:hover {
+      transform: scale(1.08);
+      background: var(--accent-hover);
+    }
+    .timeline-slider {
+      flex: 1;
+      height: 6px;
+      border-radius: 3px;
+      -webkit-appearance: none;
+      background: #1f293d;
+      outline: none;
+    }
+    .timeline-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: #3b82f6;
+      cursor: pointer;
+      box-shadow: 0 0 8px #3b82f6;
+    }
+
+    /* Right Panel: Controls & Faces */
+    .section-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .anim-buttons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+    .anim-btn {
+      padding: 9px 10px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      background: var(--card-bg);
+      border: 1px solid var(--surface-border);
+      color: #d1d5db;
+      cursor: pointer;
+      text-align: left;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s;
+    }
+    .anim-btn:hover {
+      border-color: #3b82f6;
+      background: rgba(59, 130, 246, 0.1);
+    }
+    .anim-btn.active {
+      border-color: #3b82f6;
+      background: var(--accent);
+      color: #fff;
+    }
+
+    /* Face Expression Selector Grid */
+    .face-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      max-height: 240px;
+      overflow-y: auto;
+      padding-right: 4px;
+      margin-bottom: 20px;
+    }
+    .face-item {
+      background: var(--card-bg);
+      border: 1px solid var(--surface-border);
+      border-radius: 8px;
+      padding: 4px;
+      cursor: pointer;
+      aspect-ratio: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s;
+    }
+    .face-item:hover {
+      border-color: var(--accent);
+      transform: scale(1.08);
+      background: rgba(59, 130, 246, 0.15);
+    }
+    .face-item.active {
+      border-color: var(--accent);
+      box-shadow: 0 0 10px var(--accent-glow);
+      background: rgba(59, 130, 246, 0.25);
+    }
+    .face-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    /* Sliders */
+    .control-group {
+      margin-bottom: 14px;
+    }
+    .control-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+    .control-slider {
+      width: 100%;
+      height: 5px;
+      border-radius: 3px;
+      background: #1f293d;
+      outline: none;
+      -webkit-appearance: none;
+    }
+    .control-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #3b82f6;
+      cursor: pointer;
+    }
+
+    /* CATALOG VIEW */
+    .catalog-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .filter-pills {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .pill {
+      padding: 7px 16px;
+      font-size: 12px;
+      font-weight: 600;
+      border-radius: 20px;
+      background: var(--surface);
+      border: 1px solid var(--surface-border);
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .pill:hover {
+      color: #fff;
+      border-color: #3b82f6;
+    }
+    .pill.active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+    }
+    .search-box {
+      display: flex;
+      align-items: center;
+      background: var(--surface);
+      border: 1px solid var(--surface-border);
+      border-radius: 10px;
+      padding: 6px 14px;
+      gap: 10px;
+      width: 320px;
+    }
+    .search-box input {
+      background: transparent;
+      border: none;
+      color: #fff;
+      font-size: 13px;
+      outline: none;
+      width: 100%;
+      font-family: inherit;
+    }
+
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 18px;
+    }
+    .prod-card {
+      background: var(--card-bg);
+      border: 1px solid var(--surface-border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.2s, border-color 0.2s;
+      cursor: pointer;
+    }
+    .prod-card:hover {
+      transform: translateY(-4px);
+      border-color: #3b82f6;
+      box-shadow: 0 10px 24px rgba(0,0,0,0.4);
+    }
+    .prod-thumb-wrap {
+      width: 100%;
+      aspect-ratio: 4/3;
+      background: #070a12;
+      position: relative;
+      overflow: hidden;
+    }
+    .prod-thumb-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s;
+    }
+    .prod-card:hover .prod-thumb-wrap img {
+      transform: scale(1.05);
+    }
+    .prod-badge {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      background: rgba(17, 24, 39, 0.85);
+      border: 1px solid rgba(255,255,255,0.1);
+      backdrop-filter: blur(4px);
+    }
+    .badge-nhan-vat { color: #60a5fa; border-color: rgba(96, 165, 250, 0.4); }
+    .badge-bieu-cam { color: #f472b6; border-color: rgba(244, 114, 182, 0.4); }
+    .badge-anh-nen { color: #34d399; border-color: rgba(52, 211, 153, 0.4); }
+    .badge-vu-khi { color: #fbbf24; border-color: rgba(251, 191, 36, 0.4); }
+    .badge-hieu-ung { color: #a78bfa; border-color: rgba(167, 139, 250, 0.4); }
+
+    .prod-info {
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+    .prod-title {
+      font-size: 13px;
+      font-weight: 600;
+      line-height: 1.4;
+      color: #f3f4f6;
+      margin-bottom: 8px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .prod-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: auto;
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+    .prod-price {
+      font-size: 12px;
+      font-weight: 700;
+      color: #ef4444;
+    }
+
+    /* Modal */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(8px);
+      z-index: 999;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    .modal-overlay.active { display: flex; }
+    .modal-content {
+      background: var(--surface);
+      border: 1px solid var(--surface-border);
+      border-radius: var(--radius);
+      max-width: 900px;
+      width: 100%;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+    }
+    .modal-header {
+      padding: 14px 20px;
+      border-bottom: 1px solid var(--surface-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .modal-body {
+      padding: 20px;
+      overflow-y: auto;
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 20px;
+    }
+    .modal-gallery img {
+      width: 100%;
+      border-radius: 8px;
+      background: #060911;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-inner">
+      <div class="logo-group">
+        <div class="logo-badge">
+          <i class="fas fa-paw"></i>
+        </div>
+        <div class="logo-text">
+          <h1>VẬT LIỆU HOẠT HÌNH & RIG STUDIO</h1>
+          <p>Điêu Khắc Cát & Gấu Hài Hước Animation System</p>
+        </div>
+      </div>
+
+      <div class="nav-tabs">
+        <div class="nav-tab active" data-tab="studio">
+          <i class="fas fa-bone"></i> Character Rig Studio
+        </div>
+        <div class="nav-tab" data-tab="catalog">
+          <i class="fas fa-folder-open"></i> Kho Vật Liệu (198 Gói / 1,357 Ảnh)
+        </div>
+      </div>
+
+      <div>
+        <a class="btn btn-primary" href="/static/vatlieuhoathinh/vatlieuhoathinh_catalog.json" download="vatlieuhoathinh_catalog.json">
+          <i class="fas fa-download"></i> Tải Catalog JSON
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- TAB 1: CHARACTER RIG STUDIO -->
+    <div class="tab-content active" id="tab-studio">
+      <div class="studio-container">
+        
+        <!-- LEFT: Character Roster -->
+        <div class="panel">
+          <div class="panel-header">
+            <span class="panel-title"><i class="fas fa-users"></i> Nhân Vật (<span id="charCountTitle">0</span> Rigs)</span>
+            <span style="font-size: 11px; color: var(--text-muted);" id="charCount">0</span>
+          </div>
+          <div class="panel-body">
+            <div class="char-grid" id="charRosterGrid">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+        </div>
+
+        <!-- CENTER: Viewport & Canvas -->
+        <div class="viewport-panel">
+          <div class="viewport-toolbar">
+            <div class="toolbar-left">
+              <button class="btn" id="btnToggleBones" title="Lớp tham chiếu: ảnh thân là một khối, xương không làm biến dạng ảnh">
+                <i class="fas fa-project-diagram"></i> Hiện Khung Xương (Bones)
+              </button>
+              <button class="btn" id="btnToggleFace">
+                <i class="fas fa-smile"></i> Biểu Cảm
+              </button>
+              <button class="btn" id="btnResetPose">
+                <i class="fas fa-undo"></i> Reset Pose
+              </button>
+            </div>
+            <div class="toolbar-right">
+              <button class="btn" id="btnExportJSON">
+                <i class="fas fa-file-code"></i> Export Rig JSON
+              </button>
+              <button class="btn btn-primary" id="btnExportPNG">
+                <i class="fas fa-camera"></i> Snapshot PNG
+              </button>
+            </div>
+          </div>
+
+          <div class="canvas-container">
+            <canvas id="rigCanvas" width="700" height="700"></canvas>
+          </div>
+
+          <!-- Bottom Playback -->
+          <div class="playback-bar">
+            <button class="play-btn" id="btnPlayPause">
+              <i class="fas fa-pause" id="playIcon"></i>
+            </button>
+            <input type="range" class="timeline-slider" id="timelineSlider" min="0" max="100" value="0" step="0.1">
+            <span style="font-size: 12px; font-family: 'JetBrains Mono', monospace; width: 60px;" id="timeLabel">0.00s</span>
+          </div>
+        </div>
+
+        <!-- RIGHT: Animations & Face Customization -->
+        <div class="panel">
+          <div class="panel-header">
+            <span class="panel-title"><i class="fas fa-running"></i> Diễn Hoạt & Biểu Cảm</span>
+          </div>
+          <div class="panel-body">
+            
+            <!-- Animation Presets -->
+            <div class="section-title">
+              <span>Động Tác Hoạt Hình Điêu Khắc Cát</span>
+            </div>
+            <div class="anim-buttons" id="animButtons">
+              <!-- Dynamically populated -->
+            </div>
+
+            <!-- Speed & Scale Sliders -->
+            <div class="control-group">
+              <div class="control-label">
+                <span>Tốc Độ Diễn Hoạt</span>
+                <span id="speedVal">1.0x</span>
+              </div>
+              <input type="range" class="control-slider" id="speedSlider" min="0.2" max="2.5" step="0.1" value="1.0">
+            </div>
+
+            <!-- Face Expressions Grid -->
+            <div class="section-title" style="margin-top: 16px;">
+              <span>Thay Mặt Meme</span>
+              <span style="font-size: 11px; color: var(--accent);" id="faceCount">66</span>
+            </div>
+            <div class="face-grid" id="faceGrid">
+              <!-- Dynamically populated -->
+            </div>
+
+            <!-- Manual Bone Angle Adjustments -->
+            <div class="section-title" style="margin-top: 16px;">
+              <span>Tinh Chỉnh Xương Thủ Công (FK)</span>
+            </div>
+            <div class="control-group">
+              <div class="control-label"><span>Xoay Đầu (Head Angle)</span><span id="headAngleVal">0°</span></div>
+              <input type="range" class="control-slider" id="sliderHead" min="-45" max="45" value="0">
+            </div>
+            <div class="control-group">
+              <div class="control-label"><span>Nghiêng Người (Torso Tilt)</span><span id="torsoTiltVal">0°</span></div>
+              <input type="range" class="control-slider" id="sliderTorso" min="-30" max="30" value="0">
+            </div>
+            <div class="control-group">
+              <div class="control-label"><span>Cánh Tay Trái (Arm L)</span><span id="armLVal">0°</span></div>
+              <input type="range" class="control-slider" id="sliderArmL" min="-90" max="90" value="0">
+            </div>
+            <div class="control-group">
+              <div class="control-label"><span>Cánh Tay Phải (Arm R)</span><span id="armRVal">0°</span></div>
+              <input type="range" class="control-slider" id="sliderArmR" min="-90" max="90" value="0">
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- TAB 2: CATALOG BROWSER -->
+    <div class="tab-content" id="tab-catalog">
+      <div class="catalog-header">
+        <div class="filter-pills" id="categoryPills">
+          <div class="pill active" data-cat="all">Tất cả (198)</div>
+          <div class="pill" data-cat="nhan-vat">Nhân vật (70)</div>
+          <div class="pill" data-cat="bieu-cam">Biểu cảm (43)</div>
+          <div class="pill" data-cat="anh-nen">Ảnh nền (29)</div>
+          <div class="pill" data-cat="hieu-ung">Hiệu ứng (25)</div>
+          <div class="pill" data-cat="khac">Khác (18)</div>
+          <div class="pill" data-cat="vu-khi">Vũ khí (7)</div>
+          <div class="pill" data-cat="do-vat">Đồ vật (6)</div>
+        </div>
+        <div class="search-box">
+          <i class="fas fa-search" style="color: var(--text-muted);"></i>
+          <input type="text" id="searchInput" placeholder="Tìm kiếm vật liệu hoạt hình...">
+        </div>
+      </div>
+
+      <div class="products-grid" id="productsGrid">
+        <!-- Dynamically populated from catalog.json -->
+      </div>
+    </div>
+  </main>
+
+  <!-- Product Detail Modal -->
+  <div class="modal-overlay" id="productModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="modalTitle" style="font-size: 16px;">Chi tiết sản phẩm</h3>
+        <button class="btn" onclick="closeModal()"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-gallery" id="modalGallery">
+          <!-- Images -->
+        </div>
+        <div class="modal-info" id="modalInfo">
+          <!-- Info -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Global State
+    let rigData = null;
+    let allProducts = [];
+    let currentChar = null;
+    let currentFace = null;
+    let currentAnim = 'idle';
+    let isPlaying = true;
+    let animTime = 0;
+    let animSpeed = 1.0;
+    let showBones = false;
+    let showFace = true;
+
+    // Manual overrides
+    let headAngle = 0;
+    let torsoTilt = 0;
+    let armLAngle = 0;
+    let armRAngle = 0;
+
+    // Canvas & Images Cache
+    const canvas = document.getElementById('rigCanvas');
+    const ctx = canvas.getContext('2d');
+    const imageCache = {};
+
+    let ASSET_BASE = '/static/vatlieuhoathinh';
+
+    function assetUrl(rel) {
+      if (!rel) return '';
+      if (rel.startsWith('http://') || rel.startsWith('https://')) return rel;
+      const cleanRel = rel.startsWith('/') ? rel.slice(1) : rel;
+      return `${ASSET_BASE}/${cleanRel}`;
+    }
+
+    function loadImage(src) {
+      if (!src) return null;
+      const resolved = assetUrl(src);
+      if (imageCache[resolved]) return imageCache[resolved];
+      const img = new Image();
+      img.src = resolved;
+      imageCache[resolved] = img;
+      return img;
+    }
+
+    async function loadJsonWithFallback(subPath) {
+      const candidates = [
+        ASSET_BASE + subPath,
+        './vatlieuhoathinh' + subPath,
+        '/static/vatlieuhoathinh' + subPath,
+        '../../crawled_vatlieuhoathinh' + subPath,
+        './crawled_vatlieuhoathinh' + subPath,
+        '/crawled_vatlieuhoathinh' + subPath
+      ];
+      for (const p of candidates) {
+        try {
+          const res = await fetch(p);
+          if (res.ok) {
+            ASSET_BASE = p.slice(0, p.length - subPath.length);
+            return await res.json();
+          }
+        } catch (e) {}
+      }
+      throw new Error('Failed to load JSON at: ' + subPath);
+    }
+
+    // Initialize
+    async function init() {
+      setupTabs();
+      setupToolbar();
+
+      // Load Rig Data
+      try {
+        rigData = await loadJsonWithFallback('/rig_assets/rig_data.json');
+        setupRigStudio();
+      } catch (e) {
+        console.error('Lỗi tải rig_data.json:', e);
+      }
+
+      // Load Catalog Data
+      try {
+        allProducts = await loadJsonWithFallback('/vatlieuhoathinh_catalog.json');
+        setupCatalog();
+      } catch (e) {
+        console.error('Lỗi tải catalog.json:', e);
+      }
+
+      requestAnimationFrame(renderLoop);
+    }
+
+    function setupTabs() {
+      document.querySelectorAll('.nav-tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+          document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+          document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+          tab.classList.add('active');
+          document.getElementById('tab-' + tab.dataset.tab).classList.add('active');
+        });
+      });
+    }
+
+    function setupRigStudio() {
+      // 1. Render Character Roster
+      const roster = document.getElementById('charRosterGrid');
+      roster.innerHTML = '';
+      document.getElementById('charCount').textContent = rigData.characters.length;
+      document.getElementById('charCountTitle').textContent = rigData.characters.length;
+      rigData.characters.forEach((c, idx) => {
+        const div = document.createElement('div');
+        div.className = 'char-card' + (idx === 0 ? ' active' : '');
+        div.innerHTML = `
+          <img src="${esc(assetUrl('rig_assets/' + bodyPath(c)))}" alt="${esc(c.name)}">
+          <div class="char-card-name" title="${esc(c.name)}">${esc(c.name)}</div>
+        `;
+        div.onclick = () => selectCharacter(c, div);
+        roster.appendChild(div);
+      });
+
+      // 2. Render Animation Buttons
+      const animBox = document.getElementById('animButtons');
+      animBox.innerHTML = '';
+      rigData.animations.forEach((a, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'anim-btn' + (idx === 0 ? ' active' : '');
+        btn.innerHTML = `<i class="fas fa-play"></i> <span>${a.label}</span>`;
+        btn.onclick = () => selectAnimation(a.id, btn);
+        animBox.appendChild(btn);
+      });
+
+      // 3. Render Faces Grid
+      const faceBox = document.getElementById('faceGrid');
+      faceBox.innerHTML = '';
+      const faceList = faceItems();
+      document.getElementById('faceCount').textContent = faceList.length;
+      faceList.forEach((f, idx) => {
+        const div = document.createElement('div');
+        div.className = 'face-item' + (idx === 0 ? ' active' : '');
+        div.innerHTML = `<img src="${assetUrl(faceDir() + f.file)}" alt="${f.id}">`;
+        div.onclick = () => selectFace(f.file, div);
+        faceBox.appendChild(div);
+      });
+
+      // Set default
+      selectCharacter(rigData.characters[0], roster.children[0]);
+    }
+
+    // Bộ đã làm sạch (bỏ chữ/mảnh vỡ/bản trùng) nếu có; không thì dùng bộ gốc.
+    function faceItems() { return (rigData.faces_clean && rigData.faces_clean.length) ? rigData.faces_clean : rigData.faces; }
+    function faceDir() { return (rigData.faces_clean && rigData.faces_clean.length) ? 'rig_assets/faces_clean/' : 'rig_assets/faces/'; }
+    function bodyPath(c) { return c.body_clean || c.body_img; }
+
+    function selectCharacter(c, elem) {
+      currentChar = c;
+      document.querySelectorAll('.char-card').forEach(el => el.classList.remove('active'));
+      if (elem) elem.classList.add('active');
+      loadImage('rig_assets/' + bodyPath(c));
+      const faces = faceItems();
+      currentFace = faces.some(f => f.file === c.default_face) ? c.default_face : faces[0].file;
+      loadImage(faceDir() + currentFace);
+    }
+
+    function selectAnimation(id, elem) {
+      currentAnim = id;
+      document.querySelectorAll('.anim-btn').forEach(b => b.classList.remove('active'));
+      if (elem) elem.classList.add('active');
+    }
+
+    function selectFace(faceFile, elem) {
+      currentFace = faceFile;
+      document.querySelectorAll('.face-item').forEach(f => f.classList.remove('active'));
+      if (elem) elem.classList.add('active');
+      loadImage(faceDir() + faceFile);
+    }
+
+    function setupToolbar() {
+      document.getElementById('btnToggleBones').onclick = (e) => {
+        showBones = !showBones;
+        e.currentTarget.classList.toggle('btn-active', showBones);
+      };
+
+      document.getElementById('btnToggleFace').onclick = (e) => {
+        showFace = !showFace;
+        e.currentTarget.classList.toggle('btn-active', showFace);
+      };
+
+      document.getElementById('btnResetPose').onclick = () => {
+        headAngle = 0; torsoTilt = 0; armLAngle = 0; armRAngle = 0;
+        document.getElementById('sliderHead').value = 0;
+        document.getElementById('sliderTorso').value = 0;
+        document.getElementById('sliderArmL').value = 0;
+        document.getElementById('sliderArmR').value = 0;
+        document.getElementById('headAngleVal').textContent = '0°';
+        document.getElementById('torsoTiltVal').textContent = '0°';
+        document.getElementById('armLVal').textContent = '0°';
+        document.getElementById('armRVal').textContent = '0°';
+      };
+
+      document.getElementById('btnPlayPause').onclick = () => {
+        isPlaying = !isPlaying;
+        document.getElementById('playIcon').className = isPlaying ? 'fas fa-pause' : 'fas fa-play';
+      };
+
+      document.getElementById('speedSlider').oninput = (e) => {
+        animSpeed = parseFloat(e.target.value);
+        document.getElementById('speedVal').textContent = animSpeed.toFixed(1) + 'x';
+      };
+
+      document.getElementById('sliderHead').oninput = (e) => {
+        headAngle = parseInt(e.target.value);
+        document.getElementById('headAngleVal').textContent = headAngle + '°';
+      };
+      document.getElementById('sliderTorso').oninput = (e) => {
+        torsoTilt = parseInt(e.target.value);
+        document.getElementById('torsoTiltVal').textContent = torsoTilt + '°';
+      };
+      document.getElementById('sliderArmL').oninput = (e) => {
+        armLAngle = parseInt(e.target.value);
+        document.getElementById('armLVal').textContent = armLAngle + '°';
+      };
+      document.getElementById('sliderArmR').oninput = (e) => {
+        armRAngle = parseInt(e.target.value);
+        document.getElementById('armRVal').textContent = armRAngle + '°';
+      };
+
+      document.getElementById('btnExportPNG').onclick = () => {
+        const link = document.createElement('a');
+        link.download = (currentChar ? currentChar.id : 'rig') + '_pose.png';
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+      };
+
+      document.getElementById('btnExportJSON').onclick = () => {
+        const blob = new Blob([JSON.stringify(rigData, null, 2)], { type: 'application/json' });
+        const link = document.createElement('a');
+        link.download = 'hoathinh_rig_spec.json';
+        link.href = URL.createObjectURL(blob);
+        link.click();
+      };
+    }
+
+    // MAIN RENDER LOOP (60 FPS)
+    let lastTime = performance.now();
+    function renderLoop(now) {
+      const dt = (now - lastTime) / 1000;
+      lastTime = now;
+
+      if (isPlaying) {
+        animTime += dt * animSpeed;
+        const timeline = document.getElementById('timelineSlider');
+        timeline.value = (animTime % 2.0) / 2.0 * 100;
+        document.getElementById('timeLabel').textContent = (animTime % 2.0).toFixed(2) + 's';
+      }
+
+      drawRig(animTime);
+      requestAnimationFrame(renderLoop);
+    }
+
+    function drawRig(t) {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      if (!currentChar) return;
+
+      const cx = canvas.width / 2;
+      const cy = canvas.height * 0.72;
+      const scale = 2.4;
+
+      // Calculate procedural animation bone transforms based on currentAnim
+      let bob = 0;
+      let sway = 0;
+      let headBob = 0;
+      let headRot = headAngle * Math.PI / 180;
+      let spineRot = torsoTilt * Math.PI / 180;
+      let armLRot = armLAngle * Math.PI / 180;
+      let armRRot = armRAngle * Math.PI / 180;
+      let legLRot = 0;
+      let legRRot = 0;
+
+      if (currentAnim === 'idle') {
+        bob = Math.sin(t * 3) * 4;
+        headBob = Math.sin(t * 3 - 0.5) * 0.04;
+        armLRot += Math.sin(t * 2) * 0.05;
+        armRRot -= Math.sin(t * 2) * 0.05;
+      } else if (currentAnim === 'walk') {
+        // Iconic waddle walk
+        sway = Math.sin(t * 7) * 14;
+        bob = Math.abs(Math.sin(t * 7)) * 10;
+        spineRot += Math.sin(t * 7) * 0.08;
+        headRot += Math.sin(t * 7 + 0.3) * 0.06;
+        armLRot += Math.sin(t * 7) * 0.6;
+        armRRot -= Math.sin(t * 7) * 0.6;
+        legLRot = Math.sin(t * 7) * 0.5;
+        legRRot = -Math.sin(t * 7) * 0.5;
+      } else if (currentAnim === 'talk') {
+        bob = Math.sin(t * 8) * 3;
+        headRot += Math.sin(t * 12) * 0.12;
+        armLRot += Math.sin(t * 6) * 0.3 + 0.3;
+        armRRot += Math.cos(t * 5) * 0.2;
+      } else if (currentAnim === 'laugh') {
+        bob = Math.sin(t * 22) * 6;
+        headRot += Math.sin(t * 22) * 0.1;
+        armLRot += Math.sin(t * 22) * 0.2 + 0.2;
+        armRRot -= Math.sin(t * 22) * 0.2 + 0.2;
+      } else if (currentAnim === 'shock') {
+        bob = -15 + Math.sin(t * 18) * 2;
+        headRot = -0.15;
+        armLRot = -1.2 + Math.sin(t * 15) * 0.1;
+        armRRot = -1.2 - Math.sin(t * 15) * 0.1;
+      } else if (currentAnim === 'dance') {
+        sway = Math.sin(t * 6) * 20;
+        bob = Math.abs(Math.sin(t * 12)) * 8;
+        spineRot += Math.sin(t * 6) * 0.2;
+        headRot += Math.cos(t * 6) * 0.15;
+        armLRot += Math.sin(t * 6) * 1.0;
+        armRRot += Math.cos(t * 6) * 1.0;
+      }
+
+      ctx.save();
+      ctx.translate(cx + sway, cy - bob);
+      ctx.scale(scale, scale);
+
+      // 1. Thân + 2. mặt trong CÙNG hệ xoay theo thân (xoay quanh bàn chân), nên mặt đi theo khi nghiêng/nhún.
+      const bodyImg = loadImage('rig_assets/' + bodyPath(currentChar));
+      if (bodyImg.complete && bodyImg.naturalWidth > 0) {
+        ctx.save();
+        ctx.rotate(spineRot);
+        // Co vừa khung 120×175 (đơn vị trước scale): ảnh cao gầy không bị cắt mất đầu.
+        const ratio = bodyImg.naturalHeight / bodyImg.naturalWidth;
+        const bw = Math.min(120, 175 / ratio);
+        const bh = bw * ratio;
+        ctx.drawImage(bodyImg, -bw / 2, -bh, bw, bh);
+
+        if (showFace && currentFace) {
+          const faceImg = loadImage(faceDir() + currentFace);
+          if (faceImg && faceImg.complete && faceImg.naturalWidth > 0) {
+            const rx = currentChar.rel_x !== undefined ? currentChar.rel_x : (currentChar.face_box ? currentChar.face_box[0] : 0.5);
+            const ry = currentChar.rel_y !== undefined ? currentChar.rel_y : (currentChar.face_box ? currentChar.face_box[1] : 0.25);
+            const rw = currentChar.rel_w !== undefined ? currentChar.rel_w : (currentChar.face_box ? currentChar.face_box[2] : 0.28);
+            
+            const fx = -bw / 2 + rx * bw;
+            const fy = -bh + ry * bh;
+            const fw = rw * bw;
+            const fh = fw * (faceImg.naturalHeight / faceImg.naturalWidth);
+            ctx.save();
+            ctx.translate(fx, fy);
+            ctx.rotate(headRot);
+            ctx.drawImage(faceImg, -fw / 2, -fh / 2, fw, fh);
+            ctx.restore();
+          }
+        }
+        
+        // 3. Draw 2D Bone Skeleton Overlay (inside the rotated body frame)
+        if (showBones && rigData && rigData.bones) {
+          const rx = currentChar.rel_x !== undefined ? currentChar.rel_x : 0.5;
+          const ry = currentChar.rel_y !== undefined ? currentChar.rel_y : 0.25;
+          drawBones(ctx, spineRot, headRot, armLRot, armRRot, legLRot, legRRot, bw, bh, rx, ry);
+        }
+        
+        ctx.restore();
+      }
+
+      ctx.restore();
+    }
+
+    function drawBones(ctx, spineRot, headRot, armLRot, armRRot, legLRot, legRRot, bw, bh, rx, ry) {
+      // Calculated joint points anchored to character anatomy
+      const cx = -bw / 2 + rx * bw;
+      const headCenter = { x: cx, y: -bh + ry * bh };
+      const neck = { x: cx, y: headCenter.y + bh * 0.08 };
+      const spine = { x: cx, y: -bh * 0.52 };
+      const pelvis = { x: cx, y: -bh * 0.38 };
+      const root = { x: cx, y: 0 };
+      
+      const head = { 
+        x: headCenter.x + Math.sin(headRot) * 15, 
+        y: headCenter.y - Math.cos(headRot) * 15 
+      };
+
+      // Arms
+      const armSpan = bw * 0.30;
+      const shoulderL = { x: spine.x - armSpan, y: spine.y - 4 };
+      const elbowL = { 
+        x: shoulderL.x + Math.sin(armLRot - 0.4) * (bh * 0.14), 
+        y: shoulderL.y + Math.cos(armLRot - 0.4) * (bh * 0.14) 
+      };
+      const handL = { 
+        x: elbowL.x + Math.sin(armLRot) * (bh * 0.12), 
+        y: elbowL.y + Math.cos(armLRot) * (bh * 0.12) 
+      };
+
+      const shoulderR = { x: spine.x + armSpan, y: spine.y - 4 };
+      const elbowR = { 
+        x: shoulderR.x + Math.sin(armRRot + 0.4) * (bh * 0.14), 
+        y: shoulderR.y + Math.cos(armRRot + 0.4) * (bh * 0.14) 
+      };
+      const handR = { 
+        x: elbowR.x + Math.sin(armRRot) * (bh * 0.12), 
+        y: elbowR.y + Math.cos(armRRot) * (bh * 0.12) 
+      };
+
+      // Legs
+      const hipSpan = bw * 0.18;
+      const hipL = { x: pelvis.x - hipSpan, y: pelvis.y };
+      const kneeL = { x: hipL.x + Math.sin(legLRot) * (bh * 0.18), y: hipL.y + Math.cos(legLRot) * (bh * 0.18) };
+      const footL = { x: kneeL.x + Math.sin(legLRot) * (bh * 0.18), y: kneeL.y + Math.cos(legLRot) * (bh * 0.18) };
+
+      const hipR = { x: pelvis.x + hipSpan, y: pelvis.y };
+      const kneeR = { x: hipR.x + Math.sin(legRRot) * (bh * 0.18), y: hipR.y + Math.cos(legRRot) * (bh * 0.18) };
+      const footR = { x: kneeR.x + Math.sin(legRRot) * (bh * 0.18), y: kneeR.y + Math.cos(legRRot) * (bh * 0.18) };
+
+      const bones = [
+        [root, pelvis, '#00ffcc'],
+        [pelvis, spine, '#0099ff'],
+        [spine, neck, '#ff3366'],
+        [neck, headCenter, '#ffff00'],
+        // Left Arm
+        [spine, shoulderL, '#33cc33'],
+        [shoulderL, elbowL, '#33cc33'],
+        [elbowL, handL, '#66ff66'],
+        // Right Arm
+        [spine, shoulderR, '#33cc33'],
+        [shoulderR, elbowR, '#33cc33'],
+        [elbowR, handR, '#66ff66'],
+        // Left Leg
+        [pelvis, hipL, '#9933ff'],
+        [hipL, kneeL, '#9933ff'],
+        [kneeL, footL, '#cc66ff'],
+        // Right Leg
+        [pelvis, hipR, '#9933ff'],
+        [hipR, kneeR, '#9933ff'],
+        [kneeR, footR, '#cc66ff'],
+      ];
+
+      // Draw bone segments
+      ctx.lineWidth = 2.5;
+      bones.forEach(([p1, p2, col]) => {
+        ctx.strokeStyle = col;
+        ctx.beginPath();
+        ctx.moveTo(p1.x, p1.y);
+        ctx.lineTo(p2.x, p2.y);
+        ctx.stroke();
+
+        // Joint circle
+        ctx.fillStyle = '#ffffff';
+        ctx.beginPath();
+        ctx.arc(p2.x, p2.y, 3, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.strokeStyle = col;
+        ctx.stroke();
+      });
+
+      // Root joint
+      ctx.fillStyle = '#00ffcc';
+      ctx.beginPath();
+      ctx.arc(root.x, root.y, 4, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    // CATALOG SETUP
+    function setupCatalog() {
+      renderProducts('all', '');
+
+      // Pills filter
+      document.querySelectorAll('.pill').forEach(pill => {
+        pill.addEventListener('click', () => {
+          document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+          pill.classList.add('active');
+          renderProducts(pill.dataset.cat, document.getElementById('searchInput').value);
+        });
+      });
+
+      // Search input
+      document.getElementById('searchInput').addEventListener('input', (e) => {
+        const activePill = document.querySelector('.pill.active');
+        const cat = activePill ? activePill.dataset.cat : 'all';
+        renderProducts(cat, e.target.value);
+      });
+    }
+
+    // Dữ liệu catalog lấy từ trang ngoài: luôn escape trước khi đưa vào HTML.
+    function esc(v) {
+      return String(v ?? '').replace(/[&<>"']/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]));
+    }
+    // Ưu tiên ảnh đã tải về (local_images), chỉ dùng URL gốc khi gói chưa có bản sao.
+    function productImages(p) {
+      const local = (p.local_images || []).map(assetUrl);
+      return local.length ? local : (p.images || (p.thumb ? [p.thumb] : []));
+    }
+
+    function renderProducts(category, keyword) {
+      const grid = document.getElementById('productsGrid');
+      grid.innerHTML = '';
+
+      const kw = (keyword || '').toLowerCase().trim();
+      const filtered = allProducts.filter(p => {
+        const matchCat = (category === 'all') || (p.the_loai === category);
+        const matchKw = !kw || p.title.toLowerCase().includes(kw) || (p.description || '').toLowerCase().includes(kw) || (p.chu_de || '').toLowerCase().includes(kw);
+        return matchCat && matchKw;
+      });
+
+      filtered.forEach(p => {
+        const card = document.createElement('div');
+        card.className = 'prod-card';
+
+        const badgeClass = 'badge-' + esc(p.the_loai || 'khac');
+        const imgs = productImages(p);
+        const thumbUrl = imgs[0] || '';
+
+        card.innerHTML = `
+          <div class="prod-thumb-wrap">
+            <span class="prod-badge ${badgeClass}">${esc(p.the_loai_name || p.the_loai)}</span>
+            <img src="${esc(thumbUrl)}" alt="${esc(p.title)}" loading="lazy" onerror="this.style.visibility='hidden'">
+          </div>
+          <div class="prod-info">
+            <div class="prod-title" title="${esc(p.title)}">${esc(p.title)}</div>
+            <div class="prod-footer">
+              <span class="prod-price">${esc(p.price || '0 đ')}</span>
+              <span><i class="fas fa-images"></i> ${imgs.length} ảnh</span>
+            </div>
+          </div>
+        `;
+        card.onclick = () => openProductModal(p);
+        grid.appendChild(card);
+      });
+    }
+
+    function openProductModal(p) {
+      const modal = document.getElementById('productModal');
+      document.getElementById('modalTitle').textContent = p.title;
+
+      const gallery = document.getElementById('modalGallery');
+      gallery.innerHTML = '';
+      productImages(p).forEach((imgUrl, i) => {
+        const img = document.createElement('img');
+        img.src = imgUrl;
+        img.alt = p.title + ' ' + (i + 1);
+        img.style.marginBottom = '12px';
+        gallery.appendChild(img);
+      });
+
+      const info = document.getElementById('modalInfo');
+      info.innerHTML = `
+        <div style="margin-bottom: 16px;">
+          <span class="prod-badge badge-${esc(p.the_loai)}" style="position: static; display: inline-block;">${esc(p.the_loai_name || p.the_loai)}</span>
+          <span style="font-size: 12px; color: var(--text-muted); margin-left: 8px;">Chủ đề: <b>${esc(p.chu_de || 'Tất cả')}</b></span>
+        </div>
+        <div style="font-size: 18px; font-weight: 700; color: #ef4444; margin-bottom: 12px;">${esc(p.price || '0 đ')}</div>
+        <p style="font-size: 13px; color: var(--text-muted); line-height: 1.6; margin-bottom: 16px; white-space: pre-line;">${esc(p.description || 'Không có mô tả')}</p>
+        <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 16px;">
+          <div><i class="fas fa-shopping-cart"></i> Đã bán: <b>${esc(p.sales || 0)}</b></div>
+          <div><i class="fas fa-folder"></i> Thư mục: <code>crawled_vatlieuhoathinh/${esc(p.the_loai)}/${esc(p.slug)}/</code></div>
+        </div>
+        <a class="btn btn-primary" href="${esc(/^https:\/\//.test(p.url || '') ? p.url : '#')}" target="_blank" rel="noopener noreferrer" style="width: 100%; justify-content: center;">
+          <i class="fas fa-external-link-alt"></i> Xem trên Web Gốc
+        </a>
+      `;
+
+      modal.classList.add('active');
+    }
+
+    function closeModal() {
+      document.getElementById('productModal').classList.remove('active');
+    }
+
+    window.onclick = (e) => {
+      const modal = document.getElementById('productModal');
+      if (e.target === modal) closeModal();
+    };
+
+    // Run
+    window.addEventListener('DOMContentLoaded', init);
+  </script>
+</body>
+</html>

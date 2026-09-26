@@ -1,0 +1,11 @@
+[Unit]
+Description=Kiem tra inbox kich ban moi 1 phut
+
+[Timer]
+OnBootSec=90s
+OnUnitActiveSec=1min
+AccuracySec=15s
+Unit=tokmatrix-script-bridge.service
+
+[Install]
+WantedBy=timers.target

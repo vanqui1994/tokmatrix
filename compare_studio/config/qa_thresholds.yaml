@@ -1,0 +1,39 @@
+policy_version: 2
+# Mỗi tầng lọc trùng có ngưỡng riêng; vượt ngưỡng ở BẤT KỲ tầng nào là loại.
+# similarity_threshold (mặc định + từng niche) = cosine TF-IDF, giữ nguyên nghĩa của policy v1.
+default_similarity_threshold: 0.65
+# Jaccard 3-gram theo từ: hai bài viết độc lập cùng chủ đề thường < 0.10; >= 0.30 là chép có sửa.
+lexical_similarity_threshold: 0.30
+# Cosine embedding (chỉ khi có embedding): bài cùng niche khác topic mà >= 0.90 là diễn đạt lại cùng một bài.
+# Hiệu chỉnh lại theo model embedding thật trước khi dựa vào.
+embedding_similarity_threshold: 0.90
+shortlist_size: 20
+max_registry_candidates: 2000
+max_script_duration_seconds: 60
+max_hook_duration_seconds: 3
+minimum_script_qa_score: 80
+forbidden_phrases:
+  - cure all diseases
+  - guaranteed cure
+  - chữa khỏi mọi bệnh
+  - chữa khỏi ung thư
+  - racial superiority
+niches:
+  folklore_legends: { policy_version: 2, similarity_threshold: 0.65 }
+  unsolved_mysteries: { policy_version: 2, similarity_threshold: 0.65 }
+  deep_space: { policy_version: 2, similarity_threshold: 0.62 }
+  extreme_wildlife: { policy_version: 2, similarity_threshold: 0.65 }
+  geopolitics_maps: { policy_version: 2, similarity_threshold: 0.65 }
+  dark_psychology: { policy_version: 2, similarity_threshold: 0.65 }
+  extreme_survival: { policy_version: 2, similarity_threshold: 0.65 }
+  tech_ai_future: { policy_version: 2, similarity_threshold: 0.65 }
+  economy_empires: { policy_version: 2, similarity_threshold: 0.65 }
+  lost_civilizations: { policy_version: 2, similarity_threshold: 0.65 }
+  medical_anomalies: { policy_version: 2, similarity_threshold: 0.6 }
+  mega_catastrophes: { policy_version: 2, similarity_threshold: 0.65 }
+  infamous_figures: { policy_version: 2, similarity_threshold: 0.65 }
+  forbidden_experiments: { policy_version: 2, similarity_threshold: 0.65 }
+  ocean_mysteries: { policy_version: 2, similarity_threshold: 0.65 }
+  philosophy_paradox: { policy_version: 2, similarity_threshold: 0.65 }
+  military_arsenal: { policy_version: 2, similarity_threshold: 0.65 }
+  ancient_mythology: { policy_version: 2, similarity_threshold: 0.65 }

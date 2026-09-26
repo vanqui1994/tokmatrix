@@ -1,0 +1,5 @@
+niche_id: medical_anomalies
+name: Y Học & Dị Biệt Sinh Học
+language: vi
+summary: Hiện tượng y sinh học mang tính giáo dục, không thay thế tư vấn y tế.
+allowed_engines: [mystery, newspaper, vox, science, survival, tierlist, kinetic]

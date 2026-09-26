@@ -1,0 +1,43 @@
+audio:
+  music_family: philosophy_paradox_editorial
+  sfx_density: medium
+  soundscape_id: science
+  voice_id: vi-VN-NamMinhNeural
+  voice_pitch: -1
+  voice_speed: 1.0
+channel_id: philosophy_paradox_12
+config_version: 2
+creative:
+  cut_cadence_seconds: 2.4
+  palette:
+    accent: '#D6A84F'
+    primary: '#111318'
+    text: '#F2EEE6'
+  preferred_engines:
+  - mystery
+  - science
+  - tierlist
+  visual_style_id: dark_mystery_v1
+name: Nghịch Lý Triết Học 12
+niche_id: philosophy_paradox
+persona:
+  catchphrase_prefix: 'Điều đáng chú ý trong câu chuyện này là:'
+  energy_level: 0.7000000000000001
+  target_demographic: Vietnamese viewers aged 18-34
+  tone: evidence_first_editorial
+publishing:
+  default_schedule_window: 19:30-20:30
+  hashtags:
+  - philosophyparadox
+  - khampha
+  - facts
+  language: vi
+story:
+  pacing_beats: 12
+  preferred_blueprints:
+  - mystery_reveal
+  preferred_hook_types:
+  - evidence_hook
+  - paradox_question
+  target_duration_seconds: 49
+tiktok_account_ref: null

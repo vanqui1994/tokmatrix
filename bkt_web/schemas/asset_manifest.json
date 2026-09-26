@@ -1,0 +1,6 @@
+{
+  "schema": "tokmatrix.asset-manifest/v1",
+  "version": "1.0.0",
+  "notes": "Declared (non-built-in) assets for UV-500. Built-in vector rigs are derived from the capability registry and are NOT repeated here. Imported, generated and composed records are appended by the resolver's freeze step (UV-501) or by hand; every record needs a license, a provenance kind, a sha256 checksum and an explicit capability list. Paths are relative to the repository root.",
+  "assets": {}
+}

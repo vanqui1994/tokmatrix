@@ -1,0 +1,1265 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Remake Hoạt Hình 2D Đa Năng (Universal Vector 60 FPS)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #070913;
+      --panel: rgba(15, 23, 42, 0.85);
+      --border: rgba(255, 255, 255, 0.1);
+      --accent-purple: #a855f7;
+      --accent-cyan: #38bdf8;
+      --accent-gold: #f59e0b;
+      --accent-green: #22c55e;
+      --accent-red: #ef4444;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+      background: var(--bg);
+      background-image: 
+        radial-gradient(circle at 15% 15%, rgba(168, 85, 247, 0.15) 0%, transparent 45%),
+        radial-gradient(circle at 85% 85%, rgba(56, 189, 248, 0.15) 0%, transparent 45%),
+        radial-gradient(circle at 50% 50%, rgba(245, 158, 11, 0.08) 0%, transparent 60%);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px 16px 60px;
+    }
+
+    /* Top Navigation */
+    .top-nav {
+      width: 100%;
+      max-width: 1240px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+      padding: 14px 24px;
+      background: var(--panel);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+    }
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .badge-tag {
+      padding: 4px 10px;
+      background: rgba(168, 85, 247, 0.2);
+      border: 1px solid rgba(168, 85, 247, 0.45);
+      color: #c084fc;
+      font-size: 11px;
+      font-weight: 800;
+      border-radius: 20px;
+      letter-spacing: 0.5px;
+    }
+    .nav-title { font-size: 16px; font-weight: 800; color: #fff; }
+    .nav-links { display: flex; gap: 8px; }
+    .btn-nav {
+      padding: 8px 14px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--border);
+      color: #cbd5e1;
+      text-decoration: none;
+      font-size: 12.5px;
+      font-weight: 700;
+      border-radius: 10px;
+      transition: all 0.2s;
+    }
+    .btn-nav:hover { background: rgba(255, 255, 255, 0.12); color: #fff; }
+
+    /* Main Grid */
+    .main-grid {
+      display: grid;
+      grid-template-columns: 460px 1fr;
+      gap: 32px;
+      width: 100%;
+      max-width: 1240px;
+      align-items: start;
+    }
+    @media (max-width: 950px) {
+      .main-grid { grid-template-columns: 1fr; justify-items: center; }
+    }
+
+    /* iPhone 16 Pro Titanium Bezel */
+    .phone-wrapper {
+      position: relative;
+      width: 440px;
+      background: #111422;
+      border-radius: 54px;
+      padding: 12px;
+      box-shadow: 
+        0 25px 60px -15px rgba(0, 0, 0, 0.8),
+        0 0 0 1px rgba(255, 255, 255, 0.12),
+        inset 0 0 0 2px rgba(255, 255, 255, 0.05);
+    }
+    .phone-screen {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 9 / 16;
+      background: #020617;
+      border-radius: 44px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .island-bar {
+      position: absolute;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 110px;
+      height: 28px;
+      background: #000;
+      border-radius: 20px;
+      z-index: 40;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 10px;
+    }
+    .island-dot { width: 8px; height: 8px; border-radius: 50%; background: #1e293b; }
+    .island-cam { width: 10px; height: 10px; border-radius: 50%; background: #0f172a; border: 1px solid #1e293b; }
+
+    canvas#canvas2d {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* Floating UI Inside Phone */
+    .phone-overlay {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 48px 16px 20px;
+    }
+    .overlay-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 10;
+    }
+    .live-badge {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(0, 0, 0, 0.55);
+      backdrop-filter: blur(12px);
+      padding: 5px 10px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 800;
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+    .live-dot {
+      width: 7px;
+      height: 7px;
+      background: #ef4444;
+      border-radius: 50%;
+      animation: pulseDot 1.4s infinite;
+    }
+    @keyframes pulseDot {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.4); opacity: 0.5; }
+    }
+
+    .overlay-bottom {
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .sub-banner {
+      background: rgba(10, 15, 30, 0.85);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 18px;
+      padding: 12px 14px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      transition: all 0.25s ease;
+      min-height: 58px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    }
+    .sub-avatar {
+      font-size: 26px;
+      line-height: 1;
+      filter: drop-shadow(0 2px 6px rgba(0,0,0,0.4));
+    }
+    .sub-content { flex: 1; min-width: 0; }
+    .sub-speaker {
+      font-size: 11px;
+      font-weight: 800;
+      color: #c084fc;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      margin-bottom: 2px;
+    }
+    .sub-text {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.35;
+      white-space: normal;
+    }
+
+    /* Player Controls */
+    .controls-card {
+      margin-top: 14px;
+      background: var(--panel);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 14px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .progress-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .time-bar {
+      flex: 1;
+      height: 7px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      position: relative;
+      cursor: pointer;
+      overflow: hidden;
+    }
+    .time-bar-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #a855f7, #38bdf8);
+      border-radius: 10px;
+      transition: width 0.08s linear;
+    }
+    .time-display {
+      font-size: 11.5px;
+      font-weight: 700;
+      color: var(--text-muted);
+      font-variant-numeric: tabular-nums;
+      min-width: 78px;
+      text-align: right;
+    }
+    .btn-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .btn-play-hero {
+      padding: 10px 24px;
+      background: linear-gradient(135deg, #9333ea, #3b82f6);
+      border: none;
+      color: #fff;
+      font-size: 13.5px;
+      font-weight: 800;
+      border-radius: 12px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 8px 20px -4px rgba(147, 51, 234, 0.5);
+      transition: all 0.2s;
+    }
+    .btn-play-hero:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 12px 25px -4px rgba(147, 51, 234, 0.7);
+    }
+    .btn-sec {
+      padding: 8px 14px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--border);
+      color: #cbd5e1;
+      font-size: 12px;
+      font-weight: 700;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-sec:hover { background: rgba(255, 255, 255, 0.12); color: #fff; }
+
+    /* Right Panel */
+    .right-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .info-card {
+      background: var(--panel);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 22px;
+    }
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+    .panel-h2 {
+      font-size: 18px;
+      font-weight: 800;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .pill-counter {
+      padding: 4px 10px;
+      background: rgba(168, 85, 247, 0.15);
+      border: 1px solid rgba(168, 85, 247, 0.3);
+      color: #c084fc;
+      font-size: 11px;
+      font-weight: 800;
+      border-radius: 12px;
+    }
+
+    /* Cast Cards */
+    .cast-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .cast-card {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 12px 14px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      transition: all 0.2s;
+    }
+    .cast-card.active {
+      border-color: #a855f7;
+      background: rgba(168, 85, 247, 0.12);
+      box-shadow: 0 0 15px rgba(168, 85, 247, 0.25);
+    }
+    .cast-avatar {
+      font-size: 28px;
+      line-height: 1;
+    }
+    .cast-name { font-size: 13px; font-weight: 800; color: #fff; }
+    .cast-voice { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+
+    /* Cues List */
+    .cues-container {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      max-height: 480px;
+      overflow-y: auto;
+      padding-right: 6px;
+    }
+    .cues-container::-webkit-scrollbar { width: 5px; }
+    .cues-container::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 10px; }
+
+    .cue-item {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 14px;
+      padding: 12px 14px;
+      cursor: pointer;
+      display: flex;
+      align-items: start;
+      gap: 12px;
+      transition: all 0.2s ease;
+    }
+    .cue-item:hover {
+      background: rgba(255, 255, 255, 0.07);
+      border-color: rgba(255, 255, 255, 0.15);
+      transform: translateX(3px);
+    }
+    .cue-item.active {
+      background: rgba(168, 85, 247, 0.15);
+      border-color: rgba(168, 85, 247, 0.5);
+      box-shadow: inset 3px 0 0 #a855f7;
+    }
+    .cue-time {
+      font-size: 11px;
+      font-weight: 800;
+      color: #93c5fd;
+      background: rgba(59, 130, 246, 0.15);
+      padding: 3px 7px;
+      border-radius: 6px;
+      font-variant-numeric: tabular-nums;
+      margin-top: 2px;
+    }
+    .cue-body { flex: 1; min-width: 0; }
+    .cue-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 4px;
+    }
+    .cue-spk-name { font-size: 12px; font-weight: 800; color: #fff; }
+    .cue-text { font-size: 13px; color: #e2e8f0; line-height: 1.45; }
+
+    /* Features Grid */
+    .features-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-top: 16px;
+    }
+    .feat-box {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 10px;
+      text-align: center;
+    }
+    .feat-val { font-size: 13px; font-weight: 800; color: #fff; margin-bottom: 2px; }
+    .feat-lbl { font-size: 10px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navigation -->
+  <header class="top-nav">
+    <div class="brand-group">
+      <div class="badge-tag">2D DYNAMIC STUDIO</div>
+      <span class="nav-title">Hoạt Hình 2D Đa Năng: Universal Vector 60 FPS</span>
+    </div>
+    <div class="nav-links">
+      <a href="/static/remake_hub.html" class="btn-nav">← Remake Hub</a>
+      <a href="/" class="btn-nav">Trang Chủ</a>
+    </div>
+  </header>
+
+  <!-- Main Grid -->
+  <main class="main-grid">
+
+    <!-- Phone Simulator -->
+    <div>
+      <div class="phone-wrapper">
+        <div class="phone-screen">
+          <div class="island-bar">
+            <div class="island-dot"></div>
+            <div class="island-cam"></div>
+          </div>
+
+          <canvas id="canvas2d" width="720" height="1280"></canvas>
+
+          <div class="phone-overlay">
+            <div class="overlay-top">
+              <div class="live-badge">
+                <span class="live-dot"></span>
+                <span>2D CANVAS 60 FPS</span>
+              </div>
+              <div class="live-badge" style="background: rgba(168, 85, 247, 0.3); border-color: rgba(168,85,247,0.5);">
+                <span id="active-spk-tag">✨ SÂN KHẤU HOẠT HÌNH</span>
+              </div>
+            </div>
+
+            <div class="overlay-bottom">
+              <div class="sub-banner" id="subBanner">
+                <div class="sub-avatar" id="subAvatar">🌟</div>
+                <div class="sub-content">
+                  <div class="sub-speaker" id="subSpeaker">NHÂN VẬT A</div>
+                  <div class="sub-text" id="subText">Bấm Phát để thưởng thức video hoạt hình 2D sinh động...</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Controls -->
+      <div class="controls-card">
+        <div class="progress-row">
+          <div class="time-bar" id="timeBar">
+            <div class="time-bar-fill" id="timeBarFill"></div>
+          </div>
+          <div class="time-display" id="timeDisplay">00:00 / 00:00</div>
+        </div>
+
+        <div class="btn-row">
+          <button class="btn-play-hero" id="btnPlay">
+            <span id="playIcon">▶</span>
+            <span id="playText">Phát Video</span>
+          </button>
+          <div style="display: flex; gap: 8px;">
+            <button class="btn-sec" onclick="seekAudio(0)">⏮ Tua lại</button>
+            <button class="btn-sec" id="btnToggleMute">🔊 Bật tiếng</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Information Panel -->
+    <div class="right-panel">
+
+      <div class="info-card">
+        <div class="panel-header">
+          <h2 class="panel-h2">
+            <span>✨ Kịch Bản Việt Hóa Đa Vai (TokMatrix Universal)</span>
+          </h2>
+          <span class="pill-counter" id="cuesCountPill">0 câu thoại</span>
+        </div>
+
+        <!-- Dynamic Cast List -->
+        <div class="cast-grid" id="castGrid"></div>
+
+        <!-- Cues List -->
+        <div class="cues-container" id="cuesList"></div>
+
+        <div class="features-row">
+          <div class="feat-box">
+            <div class="feat-val">60 FPS</div>
+            <div class="feat-lbl">Vector Canvas</div>
+          </div>
+          <div class="feat-box">
+            <div class="feat-val">TikTok 9:16</div>
+            <div class="feat-lbl">Tỷ Lệ Chuẩn</div>
+          </div>
+          <div class="feat-box">
+            <div class="feat-val">Lip-Sync</div>
+            <div class="feat-lbl">Khẩu Hình Động</div>
+          </div>
+          <div class="feat-box">
+            <div class="feat-val">CapCut + Edge</div>
+            <div class="feat-lbl">Âm Thanh Đa Vai</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- Audio Element -->
+  <audio id="master-audio" src="/static/remake_universal_master.mp3" preload="auto"></audio>
+
+  <script>
+    // -------------------------------------------------------------
+    // DATA CUES CỦA VIDEO (ĐƯỢC TỰ ĐỘNG THAY THẾ TỪ PIPELINE)
+    // -------------------------------------------------------------
+    const CUES = [
+      { start: 0.5, end: 3.5, speaker: "char_a", name: "Bé Hoạt Hình A", text: "Xin chào các bạn! Đây là công nghệ Remake Hoạt Hình 2D Vector tự động!", engine: "capcut", voice: "BV421_vivn_streaming", avatar: "🌟" },
+      { start: 3.8, end: 7.2, speaker: "char_b", name: "Bé Hoạt Hình B", text: "Bất kỳ video nào khi upload lên đều sẽ được tự động vẽ và lồng tiếng chuẩn 60 FPS!", engine: "edge", voice: "vi-VN-HoaiMyNeural", avatar: "✨" }
+    ];
+    const cues = CUES;
+    const totalDuration = 45.0;
+
+    // -------------------------------------------------------------
+    // AUDIO & PLAYER CONTROLS
+    // -------------------------------------------------------------
+    const audio = document.getElementById('master-audio') || document.getElementById('masterAudio');
+    const canvas = document.getElementById('canvas2d');
+    const ctx = canvas.getContext('2d');
+
+    const btnPlay = document.getElementById('btnPlay');
+    const playIcon = document.getElementById('playIcon');
+    const playText = document.getElementById('playText');
+    const timeBar = document.getElementById('timeBar');
+    const timeBarFill = document.getElementById('timeBarFill');
+    const timeDisplay = document.getElementById('timeDisplay');
+    const subBanner = document.getElementById('subBanner');
+    const subAvatar = document.getElementById('subAvatar');
+    const subSpeaker = document.getElementById('subSpeaker');
+    const subText = document.getElementById('subText');
+    const activeSpkTag = document.getElementById('active-spk-tag');
+    const castGrid = document.getElementById('castGrid');
+    const cuesList = document.getElementById('cuesList');
+    const cuesCountPill = document.getElementById('cuesCountPill');
+
+    let isPlaying = false;
+    let currentCueIndex = -1;
+
+    function formatTime(sec) {
+      if (isNaN(sec) || sec < 0) sec = 0;
+      const m = Math.floor(sec / 60);
+      const s = Math.floor(sec % 60);
+      return `${m < 10 ? '0' : ''}${m}:${s < 10 ? '0' : ''}${s}`;
+    }
+
+    function togglePlay() {
+      if (audio.paused) {
+        audio.play().then(() => {
+          isPlaying = true;
+          playIcon.textContent = '⏸';
+          playText.textContent = 'Tạm dừng';
+        }).catch(err => {
+          console.warn('Audio play request:', err);
+        });
+      } else {
+        audio.pause();
+        isPlaying = false;
+        playIcon.textContent = '▶';
+        playText.textContent = 'Phát Video';
+      }
+    }
+    btnPlay.addEventListener('click', togglePlay);
+
+    function seekAudio(time) {
+      audio.currentTime = Math.max(0, Math.min(time, totalDuration));
+      if (!isPlaying) togglePlay();
+    }
+
+    timeBar.addEventListener('click', (e) => {
+      const rect = timeBar.getBoundingClientRect();
+      const pct = (e.clientX - rect.left) / rect.width;
+      seekAudio(pct * totalDuration);
+    });
+
+    document.getElementById('btnToggleMute').addEventListener('click', () => {
+      audio.muted = !audio.muted;
+      document.getElementById('btnToggleMute').textContent = audio.muted ? '🔇 Tắt tiếng' : '🔊 Bật tiếng';
+    });
+
+    // Keyboard shortcut Space
+    window.addEventListener('keydown', (e) => {
+      if (e.code === 'Space' && e.target.tagName !== 'INPUT') {
+        e.preventDefault();
+        togglePlay();
+      }
+    });
+
+    // -------------------------------------------------------------
+    // DYNAMIC CAST & CUES RENDERING
+    // -------------------------------------------------------------
+    function initUI() {
+      cuesCountPill.textContent = `${CUES.length} câu thoại`;
+
+      // Extract unique characters
+      const uniqueSpeakers = {};
+      CUES.forEach(c => {
+        const spk = c.speaker || 'char';
+        if (!uniqueSpeakers[spk]) {
+          uniqueSpeakers[spk] = {
+            speaker: spk,
+            name: c.name || spk,
+            avatar: c.avatar || '🌟',
+            voice: `${c.engine || 'AI'} · ${c.voice || ''}`
+          };
+        }
+      });
+
+      // Render Cast Grid
+      castGrid.innerHTML = Object.values(uniqueSpeakers).map(s => `
+        <div class="cast-card" id="cast-${s.speaker}">
+          <div class="cast-avatar">${s.avatar}</div>
+          <div>
+            <div class="cast-name">${s.name}</div>
+            <div class="cast-voice">${s.voice}</div>
+          </div>
+        </div>
+      `).join('');
+
+      // Render Cues List
+      cuesList.innerHTML = CUES.map((c, i) => `
+        <div class="cue-item" id="cue-item-${i}" onclick="seekAudio(${c.start})">
+          <span class="cue-time">${formatTime(c.start)}</span>
+          <div class="cue-body">
+            <div class="cue-header">
+              <span class="cue-spk-name">${c.avatar || '🌟'} ${c.name || 'Nhân vật'}</span>
+            </div>
+            <div class="cue-text">${c.text}</div>
+          </div>
+        </div>
+      `).join('');
+    }
+    initUI();
+
+    // -------------------------------------------------------------
+    // 2D VECTOR CARTOON STAGE ENGINE (60 FPS NATIVE CANVAS)
+    // -------------------------------------------------------------
+    const W = 720;
+    const H = 1280;
+
+    // Ambient floating particles
+    const particles = Array.from({ length: 45 }, () => ({
+      x: Math.random() * W,
+      y: Math.random() * H,
+      r: Math.random() * 4 + 1.5,
+      speedY: Math.random() * 0.8 + 0.3,
+      speedX: (Math.random() - 0.5) * 0.5,
+      alpha: Math.random() * 0.6 + 0.2,
+      color: Math.random() > 0.5 ? '#c084fc' : '#38bdf8'
+    }));
+
+    // Speech emotion effects (sparkles & symbols)
+    let emotionParticles = [];
+
+    function triggerEmotion(x, y, emoji) {
+      for (let i = 0; i < 4; i++) {
+        emotionParticles.push({
+          x: x + (Math.random() - 0.5) * 40,
+          y: y - 20,
+          vx: (Math.random() - 0.5) * 3,
+          vy: -Math.random() * 4 - 2,
+          alpha: 1,
+          size: Math.random() * 10 + 16,
+          emoji: emoji || (Math.random() > 0.5 ? '✨' : '🌟')
+        });
+      }
+    }
+
+    let lastSpokenCue = -1;
+
+    function renderStage(curTime) {
+      ctx.clearRect(0, 0, W, H);
+
+      // 1. Dynamic Animated Gradient Background
+      const bgGrad = ctx.createLinearGradient(0, 0, 0, H);
+      bgGrad.addColorStop(0, '#0a0d24');
+      bgGrad.addColorStop(0.45, '#121838');
+      bgGrad.addColorStop(0.8, '#1e1b4b');
+      bgGrad.addColorStop(1, '#0f0d24');
+      ctx.fillStyle = bgGrad;
+      ctx.fillRect(0, 0, W, H);
+
+      // 2. Soft Ambient Spotlights
+      const spotGrad1 = ctx.createRadialGradient(240, 750, 20, 240, 750, 360);
+      spotGrad1.addColorStop(0, 'rgba(168, 85, 247, 0.28)');
+      spotGrad1.addColorStop(1, 'transparent');
+      ctx.fillStyle = spotGrad1;
+      ctx.beginPath();
+      ctx.arc(240, 750, 360, 0, Math.PI * 2);
+      ctx.fill();
+
+      const spotGrad2 = ctx.createRadialGradient(480, 750, 20, 480, 750, 360);
+      spotGrad2.addColorStop(0, 'rgba(56, 189, 248, 0.28)');
+      spotGrad2.addColorStop(1, 'transparent');
+      ctx.fillStyle = spotGrad2;
+      ctx.beginPath();
+      ctx.arc(480, 750, 360, 0, Math.PI * 2);
+      ctx.fill();
+
+      // 3. Floating Ambient Particles
+      particles.forEach(p => {
+        p.y -= p.speedY;
+        p.x += p.speedX;
+        if (p.y < 0) { p.y = H; p.x = Math.random() * W; }
+        ctx.save();
+        ctx.globalAlpha = p.alpha;
+        ctx.fillStyle = p.color;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+      });
+
+      // 4. Circular Pedestal / Stage Floor
+      ctx.save();
+      ctx.translate(W / 2, 940);
+      const stageGrad = ctx.createRadialGradient(0, 0, 50, 0, 0, 320);
+      stageGrad.addColorStop(0, 'rgba(255, 255, 255, 0.12)');
+      stageGrad.addColorStop(0.7, 'rgba(168, 85, 247, 0.15)');
+      stageGrad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+      ctx.fillStyle = stageGrad;
+      ctx.beginPath();
+      ctx.ellipse(0, 0, 310, 85, 0, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Inner glowing ring
+      ctx.strokeStyle = 'rgba(168, 85, 247, 0.4)';
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.ellipse(0, 0, 260, 68, 0, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.restore();
+
+      // 5. Determine Active Cue and Speaker
+      let activeCue = null;
+      let activeIndex = -1;
+      for (let i = 0; i < CUES.length; i++) {
+        if (curTime >= CUES[i].start && curTime <= CUES[i].end) {
+          activeCue = CUES[i];
+          activeIndex = i;
+          break;
+        }
+      }
+
+      if (activeIndex !== currentCueIndex) {
+        currentCueIndex = activeIndex;
+        onCueChanged(activeCue, activeIndex);
+        if (activeCue && activeIndex !== lastSpokenCue) {
+          lastSpokenCue = activeIndex;
+          const isCharA = activeIndex % 2 === 0;
+          triggerEmotion(isCharA ? 240 : 480, 520, activeCue.avatar || '✨');
+        }
+      }
+
+      // Check which character is speaking
+      const isCharASpeaking = activeCue && (activeIndex % 2 === 0);
+      const isCharBSpeaking = activeCue && (activeIndex % 2 === 1);
+
+      // Audio frequency wave simulation
+      const mouthProgress = isPlaying && activeCue ? (Math.sin(curTime * 18) * 0.5 + 0.5) : 0;
+
+      // 6. Draw 2D Cartoon Character A (Left - Violet / Hero)
+      drawCartoonHero(240, 840, curTime, isCharASpeaking, mouthProgress, activeCue);
+
+      // 7. Draw 2D Cartoon Character B (Right - Cyan / Friend)
+      drawCartoonFriend(480, 840, curTime, isCharBSpeaking, mouthProgress, activeCue);
+
+      // 8. Draw Speech Bubble for Active Speaker
+      if (activeCue) {
+        if (isCharASpeaking) {
+          drawComicSpeechBubble(250, 480, activeCue.text, activeCue.name, '#9333ea', '#c084fc', true);
+        } else {
+          drawComicSpeechBubble(470, 480, activeCue.text, activeCue.name, '#0284c7', '#38bdf8', false);
+        }
+      }
+
+      // 9. Update & Draw Emotion Particles
+      for (let i = emotionParticles.length - 1; i >= 0; i--) {
+        const ep = emotionParticles[i];
+        ep.x += ep.vx;
+        ep.y += ep.vy;
+        ep.alpha -= 0.018;
+        if (ep.alpha <= 0) {
+          emotionParticles.splice(i, 1);
+          continue;
+        }
+        ctx.save();
+        ctx.globalAlpha = ep.alpha;
+        ctx.font = `${ep.size}px sans-serif`;
+        ctx.textAlign = 'center';
+        ctx.fillText(ep.emoji, ep.x, ep.y);
+        ctx.restore();
+      }
+
+      // 10. Soundwave Visualizer at Bottom of Stage
+      drawSoundwaves(W / 2, 1060, curTime, isPlaying && activeCue);
+    }
+
+    // -------------------------------------------------------------
+    // DRAW 2D CARTOON CHARACTER A (HERO / CHAR A)
+    // -------------------------------------------------------------
+    function drawCartoonHero(x, y, t, isSpeaking, mouth, cue) {
+      ctx.save();
+      const bounce = Math.sin(t * 3.5) * 4;
+      const speakBounce = isSpeaking ? (Math.sin(t * 14) * 6 - 8) : 0;
+      const scale = isSpeaking ? 1.05 : 0.98;
+
+      ctx.translate(x, y + bounce + speakBounce);
+      ctx.scale(scale, scale);
+
+      // Soft ground shadow
+      ctx.save();
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.35)';
+      ctx.beginPath();
+      ctx.ellipse(0, 70, 60, 16, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+
+      // Body / Head (Cute Oval Creature)
+      const bodyGrad = ctx.createLinearGradient(-50, -80, 50, 70);
+      bodyGrad.addColorStop(0, '#c084fc');
+      bodyGrad.addColorStop(0.5, '#9333ea');
+      bodyGrad.addColorStop(1, '#6b21a8');
+
+      ctx.fillStyle = bodyGrad;
+      ctx.strokeStyle = '#f3e8ff';
+      ctx.lineWidth = 4.5;
+      ctx.beginPath();
+      ctx.ellipse(0, 0, 68, 76, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.stroke();
+
+      // Cute Ears / Antennae
+      ctx.save();
+      ctx.fillStyle = '#a855f7';
+      ctx.strokeStyle = '#f3e8ff';
+      ctx.lineWidth = 3.5;
+
+      // Left Ear
+      ctx.beginPath();
+      ctx.ellipse(-42, -70, 14, 28, -0.4, 0, Math.PI * 2);
+      ctx.fill(); ctx.stroke();
+
+      // Right Ear
+      ctx.beginPath();
+      ctx.ellipse(42, -70, 14, 28, 0.4, 0, Math.PI * 2);
+      ctx.fill(); ctx.stroke();
+      ctx.restore();
+
+      // Cute Rosy Cheeks
+      ctx.fillStyle = 'rgba(244, 114, 182, 0.55)';
+      ctx.beginPath(); ctx.arc(-36, 12, 11, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath(); ctx.arc(36, 12, 11, 0, Math.PI * 2); ctx.fill();
+
+      // Eyes (Blinking Logic)
+      const isBlinking = (Math.sin(t * 1.8) > 0.96);
+      if (isBlinking) {
+        ctx.strokeStyle = '#fff';
+        ctx.lineWidth = 4;
+        ctx.beginPath(); ctx.arc(-22, -10, 10, 0.2, Math.PI - 0.2); ctx.stroke();
+        ctx.beginPath(); ctx.arc(22, -10, 10, 0.2, Math.PI - 0.2); ctx.stroke();
+      } else {
+        // Eye whites & large sparkly pupils
+        drawCartoonEye(-22, -12, 14, isSpeaking);
+        drawCartoonEye(22, -12, 14, isSpeaking);
+      }
+
+      // Eyebrows
+      ctx.strokeStyle = '#fff';
+      ctx.lineWidth = 3.5;
+      ctx.lineCap = 'round';
+      const browY = isSpeaking ? -34 : -28;
+      ctx.beginPath(); ctx.moveTo(-32, browY + 2); ctx.quadraticCurveTo(-22, browY - 4, -12, browY + 1); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(12, browY + 1); ctx.quadraticCurveTo(22, browY - 4, 32, browY + 2); ctx.stroke();
+
+      // Mouth (Dynamic Lip-Sync)
+      drawCartoonMouth(0, 18, isSpeaking, mouth);
+
+      // Body Star / Badge
+      ctx.font = '22px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('🌟', 0, 52);
+
+      ctx.restore();
+    }
+
+    // -------------------------------------------------------------
+    // DRAW 2D CARTOON CHARACTER B (FRIEND / CHAR B)
+    // -------------------------------------------------------------
+    function drawCartoonFriend(x, y, t, isSpeaking, mouth, cue) {
+      ctx.save();
+      const bounce = Math.sin(t * 3.5 + 1.5) * 4;
+      const speakBounce = isSpeaking ? (Math.sin(t * 14) * 6 - 8) : 0;
+      const scale = isSpeaking ? 1.05 : 0.98;
+
+      ctx.translate(x, y + bounce + speakBounce);
+      ctx.scale(scale, scale);
+
+      // Soft ground shadow
+      ctx.save();
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.35)';
+      ctx.beginPath();
+      ctx.ellipse(0, 70, 60, 16, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+
+      // Body / Head (Cute Cyan Creature)
+      const bodyGrad = ctx.createLinearGradient(-50, -80, 50, 70);
+      bodyGrad.addColorStop(0, '#38bdf8');
+      bodyGrad.addColorStop(0.5, '#0284c7');
+      bodyGrad.addColorStop(1, '#0369a1');
+
+      ctx.fillStyle = bodyGrad;
+      ctx.strokeStyle = '#e0f2fe';
+      ctx.lineWidth = 4.5;
+      ctx.beginPath();
+      ctx.ellipse(0, 0, 66, 74, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.stroke();
+
+      // Cute Little Horns / Crown
+      ctx.save();
+      ctx.fillStyle = '#38bdf8';
+      ctx.strokeStyle = '#e0f2fe';
+      ctx.lineWidth = 3.5;
+
+      ctx.beginPath();
+      ctx.ellipse(-38, -66, 12, 22, -0.35, 0, Math.PI * 2);
+      ctx.fill(); ctx.stroke();
+
+      ctx.beginPath();
+      ctx.ellipse(38, -66, 12, 22, 0.35, 0, Math.PI * 2);
+      ctx.fill(); ctx.stroke();
+      ctx.restore();
+
+      // Cute Rosy Cheeks
+      ctx.fillStyle = 'rgba(244, 114, 182, 0.55)';
+      ctx.beginPath(); ctx.arc(-34, 12, 11, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath(); ctx.arc(34, 12, 11, 0, Math.PI * 2); ctx.fill();
+
+      // Eyes
+      const isBlinking = (Math.sin(t * 1.8 + 1.2) > 0.96);
+      if (isBlinking) {
+        ctx.strokeStyle = '#fff';
+        ctx.lineWidth = 4;
+        ctx.beginPath(); ctx.arc(-20, -10, 10, 0.2, Math.PI - 0.2); ctx.stroke();
+        ctx.beginPath(); ctx.arc(20, -10, 10, 0.2, Math.PI - 0.2); ctx.stroke();
+      } else {
+        drawCartoonEye(-20, -12, 14, isSpeaking);
+        drawCartoonEye(20, -12, 14, isSpeaking);
+      }
+
+      // Eyebrows
+      ctx.strokeStyle = '#fff';
+      ctx.lineWidth = 3.5;
+      ctx.lineCap = 'round';
+      const browY = isSpeaking ? -34 : -28;
+      ctx.beginPath(); ctx.moveTo(-30, browY + 1); ctx.quadraticCurveTo(-20, browY - 4, -10, browY + 2); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(10, browY + 2); ctx.quadraticCurveTo(20, browY - 4, 30, browY + 1); ctx.stroke();
+
+      // Mouth
+      drawCartoonMouth(0, 18, isSpeaking, mouth);
+
+      // Body Diamond / Badge
+      ctx.font = '22px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('✨', 0, 52);
+
+      ctx.restore();
+    }
+
+    function drawCartoonEye(x, y, r, isExcited) {
+      ctx.save();
+      // White sclera
+      ctx.fillStyle = '#ffffff';
+      ctx.beginPath();
+      ctx.arc(x, y, r, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Dark pupil
+      ctx.fillStyle = '#0f172a';
+      ctx.beginPath();
+      ctx.arc(x, y, r * 0.72, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Big Sparkle Highlight
+      ctx.fillStyle = '#ffffff';
+      ctx.beginPath();
+      ctx.arc(x - 3, y - 4, r * 0.32, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Small secondary highlight
+      ctx.beginPath();
+      ctx.arc(x + 4, y + 3, r * 0.16, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    }
+
+    function drawCartoonMouth(x, y, isSpeaking, mouthOpen) {
+      ctx.save();
+      ctx.translate(x, y);
+
+      if (isSpeaking) {
+        const h = 6 + mouthOpen * 18;
+        ctx.fillStyle = '#831843';
+        ctx.strokeStyle = '#ffffff';
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.ellipse(0, 0, 14, h, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+
+        // Cute Tongue
+        ctx.fillStyle = '#f43f5e';
+        ctx.beginPath();
+        ctx.ellipse(0, h * 0.45, 9, h * 0.45, 0, 0, Math.PI);
+        ctx.fill();
+      } else {
+        // Gentle smile
+        ctx.strokeStyle = '#ffffff';
+        ctx.lineWidth = 3.5;
+        ctx.lineCap = 'round';
+        ctx.beginPath();
+        ctx.arc(0, -3, 11, 0.3, Math.PI - 0.3);
+        ctx.stroke();
+      }
+      ctx.restore();
+    }
+
+    // -------------------------------------------------------------
+    // COMIC SPEECH BUBBLE WITH DYNAMIC WRAP
+    // -------------------------------------------------------------
+    function drawComicSpeechBubble(x, y, text, speakerName, colorMain, colorLight, isLeft) {
+      ctx.save();
+      ctx.font = 'bold 20px "Plus Jakarta Sans", sans-serif';
+
+      // Text wrapping logic
+      const maxW = 380;
+      const words = text.split(' ');
+      let lines = [];
+      let curLine = '';
+
+      for (let n = 0; n < words.length; n++) {
+        const testLine = curLine + words[n] + ' ';
+        const metrics = ctx.measureText(testLine);
+        if (metrics.width > maxW && n > 0) {
+          lines.push(curLine.trim());
+          curLine = words[n] + ' ';
+        } else {
+          curLine = testLine;
+        }
+      }
+      lines.push(curLine.trim());
+
+      const lineH = 26;
+      const boxW = Math.min(420, Math.max(220, maxW + 30));
+      const boxH = Math.max(76, lines.length * lineH + 36);
+
+      const boxX = isLeft ? Math.max(30, x - 120) : Math.min(W - boxW - 30, x - boxW + 120);
+      const boxY = y - boxH - 24;
+
+      // Drop Shadow
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.45)';
+      roundRect(ctx, boxX + 6, boxY + 6, boxW, boxH, 20);
+      ctx.fill();
+
+      // Bubble Background (White with vibrant border)
+      ctx.fillStyle = '#ffffff';
+      ctx.strokeStyle = colorMain;
+      ctx.lineWidth = 4.5;
+      roundRect(ctx, boxX, boxY, boxW, boxH, 20);
+      ctx.fill();
+      ctx.stroke();
+
+      // Speech Bubble Tail pointing to the character
+      ctx.fillStyle = '#ffffff';
+      ctx.strokeStyle = colorMain;
+      ctx.lineWidth = 4.5;
+      ctx.beginPath();
+      if (isLeft) {
+        ctx.moveTo(x - 20, boxY + boxH - 2);
+        ctx.lineTo(x, boxY + boxH + 22);
+        ctx.lineTo(x + 15, boxY + boxH - 2);
+      } else {
+        ctx.moveTo(x - 15, boxY + boxH - 2);
+        ctx.lineTo(x, boxY + boxH + 22);
+        ctx.lineTo(x + 20, boxY + boxH - 2);
+      }
+      ctx.fill();
+
+      // Text inside bubble
+      ctx.fillStyle = '#0f172a';
+      ctx.textAlign = 'center';
+      for (let i = 0; i < lines.length; i++) {
+        ctx.fillText(lines[i], boxX + boxW / 2, boxY + 34 + i * lineH);
+      }
+
+      ctx.restore();
+    }
+
+    function roundRect(ctx, x, y, width, height, radius) {
+      ctx.beginPath();
+      ctx.moveTo(x + radius, y);
+      ctx.lineTo(x + width - radius, y);
+      ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+      ctx.lineTo(x + width, y + height - radius);
+      ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+      ctx.lineTo(x + radius, y + height);
+      ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
+      ctx.lineTo(x, y + radius);
+      ctx.quadraticCurveTo(x, y, x + radius, y);
+      ctx.closePath();
+    }
+
+    // -------------------------------------------------------------
+    // AUDIO SPECTRUM SOUNDWAVES
+    // -------------------------------------------------------------
+    function drawSoundwaves(cx, cy, t, isActive) {
+      ctx.save();
+      const numBars = 28;
+      const barW = 6;
+      const gap = 5;
+      const totalW = numBars * (barW + gap);
+      const startX = cx - totalW / 2;
+
+      for (let i = 0; i < numBars; i++) {
+        const x = startX + i * (barW + gap);
+        let barH = 8;
+        if (isActive) {
+          const wave = Math.sin(t * 12 + i * 0.45) * 0.5 + 0.5;
+          const wave2 = Math.cos(t * 8 + i * 0.3) * 0.5 + 0.5;
+          barH = Math.max(8, (wave * wave2) * 55 + 10);
+        }
+
+        const barGrad = ctx.createLinearGradient(0, cy - barH, 0, cy + barH);
+        barGrad.addColorStop(0, '#38bdf8');
+        barGrad.addColorStop(0.5, '#c084fc');
+        barGrad.addColorStop(1, '#a855f7');
+
+        ctx.fillStyle = barGrad;
+        roundRect(ctx, x, cy - barH / 2, barW, barH, 3);
+        ctx.fill();
+      }
+      ctx.restore();
+    }
+
+    // -------------------------------------------------------------
+    // CUE CHANGE & TIMELINE SYNC
+    // -------------------------------------------------------------
+    function onCueChanged(cue, index) {
+      // Clear active highlights
+      document.querySelectorAll('.cue-item').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.cast-card').forEach(el => el.classList.remove('active'));
+
+      if (cue && index >= 0) {
+        subAvatar.textContent = cue.avatar || '🌟';
+        subSpeaker.textContent = cue.name || 'NHÂN VẬT';
+        subText.textContent = cue.text || '';
+        activeSpkTag.textContent = `🎙️ ${cue.name}`;
+
+        // Highlight active cue in list
+        const activeCueEl = document.getElementById(`cue-item-${index}`);
+        if (activeCueEl) {
+          activeCueEl.classList.add('active');
+          activeCueEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        // Highlight cast card
+        const spkId = cue.speaker || 'char';
+        const castEl = document.getElementById(`cast-${spkId}`);
+        if (castEl) castEl.classList.add('active');
+      } else {
+        activeSpkTag.textContent = `✨ SÂN KHẤU HOẠT HÌNH`;
+      }
+    }
+
+    // -------------------------------------------------------------
+    // ANIMATION LOOP (60 FPS)
+    // -------------------------------------------------------------
+    function loop() {
+      const cur = audio.currentTime || 0;
+      timeBarFill.style.width = (cur / totalDuration * 100) + '%';
+      timeDisplay.textContent = `${formatTime(cur)} / ${formatTime(totalDuration)}`;
+
+      renderStage(cur);
+      requestAnimationFrame(loop);
+    }
+    requestAnimationFrame(loop);
+
+    audio.addEventListener('play', () => {
+      isPlaying = true;
+      playIcon.textContent = '⏸';
+      playText.textContent = 'Tạm dừng';
+    });
+
+    audio.addEventListener('pause', () => {
+      isPlaying = false;
+      playIcon.textContent = '▶';
+      playText.textContent = 'Phát Video';
+    });
+
+    audio.addEventListener('ended', () => {
+      isPlaying = false;
+      playIcon.textContent = '▶';
+      playText.textContent = 'Phát Lại';
+    });
+  </script>
+</body>
+</html>

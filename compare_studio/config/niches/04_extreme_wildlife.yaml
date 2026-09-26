@@ -1,0 +1,5 @@
+niche_id: extreme_wildlife
+name: Động Vật & Biển Sâu
+language: vi
+summary: Động vật cực hạn, sinh vật biển sâu và các thích nghi sinh học đáng chú ý.
+allowed_engines: [vox, science, survival, tierlist, kinetic, wildlife]

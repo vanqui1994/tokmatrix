@@ -1,0 +1,89 @@
+{
+  "schema_version": "2.0.0",
+  "project_id": "project_talking_head_demo",
+  "title": "One-speaker introduction",
+  "source": {
+    "source_id": "source_talking_head_demo",
+    "sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+    "media_type": "video/mp4",
+    "width": 1920,
+    "height": 1080,
+    "frame_rate": 25
+  },
+  "duration_seconds": 4.2,
+  "timebase": { "unit": "seconds", "origin_seconds": 0, "precision": 3 },
+  "tracks": [
+    { "track_id": "track_visual", "kind": "visual", "items": [{ "item_id": "item_intro_scene", "target_type": "scene", "target_id": "scene_intro", "start": 0, "end": 4.2, "layer": 0 }] },
+    { "track_id": "track_dialogue", "kind": "dialogue", "items": [{ "item_id": "item_intro_dialogue", "target_type": "audio_event", "target_id": "audio_intro_dialogue", "start": 0.35, "end": 3.8 }] }
+  ],
+  "scenes": [
+    {
+      "scene_id": "scene_intro",
+      "start": 0,
+      "end": 4.2,
+      "summary": "A presenter delivers an introduction directly to camera.",
+      "entities": [
+        {
+          "entity_id": "speaker_lan",
+          "kind": "person",
+          "label": "Lan",
+          "role": "speaker",
+          "components": [
+            { "component_id": "speaker_lan_face", "kind": "face", "state": "visible", "anchors": [{ "anchor_id": "speaker_lan_mouth", "name": "mouth", "semantic": "speech" }] }
+          ],
+          "analysis": { "confidence": 0.99, "evidence_ids": ["evidence_speaker_face"], "model": "fixture-analyzer-1", "review_status": "accepted" },
+          "provenance_id": "provenance_talking_analysis"
+        }
+      ],
+      "relations": [
+        { "relation_id": "relation_speaker_faces_camera", "type": "faces", "subject_id": "speaker_lan", "object_id": "camera_intro", "start": 0, "end": 4.2, "provenance_id": "provenance_talking_analysis" }
+      ],
+      "actions": [
+        { "action_id": "action_speak_intro", "type": "speak", "actor_ids": ["speaker_lan"], "target_ids": [], "start": 0.35, "end": 3.8, "parameters": { "audio_event_id": "audio_intro_dialogue" }, "analysis": { "confidence": 0.98, "evidence_ids": ["evidence_dialogue"], "model": "fixture-analyzer-1", "review_status": "accepted" }, "provenance_id": "provenance_talking_analysis" }
+      ],
+      "constraints": [
+        { "constraint_id": "constraint_lip_sync", "type": "lip_sync", "subject_ids": ["speaker_lan_mouth", "audio_intro_dialogue"], "start": 0.35, "end": 3.8, "strength": "hard", "provenance_id": "provenance_talking_analysis" }
+      ],
+      "camera": {
+        "camera_id": "camera_intro",
+        "shots": [{ "shot_id": "shot_intro_close", "start": 0, "end": 4.2, "framing": "close_up", "movement": "static", "subject_ids": ["speaker_lan"], "provenance_id": "provenance_talking_analysis" }]
+      },
+      "environment": { "environment_id": "environment_studio", "kind": "studio", "attributes": { "background": "neutral" } },
+      "style": { "style_id": "style_clean_interview", "tags": ["clean", "interview"], "typography": ["sans-serif"] },
+      "audio_events": [
+        { "audio_event_id": "audio_intro_dialogue", "kind": "dialogue", "start": 0.35, "end": 3.8, "speaker_id": "speaker_lan", "text": "Xin chào, hôm nay chúng ta bắt đầu.", "language": "vi", "gain_db": 0, "analysis": { "confidence": 0.99, "evidence_ids": ["evidence_dialogue"], "model": "fixture-transcriber-1", "review_status": "accepted" }, "provenance_id": "provenance_talking_analysis" }
+      ],
+      "render_requirements": {
+        "required": [
+          { "requirement_id": "requirement_speaker_identity", "capability": "identity.preserve", "target_ids": ["speaker_lan"] },
+          { "requirement_id": "requirement_dialogue_timing", "capability": "audio.dialogue_timing", "target_ids": ["audio_intro_dialogue"], "metric": "timing_error_seconds", "tolerance": 0.04 }
+        ],
+        "preferred": [{ "requirement_id": "requirement_lip_sync", "capability": "constraint.lip_sync", "target_ids": ["constraint_lip_sync"], "metric": "sync_error_seconds", "tolerance": 0.08 }],
+        "optional": [{ "requirement_id": "requirement_background_replace", "capability": "effect.background_replace", "target_ids": ["environment_studio"] }]
+      },
+      "analysis": { "confidence": 0.98, "evidence_ids": ["evidence_speaker_face", "evidence_dialogue"], "model": "fixture-analyzer-1", "review_status": "accepted" },
+      "provenance_id": "provenance_talking_analysis"
+    }
+  ],
+  "render_plan": {
+    "render_plan_id": "render_plan_talking_head",
+    "status": "routable",
+    "selections": [{ "selection_id": "selection_talking_head", "scene_id": "scene_intro", "start": 0, "end": 4.2, "renderer_id": "footage_composite_v1", "renderer_version": "1.0.0", "status": "selected", "satisfied_requirement_ids": ["requirement_speaker_identity", "requirement_dialogue_timing", "requirement_lip_sync"], "fallback_ids": [], "explanation": "A compositing renderer preserves identity, dialogue timing, and lip sync." }],
+    "fallbacks": []
+  },
+  "provenance": [
+    {
+      "provenance_id": "provenance_talking_analysis",
+      "kind": "analysis",
+      "created_at": "2026-09-18T08:10:00Z",
+      "agent": "fixture-analyzer",
+      "tool_version": "1.0.0",
+      "source_refs": ["source_talking_head_demo"],
+      "evidence": [
+        { "evidence_id": "evidence_speaker_face", "kind": "frame_range", "source_id": "source_talking_head_demo", "interval": { "start": 0, "end": 4.2 }, "region": { "space": "normalized_source", "x": 0.3, "y": 0.1, "width": 0.4, "height": 0.8 } },
+        { "evidence_id": "evidence_dialogue", "kind": "transcript_span", "source_id": "source_talking_head_demo", "interval": { "start": 0.35, "end": 3.8 }, "quote": "Xin chào, hôm nay chúng ta bắt đầu." }
+      ]
+    }
+  ],
+  "extensions": { "com.ssmatool.fixture:category": "talking_head" }
+}

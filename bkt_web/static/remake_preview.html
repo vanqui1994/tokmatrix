@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bản Remake Video AI — TokMatrix Studio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0b0f19;
+      --card: #151d2f;
+      --card-hover: #1c273e;
+      --border: #23304a;
+      --accent: #ea580c;
+      --accent-glow: rgba(234, 88, 12, 0.35);
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      --green: #10b981;
+      --yellow: #f59e0b;
+      --blue: #3b82f6;
+      --purple: #a855f7;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      padding: 24px;
+    }
+
+    .container {
+      max-width: 1240px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .top-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .title-group h1 {
+      font-size: 21px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .badge-tag {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 20px;
+      background: linear-gradient(135deg, rgba(234, 88, 12, 0.2), rgba(168, 85, 247, 0.2));
+      color: #fb923c;
+      border: 1px solid rgba(234, 88, 12, 0.4);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* Version Switcher Tabs */
+    .version-switcher {
+      display: flex;
+      background: #111827;
+      padding: 4px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      gap: 4px;
+      margin-bottom: 20px;
+    }
+    .ver-btn {
+      flex: 1;
+      padding: 10px 16px;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-muted);
+      background: transparent;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.2s;
+    }
+    .ver-btn.active {
+      background: linear-gradient(135deg, #ea580c, #c2410c);
+      color: #fff;
+      box-shadow: 0 4px 14px rgba(234, 88, 12, 0.4);
+    }
+    .ver-btn.active.b {
+      background: linear-gradient(135deg, #9333ea, #7c3aed);
+      box-shadow: 0 4px 14px rgba(147, 51, 234, 0.4);
+    }
+
+    .main-grid {
+      display: grid;
+      grid-template-columns: 380px 1fr;
+      gap: 28px;
+    }
+
+    @media (max-width: 900px) {
+      .main-grid { grid-template-columns: 1fr; }
+    }
+
+    /* Video Phone Frame */
+    .phone-mockup {
+      background: #000;
+      border: 3px solid #23304a;
+      border-radius: 28px;
+      box-shadow: 0 25px 60px rgba(0,0,0,0.6), 0 0 40px var(--accent-glow);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      aspect-ratio: 9/16;
+      max-height: 640px;
+    }
+
+    .phone-mockup video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      background: #000;
+    }
+
+    /* TikTok Style Subtitles Overlay */
+    .tiktok-sub-overlay {
+      position: absolute;
+      bottom: 50px;
+      left: 14px;
+      right: 14px;
+      text-align: center;
+      pointer-events: none;
+      z-index: 10;
+      transition: all 0.15s ease;
+    }
+
+    .tiktok-sub-text {
+      display: inline-block;
+      font-size: 15px;
+      font-weight: 900;
+      color: #ffe600;
+      text-shadow: 
+        -2px -2px 0 #000,  
+         2px -2px 0 #000,
+        -2px  2px 0 #000,
+         2px  2px 0 #000,
+         0px  3px 8px rgba(0,0,0,0.9);
+      background: rgba(0, 0, 0, 0.55);
+      backdrop-filter: blur(4px);
+      padding: 6px 12px;
+      border-radius: 10px;
+      line-height: 1.35;
+      max-width: 94%;
+    }
+
+    /* Details Column */
+    .details-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 18px 22px;
+    }
+
+    .card-title {
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* Gallery of 3D Scenes */
+    .scene-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 8px;
+      margin-top: 10px;
+    }
+    @media (max-width: 600px) {
+      .scene-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+    .scene-card {
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      background: #000;
+      aspect-ratio: 9/16;
+      cursor: pointer;
+      position: relative;
+      transition: all 0.2s;
+    }
+    .scene-card:hover {
+      transform: scale(1.05);
+      border-color: #ea580c;
+      box-shadow: 0 4px 12px rgba(234,88,12,0.4);
+    }
+    .scene-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .scene-card span {
+      position: absolute;
+      bottom: 2px;
+      left: 2px;
+      font-size: 9.5px;
+      font-weight: 800;
+      background: rgba(0,0,0,0.7);
+      padding: 1px 4px;
+      border-radius: 4px;
+      color: #fff;
+    }
+
+    /* Timeline Script Beats */
+    .script-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      max-height: 250px;
+      overflow-y: auto;
+      padding-right: 6px;
+    }
+
+    .script-item {
+      background: rgba(11, 15, 25, 0.6);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 12px;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .script-item:hover, .script-item.active {
+      background: rgba(234, 88, 12, 0.12);
+      border-color: rgba(234, 88, 12, 0.5);
+    }
+
+    .script-time {
+      font-family: monospace;
+      font-size: 11px;
+      font-weight: 700;
+      color: #fb923c;
+      background: rgba(234, 88, 12, 0.2);
+      padding: 2px 6px;
+      border-radius: 4px;
+      white-space: nowrap;
+    }
+    .script-role {
+      font-size: 11px;
+      font-weight: 800;
+      color: #38bdf8;
+      margin-bottom: 2px;
+    }
+    .script-text {
+      font-size: 12.5px;
+      color: var(--text);
+      line-height: 1.4;
+    }
+
+    /* Action Buttons */
+    .btn-group {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 18px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 700;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, #ea580c, #c2410c);
+      color: #fff;
+      box-shadow: 0 4px 14px rgba(234, 88, 12, 0.4);
+    }
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 18px rgba(234, 88, 12, 0.6);
+    }
+    .btn-secondary {
+      background: #1e293b;
+      color: #cbd5e1;
+      border: 1px solid #334155;
+    }
+    .btn-secondary:hover {
+      background: #334155;
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Top Bar -->
+    <div class="top-bar">
+      <div class="title-group">
+        <h1>
+          <span>🎬</span> Xưởng Remake AI: Dưa Hấu Chín Non
+        </h1>
+        <span class="badge-tag">Phương Án B: 100% Hoạt Hình 3D Pixar Mới</span>
+      </div>
+      <div class="btn-group">
+        <a href="/static/remake_hub.html" class="btn btn-primary" style="background: linear-gradient(135deg, #0284c7, #0369a1); color: #fff; font-weight: 800;">
+          🚀 Trung Tâm Remake Hub
+        </a>
+        <a href="/static/remake_2d_demo.html" class="btn btn-primary" style="background: linear-gradient(135deg, #10b981, #059669); color: #000; font-weight: 900;">
+          🍉 Bản Dưa Hấu 2D (Chốt)
+        </a>
+        <a href="/static/remake_tomato_demo.html" class="btn btn-primary" style="background: linear-gradient(135deg, #ef4444, #dc2626); color: #fff; font-weight: 800;">
+          🍅 Bản Cà Chua 5.mp4 (Mới)
+        </a>
+        <a id="btn-download" href="/static/remake_3d_pixar_video.mp4" download="remake_3d_pixar.mp4" class="btn btn-primary" style="background: linear-gradient(135deg, #9333ea, #7c3aed);">
+          ⬇️ Tải Video 3D Pixar MP4 (2.9 MB)
+        </a>
+        <a href="/" class="btn btn-secondary">
+          🏠 Quay Lại BKT Web
+        </a>
+      </div>
+    </div>
+
+    <!-- Version Switcher -->
+    <div class="version-switcher">
+      <button type="button" class="ver-btn active b" id="tab-b" onclick="switchVersion('b')">
+        <span>✨</span> PHƯƠNG ÁN B: Video Hoạt Hình 3D Pixar Mới 100% (Độc Quyền AI)
+      </button>
+      <button type="button" class="ver-btn" id="tab-a" onclick="switchVersion('a')">
+        <span>📺</span> PHƯƠNG ÁN A: Giữ Khung Hình 1.mp4 + Lồng Tiếng Việt & SFX
+      </button>
+    </div>
+
+    <!-- Main Grid -->
+    <div class="main-grid">
+      <!-- Left: Phone Player -->
+      <div class="phone-mockup">
+        <video id="remake-video" src="/static/remake_3d_pixar_video.mp4" controls playsinline autoplay></video>
+        <!-- Floating Subtitle -->
+        <div class="tiktok-sub-overlay" id="sub-overlay">
+          <div class="tiktok-sub-text" id="sub-text">Đang phát bản Hoạt Hình 3D Pixar mới 100%!</div>
+        </div>
+      </div>
+
+      <!-- Right: Details & Scripts -->
+      <div class="details-panel">
+        <!-- 3D Pixar Scene Gallery -->
+        <div class="card" style="border: 1px solid rgba(168, 85, 247, 0.4); background: linear-gradient(180deg, rgba(168, 85, 247, 0.08) 0%, var(--card) 100%);">
+          <div class="card-title" style="color: #c084fc;">
+            <span>🎨</span> Bộ Hình Ảnh Phân Cảnh 3D Pixar (Chuẩn 9:16 TikTok)
+          </div>
+          <p style="font-size: 11.5px; color: var(--text-muted); margin-bottom: 8px;">
+            Nhấp vào từng cảnh bên dưới để video nhảy ngay đến đoạn kịch bản tương ứng:
+          </p>
+          <div class="scene-grid">
+            <div class="scene-card" onclick="seekTo(0.5)" title="Cảnh 1: Hai quả dưa tắm nắng">
+              <img src="/static/remake_3d_scenes/scene_1.jpg" alt="Cảnh 1">
+              <span>Cảnh 1</span>
+            </div>
+            <div class="scene-card" onclick="seekTo(6.4)" title="Cảnh 2: Bác nông dân đến vườn">
+              <img src="/static/remake_3d_scenes/scene_2.jpg" alt="Cảnh 2">
+              <span>Cảnh 2</span>
+            </div>
+            <div class="scene-card" onclick="seekTo(14.8)" title="Cảnh 3: Quả dưa tự giật đứt cuống">
+              <img src="/static/remake_3d_scenes/scene_3.jpg" alt="Cảnh 3">
+              <span>Cảnh 3</span>
+            </div>
+            <div class="scene-card" onclick="seekTo(22.2)" title="Cảnh 4: Bổ ra ruột trắng bệch">
+              <img src="/static/remake_3d_scenes/scene_4.jpg" alt="Cảnh 4">
+              <span>Cảnh 4</span>
+            </div>
+            <div class="scene-card" onclick="seekTo(34.2)" title="Cảnh 5: So sánh dưa non vs dưa chín">
+              <img src="/static/remake_3d_scenes/scene_5.jpg" alt="Cảnh 5">
+              <span>Cảnh 5</span>
+            </div>
+            <div class="scene-card" onclick="seekTo(43.2)" title="Cảnh 6: 3 Mẹo chọn dưa hấu siêu ngọt">
+              <img src="/static/remake_3d_scenes/scene_6.jpg" alt="Cảnh 6">
+              <span>Cảnh 6</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Script Timeline Card -->
+        <div class="card">
+          <div class="card-title" style="justify-content: space-between;">
+            <span><span>📜</span> Kịch Bản Lời Thoại & Âm Thanh Đồng Bộ</span>
+            <span style="font-size: 11px; font-weight: 600; color: var(--text-dim); text-transform: none;">Nhấp dòng để nghe thử</span>
+          </div>
+
+          <div class="script-list" id="script-list">
+            <div class="script-item" onclick="seekTo(0.5)">
+              <span class="script-time">00:00.5</span>
+              <div>
+                <div class="script-role">🍉 Quả Dưa A (nôn nóng)</div>
+                <div class="script-text">"Anh Hai ơi, tụi mình bự chảng ngần này rồi, sao chưa ai tới hái vậy cà?"</div>
+              </div>
+            </div>
+
+            <div class="script-item" onclick="seekTo(6.4)">
+              <span class="script-time">00:06.4</span>
+              <div>
+                <div class="script-role">🍉 Quả Dưa A (thấy bác nông dân)</div>
+                <div class="script-text">"Ủa bác đi đâu đấy? Tưởng tới hái tụi cháu chớ? Tụi cháu to bự lắm rồi nè!"</div>
+              </div>
+            </div>
+
+            <div class="script-item" onclick="seekTo(10.4)">
+              <span class="script-time">00:10.4</span>
+              <div>
+                <div class="script-role">👨‍🌾 Bác Nông Dân (NamMinh)</div>
+                <div class="script-text">"To xác chưa chắc đã chín đâu con! Hai đứa bay phải nằm phơi nắng thêm mấy ngày nữa!"</div>
+              </div>
+            </div>
+
+            <div class="script-item" onclick="seekTo(15.0)">
+              <span class="script-time">00:15.0</span>
+              <div>
+                <div class="script-role">🍉 Quả Dưa A (dỗi)</div>
+                <div class="script-text">"Ai mà thèm đợi nữa chứ! Cứ bắt người ta nằm chờ hoài hà!"</div>
+              </div>
+            </div>
+
+            <div class="script-item" onclick="seekTo(17.8)">
+              <span class="script-time">00:17.8</span>
+              <div>
+                <div class="script-role">🍈 Quả Dưa B & Quả A</div>
+                <div class="script-text">"Ủa mày tính làm gì đó? Tự bứt cuống luôn! Buộc phải bưng tụi mình về nha!"</div>
+              </div>
+            </div>
+
+            <div class="script-item" onclick="seekTo(22.2)">
+              <span class="script-time">00:22.2</span>
+              <div>
+                <div class="script-role">👨‍🌾 Bác Nông Dân (bổ dưa)</div>
+                <div class="script-text">"Ủa cuống rụng rồi à? Thôi bổ ăn thử... Trời đất ơi! To xác mà ruột trắng bệch, nhạt toẹt, tiếc ghê!"</div>
+              </div>
+            </div>
+
+            <div class="script-item" onclick="seekTo(30.2)">
+              <span class="script-time">00:30.2</span>
+              <div>
+                <div class="script-role">👨‍🌾 Bác Nông Dân (tiếc nuối)</div>
+                <div class="script-text">"Phải đợi thêm thời gian thì dưa mới tích đủ mật ngọt chứ!"</div>
+              </div>
+            </div>
+
+            <div class="script-item" onclick="seekTo(34.2)">
+              <span class="script-time">00:34.2</span>
+              <div>
+                <div class="script-role">🎙️ Giọng Dẫn Chuyện (Bài học sinh học)</div>
+                <div class="script-text">"Bài học rút ra: Quả nhìn bên ngoài to bự, nhưng ruột bên trong chưa chắc đã chín tới. Dưa hấu đạt kích thước tối đa vẫn cần thêm thời gian để tích lũy độ ngọt tự nhiên."</div>
+              </div>
+            </div>
+
+            <div class="script-item" onclick="seekTo(43.2)">
+              <span class="script-time">00:43.2</span>
+              <div>
+                <div class="script-role">🎙️ Giọng Dẫn Chuyện (3 Mẹo chọn dưa)</div>
+                <div class="script-text">"Bởi vậy người sành ăn không bao giờ chỉ nhìn kích cỡ để chọn dưa! Hãy chọn quả có vệt vàng cam dưới đáy, cuống khô teo và gõ nghe tiếng đục mới là dưa chín ngọt nha!"</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Next Action Card -->
+        <div class="card" style="border-left: 4px solid #a855f7;">
+          <div class="card-title" style="color: #c084fc;">
+            <span>🚀</span> Đánh Giá Phương Án B:
+          </div>
+          <p style="font-size: 12.5px; color: var(--text-muted); line-height: 1.6;">
+            Video <strong>Phương Án B</strong> được vẽ 100% bằng AI theo phong cách 3D Pixar, hoàn toàn sạch bản quyền hình ảnh lẫn âm thanh. Nếu bạn thấy phương án B này ưng ý, chúng ta sẽ bắt tay vào triển khai <strong>Phương Án C (Tạo tính năng Auto Remake Video 1-Click trên Web TokMatrix)</strong>!
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const cues = [
+      { start: 0.5, end: 4.2, text: "Anh Hai ơi, tụi mình bự chảng ngần này rồi, sao chưa ai tới hái vậy cà?" },
+      { start: 6.4, end: 10.2, text: "Ủa bác đi đâu đấy? Tưởng tới hái tụi cháu chớ? Tụi cháu to bự lắm rồi nè!" },
+      { start: 10.4, end: 14.8, text: "To xác chưa chắc đã chín đâu con! Hai đứa bay phải nằm phơi nắng thêm mấy ngày nữa!" },
+      { start: 15.0, end: 17.6, text: "Ai mà thèm đợi nữa chứ! Cứ bắt người ta nằm chờ hoài hà!" },
+      { start: 17.8, end: 22.0, text: "Ủa mày tính làm gì đó? Tự bứt cuống luôn! Buộc phải bưng tụi mình về nha!" },
+      { start: 22.2, end: 29.4, text: "Ủa cuống rụng rồi à? Thôi bổ ăn thử... Trời đất ơi! To xác mà ruột trắng bệch, nhạt toẹt, tiếc ghê!" },
+      { start: 30.2, end: 33.5, text: "Phải đợi thêm thời gian thì dưa mới tích đủ mật ngọt chứ!" },
+      { start: 34.2, end: 42.5, text: "Bài học: Dưa hấu đạt kích thước tối đa vẫn cần thêm thời gian để tích lũy độ ngọt tự nhiên." },
+      { start: 43.2, end: 51.5, text: "Mẹo chọn dưa: Vệt vàng cam dưới đáy, cuống khô teo và gõ nghe tiếng đục mới là dưa chín ngọt nha!" }
+    ];
+
+    let currentVersion = 'b';
+    const vid = document.getElementById('remake-video');
+    const subText = document.getElementById('sub-text');
+    const scriptItems = document.querySelectorAll('.script-item');
+    const btnDownload = document.getElementById('btn-download');
+
+    function switchVersion(ver) {
+      currentVersion = ver;
+      const t = vid.currentTime;
+      const isPlaying = !vid.paused;
+
+      const tabA = document.getElementById('tab-a');
+      const tabB = document.getElementById('tab-b');
+
+      if (ver === 'b') {
+        tabB.className = 'ver-btn active b';
+        tabA.className = 'ver-btn';
+        vid.src = '/static/remake_3d_pixar_video.mp4';
+        btnDownload.href = '/static/remake_3d_pixar_video.mp4';
+        btnDownload.setAttribute('download', 'remake_3d_pixar.mp4');
+        btnDownload.innerHTML = '⬇️ Tải Video 3D Pixar MP4 (2.9 MB)';
+        btnDownload.style.background = 'linear-gradient(135deg, #9333ea, #7c3aed)';
+      } else {
+        tabA.className = 'ver-btn active';
+        tabB.className = 'ver-btn';
+        vid.src = '/static/remake_dua_hau_preview.mp4';
+        btnDownload.href = '/static/remake_dua_hau_preview.mp4';
+        btnDownload.setAttribute('download', 'remake_dua_hau_goc.mp4');
+        btnDownload.innerHTML = '⬇️ Tải Video Gốc Lồng Tiếng (3.2 MB)';
+        btnDownload.style.background = 'linear-gradient(135deg, #ea580c, #c2410c)';
+      }
+
+      vid.currentTime = t;
+      if (isPlaying) vid.play();
+    }
+
+    vid.addEventListener('timeupdate', () => {
+      const t = vid.currentTime;
+      let activeCue = cues.find(c => t >= c.start && t <= c.end);
+      if (activeCue) {
+        subText.textContent = activeCue.text;
+        subText.style.display = 'inline-block';
+      } else {
+        subText.style.display = 'none';
+      }
+
+      cues.forEach((c, idx) => {
+        if (scriptItems[idx]) {
+          scriptItems[idx].classList.toggle('active', t >= c.start && t <= c.end);
+        }
+      });
+    });
+
+    function seekTo(sec) {
+      vid.currentTime = sec;
+      vid.play();
+    }
+  </script>
+</body>
+</html>

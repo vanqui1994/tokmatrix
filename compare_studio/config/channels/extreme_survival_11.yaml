@@ -1,0 +1,43 @@
+audio:
+  music_family: extreme_survival_editorial
+  sfx_density: medium
+  soundscape_id: survival
+  voice_id: en-US-AndrewNeural
+  voice_pitch: -1
+  voice_speed: 1.03
+channel_id: extreme_survival_11
+config_version: 4
+creative:
+  cut_cadence_seconds: 2.3
+  palette:
+    accent: '#D6A84F'
+    primary: '#111318'
+    text: '#F2EEE6'
+  preferred_engines:
+  - tierlist
+  - kinetic
+  - survival
+  visual_style_id: dark_mystery_v1
+name: Survival & Disaster 11
+niche_id: extreme_survival
+persona:
+  catchphrase_prefix: 'Điều đáng chú ý trong câu chuyện này là:'
+  energy_level: 0.7000000000000001
+  target_demographic: Vietnamese viewers aged 18-34
+  tone: evidence_first_editorial
+publishing:
+  default_schedule_window: 19:30-20:30
+  hashtags:
+  - extremesurvival
+  - khampha
+  - facts
+  language: en
+story:
+  pacing_beats: 12
+  preferred_blueprints:
+  - mystery_reveal
+  preferred_hook_types:
+  - evidence_hook
+  - paradox_question
+  target_duration_seconds: 52
+tiktok_account_ref: null

@@ -1,0 +1,2043 @@
+{
+  "version": "1.1.0",
+  "title": "Hoạt Hình Điêu Khắc Cát - Character Rigging System",
+  "characters": [
+    {
+      "id": "bo_panda",
+      "name": "Bò - Gấu Hài Hước (Panda)",
+      "thumb": "bodies/bo_panda_full.png",
+      "body_img": "bodies/bo_panda_full.png",
+      "face_anchor": [
+        0,
+        -118
+      ],
+      "face_scale": 0.75,
+      "default_face": "face_a_02.png",
+      "body_clean": "bodies_clean/bo_panda_full.png",
+      "face_box": [
+        0.47,
+        0.3,
+        0.42
+      ],
+      "face_box_source": "manual"
+    },
+    {
+      "id": "ton_ngo_khong",
+      "name": "Tôn Ngộ Không (Tề Thiên Đại Thánh)",
+      "thumb": "bodies/ton_ngo_khong.png",
+      "body_img": "bodies/ton_ngo_khong.png",
+      "face_anchor": [
+        6,
+        -112
+      ],
+      "face_scale": 0.65,
+      "default_face": "face_a_01.png",
+      "rel_x": 0.505,
+      "rel_y": 0.215,
+      "rel_w": 0.28,
+      "rel_h": 0.18,
+      "body_clean": "bodies_clean/ton_ngo_khong.png",
+      "face_box": [
+        0.47,
+        0.135,
+        0.22
+      ],
+      "face_box_source": "manual"
+    },
+    {
+      "id": "duong_tang",
+      "name": "Đường Tăng (Tam Tạng Pháp Sư)",
+      "thumb": "bodies/duong_tang.png",
+      "body_img": "bodies/duong_tang.png",
+      "face_anchor": [
+        4,
+        -100
+      ],
+      "face_scale": 0.7,
+      "default_face": "face_a_01.png",
+      "rel_x": 0.62,
+      "rel_y": 0.335,
+      "rel_w": 0.27,
+      "rel_h": 0.17,
+      "body_clean": "bodies_clean/duong_tang.png",
+      "face_box": [
+        0.6503,
+        0.3479,
+        0.3203
+      ],
+      "face_box_source": "detected"
+    },
+    {
+      "id": "tru_bat_gioi",
+      "name": "Trư Bát Giới (Thiên Bồng)",
+      "thumb": "bodies/tru_bat_gioi.png",
+      "body_img": "bodies/tru_bat_gioi.png",
+      "face_anchor": [
+        0,
+        -105
+      ],
+      "face_scale": 0.72,
+      "default_face": "face_a_01.png",
+      "rel_x": 0.47,
+      "rel_y": 0.245,
+      "rel_w": 0.28,
+      "rel_h": 0.18,
+      "body_clean": "bodies_clean/tru_bat_gioi.png",
+      "face_box": [
+        0.47,
+        0.2,
+        0.22
+      ],
+      "face_box_source": "manual"
+    },
+    {
+      "id": "phat_di_lac",
+      "name": "Phật Di Lặc (Cầm Thỏi Vàng)",
+      "thumb": "bodies/phat_di_lac.png",
+      "body_img": "bodies/phat_di_lac.png",
+      "face_anchor": [
+        0,
+        -95
+      ],
+      "face_scale": 0.68,
+      "default_face": "face_a_01.png",
+      "rel_x": 0.56,
+      "rel_y": 0.285,
+      "rel_w": 0.28,
+      "rel_h": 0.18,
+      "body_clean": "bodies_clean/phat_di_lac.png",
+      "face_box": [
+        0.5741,
+        0.3287,
+        0.3578
+      ],
+      "face_box_source": "detected"
+    },
+    {
+      "id": "na_tra_thai_tu",
+      "name": "Na Tra Thái Tử (Thương Lửa)",
+      "thumb": "bodies/na_tra_thai_tu.png",
+      "body_img": "bodies/na_tra_thai_tu.png",
+      "face_anchor": [
+        0,
+        -108
+      ],
+      "face_scale": 0.65,
+      "default_face": "face_a_01.png",
+      "rel_x": 0.655,
+      "rel_y": 0.3,
+      "rel_w": 0.23,
+      "rel_h": 0.14,
+      "body_clean": "bodies_clean/na_tra_thai_tu.png",
+      "face_box": [
+        0.6135,
+        0.325,
+        0.2747
+      ],
+      "face_box_source": "detected"
+    },
+    {
+      "id": "quan_am_bo_tat",
+      "name": "Quan Âm Bồ Tát (Ngự Toà Sen)",
+      "thumb": "bodies/quan_am_bo_tat.png",
+      "body_img": "bodies/quan_am_bo_tat.png",
+      "face_anchor": [
+        0,
+        -110
+      ],
+      "face_scale": 0.62,
+      "default_face": "face_a_01.png",
+      "rel_x": 0.505,
+      "rel_y": 0.285,
+      "rel_w": 0.24,
+      "rel_h": 0.15,
+      "body_clean": "bodies_clean/quan_am_bo_tat.png",
+      "face_box": [
+        0.5119,
+        0.2728,
+        0.2386
+      ],
+      "face_box_source": "detected"
+    },
+    {
+      "id": "ha_nhan",
+      "name": "Hạ Nhân (Cổ Trang Lam Y)",
+      "thumb": "bodies/ha_nhan_full.png",
+      "body_img": "bodies/ha_nhan_full.png",
+      "face_anchor": [
+        2,
+        -106
+      ],
+      "face_scale": 0.7,
+      "default_face": "face_a_01.png",
+      "rel_x": 0.5,
+      "rel_y": 0.22,
+      "rel_w": 0.32,
+      "rel_h": 0.2,
+      "body_clean": "bodies_clean/ha_nhan_full.png",
+      "face_box": [
+        0.5,
+        0.2,
+        0.4
+      ],
+      "face_box_source": "manual"
+    },
+    {
+      "id": "cuu_vi_ho_ly",
+      "name": "Cửu Vĩ Hồ Ly (Lam Hoả)",
+      "thumb": "bodies/cuu_vi_ho_ly.png",
+      "body_img": "bodies/cuu_vi_ho_ly.png",
+      "face_anchor": [
+        0,
+        -114
+      ],
+      "face_scale": 0.6,
+      "default_face": "face_a_01.png",
+      "rel_x": 0.495,
+      "rel_y": 0.23,
+      "rel_w": 0.26,
+      "rel_h": 0.15,
+      "body_clean": "bodies_clean/cuu_vi_ho_ly.png",
+      "face_box": [
+        0.4388,
+        0.2836,
+        0.2243
+      ],
+      "face_box_source": "detected"
+    },
+    {
+      "id": "hong_y_tieu_thu",
+      "name": "Hồng Y Tiểu Thư (Váy Xoè)",
+      "thumb": "bodies/hong_y_tieu_thu.png",
+      "body_img": "bodies/hong_y_tieu_thu.png",
+      "face_anchor": [
+        0,
+        -110
+      ],
+      "face_scale": 0.62,
+      "default_face": "face_a_01.png",
+      "body_clean": "bodies_clean/hong_y_tieu_thu.png",
+      "face_box": [
+        0.4837,
+        0.2622,
+        0.2652
+      ],
+      "face_box_source": "detected"
+    },
+    {
+      "id": "sa_tang_dau_da",
+      "name": "Sa Tăng Đầu Đà (Vòng Đầu Lâu)",
+      "thumb": "bodies/sa_tang_dau_da.png",
+      "body_img": "bodies/sa_tang_dau_da.png",
+      "face_anchor": [
+        0,
+        -108
+      ],
+      "face_scale": 0.66,
+      "default_face": "face_a_01.png",
+      "rel_x": 0.605,
+      "rel_y": 0.265,
+      "rel_w": 0.25,
+      "rel_h": 0.16,
+      "body_clean": "bodies_clean/sa_tang_dau_da.png",
+      "face_box": [
+        0.62,
+        0.13,
+        0.24
+      ],
+      "face_box_source": "manual"
+    },
+    {
+      "id": "ong_lao_cau_ca",
+      "name": "Lão Ngư Câu Cá (Ngồi Tảng Đá)",
+      "thumb": "bodies/ong_lao_cau_ca.png",
+      "body_img": "bodies/ong_lao_cau_ca.png",
+      "face_anchor": [
+        0,
+        -96
+      ],
+      "face_scale": 0.65,
+      "default_face": "face_a_01.png",
+      "rel_x": 0.54,
+      "rel_y": 0.22,
+      "rel_w": 0.23,
+      "rel_h": 0.14,
+      "body_clean": "bodies_clean/ong_lao_cau_ca.png",
+      "face_box": [
+        0.5212,
+        0.2278,
+        0.2872
+      ],
+      "face_box_source": "detected"
+    },
+    {
+      "id": "ma_dao_su_huynh",
+      "name": "Sư Huynh Ma Đạo (Song Sừng)",
+      "thumb": "bodies/ma_dao_su_huynh.png",
+      "body_img": "bodies/ma_dao_su_huynh.png",
+      "face_anchor": [
+        0,
+        -108
+      ],
+      "face_scale": 0.65,
+      "default_face": "face_a_01.png",
+      "body_clean": "bodies_clean/ma_dao_su_huynh.png",
+      "face_box": [
+        0.4977,
+        0.2084,
+        0.37
+      ],
+      "face_box_source": "detected"
+    },
+    {
+      "id": "bach_phat_ma_ton",
+      "name": "Bạch Phát Ma Tôn",
+      "thumb": "bodies/bach_phat_ma_ton.png",
+      "body_img": "bodies/bach_phat_ma_ton.png",
+      "face_anchor": [
+        0,
+        -112
+      ],
+      "face_scale": 0.62,
+      "default_face": "face_a_01.png",
+      "rel_x": 0.5,
+      "rel_y": 0.24,
+      "rel_w": 0.26,
+      "rel_h": 0.16,
+      "body_clean": "bodies_clean/bach_phat_ma_ton.png",
+      "face_box": [
+        0.3638,
+        0.2597,
+        0.4468
+      ],
+      "face_box_source": "detected"
+    },
+    {
+      "id": "nu_yeu_nhen",
+      "name": "Nữ Yêu Nhện (Lục Chi)",
+      "thumb": "bodies/nu_yeu_nhen.png",
+      "body_img": "bodies/nu_yeu_nhen.png",
+      "face_anchor": [
+        0,
+        -105
+      ],
+      "face_scale": 0.6,
+      "default_face": "face_a_01.png",
+      "body_clean": "bodies_clean/nu_yeu_nhen.png",
+      "face_box": [
+        0.3814,
+        0.2202,
+        0.1766
+      ],
+      "face_box_source": "detected"
+    },
+    {
+      "id": "gau_vang",
+      "name": "Cụ Gấu Vàng (Hoodie Vàng)",
+      "thumb": "bodies/gau_vang_full.png",
+      "body_img": "bodies/gau_vang_full.png",
+      "face_anchor": [
+        0,
+        -115
+      ],
+      "face_scale": 0.75,
+      "default_face": "face_a_05.png",
+      "body_clean": "bodies_clean/gau_vang_full.png",
+      "face_box": [
+        0.5,
+        0.22,
+        0.5
+      ],
+      "face_box_source": "manual"
+    },
+    {
+      "id": "hac_bach_kiem_ton",
+      "name": "Hắc Bạch Kiếm Tôn",
+      "body_img": "bodies/hac_bach_kiem_ton.png",
+      "thumb": "bodies/hac_bach_kiem_ton.png",
+      "rel_x": 0.5,
+      "rel_y": 0.24,
+      "rel_w": 0.26,
+      "rel_h": 0.16,
+      "default_face": "face_a_01.png",
+      "body_clean": "bodies_clean/hac_bach_kiem_ton.png",
+      "face_box": [
+        0.542,
+        0.121,
+        0.3446
+      ],
+      "face_box_source": "detected"
+    },
+    {
+      "id": "chien_binh_cam_riu",
+      "name": "Chiến Binh Cầm Rìu",
+      "body_img": "bodies/chien_binh_cam_riu.png",
+      "thumb": "bodies/chien_binh_cam_riu.png",
+      "rel_x": 0.485,
+      "rel_y": 0.245,
+      "rel_w": 0.28,
+      "rel_h": 0.17,
+      "default_face": "face_a_01.png",
+      "body_clean": "bodies_clean/chien_binh_cam_riu.png",
+      "face_box": [
+        0.4608,
+        0.3062,
+        0.1788
+      ],
+      "face_box_source": "detected"
+    },
+    {
+      "id": "bo_cap_tinh",
+      "name": "Bò Cạp Tinh",
+      "body_img": "bodies/bo_cap_tinh.png",
+      "thumb": "bodies/bo_cap_tinh.png",
+      "rel_x": 0.355,
+      "rel_y": 0.38,
+      "rel_w": 0.26,
+      "rel_h": 0.17,
+      "default_face": "face_a_01.png",
+      "body_clean": "bodies_clean/bo_cap_tinh.png",
+      "face_box": [
+        0.5092,
+        0.184,
+        0.1067
+      ],
+      "face_box_source": "detected"
+    },
+    {
+      "id": "dau_gau_non_la",
+      "name": "Gấu Trúc Nón Lá Điêu Khắc Cát",
+      "body_img": "bodies/dau_gau_non_la_blank.png",
+      "thumb": "bodies/dau_gau_non_la_blank.png",
+      "rel_x": 0.44,
+      "rel_y": 0.58,
+      "rel_w": 0.48,
+      "rel_h": 0.42,
+      "default_face": "face_a_01.png",
+      "body_clean": "bodies_clean/dau_gau_non_la_blank.png",
+      "face_box": [
+        0.5,
+        0.2,
+        0.4
+      ],
+      "face_box_source": "detected"
+    }
+  ],
+  "faces": [
+    {
+      "id": "face_01",
+      "file": "face_01.png"
+    },
+    {
+      "id": "face_02",
+      "file": "face_02.png"
+    },
+    {
+      "id": "face_03",
+      "file": "face_03.png"
+    },
+    {
+      "id": "face_04",
+      "file": "face_04.png"
+    },
+    {
+      "id": "face_05",
+      "file": "face_05.png"
+    },
+    {
+      "id": "face_06",
+      "file": "face_06.png"
+    },
+    {
+      "id": "face_07",
+      "file": "face_07.png"
+    },
+    {
+      "id": "face_08",
+      "file": "face_08.png"
+    },
+    {
+      "id": "face_09",
+      "file": "face_09.png"
+    },
+    {
+      "id": "face_10",
+      "file": "face_10.png"
+    },
+    {
+      "id": "face_11",
+      "file": "face_11.png"
+    },
+    {
+      "id": "face_12",
+      "file": "face_12.png"
+    },
+    {
+      "id": "face_13",
+      "file": "face_13.png"
+    },
+    {
+      "id": "face_14",
+      "file": "face_14.png"
+    },
+    {
+      "id": "face_15",
+      "file": "face_15.png"
+    },
+    {
+      "id": "face_16",
+      "file": "face_16.png"
+    },
+    {
+      "id": "face_17",
+      "file": "face_17.png"
+    },
+    {
+      "id": "face_18",
+      "file": "face_18.png"
+    },
+    {
+      "id": "face_19",
+      "file": "face_19.png"
+    },
+    {
+      "id": "face_20",
+      "file": "face_20.png"
+    },
+    {
+      "id": "face_21",
+      "file": "face_21.png"
+    },
+    {
+      "id": "face_22",
+      "file": "face_22.png"
+    },
+    {
+      "id": "face_23",
+      "file": "face_23.png"
+    },
+    {
+      "id": "face_24",
+      "file": "face_24.png"
+    },
+    {
+      "id": "face_25",
+      "file": "face_25.png"
+    },
+    {
+      "id": "face_26",
+      "file": "face_26.png"
+    },
+    {
+      "id": "face_27",
+      "file": "face_27.png"
+    },
+    {
+      "id": "face_28",
+      "file": "face_28.png"
+    },
+    {
+      "id": "face_29",
+      "file": "face_29.png"
+    },
+    {
+      "id": "face_30",
+      "file": "face_30.png"
+    },
+    {
+      "id": "face_31",
+      "file": "face_31.png"
+    },
+    {
+      "id": "face_32",
+      "file": "face_32.png"
+    },
+    {
+      "id": "face_33",
+      "file": "face_33.png"
+    },
+    {
+      "id": "face_34",
+      "file": "face_34.png"
+    },
+    {
+      "id": "face_35",
+      "file": "face_35.png"
+    },
+    {
+      "id": "face_36",
+      "file": "face_36.png"
+    },
+    {
+      "id": "face_37",
+      "file": "face_37.png"
+    },
+    {
+      "id": "face_38",
+      "file": "face_38.png"
+    },
+    {
+      "id": "face_a_01",
+      "file": "face_a_01.png"
+    },
+    {
+      "id": "face_a_02",
+      "file": "face_a_02.png"
+    },
+    {
+      "id": "face_a_03",
+      "file": "face_a_03.png"
+    },
+    {
+      "id": "face_a_04",
+      "file": "face_a_04.png"
+    },
+    {
+      "id": "face_a_05",
+      "file": "face_a_05.png"
+    },
+    {
+      "id": "face_a_06",
+      "file": "face_a_06.png"
+    },
+    {
+      "id": "face_a_07",
+      "file": "face_a_07.png"
+    },
+    {
+      "id": "face_a_08",
+      "file": "face_a_08.png"
+    },
+    {
+      "id": "face_a_09",
+      "file": "face_a_09.png"
+    },
+    {
+      "id": "face_a_10",
+      "file": "face_a_10.png"
+    },
+    {
+      "id": "face_a_11",
+      "file": "face_a_11.png"
+    },
+    {
+      "id": "face_a_12",
+      "file": "face_a_12.png"
+    },
+    {
+      "id": "face_a_13",
+      "file": "face_a_13.png"
+    },
+    {
+      "id": "face_a_14",
+      "file": "face_a_14.png"
+    },
+    {
+      "id": "face_a_15",
+      "file": "face_a_15.png"
+    },
+    {
+      "id": "face_a_16",
+      "file": "face_a_16.png"
+    },
+    {
+      "id": "face_a_17",
+      "file": "face_a_17.png"
+    },
+    {
+      "id": "face_a_18",
+      "file": "face_a_18.png"
+    },
+    {
+      "id": "face_a_19",
+      "file": "face_a_19.png"
+    },
+    {
+      "id": "face_a_20",
+      "file": "face_a_20.png"
+    },
+    {
+      "id": "face_a_21",
+      "file": "face_a_21.png"
+    },
+    {
+      "id": "face_a_22",
+      "file": "face_a_22.png"
+    },
+    {
+      "id": "face_a_23",
+      "file": "face_a_23.png"
+    },
+    {
+      "id": "face_a_24",
+      "file": "face_a_24.png"
+    },
+    {
+      "id": "face_a_25",
+      "file": "face_a_25.png"
+    },
+    {
+      "id": "face_a_26",
+      "file": "face_a_26.png"
+    },
+    {
+      "id": "face_a_27",
+      "file": "face_a_27.png"
+    },
+    {
+      "id": "face_a_28",
+      "file": "face_a_28.png"
+    },
+    {
+      "id": "face_a_29",
+      "file": "face_a_29.png"
+    },
+    {
+      "id": "face_a_30",
+      "file": "face_a_30.png"
+    },
+    {
+      "id": "face_b_01",
+      "file": "face_b_01.png"
+    },
+    {
+      "id": "face_b_02",
+      "file": "face_b_02.png"
+    },
+    {
+      "id": "face_b_03",
+      "file": "face_b_03.png"
+    },
+    {
+      "id": "face_b_04",
+      "file": "face_b_04.png"
+    },
+    {
+      "id": "face_b_05",
+      "file": "face_b_05.png"
+    },
+    {
+      "id": "face_b_06",
+      "file": "face_b_06.png"
+    },
+    {
+      "id": "face_b_07",
+      "file": "face_b_07.png"
+    },
+    {
+      "id": "face_b_08",
+      "file": "face_b_08.png"
+    },
+    {
+      "id": "face_b_09",
+      "file": "face_b_09.png"
+    },
+    {
+      "id": "face_b_10",
+      "file": "face_b_10.png"
+    },
+    {
+      "id": "face_b_11",
+      "file": "face_b_11.png"
+    },
+    {
+      "id": "face_b_12",
+      "file": "face_b_12.png"
+    },
+    {
+      "id": "face_b_13",
+      "file": "face_b_13.png"
+    },
+    {
+      "id": "face_b_14",
+      "file": "face_b_14.png"
+    },
+    {
+      "id": "face_b_15",
+      "file": "face_b_15.png"
+    },
+    {
+      "id": "face_b_16",
+      "file": "face_b_16.png"
+    },
+    {
+      "id": "face_b_17",
+      "file": "face_b_17.png"
+    },
+    {
+      "id": "face_b_18",
+      "file": "face_b_18.png"
+    },
+    {
+      "id": "face_b_19",
+      "file": "face_b_19.png"
+    },
+    {
+      "id": "face_b_20",
+      "file": "face_b_20.png"
+    },
+    {
+      "id": "face_b_21",
+      "file": "face_b_21.png"
+    },
+    {
+      "id": "face_b_22",
+      "file": "face_b_22.png"
+    },
+    {
+      "id": "face_b_23",
+      "file": "face_b_23.png"
+    },
+    {
+      "id": "face_b_24",
+      "file": "face_b_24.png"
+    },
+    {
+      "id": "face_b_25",
+      "file": "face_b_25.png"
+    },
+    {
+      "id": "face_b_26",
+      "file": "face_b_26.png"
+    },
+    {
+      "id": "face_b_27",
+      "file": "face_b_27.png"
+    },
+    {
+      "id": "face_b_28",
+      "file": "face_b_28.png"
+    },
+    {
+      "id": "face_b_29",
+      "file": "face_b_29.png"
+    },
+    {
+      "id": "face_b_30",
+      "file": "face_b_30.png"
+    },
+    {
+      "id": "face_b_31",
+      "file": "face_b_31.png"
+    },
+    {
+      "id": "face_b_32",
+      "file": "face_b_32.png"
+    },
+    {
+      "id": "face_b_33",
+      "file": "face_b_33.png"
+    },
+    {
+      "id": "face_b_34",
+      "file": "face_b_34.png"
+    },
+    {
+      "id": "face_b_35",
+      "file": "face_b_35.png"
+    },
+    {
+      "id": "face_b_36",
+      "file": "face_b_36.png"
+    },
+    {
+      "id": "meme_a_01",
+      "file": "meme_a_01.png"
+    },
+    {
+      "id": "meme_a_02",
+      "file": "meme_a_02.png"
+    },
+    {
+      "id": "meme_a_03",
+      "file": "meme_a_03.png"
+    },
+    {
+      "id": "meme_a_04",
+      "file": "meme_a_04.png"
+    },
+    {
+      "id": "meme_a_05",
+      "file": "meme_a_05.png"
+    },
+    {
+      "id": "meme_a_06",
+      "file": "meme_a_06.png"
+    },
+    {
+      "id": "meme_a_07",
+      "file": "meme_a_07.png"
+    },
+    {
+      "id": "meme_a_08",
+      "file": "meme_a_08.png"
+    },
+    {
+      "id": "meme_a_09",
+      "file": "meme_a_09.png"
+    },
+    {
+      "id": "meme_a_10",
+      "file": "meme_a_10.png"
+    },
+    {
+      "id": "meme_a_11",
+      "file": "meme_a_11.png"
+    },
+    {
+      "id": "meme_a_12",
+      "file": "meme_a_12.png"
+    },
+    {
+      "id": "meme_a_13",
+      "file": "meme_a_13.png"
+    },
+    {
+      "id": "meme_a_14",
+      "file": "meme_a_14.png"
+    },
+    {
+      "id": "meme_a_15",
+      "file": "meme_a_15.png"
+    },
+    {
+      "id": "meme_a_16",
+      "file": "meme_a_16.png"
+    },
+    {
+      "id": "meme_a_17",
+      "file": "meme_a_17.png"
+    },
+    {
+      "id": "meme_a_18",
+      "file": "meme_a_18.png"
+    },
+    {
+      "id": "meme_a_19",
+      "file": "meme_a_19.png"
+    },
+    {
+      "id": "meme_a_20",
+      "file": "meme_a_20.png"
+    },
+    {
+      "id": "meme_a_21",
+      "file": "meme_a_21.png"
+    },
+    {
+      "id": "meme_a_22",
+      "file": "meme_a_22.png"
+    },
+    {
+      "id": "meme_a_23",
+      "file": "meme_a_23.png"
+    },
+    {
+      "id": "meme_a_24",
+      "file": "meme_a_24.png"
+    },
+    {
+      "id": "meme_a_25",
+      "file": "meme_a_25.png"
+    },
+    {
+      "id": "meme_a_26",
+      "file": "meme_a_26.png"
+    },
+    {
+      "id": "meme_a_27",
+      "file": "meme_a_27.png"
+    },
+    {
+      "id": "meme_b_01",
+      "file": "meme_b_01.png"
+    },
+    {
+      "id": "meme_b_02",
+      "file": "meme_b_02.png"
+    },
+    {
+      "id": "meme_b_03",
+      "file": "meme_b_03.png"
+    },
+    {
+      "id": "meme_b_04",
+      "file": "meme_b_04.png"
+    },
+    {
+      "id": "meme_b_05",
+      "file": "meme_b_05.png"
+    },
+    {
+      "id": "meme_b_06",
+      "file": "meme_b_06.png"
+    },
+    {
+      "id": "meme_b_07",
+      "file": "meme_b_07.png"
+    },
+    {
+      "id": "meme_b_08",
+      "file": "meme_b_08.png"
+    },
+    {
+      "id": "meme_b_09",
+      "file": "meme_b_09.png"
+    },
+    {
+      "id": "meme_b_10",
+      "file": "meme_b_10.png"
+    },
+    {
+      "id": "meme_b_11",
+      "file": "meme_b_11.png"
+    },
+    {
+      "id": "meme_b_12",
+      "file": "meme_b_12.png"
+    },
+    {
+      "id": "meme_b_13",
+      "file": "meme_b_13.png"
+    },
+    {
+      "id": "meme_b_14",
+      "file": "meme_b_14.png"
+    },
+    {
+      "id": "meme_b_15",
+      "file": "meme_b_15.png"
+    },
+    {
+      "id": "meme_b_16",
+      "file": "meme_b_16.png"
+    },
+    {
+      "id": "meme_b_17",
+      "file": "meme_b_17.png"
+    },
+    {
+      "id": "meme_b_18",
+      "file": "meme_b_18.png"
+    },
+    {
+      "id": "meme_b_19",
+      "file": "meme_b_19.png"
+    },
+    {
+      "id": "meme_b_20",
+      "file": "meme_b_20.png"
+    },
+    {
+      "id": "meme_b_21",
+      "file": "meme_b_21.png"
+    },
+    {
+      "id": "meme_b_22",
+      "file": "meme_b_22.png"
+    },
+    {
+      "id": "meme_b_23",
+      "file": "meme_b_23.png"
+    },
+    {
+      "id": "meme_b_24",
+      "file": "meme_b_24.png"
+    },
+    {
+      "id": "meme_b_25",
+      "file": "meme_b_25.png"
+    },
+    {
+      "id": "meme_b_26",
+      "file": "meme_b_26.png"
+    },
+    {
+      "id": "meme_b_27",
+      "file": "meme_b_27.png"
+    },
+    {
+      "id": "meme_b_28",
+      "file": "meme_b_28.png"
+    },
+    {
+      "id": "meme_b_29",
+      "file": "meme_b_29.png"
+    },
+    {
+      "id": "meme_b_30",
+      "file": "meme_b_30.png"
+    },
+    {
+      "id": "meme_b_31",
+      "file": "meme_b_31.png"
+    },
+    {
+      "id": "meme_b_32",
+      "file": "meme_b_32.png"
+    },
+    {
+      "id": "meme_b_33",
+      "file": "meme_b_33.png"
+    },
+    {
+      "id": "meme_b_34",
+      "file": "meme_b_34.png"
+    },
+    {
+      "id": "meme_b_35",
+      "file": "meme_b_35.png"
+    },
+    {
+      "id": "meme_b_36",
+      "file": "meme_b_36.png"
+    },
+    {
+      "id": "test_floodfill",
+      "file": "test_floodfill.png"
+    }
+  ],
+  "bones": [
+    {
+      "id": "root",
+      "parent": null,
+      "name": "Gốc (Root)",
+      "x": 0,
+      "y": 0
+    },
+    {
+      "id": "pelvis",
+      "parent": "root",
+      "name": "Hông (Pelvis)",
+      "x": 0,
+      "y": -45
+    },
+    {
+      "id": "spine",
+      "parent": "pelvis",
+      "name": "Lưng (Spine)",
+      "x": 0,
+      "y": -70
+    },
+    {
+      "id": "neck",
+      "parent": "spine",
+      "name": "Cổ (Neck)",
+      "x": 0,
+      "y": -95
+    },
+    {
+      "id": "head",
+      "parent": "neck",
+      "name": "Đầu (Head)",
+      "x": 0,
+      "y": -118
+    },
+    {
+      "id": "shoulder_l",
+      "parent": "spine",
+      "name": "Vai trái",
+      "x": -26,
+      "y": -80
+    },
+    {
+      "id": "elbow_l",
+      "parent": "shoulder_l",
+      "name": "Khuỷu tay trái",
+      "x": -42,
+      "y": -58
+    },
+    {
+      "id": "hand_l",
+      "parent": "elbow_l",
+      "name": "Bàn tay trái",
+      "x": -45,
+      "y": -38
+    },
+    {
+      "id": "shoulder_r",
+      "parent": "spine",
+      "name": "Vai phải",
+      "x": 26,
+      "y": -80
+    },
+    {
+      "id": "elbow_r",
+      "parent": "shoulder_r",
+      "name": "Khuỷu tay phải",
+      "x": 42,
+      "y": -58
+    },
+    {
+      "id": "hand_r",
+      "parent": "elbow_r",
+      "name": "Bàn tay phải",
+      "x": 45,
+      "y": -38
+    },
+    {
+      "id": "hip_l",
+      "parent": "pelvis",
+      "name": "Khớp háng trái",
+      "x": -16,
+      "y": -42
+    },
+    {
+      "id": "knee_l",
+      "parent": "hip_l",
+      "name": "Đầu gối trái",
+      "x": -20,
+      "y": -20
+    },
+    {
+      "id": "foot_l",
+      "parent": "knee_l",
+      "name": "Bàn chân trái",
+      "x": -22,
+      "y": -2
+    },
+    {
+      "id": "hip_r",
+      "parent": "pelvis",
+      "name": "Khớp háng phải",
+      "x": 16,
+      "y": -42
+    },
+    {
+      "id": "knee_r",
+      "parent": "hip_r",
+      "name": "Đầu gối phải",
+      "x": 20,
+      "y": -20
+    },
+    {
+      "id": "foot_r",
+      "parent": "knee_r",
+      "name": "Bàn chân phải",
+      "x": 22,
+      "y": -2
+    }
+  ],
+  "animations": [
+    {
+      "id": "idle",
+      "label": "Đứng thở (Idle)",
+      "speed": 1.0,
+      "desc": "Nhịp thở nhẹ nhàng, đầu lắc lư"
+    },
+    {
+      "id": "walk",
+      "label": "Đi lắc lư (Waddle Walk)",
+      "speed": 1.4,
+      "desc": "Dáng đi hài hước đặc trưng hoạt hình điêu khắc cát"
+    },
+    {
+      "id": "talk",
+      "label": "Nói chuyện giật giật (Talk)",
+      "speed": 1.2,
+      "desc": "Đầu gật gù, miệng nhóp nhép, khua tay"
+    },
+    {
+      "id": "laugh",
+      "label": "Cười rung bần bật (Meme Laugh)",
+      "speed": 1.5,
+      "desc": "Cả người rung lắc cười hả hê"
+    },
+    {
+      "id": "shock",
+      "label": "Giật mình hoảng hốt (Shocked)",
+      "speed": 1.0,
+      "desc": "Giật lùi lại, giơ hai tay lên trời"
+    },
+    {
+      "id": "dance",
+      "label": "Múa quạt / Lắc hông (Meme Dance)",
+      "speed": 1.6,
+      "desc": "Lắc hông cực bựa theo nhạc"
+    }
+  ],
+  "faces_raw": [
+    {
+      "id": "face_01",
+      "file": "face_01.png"
+    },
+    {
+      "id": "face_02",
+      "file": "face_02.png"
+    },
+    {
+      "id": "face_03",
+      "file": "face_03.png"
+    },
+    {
+      "id": "face_04",
+      "file": "face_04.png"
+    },
+    {
+      "id": "face_05",
+      "file": "face_05.png"
+    },
+    {
+      "id": "face_06",
+      "file": "face_06.png"
+    },
+    {
+      "id": "face_07",
+      "file": "face_07.png"
+    },
+    {
+      "id": "face_08",
+      "file": "face_08.png"
+    },
+    {
+      "id": "face_09",
+      "file": "face_09.png"
+    },
+    {
+      "id": "face_10",
+      "file": "face_10.png"
+    },
+    {
+      "id": "face_11",
+      "file": "face_11.png"
+    },
+    {
+      "id": "face_12",
+      "file": "face_12.png"
+    },
+    {
+      "id": "face_13",
+      "file": "face_13.png"
+    },
+    {
+      "id": "face_14",
+      "file": "face_14.png"
+    },
+    {
+      "id": "face_15",
+      "file": "face_15.png"
+    },
+    {
+      "id": "face_16",
+      "file": "face_16.png"
+    },
+    {
+      "id": "face_17",
+      "file": "face_17.png"
+    },
+    {
+      "id": "face_18",
+      "file": "face_18.png"
+    },
+    {
+      "id": "face_19",
+      "file": "face_19.png"
+    },
+    {
+      "id": "face_20",
+      "file": "face_20.png"
+    },
+    {
+      "id": "face_21",
+      "file": "face_21.png"
+    },
+    {
+      "id": "face_22",
+      "file": "face_22.png"
+    },
+    {
+      "id": "face_23",
+      "file": "face_23.png"
+    },
+    {
+      "id": "face_24",
+      "file": "face_24.png"
+    },
+    {
+      "id": "face_25",
+      "file": "face_25.png"
+    },
+    {
+      "id": "face_26",
+      "file": "face_26.png"
+    },
+    {
+      "id": "face_27",
+      "file": "face_27.png"
+    },
+    {
+      "id": "face_28",
+      "file": "face_28.png"
+    },
+    {
+      "id": "face_29",
+      "file": "face_29.png"
+    },
+    {
+      "id": "face_30",
+      "file": "face_30.png"
+    },
+    {
+      "id": "face_31",
+      "file": "face_31.png"
+    },
+    {
+      "id": "face_32",
+      "file": "face_32.png"
+    },
+    {
+      "id": "face_33",
+      "file": "face_33.png"
+    },
+    {
+      "id": "face_34",
+      "file": "face_34.png"
+    },
+    {
+      "id": "face_35",
+      "file": "face_35.png"
+    },
+    {
+      "id": "face_36",
+      "file": "face_36.png"
+    },
+    {
+      "id": "face_37",
+      "file": "face_37.png"
+    },
+    {
+      "id": "face_38",
+      "file": "face_38.png"
+    },
+    {
+      "id": "face_a_01",
+      "file": "face_a_01.png"
+    },
+    {
+      "id": "face_a_02",
+      "file": "face_a_02.png"
+    },
+    {
+      "id": "face_a_03",
+      "file": "face_a_03.png"
+    },
+    {
+      "id": "face_a_04",
+      "file": "face_a_04.png"
+    },
+    {
+      "id": "face_a_05",
+      "file": "face_a_05.png"
+    },
+    {
+      "id": "face_a_06",
+      "file": "face_a_06.png"
+    },
+    {
+      "id": "face_a_07",
+      "file": "face_a_07.png"
+    },
+    {
+      "id": "face_a_08",
+      "file": "face_a_08.png"
+    },
+    {
+      "id": "face_a_09",
+      "file": "face_a_09.png"
+    },
+    {
+      "id": "face_a_10",
+      "file": "face_a_10.png"
+    },
+    {
+      "id": "face_a_11",
+      "file": "face_a_11.png"
+    },
+    {
+      "id": "face_a_12",
+      "file": "face_a_12.png"
+    },
+    {
+      "id": "face_a_13",
+      "file": "face_a_13.png"
+    },
+    {
+      "id": "face_a_14",
+      "file": "face_a_14.png"
+    },
+    {
+      "id": "face_a_15",
+      "file": "face_a_15.png"
+    },
+    {
+      "id": "face_a_16",
+      "file": "face_a_16.png"
+    },
+    {
+      "id": "face_a_17",
+      "file": "face_a_17.png"
+    },
+    {
+      "id": "face_a_18",
+      "file": "face_a_18.png"
+    },
+    {
+      "id": "face_a_19",
+      "file": "face_a_19.png"
+    },
+    {
+      "id": "face_a_20",
+      "file": "face_a_20.png"
+    },
+    {
+      "id": "face_a_21",
+      "file": "face_a_21.png"
+    },
+    {
+      "id": "face_a_22",
+      "file": "face_a_22.png"
+    },
+    {
+      "id": "face_a_23",
+      "file": "face_a_23.png"
+    },
+    {
+      "id": "face_a_24",
+      "file": "face_a_24.png"
+    },
+    {
+      "id": "face_a_25",
+      "file": "face_a_25.png"
+    },
+    {
+      "id": "face_a_26",
+      "file": "face_a_26.png"
+    },
+    {
+      "id": "face_a_27",
+      "file": "face_a_27.png"
+    },
+    {
+      "id": "face_a_28",
+      "file": "face_a_28.png"
+    },
+    {
+      "id": "face_a_29",
+      "file": "face_a_29.png"
+    },
+    {
+      "id": "face_a_30",
+      "file": "face_a_30.png"
+    },
+    {
+      "id": "face_b_01",
+      "file": "face_b_01.png"
+    },
+    {
+      "id": "face_b_02",
+      "file": "face_b_02.png"
+    },
+    {
+      "id": "face_b_03",
+      "file": "face_b_03.png"
+    },
+    {
+      "id": "face_b_04",
+      "file": "face_b_04.png"
+    },
+    {
+      "id": "face_b_05",
+      "file": "face_b_05.png"
+    },
+    {
+      "id": "face_b_06",
+      "file": "face_b_06.png"
+    },
+    {
+      "id": "face_b_07",
+      "file": "face_b_07.png"
+    },
+    {
+      "id": "face_b_08",
+      "file": "face_b_08.png"
+    },
+    {
+      "id": "face_b_09",
+      "file": "face_b_09.png"
+    },
+    {
+      "id": "face_b_10",
+      "file": "face_b_10.png"
+    },
+    {
+      "id": "face_b_11",
+      "file": "face_b_11.png"
+    },
+    {
+      "id": "face_b_12",
+      "file": "face_b_12.png"
+    },
+    {
+      "id": "face_b_13",
+      "file": "face_b_13.png"
+    },
+    {
+      "id": "face_b_14",
+      "file": "face_b_14.png"
+    },
+    {
+      "id": "face_b_15",
+      "file": "face_b_15.png"
+    },
+    {
+      "id": "face_b_16",
+      "file": "face_b_16.png"
+    },
+    {
+      "id": "face_b_17",
+      "file": "face_b_17.png"
+    },
+    {
+      "id": "face_b_18",
+      "file": "face_b_18.png"
+    },
+    {
+      "id": "face_b_19",
+      "file": "face_b_19.png"
+    },
+    {
+      "id": "face_b_20",
+      "file": "face_b_20.png"
+    },
+    {
+      "id": "face_b_21",
+      "file": "face_b_21.png"
+    },
+    {
+      "id": "face_b_22",
+      "file": "face_b_22.png"
+    },
+    {
+      "id": "face_b_23",
+      "file": "face_b_23.png"
+    },
+    {
+      "id": "face_b_24",
+      "file": "face_b_24.png"
+    },
+    {
+      "id": "face_b_25",
+      "file": "face_b_25.png"
+    },
+    {
+      "id": "face_b_26",
+      "file": "face_b_26.png"
+    },
+    {
+      "id": "face_b_27",
+      "file": "face_b_27.png"
+    },
+    {
+      "id": "face_b_28",
+      "file": "face_b_28.png"
+    },
+    {
+      "id": "face_b_29",
+      "file": "face_b_29.png"
+    },
+    {
+      "id": "face_b_30",
+      "file": "face_b_30.png"
+    },
+    {
+      "id": "face_b_31",
+      "file": "face_b_31.png"
+    },
+    {
+      "id": "face_b_32",
+      "file": "face_b_32.png"
+    },
+    {
+      "id": "face_b_33",
+      "file": "face_b_33.png"
+    },
+    {
+      "id": "face_b_34",
+      "file": "face_b_34.png"
+    },
+    {
+      "id": "face_b_35",
+      "file": "face_b_35.png"
+    },
+    {
+      "id": "face_b_36",
+      "file": "face_b_36.png"
+    },
+    {
+      "id": "meme_a_01",
+      "file": "meme_a_01.png"
+    },
+    {
+      "id": "meme_a_02",
+      "file": "meme_a_02.png"
+    },
+    {
+      "id": "meme_a_03",
+      "file": "meme_a_03.png"
+    },
+    {
+      "id": "meme_a_04",
+      "file": "meme_a_04.png"
+    },
+    {
+      "id": "meme_a_05",
+      "file": "meme_a_05.png"
+    },
+    {
+      "id": "meme_a_06",
+      "file": "meme_a_06.png"
+    },
+    {
+      "id": "meme_a_07",
+      "file": "meme_a_07.png"
+    },
+    {
+      "id": "meme_a_08",
+      "file": "meme_a_08.png"
+    },
+    {
+      "id": "meme_a_09",
+      "file": "meme_a_09.png"
+    },
+    {
+      "id": "meme_a_10",
+      "file": "meme_a_10.png"
+    },
+    {
+      "id": "meme_a_11",
+      "file": "meme_a_11.png"
+    },
+    {
+      "id": "meme_a_12",
+      "file": "meme_a_12.png"
+    },
+    {
+      "id": "meme_a_13",
+      "file": "meme_a_13.png"
+    },
+    {
+      "id": "meme_a_14",
+      "file": "meme_a_14.png"
+    },
+    {
+      "id": "meme_a_15",
+      "file": "meme_a_15.png"
+    },
+    {
+      "id": "meme_a_16",
+      "file": "meme_a_16.png"
+    },
+    {
+      "id": "meme_a_17",
+      "file": "meme_a_17.png"
+    },
+    {
+      "id": "meme_a_18",
+      "file": "meme_a_18.png"
+    },
+    {
+      "id": "meme_a_19",
+      "file": "meme_a_19.png"
+    },
+    {
+      "id": "meme_a_20",
+      "file": "meme_a_20.png"
+    },
+    {
+      "id": "meme_a_21",
+      "file": "meme_a_21.png"
+    },
+    {
+      "id": "meme_a_22",
+      "file": "meme_a_22.png"
+    },
+    {
+      "id": "meme_a_23",
+      "file": "meme_a_23.png"
+    },
+    {
+      "id": "meme_a_24",
+      "file": "meme_a_24.png"
+    },
+    {
+      "id": "meme_a_25",
+      "file": "meme_a_25.png"
+    },
+    {
+      "id": "meme_a_26",
+      "file": "meme_a_26.png"
+    },
+    {
+      "id": "meme_a_27",
+      "file": "meme_a_27.png"
+    },
+    {
+      "id": "meme_b_01",
+      "file": "meme_b_01.png"
+    },
+    {
+      "id": "meme_b_02",
+      "file": "meme_b_02.png"
+    },
+    {
+      "id": "meme_b_03",
+      "file": "meme_b_03.png"
+    },
+    {
+      "id": "meme_b_04",
+      "file": "meme_b_04.png"
+    },
+    {
+      "id": "meme_b_05",
+      "file": "meme_b_05.png"
+    },
+    {
+      "id": "meme_b_06",
+      "file": "meme_b_06.png"
+    },
+    {
+      "id": "meme_b_07",
+      "file": "meme_b_07.png"
+    },
+    {
+      "id": "meme_b_08",
+      "file": "meme_b_08.png"
+    },
+    {
+      "id": "meme_b_09",
+      "file": "meme_b_09.png"
+    },
+    {
+      "id": "meme_b_10",
+      "file": "meme_b_10.png"
+    },
+    {
+      "id": "meme_b_11",
+      "file": "meme_b_11.png"
+    },
+    {
+      "id": "meme_b_12",
+      "file": "meme_b_12.png"
+    },
+    {
+      "id": "meme_b_13",
+      "file": "meme_b_13.png"
+    },
+    {
+      "id": "meme_b_14",
+      "file": "meme_b_14.png"
+    },
+    {
+      "id": "meme_b_15",
+      "file": "meme_b_15.png"
+    },
+    {
+      "id": "meme_b_16",
+      "file": "meme_b_16.png"
+    },
+    {
+      "id": "meme_b_17",
+      "file": "meme_b_17.png"
+    },
+    {
+      "id": "meme_b_18",
+      "file": "meme_b_18.png"
+    },
+    {
+      "id": "meme_b_19",
+      "file": "meme_b_19.png"
+    },
+    {
+      "id": "meme_b_20",
+      "file": "meme_b_20.png"
+    },
+    {
+      "id": "meme_b_21",
+      "file": "meme_b_21.png"
+    },
+    {
+      "id": "meme_b_22",
+      "file": "meme_b_22.png"
+    },
+    {
+      "id": "meme_b_23",
+      "file": "meme_b_23.png"
+    },
+    {
+      "id": "meme_b_24",
+      "file": "meme_b_24.png"
+    },
+    {
+      "id": "meme_b_25",
+      "file": "meme_b_25.png"
+    },
+    {
+      "id": "meme_b_26",
+      "file": "meme_b_26.png"
+    },
+    {
+      "id": "meme_b_27",
+      "file": "meme_b_27.png"
+    },
+    {
+      "id": "meme_b_28",
+      "file": "meme_b_28.png"
+    },
+    {
+      "id": "meme_b_29",
+      "file": "meme_b_29.png"
+    },
+    {
+      "id": "meme_b_30",
+      "file": "meme_b_30.png"
+    },
+    {
+      "id": "meme_b_31",
+      "file": "meme_b_31.png"
+    },
+    {
+      "id": "meme_b_32",
+      "file": "meme_b_32.png"
+    },
+    {
+      "id": "meme_b_33",
+      "file": "meme_b_33.png"
+    },
+    {
+      "id": "meme_b_34",
+      "file": "meme_b_34.png"
+    },
+    {
+      "id": "meme_b_35",
+      "file": "meme_b_35.png"
+    },
+    {
+      "id": "meme_b_36",
+      "file": "meme_b_36.png"
+    },
+    {
+      "id": "test_floodfill",
+      "file": "test_floodfill.png"
+    }
+  ],
+  "faces_clean": [
+    {
+      "id": "face_a_01.png",
+      "file": "face_a_01.png"
+    },
+    {
+      "id": "face_a_02.png",
+      "file": "face_a_02.png"
+    },
+    {
+      "id": "face_a_03.png",
+      "file": "face_a_03.png"
+    },
+    {
+      "id": "face_a_04.png",
+      "file": "face_a_04.png"
+    },
+    {
+      "id": "face_a_05.png",
+      "file": "face_a_05.png"
+    },
+    {
+      "id": "face_a_11.png",
+      "file": "face_a_11.png"
+    },
+    {
+      "id": "face_a_12.png",
+      "file": "face_a_12.png"
+    },
+    {
+      "id": "face_a_13.png",
+      "file": "face_a_13.png"
+    },
+    {
+      "id": "face_a_14.png",
+      "file": "face_a_14.png"
+    },
+    {
+      "id": "face_a_15.png",
+      "file": "face_a_15.png"
+    },
+    {
+      "id": "face_b_01.png",
+      "file": "face_b_01.png"
+    },
+    {
+      "id": "face_b_02.png",
+      "file": "face_b_02.png"
+    },
+    {
+      "id": "face_b_03.png",
+      "file": "face_b_03.png"
+    },
+    {
+      "id": "face_b_04.png",
+      "file": "face_b_04.png"
+    },
+    {
+      "id": "face_b_05.png",
+      "file": "face_b_05.png"
+    },
+    {
+      "id": "face_b_06.png",
+      "file": "face_b_06.png"
+    },
+    {
+      "id": "face_b_07.png",
+      "file": "face_b_07.png"
+    },
+    {
+      "id": "face_b_09.png",
+      "file": "face_b_09.png"
+    },
+    {
+      "id": "face_b_10.png",
+      "file": "face_b_10.png"
+    },
+    {
+      "id": "face_b_11.png",
+      "file": "face_b_11.png"
+    },
+    {
+      "id": "face_b_12.png",
+      "file": "face_b_12.png"
+    },
+    {
+      "id": "face_b_31.png",
+      "file": "face_b_31.png"
+    },
+    {
+      "id": "face_b_32.png",
+      "file": "face_b_32.png"
+    },
+    {
+      "id": "face_b_33.png",
+      "file": "face_b_33.png"
+    },
+    {
+      "id": "face_b_34.png",
+      "file": "face_b_34.png"
+    },
+    {
+      "id": "face_b_35.png",
+      "file": "face_b_35.png"
+    },
+    {
+      "id": "face_b_36.png",
+      "file": "face_b_36.png"
+    }
+  ]
+}

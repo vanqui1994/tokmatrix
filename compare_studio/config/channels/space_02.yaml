@@ -1,0 +1,45 @@
+channel_id: space_02
+config_version: 3
+niche_id: deep_space
+name: Scale Of The Cosmos
+tiktok_account_ref: null
+persona:
+  tone: visual_scale_storyteller
+  energy_level: 0.78
+  target_demographic: Vietnamese viewers aged 18-34 interested in astronomy and visual
+    learning
+  catchphrase_prefix: 'Nếu đặt Trái Đất cạnh vật thể này, mọi con số sẽ thay đổi:'
+story:
+  preferred_blueprints:
+  - science_explainer
+  preferred_hook_types:
+  - scale_comparison
+  - record_breaking_distance
+  target_duration_seconds: 50
+  pacing_beats: 12
+creative:
+  preferred_engines:
+  - vox
+  - science
+  - tierlist
+  visual_style_id: cosmic_space_v1
+  cut_cadence_seconds: 2.5
+  palette:
+    primary: '#0B0C10'
+    accent: '#66FCF1'
+    text: '#C5C6C7'
+audio:
+  voice_id: de-DE-KatjaNeural
+  voice_speed: 1.06
+  voice_pitch: 0
+  music_family: orbital_ambient
+  soundscape_id: science
+  sfx_density: low
+publishing:
+  language: de
+  default_schedule_window: 19:30-20:30
+  hashtags:
+  - thienvan
+  - khoangcachvutru
+  - hematroi
+  - scaleofthecosmos

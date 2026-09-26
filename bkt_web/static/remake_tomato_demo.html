@@ -1,0 +1,1548 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Remake 2D Hoạt Hình: Cây Cà Chua & Đậu Nành Luộc (5.mp4)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #060813;
+      --panel-bg: rgba(15, 23, 42, 0.75);
+      --panel-border: rgba(255, 255, 255, 0.08);
+      --accent-red: #ef4444;
+      --accent-green: #22c55e;
+      --accent-gold: #f59e0b;
+      --text-main: #f8fafc;
+      --text-sub: #94a3b8;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+      background: var(--bg-dark);
+      background-image: 
+        radial-gradient(circle at 15% 20%, rgba(239, 68, 68, 0.12) 0%, transparent 45%),
+        radial-gradient(circle at 85% 80%, rgba(34, 197, 94, 0.12) 0%, transparent 45%);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 24px 16px 60px;
+      overflow-x: hidden;
+    }
+
+    /* Top Navigation Bar */
+    .nav-bar {
+      width: 100%;
+      max-width: 1200px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+      padding: 12px 20px;
+      background: var(--panel-bg);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--panel-border);
+      border-radius: 16px;
+    }
+    .nav-left { display: flex; align-items: center; gap: 12px; }
+    .nav-tag {
+      padding: 4px 10px;
+      background: rgba(239, 68, 68, 0.18);
+      border: 1px solid rgba(239, 68, 68, 0.4);
+      color: #f87171;
+      font-size: 11px;
+      font-weight: 800;
+      border-radius: 20px;
+      letter-spacing: 0.5px;
+    }
+    .nav-title { font-size: 16px; font-weight: 800; color: #fff; }
+    .nav-links { display: flex; gap: 10px; }
+    .btn-nav {
+      padding: 8px 14px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--panel-border);
+      color: var(--text-sub);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+      border-radius: 10px;
+      transition: all 0.2s;
+    }
+    .btn-nav:hover { background: rgba(255, 255, 255, 0.12); color: #fff; }
+
+    /* Main Grid */
+    .main-grid {
+      display: grid;
+      grid-template-columns: 460px 1fr;
+      gap: 32px;
+      width: 100%;
+      max-width: 1200px;
+      align-items: start;
+    }
+
+    @media (max-width: 950px) {
+      .main-grid { grid-template-columns: 1fr; justify-items: center; }
+    }
+
+    /* iPhone 16 Bezel Player */
+    .phone-container {
+      position: relative;
+      width: 440px;
+      height: 782px;
+      background: #000;
+      border-radius: 54px;
+      padding: 12px;
+      box-shadow: 
+        0 0 0 2px #334155,
+        0 0 0 5px #1e293b,
+        0 25px 60px -15px rgba(0, 0, 0, 0.8),
+        0 0 80px rgba(239, 68, 68, 0.15);
+      border: 4px solid #475569;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .dynamic-island {
+      position: absolute;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 120px;
+      height: 32px;
+      background: #000;
+      border-radius: 20px;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 12px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .island-pill {
+      font-size: 10px;
+      font-weight: 700;
+      color: #ef4444;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .island-eq {
+      display: flex;
+      gap: 2px;
+      align-items: flex-end;
+      height: 12px;
+    }
+    .island-bar {
+      width: 2px;
+      height: 6px;
+      background: #22c55e;
+      border-radius: 1px;
+    }
+    .playing .island-bar:nth-child(1) { animation: eq 0.6s infinite ease-in-out alternate; }
+    .playing .island-bar:nth-child(2) { animation: eq 0.8s infinite ease-in-out alternate 0.2s; }
+    .playing .island-bar:nth-child(3) { animation: eq 0.5s infinite ease-in-out alternate 0.4s; }
+    @keyframes eq { 0% { height: 3px; } 100% { height: 12px; } }
+
+    #animationCanvas {
+      width: 100%;
+      height: 100%;
+      border-radius: 44px;
+      display: block;
+      background: #000;
+      cursor: pointer;
+    }
+
+    /* Subtitle Overlay inside Canvas Area */
+    .caption-overlay {
+      position: absolute;
+      bottom: 60px;
+      left: 20px;
+      right: 20px;
+      text-align: center;
+      pointer-events: none;
+      z-index: 50;
+    }
+    .caption-pill {
+      display: inline-block;
+      padding: 8px 16px;
+      background: rgba(0, 0, 0, 0.82);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 14px;
+      color: #fef08a;
+      font-size: 15px;
+      font-weight: 800;
+      line-height: 1.4;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(8px);
+      transition: all 0.2s;
+    }
+
+    /* Right Control & Info Panel */
+    .panel-side {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      width: 100%;
+    }
+
+    .card {
+      background: var(--panel-bg);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--panel-border);
+      border-radius: 20px;
+      padding: 24px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+
+    .card-title {
+      font-size: 18px;
+      font-weight: 800;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    /* Primary Player Controls */
+    .controls-row {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    .btn-action {
+      padding: 12px 20px;
+      font-size: 14px;
+      font-weight: 700;
+      border-radius: 12px;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s;
+    }
+    .btn-play {
+      background: linear-gradient(135deg, #ef4444, #dc2626);
+      color: #fff;
+      box-shadow: 0 4px 16px rgba(239, 68, 68, 0.35);
+    }
+    .btn-play:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(239, 68, 68, 0.5); }
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.08);
+      color: #f1f5f9;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+    }
+    .btn-secondary:hover { background: rgba(255, 255, 255, 0.14); }
+    .btn-record {
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+      color: #fff;
+    }
+
+    /* Progress Bar */
+    .timeline-container {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .timeline-slider {
+      width: 100%;
+      height: 6px;
+      -webkit-appearance: none;
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 3px;
+      outline: none;
+      cursor: pointer;
+    }
+    .timeline-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: #ef4444;
+      border: 2px solid #fff;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+    }
+    .time-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-sub);
+    }
+
+    /* Chapters Strip */
+    .chapter-strip {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 6px;
+    }
+    .chapter-pill {
+      padding: 8px 14px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--panel-border);
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-sub);
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s;
+    }
+    .chapter-pill:hover, .chapter-pill.active {
+      background: rgba(239, 68, 68, 0.18);
+      border-color: rgba(239, 68, 68, 0.5);
+      color: #f87171;
+    }
+
+    /* Cue Dialogue Script List */
+    .cue-list {
+      max-height: 240px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding-right: 6px;
+    }
+    .cue-item {
+      padding: 10px 14px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 12px;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .cue-item:hover { background: rgba(255, 255, 255, 0.07); }
+    .cue-item.active {
+      background: rgba(239, 68, 68, 0.15);
+      border-color: rgba(239, 68, 68, 0.4);
+    }
+    .cue-avatar { font-size: 20px; line-height: 1; }
+    .cue-info { flex: 1; }
+    .cue-header { display: flex; justify-content: space-between; font-size: 11px; font-weight: 800; color: var(--text-sub); margin-bottom: 2px; }
+    .cue-text { font-size: 13px; font-weight: 600; color: #f8fafc; line-height: 1.4; }
+
+    /* Feature Specs Grid */
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+    .feature-card {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--panel-border);
+      border-radius: 14px;
+      padding: 12px;
+      text-align: center;
+    }
+    .feature-val { font-size: 15px; font-weight: 800; color: #f8fafc; margin-bottom: 2px; }
+    .feature-lbl { font-size: 11px; font-weight: 600; color: var(--text-sub); }
+  </style>
+</head>
+<body>
+
+  <!-- Top Nav -->
+  <div class="nav-bar">
+    <div class="nav-left">
+      <span class="nav-tag">🌱 REMAKE 5.MP4 HOÀN TOÀN BẰNG CODE</span>
+      <span class="nav-title">Cây Cà Chua & Bí Kíp Đậu Nành Luộc Hữu Cơ</span>
+    </div>
+    <div class="nav-links">
+      <a href="/static/remake_hub.html" class="btn-nav" style="color: #38bdf8; border-color: rgba(56, 189, 248, 0.4);">🚀 Trung Tâm Remake Hub</a>
+      <a href="/static/remake_2d_demo.html" class="btn-nav">🍉 Xem Bản Dưa Hấu 2D</a>
+      <a href="/" class="btn-nav">🏠 Về TokMatrix Studio</a>
+    </div>
+  </div>
+
+  <!-- Main Grid -->
+  <div class="main-grid">
+
+    <!-- Phone Simulator Bezel -->
+    <div class="phone-container">
+      <!-- Dynamic Island with EQ bars -->
+      <div class="dynamic-island" id="dynamic-speaker">
+        <div class="island-pill">🍅 <span>Lồng Tiếng</span></div>
+        <div class="island-eq">
+          <div class="island-bar"></div>
+          <div class="island-bar"></div>
+          <div class="island-bar"></div>
+        </div>
+      </div>
+
+      <!-- 100% Code HTML5 Canvas -->
+      <canvas id="animationCanvas" width="720" height="1280"></canvas>
+
+      <!-- Subtitle Overlay -->
+      <div class="caption-overlay">
+        <div class="caption-pill" id="liveSubtitle">Bấm [▶ Phát Video] để xem hoạt hình 60 FPS!</div>
+      </div>
+    </div>
+
+    <!-- Side Control Panel -->
+    <div class="panel-side">
+
+      <!-- Main Controls Card -->
+      <div class="card">
+        <div class="card-title">🎬 Bộ Điều Khiển Hoạt Hình 2D Native</div>
+        
+        <div class="controls-row">
+          <button class="btn-action btn-play" id="btn-play" onclick="togglePlay()">▶ Phát Video</button>
+          <button class="btn-action btn-secondary" onclick="restart()">⏮ Xem Lại</button>
+          <button class="btn-action btn-record" id="btn-record" onclick="startExportRecording()">🔴 Quay & Xuất MP4</button>
+        </div>
+
+        <div class="timeline-container">
+          <input type="range" class="timeline-slider" id="timeline" min="0" max="46.5" step="0.1" value="0" oninput="seekAudio(this.value)">
+          <div class="time-labels">
+            <span id="curTime">00:00</span>
+            <span id="totTime">00:46</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chapter Strip -->
+      <div class="card">
+        <div class="card-title">📑 Chuyển Cảnh Nhanh (Chapters)</div>
+        <div class="chapter-strip">
+          <div class="chapter-pill active" onclick="seekAudio(0.2)">01. Cà Chua Kén Ăn (0s)</div>
+          <div class="chapter-pill" onclick="seekAudio(6.8)">02. Chủ Khuyên Nhủ (7s)</div>
+          <div class="chapter-pill" onclick="seekAudio(13.8)">03. Thà Nhịn Đói (14s)</div>
+          <div class="chapter-pill" onclick="seekAudio(25.0)">04. Vùi Đậu Nành (25s)</div>
+          <div class="chapter-pill" onclick="seekAudio(29.0)">05. Nuốt Dinh Dưỡng (29s)</div>
+          <div class="chapter-pill" onclick="seekAudio(32.5)">06. Mẹ Ơi Thơm Ngon! (33s)</div>
+          <div class="chapter-pill" onclick="seekAudio(35.2)">07. 2000 Năm Sau... (35s)</div>
+          <div class="chapter-pill" onclick="seekAudio(38.6)">08. Trĩu Quả Đỏ Mọng (39s)</div>
+        </div>
+      </div>
+
+      <!-- Dialogue Cues Sheet -->
+      <div class="card">
+        <div class="card-title">🎙️ Kịch Bản Lồng Tiếng Đa Vai (TikTok Audio Master)</div>
+        <div class="cue-list" id="cueList">
+          <!-- Rendered via JS -->
+        </div>
+      </div>
+
+      <!-- Feature Specs -->
+      <div class="feature-grid">
+        <div class="feature-card">
+          <div class="feature-val" style="color: #ef4444;">100% Vector</div>
+          <div class="feature-lbl">Mã Canvas Thuần</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-val" style="color: #22c55e;">60 FPS</div>
+          <div class="feature-lbl">Mượt Mà Chuẩn Web</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-val" style="color: #f59e0b;">Lồng Tiếng VIP</div>
+          <div class="feature-lbl">CapCut + Edge-TTS</div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- Audio Element -->
+  <audio id="masterAudio" src="/static/remake_tomato_master.mp3" preload="auto"></audio>
+
+  <script>
+    const canvas = document.getElementById('animationCanvas');
+    const ctx = canvas.getContext('2d');
+    const audio = document.getElementById('masterAudio');
+    const liveSubtitle = document.getElementById('liveSubtitle');
+    const timeline = document.getElementById('timeline');
+    const curTimeLabel = document.getElementById('curTime');
+    const totTimeLabel = document.getElementById('totTime');
+    const btnPlay = document.getElementById('btn-play');
+    const cueListEl = document.getElementById('cueList');
+    const dynamicSpeaker = document.getElementById('dynamic-speaker');
+
+    let isPlaying = false;
+    let lastActiveIndex = -1;
+
+    // Kịch bản lồng tiếng đồng bộ theo 5.mp4
+    const cues = [
+      { start: 0.2, end: 2.2, text: "Tôi đã nói với bạn bao nhiêu lần rồi hả?!", speaker: "tomato", name: "Cây Cà Chua", avatar: "🍅" },
+      { start: 2.3, end: 4.3, text: "Tôi không thèm ăn phân bón hóa học đâu!", speaker: "tomato", name: "Cây Cà Chua", avatar: "🍅" },
+      { start: 4.4, end: 6.6, text: "Tôi chỉ thích phân bón hữu cơ tự nhiên thôi!", speaker: "tomato", name: "Cây Cà Chua", avatar: "🍅" },
+      { start: 6.8, end: 10.1, text: "Nhưng mà cậu đang còi cọc thiếu dinh dưỡng rồi này!", speaker: "gardener", name: "Người Làm Vườn", avatar: "👨‍🌾" },
+      { start: 10.3, end: 13.6, text: "Không bón phân thì lấy sức đâu mà lớn hả nhóc?", speaker: "gardener", name: "Người Làm Vườn", avatar: "👨‍🌾" },
+      { start: 13.8, end: 15.9, text: "Kệ tui! Tui hổng thèm quan tâm!", speaker: "tomato", name: "Cây Cà Chua", avatar: "🍅" },
+      { start: 16.0, end: 17.9, text: "Hôm nay tui có bị đói lả người...", speaker: "tomato", name: "Cây Cà Chua", avatar: "🍅" },
+      { start: 18.1, end: 20.6, text: "...cũng quyết không ăn một miếng phân hóa học nào đâu!", speaker: "tomato", name: "Cây Cà Chua", avatar: "🍅" },
+      { start: 20.8, end: 24.8, text: "Thiệt tình... chưa từng thấy cây cà chua nào kén ăn như cậu luôn á!", speaker: "gardener", name: "Người Làm Vườn", avatar: "👨‍🌾" },
+      { start: 25.0, end: 28.5, text: "Thôi được rồi, để tôi tìm cách khác cho cậu xem sao...", speaker: "gardener", name: "Người Làm Vườn", avatar: "👨‍🌾" },
+      { start: 28.5, end: 32.2, text: "🌱 [Vùi đậu nành luộc chín vào đất — Rễ cây bắt đầu hấp thụ dinh dưỡng!]", speaker: "narrator", name: "Thuyết Minh", avatar: "🎙️" },
+      { start: 32.5, end: 35.0, text: "Mẹ ơi thơm ngon dữ dằn luôn á trời ơi!", speaker: "tomato", name: "Cây Cà Chua", avatar: "🍅" },
+      { start: 35.2, end: 38.4, text: "⏳ 2,000 YEARS LATER... (Vài tuần sau...)", speaker: "meme", name: "Meme SpongeBob", avatar: "⏳" },
+      { start: 38.6, end: 41.8, text: "Mấy hạt đậu nành luộc chín này làm phân bón hữu cơ đỉnh chóp ghê!", speaker: "tomato", name: "Cây Cà Chua", avatar: "🍅" },
+      { start: 42.0, end: 46.2, text: "Tui không những lớn nhanh như thổi, mà quả còn đậu trĩu cành đỏ au luôn nè!", speaker: "tomato", name: "Cây Cà Chua", avatar: "🍅" }
+    ];
+
+    // Render Cue List
+    function renderCueList() {
+      cueListEl.innerHTML = cues.map((c, i) => `
+        <div class="cue-item" id="cue-${i}" onclick="seekAudio(${c.start})">
+          <div class="cue-avatar">${c.avatar}</div>
+          <div class="cue-info">
+            <div class="cue-header">
+              <span>${c.name}</span>
+              <span>${formatTime(c.start)}</span>
+            </div>
+            <div class="cue-text">${c.text}</div>
+          </div>
+        </div>
+      `).join('');
+    }
+    renderCueList();
+
+    function formatTime(sec) {
+      const m = Math.floor(sec / 60);
+      const s = Math.floor(sec % 60);
+      return `${m < 10 ? '0' : ''}${m}:${s < 10 ? '0' : ''}${s}`;
+    }
+
+    function togglePlay() {
+      if (audio.paused) {
+        audio.play();
+        isPlaying = true;
+        btnPlay.textContent = '⏸ Tạm Dừng';
+        dynamicSpeaker.classList.add('playing');
+      } else {
+        audio.pause();
+        isPlaying = false;
+        btnPlay.textContent = '▶ Phát Video';
+        dynamicSpeaker.classList.remove('playing');
+      }
+    }
+
+    function restart() {
+      audio.currentTime = 0;
+      audio.play();
+      isPlaying = true;
+      btnPlay.textContent = '⏸ Tạm Dừng';
+      dynamicSpeaker.classList.add('playing');
+    }
+
+    function seekAudio(val) {
+      audio.currentTime = parseFloat(val);
+      if (audio.paused) {
+        audio.play();
+        isPlaying = true;
+        btnPlay.textContent = '⏸ Tạm Dừng';
+        dynamicSpeaker.classList.add('playing');
+      }
+    }
+
+    canvas.addEventListener('click', togglePlay);
+
+    // ========================================================
+    // 100% NATIVE HTML5 CANVAS 2D CARTOON ENGINE (720 x 1280)
+    // ========================================================
+
+    function render(ts) {
+      const t = audio.currentTime;
+      timeline.value = t;
+      curTimeLabel.textContent = formatTime(t);
+
+      // Cập nhật Subtitle & Cue Active
+      let activeIndex = -1;
+      for (let i = 0; i < cues.length; i++) {
+        if (t >= cues[i].start && t <= cues[i].end) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      if (activeIndex !== lastActiveIndex) {
+        lastActiveIndex = activeIndex;
+        document.querySelectorAll('.cue-item').forEach(el => el.classList.remove('active'));
+        if (activeIndex !== -1) {
+          liveSubtitle.textContent = cues[activeIndex].text;
+          const activeItem = document.getElementById(`cue-${activeIndex}`);
+          if (activeItem) {
+            activeItem.classList.add('active');
+            activeItem.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          }
+        } else {
+          liveSubtitle.textContent = "🌱 Phân Bón Đậu Nành Hữu Cơ 100%";
+        }
+      }
+
+      ctx.clearRect(0, 0, 720, 1280);
+
+      // --- PHÂN NHÁNH CẢNH ---
+      if (t >= 35.0 && t < 38.4) {
+        // Cảnh Meme "2,000 YEARS LATER"
+        drawMemeScene(t, ts);
+      } else if (t >= 38.4) {
+        // Cảnh Cà Chua Trưởng Thành Trĩu Quả Đỏ Mọng
+        drawAdultTomatoScene(t, ts);
+      } else {
+        // Cảnh Cà Chua Nhỏ Trong Chậu (0s - 35s)
+        drawYoungTomatoScene(t, ts);
+      }
+
+      requestAnimationFrame(render);
+    }
+
+    // ========================================================
+    // CẢNH 1: CÂY CÀ CHUA BƯỚNG BỈNH TRONG CHẬU (0s - 35s)
+    // ========================================================
+    function drawYoungTomatoScene(t, ts) {
+      ctx.save();
+
+      // 1. Phông nền Ban công & Cửa sổ
+      drawBalconyBackground(ts);
+
+      // 2. Chậu Đất Nung & Đất
+      const potX = 360, potY = 960;
+      const isCutaway = (t >= 25.0); // Chuyển sang góc nhìn cắt lớp rễ cây
+      drawTerracottaPot(potX, potY, isCutaway, t, ts);
+
+      // 3. Cây Cà Chua Bé (Thân, lá, quả con, mặt biểu cảm)
+      drawYoungTomatoPlant(potX, potY - 140, t, ts);
+
+      // 4. Bàn Tay Người Trồng & Túi Phân Bón Hóa Học
+      if (t < 24.5) {
+        drawChemicalFertilizerHand(t, ts);
+      } else if (t >= 24.5 && t < 28.5) {
+        // Tay đặt đậu nành vào đất
+        drawSoybeanPlantingHand(t, ts);
+      }
+
+      ctx.restore();
+    }
+
+    // Nền ban công, cửa sổ kính, sàn gỗ
+    function drawBalconyBackground(ts) {
+      // Bầu trời ban ngày qua cửa sổ kính
+      const skyGrad = ctx.createLinearGradient(0, 0, 0, 720);
+      skyGrad.addColorStop(0, '#bae6fd');
+      skyGrad.addColorStop(0.6, '#e0f2fe');
+      skyGrad.addColorStop(1, '#ffffff');
+      ctx.fillStyle = skyGrad;
+      ctx.fillRect(0, 0, 720, 780);
+
+      // Mây trôi nhẹ
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+      const cloudX = (ts * 0.015) % 850 - 100;
+      ctx.beginPath();
+      ctx.arc(cloudX, 160, 45, 0, Math.PI * 2);
+      ctx.arc(cloudX + 45, 145, 55, 0, Math.PI * 2);
+      ctx.arc(cloudX + 95, 160, 40, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Khung cửa sổ kính đứng (Window bars)
+      ctx.fillStyle = '#cbd5e1';
+      ctx.fillRect(0, 520, 720, 16); // Thanh ngang lan can
+      for (let x = 90; x < 720; x += 180) {
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+        ctx.fillRect(x - 12, 0, 24, 760);
+        ctx.fillStyle = '#94a3b8';
+        ctx.fillRect(x - 2, 0, 4, 760);
+      }
+
+      // Sàn Gỗ Ấm Cúm (Wooden Floor)
+      const floorGrad = ctx.createLinearGradient(0, 760, 0, 1280);
+      floorGrad.addColorStop(0, '#fde68a');
+      floorGrad.addColorStop(0.2, '#d97706');
+      floorGrad.addColorStop(1, '#78350f');
+      ctx.fillStyle = floorGrad;
+      ctx.fillRect(0, 760, 720, 520);
+
+      // Đường kẻ ván sàn gỗ
+      ctx.strokeStyle = 'rgba(69, 26, 3, 0.4)';
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.moveTo(0, 1020); ctx.lineTo(720, 1020);
+      ctx.moveTo(0, 1160); ctx.lineTo(720, 1160);
+      ctx.stroke();
+
+      // Bóng đổ chậu cây xuống sàn
+      ctx.fillStyle = 'rgba(41, 14, 2, 0.4)';
+      ctx.beginPath();
+      ctx.ellipse(360, 1150, 190, 36, 0, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    // Chậu đất nung (có chế độ cắt lớp soi rễ cây)
+    function drawTerracottaPot(x, y, isCutaway, t, ts) {
+      ctx.save();
+      ctx.translate(x, y);
+
+      // Đĩa hứng đáy chậu (Saucer)
+      ctx.fillStyle = '#c2410c';
+      ctx.beginPath();
+      ctx.roundRect(-165, 140, 330, 30, 15);
+      ctx.fill();
+      ctx.strokeStyle = '#7c2d12';
+      ctx.lineWidth = 3;
+      ctx.stroke();
+
+      // Thân Chậu Đất Nung (Trapezoid pot)
+      const potGrad = ctx.createLinearGradient(-150, 0, 150, 0);
+      potGrad.addColorStop(0, '#ea580c');
+      potGrad.addColorStop(0.4, '#fb923c');
+      potGrad.addColorStop(0.8, '#c2410c');
+      potGrad.addColorStop(1, '#9a3412');
+      ctx.fillStyle = potGrad;
+
+      ctx.beginPath();
+      ctx.moveTo(-180, -110);
+      ctx.lineTo(180, -110);
+      ctx.lineTo(135, 140);
+      ctx.lineTo(-135, 140);
+      ctx.closePath();
+      ctx.fill();
+      ctx.strokeStyle = '#7c2d12';
+      ctx.lineWidth = 4;
+      ctx.stroke();
+
+      // Vành miệng chậu nổi (Rim)
+      ctx.fillStyle = '#f97316';
+      ctx.beginPath();
+      ctx.roundRect(-195, -145, 390, 42, 14);
+      ctx.fill();
+      ctx.stroke();
+
+      // Đất trong chậu (Top soil)
+      ctx.fillStyle = '#451a03';
+      ctx.beginPath();
+      ctx.ellipse(0, -135, 165, 22, 0, 0, Math.PI * 2);
+      ctx.fill();
+
+      // NẾU LÀ GÓC NHÌN CẮT LỚP (CUTAWAY) T >= 25s
+      if (isCutaway) {
+        // Cắt một cửa sổ trong suốt nhìn vào ruột đất
+        ctx.fillStyle = '#270e02';
+        ctx.beginPath();
+        ctx.moveTo(-135, -100);
+        ctx.lineTo(135, -100);
+        ctx.lineTo(105, 120);
+        ctx.lineTo(-105, 120);
+        ctx.closePath();
+        ctx.fill();
+        ctx.strokeStyle = 'rgba(251, 146, 60, 0.6)';
+        ctx.lineWidth = 3;
+        ctx.stroke();
+
+        // Hệ thống RỄ CÂY (Roots)
+        ctx.save();
+        ctx.strokeStyle = '#fef08a';
+        ctx.lineWidth = 4;
+        ctx.lineCap = 'round';
+        // Rễ cọc chính
+        ctx.beginPath();
+        ctx.moveTo(0, -110);
+        ctx.quadraticCurveTo(-10, -30, 0, 40);
+        ctx.quadraticCurveTo(8, 70, -15, 110);
+        ctx.stroke();
+
+        // Rễ nhánh
+        ctx.lineWidth = 2.5;
+        ctx.beginPath();
+        ctx.moveTo(-5, -60); ctx.quadraticCurveTo(-45, -20, -75, 20);
+        ctx.moveTo(2, -40); ctx.quadraticCurveTo(45, 10, 70, 45);
+        ctx.moveTo(-3, 10); ctx.quadraticCurveTo(-35, 50, -60, 90);
+        ctx.moveTo(4, 30); ctx.quadraticCurveTo(35, 70, 55, 105);
+        ctx.stroke();
+        ctx.restore();
+
+        // 5 Hạt ĐẬU NÀNH LUỘC CHÍN (Boiled Soybeans)
+        const beans = [
+          [-55, 15], [-20, 60], [25, 30], [50, 80], [-40, 85]
+        ];
+        beans.forEach(([bx, by], idx) => {
+          ctx.save();
+          // Hào quang dinh dưỡng tỏa ra
+          const pulse = Math.sin(ts * 0.008 + idx) * 4;
+          const aGrad = ctx.createRadialGradient(bx, by, 4, bx, by, 22 + pulse);
+          aGrad.addColorStop(0, 'rgba(250, 204, 21, 0.8)');
+          aGrad.addColorStop(1, 'rgba(250, 204, 21, 0)');
+          ctx.fillStyle = aGrad;
+          ctx.beginPath(); ctx.arc(bx, by, 22 + pulse, 0, Math.PI * 2); ctx.fill();
+
+          // Thân hạt đậu nành vàng óng
+          ctx.fillStyle = '#facc15';
+          ctx.beginPath();
+          ctx.ellipse(bx, by, 12, 8, 0.35, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.strokeStyle = '#ca8a04';
+          ctx.lineWidth = 2;
+          ctx.stroke();
+
+          // Vết mầm đậu
+          ctx.fillStyle = '#fef9c3';
+          ctx.beginPath();
+          ctx.arc(bx - 3, by - 1, 2.5, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.restore();
+        });
+
+        // Hạt dinh dưỡng bay từ đậu vào rễ
+        for (let i = 0; i < 8; i++) {
+          const py = 100 - ((ts * 0.06 + i * 25) % 180);
+          const px = Math.sin(ts * 0.01 + i) * 25;
+          ctx.fillStyle = '#fef08a';
+          ctx.beginPath();
+          ctx.arc(px, py, 3, 0, Math.PI * 2);
+          ctx.fill();
+        }
+
+        // Tag chú thích: Đậu Nành Luộc
+        ctx.fillStyle = '#ffffff';
+        ctx.font = '900 18px "Plus Jakarta Sans"';
+        ctx.textAlign = 'center';
+        ctx.shadowColor = '#000';
+        ctx.shadowBlur = 8;
+        ctx.fillText('⚡ ĐẬU NÀNH LUỘC (HỮU CƠ)', 0, -50);
+        ctx.shadowColor = 'transparent';
+      }
+
+      ctx.restore();
+    }
+
+    // Cây Cà Chua Nhỏ (Thân mảnh, vài quả con, mặt biểu cảm)
+    function drawYoungTomatoPlant(x, y, t, ts) {
+      ctx.save();
+      ctx.translate(x, y);
+
+      // Rung rinh nhẹ / squash khi bực tức
+      const isAngry = (t >= 0.2 && t < 6.6) || (t >= 13.8 && t < 20.6);
+      const isSpeaking = (t >= 0.2 && t < 6.6) || (t >= 13.8 && t < 20.6) || (t >= 32.5 && t < 35.0);
+      const isDelighted = (t >= 32.5 && t < 35.0);
+      const shake = isAngry ? Math.sin(ts * 0.05) * 4 : Math.sin(ts * 0.003) * 1.5;
+      ctx.rotate(shake * 0.01);
+
+      // Thân cây cà chua chính
+      ctx.strokeStyle = '#16a34a';
+      ctx.lineWidth = 14;
+      ctx.lineCap = 'round';
+      ctx.beginPath();
+      ctx.moveTo(0, 10);
+      ctx.quadraticCurveTo(15, -120, -10, -220);
+      ctx.quadraticCurveTo(-25, -280, 0, -360);
+      ctx.stroke();
+
+      // CỤC DINH DƯỠNG PHÌNH THÂN CHẠY LÊN (GULP! 29s - 32.2s)
+      if (t >= 28.5 && t < 32.5) {
+        const gulpProgress = (t - 28.5) / 4.0; // 0 to 1
+        const gulpY = 10 - gulpProgress * 370;
+        ctx.save();
+        ctx.fillStyle = '#4ade80';
+        ctx.beginPath();
+        ctx.ellipse(0, gulpY, 20, 28, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.strokeStyle = '#15803d';
+        ctx.lineWidth = 4;
+        ctx.stroke();
+        // Ánh sáng lấp lánh bên trong cục dinh dưỡng
+        ctx.fillStyle = '#fef08a';
+        ctx.beginPath(); ctx.arc(0, gulpY, 8, 0, Math.PI * 2); ctx.fill();
+        ctx.restore();
+      }
+
+      // Các nhánh lá xòe ra hai bên
+      drawTomatoBranch(-6, -110, -0.6, 0.9);
+      drawTomatoBranch(5, -180, 0.55, 1.05);
+      drawTomatoBranch(-12, -260, -0.5, 0.95);
+      drawTomatoBranch(8, -320, 0.6, 0.85);
+
+      // 3 Quả Cà Chua Bé Unripe (Xanh, cam non)
+      drawMiniTomato(-38, -135, 16, '#86efac'); // quả xanh nhỏ
+      drawMiniTomato(42, -210, 20, '#fbbf24');  // quả vàng cam
+      drawMiniTomato(-45, -290, 17, '#f87171'); // quả hơi ửng hồng
+
+      // ==========================================
+      // KHUÔN MẶT BIỂU CẢM TRÊN ĐỈNH CÂY CÀ CHUA
+      // ==========================================
+      const headX = 0, headY = -375;
+      ctx.save();
+      ctx.translate(headX, headY);
+
+      if (isDelighted) {
+        // --- BIỂU CẢM: "MẸ ƠI THƠM NGON BÁ CHÁY!" (32.5s - 35s) ---
+        // 2 Bàn tay găng trắng hoạt hình ôm má
+        drawWhiteGlovedHands(ts);
+
+        // Mắt to tròn long lanh lấp lánh (Sparkling Anime Eyes)
+        drawDelightedEyes(ts);
+
+        // Má hồng cà chua siêu bự
+        ctx.fillStyle = 'rgba(248, 113, 113, 0.85)';
+        ctx.beginPath(); ctx.arc(-52, 10, 24, 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath(); ctx.arc(52, 10, 24, 0, Math.PI * 2); ctx.fill();
+
+        // Miệng cười mở to hạnh phúc
+        ctx.fillStyle = '#b91c1c';
+        ctx.beginPath();
+        ctx.arc(0, 12, 18, 0, Math.PI);
+        ctx.fill();
+        ctx.fillStyle = '#f43f5e';
+        ctx.beginPath();
+        ctx.arc(0, 18, 11, 0, Math.PI);
+        ctx.fill();
+
+        // Trái tim & Nốt nhạc bay
+        ctx.font = '32px sans-serif';
+        ctx.fillText('💖', -75, -60);
+        ctx.fillText('🎶', 60, -65);
+        ctx.fillText('✨', 0, -95);
+
+      } else if (isAngry) {
+        // --- BIỂU CẢM: BƯỚNG BỈNH, NHẮM TỊT MẮT TỪ CHỐI (> <) ---
+        // Lông mày xếch giận dữ
+        ctx.strokeStyle = '#064e3b';
+        ctx.lineWidth = 6;
+        ctx.lineCap = 'round';
+        ctx.beginPath();
+        ctx.moveTo(-50, -42); ctx.lineTo(-14, -20); // mày trái
+        ctx.moveTo(50, -42); ctx.lineTo(14, -20);   // mày phải
+        ctx.stroke();
+
+        // Mắt nhắm chặt nghiến răng `> <`
+        ctx.lineWidth = 7;
+        ctx.beginPath();
+        ctx.moveTo(-52, -18); ctx.lineTo(-30, 0); ctx.lineTo(-52, 18);
+        ctx.moveTo(52, -18); ctx.lineTo(30, 0); ctx.lineTo(52, 18);
+        ctx.stroke();
+
+        // Giọt nước mắt phẫn uất văng ra
+        ctx.fillStyle = '#38bdf8';
+        ctx.beginPath();
+        ctx.ellipse(-65, 5, 8, 14, -0.4, 0, Math.PI * 2);
+        ctx.ellipse(65, 5, 8, 14, 0.4, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Miệng cự cãi, nhép môi
+        const mouthOpen = isSpeaking ? (Math.sin(ts * 0.03) * 10 + 12) : 6;
+        ctx.fillStyle = '#064e3b';
+        ctx.beginPath();
+        ctx.ellipse(0, 24, 18, mouthOpen, 0, 0, Math.PI * 2);
+        ctx.fill();
+
+      } else {
+        // --- BIỂU CẢM: CHẢNH CHỌE / PHỤNG PHỊU ---
+        // Mắt to nhìn xéo
+        drawPoutingEyes(ts);
+
+        // Miệng cong hờn dỗi
+        ctx.strokeStyle = '#064e3b';
+        ctx.lineWidth = 5;
+        ctx.beginPath();
+        ctx.arc(0, 32, 14, Math.PI * 1.15, Math.PI * 1.85);
+        ctx.stroke();
+      }
+
+      ctx.restore();
+      ctx.restore();
+    }
+
+    // Nhánh lá cây cà chua
+    function drawTomatoBranch(x, y, rot, scale = 1.0) {
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.rotate(rot);
+      ctx.scale(scale, scale);
+
+      // Cành nhỏ
+      ctx.strokeStyle = '#16a34a';
+      ctx.lineWidth = 6;
+      ctx.beginPath();
+      ctx.moveTo(0, 0);
+      ctx.quadraticCurveTo(35, -15, 80, -10);
+      ctx.stroke();
+
+      // Lá chét cà chua có răng cưa
+      const leaves = [30, 55, 80];
+      leaves.forEach(lx => {
+        ctx.save();
+        ctx.translate(lx, -12);
+        ctx.fillStyle = '#22c55e';
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.bezierCurveTo(15, -24, 32, -18, 36, 0);
+        ctx.bezierCurveTo(32, 18, 15, 24, 0, 0);
+        ctx.fill();
+        ctx.strokeStyle = '#15803d';
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+        ctx.restore();
+      });
+
+      ctx.restore();
+    }
+
+    // Quả cà chua con unripe
+    function drawMiniTomato(x, y, rad, color) {
+      ctx.save();
+      ctx.translate(x, y);
+      // Cuống quả
+      ctx.strokeStyle = '#15803d';
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.moveTo(0, -rad - 8);
+      ctx.lineTo(0, -rad);
+      ctx.stroke();
+
+      // Tai đài hoa hình sao 5 cánh (Calyx)
+      ctx.fillStyle = '#16a34a';
+      for (let i = 0; i < 5; i++) {
+        const a = (i * Math.PI * 2) / 5;
+        ctx.beginPath();
+        ctx.moveTo(0, -rad);
+        ctx.lineTo(Math.cos(a) * 10, -rad + Math.sin(a) * 6);
+        ctx.lineTo(Math.cos(a + 0.3) * 4, -rad + Math.sin(a + 0.3) * 4);
+        ctx.fill();
+      }
+
+      // Quả bóng tròn
+      const tGrad = ctx.createRadialGradient(-rad * 0.3, -rad * 0.3, 2, 0, 0, rad);
+      tGrad.addColorStop(0, '#ffffff');
+      tGrad.addColorStop(0.3, color);
+      tGrad.addColorStop(1, '#15803d');
+      ctx.fillStyle = tGrad;
+      ctx.beginPath();
+      ctx.arc(0, 0, rad, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    }
+
+    // Mắt long lanh hạnh phúc khi nuốt đậu nành
+    function drawDelightedEyes(ts) {
+      [-36, 36].forEach(ex => {
+        ctx.save();
+        ctx.fillStyle = '#ffffff';
+        ctx.beginPath(); ctx.arc(ex, -12, 28, 0, Math.PI * 2); ctx.fill();
+        ctx.strokeStyle = '#064e3b';
+        ctx.lineWidth = 4;
+        ctx.stroke();
+
+        // Con ngươi màu ngọc lục bảo + lấp lánh
+        const pGrad = ctx.createRadialGradient(ex, -12, 3, ex, -12, 18);
+        pGrad.addColorStop(0, '#047857');
+        pGrad.addColorStop(0.8, '#064e3b');
+        pGrad.addColorStop(1, '#022c22');
+        ctx.fillStyle = pGrad;
+        ctx.beginPath(); ctx.arc(ex, -12, 17, 0, Math.PI * 2); ctx.fill();
+
+        // 2 Ngôi sao bắt sáng (Catchlight stars)
+        ctx.fillStyle = '#ffffff';
+        ctx.beginPath(); ctx.arc(ex - 6, -18, 6, 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath(); ctx.arc(ex + 7, -6, 3.5, 0, Math.PI * 2); ctx.fill();
+        ctx.restore();
+      });
+    }
+
+    // Mắt phụng phịu
+    function drawPoutingEyes(ts) {
+      [-36, 36].forEach(ex => {
+        ctx.save();
+        ctx.fillStyle = '#ffffff';
+        ctx.beginPath(); ctx.arc(ex, -10, 24, 0, Math.PI * 2); ctx.fill();
+        ctx.strokeStyle = '#064e3b';
+        ctx.lineWidth = 4;
+        ctx.stroke();
+
+        // Con ngươi liếc sang phải (quay lưng với túi phân)
+        ctx.fillStyle = '#064e3b';
+        ctx.beginPath(); ctx.arc(ex + 9, -8, 12, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = '#ffffff';
+        ctx.beginPath(); ctx.arc(ex + 6, -12, 4, 0, Math.PI * 2); ctx.fill();
+        ctx.restore();
+      });
+    }
+
+    // 2 Bàn tay găng trắng hoạt hình ôm má
+    function drawWhiteGlovedHands(ts) {
+      // Tay trái
+      ctx.save();
+      ctx.translate(-58, 20);
+      ctx.rotate(-0.35);
+      drawGlove();
+      ctx.restore();
+
+      // Tay phải
+      ctx.save();
+      ctx.translate(58, 20);
+      ctx.scale(-1, 1);
+      ctx.rotate(-0.35);
+      drawGlove();
+      ctx.restore();
+    }
+
+    function drawGlove() {
+      ctx.fillStyle = '#ffffff';
+      ctx.strokeStyle = '#1e293b';
+      ctx.lineWidth = 3.5;
+
+      // 3 ngón tay cong lên ôm má
+      ctx.beginPath();
+      ctx.ellipse(0, 0, 14, 24, -0.2, 0, Math.PI * 2);
+      ctx.fill(); ctx.stroke();
+      ctx.beginPath();
+      ctx.ellipse(-10, -5, 10, 20, -0.3, 0, Math.PI * 2);
+      ctx.fill(); ctx.stroke();
+      ctx.beginPath();
+      ctx.ellipse(10, -4, 10, 20, -0.1, 0, Math.PI * 2);
+      ctx.fill(); ctx.stroke();
+
+      // Cổ tay găng áo
+      ctx.fillStyle = '#f1f5f9';
+      ctx.beginPath();
+      ctx.roundRect(-16, 14, 32, 12, 6);
+      ctx.fill(); ctx.stroke();
+    }
+
+    // Bàn tay cầm túi phân hóa học rắc xuống
+    function drawChemicalFertilizerHand(t, ts) {
+      ctx.save();
+      const shakeHand = Math.sin(ts * 0.02) * 8;
+      ctx.translate(520 + shakeHand, 440 + shakeHand * 0.5);
+
+      // Cánh tay áo người trồng
+      ctx.fillStyle = '#3b82f6';
+      ctx.beginPath();
+      ctx.moveTo(140, -140);
+      ctx.lineTo(260, -220);
+      ctx.lineTo(300, -180);
+      ctx.lineTo(180, -90);
+      ctx.closePath();
+      ctx.fill();
+
+      // Bàn tay màu da cầm miệng túi
+      ctx.fillStyle = '#fed7aa';
+      ctx.beginPath();
+      ctx.ellipse(110, -85, 22, 16, 0.4, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = '#c2410c';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      // Túi phân bón "HÓA HỌC" dốc nghiêng
+      ctx.save();
+      ctx.rotate(0.35);
+      ctx.fillStyle = '#f8fafc';
+      ctx.beginPath();
+      ctx.roundRect(-60, -90, 120, 140, 16);
+      ctx.fill();
+      ctx.strokeStyle = '#64748b';
+      ctx.lineWidth = 3;
+      ctx.stroke();
+
+      // Nhãn túi: "PHÂN HÓA HỌC" kèm biểu tượng cảnh báo ⚠️
+      ctx.fillStyle = '#dc2626';
+      ctx.beginPath();
+      ctx.roundRect(-50, -45, 100, 42, 8);
+      ctx.fill();
+      ctx.fillStyle = '#ffffff';
+      ctx.font = '900 13px "Plus Jakarta Sans"';
+      ctx.textAlign = 'center';
+      ctx.fillText('⚠️ PHÂN HÓA HỌC', 0, -26);
+      ctx.font = 'bold 11px sans-serif';
+      ctx.fillText('NPK CÔNG NGHIỆP', 0, -10);
+
+      // Miệng túi dốc đổ hạt phân bón
+      ctx.fillStyle = '#cbd5e1';
+      ctx.beginPath();
+      ctx.ellipse(0, 50, 40, 12, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+
+      // Hạt phân hóa học màu xám trắng rơi lả tả xuống chậu
+      for (let i = 0; i < 9; i++) {
+        const dropY = (ts * 0.15 + i * 40) % 240 + 60;
+        const dropX = -50 + Math.sin(ts * 0.01 + i) * 20;
+        ctx.fillStyle = '#e2e8f0';
+        ctx.beginPath();
+        ctx.arc(dropX, dropY, 4, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.strokeStyle = '#94a3b8';
+        ctx.lineWidth = 1;
+        ctx.stroke();
+      }
+
+      ctx.restore();
+    }
+
+    // Bàn tay đặt hạt đậu nành vào chậu đất
+    function drawSoybeanPlantingHand(t, ts) {
+      ctx.save();
+      ctx.translate(500, 680);
+
+      // Bàn tay cầm muỗng gỗ xới đất
+      ctx.fillStyle = '#fed7aa';
+      ctx.beginPath();
+      ctx.ellipse(0, 0, 26, 18, -0.3, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = '#c2410c';
+      ctx.lineWidth = 2.5;
+      ctx.stroke();
+
+      // Hạt đậu nành vàng trên tay
+      ctx.fillStyle = '#facc15';
+      ctx.beginPath();
+      ctx.ellipse(-15, -8, 12, 8, 0.2, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = '#ca8a04';
+      ctx.stroke();
+
+      // Chữ hướng dẫn
+      ctx.fillStyle = '#fef08a';
+      ctx.font = '900 20px "Plus Jakarta Sans"';
+      ctx.textAlign = 'center';
+      ctx.shadowColor = '#000';
+      ctx.shadowBlur = 10;
+      ctx.fillText('🌱 VÙI ĐẬU NÀNH LUỘC', -70, -40);
+      ctx.shadowColor = 'transparent';
+
+      ctx.restore();
+    }
+
+    // ========================================================
+    // CẢNH 2: MEME "2,000 YEARS LATER" (35s - 38.4s)
+    // ========================================================
+    function drawMemeScene(t, ts) {
+      ctx.save();
+      // Nền biển đảo SpongeBob Meme (Vàng cam & Xanh ngọc)
+      const memeBg = ctx.createLinearGradient(0, 0, 0, 1280);
+      memeBg.addColorStop(0, '#0284c7');
+      memeBg.addColorStop(0.5, '#0ea5e9');
+      memeBg.addColorStop(1, '#38bdf8');
+      ctx.fillStyle = memeBg;
+      ctx.fillRect(0, 0, 720, 1280);
+
+      // Những bông hoa meme nổi kiểu SpongeBob
+      drawMemeFlower(120, 220, '#f43f5e', ts);
+      drawMemeFlower(600, 310, '#facc15', ts + 2);
+      drawMemeFlower(160, 920, '#a855f7', ts + 4);
+      drawMemeFlower(580, 1050, '#22c55e', ts + 1);
+
+      // Chữ Meme kinh điển: "2,000 YEARS LATER..."
+      ctx.save();
+      ctx.translate(360, 620);
+      const mScale = 1 + Math.sin(ts * 0.006) * 0.03;
+      ctx.scale(mScale, mScale);
+
+      // Chữ lớn
+      ctx.fillStyle = '#ffffff';
+      ctx.font = '900 52px "Plus Jakarta Sans", cursive';
+      ctx.textAlign = 'center';
+      ctx.shadowColor = 'rgba(0, 0, 0, 0.7)';
+      ctx.shadowBlur = 24;
+      ctx.shadowOffsetY = 6;
+      ctx.fillText('2,000 YEARS LATER...', 0, 0);
+
+      // Phụ đề Việt hóa hài hước
+      ctx.fillStyle = '#fef08a';
+      ctx.font = '800 28px "Plus Jakarta Sans"';
+      ctx.fillText('(VÀI TUẦN SAU ĐÓ...)', 0, 65);
+      ctx.restore();
+
+      ctx.restore();
+    }
+
+    function drawMemeFlower(x, y, color, ts) {
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.rotate(ts * 0.001);
+      ctx.fillStyle = color;
+      for (let i = 0; i < 5; i++) {
+        const a = (i * Math.PI * 2) / 5;
+        ctx.beginPath();
+        ctx.arc(Math.cos(a) * 35, Math.sin(a) * 35, 26, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.fillStyle = '#ffffff';
+      ctx.beginPath(); ctx.arc(0, 0, 20, 0, Math.PI * 2); ctx.fill();
+      ctx.restore();
+    }
+
+    // ========================================================
+    // CẢNH 3: CÂY CÀ CHUA TRƯỞNG THÀNH TRĨU QUẢ ĐỎ MỌNG (38.4s+)
+    // ========================================================
+    function drawAdultTomatoScene(t, ts) {
+      ctx.save();
+
+      // Nền sáng rực rỡ ban công đầy nắng
+      drawBalconyBackground(ts);
+
+      // Chậu cây
+      const potX = 360, potY = 980;
+      drawTerracottaPot(potX, potY, false, t, ts);
+
+      // Cây cà chua khổng lồ um tùm
+      ctx.save();
+      ctx.translate(potX, potY - 140);
+
+      // Thân cây to lực lưỡng
+      ctx.strokeStyle = '#15803d';
+      ctx.lineWidth = 26;
+      ctx.lineCap = 'round';
+      ctx.beginPath();
+      ctx.moveTo(0, 10);
+      ctx.quadraticCurveTo(20, -180, -15, -340);
+      ctx.quadraticCurveTo(-35, -480, 0, -620);
+      ctx.stroke();
+
+      // 8 Cành lá xum xuê dày đặc
+      [-120, -220, -320, -420, -520].forEach((ly, i) => {
+        const dir = (i % 2 === 0) ? 1 : -1;
+        drawAdultBranch(dir * 10, ly, dir * 0.55, 1.25);
+        drawAdultBranch(-dir * 15, ly - 35, -dir * 0.65, 1.15);
+      });
+
+      // ==========================================
+      // CHÙM CÀ CHUA CHÍN ĐỎ MỌNG NƯỚC (14 QUẢ)
+      // ==========================================
+      const tomatoSpots = [
+        [-90, -160, 32], [85, -190, 36], [-120, -270, 38], [115, -290, 42],
+        [-65, -360, 40], [75, -380, 44], [-110, -460, 36], [105, -470, 38],
+        [-50, -530, 34], [60, -540, 36], [0, -240, 44], [-25, -430, 42],
+        [30, -330, 40], [-80, -390, 35]
+      ];
+
+      tomatoSpots.forEach(([tx, ty, rad]) => {
+        drawGiantRipeTomato(tx, ty, rad, ts);
+      });
+
+      // ==========================================
+      // KHUÔN MẶT CỰC KỲ HẠNH PHÚC & TỰ HÀO (^ ^)
+      // ==========================================
+      const headY = -650;
+      ctx.save();
+      ctx.translate(0, headY);
+
+      // Mắt cười tít hình trăng khuyết hạnh phúc `^ ^`
+      ctx.strokeStyle = '#064e3b';
+      ctx.lineWidth = 7;
+      ctx.lineCap = 'round';
+      ctx.beginPath();
+      ctx.arc(-42, -10, 22, Math.PI * 1.15, Math.PI * 1.85);
+      ctx.arc(42, -10, 22, Math.PI * 1.15, Math.PI * 1.85);
+      ctx.stroke();
+
+      // Đôi má hồng đào to tướng
+      ctx.fillStyle = 'rgba(248, 113, 113, 0.85)';
+      ctx.beginPath(); ctx.arc(-55, 12, 26, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath(); ctx.arc(55, 12, 26, 0, Math.PI * 2); ctx.fill();
+
+      // Nụ cười rạng rỡ khoe răng thỏ trắng
+      ctx.fillStyle = '#b91c1c';
+      ctx.beginPath();
+      ctx.arc(0, 15, 24, 0, Math.PI);
+      ctx.fill();
+      // Răng trắng
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(-10, 15, 20, 8);
+      // Lưỡi hồng
+      ctx.fillStyle = '#fb7185';
+      ctx.beginPath();
+      ctx.arc(0, 28, 14, 0, Math.PI);
+      ctx.fill();
+
+      // Vương miện lá xanh trên đầu
+      drawCrownLeaves();
+
+      // Sao lấp lánh xung quanh
+      ctx.font = '36px sans-serif';
+      ctx.fillText('✨', -100, -50);
+      ctx.fillText('✨', 90, -40);
+      ctx.fillText('🏆', 0, -85);
+
+      ctx.restore(); // end head
+      ctx.restore(); // end plant
+
+      // ==========================================
+      // THẺ INFOGRAPHIC KHOA HỌC: BÍ KÍP ĐẬU NÀNH
+      // ==========================================
+      drawSoybeanScienceCard(ts);
+
+      ctx.restore();
+    }
+
+    // Quả cà chua chín mọng đỏ au (3D Gradient + Highlight)
+    function drawGiantRipeTomato(x, y, rad, ts) {
+      ctx.save();
+      ctx.translate(x, y);
+
+      // Tai cuống hình sao xanh
+      ctx.fillStyle = '#15803d';
+      for (let i = 0; i < 5; i++) {
+        const a = (i * Math.PI * 2) / 5;
+        ctx.beginPath();
+        ctx.moveTo(0, -rad);
+        ctx.lineTo(Math.cos(a) * (rad * 0.6), -rad + Math.sin(a) * (rad * 0.4));
+        ctx.lineTo(Math.cos(a + 0.3) * (rad * 0.25), -rad + Math.sin(a + 0.3) * (rad * 0.25));
+        ctx.fill();
+      }
+
+      // Quả bóng đỏ căng mọng
+      const rGrad = ctx.createRadialGradient(-rad * 0.35, -rad * 0.35, 4, 0, 0, rad);
+      rGrad.addColorStop(0, '#fca5a5');
+      rGrad.addColorStop(0.3, '#ef4444');
+      rGrad.addColorStop(0.75, '#dc2626');
+      rGrad.addColorStop(1, '#7f1d1d');
+      ctx.fillStyle = rGrad;
+      ctx.beginPath();
+      ctx.arc(0, 0, rad, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = '#7f1d1d';
+      ctx.lineWidth = 2.5;
+      ctx.stroke();
+
+      // Vệt sáng bóng loáng (Specular gloss)
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
+      ctx.beginPath();
+      ctx.ellipse(-rad * 0.35, -rad * 0.35, rad * 0.35, rad * 0.18, -Math.PI / 4, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.restore();
+    }
+
+    // Nhánh lá xum xuê trưởng thành
+    function drawAdultBranch(x, y, rot, scale = 1.0) {
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.rotate(rot);
+      ctx.scale(scale, scale);
+
+      ctx.strokeStyle = '#15803d';
+      ctx.lineWidth = 10;
+      ctx.beginPath();
+      ctx.moveTo(0, 0);
+      ctx.quadraticCurveTo(60, -25, 140, -15);
+      ctx.stroke();
+
+      [40, 80, 120].forEach(lx => {
+        ctx.save();
+        ctx.translate(lx, -20);
+        ctx.fillStyle = '#22c55e';
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.bezierCurveTo(25, -35, 55, -25, 60, 0);
+        ctx.bezierCurveTo(55, 25, 25, 35, 0, 0);
+        ctx.fill();
+        ctx.strokeStyle = '#16a34a';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+        ctx.restore();
+      });
+
+      ctx.restore();
+    }
+
+    // Vương miện lá trên ngọn
+    function drawCrownLeaves() {
+      ctx.fillStyle = '#22c55e';
+      [-30, 0, 30].forEach((lx, i) => {
+        ctx.beginPath();
+        ctx.moveTo(lx, -35);
+        ctx.lineTo(lx - 12, -70);
+        ctx.lineTo(lx, -85);
+        ctx.lineTo(lx + 12, -70);
+        ctx.closePath();
+        ctx.fill();
+        ctx.strokeStyle = '#15803d';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+      });
+    }
+
+    // Thẻ Infographic Khoa Học ở đáy màn hình
+    function drawSoybeanScienceCard(ts) {
+      ctx.save();
+      const cardX = 30, cardY = 960, cardW = 660, cardH = 180;
+      
+      // Khung thẻ Glassmorphism viền xanh lá & vàng
+      ctx.fillStyle = 'rgba(15, 23, 42, 0.92)';
+      ctx.beginPath();
+      ctx.roundRect(cardX, cardY, cardW, cardH, 20);
+      ctx.fill();
+      ctx.strokeStyle = '#22c55e';
+      ctx.lineWidth = 2.5;
+      ctx.stroke();
+
+      // Tiêu đề huy hiệu
+      ctx.fillStyle = '#facc15';
+      ctx.font = '900 18px "Plus Jakarta Sans"';
+      ctx.textAlign = 'left';
+      ctx.fillText('🌱 BÍ QUYẾT ĐẬU NÀNH LUỘC HỮU CƠ TỰ NHIÊN:', cardX + 24, cardY + 36);
+
+      // Nội dung khoa học dễ hiểu
+      ctx.fillStyle = '#f8fafc';
+      ctx.font = '600 14px "Plus Jakarta Sans"';
+      ctx.fillText('• Đậu nành giàu đạm tự nhiên (Nitơ) & Axit Amin giúp rễ cà chua hấp thụ trực tiếp.', cardX + 24, cardY + 70);
+      ctx.fillText('• Luộc chín giúp phân giải enzyme ức chế, đậu tự phân hủy êm dịu không gây cháy rễ.', cardX + 24, cardY + 102);
+      ctx.fillText('• Cây lớn nhanh gấp 2 lần, quả sai trĩu cành, chuẩn sạch 100% không lo hóa chất!', cardX + 24, cardY + 134);
+
+      ctx.restore();
+    }
+
+    // ==========================================
+    // QUAY VÀ XUẤT VIDEO (WEBM / MP4)
+    // ==========================================
+    let mediaRecorder = null;
+    let recordedChunks = [];
+
+    function startExportRecording() {
+      const btn = document.getElementById('btn-record');
+      if (mediaRecorder && mediaRecorder.state === 'recording') {
+        mediaRecorder.stop();
+        btn.textContent = '🔴 Quay & Xuất MP4';
+        btn.style.background = '#f59e0b';
+        return;
+      }
+
+      restart();
+      const stream = canvas.captureStream(30);
+
+      recordedChunks = [];
+      try {
+        mediaRecorder = new MediaRecorder(stream, { mimeType: 'video/webm;codecs=vp9' });
+      } catch (e) {
+        mediaRecorder = new MediaRecorder(stream);
+      }
+
+      mediaRecorder.ondataavailable = (e) => {
+        if (e.data.size > 0) recordedChunks.push(e.data);
+      };
+
+      mediaRecorder.onstop = () => {
+        const blob = new Blob(recordedChunks, { type: 'video/webm' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'remake_tomato_soybean_5.webm';
+        a.click();
+        btn.textContent = '✓ Đã tải video!';
+        setTimeout(() => {
+          btn.textContent = '🔴 Quay & Xuất MP4';
+          btn.style.background = '#f59e0b';
+        }, 4000);
+      };
+
+      mediaRecorder.start();
+      btn.textContent = '⏹ Đang quay... Bấm dừng';
+      btn.style.background = '#ef4444';
+    }
+
+    // Bắt đầu vòng lặp đồ họa 60 FPS
+    requestAnimationFrame(render);
+  </script>
+</body>
+</html>

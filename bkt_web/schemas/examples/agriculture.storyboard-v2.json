@@ -1,0 +1,105 @@
+{
+  "schema_version": "2.0.0",
+  "project_id": "project_agriculture_demo",
+  "title": "Harvest one tomato",
+  "source": {
+    "source_id": "source_agriculture_demo",
+    "sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+    "media_type": "video/mp4",
+    "width": 1080,
+    "height": 1920,
+    "frame_rate": 30
+  },
+  "duration_seconds": 6,
+  "timebase": { "unit": "seconds", "origin_seconds": 0, "precision": 3 },
+  "tracks": [
+    {
+      "track_id": "track_visual_main",
+      "kind": "visual",
+      "items": [
+        { "item_id": "item_scene_harvest", "target_type": "scene", "target_id": "scene_harvest", "start": 0, "end": 6, "layer": 0 }
+      ]
+    }
+  ],
+  "scenes": [
+    {
+      "scene_id": "scene_harvest",
+      "start": 0,
+      "end": 6,
+      "summary": "A farmer picks a ripe tomato and places it in a basket.",
+      "entities": [
+        {
+          "entity_id": "farmer_01",
+          "kind": "person",
+          "label": "Farmer",
+          "role": "actor",
+          "components": [
+            { "component_id": "farmer_01_body", "kind": "body", "state": "visible", "anchors": [] },
+            { "component_id": "farmer_01_hand_right", "kind": "hand", "parent_component_id": "farmer_01_body", "state": "attached", "anchors": [{ "anchor_id": "farmer_01_grip_right", "name": "grip", "semantic": "grasp" }] }
+          ],
+          "analysis": { "confidence": 0.96, "evidence_ids": ["evidence_harvest_frames"], "model": "fixture-analyzer-1", "review_status": "accepted" },
+          "provenance_id": "provenance_analysis"
+        },
+        {
+          "entity_id": "tomato_01",
+          "kind": "produce",
+          "label": "Ripe tomato",
+          "components": [{ "component_id": "tomato_01_body", "kind": "fruit", "state": "attached", "anchors": [{ "anchor_id": "tomato_01_stem", "name": "stem", "semantic": "attachment" }] }],
+          "provenance_id": "provenance_analysis"
+        },
+        {
+          "entity_id": "basket_01",
+          "kind": "container",
+          "components": [{ "component_id": "basket_01_body", "kind": "basket", "state": "visible", "anchors": [{ "anchor_id": "basket_01_interior", "name": "interior", "semantic": "containment" }] }],
+          "provenance_id": "provenance_analysis"
+        }
+      ],
+      "relations": [
+        { "relation_id": "relation_tomato_in_basket", "type": "inside", "subject_id": "tomato_01", "object_id": "basket_01", "start": 5, "end": 6, "provenance_id": "provenance_analysis" }
+      ],
+      "actions": [
+        { "action_id": "action_reach", "type": "reach", "actor_ids": ["farmer_01"], "target_ids": ["tomato_01"], "start": 1, "end": 2, "analysis": { "confidence": 0.92, "evidence_ids": ["evidence_harvest_frames"], "model": "fixture-analyzer-1", "review_status": "accepted" }, "provenance_id": "provenance_analysis" },
+        { "action_id": "action_detach", "type": "detach", "actor_ids": ["farmer_01"], "target_ids": ["tomato_01"], "start": 2, "end": 3, "provenance_id": "provenance_human" },
+        { "action_id": "action_place", "type": "place", "actor_ids": ["farmer_01"], "target_ids": ["tomato_01", "basket_01"], "start": 3, "end": 5, "provenance_id": "provenance_human" }
+      ],
+      "constraints": [
+        { "constraint_id": "constraint_grip_tomato", "type": "anchor_contact", "subject_ids": ["farmer_01_grip_right", "tomato_01_body"], "start": 2, "end": 5, "strength": "hard", "provenance_id": "provenance_human" }
+      ],
+      "camera": {
+        "camera_id": "camera_harvest",
+        "shots": [
+          { "shot_id": "shot_harvest_medium", "start": 0, "end": 6, "framing": "medium", "movement": "tracking", "subject_ids": ["farmer_01", "tomato_01"], "provenance_id": "provenance_analysis" }
+        ]
+      },
+      "environment": { "environment_id": "environment_garden", "kind": "outdoor_garden", "attributes": { "lighting": "daylight" } },
+      "style": { "style_id": "style_warm_documentary", "tags": ["warm", "documentary"], "palette": ["#4F772D", "#D62828"] },
+      "audio_events": [],
+      "render_requirements": {
+        "required": [
+          { "requirement_id": "requirement_contact", "capability": "constraint.anchor_contact", "target_ids": ["constraint_grip_tomato"], "metric": "contact_error_px", "tolerance": 4 }
+        ],
+        "preferred": [
+          { "requirement_id": "requirement_detach", "capability": "action.detach", "target_ids": ["action_detach"] }
+        ],
+        "optional": [
+          { "requirement_id": "requirement_leaf_motion", "capability": "effect.wind_motion", "target_ids": ["environment_garden"] }
+        ]
+      },
+      "analysis": { "confidence": 0.93, "evidence_ids": ["evidence_harvest_frames"], "model": "fixture-analyzer-1", "review_status": "accepted" },
+      "provenance_id": "provenance_analysis"
+    }
+  ],
+  "render_plan": {
+    "render_plan_id": "render_plan_agriculture",
+    "status": "routable",
+    "selections": [
+      { "selection_id": "selection_harvest", "scene_id": "scene_harvest", "start": 0, "end": 6, "renderer_id": "native_vector_v1", "renderer_version": "1.0.0", "status": "selected", "satisfied_requirement_ids": ["requirement_contact", "requirement_detach"], "fallback_ids": [], "explanation": "The renderer supports articulated contact and detachable components." }
+    ],
+    "fallbacks": []
+  },
+  "provenance": [
+    { "provenance_id": "provenance_analysis", "kind": "analysis", "created_at": "2026-09-18T08:00:00Z", "agent": "fixture-analyzer", "tool_version": "1.0.0", "source_refs": ["source_agriculture_demo"], "evidence": [{ "evidence_id": "evidence_harvest_frames", "kind": "frame_range", "source_id": "source_agriculture_demo", "interval": { "start": 0, "end": 6 }, "annotation": "Farmer, tomato, basket, and action sequence are visible." }] },
+    { "provenance_id": "provenance_human", "kind": "human", "created_at": "2026-09-18T08:05:00Z", "agent": "reviewer-fixture", "source_refs": ["source_agriculture_demo"], "evidence": [{ "evidence_id": "evidence_human_harvest", "kind": "human_annotation", "source_id": "source_agriculture_demo", "interval": { "start": 2, "end": 5 }, "annotation": "Detach and place timings verified." }] }
+  ],
+  "extensions": { "com.ssmatool.fixture:category": "agriculture" }
+}

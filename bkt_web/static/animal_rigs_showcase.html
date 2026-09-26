@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>37 Mẫu Động Vật Hoạt Hình 2D · Remake Vector Engine</title>
+  <style>
+    :root {
+      --bg: #090e17;
+      --card: #121c2b;
+      --card-hover: #19263a;
+      --card-border: #22344d;
+      --green: #4ade80;
+      --green-glow: rgba(74, 222, 128, 0.35);
+      --gold: #fbbf24;
+      --amber: #f97316;
+      --cyan: #38bdf8;
+      --purple: #c084fc;
+      --rose: #fb7185;
+      --text: #f1f5f9;
+      --text-muted: #94a3b8;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: radial-gradient(circle at 50% 10%, #152538 0%, #080d14 100%);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 24px 16px;
+      overflow-x: hidden;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 20px;
+      max-width: 960px;
+    }
+    .badge {
+      display: inline-block;
+      background: linear-gradient(135deg, rgba(74,222,128,0.15), rgba(56,189,248,0.25));
+      border: 1px solid var(--green);
+      color: var(--green);
+      padding: 5px 16px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+      box-shadow: 0 0 16px var(--green-glow);
+    }
+    h1 {
+      font-size: 32px;
+      font-weight: 900;
+      background: linear-gradient(90deg, #ffffff, #86efac, #67e8f9, #fde047);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 8px;
+      letter-spacing: -0.5px;
+    }
+    p.subtitle {
+      color: var(--text-muted);
+      font-size: 15px;
+      line-height: 1.5;
+    }
+
+    /* Filter Tabs */
+    .filter-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+      margin-bottom: 20px;
+      max-width: 1000px;
+    }
+    .tab-btn {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      color: var(--text-muted);
+      padding: 8px 16px;
+      border-radius: 10px;
+      font-size: 13.5px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .tab-btn:hover {
+      background: var(--card-hover);
+      color: var(--text);
+      border-color: var(--green);
+    }
+    .tab-btn.active {
+      background: linear-gradient(135deg, #1c3628, #18283a);
+      color: var(--green);
+      border-color: var(--green);
+      box-shadow: 0 0 14px var(--green-glow);
+    }
+
+    /* Main Showcase Container */
+    .stage-container {
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 20px;
+      max-width: 1200px;
+      width: 100%;
+      margin-bottom: 28px;
+    }
+    @media (max-width: 960px) {
+      .stage-container { grid-template-columns: 1fr; }
+    }
+
+    .canvas-card {
+      background: var(--card);
+      border: 1.5px solid var(--card-border);
+      border-radius: 18px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 12px 32px rgba(0,0,0,0.5);
+    }
+    .canvas-hud {
+      position: absolute;
+      top: 24px;
+      left: 24px;
+      background: rgba(10, 16, 26, 0.75);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,0.1);
+      padding: 8px 14px;
+      border-radius: 10px;
+      font-size: 12px;
+      font-family: monospace;
+      color: var(--green);
+      pointer-events: none;
+      z-index: 5;
+    }
+    canvas {
+      width: 100%;
+      max-height: 520px;
+      aspect-ratio: 16 / 9;
+      background: #000;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.08);
+      display: block;
+    }
+
+    /* Controls Panel */
+    .controls-panel {
+      background: var(--card);
+      border: 1.5px solid var(--card-border);
+      border-radius: 18px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      box-shadow: 0 12px 32px rgba(0,0,0,0.5);
+    }
+    .panel-title {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-bottom: 1px solid var(--card-border);
+      padding-bottom: 10px;
+    }
+    .control-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .control-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+    .control-label span:last-child {
+      color: var(--green);
+      font-family: monospace;
+    }
+    input[type=range] {
+      -webkit-appearance: none;
+      width: 100%;
+      background: #1e2c3f;
+      height: 6px;
+      border-radius: 3px;
+      outline: none;
+    }
+    input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--green);
+      cursor: pointer;
+      box-shadow: 0 0 8px var(--green-glow);
+    }
+
+    /* Action Buttons */
+    .action-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+    }
+    .btn {
+      background: #182537;
+      border: 1px solid var(--card-border);
+      color: var(--text);
+      padding: 10px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+    .btn:hover {
+      background: #20324a;
+      border-color: var(--green);
+      color: var(--green);
+    }
+    .btn.active {
+      background: #164e32;
+      border-color: var(--green);
+      color: #ffffff;
+      box-shadow: 0 0 12px var(--green-glow);
+    }
+
+    /* Animals Grid */
+    .animals-section {
+      max-width: 1200px;
+      width: 100%;
+      margin-bottom: 30px;
+    }
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+    .section-header h2 {
+      font-size: 20px;
+      font-weight: 800;
+    }
+    .animal-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 12px;
+    }
+    .animal-card {
+      background: var(--card);
+      border: 1.5px solid var(--card-border);
+      border-radius: 14px;
+      padding: 12px;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+    }
+    .animal-card:hover {
+      border-color: var(--green);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 24px rgba(74, 222, 128, 0.18);
+    }
+    .animal-card.active {
+      background: linear-gradient(180deg, #153422 0%, #101c2b 100%);
+      border-color: var(--green);
+      box-shadow: 0 0 20px var(--green-glow);
+    }
+    .animal-card.active::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: var(--green);
+      border-radius: 14px 14px 0 0;
+    }
+    .card-thumb {
+      width: 100%;
+      height: 90px;
+      background: #080d14;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+    }
+    .card-thumb canvas {
+      width: 100%;
+      height: 100%;
+      aspect-ratio: auto;
+      border: none;
+    }
+    .card-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .card-sub {
+      font-size: 11.5px;
+      color: var(--text-muted);
+    }
+    .card-tag {
+      align-self: flex-start;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 999px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .tag-savanna { background: rgba(245, 158, 11, 0.18); color: #fbbf24; border: 1px solid #f59e0b; }
+    .tag-forest { background: rgba(34, 197, 94, 0.18); color: #4ade80; border: 1px solid #22c55e; }
+    .tag-dino { background: rgba(239, 68, 68, 0.18); color: #f87171; border: 1px solid #ef4444; }
+    .tag-polar { background: rgba(56, 189, 248, 0.18); color: #38bdf8; border: 1px solid #0284c7; }
+
+    /* Contact Sheet Links */
+    .sheet-links {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      max-width: 1200px;
+      width: 100%;
+      margin-top: 10px;
+    }
+    @media (max-width: 768px) {
+      .sheet-links { grid-template-columns: repeat(2, 1fr); }
+    }
+    .sheet-btn {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 12px;
+      text-align: center;
+      text-decoration: none;
+      color: var(--text);
+      font-size: 13px;
+      font-weight: 700;
+      transition: all 0.2s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+    }
+    .sheet-btn:hover {
+      border-color: var(--cyan);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 16px rgba(56, 189, 248, 0.2);
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="badge">Remake Vector Engine 1.11.0 · Complete Animal Rigs</div>
+    <h1>Bộ Sưu Tập 37 Mẫu Động Vật 2D Vector</h1>
+    <p class="subtitle">
+      Đã rig hoàn chỉnh 37 loài từ 3 bảng mẫu: Savanna Châu Phi, Rừng Ôn Đới, Khủng Long Tiền Sử & Cực Địa Hoạt Hình.<br>
+      Khung chuẩn 100% Vector Canvas tất định, giải phẫu khớp động, tiếp xúc mặt đất y = 0, hỗ trợ bước đi, cúi gặm cỏ, mở miệng gầm.
+    </p>
+  </header>
+
+  <!-- Filter Tabs -->
+  <div class="filter-tabs">
+    <button class="tab-btn active" onclick="filterPack('all')">Tất cả (37 loài)</button>
+    <button class="tab-btn" onclick="filterPack('savanna')">🦁 Savanna Châu Phi (9)</button>
+    <button class="tab-btn" onclick="filterPack('forest')">🌲 Rừng & Thú Cưng (13)</button>
+    <button class="tab-btn" onclick="filterPack('dino')">🦖 Khủng Long Tiền Sử (4)</button>
+    <button class="tab-btn" onclick="filterPack('polar')">🦅 Chim, Cực Địa & Hoạt Hình (11)</button>
+  </div>
+
+  <!-- Stage Container -->
+  <div class="stage-container">
+    <div class="canvas-card">
+      <div class="canvas-hud" id="hud">ID: elephant | FPS: 60 | t: 0.0s</div>
+      <canvas id="mainCanvas" width="1280" height="720"></canvas>
+    </div>
+
+    <!-- Controls Panel -->
+    <div class="controls-panel">
+      <div class="panel-title">
+        <span>🎮 Bảng Điều Khiển Động Tác</span>
+      </div>
+
+      <!-- Action Toggles -->
+      <div class="action-grid">
+        <button class="btn active" id="btnWalk" onclick="toggleAction('walk')">🚶 Bước đi</button>
+        <button class="btn" id="btnRoar" onclick="toggleAction('mouth')">📢 Gầm / Há miệng</button>
+        <button class="btn" id="btnGraze" onclick="toggleAction('graze')">🌿 Cúi ăn cỏ</button>
+        <button class="btn" id="btnFly" onclick="toggleAction('flying')">🪽 Vỗ cánh bay</button>
+        <button class="btn" id="btnFlip" onclick="toggleAction('flip')">🔄 Lật hướng</button>
+        <button class="btn" id="btnReset" onclick="resetControls()">↺ Mặc định</button>
+      </div>
+
+      <!-- Sliders -->
+      <div class="control-group">
+        <div class="control-label">
+          <span>Tốc độ bước đi (Walk):</span>
+          <span id="valWalk">1.0</span>
+        </div>
+        <input type="range" id="sliderWalk" min="0" max="1" step="0.05" value="1" oninput="updateParam('walk', this.value)">
+      </div>
+
+      <div class="control-group">
+        <div class="control-label">
+          <span>Độ mở miệng / Gầm (Mouth):</span>
+          <span id="valMouth">0.0</span>
+        </div>
+        <input type="range" id="sliderMouth" min="0" max="1" step="0.05" value="0" oninput="updateParam('mouth', this.value)">
+      </div>
+
+      <div class="control-group">
+        <div class="control-label">
+          <span>Độ cúi đầu gặm cỏ (Head Down):</span>
+          <span id="valHeadDown">0.0 rad</span>
+        </div>
+        <input type="range" id="sliderHeadDown" min="0" max="1.2" step="0.05" value="0" oninput="updateParam('head_down', this.value)">
+      </div>
+
+      <div class="control-group">
+        <div class="control-label">
+          <span>Thu phóng tỉ lệ (Scale):</span>
+          <span id="valScale">2.4x</span>
+        </div>
+        <input type="range" id="sliderScale" min="1" max="4" step="0.1" value="2.4" oninput="updateParam('scale', this.value)">
+      </div>
+    </div>
+  </div>
+
+  <!-- Animal Grid Browser -->
+  <div class="animals-section">
+    <div class="section-header">
+      <h2>Danh Sách 37 Rigs Động Vật (Nhấn để chọn)</h2>
+      <span style="font-size: 13px; color: var(--text-muted);" id="countDisplay">Hiển thị 37 loài</span>
+    </div>
+    <div class="animal-grid" id="animalGrid"></div>
+  </div>
+
+  <!-- Contact Sheet Download Links -->
+  <div class="sheet-links">
+    <a class="sheet-btn" href="/contact_sheet_savanna.jpg" target="_blank">
+      <span>🦁 Savanna (9 loài)</span>
+      <span style="font-size: 11px; color: var(--text-muted);">Xem Bảng Soi 5K</span>
+    </a>
+    <a class="sheet-btn" href="/contact_sheet_forest.jpg" target="_blank">
+      <span>🌲 Rừng & Thú Cưng (13 loài)</span>
+      <span style="font-size: 11px; color: var(--text-muted);">Xem Bảng Soi 5K</span>
+    </a>
+    <a class="sheet-btn" href="/contact_sheet_dinosaurs.jpg" target="_blank">
+      <span>🦖 Khủng Long (4 loài)</span>
+      <span style="font-size: 11px; color: var(--text-muted);">Xem Bảng Soi 5K</span>
+    </a>
+    <a class="sheet-btn" href="/contact_sheet_polar_cartoon.jpg" target="_blank">
+      <span>🦅 Cực Địa & Hoạt Hình (11 loài)</span>
+      <span style="font-size: 11px; color: var(--text-muted);">Xem Bảng Soi 5K</span>
+    </a>
+  </div>
+
+  <!-- Nạp Vector Engine và 4 Gói Động Vật -->
+  <script src="remake_vector_engine.js"></script>
+  <script src="remake_vector_packs/farm_trees.js"></script>
+  <script src="remake_vector_packs/wildlife_savanna.js"></script>
+  <script src="remake_vector_packs/wildlife_forest.js"></script>
+  <script src="remake_vector_packs/ancient_dinosaurs.js"></script>
+  <script src="remake_vector_packs/polar_cartoon.js"></script>
+
+  <script>
+    // Dữ liệu 37 loài
+    const ANIMALS = [
+      // Savanna
+      { id: 'elephant', name: 'Voi Châu Phi', eng: 'African Elephant', pack: 'savanna', tag: 'tag-savanna' },
+      { id: 'hippo', name: 'Hà mã', eng: 'Hippopotamus', pack: 'savanna', tag: 'tag-savanna' },
+      { id: 'crocodile', name: 'Cá sấu', eng: 'Nile Crocodile', pack: 'savanna', tag: 'tag-savanna' },
+      { id: 'gorilla', name: 'Khỉ đột', eng: 'Silverback Gorilla', pack: 'savanna', tag: 'tag-savanna' },
+      { id: 'cheetah', name: 'Báo săn đốm', eng: 'Cheetah', pack: 'savanna', tag: 'tag-savanna' },
+      { id: 'hyena', name: 'Linh cẩu đốm', eng: 'Spotted Hyena', pack: 'savanna', tag: 'tag-savanna' },
+      { id: 'giraffe', name: 'Hươu cao cổ', eng: 'Giraffe', pack: 'savanna', tag: 'tag-savanna' },
+      { id: 'meerkat', name: 'Chồn đất', eng: 'Meerkat Sentinel', pack: 'savanna', tag: 'tag-savanna' },
+      { id: 'warthog', name: 'Lợn rừng Châu Phi', eng: 'Warthog', pack: 'savanna', tag: 'tag-savanna' },
+
+      // Forest
+      { id: 'koala', name: 'Gấu túi', eng: 'Koala', pack: 'forest', tag: 'tag-forest' },
+      { id: 'red_panda', name: 'Gấu trúc đỏ', eng: 'Red Panda', pack: 'forest', tag: 'tag-forest' },
+      { id: 'donkey', name: 'Con lừa', eng: 'Donkey', pack: 'forest', tag: 'tag-forest' },
+      { id: 'pug', name: 'Chó Pug mặt xệ', eng: 'Pug Dog', pack: 'forest', tag: 'tag-forest' },
+      { id: 'shiba', name: 'Chó Shiba Inu', eng: 'Shiba Inu', pack: 'forest', tag: 'tag-forest' },
+      { id: 'hedgehog', name: 'Nhím gai', eng: 'Hedgehog', pack: 'forest', tag: 'tag-forest' },
+      { id: 'sloth', name: 'Con lười', eng: 'Three-Toed Sloth', pack: 'forest', tag: 'tag-forest' },
+      { id: 'beaver', name: 'Hải ly', eng: 'Beaver', pack: 'forest', tag: 'tag-forest' },
+      { id: 'black_goat', name: 'Dê đen sừng cong', eng: 'Black Goat', pack: 'forest', tag: 'tag-forest' },
+      { id: 'white_goat', name: 'Dê núi trắng', eng: 'Alpine White Goat', pack: 'forest', tag: 'tag-forest' },
+      { id: 'fluffy_sheep', name: 'Cừu bông xoăn', eng: 'Merino Sheep', pack: 'forest', tag: 'tag-forest' },
+      { id: 'scrat_squirrel', name: 'Sóc tiền sử Scrat', eng: 'Prehistoric Squirrel', pack: 'forest', tag: 'tag-forest' },
+      { id: 'turtle', name: 'Rùa cạn', eng: 'Land Tortoise', pack: 'forest', tag: 'tag-forest' },
+
+      // Dinosaurs
+      { id: 'trex', name: 'Khủng long T-Rex', eng: 'Tyrannosaurus Rex', pack: 'dino', tag: 'tag-dino' },
+      { id: 'triceratops', name: 'Khủng long 3 sừng', eng: 'Triceratops', pack: 'dino', tag: 'tag-dino' },
+      { id: 'pterodactyl', name: 'Thằn lằn bay', eng: 'Pterodactyl', pack: 'dino', tag: 'tag-dino' },
+      { id: 'ancient_lizard', name: 'Thằn lằn buồm', eng: 'Dimetrodon', pack: 'dino', tag: 'tag-dino' },
+
+      // Polar & Cartoon
+      { id: 'eagle', name: 'Đại bàng hoàng kim', eng: 'Golden Eagle', pack: 'polar', tag: 'tag-polar' },
+      { id: 'penguin', name: 'Chim cánh cụt', eng: 'Emperor Penguin', pack: 'polar', tag: 'tag-polar' },
+      { id: 'wild_rabbit', name: 'Thỏ rừng chân dài', eng: 'Wild Hare', pack: 'polar', tag: 'tag-polar' },
+      { id: 'capybara', name: 'Chuột lang nước', eng: 'Capybara', pack: 'polar', tag: 'tag-polar' },
+      { id: 'cartoon_tiger', name: 'Hổ vằn hoạt hình', eng: 'Cartoon Tiger', pack: 'polar', tag: 'tag-polar' },
+      { id: 'cartoon_monkey', name: 'Khỉ con đuôi dài', eng: 'Cartoon Monkey', pack: 'polar', tag: 'tag-polar' },
+      { id: 'armored_bear', name: 'Gấu chiến giáp', eng: 'Armored Bear', pack: 'polar', tag: 'tag-polar' },
+      { id: 'armored_wolf', name: 'Sói chiến giáp', eng: 'Armored Wolf', pack: 'polar', tag: 'tag-polar' },
+      { id: 'chibi_cow', name: 'Bê con Chibi', eng: 'Chibi Cow', pack: 'polar', tag: 'tag-polar' },
+      { id: 'cartoon_snake', name: 'Rắn lục hoạt hình', eng: 'Cartoon Snake', pack: 'polar', tag: 'tag-polar' },
+      { id: 'vulture', name: 'Kền kền sa mạc', eng: 'Desert Vulture', pack: 'polar', tag: 'tag-polar' }
+    ];
+
+    // Trạng thái hiện tại của sân khấu
+    let activeAnimal = ANIMALS[0];
+    let state = {
+      walk: 1.0,
+      stride: 0,
+      mouth: 0.0,
+      head_down: 0.0,
+      scale: 2.4,
+      flip: false,
+      flying: false,
+      blink: 0
+    };
+
+    const canvas = document.getElementById('mainCanvas');
+    const ctx = canvas.getContext('2d');
+    const hud = document.getElementById('hud');
+    let startTime = performance.now();
+    let frameCount = 0, fps = 60, lastFpsTime = startTime;
+
+    // Render loop
+    function render(now) {
+      const t = (now - startTime) / 1000;
+      frameCount++;
+      if (now - lastFpsTime >= 1000) {
+        fps = frameCount;
+        frameCount = 0;
+        lastFpsTime = now;
+      }
+
+      // Cập nhật stride cho dáng đi
+      if (state.walk > 0) {
+        state.stride += state.walk * 0.12;
+      }
+      // Chớp mắt tất định
+      state.blink = (t * 0.6) % 3.0 > 2.85 ? 1 : 0;
+
+      // Xóa màn hình & Vẽ nền đồng quê / savanna
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      drawBackground(ctx, t, activeAnimal.pack);
+
+      // Định vị actor tại giữa màn hình trên mặt đất
+      ctx.save();
+      const groundY = canvas.height * 0.76;
+      ctx.translate(canvas.width / 2, groundY);
+      ctx.scale(state.flip ? -state.scale : state.scale, state.scale);
+
+      // Dispatch qua RIG_DRAWERS của RemakeVector
+      const drawer = globalThis.RemakeVector?.kit?.RIG_DRAWERS?.[activeAnimal.id];
+      if (drawer) {
+        const actorState = {
+          asset: activeAnimal.id,
+          id: 'preview_actor',
+          walk: state.walk,
+          stride: state.stride,
+          mouth: state.mouth,
+          head_down: state.head_down,
+          flying: state.flying,
+          blink: state.blink,
+          style: {}
+        };
+        drawer(ctx, actorState, t);
+      }
+
+      ctx.restore();
+
+      // Cập nhật HUD
+      hud.textContent = `Rig: ${activeAnimal.id} (${activeAnimal.name}) | FPS: ${fps} | t: ${t.toFixed(1)}s | Walk: ${state.walk.toFixed(2)} | Mouth: ${state.mouth.toFixed(2)}`;
+
+      requestAnimationFrame(render);
+    }
+
+    // Vẽ hình nền sinh động theo vùng sinh thái
+    function drawBackground(ctx, t, pack) {
+      const W = canvas.width, H = canvas.height, gy = H * 0.76;
+      // Bầu trời
+      const skyGrad = ctx.createLinearGradient(0, 0, 0, gy);
+      if (pack === 'savanna') {
+        skyGrad.addColorStop(0, '#7dd3fc');
+        skyGrad.addColorStop(1, '#fed7aa');
+      } else if (pack === 'dino') {
+        skyGrad.addColorStop(0, '#f97316');
+        skyGrad.addColorStop(1, '#fde047');
+      } else if (pack === 'polar') {
+        skyGrad.addColorStop(0, '#bae6fd');
+        skyGrad.addColorStop(1, '#e0f2fe');
+      } else {
+        skyGrad.addColorStop(0, '#38bdf8');
+        skyGrad.addColorStop(1, '#bae6fd');
+      }
+      ctx.fillStyle = skyGrad;
+      ctx.fillRect(0, 0, W, gy);
+
+      // Đồi xa
+      ctx.fillStyle = pack === 'savanna' ? '#c4b5fd' : (pack === 'dino' ? '#78350f' : '#64748b');
+      ctx.beginPath();
+      ctx.moveTo(0, gy);
+      for (let x = 0; x <= W; x += 80) {
+        ctx.lineTo(x, gy - 40 - Math.sin(x * 0.005 + 1) * 35);
+      }
+      ctx.lineTo(W, gy);
+      ctx.fill();
+
+      // Mặt đất
+      const groundGrad = ctx.createLinearGradient(0, gy, 0, H);
+      if (pack === 'savanna') {
+        groundGrad.addColorStop(0, '#d97706');
+        groundGrad.addColorStop(1, '#78350f');
+      } else if (pack === 'polar') {
+        groundGrad.addColorStop(0, '#e2e8f0');
+        groundGrad.addColorStop(1, '#94a3b8');
+      } else {
+        groundGrad.addColorStop(0, '#15803d');
+        groundGrad.addColorStop(1, '#14532d');
+      }
+      ctx.fillStyle = groundGrad;
+      ctx.fillRect(0, gy, W, H - gy);
+
+      // Vạch cỏ / sỏi trên mặt đất
+      ctx.fillStyle = 'rgba(0,0,0,0.12)';
+      ctx.fillRect(0, gy - 2, W, 4);
+    }
+
+    // Xử lý controls
+    function updateParam(key, val) {
+      state[key] = parseFloat(val);
+      if (key === 'walk') document.getElementById('valWalk').textContent = val;
+      if (key === 'mouth') document.getElementById('valMouth').textContent = val;
+      if (key === 'head_down') document.getElementById('valHeadDown').textContent = val + ' rad';
+      if (key === 'scale') document.getElementById('valScale').textContent = val + 'x';
+    }
+
+    function toggleAction(action) {
+      if (action === 'walk') {
+        state.walk = state.walk > 0 ? 0 : 1;
+        document.getElementById('sliderWalk').value = state.walk;
+        document.getElementById('valWalk').textContent = state.walk.toFixed(1);
+        document.getElementById('btnWalk').classList.toggle('active', state.walk > 0);
+      } else if (action === 'mouth') {
+        state.mouth = state.mouth > 0 ? 0 : 0.8;
+        document.getElementById('sliderMouth').value = state.mouth;
+        document.getElementById('valMouth').textContent = state.mouth.toFixed(1);
+        document.getElementById('btnRoar').classList.toggle('active', state.mouth > 0);
+      } else if (action === 'graze') {
+        state.head_down = state.head_down > 0 ? 0 : 0.8;
+        document.getElementById('sliderHeadDown').value = state.head_down;
+        document.getElementById('valHeadDown').textContent = state.head_down.toFixed(1) + ' rad';
+        document.getElementById('btnGraze').classList.toggle('active', state.head_down > 0);
+      } else if (action === 'flying') {
+        state.flying = !state.flying;
+        document.getElementById('btnFly').classList.toggle('active', state.flying);
+      } else if (action === 'flip') {
+        state.flip = !state.flip;
+        document.getElementById('btnFlip').classList.toggle('active', state.flip);
+      }
+    }
+
+    function resetControls() {
+      state.walk = 1.0;
+      state.mouth = 0;
+      state.head_down = 0;
+      state.flying = false;
+      state.flip = false;
+      document.getElementById('sliderWalk').value = 1;
+      document.getElementById('sliderMouth').value = 0;
+      document.getElementById('sliderHeadDown').value = 0;
+      document.getElementById('valWalk').textContent = '1.0';
+      document.getElementById('valMouth').textContent = '0.0';
+      document.getElementById('valHeadDown').textContent = '0.0 rad';
+      document.querySelectorAll('.btn').forEach(b => b.classList.remove('active'));
+      document.getElementById('btnWalk').classList.add('active');
+    }
+
+    function selectAnimal(id) {
+      const found = ANIMALS.find(a => a.id === id);
+      if (!found) return;
+      activeAnimal = found;
+      document.querySelectorAll('.animal-card').forEach(c => {
+        c.classList.toggle('active', c.dataset.id === id);
+      });
+      // Nếu là chim thì kích hoạt nút bay
+      const canFly = ['eagle', 'vulture', 'pterodactyl'].includes(id);
+      document.getElementById('btnFly').style.display = canFly ? 'flex' : 'none';
+      if (!canFly) state.flying = false;
+    }
+
+    function filterPack(pack) {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      event.target.classList.add('active');
+      const filtered = pack === 'all' ? ANIMALS : ANIMALS.filter(a => a.pack === pack);
+      renderGrid(filtered);
+    }
+
+    // Render danh sách cards
+    function renderGrid(list) {
+      const grid = document.getElementById('animalGrid');
+      grid.innerHTML = '';
+      document.getElementById('countDisplay').textContent = `Hiển thị ${list.length} loài`;
+
+      list.forEach(item => {
+        const card = document.createElement('div');
+        card.className = `animal-card ${item.id === activeAnimal.id ? 'active' : ''}`;
+        card.dataset.id = item.id;
+        card.onclick = () => selectAnimal(item.id);
+
+        card.innerHTML = `
+          <div class="card-thumb">
+            <canvas id="thumb_${item.id}" width="160" height="90"></canvas>
+          </div>
+          <div class="card-title">${item.name}</div>
+          <div class="card-sub">${item.eng}</div>
+          <span class="card-tag ${item.tag}">${item.pack.toUpperCase()}</span>
+        `;
+        grid.appendChild(card);
+
+        // Vẽ thumbnail tĩnh
+        setTimeout(() => {
+          const tc = document.getElementById(`thumb_${item.id}`);
+          if (tc) {
+            const tctx = tc.getContext('2d');
+            tctx.save();
+            tctx.translate(tc.width / 2, tc.height * 0.85);
+            tctx.scale(0.85, 0.85);
+            const drawer = globalThis.RemakeVector?.kit?.RIG_DRAWERS?.[item.id];
+            if (drawer) {
+              drawer(tctx, { asset: item.id, walk: 0, mouth: 0, head_down: 0 }, 1.0);
+            }
+            tctx.restore();
+          }
+        }, 10);
+      });
+    }
+
+    // Khởi tạo
+    window.addEventListener('load', () => {
+      renderGrid(ANIMALS);
+      selectAnimal('elephant');
+      requestAnimationFrame(render);
+    });
+  </script>
+</body>
+</html>

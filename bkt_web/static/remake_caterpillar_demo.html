@@ -1,0 +1,1122 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Remake 2D Hoạt Hình: Bác Nông Dân & Con Sâu Ranh Mãnh (2.mp4)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #060813;
+      --panel-bg: rgba(15, 23, 42, 0.75);
+      --panel-border: rgba(255, 255, 255, 0.08);
+      --accent-green: #22c55e;
+      --accent-blue: #38bdf8;
+      --accent-amber: #f59e0b;
+      --accent-red: #ef4444;
+      --text-main: #f8fafc;
+      --text-sub: #94a3b8;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+      background: var(--bg-dark);
+      background-image: 
+        radial-gradient(circle at 15% 20%, rgba(34, 197, 94, 0.12) 0%, transparent 45%),
+        radial-gradient(circle at 85% 80%, rgba(56, 189, 248, 0.12) 0%, transparent 45%);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 24px 16px 60px;
+      overflow-x: hidden;
+    }
+
+    /* Top Navigation Bar */
+    .nav-bar {
+      width: 100%;
+      max-width: 1200px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+      padding: 12px 20px;
+      background: var(--panel-bg);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--panel-border);
+      border-radius: 16px;
+    }
+    .nav-left { display: flex; align-items: center; gap: 12px; }
+    .nav-tag {
+      padding: 4px 10px;
+      background: rgba(34, 197, 94, 0.18);
+      border: 1px solid rgba(34, 197, 94, 0.4);
+      color: #4ade80;
+      font-size: 11px;
+      font-weight: 800;
+      border-radius: 20px;
+      letter-spacing: 0.5px;
+    }
+    .nav-title { font-size: 16px; font-weight: 800; color: #fff; }
+    .nav-links { display: flex; gap: 10px; }
+    .btn-nav {
+      padding: 8px 14px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--panel-border);
+      color: var(--text-sub);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+      border-radius: 10px;
+      transition: all 0.2s;
+    }
+    .btn-nav:hover { background: rgba(255, 255, 255, 0.12); color: #fff; }
+
+    /* Main Grid */
+    .main-grid {
+      display: grid;
+      grid-template-columns: 460px 1fr;
+      gap: 32px;
+      width: 100%;
+      max-width: 1200px;
+      align-items: start;
+    }
+
+    @media (max-width: 950px) {
+      .main-grid { grid-template-columns: 1fr; justify-items: center; }
+    }
+
+    /* iPhone 16 Bezel Player */
+    .phone-container {
+      position: relative;
+      width: 440px;
+      height: 782px;
+      background: #000;
+      border-radius: 54px;
+      padding: 12px;
+      box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.8),
+                  0 0 0 1px rgba(255, 255, 255, 0.1),
+                  inset 0 0 0 2px rgba(255, 255, 255, 0.05);
+    }
+
+    .phone-screen {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      background: #000;
+      border-radius: 44px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Dynamic Island */
+    .dynamic-island {
+      position: absolute;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 120px;
+      height: 32px;
+      background: #000;
+      border-radius: 20px;
+      z-index: 50;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+    }
+    .island-cam {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      background: #111;
+      border: 1.5px solid #222;
+    }
+    .island-sensor {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #0c102b;
+    }
+
+    /* Canvas 9:16 */
+    #anim-canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+      background: #0f172a;
+    }
+
+    /* Overlay Controls on Phone */
+    .phone-overlay {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      pointer-events: none;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 50px 16px 20px;
+      z-index: 30;
+    }
+
+    .overlay-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .tag-live {
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(10px);
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 700;
+      color: #22c55e;
+      border: 1px solid rgba(34, 197, 94, 0.4);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .tag-live::before {
+      content: '';
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      background: #22c55e;
+      border-radius: 50%;
+      animation: pulse 1.5s infinite;
+    }
+
+    .sub-pill-container {
+      margin-bottom: 8px;
+      display: flex;
+      justify-content: center;
+    }
+    .sub-pill {
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 14px;
+      padding: 8px 16px;
+      color: #fff;
+      font-size: 13.5px;
+      font-weight: 800;
+      text-align: center;
+      max-width: 90%;
+      line-height: 1.4;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+      transition: all 0.2s ease;
+    }
+    .sub-pill.farmer { border-color: rgba(245, 158, 11, 0.6); color: #fbbf24; }
+    .sub-pill.worm { border-color: rgba(34, 197, 94, 0.6); color: #4ade80; }
+
+    .overlay-bottom {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      pointer-events: auto;
+    }
+
+    .time-bar {
+      width: 100%;
+      height: 5px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 10px;
+      overflow: hidden;
+      cursor: pointer;
+    }
+    .time-bar-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #22c55e, #38bdf8);
+      border-radius: 10px;
+    }
+
+    .btn-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .btn-play-toggle {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: #fff;
+      color: #000;
+      border: none;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(255,255,255,0.3);
+      transition: transform 0.15s;
+    }
+    .btn-play-toggle:hover { transform: scale(1.08); }
+    .time-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: #e2e8f0;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+    }
+
+    /* Right Sidebar / Details Panel */
+    .side-panel {
+      background: var(--panel-bg);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--panel-border);
+      border-radius: 24px;
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      border-bottom: 1px solid var(--panel-border);
+      padding-bottom: 18px;
+    }
+    .panel-title-h2 {
+      font-size: 20px;
+      font-weight: 800;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .panel-desc {
+      font-size: 13px;
+      color: var(--text-sub);
+      margin-top: 6px;
+      line-height: 1.5;
+    }
+
+    /* Storyboard list */
+    .storyboard-scroll {
+      max-height: 420px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding-right: 6px;
+    }
+    .storyboard-scroll::-webkit-scrollbar { width: 6px; }
+    .storyboard-scroll::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 4px; }
+
+    .cue-card {
+      padding: 12px 16px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .cue-card:hover {
+      background: rgba(255, 255, 255, 0.07);
+      border-color: rgba(255, 255, 255, 0.15);
+    }
+    .cue-card.active {
+      background: rgba(34, 197, 94, 0.12);
+      border-color: rgba(34, 197, 94, 0.4);
+    }
+    .cue-avatar {
+      font-size: 24px;
+      line-height: 1;
+    }
+    .cue-body { flex: 1; }
+    .cue-speaker {
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 2px;
+    }
+    .cue-speaker.farmer { color: #fbbf24; }
+    .cue-speaker.worm { color: #4ade80; }
+    .cue-speaker.narrator { color: #94a3b8; }
+    .cue-text {
+      font-size: 13.5px;
+      font-weight: 600;
+      color: #f1f5f9;
+      line-height: 1.4;
+    }
+    .cue-time {
+      font-size: 11px;
+      color: var(--text-sub);
+      margin-top: 4px;
+    }
+
+    /* Actions */
+    .panel-actions {
+      display: flex;
+      gap: 12px;
+    }
+    .btn-export-mp4 {
+      flex: 1;
+      padding: 14px;
+      background: linear-gradient(135deg, #22c55e, #16a34a);
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 4px 16px rgba(34, 197, 94, 0.35);
+      transition: all 0.2s;
+    }
+    .btn-export-mp4:hover {
+      box-shadow: 0 6px 22px rgba(34, 197, 94, 0.5);
+      transform: translateY(-2px);
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+    body { background:#f4f7fb; background-image:radial-gradient(circle at 10% 8%,#e4f6ec 0,transparent 35%),radial-gradient(circle at 90% 12%,#e3efff 0,transparent 32%); color:#172033; }
+    .nav-bar,.side-panel { background:rgba(255,255,255,.95); border-color:#dbe3ef; box-shadow:0 16px 42px rgba(31,50,81,.10); }
+    .nav-title,.panel-title-h2 { color:#172033; }.panel-desc,.cue-text,.cue-time { color:#64748b; }
+    .btn-nav { background:#fff; border-color:#dbe3ef; color:#334155; }.btn-nav:hover { background:#f8fafc; color:#172033; }
+    .cue-card { background:#f8fafc; border-color:#e1e8f2; }.cue-card:hover { background:#f1f5f9; border-color:#b8c8df; }
+    @media(max-width:560px){
+      body{padding:12px 10px 36px}.nav-bar{padding:12px;flex-wrap:wrap}.nav-left{width:100%;flex-wrap:wrap}.nav-links{width:100%;max-width:100%;overflow-x:auto;padding-bottom:3px}.btn-nav{flex:0 0 auto}.main-grid{min-width:0}.phone-container,.side-panel{width:100%;max-width:calc(100vw - 20px)}.phone-container{height:auto;aspect-ratio:9/16;border-radius:34px;padding:8px}.phone-screen{border-radius:27px}.side-panel{padding:16px 12px;border-radius:18px}.panel-header{flex-wrap:wrap;gap:10px}.panel-actions{flex-direction:column}.cue-card{padding:10px;min-width:0}.cue-body{min-width:0}.cue-text{overflow-wrap:anywhere}}
+  </style>
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <div class="nav-bar">
+    <div class="nav-left">
+      <span class="nav-tag">2D NATIVE CANVAS</span>
+      <span class="nav-title">Bác Nông Dân &amp; Chú Sâu Ranh Mãnh (2.mp4)</span>
+    </div>
+    <div class="nav-links">
+      <a href="/static/remake_tomato_demo.html" class="btn-nav">🍅 Bản Cà Chua 5.mp4</a>
+      <a href="/static/remake_2d_demo.html" class="btn-nav">🍉 Bản Dưa Hấu 1.mp4</a>
+      <a href="/static/remake_hub.html" class="btn-nav">🎛️ Remake Hub</a>
+      <a href="/" class="btn-nav">🏠 Trang Chủ</a>
+    </div>
+  </div>
+
+  <!-- Main Grid -->
+  <div class="main-grid">
+
+    <!-- Left: iPhone 16 Bezel Screen -->
+    <div class="phone-container">
+      <div class="phone-screen">
+        <div class="dynamic-island">
+          <div class="island-cam"></div>
+          <div class="island-sensor"></div>
+        </div>
+
+        <canvas id="anim-canvas" width="720" height="1280"></canvas>
+
+        <div class="phone-overlay">
+          <div class="overlay-top">
+            <div class="tag-live">60 FPS VECTOR</div>
+            <div style="font-size: 12px; font-weight: 800; color: #fff; background: rgba(0,0,0,0.5); padding: 4px 8px; border-radius: 8px;">
+              9:16 TIKTOK
+            </div>
+          </div>
+
+          <div class="overlay-bottom">
+            <div class="sub-pill-container">
+              <div id="sub-pill" class="sub-pill">Đang chuẩn bị...</div>
+            </div>
+
+            <div class="time-bar" id="time-bar" onclick="seekAudio(event)">
+              <div class="time-bar-fill" id="time-bar-fill"></div>
+            </div>
+
+            <div class="btn-row">
+              <button type="button" class="btn-play-toggle" id="btn-play" onclick="togglePlay()">
+                ▶
+              </button>
+              <div class="time-label" id="time-label">00:00 / 01:02</div>
+              <button type="button" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #fff; border-radius: 8px; padding: 6px 10px; cursor: pointer; font-size: 12px;" onclick="toggleMute()">
+                🔊 Bật/Tắt Âm
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: Details & Cue Timeline Panel -->
+    <div class="side-panel">
+      <div class="panel-header">
+        <div>
+          <h2 class="panel-title-h2">
+            <span>🐛</span> Kịch Bản Việt Hóa Đa Vai (22 Phân Đoạn)
+          </h2>
+          <p class="panel-desc">
+            Phân vai lồng tiếng: Bác Nông Dân (Edge-TTS <code>vi-VN-NamMinhNeural</code>) đối đầu Chú Sâu Xanh lém lỉnh (CapCut <code>BV421_vivn_streaming</code>).
+          </p>
+        </div>
+        <div style="padding: 6px 12px; background: rgba(34,197,94,0.15); border: 1px solid rgba(34,197,94,0.3); border-radius: 10px; font-size: 12px; font-weight: 800; color: #4ade80;">
+          MASTER: 62.1s
+        </div>
+      </div>
+
+      <!-- Scrollable Cues -->
+      <div class="storyboard-scroll" id="cues-list">
+        <!-- Dynamic Cue Cards -->
+      </div>
+
+      <!-- Action Footer -->
+      <div class="panel-actions">
+        <button type="button" class="btn-export-mp4" onclick="exportMp4()">
+          <span>⚡</span> XUẤT VIDEO MP4 SẮC NÉT (60 FPS)
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Audio Master Element -->
+  <audio id="master-audio" src="/static/remake_caterpillar_master.mp3" preload="auto"></audio>
+
+  <script>
+    let CUES = [
+      { start: 0.0, end: 2.0, speaker: 'farmer', name: 'Bác Nông Dân', text: 'Này con sâu ranh con kia, lại mò vào ăn lá à!', avatar: '👨‍🌾' },
+      { start: 2.1, end: 4.2, speaker: 'farmer', name: 'Bác Nông Dân', text: 'Xem hôm nay tao xử đẹp mày thế nào!', avatar: '👨‍🌾' },
+      { start: 5.8, end: 8.5, speaker: 'worm', name: 'Chú Sâu Xanh', text: 'Lêu lêu! Cứ như ông mà đòi trị được bổn công tử này à!', avatar: '🐛' },
+      { start: 12.0, end: 13.9, speaker: 'farmer', name: 'Bác Nông Dân', text: 'Ủa tao xịt thuốc sâu xịn sò ngần này rồi cơ mà?', avatar: '👨‍🌾' },
+      { start: 14.0, end: 15.9, speaker: 'farmer', name: 'Bác Nông Dân', text: 'Chẳng lẽ thuốc dỏm nên sâu chưa bị diệt sao ta?', avatar: '👨‍🌾' },
+      { start: 16.0, end: 17.9, speaker: 'worm', name: 'Chú Sâu Xanh', text: 'Mắt ông để dưới gót chân hay sao vậy hả?!', avatar: '🐛' },
+      { start: 18.0, end: 19.2, speaker: 'worm', name: 'Chú Sâu Xanh', text: 'Thuốc có dính được giọt nào lên người tui đâu!', avatar: '🐛' },
+      { start: 19.3, end: 21.0, speaker: 'worm', name: 'Chú Sâu Xanh', text: 'Xịt hụt tùm lum thì làm sao mà diệt được tui hả trời!', avatar: '🐛' },
+      { start: 22.0, end: 24.2, speaker: 'farmer', name: 'Bác Nông Dân', text: 'Ban ngày mày nấp kỹ quá tao xịt không trúng chứ gì!', avatar: '👨‍🌾' },
+      { start: 24.5, end: 27.5, speaker: 'farmer', name: 'Bác Nông Dân', text: 'Cứ đợi đấy, tối nay tao nhất định sẽ quay lại phục kích mày!', avatar: '👨‍🌾' },
+      { start: 28.0, end: 30.0, speaker: 'worm', name: 'Chú Sâu Xanh', text: 'Thách ông luôn đó, tui lại sợ ông quá cơ!', avatar: '🐛' },
+      { start: 30.2, end: 34.0, speaker: 'farmer', name: 'Bác Nông Dân', text: 'Hôm nay ông đây quyết chiến tới cùng với mày luôn!', avatar: '👨‍🌾' },
+      { start: 34.5, end: 36.2, speaker: 'narrator', name: 'Lời Dẫn', text: '🌙 [Đêm khuya thanh vắng — Bác nông dân rình rập ngoài vườn...]', avatar: '🌙' },
+      { start: 36.5, end: 38.5, speaker: 'worm', name: 'Chú Sâu Xanh', text: 'Trời đất ơi trong kẽ lá này oi bức ngột ngạt quá!', avatar: '🐛' },
+      { start: 38.6, end: 41.0, speaker: 'worm', name: 'Chú Sâu Xanh', text: 'Phải bò ra ngoài hóng gió mát tí cho đỡ ngột ngạt coi...', avatar: '🐛' },
+      { start: 41.2, end: 43.5, speaker: 'worm', name: 'Chú Sâu Xanh', text: 'Aha! Gió mát trăng thanh, đã cái nư ghê chưa kìa!', avatar: '🐛' },
+      { start: 44.5, end: 47.0, speaker: 'farmer', name: 'Bác Nông Dân', text: 'Đã cái nư hả mậy?! Xem hôm nay mày chạy đằng trời nè con!', avatar: '👨‍🌾' },
+      { start: 47.0, end: 48.5, speaker: 'worm', name: 'Chú Sâu Xanh', text: 'Ủa mẹ ơi cứu con!', avatar: '🐛' },
+      { start: 48.5, end: 51.2, speaker: 'worm', name: 'Chú Sâu Xanh', text: 'Nửa đêm nửa hôm ngần này rồi mà ông còn chưa chịu đi ngủ hả?!', avatar: '🐛' },
+      { start: 51.5, end: 53.5, speaker: 'farmer', name: 'Bác Nông Dân', text: 'Vì để bắt sống được cái thứ ranh mãnh như mày...', avatar: '👨‍🌾' },
+      { start: 53.8, end: 57.5, speaker: 'farmer', name: 'Bác Nông Dân', text: '...có biết ông đây phải thức trắng đêm khổ cực thế nào không hả?!', avatar: '👨‍🌾' },
+      { start: 58.0, end: 61.8, speaker: 'narrator', name: 'Lời Bình', text: 'Mẹo nhà nông: Sâu cuốn lá thường bò ra ngoài vào ban đêm, soi đèn bắt sâu là cách an toàn và hiệu quả nhất!', avatar: '🎙️' }
+    ];
+    const VI_CUES = CUES.map(cue => ({ ...cue }));
+
+    const audio = document.getElementById('master-audio');
+    const canvas = document.getElementById('anim-canvas');
+    const ctx = canvas.getContext('2d');
+    const subPill = document.getElementById('sub-pill');
+    const timeBarFill = document.getElementById('time-bar-fill');
+    const timeLabel = document.getElementById('time-label');
+    const btnPlay = document.getElementById('btn-play');
+    const cuesList = document.getElementById('cues-list');
+
+    let isPlaying = false;
+    const totalDuration = 62.1;
+
+    async function setupCountryVoices() {
+      const projectId = new URLSearchParams(location.search).get('project');
+      if (!projectId || !/^[a-z0-9_-]{1,80}$/.test(projectId)) return;
+      try {
+        const response = await fetch(`/static/remake_projects/${encodeURIComponent(projectId)}/manifest.json`, {cache:'no-store'});
+        if (!response.ok) return;
+        const manifest = await response.json();
+        const select = document.createElement('select');
+        select.title = 'Chọn quốc gia lồng tiếng';
+        select.style.cssText = 'width:100%;padding:11px 12px;border-radius:10px;border:1px solid #cfd9e8;background:#fff;color:#172033;font-weight:800;margin-bottom:10px';
+        for (const [code, item] of Object.entries(manifest.localizations || {})) {
+          if (item.status !== 'ready') continue;
+          const option = document.createElement('option'); option.value = code;
+          option.textContent = `${item.country?.flag || (code==='vi-VN'?'🇻🇳':'🌍')} ${item.country?.country || (code==='vi-VN'?'Việt Nam':code)}`;
+          select.append(option);
+        }
+        if (!select.options.length) return;
+        document.querySelector('.panel-actions').prepend(select);
+        select.addEventListener('change', async () => {
+          const item = manifest.localizations[select.value];
+          const wasPlaying = !audio.paused, current = audio.currentTime;
+          if (item.dialogue_url) {
+            const packageData = await (await fetch(item.dialogue_url, {cache:'no-store'})).json();
+            CUES = packageData.cues.map(cue => ({...cue, name:cue.character_name || cue.speaker, avatar:({farmer:'👨‍🌾',worm:'🐛',narrator:'🎙️'})[cue.speaker] || '🎙️'}));
+          } else CUES = VI_CUES.map(cue => ({...cue}));
+          audio.src = item.audio_url; audio.currentTime = Math.min(current, totalDuration); renderCuesList();
+          if (wasPlaying) await audio.play();
+        });
+      } catch (error) { console.warn('Không tải được voice package', error); }
+    }
+
+    // Render Cues in Right Panel
+    function renderCuesList() {
+      cuesList.innerHTML = '';
+      CUES.forEach((cue, idx) => {
+        const div = document.createElement('div');
+        div.className = 'cue-card';
+        div.id = `cue-item-${idx}`;
+        div.onclick = () => {
+          audio.currentTime = cue.start;
+          if (!isPlaying) togglePlay();
+        };
+        div.innerHTML = `
+          <div class="cue-avatar">${cue.avatar}</div>
+          <div class="cue-body">
+            <div class="cue-speaker ${cue.speaker}">${cue.name}</div>
+            <div class="cue-text">${cue.text}</div>
+            <div class="cue-time">${formatTime(cue.start)} - ${formatTime(cue.end)}</div>
+          </div>
+        `;
+        cuesList.appendChild(div);
+      });
+    }
+
+    function formatTime(sec) {
+      const m = Math.floor(sec / 60);
+      const s = Math.floor(sec % 60);
+      return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+    }
+
+    function togglePlay() {
+      if (audio.paused) {
+        audio.play().then(() => {
+          isPlaying = true;
+          btnPlay.textContent = '⏸';
+        }).catch(err => console.log('Audio autoplay blocked', err));
+      } else {
+        audio.pause();
+        isPlaying = false;
+        btnPlay.textContent = '▶';
+      }
+    }
+
+    function toggleMute() {
+      audio.muted = !audio.muted;
+    }
+
+    function seekAudio(e) {
+      const rect = e.currentTarget.getBoundingClientRect();
+      const pct = (e.clientX - rect.left) / rect.width;
+      audio.currentTime = pct * totalDuration;
+    }
+
+    // ==========================================
+    // 2D NATIVE CANVAS ANIMATION ENGINE (60 FPS)
+    // ==========================================
+    let animFrame;
+    function render() {
+      const curTime = audio.currentTime || 0;
+      const t = curTime;
+      const W = canvas.width;
+      const H = canvas.height;
+
+      // Determine day / night phase
+      const isNight = t >= 34.5;
+      const nightTransition = Math.min(1, Math.max(0, (t - 33.5) / 2.0));
+
+      // 1. CLEAR & BACKGROUND
+      ctx.save();
+      if (!isNight) {
+        // Day sky gradient
+        const skyGrad = ctx.createLinearGradient(0, 0, 0, H);
+        skyGrad.addColorStop(0, '#38bdf8');
+        skyGrad.addColorStop(0.5, '#7dd3fc');
+        skyGrad.addColorStop(1, '#bae6fd');
+        ctx.fillStyle = skyGrad;
+        ctx.fillRect(0, 0, W, H);
+
+        // Sun
+        ctx.fillStyle = '#fef08a';
+        ctx.beginPath();
+        ctx.arc(620, 180, 70, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = 'rgba(254, 240, 138, 0.25)';
+        ctx.beginPath();
+        ctx.arc(620, 180, 110, 0, Math.PI * 2);
+        ctx.fill();
+      } else {
+        // Night sky gradient
+        const nightGrad = ctx.createLinearGradient(0, 0, 0, H);
+        nightGrad.addColorStop(0, '#030712');
+        nightGrad.addColorStop(0.6, '#0f172a');
+        nightGrad.addColorStop(1, '#1e1b4b');
+        ctx.fillStyle = nightGrad;
+        ctx.fillRect(0, 0, W, H);
+
+        // Moon
+        ctx.fillStyle = '#fef08a';
+        ctx.beginPath();
+        ctx.arc(620, 200, 65, 0, Math.PI * 2);
+        ctx.fill();
+        // Moon crater cut
+        ctx.fillStyle = '#0a0f1d';
+        ctx.beginPath();
+        ctx.arc(600, 190, 55, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Stars
+        ctx.fillStyle = '#ffffff';
+        for (let i = 0; i < 20; i++) {
+          const sx = (i * 37) % W;
+          const sy = (i * 49) % 400;
+          const twinkle = (Math.sin(t * 4 + i) + 1) * 0.5;
+          ctx.globalAlpha = twinkle * 0.8;
+          ctx.beginPath();
+          ctx.arc(sx, sy, 2 + (i % 3), 0, Math.PI * 2);
+          ctx.fill();
+        }
+        ctx.globalAlpha = 1.0;
+      }
+
+      // 2. BIG PLANT & LEAVES
+      // Branch stem
+      ctx.strokeStyle = '#3f2e18';
+      ctx.lineWidth = 26;
+      ctx.lineCap = 'round';
+      ctx.beginPath();
+      ctx.moveTo(-20, 750);
+      ctx.bezierCurveTo(200, 720, 350, 760, 520, 700);
+      ctx.bezierCurveTo(600, 670, 680, 690, 740, 680);
+      ctx.stroke();
+
+      // Big Main Leaf where the worm is sitting
+      ctx.save();
+      ctx.translate(360, 720);
+      ctx.rotate(-0.08 + Math.sin(t * 2) * 0.02);
+
+      // Leaf body
+      const leafGrad = ctx.createLinearGradient(-150, -100, 180, 80);
+      leafGrad.addColorStop(0, '#4ade80');
+      leafGrad.addColorStop(0.6, '#22c55e');
+      leafGrad.addColorStop(1, '#15803d');
+      ctx.fillStyle = leafGrad;
+      ctx.beginPath();
+      ctx.moveTo(-180, 0);
+      ctx.bezierCurveTo(-100, -130, 120, -140, 220, 0);
+      ctx.bezierCurveTo(120, 140, -100, 120, -180, 0);
+      ctx.fill();
+      ctx.strokeStyle = '#166534';
+      ctx.lineWidth = 4;
+      ctx.stroke();
+
+      // Leaf veins
+      ctx.strokeStyle = '#86efac';
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.moveTo(-170, 0);
+      ctx.lineTo(210, 0);
+      ctx.stroke();
+
+      // Small veins
+      for (let i = -100; i <= 150; i += 40) {
+        ctx.beginPath();
+        ctx.moveTo(i, 0);
+        ctx.lineTo(i + 30, -50);
+        ctx.moveTo(i, 0);
+        ctx.lineTo(i + 30, 45);
+        ctx.stroke();
+      }
+
+      // Small bitten hole by the worm
+      ctx.fillStyle = isNight ? '#0b1120' : '#4ba4de';
+      ctx.beginPath();
+      ctx.arc(80, -35, 18, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.beginPath();
+      ctx.arc(95, -28, 14, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.restore();
+
+      // 3. THE CATERPILLAR (CHÚ SÂU XANH LÉM LĨNH)
+      // Worm position & animation
+      let wormX = 380;
+      let wormY = 640;
+      let wormScale = 1.0;
+      let isTaunting = (t >= 5.8 && t <= 9.0) || (t >= 16.0 && t <= 21.0);
+      let isHiding = (t >= 0.5 && t <= 5.5) || (t >= 22.0 && t <= 26.0);
+      let isShocked = (t >= 44.5 && t <= 57.0);
+      let isRelaxing = (t >= 36.5 && t <= 44.0);
+
+      if (isHiding) {
+        wormY = 720; // hides under leaf
+      } else if (isRelaxing) {
+        wormX = 420;
+        wormY = 620;
+      }
+
+      ctx.save();
+      ctx.translate(wormX, wormY);
+      const bob = Math.sin(t * 8) * (isTaunting ? 12 : 4);
+      ctx.translate(0, bob);
+
+      // Worm body segments (Chubby Cute Segmented Caterpillar)
+      const segColors = ['#22c55e', '#4ade80', '#16a34a', '#4ade80', '#22c55e'];
+      const segRadii = [32, 28, 25, 22, 18];
+      const segOffsets = [0, -40, -75, -105, -130];
+
+      // Draw segments from tail to head
+      for (let i = 4; i >= 0; i--) {
+        const segX = segOffsets[i] + Math.cos(t * 4 + i) * 6;
+        const segY = Math.sin(t * 4 + i) * 5;
+        const r = segRadii[i];
+
+        ctx.fillStyle = segColors[i];
+        ctx.beginPath();
+        ctx.arc(segX, segY, r, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.strokeStyle = '#14532d';
+        ctx.lineWidth = 3;
+        ctx.stroke();
+
+        // Shiny Specular spot
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
+        ctx.beginPath();
+        ctx.arc(segX - r * 0.3, segY - r * 0.3, r * 0.25, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Little cute feet
+        if (i < 4) {
+          ctx.fillStyle = '#15803d';
+          ctx.beginPath();
+          ctx.arc(segX - 5, segY + r + 4, 6, 0, Math.PI * 2);
+          ctx.arc(segX + 5, segY + r + 4, 6, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+
+      // Worm Head Antennae
+      ctx.strokeStyle = '#15803d';
+      ctx.lineWidth = 4;
+      ctx.beginPath();
+      ctx.moveTo(10, -25);
+      ctx.quadraticCurveTo(20, -55, 30, -50);
+      ctx.moveTo(-5, -25);
+      ctx.quadraticCurveTo(-15, -55, -25, -50);
+      ctx.stroke();
+      ctx.fillStyle = '#f59e0b';
+      ctx.beginPath();
+      ctx.arc(30, -50, 7, 0, Math.PI * 2);
+      ctx.arc(-25, -50, 7, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Big Googly Cute Eyes
+      ctx.fillStyle = '#ffffff';
+      ctx.beginPath();
+      ctx.arc(8, -10, 16, 0, Math.PI * 2);
+      ctx.arc(-18, -10, 14, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = '#000';
+      ctx.lineWidth = 2.5;
+      ctx.stroke();
+
+      // Pupils
+      if (isShocked) {
+        // Shocked tiny pupils
+        ctx.fillStyle = '#000';
+        ctx.beginPath();
+        ctx.arc(8, -10, 4, 0, Math.PI * 2);
+        ctx.arc(-18, -10, 4, 0, Math.PI * 2);
+        ctx.fill();
+        // Sweat droplets
+        ctx.fillStyle = '#38bdf8';
+        ctx.beginPath();
+        ctx.arc(30, -25, 6, 0, Math.PI * 2);
+        ctx.arc(-35, -20, 5, 0, Math.PI * 2);
+        ctx.fill();
+      } else if (isTaunting) {
+        // Smug looking eye
+        ctx.fillStyle = '#000';
+        ctx.beginPath();
+        ctx.arc(11, -8, 8, 0, Math.PI * 2);
+        ctx.arc(-15, -8, 7, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = '#fff';
+        ctx.beginPath();
+        ctx.arc(13, -11, 3, 0, Math.PI * 2);
+        ctx.fill();
+      } else {
+        // Normal happy eye
+        ctx.fillStyle = '#000';
+        ctx.beginPath();
+        ctx.arc(10, -9, 7, 0, Math.PI * 2);
+        ctx.arc(-16, -9, 6, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      // Mouth
+      ctx.strokeStyle = '#991b1b';
+      ctx.lineWidth = 3.5;
+      ctx.beginPath();
+      if (isShocked) {
+        // Big 'O' gasp
+        ctx.fillStyle = '#ef4444';
+        ctx.arc(-2, 10, 12, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+      } else if (isTaunting) {
+        // Smug grin sticking out tongue
+        ctx.arc(-2, 8, 14, 0.1 * Math.PI, 0.9 * Math.PI);
+        ctx.stroke();
+        // Tongue
+        ctx.fillStyle = '#f43f5e';
+        ctx.beginPath();
+        ctx.arc(-2, 16, 7, 0, Math.PI * 2);
+        ctx.fill();
+      } else {
+        // Gentle smile
+        ctx.arc(-2, 8, 10, 0.1 * Math.PI, 0.9 * Math.PI);
+        ctx.stroke();
+      }
+
+      // Rosy cheeks
+      ctx.fillStyle = 'rgba(244, 63, 94, 0.4)';
+      ctx.beginPath();
+      ctx.arc(22, 2, 7, 0, Math.PI * 2);
+      ctx.arc(-28, 2, 7, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Taunt Waving Gloves
+      if (isTaunting) {
+        ctx.save();
+        ctx.translate(25, 0);
+        ctx.rotate(Math.sin(t * 15) * 0.4);
+        ctx.fillStyle = '#ffffff';
+        ctx.strokeStyle = '#000';
+        ctx.lineWidth = 2.5;
+        ctx.beginPath();
+        ctx.arc(10, -10, 12, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+        ctx.restore();
+      }
+
+      ctx.restore();
+
+      // 4. BÁC NÔNG DÂN (FARMER WITH SPRAYER IN DAY / FLASHLIGHT AT NIGHT)
+      let farmerX = 140;
+      let farmerY = 820;
+
+      ctx.save();
+      ctx.translate(farmerX, farmerY);
+
+      // Body (Áo nâu nông dân)
+      ctx.fillStyle = '#78350f';
+      ctx.beginPath();
+      ctx.roundRect(-45, 60, 90, 140, 18);
+      ctx.fill();
+      ctx.strokeStyle = '#451a03';
+      ctx.lineWidth = 4;
+      ctx.stroke();
+
+      // Head
+      ctx.fillStyle = '#fed7aa';
+      ctx.beginPath();
+      ctx.arc(0, 0, 42, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = '#c2410c';
+      ctx.lineWidth = 3;
+      ctx.stroke();
+
+      // Straw Hat (Nón lá / Mũ rơm)
+      ctx.fillStyle = '#fbbf24';
+      ctx.beginPath();
+      ctx.ellipse(0, -32, 90, 22, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = '#d97706';
+      ctx.lineWidth = 4;
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.arc(0, -42, 45, Math.PI, 0);
+      ctx.fill();
+      ctx.stroke();
+
+      // Farmer Beard & Mustache
+      ctx.fillStyle = '#ffffff';
+      ctx.beginPath();
+      ctx.arc(-12, 14, 10, 0, Math.PI);
+      ctx.arc(12, 14, 10, 0, Math.PI);
+      ctx.fill();
+
+      // Farmer Eyes & Brows
+      ctx.strokeStyle = '#000';
+      ctx.lineWidth = 3.5;
+      if (t < 34.5) {
+        // Annoyed day eyebrows
+        ctx.beginPath();
+        ctx.moveTo(-25, -12);
+        ctx.lineTo(-5, -6);
+        ctx.moveTo(25, -12);
+        ctx.lineTo(5, -6);
+        ctx.stroke();
+      } else {
+        // Determined night eyes
+        ctx.beginPath();
+        ctx.moveTo(-22, -8);
+        ctx.lineTo(-6, -8);
+        ctx.moveTo(22, -8);
+        ctx.lineTo(6, -8);
+        ctx.stroke();
+      }
+
+      ctx.fillStyle = '#000';
+      ctx.beginPath();
+      ctx.arc(-14, -2, 5, 0, Math.PI * 2);
+      ctx.arc(14, -2, 5, 0, Math.PI * 2);
+      ctx.fill();
+
+      // 4.1 DAY MODE: Sprayer Tank on Back & Wand
+      if (!isNight) {
+        // Yellow chemical sprayer tank on back
+        ctx.fillStyle = '#facc15';
+        ctx.beginPath();
+        ctx.roundRect(-80, 50, 40, 95, 10);
+        ctx.fill();
+        ctx.strokeStyle = '#ca8a04';
+        ctx.lineWidth = 3;
+        ctx.stroke();
+
+        // Sprayer hose & wand
+        ctx.strokeStyle = '#000';
+        ctx.lineWidth = 6;
+        ctx.beginPath();
+        ctx.moveTo(-60, 135);
+        ctx.quadraticCurveTo(0, 160, 60, 100);
+        ctx.lineTo(160, 40);
+        ctx.stroke();
+
+        // Spray Nozzle
+        ctx.fillStyle = '#94a3b8';
+        ctx.fillRect(158, 32, 16, 16);
+
+        // Spray Mist Particles (Phun bọt thuốc)
+        if (t < 25.0) {
+          const sprayAnim = (t * 12) % 10;
+          for (let p = 0; p < 18; p++) {
+            const px = 175 + ((p * 23 + sprayAnim * 20) % 240);
+            const py = 35 + Math.sin(p + t * 5) * 45;
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.65)';
+            ctx.beginPath();
+            ctx.arc(px, py, 4 + (p % 6), 0, Math.PI * 2);
+            ctx.fill();
+          }
+        }
+      } else {
+        // 4.2 NIGHT MODE: Flashlight Spotlight
+        ctx.save();
+        // Hand holding flashlight
+        ctx.fillStyle = '#334155';
+        ctx.fillRect(45, 60, 36, 18);
+        ctx.fillStyle = '#f59e0b';
+        ctx.beginPath();
+        ctx.arc(81, 69, 12, -Math.PI / 2, Math.PI / 2);
+        ctx.fill();
+
+        // Giant Cone Spotlight hitting the worm
+        if (t >= 44.5) {
+          const spotGrad = ctx.createRadialGradient(85, 69, 10, 260, -100, 380);
+          spotGrad.addColorStop(0, 'rgba(254, 240, 138, 0.85)');
+          spotGrad.addColorStop(0.4, 'rgba(254, 240, 138, 0.45)');
+          spotGrad.addColorStop(1, 'transparent');
+          ctx.fillStyle = spotGrad;
+          ctx.beginPath();
+          ctx.moveTo(85, 69);
+          ctx.lineTo(380, -220);
+          ctx.lineTo(380, 80);
+          ctx.closePath();
+          ctx.fill();
+        }
+        ctx.restore();
+      }
+
+      ctx.restore();
+
+      // 5. EDUCATIONAL CALLOUT BANNER (At the end: 58s - 62s)
+      if (t >= 58.0) {
+        ctx.save();
+        ctx.fillStyle = 'rgba(15, 23, 42, 0.95)';
+        ctx.strokeStyle = '#22c55e';
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.roundRect(40, 260, W - 80, 220, 20);
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.fillStyle = '#22c55e';
+        ctx.font = '800 24px "Plus Jakarta Sans"';
+        ctx.fillText('💡 BÍ KÍP BẮT SÂU HỮU CƠ CỦA BÁC NÔNG DÂN', 65, 310);
+
+        ctx.fillStyle = '#ffffff';
+        ctx.font = '600 18px "Plus Jakarta Sans"';
+        ctx.fillText('1. Ban ngày sâu cuốn lá thường nấp kín dưới gân lá', 65, 360);
+        ctx.fillText('2. Ban đêm (20h - 22h) sâu bò ra giữa tán để ăn lá', 65, 400);
+        ctx.fillText('3. Dùng đèn pin soi bắt sống — Không độc hại, rau sạch 100%!', 65, 440);
+        ctx.restore();
+      }
+
+      ctx.restore();
+
+      // Sync Controls & Subtitles
+      updateUI(curTime);
+
+      requestAnimationFrame(render);
+    }
+
+    function updateUI(curTime) {
+      // Progress bar
+      const pct = Math.min(100, (curTime / totalDuration) * 100);
+      timeBarFill.style.width = `${pct}%`;
+      timeLabel.textContent = `${formatTime(curTime)} / ${formatTime(totalDuration)}`;
+
+      // Active Cue
+      let currentCue = null;
+      let activeIdx = -1;
+      for (let i = 0; i < CUES.length; i++) {
+        if (curTime >= CUES[i].start && curTime <= CUES[i].end) {
+          currentCue = CUES[i];
+          activeIdx = i;
+          break;
+        }
+      }
+
+      // Highlight cue card
+      document.querySelectorAll('.cue-card').forEach((el, idx) => {
+        el.classList.toggle('active', idx === activeIdx);
+      });
+
+      if (currentCue) {
+        subPill.textContent = currentCue.text;
+        subPill.className = `sub-pill ${currentCue.speaker}`;
+        subPill.style.opacity = '1';
+      } else {
+        subPill.style.opacity = '0';
+      }
+    }
+
+    function exportMp4() {
+      alert('Đang kích hoạt quy trình Render Video GPU MP4 60 FPS cho dự án "Bác Nông Dân & Sâu Xanh"!\nFile xuất sẽ được tự động lưu vào bkt_web/storage/rendered/');
+      window.open('/static/remake_hub.html', '_blank');
+    }
+
+    // Init
+    renderCuesList();
+    setupCountryVoices();
+    render();
+  </script>
+</body>
+</html>

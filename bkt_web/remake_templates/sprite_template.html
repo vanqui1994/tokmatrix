@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Remake — 77-aaaf287e-v3</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #0d0e15;
+      color: #fff;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      overflow: hidden;
+    }
+    #stage-wrap {
+      position: relative;
+      width: 576px;
+      height: 1024px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+      border-radius: 12px;
+      overflow: hidden;
+      background: #000;
+    }
+    canvas {
+      display: block;
+      width: 576px;
+      height: 1024px;
+    }
+  </style>
+</head>
+<body>
+
+<div id="stage-wrap">
+  <canvas id="stage" width="576" height="1024"></canvas>
+</div>
+
+<script>
+// ============================================================================
+// AI SPRITE REMAKE ANIMATION ENGINE v5 (HIGH FIDELITY)
+// Nhúng sprites PNG trong suốt • Nền cảnh AI • Hiệu ứng cắt & chảy nhựa
+// Transition "A few minutes later" • Phụ đề kiểu TikTok / Shorts chuyên nghiệp
+// ============================================================================
+
+const W = 576, H = 1024;
+const CHARACTERS = {{CHARACTERS_JSON}};
+const SCENES = {{SCENES_JSON}};
+const CUES = {{CUES_JSON}};
+const EXTRA_ASSETS = {{EXTRA_ASSETS_JSON}};
+const AUDIO_URL = "{{AUDIO_URL}}";
+const TOTAL_DURATION = Number("{{DURATION}}") || 48.4;
+
+const canvas = document.getElementById('stage');
+const ctx = canvas.getContext('2d');
+
+let audio = null;
+let isPlaying = false;
+let startTime = 0;
+
+// Image caches
+const spriteImages = {}; // id -> HTMLImageElement
+const extraImages = {};  // key -> HTMLImageElement
+const bgImages = {};     // index -> HTMLImageElement
+
+// ================================================================ PRELOAD
+function boot() {
+  drawLoading('Đang khởi tạo nhân vật...');
+  let toLoad = 0, loaded = 0;
+
+  function onImgDone() {
+    loaded++;
+    if (loaded >= toLoad) {
+      setTimeout(startPlayback, 100);
+    }
+  }
+
+  // Preload character sprites
+  CHARACTERS.forEach(ch => {
+    if (ch.sprite_url) {
+      toLoad++;
+      const img = new Image();
+      img.onload = onImgDone;
+      img.onerror = onImgDone;
+      img.src = ch.sprite_url;
+      spriteImages[ch.id] = img;
+    }
+  });
+
+  // Preload extra assets (bucket, transition, bg_farm)
+  for (const [k, url] of Object.entries(EXTRA_ASSETS)) {
+    if (url) {
+      toLoad++;
+      const img = new Image();
+      img.onload = onImgDone;
+      img.onerror = onImgDone;
+      img.src = url;
+      extraImages[k] = img;
+    }
+  }
+
+  // Preload scene backgrounds
+  SCENES.forEach((sc, i) => {
+    if (sc.bg_url) {
+      toLoad++;
+      const img = new Image();
+      img.onload = onImgDone;
+      img.onerror = onImgDone;
+      img.src = sc.bg_url;
+      bgImages[i] = img;
+    }
+  });
+
+  // Setup Audio
+  if (AUDIO_URL) {
+    audio = new Audio(AUDIO_URL);
+    audio.preload = 'auto';
+  }
+
+  if (toLoad === 0) {
+    startPlayback();
+  }
+}
+
+function drawLoading(msg) {
+  ctx.fillStyle = '#0f172a';
+  ctx.fillRect(0, 0, W, H);
+  ctx.fillStyle = '#94a3b8';
+  ctx.font = '600 18px system-ui';
+  ctx.textAlign = 'center';
+  ctx.fillText(msg, W / 2, H / 2);
+}
+
+function startPlayback() {
+  if (isPlaying) return;
+  isPlaying = true;
+  startTime = performance.now();
+
+  if (audio) {
+    audio.currentTime = 0;
+    audio.play().catch(() => {
+      // Autoplay blocked: play on user click
+      canvas.addEventListener('click', () => {
+        if (audio.paused) audio.play();
+      }, { once: true });
+    });
+  }
+
+  requestAnimationFrame(loop);
+}
+
+// Lấy mốc thời gian hiện tại (ưu tiên mockTime, audio clock, fallback wall-clock)
+function getCurrentTime() {
+  if (typeof window.mockTime === 'number') return window.mockTime;
+  if (audio && !audio.paused && audio.currentTime > 0) {
+    return audio.currentTime;
+  }
+  return (performance.now() - startTime) / 1000;
+}
+
+function loop() {
+  const t = getCurrentTime();
+  if (t > TOTAL_DURATION + 0.5) {
+    // End of animation
+    return;
+  }
+  drawFrame(t);
+  requestAnimationFrame(loop);
+}
+
+// Helpers
+function getScene(t) {
+  for (let i = SCENES.length - 1; i >= 0; i--) {
+    if (t >= SCENES[i].start_time) return SCENES[i];
+  }
+  return SCENES[0];
+}
+
+function getSceneIdx(t) {
+  for (let i = SCENES.length - 1; i >= 0; i--) {
+    if (t >= SCENES[i].start_time) return i;
+  }
+  return 0;
+}
+
+function getCue(t) {
+  return CUES.find(c => t >= c.start && t < c.end) || null;
+}
+
+// ================================================================ MAIN RENDER
+function drawFrame(t) {
+  ctx.clearRect(0, 0, W, H);
+  if (t < 0.12) { ctx.fillStyle = "#ff00ff"; ctx.fillRect(0, 0, 18, 18); }
+
+  // TRANSITION: "A FEW MINUTES LATER..." từ ~32.6s đến ~34.8s
+  const isTransition = (t >= 32.5 && t <= 34.8);
+  if (isTransition) {
+    drawTransitionScreen(t - 32.5);
+    const cue = getCue(t);
+    if (cue && cue.text) drawSubtitles(cue, t);
+    return;
+  }
+
+  const scene = getScene(t);
+  const scIdx = getSceneIdx(t);
+  const cue = getCue(t);
+  const isAfterTransition = (t > 34.8);
+
+  // 1. Draw Background
+  drawBackground(scene, scIdx, t);
+
+  // 2. Draw Scene Characters
+  if (!isAfterTransition) {
+    // SCENE 1 & 2: Cây đu đủ và Con dao
+    drawPapayaTreeScene(t, cue);
+  } else {
+    // SCENE 3: Người nông dân và Thùng sữa đu đủ
+    drawFarmerScene(t, cue);
+  }
+
+  // 3. Subtitles
+  if (cue && cue.text) {
+    drawSubtitles(cue, t);
+  }
+
+  // 4. Subtle top header
+  drawHeader(t);
+}
+
+// ================================================================ BACKGROUND
+function drawBackground(scene, scIdx, t) {
+  // Ưu tiên bg_farm hoặc bgImages[scIdx]
+  const bg = extraImages['bg_farm'] || bgImages[scIdx] || extraImages['bg_scene'];
+
+  if (bg && bg.complete && bg.naturalWidth > 0) {
+    // Cover 9:16
+    const imgAspect = bg.naturalWidth / bg.naturalHeight;
+    const canvasAspect = W / H;
+    let sx = 0, sy = 0, sw = bg.naturalWidth, sh = bg.naturalHeight;
+    if (imgAspect > canvasAspect) {
+      sw = bg.naturalHeight * canvasAspect;
+      sx = (bg.naturalWidth - sw) / 2;
+    } else {
+      sh = bg.naturalWidth / canvasAspect;
+      sy = (bg.naturalHeight - sh) / 2;
+    }
+    ctx.drawImage(bg, sx, sy, sw, sh, 0, 0, W, H);
+  } else {
+    // Fallback: Gradient bầu trời + đồng cỏ
+    const g = ctx.createLinearGradient(0, 0, 0, H * 0.72);
+    g.addColorStop(0, '#63b3ed');
+    g.addColorStop(0.6, '#bee3f8');
+    g.addColorStop(1, '#e2e8f0');
+    ctx.fillStyle = g;
+    ctx.fillRect(0, 0, W, H);
+
+    ctx.fillStyle = '#b7791f';
+    ctx.fillRect(0, H * 0.72, W, H * 0.28);
+  }
+
+  // Animated clouds float
+  drawFloatingClouds(t);
+}
+
+function drawFloatingClouds(t) {
+  ctx.fillStyle = 'rgba(255, 255, 255, 0.25)';
+  const c1x = ((t * 8) + 50) % (W + 200) - 100;
+  drawCloud(c1x, 90, 80);
+  const c2x = ((t * 5) + 320) % (W + 200) - 100;
+  drawCloud(c2x, 140, 60);
+}
+
+function drawCloud(cx, cy, r) {
+  ctx.beginPath();
+  ctx.arc(cx, cy, r * 0.5, 0, Math.PI * 2);
+  ctx.arc(cx + r * 0.4, cy - r * 0.2, r * 0.6, 0, Math.PI * 2);
+  ctx.arc(cx + r * 0.8, cy, r * 0.45, 0, Math.PI * 2);
+  ctx.fill();
+}
+
+// ================================================================ SCENE 1 & 2: TREE + KNIFE
+function drawPapayaTreeScene(t, cue) {
+  const treeImg = findSprite('papaya') || findSprite('tree');
+  const knifeImg = findSprite('knife') || findSprite('scalpel') || findSprite('dao');
+  const cId = (cue?.character_id || '').toLowerCase();
+  const cName = (cue?.character_name || '').toLowerCase();
+  const treeSpeaking = cue && (cId.includes('papaya') || cId.includes('tree') || cName.includes('đu đủ') || cName.includes('cây'));
+  const knifeSpeaking = cue && !treeSpeaking;
+
+  // 1. CÂY ĐU ĐỦ Ở CHÍNH GIỮA (Lush Tree in Center)
+  const treeX = W * 0.48;
+  const treeY = H * 0.48;
+  const treeH = H * 0.68;
+
+  // Tree idle sway
+  const treeSway = Math.sin(t * 1.8) * 2;
+  const treeBreath = 1 + Math.sin(t * 2.2) * 0.008;
+  const treeBounce = treeSpeaking ? Math.abs(Math.sin(t * 9)) * 4 : 0;
+
+  ctx.save();
+  ctx.translate(treeX + treeSway, treeY - treeBounce);
+  ctx.scale(treeBreath, treeBreath);
+
+  // Tree shadow on ground
+  ctx.fillStyle = 'rgba(0, 0, 0, 0.18)';
+  ctx.beginPath();
+  ctx.ellipse(0, treeH * 0.48, 90, 16, 0, 0, Math.PI * 2);
+  ctx.fill();
+
+  if (treeImg && treeImg.complete && treeImg.naturalWidth > 0) {
+    const aspect = treeImg.naturalWidth / treeImg.naturalHeight;
+    const dw = treeH * aspect;
+    ctx.drawImage(treeImg, -dw / 2, -treeH / 2, dw, treeH);
+    // Facial animation: Chớp mắt & Nhép môi khi nói
+    drawFacialAnimation('tree', dw, treeH, t, treeSpeaking);
+  } else {
+    // Fallback tree shape
+    drawFallbackTree(treeH);
+  }
+
+  // Milky latex drips on the front papaya (khi dao rạch sau 3s)
+  if (t > 3.0) {
+    drawPapayaMilkDrips(t);
+  }
+
+  ctx.restore();
+
+  // 2. BIỂN HIỆU "木瓜树" (Signboard)
+  drawSignboard(W * 0.22, H * 0.77, "木瓜树", "Cây Đu Đủ");
+
+  // 3. CON DAO (Knife character on the right)
+  const knifeH = H * 0.28;
+  // Slicing animation: Dao tiến sát vào cây khi nói hoặc sau 4s
+  const isSlicing = (t > 3.5 && t < 32.0);
+  const sliceWave = Math.sin(t * 6);
+  const targetX = isSlicing ? (W * 0.66 + sliceWave * 12) : (W * 0.76);
+  const targetY = H * 0.42 + (isSlicing ? sliceWave * 8 : Math.sin(t * 2) * 4);
+  const knifeTilt = isSlicing ? (-24 + Math.sin(t * 8) * 8) : -12;
+
+  ctx.save();
+  ctx.translate(targetX, targetY);
+  ctx.rotate((knifeTilt * Math.PI) / 180);
+
+  // Knife shadow
+  ctx.fillStyle = 'rgba(0, 0, 0, 0.12)';
+  ctx.beginPath();
+  ctx.ellipse(0, knifeH * 0.46, 25, 6, 0, 0, Math.PI * 2);
+  ctx.fill();
+
+  if (knifeImg && knifeImg.complete && knifeImg.naturalWidth > 0) {
+    const aspect = knifeImg.naturalWidth / knifeImg.naturalHeight;
+    const dw = knifeH * aspect;
+    ctx.drawImage(knifeImg, -dw / 2, -knifeH / 2, dw, knifeH);
+    // Facial animation: Chớp mắt & Nhép môi khi nói
+    drawFacialAnimation('knife', dw, knifeH, t, knifeSpeaking);
+  } else {
+    drawFallbackKnife(knifeH);
+  }
+
+  // Sparkle / cut line effect near papaya
+  if (isSlicing && Math.sin(t * 8) > 0.4) {
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.8)';
+    ctx.lineWidth = 2.5;
+    ctx.beginPath();
+    ctx.moveTo(-knifeH * 0.35, -knifeH * 0.1);
+    ctx.lineTo(-knifeH * 0.65, knifeH * 0.15);
+    ctx.stroke();
+  }
+
+  ctx.restore();
+}
+
+// ================================================================ FACIAL ANIMATION (CHỚP MẮT & NHÉP MÔI)
+const FACE_CONFIGS = {
+  tree: {
+    eyeL: { dx: -0.0595, dy: -0.2179, rx: 0.054, ry: 0.041 },
+    eyeR: { dx:  0.0266, dy: -0.2217, rx: 0.051, ry: 0.041 },
+    mouth: { dx: -0.0125, dy: -0.1632, mw: 0.034, mh: 0.024 },
+    blinkPeriod: 3.2,
+    blinkOffset: 0.0,
+    skinColor: '#5faa3c',
+  },
+  knife: {
+    eyeL: { dx: -0.0641, dy: -0.0584, rx: 0.058, ry: 0.043 },
+    eyeR: { dx:  0.0581, dy: -0.0584, rx: 0.058, ry: 0.043 },
+    mouth: { dx: -0.0013, dy:  0.0045, mw: 0.040, mh: 0.030 },
+    blinkPeriod: 2.8,
+    blinkOffset: 1.2,
+    skinColor: '#b8c3cd',
+  },
+  farmer: {
+    eyeL: { dx: -0.0433, dy: -0.2943, rx: 0.034, ry: 0.024 },
+    eyeR: { dx:  0.0466, dy: -0.2941, rx: 0.034, ry: 0.024 },
+    mouth: { dx:  0.0000, dy: -0.2250, mw: 0.042, mh: 0.016 },
+    blinkPeriod: 3.5,
+    blinkOffset: 0.6,
+    skinColor: '#fed7aa',
+  }
+};
+
+function drawFacialAnimation(charKey, dw, dh, t, isSpeaking) {
+  const cfg = FACE_CONFIGS[charKey];
+  if (!cfg) return;
+
+  ctx.save();
+
+  // 1. CHỚP MẮT (Blinking Animation)
+  const blinkCycle = (t + cfg.blinkOffset) % cfg.blinkPeriod;
+  const isBlinking = (blinkCycle > (cfg.blinkPeriod - 0.22));
+
+  if (isBlinking) {
+    const elX = cfg.eyeL.dx * dw;
+    const elY = cfg.eyeL.dy * dh;
+    const elRx = cfg.eyeL.rx * dw;
+    const elRy = cfg.eyeL.ry * dh;
+
+    const erX = cfg.eyeR.dx * dw;
+    const erY = cfg.eyeR.dy * dh;
+    const erRx = cfg.eyeR.rx * dw;
+    const erRy = cfg.eyeR.ry * dh;
+
+    // Left eye closed: cover with body/skin color
+    ctx.fillStyle = cfg.skinColor;
+    ctx.strokeStyle = '#1e293b';
+    ctx.lineWidth = 3.5;
+    ctx.beginPath();
+    ctx.ellipse(elX, elY, elRx, elRy, 0, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.stroke();
+
+    // Curved eyelid arc ⌒
+    ctx.lineWidth = 4;
+    ctx.beginPath();
+    ctx.arc(elX, elY + elRy * 0.15, elRx * 0.72, Math.PI * 1.15, Math.PI * 1.85);
+    ctx.stroke();
+
+    // Right eye closed
+    ctx.fillStyle = cfg.skinColor;
+    ctx.lineWidth = 3.5;
+    ctx.beginPath();
+    ctx.ellipse(erX, erY, erRx, erRy, 0, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.stroke();
+
+    ctx.lineWidth = 4;
+    ctx.beginPath();
+    ctx.arc(erX, erY + erRy * 0.15, erRx * 0.72, Math.PI * 1.15, Math.PI * 1.85);
+    ctx.stroke();
+  }
+
+  // 2. NHÉP MÔI (Lip-sync Flap when speaking)
+  if (isSpeaking) {
+    const mx = cfg.mouth.dx * dw;
+    const my = cfg.mouth.dy * dh;
+    const baseW = cfg.mouth.mw * dw;
+    const baseH = cfg.mouth.mh * dh;
+
+    // Rhythmic mouth flap (15Hz talking cycle)
+    const flap = Math.abs(Math.sin(t * 15)) * 0.75 + Math.abs(Math.cos(t * 22)) * 0.25;
+    const openH = Math.max(baseH * 0.35, flap * baseH * 1.7);
+    const openW = baseW * (0.85 + Math.cos(t * 11) * 0.15);
+
+    // Mouth cavity (dark crimson)
+    ctx.fillStyle = '#661111';
+    ctx.strokeStyle = '#1e293b';
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.ellipse(mx, my, openW, openH, 0, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.stroke();
+
+    // Top teeth (white rounded bar)
+    ctx.fillStyle = '#ffffff';
+    ctx.beginPath();
+    roundRect(ctx, mx - openW * 0.55, my - openH * 0.92, openW * 1.1, Math.min(openH * 0.65, 7), 2);
+    ctx.fill();
+
+    // Pink tongue at bottom
+    if (openH > 7) {
+      ctx.fillStyle = '#f472b6';
+      ctx.beginPath();
+      ctx.ellipse(mx, my + openH * 0.35, openW * 0.5, openH * 0.45, 0, 0, Math.PI);
+      ctx.fill();
+    }
+  }
+
+  ctx.restore();
+}
+
+// Milky drips flowing down the papaya fruits
+function drawPapayaMilkDrips(t) {
+  ctx.save();
+  ctx.fillStyle = '#ffffff';
+  ctx.strokeStyle = 'rgba(255, 255, 255, 0.9)';
+  ctx.lineWidth = 4.5;
+  ctx.lineCap = 'round';
+
+  // Drip streams on papaya fruits
+  const streams = [
+    { x: -14, yStart: -50, maxLen: 85, speed: 22 },
+    { x: 18, yStart: -40, maxLen: 105, speed: 26 },
+    { x: 42, yStart: -30, maxLen: 75, speed: 18 },
+  ];
+
+  streams.forEach((s, idx) => {
+    const elapsed = Math.max(0, t - 3.0 - idx * 0.8);
+    const curLen = Math.min(s.maxLen, elapsed * s.speed);
+
+    // Drip streak
+    ctx.beginPath();
+    ctx.moveTo(s.x, s.yStart);
+    ctx.lineTo(s.x, s.yStart + curLen);
+    ctx.stroke();
+
+    // Drip head bulb
+    ctx.beginPath();
+    ctx.arc(s.x, s.yStart + curLen, 4, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Falling droplets
+    if (curLen >= s.maxLen) {
+      const dropTime = (elapsed * 1.5 + idx * 2.3) % 1.6;
+      const dropY = s.yStart + s.maxLen + dropTime * 140;
+      ctx.beginPath();
+      ctx.ellipse(s.x, dropY, 3, 5, 0, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  });
+
+  ctx.restore();
+}
+
+// Signboard at bottom left
+function drawSignboard(x, y, zhText, viText) {
+  ctx.save();
+  ctx.translate(x, y);
+
+  // Post
+  ctx.fillStyle = '#78350f';
+  ctx.fillRect(-5, 0, 10, 45);
+
+  // Wooden Board
+  ctx.fillStyle = '#fef08a';
+  ctx.strokeStyle = '#854d0e';
+  ctx.lineWidth = 3;
+  ctx.beginPath();
+  roundRect(ctx, -60, -32, 120, 36, 6);
+  ctx.fill();
+  ctx.stroke();
+
+  // Text
+  ctx.fillStyle = '#1e293b';
+  ctx.font = '900 16px system-ui';
+  ctx.textAlign = 'center';
+  ctx.fillText(zhText, 0, -14);
+  ctx.font = '600 10px system-ui';
+  ctx.fillStyle = '#475569';
+  ctx.fillText(viText, 0, -2);
+
+  ctx.restore();
+}
+
+// ================================================================ SCENE 3: FARMER + BUCKET
+function drawFarmerScene(t, cue) {
+  const farmerImg = findSprite('farmer') || findSprite('person') || findSprite('nong');
+  const bucketImg = extraImages['bucket'] || findSprite('bucket');
+
+  const cId = (cue?.character_id || '').toLowerCase();
+  const cName = (cue?.character_name || '').toLowerCase();
+  const farmerSpeaking = !!cue;
+
+  // 1. NGƯỜI NÔNG DÂN
+  const farmerX = W * 0.40;
+  const farmerY = H * 0.52;
+  const farmerH = H * 0.56;
+
+  const farmerBreath = 1 + Math.sin(t * 2.5) * 0.006;
+  const farmerSway = Math.sin(t * 1.4) * 2;
+  const farmerBounce = farmerSpeaking ? Math.abs(Math.sin(t * 9)) * 3 : 0;
+
+  ctx.save();
+  ctx.translate(farmerX + farmerSway, farmerY - farmerBounce);
+  ctx.scale(farmerBreath, farmerBreath);
+
+  // Shadow
+  ctx.fillStyle = 'rgba(0, 0, 0, 0.18)';
+  ctx.beginPath();
+  ctx.ellipse(0, farmerH * 0.48, 80, 14, 0, 0, Math.PI * 2);
+  ctx.fill();
+
+  if (farmerImg && farmerImg.complete && farmerImg.naturalWidth > 0) {
+    const aspect = farmerImg.naturalWidth / farmerImg.naturalHeight;
+    const dw = farmerH * aspect;
+    ctx.drawImage(farmerImg, -dw / 2, -farmerH / 2, dw, farmerH);
+    // Facial animation: Chớp mắt & Nhép môi khi nói
+    drawFacialAnimation('farmer', dw, farmerH, t, farmerSpeaking);
+  } else {
+    drawFallbackFarmer(farmerH);
+  }
+
+
+  ctx.restore();
+
+  // 2. THÙNG NHỰA ĐU ĐỦ (Bucket of Latex)
+  const bucketX = W * 0.73;
+  const bucketY = H * 0.72;
+  const bucketH = H * 0.25;
+
+  ctx.save();
+  ctx.translate(bucketX, bucketY);
+
+  // Shadow
+  ctx.fillStyle = 'rgba(0, 0, 0, 0.22)';
+  ctx.beginPath();
+  ctx.ellipse(0, bucketH * 0.46, 50, 12, 0, 0, Math.PI * 2);
+  ctx.fill();
+
+  if (bucketImg && bucketImg.complete && bucketImg.naturalWidth > 0) {
+    const aspect = bucketImg.naturalWidth / bucketImg.naturalHeight;
+    const dw = bucketH * aspect;
+    ctx.drawImage(bucketImg, -dw / 2, -bucketH / 2, dw, bucketH);
+  } else {
+    drawFallbackBucket(bucketH);
+  }
+
+  // Gentle gleam on milk surface
+  const gleamX = Math.sin(t * 3) * 15;
+  ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
+  ctx.beginPath();
+  ctx.arc(gleamX, -bucketH * 0.25, 4, 0, Math.PI * 2);
+  ctx.fill();
+
+  ctx.restore();
+}
+
+// ================================================================ TRANSITION SCREEN
+function drawTransitionScreen(relTime) {
+  const transImg = extraImages['transition_later'];
+
+  ctx.save();
+  const bounce = 1 + Math.sin(relTime * 4) * 0.02;
+  ctx.translate(W / 2, H / 2);
+  ctx.scale(bounce, bounce);
+
+  if (transImg && transImg.complete && transImg.naturalWidth > 0) {
+    ctx.drawImage(transImg, -W / 2, -H / 2, W, H);
+  } else {
+    // Comic wood background fallback
+    ctx.fillStyle = '#78350f';
+    ctx.fillRect(-W / 2, -H / 2, W, H);
+
+    ctx.font = '900 36px Impact, system-ui';
+    ctx.fillStyle = '#fef08a';
+    ctx.strokeStyle = '#000';
+    ctx.lineWidth = 8;
+    ctx.textAlign = 'center';
+    ctx.strokeText('A FEW MINUTES LATER...', 0, 0);
+    ctx.fillText('A FEW MINUTES LATER...', 0, 0);
+  }
+  ctx.restore();
+}
+
+// ================================================================ SUBTITLES (TIKTOK STYLE)
+function drawSubtitles(cue, t) {
+  const text = cue.text;
+  const speaker = cue.character_name || cue.character_id;
+
+  // Badge icon based on character
+  let badgeIcon = '💬';
+  let badgeBg = '#475569';
+  if (speaker.toLowerCase().includes('đu đủ') || speaker.toLowerCase().includes('tree') || speaker.toLowerCase().includes('papaya')) {
+    badgeIcon = '🌴'; badgeBg = '#16a34a';
+  } else if (speaker.toLowerCase().includes('dao') || speaker.toLowerCase().includes('knife') || speaker.toLowerCase().includes('scalpel')) {
+    badgeIcon = '🔪'; badgeBg = '#0284c7';
+  } else if (speaker.toLowerCase().includes('nông') || speaker.toLowerCase().includes('farmer')) {
+    badgeIcon = '👨‍🌾'; badgeBg = '#d97706';
+  }
+
+  const subY = H * 0.84;
+
+  ctx.save();
+
+  // Pop-in scale on sentence start
+  const progress = Math.min(1, (t - cue.start) * 7);
+  const pop = 1 + (1 - progress) * 0.15;
+  ctx.translate(W / 2, subY);
+  ctx.scale(pop, pop);
+
+  // 1. Speaker Badge Pill
+  const badgeText = `${badgeIcon} ${speaker}`;
+  ctx.font = '700 13px system-ui';
+  const bMetrics = ctx.measureText(badgeText);
+  const bW = bMetrics.width + 24;
+  const bH = 26;
+
+  ctx.fillStyle = badgeBg;
+  ctx.beginPath();
+  roundRect(ctx, -bW / 2, -45, bW, bH, 13);
+  ctx.fill();
+  ctx.strokeStyle = 'rgba(255,255,255,0.3)';
+  ctx.lineWidth = 1;
+  ctx.stroke();
+
+  ctx.fillStyle = '#ffffff';
+  ctx.textAlign = 'center';
+  ctx.fillText(badgeText, 0, -28);
+
+  // 2. Subtitle Text Box (Bold yellow + heavy black stroke)
+  ctx.font = '900 24px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+  ctx.textAlign = 'center';
+
+  // Wrap text
+  const maxW = W * 0.88;
+  const lines = wrapText(ctx, text, maxW);
+  const lineH = 32;
+
+  lines.forEach((line, i) => {
+    const ly = i * lineH;
+
+    // Stroke
+    ctx.lineJoin = 'round';
+    ctx.miterLimit = 2;
+    ctx.strokeStyle = '#000000';
+    ctx.lineWidth = 6;
+    ctx.strokeText(line, 0, ly);
+
+    // Glow / Drop Shadow
+    ctx.shadowColor = 'rgba(0,0,0,0.8)';
+    ctx.shadowBlur = 8;
+    ctx.shadowOffsetX = 0;
+    ctx.shadowOffsetY = 2;
+
+    // Fill
+    ctx.fillStyle = '#ffe600';
+    ctx.fillText(line, 0, ly);
+  });
+
+  ctx.restore();
+}
+
+function wrapText(ctx, text, maxWidth) {
+  const words = text.split(' ');
+  const lines = [];
+  let current = words[0];
+
+  for (let i = 1; i < words.length; i++) {
+    const word = words[i];
+    const width = ctx.measureText(current + ' ' + word).width;
+    if (width < maxWidth) {
+      current += ' ' + word;
+    } else {
+      lines.push(current);
+      current = word;
+    }
+  }
+  lines.push(current);
+  return lines;
+}
+
+// Top subtle header
+function drawHeader(t) {
+  ctx.save();
+  ctx.fillStyle = 'rgba(0, 0, 0, 0.4)';
+  ctx.fillRect(0, 0, W, 40);
+
+  ctx.fillStyle = 'rgba(255, 255, 255, 0.85)';
+  ctx.font = '600 13px system-ui';
+  ctx.textAlign = 'left';
+  const mins = Math.floor(t / 60);
+  const secs = Math.floor(t % 60);
+  ctx.fillText(`⏱️ ${mins}:${secs < 10 ? '0' : ''}${secs}`, 16, 25);
+
+  ctx.textAlign = 'right';
+  ctx.fillStyle = '#38bdf8';
+  ctx.fillText('⚡ AI Remake Studio', W - 16, 25);
+  ctx.restore();
+}
+
+// Find sprite by partial keyword match
+function findSprite(keyword) {
+  const kw = keyword.toLowerCase();
+  for (const [id, img] of Object.entries(spriteImages)) {
+    if (id.toLowerCase().includes(kw)) return img;
+  }
+  return null;
+}
+
+function roundRect(ctx, x, y, w, h, r) {
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.arcTo(x + w, y, x + w, y + h, r);
+  ctx.arcTo(x + w, y + h, x, y + h, r);
+  ctx.arcTo(x, y + h, x, y, r);
+  ctx.arcTo(x, y, x + w, y, r);
+  ctx.closePath();
+}
+
+// Fallback visual drawers if images fail
+function drawFallbackTree(h) {
+  ctx.fillStyle = '#854d0e';
+  ctx.fillRect(-15, -h * 0.1, 30, h * 0.55);
+  ctx.fillStyle = '#15803d';
+  ctx.beginPath();
+  ctx.arc(0, -h * 0.25, 90, 0, Math.PI * 2);
+  ctx.fill();
+}
+
+function drawFallbackKnife(h) {
+  ctx.fillStyle = '#94a3b8';
+  ctx.fillRect(-8, -h * 0.4, 16, h * 0.5);
+  ctx.fillStyle = '#0f766e';
+  ctx.fillRect(-10, h * 0.1, 20, h * 0.35);
+}
+
+function drawFallbackFarmer(h) {
+  ctx.fillStyle = '#0284c7';
+  ctx.fillRect(-30, -h * 0.2, 60, h * 0.35);
+  ctx.fillStyle = '#fed7aa';
+  ctx.beginPath();
+  ctx.arc(0, -h * 0.35, 28, 0, Math.PI * 2);
+  ctx.fill();
+}
+
+function drawFallbackBucket(h) {
+  ctx.fillStyle = '#1e293b';
+  ctx.beginPath();
+  ctx.moveTo(-35, -h * 0.3);
+  ctx.lineTo(35, -h * 0.3);
+  ctx.lineTo(25, h * 0.4);
+  ctx.lineTo(-25, h * 0.4);
+  ctx.closePath();
+  ctx.fill();
+}
+
+// Start
+window.addEventListener('DOMContentLoaded', boot);
+</script>
+</body>
+</html>

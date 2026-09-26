@@ -1,0 +1,36 @@
+# Mỗi dòng một topic (tiếng Anh; angle/kịch bản được viết theo ngôn ngữ của kênh). Autopilot lấy dòng đầu chưa dùng.
+ChatGPT vs Google Search: how we find answers
+iPhone vs Android: two philosophies
+Tesla vs BYD: the electric car race
+Starlink vs fiber internet: which wins
+Windows vs macOS: the desktop war
+How large language models actually predict words
+Why quantum computers are so hard to build
+How self-driving cars see the road
+What happens to data in a data centre
+How lithium batteries work and why they catch fire
+Why nuclear fusion keeps being 30 years away
+How CRISPR edits genes
+What an AI chip does differently from a CPU
+How GPS knows where you are
+Why deepfakes are hard to detect
+How the internet crosses oceans through cables
+What semiconductors are and why Taiwan matters
+How facial recognition works
+Why robots still struggle to fold laundry
+How solar panels turn light into electricity
+What 6G networks promise
+How brain-computer interfaces read signals
+Why passwords are being replaced by passkeys
+How weather forecasts use supercomputers
+What happens when AI makes mistakes in medicine
+How reusable rockets land themselves
+Why space debris is a growing problem
+How vertical farms grow food indoors
+What the Turing test measures and what it misses
+How noise-cancelling headphones work
+Why Moore's law is slowing down
+How lab-grown meat is made
+What a digital twin is
+How drones deliver medical supplies
+Why the first computer bug was a real insect

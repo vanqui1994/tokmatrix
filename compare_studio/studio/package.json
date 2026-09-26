@@ -1,0 +1,32 @@
+{
+  "name": "compare-studio",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "node server/index.mjs & vite",
+    "server": "node server/index.mjs",
+    "build": "tsc -b && vite build",
+    "start": "npm run build && node server/index.mjs",
+    "lint": "oxlint"
+  },
+  "dependencies": {
+    "@radix-ui/react-tabs": "^1.1.21",
+    "clsx": "^2.1.1",
+    "lucide-react": "^1.40.0",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "tailwind-merge": "^3.6.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.3.3",
+    "@types/node": "^24.13.3",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.4",
+    "@vitejs/plugin-react": "^6.1.0",
+    "oxlint": "^1.79.0",
+    "tailwindcss": "^4.3.3",
+    "typescript": "~6.0.2",
+    "vite": "^8.2.2"
+  }
+}

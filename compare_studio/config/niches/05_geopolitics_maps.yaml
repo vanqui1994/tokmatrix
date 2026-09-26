@@ -1,0 +1,5 @@
+niche_id: geopolitics_maps
+name: Địa Chính Trị & Biên Giới
+language: vi
+summary: Biên giới, bản đồ và địa chính trị với ngữ cảnh lịch sử có nguồn.
+allowed_engines: [newspaper, vox, chalk, tierlist, kinetic, wildlife]

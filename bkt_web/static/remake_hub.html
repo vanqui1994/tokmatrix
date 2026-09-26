@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Xưởng Remake 2D · Native Vector Canvas</title>
+  <style>
+    :root{color-scheme:light;--bg:#f5f7fb;--card:#fff;--text:#172033;--muted:#64748b;--line:#dbe3ef;--blue:#2563eb;--blue2:#1d4ed8;--green:#059669;--red:#dc2626;--shadow:0 16px 44px rgba(30,49,80,.09)}
+    *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:14px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,sans-serif}.wrap{max-width:1320px;margin:auto;padding:24px}
+    .top,.card{background:var(--card);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow)}.top{display:flex;justify-content:space-between;align-items:center;gap:20px;padding:20px 24px;margin-bottom:18px}h1{font-size:clamp(21px,3vw,32px);margin:2px 0 5px}.eyebrow{color:var(--blue);font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase}.sub{color:var(--muted)}
+    .back{padding:10px 14px;border:1px solid var(--line);border-radius:10px;color:var(--text);font-weight:700;text-decoration:none;white-space:nowrap}.back:hover{background:#f8fafc;border-color:#aac0e5}
+    .guards{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px}.guard{padding:16px}.guard strong{display:block;margin-bottom:5px}.guard span{font-size:12px;color:var(--muted)}.check{color:var(--green);font-weight:900;margin-right:6px}
+    .work{display:grid;grid-template-columns:410px minmax(0,1fr);gap:18px;margin-bottom:26px}.runner,.console{padding:22px}.runner h2,.console h2,.projects h2{font-size:17px;margin:0 0 17px}.field{margin-bottom:15px}.field label{display:block;font-size:12px;font-weight:800;color:#52627a;margin-bottom:7px}.input{width:100%;min-height:44px;padding:10px 12px;border:1px solid #cdd8e7;border-radius:10px;background:#fff;color:var(--text);outline:none}.input:focus{border-color:#6d9cf5;box-shadow:0 0 0 3px #e8f0ff}
+    .start{width:100%;min-height:48px;border:0;border-radius:11px;background:var(--blue);color:#fff;font-weight:850;cursor:pointer}.start:hover{background:var(--blue2)}.start:disabled{opacity:.6;cursor:wait}.hint{font-size:12px;color:var(--muted);margin-top:11px}.upload-box{display:flex;align-items:center;gap:12px;padding:13px;margin-bottom:15px;border:1.5px dashed #9db7de;border-radius:12px;background:#f7faff}.upload-button{flex:0 0 auto;border:0;border-radius:9px;background:#e8f0ff;color:#1d4ed8;padding:10px 12px;font-weight:850;cursor:pointer}.upload-copy{min-width:0}.upload-copy strong{display:block;font-size:12px}.upload-copy span{display:block;color:var(--muted);font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.upload-progress{height:5px;margin-top:7px;background:#e5edf8;border-radius:99px;overflow:hidden;display:none}.upload-progress>div{height:100%;width:0;background:linear-gradient(90deg,var(--blue),var(--green))}
+    .console{display:flex;flex-direction:column}.progress-head{display:flex;justify-content:space-between;gap:16px;color:var(--muted);font-size:12px}.bar{height:8px;background:#edf2f8;border-radius:99px;margin:10px 0 14px;overflow:hidden}.bar>div{width:0;height:100%;background:linear-gradient(90deg,var(--blue),var(--green));transition:width .25s}.logs{min-height:230px;max-height:310px;overflow:auto;border:1px solid #dce4ef;border-radius:12px;background:#f8fafc;padding:14px;color:#334155;font:12px/1.7 ui-monospace,SFMono-Regular,Menlo,monospace}.log-error{color:var(--red)}
+    .projects{margin-top:8px}.project-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:14px}.project{padding:18px;display:flex;flex-direction:column;gap:12px}.project-top{display:flex;justify-content:space-between;gap:12px}.badge{display:inline-flex;align-items:center;padding:4px 8px;border-radius:99px;background:#ecfdf5;color:#047857;font-size:11px;font-weight:850}.project h3{font-size:16px;margin:0;overflow-wrap:anywhere}.project p{margin:0;color:var(--muted);font-size:12px}.open{display:block;margin-top:auto;padding:10px 12px;border-radius:10px;background:#eff6ff;color:#1d4ed8;text-decoration:none;text-align:center;font-weight:800}.empty{padding:24px;color:var(--muted);text-align:center;grid-column:1/-1}.localize-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px}.country-select{min-width:0;padding:9px 10px;border:1px solid #cdd8e7;border-radius:9px;background:#fff;color:var(--text)}.localize-btn{border:0;border-radius:9px;padding:9px 12px;background:#059669;color:#fff;font-weight:800;cursor:pointer}.localize-btn:disabled{opacity:.55}.locale-list{color:#047857!important;font-weight:700}
+    .work,.runner,.console,.upload-box,.upload-copy{min-width:0}
+    @media(max-width:960px){.guards{grid-template-columns:repeat(2,1fr)}.work{grid-template-columns:minmax(0,1fr)}}@media(max-width:560px){.wrap{padding:12px}.top{align-items:flex-start;flex-direction:column}.guards{grid-template-columns:1fr}.runner,.console{padding:15px}.project-grid{grid-template-columns:1fr}.upload-box{align-items:flex-start;flex-direction:column}.upload-button{width:100%}.upload-copy{width:100%}}
+  </style>
+</head>
+<body>
+<main class="wrap">
+  <header class="top">
+    <div><div class="eyebrow">Story-faithful · Native HTML5 Canvas</div><h1>Xưởng Remake Hoạt Hình 2D</h1><div class="sub">Thiết kế lại hình ảnh bằng Character Rig, giữ đúng câu chuyện và lồng tiếng theo quốc gia.</div></div>
+    <a class="back" href="/static/remake_vector_library.html">Thư viện vector</a>
+    <a class="back" href="/" title="Quay về trang quản lý">← Trang chủ</a>
+  </header>
+  <section class="guards" aria-label="Nguyên tắc fidelity">
+    <article class="card guard"><strong><span class="check">✓</span>Thiết kế hình ảnh mới</strong><span>Canvas vector và Character Rig, không phát lại video gốc.</span></article>
+    <article class="card guard"><strong><span class="check">✓</span>Không bịa nhân vật</strong><span>Không suy đoán vai theo tên file hoặc thứ tự câu.</span></article>
+    <article class="card guard"><strong><span class="check">✓</span>Multi-voice theo vai</strong><span>Mỗi nhân vật giữ một giọng riêng tại từng quốc gia.</span></article>
+    <article class="card guard"><strong><span class="check">✓</span>Nhiều quốc gia</strong><span>Một bản hình ảnh master, nhiều gói thoại có thể chuyển đổi.</span></article>
+  </section>
+  <section class="work">
+    <div class="card runner">
+      <h2>Tạo Canvas project</h2>
+      <div class="upload-box">
+        <button class="upload-button" id="uploadButton" type="button" title="Tải video từ máy lên Xưởng Remake">⬆ Tải video lên</button>
+        <div class="upload-copy"><strong id="uploadTitle">MP4, MOV hoặc WebM</strong><span id="uploadNote">Tối đa 500 MB · file được kiểm tra bằng FFprobe</span><div class="upload-progress" id="uploadProgress"><div id="uploadProgressFill"></div></div></div>
+        <input id="videoFile" type="file" accept="video/mp4,video/quicktime,video/webm,.mp4,.mov,.webm" hidden>
+      </div>
+      <div class="field"><label for="videoSelect">VIDEO NGUỒN</label><select class="input" id="videoSelect" title="Chọn video sẽ được vector hóa"><option>Đang tải danh sách…</option></select></div>
+      <div class="field"><label for="projectSlug">MÃ PROJECT</label><input class="input" id="projectSlug" maxlength="80" pattern="[A-Za-z0-9_-]+" placeholder="video-01" title="Chỉ dùng chữ, số, gạch ngang và gạch dưới"></div>
+      <button class="start" id="start" type="button" title="Phân tích video và dựng Native Canvas project">Bắt đầu dựng bản remake</button>
+      <div class="hint">Quá trình gồm kiểm chứng nguồn → Story Bible → phân vai → Character Rig → lồng tiếng quốc gia → Canvas player.</div>
+    </div>
+    <div class="card console">
+      <div class="progress-head"><h2>Tiến trình</h2><strong id="status">Sẵn sàng · 0%</strong></div>
+      <div class="bar"><div id="bar"></div></div>
+      <div class="logs" id="logs" aria-live="polite">Chọn video nguồn để bắt đầu. Hệ thống sẽ không tự sáng tác nhân vật hoặc nội dung.</div>
+    </div>
+  </section>
+  <section class="projects">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+      <h2 style="margin:0;">Canvas project đã hoàn thành</h2>
+      <button id="btnClearProjects" type="button" style="padding:6px 14px; background:#fee2e2; border:1px solid #fca5a5; color:#b91c1c; border-radius:8px; font-weight:700; cursor:pointer; font-size:12px;">🗑️ Xóa tất cả dự án</button>
+    </div>
+    <div class="project-grid" id="projects"><div class="empty">Đang tải…</div></div>
+  </section>
+</main>
+<script>
+(() => {
+  'use strict';
+  const $=id=>document.getElementById(id), video=$('videoSelect'), slug=$('projectSlug'), start=$('start'), logs=$('logs'), status=$('status'), bar=$('bar'), projects=$('projects'), videoFile=$('videoFile'), uploadButton=$('uploadButton'), uploadTitle=$('uploadTitle'), uploadNote=$('uploadNote'), uploadProgress=$('uploadProgress'), uploadProgressFill=$('uploadProgressFill');
+  let timer=null, countryCatalog=[];
+  const cleanSlug=value=>value.toLowerCase().replace(/\.[^.]+$/,'').replace(/[^a-z0-9_-]+/g,'-').replace(/^-+|-+$/g,'').slice(0,80);
+  const setBusy=busy=>{start.disabled=busy;start.textContent=busy?'Đang xử lý video…':'Bắt đầu dựng bản remake';};
+  async function jsonFetch(url,options){const response=await fetch(url,options);let data={};try{data=await response.json();}catch{}if(!response.ok)throw new Error(data.detail||`HTTP ${response.status}`);return data;}
+  async function loadVideos(selectedPath){
+    const data=await jsonFetch('/api/remake/source-videos'); video.replaceChildren();
+    for(const item of data.videos||[]){const option=document.createElement('option');option.value=item.path;option.textContent=`${item.uploaded?'⬆ ':''}${item.filename} · ${item.size_mb} MB`;video.append(option);}
+    if(!video.options.length){const option=document.createElement('option');option.textContent='Chưa có video — hãy tải video lên';option.disabled=true;video.append(option);start.disabled=true;}else{start.disabled=false;if(selectedPath&&[...video.options].some(option=>option.value===selectedPath))video.value=selectedPath;slug.value=cleanSlug(video.options[video.selectedIndex].textContent.replace(/^⬆\s*/, '').split(' · ')[0]);}
+  }
+  function uploadSelectedVideo(file){
+    if(!file)return;const allowed=['.mp4','.mov','.webm'];const suffix='.'+(file.name.split('.').pop()||'').toLowerCase();if(!allowed.includes(suffix)){logs.textContent='Chỉ hỗ trợ video MP4, MOV hoặc WebM.';return;}if(file.size>500*1024*1024){logs.textContent='Video vượt quá giới hạn 500 MB.';return;}
+    const form=new FormData();form.append('file',file);const xhr=new XMLHttpRequest();xhr.open('POST','/api/remake/upload');uploadButton.disabled=true;uploadButton.textContent='Đang tải…';uploadTitle.textContent=file.name;uploadNote.textContent=`${(file.size/1024/1024).toFixed(2)} MB`;uploadProgress.style.display='block';
+    xhr.upload.addEventListener('progress',event=>{if(event.lengthComputable){const pct=Math.round(event.loaded/event.total*100);uploadProgressFill.style.width=pct+'%';status.textContent=`Đang tải video · ${pct}%`;}});
+    xhr.addEventListener('load',async()=>{uploadButton.disabled=false;uploadButton.textContent='⬆ Tải video khác';let data={};try{data=JSON.parse(xhr.responseText||'{}');}catch{}if(xhr.status<200||xhr.status>=300){uploadNote.textContent=data.detail||`Upload lỗi HTTP ${xhr.status}`;status.textContent='Upload thất bại';return;}uploadProgressFill.style.width='100%';uploadNote.textContent=`Đã kiểm tra · ${data.width}×${data.height} · ${data.duration}s`;status.textContent='Upload hoàn tất · Sẵn sàng remake';logs.textContent=`Đã tải lên ${data.original_filename}. Server lưu an toàn thành ${data.filename}.`;await loadVideos(data.path);});
+    xhr.addEventListener('error',()=>{uploadButton.disabled=false;uploadButton.textContent='⬆ Thử tải lại';uploadNote.textContent='Không kết nối được server';status.textContent='Upload thất bại';});xhr.send(form);
+  }
+  function addText(parent,tag,className,text){const node=document.createElement(tag);if(className)node.className=className;node.textContent=text;parent.append(node);return node;}
+  async function loadCountries(){const data=await jsonFetch('/api/remake/countries');countryCatalog=data.countries||[];}
+  async function loadProjects(){
+    const data=await jsonFetch('/api/remake/projects');projects.replaceChildren();
+    if(!(data.projects||[]).length){addText(projects,'div','empty','Chưa có project mới. Các demo cũ bịa nội dung đã được loại khỏi danh sách.');return;}
+    for(const item of data.projects){
+      const card=document.createElement('article');card.className='card project';const top=document.createElement('div');top.className='project-top';addText(top,'span','badge',item.fidelity==='passed'?'✓ Fidelity passed':'Canvas project');addText(top,'span','',`${Number(item.duration||0).toFixed(1)}s`);card.append(top);addText(card,'h3','',item.name||item.id);addText(card,'p','',`Nguồn: ${item.source||'—'} · ${item.renderer==='character-rig'?'Character Rig 60 FPS':`${item.keyframes_count||0} keyframe`} · ${item.cues_count||0} đoạn thoại`);
+      if(item.renderer==='character-rig'){addText(card,'p','locale-list',`Đã có: ${(item.locales||['vi-VN']).join(', ')}`);const row=document.createElement('div');row.className='localize-row';const select=document.createElement('select');select.className='country-select';select.title='Chọn quốc gia cần tạo lồng tiếng';for(const country of countryCatalog){const option=document.createElement('option');option.value=country.code;option.textContent=`${country.flag} ${country.country} · ${country.language}`;select.append(option);}select.value='en-US';const voiceButton=addText(row,'button','localize-btn','Tạo voice');voiceButton.type='button';voiceButton.title='Dịch nội dung và lồng tiếng đúng từng vai';voiceButton.addEventListener('click',()=>localizeProject(item.id,select.value,voiceButton));row.prepend(select);card.append(row);}
+      const link=addText(card,'a','open',item.renderer==='character-rig'?'Mở hoạt hình vector & đổi quốc gia':'Mở Canvas player & đối chiếu nguồn');link.href=item.demo_url||item.review_url||'#';if(item.status==='needs_review')link.textContent='Mở storyboard cần duyệt';link.target='_blank';link.rel='noopener';link.title='Mở project trong tab mới';card.append(link);projects.append(card);
+    }
+  }
+  async function localizeProject(projectId,locale,button){button.disabled=true;button.textContent='Đang tạo…';bar.style.width='2%';status.textContent=`Chuẩn bị ${locale} · 2%`;try{const data=await jsonFetch(`/api/remake/projects/${encodeURIComponent(projectId)}/localize`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({locales:[locale]})});poll(data.task_id);}catch(error){button.disabled=false;button.textContent='Tạo voice';status.textContent='Lỗi tạo voice';logs.textContent=error.message;}}
+  function poll(taskId){clearInterval(timer);timer=setInterval(async()=>{try{const task=await jsonFetch(`/api/remake/status/${encodeURIComponent(taskId)}`);const pct=Number(task.progress||0);bar.style.width=`${pct}%`;status.textContent=`${task.current_step||task.status} · ${pct}%`;logs.replaceChildren(...(task.logs||[]).map(line=>{const div=document.createElement('div');div.textContent=line;if(line.includes('[LỖI]'))div.className='log-error';return div;}));logs.scrollTop=logs.scrollHeight;if(['completed','error','needs_review','waiting_antigravity'].includes(task.status)){clearInterval(timer);setBusy(false);if(task.status!=='error')await loadProjects();}}catch(error){clearInterval(timer);setBusy(false);status.textContent='Mất kết nối';logs.textContent=error.message;}},1200);}
+  async function run(){const project=cleanSlug(slug.value);if(!project){slug.focus();return;}slug.value=project;setBusy(true);bar.style.width='2%';status.textContent='Đang khởi tạo · 2%';try{const data=await jsonFetch('/api/remake/start',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({video_path:video.value,project_name:project})});poll(data.task_id);}catch(error){setBusy(false);status.textContent='Không thể bắt đầu';logs.textContent=error.message;}}
+  uploadButton.addEventListener('click',()=>videoFile.click());videoFile.addEventListener('change',()=>uploadSelectedVideo(videoFile.files?.[0]));video.addEventListener('change',()=>slug.value=cleanSlug((video.options[video.selectedIndex]?.textContent||'').replace(/^⬆\s*/,'').split(' · ')[0]));start.addEventListener('click',run);
+  $('btnClearProjects')?.addEventListener('click', async () => {
+    if (!confirm('Bạn có chắc muốn xóa toàn bộ các video và dự án remake đã dựng không?')) return;
+    try {
+      await jsonFetch('/api/remake/projects?confirm=XOA-TAT-CA', { method: 'DELETE' });
+      await loadProjects();
+    } catch (err) { alert('Lỗi: ' + err.message); }
+  });
+  Promise.all([loadVideos(),loadCountries()]).then(loadProjects).catch(error=>{logs.textContent=error.message;status.textContent='Lỗi tải dữ liệu';});
+})();
+</script>
+</body>
+</html>

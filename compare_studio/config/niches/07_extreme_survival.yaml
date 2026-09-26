@@ -1,0 +1,5 @@
+niche_id: extreme_survival
+name: Sinh Tồn & Thảm Hoạ
+language: vi
+summary: Kỹ năng sinh tồn, tình huống cực hạn và bài học từ thảm họa.
+allowed_engines: [mystery, newspaper, vox, chalk, science, survival, tierlist, kinetic, wildlife]

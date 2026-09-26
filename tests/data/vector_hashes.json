@@ -1,0 +1,2579 @@
+{
+  "sample_times": [
+    0.2,
+    0.8,
+    1.6,
+    2.4,
+    3.2
+  ],
+  "assets": {
+    "watermelon": [
+      "c1841cef8efacddd",
+      "237238eff0d7b4cb",
+      "92e6bcef7808d7a1",
+      "14cb84efd4b0582e",
+      "b51e32ef72270474"
+    ],
+    "apple": [
+      "dac92bef34ad1864",
+      "cd391defcfba4ca5",
+      "8b6424ef8f17127f",
+      "26c30eef8dcd4b6a",
+      "5f3b5cef79dde3d5"
+    ],
+    "tomato": [
+      "440146ef991b5044",
+      "d14355ef1da572ff",
+      "239dbcef72775706",
+      "a97cbdefbf7ecabd",
+      "c5d4d1efbb3cfdae"
+    ],
+    "pepper": [
+      "bc9306ef721d15e8",
+      "011da8ef73f7a9d6",
+      "5f2c7aefa32d350a",
+      "6afd74ef6f3dedfa",
+      "b05e46efc6f1e575"
+    ],
+    "tomato_plant": [
+      "cae7e9ef6f830563",
+      "cae7e9ef6f830563",
+      "cae7e9ef6f830563",
+      "cae7e9ef6f830563",
+      "fc5060ef2270417e"
+    ],
+    "peanut_plant": [
+      "3ecb57ef0ad1fbe6",
+      "3ecb57ef0ad1fbe6",
+      "3ecb57ef0ad1fbe6",
+      "3ecb57ef0ad1fbe6",
+      "1c8a74ef395d111b"
+    ],
+    "papaya_tree": [
+      "6392a0ef0fd6c31b",
+      "6392a0ef0fd6c31b",
+      "6392a0ef0fd6c31b",
+      "6392a0ef0fd6c31b",
+      "344350ef71de760e"
+    ],
+    "insect": [
+      "85ce3bef2d20a24d",
+      "85ce3bef2d20a24d",
+      "85ce3bef2d20a24d",
+      "85ce3bef2d20a24d",
+      "0d2fe2ef25f3f5dc"
+    ],
+    "hand": [
+      "337904ef82ed2950",
+      "337904ef82ed2950",
+      "337904ef82ed2950",
+      "337904ef82ed2950",
+      "b6bda2ef3d777153"
+    ],
+    "foot": [
+      "f3f61eeff2129d18",
+      "f3f61eeff2129d18",
+      "f3f61eeff2129d18",
+      "f3f61eeff2129d18",
+      "fe836eefc646c1db"
+    ],
+    "farmer": [
+      "4474c9ef437c14bd",
+      "db8781ef8888bbda",
+      "5855afefa50ef398",
+      "b59ff0ef12a3eba4",
+      "077306ef5951af22"
+    ],
+    "fisherman": [
+      "da461cefa579c4bc",
+      "8a3559ef6dcbe4bc",
+      "07ae45ef78aed673",
+      "85be62ef2cbe7eb6",
+      "aca583efa7b16f9f"
+    ],
+    "knife": [
+      "f3ad01ef72bfc4b2",
+      "f3ad01ef72bfc4b2",
+      "f3ad01ef72bfc4b2",
+      "f3ad01ef72bfc4b2",
+      "8e4ba4ef292ab9de"
+    ],
+    "sprayer": [
+      "2b4f48ef68438c03",
+      "2b4f48ef68438c03",
+      "2b4f48ef68438c03",
+      "2b4f48ef68438c03",
+      "71dfccefb209fad2"
+    ],
+    "fishing_rod": [
+      "f6747eefcfb5cd1a",
+      "f6747eefcfb5cd1a",
+      "f6747eefcfb5cd1a",
+      "f6747eefcfb5cd1a",
+      "f6747eefcfb5cd1a"
+    ],
+    "pot": [
+      "185573ef24e75930",
+      "185573ef24e75930",
+      "185573ef24e75930",
+      "185573ef24e75930",
+      "185573ef24e75930"
+    ],
+    "bucket": [
+      "f2bbc5ef0ec8ba8c",
+      "f2bbc5ef0ec8ba8c",
+      "f2bbc5ef0ec8ba8c",
+      "f2bbc5ef0ec8ba8c",
+      "f2bbc5ef0ec8ba8c"
+    ],
+    "bag": [
+      "f84962ef04ee226c",
+      "f84962ef04ee226c",
+      "f84962ef04ee226c",
+      "f84962ef04ee226c",
+      "cdd7aeef562b65c7"
+    ],
+    "seed": [
+      "d4bc6eefd98f200c",
+      "d4bc6eefd98f200c",
+      "d4bc6eefd98f200c",
+      "d4bc6eefd98f200c",
+      "d4bc6eefd98f200c"
+    ],
+    "hook": [
+      "5d4ed9efe1d4349a",
+      "5d4ed9efe1d4349a",
+      "5d4ed9efe1d4349a",
+      "5d4ed9efe1d4349a",
+      "5d4ed9efe1d4349a"
+    ],
+    "bobber": [
+      "d68a5bef16c56660",
+      "157695ef955209f2",
+      "e47d62ef1382bd05",
+      "8ecdd1ef7508826d",
+      "eed43cef38bd70dd"
+    ],
+    "boat": [
+      "2e3214efad98486b",
+      "2e3214efad98486b",
+      "2e3214efad98486b",
+      "2e3214efad98486b",
+      "2e3214efad98486b"
+    ],
+    "fish": [
+      "30d792ef26c6a791",
+      "9a21a6ef2df51a1d",
+      "c8ad8aef7b53d041",
+      "c58239ef898a82d4",
+      "935a81ef2f42b8f3"
+    ],
+    "big_fish": [
+      "4268eeef237b09f6",
+      "1f2b56ef00187f88",
+      "9a70f2ef3bb80f2d",
+      "f953d3ef3b904bad",
+      "4cb4aaef54d4070a"
+    ],
+    "sea_monster_s": [
+      "7b902bef4b0aec25",
+      "776eb9efcb84824a",
+      "774411ef7d27be10",
+      "06e9c4ef7d6951f1",
+      "ac271defee7228f5"
+    ],
+    "sea_monster_ss": [
+      "49afd8ef2cca0588",
+      "b82c47ef54c46257",
+      "aa1062efcc9ff32f",
+      "e32ec1ef137c66ed",
+      "b40331ef404b31d7"
+    ],
+    "sea_monster_leviathan": [
+      "f817caefe8490164",
+      "f0ae04efb3424b00",
+      "683463ef563df041",
+      "9b18d0efb17b93af",
+      "96328eefd53e183c"
+    ],
+    "sea_monster_drake": [
+      "235b62ef790fbeea",
+      "577bc4efacf50a3c",
+      "206288efc4c1df7d",
+      "c252bbef14faa896",
+      "f718fbef18118957"
+    ],
+    "sea_monster_behemoth": [
+      "0a5545efa5ce01f6",
+      "c13c7beffbcd7f79",
+      "187c5fefa5b7c666",
+      "831ef5ef21815fae",
+      "88721aefd6ba3fff"
+    ],
+    "sea_monster_crystal_whale": [
+      "da09f2efd7ae7bbb",
+      "c3dce8ef447c37d5",
+      "e2366cef8f7c468c",
+      "784584efec8581e9",
+      "0c7263ef6d378217"
+    ],
+    "sea_monster_magma": [
+      "875f33ef94110bf9",
+      "903043efec50f701",
+      "070103ef505afa4e",
+      "042dc4ef48aa6874",
+      "9f9d24ef49d30cd1"
+    ],
+    "sea_monster_megalodon": [
+      "6f7375ef52bbdf4f",
+      "d361f4ef12d9f128",
+      "3ba49defa76a5fa5",
+      "f39f42efcd95e818",
+      "faafd5eff000707e"
+    ],
+    "face": [
+      "acda70ef39490325",
+      "acda70ef39490325",
+      "acda70ef39490325",
+      "acda70ef39490325",
+      "0e63adef78aacfad"
+    ],
+    "hand_right": [
+      "5ec59fef7d4a7aab",
+      "5ec59fef7d4a7aab",
+      "5ec59fef7d4a7aab",
+      "5ec59fef7d4a7aab",
+      "9bff6defdbba3d4a"
+    ],
+    "farmer_woman": [
+      "60d556ef740d1096",
+      "e15042ef738f9646",
+      "f40e06efda81ff87",
+      "924d20ef96aa5342",
+      "88fae9efa5ea87ac"
+    ],
+    "scarecrow": [
+      "148569ef2be18bf6",
+      "4bb159ef6f768ab3",
+      "f9b1f1efdbfe1779",
+      "597523efb291f5ac",
+      "275ff0ef00f02df9"
+    ],
+    "buffalo": [
+      "12b248efe705c1bb",
+      "81f8c1ef38d48ee5",
+      "ac6304ef90aeb8ba",
+      "4a0742ef945546eb",
+      "9cd216ef3381f125"
+    ],
+    "chicken": [
+      "2b8890efbaac35d0",
+      "3f54ceefbd154bf3",
+      "ddabd7ef6e2d0ae9",
+      "e9d383efe3a68db5",
+      "2467f2ef5fa9ccc3"
+    ],
+    "earthworm": [
+      "b37d7cef4b5bfdd1",
+      "3f0c05eff138d5f0",
+      "32ea98efb4c065e0",
+      "f18fc3ef1daf8af9",
+      "78cb6fef00df7d77"
+    ],
+    "snail": [
+      "0df2f7ef5fbbe05f",
+      "0df2f7ef5fbbe05f",
+      "0df2f7ef5fbbe05f",
+      "0df2f7ef5fbbe05f",
+      "e059a7ef7fcbe843"
+    ],
+    "bee": [
+      "b220cfeffe87f128",
+      "b3f5d1ef0ef43479",
+      "c3c441ef36b84c63",
+      "3d4aadef57d65c08",
+      "8e4633efc318cbde"
+    ],
+    "rice_plant": [
+      "3b7e01efa2ad5824",
+      "0ea99bef37acd447",
+      "4b2045ef9ad99a57",
+      "2a8f4eefc405678b",
+      "36ab08ef47aeb4ba"
+    ],
+    "corn_plant": [
+      "925823ef53c5c668",
+      "f38d70efb589ec97",
+      "3953a5ef3c1b7966",
+      "6b82f9efbc30066c",
+      "6088c4efd64cb48c"
+    ],
+    "sunflower": [
+      "d038c7ef53d884dd",
+      "4e44c9ef7360f7cd",
+      "709dffef77115d12",
+      "5c68dbeffbe99cf9",
+      "21b7c1ef623d9bac"
+    ],
+    "banana_tree": [
+      "0ee9eaeffed622f4",
+      "5c7a02ef62acf744",
+      "2b60c5effaee51cc",
+      "10de4bef3728a99d",
+      "9d2521ef7deedc74"
+    ],
+    "cabbage": [
+      "5897faef6ac09934",
+      "5897faef6ac09934",
+      "5897faef6ac09934",
+      "5897faef6ac09934",
+      "de20c4efed0de8aa"
+    ],
+    "carrot": [
+      "13249cef444dcba0",
+      "fa3a61efd46a1388",
+      "e6e8e4efa44432af",
+      "993c3fef8e3d3846",
+      "e1301fef462ee24e"
+    ],
+    "pumpkin": [
+      "8a9236ef52476dc6",
+      "030675ef47c1871d",
+      "ad107ceff617a1e3",
+      "5c21e3ef05ca4fa5",
+      "e527a3ef16128586"
+    ],
+    "eggplant": [
+      "aeb053ef15e0cd54",
+      "87cd7cefbea760c9",
+      "91288fef5c600a49",
+      "f69cbaef7d992c5f",
+      "3c6c3aef151165ba"
+    ],
+    "corn": [
+      "2b3ba4efc7623509",
+      "b1ea36efdd800125",
+      "57c9f3efc047e6e7",
+      "487b66ef6ab450a3",
+      "74601aefe4e75451"
+    ],
+    "hoe": [
+      "878e21efcd2a1071",
+      "878e21efcd2a1071",
+      "878e21efcd2a1071",
+      "878e21efcd2a1071",
+      "878e21efcd2a1071"
+    ],
+    "sickle": [
+      "6ba0c4efab72d91a",
+      "6ba0c4efab72d91a",
+      "6ba0c4efab72d91a",
+      "6ba0c4efab72d91a",
+      "6ba0c4efab72d91a"
+    ],
+    "watering_can": [
+      "511b2befb680c638",
+      "511b2befb680c638",
+      "511b2befb680c638",
+      "511b2befb680c638",
+      "f99388efad55782b"
+    ],
+    "shovel": [
+      "1a5c72ef0ee5d972",
+      "1a5c72ef0ee5d972",
+      "1a5c72ef0ee5d972",
+      "1a5c72ef0ee5d972",
+      "1a5c72ef0ee5d972"
+    ],
+    "rake": [
+      "ea33c4efe059e9de",
+      "ea33c4efe059e9de",
+      "ea33c4efe059e9de",
+      "ea33c4efe059e9de",
+      "ea33c4efe059e9de"
+    ],
+    "axe": [
+      "ab1e4aef15f1855e",
+      "ab1e4aef15f1855e",
+      "ab1e4aef15f1855e",
+      "ab1e4aef15f1855e",
+      "ab1e4aef15f1855e"
+    ],
+    "pruning_shears": [
+      "b705e5efa893f1a9",
+      "b705e5efa893f1a9",
+      "b705e5efa893f1a9",
+      "b705e5efa893f1a9",
+      "b705e5efa893f1a9"
+    ],
+    "basket": [
+      "f2e076ef56782c69",
+      "f2e076ef56782c69",
+      "f2e076ef56782c69",
+      "f2e076ef56782c69",
+      "f2e076ef56782c69"
+    ],
+    "soil_bed": [
+      "901ed3ef09ee5acb",
+      "901ed3ef09ee5acb",
+      "901ed3ef09ee5acb",
+      "901ed3ef09ee5acb",
+      "901ed3ef09ee5acb"
+    ],
+    "wheelbarrow": [
+      "0d43c7ef08400c43",
+      "0d43c7ef08400c43",
+      "0d43c7ef08400c43",
+      "0d43c7ef08400c43",
+      "0d43c7ef08400c43"
+    ],
+    "crate": [
+      "fcd438ef0beabe93",
+      "fcd438ef0beabe93",
+      "fcd438ef0beabe93",
+      "fcd438ef0beabe93",
+      "fcd438ef0beabe93"
+    ],
+    "sack": [
+      "86d204efc47d8146",
+      "86d204efc47d8146",
+      "86d204efc47d8146",
+      "86d204efc47d8146",
+      "ce4840ef90d44a1d"
+    ],
+    "hay_bale": [
+      "2086f2efc2561550",
+      "2086f2efc2561550",
+      "2086f2efc2561550",
+      "2086f2efc2561550",
+      "2086f2efc2561550"
+    ],
+    "egg": [
+      "9dd864ef79a927bd",
+      "9dd864ef79a927bd",
+      "9dd864ef79a927bd",
+      "9dd864ef79a927bd",
+      "aa0f7fefa0b656e9"
+    ],
+    "nest": [
+      "a3f11fef587b7c1c",
+      "a3f11fef587b7c1c",
+      "a3f11fef587b7c1c",
+      "a3f11fef587b7c1c",
+      "a3f11fef587b7c1c"
+    ],
+    "beehive": [
+      "21b82def1a6c1143",
+      "08e9e8ef67c1276b",
+      "83ccb9efb9a139c5",
+      "772f09ef8e3cc9d7",
+      "c41918efad6fa147"
+    ],
+    "lantern": [
+      "d467feefb7e27d08",
+      "9893beef58898c63",
+      "d325bdef2d523f75",
+      "f51fb2eff171f52c",
+      "f7288eef23a5d43f"
+    ],
+    "bowl": [
+      "45cbaeefa89f8973",
+      "45cbaeefa89f8973",
+      "45cbaeefa89f8973",
+      "45cbaeefa89f8973",
+      "45cbaeefa89f8973"
+    ],
+    "fence": [
+      "693bacef7c344347",
+      "693bacef7c344347",
+      "693bacef7c344347",
+      "693bacef7c344347",
+      "693bacef7c344347"
+    ],
+    "cow": [
+      "b81656efecc9bd3d",
+      "b8a11eef140fab82",
+      "61ba61ef70b73c32",
+      "9b4daaeff3336838",
+      "afa47eef1807b909"
+    ],
+    "pig": [
+      "c9e7e2ef5776d8f2",
+      "6e8a4eefa47490fc",
+      "090959ef40c78270",
+      "4c6534ef01fea9b3",
+      "8d00dfef787c3b4d"
+    ],
+    "goat": [
+      "1035b7ef0ad66f67",
+      "215cacefadebcb65",
+      "38078cef4191e887",
+      "a1d4ecef98c6d81b",
+      "728747efb1f9062e"
+    ],
+    "sheep": [
+      "955cc7effc5f2d48",
+      "2b5f27ef226a117a",
+      "24fb9def9dfc1dfc",
+      "4eb626ef863f7c52",
+      "740edcefc5a9d379"
+    ],
+    "horse": [
+      "54cab0efd1541948",
+      "254acdef4aa2e5f7",
+      "17c30bef6e6e7cc6",
+      "8c2c1befc32241ab",
+      "479ea9eff498c55d"
+    ],
+    "dog": [
+      "7f18deefbb1c8aef",
+      "72668eef6fd707e6",
+      "f2a944efa7a0ff43",
+      "499e6eef4ae809c5",
+      "6ea263ef40e08865"
+    ],
+    "cat": [
+      "995252ef257d9521",
+      "cbf9c9efec4226f3",
+      "84b42cef0a668c5d",
+      "a5ab88ef0dfcf235",
+      "73bd7def44d1d28a"
+    ],
+    "rabbit": [
+      "26b19eef00a391fc",
+      "9a284ceffdf1f3f1",
+      "bdcf22efc54c870d",
+      "d7c20feffe4ec65d",
+      "8f5eacef7a6ed1b3"
+    ],
+    "mouse": [
+      "cc6d50ef3c57b7e1",
+      "34141bef977b7776",
+      "1d4276ef5c6a1735",
+      "3a14f1ef6533bef7",
+      "bb19d5effb07c6d3"
+    ],
+    "grass_tuft": [
+      "beae99ef59caf227",
+      "36b5d7efa5a11e73",
+      "72fbddefd3e8a970",
+      "1eb2bcefb4f3e54e",
+      "0e2993efd1babd3c"
+    ],
+    "duck": [
+      "139d4fef1b75b1e1",
+      "139d4fef1b75b1e1",
+      "139d4fef1b75b1e1",
+      "139d4fef1b75b1e1",
+      "d88f97efe9ad7918"
+    ],
+    "chick": [
+      "2fbf7bef0118d00e",
+      "2fbf7bef0118d00e",
+      "2fbf7bef0118d00e",
+      "2fbf7bef0118d00e",
+      "ade139ef43a4f4e8"
+    ],
+    "rooster": [
+      "67dcf9efa06e952a",
+      "36f545ef546a3fa6",
+      "e9e976efd3677abd",
+      "d6bc00ef7d39af0f",
+      "795153ef4e0e386e"
+    ],
+    "sparrow": [
+      "5ef6c3ef4620403c",
+      "25d208eff66ef0b1",
+      "123cd2efadce7ec8",
+      "f3037fef09ad60e0",
+      "8fe333ef6232e1a1"
+    ],
+    "butterfly": [
+      "367d8aefbb945de6",
+      "bd101aef80c13b3a",
+      "16494cef344425f2",
+      "0e3435ef9e43a0cc",
+      "ec490fef10668be6"
+    ],
+    "dragonfly": [
+      "c1d278ef5eb1b472",
+      "ed7b3aef6832ce6c",
+      "076305ef07c7224b",
+      "9ca0dbefe8f3cf7f",
+      "c714faefe11f33e4"
+    ],
+    "ladybug": [
+      "edf79def1355b2ee",
+      "edf79def1355b2ee",
+      "edf79def1355b2ee",
+      "edf79def1355b2ee",
+      "25a37befb422b378"
+    ],
+    "ant": [
+      "df8a53ef91118cf7",
+      "df8a53ef91118cf7",
+      "df8a53ef91118cf7",
+      "df8a53ef91118cf7",
+      "7460ecef90b8dd30"
+    ],
+    "caterpillar": [
+      "d7213eefa7ef91c9",
+      "d7213eefa7ef91c9",
+      "d7213eefa7ef91c9",
+      "d7213eefa7ef91c9",
+      "c44d6eef2b132dfc"
+    ],
+    "frog": [
+      "e8d6f1ef19b65de0",
+      "6794a7ef4e47cb59",
+      "6d9aacefa93ff6f6",
+      "6293bdef93ef5df1",
+      "bebfb9efae5e9cb7"
+    ],
+    "mango": [
+      "e9d1a1ef0f83782c",
+      "96d865ef7624e79f",
+      "643fd6ef3f5b344c",
+      "a5b8f6ef2a08a48e",
+      "aafdc9ef59d0da45"
+    ],
+    "orange": [
+      "e9c076efd714ed72",
+      "c4af3cefd53ed9ae",
+      "322078ef5f4ca7ce",
+      "d4bc61effbbc1d2a",
+      "59cb25ef6307dad8"
+    ],
+    "lime": [
+      "489e8def56460199",
+      "41f868efdf66d0d2",
+      "8e4438efb6e158d2",
+      "37d3d8ef9e5c3377",
+      "bdc681ef4dbea29c"
+    ],
+    "guava": [
+      "4ad816ef487d2d04",
+      "62e4e4ef5b024fd2",
+      "49b626efbb705ddf",
+      "539f93efb68c79c5",
+      "488dc7ef8172f827"
+    ],
+    "lychee": [
+      "6e1770ef84d6c962",
+      "d4523cef94ebc937",
+      "58d0e6ef55495801",
+      "9e73d2ef259a4ebc",
+      "6d920eefbffbc916"
+    ],
+    "rambutan": [
+      "9be662ef14efb866",
+      "317e2eefbc356577",
+      "7a1a2aef6a0ed275",
+      "0d879fef85efc339",
+      "95886defdb9a3cca"
+    ],
+    "mangosteen": [
+      "31977fefe7281059",
+      "0888b5ef9a4350c2",
+      "7feb44ef31165bea",
+      "a04921efbffbed30",
+      "88f087ef770a5f41"
+    ],
+    "durian": [
+      "47661bef21888769",
+      "4ba2aeef2b657536",
+      "7c9b45ef7f87d3df",
+      "ce11c6effb670ef2",
+      "df906befe216a472"
+    ],
+    "coconut": [
+      "717595ef8531a438",
+      "0b2403ef79e4887c",
+      "59ecfbef253257ee",
+      "eac6e3ef06804380",
+      "02bbd1ef35a1bd58"
+    ],
+    "avocado": [
+      "e33ff3ef89a39fb3",
+      "1f8072efcd15df1e",
+      "9bdf5fef1fe981a0",
+      "1c3769efca80a19c",
+      "befc25efa64ad596"
+    ],
+    "strawberry": [
+      "928cf7efefd04550",
+      "b2f110ef07733fe4",
+      "67826def15f0897f",
+      "38f62bef12b36ece",
+      "5c1a7befee4ba6bd"
+    ],
+    "pineapple": [
+      "ca234fefd11bf367",
+      "715d5bef4da77047",
+      "d20f48ef201b257b",
+      "3d943befbd3f8026",
+      "e26c00ef60d22fd8"
+    ],
+    "grape": [
+      "2879b5ef18a21155",
+      "1e19efefaa93b299",
+      "0da66fef0ffc35dd",
+      "206ee4effd3bbd17",
+      "0c90e0ef19a1ba81"
+    ],
+    "dragon_fruit": [
+      "e89406ef71b09dcc",
+      "29602aef496a20cc",
+      "bfd9d6ef283de2cd",
+      "ca6aa3ef684e63d6",
+      "087987efd91c0437"
+    ],
+    "starfruit": [
+      "e93b79efe181604d",
+      "a2ec5aef6cd37314",
+      "f1b9d7ef3d0c4cb0",
+      "de2fcfef0e7ec09b",
+      "36049def616aa47c"
+    ],
+    "jackfruit": [
+      "242b30efdeb89d91",
+      "6c50bbef1103dc85",
+      "7aa02eefef996c80",
+      "062f7defcd8f9d1c",
+      "67587cef7211a344"
+    ],
+    "banana_fruit": [
+      "885d37efa1e0ab04",
+      "50d90def7863d1eb",
+      "b2cfb8ef31d2bda4",
+      "acc09fefe9e7fae3",
+      "e88853ef88ed33cb"
+    ],
+    "rose": [
+      "e34093ef9ff23739",
+      "444369ef29d76ec1",
+      "f0a9a3efce3f1807",
+      "60915fefe6394f07",
+      "d02b53ef06367099"
+    ],
+    "lotus": [
+      "0cd70aefe529ecfe",
+      "134128ef55d8ba49",
+      "e27cf2efefc880a1",
+      "27ea89ef5c5c0d30",
+      "e77b3fef1eeecb4a"
+    ],
+    "tulip": [
+      "c07d43ef807af5d2",
+      "e2b7ebefe751fa37",
+      "1c0743efc7850add",
+      "0561a1ef3fd56be5",
+      "9ab030efb4a8eb75"
+    ],
+    "daisy": [
+      "efcbf6efb92fde01",
+      "047a8defaa2d8786",
+      "165640ef4e2acb57",
+      "2b4696eff98e3a9d",
+      "93e6f9ef87582c7e"
+    ],
+    "marigold": [
+      "b7a9b4ef116ba49e",
+      "18e88befdd5cdc7e",
+      "60ad01effa6f3679",
+      "9f78a4ef3557823a",
+      "03f23bef841efbeb"
+    ],
+    "hibiscus": [
+      "744d1aef5ae29811",
+      "623a7eefa898555b",
+      "18898defe4c2abc3",
+      "b492f8ef9d0f5665",
+      "e89defeff8cb98e6"
+    ],
+    "orchid": [
+      "86ffd0ef1ce7f0d9",
+      "d00f76ef4db8a9c3",
+      "d447bfefdb4deea0",
+      "7c993cef6c50efa8",
+      "8f49e9ef991be9e4"
+    ],
+    "peach_blossom": [
+      "cbb527ef58217e1c",
+      "b1374aef427477f2",
+      "e50423ef7f47a744",
+      "e875b1efd5c6809b",
+      "40b725efa8b112a1"
+    ],
+    "apricot_blossom": [
+      "b3c114ef59efac5c",
+      "cadadfef2e8300f7",
+      "350cffef670932db",
+      "ec7bbeefec43f000",
+      "55e3b4efce4168e2"
+    ],
+    "lily": [
+      "7fdbd7ef924ee500",
+      "a517daef87700a97",
+      "02d1a7eff4dfaa5f",
+      "a67341ef473aaf07",
+      "2ea515efcd11b64f"
+    ],
+    "mango_tree": [
+      "295aa8ef2fc8639d",
+      "295aa8ef2fc8639d",
+      "295aa8ef2fc8639d",
+      "295aa8ef2fc8639d",
+      "ae7929efcf2fed7d"
+    ],
+    "orange_tree": [
+      "82db36ef4471473c",
+      "82db36ef4471473c",
+      "82db36ef4471473c",
+      "82db36ef4471473c",
+      "77b6f8efb601dcbd"
+    ],
+    "lime_tree": [
+      "92f967ef1be923d9",
+      "92f967ef1be923d9",
+      "92f967ef1be923d9",
+      "92f967ef1be923d9",
+      "3324d9ef98a15d98"
+    ],
+    "apple_tree": [
+      "ff4120ef0440e124",
+      "ff4120ef0440e124",
+      "ff4120ef0440e124",
+      "ff4120ef0440e124",
+      "ae40aeeff9e36665"
+    ],
+    "coconut_palm": [
+      "1373c6eff0bb7eb8",
+      "1373c6eff0bb7eb8",
+      "1373c6eff0bb7eb8",
+      "1373c6eff0bb7eb8",
+      "beea6eef3d53d959"
+    ],
+    "durian_tree": [
+      "aac0b7efa8425146",
+      "aac0b7efa8425146",
+      "aac0b7efa8425146",
+      "aac0b7efa8425146",
+      "4239faef63a6dc87"
+    ],
+    "jackfruit_tree": [
+      "7d402defcf8d57a3",
+      "7d402defcf8d57a3",
+      "7d402defcf8d57a3",
+      "7d402defcf8d57a3",
+      "edb149efb4899032"
+    ],
+    "lychee_tree": [
+      "64f789ef32fc54be",
+      "64f789ef32fc54be",
+      "64f789ef32fc54be",
+      "64f789ef32fc54be",
+      "4c991bef7b5ee5af"
+    ],
+    "rambutan_tree": [
+      "301493ef5f884b40",
+      "04f4e4ef0a6be0ae",
+      "387bbeeff489a808",
+      "040acfef7b5fecb6",
+      "3fdc24ef811cf41f"
+    ],
+    "guava_tree": [
+      "4ea5bfeffc02b9a7",
+      "4ea5bfeffc02b9a7",
+      "4ea5bfeffc02b9a7",
+      "4ea5bfeffc02b9a7",
+      "3a1ca1ef333f59ad"
+    ],
+    "avocado_tree": [
+      "c3163eef7e812aa0",
+      "c3163eef7e812aa0",
+      "c3163eef7e812aa0",
+      "c3163eef7e812aa0",
+      "c4d102ef1557487a"
+    ],
+    "dragon_fruit_cactus": [
+      "777dd9efa63a29fc",
+      "777dd9efa63a29fc",
+      "777dd9efa63a29fc",
+      "777dd9efa63a29fc",
+      "d3bf1eeff6a7e040"
+    ],
+    "pineapple_plant": [
+      "82f37deff322a637",
+      "82f37deff322a637",
+      "82f37deff322a637",
+      "82f37deff322a637",
+      "20eac0ef3fba842d"
+    ],
+    "strawberry_plant": [
+      "da9c59efeda1f849",
+      "da9c59efeda1f849",
+      "da9c59efeda1f849",
+      "da9c59efeda1f849",
+      "63a621efbcdc344c"
+    ],
+    "mangosteen_tree": [
+      "e4d3c0efd934d1e9",
+      "e4d3c0efd934d1e9",
+      "e4d3c0efd934d1e9",
+      "e4d3c0efd934d1e9",
+      "5c16ceefd3fa23a0"
+    ],
+    "starfruit_tree": [
+      "63b0d9ef9c02a7a4",
+      "63b0d9ef9c02a7a4",
+      "63b0d9ef9c02a7a4",
+      "63b0d9ef9c02a7a4",
+      "861f0bef8e770ce5"
+    ],
+    "elephant": [
+      "d66182ef48f6d13d",
+      "02b33cefeef3c407",
+      "8ab9c4ef4ae83777",
+      "63d99bef52b6186d",
+      "bceb40ef4f6f2ea2"
+    ],
+    "hippo": [
+      "dd9748ef3ecbe7a6",
+      "4b38a2eff4577ef5",
+      "366390ef3db04e12",
+      "1cc60aef29d467d8",
+      "91de63ef10463463"
+    ],
+    "crocodile": [
+      "7be58eefcfc23871",
+      "0b83eeef8e62bfe6",
+      "50eb5bef824f4f08",
+      "74bc4cef60b1cf2c",
+      "b18ce9efe3ff98fb"
+    ],
+    "gorilla": [
+      "dca311ef833a465e",
+      "dca311ef833a465e",
+      "dca311ef833a465e",
+      "dca311ef833a465e",
+      "dca311ef833a465e"
+    ],
+    "cheetah": [
+      "4c46bfefb5b4f96f",
+      "d2d23fef5e4b49d8",
+      "3a412cef6354bd8f",
+      "5fbb3befd7957ea7",
+      "4e3e50ef93e02ca5"
+    ],
+    "hyena": [
+      "d56af9ef082ee46c",
+      "d56af9ef082ee46c",
+      "d56af9ef082ee46c",
+      "d56af9ef082ee46c",
+      "d56af9ef082ee46c"
+    ],
+    "giraffe": [
+      "775e77ef474a8556",
+      "cac951ef56c01df0",
+      "43b611ef4a3e5acd",
+      "708c54ef9c030038",
+      "52e7edef5afdbf49"
+    ],
+    "meerkat": [
+      "280611efb1223336",
+      "e4ec99ef7672fe82",
+      "718ce0efd7257a38",
+      "0a7155ef0ca2ea15",
+      "a21d3def24bf07e7"
+    ],
+    "warthog": [
+      "f466abef1d2654a7",
+      "16dbb2eff81c1f9e",
+      "8be5abef9e029b22",
+      "7fad9deff9a01c9f",
+      "57f7fdefafa3a7d2"
+    ],
+    "koala": [
+      "34306bef4d7034b5",
+      "34306bef4d7034b5",
+      "34306bef4d7034b5",
+      "34306bef4d7034b5",
+      "34306bef4d7034b5"
+    ],
+    "red_panda": [
+      "321a43ef6e4ce091",
+      "3d66eaef8f37c547",
+      "eb31b2ef4bd79499",
+      "a4f740efd123e5f2",
+      "7e7484effef0f743"
+    ],
+    "donkey": [
+      "bd3926ef4ef599f3",
+      "9acd81efeaa1f17f",
+      "16c2afefc0bc7345",
+      "e3fdccef0ea024ef",
+      "4edbc3efd24219b4"
+    ],
+    "pug": [
+      "a7d2fcefb79cce33",
+      "a7d2fcefb79cce33",
+      "a7d2fcefb79cce33",
+      "a7d2fcefb79cce33",
+      "a7d2fcefb79cce33"
+    ],
+    "shiba": [
+      "443001ef9da8ae6a",
+      "443001ef9da8ae6a",
+      "443001ef9da8ae6a",
+      "443001ef9da8ae6a",
+      "443001ef9da8ae6a"
+    ],
+    "hedgehog": [
+      "9de504ef70ff62a1",
+      "ff1571ef6da53a1c",
+      "ec8d7cef346e5753",
+      "ebd69eef225bc358",
+      "546ee7ef2ffe7acb"
+    ],
+    "sloth": [
+      "ab6c87efb1973cc2",
+      "ab6c87efb1973cc2",
+      "ab6c87efb1973cc2",
+      "ab6c87efb1973cc2",
+      "ab6c87efb1973cc2"
+    ],
+    "beaver": [
+      "8a541fefb634673d",
+      "6696ebeff43638c0",
+      "dba327ef671181f3",
+      "1901d4efcb1391dd",
+      "ee90f6ef7d21a47c"
+    ],
+    "black_goat": [
+      "aba99fefead40d88",
+      "1c4223ef88238fde",
+      "28a6a5ef4866e1fe",
+      "3f65a2efba915e47",
+      "1268a8efb2e20a27"
+    ],
+    "white_goat": [
+      "df496aef153a2095",
+      "df496aef153a2095",
+      "df496aef153a2095",
+      "df496aef153a2095",
+      "df496aef153a2095"
+    ],
+    "fluffy_sheep": [
+      "767f22ef950e73c6",
+      "767f22ef950e73c6",
+      "767f22ef950e73c6",
+      "767f22ef950e73c6",
+      "767f22ef950e73c6"
+    ],
+    "squirrel": [
+      "60d151ef75e15f8c",
+      "30e62deff9edd6f6",
+      "4f9b86ef8a5616bf",
+      "143980ef0c2189da",
+      "dc11c6ef06b54eea"
+    ],
+    "turtle": [
+      "52a4b8efa973b3ee",
+      "42fab1efd67aa372",
+      "e83216efdc86f223",
+      "8bdef2efa08c1a6a",
+      "2f2c28ef0239e9d8"
+    ],
+    "trex": [
+      "8cd95eef3d28643c",
+      "ce0ffdef07f97e92",
+      "5048f6ef1173f402",
+      "459fafefacbfe886",
+      "993856ef55afc522"
+    ],
+    "triceratops": [
+      "86909bef6cf4549b",
+      "abe184efeb54b079",
+      "0478feeff009c3a2",
+      "d8ebaaeff4694826",
+      "ad7b0bef8c0a3002"
+    ],
+    "pterodactyl": [
+      "3400e7efdc2f6b02",
+      "3400e7efdc2f6b02",
+      "3400e7efdc2f6b02",
+      "3400e7efdc2f6b02",
+      "3400e7efdc2f6b02"
+    ],
+    "ancient_lizard": [
+      "acb713ef3ede24b8",
+      "57ea0eefb969e428",
+      "e36146efa79cf36b",
+      "e16592eff53c6d5c",
+      "cee445effc16cad5"
+    ],
+    "eagle": [
+      "752fdbefb32ac2ca",
+      "752fdbefb32ac2ca",
+      "752fdbefb32ac2ca",
+      "752fdbefb32ac2ca",
+      "752fdbefb32ac2ca"
+    ],
+    "penguin": [
+      "5783a8effe0cde3b",
+      "43878fef26deadb6",
+      "63c927ef4e761914",
+      "c76141efd7e7f084",
+      "f237caefcdd208f8"
+    ],
+    "wild_rabbit": [
+      "522dd5eff272b8f8",
+      "c78744efcc620f7c",
+      "b3496bef9d372876",
+      "27e18fef1105e8dc",
+      "f8e568efeee89d4b"
+    ],
+    "capybara": [
+      "8d7860ef127d5031",
+      "8d7860ef127d5031",
+      "8d7860ef127d5031",
+      "8d7860ef127d5031",
+      "8d7860ef127d5031"
+    ],
+    "cartoon_tiger": [
+      "39518cef40b5e042",
+      "3adb13efeacdc4f9",
+      "1410c9ef64cfc9bc",
+      "d9f585ef9c2ad3a2",
+      "b6f8edef169760a9"
+    ],
+    "cartoon_monkey": [
+      "49e1efefb043ceea",
+      "db2baaef24452141",
+      "b2241befb3bf4e0a",
+      "812aefefc087a966",
+      "2310daef782d5547"
+    ],
+    "armored_bear": [
+      "9c7d3defc0c074e8",
+      "9c7d3defc0c074e8",
+      "9c7d3defc0c074e8",
+      "9c7d3defc0c074e8",
+      "9c7d3defc0c074e8"
+    ],
+    "armored_wolf": [
+      "44309cef9ab44cff",
+      "97da65efe727304f",
+      "2976cfefc00afdd0",
+      "c80aeaef3a18a73d",
+      "d2c08fef4644edb7"
+    ],
+    "chibi_cow": [
+      "e4f83fef7a488062",
+      "bc7b24ef899dc9bc",
+      "78db37ef390ed071",
+      "c51853efc38a6e60",
+      "f4e194ef74677b85"
+    ],
+    "cartoon_snake": [
+      "975678ef52a7d9e5",
+      "1670fdefabb326b5",
+      "a43a89efb83ce494",
+      "d4121def61112f69",
+      "7cbb04ef46311401"
+    ],
+    "vulture": [
+      "43a7d3ef2c18d71d",
+      "43a7d3ef2c18d71d",
+      "43a7d3ef2c18d71d",
+      "43a7d3ef2c18d71d",
+      "43a7d3ef2c18d71d"
+    ],
+    "trellis_a": [
+      "3ca7d2ef0f7030a5",
+      "3ca7d2ef0f7030a5",
+      "3ca7d2ef0f7030a5",
+      "3ca7d2ef0f7030a5",
+      "3ca7d2ef0f7030a5"
+    ],
+    "trellis_net": [
+      "f5d0a8efc9eb3c85",
+      "f5d0a8efc9eb3c85",
+      "f5d0a8efc9eb3c85",
+      "f5d0a8efc9eb3c85",
+      "f5d0a8efc9eb3c85"
+    ],
+    "pergola": [
+      "6739c5ef950d5061",
+      "6739c5ef950d5061",
+      "6739c5ef950d5061",
+      "6739c5ef950d5061",
+      "6739c5ef950d5061"
+    ],
+    "cucumber": [
+      "3ac2ebefdcfd09c3",
+      "b80d8cefb99572bc",
+      "de2e1defcd55201d",
+      "45467defe15f0325",
+      "84e3c6ef6ba6738a"
+    ],
+    "bitter_melon": [
+      "1c0453efdbeff3e2",
+      "ec6c76ef918cbc94",
+      "f598baefd5a6eaa8",
+      "a76a3fef4234a91d",
+      "1a7f7aef2880cc2b"
+    ],
+    "luffa": [
+      "e20be3efacbe713e",
+      "a39b98ef4d522be2",
+      "f83cdaefee2e918f",
+      "ee2e5aef40da57bd",
+      "75cb49ef307c7c7d"
+    ],
+    "bottle_gourd": [
+      "a20de1ef0d0f5cc3",
+      "03be24ef41376676",
+      "141315efb9a75bd1",
+      "e578c5ef57e7eb62",
+      "4da11aef8964a63b"
+    ],
+    "winter_melon": [
+      "bd8522ef06f2e8ea",
+      "8fa441ef9a74ce0f",
+      "b65872efbee6a0f4",
+      "fc9e36ef95761582",
+      "f6e8e6ef341eb04e"
+    ],
+    "passion_fruit": [
+      "87a67cef6166b05a",
+      "f2464cef27c6926c",
+      "c458dbefdff536d7",
+      "b88519ef9a570e5b",
+      "4b51ccef530a7810"
+    ],
+    "chayote": [
+      "c0736fef231f3496",
+      "d2aefcef6810b293",
+      "94d322ef29f9aac7",
+      "563b80ef0ca85243",
+      "e45779ef049ecbf3"
+    ],
+    "long_bean": [
+      "543ce2efcd7de71a",
+      "50ea54ef5298139a",
+      "342a77ef107f4710",
+      "922a48efe8b619cc",
+      "445566ef9dbf827c"
+    ],
+    "kiwi": [
+      "0fdb86efc2dc1b21",
+      "ae87b4ef8cdaf35a",
+      "ef633eef48cbcf42",
+      "098349ef951f6173",
+      "da9d4befa47c35ed"
+    ],
+    "cucumber_vine": [
+      "1a5df4efb55a1e7c",
+      "cf8513efa5284893",
+      "a7114def96f3e9a5",
+      "d90119efd7523dad",
+      "f3740ceffe5eed48"
+    ],
+    "bitter_melon_vine": [
+      "0827c8ef44ea53d7",
+      "c187f5ef9f372615",
+      "5b205def15d6732c",
+      "b335e7efa293b4dc",
+      "178d53ef011eb310"
+    ],
+    "luffa_vine": [
+      "b09532ef31479c72",
+      "28d892efa14028fd",
+      "b3dbb9ef0a06584e",
+      "3d4581ef0728183b",
+      "235a9eefdecc60fd"
+    ],
+    "bottle_gourd_vine": [
+      "757062ef061c2fac",
+      "9c4092efbeb943dd",
+      "639b5cefe05c38cc",
+      "30a0b7efdd95b1cc",
+      "571a8fef1d46f84b"
+    ],
+    "winter_melon_vine": [
+      "4dee75ef028e8a60",
+      "c32505ef3568dc44",
+      "306b49eff720c2dd",
+      "7c2237ef1ea0a7a7",
+      "53e6fbefb7368d5f"
+    ],
+    "passion_fruit_vine": [
+      "3cd148ef26cfaafe",
+      "55f6bcef62811938",
+      "5ac2c6efd16c872a",
+      "0886e9ef0f9ce181",
+      "16164bef7f1f8afb"
+    ],
+    "chayote_vine": [
+      "6b5f6fef9ec63f4e",
+      "8ecd71eff212e83a",
+      "07f5f4ef1eb536ec",
+      "af6f7fef49bfa647",
+      "4e9c1def438e0506"
+    ],
+    "long_bean_vine": [
+      "fdc445ef529c68fd",
+      "d070dbefdf20130a",
+      "133baaefacfbe124",
+      "c8adc7efb0d6047d",
+      "c0f27cefb639ecd3"
+    ],
+    "grape_vine": [
+      "d7feeaef02f6273c",
+      "55bd47ef79ca3a24",
+      "a908b4ef54701746",
+      "2cd9d0efc66a3661",
+      "2fca4bef16d4fdda"
+    ],
+    "kiwi_vine": [
+      "8fc763ef6c67183c",
+      "f2a6f8eff6dc6e28",
+      "095fc7ef35e01a65",
+      "f0350aef02ccedf2",
+      "3b174def8a7276ba"
+    ],
+    "pear": [
+      "e888c4ef6f3363ff",
+      "e09a52ef02306d17",
+      "389883ef285a1fee",
+      "4a879fef2b77bdbc",
+      "f85e9fef61ebba05"
+    ],
+    "peach": [
+      "5b9cd2ef2c09da82",
+      "3448e3efec1c262c",
+      "e87d4eef1686d641",
+      "67696fef893d38ba",
+      "23a26eefe434ca5b"
+    ],
+    "plum": [
+      "fe9bc6effbfe1d9f",
+      "e4310eef1b30d62b",
+      "92365def1d7fabec",
+      "582914efb5b0360d",
+      "763501effc73c633"
+    ],
+    "cherry": [
+      "2d207bef46e1eabf",
+      "f8909aef14d955e4",
+      "74607cef59761def",
+      "f2f211efd66f03db",
+      "d2607eefec8eb1d7"
+    ],
+    "persimmon": [
+      "a45009ef673b4ed3",
+      "eabb40ef3fd8f4d0",
+      "2d0711ef565d77af",
+      "591bbbeff789fb64",
+      "c7ca6aefbb9fcf87"
+    ],
+    "blueberry": [
+      "0ef990efd6b31391",
+      "4af8c7ef71e50c5c",
+      "51d01eefcb809c35",
+      "8dc3b9ef0ad28473",
+      "ee3066ef45f49a2e"
+    ],
+    "raspberry": [
+      "2e3bf5ef416cf19c",
+      "d5f8b7efb9aae1ed",
+      "2817abef8a0e2ecc",
+      "9ac553ef8ca365d0",
+      "7bd1a1efe5fc9395"
+    ],
+    "apricot": [
+      "a01d16efbe25dd52",
+      "a88c4eef42232f66",
+      "bff55bef1757527a",
+      "d9688fef20acbdcd",
+      "062060efa8ab287a"
+    ],
+    "pomegranate": [
+      "624ae7effdb5c20b",
+      "468d4bef05cefbca",
+      "6cdcd7ef652f0e10",
+      "1a913cefdf0ac3db",
+      "d445f1effcb9f8fe"
+    ],
+    "persimmon_tree": [
+      "c96d6eef56957ee7",
+      "c96d6eef56957ee7",
+      "c96d6eef56957ee7",
+      "c96d6eef56957ee7",
+      "7430e0efeb6cc1de"
+    ],
+    "peach_tree": [
+      "51161bef5b2a90a5",
+      "51161bef5b2a90a5",
+      "51161bef5b2a90a5",
+      "51161bef5b2a90a5",
+      "a41221ef38c9b86c"
+    ],
+    "pear_tree": [
+      "a926e4ef9912ec94",
+      "a926e4ef9912ec94",
+      "a926e4ef9912ec94",
+      "a926e4ef9912ec94",
+      "398f32efbb75ef95"
+    ],
+    "cherry_tree": [
+      "92fc49ef10bdaf46",
+      "92fc49ef10bdaf46",
+      "92fc49ef10bdaf46",
+      "92fc49ef10bdaf46",
+      "522c5befb20ca0b7"
+    ],
+    "kohlrabi": [
+      "a25d37efe35ed852",
+      "be3bfaefa641c102",
+      "bcb6c3ef1425637b",
+      "f8afe7ef5b9bfd9a",
+      "4bb3c3ef8efc6a29"
+    ],
+    "potato": [
+      "d2db0bef9ec91578",
+      "d0ce8defdda9ea81",
+      "e453cfefbb438b6d",
+      "5e92b4efb2355826",
+      "6309eaefd3120333"
+    ],
+    "sweet_potato": [
+      "8501d6ef9323f5ae",
+      "311309efc485dc7d",
+      "43f648ef7a1a109b",
+      "a06715ef14bba852",
+      "f6ef5cef9648bed0"
+    ],
+    "cassava": [
+      "85bbc8ef3b7e2563",
+      "9e7817ef89fd3b2d",
+      "c28922ef9c1b5c32",
+      "2770deefe48ceca1",
+      "425a2aef1714fd1a"
+    ],
+    "taro": [
+      "e3e57feff7080447",
+      "4884d4ef1114caa4",
+      "31892cefb78d6f23",
+      "3524d9ef4a2c97e3",
+      "01e306ef341d3c4b"
+    ],
+    "radish": [
+      "767fafef7b04128d",
+      "adb12fef5f8f60f4",
+      "db5500ef64510728",
+      "039abfef58cf598f",
+      "defbc6ef54c72c58"
+    ],
+    "beet": [
+      "ef7bd1ef99b2dde7",
+      "23f02eef90d941cb",
+      "8b7b34ef63017475",
+      "277e28ef72ef37c9",
+      "01c84aef88da9e51"
+    ],
+    "onion": [
+      "8981ceefc86c907a",
+      "461f4fefa461e2cd",
+      "a2222def3954941f",
+      "f1f4f7efa7980b21",
+      "9c0c8defc7f96b89"
+    ],
+    "garlic": [
+      "76f25cefb445a30a",
+      "fbc49fefe6e7eb10",
+      "ed21d5eff0eb1499",
+      "229dccef86ea12ba",
+      "bb75d3ef44af4b2d"
+    ],
+    "ginger": [
+      "fe8c92ef62902827",
+      "c2c305efd93cb401",
+      "a8fa09efd8c8ebe2",
+      "9af938ef5367f47b",
+      "0c2fcdefc21686b3"
+    ],
+    "cauliflower": [
+      "e49947ef72430ca9",
+      "9bc096efdfb960dc",
+      "9bf6d0ef6a0c8afb",
+      "2636a9ef36b9e94b",
+      "eaa991ef38c3a597"
+    ],
+    "broccoli": [
+      "423075ef0f7580b3",
+      "8ec9ddef3abc8e35",
+      "e5c592ef761ce97d",
+      "df4f5defcf9d1d69",
+      "68b624ef6159794d"
+    ],
+    "okra": [
+      "93a7b6ef9c43e463",
+      "93ce95efef947132",
+      "9a4669efef4cd4a5",
+      "6d8ac2efac7c009c",
+      "85beb4ef0f630403"
+    ],
+    "chili": [
+      "ec2f16efa600bb02",
+      "95382def9b8e7269",
+      "4b22ccefe8cea1d1",
+      "a4cae6efa09e6c19",
+      "f4b5a7efabe063cb"
+    ],
+    "mushroom": [
+      "bc2339efffdcea36",
+      "13422eefd62c4c40",
+      "1b49efefc8f7a1e5",
+      "bfce7eef631866a4",
+      "a006bcef12e0da40"
+    ],
+    "kohlrabi_plant": [
+      "c3d883efa9ab7564",
+      "c3d883efa9ab7564",
+      "c3d883efa9ab7564",
+      "c3d883efa9ab7564",
+      "3f2e5fef5469c6c5"
+    ],
+    "potato_plant": [
+      "92bccfefa03eb1e9",
+      "92bccfefa03eb1e9",
+      "92bccfefa03eb1e9",
+      "92bccfefa03eb1e9",
+      "a0b796efe2e5cdf1"
+    ],
+    "sweet_potato_plant": [
+      "c221bbef896a946e",
+      "c221bbef896a946e",
+      "c221bbef896a946e",
+      "c221bbef896a946e",
+      "33db27ef35ce3a45"
+    ],
+    "cassava_plant": [
+      "cdb3f6ef09238bea",
+      "cdb3f6ef09238bea",
+      "cdb3f6ef09238bea",
+      "cdb3f6ef09238bea",
+      "8fcdaeeff4283d2a"
+    ],
+    "taro_plant": [
+      "d0b9d9efad1e6d73",
+      "d0b9d9efad1e6d73",
+      "d0b9d9efad1e6d73",
+      "d0b9d9efad1e6d73",
+      "7c78c3ef23ffcdba"
+    ],
+    "radish_plant": [
+      "e798b9ef7127fc74",
+      "e798b9ef7127fc74",
+      "e798b9ef7127fc74",
+      "e798b9ef7127fc74",
+      "8f14daefaff832b1"
+    ],
+    "beet_plant": [
+      "47299def24358e46",
+      "47299def24358e46",
+      "47299def24358e46",
+      "47299def24358e46",
+      "c2c5abefca83c531"
+    ],
+    "onion_plant": [
+      "0eb44eef8d74581e",
+      "0eb44eef8d74581e",
+      "0eb44eef8d74581e",
+      "0eb44eef8d74581e",
+      "fedfa4ef3f95ddf0"
+    ],
+    "garlic_plant": [
+      "e6fa4cef65e4233b",
+      "e6fa4cef65e4233b",
+      "e6fa4cef65e4233b",
+      "e6fa4cef65e4233b",
+      "f2a9c0ef87c93c72"
+    ],
+    "ginger_plant": [
+      "724d4aefa4e721d2",
+      "724d4aefa4e721d2",
+      "724d4aefa4e721d2",
+      "724d4aefa4e721d2",
+      "fc2032ef4fcf3a53"
+    ],
+    "cauliflower_plant": [
+      "1b1a5aeff4931bdc",
+      "1b1a5aeff4931bdc",
+      "1b1a5aeff4931bdc",
+      "1b1a5aeff4931bdc",
+      "0c0d86ef9b0e9f50"
+    ],
+    "broccoli_plant": [
+      "eb46baef87f424e3",
+      "eb46baef87f424e3",
+      "eb46baef87f424e3",
+      "eb46baef87f424e3",
+      "1d2d59eff8c913b3"
+    ],
+    "lettuce": [
+      "1b5580ef708bc76d",
+      "1b5580ef708bc76d",
+      "1b5580ef708bc76d",
+      "1b5580ef708bc76d",
+      "06e6a4ef55cda22b"
+    ],
+    "napa_cabbage": [
+      "10591aefa416f161",
+      "10591aefa416f161",
+      "10591aefa416f161",
+      "10591aefa416f161",
+      "b848a4ef5de540ec"
+    ],
+    "water_spinach": [
+      "bdee21ef25460f41",
+      "bdee21ef25460f41",
+      "bdee21ef25460f41",
+      "bdee21ef25460f41",
+      "cd9da1ef74554a69"
+    ],
+    "mustard_greens": [
+      "c0ab79efcd16ef70",
+      "c0ab79efcd16ef70",
+      "c0ab79efcd16ef70",
+      "c0ab79efcd16ef70",
+      "b28991efc0ecc098"
+    ],
+    "spring_onion": [
+      "8a59c3ef6546882d",
+      "8a59c3ef6546882d",
+      "8a59c3ef6546882d",
+      "8a59c3ef6546882d",
+      "a699f3ef6c26ee88"
+    ],
+    "giant_radish": [
+      "e18808ef16d0f9a9",
+      "e18808ef16d0f9a9",
+      "e18808ef16d0f9a9",
+      "e18808ef16d0f9a9",
+      "49275befc074021c"
+    ],
+    "fertilizer_sack": [
+      "3ac380ef859fd5ec",
+      "3ac380ef859fd5ec",
+      "3ac380ef859fd5ec",
+      "3ac380ef859fd5ec",
+      "3ac380ef859fd5ec"
+    ],
+    "compost_heap": [
+      "465f76efa5677786",
+      "b98dbcef9f649db6",
+      "ef14afef01672266",
+      "4c71e9ef7bae426f",
+      "6b1becef7ccc5271"
+    ],
+    "manure_pile": [
+      "6f7f00ef4e81f06f",
+      "6f7f00ef4e81f06f",
+      "6f7f00ef4e81f06f",
+      "6f7f00ef4e81f06f",
+      "6f7f00ef4e81f06f"
+    ],
+    "compost_bin": [
+      "2aa707ef456be132",
+      "2aa707ef456be132",
+      "2aa707ef456be132",
+      "2aa707ef456be132",
+      "2aa707ef456be132"
+    ],
+    "granules": [
+      "b66603ef6baf8129",
+      "b66603ef6baf8129",
+      "b66603ef6baf8129",
+      "b66603ef6baf8129",
+      "b66603ef6baf8129"
+    ],
+    "pesticide_bottle": [
+      "ddfd32efcdd19fa8",
+      "ddfd32efcdd19fa8",
+      "ddfd32efcdd19fa8",
+      "ddfd32efcdd19fa8",
+      "ddfd32efcdd19fa8"
+    ],
+    "backpack_sprayer": [
+      "b2f7f6ef95f865aa",
+      "b2f7f6ef95f865aa",
+      "b2f7f6ef95f865aa",
+      "b2f7f6ef95f865aa",
+      "b2f7f6ef95f865aa"
+    ],
+    "jerrycan": [
+      "e768baef8960e8c5",
+      "e768baef8960e8c5",
+      "e768baef8960e8c5",
+      "e768baef8960e8c5",
+      "e768baef8960e8c5"
+    ],
+    "chem_cabinet": [
+      "4a2550ef28ccc039",
+      "4a2550ef28ccc039",
+      "4a2550ef28ccc039",
+      "4a2550ef28ccc039",
+      "4a2550ef28ccc039"
+    ],
+    "ppe_gloves": [
+      "ecac83ef777ef4b5",
+      "ecac83ef777ef4b5",
+      "ecac83ef777ef4b5",
+      "ecac83ef777ef4b5",
+      "ecac83ef777ef4b5"
+    ],
+    "ppe_mask": [
+      "fd0dc8efc6b03762",
+      "fd0dc8efc6b03762",
+      "fd0dc8efc6b03762",
+      "fd0dc8efc6b03762",
+      "fd0dc8efc6b03762"
+    ],
+    "ppe_goggles": [
+      "aa11a6efd56d2390",
+      "aa11a6efd56d2390",
+      "aa11a6efd56d2390",
+      "aa11a6efd56d2390",
+      "aa11a6efd56d2390"
+    ],
+    "ppe_boots": [
+      "b91fbdef0b184761",
+      "b91fbdef0b184761",
+      "b91fbdef0b184761",
+      "b91fbdef0b184761",
+      "b91fbdef0b184761"
+    ],
+    "warning_sign": [
+      "c2bfd5ef3cda04f9",
+      "c2bfd5ef3cda04f9",
+      "c2bfd5ef3cda04f9",
+      "c2bfd5ef3cda04f9",
+      "c2bfd5ef3cda04f9"
+    ],
+    "rinse_basin": [
+      "84a141ef901b4ce1",
+      "b2f9beefdf59cb8e",
+      "432769ef8a265e9b",
+      "034c91ef4fa6a8b9",
+      "949858ef4cf88faf"
+    ]
+  },
+  "backgrounds": {
+    "garden": {
+      "day": [
+        "d2aa39ef2d5bb9e3",
+        "d2aa39ef2d5bb9e3"
+      ],
+      "night": [
+        "8bb3cfef09ada09b",
+        "8bb3cfef09ada09b"
+      ],
+      "rain": [
+        "48e3e3ef29ffa7dc",
+        "db3421efe84b39d9"
+      ],
+      "snow": [
+        "ddcf13ef98269b77",
+        "8d78b2ef9daa1470"
+      ],
+      "wind": [
+        "d78c4aef89a304e0",
+        "e8b74aefd6678715"
+      ],
+      "fog": [
+        "1b23dfefd3a78953",
+        "cc31a6effdb26b49"
+      ],
+      "storm": [
+        "0a1cceef379f925a",
+        "9cbad9ef83181e91"
+      ],
+      "hot": [
+        "f6e432ef36be3ee6",
+        "de522def3e6efc91"
+      ]
+    },
+    "orchard": {
+      "day": [
+        "42acc3efc72c5d10",
+        "42acc3efc72c5d10"
+      ],
+      "night": [
+        "d10119efed6f7adc",
+        "d10119efed6f7adc"
+      ],
+      "rain": [
+        "a1c13bef5acced54",
+        "dd71aeefdc312b06"
+      ],
+      "snow": [
+        "24c9b9efa7b56548",
+        "e317f8eff26525ab"
+      ],
+      "wind": [
+        "213c0cef2cba5288",
+        "f122c3efcb6051c6"
+      ],
+      "fog": [
+        "1f427aefcb2084e9",
+        "99708cefa9bdaaa5"
+      ],
+      "storm": [
+        "30e3eaef77ec2743",
+        "37b4fcef7e893aef"
+      ],
+      "hot": [
+        "8414b3ef9317fa09",
+        "5a91d8ef4533124e"
+      ]
+    },
+    "balcony": {
+      "day": [
+        "9a8becef85b98b6e",
+        "9a8becef85b98b6e"
+      ],
+      "night": [
+        "bd160aefb75a872b",
+        "bd160aefb75a872b"
+      ],
+      "rain": [
+        "5c7494ef5add5f3a",
+        "8b6942ef600bc100"
+      ],
+      "snow": [
+        "f30005ef457ddee0",
+        "ad4e14ef02f5002e"
+      ],
+      "wind": [
+        "4d0dfaef35757752",
+        "a908b3ef10d415c6"
+      ],
+      "fog": [
+        "cf959cef5f6d94c3",
+        "008915ef97b0c7f9"
+      ],
+      "storm": [
+        "564af0ef9daf9023",
+        "cbbd71eff6a98c6e"
+      ],
+      "hot": [
+        "aab53deffe5c244e",
+        "84ce7befe0405aef"
+      ]
+    },
+    "pepper_patch": {
+      "day": [
+        "2c016def0080f0ae",
+        "2c016def0080f0ae"
+      ],
+      "night": [
+        "037eddef92238900",
+        "037eddef92238900"
+      ],
+      "rain": [
+        "08151fefbe5112a9",
+        "81511cefe8848fbd"
+      ],
+      "snow": [
+        "043454efc1ea4acb",
+        "140297ef8e238bc2"
+      ],
+      "wind": [
+        "7e67e9efab3c6890",
+        "fba315ef41236d29"
+      ],
+      "fog": [
+        "1b930fef55343f94",
+        "ea0417ef354925ef"
+      ],
+      "storm": [
+        "213f58efa6bb738b",
+        "d252f2effb166d6d"
+      ],
+      "hot": [
+        "7a2544ef5a78f4b4",
+        "49cbd6ef2b73e019"
+      ]
+    },
+    "soil_cutaway": {
+      "day": [
+        "1fe224ef0409fbb3",
+        "1fe224ef0409fbb3"
+      ],
+      "night": [
+        "96c4e7ef52c87336",
+        "96c4e7ef52c87336"
+      ],
+      "rain": [
+        "b9eb7cefbf46ac1f",
+        "72466def92d2493d"
+      ],
+      "snow": [
+        "c3fc6fef626a1d0c",
+        "dabc0eefe4952d3c"
+      ],
+      "wind": [
+        "29a60eefded348e3",
+        "717170efa3a37f7f"
+      ],
+      "fog": [
+        "edaff0ef13c5b48b",
+        "01210cef09e3b41c"
+      ],
+      "storm": [
+        "3bc3a0efc2a9071e",
+        "6bb757efbaa2092a"
+      ],
+      "hot": [
+        "e98f83ef7567c8a0",
+        "6f2641ef6fc47fcc"
+      ]
+    },
+    "pond": {
+      "day": [
+        "8e6804efbca9a79d",
+        "0ae735ef5b6ca664"
+      ],
+      "night": [
+        "28339eef06a5d623",
+        "7d85bfef761856a0"
+      ],
+      "rain": [
+        "77b2e2efb2073350",
+        "55f3ccef4d4c233a"
+      ],
+      "snow": [
+        "85f6fdefd7fdeaad",
+        "2c060bef96140cea"
+      ],
+      "wind": [
+        "7c081befdc77a470",
+        "7f38fcef3cd25eab"
+      ],
+      "fog": [
+        "98944aef57a1fd6e",
+        "230295efaa3b1823"
+      ],
+      "storm": [
+        "fe45d1ef19576174",
+        "6563a0efec1f23ce"
+      ],
+      "hot": [
+        "8d301def0f1f83c4",
+        "8cb4adef409034ce"
+      ]
+    },
+    "river": {
+      "day": [
+        "8e6804efbca9a79d",
+        "0ae735ef5b6ca664"
+      ],
+      "night": [
+        "28339eef06a5d623",
+        "7d85bfef761856a0"
+      ],
+      "rain": [
+        "77b2e2efb2073350",
+        "55f3ccef4d4c233a"
+      ],
+      "snow": [
+        "85f6fdefd7fdeaad",
+        "2c060bef96140cea"
+      ],
+      "wind": [
+        "7c081befdc77a470",
+        "7f38fcef3cd25eab"
+      ],
+      "fog": [
+        "98944aef57a1fd6e",
+        "230295efaa3b1823"
+      ],
+      "storm": [
+        "fe45d1ef19576174",
+        "6563a0efec1f23ce"
+      ],
+      "hot": [
+        "8d301def0f1f83c4",
+        "8cb4adef409034ce"
+      ]
+    },
+    "sea": {
+      "day": [
+        "8e6804efbca9a79d",
+        "0ae735ef5b6ca664"
+      ],
+      "night": [
+        "28339eef06a5d623",
+        "7d85bfef761856a0"
+      ],
+      "rain": [
+        "77b2e2efb2073350",
+        "55f3ccef4d4c233a"
+      ],
+      "snow": [
+        "85f6fdefd7fdeaad",
+        "2c060bef96140cea"
+      ],
+      "wind": [
+        "7c081befdc77a470",
+        "7f38fcef3cd25eab"
+      ],
+      "fog": [
+        "98944aef57a1fd6e",
+        "230295efaa3b1823"
+      ],
+      "storm": [
+        "fe45d1ef19576174",
+        "6563a0efec1f23ce"
+      ],
+      "hot": [
+        "8d301def0f1f83c4",
+        "8cb4adef409034ce"
+      ]
+    },
+    "underwater": {
+      "day": [
+        "c4221defd3184d84",
+        "235fe5ef4773fdcf"
+      ],
+      "night": [
+        "b1a86fef4a140f46",
+        "0573d6ef2625bc8a"
+      ],
+      "rain": [
+        "0d79b7ef0e842134",
+        "5130afefd6279af9"
+      ],
+      "snow": [
+        "8eeacdefb60df146",
+        "bc4eceef7f56e14d"
+      ],
+      "wind": [
+        "4b4379ef1861a4a6",
+        "d5c7ddefd746dbce"
+      ],
+      "fog": [
+        "9b8ec6ef63da847e",
+        "30378eef74deb311"
+      ],
+      "storm": [
+        "501b69efeb93c6e0",
+        "3c45c3ef25e6b01e"
+      ],
+      "hot": [
+        "70aa2cef9453142b",
+        "97d522ef130bb808"
+      ]
+    },
+    "rice_paddy": {
+      "day": [
+        "9b2454eff1078385",
+        "7dd0a2ef76f00a91"
+      ],
+      "night": [
+        "46942fefaded9d68",
+        "21c279efc242a708"
+      ],
+      "rain": [
+        "27fc64eff57caea9",
+        "a94d3defdc7c1f78"
+      ],
+      "snow": [
+        "25a6cfef624a6b37",
+        "d13b42efb95cd068"
+      ],
+      "wind": [
+        "15b868effcfe3765",
+        "7857ecefd769bae8"
+      ],
+      "fog": [
+        "22f5e8ef31597e5a",
+        "e107c9effe7c9c15"
+      ],
+      "storm": [
+        "fd4f51efb0de49cb",
+        "f8140aeff4b92dd8"
+      ],
+      "hot": [
+        "6dc44eefce430349",
+        "fa623eefa3fd5413"
+      ]
+    },
+    "terraced_field": {
+      "day": [
+        "dcc419ef8eb0b8d0",
+        "dcc419ef8eb0b8d0"
+      ],
+      "night": [
+        "c8d328efd473aa22",
+        "c8d328efd473aa22"
+      ],
+      "rain": [
+        "afc038ef59b8e678",
+        "bd18c5efcac606ef"
+      ],
+      "snow": [
+        "6c1993efb1867a56",
+        "3bec30ef450966a9"
+      ],
+      "wind": [
+        "f36997ef473f6909",
+        "a0975befd9489abc"
+      ],
+      "fog": [
+        "9b7cd4ef90ca48a8",
+        "9204a5eff27ab3b6"
+      ],
+      "storm": [
+        "79f1b8ef6a339c00",
+        "79ad11ef1556b293"
+      ],
+      "hot": [
+        "a55e3eefcb74ffe0",
+        "ea4c31ef8c69a7e6"
+      ]
+    },
+    "fruit_orchard": {
+      "day": [
+        "ea86beef3838b867",
+        "ea86beef3838b867"
+      ],
+      "night": [
+        "a69718ef4465688c",
+        "a69718ef4465688c"
+      ],
+      "rain": [
+        "e27b56ef1fa4dbfa",
+        "a78075ef42759dbc"
+      ],
+      "snow": [
+        "8ec5caef1de8634b",
+        "e3c88fef65c4b667"
+      ],
+      "wind": [
+        "38356eef5202cbe3",
+        "12b415efd69a4e85"
+      ],
+      "fog": [
+        "5433b1ef489bd09c",
+        "be04b1eff524d618"
+      ],
+      "storm": [
+        "ed5d0deff04ef8be",
+        "a29444ef260ff235"
+      ],
+      "hot": [
+        "db7ebaef15707c50",
+        "9fbb39ef758c21e9"
+      ]
+    },
+    "trellis_garden": {
+      "day": [
+        "fc5cf7efdcc37787",
+        "fc5cf7efdcc37787"
+      ],
+      "night": [
+        "d45eefef7fa57c90",
+        "d45eefef7fa57c90"
+      ],
+      "rain": [
+        "30b4f4efbb3b27cf",
+        "c8dc03ef09a383d7"
+      ],
+      "snow": [
+        "1be1c7ef93bf3d9a",
+        "3b7db3ef4649c29e"
+      ],
+      "wind": [
+        "bdf810efee306010",
+        "2e516cefebf8d6c7"
+      ],
+      "fog": [
+        "b95c01efb444015d",
+        "fbf249eff17e8a45"
+      ],
+      "storm": [
+        "8b23f9ef44c5aac5",
+        "ecf2e6efc2fb8f53"
+      ],
+      "hot": [
+        "10e6e5efcd699df7",
+        "af19c9ef27e515bc"
+      ]
+    },
+    "greenhouse": {
+      "day": [
+        "b7d13bef502e1f12",
+        "c0438fefd3a39ecf"
+      ],
+      "night": [
+        "d35c14ef3a4c805d",
+        "52b670ef0eadbca9"
+      ],
+      "rain": [
+        "e349e0efe911e0a7",
+        "784675ef336a6948"
+      ],
+      "snow": [
+        "2c3077efba7da85d",
+        "b37223ef4d271d82"
+      ],
+      "wind": [
+        "4cc1efef8773d35e",
+        "9d606aefea1e4b6e"
+      ],
+      "fog": [
+        "182f49ef90ecc36d",
+        "cdbdb8efd2b65c03"
+      ],
+      "storm": [
+        "bc44dfefd6bcb4e3",
+        "7faeb6ef00ac7684"
+      ],
+      "hot": [
+        "af05cdef895dabfb",
+        "69da7fefa94038fa"
+      ]
+    },
+    "highland_farm": {
+      "day": [
+        "846b8aefd2aa395c",
+        "846b8aefd2aa395c"
+      ],
+      "night": [
+        "281a8eeffe433680",
+        "281a8eeffe433680"
+      ],
+      "rain": [
+        "0fc333efe9666cd6",
+        "002e81ef4959ac60"
+      ],
+      "snow": [
+        "c3ea1eef463ff623",
+        "d0ada2effc4ee6f9"
+      ],
+      "wind": [
+        "35bfc6ef211e6879",
+        "39a0f9ef57897340"
+      ],
+      "fog": [
+        "054d05ef90f6ab29",
+        "1a8299efd984f155"
+      ],
+      "storm": [
+        "4df100ef73f53c20",
+        "254236ef09445643"
+      ],
+      "hot": [
+        "3b5b2eef1e4fecd0",
+        "b1399aef264db455"
+      ]
+    },
+    "snowy_orchard": {
+      "day": [
+        "b29513eff62b3c60",
+        "50b3c9ef4331e8ed"
+      ],
+      "night": [
+        "9e7fb6efa27d7ee1",
+        "2ee9e6effa1f24ee"
+      ],
+      "rain": [
+        "238a26efa224aa94",
+        "e18053eff3b106ed"
+      ],
+      "snow": [
+        "eb54a7ef906fb35b",
+        "89bc74ef1e049d10"
+      ],
+      "wind": [
+        "486871eff57606d7",
+        "6f8250ef2370eb7d"
+      ],
+      "fog": [
+        "589f32ef172201da",
+        "8e82c7efbcf6b963"
+      ],
+      "storm": [
+        "9c8950efd54db307",
+        "41bd32ef06d7b4e7"
+      ],
+      "hot": [
+        "e8442fef4711b504",
+        "3f9c70efc2c779ff"
+      ]
+    },
+    "vegetable_rows": {
+      "day": [
+        "367d62ef7cbed9b6",
+        "367d62ef7cbed9b6"
+      ],
+      "night": [
+        "0a3964ef8e9b09b4",
+        "0a3964ef8e9b09b4"
+      ],
+      "rain": [
+        "44373defcec1607a",
+        "818365ef754cee2c"
+      ],
+      "snow": [
+        "c63c2aef599d4112",
+        "8ae09aef47d0dc85"
+      ],
+      "wind": [
+        "0bc6c4efad9d434f",
+        "c6a683efe804b937"
+      ],
+      "fog": [
+        "4319f5ef3ba8aa80",
+        "9a988feff6a98237"
+      ],
+      "storm": [
+        "3a9d75ef7f0b8e10",
+        "880f36efa1432401"
+      ],
+      "hot": [
+        "e44314ef5d2a4a91",
+        "b19df0ef2b0bcf23"
+      ]
+    },
+    "farm_warehouse": {
+      "day": [
+        "c692bfef6500e9ce",
+        "c692bfef6500e9ce"
+      ],
+      "night": [
+        "b87bf2ef1b2d2ccd",
+        "b87bf2ef1b2d2ccd"
+      ],
+      "rain": [
+        "bc3650ef13b42714",
+        "31c07aef919e72ed"
+      ],
+      "snow": [
+        "ba2e14ef1e12e2d7",
+        "6b99aeef8684c8b0"
+      ],
+      "wind": [
+        "47c49befe8d709db",
+        "a27c0aef448d4036"
+      ],
+      "fog": [
+        "f27144ef3840f21c",
+        "67f7f1ef56a0cb95"
+      ],
+      "storm": [
+        "3b608ceff528d101",
+        "253fefefdb2d26ec"
+      ],
+      "hot": [
+        "a8ace3ef56880758",
+        "f488acef44b9139d"
+      ]
+    },
+    "kitchen": {
+      "day": [
+        "4f2d96ef64ce9d88",
+        "4f2d96ef64ce9d88"
+      ],
+      "night": [
+        "9a0804ef653bcda4",
+        "9a0804ef653bcda4"
+      ],
+      "rain": [
+        "528e99ef9a2d790f",
+        "b48272efe454fdfa"
+      ],
+      "snow": [
+        "8b02b1ef1db3dcf9",
+        "0c1b2befa1cc4a41"
+      ],
+      "wind": [
+        "24f051ef2ad7cfd1",
+        "1ceab3efe20c675a"
+      ],
+      "fog": [
+        "4f27cbef5b6dbe76",
+        "5d13b9ef1a5975cc"
+      ],
+      "storm": [
+        "3995eeef8102f99a",
+        "a0c41aef53f12653"
+      ],
+      "hot": [
+        "a2398eeffa36ecca",
+        "308320eff4289766"
+      ]
+    }
+  },
+  "stories": {
+    "watermelon": [
+      "8fc13aeff4f7c1e7",
+      "26f9f1efb3362f07",
+      "91019fef6ad46728",
+      "28a876ef3dc56b46",
+      "7f2522efcbdab904"
+    ],
+    "pepper": [
+      "b66c49efce8c5a94",
+      "82bcddefad711a60",
+      "e8e349ef9ce97fc6",
+      "4a787def5a86cc21",
+      "c9b4ddef63f74de5"
+    ],
+    "apple": [
+      "9380f6ef960f9bc8",
+      "7f1ff7ef38e4eade",
+      "35c40def6e71ea3f",
+      "86f6edef6845eb0f",
+      "4cb113efcbe12436"
+    ],
+    "peanut": [
+      "00c10cef40e1c815",
+      "b062c6efc093db82",
+      "f99540efff28bc1a",
+      "daeb71efacd3efa8",
+      "76ff89ef80be4c70"
+    ],
+    "tomato": [
+      "9846b5ef5db8ffed",
+      "b65708ef79c4cd98",
+      "365803ef8a438727",
+      "c35078ef5bc01752",
+      "881db4ef27402db7"
+    ],
+    "farm-sow-grow": [
+      "6b4844ef75256087",
+      "4c6641eff85b2b06",
+      "0301dbef63c73087",
+      "3c9abcefa0ed7fdf",
+      "47611aefbd423a70"
+    ],
+    "farm-harvest": [
+      "e15e34ef7051e702",
+      "3904a6efd01cfe8c",
+      "0bc9b5efb7b03cd6",
+      "e47156ef9db6171a",
+      "7eb122ef3cf5214e"
+    ],
+    "farm-papaya-latex": [
+      "24fe98efde64b878",
+      "b3b93fefda49ab37",
+      "fc1505ef65a652e2",
+      "27d379efafc3d0cd",
+      "73f888ef87ec6d2d"
+    ],
+    "farm-life": [
+      "3814daef0ca53a75",
+      "82d385ef016351d1",
+      "90fb5aefb3e477bc",
+      "3da7ddefbfbdb384",
+      "9a8a99ef07bce006"
+    ],
+    "farm-animals": [
+      "187564ef8c839f70",
+      "331365ef765ae4ca",
+      "5d63eeef82d9ed9d",
+      "09912bef00fc5541",
+      "e20df4ef334858ee"
+    ],
+    "articulated-hand-tool": [
+      "da14d5ef086a5b28",
+      "8837fcef8c715a39",
+      "a86096ef0337886a",
+      "83f9cfef076507a6",
+      "a41938eff386ab59"
+    ],
+    "articulated-hand-poses": [
+      "d3343befe260e5c0",
+      "0abcebef4822d189",
+      "ca9826ef8b044f53",
+      "13f3bcef816c6390",
+      "13f3bcef816c6390"
+    ],
+    "articulated-branch": [
+      "c3177fef18a4dc5b",
+      "9702f7ef51fcac2d",
+      "92f897efa6b40571",
+      "0cba09ef7524b290",
+      "c339dcefdfc58132"
+    ],
+    "farmer-ik-reach": [
+      "c0e851efb04af9a2",
+      "efec21ef55cd4a0e",
+      "54734def1a185bf6",
+      "a14eebef7df8024f",
+      "1affcfef683506c5"
+    ],
+    "farmer-ik-carry": [
+      "fa2defef96af9b33",
+      "19866aefb9f21c11",
+      "faea31ef088423fd",
+      "1fea5eef529544cb",
+      "98a297ef3ff7511b"
+    ],
+    "fishing": [
+      "3b846bef326947ee",
+      "f78acdef20643e05",
+      "45d3f4ef55607ad3",
+      "57eeeeef2b0583f2",
+      "37e7d1efcb8e9426"
+    ],
+    "sea-monsters": [
+      "1b3182ef657138b7",
+      "acff12ef3663c950",
+      "f7cdccefdb83b776",
+      "e19cc4effc2d9f8c",
+      "326258ef6264f1bb"
+    ],
+    "orchard_harvest": [
+      "39f71def104a1b04",
+      "fae63eef87e81e7d",
+      "34cb98ef5c9b44b1",
+      "193d1fef2b8441b7",
+      "701615ef90f16c38"
+    ],
+    "trellis_cucumber": [
+      "74a210effae33bf0",
+      "2c6d5fefa6011182",
+      "b38716efdca668cd",
+      "cd3e2eef9c7b2338",
+      "7ff22def54b234f4"
+    ],
+    "highland_temperate": [
+      "c48c22ef8add927e",
+      "51273eefbcc004d3",
+      "6b54bdefa6151d20",
+      "6c93c5ef2bbb8d7d",
+      "a32d52ef61bb90ec"
+    ],
+    "vegetable_cutaway": [
+      "1120b5eff6705025",
+      "1c4b0cef1cfa5991",
+      "7142e5efe8003ccd",
+      "b3a24defc20173da",
+      "c277b8ef6156231a"
+    ],
+    "safe_spraying": [
+      "757db9efcc128138",
+      "326055ef60b59446",
+      "d5f223efea70bab4",
+      "6fbeb2ef171c6a15",
+      "892991ef5b54c9e7"
+    ]
+  }
+}

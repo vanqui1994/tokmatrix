@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>{{PROJECT_NAME}}</title>
+<style>
+  html, body { margin: 0; padding: 0; background: #12100e; overflow: hidden; }
+  canvas { display: block; width: 100vw; height: 100vh; }
+</style>
+</head>
+<body>
+<canvas id="stage"></canvas>
+<script>
+/* Renderer tổng quát cho bridge Antigravity.
+   Khác sprite_template.html (vẽ tay riêng cho video đu đủ), file này không biết
+   trước nhân vật nào: mọi thứ đến từ dữ liệu bên dưới, nên video nào cũng dựng
+   được miễn là Antigravity nộp sprite + rig. */
+const CHARACTERS = {{CHARACTERS_JSON}};
+const SCENES     = {{SCENES_JSON}};
+const CUES       = {{CUES_JSON}};
+const FACE_RIGS  = {{FACE_RIGS_JSON}};
+const AUDIO_URL  = "{{AUDIO_URL}}";
+const DURATION   = Number("{{DURATION}}") || 30;
+
+const W = 576, H = 1024;
+const canvas = document.getElementById('stage');
+const ctx = canvas.getContext('2d');
+canvas.width = W; canvas.height = H;
+
+/* ---------------------------------------------------------------- nạp ảnh */
+const images = {};
+let pending = 0;
+function load(key, url) {
+  if (!url) return;
+  pending++;
+  const img = new Image();
+  img.onload = () => { images[key] = img; pending--; };
+  img.onerror = () => { pending--; };
+  img.src = url;
+}
+CHARACTERS.forEach(c => load('char:' + c.id, c.sprite_url));
+CHARACTERS.forEach(c => Object.entries(c.pose_sprites || {}).forEach(([drawingId, url]) =>
+  load('cel:' + c.id + ':' + drawingId, url)
+));
+SCENES.forEach((s, i) => load('bg:' + i, s.bg_url));
+
+/* ------------------------------------------------- rig khuôn mặt (tự dò) */
+/* Antigravity đo rig chính xác nhất vì nó nhìn được sprite nó vẽ. Nhưng nhân
+   vật nào thiếu rig vẫn phải nhép môi + chớp mắt, nên ở đây tự dò vùng đầu từ
+   kênh alpha của sprite: tìm bbox phần không trong suốt, dò "cổ" ở chỗ thân
+   hẹp lại, rồi đặt mắt/miệng theo tỉ lệ nhân trắc trong phần đầu. Cách này
+   không đoán mò một con số cố định nên hợp với mọi kiểu sprite. */
+const FALLBACK_RIG = {
+  eyeL:  { dx: -0.072, dy: -0.300, r: 0.046 },
+  eyeR:  { dx:  0.072, dy: -0.300, r: 0.046 },
+  mouth: { dx:  0.000, dy: -0.205, mw: 0.040, mh: 0.018 },
+  blinkPeriod: 3.4, blinkOffset: 0, eyeFill: '#ffffff'
+};
+
+function detectRig(img) {
+  const MAX = 180;
+  const scale = Math.min(1, MAX / Math.max(img.width, img.height));
+  const w = Math.max(1, Math.round(img.width * scale));
+  const h = Math.max(1, Math.round(img.height * scale));
+  const off = document.createElement('canvas');
+  off.width = w; off.height = h;
+  const octx = off.getContext('2d', { willReadFrequently: true });
+  octx.drawImage(img, 0, 0, w, h);
+
+  let data;
+  try { data = octx.getImageData(0, 0, w, h).data; }
+  catch (e) { return null; }           /* ảnh khác origin -> chịu, dùng fallback */
+
+  /* Bề rộng phần đặc của từng hàng + bbox */
+  const rowW = new Array(h).fill(0);
+  const rowMin = new Array(h).fill(w);
+  const rowMax = new Array(h).fill(-1);
+  let top = -1, bottom = -1;
+  for (let y = 0; y < h; y++) {
+    for (let x = 0; x < w; x++) {
+      if (data[(y * w + x) * 4 + 3] > 40) {
+        rowW[y]++;
+        if (x < rowMin[y]) rowMin[y] = x;
+        if (x > rowMax[y]) rowMax[y] = x;
+      }
+    }
+    if (rowW[y] > 0) { if (top < 0) top = y; bottom = y; }
+  }
+  if (top < 0 || bottom <= top) return null;
+
+  const bodyH = bottom - top + 1;
+  /* Đầu thường nằm trong 55% trên; tìm chỗ rộng nhất rồi dò xuống tới khi hẹp
+     lại rõ rệt — đó là cổ. */
+  const searchEnd = top + Math.max(2, Math.round(bodyH * 0.55));
+  let widest = 0, widestY = top;
+  for (let y = top; y <= searchEnd && y <= bottom; y++) {
+    if (rowW[y] > widest) { widest = rowW[y]; widestY = y; }
+  }
+  let neck = -1;
+  for (let y = widestY; y <= searchEnd && y <= bottom; y++) {
+    if (rowW[y] < widest * 0.72) { neck = y; break; }
+  }
+  if (neck < 0) neck = top + Math.round(bodyH * 0.32);
+
+  const headTop = top;
+  const headH = Math.max(4, neck - headTop);
+  /* Tâm ngang của đầu lấy ở giữa vùng đầu cho đỡ lệch vì tóc/nón */
+  const midY = headTop + Math.round(headH * 0.5);
+  const cxPx = (rowMax[midY] >= 0)
+    ? (rowMin[midY] + rowMax[midY]) / 2
+    : (rowMin[widestY] + rowMax[widestY]) / 2;
+  const headW = Math.max(4, (rowMax[widestY] - rowMin[widestY] + 1));
+
+  /* Tỉ lệ nhân trắc rút gọn cho mặt hoạt hình */
+  const eyeY   = headTop + headH * 0.44;
+  const mouthY = headTop + headH * 0.74;
+  const eyeDX  = headW * 0.19;
+  const eyeR   = headW * 0.085;
+  const mouthW = headW * 0.13;
+  const mouthH = headH * 0.035;
+
+  /* Quy về tỉ lệ so với khung sprite, gốc toạ độ ở tâm khung */
+  const rx = v => (v - w / 2) / w;
+  const ry = v => (v - h / 2) / h;
+  return {
+    eyeL:  { dx: rx(cxPx - eyeDX), dy: ry(eyeY), r: eyeR / w },
+    eyeR:  { dx: rx(cxPx + eyeDX), dy: ry(eyeY), r: eyeR / w },
+    mouth: { dx: rx(cxPx), dy: ry(mouthY), mw: mouthW / w, mh: mouthH / h },
+    eyeFill: '#ffffff',
+    _auto: true
+  };
+}
+
+/* Khi không có sprite, thân được vẽ bằng drawPlaceholderBody — rig dưới đây
+   khớp đúng hình học đó (đầu tâm -0.22h, bán kính 0.23h) nên mặt vẫn đúng chỗ. */
+const PLACEHOLDER_RIG = {
+  eyeL:  { dx: -0.160, dy: -0.262, r: 0.075 },
+  eyeR:  { dx:  0.160, dy: -0.262, r: 0.075 },
+  mouth: { dx:  0.000, dy: -0.160, mw: 0.130, mh: 0.028 },
+  eyeFill: '#ffffff'
+};
+
+const autoRigs = {};
+function rigFor(id, idx, hasSprite) {
+  const base = { blinkPeriod: 2.8 + (idx % 4) * 0.35, blinkOffset: idx * 0.73 };
+  const supplied = FACE_RIGS[id];
+  if (supplied) return Object.assign({}, FALLBACK_RIG, base, supplied);
+  if (!hasSprite) return Object.assign({}, FALLBACK_RIG, base, PLACEHOLDER_RIG);
+
+  if (!(id in autoRigs)) {
+    autoRigs[id] = detectRig(images['char:' + id]);
+  }
+  return Object.assign({}, FALLBACK_RIG, base, autoRigs[id] || {});
+}
+
+/* ------------------------------------------------------------ tra cứu thời gian */
+function sceneAt(t) {
+  for (let i = 0; i < SCENES.length; i++) {
+    const s = SCENES[i];
+    if (t >= (s.start_time || 0) && t < (s.end_time || DURATION)) return { scene: s, index: i };
+  }
+  return SCENES.length ? { scene: SCENES[SCENES.length - 1], index: SCENES.length - 1 } : null;
+}
+function cueAt(t) {
+  return CUES.find(c => t >= c.start && t < c.end) || null;
+}
+
+/* ------------------------------------------------------------------- nền */
+function drawBackground(sc, idx, t) {
+  const bg = images['bg:' + idx];
+  if (bg) {
+    /* cover, kèm trôi nhẹ cho đỡ tĩnh */
+    const scale = Math.max(W / bg.width, H / bg.height) * 1.06;
+    const dw = bg.width * scale, dh = bg.height * scale;
+    const drift = Math.sin(t * 0.18) * 8;
+    ctx.drawImage(bg, (W - dw) / 2 + drift, (H - dh) / 2, dw, dh);
+    return;
+  }
+  const mood = (sc && sc.mood) || 'happy';
+  const palettes = {
+    happy:   ['#ffe7a8', '#ffc4d6'], sad: ['#b9c9e8', '#8fa3c7'],
+    tense:   ['#f7b89c', '#e0736b'], calm: ['#c9e9d8', '#9ed3c0'],
+    night:   ['#4a5b8c', '#2b3358'], default: ['#ffe0b8', '#ffb8d0']
+  };
+  const p = palettes[mood] || palettes.default;
+  const g = ctx.createLinearGradient(0, 0, 0, H);
+  g.addColorStop(0, p[0]); g.addColorStop(1, p[1]);
+  ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+
+  ctx.globalAlpha = 0.35;
+  for (let i = 0; i < 4; i++) {
+    const cx = ((i * 173 + t * 12) % (W + 220)) - 110;
+    const cy = 120 + i * 78;
+    ctx.fillStyle = '#ffffff';
+    ctx.beginPath();
+    ctx.ellipse(cx, cy, 62, 26, 0, 0, Math.PI * 2);
+    ctx.fill();
+  }
+  ctx.globalAlpha = 1;
+}
+
+/* ------------------------------------------------- thân nhân vật khi thiếu sprite */
+function drawPlaceholderBody(x, baseY, h, hue) {
+  const w = h * 0.62;
+  ctx.fillStyle = `hsl(${hue}, 62%, 72%)`;
+  ctx.beginPath();
+  const bodyTop = baseY - h * 0.58;
+  ctx.moveTo(x - w / 2, baseY);
+  ctx.quadraticCurveTo(x - w / 2, bodyTop, x, bodyTop);
+  ctx.quadraticCurveTo(x + w / 2, bodyTop, x + w / 2, baseY);
+  ctx.closePath();
+  ctx.fill();
+  ctx.fillStyle = `hsl(${hue}, 58%, 84%)`;
+  ctx.beginPath();
+  ctx.arc(x, baseY - h * 0.72, h * 0.23, 0, Math.PI * 2);
+  ctx.fill();
+}
+
+/* ------------------------------------------ chớp mắt + nhép môi (phần cốt lõi) */
+function drawFace(cx, cy, dw, dh, rig, t, speaking) {
+  /* Toạ độ rig là tỉ lệ so với khung sprite, gốc ở tâm khung. */
+  const blinkCycle = (t + (rig.blinkOffset || 0)) % (rig.blinkPeriod || 3.4);
+  const blinking = blinkCycle > ((rig.blinkPeriod || 3.4) - 0.16);
+
+  [rig.eyeL, rig.eyeR].forEach(eye => {
+    if (!eye) return;
+    const ex = cx + eye.dx * dw, ey = cy + eye.dy * dh;
+    const r = (eye.r || 0.045) * dw;
+    if (blinking) {
+      ctx.strokeStyle = '#3a2f26';
+      ctx.lineWidth = Math.max(2, r * 0.34);
+      ctx.lineCap = 'round';
+      ctx.beginPath();
+      ctx.moveTo(ex - r * 0.85, ey);
+      ctx.quadraticCurveTo(ex, ey + r * 0.45, ex + r * 0.85, ey);
+      ctx.stroke();
+      return;
+    }
+    ctx.fillStyle = rig.eyeFill || '#ffffff';
+    ctx.beginPath(); ctx.arc(ex, ey, r, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = '#2f2721';
+    const look = Math.sin(t * 0.7) * r * 0.16;
+    ctx.beginPath(); ctx.arc(ex + look, ey + r * 0.08, r * 0.46, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = '#ffffff';
+    ctx.beginPath(); ctx.arc(ex + look + r * 0.2, ey - r * 0.22, r * 0.16, 0, Math.PI * 2); ctx.fill();
+  });
+
+  const m = rig.mouth;
+  if (!m) return;
+  const mx = cx + m.dx * dw, my = cy + m.dy * dh;
+  const baseW = (m.mw || 0.04) * dw, baseH = (m.mh || 0.018) * dh;
+  /* Biên độ há miệng: trộn vài tần số để không ra nhịp máy móc. */
+  let open = 0;
+  if (speaking) {
+    const a = Math.sin(t * 17.0), b = Math.sin(t * 9.3 + 1.7), c = Math.sin(t * 27.1 + 0.4);
+    open = Math.max(0, (a * 0.5 + b * 0.32 + c * 0.18));
+  }
+  const h = baseH * (1 + open * 5.2);
+  const w = baseW * (1 - open * 0.16);
+  ctx.fillStyle = '#7d2f2f';
+  ctx.beginPath(); ctx.ellipse(mx, my, w, h, 0, 0, Math.PI * 2); ctx.fill();
+  if (open > 0.25) {
+    ctx.fillStyle = '#ffffff';
+    ctx.beginPath();
+    ctx.ellipse(mx, my - h * 0.55, w * 0.78, h * 0.22, 0, 0, Math.PI * 2);
+    ctx.fill();
+  }
+}
+
+/* -------------------------------------------------------------- nhân vật */
+function poseAt(sc, id, t) {
+  const keys=sc.poses[id];
+  if(t<=keys[0].time)return {...keys[0],rotation:keys[0].rotation||0};
+  for(let i=1;i<keys.length;i++){
+    if(t>keys[i].time)continue;
+    const a=keys[i-1],b=keys[i],u=(t-a.time)/(b.time-a.time),out={};
+    for(const k of ['x','y','height','rotation'])out[k]=(a[k]||0)+((b[k]||0)-(a[k]||0))*u;
+    // A drawing is exposed as a held cel.  Root placement can interpolate,
+    // but the marks never get reseeded or cross-faded every output frame.
+    out.drawing_id = u < 1 ? a.drawing_id : b.drawing_id;
+    return out;
+  }
+  return {...keys[keys.length-1],rotation:keys[keys.length-1].rotation||0};
+}
+
+function handDrawn(sc) {
+  return sc && (sc.renderer === 'hand-drawn-canvas-v1' || sc.draw?.style === 'hand-drawn');
+}
+
+/* A deterministic ink pass for the hand-drawn mode.  Whole-pose cels carry
+   the performance; this only supplies a quiet contour and sparse hatching.
+   It uses no frame-time randomness, so a held drawing is pixel-identical when
+   renderFrame() seeks backwards or forwards. */
+function drawInkCel(img, x, y, w, h, seed) {
+  const edge = Math.max(1, Math.round(Math.min(w, h) * 0.008));
+  ctx.save();
+  ctx.globalAlpha = 0.82;
+  ctx.filter = 'brightness(0) saturate(0)';
+  for (const [ox, oy] of [[-edge,0],[edge,0],[0,-edge],[0,edge],[-edge,-edge],[edge,edge]]) {
+    ctx.drawImage(img, x + ox, y + oy, w, h);
+  }
+  ctx.filter = 'none'; ctx.globalAlpha = 1;
+  ctx.drawImage(img, x, y, w, h);
+  // Stable, low-density hatching. The seed is based on character + drawing,
+  // never on output frame, so paper/marks do not swim through a hold.
+  let n = (seed >>> 0) || 1;
+  const next = () => ((n = (n * 1664525 + 1013904223) >>> 0) / 4294967296);
+  ctx.save(); ctx.beginPath(); ctx.rect(x, y, w, h); ctx.clip();
+  ctx.globalAlpha = 0.13; ctx.strokeStyle = '#2d211c'; ctx.lineWidth = Math.max(1, edge * 0.42);
+  for (let i = 0; i < 12; i++) {
+    const px = x + w * (0.12 + next() * 0.76), py = y + h * (0.20 + next() * 0.68);
+    const len = Math.min(w, h) * (0.035 + next() * 0.04);
+    ctx.beginPath(); ctx.moveTo(px - len, py + len * 0.35); ctx.lineTo(px + len, py - len * 0.35); ctx.stroke();
+  }
+  ctx.restore(); ctx.restore();
+}
+function drawCharacters(sc, t, cue) {
+  const presentIds = sc?.characters_present ?? [];
+  const present = CHARACTERS.filter(c => presentIds.indexOf(c.id) !== -1);
+  if (!present.length) return;
+
+  const baseY = H * 0.80;
+  const slot = W / (present.length + 1);
+
+  present.forEach((c, i) => {
+    const speaking = !!(cue && cue.character_id === c.id);
+    const idx = CHARACTERS.indexOf(c);
+    const pose = poseAt(sc, c.id, t);
+    const x = pose.x;
+    const baseY = pose.y;
+    ctx.save();ctx.translate(x,baseY);ctx.rotate(pose.rotation * Math.PI / 180);ctx.translate(-x,-baseY);
+
+    /* Người đang nói nhô lên và to hơn chút để mắt người xem bám theo. */
+    const bob = 0;
+    const scale = 1;
+    const h = pose.height;
+
+    const drawingId = pose.drawing_id;
+    const img = (drawingId && images['cel:' + c.id + ':' + drawingId]) || images['char:' + c.id];
+    let dw, dh, cx, cy;
+    if (img) {
+      dh = h; dw = img.width * (h / img.height);
+      cx = x; cy = baseY - dh / 2 + bob;
+      ctx.save();
+      ctx.globalAlpha = speaking ? 1 : 0.92;
+      if (handDrawn(sc)) {
+        const label = c.id + ':' + (drawingId || 'base');
+        let seed = 2166136261;
+        for (let j = 0; j < label.length; j++) seed = Math.imul(seed ^ label.charCodeAt(j), 16777619);
+        drawInkCel(img, cx - dw / 2, cy - dh / 2, dw, dh, seed);
+      } else {
+        ctx.drawImage(img, cx - dw / 2, cy - dh / 2, dw, dh);
+      }
+      ctx.restore();
+    } else {
+      drawPlaceholderBody(x, baseY + bob, h, (idx * 67) % 360);
+      dw = h * 0.62; dh = h; cx = x; cy = baseY + bob - dh / 2;
+    }
+    drawFace(cx, cy, dw, dh, rigFor(c.id, idx, !!img), t, speaking);
+
+    /* Tên nhân vật khi đang nói */
+    if (speaking && c.name) {
+      ctx.font = '700 19px Nunito, system-ui, sans-serif';
+      ctx.textAlign = 'center';
+      const tw = ctx.measureText(c.name).width;
+      ctx.fillStyle = 'rgba(58,47,38,0.82)';
+      roundRect(x - tw / 2 - 12, baseY + 12, tw + 24, 30, 15);
+      ctx.fill();
+      ctx.fillStyle = '#fff9e3';
+      ctx.fillText(c.name, x, baseY + 33);
+    }
+    ctx.restore();
+  });
+}
+
+function roundRect(x, y, w, h, r) {
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.arcTo(x + w, y, x + w, y + h, r);
+  ctx.arcTo(x + w, y + h, x, y + h, r);
+  ctx.arcTo(x, y + h, x, y, r);
+  ctx.arcTo(x, y, x + w, y, r);
+  ctx.closePath();
+}
+
+/* -------------------------------------------------------------- phụ đề */
+function drawSubtitles(cue) {
+  if (!cue || !cue.text) return;
+  ctx.font = '800 27px Nunito, system-ui, sans-serif';
+  ctx.textAlign = 'center';
+
+  const maxW = W - 72;
+  const words = cue.text.split(/\s+/);
+  const lines = [];
+  let line = '';
+  words.forEach(word => {
+    const test = line ? line + ' ' + word : word;
+    if (ctx.measureText(test).width > maxW && line) { lines.push(line); line = word; }
+    else line = test;
+  });
+  if (line) lines.push(line);
+
+  const lh = 38;
+  const boxH = lines.length * lh + 26;
+  const boxY = H - boxH - 48;
+  ctx.fillStyle = 'rgba(42,34,28,0.74)';
+  roundRect(28, boxY, W - 56, boxH, 22);
+  ctx.fill();
+
+  lines.forEach((ln, i) => {
+    const y = boxY + 34 + i * lh;
+    ctx.lineWidth = 6; ctx.strokeStyle = 'rgba(0,0,0,0.5)';
+    ctx.strokeText(ln, W / 2, y);
+    ctx.fillStyle = '#fff9e3';
+    ctx.fillText(ln, W / 2, y);
+  });
+}
+
+/* ------------------------------------------------------------- vòng lặp */
+let startTime = null;
+let audio = null;
+if (AUDIO_URL) {
+  audio = new Audio(AUDIO_URL);
+  audio.preload = 'auto';
+}
+
+function renderFrame(t) {
+  ctx.reset();
+  t = Math.min(t, DURATION - 0.001);
+
+  const found = sceneAt(t);
+  const sc = found ? found.scene : null;
+  const idx = found ? found.index : 0;
+  const cue = cueAt(t);
+
+  if(sc?.kind === 'title'){
+    ctx.fillStyle='#152322';ctx.fillRect(0,0,W,H);
+    ctx.font='800 42px system-ui';ctx.fillStyle='#fff';ctx.textAlign='center';
+    ctx.fillText(sc.text || '', W/2, H/2, W-48);return;
+  }
+  drawBackground(sc, idx, t);
+  drawCharacters(sc, t, cue);
+  drawSubtitles(cue);
+
+  /* Fade vào/ra cho gọn đầu đuôi */
+  if (t < 0.6) { ctx.fillStyle = `rgba(18,16,14,${1 - t / 0.6})`; ctx.fillRect(0, 0, W, H); }
+
+  /* Mốc đồng bộ: Playwright bắt đầu quay trước khi animation chạy, nên phần
+     đầu video là màn chờ. Nháy một ô magenta (màu không xuất hiện ở đâu khác)
+     đúng lúc t=0 để composer biết cắt từ đâu, nhờ vậy lời thoại khớp miệng. */
+  if (!new URLSearchParams(location.search).has('render') && t < 0.12) { ctx.fillStyle = '#ff00ff'; ctx.fillRect(0, 0, 18, 18); }
+  if (t > DURATION - 0.6) {
+    const k = (t - (DURATION - 0.6)) / 0.6;
+    ctx.fillStyle = `rgba(18,16,14,${Math.min(1, k)})`; ctx.fillRect(0, 0, W, H);
+  }
+
+}
+window.renderFrame=renderFrame;
+function frame(now){
+  if(startTime===null)startTime=now;
+  const t=audio&&!audio.paused?audio.currentTime:(now-startTime)/1000;
+  renderFrame(t);
+  if(t<DURATION)requestAnimationFrame(frame);
+}
+
+function start() {
+  if (new URLSearchParams(location.search).has('render')) return;
+  if (startTime !== null) return;
+  if (audio) { audio.play().catch(() => {}); }
+  requestAnimationFrame(frame);
+}
+
+/* Composer click vào canvas để mở tiếng; nếu không click thì vẫn tự chạy. */
+canvas.addEventListener('click', start);
+window.addEventListener('load', () => {
+  const wait = setInterval(() => {
+    if (pending <= 0) { clearInterval(wait); start(); }
+  }, 60);
+  setTimeout(() => { clearInterval(wait); start(); }, 4000);
+});
+</script>
+</body>
+</html>

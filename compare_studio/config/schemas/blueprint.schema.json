@@ -1,0 +1,19 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "blueprint.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["blueprint_id", "name", "description", "beats"],
+  "properties": {
+    "blueprint_id": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
+    "name": { "type": "string", "minLength": 1 },
+    "description": { "type": "string", "minLength": 1 },
+    "beats": {
+      "type": "array", "minItems": 5,
+      "items": {
+        "type": "object", "additionalProperties": false, "required": ["id", "purpose"],
+        "properties": { "id": { "type": "string", "minLength": 1 }, "purpose": { "type": "string", "minLength": 1 } }
+      }
+    }
+  }
+}

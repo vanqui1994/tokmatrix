@@ -1,0 +1,1774 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tokmatrix.local/schemas/analysis_result_v1.schema.json",
+  "title": "AnalysisResultV1",
+  "$defs": {
+    "ActionObservation": {
+      "additionalProperties": false,
+      "properties": {
+        "observation_id": {
+          "maxLength": 160,
+          "minLength": 1,
+          "pattern": "^[a-z][a-z0-9]*(?:[._:-][a-z0-9]+)*$",
+          "title": "Observation Id",
+          "type": "string"
+        },
+        "analyzer_id": {
+          "maxLength": 160,
+          "minLength": 1,
+          "pattern": "^[a-z][a-z0-9]*(?:[._:-][a-z0-9]+)*$",
+          "title": "Analyzer Id",
+          "type": "string"
+        },
+        "source_interval": {
+          "$ref": "#/$defs/Interval"
+        },
+        "confidence": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Confidence",
+          "type": "number"
+        },
+        "evidence_ids": {
+          "items": {
+            "maxLength": 160,
+            "minLength": 1,
+            "pattern": "^[a-z][a-z0-9]*(?:[._:-][a-z0-9]+)*$",
+            "type": "string"
+          },
+          "maxItems": 1000,
+          "minItems": 1,
+          "title": "Evidence Ids",
+          "type": "array"
+        },
+        "review_status": {
+          "default": "unreviewed",
+          "enum": [
+            "unreviewed",
+            "accepted",
+            "corrected",
+            "rejected"
+          ],
+          "title": "Review Status",
+          "type": "string"
+        },
+        "alternatives": {
+          "items": {
+            "$ref": "#/$defs/Alternative"
+          },
+          "maxItems": 100,
+          "title": "Alternatives",
+          "type": "array"
+        },
+        "notes": {
+          "anyOf": [
+            {
+              "maxLength": 2000,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Notes"
+        },
+        "extensions": {
+          "anyOf": [
+            {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Extensions"
+        },
+        "kind": {
+          "const": "action",
+          "title": "Kind",
+          "type": "string"
+        },
+        "label": {
+          "maxLength": 100,
+          "pattern": "^[a-z][a-z0-9._-]*$",
+          "title": "Label",
+          "type": "string"
+        },
+        "actor_track_ref": {
+          "anyOf": [
+            {
+              "maxLength": 160,
+              "minLength": 1,
+              "pattern": "^[a-z][a-z0-9]*(?:[._:-][a-z0-9]+)*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Actor Track Ref"
+        },
+        "target_track_ref": {
+          "anyOf": [
+            {
+              "maxLength": 160,
+              "minLength": 1,
+              "pattern": "^[a-z][a-z0-9]*(?:[._:-][a-z0-9]+)*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Target Track Ref"
+        }
+      },
+      "required": [
+        "observation_id",
+        "analyzer_id",
+        "source_interval",
+        "confidence",
+        "evidence_ids",
+        "kind",
+        "label"
+      ],
+      "title": "ActionObservation",
+      "type": "object"
+    },
+    "Alternative": {
+      "additionalProperties": false,
+      "description": "A competing reading the analyzer could not rule out.",
+      "properties": {
+        "label": {
+          "maxLength": 300,
+          "minLength": 1,
+          "title": "Label",
+          "type": "string"
+        },
+        "confidence": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Confidence",
+          "type": "number"
+        }
+      },
+      "required": [
+        "label",
+        "confidence"
+      ],
+      "title": "Alternative",
+      "type": "object"
+    },
+    "Analyzer": {
+      "additionalProperties": false,
+      "properties": {
+        "analyzer_id": {
+          "maxLength": 160,
+          "minLength": 1,
+          "pattern": "^[a-z][a-z0-9]*(?:[._:-][a-z0-9]+)*$",
+          "title": "Analyzer Id",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "shot",
+            "transcript",
+            "ocr",
+            "track",
+            "pose",
+            "action",
+            "camera",
+            "audio",
+            "multi"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "name": {
+          "maxLength": 300,
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "version": {
+          "maxLength": 100,
+          "minLength": 1,
+          "title": "Version",
+          "type": "string"
+        },
+        "ran_at": {
+          "anyOf": [
+            {
+              "maxLength": 64,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Ran At"
+        },
+        "parameters": {
+          "additionalProperties": true,
+          "title": "Parameters",
+          "type": "object"
+        }
+      },
+      "required": [
+        "analyzer_id",
+        "kind",
+        "name",
+        "version"
+      ],
+      "title": "Analyzer",
+      "type": "object"
+    },
+    "AnalyzerFailure": {
+      "additionalProperties": false,
+      "description": "A analyzer that did not finish. Recorded, so partial results stay usable.",
+      "properties": {
+        "failure_id": {
+          "maxLength": 160,
+          "minLength": 1,
+          "pattern": "^[a-z][a-z0-9]*(?:[._:-][a-z0-9]+)*$",
+          "title": "Failure Id",
+          "type": "string"
+        },
+        "analyzer_id": {
+          "maxLength": 160,
+          "minLength": 1,
+          "pattern": "^[a-z][a-z0-9]*(?:[._:-][a-z0-9]+)*$",
+          "title": "Analyzer Id",
+          "type": "string"
+        },
+        "reason": {
+          "enum": [
+            "unavailable",
+            "timeout",
+            "unsupported_media",
+            "low_quality_input",
+            "internal_error",
+            "cancelled"
+          ],
+          "title": "Reason",
+          "type": "string"
+        },
+        "message": {
+          "anyOf": [
+            {
+              "maxLength": 2000,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Message"
+        },
+        "covered": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Interval"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "failure_id",
+        "analyzer_id",
+        "reason"
+      ],
+      "title": "AnalyzerFailure",
+      "type": "object"
+    },
+    "AudioEventObservation": {
+      "additionalProperties": false,
+      "properties": {
+        "observation_id": {
+          "maxLength": 160,
+          "minLength": 1,
+          "pattern": "^[a-z][a-z0-9]*(?:[._:-][a-z0-9]+)*$",
+          "title": "Observation Id",
+          "type": "string"
+        },
+        "analyzer_id": {
+          "maxLength": 160,
+          "minLength": 1,
+          "pattern": "^[a-z][a-z0-9]*(?:[._:-][a-z0-9]+)*$",
+          "title": "Analyzer Id",
+          "type": "string"
+        },
+        "source_interval": {
+          "$ref": "#/$defs/Interval"
+        },
+        "confidence": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Confidence",
+          "type": "number"
+        },
+        "evidence_ids": {
+          "items": {
+            "maxLength": 160,
+            "minLength": 1,
+            "pattern": "^[a-z][a-z0-9]*(?:[._:-][a-z0-9]+)*$",
+            "type": "string"
+          },
+          "maxItems": 1000,
+          "minItems": 1,
+          "title": "Evidence Ids",
+          "type": "array"
+        },
+        "review_status": {
+          "default": "unreviewed",
+          "enum": [
+            "unreviewed",
+            "accepted",
+            "corrected",
+            "rejected"
+          ],
+          "title": "Review Status",
+          "type": "string"
+        },
+        "alternatives": {
+          "items": {
+            "$ref": "#/$defs/Alternative"
+          },
+          "maxItems": 100,
+          "title": "Alternatives",
+          "type": "array"
+        },
+        "notes": {
+          "anyOf": [
+            {
+              "maxLength": 2000,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Notes"
+        },
+        "extensions": {
+          "anyOf": [
+            {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Extensions"
+        },
+        "kind": {
+          "const": "audio_event",
+          "title": "Kind",
+          "type": "string"
+        },
+        "category": {
+          "enum": [
+            "speech",
+            "music",
+            "sfx",
+            "ambience",
+            "silence",
+            "noise"
+          ],
+          "title": "Category",
+          "type": "string"
+        },
+        "speaker_label": {
+          "anyOf": [
+            {
+              "maxLength": 100,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Speaker Label"
+        },
+        "loudness_lufs": {
+          "anyOf": [
+            {
+              "maximum": 10,
+              "minimum": -120,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Loudness Lufs"
+        },
+        "peak_db": {
+          "anyOf": [
+            {
+              "maximum": 10,
+              "minimum": -120,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Peak Db"
+        }
+      },
+      "required": [
+        "observation_id",
+        "analyzer_id",
+        "source_interval",
+        "confidence",
+        "evidence_ids",
+        "kind",
+        "category"
+      ],
+      "title": "AudioEventObservation",
+      "type": "object"
+    },
+    "CameraObservation": {
+      "additionalProperties": false,
+      "properties": {
+        "observation_id": {
+          "maxLength": 160,
+          "minLength": 1,
+          "pattern": "^[a-z][a-z0-9]*(?:[._:-][a-z0-9]+)*$",
+          "title": "Observation Id",
+          "type": "string"
+        },
+        "analyzer_id": {
+          "maxLength": 160,
+          "minLength": 1,
+          "pattern": "^[a-z][a-z0-9]*(?:[._:-][a-z0-9]+)*$",
+          "title": "Analyzer Id",
+          "type": "string"
+        },
+        "source_interval": {
+          "$ref": "#/$defs/Interval"
+        },
+        "confidence": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Confidence",
+          "type": "number"
+        },
+        "evidence_ids": {
+          "items": {
+            "maxLength": 160,
+            "minLength": 1,
+            "pattern": "^[a-z][a-z0-9]*(?:[._:-][a-z0-9]+)*$",
+            "type": "string"
+          },
+          "maxItems": 1000,
+          "minItems": 1,
+          "title": "Evidence Ids",
+          "type": "array"
+        },
+        "review_status": {
+          "default": "unreviewed",
+          "enum": [
+            "unreviewed",
+            "accepted",
+            "corrected",
+            "rejected"
+          ],
+          "title": "Review Status",
+          "type": "string"
+        },
+        "alternatives": {
+          "items": {
+            "$ref": "#/$defs/Alternative"
+          },
+          "maxItems": 100,
+          "title": "Alternatives",
+          "type": "array"
+        },
+        "notes": {
+          "anyOf": [
+            {
+              "maxLength": 2000,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Notes"
+        },
+        "extensions": {
+          "anyOf": [
+            {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Extensions"
+        },
+        "kind": {
+          "const": "camera",
+          "title": "Kind",
+          "type": "string"
+        },
+        "movement": {
+          "enum": [
+            "static",
+            "pan",
+            "tilt",
+            "zoom",
+            "dolly",
+            "truck",
+            "orbit",
+            "handheld",
+            "unknown"
+          ],
+          "title": "Movement",
+          "type": "string"
+        },
+        "magnitude": {
+          "anyOf": [
+            {
+              "maximum": 1,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Magnitude"
+        },
+        "direction_degrees": {
+          "anyOf": [
+            {
+              "maximum": 360,
+              "minimum": -360,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Direction Degrees"
+        },
+        "subject_track_ref": {
+          "anyOf": [
+            {
+              "maxLength": 160,
+              "minLength": 1,
+              "pattern": "^[a-z][a-z0-9]*(?:[._:-][a-z0-9]+)*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Subject Track Ref"
+        }
+      },
+      "required": [
+        "observation_id",
+        "analyzer_id",
+        "source_interval",
+        "confidence",
+        "evidence_ids",
+        "kind",
+        "movement"
+      ],
+      "title": "CameraObservation",
+      "type": "object"
+    },
+    "Evidence": {
+      "additionalProperties": false,
+      "properties": {
+        "extensions": {
+          "anyOf": [
+            {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Extensions"
+        },
+        "evidence_id": {
+          "maxLength": 160,
+          "minLength": 1,
+          "pattern": "^[a-z][a-z0-9]*(?:[._:-][a-z0-9]+)*$",
+          "title": "Evidence Id",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "frame",
+            "frame_range",
+            "audio_range",
+            "transcript_span",
+            "ocr_region",
+            "human_annotation",
+            "external_reference"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "source_id": {
+          "maxLength": 160,
+          "minLength": 1,
+          "pattern": "^[a-z][a-z0-9]*(?:[._:-][a-z0-9]+)*$",
+          "title": "Source Id",
+          "type": "string"
+        },
+        "interval": {
+          "$ref": "#/$defs/Interval"
+        },
+        "region": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Region"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "quote": {
+          "anyOf": [
+            {
+              "maxLength": 2000,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Quote"
+        },
+        "annotation": {
+          "anyOf": [
+            {
+              "maxLength": 4000,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Annotation"
+        }
+      },
+      "required": [
+        "evidence_id",
+        "kind",
+        "source_id",
+        "interval"
+      ],
+      "title": "Evidence",
+      "type": "object"
+    },
+    "Interval": {
+      "additionalProperties": false,
+      "properties": {
+        "start": {
+          "minimum": 0,
+          "title": "Start",
+          "type": "number"
+        },
+        "end": {
+          "minimum": 0,
+          "title": "End",
+          "type": "number"
+        }
+      },
+      "required": [
+        "start",
+        "end"
+      ],
+      "title": "Interval",
+      "type": "object"
+    },
+    "Keypoint": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "maxLength": 100,
+          "pattern": "^[a-z][a-z0-9._-]*$",
+          "title": "Name",
+          "type": "string"
+        },
+        "x": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "X",
+          "type": "number"
+        },
+        "y": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Y",
+          "type": "number"
+        },
+        "confidence": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Confidence",
+          "type": "number"
+        },
+        "visible": {
+          "default": true,
+          "title": "Visible",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "name",
+        "x",
+        "y",
+        "confidence"
+      ],
+      "title": "Keypoint",
+      "type": "object"
+    },
+    "OcrObservation": {
+      "additionalProperties": false,
+      "properties": {
+        "observation_id": {
+          "maxLength": 160,
+          "minLength": 1,
+          "pattern": "^[a-z][a-z0-9]*(?:[._:-][a-z0-9]+)*$",
+          "title": "Observation Id",
+          "type": "string"
+        },
+        "analyzer_id": {
+          "maxLength": 160,
+          "minLength": 1,
+          "pattern": "^[a-z][a-z0-9]*(?:[._:-][a-z0-9]+)*$",
+          "title": "Analyzer Id",
+          "type": "string"
+        },
+        "source_interval": {
+          "$ref": "#/$defs/Interval"
+        },
+        "confidence": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Confidence",
+          "type": "number"
+        },
+        "evidence_ids": {
+          "items": {
+            "maxLength": 160,
+            "minLength": 1,
+            "pattern": "^[a-z][a-z0-9]*(?:[._:-][a-z0-9]+)*$",
+            "type": "string"
+          },
+          "maxItems": 1000,
+          "minItems": 1,
+          "title": "Evidence Ids",
+          "type": "array"
+        },
+        "review_status": {
+          "default": "unreviewed",
+          "enum": [
+            "unreviewed",
+            "accepted",
+            "corrected",
+            "rejected"
+          ],
+          "title": "Review Status",
+          "type": "string"
+        },
+        "alternatives": {
+          "items": {
+            "$ref": "#/$defs/Alternative"
+          },
+          "maxItems": 100,
+          "title": "Alternatives",
+          "type": "array"
+        },
+        "notes": {
+          "anyOf": [
+            {
+              "maxLength": 2000,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Notes"
+        },
+        "extensions": {
+          "anyOf": [
+            {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Extensions"
+        },
+        "kind": {
+          "const": "ocr",
+          "title": "Kind",
+          "type": "string"
+        },
+        "text": {
+          "maxLength": 5000,
+          "minLength": 1,
+          "title": "Text",
+          "type": "string"
+        },
+        "region": {
+          "$ref": "#/$defs/Region"
+        },
+        "language": {
+          "anyOf": [
+            {
+              "pattern": "^[A-Za-z]{2,3}(?:-[A-Za-z0-9]{2,8})*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Language"
+        }
+      },
+      "required": [
+        "observation_id",
+        "analyzer_id",
+        "source_interval",
+        "confidence",
+        "evidence_ids",
+        "kind",
+        "text",
+        "region"
+      ],
+      "title": "OcrObservation",
+      "type": "object"
+    },
+    "PoseObservation": {
+      "additionalProperties": false,
+      "properties": {
+        "observation_id": {
+          "maxLength": 160,
+          "minLength": 1,
+          "pattern": "^[a-z][a-z0-9]*(?:[._:-][a-z0-9]+)*$",
+          "title": "Observation Id",
+          "type": "string"
+        },
+        "analyzer_id": {
+          "maxLength": 160,
+          "minLength": 1,
+          "pattern": "^[a-z][a-z0-9]*(?:[._:-][a-z0-9]+)*$",
+          "title": "Analyzer Id",
+          "type": "string"
+        },
+        "source_interval": {
+          "$ref": "#/$defs/Interval"
+        },
+        "confidence": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Confidence",
+          "type": "number"
+        },
+        "evidence_ids": {
+          "items": {
+            "maxLength": 160,
+            "minLength": 1,
+            "pattern": "^[a-z][a-z0-9]*(?:[._:-][a-z0-9]+)*$",
+            "type": "string"
+          },
+          "maxItems": 1000,
+          "minItems": 1,
+          "title": "Evidence Ids",
+          "type": "array"
+        },
+        "review_status": {
+          "default": "unreviewed",
+          "enum": [
+            "unreviewed",
+            "accepted",
+            "corrected",
+            "rejected"
+          ],
+          "title": "Review Status",
+          "type": "string"
+        },
+        "alternatives": {
+          "items": {
+            "$ref": "#/$defs/Alternative"
+          },
+          "maxItems": 100,
+          "title": "Alternatives",
+          "type": "array"
+        },
+        "notes": {
+          "anyOf": [
+            {
+              "maxLength": 2000,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Notes"
+        },
+        "extensions": {
+          "anyOf": [
+            {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Extensions"
+        },
+        "kind": {
+          "const": "pose",
+          "title": "Kind",
+          "type": "string"
+        },
+        "track_ref": {
+          "anyOf": [
+            {
+              "maxLength": 160,
+              "minLength": 1,
+              "pattern": "^[a-z][a-z0-9]*(?:[._:-][a-z0-9]+)*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Track Ref"
+        },
+        "time": {
+          "minimum": 0,
+          "title": "Time",
+          "type": "number"
+        },
+        "keypoints": {
+          "items": {
+            "$ref": "#/$defs/Keypoint"
+          },
+          "maxItems": 1000,
+          "minItems": 1,
+          "title": "Keypoints",
+          "type": "array"
+        }
+      },
+      "required": [
+        "observation_id",
+        "analyzer_id",
+        "source_interval",
+        "confidence",
+        "evidence_ids",
+        "kind",
+        "time",
+        "keypoints"
+      ],
+      "title": "PoseObservation",
+      "type": "object"
+    },
+    "Region": {
+      "additionalProperties": false,
+      "properties": {
+        "space": {
+          "enum": [
+            "normalized_source",
+            "normalized_output"
+          ],
+          "title": "Space",
+          "type": "string"
+        },
+        "x": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "X",
+          "type": "number"
+        },
+        "y": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Y",
+          "type": "number"
+        },
+        "width": {
+          "exclusiveMinimum": 0,
+          "maximum": 1,
+          "title": "Width",
+          "type": "number"
+        },
+        "height": {
+          "exclusiveMinimum": 0,
+          "maximum": 1,
+          "title": "Height",
+          "type": "number"
+        }
+      },
+      "required": [
+        "space",
+        "x",
+        "y",
+        "width",
+        "height"
+      ],
+      "title": "Region",
+      "type": "object"
+    },
+    "ShotObservation": {
+      "additionalProperties": false,
+      "properties": {
+        "observation_id": {
+          "maxLength": 160,
+          "minLength": 1,
+          "pattern": "^[a-z][a-z0-9]*(?:[._:-][a-z0-9]+)*$",
+          "title": "Observation Id",
+          "type": "string"
+        },
+        "analyzer_id": {
+          "maxLength": 160,
+          "minLength": 1,
+          "pattern": "^[a-z][a-z0-9]*(?:[._:-][a-z0-9]+)*$",
+          "title": "Analyzer Id",
+          "type": "string"
+        },
+        "source_interval": {
+          "$ref": "#/$defs/Interval"
+        },
+        "confidence": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Confidence",
+          "type": "number"
+        },
+        "evidence_ids": {
+          "items": {
+            "maxLength": 160,
+            "minLength": 1,
+            "pattern": "^[a-z][a-z0-9]*(?:[._:-][a-z0-9]+)*$",
+            "type": "string"
+          },
+          "maxItems": 1000,
+          "minItems": 1,
+          "title": "Evidence Ids",
+          "type": "array"
+        },
+        "review_status": {
+          "default": "unreviewed",
+          "enum": [
+            "unreviewed",
+            "accepted",
+            "corrected",
+            "rejected"
+          ],
+          "title": "Review Status",
+          "type": "string"
+        },
+        "alternatives": {
+          "items": {
+            "$ref": "#/$defs/Alternative"
+          },
+          "maxItems": 100,
+          "title": "Alternatives",
+          "type": "array"
+        },
+        "notes": {
+          "anyOf": [
+            {
+              "maxLength": 2000,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Notes"
+        },
+        "extensions": {
+          "anyOf": [
+            {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Extensions"
+        },
+        "kind": {
+          "const": "shot",
+          "title": "Kind",
+          "type": "string"
+        },
+        "index": {
+          "minimum": 0,
+          "title": "Index",
+          "type": "integer"
+        },
+        "boundary": {
+          "default": "unknown",
+          "enum": [
+            "cut",
+            "dissolve",
+            "fade",
+            "wipe",
+            "unknown"
+          ],
+          "title": "Boundary",
+          "type": "string"
+        }
+      },
+      "required": [
+        "observation_id",
+        "analyzer_id",
+        "source_interval",
+        "confidence",
+        "evidence_ids",
+        "kind",
+        "index"
+      ],
+      "title": "ShotObservation",
+      "type": "object"
+    },
+    "Source": {
+      "additionalProperties": false,
+      "properties": {
+        "extensions": {
+          "anyOf": [
+            {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Extensions"
+        },
+        "source_id": {
+          "maxLength": 160,
+          "minLength": 1,
+          "pattern": "^[a-z][a-z0-9]*(?:[._:-][a-z0-9]+)*$",
+          "title": "Source Id",
+          "type": "string"
+        },
+        "sha256": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Sha256",
+          "type": "string"
+        },
+        "media_type": {
+          "pattern": "^[a-z0-9.+-]+/[a-z0-9.+-]+$",
+          "title": "Media Type",
+          "type": "string"
+        },
+        "uri": {
+          "anyOf": [
+            {
+              "maxLength": 4096,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Uri"
+        },
+        "width": {
+          "anyOf": [
+            {
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Width"
+        },
+        "height": {
+          "anyOf": [
+            {
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Height"
+        },
+        "frame_rate": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Frame Rate"
+        }
+      },
+      "required": [
+        "source_id",
+        "sha256",
+        "media_type"
+      ],
+      "title": "Source",
+      "type": "object"
+    },
+    "Timebase": {
+      "additionalProperties": false,
+      "properties": {
+        "unit": {
+          "const": "seconds",
+          "title": "Unit",
+          "type": "string"
+        },
+        "origin_seconds": {
+          "const": 0,
+          "title": "Origin Seconds",
+          "type": "integer"
+        },
+        "precision": {
+          "anyOf": [
+            {
+              "maximum": 9,
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Precision"
+        }
+      },
+      "required": [
+        "unit",
+        "origin_seconds"
+      ],
+      "title": "Timebase",
+      "type": "object"
+    },
+    "TrackObservation": {
+      "additionalProperties": false,
+      "properties": {
+        "observation_id": {
+          "maxLength": 160,
+          "minLength": 1,
+          "pattern": "^[a-z][a-z0-9]*(?:[._:-][a-z0-9]+)*$",
+          "title": "Observation Id",
+          "type": "string"
+        },
+        "analyzer_id": {
+          "maxLength": 160,
+          "minLength": 1,
+          "pattern": "^[a-z][a-z0-9]*(?:[._:-][a-z0-9]+)*$",
+          "title": "Analyzer Id",
+          "type": "string"
+        },
+        "source_interval": {
+          "$ref": "#/$defs/Interval"
+        },
+        "confidence": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Confidence",
+          "type": "number"
+        },
+        "evidence_ids": {
+          "items": {
+            "maxLength": 160,
+            "minLength": 1,
+            "pattern": "^[a-z][a-z0-9]*(?:[._:-][a-z0-9]+)*$",
+            "type": "string"
+          },
+          "maxItems": 1000,
+          "minItems": 1,
+          "title": "Evidence Ids",
+          "type": "array"
+        },
+        "review_status": {
+          "default": "unreviewed",
+          "enum": [
+            "unreviewed",
+            "accepted",
+            "corrected",
+            "rejected"
+          ],
+          "title": "Review Status",
+          "type": "string"
+        },
+        "alternatives": {
+          "items": {
+            "$ref": "#/$defs/Alternative"
+          },
+          "maxItems": 100,
+          "title": "Alternatives",
+          "type": "array"
+        },
+        "notes": {
+          "anyOf": [
+            {
+              "maxLength": 2000,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Notes"
+        },
+        "extensions": {
+          "anyOf": [
+            {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Extensions"
+        },
+        "kind": {
+          "const": "track",
+          "title": "Kind",
+          "type": "string"
+        },
+        "label": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Label",
+          "type": "string"
+        },
+        "category": {
+          "enum": [
+            "person",
+            "face",
+            "hand",
+            "animal",
+            "object",
+            "text",
+            "screen",
+            "unknown"
+          ],
+          "title": "Category",
+          "type": "string"
+        },
+        "samples": {
+          "items": {
+            "$ref": "#/$defs/TrackSample"
+          },
+          "maxItems": 100000,
+          "minItems": 1,
+          "title": "Samples",
+          "type": "array"
+        },
+        "identity_resolved": {
+          "default": false,
+          "title": "Identity Resolved",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "observation_id",
+        "analyzer_id",
+        "source_interval",
+        "confidence",
+        "evidence_ids",
+        "kind",
+        "label",
+        "category",
+        "samples"
+      ],
+      "title": "TrackObservation",
+      "type": "object"
+    },
+    "TrackSample": {
+      "additionalProperties": false,
+      "properties": {
+        "time": {
+          "minimum": 0,
+          "title": "Time",
+          "type": "number"
+        },
+        "region": {
+          "$ref": "#/$defs/Region"
+        },
+        "confidence": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Confidence",
+          "type": "number"
+        }
+      },
+      "required": [
+        "time",
+        "region",
+        "confidence"
+      ],
+      "title": "TrackSample",
+      "type": "object"
+    },
+    "TranscriptObservation": {
+      "additionalProperties": false,
+      "properties": {
+        "observation_id": {
+          "maxLength": 160,
+          "minLength": 1,
+          "pattern": "^[a-z][a-z0-9]*(?:[._:-][a-z0-9]+)*$",
+          "title": "Observation Id",
+          "type": "string"
+        },
+        "analyzer_id": {
+          "maxLength": 160,
+          "minLength": 1,
+          "pattern": "^[a-z][a-z0-9]*(?:[._:-][a-z0-9]+)*$",
+          "title": "Analyzer Id",
+          "type": "string"
+        },
+        "source_interval": {
+          "$ref": "#/$defs/Interval"
+        },
+        "confidence": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Confidence",
+          "type": "number"
+        },
+        "evidence_ids": {
+          "items": {
+            "maxLength": 160,
+            "minLength": 1,
+            "pattern": "^[a-z][a-z0-9]*(?:[._:-][a-z0-9]+)*$",
+            "type": "string"
+          },
+          "maxItems": 1000,
+          "minItems": 1,
+          "title": "Evidence Ids",
+          "type": "array"
+        },
+        "review_status": {
+          "default": "unreviewed",
+          "enum": [
+            "unreviewed",
+            "accepted",
+            "corrected",
+            "rejected"
+          ],
+          "title": "Review Status",
+          "type": "string"
+        },
+        "alternatives": {
+          "items": {
+            "$ref": "#/$defs/Alternative"
+          },
+          "maxItems": 100,
+          "title": "Alternatives",
+          "type": "array"
+        },
+        "notes": {
+          "anyOf": [
+            {
+              "maxLength": 2000,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Notes"
+        },
+        "extensions": {
+          "anyOf": [
+            {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Extensions"
+        },
+        "kind": {
+          "const": "transcript",
+          "title": "Kind",
+          "type": "string"
+        },
+        "text": {
+          "maxLength": 20000,
+          "minLength": 1,
+          "title": "Text",
+          "type": "string"
+        },
+        "language": {
+          "anyOf": [
+            {
+              "pattern": "^[A-Za-z]{2,3}(?:-[A-Za-z0-9]{2,8})*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Language"
+        },
+        "speaker_label": {
+          "anyOf": [
+            {
+              "maxLength": 100,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Speaker Label"
+        },
+        "words": {
+          "items": {
+            "$ref": "#/$defs/TranscriptWord"
+          },
+          "maxItems": 20000,
+          "title": "Words",
+          "type": "array"
+        }
+      },
+      "required": [
+        "observation_id",
+        "analyzer_id",
+        "source_interval",
+        "confidence",
+        "evidence_ids",
+        "kind",
+        "text"
+      ],
+      "title": "TranscriptObservation",
+      "type": "object"
+    },
+    "TranscriptWord": {
+      "additionalProperties": false,
+      "properties": {
+        "text": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Text",
+          "type": "string"
+        },
+        "start": {
+          "minimum": 0,
+          "title": "Start",
+          "type": "number"
+        },
+        "end": {
+          "minimum": 0,
+          "title": "End",
+          "type": "number"
+        },
+        "confidence": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Confidence",
+          "type": "number"
+        }
+      },
+      "required": [
+        "text",
+        "start",
+        "end",
+        "confidence"
+      ],
+      "title": "TranscriptWord",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "analysis_id": {
+      "maxLength": 160,
+      "minLength": 1,
+      "pattern": "^[a-z][a-z0-9]*(?:[._:-][a-z0-9]+)*$",
+      "title": "Analysis Id",
+      "type": "string"
+    },
+    "source": {
+      "$ref": "#/$defs/Source"
+    },
+    "timebase": {
+      "$ref": "#/$defs/Timebase"
+    },
+    "duration_seconds": {
+      "minimum": 0,
+      "title": "Duration Seconds",
+      "type": "number"
+    },
+    "analyzers": {
+      "items": {
+        "$ref": "#/$defs/Analyzer"
+      },
+      "maxItems": 1000,
+      "minItems": 1,
+      "title": "Analyzers",
+      "type": "array"
+    },
+    "evidence": {
+      "items": {
+        "$ref": "#/$defs/Evidence"
+      },
+      "maxItems": 100000,
+      "minItems": 1,
+      "title": "Evidence",
+      "type": "array"
+    },
+    "observations": {
+      "items": {
+        "discriminator": {
+          "mapping": {
+            "action": "#/$defs/ActionObservation",
+            "audio_event": "#/$defs/AudioEventObservation",
+            "camera": "#/$defs/CameraObservation",
+            "ocr": "#/$defs/OcrObservation",
+            "pose": "#/$defs/PoseObservation",
+            "shot": "#/$defs/ShotObservation",
+            "track": "#/$defs/TrackObservation",
+            "transcript": "#/$defs/TranscriptObservation"
+          },
+          "propertyName": "kind"
+        },
+        "oneOf": [
+          {
+            "$ref": "#/$defs/ShotObservation"
+          },
+          {
+            "$ref": "#/$defs/TranscriptObservation"
+          },
+          {
+            "$ref": "#/$defs/OcrObservation"
+          },
+          {
+            "$ref": "#/$defs/TrackObservation"
+          },
+          {
+            "$ref": "#/$defs/PoseObservation"
+          },
+          {
+            "$ref": "#/$defs/ActionObservation"
+          },
+          {
+            "$ref": "#/$defs/CameraObservation"
+          },
+          {
+            "$ref": "#/$defs/AudioEventObservation"
+          }
+        ]
+      },
+      "maxItems": 1000000,
+      "title": "Observations",
+      "type": "array"
+    },
+    "failures": {
+      "items": {
+        "$ref": "#/$defs/AnalyzerFailure"
+      },
+      "maxItems": 1000,
+      "title": "Failures",
+      "type": "array"
+    },
+    "extensions": {
+      "anyOf": [
+        {
+          "additionalProperties": true,
+          "type": "object"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Extensions"
+    }
+  },
+  "required": [
+    "schema_version",
+    "analysis_id",
+    "source",
+    "timebase",
+    "duration_seconds",
+    "analyzers",
+    "evidence",
+    "observations"
+  ],
+  "type": "object"
+}

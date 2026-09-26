@@ -1,0 +1,471 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ssmatool.local/schemas/universal-storyboard/v2.0.0",
+  "title": "Universal Storyboard v2",
+  "description": "Renderer-neutral interchange format for analyzed and authored video projects.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "project_id",
+    "source",
+    "duration_seconds",
+    "timebase",
+    "tracks",
+    "scenes",
+    "render_plan",
+    "provenance"
+  ],
+  "properties": {
+    "schema_version": { "const": "2.0.0" },
+    "project_id": { "$ref": "#/$defs/stableId" },
+    "title": { "type": "string", "maxLength": 500 },
+    "source": { "$ref": "#/$defs/source" },
+    "duration_seconds": { "$ref": "#/$defs/nonNegativeSeconds" },
+    "timebase": { "$ref": "#/$defs/timebase" },
+    "tracks": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/track" },
+      "maxItems": 10000
+    },
+    "scenes": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/scene" },
+      "maxItems": 100000
+    },
+    "render_plan": { "$ref": "#/$defs/renderPlan" },
+    "provenance": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/provenance" },
+      "minItems": 1,
+      "maxItems": 100000
+    },
+    "extensions": { "$ref": "#/$defs/extensions" }
+  },
+  "$defs": {
+    "stableId": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9]*(?:[._:-][a-z0-9]+)*$",
+      "minLength": 1,
+      "maxLength": 160
+    },
+    "nonNegativeSeconds": {
+      "type": "number",
+      "minimum": 0
+    },
+    "confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "extensions": {
+      "type": "object",
+      "description": "Namespaced extension data. Keys use a reverse-DNS namespace followed by a colon and field name.",
+      "propertyNames": {
+        "pattern": "^[a-z][a-z0-9-]*(?:\\.[a-z][a-z0-9-]*)+:[a-z][a-z0-9._-]*$"
+      },
+      "additionalProperties": true
+    },
+    "interval": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["start", "end"],
+      "properties": {
+        "start": { "$ref": "#/$defs/nonNegativeSeconds" },
+        "end": { "$ref": "#/$defs/nonNegativeSeconds" }
+      }
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source_id", "sha256", "media_type"],
+      "properties": {
+        "source_id": { "$ref": "#/$defs/stableId" },
+        "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+        "media_type": { "type": "string", "pattern": "^[a-z0-9.+-]+/[a-z0-9.+-]+$" },
+        "uri": { "type": "string", "maxLength": 4096 },
+        "width": { "type": "integer", "minimum": 1 },
+        "height": { "type": "integer", "minimum": 1 },
+        "frame_rate": { "type": "number", "exclusiveMinimum": 0 },
+        "extensions": { "$ref": "#/$defs/extensions" }
+      }
+    },
+    "timebase": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["unit", "origin_seconds"],
+      "properties": {
+        "unit": { "const": "seconds" },
+        "origin_seconds": { "const": 0 },
+        "precision": { "type": "integer", "minimum": 0, "maximum": 9 }
+      }
+    },
+    "analysis": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["confidence", "evidence_ids"],
+      "properties": {
+        "confidence": { "$ref": "#/$defs/confidence" },
+        "evidence_ids": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/stableId" },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "model": { "type": "string", "maxLength": 300 },
+        "review_status": {
+          "enum": ["unreviewed", "accepted", "corrected", "rejected"]
+        }
+      }
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["evidence_id", "kind", "source_id", "interval"],
+      "properties": {
+        "evidence_id": { "$ref": "#/$defs/stableId" },
+        "kind": { "enum": ["frame", "frame_range", "audio_range", "transcript_span", "ocr_region", "human_annotation", "external_reference"] },
+        "source_id": { "$ref": "#/$defs/stableId" },
+        "interval": { "$ref": "#/$defs/interval" },
+        "region": { "$ref": "#/$defs/region" },
+        "quote": { "type": "string", "maxLength": 2000 },
+        "annotation": { "type": "string", "maxLength": 4000 },
+        "extensions": { "$ref": "#/$defs/extensions" }
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["provenance_id", "kind", "created_at", "agent", "evidence"],
+      "properties": {
+        "provenance_id": { "$ref": "#/$defs/stableId" },
+        "kind": { "enum": ["source", "human", "analysis", "generated", "imported", "migrated"] },
+        "created_at": { "type": "string", "format": "date-time" },
+        "agent": { "type": "string", "minLength": 1, "maxLength": 300 },
+        "tool_version": { "type": "string", "maxLength": 100 },
+        "source_refs": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/stableId" },
+          "uniqueItems": true
+        },
+        "license": { "type": "string", "maxLength": 300 },
+        "evidence": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/evidence" },
+          "maxItems": 100000
+        },
+        "extensions": { "$ref": "#/$defs/extensions" }
+      }
+    },
+    "track": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["track_id", "kind", "items"],
+      "properties": {
+        "track_id": { "$ref": "#/$defs/stableId" },
+        "kind": { "enum": ["visual", "dialogue", "music", "sfx", "captions", "data", "custom"] },
+        "label": { "type": "string", "maxLength": 300 },
+        "items": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/timelineItem" },
+          "maxItems": 100000
+        },
+        "extensions": { "$ref": "#/$defs/extensions" }
+      }
+    },
+    "timelineItem": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["item_id", "target_type", "target_id", "start", "end"],
+      "properties": {
+        "item_id": { "$ref": "#/$defs/stableId" },
+        "target_type": { "enum": ["scene", "action", "audio_event", "caption", "external_media", "custom"] },
+        "target_id": { "$ref": "#/$defs/stableId" },
+        "start": { "$ref": "#/$defs/nonNegativeSeconds" },
+        "end": { "$ref": "#/$defs/nonNegativeSeconds" },
+        "layer": { "type": "integer" },
+        "extensions": { "$ref": "#/$defs/extensions" }
+      }
+    },
+    "scene": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "scene_id", "start", "end", "entities", "relations", "actions",
+        "constraints", "camera", "audio_events", "render_requirements", "provenance_id"
+      ],
+      "properties": {
+        "scene_id": { "$ref": "#/$defs/stableId" },
+        "start": { "$ref": "#/$defs/nonNegativeSeconds" },
+        "end": { "$ref": "#/$defs/nonNegativeSeconds" },
+        "summary": { "type": "string", "maxLength": 4000 },
+        "entities": { "type": "array", "items": { "$ref": "#/$defs/entity" }, "maxItems": 10000 },
+        "relations": { "type": "array", "items": { "$ref": "#/$defs/relation" }, "maxItems": 100000 },
+        "actions": { "type": "array", "items": { "$ref": "#/$defs/action" }, "maxItems": 100000 },
+        "constraints": { "type": "array", "items": { "$ref": "#/$defs/constraint" }, "maxItems": 100000 },
+        "camera": { "$ref": "#/$defs/camera" },
+        "environment": { "$ref": "#/$defs/environment" },
+        "style": { "$ref": "#/$defs/style" },
+        "audio_events": { "type": "array", "items": { "$ref": "#/$defs/audioEvent" }, "maxItems": 100000 },
+        "render_requirements": { "$ref": "#/$defs/fidelityProfile" },
+        "analysis": { "$ref": "#/$defs/analysis" },
+        "provenance_id": { "$ref": "#/$defs/stableId" },
+        "extensions": { "$ref": "#/$defs/extensions" }
+      }
+    },
+    "entity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["entity_id", "kind", "components", "provenance_id"],
+      "properties": {
+        "entity_id": { "$ref": "#/$defs/stableId" },
+        "kind": { "type": "string", "pattern": "^[a-z][a-z0-9._-]*$", "maxLength": 100 },
+        "label": { "type": "string", "maxLength": 300 },
+        "role": { "type": "string", "maxLength": 100 },
+        "components": { "type": "array", "items": { "$ref": "#/$defs/component" }, "maxItems": 10000 },
+        "attributes": { "type": "object", "additionalProperties": true },
+        "analysis": { "$ref": "#/$defs/analysis" },
+        "provenance_id": { "$ref": "#/$defs/stableId" },
+        "extensions": { "$ref": "#/$defs/extensions" }
+      }
+    },
+    "component": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["component_id", "kind", "state"],
+      "properties": {
+        "component_id": { "$ref": "#/$defs/stableId" },
+        "kind": { "type": "string", "pattern": "^[a-z][a-z0-9._-]*$", "maxLength": 100 },
+        "parent_component_id": { "$ref": "#/$defs/stableId" },
+        "state": { "enum": ["visible", "hidden", "attached", "detached", "damaged"] },
+        "anchors": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/anchor" },
+          "maxItems": 1000
+        },
+        "attributes": { "type": "object", "additionalProperties": true },
+        "extensions": { "$ref": "#/$defs/extensions" }
+      }
+    },
+    "anchor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["anchor_id", "name"],
+      "properties": {
+        "anchor_id": { "$ref": "#/$defs/stableId" },
+        "name": { "type": "string", "pattern": "^[a-z][a-z0-9._-]*$", "maxLength": 100 },
+        "semantic": { "type": "string", "maxLength": 100 },
+        "extensions": { "$ref": "#/$defs/extensions" }
+      }
+    },
+    "relation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["relation_id", "type", "subject_id", "object_id", "start", "end", "provenance_id"],
+      "properties": {
+        "relation_id": { "$ref": "#/$defs/stableId" },
+        "type": { "type": "string", "pattern": "^[a-z][a-z0-9._-]*$", "maxLength": 100 },
+        "subject_id": { "$ref": "#/$defs/stableId" },
+        "object_id": { "$ref": "#/$defs/stableId" },
+        "start": { "$ref": "#/$defs/nonNegativeSeconds" },
+        "end": { "$ref": "#/$defs/nonNegativeSeconds" },
+        "attributes": { "type": "object", "additionalProperties": true },
+        "analysis": { "$ref": "#/$defs/analysis" },
+        "provenance_id": { "$ref": "#/$defs/stableId" },
+        "extensions": { "$ref": "#/$defs/extensions" }
+      }
+    },
+    "action": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["action_id", "type", "actor_ids", "target_ids", "start", "end", "provenance_id"],
+      "properties": {
+        "action_id": { "$ref": "#/$defs/stableId" },
+        "type": { "type": "string", "pattern": "^[a-z][a-z0-9._-]*$", "maxLength": 100 },
+        "actor_ids": { "type": "array", "items": { "$ref": "#/$defs/stableId" }, "minItems": 1, "uniqueItems": true },
+        "target_ids": { "type": "array", "items": { "$ref": "#/$defs/stableId" }, "uniqueItems": true },
+        "start": { "$ref": "#/$defs/nonNegativeSeconds" },
+        "end": { "$ref": "#/$defs/nonNegativeSeconds" },
+        "parameters": { "type": "object", "additionalProperties": true },
+        "analysis": { "$ref": "#/$defs/analysis" },
+        "provenance_id": { "$ref": "#/$defs/stableId" },
+        "extensions": { "$ref": "#/$defs/extensions" }
+      }
+    },
+    "constraint": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["constraint_id", "type", "subject_ids", "start", "end", "strength", "provenance_id"],
+      "properties": {
+        "constraint_id": { "$ref": "#/$defs/stableId" },
+        "type": { "type": "string", "pattern": "^[a-z][a-z0-9._-]*$", "maxLength": 100 },
+        "subject_ids": { "type": "array", "items": { "$ref": "#/$defs/stableId" }, "minItems": 1, "uniqueItems": true },
+        "start": { "$ref": "#/$defs/nonNegativeSeconds" },
+        "end": { "$ref": "#/$defs/nonNegativeSeconds" },
+        "strength": { "enum": ["hard", "soft"] },
+        "parameters": { "type": "object", "additionalProperties": true },
+        "analysis": { "$ref": "#/$defs/analysis" },
+        "provenance_id": { "$ref": "#/$defs/stableId" },
+        "extensions": { "$ref": "#/$defs/extensions" }
+      }
+    },
+    "camera": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["camera_id", "shots"],
+      "properties": {
+        "camera_id": { "$ref": "#/$defs/stableId" },
+        "shots": { "type": "array", "items": { "$ref": "#/$defs/cameraShot" }, "minItems": 1, "maxItems": 10000 },
+        "extensions": { "$ref": "#/$defs/extensions" }
+      }
+    },
+    "cameraShot": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["shot_id", "start", "end", "framing", "movement", "provenance_id"],
+      "properties": {
+        "shot_id": { "$ref": "#/$defs/stableId" },
+        "start": { "$ref": "#/$defs/nonNegativeSeconds" },
+        "end": { "$ref": "#/$defs/nonNegativeSeconds" },
+        "framing": { "enum": ["extreme_wide", "wide", "full", "medium", "close_up", "extreme_close_up", "over_shoulder", "point_of_view", "screen_capture", "custom"] },
+        "movement": { "enum": ["static", "pan", "tilt", "dolly", "truck", "pedestal", "zoom", "orbit", "handheld", "tracking", "custom"] },
+        "subject_ids": { "type": "array", "items": { "$ref": "#/$defs/stableId" }, "uniqueItems": true },
+        "parameters": { "type": "object", "additionalProperties": true },
+        "analysis": { "$ref": "#/$defs/analysis" },
+        "provenance_id": { "$ref": "#/$defs/stableId" },
+        "extensions": { "$ref": "#/$defs/extensions" }
+      }
+    },
+    "audioEvent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["audio_event_id", "kind", "start", "end", "provenance_id"],
+      "properties": {
+        "audio_event_id": { "$ref": "#/$defs/stableId" },
+        "kind": { "enum": ["dialogue", "music", "sfx", "ambience", "silence", "custom"] },
+        "start": { "$ref": "#/$defs/nonNegativeSeconds" },
+        "end": { "$ref": "#/$defs/nonNegativeSeconds" },
+        "speaker_id": { "$ref": "#/$defs/stableId" },
+        "text": { "type": "string", "maxLength": 20000 },
+        "language": { "type": "string", "pattern": "^[A-Za-z]{2,3}(?:-[A-Za-z0-9]{2,8})*$" },
+        "media_ref": { "$ref": "#/$defs/stableId" },
+        "gain_db": { "type": "number", "minimum": -120, "maximum": 24 },
+        "analysis": { "$ref": "#/$defs/analysis" },
+        "provenance_id": { "$ref": "#/$defs/stableId" },
+        "extensions": { "$ref": "#/$defs/extensions" }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "kind": { "const": "dialogue" } }, "required": ["kind"] },
+          "then": { "required": ["speaker_id", "text"] }
+        }
+      ]
+    },
+    "environment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["environment_id", "kind"],
+      "properties": {
+        "environment_id": { "$ref": "#/$defs/stableId" },
+        "kind": { "type": "string", "pattern": "^[a-z][a-z0-9._-]*$", "maxLength": 100 },
+        "attributes": { "type": "object", "additionalProperties": true },
+        "extensions": { "$ref": "#/$defs/extensions" }
+      }
+    },
+    "style": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["style_id", "tags"],
+      "properties": {
+        "style_id": { "$ref": "#/$defs/stableId" },
+        "tags": { "type": "array", "items": { "type": "string", "maxLength": 100 }, "uniqueItems": true },
+        "palette": { "type": "array", "items": { "type": "string", "pattern": "^#[0-9A-Fa-f]{6}(?:[0-9A-Fa-f]{2})?$" }, "uniqueItems": true },
+        "typography": { "type": "array", "items": { "type": "string", "maxLength": 200 }, "uniqueItems": true },
+        "attributes": { "type": "object", "additionalProperties": true },
+        "extensions": { "$ref": "#/$defs/extensions" }
+      }
+    },
+    "region": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["space", "x", "y", "width", "height"],
+      "properties": {
+        "space": { "enum": ["normalized_source", "normalized_output"] },
+        "x": { "type": "number", "minimum": 0, "maximum": 1 },
+        "y": { "type": "number", "minimum": 0, "maximum": 1 },
+        "width": { "type": "number", "exclusiveMinimum": 0, "maximum": 1 },
+        "height": { "type": "number", "exclusiveMinimum": 0, "maximum": 1 }
+      }
+    },
+    "fidelityProfile": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["required", "preferred", "optional"],
+      "properties": {
+        "required": { "type": "array", "items": { "$ref": "#/$defs/fidelityRequirement" }, "maxItems": 10000 },
+        "preferred": { "type": "array", "items": { "$ref": "#/$defs/fidelityRequirement" }, "maxItems": 10000 },
+        "optional": { "type": "array", "items": { "$ref": "#/$defs/fidelityRequirement" }, "maxItems": 10000 }
+      }
+    },
+    "fidelityRequirement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["requirement_id", "capability", "target_ids"],
+      "properties": {
+        "requirement_id": { "$ref": "#/$defs/stableId" },
+        "capability": { "type": "string", "pattern": "^[a-z][a-z0-9._-]*$", "maxLength": 160 },
+        "target_ids": { "type": "array", "items": { "$ref": "#/$defs/stableId" }, "uniqueItems": true },
+        "metric": { "type": "string", "maxLength": 100 },
+        "tolerance": { "type": "number", "minimum": 0 },
+        "description": { "type": "string", "maxLength": 2000 },
+        "extensions": { "$ref": "#/$defs/extensions" }
+      }
+    },
+    "renderPlan": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["render_plan_id", "status", "selections", "fallbacks"],
+      "properties": {
+        "render_plan_id": { "$ref": "#/$defs/stableId" },
+        "status": { "enum": ["draft", "routable", "needs-review", "approved", "failed"] },
+        "selections": { "type": "array", "items": { "$ref": "#/$defs/rendererSelection" }, "maxItems": 100000 },
+        "fallbacks": { "type": "array", "items": { "$ref": "#/$defs/fallback" }, "maxItems": 100000 },
+        "extensions": { "$ref": "#/$defs/extensions" }
+      }
+    },
+    "rendererSelection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["selection_id", "scene_id", "start", "end", "renderer_id", "renderer_version", "status", "satisfied_requirement_ids", "fallback_ids"],
+      "properties": {
+        "selection_id": { "$ref": "#/$defs/stableId" },
+        "scene_id": { "$ref": "#/$defs/stableId" },
+        "start": { "$ref": "#/$defs/nonNegativeSeconds" },
+        "end": { "$ref": "#/$defs/nonNegativeSeconds" },
+        "renderer_id": { "$ref": "#/$defs/stableId" },
+        "renderer_version": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(?:[-+][0-9A-Za-z.-]+)?$" },
+        "status": { "enum": ["selected", "needs-review", "rejected"] },
+        "satisfied_requirement_ids": { "type": "array", "items": { "$ref": "#/$defs/stableId" }, "uniqueItems": true },
+        "fallback_ids": { "type": "array", "items": { "$ref": "#/$defs/stableId" }, "uniqueItems": true },
+        "explanation": { "type": "string", "maxLength": 4000 },
+        "extensions": { "$ref": "#/$defs/extensions" }
+      }
+    },
+    "fallback": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["fallback_id", "scene_id", "type", "reason_code", "disclosure", "source_media_usage", "approval_required"],
+      "properties": {
+        "fallback_id": { "$ref": "#/$defs/stableId" },
+        "scene_id": { "$ref": "#/$defs/stableId" },
+        "type": { "enum": ["alternate_renderer", "simplify", "freeze_frame", "source_composite", "generated_media", "needs-review"] },
+        "reason_code": { "type": "string", "pattern": "^[A-Z][A-Z0-9_]*$", "maxLength": 100 },
+        "disclosure": { "type": "string", "minLength": 1, "maxLength": 4000 },
+        "source_media_usage": { "enum": ["none", "visual", "audio", "visual_and_audio"] },
+        "approval_required": { "type": "boolean" },
+        "affected_requirement_ids": { "type": "array", "items": { "$ref": "#/$defs/stableId" }, "uniqueItems": true },
+        "extensions": { "$ref": "#/$defs/extensions" }
+      }
+    }
+  }
+}

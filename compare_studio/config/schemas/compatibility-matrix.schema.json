@@ -1,0 +1,29 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "compatibility-matrix.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "minimum_score", "engines", "niches"],
+  "properties": {
+    "schema_version": { "type": "integer", "const": 1 },
+    "minimum_score": { "type": "number", "minimum": 0, "maximum": 1 },
+    "engines": {
+      "type": "array", "minItems": 10, "maxItems": 16,
+      "items": {
+        "type": "object", "additionalProperties": false, "required": ["id", "name"],
+        "properties": { "id": { "type": "string", "minLength": 1 }, "name": { "type": "string", "minLength": 1 } }
+      }
+    },
+    "niches": {
+      "type": "array", "minItems": 18, "maxItems": 18,
+      "items": {
+        "type": "object", "additionalProperties": false, "required": ["id", "name", "scores"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
+          "name": { "type": "string", "minLength": 1 },
+          "scores": { "type": "object", "minProperties": 10, "maxProperties": 16, "additionalProperties": { "type": "number", "minimum": 0, "maximum": 1 } }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,1469 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Remake 2D: Cây Lạc & Kỹ Thuật Đạp Nhánh Tăng Sản Lượng (4.mp4)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #070913;
+      --panel: rgba(15, 23, 42, 0.88);
+      --border: rgba(255, 255, 255, 0.1);
+      --accent-green: #22c55e;
+      --accent-peanut: #f59e0b;
+      --accent-purple: #c084fc;
+      --accent-cyan: #38bdf8;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+      background: var(--bg);
+      background-image: 
+        radial-gradient(circle at 15% 15%, rgba(245, 158, 11, 0.15) 0%, transparent 45%),
+        radial-gradient(circle at 85% 85%, rgba(34, 197, 94, 0.15) 0%, transparent 45%),
+        radial-gradient(circle at 50% 50%, rgba(56, 189, 248, 0.08) 0%, transparent 60%);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px 16px 60px;
+    }
+
+    /* Top Nav */
+    .top-nav {
+      width: 100%;
+      max-width: 1240px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+      padding: 14px 24px;
+      background: var(--panel);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+    }
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .badge-tag {
+      padding: 5px 12px;
+      background: rgba(245, 158, 11, 0.18);
+      border: 1px solid rgba(245, 158, 11, 0.4);
+      color: #fbbf24;
+      font-size: 11px;
+      font-weight: 800;
+      border-radius: 20px;
+      letter-spacing: 0.5px;
+    }
+    .nav-title { font-size: 16px; font-weight: 800; color: #fff; }
+    .nav-links { display: flex; gap: 8px; }
+    .btn-nav {
+      padding: 8px 14px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--border);
+      color: #cbd5e1;
+      text-decoration: none;
+      font-size: 12.5px;
+      font-weight: 700;
+      border-radius: 10px;
+      transition: all 0.2s;
+    }
+    .btn-nav:hover { background: rgba(255, 255, 255, 0.12); color: #fff; }
+
+    /* Layout Grid */
+    .main-grid {
+      display: grid;
+      grid-template-columns: 460px 1fr;
+      gap: 32px;
+      width: 100%;
+      max-width: 1240px;
+      align-items: start;
+    }
+    @media (max-width: 950px) {
+      .main-grid { grid-template-columns: 1fr; justify-items: center; }
+    }
+
+    /* iPhone 16 Pro Titanium Bezel */
+    .phone-wrapper {
+      position: relative;
+      width: 440px;
+      background: linear-gradient(145deg, #2b303c, #141824);
+      padding: 12px;
+      border-radius: 54px;
+      box-shadow: 
+        0 25px 60px -15px rgba(0, 0, 0, 0.85),
+        0 0 0 1px rgba(255, 255, 255, 0.15) inset,
+        0 0 40px rgba(245, 158, 11, 0.15);
+    }
+    .phone-screen {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 9/16;
+      background: #000;
+      border-radius: 44px;
+      overflow: hidden;
+      border: 2px solid rgba(0, 0, 0, 0.8);
+    }
+    .dynamic-island {
+      position: absolute;
+      top: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100px;
+      height: 25px;
+      background: #000;
+      border-radius: 20px;
+      z-index: 50;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding-right: 12px;
+    }
+    .island-lens {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: #111e38;
+      border: 1px solid #1e293b;
+    }
+
+    /* Native Canvas */
+    #anim-canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    /* TikTok Overlay */
+    .tiktok-ui {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 46px 16px 20px;
+      z-index: 10;
+    }
+    .top-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .badge-live {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(15, 23, 42, 0.75);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 11.5px;
+      font-weight: 800;
+      color: #fbbf24;
+    }
+    .dot-live {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #22c55e;
+      box-shadow: 0 0 8px #22c55e;
+      animation: pulse 1.5s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.4); opacity: 0.6; }
+    }
+
+    /* Subtitle Karaoke Pill */
+    .subtitle-pill-wrapper {
+      margin-bottom: 12px;
+      display: flex;
+      justify-content: center;
+    }
+    .subtitle-pill {
+      background: rgba(15, 23, 42, 0.92);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      padding: 10px 16px;
+      border-radius: 18px;
+      max-width: 90%;
+      text-align: center;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+      transition: all 0.2s ease;
+    }
+    .sub-speaker {
+      font-size: 10.5px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      margin-bottom: 3px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+    .speaker-dot { color: #4ade80; }
+    .speaker-canh { color: #c084fc; }
+    .speaker-nongdan { color: #fbbf24; }
+
+    .sub-content {
+      font-size: 14px;
+      font-weight: 800;
+      color: #fff;
+      line-height: 1.35;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    }
+
+    /* Player Controls */
+    .player-ctrls {
+      pointer-events: auto;
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 20px;
+      padding: 10px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .time-bar-bg {
+      width: 100%;
+      height: 5px;
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 10px;
+      cursor: pointer;
+      position: relative;
+    }
+    .time-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #f59e0b, #22c55e);
+      border-radius: 10px;
+      width: 0%;
+      transition: width 0.05s linear;
+    }
+    .ctrl-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .btn-play-toggle {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      border: none;
+      background: #f59e0b;
+      color: #000;
+      font-size: 16px;
+      font-weight: 900;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.15s;
+    }
+    .btn-play-toggle:hover { transform: scale(1.08); background: #fbbf24; }
+    .time-text { font-size: 11.5px; font-family: monospace; color: #94a3b8; font-weight: 700; }
+    .btn-action-ctrl {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #fff;
+      padding: 5px 10px;
+      border-radius: 10px;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      backdrop-filter: blur(10px);
+      transition: all 0.2s;
+    }
+    .btn-action-ctrl:hover { background: rgba(255, 255, 255, 0.2); }
+
+    /* Side Panel */
+    .side-panel {
+      background: var(--panel);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 26px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 16px;
+    }
+    .panel-h2 {
+      font-size: 20px;
+      font-weight: 900;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+    .panel-sub {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* Cast Cards */
+    .cast-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 10px;
+    }
+    .cast-card {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 6px;
+    }
+    .cast-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+    }
+    .cast-name { font-size: 12.5px; font-weight: 800; color: #fff; }
+    .cast-role { font-size: 10.5px; color: var(--text-muted); line-height: 1.3; }
+    .cast-voice { font-size: 10px; color: #f59e0b; font-family: monospace; }
+
+    /* Timeline Cues */
+    .story-timeline {
+      max-height: 380px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding-right: 6px;
+    }
+    .story-timeline::-webkit-scrollbar { width: 6px; }
+    .story-timeline::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 4px; }
+    .cue-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 10px 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .cue-card:hover {
+      background: rgba(255, 255, 255, 0.07);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+    .cue-card.cue-active {
+      border-color: #f59e0b;
+      background: rgba(245, 158, 11, 0.15);
+      box-shadow: 0 0 16px rgba(245, 158, 11, 0.25);
+    }
+    .cue-icon { font-size: 18px; }
+    .cue-info { flex: 1; }
+    .cue-top { display: flex; justify-content: space-between; margin-bottom: 2px; }
+    .cue-spk { font-size: 11px; font-weight: 800; }
+    .cue-sec { font-size: 10.5px; color: #94a3b8; font-family: monospace; }
+    .cue-txt { font-size: 12.5px; font-weight: 600; color: #f1f5f9; line-height: 1.35; }
+
+    /* Export Button */
+    .btn-export-box {
+      border-top: 1px solid var(--border);
+      padding-top: 16px;
+    }
+    .btn-export-full {
+      width: 100%;
+      padding: 14px 20px;
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+      border: none;
+      border-radius: 14px;
+      color: #000;
+      font-size: 14px;
+      font-weight: 900;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      cursor: pointer;
+      box-shadow: 0 6px 20px rgba(245, 158, 11, 0.35);
+      transition: all 0.2s;
+    }
+    .btn-export-full:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(245, 158, 11, 0.5); }
+  </style>
+</head>
+<body>
+
+  <!-- Top Nav -->
+  <div class="top-nav">
+    <div class="brand-group">
+      <span class="badge-tag">🥜 2D VECTOR CARTOON ART</span>
+      <span class="nav-title">Hoạt Hình 2D: Cây Lạc & Bí Kíp Đạp Nhánh (4.mp4)</span>
+    </div>
+    <div class="nav-links">
+      <a href="/static/remake_3_demo.html" class="btn-nav">🍎 Bản Quả Táo 3.mp4</a>
+      <a href="/static/remake_caterpillar_demo.html" class="btn-nav">🐛 Bản Bắt Sâu 2.mp4</a>
+      <a href="/static/remake_tomato_demo.html" class="btn-nav">🍅 Bản Cà Chua 5.mp4</a>
+      <a href="/static/remake_2d_demo.html" class="btn-nav">🍉 Bản Dưa Hấu 1.mp4</a>
+      <a href="/static/remake_hub.html" class="btn-nav">🎛️ Remake Hub</a>
+    </div>
+  </div>
+
+  <!-- Main Grid -->
+  <div class="main-grid">
+
+    <!-- Left: iPhone 16 Bezel Screen -->
+    <div class="phone-wrapper">
+      <div class="phone-screen">
+        <div class="dynamic-island"><div class="island-lens"></div></div>
+
+        <!-- 60 FPS Canvas -->
+        <canvas id="anim-canvas" width="720" height="1280"></canvas>
+
+        <!-- TikTok Live HUD -->
+        <div class="tiktok-ui">
+          <div class="top-meta">
+            <div class="badge-live">
+              <span class="dot-live"></span>
+              <span>2D CANAVAS RIG · 60 FPS</span>
+            </div>
+          </div>
+
+          <div class="bottom-group">
+            <!-- Dynamic Karaoke Subtitle -->
+            <div class="subtitle-pill-wrapper">
+              <div class="subtitle-pill" id="sub-pill">
+                <div class="sub-speaker" id="sub-spk">
+                  <span>🥜</span> ĐỌT NGỌN LẠC
+                </div>
+                <div class="sub-content" id="sub-txt">
+                  "Alo!"
+                </div>
+              </div>
+            </div>
+
+            <!-- Player Controls -->
+            <div class="player-ctrls">
+              <div class="time-bar-bg" onclick="seekTimeline(event)">
+                <div class="time-bar-fill" id="time-bar-fill"></div>
+              </div>
+              <div class="ctrl-row">
+                <button type="button" class="btn-play-toggle" id="btn-play" onclick="togglePlay()">▶</button>
+                <span class="time-text" id="time-display">00:00 / 00:44</span>
+                <button type="button" class="btn-action-ctrl" onclick="toggleMute()">🔊 Bật/Tắt</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Right: Side Info Panel -->
+    <div class="side-panel">
+      <div class="panel-header">
+        <div>
+          <h2 class="panel-h2">🌾 Câu Chuyện Cây Lạc & Kỹ Thuật Đạp Cành</h2>
+          <p class="panel-sub">
+            Chuyển thể kịch bản hài Châu Tinh Trì ("Không đi làm anh nuôi tôi à?!") kết hợp kỹ thuật nông nghiệp: Ép cành sát đất giúp kim hoa cắm sâu vào lòng đất, sản lượng củ lạc tăng gấp đôi!
+          </p>
+        </div>
+      </div>
+
+      <!-- Cast Details -->
+      <div class="cast-grid">
+        <div class="cast-card">
+          <div class="cast-avatar">🥜</div>
+          <div class="cast-name">Đọt Ngọn Lạc</div>
+          <div class="cast-role">Mặt ngơ ngác, tóc đen anime, lười đi làm</div>
+          <div class="cast-voice">CapCut · BV421</div>
+        </div>
+        <div class="cast-card">
+          <div class="cast-avatar">🌸</div>
+          <div class="cast-name">Cành Gốc & Hoa</div>
+          <div class="cast-role">Mí mắt tím, môi son, khóc tuôn nước mắt</div>
+          <div class="cast-voice">Edge · HoaiMy</div>
+        </div>
+        <div class="cast-card">
+          <div class="cast-avatar">👨‍🌾</div>
+          <div class="cast-name">Bác Nông Dân</div>
+          <div class="cast-role">Giẫm cành sát đất, thu hoạch củ lạc bội thu</div>
+          <div class="cast-voice">Edge · NamMinh</div>
+        </div>
+      </div>
+
+      <!-- Timeline Cues -->
+      <div class="story-timeline" id="timeline-list">
+        <!-- Rendered via JS -->
+      </div>
+
+      <!-- Export Action -->
+      <div class="btn-export-box">
+        <button type="button" class="btn-export-full" id="btn-export" onclick="exportVideo()">
+          <span>⚡</span> XUẤT VIDEO MP4 HOẠT HÌNH 2D CÂY LẠC (60 FPS)
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Audio Master -->
+  <audio id="master-audio" src="/static/remake_peanut_test_master.mp3" preload="auto"></audio>
+
+  <script>
+    const CUES = [
+      { "start": 1.55, "end": 2.55, "speaker": "dot_lac", "name": "Đọt Ngọn Lạc", "text": "Alo!", "engine": "capcut", "voice": "BV421_vivn_streaming", "avatar": "🥜" },
+      { "start": 2.55, "end": 4.05, "speaker": "canh_goc", "name": "Cành Gốc & Hoa", "text": "Gì đó?", "engine": "edge", "voice": "vi-VN-HoaiMyNeural", "avatar": "🌸" },
+      { "start": 4.05, "end": 5.55, "speaker": "dot_lac", "name": "Đọt Ngọn Lạc", "text": "Ăn ít đất thôi!", "engine": "capcut", "voice": "BV421_vivn_streaming", "avatar": "🥜" },
+      { "start": 5.55, "end": 6.55, "speaker": "canh_goc", "name": "Cành Gốc & Hoa", "text": "Đất cát gì chứ?", "engine": "edge", "voice": "vi-VN-HoaiMyNeural", "avatar": "🌸" },
+      { "start": 6.55, "end": 7.55, "speaker": "dot_lac", "name": "Đọt Ngọn Lạc", "text": "Rồi sao nữa?", "engine": "capcut", "voice": "BV421_vivn_streaming", "avatar": "🥜" },
+      { "start": 7.55, "end": 9.55, "speaker": "canh_goc", "name": "Cành Gốc & Hoa", "text": "Đi làm để lớn thành củ lạc chứ!", "engine": "edge", "voice": "vi-VN-HoaiMyNeural", "avatar": "🌸" },
+      { "start": 9.55, "end": 11.55, "speaker": "dot_lac", "name": "Đọt Ngọn Lạc", "text": "Không đi làm có được không?", "engine": "capcut", "voice": "BV421_vivn_streaming", "avatar": "🥜" },
+      { "start": 11.55, "end": 13.55, "speaker": "canh_goc", "name": "Cành Gốc & Hoa", "text": "Không đi làm anh nuôi tôi à?!", "engine": "edge", "voice": "vi-VN-HoaiMyNeural", "avatar": "🌸" },
+      { "start": 14.55, "end": 16.55, "speaker": "dot_lac", "name": "Đọt Ngọn Lạc", "text": "Alo, lại gì nữa?", "engine": "capcut", "voice": "BV421_vivn_streaming", "avatar": "🥜" },
+      { "start": 16.55, "end": 17.55, "speaker": "canh_goc", "name": "Cành Gốc & Hoa", "text": "Tôi nuôi bà chứ ai!", "engine": "edge", "voice": "vi-VN-HoaiMyNeural", "avatar": "🌸" },
+      { "start": 20.57, "end": 22.57, "speaker": "nong_dan", "name": "Bác Nông Dân", "text": "Hai đứa bay không đi làm thì ai nuôi tao hả?!", "engine": "edge", "voice": "vi-VN-NamMinhNeural", "avatar": "👨‍🌾" },
+      { "start": 22.57, "end": 24.57, "speaker": "canh_goc", "name": "Cành Gốc & Hoa", "text": "Đi làm thì đi làm chứ!", "engine": "edge", "voice": "vi-VN-HoaiMyNeural", "avatar": "🌸" },
+      { "start": 24.57, "end": 26.57, "speaker": "canh_goc", "name": "Cành Gốc & Hoa", "text": "Ủa sao tự nhiên giẫm đạp tui vậy?!", "engine": "edge", "voice": "vi-VN-HoaiMyNeural", "avatar": "🌸" },
+      { "start": 26.57, "end": 28.57, "speaker": "nong_dan", "name": "Bác Nông Dân", "text": "Ta đang giúp ngươi đấy!", "engine": "edge", "voice": "vi-VN-NamMinhNeural", "avatar": "👨‍🌾" },
+      { "start": 28.57, "end": 30.57, "speaker": "nong_dan", "name": "Bác Nông Dân", "text": "Ép cành nhánh sát mặt đất mà lớn...", "engine": "edge", "voice": "vi-VN-NamMinhNeural", "avatar": "👨‍🌾" },
+      { "start": 30.57, "end": 32.57, "speaker": "nong_dan", "name": "Bác Nông Dân", "text": "...thì mới đâm ra thật nhiều vòi hoa...", "engine": "edge", "voice": "vi-VN-NamMinhNeural", "avatar": "👨‍🌾" },
+      { "start": 32.57, "end": 34.57, "speaker": "nong_dan", "name": "Bác Nông Dân", "text": "...cắm thẳng sâu vào trong lòng đất...", "engine": "edge", "voice": "vi-VN-NamMinhNeural", "avatar": "👨‍🌾" },
+      { "start": 34.57, "end": 36.57, "speaker": "nong_dan", "name": "Bác Nông Dân", "text": "...làm cho sản lượng củ lạc tăng gấp đôi!", "engine": "edge", "voice": "vi-VN-NamMinhNeural", "avatar": "👨‍🌾" },
+      { "start": 37.00, "end": 43.80, "speaker": "nong_dan", "name": "Bác Nông Dân", "text": "Quả nhiên năng suất đỉnh chóp luôn haha!", "engine": "edge", "voice": "vi-VN-NamMinhNeural", "avatar": "👨‍🌾" }
+    ];
+
+    const audio = document.getElementById('master-audio');
+    const canvas = document.getElementById('anim-canvas');
+    const ctx = canvas.getContext('2d');
+    const subPill = document.getElementById('sub-pill');
+    const subSpk = document.getElementById('sub-spk');
+    const subTxt = document.getElementById('sub-txt');
+    const timeBarFill = document.getElementById('time-bar-fill');
+    const timeDisplay = document.getElementById('time-display');
+    const btnPlay = document.getElementById('btn-play');
+    const timelineList = document.getElementById('timeline-list');
+
+    let isPlaying = false;
+    const totalDuration = 44.118;
+
+    // Render Timeline Cues
+    function initTimeline() {
+      timelineList.innerHTML = '';
+      CUES.forEach((c, idx) => {
+        const item = document.createElement('div');
+        item.className = 'cue-card';
+        item.id = `cue-item-${idx}`;
+        item.onclick = () => {
+          audio.currentTime = c.start;
+          if (!isPlaying) togglePlay();
+        };
+        const spkColor = c.speaker === 'dot_lac' ? '#4ade80' : (c.speaker === 'canh_goc' ? '#c084fc' : '#fbbf24');
+        item.innerHTML = `
+          <div class="cue-icon">${c.avatar}</div>
+          <div class="cue-info">
+            <div class="cue-top">
+              <span class="cue-spk" style="color: ${spkColor}">${c.name}</span>
+              <span class="cue-sec">${formatTime(c.start)} - ${formatTime(c.end)}</span>
+            </div>
+            <div class="cue-txt">${c.text}</div>
+          </div>
+        `;
+        timelineList.appendChild(item);
+      });
+    }
+
+    function formatTime(sec) {
+      const m = Math.floor(sec / 60);
+      const s = Math.floor(sec % 60);
+      return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+    }
+
+    function togglePlay() {
+      if (audio.paused) {
+        audio.play().then(() => {
+          isPlaying = true;
+          btnPlay.textContent = '⏸';
+        }).catch(err => console.log('Autoplay blocked:', err));
+      } else {
+        audio.pause();
+        isPlaying = false;
+        btnPlay.textContent = '▶';
+      }
+    }
+
+    function toggleMute() {
+      audio.muted = !audio.muted;
+    }
+
+    function seekTimeline(e) {
+      const rect = e.currentTarget.getBoundingClientRect();
+      const pct = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+      audio.currentTime = pct * totalDuration;
+    }
+
+    // Audio update listener
+    audio.addEventListener('timeupdate', () => {
+      const cur = audio.currentTime;
+      timeBarFill.style.width = (cur / totalDuration * 100) + '%';
+      timeDisplay.textContent = `${formatTime(cur)} / ${formatTime(totalDuration)}`;
+
+      // Find active cue
+      const activeCue = CUES.find(c => cur >= c.start && cur <= c.end);
+      if (activeCue) {
+        subSpk.innerHTML = `<span>${activeCue.avatar}</span> ${activeCue.name}`;
+        subSpk.className = 'sub-speaker ' + (activeCue.speaker === 'dot_lac' ? 'speaker-dot' : (activeCue.speaker === 'canh_goc' ? 'speaker-canh' : 'speaker-nongdan'));
+        subTxt.textContent = `"${activeCue.text}"`;
+      } else {
+        subSpk.innerHTML = '<span>🌾</span> TOKMATRIX KHOA HỌC NÔNG NGHIỆP';
+        subSpk.className = 'sub-speaker';
+        subTxt.textContent = '🥜 Kỹ Thuật Trồng Lạc Cho Năng Suất Gấp Đôi';
+      }
+
+      // Highlight timeline card
+      CUES.forEach((c, idx) => {
+        const el = document.getElementById(`cue-item-${idx}`);
+        if (el) {
+          if (cur >= c.start && cur <= c.end) el.classList.add('cue-active');
+          else el.classList.remove('cue-active');
+        }
+      });
+    });
+
+    audio.addEventListener('ended', () => {
+      isPlaying = false;
+      btnPlay.textContent = '▶';
+    });
+
+    // =========================================================================
+    // 2D NATIVE CANVAS ART ENGINE FOR PEANUT PLANT (60 FPS)
+    // =========================================================================
+
+    // Floating particles / sparkles
+    const sparkles = Array.from({ length: 30 }, () => ({
+      x: Math.random() * 720,
+      y: Math.random() * 1280,
+      size: 3 + Math.random() * 5,
+      speed: 0.8 + Math.random() * 1.5,
+      alpha: 0.2 + Math.random() * 0.8,
+      rot: Math.random() * Math.PI
+    }));
+
+    function drawPeanutLeaf(x, y, scale, rot) {
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.rotate(rot);
+      ctx.scale(scale, scale);
+
+      // 4-foliolate peanut leaf (lá chét 4 lá hình bầu dục)
+      const leaflets = [
+        { dx: -24, dy: -28, r: -0.4, w: 22, h: 32 },
+        { dx: 24, dy: -28, r: 0.4, w: 22, h: 32 },
+        { dx: -18, dy: -60, r: -0.15, w: 20, h: 30 },
+        { dx: 18, dy: -60, r: 0.15, w: 20, h: 30 }
+      ];
+
+      // Petiole (cuống lá)
+      ctx.beginPath();
+      ctx.moveTo(0, 0);
+      ctx.lineTo(0, -45);
+      ctx.lineWidth = 4;
+      ctx.strokeStyle = '#15803d';
+      ctx.stroke();
+
+      leaflets.forEach(l => {
+        ctx.save();
+        ctx.translate(l.dx, l.dy);
+        ctx.rotate(l.r);
+
+        // Leaf body
+        ctx.beginPath();
+        ctx.ellipse(0, 0, l.w, l.h, 0, 0, Math.PI * 2);
+        const lg = ctx.createLinearGradient(-l.w, 0, l.w, 0);
+        lg.addColorStop(0, '#4ade80');
+        lg.addColorStop(0.5, '#22c55e');
+        lg.addColorStop(1, '#15803d');
+        ctx.fillStyle = lg;
+        ctx.fill();
+        ctx.strokeStyle = '#166534';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        // Central vein
+        ctx.beginPath();
+        ctx.moveTo(0, l.h * 0.8);
+        ctx.lineTo(0, -l.h * 0.8);
+        ctx.strokeStyle = '#86efac';
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+
+        ctx.restore();
+      });
+
+      ctx.restore();
+    }
+
+    // Peanut pod (củ lạc / đậu phộng 2 ngấn với gân vỏ)
+    function drawPeanutPod(x, y, scale, rot) {
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.rotate(rot);
+      ctx.scale(scale, scale);
+
+      // Shell body
+      ctx.beginPath();
+      ctx.moveTo(0, -32);
+      ctx.bezierCurveTo(24, -30, 26, -10, 14, 0);
+      ctx.bezierCurveTo(28, 12, 22, 36, 0, 36);
+      ctx.bezierCurveTo(-22, 36, -28, 12, -14, 0);
+      ctx.bezierCurveTo(-26, -10, -24, -30, 0, -32);
+      ctx.closePath();
+
+      const pg = ctx.createLinearGradient(-25, 0, 25, 0);
+      pg.addColorStop(0, '#fef08a');
+      pg.addColorStop(0.4, '#fde047');
+      pg.addColorStop(0.8, '#d97706');
+      pg.addColorStop(1, '#92400e');
+      ctx.fillStyle = pg;
+      ctx.fill();
+
+      ctx.strokeStyle = '#78350f';
+      ctx.lineWidth = 3;
+      ctx.stroke();
+
+      // Textured reticulated veins (gân lưới vỏ đậu phộng)
+      ctx.strokeStyle = 'rgba(120, 53, 15, 0.4)';
+      ctx.lineWidth = 1.8;
+      for (let i = -24; i <= 24; i += 8) {
+        ctx.beginPath();
+        ctx.moveTo(-12, i);
+        ctx.quadraticCurveTo(0, i + 3, 12, i);
+        ctx.stroke();
+      }
+      ctx.beginPath();
+      ctx.moveTo(0, -28);
+      ctx.lineTo(0, 30);
+      ctx.stroke();
+
+      ctx.restore();
+    }
+
+    // Top Character: Đọt Ngọn Lạc (Nhân vật A - CapCut)
+    function drawTopFace(x, y, isTalking, mood, t) {
+      ctx.save();
+      ctx.translate(x, y);
+
+      // Black anime hair tufts on top
+      ctx.fillStyle = '#0f172a';
+      ctx.beginPath();
+      ctx.moveTo(-50, -35);
+      ctx.quadraticCurveTo(-35, -70, -10, -42);
+      ctx.quadraticCurveTo(10, -75, 28, -45);
+      ctx.quadraticCurveTo(45, -68, 56, -35);
+      ctx.quadraticCurveTo(25, -48, 0, -38);
+      ctx.quadraticCurveTo(-25, -50, -50, -35);
+      ctx.fill();
+
+      // Big expressive eyebrows
+      ctx.strokeStyle = '#0f172a';
+      ctx.lineWidth = 7;
+      ctx.lineCap = 'round';
+      ctx.beginPath();
+      if (mood === 'shock') {
+        ctx.moveTo(-45, -28); ctx.lineTo(-12, -18);
+        ctx.moveTo(12, -18); ctx.lineTo(45, -28);
+      } else {
+        ctx.moveTo(-45, -18); ctx.lineTo(-12, -22);
+        ctx.moveTo(12, -22); ctx.lineTo(45, -18);
+      }
+      ctx.stroke();
+
+      // Big Round Googly Eyes
+      const blink = Math.abs(Math.sin(t * 1.5)) > 0.98;
+      // Eye left
+      ctx.beginPath();
+      ctx.ellipse(-24, 6, 28, 36, 0, 0, Math.PI * 2);
+      ctx.fillStyle = '#fff'; ctx.fill();
+      ctx.strokeStyle = '#0f172a'; ctx.lineWidth = 3.5; ctx.stroke();
+
+      // Eye right
+      ctx.beginPath();
+      ctx.ellipse(24, 6, 28, 36, 0, 0, Math.PI * 2);
+      ctx.fillStyle = '#fff'; ctx.fill();
+      ctx.strokeStyle = '#0f172a'; ctx.lineWidth = 3.5; ctx.stroke();
+
+      if (blink) {
+        ctx.strokeStyle = '#0f172a'; ctx.lineWidth = 5;
+        ctx.beginPath(); ctx.moveTo(-46, 6); ctx.lineTo(-2, 6); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(2, 6); ctx.lineTo(46, 6); ctx.stroke();
+      } else {
+        // Pupils looking around
+        const lookX = Math.sin(t * 2) * 4;
+        const lookY = Math.cos(t * 1.5) * 3;
+        ctx.fillStyle = '#0f172a';
+        ctx.beginPath(); ctx.arc(-22 + lookX, 8 + lookY, 10, 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath(); ctx.arc(26 + lookX, 8 + lookY, 10, 0, Math.PI * 2); ctx.fill();
+        // Highlights
+        ctx.fillStyle = '#fff';
+        ctx.beginPath(); ctx.arc(-25 + lookX, 5 + lookY, 4, 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath(); ctx.arc(23 + lookX, 5 + lookY, 4, 0, Math.PI * 2); ctx.fill();
+      }
+
+      // Rosy cheeks
+      ctx.fillStyle = 'rgba(244, 63, 94, 0.4)';
+      ctx.beginPath(); ctx.ellipse(-40, 32, 10, 6, 0, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath(); ctx.ellipse(40, 32, 10, 6, 0, 0, Math.PI * 2); ctx.fill();
+
+      // Nose
+      ctx.fillStyle = '#ef4444';
+      ctx.beginPath(); ctx.arc(0, 24, 4.5, 0, Math.PI * 2); ctx.fill();
+
+      // Animated mouth (talking lipsync)
+      ctx.strokeStyle = '#991b1b';
+      ctx.lineWidth = 4;
+      ctx.beginPath();
+      if (isTalking) {
+        const mouthOpen = 8 + Math.abs(Math.sin(t * 15)) * 14;
+        ctx.ellipse(0, 48, 14, mouthOpen, 0, 0, Math.PI * 2);
+        ctx.fillStyle = '#b91c1c'; ctx.fill();
+        ctx.stroke();
+        // Tongue
+        ctx.fillStyle = '#fda4af';
+        ctx.beginPath(); ctx.arc(0, 48 + mouthOpen * 0.4, 7, 0, Math.PI); ctx.fill();
+      } else {
+        ctx.arc(0, 42, 14, 0.1 * Math.PI, 0.9 * Math.PI);
+        ctx.stroke();
+      }
+
+      // White cartoon hands gesturing!
+      const handWaveL = Math.sin(t * 6) * 15;
+      const handWaveR = Math.cos(t * 6) * 15;
+      // Left Hand
+      ctx.save();
+      ctx.translate(-75, 45 + handWaveL);
+      ctx.beginPath(); ctx.arc(0, 0, 14, 0, Math.PI * 2);
+      ctx.fillStyle = '#fff'; ctx.fill();
+      ctx.strokeStyle = '#0f172a'; ctx.lineWidth = 3; ctx.stroke();
+      // Fingers
+      ctx.beginPath(); ctx.arc(-10, -5, 6, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+      ctx.restore();
+
+      // Right Hand
+      ctx.save();
+      ctx.translate(75, 45 + handWaveR);
+      ctx.beginPath(); ctx.arc(0, 0, 14, 0, Math.PI * 2);
+      ctx.fillStyle = '#fff'; ctx.fill();
+      ctx.strokeStyle = '#0f172a'; ctx.lineWidth = 3; ctx.stroke();
+      // Fingers
+      ctx.beginPath(); ctx.arc(10, -5, 6, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+      ctx.restore();
+
+      ctx.restore();
+    }
+
+    // Bottom Character: Cành Gốc & Hoa (Nhân vật B - Edge-TTS)
+    function drawBottomFace(x, y, isTalking, isCrying, t) {
+      ctx.save();
+      ctx.translate(x, y);
+
+      // Purple styled eyelids with eyelashes
+      ctx.fillStyle = '#c084fc';
+      ctx.beginPath();
+      ctx.moveTo(-36, -14); ctx.quadraticCurveTo(-18, -32, 0, -14);
+      ctx.quadraticCurveTo(18, -32, 36, -14);
+      ctx.lineTo(36, -6); ctx.lineTo(-36, -6);
+      ctx.closePath();
+      ctx.fill();
+
+      // Eyeballs
+      ctx.beginPath(); ctx.ellipse(-18, 0, 20, 24, 0, 0, Math.PI * 2);
+      ctx.fillStyle = '#fff'; ctx.fill();
+      ctx.strokeStyle = '#4a044e'; ctx.lineWidth = 3; ctx.stroke();
+
+      ctx.beginPath(); ctx.ellipse(18, 0, 20, 24, 0, 0, Math.PI * 2);
+      ctx.fillStyle = '#fff'; ctx.fill();
+      ctx.strokeStyle = '#4a044e'; ctx.lineWidth = 3; ctx.stroke();
+
+      // Pupils with purple eyeshadow
+      ctx.fillStyle = '#7e22ce';
+      ctx.beginPath(); ctx.arc(-16, 2, 8, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath(); ctx.arc(16, 2, 8, 0, Math.PI * 2); ctx.fill();
+
+      // Eyelashes
+      ctx.strokeStyle = '#4a044e'; ctx.lineWidth = 2.5;
+      [-28, -18, -8].forEach(lx => {
+        ctx.beginPath(); ctx.moveTo(lx, -16); ctx.lineTo(lx - 4, -24); ctx.stroke();
+      });
+      [8, 18, 28].forEach(rx => {
+        ctx.beginPath(); ctx.moveTo(rx, -16); ctx.lineTo(rx + 4, -24); ctx.stroke();
+      });
+
+      // Red lipstick mouth
+      ctx.fillStyle = '#e11d48';
+      ctx.beginPath();
+      if (isTalking) {
+        const op = 6 + Math.abs(Math.sin(t * 14)) * 8;
+        ctx.ellipse(0, 28, 12, op, 0, 0, Math.PI * 2);
+        ctx.fill();
+      } else {
+        ctx.ellipse(0, 26, 10, 5, 0, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      // WATERFALL TEARS (Khi bị giẫm đạp hoặc khóc lóc)
+      if (isCrying) {
+        ctx.fillStyle = '#38bdf8';
+        [-18, 18].forEach(tx => {
+          ctx.beginPath();
+          ctx.moveTo(tx - 6, 12);
+          const tearWiggle = Math.sin(t * 20) * 4;
+          ctx.quadraticCurveTo(tx - 12 + tearWiggle, 60, tx - 4, 110);
+          ctx.lineTo(tx + 4, 110);
+          ctx.quadraticCurveTo(tx + 12 - tearWiggle, 60, tx + 6, 12);
+          ctx.fill();
+
+          // Tear splashes at bottom
+          ctx.beginPath();
+          ctx.arc(tx + tearWiggle, 112, 6, 0, Math.PI * 2);
+          ctx.fill();
+        });
+      }
+
+      ctx.restore();
+    }
+
+    // Farmer's Big Boot / Stomp Foot
+    function drawFarmerBoot(x, y, stomp) {
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.scale(1.2, 1.2);
+
+      // Denim blue pant leg
+      ctx.fillStyle = '#1e3a8a';
+      ctx.beginPath();
+      ctx.moveTo(-50, -260); ctx.lineTo(50, -260);
+      ctx.lineTo(42, -90); ctx.lineTo(-44, -90);
+      ctx.closePath(); ctx.fill();
+      ctx.strokeStyle = '#172554'; ctx.lineWidth = 4; ctx.stroke();
+
+      // Leather Boot
+      const bg = ctx.createLinearGradient(-60, -90, 80, 40);
+      bg.addColorStop(0, '#a16207');
+      bg.addColorStop(0.5, '#78350f');
+      bg.addColorStop(1, '#451a03');
+      ctx.fillStyle = bg;
+
+      ctx.beginPath();
+      ctx.moveTo(-45, -95);
+      ctx.lineTo(44, -95);
+      ctx.bezierCurveTo(70, -20, 110, 10, 130, 35);
+      ctx.lineTo(130, 65); // Toe tip
+      ctx.lineTo(-65, 65); // Heel bottom
+      ctx.lineTo(-65, 10); // Heel back
+      ctx.bezierCurveTo(-58, -40, -50, -70, -45, -95);
+      ctx.closePath();
+      ctx.fill();
+      ctx.strokeStyle = '#292524'; ctx.lineWidth = 5; ctx.stroke();
+
+      // Thick boot sole
+      ctx.fillStyle = '#1c1917';
+      ctx.beginPath();
+      ctx.roundRect(-68, 62, 202, 16, 4);
+      ctx.fill();
+
+      // Boot laces & eyelets
+      ctx.strokeStyle = '#fbbf24'; ctx.lineWidth = 3;
+      for (let i = -70; i <= -20; i += 16) {
+        ctx.beginPath(); ctx.moveTo(-15, i); ctx.lineTo(15, i + 6); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(15, i); ctx.lineTo(-15, i + 6); ctx.stroke();
+      }
+
+      ctx.restore();
+    }
+
+    // Farmer's Hand pulling the Peanut Bush
+    function drawFarmerHand(x, y) {
+      ctx.save();
+      ctx.translate(x, y);
+
+      // Arm stretching in from right
+      const armG = ctx.createLinearGradient(0, -30, 300, 40);
+      armG.addColorStop(0, '#fcd34d'); armG.addColorStop(1, '#f59e0b');
+      ctx.fillStyle = armG;
+      ctx.beginPath();
+      ctx.moveTo(40, -35); ctx.lineTo(320, -35);
+      ctx.lineTo(320, 55); ctx.lineTo(40, 55);
+      ctx.closePath(); ctx.fill();
+      ctx.strokeStyle = '#b45309'; ctx.lineWidth = 4; ctx.stroke();
+
+      // Fist gripping stem
+      ctx.beginPath();
+      ctx.roundRect(-35, -45, 80, 95, 20);
+      ctx.fill(); ctx.stroke();
+
+      // 4 Knuckles
+      for (let i = 0; i < 4; i++) {
+        ctx.beginPath();
+        ctx.roundRect(-30 + i * 18, -55, 16, 30, 8);
+        ctx.fill(); ctx.stroke();
+      }
+
+      ctx.restore();
+    }
+
+    // 2000 YEARS LATER Meme Card
+    function draw2000YearsMeme(t) {
+      // Tropical tiki background
+      const tg = ctx.createLinearGradient(0, 0, 720, 1280);
+      tg.addColorStop(0, '#064e3b');
+      tg.addColorStop(0.5, '#047857');
+      tg.addColorStop(1, '#065f46');
+      ctx.fillStyle = tg;
+      ctx.fillRect(0, 0, 720, 1280);
+
+      // Decorative flowers
+      ctx.fillStyle = 'rgba(251, 191, 36, 0.25)';
+      for (let i = 0; i < 8; i++) {
+        const fx = 80 + (i % 3) * 260;
+        const fy = 150 + Math.floor(i / 3) * 350;
+        ctx.beginPath(); ctx.arc(fx, fy, 45, 0, Math.PI * 2); ctx.fill();
+      }
+
+      // SpongeBob Style Meme Card Frame
+      ctx.save();
+      ctx.translate(360, 640);
+      const wobble = Math.sin(t * 12) * 0.03;
+      ctx.rotate(wobble);
+
+      ctx.fillStyle = '#fef08a';
+      ctx.strokeStyle = '#78350f';
+      ctx.lineWidth = 14;
+      ctx.beginPath();
+      ctx.roundRect(-310, -220, 620, 440, 32);
+      ctx.fill(); ctx.stroke();
+
+      // Inner border
+      ctx.strokeStyle = '#b45309';
+      ctx.lineWidth = 4;
+      ctx.beginPath();
+      ctx.roundRect(-290, -200, 580, 400, 24);
+      ctx.stroke();
+
+      // Text: "2000 YEARS LATER"
+      ctx.fillStyle = '#451a03';
+      ctx.font = '900 68px "Plus Jakarta Sans", impact, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('2000 NĂM', 0, -35);
+      ctx.font = '900 58px "Plus Jakarta Sans", impact, sans-serif';
+      ctx.fillText('SAU ĐÓ...', 0, 55);
+
+      ctx.fillStyle = '#d97706';
+      ctx.font = '800 24px "Plus Jakarta Sans", sans-serif';
+      ctx.fillText('⏳ 2000 YEARS LATER ⏳', 0, 140);
+
+      ctx.restore();
+    }
+
+    // MAIN RENDER LOOP (60 FPS)
+    function renderCanvas() {
+      const cur = audio.currentTime || 0;
+      const t = cur;
+      const W = canvas.width;
+      const H = canvas.height;
+
+      ctx.clearRect(0, 0, W, H);
+
+      // Check current scene stage
+      const isIntro = (cur < 20.0);
+      const isStomp = (cur >= 20.0 && cur < 28.0);
+      const isExplain = (cur >= 28.0 && cur < 36.2);
+      const isMeme = (cur >= 36.2 && cur < 38.0);
+      const isHarvest = (cur >= 38.0);
+
+      // Active cue check for talking animations
+      const activeCue = CUES.find(c => cur >= c.start && cur <= c.end);
+      const isDotTalking = activeCue && (activeCue.speaker === 'dot_lac');
+      const isCanhTalking = activeCue && (activeCue.speaker === 'canh_goc');
+      const isNongDanTalking = activeCue && (activeCue.speaker === 'nong_dan');
+
+      // -------------------------------------------------------------
+      // MEME CUT SCENE
+      // -------------------------------------------------------------
+      if (isMeme) {
+        draw2000YearsMeme(t);
+        requestAnimationFrame(renderCanvas);
+        return;
+      }
+
+      // -------------------------------------------------------------
+      // BACKGROUND: SUNNY FARM FIELD
+      // -------------------------------------------------------------
+      const sky = ctx.createLinearGradient(0, 0, 0, 800);
+      if (isHarvest) {
+        sky.addColorStop(0, '#38bdf8');
+        sky.addColorStop(0.5, '#bae6fd');
+        sky.addColorStop(1, '#fef08a');
+      } else {
+        sky.addColorStop(0, '#7dd3fc');
+        sky.addColorStop(0.6, '#bae6fd');
+        sky.addColorStop(1, '#e0f2fe');
+      }
+      ctx.fillStyle = sky;
+      ctx.fillRect(0, 0, W, 820);
+
+      // Sun
+      ctx.fillStyle = 'rgba(254, 240, 138, 0.45)';
+      ctx.beginPath(); ctx.arc(600, 120, 80, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = '#fef08a';
+      ctx.beginPath(); ctx.arc(600, 120, 45, 0, Math.PI * 2); ctx.fill();
+
+      // Distant rolling hills
+      ctx.fillStyle = '#86efac';
+      ctx.beginPath();
+      ctx.moveTo(0, 680);
+      ctx.quadraticCurveTo(200, 620, 420, 670);
+      ctx.quadraticCurveTo(580, 710, 720, 660);
+      ctx.lineTo(720, 820); ctx.lineTo(0, 820);
+      ctx.fill();
+
+      // Rich brown agricultural soil bed
+      const soilY = 780;
+      const soilG = ctx.createLinearGradient(0, soilY, 0, 1280);
+      soilG.addColorStop(0, '#92400e');
+      soilG.addColorStop(0.2, '#78350f');
+      soilG.addColorStop(0.7, '#451a03');
+      soilG.addColorStop(1, '#291708');
+      ctx.fillStyle = soilG;
+      ctx.fillRect(0, soilY, W, 1280 - soilY);
+
+      // Soil texture / pebbles
+      ctx.fillStyle = 'rgba(254, 215, 170, 0.2)';
+      for (let i = 0; i < 40; i++) {
+        const px = (i * 73 + 24) % W;
+        const py = soilY + 20 + (i * 47) % (1280 - soilY);
+        ctx.beginPath(); ctx.arc(px, py, 3 + (i % 4), 0, Math.PI * 2); ctx.fill();
+      }
+
+      // -------------------------------------------------------------
+      // SCENE 3: UNDERGROUND FLOWER NEEDLES EXPLANATION (28.0s - 36.2s)
+      // -------------------------------------------------------------
+      if (isExplain) {
+        // Cutaway diagram showing branches pressed flat on ground
+        ctx.fillStyle = 'rgba(15, 23, 42, 0.25)';
+        ctx.fillRect(0, 0, W, H);
+
+        // Circular magnifying diagram
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(360, 620, 310, 0, Math.PI * 2);
+        ctx.clip();
+
+        // Diagram Soil
+        const dSoil = ctx.createLinearGradient(0, 520, 0, 950);
+        dSoil.addColorStop(0, '#b45309'); dSoil.addColorStop(1, '#451a03');
+        ctx.fillStyle = dSoil;
+        ctx.fillRect(50, 520, 620, 450);
+
+        // Diagram Air / Surface
+        ctx.fillStyle = '#dcfce7';
+        ctx.fillRect(50, 280, 620, 240);
+
+        // Pressed Stem lying flat along surface
+        ctx.strokeStyle = '#15803d';
+        ctx.lineWidth = 18;
+        ctx.lineCap = 'round';
+        ctx.beginPath();
+        ctx.moveTo(70, 520);
+        ctx.bezierCurveTo(220, 505, 480, 535, 650, 515);
+        ctx.stroke();
+
+        // Leaves along the stem
+        for (let i = 0; i < 7; i++) {
+          const lx = 100 + i * 80;
+          drawPeanutLeaf(lx, 495, 0.7, (i % 2 ? 0.3 : -0.3));
+        }
+
+        // PINK FLOWER NEEDLES (Kim Hoa) shooting downwards into soil!
+        const needleProgress = Math.min(1, (cur - 28.0) / 4.0);
+        for (let i = 0; i < 7; i++) {
+          const nx = 110 + i * 78;
+          const targetDepth = 60 + i * 15;
+          const depth = needleProgress * targetDepth;
+
+          ctx.strokeStyle = '#ec4899';
+          ctx.lineWidth = 6;
+          ctx.lineCap = 'round';
+          ctx.beginPath();
+          ctx.moveTo(nx, 525);
+          ctx.bezierCurveTo(nx + (i % 2 ? 15 : -15), 580, nx - 8, 640, nx, 530 + depth);
+          ctx.stroke();
+
+          // Young peanut pods forming at tips in soil
+          if (cur > 32.0) {
+            const podScale = Math.min(0.65, (cur - 32.0) * 0.25);
+            drawPeanutPod(nx, 545 + depth, podScale, (i % 2 ? 0.2 : -0.2));
+          }
+        }
+
+        ctx.restore();
+
+        // Magnifying glass golden ring
+        ctx.strokeStyle = '#f59e0b';
+        ctx.lineWidth = 14;
+        ctx.beginPath();
+        ctx.arc(360, 620, 310, 0, Math.PI * 2);
+        ctx.stroke();
+
+        // Infographic Banner Badges
+        ctx.fillStyle = 'rgba(15, 23, 42, 0.9)';
+        ctx.beginPath();
+        ctx.roundRect(70, 130, 580, 120, 24);
+        ctx.fill();
+        ctx.strokeStyle = '#f59e0b';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        ctx.fillStyle = '#fbbf24';
+        ctx.font = '900 28px "Plus Jakarta Sans", sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('BÍ KÍP ÉP CÀNH SÁT MẶT ĐẤT', 360, 180);
+
+        ctx.fillStyle = '#f8fafc';
+        ctx.font = '700 20px "Plus Jakarta Sans", sans-serif';
+        const infoTxt = cur < 31.0 ? '🌿 Nhánh cành ép phẳng sát mặt đất' :
+                        (cur < 33.5 ? '🌸 Kích thích vòi hoa (kim hoa) đâm xuống' :
+                        '🥜 Củ đậu phộng phát triển gấp đôi sản lượng!');
+        ctx.fillText(infoTxt, 360, 222);
+
+      // -------------------------------------------------------------
+      // SCENE 5: HARVEST BOUNTIFUL PEANUT CELEBRATION (38.0s - 44.1s)
+      // -------------------------------------------------------------
+      } else if (isHarvest) {
+        // Confetti & Sparkles
+        sparkles.forEach(s => {
+          ctx.save();
+          ctx.translate(s.x, s.y);
+          ctx.rotate(t * s.speed + s.rot);
+          ctx.fillStyle = `rgba(251, 191, 36, ${s.alpha})`;
+          ctx.beginPath();
+          ctx.roundRect(-s.size, -s.size, s.size * 2, s.size * 2, 2);
+          ctx.fill();
+          ctx.restore();
+          s.y -= s.speed * 1.5;
+          if (s.y < 0) s.y = 1280;
+        });
+
+        // Golden Aura burst behind plant
+        ctx.save();
+        ctx.translate(360, 480);
+        for (let i = 0; i < 16; i++) {
+          ctx.beginPath();
+          ctx.moveTo(0, 0);
+          ctx.arc(0, 0, 450, (i * Math.PI) / 8 + t * 0.2, ((i + 0.4) * Math.PI) / 8 + t * 0.2);
+          ctx.fillStyle = 'rgba(250, 204, 21, 0.12)';
+          ctx.fill();
+        }
+        ctx.restore();
+
+        // Lifted Peanut Plant
+        const liftY = 480;
+        ctx.save();
+        ctx.translate(360, liftY);
+
+        // Bush foliage
+        for (let a = -1.2; a <= 1.2; a += 0.4) {
+          drawPeanutLeaf(Math.sin(a) * 110, -120 + Math.cos(a) * 30, 0.95, a);
+        }
+        // Top Face (Happy / Victorious)
+        drawTopFace(0, -180, isDotTalking, 'normal', t);
+
+        // Massive BUNCH OF PEANUTS (chùm củ lạc trĩu nặng dưới rễ)
+        const roots = [
+          { rx: -110, ry: 40, s: 0.9, r: -0.3 },
+          { rx: -70, ry: 90, s: 1.0, r: -0.1 },
+          { rx: -30, ry: 130, s: 1.1, r: -0.2 },
+          { rx: 20, ry: 135, s: 1.15, r: 0.1 },
+          { rx: 70, ry: 95, s: 1.0, r: 0.25 },
+          { rx: 110, ry: 45, s: 0.9, r: 0.35 },
+          { rx: -50, ry: 50, s: 0.95, r: 0.1 },
+          { rx: 0, ry: 75, s: 1.05, r: -0.05 },
+          { rx: 45, ry: 55, s: 0.95, r: -0.15 },
+          { rx: -20, ry: 190, s: 1.1, r: 0.05 },
+          { rx: 30, ry: 185, s: 1.05, r: -0.1 }
+        ];
+
+        // Root fibers
+        ctx.strokeStyle = '#92400e';
+        ctx.lineWidth = 5;
+        roots.forEach(rt => {
+          ctx.beginPath();
+          ctx.moveTo(0, 0);
+          ctx.quadraticCurveTo(rt.rx * 0.5, rt.ry * 0.4, rt.rx, rt.ry);
+          ctx.stroke();
+          drawPeanutPod(rt.rx, rt.ry + 20, rt.s, rt.r);
+        });
+
+        ctx.restore();
+
+        // Farmer's Hand gripping plant
+        drawFarmerHand(350, liftY - 90);
+
+        // Celebration Banner
+        ctx.fillStyle = 'rgba(15, 23, 42, 0.9)';
+        ctx.beginPath();
+        ctx.roundRect(80, 920, 560, 80, 20);
+        ctx.fill();
+        ctx.strokeStyle = '#f59e0b';
+        ctx.lineWidth = 3;
+        ctx.stroke();
+
+        ctx.fillStyle = '#fbbf24';
+        ctx.font = '900 28px "Plus Jakarta Sans", sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('✨ SẢN LƯỢNG LẠC TĂNG GẤP ĐÔI! ✨', 360, 970);
+
+      // -------------------------------------------------------------
+      // SCENE 1 & 2: INTRO & FARMER STOMP (0.0s - 28.0s)
+      // -------------------------------------------------------------
+      } else {
+        const stompProgress = isStomp ? Math.min(1, Math.max(0, (cur - 20.5) / 1.5)) : 0;
+        const squash = 1 - stompProgress * 0.45;
+        const plantCenterY = 780;
+
+        ctx.save();
+        ctx.translate(360, plantCenterY);
+        ctx.scale(1 + stompProgress * 0.25, squash);
+
+        // Bush foliage leaves
+        const leafAngles = [-1.4, -1.0, -0.6, -0.2, 0.2, 0.6, 1.0, 1.4];
+        leafAngles.forEach((a, i) => {
+          const sway = Math.sin(t * 3 + i) * 0.08;
+          const dist = 120 + (i % 3) * 30;
+          drawPeanutLeaf(Math.sin(a + sway) * dist, -180 + Math.cos(a) * 40, 0.9, a + sway);
+        });
+
+        // Top Face (Đọt Ngọn Lạc)
+        const topMood = isStomp ? 'shock' : 'normal';
+        drawTopFace(0, -220, isDotTalking, topMood, t);
+
+        // Bottom Face (Cành Gốc & Vòi Hoa sát đất)
+        const isCrying = (cur >= 7.5 && cur <= 26.5);
+        drawBottomFace(0, -50, isCanhTalking, isCrying, t);
+
+        ctx.restore();
+
+        // Farmer's Boot coming down from top-right in Scene 2 (20.0s - 28.0s)
+        if (isStomp) {
+          const bootY = -100 + stompProgress * 820;
+          drawFarmerBoot(460, bootY, stompProgress);
+
+          // Impact shockwaves on stomp
+          if (stompProgress > 0.8) {
+            ctx.strokeStyle = 'rgba(251, 191, 36, 0.6)';
+            ctx.lineWidth = 4;
+            ctx.beginPath();
+            ctx.ellipse(360, 780, 160 * stompProgress, 40 * stompProgress, 0, 0, Math.PI * 2);
+            ctx.stroke();
+          }
+        }
+      }
+
+      requestAnimationFrame(renderCanvas);
+    }
+
+    // -------------------------------------------------------------
+    // 60 FPS MP4 / WEBM RECORDER & EXPORTER
+    // -------------------------------------------------------------
+    let mediaRecorder = null;
+    let recordedChunks = [];
+
+    function exportVideo() {
+      const btn = document.getElementById('btn-export');
+      if (mediaRecorder && mediaRecorder.state === 'recording') {
+        mediaRecorder.stop();
+        btn.innerHTML = '<span>⚡</span> XUẤT VIDEO MP4 HOẠT HÌNH 2D CÂY LẠC (60 FPS)';
+        return;
+      }
+
+      const stream = canvas.captureStream(60);
+      try {
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const sourceNode = audioCtx.createMediaElementSource(audio);
+        const destNode = audioCtx.createMediaStreamDestination();
+        sourceNode.connect(destNode);
+        sourceNode.connect(audioCtx.destination);
+        destNode.stream.getAudioTracks().forEach(track => stream.addTrack(track));
+      } catch (e) {
+        console.warn('Direct audio stream hook warning:', e);
+      }
+
+      recordedChunks = [];
+      const options = { mimeType: 'video/webm;codecs=vp9,opus' };
+      try {
+        mediaRecorder = new MediaRecorder(stream, options);
+      } catch (e) {
+        mediaRecorder = new MediaRecorder(stream);
+      }
+
+      mediaRecorder.ondataavailable = e => {
+        if (e.data && e.data.size > 0) recordedChunks.push(e.data);
+      };
+
+      mediaRecorder.onstop = () => {
+        const blob = new Blob(recordedChunks, { type: 'video/webm' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'HoatHinh_2D_CayLac_4.webm';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        btn.innerHTML = '<span>✅</span> ĐÃ TẢI VIDEO XUỐNG THÀNH CÔNG!';
+        setTimeout(() => {
+          btn.innerHTML = '<span>⚡</span> XUẤT VIDEO MP4 HOẠT HÌNH 2D CÂY LẠC (60 FPS)';
+        }, 4000);
+      };
+
+      audio.currentTime = 0;
+      audio.play().then(() => {
+        isPlaying = true;
+        btnPlay.textContent = '⏸';
+        mediaRecorder.start();
+        btn.innerHTML = '<span>🔴</span> ĐANG GHI HÌNH 60 FPS (VUI LÒNG CHỜ)...';
+
+        audio.onended = () => {
+          if (mediaRecorder && mediaRecorder.state === 'recording') {
+            mediaRecorder.stop();
+          }
+        };
+      });
+    }
+
+    // Initialize
+    initTimeline();
+    requestAnimationFrame(renderCanvas);
+  </script>
+</body>
+</html>

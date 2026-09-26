@@ -1,0 +1,28 @@
+{
+  "name": "auto-compare-video",
+  "private": true,
+  "type": "module",
+  "description": "Series of short-form comparison videos + local studio. Per-video projects live in videos/*. No runtime dependencies: everything runs offline.",
+  "scripts": {
+    "studio": "cd studio && npm start",
+    "create": "node tools/create-video.mjs",
+    "topic": "node tools/generate-topic.mjs",
+    "topic:ai": "node tools/generate-topic.mjs --ai",
+    "topic:create": "node tools/generate-topic.mjs --create",
+    "topic:ai:create": "node tools/generate-topic.mjs --ai --create",
+    "chalk": "node tools/create-chalk-video.mjs",
+    "chalk:render": "node tools/create-chalk-video.mjs --render",
+    "chalk:topic": "node tools/generate-chalk-topic.mjs",
+    "retime": "node tools/retime.mjs",
+    "fit": "node tools/fit-duration.mjs",
+    "validate:matrix-config": "node tools/validate-matrix-config.mjs",
+    "test:matrix-config": "node --test tests/matrix-config.test.mjs",
+    "test:matrix": "node --test tests/matrix-*.test.mjs",
+    "batch:matrix": "node tools/batch-matrix.mjs"
+  },
+  "dependencies": {
+    "ajv": "8.20.0",
+    "edge-tts-universal": "^1.4.0",
+    "yaml": "2.9.1"
+  }
+}

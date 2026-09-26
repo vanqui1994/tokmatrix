@@ -1,0 +1,5379 @@
+{
+  "id": "vector-library-showreel",
+  "renderer": "native-vector-v1",
+  "fidelity": "technical-demo",
+  "duration": 113.0,
+  "characters": [
+    {
+      "id": "watermelon-left",
+      "name": "Dưa hấu",
+      "asset": "watermelon"
+    },
+    {
+      "id": "watermelon-right",
+      "name": "Dưa hấu",
+      "asset": "watermelon"
+    },
+    {
+      "id": "watermelon-blade",
+      "name": "Dao",
+      "asset": "knife"
+    },
+    {
+      "id": "watermelon-farmer",
+      "name": "Nông dân",
+      "asset": "farmer"
+    },
+    {
+      "id": "watermelon-held",
+      "name": "Dưa hấu",
+      "asset": "watermelon",
+      "attach_to": {
+        "id": "watermelon-farmer",
+        "anchor": "hand"
+      }
+    },
+    {
+      "id": "pepper-pepper",
+      "name": "Quả ớt",
+      "asset": "pepper"
+    },
+    {
+      "id": "pepper-bug",
+      "name": "Côn trùng",
+      "asset": "insect"
+    },
+    {
+      "id": "pepper-sprayer",
+      "name": "Vòi phun",
+      "asset": "sprayer"
+    },
+    {
+      "id": "apple-bare",
+      "name": "Táo",
+      "asset": "apple"
+    },
+    {
+      "id": "apple-protected",
+      "name": "Táo",
+      "asset": "apple"
+    },
+    {
+      "id": "apple-bag",
+      "name": "Túi bọc quả",
+      "asset": "bag"
+    },
+    {
+      "id": "peanut-plant",
+      "name": "Cây lạc",
+      "asset": "peanut_plant",
+      "face": false
+    },
+    {
+      "id": "peanut-shoot",
+      "name": "Mặt gắn vào bộ phận",
+      "asset": "face",
+      "attach_to": {
+        "id": "peanut-plant",
+        "anchor": "shoot"
+      }
+    },
+    {
+      "id": "peanut-branch",
+      "name": "Mặt gắn vào bộ phận",
+      "asset": "face",
+      "attach_to": {
+        "id": "peanut-plant",
+        "anchor": "branch"
+      }
+    },
+    {
+      "id": "peanut-foot",
+      "name": "Bàn chân",
+      "asset": "foot"
+    },
+    {
+      "id": "peanut-hand",
+      "name": "Bàn tay trái",
+      "asset": "hand"
+    },
+    {
+      "id": "tomato-plant",
+      "name": "Cây cà chua",
+      "asset": "tomato_plant"
+    },
+    {
+      "id": "tomato-pot",
+      "name": "Chậu / mặt cắt",
+      "asset": "pot"
+    },
+    {
+      "id": "tomato-hand",
+      "name": "Bàn tay trái",
+      "asset": "hand"
+    },
+    {
+      "id": "farm-sow-grow-hand",
+      "name": "Bàn tay trái",
+      "asset": "hand",
+      "material": "pencil"
+    },
+    {
+      "id": "farm-sow-grow-seed",
+      "name": "Hạt đậu",
+      "asset": "seed",
+      "material": "ink"
+    },
+    {
+      "id": "farm-sow-grow-pot",
+      "name": "Chậu / mặt cắt",
+      "asset": "pot",
+      "face": false,
+      "material": "ink"
+    },
+    {
+      "id": "farm-sow-grow-plant",
+      "name": "Cây cà chua",
+      "asset": "tomato_plant",
+      "face": false,
+      "material": "ink"
+    },
+    {
+      "id": "farm-harvest-farmer",
+      "name": "Nông dân",
+      "asset": "farmer",
+      "material": "ink"
+    },
+    {
+      "id": "farm-harvest-plant",
+      "name": "Cây cà chua",
+      "asset": "tomato_plant",
+      "face": false,
+      "material": "ink"
+    },
+    {
+      "id": "farm-harvest-tomato",
+      "name": "Quả cà chua",
+      "asset": "tomato",
+      "material": "ink",
+      "attach_to": {
+        "id": "farm-harvest-plant",
+        "anchor": "branch_1"
+      }
+    },
+    {
+      "id": "farm-harvest-bucket",
+      "name": "Xô hứng",
+      "asset": "bucket",
+      "face": false,
+      "material": "ink"
+    },
+    {
+      "id": "farm-papaya-latex-tree",
+      "name": "Cây đu đủ",
+      "asset": "papaya_tree",
+      "face": false,
+      "material": "ink"
+    },
+    {
+      "id": "farm-papaya-latex-knife",
+      "name": "Dao",
+      "asset": "knife",
+      "face": false,
+      "material": "ink"
+    },
+    {
+      "id": "farm-papaya-latex-bucket",
+      "name": "Xô hứng",
+      "asset": "bucket",
+      "face": false,
+      "material": "ink"
+    },
+    {
+      "id": "farm-life-woman",
+      "name": "Nông dân nữ",
+      "asset": "farmer_woman"
+    },
+    {
+      "id": "farm-life-rice1",
+      "name": "Cây lúa",
+      "asset": "rice_plant",
+      "face": false
+    },
+    {
+      "id": "farm-life-rice2",
+      "name": "Cây lúa",
+      "asset": "rice_plant",
+      "face": false
+    },
+    {
+      "id": "farm-life-rice3",
+      "name": "Cây lúa",
+      "asset": "rice_plant",
+      "face": false
+    },
+    {
+      "id": "farm-life-sickle",
+      "name": "Cái liềm",
+      "asset": "sickle"
+    },
+    {
+      "id": "farm-life-scarecrow",
+      "name": "Bù nhìn",
+      "asset": "scarecrow"
+    },
+    {
+      "id": "farm-life-buffalo",
+      "name": "Con trâu",
+      "asset": "buffalo"
+    },
+    {
+      "id": "farm-life-chicken",
+      "name": "Con gà",
+      "asset": "chicken"
+    },
+    {
+      "id": "farm-life-worm",
+      "name": "Giun đất",
+      "asset": "earthworm"
+    },
+    {
+      "id": "farm-life-sunflower",
+      "name": "Hoa hướng dương",
+      "asset": "sunflower"
+    },
+    {
+      "id": "farm-life-bee",
+      "name": "Con ong",
+      "asset": "bee"
+    },
+    {
+      "id": "farm-life-cabbage",
+      "name": "Bắp cải",
+      "asset": "cabbage"
+    },
+    {
+      "id": "farm-life-can",
+      "name": "Bình tưới",
+      "asset": "watering_can"
+    },
+    {
+      "id": "farm-life-carrot",
+      "name": "Cà rốt",
+      "asset": "carrot"
+    },
+    {
+      "id": "farm-life-hand",
+      "name": "Bàn tay phải",
+      "asset": "hand_right",
+      "face": false
+    },
+    {
+      "id": "farm-life-pumpkin",
+      "name": "Bí ngô",
+      "asset": "pumpkin"
+    },
+    {
+      "id": "farm-life-eggplant",
+      "name": "Cà tím",
+      "asset": "eggplant"
+    },
+    {
+      "id": "farm-life-corn",
+      "name": "Bắp ngô",
+      "asset": "corn"
+    },
+    {
+      "id": "farm-life-basket",
+      "name": "Cái thúng",
+      "asset": "basket"
+    },
+    {
+      "id": "farm-animals-cow",
+      "name": "Con bò",
+      "asset": "cow"
+    },
+    {
+      "id": "farm-animals-grass",
+      "name": "Bụi cỏ",
+      "asset": "grass_tuft",
+      "face": false
+    },
+    {
+      "id": "farm-animals-goat",
+      "name": "Con dê",
+      "asset": "goat"
+    },
+    {
+      "id": "farm-animals-rabbit",
+      "name": "Con thỏ",
+      "asset": "rabbit"
+    },
+    {
+      "id": "farm-animals-lotus",
+      "name": "Hoa sen",
+      "asset": "lotus"
+    },
+    {
+      "id": "farm-animals-rose",
+      "name": "Hoa hồng",
+      "asset": "rose"
+    },
+    {
+      "id": "farm-animals-daisy",
+      "name": "Hoa cúc",
+      "asset": "daisy"
+    },
+    {
+      "id": "farm-animals-butterfly",
+      "name": "Con bướm",
+      "asset": "butterfly",
+      "face": false
+    },
+    {
+      "id": "farm-animals-bee",
+      "name": "Con ong",
+      "asset": "bee",
+      "face": false
+    },
+    {
+      "id": "farm-animals-woman",
+      "name": "Nông dân nữ",
+      "asset": "farmer_woman"
+    },
+    {
+      "id": "farm-animals-mango",
+      "name": "Xoài",
+      "asset": "mango"
+    },
+    {
+      "id": "farm-animals-crate",
+      "name": "Thùng gỗ",
+      "asset": "crate",
+      "face": false
+    },
+    {
+      "id": "farm-animals-strawberry",
+      "name": "Dâu tây",
+      "asset": "strawberry"
+    },
+    {
+      "id": "farm-animals-orange",
+      "name": "Quả cam",
+      "asset": "orange"
+    },
+    {
+      "id": "farm-animals-pig",
+      "name": "Con heo",
+      "asset": "pig"
+    },
+    {
+      "id": "farm-animals-duck",
+      "name": "Con vịt",
+      "asset": "duck"
+    },
+    {
+      "id": "farm-animals-chick",
+      "name": "Gà con",
+      "asset": "chick"
+    },
+    {
+      "id": "farm-animals-ant",
+      "name": "Con kiến",
+      "asset": "ant",
+      "face": false
+    },
+    {
+      "id": "farm-animals-shovel",
+      "name": "Cái xẻng",
+      "asset": "shovel",
+      "face": false
+    },
+    {
+      "id": "farm-animals-soil_bed",
+      "name": "Luống đất",
+      "asset": "soil_bed",
+      "face": false
+    },
+    {
+      "id": "articulated-hand-tool-hand",
+      "name": "Bàn tay trái",
+      "asset": "hand",
+      "face": false
+    },
+    {
+      "id": "articulated-hand-tool-tool",
+      "name": "Dao",
+      "asset": "knife",
+      "face": false
+    },
+    {
+      "id": "articulated-hand-poses-hand",
+      "name": "Bàn tay trái",
+      "asset": "hand",
+      "face": false
+    },
+    {
+      "id": "articulated-hand-poses-seed",
+      "name": "Hạt đậu",
+      "asset": "seed",
+      "face": false
+    },
+    {
+      "id": "articulated-branch-plant",
+      "name": "Cây lạc",
+      "asset": "peanut_plant",
+      "face": false
+    },
+    {
+      "id": "articulated-branch-face",
+      "name": "Mặt gắn vào bộ phận",
+      "asset": "face",
+      "attach_to": {
+        "id": "articulated-branch-plant",
+        "anchor": "branch_2"
+      }
+    },
+    {
+      "id": "articulated-branch-hand",
+      "name": "Bàn tay trái",
+      "asset": "hand",
+      "face": false
+    },
+    {
+      "id": "farmer-ik-reach-farmer",
+      "name": "Nông dân",
+      "asset": "farmer"
+    },
+    {
+      "id": "farmer-ik-reach-object",
+      "name": "Dưa hấu",
+      "asset": "watermelon",
+      "face": false
+    },
+    {
+      "id": "farmer-ik-carry-farmer",
+      "name": "Nông dân",
+      "asset": "farmer"
+    },
+    {
+      "id": "farmer-ik-carry-object",
+      "name": "Dưa hấu",
+      "asset": "watermelon",
+      "face": false
+    },
+    {
+      "id": "fishing-fisherman",
+      "name": "Ngư dân",
+      "asset": "fisherman",
+      "material": "ink"
+    },
+    {
+      "id": "fishing-boat",
+      "name": "Thuyền câu",
+      "asset": "boat",
+      "face": false,
+      "material": "ink"
+    },
+    {
+      "id": "fishing-rod",
+      "name": "Cần câu",
+      "asset": "fishing_rod",
+      "face": false,
+      "material": "pencil",
+      "attach_to": {
+        "id": "fishing-fisherman",
+        "anchor": "hand_r"
+      }
+    },
+    {
+      "id": "fishing-bobber",
+      "name": "Phao câu",
+      "asset": "bobber",
+      "attach_to": {
+        "id": "fishing-rod",
+        "anchor": "line_end"
+      },
+      "material": "ink"
+    },
+    {
+      "id": "fishing-hook",
+      "name": "Lưỡi câu",
+      "asset": "hook",
+      "face": false,
+      "material": "ink"
+    },
+    {
+      "id": "fishing-fish",
+      "name": "Cá con",
+      "asset": "fish",
+      "material": "pencil"
+    },
+    {
+      "id": "sea-monsters-s_monster",
+      "name": "Thủy quái cấp S",
+      "asset": "sea_monster_s",
+      "material": "ink"
+    },
+    {
+      "id": "sea-monsters-ss_monster",
+      "name": "Thủy quái cấp SS",
+      "asset": "sea_monster_ss",
+      "material": "ink"
+    },
+    {
+      "id": "sea-monsters-boat",
+      "name": "Thuyền câu",
+      "asset": "boat",
+      "face": false,
+      "material": "pencil"
+    },
+    {
+      "id": "sea-monsters-fisherman",
+      "name": "Ngư dân",
+      "asset": "fisherman",
+      "material": "ink"
+    },
+    {
+      "id": "orchard_harvest-farmer",
+      "name": "Nông dân",
+      "asset": "farmer"
+    },
+    {
+      "id": "orchard_harvest-mango_tree",
+      "name": "Cây xoài",
+      "asset": "mango_tree"
+    },
+    {
+      "id": "orchard_harvest-orange_tree",
+      "name": "Cây cam",
+      "asset": "orange_tree"
+    },
+    {
+      "id": "orchard_harvest-durian_tree",
+      "name": "Cây sầu riêng",
+      "asset": "durian_tree"
+    },
+    {
+      "id": "orchard_harvest-basket",
+      "name": "Cái thúng",
+      "asset": "basket"
+    },
+    {
+      "id": "orchard_harvest-mango_picked",
+      "name": "Xoài",
+      "asset": "mango",
+      "face": false
+    },
+    {
+      "id": "orchard_harvest-orange_picked",
+      "name": "Quả cam",
+      "asset": "orange",
+      "face": false
+    },
+    {
+      "id": "orchard_harvest-durian_dropped",
+      "name": "Sầu riêng",
+      "asset": "durian",
+      "face": false
+    },
+    {
+      "id": "trellis_cucumber-farmer",
+      "name": "Nông dân",
+      "asset": "farmer"
+    },
+    {
+      "id": "trellis_cucumber-cucumber_vine",
+      "name": "Giàn dưa leo",
+      "asset": "cucumber_vine"
+    },
+    {
+      "id": "trellis_cucumber-basket",
+      "name": "Cái thúng",
+      "asset": "basket"
+    },
+    {
+      "id": "trellis_cucumber-cucumber_picked",
+      "name": "Dưa leo",
+      "asset": "cucumber",
+      "face": false
+    },
+    {
+      "id": "highland_temperate-farmer",
+      "name": "Nông dân",
+      "asset": "farmer"
+    },
+    {
+      "id": "highland_temperate-persimmon_tree",
+      "name": "Cây hồng",
+      "asset": "persimmon_tree"
+    },
+    {
+      "id": "highland_temperate-strawberry_plant",
+      "name": "Cây dâu tây",
+      "asset": "strawberry_plant"
+    },
+    {
+      "id": "highland_temperate-pear_tree",
+      "name": "Cây lê",
+      "asset": "pear_tree"
+    },
+    {
+      "id": "highland_temperate-basket",
+      "name": "Cái thúng",
+      "asset": "basket"
+    },
+    {
+      "id": "highland_temperate-persimmon_picked",
+      "name": "Hồng",
+      "asset": "persimmon",
+      "face": false
+    },
+    {
+      "id": "vegetable_cutaway-kohlrabi_plant",
+      "name": "Cây su hào",
+      "asset": "kohlrabi_plant"
+    },
+    {
+      "id": "vegetable_cutaway-sweet_potato_plant",
+      "name": "Cây khoai lang",
+      "asset": "sweet_potato_plant"
+    },
+    {
+      "id": "vegetable_cutaway-hand",
+      "name": "Bàn tay trái",
+      "asset": "hand"
+    },
+    {
+      "id": "safe_spraying-farmer",
+      "name": "Nông dân",
+      "asset": "farmer"
+    },
+    {
+      "id": "safe_spraying-mask",
+      "name": "Mặt nạ phòng độc",
+      "asset": "ppe_mask",
+      "face": false,
+      "attach_to": {
+        "id": "safe_spraying-farmer",
+        "anchor": "face"
+      }
+    },
+    {
+      "id": "safe_spraying-sprayer",
+      "name": "Bình phun thuốc đeo lưng",
+      "asset": "backpack_sprayer",
+      "face": false
+    },
+    {
+      "id": "safe_spraying-cabinet",
+      "name": "Tủ khoá hoá chất",
+      "asset": "chem_cabinet",
+      "face": false
+    },
+    {
+      "id": "safe_spraying-bottle",
+      "name": "Chai thuốc BVTV",
+      "asset": "pesticide_bottle",
+      "face": false
+    },
+    {
+      "id": "safe_spraying-sign",
+      "name": "Biển cảnh báo an toàn",
+      "asset": "warning_sign",
+      "face": false
+    },
+    {
+      "id": "safe_spraying-bystander",
+      "name": "Nông dân nữ",
+      "asset": "farmer_woman"
+    },
+    {
+      "id": "safe_spraying-cabbage",
+      "name": "Bắp cải",
+      "asset": "cabbage"
+    },
+    {
+      "id": "safe_spraying-basin",
+      "name": "Chậu rửa rau quả",
+      "asset": "rinse_basin",
+      "face": false
+    },
+    {
+      "id": "safe_spraying-hand",
+      "name": "Bàn tay trái",
+      "asset": "hand",
+      "face": false
+    }
+  ],
+  "scenes": [
+    {
+      "renderer": "native-vector-v1",
+      "kind": "title",
+      "start_time": 0,
+      "end_time": 1.5,
+      "text": "Thư viện vector · Mẫu kỹ thuật",
+      "characters_present": [],
+      "poses": {},
+      "index": 0
+    },
+    {
+      "renderer": "native-vector-v1",
+      "kind": "scene",
+      "start_time": 1.5,
+      "end_time": 4.833333333333334,
+      "characters_present": [
+        "watermelon-left",
+        "watermelon-right",
+        "watermelon-blade"
+      ],
+      "poses": {
+        "watermelon-left": [
+          {
+            "time": 1.5,
+            "x": 180,
+            "y": 650,
+            "height": 170,
+            "expression": "worried"
+          }
+        ],
+        "watermelon-right": [
+          {
+            "time": 1.5,
+            "x": 410,
+            "y": 650,
+            "height": 150,
+            "expression": "surprised"
+          }
+        ],
+        "watermelon-blade": [
+          {
+            "time": 1.5,
+            "x": 455,
+            "y": 440,
+            "height": 125,
+            "z": 2
+          }
+        ]
+      },
+      "actions": [
+        {
+          "type": "cut",
+          "start": 1.9166666666666667,
+          "end": 2.75,
+          "target": "watermelon-left",
+          "actor": "watermelon-blade"
+        },
+        {
+          "type": "slice",
+          "start": 2.8333333333333335,
+          "end": 3.791666666666667,
+          "target": "watermelon-left",
+          "actor": "watermelon-blade"
+        }
+      ],
+      "background": {
+        "preset": "garden"
+      },
+      "index": 1
+    },
+    {
+      "renderer": "native-vector-v1",
+      "kind": "scene",
+      "start_time": 4.833333333333334,
+      "end_time": 6.5,
+      "characters_present": [
+        "watermelon-farmer",
+        "watermelon-held"
+      ],
+      "poses": {
+        "watermelon-farmer": [
+          {
+            "time": 4.833333333333334,
+            "x": 340,
+            "y": 870,
+            "height": 460,
+            "expression": "happy"
+          }
+        ],
+        "watermelon-held": [
+          {
+            "time": 4.833333333333334,
+            "x": 0,
+            "y": 15,
+            "height": 90,
+            "slice": 1,
+            "z": 3
+          }
+        ]
+      },
+      "actions": [
+        {
+          "type": "gesture",
+          "start": 5.041666666666667,
+          "end": 6.083333333333334,
+          "actor": "watermelon-farmer"
+        }
+      ],
+      "background": {
+        "preset": "garden"
+      },
+      "index": 2
+    },
+    {
+      "renderer": "native-vector-v1",
+      "kind": "scene",
+      "start_time": 6.5,
+      "end_time": 9.0,
+      "characters_present": [
+        "pepper-pepper",
+        "pepper-bug",
+        "pepper-sprayer"
+      ],
+      "poses": {
+        "pepper-pepper": [
+          {
+            "time": 6.5,
+            "x": 300,
+            "y": 830,
+            "height": 570,
+            "rotation": 25,
+            "damage": 0.8
+          }
+        ],
+        "pepper-bug": [
+          {
+            "time": 6.5,
+            "x": 220,
+            "y": 560,
+            "height": 90,
+            "expression": "smug",
+            "z": 2
+          }
+        ],
+        "pepper-sprayer": [
+          {
+            "time": 6.5,
+            "x": 435,
+            "y": 330,
+            "height": 160,
+            "rotation": 20,
+            "z": 3
+          }
+        ]
+      },
+      "actions": [
+        {
+          "type": "spray",
+          "start": 6.916666666666667,
+          "end": 7.75,
+          "target": "pepper-bug",
+          "actor": "pepper-sprayer",
+          "target_anchor": "face"
+        },
+        {
+          "type": "crawl",
+          "start": 7.833333333333334,
+          "end": 8.791666666666668,
+          "target": "pepper-pepper",
+          "actor": "pepper-bug"
+        }
+      ],
+      "background": {
+        "preset": "pepper_patch"
+      },
+      "index": 3
+    },
+    {
+      "renderer": "native-vector-v1",
+      "kind": "scene",
+      "start_time": 9.0,
+      "end_time": 11.5,
+      "characters_present": [
+        "pepper-pepper",
+        "pepper-bug",
+        "pepper-sprayer"
+      ],
+      "poses": {
+        "pepper-pepper": [
+          {
+            "time": 9.0,
+            "x": 300,
+            "y": 830,
+            "height": 570,
+            "rotation": 25,
+            "damage": 0.8
+          }
+        ],
+        "pepper-bug": [
+          {
+            "time": 9.0,
+            "x": 280,
+            "y": 370,
+            "height": 90,
+            "expression": "sleep",
+            "z": 2
+          }
+        ],
+        "pepper-sprayer": [
+          {
+            "time": 9.0,
+            "x": 435,
+            "y": 330,
+            "height": 160,
+            "rotation": 20,
+            "expression": "angry",
+            "z": 3
+          }
+        ]
+      },
+      "actions": [
+        {
+          "type": "spray",
+          "start": 9.833333333333334,
+          "end": 11.083333333333334,
+          "target": "pepper-bug",
+          "actor": "pepper-sprayer",
+          "target_anchor": "face"
+        }
+      ],
+      "background": {
+        "preset": "pepper_patch",
+        "time": "night"
+      },
+      "index": 4
+    },
+    {
+      "renderer": "native-vector-v1",
+      "kind": "scene",
+      "start_time": 11.5,
+      "end_time": 12.928571428571429,
+      "characters_present": [
+        "apple-bare",
+        "apple-protected",
+        "apple-bag"
+      ],
+      "poses": {
+        "apple-bare": [
+          {
+            "time": 11.5,
+            "x": 160,
+            "y": 610,
+            "height": 170,
+            "growth": 0
+          }
+        ],
+        "apple-protected": [
+          {
+            "time": 11.5,
+            "x": 390,
+            "y": 610,
+            "height": 170,
+            "growth": 0
+          }
+        ],
+        "apple-bag": [
+          {
+            "time": 11.5,
+            "x": 490,
+            "y": 350,
+            "height": 190,
+            "z": 2
+          }
+        ]
+      },
+      "actions": [
+        {
+          "type": "cover",
+          "start": 11.857142857142858,
+          "end": 12.571428571428571,
+          "target": "apple-protected",
+          "actor": "apple-bag"
+        }
+      ],
+      "background": {
+        "preset": "orchard"
+      },
+      "index": 5
+    },
+    {
+      "renderer": "native-vector-v1",
+      "kind": "scene",
+      "start_time": 12.928571428571429,
+      "end_time": 14.357142857142858,
+      "characters_present": [
+        "apple-bare",
+        "apple-protected",
+        "apple-bag"
+      ],
+      "poses": {
+        "apple-bare": [
+          {
+            "time": 12.928571428571429,
+            "x": 160,
+            "y": 610,
+            "height": 170,
+            "growth": 0,
+            "damage": 0
+          },
+          {
+            "time": 14.357142857142858,
+            "x": 160,
+            "y": 610,
+            "height": 170,
+            "growth": 0,
+            "damage": 1,
+            "expression": "sad"
+          }
+        ],
+        "apple-protected": [
+          {
+            "time": 12.928571428571429,
+            "x": 390,
+            "y": 610,
+            "height": 170,
+            "growth": 0.5
+          }
+        ],
+        "apple-bag": [
+          {
+            "time": 12.928571428571429,
+            "x": 390,
+            "y": 610,
+            "height": 190,
+            "z": 2,
+            "expression": "happy"
+          }
+        ]
+      },
+      "actions": [],
+      "background": {
+        "preset": "orchard",
+        "weather": "rain"
+      },
+      "index": 6
+    },
+    {
+      "renderer": "native-vector-v1",
+      "kind": "scene",
+      "start_time": 14.357142857142858,
+      "end_time": 16.5,
+      "characters_present": [
+        "apple-bare",
+        "apple-protected",
+        "apple-bag"
+      ],
+      "poses": {
+        "apple-bare": [
+          {
+            "time": 14.357142857142858,
+            "x": 160,
+            "y": 610,
+            "height": 170,
+            "damage": 1,
+            "growth": 0.4,
+            "expression": "worried"
+          }
+        ],
+        "apple-protected": [
+          {
+            "time": 14.357142857142858,
+            "x": 390,
+            "y": 610,
+            "height": 170,
+            "growth": 0.7,
+            "expression": "happy"
+          }
+        ],
+        "apple-bag": [
+          {
+            "time": 14.357142857142858,
+            "x": 390,
+            "y": 610,
+            "height": 190,
+            "z": 2
+          }
+        ]
+      },
+      "actions": [
+        {
+          "type": "uncover",
+          "start": 14.714285714285715,
+          "end": 15.428571428571429,
+          "target": "apple-protected",
+          "actor": "apple-bag"
+        },
+        {
+          "type": "grow",
+          "start": 14.357142857142858,
+          "end": 15.785714285714285,
+          "target": "apple-protected"
+        }
+      ],
+      "background": {
+        "preset": "orchard"
+      },
+      "index": 7
+    },
+    {
+      "renderer": "native-vector-v1",
+      "kind": "scene",
+      "start_time": 16.5,
+      "end_time": 18.833333333333332,
+      "characters_present": [
+        "peanut-plant",
+        "peanut-shoot",
+        "peanut-branch",
+        "peanut-foot"
+      ],
+      "poses": {
+        "peanut-plant": [
+          {
+            "time": 16.5,
+            "x": 288,
+            "y": 800,
+            "height": 430,
+            "growth": 0.8
+          }
+        ],
+        "peanut-shoot": [
+          {
+            "time": 16.5,
+            "x": 0,
+            "y": 35,
+            "height": 90,
+            "expression": "surprised",
+            "z": 3
+          }
+        ],
+        "peanut-branch": [
+          {
+            "time": 16.5,
+            "x": 0,
+            "y": 20,
+            "height": 65,
+            "expression": "worried",
+            "z": 3
+          }
+        ],
+        "peanut-foot": [
+          {
+            "time": 16.5,
+            "x": 410,
+            "y": 270,
+            "height": 230,
+            "z": 4
+          }
+        ]
+      },
+      "actions": [
+        {
+          "type": "press",
+          "start": 16.833333333333332,
+          "end": 17.833333333333332,
+          "target": "peanut-plant",
+          "actor": "peanut-foot",
+          "amount": 0.8
+        }
+      ],
+      "background": {
+        "preset": "garden"
+      },
+      "index": 8
+    },
+    {
+      "renderer": "native-vector-v1",
+      "kind": "scene",
+      "start_time": 18.833333333333332,
+      "end_time": 20.166666666666668,
+      "characters_present": [
+        "peanut-plant"
+      ],
+      "poses": {
+        "peanut-plant": [
+          {
+            "time": 18.833333333333332,
+            "x": 288,
+            "y": 470,
+            "height": 260,
+            "roots": 1,
+            "growth": 0.2,
+            "bend": 0.6
+          }
+        ]
+      },
+      "actions": [
+        {
+          "type": "grow",
+          "start": 19.0,
+          "end": 20.0,
+          "target": "peanut-plant"
+        }
+      ],
+      "background": {
+        "preset": "soil_cutaway"
+      },
+      "index": 9
+    },
+    {
+      "renderer": "native-vector-v1",
+      "kind": "scene",
+      "start_time": 20.166666666666668,
+      "end_time": 21.5,
+      "characters_present": [
+        "peanut-plant",
+        "peanut-hand"
+      ],
+      "poses": {
+        "peanut-plant": [
+          {
+            "time": 20.166666666666668,
+            "x": 250,
+            "y": 820,
+            "height": 340,
+            "growth": 1
+          }
+        ],
+        "peanut-hand": [
+          {
+            "time": 20.166666666666668,
+            "x": 445,
+            "y": 540,
+            "height": 170,
+            "z": 3
+          }
+        ]
+      },
+      "actions": [
+        {
+          "type": "uproot",
+          "start": 20.333333333333332,
+          "end": 21.166666666666664,
+          "target": "peanut-plant",
+          "actor": "peanut-hand"
+        }
+      ],
+      "background": {
+        "preset": "garden"
+      },
+      "index": 10
+    },
+    {
+      "renderer": "native-vector-v1",
+      "kind": "scene",
+      "start_time": 21.5,
+      "end_time": 22.928571428571427,
+      "characters_present": [
+        "tomato-pot",
+        "tomato-plant",
+        "tomato-hand"
+      ],
+      "poses": {
+        "tomato-pot": [
+          {
+            "time": 21.5,
+            "x": 288,
+            "y": 890,
+            "height": 190,
+            "z": 0
+          }
+        ],
+        "tomato-plant": [
+          {
+            "time": 21.5,
+            "x": 288,
+            "y": 782,
+            "height": 450,
+            "growth": 0.2,
+            "expression": "sad",
+            "z": 1
+          }
+        ],
+        "tomato-hand": [
+          {
+            "time": 21.5,
+            "x": 452,
+            "y": 565,
+            "height": 170,
+            "z": 3
+          }
+        ]
+      },
+      "actions": [
+        {
+          "type": "fertilize",
+          "start": 21.857142857142858,
+          "end": 22.857142857142858,
+          "target": "tomato-pot",
+          "actor": "tomato-hand"
+        }
+      ],
+      "background": {
+        "preset": "balcony"
+      },
+      "index": 11
+    },
+    {
+      "renderer": "native-vector-v1",
+      "kind": "scene",
+      "start_time": 22.928571428571427,
+      "end_time": 24.357142857142858,
+      "characters_present": [
+        "tomato-pot",
+        "tomato-plant",
+        "tomato-hand"
+      ],
+      "poses": {
+        "tomato-pot": [
+          {
+            "time": 22.928571428571427,
+            "x": 288,
+            "y": 870,
+            "height": 400,
+            "cutaway": 1,
+            "nutrients": 1,
+            "z": 0
+          }
+        ],
+        "tomato-plant": [
+          {
+            "time": 22.928571428571427,
+            "x": 288,
+            "y": 642,
+            "height": 380,
+            "roots": 1,
+            "growth": 0.3,
+            "z": 1
+          }
+        ],
+        "tomato-hand": [
+          {
+            "time": 22.928571428571427,
+            "x": 440,
+            "y": 530,
+            "height": 140,
+            "z": 3
+          }
+        ]
+      },
+      "actions": [
+        {
+          "type": "fertilize",
+          "start": 23.107142857142858,
+          "end": 24.0,
+          "target": "tomato-pot",
+          "actor": "tomato-hand"
+        }
+      ],
+      "background": {
+        "preset": "balcony"
+      },
+      "camera": [
+        {
+          "time": 22.928571428571427,
+          "x": 288,
+          "y": 600,
+          "zoom": 1
+        },
+        {
+          "time": 24.357142857142858,
+          "x": 288,
+          "y": 600,
+          "zoom": 1.12,
+          "ease": "smooth"
+        }
+      ],
+      "index": 12
+    },
+    {
+      "renderer": "native-vector-v1",
+      "kind": "title",
+      "start_time": 24.357142857142858,
+      "end_time": 24.892857142857142,
+      "text": "2000 năm sau",
+      "characters_present": [],
+      "poses": {},
+      "index": 13
+    },
+    {
+      "renderer": "native-vector-v1",
+      "kind": "scene",
+      "start_time": 24.892857142857142,
+      "end_time": 26.5,
+      "characters_present": [
+        "tomato-pot",
+        "tomato-plant"
+      ],
+      "poses": {
+        "tomato-pot": [
+          {
+            "time": 24.892857142857142,
+            "x": 288,
+            "y": 890,
+            "height": 190
+          }
+        ],
+        "tomato-plant": [
+          {
+            "time": 24.892857142857142,
+            "x": 288,
+            "y": 782,
+            "height": 450,
+            "growth": 0.3,
+            "expression": "happy",
+            "z": 1
+          }
+        ]
+      },
+      "actions": [
+        {
+          "type": "grow",
+          "start": 24.928571428571427,
+          "end": 26.142857142857142,
+          "target": "tomato-plant"
+        }
+      ],
+      "background": {
+        "preset": "balcony"
+      },
+      "index": 14
+    },
+    {
+      "renderer": "native-vector-v1",
+      "kind": "scene",
+      "start_time": 26.5,
+      "end_time": 29.0,
+      "characters_present": [
+        "farm-sow-grow-hand",
+        "farm-sow-grow-seed",
+        "farm-sow-grow-pot",
+        "farm-sow-grow-plant"
+      ],
+      "poses": {
+        "farm-sow-grow-hand": [
+          {
+            "time": 26.5,
+            "x": 190,
+            "y": 690,
+            "height": 190,
+            "hand_pose": "pinch",
+            "drawing_id": "seed-ready",
+            "exposure": "hold"
+          },
+          {
+            "time": 27.333333333333332,
+            "x": 275,
+            "y": 650,
+            "height": 190,
+            "hand_pose": "scatter",
+            "drawing_id": "seed-drop",
+            "exposure": "ones"
+          },
+          {
+            "time": 29.0,
+            "x": 300,
+            "y": 690,
+            "height": 190,
+            "hand_pose": "open",
+            "drawing_id": "after-drop",
+            "exposure": "twos"
+          }
+        ],
+        "farm-sow-grow-seed": [
+          {
+            "time": 26.5,
+            "x": 330,
+            "y": 570,
+            "height": 72,
+            "drawing_id": "seed-rest",
+            "exposure": "hold"
+          }
+        ],
+        "farm-sow-grow-pot": [
+          {
+            "time": 26.5,
+            "x": 292,
+            "y": 875,
+            "height": 330,
+            "cutaway": 1,
+            "drawing_id": "pot-open",
+            "exposure": "hold"
+          }
+        ],
+        "farm-sow-grow-plant": [
+          {
+            "time": 26.5,
+            "x": 292,
+            "y": 855,
+            "height": 210,
+            "growth": 0.05,
+            "drawing_id": "sprout",
+            "exposure": "hold"
+          }
+        ]
+      },
+      "actions": [
+        {
+          "type": "grip",
+          "start": 26.916666666666668,
+          "end": 27.083333333333332,
+          "target": "farm-sow-grow-seed",
+          "actor": "farm-sow-grow-hand"
+        },
+        {
+          "type": "release",
+          "start": 27.416666666666668,
+          "end": 27.75,
+          "target": "farm-sow-grow-seed",
+          "actor": "farm-sow-grow-hand",
+          "offset": [
+            0,
+            170
+          ]
+        },
+        {
+          "type": "fertilize",
+          "start": 27.791666666666668,
+          "end": 28.666666666666668,
+          "target": "farm-sow-grow-pot",
+          "actor": "farm-sow-grow-hand",
+          "amount": 0.8
+        }
+      ],
+      "background": {
+        "preset": "garden"
+      },
+      "index": 15
+    },
+    {
+      "renderer": "native-vector-v1",
+      "kind": "scene",
+      "start_time": 29.0,
+      "end_time": 31.5,
+      "characters_present": [
+        "farm-sow-grow-pot",
+        "farm-sow-grow-plant"
+      ],
+      "poses": {
+        "farm-sow-grow-pot": [
+          {
+            "time": 29.0,
+            "x": 292,
+            "y": 875,
+            "height": 330,
+            "cutaway": 1,
+            "drawing_id": "pot-open",
+            "exposure": "hold"
+          }
+        ],
+        "farm-sow-grow-plant": [
+          {
+            "time": 29.0,
+            "x": 292,
+            "y": 855,
+            "height": 210,
+            "growth": 0.05,
+            "drawing_id": "sprout",
+            "exposure": "hold"
+          },
+          {
+            "time": 30.25,
+            "x": 292,
+            "y": 855,
+            "height": 330,
+            "growth": 0.65,
+            "drawing_id": "leafy",
+            "exposure": "twos"
+          },
+          {
+            "time": 31.5,
+            "x": 292,
+            "y": 855,
+            "height": 390,
+            "growth": 1,
+            "drawing_id": "flowering",
+            "exposure": "hold"
+          }
+        ]
+      },
+      "actions": [
+        {
+          "type": "grow",
+          "start": 29.166666666666668,
+          "end": 31.291666666666668,
+          "target": "farm-sow-grow-plant"
+        }
+      ],
+      "background": {
+        "preset": "garden"
+      },
+      "index": 16
+    },
+    {
+      "renderer": "native-vector-v1",
+      "kind": "scene",
+      "start_time": 31.5,
+      "end_time": 36.5,
+      "characters_present": [
+        "farm-harvest-farmer",
+        "farm-harvest-plant",
+        "farm-harvest-tomato",
+        "farm-harvest-bucket"
+      ],
+      "poses": {
+        "farm-harvest-farmer": [
+          {
+            "time": 31.5,
+            "x": 165,
+            "y": 890,
+            "height": 440,
+            "expression": "happy",
+            "drawing_id": "reach-ready",
+            "exposure": "hold"
+          },
+          {
+            "time": 33.5,
+            "x": 170,
+            "y": 890,
+            "height": 440,
+            "expression": "happy",
+            "drawing_id": "reach-contact",
+            "exposure": "ones"
+          },
+          {
+            "time": 36.5,
+            "x": 220,
+            "y": 890,
+            "height": 440,
+            "expression": "happy",
+            "drawing_id": "drop-recover",
+            "exposure": "twos"
+          }
+        ],
+        "farm-harvest-plant": [
+          {
+            "time": 31.5,
+            "x": 405,
+            "y": 850,
+            "height": 410,
+            "growth": 1,
+            "drawing_id": "fruit-heavy",
+            "exposure": "hold"
+          }
+        ],
+        "farm-harvest-tomato": [
+          {
+            "time": 31.5,
+            "x": 0,
+            "y": 0,
+            "height": 88,
+            "drawing_id": "attached",
+            "exposure": "hold"
+          }
+        ],
+        "farm-harvest-bucket": [
+          {
+            "time": 31.5,
+            "x": 365,
+            "y": 945,
+            "height": 250,
+            "fill": 0,
+            "drawing_id": "bucket-empty",
+            "exposure": "hold"
+          },
+          {
+            "time": 36.5,
+            "x": 365,
+            "y": 945,
+            "height": 250,
+            "fill": 0.3,
+            "drawing_id": "bucket-filled",
+            "exposure": "hold"
+          }
+        ]
+      },
+      "actions": [
+        {
+          "type": "reach",
+          "start": 32.0,
+          "end": 33.5,
+          "target": "farm-harvest-tomato",
+          "actor": "farm-harvest-farmer",
+          "actor_anchor": "hand_r"
+        },
+        {
+          "type": "grip",
+          "start": 33.642857142857146,
+          "end": 33.857142857142854,
+          "target": "farm-harvest-tomato",
+          "actor": "farm-harvest-farmer",
+          "actor_anchor": "hand_r"
+        },
+        {
+          "type": "release",
+          "start": 34.642857142857146,
+          "end": 35.42857142857143,
+          "target": "farm-harvest-tomato",
+          "actor": "farm-harvest-farmer",
+          "actor_anchor": "hand_r",
+          "offset": [
+            105,
+            155
+          ]
+        },
+        {
+          "type": "gesture",
+          "start": 35.57142857142857,
+          "end": 36.357142857142854,
+          "actor": "farm-harvest-farmer"
+        }
+      ],
+      "background": {
+        "preset": "garden"
+      },
+      "index": 17
+    },
+    {
+      "renderer": "native-vector-v1",
+      "kind": "scene",
+      "start_time": 36.5,
+      "end_time": 41.5,
+      "characters_present": [
+        "farm-papaya-latex-tree",
+        "farm-papaya-latex-knife",
+        "farm-papaya-latex-bucket"
+      ],
+      "poses": {
+        "farm-papaya-latex-tree": [
+          {
+            "time": 36.5,
+            "x": 285,
+            "y": 860,
+            "height": 590,
+            "growth": 1,
+            "drawing_id": "tree-rest",
+            "exposure": "hold"
+          },
+          {
+            "time": 38.5,
+            "x": 285,
+            "y": 860,
+            "height": 590,
+            "cut": 0.7,
+            "drawing_id": "cut-contact",
+            "exposure": "ones"
+          },
+          {
+            "time": 41.5,
+            "x": 285,
+            "y": 860,
+            "height": 590,
+            "cut": 1,
+            "drawing_id": "latex-flow",
+            "exposure": "hold"
+          }
+        ],
+        "farm-papaya-latex-knife": [
+          {
+            "time": 36.5,
+            "x": 465,
+            "y": 555,
+            "height": 160,
+            "rotation": -22,
+            "drawing_id": "knife-raise",
+            "exposure": "hold"
+          }
+        ],
+        "farm-papaya-latex-bucket": [
+          {
+            "time": 36.5,
+            "x": 300,
+            "y": 970,
+            "height": 230,
+            "fill": 0,
+            "drawing_id": "bucket-empty",
+            "exposure": "hold"
+          },
+          {
+            "time": 41.5,
+            "x": 300,
+            "y": 970,
+            "height": 230,
+            "fill": 0.75,
+            "drawing_id": "bucket-latex",
+            "exposure": "hold"
+          }
+        ]
+      },
+      "actions": [
+        {
+          "type": "cut",
+          "start": 37.214285714285715,
+          "end": 38.714285714285715,
+          "target": "farm-papaya-latex-tree",
+          "actor": "farm-papaya-latex-knife"
+        },
+        {
+          "type": "drip",
+          "start": 38.785714285714285,
+          "end": 41.285714285714285,
+          "target": "farm-papaya-latex-bucket",
+          "actor": "farm-papaya-latex-tree",
+          "amount": 0.75
+        }
+      ],
+      "background": {
+        "preset": "garden"
+      },
+      "index": 18
+    },
+    {
+      "renderer": "native-vector-v1",
+      "kind": "scene",
+      "start_time": 41.5,
+      "end_time": 42.75,
+      "characters_present": [
+        "farm-life-rice1",
+        "farm-life-rice2",
+        "farm-life-rice3",
+        "farm-life-sickle",
+        "farm-life-woman"
+      ],
+      "poses": {
+        "farm-life-rice1": [
+          {
+            "time": 41.5,
+            "x": 80,
+            "y": 900,
+            "height": 300,
+            "growth": 1,
+            "z": 1
+          }
+        ],
+        "farm-life-rice2": [
+          {
+            "time": 41.5,
+            "x": 175,
+            "y": 910,
+            "height": 300,
+            "growth": 1,
+            "z": 1
+          }
+        ],
+        "farm-life-rice3": [
+          {
+            "time": 41.5,
+            "x": 270,
+            "y": 900,
+            "height": 300,
+            "growth": 0.7,
+            "z": 1
+          }
+        ],
+        "farm-life-sickle": [
+          {
+            "time": 41.5,
+            "x": 230,
+            "y": 620,
+            "height": 140,
+            "rotation": -10,
+            "z": 3
+          }
+        ],
+        "farm-life-woman": [
+          {
+            "time": 41.5,
+            "x": 450,
+            "y": 960,
+            "height": 330,
+            "expression": "happy",
+            "z": 2
+          }
+        ]
+      },
+      "actions": [
+        {
+          "type": "cut",
+          "start": 41.625,
+          "end": 42.0625,
+          "target": "farm-life-rice1",
+          "actor": "farm-life-sickle"
+        },
+        {
+          "type": "cut",
+          "start": 42.125,
+          "end": 42.5625,
+          "target": "farm-life-rice2",
+          "actor": "farm-life-sickle"
+        },
+        {
+          "type": "gesture",
+          "start": 41.8125,
+          "end": 42.4375,
+          "actor": "farm-life-woman"
+        }
+      ],
+      "background": {
+        "preset": "garden"
+      },
+      "index": 19
+    },
+    {
+      "renderer": "native-vector-v1",
+      "kind": "scene",
+      "start_time": 42.75,
+      "end_time": 44.0,
+      "characters_present": [
+        "farm-life-scarecrow",
+        "farm-life-buffalo",
+        "farm-life-chicken",
+        "farm-life-worm"
+      ],
+      "poses": {
+        "farm-life-scarecrow": [
+          {
+            "time": 42.75,
+            "x": 470,
+            "y": 810,
+            "height": 280,
+            "z": 0
+          }
+        ],
+        "farm-life-buffalo": [
+          {
+            "time": 42.75,
+            "x": -60,
+            "y": 830,
+            "height": 250,
+            "z": 1
+          },
+          {
+            "time": 44.0,
+            "x": 300,
+            "y": 830,
+            "height": 250,
+            "z": 1
+          }
+        ],
+        "farm-life-chicken": [
+          {
+            "time": 42.75,
+            "x": 300,
+            "y": 930,
+            "height": 170,
+            "z": 2
+          }
+        ],
+        "farm-life-worm": [
+          {
+            "time": 42.75,
+            "x": 420,
+            "y": 935,
+            "height": 80,
+            "z": 1
+          }
+        ]
+      },
+      "actions": [
+        {
+          "type": "peck",
+          "start": 43.0625,
+          "end": 43.8125,
+          "target": "farm-life-worm",
+          "actor": "farm-life-chicken"
+        }
+      ],
+      "background": {
+        "preset": "garden"
+      },
+      "index": 20
+    },
+    {
+      "renderer": "native-vector-v1",
+      "kind": "scene",
+      "start_time": 44.0,
+      "end_time": 45.25,
+      "characters_present": [
+        "farm-life-sunflower",
+        "farm-life-bee",
+        "farm-life-cabbage",
+        "farm-life-can"
+      ],
+      "poses": {
+        "farm-life-sunflower": [
+          {
+            "time": 44.0,
+            "x": 140,
+            "y": 900,
+            "height": 380,
+            "growth": 0.3
+          },
+          {
+            "time": 45.09375,
+            "x": 140,
+            "y": 900,
+            "height": 380,
+            "growth": 1,
+            "ease": "ease_out"
+          }
+        ],
+        "farm-life-bee": [
+          {
+            "time": 44.0,
+            "x": 40,
+            "y": 380,
+            "height": 100
+          },
+          {
+            "time": 44.625,
+            "x": 160,
+            "y": 300,
+            "height": 100,
+            "ease": "smooth"
+          },
+          {
+            "time": 45.25,
+            "x": 120,
+            "y": 360,
+            "height": 100,
+            "flip": true,
+            "ease": "smooth"
+          }
+        ],
+        "farm-life-cabbage": [
+          {
+            "time": 44.0,
+            "x": 330,
+            "y": 930,
+            "height": 230,
+            "growth": 0.7,
+            "z": 1
+          }
+        ],
+        "farm-life-can": [
+          {
+            "time": 44.0,
+            "x": 470,
+            "y": 700,
+            "height": 190,
+            "z": 3
+          }
+        ]
+      },
+      "actions": [
+        {
+          "type": "grow",
+          "start": 44.125,
+          "end": 45.09375,
+          "target": "farm-life-sunflower"
+        },
+        {
+          "type": "water",
+          "start": 44.1875,
+          "end": 45.0625,
+          "target": "farm-life-cabbage",
+          "actor": "farm-life-can"
+        }
+      ],
+      "background": {
+        "preset": "garden"
+      },
+      "index": 21
+    },
+    {
+      "renderer": "native-vector-v1",
+      "kind": "scene",
+      "start_time": 45.25,
+      "end_time": 46.5,
+      "characters_present": [
+        "farm-life-carrot",
+        "farm-life-hand",
+        "farm-life-basket",
+        "farm-life-pumpkin",
+        "farm-life-eggplant",
+        "farm-life-corn"
+      ],
+      "poses": {
+        "farm-life-carrot": [
+          {
+            "time": 45.25,
+            "x": 300,
+            "y": 900,
+            "height": 260,
+            "growth": 0.9,
+            "z": 1
+          }
+        ],
+        "farm-life-hand": [
+          {
+            "time": 45.25,
+            "x": 520,
+            "y": 640,
+            "height": 190,
+            "z": 3
+          }
+        ],
+        "farm-life-basket": [
+          {
+            "time": 45.25,
+            "x": 110,
+            "y": 990,
+            "height": 240,
+            "fill": 0.8,
+            "z": 0
+          }
+        ],
+        "farm-life-pumpkin": [
+          {
+            "time": 45.25,
+            "x": 90,
+            "y": 790,
+            "height": 190,
+            "expression": "happy",
+            "z": 1
+          }
+        ],
+        "farm-life-eggplant": [
+          {
+            "time": 45.25,
+            "x": 470,
+            "y": 990,
+            "height": 150,
+            "expression": "happy",
+            "z": 2
+          }
+        ],
+        "farm-life-corn": [
+          {
+            "time": 45.25,
+            "x": 540,
+            "y": 990,
+            "height": 150,
+            "expression": "surprised",
+            "z": 2
+          }
+        ]
+      },
+      "actions": [
+        {
+          "type": "uproot",
+          "start": 45.34375,
+          "end": 46.1875,
+          "target": "farm-life-carrot",
+          "actor": "farm-life-hand"
+        }
+      ],
+      "background": {
+        "preset": "garden"
+      },
+      "index": 22
+    },
+    {
+      "renderer": "native-vector-v1",
+      "kind": "scene",
+      "start_time": 46.5,
+      "end_time": 47.75,
+      "characters_present": [
+        "farm-animals-cow",
+        "farm-animals-grass",
+        "farm-animals-goat",
+        "farm-animals-rabbit"
+      ],
+      "poses": {
+        "farm-animals-cow": [
+          {
+            "time": 46.5,
+            "x": 190,
+            "y": 840,
+            "height": 260,
+            "z": 1
+          }
+        ],
+        "farm-animals-grass": [
+          {
+            "time": 46.5,
+            "x": 400,
+            "y": 850,
+            "height": 140,
+            "z": 0
+          }
+        ],
+        "farm-animals-goat": [
+          {
+            "time": 46.5,
+            "x": 660,
+            "y": 790,
+            "height": 190,
+            "flip": true,
+            "z": 0
+          },
+          {
+            "time": 47.75,
+            "x": 480,
+            "y": 790,
+            "height": 190,
+            "flip": true,
+            "z": 0
+          }
+        ],
+        "farm-animals-rabbit": [
+          {
+            "time": 46.5,
+            "x": 105,
+            "y": 905,
+            "height": 130,
+            "z": 3
+          }
+        ]
+      },
+      "actions": [
+        {
+          "type": "graze",
+          "start": 46.65625,
+          "end": 47.59375,
+          "target": "farm-animals-grass",
+          "actor": "farm-animals-cow"
+        },
+        {
+          "type": "hop",
+          "start": 46.8125,
+          "end": 47.59375,
+          "actor": "farm-animals-rabbit"
+        }
+      ],
+      "background": {
+        "preset": "garden"
+      },
+      "index": 23
+    },
+    {
+      "renderer": "native-vector-v1",
+      "kind": "scene",
+      "start_time": 47.75,
+      "end_time": 49.0,
+      "characters_present": [
+        "farm-animals-lotus",
+        "farm-animals-rose",
+        "farm-animals-daisy",
+        "farm-animals-butterfly",
+        "farm-animals-bee"
+      ],
+      "poses": {
+        "farm-animals-lotus": [
+          {
+            "time": 47.75,
+            "x": 100,
+            "y": 910,
+            "height": 280,
+            "growth": 0.2,
+            "z": 0
+          },
+          {
+            "time": 48.84375,
+            "x": 100,
+            "y": 910,
+            "height": 280,
+            "growth": 1.0,
+            "ease": "ease_out"
+          }
+        ],
+        "farm-animals-rose": [
+          {
+            "time": 47.75,
+            "x": 270,
+            "y": 920,
+            "height": 290,
+            "growth": 0.3,
+            "z": 1
+          },
+          {
+            "time": 48.84375,
+            "x": 270,
+            "y": 920,
+            "height": 290,
+            "growth": 1.0,
+            "ease": "ease_out"
+          }
+        ],
+        "farm-animals-daisy": [
+          {
+            "time": 47.75,
+            "x": 440,
+            "y": 920,
+            "height": 260,
+            "growth": 0.2,
+            "z": 0
+          },
+          {
+            "time": 48.84375,
+            "x": 440,
+            "y": 920,
+            "height": 260,
+            "growth": 0.9,
+            "ease": "ease_out"
+          }
+        ],
+        "farm-animals-butterfly": [
+          {
+            "time": 47.75,
+            "x": 380,
+            "y": 480,
+            "height": 110,
+            "z": 2
+          }
+        ],
+        "farm-animals-bee": [
+          {
+            "time": 47.75,
+            "x": 160,
+            "y": 440,
+            "height": 90,
+            "z": 2
+          }
+        ]
+      },
+      "actions": [
+        {
+          "type": "grow",
+          "start": 47.8125,
+          "end": 48.84375,
+          "target": "farm-animals-lotus"
+        },
+        {
+          "type": "grow",
+          "start": 47.84375,
+          "end": 48.84375,
+          "target": "farm-animals-rose"
+        },
+        {
+          "type": "grow",
+          "start": 47.875,
+          "end": 48.84375,
+          "target": "farm-animals-daisy"
+        },
+        {
+          "type": "pollinate",
+          "start": 47.90625,
+          "end": 48.84375,
+          "target": "farm-animals-rose",
+          "actor": "farm-animals-butterfly"
+        },
+        {
+          "type": "fly",
+          "start": 47.8125,
+          "end": 48.875,
+          "actor": "farm-animals-bee"
+        }
+      ],
+      "background": {
+        "preset": "garden"
+      },
+      "index": 24
+    },
+    {
+      "renderer": "native-vector-v1",
+      "kind": "scene",
+      "start_time": 49.0,
+      "end_time": 50.25,
+      "characters_present": [
+        "farm-animals-woman",
+        "farm-animals-crate",
+        "farm-animals-mango",
+        "farm-animals-strawberry",
+        "farm-animals-orange"
+      ],
+      "poses": {
+        "farm-animals-woman": [
+          {
+            "time": 49.0,
+            "x": 330,
+            "y": 915,
+            "height": 330,
+            "z": 2
+          }
+        ],
+        "farm-animals-crate": [
+          {
+            "time": 49.0,
+            "x": 175,
+            "y": 912,
+            "height": 170,
+            "z": 1
+          }
+        ],
+        "farm-animals-mango": [
+          {
+            "time": 49.0,
+            "x": 175,
+            "y": 810,
+            "height": 100,
+            "z": 3
+          }
+        ],
+        "farm-animals-strawberry": [
+          {
+            "time": 49.0,
+            "x": 460,
+            "y": 912,
+            "height": 115,
+            "expression": "happy",
+            "z": 3
+          }
+        ],
+        "farm-animals-orange": [
+          {
+            "time": 49.0,
+            "x": 525,
+            "y": 912,
+            "height": 115,
+            "expression": "surprised",
+            "z": 3
+          }
+        ]
+      },
+      "actions": [
+        {
+          "type": "reach",
+          "start": 49.0625,
+          "end": 49.4375,
+          "target": "farm-animals-mango",
+          "actor": "farm-animals-woman"
+        },
+        {
+          "type": "grip",
+          "start": 49.4375,
+          "end": 49.8125,
+          "target": "farm-animals-mango",
+          "actor": "farm-animals-woman"
+        },
+        {
+          "type": "release",
+          "start": 49.8125,
+          "end": 50.125,
+          "target": "farm-animals-mango",
+          "actor": "farm-animals-woman",
+          "offset": [
+            250,
+            100
+          ]
+        }
+      ],
+      "background": {
+        "preset": "garden"
+      },
+      "index": 25
+    },
+    {
+      "renderer": "native-vector-v1",
+      "kind": "scene",
+      "start_time": 50.25,
+      "end_time": 51.5,
+      "characters_present": [
+        "farm-animals-pig",
+        "farm-animals-duck",
+        "farm-animals-chick",
+        "farm-animals-ant",
+        "farm-animals-shovel",
+        "farm-animals-soil_bed"
+      ],
+      "poses": {
+        "farm-animals-pig": [
+          {
+            "time": 50.25,
+            "x": -60,
+            "y": 870,
+            "height": 200,
+            "z": 1
+          },
+          {
+            "time": 51.5,
+            "x": 260,
+            "y": 870,
+            "height": 200,
+            "z": 1
+          }
+        ],
+        "farm-animals-duck": [
+          {
+            "time": 50.25,
+            "x": 530,
+            "y": 920,
+            "height": 160,
+            "flip": true,
+            "z": 2
+          },
+          {
+            "time": 51.5,
+            "x": 350,
+            "y": 920,
+            "height": 160,
+            "flip": true,
+            "z": 2
+          }
+        ],
+        "farm-animals-chick": [
+          {
+            "time": 50.25,
+            "x": 170,
+            "y": 940,
+            "height": 100,
+            "z": 2
+          }
+        ],
+        "farm-animals-ant": [
+          {
+            "time": 50.25,
+            "x": 230,
+            "y": 945,
+            "height": 45,
+            "z": 1
+          }
+        ],
+        "farm-animals-shovel": [
+          {
+            "time": 50.25,
+            "x": 380,
+            "y": 780,
+            "height": 180,
+            "z": 3
+          }
+        ],
+        "farm-animals-soil_bed": [
+          {
+            "time": 50.25,
+            "x": 380,
+            "y": 990,
+            "height": 160,
+            "z": 0
+          }
+        ]
+      },
+      "actions": [
+        {
+          "type": "peck",
+          "start": 50.5,
+          "end": 51.25,
+          "target": "farm-animals-ant",
+          "actor": "farm-animals-chick"
+        },
+        {
+          "type": "dig",
+          "start": 50.40625,
+          "end": 51.34375,
+          "target": "farm-animals-soil_bed",
+          "actor": "farm-animals-shovel"
+        }
+      ],
+      "background": {
+        "preset": "garden"
+      },
+      "index": 26
+    },
+    {
+      "renderer": "native-vector-v1",
+      "kind": "scene",
+      "index": 27,
+      "start_time": 51.5,
+      "end_time": 56.5,
+      "characters_present": [
+        "articulated-hand-tool-hand",
+        "articulated-hand-tool-tool"
+      ],
+      "poses": {
+        "articulated-hand-tool-hand": [
+          {
+            "time": 51.5,
+            "x": 150,
+            "y": 590,
+            "height": 190,
+            "hand_pose": "open",
+            "z": 2
+          },
+          {
+            "time": 54.5625,
+            "x": 365,
+            "y": 510,
+            "height": 190,
+            "hand_pose": "knife",
+            "rotation": -12,
+            "wrist": 25,
+            "ease": "smooth"
+          },
+          {
+            "time": 55.125,
+            "x": 405,
+            "y": 490,
+            "height": 190,
+            "hand_pose": "open",
+            "wrist": 15,
+            "rotation": 0,
+            "ease": "smooth"
+          },
+          {
+            "time": 56.5,
+            "x": 470,
+            "y": 430,
+            "height": 190,
+            "hand_pose": "open",
+            "wrist": -20,
+            "rotation": 15,
+            "ease": "smooth"
+          }
+        ],
+        "articulated-hand-tool-tool": [
+          {
+            "time": 51.5,
+            "x": 260,
+            "y": 760,
+            "height": 145,
+            "rotation": -25,
+            "z": 3
+          }
+        ]
+      },
+      "actions": [
+        {
+          "type": "grip",
+          "actor": "articulated-hand-tool-hand",
+          "target": "articulated-hand-tool-tool",
+          "start": 52.125,
+          "end": 52.4375,
+          "blend_in": 0.3125
+        },
+        {
+          "type": "release",
+          "actor": "articulated-hand-tool-hand",
+          "target": "articulated-hand-tool-tool",
+          "start": 54.625,
+          "end": 55.125,
+          "offset": [
+            15,
+            130
+          ],
+          "spin": 20
+        }
+      ],
+      "background": {
+        "preset": "garden"
+      }
+    },
+    {
+      "renderer": "native-vector-v1",
+      "kind": "scene",
+      "index": 28,
+      "start_time": 56.5,
+      "end_time": 61.5,
+      "characters_present": [
+        "articulated-hand-poses-hand",
+        "articulated-hand-poses-seed"
+      ],
+      "poses": {
+        "articulated-hand-poses-hand": [
+          {
+            "time": 56.5,
+            "x": 210,
+            "y": 590,
+            "height": 210,
+            "hand_pose": "open"
+          },
+          {
+            "time": 57.75,
+            "x": 250,
+            "y": 560,
+            "height": 210,
+            "hand_pose": "pinch",
+            "ease": "smooth"
+          },
+          {
+            "time": 59.0,
+            "x": 310,
+            "y": 540,
+            "height": 210,
+            "hand_pose": "point",
+            "ease": "smooth"
+          },
+          {
+            "time": 60.25,
+            "x": 365,
+            "y": 560,
+            "height": 210,
+            "hand_pose": "scatter",
+            "ease": "smooth"
+          }
+        ],
+        "articulated-hand-poses-seed": [
+          {
+            "time": 56.5,
+            "x": 390,
+            "y": 710,
+            "height": 38
+          }
+        ]
+      },
+      "actions": [],
+      "background": {
+        "preset": "garden"
+      }
+    },
+    {
+      "renderer": "native-vector-v1",
+      "kind": "scene",
+      "index": 29,
+      "start_time": 61.5,
+      "end_time": 66.5,
+      "characters_present": [
+        "articulated-branch-plant",
+        "articulated-branch-face",
+        "articulated-branch-hand"
+      ],
+      "poses": {
+        "articulated-branch-plant": [
+          {
+            "time": 61.5,
+            "x": 288,
+            "y": 820,
+            "height": 430,
+            "growth": 0.85,
+            "branch_2": 0
+          },
+          {
+            "time": 63.0625,
+            "x": 288,
+            "y": 820,
+            "height": 430,
+            "growth": 0.85,
+            "branch_2": 42,
+            "ease": "smooth"
+          },
+          {
+            "time": 64.625,
+            "x": 288,
+            "y": 820,
+            "height": 430,
+            "growth": 0.85,
+            "branch_2": -8,
+            "ease": "smooth"
+          },
+          {
+            "time": 65.75,
+            "x": 288,
+            "y": 820,
+            "height": 430,
+            "growth": 0.85,
+            "branch_2": 0,
+            "ease": "smooth"
+          }
+        ],
+        "articulated-branch-face": [
+          {
+            "time": 61.5,
+            "x": 0,
+            "y": 0,
+            "height": 52,
+            "expression": "surprised",
+            "z": 3
+          }
+        ],
+        "articulated-branch-hand": [
+          {
+            "time": 61.5,
+            "x": 460,
+            "y": 490,
+            "height": 170,
+            "hand_pose": "open",
+            "z": 4
+          }
+        ]
+      },
+      "actions": [
+        {
+          "type": "press",
+          "actor": "articulated-branch-hand",
+          "target": "articulated-branch-plant",
+          "start": 62.125,
+          "end": 64.0,
+          "target_anchor": "branch_2",
+          "amount": 0.65,
+          "hold": false
+        }
+      ],
+      "background": {
+        "preset": "garden"
+      }
+    },
+    {
+      "renderer": "native-vector-v1",
+      "kind": "scene",
+      "index": 30,
+      "start_time": 66.5,
+      "end_time": 71.5,
+      "characters_present": [
+        "farmer-ik-reach-farmer",
+        "farmer-ik-reach-object"
+      ],
+      "poses": {
+        "farmer-ik-reach-farmer": [
+          {
+            "time": 66.5,
+            "x": 250,
+            "y": 870,
+            "height": 430,
+            "expression": "happy"
+          }
+        ],
+        "farmer-ik-reach-object": [
+          {
+            "time": 66.5,
+            "x": 430,
+            "y": 690,
+            "height": 115,
+            "z": 3
+          }
+        ]
+      },
+      "actions": [
+        {
+          "type": "reach",
+          "actor": "farmer-ik-reach-farmer",
+          "target": "farmer-ik-reach-object",
+          "start": 67.125,
+          "end": 68.375,
+          "actor_anchor": "hand_r"
+        }
+      ],
+      "background": {
+        "preset": "garden"
+      }
+    },
+    {
+      "renderer": "native-vector-v1",
+      "kind": "scene",
+      "index": 31,
+      "start_time": 71.5,
+      "end_time": 76.5,
+      "characters_present": [
+        "farmer-ik-carry-farmer",
+        "farmer-ik-carry-object"
+      ],
+      "poses": {
+        "farmer-ik-carry-farmer": [
+          {
+            "time": 71.5,
+            "x": 210,
+            "y": 880,
+            "height": 440,
+            "expression": "happy"
+          },
+          {
+            "time": 76.5,
+            "x": 370,
+            "y": 880,
+            "height": 440,
+            "expression": "happy",
+            "ease": "smooth"
+          }
+        ],
+        "farmer-ik-carry-object": [
+          {
+            "time": 71.5,
+            "x": 430,
+            "y": 760,
+            "height": 125,
+            "z": 3
+          }
+        ]
+      },
+      "actions": [
+        {
+          "type": "carry",
+          "actor": "farmer-ik-carry-farmer",
+          "target": "farmer-ik-carry-object",
+          "start": 72.125,
+          "end": 74.0
+        }
+      ],
+      "background": {
+        "preset": "garden"
+      }
+    },
+    {
+      "renderer": "native-vector-v1",
+      "kind": "scene",
+      "start_time": 76.5,
+      "end_time": 78.16666666666667,
+      "characters_present": [
+        "fishing-fisherman",
+        "fishing-boat",
+        "fishing-rod",
+        "fishing-bobber",
+        "fishing-hook",
+        "fishing-fish"
+      ],
+      "poses": {
+        "fishing-fisherman": [
+          {
+            "time": 76.5,
+            "x": 155,
+            "y": 900,
+            "height": 340,
+            "expression": "happy",
+            "drawing_id": "patient",
+            "exposure": "hold"
+          }
+        ],
+        "fishing-boat": [
+          {
+            "time": 76.5,
+            "x": 386,
+            "y": 940,
+            "height": 235,
+            "z": 0
+          }
+        ],
+        "fishing-rod": [
+          {
+            "time": 76.5,
+            "x": 0,
+            "y": 0,
+            "height": 165,
+            "rotation": -18,
+            "z": 3,
+            "drawing_id": "cast-ready",
+            "exposure": "hold"
+          },
+          {
+            "time": 77.54166666666667,
+            "x": 0,
+            "y": 0,
+            "height": 165,
+            "rotation": 38,
+            "ease": "smooth",
+            "z": 3,
+            "drawing_id": "cast",
+            "exposure": "ones"
+          },
+          {
+            "time": 78.16666666666667,
+            "x": 0,
+            "y": 0,
+            "height": 165,
+            "rotation": 22,
+            "ease": "smooth",
+            "z": 3,
+            "drawing_id": "wait",
+            "exposure": "twos"
+          }
+        ],
+        "fishing-bobber": [
+          {
+            "time": 76.5,
+            "x": 0,
+            "y": 42,
+            "height": 70,
+            "swim": -1,
+            "z": 3
+          },
+          {
+            "time": 77.33333333333333,
+            "x": 0,
+            "y": 42,
+            "height": 70,
+            "swim": 1,
+            "ease": "smooth",
+            "z": 3
+          },
+          {
+            "time": 78.16666666666667,
+            "x": 0,
+            "y": 42,
+            "height": 70,
+            "swim": -1,
+            "ease": "smooth",
+            "z": 3
+          }
+        ],
+        "fishing-hook": [
+          {
+            "time": 76.5,
+            "x": 448,
+            "y": 855,
+            "height": 58,
+            "z": 3,
+            "opacity": 0
+          }
+        ],
+        "fishing-fish": [
+          {
+            "time": 76.5,
+            "x": 452,
+            "y": 870,
+            "height": 92,
+            "swim": -0.4,
+            "z": 1,
+            "drawing_id": "glide",
+            "exposure": "twos"
+          },
+          {
+            "time": 78.16666666666667,
+            "x": 420,
+            "y": 875,
+            "height": 92,
+            "swim": 0.5,
+            "ease": "smooth",
+            "z": 1,
+            "drawing_id": "notice",
+            "exposure": "ones"
+          }
+        ]
+      },
+      "actions": [
+        {
+          "type": "gesture",
+          "start": 76.70833333333333,
+          "end": 77.125,
+          "actor": "fishing-fisherman"
+        },
+        {
+          "type": "swim",
+          "start": 76.58333333333333,
+          "end": 78.16666666666667,
+          "target": "fishing-fish"
+        }
+      ],
+      "background": {
+        "preset": "river"
+      },
+      "index": 32
+    },
+    {
+      "renderer": "native-vector-v1",
+      "kind": "scene",
+      "start_time": 78.16666666666667,
+      "end_time": 79.625,
+      "characters_present": [
+        "fishing-fisherman",
+        "fishing-boat",
+        "fishing-rod",
+        "fishing-bobber",
+        "fishing-hook",
+        "fishing-fish"
+      ],
+      "poses": {
+        "fishing-fisherman": [
+          {
+            "time": 78.16666666666667,
+            "x": 155,
+            "y": 900,
+            "height": 340,
+            "expression": "surprised",
+            "drawing_id": "bite",
+            "exposure": "ones"
+          }
+        ],
+        "fishing-boat": [
+          {
+            "time": 78.16666666666667,
+            "x": 386,
+            "y": 940,
+            "height": 235,
+            "z": 0
+          }
+        ],
+        "fishing-rod": [
+          {
+            "time": 78.16666666666667,
+            "x": 0,
+            "y": 0,
+            "height": 165,
+            "rotation": 22,
+            "z": 3,
+            "drawing_id": "bite",
+            "exposure": "ones"
+          },
+          {
+            "time": 79.625,
+            "x": 0,
+            "y": 0,
+            "height": 165,
+            "rotation": 12,
+            "ease": "smooth",
+            "z": 3,
+            "drawing_id": "pull",
+            "exposure": "twos"
+          }
+        ],
+        "fishing-bobber": [
+          {
+            "time": 78.16666666666667,
+            "x": 0,
+            "y": 42,
+            "height": 92,
+            "swim": 1,
+            "z": 3
+          },
+          {
+            "time": 78.79166666666667,
+            "x": 0,
+            "y": 42,
+            "height": 92,
+            "swim": -1,
+            "ease": "smooth",
+            "z": 3
+          },
+          {
+            "time": 79.625,
+            "x": 0,
+            "y": 42,
+            "height": 92,
+            "swim": 0,
+            "ease": "smooth",
+            "z": 3
+          }
+        ],
+        "fishing-hook": [
+          {
+            "time": 78.16666666666667,
+            "x": 430,
+            "y": 875,
+            "height": 58,
+            "z": 3
+          }
+        ],
+        "fishing-fish": [
+          {
+            "time": 78.16666666666667,
+            "x": 420,
+            "y": 875,
+            "height": 92,
+            "swim": 0.5,
+            "z": 1,
+            "drawing_id": "bite",
+            "exposure": "ones"
+          },
+          {
+            "time": 79.625,
+            "x": 400,
+            "y": 870,
+            "height": 92,
+            "swim": -0.4,
+            "ease": "smooth",
+            "z": 1,
+            "drawing_id": "hooked",
+            "exposure": "twos"
+          }
+        ]
+      },
+      "actions": [
+        {
+          "type": "set_hook",
+          "start": 78.375,
+          "end": 79.0,
+          "target": "fishing-fish",
+          "actor": "fishing-hook"
+        },
+        {
+          "type": "splash",
+          "start": 78.6875,
+          "end": 79.20833333333333,
+          "target": "fishing-fish"
+        }
+      ],
+      "background": {
+        "preset": "river"
+      },
+      "index": 33
+    },
+    {
+      "renderer": "native-vector-v1",
+      "kind": "scene",
+      "start_time": 79.625,
+      "end_time": 81.5,
+      "characters_present": [
+        "fishing-fisherman",
+        "fishing-boat",
+        "fishing-rod",
+        "fishing-fish"
+      ],
+      "poses": {
+        "fishing-fisherman": [
+          {
+            "time": 79.625,
+            "x": 160,
+            "y": 900,
+            "height": 340,
+            "expression": "worried",
+            "drawing_id": "reel",
+            "exposure": "ones"
+          },
+          {
+            "time": 81.5,
+            "x": 205,
+            "y": 900,
+            "height": 340,
+            "expression": "happy",
+            "ease": "smooth",
+            "drawing_id": "release",
+            "exposure": "twos"
+          }
+        ],
+        "fishing-boat": [
+          {
+            "time": 79.625,
+            "x": 386,
+            "y": 940,
+            "height": 235,
+            "z": 0
+          }
+        ],
+        "fishing-rod": [
+          {
+            "time": 79.625,
+            "x": 0,
+            "y": 0,
+            "height": 165,
+            "rotation": 12,
+            "z": 3,
+            "drawing_id": "reel",
+            "exposure": "ones"
+          },
+          {
+            "time": 81.5,
+            "x": 0,
+            "y": 0,
+            "height": 165,
+            "rotation": 6,
+            "ease": "smooth",
+            "z": 3,
+            "drawing_id": "rest",
+            "exposure": "hold"
+          }
+        ],
+        "fishing-fish": [
+          {
+            "time": 79.625,
+            "x": 400,
+            "y": 870,
+            "height": 92,
+            "hooked": 1,
+            "expression": "surprised",
+            "z": 3,
+            "drawing_id": "lift",
+            "exposure": "ones"
+          },
+          {
+            "time": 81.5,
+            "x": 300,
+            "y": 825,
+            "height": 92,
+            "hooked": 1,
+            "expression": "happy",
+            "ease": "smooth",
+            "z": 3,
+            "drawing_id": "safe",
+            "exposure": "twos"
+          }
+        ]
+      },
+      "actions": [
+        {
+          "type": "reel",
+          "start": 79.625,
+          "end": 80.45833333333333,
+          "target": "fishing-rod",
+          "actor": "fishing-fish"
+        },
+        {
+          "type": "carry",
+          "start": 80.45833333333333,
+          "end": 81.08333333333333,
+          "target": "fishing-fish",
+          "actor": "fishing-fisherman"
+        },
+        {
+          "type": "gesture",
+          "start": 80.5625,
+          "end": 81.1875,
+          "actor": "fishing-fisherman"
+        }
+      ],
+      "background": {
+        "preset": "river"
+      },
+      "index": 34
+    },
+    {
+      "renderer": "native-vector-v1",
+      "kind": "scene",
+      "start_time": 81.5,
+      "end_time": 83.31818181818181,
+      "characters_present": [
+        "sea-monsters-s_monster",
+        "sea-monsters-ss_monster",
+        "sea-monsters-boat",
+        "sea-monsters-fisherman"
+      ],
+      "poses": {
+        "sea-monsters-s_monster": [
+          {
+            "time": 81.5,
+            "x": 430,
+            "y": 980,
+            "height": 280,
+            "rise": 0,
+            "z": 1
+          }
+        ],
+        "sea-monsters-ss_monster": [
+          {
+            "time": 81.5,
+            "x": 120,
+            "y": 1040,
+            "height": 340,
+            "rise": 0,
+            "z": 1
+          }
+        ],
+        "sea-monsters-boat": [
+          {
+            "time": 81.5,
+            "x": 340,
+            "y": 1000,
+            "height": 250,
+            "z": 0
+          }
+        ],
+        "sea-monsters-fisherman": [
+          {
+            "time": 81.5,
+            "x": 200,
+            "y": 900,
+            "height": 430,
+            "expression": "happy",
+            "z": 3
+          }
+        ]
+      },
+      "actions": [
+        {
+          "type": "emerge",
+          "start": 81.72727272727273,
+          "end": 82.4090909090909,
+          "target": "sea-monsters-s_monster",
+          "amount": 0.8
+        },
+        {
+          "type": "whip",
+          "start": 82.63636363636364,
+          "end": 83.20454545454545,
+          "target": "sea-monsters-s_monster",
+          "amount": 0.7
+        }
+      ],
+      "background": {
+        "preset": "sea"
+      },
+      "index": 35
+    },
+    {
+      "renderer": "native-vector-v1",
+      "kind": "scene",
+      "start_time": 83.31818181818181,
+      "end_time": 84.9090909090909,
+      "characters_present": [
+        "sea-monsters-s_monster",
+        "sea-monsters-ss_monster",
+        "sea-monsters-boat",
+        "sea-monsters-fisherman"
+      ],
+      "poses": {
+        "sea-monsters-s_monster": [
+          {
+            "time": 83.31818181818181,
+            "x": 430,
+            "y": 980,
+            "height": 280,
+            "rise": 0.8,
+            "z": 1
+          }
+        ],
+        "sea-monsters-ss_monster": [
+          {
+            "time": 83.31818181818181,
+            "x": 120,
+            "y": 1040,
+            "height": 340,
+            "rise": 0,
+            "z": 1
+          }
+        ],
+        "sea-monsters-boat": [
+          {
+            "time": 83.31818181818181,
+            "x": 340,
+            "y": 1000,
+            "height": 250,
+            "z": 0
+          }
+        ],
+        "sea-monsters-fisherman": [
+          {
+            "time": 83.31818181818181,
+            "x": 200,
+            "y": 900,
+            "height": 430,
+            "expression": "surprised",
+            "z": 3
+          }
+        ]
+      },
+      "actions": [
+        {
+          "type": "emerge",
+          "start": 83.43181818181819,
+          "end": 84.11363636363636,
+          "target": "sea-monsters-ss_monster"
+        },
+        {
+          "type": "whip",
+          "start": 83.54545454545455,
+          "end": 84.22727272727273,
+          "target": "sea-monsters-s_monster",
+          "amount": 0.5
+        },
+        {
+          "type": "roar",
+          "start": 84.22727272727273,
+          "end": 84.79545454545455,
+          "target": "sea-monsters-ss_monster"
+        }
+      ],
+      "background": {
+        "preset": "sea"
+      },
+      "index": 36
+    },
+    {
+      "renderer": "native-vector-v1",
+      "kind": "scene",
+      "start_time": 84.9090909090909,
+      "end_time": 86.5,
+      "characters_present": [
+        "sea-monsters-s_monster",
+        "sea-monsters-ss_monster",
+        "sea-monsters-boat",
+        "sea-monsters-fisherman"
+      ],
+      "poses": {
+        "sea-monsters-s_monster": [
+          {
+            "time": 84.9090909090909,
+            "x": 430,
+            "y": 980,
+            "height": 290,
+            "rise": 0.9,
+            "z": 1
+          }
+        ],
+        "sea-monsters-ss_monster": [
+          {
+            "time": 84.9090909090909,
+            "x": 120,
+            "y": 1030,
+            "height": 350,
+            "rise": 1,
+            "z": 1
+          }
+        ],
+        "sea-monsters-boat": [
+          {
+            "time": 84.9090909090909,
+            "x": 340,
+            "y": 1000,
+            "height": 250,
+            "z": 0
+          }
+        ],
+        "sea-monsters-fisherman": [
+          {
+            "time": 84.9090909090909,
+            "x": 200,
+            "y": 900,
+            "height": 430,
+            "expression": "worried",
+            "z": 3
+          }
+        ]
+      },
+      "actions": [
+        {
+          "type": "strike",
+          "start": 85.13636363636364,
+          "end": 85.70454545454545,
+          "target": "sea-monsters-boat",
+          "actor": "sea-monsters-s_monster"
+        },
+        {
+          "type": "strike",
+          "start": 85.81818181818181,
+          "end": 86.38636363636364,
+          "target": "sea-monsters-fisherman",
+          "actor": "sea-monsters-ss_monster"
+        }
+      ],
+      "background": {
+        "preset": "sea"
+      },
+      "index": 37
+    },
+    {
+      "renderer": "native-vector-v1",
+      "kind": "scene",
+      "start_time": 86.5,
+      "end_time": 88.0625,
+      "characters_present": [
+        "orchard_harvest-farmer",
+        "orchard_harvest-mango_tree",
+        "orchard_harvest-basket",
+        "orchard_harvest-mango_picked"
+      ],
+      "poses": {
+        "orchard_harvest-farmer": [
+          {
+            "time": 86.5,
+            "x": 500,
+            "y": 810,
+            "height": 360,
+            "z": 3
+          },
+          {
+            "time": 86.8125,
+            "x": 323,
+            "y": 810,
+            "height": 360,
+            "z": 3
+          },
+          {
+            "time": 87.0,
+            "x": 313,
+            "y": 810,
+            "height": 360,
+            "z": 3
+          },
+          {
+            "time": 87.1875,
+            "x": 313,
+            "y": 810,
+            "height": 360,
+            "z": 3
+          },
+          {
+            "time": 87.59375,
+            "x": 165,
+            "y": 810,
+            "height": 360,
+            "ease": "smooth",
+            "flip": true,
+            "z": 3
+          },
+          {
+            "time": 87.75,
+            "x": 165,
+            "y": 810,
+            "height": 360,
+            "flip": true,
+            "z": 3
+          },
+          {
+            "time": 88.0625,
+            "x": 165,
+            "y": 810,
+            "height": 360,
+            "flip": true,
+            "z": 3
+          }
+        ],
+        "orchard_harvest-mango_tree": [
+          {
+            "time": 86.5,
+            "x": 190,
+            "y": 810,
+            "height": 560,
+            "growth": 1,
+            "fruits": 6
+          },
+          {
+            "time": 87.0,
+            "x": 190,
+            "y": 810,
+            "height": 560,
+            "growth": 1,
+            "fruits": 5
+          },
+          {
+            "time": 88.0625,
+            "x": 190,
+            "y": 810,
+            "height": 560,
+            "growth": 1,
+            "fruits": 5
+          }
+        ],
+        "orchard_harvest-basket": [
+          {
+            "time": 86.5,
+            "x": 95,
+            "y": 810,
+            "height": 180,
+            "fill": 0
+          },
+          {
+            "time": 87.8125,
+            "x": 95,
+            "y": 810,
+            "height": 180,
+            "fill": 0
+          },
+          {
+            "time": 88.0,
+            "x": 95,
+            "y": 810,
+            "height": 180,
+            "fill": 0.3
+          },
+          {
+            "time": 88.0625,
+            "x": 95,
+            "y": 810,
+            "height": 180,
+            "fill": 0.3
+          }
+        ],
+        "orchard_harvest-mango_picked": [
+          {
+            "time": 87.0,
+            "x": 234.8,
+            "y": 588.8,
+            "height": 95.2
+          },
+          {
+            "time": 87.75,
+            "x": 234.8,
+            "y": 588.8,
+            "height": 95.2
+          },
+          {
+            "time": 87.875,
+            "x": 95,
+            "y": 790,
+            "height": 95.2,
+            "ease": "ease_in"
+          },
+          {
+            "time": 88.0625,
+            "x": 95,
+            "y": 790,
+            "height": 95.2
+          }
+        ]
+      },
+      "actions": [
+        {
+          "type": "pick",
+          "actor": "orchard_harvest-farmer",
+          "target": "orchard_harvest-mango_tree",
+          "target_anchor": "fruit_6",
+          "actor_anchor": "hand_l",
+          "start": 86.8125,
+          "end": 87.125,
+          "contact": 87.0
+        },
+        {
+          "type": "grip",
+          "actor": "orchard_harvest-farmer",
+          "target": "orchard_harvest-mango_picked",
+          "actor_anchor": "hand_l",
+          "start": 87.0,
+          "end": 87.75
+        },
+        {
+          "type": "release",
+          "actor": "orchard_harvest-farmer",
+          "target": "orchard_harvest-mango_picked",
+          "start": 87.75,
+          "end": 87.875,
+          "offset": [
+            -60,
+            120
+          ]
+        }
+      ],
+      "background": {
+        "preset": "fruit_orchard"
+      },
+      "index": 38
+    },
+    {
+      "renderer": "native-vector-v1",
+      "kind": "scene",
+      "start_time": 88.0625,
+      "end_time": 89.625,
+      "characters_present": [
+        "orchard_harvest-farmer",
+        "orchard_harvest-orange_tree",
+        "orchard_harvest-basket",
+        "orchard_harvest-orange_picked"
+      ],
+      "poses": {
+        "orchard_harvest-farmer": [
+          {
+            "time": 88.0625,
+            "x": 500,
+            "y": 810,
+            "height": 360,
+            "z": 3
+          },
+          {
+            "time": 88.375,
+            "x": 287,
+            "y": 810,
+            "height": 360,
+            "z": 3
+          },
+          {
+            "time": 88.5625,
+            "x": 277,
+            "y": 810,
+            "height": 360,
+            "z": 3
+          },
+          {
+            "time": 88.75,
+            "x": 277,
+            "y": 810,
+            "height": 360,
+            "z": 3
+          },
+          {
+            "time": 89.125,
+            "x": 165,
+            "y": 810,
+            "height": 360,
+            "ease": "smooth",
+            "flip": true,
+            "z": 3
+          },
+          {
+            "time": 89.3125,
+            "x": 165,
+            "y": 810,
+            "height": 360,
+            "flip": true,
+            "z": 3
+          },
+          {
+            "time": 89.625,
+            "x": 165,
+            "y": 810,
+            "height": 360,
+            "flip": true,
+            "z": 3
+          }
+        ],
+        "orchard_harvest-orange_tree": [
+          {
+            "time": 88.0625,
+            "x": 190,
+            "y": 810,
+            "height": 470,
+            "growth": 1,
+            "fruits": 7
+          },
+          {
+            "time": 88.5625,
+            "x": 190,
+            "y": 810,
+            "height": 470,
+            "growth": 1,
+            "fruits": 6
+          },
+          {
+            "time": 89.625,
+            "x": 190,
+            "y": 810,
+            "height": 470,
+            "growth": 1,
+            "fruits": 6
+          }
+        ],
+        "orchard_harvest-basket": [
+          {
+            "time": 88.0625,
+            "x": 95,
+            "y": 810,
+            "height": 180,
+            "fill": 0.3
+          },
+          {
+            "time": 89.34375,
+            "x": 95,
+            "y": 810,
+            "height": 180,
+            "fill": 0.3
+          },
+          {
+            "time": 89.5,
+            "x": 95,
+            "y": 810,
+            "height": 180,
+            "fill": 0.6
+          },
+          {
+            "time": 89.625,
+            "x": 95,
+            "y": 810,
+            "height": 180,
+            "fill": 0.6
+          }
+        ],
+        "orchard_harvest-orange_picked": [
+          {
+            "time": 88.5625,
+            "x": 199.4,
+            "y": 511.55,
+            "height": 61.1
+          },
+          {
+            "time": 89.3125,
+            "x": 199.4,
+            "y": 511.55,
+            "height": 61.1
+          },
+          {
+            "time": 89.4375,
+            "x": 95,
+            "y": 790,
+            "height": 61.1,
+            "ease": "ease_in"
+          },
+          {
+            "time": 89.625,
+            "x": 95,
+            "y": 790,
+            "height": 61.1
+          }
+        ]
+      },
+      "actions": [
+        {
+          "type": "pick",
+          "actor": "orchard_harvest-farmer",
+          "target": "orchard_harvest-orange_tree",
+          "target_anchor": "fruit_7",
+          "actor_anchor": "hand_l",
+          "start": 88.375,
+          "end": 88.6875,
+          "contact": 88.5625
+        },
+        {
+          "type": "grip",
+          "actor": "orchard_harvest-farmer",
+          "target": "orchard_harvest-orange_picked",
+          "actor_anchor": "hand_l",
+          "start": 88.5625,
+          "end": 89.3125
+        },
+        {
+          "type": "release",
+          "actor": "orchard_harvest-farmer",
+          "target": "orchard_harvest-orange_picked",
+          "start": 89.3125,
+          "end": 89.4375,
+          "offset": [
+            -60,
+            120
+          ]
+        }
+      ],
+      "background": {
+        "preset": "fruit_orchard"
+      },
+      "index": 39
+    },
+    {
+      "renderer": "native-vector-v1",
+      "kind": "scene",
+      "start_time": 89.625,
+      "end_time": 91.5,
+      "characters_present": [
+        "orchard_harvest-farmer",
+        "orchard_harvest-durian_tree",
+        "orchard_harvest-basket",
+        "orchard_harvest-durian_dropped"
+      ],
+      "poses": {
+        "orchard_harvest-farmer": [
+          {
+            "time": 89.625,
+            "x": 500,
+            "y": 810,
+            "height": 360,
+            "z": 3
+          },
+          {
+            "time": 89.9375,
+            "x": 290,
+            "y": 810,
+            "height": 360,
+            "z": 3
+          },
+          {
+            "time": 90.375,
+            "x": 290,
+            "y": 810,
+            "height": 360,
+            "z": 3
+          },
+          {
+            "time": 90.625,
+            "x": 234,
+            "y": 810,
+            "height": 360,
+            "ease": "smooth",
+            "z": 3
+          },
+          {
+            "time": 90.875,
+            "x": 234,
+            "y": 810,
+            "height": 360,
+            "z": 3
+          },
+          {
+            "time": 91.125,
+            "x": 165,
+            "y": 810,
+            "height": 360,
+            "ease": "smooth",
+            "flip": true,
+            "z": 3
+          },
+          {
+            "time": 91.3125,
+            "x": 165,
+            "y": 810,
+            "height": 360,
+            "flip": true,
+            "z": 3
+          },
+          {
+            "time": 91.5,
+            "x": 165,
+            "y": 810,
+            "height": 360,
+            "expression": "happy",
+            "flip": true,
+            "z": 3
+          }
+        ],
+        "orchard_harvest-durian_tree": [
+          {
+            "time": 89.625,
+            "x": 200,
+            "y": 810,
+            "height": 600,
+            "growth": 1,
+            "fruits": 5
+          },
+          {
+            "time": 90.0625,
+            "x": 200,
+            "y": 810,
+            "height": 600,
+            "growth": 1,
+            "fruits": 4
+          },
+          {
+            "time": 91.5,
+            "x": 200,
+            "y": 810,
+            "height": 600,
+            "growth": 1,
+            "fruits": 4
+          }
+        ],
+        "orchard_harvest-basket": [
+          {
+            "time": 89.625,
+            "x": 95,
+            "y": 810,
+            "height": 180,
+            "fill": 0.6
+          },
+          {
+            "time": 91.25,
+            "x": 95,
+            "y": 810,
+            "height": 180,
+            "fill": 0.6
+          },
+          {
+            "time": 91.40625,
+            "x": 95,
+            "y": 810,
+            "height": 180,
+            "fill": 1.0
+          },
+          {
+            "time": 91.5,
+            "x": 95,
+            "y": 810,
+            "height": 180,
+            "fill": 1.0
+          }
+        ],
+        "orchard_harvest-durian_dropped": [
+          {
+            "time": 90.0625,
+            "x": 164.0,
+            "y": 537.0,
+            "height": 102.0
+          },
+          {
+            "time": 90.203125,
+            "x": 164.0,
+            "y": 810.0,
+            "height": 102.0,
+            "ease": "ease_in"
+          },
+          {
+            "time": 90.240625,
+            "x": 164.0,
+            "y": 790.0,
+            "height": 102.0,
+            "ease": "ease_out"
+          },
+          {
+            "time": 90.28125,
+            "x": 164.0,
+            "y": 810.0,
+            "height": 102.0,
+            "ease": "ease_in"
+          },
+          {
+            "time": 90.875,
+            "x": 164.0,
+            "y": 810,
+            "height": 102.0
+          },
+          {
+            "time": 91.25,
+            "x": 164.0,
+            "y": 810,
+            "height": 102.0
+          },
+          {
+            "time": 91.375,
+            "x": 95,
+            "y": 790,
+            "height": 102.0,
+            "ease": "ease_in"
+          },
+          {
+            "time": 91.5,
+            "x": 95,
+            "y": 790,
+            "height": 102.0
+          }
+        ]
+      },
+      "actions": [
+        {
+          "type": "shake",
+          "target": "orchard_harvest-durian_tree",
+          "start": 89.9375,
+          "end": 90.375,
+          "actor": "orchard_harvest-farmer"
+        },
+        {
+          "type": "grip",
+          "actor": "orchard_harvest-farmer",
+          "target": "orchard_harvest-durian_dropped",
+          "actor_anchor": "hand_l",
+          "start": 90.875,
+          "end": 91.25
+        },
+        {
+          "type": "release",
+          "actor": "orchard_harvest-farmer",
+          "target": "orchard_harvest-durian_dropped",
+          "start": 91.25,
+          "end": 91.375,
+          "offset": [
+            -60,
+            100
+          ]
+        }
+      ],
+      "background": {
+        "preset": "fruit_orchard"
+      },
+      "index": 40
+    },
+    {
+      "renderer": "native-vector-v1",
+      "kind": "scene",
+      "start_time": 91.5,
+      "end_time": 94.0,
+      "characters_present": [
+        "trellis_cucumber-farmer",
+        "trellis_cucumber-cucumber_vine"
+      ],
+      "poses": {
+        "trellis_cucumber-farmer": [
+          {
+            "time": 91.5,
+            "x": 460,
+            "y": 810,
+            "height": 450,
+            "expression": "happy",
+            "z": 3
+          },
+          {
+            "time": 94.0,
+            "x": 460,
+            "y": 810,
+            "height": 450,
+            "expression": "happy",
+            "z": 3
+          }
+        ],
+        "trellis_cucumber-cucumber_vine": [
+          {
+            "time": 91.5,
+            "x": 240,
+            "y": 810,
+            "height": 440,
+            "growth": 0.15,
+            "fruits": 0
+          },
+          {
+            "time": 92.4,
+            "x": 240,
+            "y": 810,
+            "height": 440,
+            "growth": 0.48,
+            "fruits": 0,
+            "ease": "smooth"
+          },
+          {
+            "time": 93.3,
+            "x": 240,
+            "y": 810,
+            "height": 440,
+            "growth": 0.82,
+            "fruits": 6,
+            "ease": "smooth"
+          },
+          {
+            "time": 94.0,
+            "x": 240,
+            "y": 810,
+            "height": 440,
+            "growth": 1.0,
+            "fruits": 6
+          }
+        ]
+      },
+      "actions": [
+        {
+          "type": "grow",
+          "target": "trellis_cucumber-cucumber_vine",
+          "start": 91.75,
+          "end": 93.75
+        }
+      ],
+      "background": {
+        "preset": "greenhouse"
+      },
+      "index": 41
+    },
+    {
+      "renderer": "native-vector-v1",
+      "kind": "scene",
+      "start_time": 94.0,
+      "end_time": 96.5,
+      "characters_present": [
+        "trellis_cucumber-farmer",
+        "trellis_cucumber-cucumber_vine",
+        "trellis_cucumber-basket",
+        "trellis_cucumber-cucumber_picked"
+      ],
+      "poses": {
+        "trellis_cucumber-farmer": [
+          {
+            "time": 94.0,
+            "x": 480,
+            "y": 810,
+            "height": 450,
+            "z": 3
+          },
+          {
+            "time": 94.5,
+            "x": 370,
+            "y": 810,
+            "height": 450,
+            "z": 3
+          },
+          {
+            "time": 94.8,
+            "x": 350,
+            "y": 810,
+            "height": 450,
+            "z": 3
+          },
+          {
+            "time": 95.1,
+            "x": 350,
+            "y": 810,
+            "height": 450,
+            "z": 3
+          },
+          {
+            "time": 95.7,
+            "x": 210,
+            "y": 810,
+            "height": 450,
+            "ease": "smooth",
+            "z": 3
+          },
+          {
+            "time": 96.0,
+            "x": 210,
+            "y": 810,
+            "height": 450,
+            "z": 3
+          },
+          {
+            "time": 96.5,
+            "x": 210,
+            "y": 810,
+            "height": 450,
+            "z": 3
+          }
+        ],
+        "trellis_cucumber-cucumber_vine": [
+          {
+            "time": 94.0,
+            "x": 240,
+            "y": 810,
+            "height": 450,
+            "growth": 1,
+            "fruits": 6
+          },
+          {
+            "time": 94.8,
+            "x": 240,
+            "y": 810,
+            "height": 450,
+            "growth": 1,
+            "fruits": 5
+          },
+          {
+            "time": 96.5,
+            "x": 240,
+            "y": 810,
+            "height": 450,
+            "growth": 1,
+            "fruits": 5
+          }
+        ],
+        "trellis_cucumber-basket": [
+          {
+            "time": 94.0,
+            "x": 110,
+            "y": 810,
+            "height": 180,
+            "fill": 0
+          },
+          {
+            "time": 95.75,
+            "x": 110,
+            "y": 810,
+            "height": 180,
+            "fill": 0
+          },
+          {
+            "time": 96.1,
+            "x": 110,
+            "y": 810,
+            "height": 180,
+            "fill": 0.4
+          },
+          {
+            "time": 96.5,
+            "x": 110,
+            "y": 810,
+            "height": 180,
+            "fill": 0.4
+          }
+        ],
+        "trellis_cucumber-cucumber_picked": [
+          {
+            "time": 94.8,
+            "x": 276.0,
+            "y": 526.5,
+            "height": 117.0
+          },
+          {
+            "time": 95.7,
+            "x": 276.0,
+            "y": 526.5,
+            "height": 117.0
+          },
+          {
+            "time": 96.0,
+            "x": 110,
+            "y": 770,
+            "height": 117.0,
+            "ease": "ease_in"
+          },
+          {
+            "time": 96.5,
+            "x": 110,
+            "y": 770,
+            "height": 117.0
+          }
+        ]
+      },
+      "actions": [
+        {
+          "type": "pick",
+          "actor": "trellis_cucumber-farmer",
+          "target": "trellis_cucumber-cucumber_vine",
+          "target_anchor": "fruit_6",
+          "actor_anchor": "hand_l",
+          "start": 94.5,
+          "end": 95.0,
+          "contact": 94.8
+        },
+        {
+          "type": "grip",
+          "actor": "trellis_cucumber-farmer",
+          "target": "trellis_cucumber-cucumber_picked",
+          "actor_anchor": "hand_l",
+          "start": 94.8,
+          "end": 95.7
+        },
+        {
+          "type": "release",
+          "actor": "trellis_cucumber-farmer",
+          "target": "trellis_cucumber-cucumber_picked",
+          "start": 95.7,
+          "end": 96.0,
+          "offset": [
+            -140,
+            200
+          ]
+        }
+      ],
+      "background": {
+        "preset": "trellis_garden"
+      },
+      "index": 42
+    },
+    {
+      "renderer": "native-vector-v1",
+      "kind": "scene",
+      "start_time": 96.5,
+      "end_time": 99.0,
+      "characters_present": [
+        "highland_temperate-farmer",
+        "highland_temperate-persimmon_tree",
+        "highland_temperate-strawberry_plant",
+        "highland_temperate-basket",
+        "highland_temperate-persimmon_picked"
+      ],
+      "poses": {
+        "highland_temperate-farmer": [
+          {
+            "time": 96.5,
+            "x": 480,
+            "y": 810,
+            "height": 360,
+            "expression": "happy",
+            "z": 3
+          },
+          {
+            "time": 97.1,
+            "x": 420,
+            "y": 810,
+            "height": 360,
+            "z": 3
+          },
+          {
+            "time": 97.4,
+            "x": 410,
+            "y": 810,
+            "height": 360,
+            "z": 3
+          },
+          {
+            "time": 97.7,
+            "x": 410,
+            "y": 810,
+            "height": 360,
+            "z": 3
+          },
+          {
+            "time": 98.4,
+            "x": 160,
+            "y": 810,
+            "height": 360,
+            "ease": "smooth",
+            "flip": true,
+            "z": 3
+          },
+          {
+            "time": 98.7,
+            "x": 160,
+            "y": 810,
+            "height": 360,
+            "flip": true,
+            "z": 3
+          },
+          {
+            "time": 99.0,
+            "x": 160,
+            "y": 810,
+            "height": 360,
+            "flip": true,
+            "z": 3
+          }
+        ],
+        "highland_temperate-persimmon_tree": [
+          {
+            "time": 96.5,
+            "x": 200,
+            "y": 810,
+            "height": 520,
+            "growth": 1,
+            "fruits": 6
+          },
+          {
+            "time": 97.4,
+            "x": 200,
+            "y": 810,
+            "height": 520,
+            "growth": 1,
+            "fruits": 5
+          },
+          {
+            "time": 99.0,
+            "x": 200,
+            "y": 810,
+            "height": 520,
+            "growth": 1,
+            "fruits": 5
+          }
+        ],
+        "highland_temperate-strawberry_plant": [
+          {
+            "time": 96.5,
+            "x": 390,
+            "y": 810,
+            "height": 120,
+            "growth": 1,
+            "fruits": 4
+          },
+          {
+            "time": 99.0,
+            "x": 390,
+            "y": 810,
+            "height": 120,
+            "growth": 1,
+            "fruits": 4
+          }
+        ],
+        "highland_temperate-basket": [
+          {
+            "time": 96.5,
+            "x": 85,
+            "y": 810,
+            "height": 180,
+            "fill": 0
+          },
+          {
+            "time": 98.45,
+            "x": 85,
+            "y": 810,
+            "height": 180,
+            "fill": 0
+          },
+          {
+            "time": 98.75,
+            "x": 85,
+            "y": 810,
+            "height": 180,
+            "fill": 0.4
+          },
+          {
+            "time": 99.0,
+            "x": 85,
+            "y": 810,
+            "height": 180,
+            "fill": 0.4
+          }
+        ],
+        "highland_temperate-persimmon_picked": [
+          {
+            "time": 97.4,
+            "x": 335.2,
+            "y": 472.0,
+            "height": 72.8
+          },
+          {
+            "time": 98.4,
+            "x": 335.2,
+            "y": 472.0,
+            "height": 72.8
+          },
+          {
+            "time": 98.7,
+            "x": 85,
+            "y": 770,
+            "height": 72.8,
+            "ease": "ease_in"
+          },
+          {
+            "time": 99.0,
+            "x": 85,
+            "y": 770,
+            "height": 72.8
+          }
+        ]
+      },
+      "actions": [
+        {
+          "type": "pick",
+          "actor": "highland_temperate-farmer",
+          "target": "highland_temperate-persimmon_tree",
+          "target_anchor": "fruit_6",
+          "actor_anchor": "hand_l",
+          "start": 97.1,
+          "end": 97.6,
+          "contact": 97.4
+        },
+        {
+          "type": "grip",
+          "actor": "highland_temperate-farmer",
+          "target": "highland_temperate-persimmon_picked",
+          "actor_anchor": "hand_l",
+          "start": 97.4,
+          "end": 98.4
+        },
+        {
+          "type": "release",
+          "actor": "highland_temperate-farmer",
+          "target": "highland_temperate-persimmon_picked",
+          "start": 98.4,
+          "end": 98.7,
+          "offset": [
+            -115,
+            210
+          ]
+        }
+      ],
+      "background": {
+        "preset": "highland_farm",
+        "weather": "fog",
+        "season": "autumn"
+      },
+      "index": 43
+    },
+    {
+      "renderer": "native-vector-v1",
+      "kind": "scene",
+      "start_time": 99.0,
+      "end_time": 101.5,
+      "characters_present": [
+        "highland_temperate-farmer",
+        "highland_temperate-pear_tree",
+        "highland_temperate-basket"
+      ],
+      "poses": {
+        "highland_temperate-farmer": [
+          {
+            "time": 99.0,
+            "x": 380,
+            "y": 810,
+            "height": 360,
+            "expression": "happy",
+            "z": 3
+          },
+          {
+            "time": 100.25,
+            "x": 380,
+            "y": 810,
+            "height": 360,
+            "expression": "happy",
+            "z": 3
+          },
+          {
+            "time": 101.5,
+            "x": 380,
+            "y": 810,
+            "height": 360,
+            "expression": "happy",
+            "z": 3
+          }
+        ],
+        "highland_temperate-pear_tree": [
+          {
+            "time": 99.0,
+            "x": 180,
+            "y": 810,
+            "height": 520,
+            "growth": 1,
+            "fruits": 0
+          },
+          {
+            "time": 101.5,
+            "x": 180,
+            "y": 810,
+            "height": 520,
+            "growth": 1,
+            "fruits": 0
+          }
+        ],
+        "highland_temperate-basket": [
+          {
+            "time": 99.0,
+            "x": 480,
+            "y": 810,
+            "height": 180,
+            "fill": 0.4
+          },
+          {
+            "time": 101.5,
+            "x": 480,
+            "y": 810,
+            "height": 180,
+            "fill": 0.4
+          }
+        ]
+      },
+      "actions": [],
+      "background": {
+        "preset": "snowy_orchard",
+        "weather": "snow",
+        "season": "winter"
+      },
+      "index": 44
+    },
+    {
+      "renderer": "native-vector-v1",
+      "kind": "scene",
+      "start_time": 101.5,
+      "end_time": 104.0,
+      "characters_present": [
+        "vegetable_cutaway-kohlrabi_plant",
+        "vegetable_cutaway-sweet_potato_plant",
+        "vegetable_cutaway-hand"
+      ],
+      "poses": {
+        "vegetable_cutaway-kohlrabi_plant": [
+          {
+            "time": 101.5,
+            "x": 160,
+            "y": 480,
+            "height": 360,
+            "growth": 0.25,
+            "cutaway": 1,
+            "roots": 1,
+            "z": 1
+          },
+          {
+            "time": 104.0,
+            "x": 160,
+            "y": 480,
+            "height": 360,
+            "growth": 1.0,
+            "cutaway": 1,
+            "roots": 1,
+            "z": 1
+          }
+        ],
+        "vegetable_cutaway-sweet_potato_plant": [
+          {
+            "time": 101.5,
+            "x": 380,
+            "y": 480,
+            "height": 380,
+            "growth": 0.25,
+            "cutaway": 1,
+            "roots": 1,
+            "z": 2
+          },
+          {
+            "time": 104.0,
+            "x": 380,
+            "y": 480,
+            "height": 380,
+            "growth": 1.0,
+            "cutaway": 1,
+            "roots": 1,
+            "z": 2
+          }
+        ],
+        "vegetable_cutaway-hand": [
+          {
+            "time": 101.5,
+            "x": 500,
+            "y": 320,
+            "height": 240,
+            "z": 3
+          },
+          {
+            "time": 104.0,
+            "x": 500,
+            "y": 320,
+            "height": 240,
+            "z": 3
+          }
+        ]
+      },
+      "actions": [
+        {
+          "type": "grow",
+          "start": 101.77777777777777,
+          "end": 103.72222222222223,
+          "target": "vegetable_cutaway-kohlrabi_plant"
+        },
+        {
+          "type": "grow",
+          "start": 101.77777777777777,
+          "end": 103.72222222222223,
+          "target": "vegetable_cutaway-sweet_potato_plant"
+        }
+      ],
+      "background": {
+        "preset": "soil_cutaway"
+      },
+      "index": 45
+    },
+    {
+      "renderer": "native-vector-v1",
+      "kind": "scene",
+      "start_time": 104.0,
+      "end_time": 106.5,
+      "characters_present": [
+        "vegetable_cutaway-kohlrabi_plant",
+        "vegetable_cutaway-sweet_potato_plant",
+        "vegetable_cutaway-hand"
+      ],
+      "poses": {
+        "vegetable_cutaway-kohlrabi_plant": [
+          {
+            "time": 104.0,
+            "x": 160,
+            "y": 480,
+            "height": 360,
+            "growth": 1.0,
+            "cutaway": 1,
+            "roots": 1,
+            "z": 1
+          },
+          {
+            "time": 106.5,
+            "x": 160,
+            "y": 480,
+            "height": 360,
+            "growth": 1.0,
+            "cutaway": 1,
+            "roots": 1,
+            "z": 1
+          }
+        ],
+        "vegetable_cutaway-sweet_potato_plant": [
+          {
+            "time": 104.0,
+            "x": 380,
+            "y": 480,
+            "height": 380,
+            "growth": 1.0,
+            "cutaway": 1,
+            "roots": 1,
+            "z": 2
+          },
+          {
+            "time": 106.5,
+            "x": 380,
+            "y": 480,
+            "height": 380,
+            "growth": 1.0,
+            "cutaway": 1,
+            "roots": 1,
+            "z": 2
+          }
+        ],
+        "vegetable_cutaway-hand": [
+          {
+            "time": 104.0,
+            "x": 500,
+            "y": 320,
+            "height": 240,
+            "z": 3
+          },
+          {
+            "time": 104.38888888888889,
+            "x": 400,
+            "y": 440,
+            "height": 240,
+            "z": 3
+          },
+          {
+            "time": 106.5,
+            "x": 400,
+            "y": 340,
+            "height": 240,
+            "z": 3
+          }
+        ]
+      },
+      "actions": [
+        {
+          "type": "uproot",
+          "start": 104.5,
+          "end": 106.27777777777777,
+          "target": "vegetable_cutaway-sweet_potato_plant",
+          "actor": "vegetable_cutaway-hand"
+        }
+      ],
+      "background": {
+        "preset": "soil_cutaway"
+      },
+      "index": 46
+    },
+    {
+      "renderer": "native-vector-v1",
+      "kind": "scene",
+      "start_time": 106.5,
+      "end_time": 108.16666666666667,
+      "characters_present": [
+        "safe_spraying-farmer",
+        "safe_spraying-mask",
+        "safe_spraying-sprayer",
+        "safe_spraying-cabinet",
+        "safe_spraying-bottle",
+        "safe_spraying-sign"
+      ],
+      "poses": {
+        "safe_spraying-farmer": [
+          {
+            "time": 106.5,
+            "x": 240,
+            "y": 810,
+            "height": 360,
+            "expression": "happy"
+          },
+          {
+            "time": 108.16666666666667,
+            "x": 240,
+            "y": 810,
+            "height": 360,
+            "expression": "happy"
+          }
+        ],
+        "safe_spraying-mask": [
+          {
+            "time": 106.5,
+            "x": 0,
+            "y": 0,
+            "height": 80
+          },
+          {
+            "time": 108.16666666666667,
+            "x": 0,
+            "y": 0,
+            "height": 80
+          }
+        ],
+        "safe_spraying-sprayer": [
+          {
+            "time": 106.5,
+            "x": 160,
+            "y": 810,
+            "height": 220
+          },
+          {
+            "time": 108.16666666666667,
+            "x": 160,
+            "y": 810,
+            "height": 220
+          }
+        ],
+        "safe_spraying-cabinet": [
+          {
+            "time": 106.5,
+            "x": 460,
+            "y": 810,
+            "height": 320,
+            "open": 1.0
+          },
+          {
+            "time": 108.16666666666667,
+            "x": 460,
+            "y": 810,
+            "height": 320,
+            "open": 1.0
+          }
+        ],
+        "safe_spraying-bottle": [
+          {
+            "time": 106.5,
+            "x": 460,
+            "y": 680,
+            "height": 80
+          },
+          {
+            "time": 108.16666666666667,
+            "x": 460,
+            "y": 680,
+            "height": 80
+          }
+        ],
+        "safe_spraying-sign": [
+          {
+            "time": 106.5,
+            "x": 80,
+            "y": 810,
+            "height": 240
+          },
+          {
+            "time": 108.16666666666667,
+            "x": 80,
+            "y": 810,
+            "height": 240
+          }
+        ]
+      },
+      "actions": [
+        {
+          "type": "pour",
+          "start": 107.0,
+          "end": 107.83333333333333,
+          "target": "safe_spraying-sprayer",
+          "actor": "safe_spraying-bottle"
+        }
+      ],
+      "background": {
+        "preset": "farm_warehouse"
+      },
+      "index": 47
+    },
+    {
+      "renderer": "native-vector-v1",
+      "kind": "scene",
+      "start_time": 108.16666666666667,
+      "end_time": 109.83333333333333,
+      "characters_present": [
+        "safe_spraying-farmer",
+        "safe_spraying-mask",
+        "safe_spraying-sprayer",
+        "safe_spraying-cabbage",
+        "safe_spraying-bystander"
+      ],
+      "poses": {
+        "safe_spraying-farmer": [
+          {
+            "time": 108.16666666666667,
+            "x": 180,
+            "y": 810,
+            "height": 360,
+            "expression": "happy"
+          },
+          {
+            "time": 109.16666666666667,
+            "x": 180,
+            "y": 810,
+            "height": 360,
+            "expression": "worried"
+          },
+          {
+            "time": 109.83333333333333,
+            "x": 180,
+            "y": 810,
+            "height": 360,
+            "expression": "worried"
+          }
+        ],
+        "safe_spraying-mask": [
+          {
+            "time": 108.16666666666667,
+            "x": 0,
+            "y": 0,
+            "height": 80
+          },
+          {
+            "time": 109.83333333333333,
+            "x": 0,
+            "y": 0,
+            "height": 80
+          }
+        ],
+        "safe_spraying-sprayer": [
+          {
+            "time": 108.16666666666667,
+            "x": 180,
+            "y": 810,
+            "height": 220,
+            "z": 1
+          },
+          {
+            "time": 109.83333333333333,
+            "x": 180,
+            "y": 810,
+            "height": 220,
+            "z": 1
+          }
+        ],
+        "safe_spraying-cabbage": [
+          {
+            "time": 108.16666666666667,
+            "x": 300,
+            "y": 810,
+            "height": 180,
+            "growth": 1.0
+          },
+          {
+            "time": 109.83333333333333,
+            "x": 300,
+            "y": 810,
+            "height": 180,
+            "growth": 1.0
+          }
+        ],
+        "safe_spraying-bystander": [
+          {
+            "time": 108.16666666666667,
+            "x": 470,
+            "y": 810,
+            "height": 350,
+            "expression": "happy",
+            "toxic": 0.0,
+            "z": 2
+          },
+          {
+            "time": 108.9,
+            "x": 470,
+            "y": 810,
+            "height": 350,
+            "expression": "worried",
+            "toxic": 0.7,
+            "z": 2
+          },
+          {
+            "time": 109.83333333333333,
+            "x": 470,
+            "y": 810,
+            "height": 350,
+            "expression": "worried",
+            "toxic": 0.7,
+            "z": 2
+          }
+        ]
+      },
+      "actions": [
+        {
+          "type": "spray_drift",
+          "start": 108.5,
+          "end": 109.56666666666666,
+          "target": "safe_spraying-bystander",
+          "actor": "safe_spraying-sprayer"
+        }
+      ],
+      "background": {
+        "preset": "vegetable_rows",
+        "weather": "wind"
+      },
+      "index": 48
+    },
+    {
+      "renderer": "native-vector-v1",
+      "kind": "scene",
+      "start_time": 109.83333333333333,
+      "end_time": 111.5,
+      "characters_present": [
+        "safe_spraying-bystander",
+        "safe_spraying-basin",
+        "safe_spraying-cabbage",
+        "safe_spraying-hand"
+      ],
+      "poses": {
+        "safe_spraying-bystander": [
+          {
+            "time": 109.83333333333333,
+            "x": 180,
+            "y": 810,
+            "height": 350,
+            "expression": "worried",
+            "toxic": 0.4
+          },
+          {
+            "time": 110.66666666666667,
+            "x": 180,
+            "y": 810,
+            "height": 350,
+            "expression": "happy",
+            "toxic": 0.0
+          },
+          {
+            "time": 111.5,
+            "x": 180,
+            "y": 810,
+            "height": 350,
+            "expression": "happy",
+            "toxic": 0.0
+          }
+        ],
+        "safe_spraying-basin": [
+          {
+            "time": 109.83333333333333,
+            "x": 380,
+            "y": 810,
+            "height": 200,
+            "fill": 0.6
+          },
+          {
+            "time": 111.5,
+            "x": 380,
+            "y": 810,
+            "height": 200,
+            "fill": 0.6
+          }
+        ],
+        "safe_spraying-cabbage": [
+          {
+            "time": 109.83333333333333,
+            "x": 380,
+            "y": 750,
+            "height": 130,
+            "toxic": 0.6,
+            "z": 2
+          },
+          {
+            "time": 111.0,
+            "x": 380,
+            "y": 750,
+            "height": 130,
+            "toxic": 0.0,
+            "z": 2
+          },
+          {
+            "time": 111.5,
+            "x": 380,
+            "y": 750,
+            "height": 130,
+            "toxic": 0.0,
+            "z": 2
+          }
+        ],
+        "safe_spraying-hand": [
+          {
+            "time": 109.83333333333333,
+            "x": 380,
+            "y": 690,
+            "height": 140,
+            "z": 3
+          },
+          {
+            "time": 111.5,
+            "x": 380,
+            "y": 690,
+            "height": 140,
+            "z": 3
+          }
+        ]
+      },
+      "actions": [
+        {
+          "type": "wash_produce",
+          "start": 110.16666666666667,
+          "end": 111.23333333333333,
+          "target": "safe_spraying-cabbage",
+          "actor": "safe_spraying-hand"
+        }
+      ],
+      "background": {
+        "preset": "kitchen"
+      },
+      "index": 49
+    },
+    {
+      "renderer": "native-vector-v1",
+      "kind": "title",
+      "start_time": 111.5,
+      "end_time": 113.0,
+      "text": "Rig + hành động + timeline · Không phải bản remake đã duyệt",
+      "characters_present": [],
+      "poses": {},
+      "index": 50
+    }
+  ],
+  "cues": [
+    {
+      "start": 1.5,
+      "end": 6.5,
+      "character_id": "narrator",
+      "text": "1 · Dưa hấu: rạch, bổ, cầm quả",
+      "offscreen": true
+    },
+    {
+      "start": 6.5,
+      "end": 11.5,
+      "character_id": "narrator",
+      "text": "2 · Ớt: sâu bò, vòi phun, ngày/đêm",
+      "offscreen": true
+    },
+    {
+      "start": 11.5,
+      "end": 16.5,
+      "character_id": "narrator",
+      "text": "3 · Táo: bọc túi, mưa, hé lộ",
+      "offscreen": true
+    },
+    {
+      "start": 16.5,
+      "end": 21.5,
+      "character_id": "narrator",
+      "text": "4 · Lạc: ép cành, mặt cắt, nhổ cây",
+      "offscreen": true
+    },
+    {
+      "start": 21.5,
+      "end": 26.5,
+      "character_id": "narrator",
+      "text": "5 · Cà chua: bón hạt, rễ, sinh trưởng",
+      "offscreen": true
+    },
+    {
+      "start": 26.5,
+      "end": 31.5,
+      "character_id": "narrator",
+      "text": "Nông trại · Gieo hạt, tưới và nảy mầm",
+      "offscreen": true
+    },
+    {
+      "start": 31.5,
+      "end": 36.5,
+      "character_id": "narrator",
+      "text": "Nông trại · Hái cà chua và thả vào xô",
+      "offscreen": true
+    },
+    {
+      "start": 36.5,
+      "end": 41.5,
+      "character_id": "narrator",
+      "text": "Nông trại · Cắt đu đủ và hứng nhựa",
+      "offscreen": true
+    },
+    {
+      "start": 41.5,
+      "end": 46.5,
+      "character_id": "narrator",
+      "text": "Nông trại · Gặt lúa, trâu, gà, tưới rau, nhổ cà rốt",
+      "offscreen": true
+    },
+    {
+      "start": 46.5,
+      "end": 51.5,
+      "character_id": "narrator",
+      "text": "Nông trại · Động vật, vườn hoa quả và đào đất",
+      "offscreen": true
+    },
+    {
+      "start": 51.5,
+      "end": 56.5,
+      "character_id": "narrator",
+      "text": "Khớp tay · Cầm dao và thả",
+      "offscreen": true
+    },
+    {
+      "start": 56.5,
+      "end": 61.5,
+      "character_id": "narrator",
+      "text": "Khớp tay · Mở, véo, chỉ, rải",
+      "offscreen": true
+    },
+    {
+      "start": 61.5,
+      "end": 66.5,
+      "character_id": "narrator",
+      "text": "Khớp cành · Uốn và hồi lại",
+      "offscreen": true
+    },
+    {
+      "start": 66.5,
+      "end": 71.5,
+      "character_id": "narrator",
+      "text": "Nông dân IK · Vươn tay chạm quả",
+      "offscreen": true
+    },
+    {
+      "start": 71.5,
+      "end": 76.5,
+      "character_id": "narrator",
+      "text": "Nông dân IK · Bê quả hai tay",
+      "offscreen": true
+    },
+    {
+      "start": 76.5,
+      "end": 81.5,
+      "character_id": "narrator",
+      "text": "6 · Câu cá: quăng cần, cá cắn, kéo lên, bê cá",
+      "offscreen": true
+    },
+    {
+      "start": 81.5,
+      "end": 86.5,
+      "character_id": "narrator",
+      "text": "7 · Thủy quái: trồi lên, quật xúc tu, gầm, vồ thuyền (cấp S & SS)",
+      "offscreen": true
+    },
+    {
+      "start": 86.5,
+      "end": 91.5,
+      "character_id": "narrator",
+      "text": "Thu hoạch vườn cây ăn quả: xoài, cam, sầu riêng",
+      "offscreen": true
+    },
+    {
+      "start": 91.5,
+      "end": 96.5,
+      "character_id": "narrator",
+      "text": "Dưa leo leo giàn và thu hoạch dưa giàn chữ A",
+      "offscreen": true
+    },
+    {
+      "start": 96.5,
+      "end": 101.5,
+      "character_id": "narrator",
+      "text": "Nông trại cao nguyên Đà Lạt và vườn cây tuyết phủ mùa đông",
+      "offscreen": true
+    },
+    {
+      "start": 101.5,
+      "end": 106.5,
+      "character_id": "narrator",
+      "text": "5 · Mặt cắt đất: su hào, khoai lang sinh trưởng và thu hoạch nhổ củ",
+      "offscreen": true
+    },
+    {
+      "start": 106.5,
+      "end": 111.5,
+      "character_id": "narrator",
+      "text": "6 · An toàn hoá chất: bảo hộ, gió tạt sương độc và rửa sạch nông sản",
+      "offscreen": true
+    }
+  ]
+}

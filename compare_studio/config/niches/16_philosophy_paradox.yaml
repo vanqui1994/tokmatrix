@@ -1,0 +1,5 @@
+niche_id: philosophy_paradox
+name: Nghịch Lý Triết Học
+language: vi
+summary: Nghịch lý, tư duy phản biện và các câu hỏi triết học dễ tiếp cận.
+allowed_engines: [mystery, vox, chalk, science, tierlist, kinetic]

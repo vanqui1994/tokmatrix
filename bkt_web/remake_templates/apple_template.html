@@ -1,0 +1,1438 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Remake Hoạt Hình 2D: Hai Quả Táo & Chiếc Túi Bọc Quả (3.mp4)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #070913;
+      --panel: rgba(15, 23, 42, 0.85);
+      --border: rgba(255, 255, 255, 0.1);
+      --accent-green: #22c55e;
+      --accent-red: #ef4444;
+      --accent-gold: #f59e0b;
+      --accent-cyan: #38bdf8;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+      background: var(--bg);
+      background-image: 
+        radial-gradient(circle at 15% 15%, rgba(34, 197, 94, 0.12) 0%, transparent 45%),
+        radial-gradient(circle at 85% 85%, rgba(239, 68, 68, 0.12) 0%, transparent 45%),
+        radial-gradient(circle at 50% 50%, rgba(56, 189, 248, 0.08) 0%, transparent 60%);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px 16px 60px;
+    }
+
+    /* Top Nav */
+    .top-nav {
+      width: 100%;
+      max-width: 1240px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+      padding: 14px 24px;
+      background: var(--panel);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+    }
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .badge-tag {
+      padding: 4px 10px;
+      background: rgba(34, 197, 94, 0.18);
+      border: 1px solid rgba(34, 197, 94, 0.4);
+      color: #4ade80;
+      font-size: 11px;
+      font-weight: 800;
+      border-radius: 20px;
+      letter-spacing: 0.5px;
+    }
+    .nav-title { font-size: 16px; font-weight: 800; color: #fff; }
+    .nav-links { display: flex; gap: 8px; }
+    .btn-nav {
+      padding: 8px 14px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--border);
+      color: #cbd5e1;
+      text-decoration: none;
+      font-size: 12.5px;
+      font-weight: 700;
+      border-radius: 10px;
+      transition: all 0.2s;
+    }
+    .btn-nav:hover { background: rgba(255, 255, 255, 0.12); color: #fff; }
+
+    /* Layout Grid */
+    .main-grid {
+      display: grid;
+      grid-template-columns: 460px 1fr;
+      gap: 32px;
+      width: 100%;
+      max-width: 1240px;
+      align-items: start;
+    }
+    @media (max-width: 950px) {
+      .main-grid { grid-template-columns: 1fr; justify-items: center; }
+    }
+
+    /* iPhone 16 Pro Titanium Bezel */
+    .phone-wrapper {
+      position: relative;
+      width: 440px;
+      height: 782px;
+      background: #000;
+      border-radius: 54px;
+      padding: 12px;
+      box-shadow: 
+        0 0 0 4px #2b2927,
+        0 0 0 6px #504d49,
+        0 0 0 9px #1c1a19,
+        0 30px 80px rgba(0, 0, 0, 0.8),
+        0 0 50px rgba(34, 197, 94, 0.15);
+    }
+    .phone-screen {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      background: #000;
+      border-radius: 44px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Dynamic Island */
+    .dynamic-island {
+      position: absolute;
+      top: 14px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 124px;
+      height: 32px;
+      background: #000;
+      border-radius: 20px;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+    }
+    .island-cam {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      background: #0d1b2a;
+      border: 1.5px solid #1e293b;
+    }
+    .island-sensor {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: #1e1b4b;
+    }
+
+    /* Canvas */
+    #anim-canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+      background: #064e3b;
+    }
+
+    /* Video Overlay Controls */
+    .screen-overlay {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 60px 18px 24px;
+      z-index: 50;
+    }
+    .overlay-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .tag-live {
+      background: rgba(34, 197, 94, 0.85);
+      backdrop-filter: blur(10px);
+      color: #000;
+      font-size: 10px;
+      font-weight: 900;
+      padding: 3px 8px;
+      border-radius: 6px;
+      letter-spacing: 0.5px;
+    }
+    .tag-aspect {
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(10px);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 800;
+      padding: 3px 8px;
+      border-radius: 6px;
+    }
+
+    .overlay-bottom {
+      pointer-events: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    /* Dynamic Subtitle Karaoke Pill */
+    .sub-pill-box {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+    }
+    .sub-pill {
+      background: rgba(0, 0, 0, 0.82);
+      backdrop-filter: blur(16px);
+      border: 1.5px solid rgba(255, 255, 255, 0.25);
+      border-radius: 14px;
+      padding: 10px 16px;
+      max-width: 96%;
+      text-align: center;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+      transition: all 0.2s;
+    }
+    .sub-speaker {
+      font-size: 11px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 2px;
+    }
+    .speaker-green { color: #4ade80; }
+    .speaker-bag { color: #f59e0b; }
+    .speaker-ruby { color: #f43f5e; }
+    .sub-text {
+      font-size: 14.5px;
+      font-weight: 800;
+      line-height: 1.35;
+      color: #ffffff;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+    }
+
+    /* Time Bar */
+    .time-bar {
+      width: 100%;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 4px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+    .time-bar-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #22c55e, #38bdf8);
+      border-radius: 4px;
+      transition: width 0.05s linear;
+    }
+
+    /* Control Buttons */
+    .controls-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .btn-play-ctrl {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: #22c55e;
+      border: none;
+      color: #000;
+      font-size: 18px;
+      font-weight: 900;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 14px rgba(34, 197, 94, 0.4);
+      transition: all 0.2s;
+    }
+    .btn-play-ctrl:hover { transform: scale(1.08); background: #4ade80; }
+    .time-display {
+      font-size: 12.5px;
+      font-weight: 800;
+      color: #f1f5f9;
+      background: rgba(0,0,0,0.5);
+      padding: 4px 10px;
+      border-radius: 8px;
+    }
+    .btn-action-ctrl {
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 8px 12px;
+      border-radius: 10px;
+      cursor: pointer;
+      backdrop-filter: blur(10px);
+      transition: all 0.2s;
+    }
+    .btn-action-ctrl:hover { background: rgba(255, 255, 255, 0.2); }
+
+    /* Side Panel */
+    .side-panel {
+      background: var(--panel);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 26px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 16px;
+    }
+    .panel-h2 {
+      font-size: 20px;
+      font-weight: 900;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+    .panel-sub {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* Cast Cards */
+    .cast-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .cast-card {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 12px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .cast-avatar {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+    }
+    .cast-name { font-size: 13.5px; font-weight: 800; color: #fff; }
+    .cast-role { font-size: 11px; color: var(--text-muted); }
+    .cast-voice { font-size: 10.5px; color: #38bdf8; font-family: monospace; }
+
+    /* Timeline Cues */
+    .story-timeline {
+      max-height: 400px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding-right: 6px;
+    }
+    .story-timeline::-webkit-scrollbar { width: 6px; }
+    .story-timeline::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 4px; }
+    .cue-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .cue-card:hover {
+      background: rgba(255, 255, 255, 0.07);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+    .cue-card.cue-active {
+      border-color: #22c55e;
+      background: rgba(34, 197, 94, 0.12);
+      box-shadow: 0 0 16px rgba(34, 197, 94, 0.2);
+    }
+    .cue-icon { font-size: 20px; }
+    .cue-info { flex: 1; }
+    .cue-top { display: flex; justify-content: space-between; margin-bottom: 2px; }
+    .cue-spk { font-size: 11px; font-weight: 800; }
+    .cue-sec { font-size: 11px; color: #94a3b8; font-family: monospace; }
+    .cue-txt { font-size: 13px; font-weight: 600; color: #f1f5f9; line-height: 1.35; }
+
+    /* Export Button */
+    .btn-export-box {
+      border-top: 1px solid var(--border);
+      padding-top: 16px;
+    }
+    .btn-export-full {
+      width: 100%;
+      padding: 14px 20px;
+      background: linear-gradient(135deg, #22c55e, #16a34a);
+      border: none;
+      border-radius: 14px;
+      color: #000;
+      font-size: 14.5px;
+      font-weight: 900;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      cursor: pointer;
+      box-shadow: 0 6px 20px rgba(34, 197, 94, 0.35);
+      transition: all 0.2s;
+    }
+    .btn-export-full:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(34, 197, 94, 0.5); }
+  </style>
+</head>
+<body>
+
+  <!-- Top Nav -->
+  <div class="top-nav">
+    <div class="brand-group">
+      <span class="badge-tag">🍎 NATIVE 2D VECTOR ART</span>
+      <span class="nav-title">Hai Quả Táo & Chiếc Túi Bọc Quả (3.mp4)</span>
+    </div>
+    <div class="nav-links">
+      <a href="/static/remake_caterpillar_demo.html" class="btn-nav">🐛 Bản Bắt Sâu 2.mp4</a>
+      <a href="/static/remake_tomato_demo.html" class="btn-nav">🍅 Bản Cà Chua 5.mp4</a>
+      <a href="/static/remake_2d_demo.html" class="btn-nav">🍉 Bản Dưa Hấu 1.mp4</a>
+      <a href="/static/remake_hub.html" class="btn-nav">🎛️ Remake Hub</a>
+      <a href="/" class="btn-nav">🏠 Về Trang Chủ</a>
+    </div>
+  </div>
+
+  <!-- Main Grid -->
+  <div class="main-grid">
+
+    <!-- Left: iPhone 16 Bezel Screen -->
+    <div class="phone-wrapper">
+      <div class="phone-screen">
+        <div class="dynamic-island">
+          <div class="island-cam"></div>
+          <div class="island-sensor"></div>
+        </div>
+
+        <canvas id="anim-canvas" width="720" height="1280"></canvas>
+
+        <div class="screen-overlay">
+          <div class="overlay-top">
+            <span class="tag-live">60 FPS VECTOR</span>
+            <span class="tag-aspect">9:16 TIKTOK HD</span>
+          </div>
+
+          <div class="overlay-bottom">
+            <!-- Dynamic Subtitle -->
+            <div class="sub-pill-box">
+              <div id="sub-pill" class="sub-pill">
+                <div id="sub-spk" class="sub-speaker speaker-green">TÁO XANH</div>
+                <div id="sub-txt" class="sub-text">Đang tải hoạt cảnh...</div>
+              </div>
+            </div>
+
+            <!-- Progress Bar -->
+            <div class="time-bar" id="time-bar" onclick="seekTimeline(event)">
+              <div class="time-bar-fill" id="time-bar-fill"></div>
+            </div>
+
+            <!-- Controls -->
+            <div class="controls-row">
+              <button type="button" class="btn-play-ctrl" id="btn-play" onclick="togglePlay()">▶</button>
+              <span class="time-display" id="time-display">00:00 / 00:46</span>
+              <button type="button" class="btn-action-ctrl" onclick="toggleMute()">🔊 Âm Thanh</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: Details & Cue Timeline Panel -->
+    <div class="side-panel">
+      <div class="panel-header">
+        <div>
+          <h2 class="panel-h2">🍏 Cốt Truyện & Lồng Tiếng Việt Hóa (3.mp4)</h2>
+          <p class="panel-sub">
+            Chuyển thể kịch bản nông nghiệp thông minh: Bài học giá trị của túi bọc trái cây chống sâu bệnh & thuốc trừ sâu độc hại.
+          </p>
+        </div>
+        <span style="font-size: 12px; font-weight: 800; color: #4ade80; background: rgba(34,197,94,0.15); padding: 4px 10px; border-radius: 8px;">
+          ⏱️ 46.5 GIÂY
+        </span>
+      </div>
+
+      <!-- Cast Details -->
+      <div class="cast-grid">
+        <div class="cast-card">
+          <div class="cast-avatar">🍏</div>
+          <div>
+            <div class="cast-name">Táo Xanh Lém Lỉnh</div>
+            <div class="cast-role">Không chịu bọc túi, bị sâu cắn</div>
+            <div class="cast-voice">CapCut · BV421_vivn_streaming</div>
+          </div>
+        </div>
+        <div class="cast-card">
+          <div class="cast-avatar">🍎</div>
+          <div>
+            <div class="cast-name">Táo Bọc Túi → Táo Ruby</div>
+            <div class="cast-role">An toàn, hóa Táo Đỏ Hoàn Mỹ</div>
+            <div class="cast-voice">Edge-TTS · vi-VN-NamMinhNeural</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Timeline Cues -->
+      <div class="story-timeline" id="timeline-list">
+        <!-- Rendered via JS -->
+      </div>
+
+      <!-- Export Action -->
+      <div class="btn-export-box">
+        <button type="button" class="btn-export-full" id="btn-export" onclick="exportVideo()">
+          <span>⚡</span> XUẤT VIDEO MP4 HOẠT HÌNH 2D SẮC NÉT (60 FPS)
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Audio Master -->
+  <audio id="master-audio" src="/static/remake_3_master.mp3" preload="auto"></audio>
+
+  <script>
+    const CUES = [
+      { id: "cue-01", start: 0.2, end: 2.2, speaker: "green_apple", name: "Táo Xanh", text: "Ê! Đang làm cái trò gì đấy bạn ơi?!", avatar: "🍏" },
+      { id: "cue-02", start: 2.4, end: 3.8, speaker: "bagged_apple", name: "Táo Bọc Túi", text: "Mau tháo cái túi bọc này ra cho tôi coi!", avatar: "📦" },
+      { id: "cue-03", start: 4.0, end: 5.4, speaker: "green_apple", name: "Táo Xanh", text: "Hứ, còn lâu nhé! Cứ gọi thoải mái đi haha!", avatar: "🍏" },
+      { id: "cue-04", start: 5.6, end: 8.0, speaker: "green_apple", name: "Táo Xanh", text: "Được trùm túi ấm áp thế kia sướng nhất rồi còn gì nữa!", avatar: "🍏" },
+      { id: "cue-05", start: 9.0, end: 12.0, speaker: "bagged_apple", name: "Táo Bọc Túi", text: "Ủa mà bên ngoài đang xảy ra chuyện gì thế hả? Sao nghe ồn vậy?", avatar: "📦" },
+      { id: "cue-06", start: 13.0, end: 15.2, speaker: "green_apple", name: "Táo Xanh", text: "Bị bọc kín mít trong túi rồi thì biết làm sao được!", avatar: "🍏" },
+      { id: "cue-07", start: 15.4, end: 17.5, speaker: "green_apple", name: "Táo Xanh", text: "Nhưng mà tui hổng có thèm nói cho nghe đâu, lêu lêu!", avatar: "🍏" },
+      { id: "cue-08", start: 18.0, end: 20.5, speaker: "bagged_apple", name: "Táo Bọc Túi", text: "Bên ngoài có cái gì thế? Sao động tĩnh dữ dội vậy trời?!", avatar: "📦" },
+      { id: "cue-09", start: 21.0, end: 25.0, speaker: "green_apple", name: "Táo Xanh", text: "Chết rồi! Bão nấm bệnh với lũ sâu hại đang tràn tới kìa! Cứu tui với!", avatar: "🍏" },
+      { id: "cue-10", start: 27.0, end: 30.5, speaker: "green_apple", name: "Táo Xanh", text: "Trời ơi nhìn đi! Thuốc trừ sâu xịt bay mù mịt dính đầy người tui rồi!", avatar: "🍏" },
+      { id: "cue-11", start: 31.0, end: 34.5, speaker: "green_apple", name: "Táo Xanh", text: "Người tui nám đen sần sùi hết cả rồi nè, hu hu!", avatar: "🍏" },
+      { id: "cue-12", start: 36.0, end: 38.2, speaker: "green_apple", name: "Táo Xanh", text: "Ơ kìa... sao cậu mở túi ra lại đỏ au bóng lộn đẹp trai thế kia?!", avatar: "🍏" },
+      { id: "cue-13", start: 38.5, end: 41.8, speaker: "ruby_apple", name: "Táo Đỏ Ruby", text: "Haha! Nhờ có chiếc túi bọc trái cây này che chắn hết mọi bụi bẩn và sâu bọ đấy!", avatar: "🍎" },
+      { id: "cue-14", start: 42.0, end: 45.8, speaker: "ruby_apple", name: "Táo Đỏ Ruby", text: "Vừa sạch sẽ vô công hại, không dính thuốc trừ sâu, quả lại ngọt lịm đạt chuẩn xuất khẩu luôn nha!", avatar: "🍎" }
+    ];
+
+    const audio = document.getElementById('master-audio');
+    const canvas = document.getElementById('anim-canvas');
+    const ctx = canvas.getContext('2d');
+    const subPill = document.getElementById('sub-pill');
+    const subSpk = document.getElementById('sub-spk');
+    const subTxt = document.getElementById('sub-txt');
+    const timeBarFill = document.getElementById('time-bar-fill');
+    const timeDisplay = document.getElementById('time-display');
+    const btnPlay = document.getElementById('btn-play');
+    const timelineList = document.getElementById('timeline-list');
+
+    let isPlaying = false;
+    const totalDuration = 46.5;
+
+    // Render Timeline Cues
+    function initTimeline() {
+      timelineList.innerHTML = '';
+      CUES.forEach((c, idx) => {
+        const item = document.createElement('div');
+        item.className = 'cue-card';
+        item.id = `cue-item-${idx}`;
+        item.onclick = () => {
+          audio.currentTime = c.start;
+          if (!isPlaying) togglePlay();
+        };
+        const spkColor = c.speaker === 'green_apple' ? '#4ade80' : (c.speaker === 'ruby_apple' ? '#f43f5e' : '#f59e0b');
+        item.innerHTML = `
+          <div class="cue-icon">${c.avatar}</div>
+          <div class="cue-info">
+            <div class="cue-top">
+              <span class="cue-spk" style="color: ${spkColor}">${c.name}</span>
+              <span class="cue-sec">${formatTime(c.start)} - ${formatTime(c.end)}</span>
+            </div>
+            <div class="cue-txt">${c.text}</div>
+          </div>
+        `;
+        timelineList.appendChild(item);
+      });
+    }
+
+    function formatTime(sec) {
+      const m = Math.floor(sec / 60);
+      const s = Math.floor(sec % 60);
+      return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+    }
+
+    function togglePlay() {
+      if (audio.paused) {
+        audio.play().then(() => {
+          isPlaying = true;
+          btnPlay.textContent = '⏸';
+        }).catch(err => console.log('Autoplay blocked:', err));
+      } else {
+        audio.pause();
+        isPlaying = false;
+        btnPlay.textContent = '▶';
+      }
+    }
+
+    function toggleMute() {
+      audio.muted = !audio.muted;
+    }
+
+    function seekTimeline(e) {
+      const rect = e.currentTarget.getBoundingClientRect();
+      const pct = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+      audio.currentTime = pct * totalDuration;
+    }
+
+    // Audio update listener
+    audio.addEventListener('timeupdate', () => {
+      const cur = audio.currentTime;
+      timeBarFill.style.width = (cur / totalDuration * 100) + '%';
+      timeDisplay.textContent = `${formatTime(cur)} / ${formatTime(totalDuration)}`;
+
+      // Find active cue
+      const activeCue = CUES.find(c => cur >= c.start && cur <= c.end);
+      if (activeCue) {
+        subSpk.textContent = activeCue.name;
+        subSpk.className = 'sub-speaker ' + (activeCue.speaker === 'green_apple' ? 'speaker-green' : (activeCue.speaker === 'ruby_apple' ? 'speaker-ruby' : 'speaker-bag'));
+        subTxt.textContent = `"${activeCue.text}"`;
+      } else {
+        subSpk.textContent = 'TOKKMATRIX STUDIO';
+        subSpk.className = 'sub-speaker';
+        subTxt.textContent = '🍎 Hai Quả Táo & Bí Quyết Túi Bọc Quả';
+      }
+
+      // Highlight timeline card
+      CUES.forEach((c, idx) => {
+        const el = document.getElementById(`cue-item-${idx}`);
+        if (el) {
+          if (cur >= c.start && cur <= c.end) el.classList.add('cue-active');
+          else el.classList.remove('cue-active');
+        }
+      });
+    });
+
+    audio.addEventListener('ended', () => {
+      isPlaying = false;
+      btnPlay.textContent = '▶';
+    });
+
+    // =========================================================================
+    // 2D NATIVE CANVAS ART ENGINE (60 FPS)
+    // =========================================================================
+
+    // Particle systems
+    const bugs = Array.from({ length: 6 }, (_, i) => ({
+      x: 100 + i * 50,
+      y: 350 + (i % 3) * 60,
+      speedX: 1.5 + Math.random() * 2,
+      speedY: Math.random() * 2 - 1,
+      wing: 0
+    }));
+
+    const mistParticles = Array.from({ length: 25 }, () => ({
+      x: Math.random() * 720,
+      y: 200 + Math.random() * 500,
+      r: 15 + Math.random() * 25,
+      alpha: 0.1 + Math.random() * 0.25,
+      vx: -1.5 - Math.random() * 2
+    }));
+
+    const rainDrops = Array.from({ length: 50 }, () => ({
+      x: Math.random() * 720,
+      y: Math.random() * 1280,
+      len: 20 + Math.random() * 25,
+      speed: 18 + Math.random() * 10
+    }));
+
+    function renderCanvas() {
+      const curTime = audio.currentTime || 0;
+      const t = curTime;
+      const W = canvas.width;
+      const H = canvas.height;
+
+      ctx.clearRect(0, 0, W, H);
+      ctx.save();
+
+      // -------------------------------------------------------------
+      // 1. DYNAMIC BACKGROUND SKY & SUNLIGHT
+      // -------------------------------------------------------------
+      let isStorm = (curTime >= 20.5 && curTime <= 35.0);
+      let isHarvest = (curTime >= 35.5);
+
+      const skyGrad = ctx.createLinearGradient(0, 0, 0, H);
+      if (isStorm) {
+        skyGrad.addColorStop(0, '#334155');
+        skyGrad.addColorStop(0.5, '#475569');
+        skyGrad.addColorStop(1, '#1e293b');
+      } else if (isHarvest) {
+        skyGrad.addColorStop(0, '#38bdf8');
+        skyGrad.addColorStop(0.4, '#bae6fd');
+        skyGrad.addColorStop(0.8, '#fef08a');
+        skyGrad.addColorStop(1, '#bbf7d0');
+      } else {
+        skyGrad.addColorStop(0, '#60a5fa');
+        skyGrad.addColorStop(0.5, '#bae6fd');
+        skyGrad.addColorStop(1, '#dcfce7');
+      }
+      ctx.fillStyle = skyGrad;
+      ctx.fillRect(0, 0, W, H);
+
+      // Radiant Sunburst Rays (if not storm)
+      if (!isStorm) {
+        ctx.save();
+        ctx.translate(650, 80);
+        ctx.rotate(t * 0.05);
+        for (let i = 0; i < 16; i++) {
+          ctx.beginPath();
+          ctx.moveTo(0, 0);
+          ctx.arc(0, 0, 800, (i * Math.PI) / 8, ((i + 0.4) * Math.PI) / 8);
+          ctx.closePath();
+          ctx.fillStyle = isHarvest ? 'rgba(250, 204, 21, 0.15)' : 'rgba(255, 255, 255, 0.09)';
+          ctx.fill();
+        }
+        ctx.restore();
+
+        // Sun disk
+        const sunG = ctx.createRadialGradient(650, 80, 10, 650, 80, 100);
+        sunG.addColorStop(0, '#fef08a');
+        sunG.addColorStop(0.5, 'rgba(253, 224, 71, 0.4)');
+        sunG.addColorStop(1, 'rgba(253, 224, 71, 0)');
+        ctx.fillStyle = sunG;
+        ctx.beginPath();
+        ctx.arc(650, 80, 100, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      // Distant rolling hills
+      ctx.fillStyle = isStorm ? '#1e293b' : '#86efac';
+      ctx.beginPath();
+      ctx.moveTo(0, 950);
+      ctx.quadraticCurveTo(240, 880, 480, 930);
+      ctx.quadraticCurveTo(620, 960, 720, 920);
+      ctx.lineTo(720, 1280);
+      ctx.lineTo(0, 1280);
+      ctx.fill();
+
+      // Foreground lush hill
+      ctx.fillStyle = isStorm ? '#0f172a' : '#22c55e';
+      ctx.beginPath();
+      ctx.moveTo(0, 1040);
+      ctx.quadraticCurveTo(360, 970, 720, 1060);
+      ctx.lineTo(720, 1280);
+      ctx.lineTo(0, 1280);
+      ctx.fill();
+
+      // Rainbow arc on Harvest celebration
+      if (isHarvest) {
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(360, 800, 420, Math.PI, 0);
+        ctx.lineWidth = 18;
+        ctx.strokeStyle = 'rgba(244, 63, 94, 0.2)';
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.arc(360, 800, 402, Math.PI, 0);
+        ctx.lineWidth = 18;
+        ctx.strokeStyle = 'rgba(250, 204, 21, 0.2)';
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.arc(360, 800, 384, Math.PI, 0);
+        ctx.lineWidth = 18;
+        ctx.strokeStyle = 'rgba(34, 197, 94, 0.2)';
+        ctx.stroke();
+        ctx.restore();
+      }
+
+      // -------------------------------------------------------------
+      // 2. TREE BRANCH & LEAVES ARCHING ACROSS TOP
+      // -------------------------------------------------------------
+      ctx.save();
+      // Main thick branch
+      ctx.beginPath();
+      ctx.moveTo(-20, 180);
+      ctx.bezierCurveTo(160, 220, 380, 230, 740, 190);
+      ctx.lineWidth = 26;
+      ctx.strokeStyle = '#451a03';
+      ctx.lineCap = 'round';
+      ctx.stroke();
+
+      // Bark highlight
+      ctx.beginPath();
+      ctx.moveTo(-20, 174);
+      ctx.bezierCurveTo(160, 214, 380, 224, 740, 184);
+      ctx.lineWidth = 6;
+      ctx.strokeStyle = '#78350f';
+      ctx.stroke();
+
+      // Leaf clusters
+      const leaves = [
+        { x: 90, y: 170, rot: -0.3, scale: 1.1 },
+        { x: 170, y: 220, rot: 0.4, scale: 0.9 },
+        { x: 260, y: 190, rot: -0.5, scale: 1.0 },
+        { x: 370, y: 240, rot: 0.2, scale: 1.2 },
+        { x: 490, y: 195, rot: -0.3, scale: 1.0 },
+        { x: 610, y: 205, rot: 0.5, scale: 1.1 },
+      ];
+
+      leaves.forEach((lf, idx) => {
+        ctx.save();
+        ctx.translate(lf.x, lf.y);
+        const sway = Math.sin(t * 3 + idx) * 0.08;
+        ctx.rotate(lf.rot + sway);
+        ctx.scale(lf.scale, lf.scale);
+
+        // Leaf shape
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.quadraticCurveTo(35, -25, 70, 0);
+        ctx.quadraticCurveTo(35, 25, 0, 0);
+        ctx.fillStyle = '#15803d';
+        ctx.fill();
+
+        // Leaf highlight
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.quadraticCurveTo(35, -22, 68, 0);
+        ctx.quadraticCurveTo(35, 0, 0, 0);
+        ctx.fillStyle = '#4ade80';
+        ctx.fill();
+
+        // Central vein
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.lineTo(65, 0);
+        ctx.lineWidth = 2;
+        ctx.strokeStyle = '#14532d';
+        ctx.stroke();
+        ctx.restore();
+      });
+      ctx.restore();
+
+      // -------------------------------------------------------------
+      // 3. WEATHER EFFECTS (RAIN / PEST BUGS / MIST)
+      // -------------------------------------------------------------
+      if (isStorm) {
+        // Rain
+        ctx.strokeStyle = 'rgba(186, 230, 253, 0.45)';
+        ctx.lineWidth = 2.5;
+        rainDrops.forEach(r => {
+          ctx.beginPath();
+          ctx.moveTo(r.x, r.y);
+          ctx.lineTo(r.x - 6, r.y + r.len);
+          ctx.stroke();
+          r.y += r.speed;
+          r.x -= 3;
+          if (r.y > 1280) { r.y = -30; r.x = Math.random() * 720; }
+        });
+
+        // Bug Pests attacking Green Apple (around x=240, y=450)
+        bugs.forEach((b, i) => {
+          b.wing = Math.sin(t * 30 + i) * 6;
+          b.x += Math.sin(t * 4 + i) * 2;
+          b.y += Math.cos(t * 3 + i) * 1.5;
+
+          ctx.save();
+          ctx.translate(b.x, b.y);
+
+          // Wings
+          ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+          ctx.beginPath();
+          ctx.ellipse(-6, -8 + b.wing, 10, 5, -0.4, 0, Math.PI * 2);
+          ctx.ellipse(6, -8 - b.wing, 10, 5, 0.4, 0, Math.PI * 2);
+          ctx.fill();
+
+          // Bug Body
+          ctx.fillStyle = '#4c0519';
+          ctx.beginPath();
+          ctx.ellipse(0, 0, 8, 12, 0, 0, Math.PI * 2);
+          ctx.fill();
+
+          // Angry Red Eyes
+          ctx.fillStyle = '#ef4444';
+          ctx.beginPath();
+          ctx.arc(-3, -6, 2.5, 0, Math.PI * 2);
+          ctx.arc(3, -6, 2.5, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.restore();
+        });
+
+        // Pesticide chemical clouds drifting
+        if (curTime >= 27.0 && curTime <= 35.0) {
+          mistParticles.forEach(p => {
+            ctx.fillStyle = `rgba(168, 85, 247, ${p.alpha})`;
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+            ctx.fill();
+            p.x += p.vx;
+            if (p.x < -50) p.x = 760;
+          });
+        }
+      }
+
+      // -------------------------------------------------------------
+      // 4. CHARACTER A: TÁO XANH (GREEN APPLE) - LEFT (x=240, y=480)
+      // -------------------------------------------------------------
+      const isGreenTalking = CUES.some(c => curTime >= c.start && curTime <= c.end && c.speaker === 'green_apple');
+      const isSick = (curTime >= 27.0);
+
+      ctx.save();
+      const greenSway = Math.sin(t * 3) * (isGreenTalking ? 0.08 : 0.03);
+      ctx.translate(240, 220); // Stem anchor on branch
+      ctx.rotate(greenSway);
+
+      // Stem
+      ctx.beginPath();
+      ctx.moveTo(0, 0);
+      ctx.quadraticCurveTo(-15, 70, 0, 130);
+      ctx.lineWidth = 8;
+      ctx.strokeStyle = '#15803d';
+      ctx.stroke();
+
+      // Stem Little Leaf
+      ctx.save();
+      ctx.translate(-8, 65);
+      ctx.rotate(-0.5);
+      ctx.beginPath();
+      ctx.ellipse(0, 0, 18, 9, 0, 0, Math.PI * 2);
+      ctx.fillStyle = '#22c55e';
+      ctx.fill();
+      ctx.restore();
+
+      // Apple Body Center (anchor relative: 0, 240)
+      ctx.translate(0, 240);
+
+      // Apple Body Shape (Plump Apple with top and bottom indentations)
+      ctx.beginPath();
+      ctx.moveTo(0, -90);
+      ctx.bezierCurveTo(70, -110, 130, -50, 120, 40);
+      ctx.bezierCurveTo(110, 110, 50, 130, 0, 115);
+      ctx.bezierCurveTo(-50, 130, -110, 110, -120, 40);
+      ctx.bezierCurveTo(-130, -50, -70, -110, 0, -90);
+      ctx.closePath();
+
+      // Dynamic Apple Skin Color
+      const appleGrad = ctx.createRadialGradient(-30, -30, 20, 0, 10, 140);
+      if (isSick) {
+        appleGrad.addColorStop(0, '#ca8a04');
+        appleGrad.addColorStop(0.6, '#a16207');
+        appleGrad.addColorStop(1, '#713f12');
+      } else {
+        appleGrad.addColorStop(0, '#bef264');
+        appleGrad.addColorStop(0.5, '#65a30d');
+        appleGrad.addColorStop(1, '#3f6212');
+      }
+      ctx.fillStyle = appleGrad;
+      ctx.fill();
+
+      // 3D Glassy Gloss Highlight
+      if (!isSick) {
+        ctx.beginPath();
+        ctx.ellipse(-45, -45, 35, 18, -0.6, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.45)';
+        ctx.fill();
+      } else {
+        // Rot Spots / Bug Bites on Apple A
+        ctx.fillStyle = '#451a03';
+        const spots = [
+          { x: -50, y: 10, r: 10 },
+          { x: -25, y: 40, r: 14 },
+          { x: 35, y: 20, r: 12 },
+          { x: 55, y: -20, r: 8 },
+          { x: -10, y: -20, r: 9 }
+        ];
+        spots.forEach(sp => {
+          ctx.beginPath();
+          ctx.arc(sp.x, sp.y, sp.r, 0, Math.PI * 2);
+          ctx.fill();
+        });
+      }
+
+      // Hands with White Cartoon Gloves
+      ctx.save();
+      // Left arm/hand
+      ctx.lineWidth = 5;
+      ctx.strokeStyle = '#14532d';
+      ctx.beginPath();
+      ctx.moveTo(-100, 20);
+      ctx.quadraticCurveTo(-135, 45, -110, 75);
+      ctx.stroke();
+      // Glove
+      ctx.fillStyle = '#ffffff';
+      ctx.beginPath();
+      ctx.arc(-110, 75, 14, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = '#000';
+      ctx.lineWidth = 2.5;
+      ctx.stroke();
+
+      // Right arm/hand (pointing or on hip)
+      ctx.lineWidth = 5;
+      ctx.strokeStyle = '#14532d';
+      ctx.beginPath();
+      ctx.moveTo(100, 20);
+      ctx.quadraticCurveTo(135, 45, 110, 75);
+      ctx.stroke();
+      // Glove
+      ctx.fillStyle = '#ffffff';
+      ctx.beginPath();
+      ctx.arc(110, 75, 14, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = '#000';
+      ctx.lineWidth = 2.5;
+      ctx.stroke();
+      ctx.restore();
+
+      // Eyes
+      const eyePanic = (curTime >= 21.0 && curTime <= 26.0);
+      const eyeSick = isSick;
+      ctx.fillStyle = '#ffffff';
+      ctx.beginPath();
+      ctx.ellipse(-32, -15, 22, 28, 0, 0, Math.PI * 2);
+      ctx.ellipse(32, -15, 22, 28, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.lineWidth = 3.5;
+      ctx.strokeStyle = '#000000';
+      ctx.stroke();
+
+      // Pupils
+      ctx.fillStyle = '#000000';
+      const pupilShift = isHarvest ? 10 : (eyePanic ? Math.sin(t * 30) * 3 : 0);
+      ctx.beginPath();
+      const pR = eyePanic ? 6 : 10;
+      ctx.arc(-28 + pupilShift, -15, pR, 0, Math.PI * 2);
+      ctx.arc(36 + pupilShift, -15, pR, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Eyelids / Brows
+      ctx.strokeStyle = '#000';
+      ctx.lineWidth = 4;
+      if (eyePanic) {
+        // High raised anxious brows
+        ctx.beginPath();
+        ctx.moveTo(-50, -50); ctx.lineTo(-15, -42);
+        ctx.moveTo(15, -42); ctx.lineTo(50, -50);
+        ctx.stroke();
+      } else if (eyeSick) {
+        // Sad droopy brows
+        ctx.beginPath();
+        ctx.moveTo(-50, -38); ctx.lineTo(-15, -46);
+        ctx.moveTo(15, -46); ctx.lineTo(50, -38);
+        ctx.stroke();
+      } else {
+        // Smug confident brows
+        ctx.beginPath();
+        ctx.moveTo(-50, -42); ctx.lineTo(-15, -45);
+        ctx.moveTo(15, -48); ctx.lineTo(50, -40);
+        ctx.stroke();
+      }
+
+      // Mouth (Talking animation)
+      ctx.save();
+      ctx.translate(0, 32);
+      const mOpenA = isGreenTalking ? Math.abs(Math.sin(t * 18)) * 16 + 4 : 4;
+      if (eyePanic || eyeSick) {
+        // Wavy sad/screaming mouth
+        ctx.fillStyle = '#dc2626';
+        ctx.beginPath();
+        ctx.ellipse(0, 0, 20, mOpenA + 6, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.strokeStyle = '#000';
+        ctx.lineWidth = 3;
+        ctx.stroke();
+      } else {
+        // Smug grin
+        ctx.fillStyle = '#ef4444';
+        ctx.beginPath();
+        ctx.arc(0, 0, 18, 0, Math.PI);
+        ctx.fill();
+        ctx.strokeStyle = '#000';
+        ctx.lineWidth = 3;
+        ctx.stroke();
+      }
+      ctx.restore();
+
+      // Cheeks
+      if (!isSick) {
+        ctx.fillStyle = 'rgba(239, 68, 68, 0.25)';
+        ctx.beginPath();
+        ctx.ellipse(-55, 12, 14, 8, 0, 0, Math.PI * 2);
+        ctx.ellipse(55, 12, 14, 8, 0, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      // Name label
+      ctx.fillStyle = '#ffffff';
+      ctx.font = '800 15px "Plus Jakarta Sans"';
+      ctx.textAlign = 'center';
+      ctx.fillText(isSick ? 'Táo Bệnh Nám 🍏' : 'Táo Xanh Lém Lỉnh 🍏', 0, 145);
+      ctx.restore();
+
+      // -------------------------------------------------------------
+      // 5. CHARACTER B: TÁO BỌC TÚI HOẶC TÁO ĐỎ RUBY (x=480, y=480)
+      // -------------------------------------------------------------
+      const isBagTalking = CUES.some(c => curTime >= c.start && curTime <= c.end && (c.speaker === 'bagged_apple' || c.speaker === 'ruby_apple'));
+
+      ctx.save();
+      const bagSway = Math.sin(t * 3.2 + 1) * (isBagTalking ? 0.08 : 0.03);
+      ctx.translate(480, 220);
+      ctx.rotate(bagSway);
+
+      // Stem
+      ctx.beginPath();
+      ctx.moveTo(0, 0);
+      ctx.quadraticCurveTo(15, 70, 0, 130);
+      ctx.lineWidth = 8;
+      ctx.strokeStyle = isHarvest ? '#9f1239' : '#b45309';
+      ctx.stroke();
+
+      ctx.translate(0, 240);
+
+      if (!isHarvest) {
+        // =========================================================
+        // GIAI ĐOẠN 1 & 2: CHIẾC TÚI GIẤY KRAFT BỌC TRÁI CÂY
+        // =========================================================
+
+        // Paper Bag Tie Ribbon at top
+        ctx.fillStyle = '#f59e0b';
+        ctx.beginPath();
+        ctx.ellipse(0, -95, 25, 8, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.strokeStyle = '#78350f';
+        ctx.lineWidth = 2.5;
+        ctx.stroke();
+
+        // Kraft Paper Bag Outline
+        ctx.beginPath();
+        ctx.moveTo(-20, -95);
+        ctx.lineTo(-95, -60);
+        ctx.quadraticCurveTo(-115, 50, -85, 120);
+        ctx.lineTo(85, 120);
+        ctx.quadraticCurveTo(115, 50, 95, -60);
+        ctx.lineTo(20, -95);
+        ctx.closePath();
+
+        const kraftGrad = ctx.createLinearGradient(-100, -90, 100, 120);
+        kraftGrad.addColorStop(0, '#d97706');
+        kraftGrad.addColorStop(0.5, '#b45309');
+        kraftGrad.addColorStop(1, '#78350f');
+        ctx.fillStyle = kraftGrad;
+        ctx.fill();
+        ctx.strokeStyle = '#451a03';
+        ctx.lineWidth = 4;
+        ctx.stroke();
+
+        // Kraft Creases & Folds
+        ctx.strokeStyle = 'rgba(69, 26, 3, 0.4)';
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.moveTo(-95, -60); ctx.lineTo(-10, 40); ctx.lineTo(-85, 120);
+        ctx.moveTo(95, -60); ctx.lineTo(10, 40); ctx.lineTo(85, 120);
+        ctx.moveTo(-10, 40); ctx.lineTo(0, 120);
+        ctx.stroke();
+
+        // Big Curious Eyes drawn on the Bag
+        ctx.fillStyle = '#ffffff';
+        ctx.beginPath();
+        ctx.arc(-32, -15, 20, 0, Math.PI * 2);
+        ctx.arc(32, -15, 20, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.lineWidth = 3;
+        ctx.strokeStyle = '#000000';
+        ctx.stroke();
+
+        // Pupils
+        ctx.fillStyle = '#000000';
+        ctx.beginPath();
+        ctx.arc(-32, -15, 9, 0, Math.PI * 2);
+        ctx.arc(32, -15, 9, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Bag Mouth (Talking animation)
+        ctx.save();
+        ctx.translate(0, 35);
+        const mOpenBag = isBagTalking ? Math.abs(Math.sin(t * 18)) * 14 + 3 : 3;
+        ctx.fillStyle = '#78350f';
+        ctx.beginPath();
+        ctx.ellipse(0, 0, 14, mOpenBag, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.strokeStyle = '#000';
+        ctx.lineWidth = 2.5;
+        ctx.stroke();
+        ctx.restore();
+
+        // Label
+        ctx.fillStyle = '#ffffff';
+        ctx.font = '800 15px "Plus Jakarta Sans"';
+        ctx.textAlign = 'center';
+        ctx.fillText('Táo Bọc Túi Giấy 📦', 0, 145);
+
+      } else {
+        // =========================================================
+        // GIAI ĐOẠN 3: TÁO ĐỎ RUBY HOÀN MỸ (TRANSFORMATION COMPLETE)
+        // =========================================================
+
+        // Golden Aura
+        const auraG = ctx.createRadialGradient(0, 10, 50, 0, 10, 160);
+        auraG.addColorStop(0, 'rgba(250, 204, 21, 0.45)');
+        auraG.addColorStop(0.7, 'rgba(245, 158, 11, 0.2)');
+        auraG.addColorStop(1, 'rgba(245, 158, 11, 0)');
+        ctx.fillStyle = auraG;
+        ctx.beginPath();
+        ctx.arc(0, 10, 160, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Apple Ruby Body
+        ctx.beginPath();
+        ctx.moveTo(0, -90);
+        ctx.bezierCurveTo(70, -110, 130, -50, 120, 40);
+        ctx.bezierCurveTo(110, 110, 50, 130, 0, 115);
+        ctx.bezierCurveTo(-50, 130, -110, 110, -120, 40);
+        ctx.bezierCurveTo(-130, -50, -70, -110, 0, -90);
+        ctx.closePath();
+
+        const rubyGrad = ctx.createRadialGradient(-30, -30, 20, 0, 10, 140);
+        rubyGrad.addColorStop(0, '#fda4af');
+        rubyGrad.addColorStop(0.3, '#f43f5e');
+        rubyGrad.addColorStop(0.7, '#e11d48');
+        rubyGrad.addColorStop(1, '#881337');
+        ctx.fillStyle = rubyGrad;
+        ctx.fill();
+
+        // Glowing Apple Border
+        ctx.strokeStyle = '#ffffff';
+        ctx.lineWidth = 3.5;
+        ctx.stroke();
+
+        // Shiny 3D Gloss Highlight
+        ctx.beginPath();
+        ctx.ellipse(-45, -45, 36, 18, -0.6, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.65)';
+        ctx.fill();
+
+        // Big Beautiful Sparkling Anime Eyes
+        ctx.fillStyle = '#ffffff';
+        ctx.beginPath();
+        ctx.ellipse(-32, -15, 24, 30, 0, 0, Math.PI * 2);
+        ctx.ellipse(32, -15, 24, 30, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.lineWidth = 3.5;
+        ctx.strokeStyle = '#000000';
+        ctx.stroke();
+
+        // Eye Pupils with Star/Heart Sparkles
+        ctx.fillStyle = '#0f172a';
+        ctx.beginPath();
+        ctx.arc(-30, -15, 14, 0, Math.PI * 2);
+        ctx.arc(34, -15, 14, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Eye Sparkle Glints
+        ctx.fillStyle = '#ffffff';
+        ctx.beginPath();
+        ctx.arc(-26, -20, 6, 0, Math.PI * 2);
+        ctx.arc(38, -20, 6, 0, Math.PI * 2);
+        ctx.arc(-34, -10, 3, 0, Math.PI * 2);
+        ctx.arc(30, -10, 3, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Rosy Blushing Cheeks
+        ctx.fillStyle = '#fb7185';
+        ctx.beginPath();
+        ctx.ellipse(-55, 15, 16, 10, 0, 0, Math.PI * 2);
+        ctx.ellipse(55, 15, 16, 10, 0, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Joyful Open Smile
+        ctx.save();
+        ctx.translate(0, 32);
+        const mOpenRuby = isBagTalking ? Math.abs(Math.sin(t * 18)) * 16 + 6 : 8;
+        ctx.fillStyle = '#991b1b';
+        ctx.beginPath();
+        ctx.arc(0, 0, 22, 0, Math.PI);
+        ctx.fill();
+        ctx.strokeStyle = '#000';
+        ctx.lineWidth = 3;
+        ctx.stroke();
+        // Little tongue
+        ctx.fillStyle = '#f43f5e';
+        ctx.beginPath();
+        ctx.arc(0, 6, 12, 0, Math.PI);
+        ctx.fill();
+        ctx.restore();
+
+        // Twinkling Sparkles around Ruby Apple
+        for (let i = 0; i < 7; i++) {
+          const spAngle = t * 2 + (i * Math.PI * 2) / 7;
+          const spR = 125 + Math.sin(t * 4 + i) * 15;
+          const sx = Math.cos(spAngle) * spR;
+          const sy = Math.sin(spAngle) * spR;
+
+          ctx.save();
+          ctx.translate(sx, sy);
+          ctx.rotate(t * 4 + i);
+          ctx.fillStyle = '#fef08a';
+          ctx.beginPath();
+          ctx.moveTo(0, -12); ctx.lineTo(3, -3); ctx.lineTo(12, 0); ctx.lineTo(3, 3);
+          ctx.lineTo(0, 12); ctx.lineTo(-3, 3); ctx.lineTo(-12, 0); ctx.lineTo(-3, -3);
+          ctx.fill();
+          ctx.restore();
+        }
+
+        // Little Gold Crown on Ruby Apple
+        ctx.save();
+        ctx.translate(0, -95);
+        ctx.fillStyle = '#fbbf24';
+        ctx.beginPath();
+        ctx.moveTo(-25, 0);
+        ctx.lineTo(-30, -22);
+        ctx.lineTo(-12, -10);
+        ctx.lineTo(0, -28);
+        ctx.lineTo(12, -10);
+        ctx.lineTo(30, -22);
+        ctx.lineTo(25, 0);
+        ctx.closePath();
+        ctx.fill();
+        ctx.strokeStyle = '#d97706';
+        ctx.lineWidth = 2.5;
+        ctx.stroke();
+        ctx.restore();
+
+        // Label
+        ctx.fillStyle = '#fef08a';
+        ctx.font = '900 16px "Plus Jakarta Sans"';
+        ctx.textAlign = 'center';
+        ctx.fillText('✨ Táo Đỏ Ruby Hoàn Mỹ 🍎', 0, 145);
+      }
+
+      ctx.restore();
+
+      // -------------------------------------------------------------
+      // 6. BOTTOM INFOGRAPHIC STAMP
+      // -------------------------------------------------------------
+      if (isHarvest) {
+        ctx.save();
+        ctx.translate(W / 2, 850);
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.75)';
+        ctx.beginPath();
+        ctx.roundRect(-220, -35, 440, 70, 16);
+        ctx.fill();
+        ctx.strokeStyle = '#22c55e';
+        ctx.lineWidth = 2.5;
+        ctx.stroke();
+
+        ctx.fillStyle = '#4ade80';
+        ctx.font = '900 15px "Plus Jakarta Sans"';
+        ctx.textAlign = 'center';
+        ctx.fillText('🏆 ĐẠT TIÊU CHUẨN XUẤT KHẨU QUỐC TẾ', 0, -8);
+
+        ctx.fillStyle = '#f8fafc';
+        ctx.font = '700 12.5px "Plus Jakarta Sans"';
+        ctx.fillText('100% Không Sâu Bệnh · Không Dư Lượng Hóa Chất', 0, 16);
+        ctx.restore();
+      }
+
+      ctx.restore();
+      requestAnimationFrame(renderCanvas);
+    }
+
+    // Export Canvas + Audio to MP4 / WebM
+    async function exportVideo() {
+      const btnExp = document.getElementById('btn-export');
+      btnExp.disabled = true;
+      btnExp.innerHTML = '⏳ ĐANG XUẤT VIDEO (VUI LÒNG CHỜ)...';
+
+      try {
+        const stream = canvas.captureStream(60);
+        // Audio stream capture
+        const actx = new (window.AudioContext || window.webkitAudioContext)();
+        const srcNode = actx.createMediaElementSource(audio);
+        const destNode = actx.createMediaStreamDestination();
+        srcNode.connect(destNode);
+        srcNode.connect(actx.destination);
+
+        const combinedStream = new MediaStream([
+          ...stream.getVideoTracks(),
+          ...destNode.stream.getAudioTracks()
+        ]);
+
+        const recorder = new MediaRecorder(combinedStream, {
+          mimeType: MediaRecorder.isTypeSupported('video/mp4;codecs=avc1') ? 'video/mp4;codecs=avc1' : 'video/webm'
+        });
+
+        const chunks = [];
+        recorder.ondataavailable = e => { if (e.data.size > 0) chunks.push(e.data); };
+        recorder.onstop = () => {
+          const blob = new Blob(chunks, { type: recorder.mimeType });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = 'remake_3_tao_xanh_vs_tao_do_60fps.mp4';
+          a.click();
+          btnExp.disabled = false;
+          btnExp.innerHTML = '✓ ĐÃ TẢI XUỐNG MP4! BẤM ĐỂ XUẤT LẠI';
+        };
+
+        audio.currentTime = 0;
+        audio.play();
+        isPlaying = true;
+        btnPlay.textContent = '⏸';
+        recorder.start();
+
+        audio.onended = () => {
+          recorder.stop();
+        };
+      } catch (err) {
+        alert('Lỗi xuất video: ' + err);
+        btnExp.disabled = false;
+        btnExp.innerHTML = '⚡ XUẤT VIDEO MP4 HOẠT HÌNH 2D SẮC NÉT (60 FPS)';
+      }
+    }
+
+    // Init
+    initTimeline();
+    requestAnimationFrame(renderCanvas);
+  </script>
+</body>
+</html>

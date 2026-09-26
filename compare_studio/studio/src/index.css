@@ -1,0 +1,141 @@
+@import "tailwindcss";
+
+/* Design tokens — same warm retro palette as the videos (DESIGN.md).
+   UI-only additions: a deeper page ground and a lighter card surface, so cards
+   separate from the background without leaving the palette. Text tones are the
+   *-ink variants, which is what clears WCAG AA on cream. */
+@theme {
+  --color-ground: #e7e0bc;
+  --color-surface: #f4eed4;
+  --color-surface-2: #faf6e6;
+  --color-line: #d5cba0;
+  --color-line-strong: #b9ac78;
+  --color-ink: #403226;
+  --color-ink-soft: #6f5643;
+  --color-ink-dim: #7a6049;
+  --color-terra: #b4502f;
+  --color-terra-bright: #cc6b49;
+  --color-gold: #d2a24c;
+  --color-sage: #3e8c77;
+  --color-sage-bright: #73bda8;
+
+  --font-sans: "Be Vietnam Pro", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+}
+
+@layer base {
+  * {
+    border-color: var(--color-line);
+  }
+  html {
+    color-scheme: light;
+  }
+  body {
+    margin: 0;
+    background: var(--color-ground);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+  /* Keyboard focus stays visible everywhere — never remove the ring. */
+  :focus-visible {
+    outline: 2px solid var(--color-terra);
+    outline-offset: 2px;
+    border-radius: 6px;
+  }
+  ::selection {
+    background: var(--color-gold);
+    color: var(--color-ink);
+  }
+}
+
+/* Motion is decoration here; honour the OS setting. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+.scroll-thin {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-line-strong) transparent;
+}
+
+.scroll-thin::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+.scroll-thin::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scroll-thin::-webkit-scrollbar-thumb {
+  background: var(--color-line-strong);
+  border-radius: 9999px;
+}
+
+/* Glassmorphism tuned for warm cream palette */
+.glass-surface {
+  background-color: rgba(244, 238, 212, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(213, 203, 160, 0.85);
+}
+
+.glass-surface-2 {
+  background-color: rgba(250, 246, 230, 0.9);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(185, 172, 120, 0.45);
+}
+
+/* Cinema Phone Frame for 9:16 vertical video inspection */
+.phone-frame {
+  position: relative;
+  border-radius: 36px;
+  border: 8px solid #231c16;
+  box-shadow: 0 20px 45px -10px rgba(64, 50, 38, 0.35), 0 0 0 1px rgba(255, 255, 255, 0.15);
+  background: #000;
+  overflow: hidden;
+}
+
+.phone-island {
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 76px;
+  height: 18px;
+  background: #231c16;
+  border-radius: 9999px;
+  z-index: 20;
+  pointer-events: none;
+}
+
+/* Live pulsing indicator */
+.pulse-emerald {
+  box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+  animation: pulse-emerald 2s infinite;
+}
+
+@keyframes pulse-emerald {
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+  }
+  70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 6px rgba(16, 185, 129, 0);
+  }
+  100% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+  }
+}
+

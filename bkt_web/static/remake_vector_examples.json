@@ -1,0 +1,5651 @@
+[
+  {
+    "id": "watermelon",
+    "name": "1 · Dưa hấu: rạch, bổ, cầm quả",
+    "renderer": "native-vector-v1",
+    "fidelity": "technical-demo",
+    "note": "Mẫu kiểm chứng thư viện, không phải bản remake đã duyệt của video nguồn.",
+    "duration": 12,
+    "characters": [
+      {
+        "id": "left",
+        "name": "Dưa hấu",
+        "asset": "watermelon"
+      },
+      {
+        "id": "right",
+        "name": "Dưa hấu",
+        "asset": "watermelon"
+      },
+      {
+        "id": "blade",
+        "name": "Dao",
+        "asset": "knife"
+      },
+      {
+        "id": "farmer",
+        "name": "Nông dân",
+        "asset": "farmer"
+      },
+      {
+        "id": "held",
+        "name": "Dưa hấu",
+        "asset": "watermelon",
+        "attach_to": {
+          "id": "farmer",
+          "anchor": "hand"
+        }
+      }
+    ],
+    "scenes": [
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 0,
+        "end_time": 8,
+        "characters_present": [
+          "left",
+          "right",
+          "blade"
+        ],
+        "poses": {
+          "left": [
+            {
+              "time": 0,
+              "x": 180,
+              "y": 650,
+              "height": 170,
+              "expression": "worried"
+            }
+          ],
+          "right": [
+            {
+              "time": 0,
+              "x": 410,
+              "y": 650,
+              "height": 150,
+              "expression": "surprised"
+            }
+          ],
+          "blade": [
+            {
+              "time": 0,
+              "x": 455,
+              "y": 440,
+              "height": 125,
+              "z": 2
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "cut",
+            "start": 1,
+            "end": 3,
+            "target": "left",
+            "actor": "blade"
+          },
+          {
+            "type": "slice",
+            "start": 3.2,
+            "end": 5.5,
+            "target": "left",
+            "actor": "blade"
+          }
+        ],
+        "background": {
+          "preset": "garden"
+        },
+        "index": 0
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 8,
+        "end_time": 12,
+        "characters_present": [
+          "farmer",
+          "held"
+        ],
+        "poses": {
+          "farmer": [
+            {
+              "time": 8,
+              "x": 340,
+              "y": 870,
+              "height": 460,
+              "expression": "happy"
+            }
+          ],
+          "held": [
+            {
+              "time": 8,
+              "x": 0,
+              "y": 15,
+              "height": 90,
+              "slice": 1,
+              "z": 3
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "gesture",
+            "start": 8.5,
+            "end": 11,
+            "actor": "farmer"
+          }
+        ],
+        "background": {
+          "preset": "garden"
+        },
+        "index": 1
+      }
+    ],
+    "cues": [
+      {
+        "start": 0.2,
+        "end": 0.9,
+        "character_id": "left",
+        "text": "Mẫu kỹ thuật",
+        "expression": "surprised"
+      }
+    ]
+  },
+  {
+    "id": "pepper",
+    "name": "2 · Ớt: sâu bò, vòi phun, ngày/đêm",
+    "renderer": "native-vector-v1",
+    "fidelity": "technical-demo",
+    "note": "Mẫu kiểm chứng thư viện, không phải bản remake đã duyệt của video nguồn.",
+    "duration": 12,
+    "characters": [
+      {
+        "id": "pepper",
+        "name": "Quả ớt",
+        "asset": "pepper"
+      },
+      {
+        "id": "bug",
+        "name": "Côn trùng",
+        "asset": "insect"
+      },
+      {
+        "id": "sprayer",
+        "name": "Vòi phun",
+        "asset": "sprayer"
+      }
+    ],
+    "scenes": [
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 0,
+        "end_time": 6,
+        "characters_present": [
+          "pepper",
+          "bug",
+          "sprayer"
+        ],
+        "poses": {
+          "pepper": [
+            {
+              "time": 0,
+              "x": 300,
+              "y": 830,
+              "height": 570,
+              "rotation": 25,
+              "damage": 0.8
+            }
+          ],
+          "bug": [
+            {
+              "time": 0,
+              "x": 220,
+              "y": 560,
+              "height": 90,
+              "expression": "smug",
+              "z": 2
+            }
+          ],
+          "sprayer": [
+            {
+              "time": 0,
+              "x": 435,
+              "y": 330,
+              "height": 160,
+              "rotation": 20,
+              "z": 3
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "spray",
+            "start": 1,
+            "end": 3,
+            "target": "bug",
+            "actor": "sprayer",
+            "target_anchor": "face"
+          },
+          {
+            "type": "crawl",
+            "start": 3.2,
+            "end": 5.5,
+            "target": "pepper",
+            "actor": "bug"
+          }
+        ],
+        "background": {
+          "preset": "pepper_patch"
+        },
+        "index": 0
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 6,
+        "end_time": 12,
+        "characters_present": [
+          "pepper",
+          "bug",
+          "sprayer"
+        ],
+        "poses": {
+          "pepper": [
+            {
+              "time": 6,
+              "x": 300,
+              "y": 830,
+              "height": 570,
+              "rotation": 25,
+              "damage": 0.8
+            }
+          ],
+          "bug": [
+            {
+              "time": 6,
+              "x": 280,
+              "y": 370,
+              "height": 90,
+              "expression": "sleep",
+              "z": 2
+            }
+          ],
+          "sprayer": [
+            {
+              "time": 6,
+              "x": 435,
+              "y": 330,
+              "height": 160,
+              "rotation": 20,
+              "expression": "angry",
+              "z": 3
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "spray",
+            "start": 8,
+            "end": 11,
+            "target": "bug",
+            "actor": "sprayer",
+            "target_anchor": "face"
+          }
+        ],
+        "background": {
+          "preset": "pepper_patch",
+          "time": "night"
+        },
+        "index": 1
+      }
+    ],
+    "cues": [
+      {
+        "start": 0.2,
+        "end": 0.9,
+        "character_id": "bug",
+        "text": "Mẫu kỹ thuật",
+        "expression": "surprised"
+      }
+    ]
+  },
+  {
+    "id": "apple",
+    "name": "3 · Táo: bọc túi, mưa, hé lộ",
+    "renderer": "native-vector-v1",
+    "fidelity": "technical-demo",
+    "note": "Mẫu kiểm chứng thư viện, không phải bản remake đã duyệt của video nguồn.",
+    "duration": 14,
+    "characters": [
+      {
+        "id": "bare",
+        "name": "Táo",
+        "asset": "apple"
+      },
+      {
+        "id": "protected",
+        "name": "Táo",
+        "asset": "apple"
+      },
+      {
+        "id": "bag",
+        "name": "Túi bọc quả",
+        "asset": "bag"
+      }
+    ],
+    "scenes": [
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 0,
+        "end_time": 4,
+        "characters_present": [
+          "bare",
+          "protected",
+          "bag"
+        ],
+        "poses": {
+          "bare": [
+            {
+              "time": 0,
+              "x": 160,
+              "y": 610,
+              "height": 170,
+              "growth": 0
+            }
+          ],
+          "protected": [
+            {
+              "time": 0,
+              "x": 390,
+              "y": 610,
+              "height": 170,
+              "growth": 0
+            }
+          ],
+          "bag": [
+            {
+              "time": 0,
+              "x": 490,
+              "y": 350,
+              "height": 190,
+              "z": 2
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "cover",
+            "start": 1,
+            "end": 3,
+            "target": "protected",
+            "actor": "bag"
+          }
+        ],
+        "background": {
+          "preset": "orchard"
+        },
+        "index": 0
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 4,
+        "end_time": 8,
+        "characters_present": [
+          "bare",
+          "protected",
+          "bag"
+        ],
+        "poses": {
+          "bare": [
+            {
+              "time": 4,
+              "x": 160,
+              "y": 610,
+              "height": 170,
+              "growth": 0,
+              "damage": 0
+            },
+            {
+              "time": 8,
+              "x": 160,
+              "y": 610,
+              "height": 170,
+              "growth": 0,
+              "damage": 1,
+              "expression": "sad"
+            }
+          ],
+          "protected": [
+            {
+              "time": 4,
+              "x": 390,
+              "y": 610,
+              "height": 170,
+              "growth": 0.5
+            }
+          ],
+          "bag": [
+            {
+              "time": 4,
+              "x": 390,
+              "y": 610,
+              "height": 190,
+              "z": 2,
+              "expression": "happy"
+            }
+          ]
+        },
+        "actions": [],
+        "background": {
+          "preset": "orchard",
+          "weather": "rain"
+        },
+        "index": 1
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 8,
+        "end_time": 14,
+        "characters_present": [
+          "bare",
+          "protected",
+          "bag"
+        ],
+        "poses": {
+          "bare": [
+            {
+              "time": 8,
+              "x": 160,
+              "y": 610,
+              "height": 170,
+              "damage": 1,
+              "growth": 0.4,
+              "expression": "worried"
+            }
+          ],
+          "protected": [
+            {
+              "time": 8,
+              "x": 390,
+              "y": 610,
+              "height": 170,
+              "growth": 0.7,
+              "expression": "happy"
+            }
+          ],
+          "bag": [
+            {
+              "time": 8,
+              "x": 390,
+              "y": 610,
+              "height": 190,
+              "z": 2
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "uncover",
+            "start": 9,
+            "end": 11,
+            "target": "protected",
+            "actor": "bag"
+          },
+          {
+            "type": "grow",
+            "start": 8,
+            "end": 12,
+            "target": "protected"
+          }
+        ],
+        "background": {
+          "preset": "orchard"
+        },
+        "index": 2
+      }
+    ],
+    "cues": [
+      {
+        "start": 0.2,
+        "end": 0.9,
+        "character_id": "bare",
+        "text": "Mẫu kỹ thuật",
+        "expression": "surprised"
+      }
+    ]
+  },
+  {
+    "id": "peanut",
+    "name": "4 · Lạc: ép cành, mặt cắt, nhổ cây",
+    "renderer": "native-vector-v1",
+    "fidelity": "technical-demo",
+    "note": "Mẫu kiểm chứng thư viện, không phải bản remake đã duyệt của video nguồn.",
+    "duration": 15,
+    "characters": [
+      {
+        "id": "plant",
+        "name": "Cây lạc",
+        "asset": "peanut_plant",
+        "face": false
+      },
+      {
+        "id": "shoot",
+        "name": "Mặt gắn vào bộ phận",
+        "asset": "face",
+        "attach_to": {
+          "id": "plant",
+          "anchor": "shoot"
+        }
+      },
+      {
+        "id": "branch",
+        "name": "Mặt gắn vào bộ phận",
+        "asset": "face",
+        "attach_to": {
+          "id": "plant",
+          "anchor": "branch"
+        }
+      },
+      {
+        "id": "foot",
+        "name": "Bàn chân",
+        "asset": "foot"
+      },
+      {
+        "id": "hand",
+        "name": "Bàn tay trái",
+        "asset": "hand"
+      }
+    ],
+    "scenes": [
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 0,
+        "end_time": 7,
+        "characters_present": [
+          "plant",
+          "shoot",
+          "branch",
+          "foot"
+        ],
+        "poses": {
+          "plant": [
+            {
+              "time": 0,
+              "x": 288,
+              "y": 800,
+              "height": 430,
+              "growth": 0.8
+            }
+          ],
+          "shoot": [
+            {
+              "time": 0,
+              "x": 0,
+              "y": 35,
+              "height": 90,
+              "expression": "surprised",
+              "z": 3
+            }
+          ],
+          "branch": [
+            {
+              "time": 0,
+              "x": 0,
+              "y": 20,
+              "height": 65,
+              "expression": "worried",
+              "z": 3
+            }
+          ],
+          "foot": [
+            {
+              "time": 0,
+              "x": 410,
+              "y": 270,
+              "height": 230,
+              "z": 4
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "press",
+            "start": 1,
+            "end": 4,
+            "target": "plant",
+            "actor": "foot",
+            "amount": 0.8
+          }
+        ],
+        "background": {
+          "preset": "garden"
+        },
+        "index": 0
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 7,
+        "end_time": 11,
+        "characters_present": [
+          "plant"
+        ],
+        "poses": {
+          "plant": [
+            {
+              "time": 7,
+              "x": 288,
+              "y": 470,
+              "height": 260,
+              "roots": 1,
+              "growth": 0.2,
+              "bend": 0.6
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "grow",
+            "start": 7.5,
+            "end": 10.5,
+            "target": "plant"
+          }
+        ],
+        "background": {
+          "preset": "soil_cutaway"
+        },
+        "index": 1
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 11,
+        "end_time": 15,
+        "characters_present": [
+          "plant",
+          "hand"
+        ],
+        "poses": {
+          "plant": [
+            {
+              "time": 11,
+              "x": 250,
+              "y": 820,
+              "height": 340,
+              "growth": 1
+            }
+          ],
+          "hand": [
+            {
+              "time": 11,
+              "x": 445,
+              "y": 540,
+              "height": 170,
+              "z": 3
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "uproot",
+            "start": 11.5,
+            "end": 14,
+            "target": "plant",
+            "actor": "hand"
+          }
+        ],
+        "background": {
+          "preset": "garden"
+        },
+        "index": 2
+      }
+    ],
+    "cues": [
+      {
+        "start": 0.2,
+        "end": 0.9,
+        "character_id": "shoot",
+        "text": "Mẫu kỹ thuật",
+        "expression": "surprised"
+      }
+    ]
+  },
+  {
+    "id": "tomato",
+    "name": "5 · Cà chua: bón hạt, rễ, sinh trưởng",
+    "renderer": "native-vector-v1",
+    "fidelity": "technical-demo",
+    "note": "Mẫu kiểm chứng thư viện, không phải bản remake đã duyệt của video nguồn.",
+    "duration": 14,
+    "characters": [
+      {
+        "id": "plant",
+        "name": "Cây cà chua",
+        "asset": "tomato_plant"
+      },
+      {
+        "id": "pot",
+        "name": "Chậu / mặt cắt",
+        "asset": "pot"
+      },
+      {
+        "id": "hand",
+        "name": "Bàn tay trái",
+        "asset": "hand"
+      }
+    ],
+    "scenes": [
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 0,
+        "end_time": 4,
+        "characters_present": [
+          "pot",
+          "plant",
+          "hand"
+        ],
+        "poses": {
+          "pot": [
+            {
+              "time": 0,
+              "x": 288,
+              "y": 890,
+              "height": 190,
+              "z": 0
+            }
+          ],
+          "plant": [
+            {
+              "time": 0,
+              "x": 288,
+              "y": 782,
+              "height": 450,
+              "growth": 0.2,
+              "expression": "sad",
+              "z": 1
+            }
+          ],
+          "hand": [
+            {
+              "time": 0,
+              "x": 452,
+              "y": 565,
+              "height": 170,
+              "z": 3
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "fertilize",
+            "start": 1,
+            "end": 3.8,
+            "target": "pot",
+            "actor": "hand"
+          }
+        ],
+        "background": {
+          "preset": "balcony"
+        },
+        "index": 0
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 4,
+        "end_time": 8,
+        "characters_present": [
+          "pot",
+          "plant",
+          "hand"
+        ],
+        "poses": {
+          "pot": [
+            {
+              "time": 4,
+              "x": 288,
+              "y": 870,
+              "height": 400,
+              "cutaway": 1,
+              "nutrients": 1,
+              "z": 0
+            }
+          ],
+          "plant": [
+            {
+              "time": 4,
+              "x": 288,
+              "y": 642,
+              "height": 380,
+              "roots": 1,
+              "growth": 0.3,
+              "z": 1
+            }
+          ],
+          "hand": [
+            {
+              "time": 4,
+              "x": 440,
+              "y": 530,
+              "height": 140,
+              "z": 3
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "fertilize",
+            "start": 4.5,
+            "end": 7,
+            "target": "pot",
+            "actor": "hand"
+          }
+        ],
+        "background": {
+          "preset": "balcony"
+        },
+        "camera": [
+          {
+            "time": 4,
+            "x": 288,
+            "y": 600,
+            "zoom": 1
+          },
+          {
+            "time": 8,
+            "x": 288,
+            "y": 600,
+            "zoom": 1.12,
+            "ease": "smooth"
+          }
+        ],
+        "index": 1
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "title",
+        "start_time": 8,
+        "end_time": 9.5,
+        "text": "2000 năm sau",
+        "characters_present": [],
+        "poses": {},
+        "index": 2
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 9.5,
+        "end_time": 14,
+        "characters_present": [
+          "pot",
+          "plant"
+        ],
+        "poses": {
+          "pot": [
+            {
+              "time": 9.5,
+              "x": 288,
+              "y": 890,
+              "height": 190
+            }
+          ],
+          "plant": [
+            {
+              "time": 9.5,
+              "x": 288,
+              "y": 782,
+              "height": 450,
+              "growth": 0.3,
+              "expression": "happy",
+              "z": 1
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "grow",
+            "start": 9.6,
+            "end": 13,
+            "target": "plant"
+          }
+        ],
+        "background": {
+          "preset": "balcony"
+        },
+        "index": 3
+      }
+    ],
+    "cues": [
+      {
+        "start": 0.2,
+        "end": 0.9,
+        "character_id": "plant",
+        "text": "Mẫu kỹ thuật",
+        "expression": "surprised"
+      }
+    ]
+  },
+  {
+    "id": "farm-sow-grow",
+    "name": "Nông trại · Gieo hạt, tưới và nảy mầm",
+    "renderer": "native-vector-v1",
+    "fidelity": "technical-demo",
+    "note": "Mẫu kiểm chứng rig nông nghiệp, không phải remake đã duyệt.",
+    "duration": 12,
+    "characters": [
+      {
+        "id": "hand",
+        "name": "Bàn tay trái",
+        "asset": "hand",
+        "material": "pencil"
+      },
+      {
+        "id": "seed",
+        "name": "Hạt đậu",
+        "asset": "seed",
+        "material": "ink"
+      },
+      {
+        "id": "pot",
+        "name": "Chậu / mặt cắt",
+        "asset": "pot",
+        "face": false,
+        "material": "ink"
+      },
+      {
+        "id": "plant",
+        "name": "Cây cà chua",
+        "asset": "tomato_plant",
+        "face": false,
+        "material": "ink"
+      }
+    ],
+    "scenes": [
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 0,
+        "end_time": 6,
+        "characters_present": [
+          "hand",
+          "seed",
+          "pot",
+          "plant"
+        ],
+        "poses": {
+          "hand": [
+            {
+              "time": 0,
+              "x": 190,
+              "y": 690,
+              "height": 190,
+              "hand_pose": "pinch",
+              "drawing_id": "seed-ready",
+              "exposure": "hold"
+            },
+            {
+              "time": 2,
+              "x": 275,
+              "y": 650,
+              "height": 190,
+              "hand_pose": "scatter",
+              "drawing_id": "seed-drop",
+              "exposure": "ones"
+            },
+            {
+              "time": 6,
+              "x": 300,
+              "y": 690,
+              "height": 190,
+              "hand_pose": "open",
+              "drawing_id": "after-drop",
+              "exposure": "twos"
+            }
+          ],
+          "seed": [
+            {
+              "time": 0,
+              "x": 330,
+              "y": 570,
+              "height": 72,
+              "drawing_id": "seed-rest",
+              "exposure": "hold"
+            }
+          ],
+          "pot": [
+            {
+              "time": 0,
+              "x": 292,
+              "y": 875,
+              "height": 330,
+              "cutaway": 1,
+              "drawing_id": "pot-open",
+              "exposure": "hold"
+            }
+          ],
+          "plant": [
+            {
+              "time": 0,
+              "x": 292,
+              "y": 855,
+              "height": 210,
+              "growth": 0.05,
+              "drawing_id": "sprout",
+              "exposure": "hold"
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "grip",
+            "start": 1,
+            "end": 1.4,
+            "target": "seed",
+            "actor": "hand"
+          },
+          {
+            "type": "release",
+            "start": 2.2,
+            "end": 3,
+            "target": "seed",
+            "actor": "hand",
+            "offset": [
+              0,
+              170
+            ]
+          },
+          {
+            "type": "fertilize",
+            "start": 3.1,
+            "end": 5.2,
+            "target": "pot",
+            "actor": "hand",
+            "amount": 0.8
+          }
+        ],
+        "background": {
+          "preset": "garden"
+        },
+        "index": 0
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 6,
+        "end_time": 12,
+        "characters_present": [
+          "pot",
+          "plant"
+        ],
+        "poses": {
+          "pot": [
+            {
+              "time": 6,
+              "x": 292,
+              "y": 875,
+              "height": 330,
+              "cutaway": 1,
+              "drawing_id": "pot-open",
+              "exposure": "hold"
+            }
+          ],
+          "plant": [
+            {
+              "time": 6,
+              "x": 292,
+              "y": 855,
+              "height": 210,
+              "growth": 0.05,
+              "drawing_id": "sprout",
+              "exposure": "hold"
+            },
+            {
+              "time": 9,
+              "x": 292,
+              "y": 855,
+              "height": 330,
+              "growth": 0.65,
+              "drawing_id": "leafy",
+              "exposure": "twos"
+            },
+            {
+              "time": 12,
+              "x": 292,
+              "y": 855,
+              "height": 390,
+              "growth": 1,
+              "drawing_id": "flowering",
+              "exposure": "hold"
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "grow",
+            "start": 6.4,
+            "end": 11.5,
+            "target": "plant"
+          }
+        ],
+        "background": {
+          "preset": "garden"
+        },
+        "index": 1
+      }
+    ],
+    "cues": []
+  },
+  {
+    "id": "farm-harvest",
+    "name": "Nông trại · Hái cà chua và thả vào xô",
+    "renderer": "native-vector-v1",
+    "fidelity": "technical-demo",
+    "note": "Mẫu kiểm chứng contact cành–tay–trái–xô, không phải remake đã duyệt.",
+    "duration": 7,
+    "characters": [
+      {
+        "id": "farmer",
+        "name": "Nông dân",
+        "asset": "farmer",
+        "material": "ink"
+      },
+      {
+        "id": "plant",
+        "name": "Cây cà chua",
+        "asset": "tomato_plant",
+        "face": false,
+        "material": "ink"
+      },
+      {
+        "id": "tomato",
+        "name": "Quả cà chua",
+        "asset": "tomato",
+        "material": "ink",
+        "attach_to": {
+          "id": "plant",
+          "anchor": "branch_1"
+        }
+      },
+      {
+        "id": "bucket",
+        "name": "Xô hứng",
+        "asset": "bucket",
+        "face": false,
+        "material": "ink"
+      }
+    ],
+    "scenes": [
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 0,
+        "end_time": 7,
+        "characters_present": [
+          "farmer",
+          "plant",
+          "tomato",
+          "bucket"
+        ],
+        "poses": {
+          "farmer": [
+            {
+              "time": 0,
+              "x": 165,
+              "y": 890,
+              "height": 440,
+              "expression": "happy",
+              "drawing_id": "reach-ready",
+              "exposure": "hold"
+            },
+            {
+              "time": 2.8,
+              "x": 170,
+              "y": 890,
+              "height": 440,
+              "expression": "happy",
+              "drawing_id": "reach-contact",
+              "exposure": "ones"
+            },
+            {
+              "time": 7,
+              "x": 220,
+              "y": 890,
+              "height": 440,
+              "expression": "happy",
+              "drawing_id": "drop-recover",
+              "exposure": "twos"
+            }
+          ],
+          "plant": [
+            {
+              "time": 0,
+              "x": 405,
+              "y": 850,
+              "height": 410,
+              "growth": 1,
+              "drawing_id": "fruit-heavy",
+              "exposure": "hold"
+            }
+          ],
+          "tomato": [
+            {
+              "time": 0,
+              "x": 0,
+              "y": 0,
+              "height": 88,
+              "drawing_id": "attached",
+              "exposure": "hold"
+            }
+          ],
+          "bucket": [
+            {
+              "time": 0,
+              "x": 365,
+              "y": 945,
+              "height": 250,
+              "fill": 0,
+              "drawing_id": "bucket-empty",
+              "exposure": "hold"
+            },
+            {
+              "time": 7,
+              "x": 365,
+              "y": 945,
+              "height": 250,
+              "fill": 0.3,
+              "drawing_id": "bucket-filled",
+              "exposure": "hold"
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "reach",
+            "start": 0.7,
+            "end": 2.8,
+            "target": "tomato",
+            "actor": "farmer",
+            "actor_anchor": "hand_r"
+          },
+          {
+            "type": "grip",
+            "start": 3,
+            "end": 3.3,
+            "target": "tomato",
+            "actor": "farmer",
+            "actor_anchor": "hand_r"
+          },
+          {
+            "type": "release",
+            "start": 4.4,
+            "end": 5.5,
+            "target": "tomato",
+            "actor": "farmer",
+            "actor_anchor": "hand_r",
+            "offset": [
+              105,
+              155
+            ]
+          },
+          {
+            "type": "gesture",
+            "start": 5.7,
+            "end": 6.8,
+            "actor": "farmer"
+          }
+        ],
+        "background": {
+          "preset": "garden"
+        },
+        "index": 0
+      }
+    ],
+    "cues": []
+  },
+  {
+    "id": "farm-papaya-latex",
+    "name": "Nông trại · Cắt đu đủ và hứng nhựa",
+    "renderer": "native-vector-v1",
+    "fidelity": "technical-demo",
+    "note": "Mẫu kiểm chứng điểm cắt, dòng nhựa và miệng xô, không phải remake đã duyệt.",
+    "duration": 7,
+    "characters": [
+      {
+        "id": "tree",
+        "name": "Cây đu đủ",
+        "asset": "papaya_tree",
+        "face": false,
+        "material": "ink"
+      },
+      {
+        "id": "knife",
+        "name": "Dao",
+        "asset": "knife",
+        "face": false,
+        "material": "ink"
+      },
+      {
+        "id": "bucket",
+        "name": "Xô hứng",
+        "asset": "bucket",
+        "face": false,
+        "material": "ink"
+      }
+    ],
+    "scenes": [
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 0,
+        "end_time": 7,
+        "characters_present": [
+          "tree",
+          "knife",
+          "bucket"
+        ],
+        "poses": {
+          "tree": [
+            {
+              "time": 0,
+              "x": 285,
+              "y": 860,
+              "height": 590,
+              "growth": 1,
+              "drawing_id": "tree-rest",
+              "exposure": "hold"
+            },
+            {
+              "time": 2.8,
+              "x": 285,
+              "y": 860,
+              "height": 590,
+              "cut": 0.7,
+              "drawing_id": "cut-contact",
+              "exposure": "ones"
+            },
+            {
+              "time": 7,
+              "x": 285,
+              "y": 860,
+              "height": 590,
+              "cut": 1,
+              "drawing_id": "latex-flow",
+              "exposure": "hold"
+            }
+          ],
+          "knife": [
+            {
+              "time": 0,
+              "x": 465,
+              "y": 555,
+              "height": 160,
+              "rotation": -22,
+              "drawing_id": "knife-raise",
+              "exposure": "hold"
+            }
+          ],
+          "bucket": [
+            {
+              "time": 0,
+              "x": 300,
+              "y": 970,
+              "height": 230,
+              "fill": 0,
+              "drawing_id": "bucket-empty",
+              "exposure": "hold"
+            },
+            {
+              "time": 7,
+              "x": 300,
+              "y": 970,
+              "height": 230,
+              "fill": 0.75,
+              "drawing_id": "bucket-latex",
+              "exposure": "hold"
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "cut",
+            "start": 1,
+            "end": 3.1,
+            "target": "tree",
+            "actor": "knife"
+          },
+          {
+            "type": "drip",
+            "start": 3.2,
+            "end": 6.7,
+            "target": "bucket",
+            "actor": "tree",
+            "amount": 0.75
+          }
+        ],
+        "background": {
+          "preset": "garden"
+        },
+        "index": 0
+      }
+    ],
+    "cues": []
+  },
+  {
+    "id": "farm-life",
+    "name": "Nông trại · Gặt lúa, trâu, gà, tưới rau, nhổ cà rốt",
+    "renderer": "native-vector-v1",
+    "fidelity": "technical-demo",
+    "note": "Mẫu kiểm chứng rig nông nghiệp mới, không phải remake đã duyệt.",
+    "duration": 16,
+    "characters": [
+      {
+        "id": "woman",
+        "name": "Nông dân nữ",
+        "asset": "farmer_woman"
+      },
+      {
+        "id": "rice1",
+        "name": "Cây lúa",
+        "asset": "rice_plant",
+        "face": false
+      },
+      {
+        "id": "rice2",
+        "name": "Cây lúa",
+        "asset": "rice_plant",
+        "face": false
+      },
+      {
+        "id": "rice3",
+        "name": "Cây lúa",
+        "asset": "rice_plant",
+        "face": false
+      },
+      {
+        "id": "sickle",
+        "name": "Cái liềm",
+        "asset": "sickle"
+      },
+      {
+        "id": "scarecrow",
+        "name": "Bù nhìn",
+        "asset": "scarecrow"
+      },
+      {
+        "id": "buffalo",
+        "name": "Con trâu",
+        "asset": "buffalo"
+      },
+      {
+        "id": "chicken",
+        "name": "Con gà",
+        "asset": "chicken"
+      },
+      {
+        "id": "worm",
+        "name": "Giun đất",
+        "asset": "earthworm"
+      },
+      {
+        "id": "sunflower",
+        "name": "Hoa hướng dương",
+        "asset": "sunflower"
+      },
+      {
+        "id": "bee",
+        "name": "Con ong",
+        "asset": "bee"
+      },
+      {
+        "id": "cabbage",
+        "name": "Bắp cải",
+        "asset": "cabbage"
+      },
+      {
+        "id": "can",
+        "name": "Bình tưới",
+        "asset": "watering_can"
+      },
+      {
+        "id": "carrot",
+        "name": "Cà rốt",
+        "asset": "carrot"
+      },
+      {
+        "id": "hand",
+        "name": "Bàn tay phải",
+        "asset": "hand_right",
+        "face": false
+      },
+      {
+        "id": "pumpkin",
+        "name": "Bí ngô",
+        "asset": "pumpkin"
+      },
+      {
+        "id": "eggplant",
+        "name": "Cà tím",
+        "asset": "eggplant"
+      },
+      {
+        "id": "corn",
+        "name": "Bắp ngô",
+        "asset": "corn"
+      },
+      {
+        "id": "basket",
+        "name": "Cái thúng",
+        "asset": "basket"
+      }
+    ],
+    "scenes": [
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 0,
+        "end_time": 4,
+        "characters_present": [
+          "rice1",
+          "rice2",
+          "rice3",
+          "sickle",
+          "woman"
+        ],
+        "poses": {
+          "rice1": [
+            {
+              "time": 0,
+              "x": 80,
+              "y": 900,
+              "height": 300,
+              "growth": 1,
+              "z": 1
+            }
+          ],
+          "rice2": [
+            {
+              "time": 0,
+              "x": 175,
+              "y": 910,
+              "height": 300,
+              "growth": 1,
+              "z": 1
+            }
+          ],
+          "rice3": [
+            {
+              "time": 0,
+              "x": 270,
+              "y": 900,
+              "height": 300,
+              "growth": 0.7,
+              "z": 1
+            }
+          ],
+          "sickle": [
+            {
+              "time": 0,
+              "x": 230,
+              "y": 620,
+              "height": 140,
+              "rotation": -10,
+              "z": 3
+            }
+          ],
+          "woman": [
+            {
+              "time": 0,
+              "x": 450,
+              "y": 960,
+              "height": 330,
+              "expression": "happy",
+              "z": 2
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "cut",
+            "start": 0.4,
+            "end": 1.8,
+            "target": "rice1",
+            "actor": "sickle"
+          },
+          {
+            "type": "cut",
+            "start": 2,
+            "end": 3.4,
+            "target": "rice2",
+            "actor": "sickle"
+          },
+          {
+            "type": "gesture",
+            "start": 1,
+            "end": 3,
+            "actor": "woman"
+          }
+        ],
+        "background": {
+          "preset": "garden"
+        },
+        "index": 0
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 4,
+        "end_time": 8,
+        "characters_present": [
+          "scarecrow",
+          "buffalo",
+          "chicken",
+          "worm"
+        ],
+        "poses": {
+          "scarecrow": [
+            {
+              "time": 4,
+              "x": 470,
+              "y": 810,
+              "height": 280,
+              "z": 0
+            }
+          ],
+          "buffalo": [
+            {
+              "time": 4,
+              "x": -60,
+              "y": 830,
+              "height": 250,
+              "z": 1
+            },
+            {
+              "time": 8,
+              "x": 300,
+              "y": 830,
+              "height": 250,
+              "z": 1
+            }
+          ],
+          "chicken": [
+            {
+              "time": 4,
+              "x": 300,
+              "y": 930,
+              "height": 170,
+              "z": 2
+            }
+          ],
+          "worm": [
+            {
+              "time": 4,
+              "x": 420,
+              "y": 935,
+              "height": 80,
+              "z": 1
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "peck",
+            "start": 5,
+            "end": 7.4,
+            "target": "worm",
+            "actor": "chicken"
+          }
+        ],
+        "background": {
+          "preset": "garden"
+        },
+        "index": 1
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 8,
+        "end_time": 12,
+        "characters_present": [
+          "sunflower",
+          "bee",
+          "cabbage",
+          "can"
+        ],
+        "poses": {
+          "sunflower": [
+            {
+              "time": 8,
+              "x": 140,
+              "y": 900,
+              "height": 380,
+              "growth": 0.3
+            },
+            {
+              "time": 11.5,
+              "x": 140,
+              "y": 900,
+              "height": 380,
+              "growth": 1,
+              "ease": "ease_out"
+            }
+          ],
+          "bee": [
+            {
+              "time": 8,
+              "x": 40,
+              "y": 380,
+              "height": 100
+            },
+            {
+              "time": 10,
+              "x": 160,
+              "y": 300,
+              "height": 100,
+              "ease": "smooth"
+            },
+            {
+              "time": 12,
+              "x": 120,
+              "y": 360,
+              "height": 100,
+              "flip": true,
+              "ease": "smooth"
+            }
+          ],
+          "cabbage": [
+            {
+              "time": 8,
+              "x": 330,
+              "y": 930,
+              "height": 230,
+              "growth": 0.7,
+              "z": 1
+            }
+          ],
+          "can": [
+            {
+              "time": 8,
+              "x": 470,
+              "y": 700,
+              "height": 190,
+              "z": 3
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "grow",
+            "start": 8.4,
+            "end": 11.5,
+            "target": "sunflower"
+          },
+          {
+            "type": "water",
+            "start": 8.6,
+            "end": 11.4,
+            "target": "cabbage",
+            "actor": "can"
+          }
+        ],
+        "background": {
+          "preset": "garden"
+        },
+        "index": 2
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 12,
+        "end_time": 16,
+        "characters_present": [
+          "carrot",
+          "hand",
+          "basket",
+          "pumpkin",
+          "eggplant",
+          "corn"
+        ],
+        "poses": {
+          "carrot": [
+            {
+              "time": 12,
+              "x": 300,
+              "y": 900,
+              "height": 260,
+              "growth": 0.9,
+              "z": 1
+            }
+          ],
+          "hand": [
+            {
+              "time": 12,
+              "x": 520,
+              "y": 640,
+              "height": 190,
+              "z": 3
+            }
+          ],
+          "basket": [
+            {
+              "time": 12,
+              "x": 110,
+              "y": 990,
+              "height": 240,
+              "fill": 0.8,
+              "z": 0
+            }
+          ],
+          "pumpkin": [
+            {
+              "time": 12,
+              "x": 90,
+              "y": 790,
+              "height": 190,
+              "expression": "happy",
+              "z": 1
+            }
+          ],
+          "eggplant": [
+            {
+              "time": 12,
+              "x": 470,
+              "y": 990,
+              "height": 150,
+              "expression": "happy",
+              "z": 2
+            }
+          ],
+          "corn": [
+            {
+              "time": 12,
+              "x": 540,
+              "y": 990,
+              "height": 150,
+              "expression": "surprised",
+              "z": 2
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "uproot",
+            "start": 12.3,
+            "end": 15,
+            "target": "carrot",
+            "actor": "hand"
+          }
+        ],
+        "background": {
+          "preset": "garden"
+        },
+        "index": 3
+      }
+    ],
+    "cues": [
+      {
+        "start": 13.2,
+        "end": 15.6,
+        "character_id": "pumpkin",
+        "text": "Mùa màng bội thu!",
+        "expression": "happy"
+      }
+    ]
+  },
+  {
+    "id": "farm-animals",
+    "name": "Nông trại · Động vật, vườn hoa quả và đào đất",
+    "renderer": "native-vector-v1",
+    "fidelity": "technical-demo",
+    "note": "Mẫu kiểm chứng thú 4 chân, chim, côn trùng, hoa quả và dụng cụ mới.",
+    "duration": 16,
+    "characters": [
+      {
+        "id": "cow",
+        "name": "Con bò",
+        "asset": "cow"
+      },
+      {
+        "id": "grass",
+        "name": "Bụi cỏ",
+        "asset": "grass_tuft",
+        "face": false
+      },
+      {
+        "id": "goat",
+        "name": "Con dê",
+        "asset": "goat"
+      },
+      {
+        "id": "rabbit",
+        "name": "Con thỏ",
+        "asset": "rabbit"
+      },
+      {
+        "id": "lotus",
+        "name": "Hoa sen",
+        "asset": "lotus"
+      },
+      {
+        "id": "rose",
+        "name": "Hoa hồng",
+        "asset": "rose"
+      },
+      {
+        "id": "daisy",
+        "name": "Hoa cúc",
+        "asset": "daisy"
+      },
+      {
+        "id": "butterfly",
+        "name": "Con bướm",
+        "asset": "butterfly",
+        "face": false
+      },
+      {
+        "id": "bee",
+        "name": "Con ong",
+        "asset": "bee",
+        "face": false
+      },
+      {
+        "id": "woman",
+        "name": "Nông dân nữ",
+        "asset": "farmer_woman"
+      },
+      {
+        "id": "mango",
+        "name": "Xoài",
+        "asset": "mango"
+      },
+      {
+        "id": "crate",
+        "name": "Thùng gỗ",
+        "asset": "crate",
+        "face": false
+      },
+      {
+        "id": "strawberry",
+        "name": "Dâu tây",
+        "asset": "strawberry"
+      },
+      {
+        "id": "orange",
+        "name": "Quả cam",
+        "asset": "orange"
+      },
+      {
+        "id": "pig",
+        "name": "Con heo",
+        "asset": "pig"
+      },
+      {
+        "id": "duck",
+        "name": "Con vịt",
+        "asset": "duck"
+      },
+      {
+        "id": "chick",
+        "name": "Gà con",
+        "asset": "chick"
+      },
+      {
+        "id": "ant",
+        "name": "Con kiến",
+        "asset": "ant",
+        "face": false
+      },
+      {
+        "id": "shovel",
+        "name": "Cái xẻng",
+        "asset": "shovel",
+        "face": false
+      },
+      {
+        "id": "soil_bed",
+        "name": "Luống đất",
+        "asset": "soil_bed",
+        "face": false
+      }
+    ],
+    "scenes": [
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 0,
+        "end_time": 4,
+        "characters_present": [
+          "cow",
+          "grass",
+          "goat",
+          "rabbit"
+        ],
+        "poses": {
+          "cow": [
+            {
+              "time": 0,
+              "x": 190,
+              "y": 840,
+              "height": 260,
+              "z": 1
+            }
+          ],
+          "grass": [
+            {
+              "time": 0,
+              "x": 400,
+              "y": 850,
+              "height": 140,
+              "z": 0
+            }
+          ],
+          "goat": [
+            {
+              "time": 0,
+              "x": 660,
+              "y": 790,
+              "height": 190,
+              "flip": true,
+              "z": 0
+            },
+            {
+              "time": 4,
+              "x": 480,
+              "y": 790,
+              "height": 190,
+              "flip": true,
+              "z": 0
+            }
+          ],
+          "rabbit": [
+            {
+              "time": 0,
+              "x": 105,
+              "y": 905,
+              "height": 130,
+              "z": 3
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "graze",
+            "start": 0.5,
+            "end": 3.5,
+            "target": "grass",
+            "actor": "cow"
+          },
+          {
+            "type": "hop",
+            "start": 1.0,
+            "end": 3.5,
+            "actor": "rabbit"
+          }
+        ],
+        "background": {
+          "preset": "garden"
+        },
+        "index": 0
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 4,
+        "end_time": 8,
+        "characters_present": [
+          "lotus",
+          "rose",
+          "daisy",
+          "butterfly",
+          "bee"
+        ],
+        "poses": {
+          "lotus": [
+            {
+              "time": 4,
+              "x": 100,
+              "y": 910,
+              "height": 280,
+              "growth": 0.2,
+              "z": 0
+            },
+            {
+              "time": 7.5,
+              "x": 100,
+              "y": 910,
+              "height": 280,
+              "growth": 1.0,
+              "ease": "ease_out"
+            }
+          ],
+          "rose": [
+            {
+              "time": 4,
+              "x": 270,
+              "y": 920,
+              "height": 290,
+              "growth": 0.3,
+              "z": 1
+            },
+            {
+              "time": 7.5,
+              "x": 270,
+              "y": 920,
+              "height": 290,
+              "growth": 1.0,
+              "ease": "ease_out"
+            }
+          ],
+          "daisy": [
+            {
+              "time": 4,
+              "x": 440,
+              "y": 920,
+              "height": 260,
+              "growth": 0.2,
+              "z": 0
+            },
+            {
+              "time": 7.5,
+              "x": 440,
+              "y": 920,
+              "height": 260,
+              "growth": 0.9,
+              "ease": "ease_out"
+            }
+          ],
+          "butterfly": [
+            {
+              "time": 4,
+              "x": 380,
+              "y": 480,
+              "height": 110,
+              "z": 2
+            }
+          ],
+          "bee": [
+            {
+              "time": 4,
+              "x": 160,
+              "y": 440,
+              "height": 90,
+              "z": 2
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "grow",
+            "start": 4.2,
+            "end": 7.5,
+            "target": "lotus"
+          },
+          {
+            "type": "grow",
+            "start": 4.3,
+            "end": 7.5,
+            "target": "rose"
+          },
+          {
+            "type": "grow",
+            "start": 4.4,
+            "end": 7.5,
+            "target": "daisy"
+          },
+          {
+            "type": "pollinate",
+            "start": 4.5,
+            "end": 7.5,
+            "target": "rose",
+            "actor": "butterfly"
+          },
+          {
+            "type": "fly",
+            "start": 4.2,
+            "end": 7.6,
+            "actor": "bee"
+          }
+        ],
+        "background": {
+          "preset": "garden"
+        },
+        "index": 1
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 8,
+        "end_time": 12,
+        "characters_present": [
+          "woman",
+          "crate",
+          "mango",
+          "strawberry",
+          "orange"
+        ],
+        "poses": {
+          "woman": [
+            {
+              "time": 8,
+              "x": 330,
+              "y": 915,
+              "height": 330,
+              "z": 2
+            }
+          ],
+          "crate": [
+            {
+              "time": 8,
+              "x": 175,
+              "y": 912,
+              "height": 170,
+              "z": 1
+            }
+          ],
+          "mango": [
+            {
+              "time": 8,
+              "x": 175,
+              "y": 810,
+              "height": 100,
+              "z": 3
+            }
+          ],
+          "strawberry": [
+            {
+              "time": 8,
+              "x": 460,
+              "y": 912,
+              "height": 115,
+              "expression": "happy",
+              "z": 3
+            }
+          ],
+          "orange": [
+            {
+              "time": 8,
+              "x": 525,
+              "y": 912,
+              "height": 115,
+              "expression": "surprised",
+              "z": 3
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "reach",
+            "start": 8.2,
+            "end": 9.4,
+            "target": "mango",
+            "actor": "woman"
+          },
+          {
+            "type": "grip",
+            "start": 9.4,
+            "end": 10.6,
+            "target": "mango",
+            "actor": "woman"
+          },
+          {
+            "type": "release",
+            "start": 10.6,
+            "end": 11.6,
+            "target": "mango",
+            "actor": "woman",
+            "offset": [
+              250,
+              100
+            ]
+          }
+        ],
+        "background": {
+          "preset": "garden"
+        },
+        "index": 2
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 12,
+        "end_time": 16,
+        "characters_present": [
+          "pig",
+          "duck",
+          "chick",
+          "ant",
+          "shovel",
+          "soil_bed"
+        ],
+        "poses": {
+          "pig": [
+            {
+              "time": 12,
+              "x": -60,
+              "y": 870,
+              "height": 200,
+              "z": 1
+            },
+            {
+              "time": 16,
+              "x": 260,
+              "y": 870,
+              "height": 200,
+              "z": 1
+            }
+          ],
+          "duck": [
+            {
+              "time": 12,
+              "x": 530,
+              "y": 920,
+              "height": 160,
+              "flip": true,
+              "z": 2
+            },
+            {
+              "time": 16,
+              "x": 350,
+              "y": 920,
+              "height": 160,
+              "flip": true,
+              "z": 2
+            }
+          ],
+          "chick": [
+            {
+              "time": 12,
+              "x": 170,
+              "y": 940,
+              "height": 100,
+              "z": 2
+            }
+          ],
+          "ant": [
+            {
+              "time": 12,
+              "x": 230,
+              "y": 945,
+              "height": 45,
+              "z": 1
+            }
+          ],
+          "shovel": [
+            {
+              "time": 12,
+              "x": 380,
+              "y": 780,
+              "height": 180,
+              "z": 3
+            }
+          ],
+          "soil_bed": [
+            {
+              "time": 12,
+              "x": 380,
+              "y": 990,
+              "height": 160,
+              "z": 0
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "peck",
+            "start": 12.8,
+            "end": 15.2,
+            "target": "ant",
+            "actor": "chick"
+          },
+          {
+            "type": "dig",
+            "start": 12.5,
+            "end": 15.5,
+            "target": "soil_bed",
+            "actor": "shovel"
+          }
+        ],
+        "background": {
+          "preset": "garden"
+        },
+        "index": 3
+      }
+    ],
+    "cues": [
+      {
+        "start": 9.2,
+        "end": 11.6,
+        "character_id": "strawberry",
+        "text": "Trái cây chín ngọt thơm quá!",
+        "expression": "happy"
+      }
+    ]
+  },
+  {
+    "id": "articulated-hand-tool",
+    "name": "Khớp tay · Cầm dao và thả",
+    "renderer": "native-vector-v1",
+    "fidelity": "technical-demo",
+    "duration": 8,
+    "characters": [
+      {
+        "id": "hand",
+        "name": "Bàn tay trái",
+        "asset": "hand",
+        "face": false
+      },
+      {
+        "id": "tool",
+        "name": "Dao",
+        "asset": "knife",
+        "face": false
+      }
+    ],
+    "scenes": [
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "index": 0,
+        "start_time": 0,
+        "end_time": 8,
+        "characters_present": [
+          "hand",
+          "tool"
+        ],
+        "poses": {
+          "hand": [
+            {
+              "time": 0,
+              "x": 150,
+              "y": 590,
+              "height": 190,
+              "hand_pose": "open",
+              "z": 2
+            },
+            {
+              "time": 4.9,
+              "x": 365,
+              "y": 510,
+              "height": 190,
+              "hand_pose": "knife",
+              "rotation": -12,
+              "wrist": 25,
+              "ease": "smooth"
+            },
+            {
+              "time": 5.8,
+              "x": 405,
+              "y": 490,
+              "height": 190,
+              "hand_pose": "open",
+              "wrist": 15,
+              "rotation": 0,
+              "ease": "smooth"
+            },
+            {
+              "time": 8,
+              "x": 470,
+              "y": 430,
+              "height": 190,
+              "hand_pose": "open",
+              "wrist": -20,
+              "rotation": 15,
+              "ease": "smooth"
+            }
+          ],
+          "tool": [
+            {
+              "time": 0,
+              "x": 260,
+              "y": 760,
+              "height": 145,
+              "rotation": -25,
+              "z": 3
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "grip",
+            "actor": "hand",
+            "target": "tool",
+            "start": 1,
+            "end": 1.5,
+            "blend_in": 0.5
+          },
+          {
+            "type": "release",
+            "actor": "hand",
+            "target": "tool",
+            "start": 5,
+            "end": 5.8,
+            "offset": [
+              15,
+              130
+            ],
+            "spin": 20
+          }
+        ],
+        "background": {
+          "preset": "garden"
+        }
+      }
+    ],
+    "cues": []
+  },
+  {
+    "id": "articulated-hand-poses",
+    "name": "Khớp tay · Mở, véo, chỉ, rải",
+    "renderer": "native-vector-v1",
+    "fidelity": "technical-demo",
+    "duration": 8,
+    "characters": [
+      {
+        "id": "hand",
+        "name": "Bàn tay trái",
+        "asset": "hand",
+        "face": false
+      },
+      {
+        "id": "seed",
+        "name": "Hạt đậu",
+        "asset": "seed",
+        "face": false
+      }
+    ],
+    "scenes": [
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "index": 0,
+        "start_time": 0,
+        "end_time": 8,
+        "characters_present": [
+          "hand",
+          "seed"
+        ],
+        "poses": {
+          "hand": [
+            {
+              "time": 0,
+              "x": 210,
+              "y": 590,
+              "height": 210,
+              "hand_pose": "open"
+            },
+            {
+              "time": 2,
+              "x": 250,
+              "y": 560,
+              "height": 210,
+              "hand_pose": "pinch",
+              "ease": "smooth"
+            },
+            {
+              "time": 4,
+              "x": 310,
+              "y": 540,
+              "height": 210,
+              "hand_pose": "point",
+              "ease": "smooth"
+            },
+            {
+              "time": 6,
+              "x": 365,
+              "y": 560,
+              "height": 210,
+              "hand_pose": "scatter",
+              "ease": "smooth"
+            }
+          ],
+          "seed": [
+            {
+              "time": 0,
+              "x": 390,
+              "y": 710,
+              "height": 38
+            }
+          ]
+        },
+        "actions": [],
+        "background": {
+          "preset": "garden"
+        }
+      }
+    ],
+    "cues": []
+  },
+  {
+    "id": "articulated-branch",
+    "name": "Khớp cành · Uốn và hồi lại",
+    "renderer": "native-vector-v1",
+    "fidelity": "technical-demo",
+    "duration": 8,
+    "characters": [
+      {
+        "id": "plant",
+        "name": "Cây lạc",
+        "asset": "peanut_plant",
+        "face": false
+      },
+      {
+        "id": "face",
+        "name": "Mặt gắn vào bộ phận",
+        "asset": "face",
+        "attach_to": {
+          "id": "plant",
+          "anchor": "branch_2"
+        }
+      },
+      {
+        "id": "hand",
+        "name": "Bàn tay trái",
+        "asset": "hand",
+        "face": false
+      }
+    ],
+    "scenes": [
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "index": 0,
+        "start_time": 0,
+        "end_time": 8,
+        "characters_present": [
+          "plant",
+          "face",
+          "hand"
+        ],
+        "poses": {
+          "plant": [
+            {
+              "time": 0,
+              "x": 288,
+              "y": 820,
+              "height": 430,
+              "growth": 0.85,
+              "branch_2": 0
+            },
+            {
+              "time": 2.5,
+              "x": 288,
+              "y": 820,
+              "height": 430,
+              "growth": 0.85,
+              "branch_2": 42,
+              "ease": "smooth"
+            },
+            {
+              "time": 5,
+              "x": 288,
+              "y": 820,
+              "height": 430,
+              "growth": 0.85,
+              "branch_2": -8,
+              "ease": "smooth"
+            },
+            {
+              "time": 6.8,
+              "x": 288,
+              "y": 820,
+              "height": 430,
+              "growth": 0.85,
+              "branch_2": 0,
+              "ease": "smooth"
+            }
+          ],
+          "face": [
+            {
+              "time": 0,
+              "x": 0,
+              "y": 0,
+              "height": 52,
+              "expression": "surprised",
+              "z": 3
+            }
+          ],
+          "hand": [
+            {
+              "time": 0,
+              "x": 460,
+              "y": 490,
+              "height": 170,
+              "hand_pose": "open",
+              "z": 4
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "press",
+            "actor": "hand",
+            "target": "plant",
+            "start": 1,
+            "end": 4,
+            "target_anchor": "branch_2",
+            "amount": 0.65,
+            "hold": false
+          }
+        ],
+        "background": {
+          "preset": "garden"
+        }
+      }
+    ],
+    "cues": []
+  },
+  {
+    "id": "farmer-ik-reach",
+    "name": "Nông dân IK · Vươn tay chạm quả",
+    "renderer": "native-vector-v1",
+    "fidelity": "technical-demo",
+    "duration": 8,
+    "characters": [
+      {
+        "id": "farmer",
+        "name": "Nông dân",
+        "asset": "farmer"
+      },
+      {
+        "id": "object",
+        "name": "Dưa hấu",
+        "asset": "watermelon",
+        "face": false
+      }
+    ],
+    "scenes": [
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "index": 0,
+        "start_time": 0,
+        "end_time": 8,
+        "characters_present": [
+          "farmer",
+          "object"
+        ],
+        "poses": {
+          "farmer": [
+            {
+              "time": 0,
+              "x": 250,
+              "y": 870,
+              "height": 430,
+              "expression": "happy"
+            }
+          ],
+          "object": [
+            {
+              "time": 0,
+              "x": 430,
+              "y": 690,
+              "height": 115,
+              "z": 3
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "reach",
+            "actor": "farmer",
+            "target": "object",
+            "start": 1,
+            "end": 3,
+            "actor_anchor": "hand_r"
+          }
+        ],
+        "background": {
+          "preset": "garden"
+        }
+      }
+    ],
+    "cues": []
+  },
+  {
+    "id": "farmer-ik-carry",
+    "name": "Nông dân IK · Bê quả hai tay",
+    "renderer": "native-vector-v1",
+    "fidelity": "technical-demo",
+    "duration": 8,
+    "characters": [
+      {
+        "id": "farmer",
+        "name": "Nông dân",
+        "asset": "farmer"
+      },
+      {
+        "id": "object",
+        "name": "Dưa hấu",
+        "asset": "watermelon",
+        "face": false
+      }
+    ],
+    "scenes": [
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "index": 0,
+        "start_time": 0,
+        "end_time": 8,
+        "characters_present": [
+          "farmer",
+          "object"
+        ],
+        "poses": {
+          "farmer": [
+            {
+              "time": 0,
+              "x": 210,
+              "y": 880,
+              "height": 440,
+              "expression": "happy"
+            },
+            {
+              "time": 8,
+              "x": 370,
+              "y": 880,
+              "height": 440,
+              "expression": "happy",
+              "ease": "smooth"
+            }
+          ],
+          "object": [
+            {
+              "time": 0,
+              "x": 430,
+              "y": 760,
+              "height": 125,
+              "z": 3
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "carry",
+            "actor": "farmer",
+            "target": "object",
+            "start": 1,
+            "end": 4
+          }
+        ],
+        "background": {
+          "preset": "garden"
+        }
+      }
+    ],
+    "cues": []
+  },
+  {
+    "id": "fishing",
+    "name": "6 · Câu cá: quăng cần, cá cắn, kéo lên, bê cá",
+    "theme": "fishing",
+    "story_beats": [
+      "Mở: người câu kiên nhẫn",
+      "Cú hích: phao rung/cá cắn",
+      "Cao trào: kéo dây",
+      "Kết: quan sát cá an toàn"
+    ],
+    "renderer": "native-vector-v1",
+    "fidelity": "technical-demo",
+    "note": "Mẫu kỹ thuật thư viện (chủ đề câu cá), không phải bản remake đã duyệt của video nguồn.",
+    "duration": 24,
+    "characters": [
+      {
+        "id": "fisherman",
+        "name": "Ngư dân",
+        "asset": "fisherman",
+        "material": "ink"
+      },
+      {
+        "id": "boat",
+        "name": "Thuyền câu",
+        "asset": "boat",
+        "face": false,
+        "material": "ink"
+      },
+      {
+        "id": "rod",
+        "name": "Cần câu",
+        "asset": "fishing_rod",
+        "face": false,
+        "material": "pencil",
+        "attach_to": {
+          "id": "fisherman",
+          "anchor": "hand_r"
+        }
+      },
+      {
+        "id": "bobber",
+        "name": "Phao câu",
+        "asset": "bobber",
+        "attach_to": {
+          "id": "rod",
+          "anchor": "line_end"
+        },
+        "material": "ink"
+      },
+      {
+        "id": "hook",
+        "name": "Lưỡi câu",
+        "asset": "hook",
+        "face": false,
+        "material": "ink"
+      },
+      {
+        "id": "fish",
+        "name": "Cá con",
+        "asset": "fish",
+        "material": "pencil"
+      }
+    ],
+    "scenes": [
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 0,
+        "end_time": 8,
+        "characters_present": [
+          "fisherman",
+          "boat",
+          "rod",
+          "bobber",
+          "hook",
+          "fish"
+        ],
+        "poses": {
+          "fisherman": [
+            {
+              "time": 0,
+              "x": 155,
+              "y": 900,
+              "height": 340,
+              "expression": "happy",
+              "drawing_id": "patient",
+              "exposure": "hold"
+            }
+          ],
+          "boat": [
+            {
+              "time": 0,
+              "x": 386,
+              "y": 940,
+              "height": 235,
+              "z": 0
+            }
+          ],
+          "rod": [
+            {
+              "time": 0,
+              "x": 0,
+              "y": 0,
+              "height": 165,
+              "rotation": -18,
+              "z": 3,
+              "drawing_id": "cast-ready",
+              "exposure": "hold"
+            },
+            {
+              "time": 5,
+              "x": 0,
+              "y": 0,
+              "height": 165,
+              "rotation": 38,
+              "ease": "smooth",
+              "z": 3,
+              "drawing_id": "cast",
+              "exposure": "ones"
+            },
+            {
+              "time": 8,
+              "x": 0,
+              "y": 0,
+              "height": 165,
+              "rotation": 22,
+              "ease": "smooth",
+              "z": 3,
+              "drawing_id": "wait",
+              "exposure": "twos"
+            }
+          ],
+          "bobber": [
+            {
+              "time": 0,
+              "x": 0,
+              "y": 42,
+              "height": 70,
+              "swim": -1,
+              "z": 3
+            },
+            {
+              "time": 4,
+              "x": 0,
+              "y": 42,
+              "height": 70,
+              "swim": 1,
+              "ease": "smooth",
+              "z": 3
+            },
+            {
+              "time": 8,
+              "x": 0,
+              "y": 42,
+              "height": 70,
+              "swim": -1,
+              "ease": "smooth",
+              "z": 3
+            }
+          ],
+          "hook": [
+            {
+              "time": 0,
+              "x": 448,
+              "y": 855,
+              "height": 58,
+              "z": 3,
+              "opacity": 0
+            }
+          ],
+          "fish": [
+            {
+              "time": 0,
+              "x": 452,
+              "y": 870,
+              "height": 92,
+              "swim": -0.4,
+              "z": 1,
+              "drawing_id": "glide",
+              "exposure": "twos"
+            },
+            {
+              "time": 8,
+              "x": 420,
+              "y": 875,
+              "height": 92,
+              "swim": 0.5,
+              "ease": "smooth",
+              "z": 1,
+              "drawing_id": "notice",
+              "exposure": "ones"
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "gesture",
+            "start": 1,
+            "end": 3,
+            "actor": "fisherman"
+          },
+          {
+            "type": "swim",
+            "start": 0.4,
+            "end": 8,
+            "target": "fish"
+          }
+        ],
+        "background": {
+          "preset": "river"
+        },
+        "index": 0
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 8,
+        "end_time": 15,
+        "characters_present": [
+          "fisherman",
+          "boat",
+          "rod",
+          "bobber",
+          "hook",
+          "fish"
+        ],
+        "poses": {
+          "fisherman": [
+            {
+              "time": 8,
+              "x": 155,
+              "y": 900,
+              "height": 340,
+              "expression": "surprised",
+              "drawing_id": "bite",
+              "exposure": "ones"
+            }
+          ],
+          "boat": [
+            {
+              "time": 8,
+              "x": 386,
+              "y": 940,
+              "height": 235,
+              "z": 0
+            }
+          ],
+          "rod": [
+            {
+              "time": 8,
+              "x": 0,
+              "y": 0,
+              "height": 165,
+              "rotation": 22,
+              "z": 3,
+              "drawing_id": "bite",
+              "exposure": "ones"
+            },
+            {
+              "time": 15,
+              "x": 0,
+              "y": 0,
+              "height": 165,
+              "rotation": 12,
+              "ease": "smooth",
+              "z": 3,
+              "drawing_id": "pull",
+              "exposure": "twos"
+            }
+          ],
+          "bobber": [
+            {
+              "time": 8,
+              "x": 0,
+              "y": 42,
+              "height": 92,
+              "swim": 1,
+              "z": 3
+            },
+            {
+              "time": 11,
+              "x": 0,
+              "y": 42,
+              "height": 92,
+              "swim": -1,
+              "ease": "smooth",
+              "z": 3
+            },
+            {
+              "time": 15,
+              "x": 0,
+              "y": 42,
+              "height": 92,
+              "swim": 0,
+              "ease": "smooth",
+              "z": 3
+            }
+          ],
+          "hook": [
+            {
+              "time": 8,
+              "x": 430,
+              "y": 875,
+              "height": 58,
+              "z": 3
+            }
+          ],
+          "fish": [
+            {
+              "time": 8,
+              "x": 420,
+              "y": 875,
+              "height": 92,
+              "swim": 0.5,
+              "z": 1,
+              "drawing_id": "bite",
+              "exposure": "ones"
+            },
+            {
+              "time": 15,
+              "x": 400,
+              "y": 870,
+              "height": 92,
+              "swim": -0.4,
+              "ease": "smooth",
+              "z": 1,
+              "drawing_id": "hooked",
+              "exposure": "twos"
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "set_hook",
+            "start": 9,
+            "end": 12,
+            "target": "fish",
+            "actor": "hook"
+          },
+          {
+            "type": "splash",
+            "start": 10.5,
+            "end": 13,
+            "target": "fish"
+          }
+        ],
+        "background": {
+          "preset": "river"
+        },
+        "index": 1
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 15,
+        "end_time": 24,
+        "characters_present": [
+          "fisherman",
+          "boat",
+          "rod",
+          "fish"
+        ],
+        "poses": {
+          "fisherman": [
+            {
+              "time": 15,
+              "x": 160,
+              "y": 900,
+              "height": 340,
+              "expression": "worried",
+              "drawing_id": "reel",
+              "exposure": "ones"
+            },
+            {
+              "time": 24,
+              "x": 205,
+              "y": 900,
+              "height": 340,
+              "expression": "happy",
+              "ease": "smooth",
+              "drawing_id": "release",
+              "exposure": "twos"
+            }
+          ],
+          "boat": [
+            {
+              "time": 15,
+              "x": 386,
+              "y": 940,
+              "height": 235,
+              "z": 0
+            }
+          ],
+          "rod": [
+            {
+              "time": 15,
+              "x": 0,
+              "y": 0,
+              "height": 165,
+              "rotation": 12,
+              "z": 3,
+              "drawing_id": "reel",
+              "exposure": "ones"
+            },
+            {
+              "time": 24,
+              "x": 0,
+              "y": 0,
+              "height": 165,
+              "rotation": 6,
+              "ease": "smooth",
+              "z": 3,
+              "drawing_id": "rest",
+              "exposure": "hold"
+            }
+          ],
+          "fish": [
+            {
+              "time": 15,
+              "x": 400,
+              "y": 870,
+              "height": 92,
+              "hooked": 1,
+              "expression": "surprised",
+              "z": 3,
+              "drawing_id": "lift",
+              "exposure": "ones"
+            },
+            {
+              "time": 24,
+              "x": 300,
+              "y": 825,
+              "height": 92,
+              "hooked": 1,
+              "expression": "happy",
+              "ease": "smooth",
+              "z": 3,
+              "drawing_id": "safe",
+              "exposure": "twos"
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "reel",
+            "start": 15,
+            "end": 19,
+            "target": "rod",
+            "actor": "fish"
+          },
+          {
+            "type": "carry",
+            "start": 19,
+            "end": 22,
+            "target": "fish",
+            "actor": "fisherman"
+          },
+          {
+            "type": "gesture",
+            "start": 19.5,
+            "end": 22.5,
+            "actor": "fisherman"
+          }
+        ],
+        "background": {
+          "preset": "river"
+        },
+        "index": 2
+      }
+    ],
+    "cues": [
+      {
+        "start": 0.2,
+        "end": 2.2,
+        "character_id": "fish",
+        "text": "Có gì đó ở dưới nước!",
+        "expression": "worried"
+      },
+      {
+        "start": 15.2,
+        "end": 17,
+        "character_id": "fisherman",
+        "text": "Bình tĩnh, kéo chậm thôi.",
+        "expression": "worried"
+      }
+    ]
+  },
+  {
+    "id": "sea-monsters",
+    "name": "7 · Thủy quái: trồi lên, quật xúc tu, gầm, vồ thuyền (cấp S & SS)",
+    "theme": "sea-monster",
+    "story_beats": [
+      "Mở: biển yên",
+      "Cảnh báo: quái trồi lên",
+      "Cao trào: thuyền bị vồ",
+      "Kết: nhân vật tìm đường thoát"
+    ],
+    "renderer": "native-vector-v1",
+    "fidelity": "technical-demo",
+    "note": "Mẫu kỹ thuật thư viện (hai thủy quái cấp S và SS), không phải bản remake đã duyệt của video nguồn.",
+    "duration": 22,
+    "characters": [
+      {
+        "id": "s_monster",
+        "name": "Thủy quái cấp S",
+        "asset": "sea_monster_s",
+        "material": "ink"
+      },
+      {
+        "id": "ss_monster",
+        "name": "Thủy quái cấp SS",
+        "asset": "sea_monster_ss",
+        "material": "ink"
+      },
+      {
+        "id": "boat",
+        "name": "Thuyền câu",
+        "asset": "boat",
+        "face": false,
+        "material": "pencil"
+      },
+      {
+        "id": "fisherman",
+        "name": "Ngư dân",
+        "asset": "fisherman",
+        "material": "ink"
+      }
+    ],
+    "scenes": [
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 0,
+        "end_time": 8,
+        "characters_present": [
+          "s_monster",
+          "ss_monster",
+          "boat",
+          "fisherman"
+        ],
+        "poses": {
+          "s_monster": [
+            {
+              "time": 0,
+              "x": 430,
+              "y": 980,
+              "height": 280,
+              "rise": 0,
+              "z": 1
+            }
+          ],
+          "ss_monster": [
+            {
+              "time": 0,
+              "x": 120,
+              "y": 1040,
+              "height": 340,
+              "rise": 0,
+              "z": 1
+            }
+          ],
+          "boat": [
+            {
+              "time": 0,
+              "x": 340,
+              "y": 1000,
+              "height": 250,
+              "z": 0
+            }
+          ],
+          "fisherman": [
+            {
+              "time": 0,
+              "x": 200,
+              "y": 900,
+              "height": 430,
+              "expression": "happy",
+              "z": 3
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "emerge",
+            "start": 1,
+            "end": 4,
+            "target": "s_monster",
+            "amount": 0.8
+          },
+          {
+            "type": "whip",
+            "start": 5,
+            "end": 7.5,
+            "target": "s_monster",
+            "amount": 0.7
+          }
+        ],
+        "background": {
+          "preset": "sea"
+        },
+        "index": 0
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 8,
+        "end_time": 15,
+        "characters_present": [
+          "s_monster",
+          "ss_monster",
+          "boat",
+          "fisherman"
+        ],
+        "poses": {
+          "s_monster": [
+            {
+              "time": 8,
+              "x": 430,
+              "y": 980,
+              "height": 280,
+              "rise": 0.8,
+              "z": 1
+            }
+          ],
+          "ss_monster": [
+            {
+              "time": 8,
+              "x": 120,
+              "y": 1040,
+              "height": 340,
+              "rise": 0,
+              "z": 1
+            }
+          ],
+          "boat": [
+            {
+              "time": 8,
+              "x": 340,
+              "y": 1000,
+              "height": 250,
+              "z": 0
+            }
+          ],
+          "fisherman": [
+            {
+              "time": 8,
+              "x": 200,
+              "y": 900,
+              "height": 430,
+              "expression": "surprised",
+              "z": 3
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "emerge",
+            "start": 8.5,
+            "end": 11.5,
+            "target": "ss_monster"
+          },
+          {
+            "type": "whip",
+            "start": 9,
+            "end": 12,
+            "target": "s_monster",
+            "amount": 0.5
+          },
+          {
+            "type": "roar",
+            "start": 12,
+            "end": 14.5,
+            "target": "ss_monster"
+          }
+        ],
+        "background": {
+          "preset": "sea"
+        },
+        "index": 1
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 15,
+        "end_time": 22,
+        "characters_present": [
+          "s_monster",
+          "ss_monster",
+          "boat",
+          "fisherman"
+        ],
+        "poses": {
+          "s_monster": [
+            {
+              "time": 15,
+              "x": 430,
+              "y": 980,
+              "height": 290,
+              "rise": 0.9,
+              "z": 1
+            }
+          ],
+          "ss_monster": [
+            {
+              "time": 15,
+              "x": 120,
+              "y": 1030,
+              "height": 350,
+              "rise": 1,
+              "z": 1
+            }
+          ],
+          "boat": [
+            {
+              "time": 15,
+              "x": 340,
+              "y": 1000,
+              "height": 250,
+              "z": 0
+            }
+          ],
+          "fisherman": [
+            {
+              "time": 15,
+              "x": 200,
+              "y": 900,
+              "height": 430,
+              "expression": "worried",
+              "z": 3
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "strike",
+            "start": 16,
+            "end": 18.5,
+            "target": "boat",
+            "actor": "s_monster"
+          },
+          {
+            "type": "strike",
+            "start": 19,
+            "end": 21.5,
+            "target": "fisherman",
+            "actor": "ss_monster"
+          }
+        ],
+        "background": {
+          "preset": "sea"
+        },
+        "index": 2
+      }
+    ],
+    "cues": [
+      {
+        "start": 0.5,
+        "end": 2.5,
+        "character_id": "fisherman",
+        "text": "Mặt biển hôm nay lạ quá.",
+        "expression": "worried"
+      },
+      {
+        "start": 12.1,
+        "end": 14.2,
+        "character_id": "ss_monster",
+        "text": "Rời khỏi vùng nước của ta!",
+        "expression": "angry"
+      }
+    ]
+  },
+  {
+    "id": "orchard_harvest",
+    "name": "Thu hoạch vườn cây ăn quả: xoài, cam, sầu riêng",
+    "renderer": "native-vector-v1",
+    "fidelity": "technical-demo",
+    "note": "Mẫu kỹ thuật Phase B: hái xoài, hái cam, rung cây sầu riêng.",
+    "duration": 16.0,
+    "characters": [
+      {
+        "id": "farmer",
+        "name": "Nông dân",
+        "asset": "farmer"
+      },
+      {
+        "id": "mango_tree",
+        "name": "Cây xoài",
+        "asset": "mango_tree"
+      },
+      {
+        "id": "orange_tree",
+        "name": "Cây cam",
+        "asset": "orange_tree"
+      },
+      {
+        "id": "durian_tree",
+        "name": "Cây sầu riêng",
+        "asset": "durian_tree"
+      },
+      {
+        "id": "basket",
+        "name": "Cái thúng",
+        "asset": "basket"
+      },
+      {
+        "id": "mango_picked",
+        "name": "Xoài",
+        "asset": "mango",
+        "face": false
+      },
+      {
+        "id": "orange_picked",
+        "name": "Quả cam",
+        "asset": "orange",
+        "face": false
+      },
+      {
+        "id": "durian_dropped",
+        "name": "Sầu riêng",
+        "asset": "durian",
+        "face": false
+      }
+    ],
+    "scenes": [
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 0,
+        "end_time": 5.0,
+        "characters_present": [
+          "farmer",
+          "mango_tree",
+          "basket",
+          "mango_picked"
+        ],
+        "poses": {
+          "farmer": [
+            {
+              "time": 0,
+              "x": 500,
+              "y": 810,
+              "height": 360,
+              "z": 3
+            },
+            {
+              "time": 1.0,
+              "x": 323,
+              "y": 810,
+              "height": 360,
+              "z": 3
+            },
+            {
+              "time": 1.6,
+              "x": 313,
+              "y": 810,
+              "height": 360,
+              "z": 3
+            },
+            {
+              "time": 2.2,
+              "x": 313,
+              "y": 810,
+              "height": 360,
+              "z": 3
+            },
+            {
+              "time": 3.5,
+              "x": 165,
+              "y": 810,
+              "height": 360,
+              "ease": "smooth",
+              "flip": true,
+              "z": 3
+            },
+            {
+              "time": 4.0,
+              "x": 165,
+              "y": 810,
+              "height": 360,
+              "flip": true,
+              "z": 3
+            },
+            {
+              "time": 5.0,
+              "x": 165,
+              "y": 810,
+              "height": 360,
+              "flip": true,
+              "z": 3
+            }
+          ],
+          "mango_tree": [
+            {
+              "time": 0,
+              "x": 190,
+              "y": 810,
+              "height": 560,
+              "growth": 1,
+              "fruits": 6
+            },
+            {
+              "time": 1.6,
+              "x": 190,
+              "y": 810,
+              "height": 560,
+              "growth": 1,
+              "fruits": 5
+            },
+            {
+              "time": 5.0,
+              "x": 190,
+              "y": 810,
+              "height": 560,
+              "growth": 1,
+              "fruits": 5
+            }
+          ],
+          "basket": [
+            {
+              "time": 0,
+              "x": 95,
+              "y": 810,
+              "height": 180,
+              "fill": 0
+            },
+            {
+              "time": 4.2,
+              "x": 95,
+              "y": 810,
+              "height": 180,
+              "fill": 0
+            },
+            {
+              "time": 4.8,
+              "x": 95,
+              "y": 810,
+              "height": 180,
+              "fill": 0.3
+            },
+            {
+              "time": 5.0,
+              "x": 95,
+              "y": 810,
+              "height": 180,
+              "fill": 0.3
+            }
+          ],
+          "mango_picked": [
+            {
+              "time": 1.6,
+              "x": 234.8,
+              "y": 588.8,
+              "height": 95.2
+            },
+            {
+              "time": 4.0,
+              "x": 234.8,
+              "y": 588.8,
+              "height": 95.2
+            },
+            {
+              "time": 4.4,
+              "x": 95,
+              "y": 790,
+              "height": 95.2,
+              "ease": "ease_in"
+            },
+            {
+              "time": 5.0,
+              "x": 95,
+              "y": 790,
+              "height": 95.2
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "pick",
+            "actor": "farmer",
+            "target": "mango_tree",
+            "target_anchor": "fruit_6",
+            "actor_anchor": "hand_l",
+            "start": 1.0,
+            "end": 2.0,
+            "contact": 1.6
+          },
+          {
+            "type": "grip",
+            "actor": "farmer",
+            "target": "mango_picked",
+            "actor_anchor": "hand_l",
+            "start": 1.6,
+            "end": 4.0
+          },
+          {
+            "type": "release",
+            "actor": "farmer",
+            "target": "mango_picked",
+            "start": 4.0,
+            "end": 4.4,
+            "offset": [
+              -60,
+              120
+            ]
+          }
+        ],
+        "background": {
+          "preset": "fruit_orchard"
+        }
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 5.0,
+        "end_time": 10.0,
+        "characters_present": [
+          "farmer",
+          "orange_tree",
+          "basket",
+          "orange_picked"
+        ],
+        "poses": {
+          "farmer": [
+            {
+              "time": 5.0,
+              "x": 500,
+              "y": 810,
+              "height": 360,
+              "z": 3
+            },
+            {
+              "time": 6.0,
+              "x": 287,
+              "y": 810,
+              "height": 360,
+              "z": 3
+            },
+            {
+              "time": 6.6,
+              "x": 277,
+              "y": 810,
+              "height": 360,
+              "z": 3
+            },
+            {
+              "time": 7.2,
+              "x": 277,
+              "y": 810,
+              "height": 360,
+              "z": 3
+            },
+            {
+              "time": 8.4,
+              "x": 165,
+              "y": 810,
+              "height": 360,
+              "ease": "smooth",
+              "flip": true,
+              "z": 3
+            },
+            {
+              "time": 9.0,
+              "x": 165,
+              "y": 810,
+              "height": 360,
+              "flip": true,
+              "z": 3
+            },
+            {
+              "time": 10.0,
+              "x": 165,
+              "y": 810,
+              "height": 360,
+              "flip": true,
+              "z": 3
+            }
+          ],
+          "orange_tree": [
+            {
+              "time": 5.0,
+              "x": 190,
+              "y": 810,
+              "height": 470,
+              "growth": 1,
+              "fruits": 7
+            },
+            {
+              "time": 6.6,
+              "x": 190,
+              "y": 810,
+              "height": 470,
+              "growth": 1,
+              "fruits": 6
+            },
+            {
+              "time": 10.0,
+              "x": 190,
+              "y": 810,
+              "height": 470,
+              "growth": 1,
+              "fruits": 6
+            }
+          ],
+          "basket": [
+            {
+              "time": 5.0,
+              "x": 95,
+              "y": 810,
+              "height": 180,
+              "fill": 0.3
+            },
+            {
+              "time": 9.1,
+              "x": 95,
+              "y": 810,
+              "height": 180,
+              "fill": 0.3
+            },
+            {
+              "time": 9.6,
+              "x": 95,
+              "y": 810,
+              "height": 180,
+              "fill": 0.6
+            },
+            {
+              "time": 10.0,
+              "x": 95,
+              "y": 810,
+              "height": 180,
+              "fill": 0.6
+            }
+          ],
+          "orange_picked": [
+            {
+              "time": 6.6,
+              "x": 199.4,
+              "y": 511.55,
+              "height": 61.1
+            },
+            {
+              "time": 9.0,
+              "x": 199.4,
+              "y": 511.55,
+              "height": 61.1
+            },
+            {
+              "time": 9.4,
+              "x": 95,
+              "y": 790,
+              "height": 61.1,
+              "ease": "ease_in"
+            },
+            {
+              "time": 10.0,
+              "x": 95,
+              "y": 790,
+              "height": 61.1
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "pick",
+            "actor": "farmer",
+            "target": "orange_tree",
+            "target_anchor": "fruit_7",
+            "actor_anchor": "hand_l",
+            "start": 6.0,
+            "end": 7.0,
+            "contact": 6.6
+          },
+          {
+            "type": "grip",
+            "actor": "farmer",
+            "target": "orange_picked",
+            "actor_anchor": "hand_l",
+            "start": 6.6,
+            "end": 9.0
+          },
+          {
+            "type": "release",
+            "actor": "farmer",
+            "target": "orange_picked",
+            "start": 9.0,
+            "end": 9.4,
+            "offset": [
+              -60,
+              120
+            ]
+          }
+        ],
+        "background": {
+          "preset": "fruit_orchard"
+        }
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 10.0,
+        "end_time": 16.0,
+        "characters_present": [
+          "farmer",
+          "durian_tree",
+          "basket",
+          "durian_dropped"
+        ],
+        "poses": {
+          "farmer": [
+            {
+              "time": 10.0,
+              "x": 500,
+              "y": 810,
+              "height": 360,
+              "z": 3
+            },
+            {
+              "time": 11.0,
+              "x": 290,
+              "y": 810,
+              "height": 360,
+              "z": 3
+            },
+            {
+              "time": 12.4,
+              "x": 290,
+              "y": 810,
+              "height": 360,
+              "z": 3
+            },
+            {
+              "time": 13.2,
+              "x": 234,
+              "y": 810,
+              "height": 360,
+              "ease": "smooth",
+              "z": 3
+            },
+            {
+              "time": 14.0,
+              "x": 234,
+              "y": 810,
+              "height": 360,
+              "z": 3
+            },
+            {
+              "time": 14.8,
+              "x": 165,
+              "y": 810,
+              "height": 360,
+              "ease": "smooth",
+              "flip": true,
+              "z": 3
+            },
+            {
+              "time": 15.4,
+              "x": 165,
+              "y": 810,
+              "height": 360,
+              "flip": true,
+              "z": 3
+            },
+            {
+              "time": 16.0,
+              "x": 165,
+              "y": 810,
+              "height": 360,
+              "expression": "happy",
+              "flip": true,
+              "z": 3
+            }
+          ],
+          "durian_tree": [
+            {
+              "time": 10.0,
+              "x": 200,
+              "y": 810,
+              "height": 600,
+              "growth": 1,
+              "fruits": 5
+            },
+            {
+              "time": 11.4,
+              "x": 200,
+              "y": 810,
+              "height": 600,
+              "growth": 1,
+              "fruits": 4
+            },
+            {
+              "time": 16.0,
+              "x": 200,
+              "y": 810,
+              "height": 600,
+              "growth": 1,
+              "fruits": 4
+            }
+          ],
+          "basket": [
+            {
+              "time": 10.0,
+              "x": 95,
+              "y": 810,
+              "height": 180,
+              "fill": 0.6
+            },
+            {
+              "time": 15.2,
+              "x": 95,
+              "y": 810,
+              "height": 180,
+              "fill": 0.6
+            },
+            {
+              "time": 15.7,
+              "x": 95,
+              "y": 810,
+              "height": 180,
+              "fill": 1.0
+            },
+            {
+              "time": 16.0,
+              "x": 95,
+              "y": 810,
+              "height": 180,
+              "fill": 1.0
+            }
+          ],
+          "durian_dropped": [
+            {
+              "time": 11.4,
+              "x": 164.0,
+              "y": 537.0,
+              "height": 102.0
+            },
+            {
+              "time": 11.85,
+              "x": 164.0,
+              "y": 810.0,
+              "height": 102.0,
+              "ease": "ease_in"
+            },
+            {
+              "time": 11.97,
+              "x": 164.0,
+              "y": 790.0,
+              "height": 102.0,
+              "ease": "ease_out"
+            },
+            {
+              "time": 12.1,
+              "x": 164.0,
+              "y": 810.0,
+              "height": 102.0,
+              "ease": "ease_in"
+            },
+            {
+              "time": 14.0,
+              "x": 164.0,
+              "y": 810,
+              "height": 102.0
+            },
+            {
+              "time": 15.2,
+              "x": 164.0,
+              "y": 810,
+              "height": 102.0
+            },
+            {
+              "time": 15.6,
+              "x": 95,
+              "y": 790,
+              "height": 102.0,
+              "ease": "ease_in"
+            },
+            {
+              "time": 16.0,
+              "x": 95,
+              "y": 790,
+              "height": 102.0
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "shake",
+            "target": "durian_tree",
+            "start": 11.0,
+            "end": 12.4,
+            "actor": "farmer"
+          },
+          {
+            "type": "grip",
+            "actor": "farmer",
+            "target": "durian_dropped",
+            "actor_anchor": "hand_l",
+            "start": 14.0,
+            "end": 15.2
+          },
+          {
+            "type": "release",
+            "actor": "farmer",
+            "target": "durian_dropped",
+            "start": 15.2,
+            "end": 15.6,
+            "offset": [
+              -60,
+              100
+            ]
+          }
+        ],
+        "background": {
+          "preset": "fruit_orchard"
+        }
+      }
+    ],
+    "cues": [
+      {
+        "start": 0.5,
+        "end": 2.5,
+        "character_id": "farmer",
+        "text": "Hôm nay vườn cây chín rộ, ta đi thu hoạch thôi!",
+        "expression": "happy"
+      },
+      {
+        "start": 10.5,
+        "end": 12.5,
+        "character_id": "farmer",
+        "text": "Cây sầu riêng cao quá, rung cho quả chín rụng xuống nào.",
+        "expression": "surprised"
+      }
+    ]
+  },
+  {
+    "id": "trellis_cucumber",
+    "name": "Dưa leo leo giàn và thu hoạch dưa giàn chữ A",
+    "renderer": "native-vector-v1",
+    "fidelity": "technical-demo",
+    "note": "Mẫu kỹ thuật Phase C: giàn dưa leo sinh trưởng, nở hoa và hái quả.",
+    "duration": 10.0,
+    "characters": [
+      {
+        "id": "farmer",
+        "name": "Nông dân",
+        "asset": "farmer"
+      },
+      {
+        "id": "cucumber_vine",
+        "name": "Giàn dưa leo",
+        "asset": "cucumber_vine"
+      },
+      {
+        "id": "basket",
+        "name": "Cái thúng",
+        "asset": "basket"
+      },
+      {
+        "id": "cucumber_picked",
+        "name": "Dưa leo",
+        "asset": "cucumber",
+        "face": false
+      }
+    ],
+    "scenes": [
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 0,
+        "end_time": 5.0,
+        "characters_present": [
+          "farmer",
+          "cucumber_vine"
+        ],
+        "poses": {
+          "farmer": [
+            {
+              "time": 0,
+              "x": 460,
+              "y": 810,
+              "height": 450,
+              "expression": "happy",
+              "z": 3
+            },
+            {
+              "time": 5.0,
+              "x": 460,
+              "y": 810,
+              "height": 450,
+              "expression": "happy",
+              "z": 3
+            }
+          ],
+          "cucumber_vine": [
+            {
+              "time": 0,
+              "x": 240,
+              "y": 810,
+              "height": 440,
+              "growth": 0.15,
+              "fruits": 0
+            },
+            {
+              "time": 1.8,
+              "x": 240,
+              "y": 810,
+              "height": 440,
+              "growth": 0.48,
+              "fruits": 0,
+              "ease": "smooth"
+            },
+            {
+              "time": 3.6,
+              "x": 240,
+              "y": 810,
+              "height": 440,
+              "growth": 0.82,
+              "fruits": 6,
+              "ease": "smooth"
+            },
+            {
+              "time": 5.0,
+              "x": 240,
+              "y": 810,
+              "height": 440,
+              "growth": 1.0,
+              "fruits": 6
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "grow",
+            "target": "cucumber_vine",
+            "start": 0.5,
+            "end": 4.5
+          }
+        ],
+        "background": {
+          "preset": "greenhouse"
+        }
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 5.0,
+        "end_time": 10.0,
+        "characters_present": [
+          "farmer",
+          "cucumber_vine",
+          "basket",
+          "cucumber_picked"
+        ],
+        "poses": {
+          "farmer": [
+            {
+              "time": 5.0,
+              "x": 480,
+              "y": 810,
+              "height": 450,
+              "z": 3
+            },
+            {
+              "time": 6.0,
+              "x": 370,
+              "y": 810,
+              "height": 450,
+              "z": 3
+            },
+            {
+              "time": 6.6,
+              "x": 350,
+              "y": 810,
+              "height": 450,
+              "z": 3
+            },
+            {
+              "time": 7.2,
+              "x": 350,
+              "y": 810,
+              "height": 450,
+              "z": 3
+            },
+            {
+              "time": 8.4,
+              "x": 210,
+              "y": 810,
+              "height": 450,
+              "ease": "smooth",
+              "z": 3
+            },
+            {
+              "time": 9.0,
+              "x": 210,
+              "y": 810,
+              "height": 450,
+              "z": 3
+            },
+            {
+              "time": 10.0,
+              "x": 210,
+              "y": 810,
+              "height": 450,
+              "z": 3
+            }
+          ],
+          "cucumber_vine": [
+            {
+              "time": 5.0,
+              "x": 240,
+              "y": 810,
+              "height": 450,
+              "growth": 1,
+              "fruits": 6
+            },
+            {
+              "time": 6.6,
+              "x": 240,
+              "y": 810,
+              "height": 450,
+              "growth": 1,
+              "fruits": 5
+            },
+            {
+              "time": 10.0,
+              "x": 240,
+              "y": 810,
+              "height": 450,
+              "growth": 1,
+              "fruits": 5
+            }
+          ],
+          "basket": [
+            {
+              "time": 5.0,
+              "x": 110,
+              "y": 810,
+              "height": 180,
+              "fill": 0
+            },
+            {
+              "time": 8.5,
+              "x": 110,
+              "y": 810,
+              "height": 180,
+              "fill": 0
+            },
+            {
+              "time": 9.2,
+              "x": 110,
+              "y": 810,
+              "height": 180,
+              "fill": 0.4
+            },
+            {
+              "time": 10.0,
+              "x": 110,
+              "y": 810,
+              "height": 180,
+              "fill": 0.4
+            }
+          ],
+          "cucumber_picked": [
+            {
+              "time": 6.6,
+              "x": 276.0,
+              "y": 526.5,
+              "height": 117.0
+            },
+            {
+              "time": 8.4,
+              "x": 276.0,
+              "y": 526.5,
+              "height": 117.0
+            },
+            {
+              "time": 9.0,
+              "x": 110,
+              "y": 770,
+              "height": 117.0,
+              "ease": "ease_in"
+            },
+            {
+              "time": 10.0,
+              "x": 110,
+              "y": 770,
+              "height": 117.0
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "pick",
+            "actor": "farmer",
+            "target": "cucumber_vine",
+            "target_anchor": "fruit_6",
+            "actor_anchor": "hand_l",
+            "start": 6.0,
+            "end": 7.0,
+            "contact": 6.6
+          },
+          {
+            "type": "grip",
+            "actor": "farmer",
+            "target": "cucumber_picked",
+            "actor_anchor": "hand_l",
+            "start": 6.6,
+            "end": 8.4
+          },
+          {
+            "type": "release",
+            "actor": "farmer",
+            "target": "cucumber_picked",
+            "start": 8.4,
+            "end": 9.0,
+            "offset": [
+              -140,
+              200
+            ]
+          }
+        ],
+        "background": {
+          "preset": "trellis_garden"
+        }
+      }
+    ],
+    "cues": [
+      {
+        "start": 0.5,
+        "end": 3.0,
+        "character_id": "farmer",
+        "text": "Dây dưa leo vươn ngọn, hoa vàng nở rộ dọc giàn!",
+        "expression": "happy"
+      },
+      {
+        "start": 5.5,
+        "end": 8.0,
+        "character_id": "farmer",
+        "text": "Dưa leo trên giàn chữ A sai trĩu quả, ta hái vào giỏ nào.",
+        "expression": "happy"
+      }
+    ]
+  },
+  {
+    "id": "highland_temperate",
+    "name": "Nông trại cao nguyên Đà Lạt và vườn cây tuyết phủ mùa đông",
+    "renderer": "native-vector-v1",
+    "fidelity": "technical-demo",
+    "note": "Mẫu kỹ thuật Phase D: cây hồng persimmon mùa thu sương mù, dâu tây và vườn cây mùa đông tuyết phủ.",
+    "duration": 10.0,
+    "characters": [
+      {
+        "id": "farmer",
+        "name": "Nông dân",
+        "asset": "farmer"
+      },
+      {
+        "id": "persimmon_tree",
+        "name": "Cây hồng",
+        "asset": "persimmon_tree"
+      },
+      {
+        "id": "strawberry_plant",
+        "name": "Cây dâu tây",
+        "asset": "strawberry_plant"
+      },
+      {
+        "id": "pear_tree",
+        "name": "Cây lê",
+        "asset": "pear_tree"
+      },
+      {
+        "id": "basket",
+        "name": "Cái thúng",
+        "asset": "basket"
+      },
+      {
+        "id": "persimmon_picked",
+        "name": "Hồng",
+        "asset": "persimmon",
+        "face": false
+      }
+    ],
+    "scenes": [
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 0,
+        "end_time": 5.0,
+        "characters_present": [
+          "farmer",
+          "persimmon_tree",
+          "strawberry_plant",
+          "basket",
+          "persimmon_picked"
+        ],
+        "poses": {
+          "farmer": [
+            {
+              "time": 0,
+              "x": 480,
+              "y": 810,
+              "height": 360,
+              "expression": "happy",
+              "z": 3
+            },
+            {
+              "time": 1.2,
+              "x": 420,
+              "y": 810,
+              "height": 360,
+              "z": 3
+            },
+            {
+              "time": 1.8,
+              "x": 410,
+              "y": 810,
+              "height": 360,
+              "z": 3
+            },
+            {
+              "time": 2.4,
+              "x": 410,
+              "y": 810,
+              "height": 360,
+              "z": 3
+            },
+            {
+              "time": 3.8,
+              "x": 160,
+              "y": 810,
+              "height": 360,
+              "ease": "smooth",
+              "flip": true,
+              "z": 3
+            },
+            {
+              "time": 4.4,
+              "x": 160,
+              "y": 810,
+              "height": 360,
+              "flip": true,
+              "z": 3
+            },
+            {
+              "time": 5.0,
+              "x": 160,
+              "y": 810,
+              "height": 360,
+              "flip": true,
+              "z": 3
+            }
+          ],
+          "persimmon_tree": [
+            {
+              "time": 0,
+              "x": 200,
+              "y": 810,
+              "height": 520,
+              "growth": 1,
+              "fruits": 6
+            },
+            {
+              "time": 1.8,
+              "x": 200,
+              "y": 810,
+              "height": 520,
+              "growth": 1,
+              "fruits": 5
+            },
+            {
+              "time": 5.0,
+              "x": 200,
+              "y": 810,
+              "height": 520,
+              "growth": 1,
+              "fruits": 5
+            }
+          ],
+          "strawberry_plant": [
+            {
+              "time": 0,
+              "x": 390,
+              "y": 810,
+              "height": 120,
+              "growth": 1,
+              "fruits": 4
+            },
+            {
+              "time": 5.0,
+              "x": 390,
+              "y": 810,
+              "height": 120,
+              "growth": 1,
+              "fruits": 4
+            }
+          ],
+          "basket": [
+            {
+              "time": 0,
+              "x": 85,
+              "y": 810,
+              "height": 180,
+              "fill": 0
+            },
+            {
+              "time": 3.9,
+              "x": 85,
+              "y": 810,
+              "height": 180,
+              "fill": 0
+            },
+            {
+              "time": 4.5,
+              "x": 85,
+              "y": 810,
+              "height": 180,
+              "fill": 0.4
+            },
+            {
+              "time": 5.0,
+              "x": 85,
+              "y": 810,
+              "height": 180,
+              "fill": 0.4
+            }
+          ],
+          "persimmon_picked": [
+            {
+              "time": 1.8,
+              "x": 335.2,
+              "y": 472.0,
+              "height": 72.8
+            },
+            {
+              "time": 3.8,
+              "x": 335.2,
+              "y": 472.0,
+              "height": 72.8
+            },
+            {
+              "time": 4.4,
+              "x": 85,
+              "y": 770,
+              "height": 72.8,
+              "ease": "ease_in"
+            },
+            {
+              "time": 5.0,
+              "x": 85,
+              "y": 770,
+              "height": 72.8
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "pick",
+            "actor": "farmer",
+            "target": "persimmon_tree",
+            "target_anchor": "fruit_6",
+            "actor_anchor": "hand_l",
+            "start": 1.2,
+            "end": 2.2,
+            "contact": 1.8
+          },
+          {
+            "type": "grip",
+            "actor": "farmer",
+            "target": "persimmon_picked",
+            "actor_anchor": "hand_l",
+            "start": 1.8,
+            "end": 3.8
+          },
+          {
+            "type": "release",
+            "actor": "farmer",
+            "target": "persimmon_picked",
+            "start": 3.8,
+            "end": 4.4,
+            "offset": [
+              -115,
+              210
+            ]
+          }
+        ],
+        "background": {
+          "preset": "highland_farm",
+          "weather": "fog",
+          "season": "autumn"
+        }
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 5.0,
+        "end_time": 10.0,
+        "characters_present": [
+          "farmer",
+          "pear_tree",
+          "basket"
+        ],
+        "poses": {
+          "farmer": [
+            {
+              "time": 5.0,
+              "x": 380,
+              "y": 810,
+              "height": 360,
+              "expression": "happy",
+              "z": 3
+            },
+            {
+              "time": 7.5,
+              "x": 380,
+              "y": 810,
+              "height": 360,
+              "expression": "happy",
+              "z": 3
+            },
+            {
+              "time": 10.0,
+              "x": 380,
+              "y": 810,
+              "height": 360,
+              "expression": "happy",
+              "z": 3
+            }
+          ],
+          "pear_tree": [
+            {
+              "time": 5.0,
+              "x": 180,
+              "y": 810,
+              "height": 520,
+              "growth": 1,
+              "fruits": 0
+            },
+            {
+              "time": 10.0,
+              "x": 180,
+              "y": 810,
+              "height": 520,
+              "growth": 1,
+              "fruits": 0
+            }
+          ],
+          "basket": [
+            {
+              "time": 5.0,
+              "x": 480,
+              "y": 810,
+              "height": 180,
+              "fill": 0.4
+            },
+            {
+              "time": 10.0,
+              "x": 480,
+              "y": 810,
+              "height": 180,
+              "fill": 0.4
+            }
+          ]
+        },
+        "actions": [],
+        "background": {
+          "preset": "snowy_orchard",
+          "weather": "snow",
+          "season": "winter"
+        }
+      }
+    ],
+    "cues": [
+      {
+        "start": 0.5,
+        "end": 3.0,
+        "character_id": "farmer",
+        "text": "Đà Lạt sương mù giăng lối, hồng chín đỏ rực cả đồi thông!",
+        "expression": "happy"
+      },
+      {
+        "start": 5.5,
+        "end": 8.5,
+        "character_id": "farmer",
+        "text": "Mùa đông tuyết rơi trắng xóa vườn cây, ta ủ ấm đón xuân sang.",
+        "expression": "happy"
+      }
+    ]
+  },
+  {
+    "id": "vegetable_cutaway",
+    "name": "5 · Mặt cắt đất: su hào, khoai lang sinh trưởng và thu hoạch nhổ củ",
+    "renderer": "native-vector-v1",
+    "fidelity": "technical-demo",
+    "note": "Mẫu kỹ thuật Phase E: mặt cắt đất soil_cutaway thấy củ su hào trên đất, củ khoai lang phình to dưới đất, và bàn tay nhổ củ uproot kéo theo củ khoai.",
+    "duration": 9.0,
+    "characters": [
+      {
+        "id": "kohlrabi_plant",
+        "name": "Cây su hào",
+        "asset": "kohlrabi_plant"
+      },
+      {
+        "id": "sweet_potato_plant",
+        "name": "Cây khoai lang",
+        "asset": "sweet_potato_plant"
+      },
+      {
+        "id": "hand",
+        "name": "Bàn tay trái",
+        "asset": "hand"
+      }
+    ],
+    "scenes": [
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 0,
+        "end_time": 4.5,
+        "characters_present": [
+          "kohlrabi_plant",
+          "sweet_potato_plant",
+          "hand"
+        ],
+        "poses": {
+          "kohlrabi_plant": [
+            {
+              "time": 0,
+              "x": 160,
+              "y": 480,
+              "height": 360,
+              "growth": 0.25,
+              "cutaway": 1,
+              "roots": 1,
+              "z": 1
+            },
+            {
+              "time": 4.5,
+              "x": 160,
+              "y": 480,
+              "height": 360,
+              "growth": 1.0,
+              "cutaway": 1,
+              "roots": 1,
+              "z": 1
+            }
+          ],
+          "sweet_potato_plant": [
+            {
+              "time": 0,
+              "x": 380,
+              "y": 480,
+              "height": 380,
+              "growth": 0.25,
+              "cutaway": 1,
+              "roots": 1,
+              "z": 2
+            },
+            {
+              "time": 4.5,
+              "x": 380,
+              "y": 480,
+              "height": 380,
+              "growth": 1.0,
+              "cutaway": 1,
+              "roots": 1,
+              "z": 2
+            }
+          ],
+          "hand": [
+            {
+              "time": 0,
+              "x": 500,
+              "y": 320,
+              "height": 240,
+              "z": 3
+            },
+            {
+              "time": 4.5,
+              "x": 500,
+              "y": 320,
+              "height": 240,
+              "z": 3
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "grow",
+            "start": 0.5,
+            "end": 4.0,
+            "target": "kohlrabi_plant"
+          },
+          {
+            "type": "grow",
+            "start": 0.5,
+            "end": 4.0,
+            "target": "sweet_potato_plant"
+          }
+        ],
+        "background": {
+          "preset": "soil_cutaway"
+        },
+        "index": 0
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 4.5,
+        "end_time": 9.0,
+        "characters_present": [
+          "kohlrabi_plant",
+          "sweet_potato_plant",
+          "hand"
+        ],
+        "poses": {
+          "kohlrabi_plant": [
+            {
+              "time": 4.5,
+              "x": 160,
+              "y": 480,
+              "height": 360,
+              "growth": 1.0,
+              "cutaway": 1,
+              "roots": 1,
+              "z": 1
+            },
+            {
+              "time": 9.0,
+              "x": 160,
+              "y": 480,
+              "height": 360,
+              "growth": 1.0,
+              "cutaway": 1,
+              "roots": 1,
+              "z": 1
+            }
+          ],
+          "sweet_potato_plant": [
+            {
+              "time": 4.5,
+              "x": 380,
+              "y": 480,
+              "height": 380,
+              "growth": 1.0,
+              "cutaway": 1,
+              "roots": 1,
+              "z": 2
+            },
+            {
+              "time": 9.0,
+              "x": 380,
+              "y": 480,
+              "height": 380,
+              "growth": 1.0,
+              "cutaway": 1,
+              "roots": 1,
+              "z": 2
+            }
+          ],
+          "hand": [
+            {
+              "time": 4.5,
+              "x": 500,
+              "y": 320,
+              "height": 240,
+              "z": 3
+            },
+            {
+              "time": 5.2,
+              "x": 400,
+              "y": 440,
+              "height": 240,
+              "z": 3
+            },
+            {
+              "time": 9.0,
+              "x": 400,
+              "y": 340,
+              "height": 240,
+              "z": 3
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "uproot",
+            "start": 5.4,
+            "end": 8.6,
+            "target": "sweet_potato_plant",
+            "actor": "hand"
+          }
+        ],
+        "background": {
+          "preset": "soil_cutaway"
+        },
+        "index": 1
+      }
+    ],
+    "cues": [
+      {
+        "start": 0.5,
+        "end": 3.8,
+        "character_id": "sweet_potato_plant",
+        "text": "Dưới lòng đất màu mỡ, củ khoai lang phình to mập mạp!",
+        "expression": "happy"
+      },
+      {
+        "start": 5.2,
+        "end": 8.6,
+        "character_id": "kohlrabi_plant",
+        "text": "Bác nông dân nhổ khoai, từng chùm củ ngọt lành theo cây lên mặt đất!",
+        "expression": "surprised"
+      }
+    ]
+  },
+  {
+    "id": "safe_spraying",
+    "name": "6 · An toàn hoá chất: bảo hộ, gió tạt sương độc và rửa sạch nông sản",
+    "renderer": "native-vector-v1",
+    "fidelity": "technical-demo",
+    "note": "Mẫu kỹ thuật Phase F: tủ khoá hoá chất, đồ bảo hộ ppe_mask, bình phun backpack_sprayer, gió làm spray_drift nhiễm toxic và wash_produce trong chậu rửa kitchen.",
+    "duration": 15.0,
+    "characters": [
+      {
+        "id": "farmer",
+        "name": "Nông dân",
+        "asset": "farmer"
+      },
+      {
+        "id": "mask",
+        "name": "Mặt nạ phòng độc",
+        "asset": "ppe_mask",
+        "face": false,
+        "attach_to": {
+          "id": "farmer",
+          "anchor": "face"
+        }
+      },
+      {
+        "id": "sprayer",
+        "name": "Bình phun thuốc đeo lưng",
+        "asset": "backpack_sprayer",
+        "face": false
+      },
+      {
+        "id": "cabinet",
+        "name": "Tủ khoá hoá chất",
+        "asset": "chem_cabinet",
+        "face": false
+      },
+      {
+        "id": "bottle",
+        "name": "Chai thuốc BVTV",
+        "asset": "pesticide_bottle",
+        "face": false
+      },
+      {
+        "id": "sign",
+        "name": "Biển cảnh báo an toàn",
+        "asset": "warning_sign",
+        "face": false
+      },
+      {
+        "id": "bystander",
+        "name": "Nông dân nữ",
+        "asset": "farmer_woman"
+      },
+      {
+        "id": "cabbage",
+        "name": "Bắp cải",
+        "asset": "cabbage"
+      },
+      {
+        "id": "basin",
+        "name": "Chậu rửa rau quả",
+        "asset": "rinse_basin",
+        "face": false
+      },
+      {
+        "id": "hand",
+        "name": "Bàn tay trái",
+        "asset": "hand",
+        "face": false
+      }
+    ],
+    "scenes": [
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 0,
+        "end_time": 5.0,
+        "characters_present": [
+          "farmer",
+          "mask",
+          "sprayer",
+          "cabinet",
+          "bottle",
+          "sign"
+        ],
+        "poses": {
+          "farmer": [
+            {
+              "time": 0,
+              "x": 240,
+              "y": 810,
+              "height": 360,
+              "expression": "happy"
+            },
+            {
+              "time": 5.0,
+              "x": 240,
+              "y": 810,
+              "height": 360,
+              "expression": "happy"
+            }
+          ],
+          "mask": [
+            {
+              "time": 0,
+              "x": 0,
+              "y": 0,
+              "height": 80
+            },
+            {
+              "time": 5.0,
+              "x": 0,
+              "y": 0,
+              "height": 80
+            }
+          ],
+          "sprayer": [
+            {
+              "time": 0,
+              "x": 160,
+              "y": 810,
+              "height": 220
+            },
+            {
+              "time": 5.0,
+              "x": 160,
+              "y": 810,
+              "height": 220
+            }
+          ],
+          "cabinet": [
+            {
+              "time": 0,
+              "x": 460,
+              "y": 810,
+              "height": 320,
+              "open": 1.0
+            },
+            {
+              "time": 5.0,
+              "x": 460,
+              "y": 810,
+              "height": 320,
+              "open": 1.0
+            }
+          ],
+          "bottle": [
+            {
+              "time": 0,
+              "x": 460,
+              "y": 680,
+              "height": 80
+            },
+            {
+              "time": 5.0,
+              "x": 460,
+              "y": 680,
+              "height": 80
+            }
+          ],
+          "sign": [
+            {
+              "time": 0,
+              "x": 80,
+              "y": 810,
+              "height": 240
+            },
+            {
+              "time": 5.0,
+              "x": 80,
+              "y": 810,
+              "height": 240
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "pour",
+            "start": 1.5,
+            "end": 4.0,
+            "target": "sprayer",
+            "actor": "bottle"
+          }
+        ],
+        "background": {
+          "preset": "farm_warehouse"
+        },
+        "index": 0
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 5.0,
+        "end_time": 10.0,
+        "characters_present": [
+          "farmer",
+          "mask",
+          "sprayer",
+          "cabbage",
+          "bystander"
+        ],
+        "poses": {
+          "farmer": [
+            {
+              "time": 5.0,
+              "x": 180,
+              "y": 810,
+              "height": 360,
+              "expression": "happy"
+            },
+            {
+              "time": 8.0,
+              "x": 180,
+              "y": 810,
+              "height": 360,
+              "expression": "worried"
+            },
+            {
+              "time": 10.0,
+              "x": 180,
+              "y": 810,
+              "height": 360,
+              "expression": "worried"
+            }
+          ],
+          "mask": [
+            {
+              "time": 5.0,
+              "x": 0,
+              "y": 0,
+              "height": 80
+            },
+            {
+              "time": 10.0,
+              "x": 0,
+              "y": 0,
+              "height": 80
+            }
+          ],
+          "sprayer": [
+            {
+              "time": 5.0,
+              "x": 180,
+              "y": 810,
+              "height": 220,
+              "z": 1
+            },
+            {
+              "time": 10.0,
+              "x": 180,
+              "y": 810,
+              "height": 220,
+              "z": 1
+            }
+          ],
+          "cabbage": [
+            {
+              "time": 5.0,
+              "x": 300,
+              "y": 810,
+              "height": 180,
+              "growth": 1.0
+            },
+            {
+              "time": 10.0,
+              "x": 300,
+              "y": 810,
+              "height": 180,
+              "growth": 1.0
+            }
+          ],
+          "bystander": [
+            {
+              "time": 5.0,
+              "x": 470,
+              "y": 810,
+              "height": 350,
+              "expression": "happy",
+              "toxic": 0.0,
+              "z": 2
+            },
+            {
+              "time": 7.2,
+              "x": 470,
+              "y": 810,
+              "height": 350,
+              "expression": "worried",
+              "toxic": 0.7,
+              "z": 2
+            },
+            {
+              "time": 10.0,
+              "x": 470,
+              "y": 810,
+              "height": 350,
+              "expression": "worried",
+              "toxic": 0.7,
+              "z": 2
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "spray_drift",
+            "start": 6.0,
+            "end": 9.2,
+            "target": "bystander",
+            "actor": "sprayer"
+          }
+        ],
+        "background": {
+          "preset": "vegetable_rows",
+          "weather": "wind"
+        },
+        "index": 1
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 10.0,
+        "end_time": 15.0,
+        "characters_present": [
+          "bystander",
+          "basin",
+          "cabbage",
+          "hand"
+        ],
+        "poses": {
+          "bystander": [
+            {
+              "time": 10.0,
+              "x": 180,
+              "y": 810,
+              "height": 350,
+              "expression": "worried",
+              "toxic": 0.4
+            },
+            {
+              "time": 12.5,
+              "x": 180,
+              "y": 810,
+              "height": 350,
+              "expression": "happy",
+              "toxic": 0.0
+            },
+            {
+              "time": 15.0,
+              "x": 180,
+              "y": 810,
+              "height": 350,
+              "expression": "happy",
+              "toxic": 0.0
+            }
+          ],
+          "basin": [
+            {
+              "time": 10.0,
+              "x": 380,
+              "y": 810,
+              "height": 200,
+              "fill": 0.6
+            },
+            {
+              "time": 15.0,
+              "x": 380,
+              "y": 810,
+              "height": 200,
+              "fill": 0.6
+            }
+          ],
+          "cabbage": [
+            {
+              "time": 10.0,
+              "x": 380,
+              "y": 750,
+              "height": 130,
+              "toxic": 0.6,
+              "z": 2
+            },
+            {
+              "time": 13.5,
+              "x": 380,
+              "y": 750,
+              "height": 130,
+              "toxic": 0.0,
+              "z": 2
+            },
+            {
+              "time": 15.0,
+              "x": 380,
+              "y": 750,
+              "height": 130,
+              "toxic": 0.0,
+              "z": 2
+            }
+          ],
+          "hand": [
+            {
+              "time": 10.0,
+              "x": 380,
+              "y": 690,
+              "height": 140,
+              "z": 3
+            },
+            {
+              "time": 15.0,
+              "x": 380,
+              "y": 690,
+              "height": 140,
+              "z": 3
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "wash_produce",
+            "start": 11.0,
+            "end": 14.2,
+            "target": "cabbage",
+            "actor": "hand"
+          }
+        ],
+        "background": {
+          "preset": "kitchen"
+        },
+        "index": 2
+      }
+    ],
+    "cues": [
+      {
+        "start": 0.5,
+        "end": 3.5,
+        "character_id": "farmer",
+        "text": "Trang bị mặt nạ bảo hộ và cất giữ hoá chất đúng quy định trong tủ khoá.",
+        "expression": "happy"
+      },
+      {
+        "start": 6.2,
+        "end": 9.2,
+        "character_id": "bystander",
+        "text": "Gió lớn làm tạt sương thuốc, phải ngừng phun ngay để tránh nhiễm độc!",
+        "expression": "worried"
+      },
+      {
+        "start": 11.2,
+        "end": 14.5,
+        "character_id": "bystander",
+        "text": "Rửa rau củ thật sạch trong bồn nước trước khi dùng để an toàn cho sức khoẻ.",
+        "expression": "happy"
+      }
+    ]
+  }
+]

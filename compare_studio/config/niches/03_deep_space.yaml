@@ -1,0 +1,11 @@
+niche_id: deep_space
+name: Vũ Trụ & Vật Lý
+language: vi
+summary: Giải thích thiên văn và vật lý bằng dữ kiện, so sánh quy mô và hình ảnh vũ trụ.
+allowed_engines:
+  - mystery
+  - vox
+  - science
+  - survival
+  - tierlist
+  - kinetic

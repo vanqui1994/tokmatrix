@@ -1,0 +1,80 @@
+schema_version: 1
+minimum_score: 0.55
+engines:
+  - id: folklore
+    name: Folklore
+  - id: mystery
+    name: Mystery
+  - id: newspaper
+    name: Newspaper
+  - id: vox
+    name: Vox
+  - id: chalk
+    name: Chalk
+  - id: science
+    name: Science
+  - id: survival
+    name: Survival
+  - id: tierlist
+    name: Tierlist
+  - id: kinetic
+    name: Kinetic
+  - id: wildlife
+    name: Wildlife
+  - id: compare
+    name: Compare (A vs B, chỉ theo đề tài — xem template-selector topicEngine)
+niches:
+  - id: folklore_legends
+    name: Dân Gian & Tâm Linh
+    scores: { folklore: 1.00, mystery: 0.90, newspaper: 0.80, vox: 0.30, chalk: 0.20, science: 0.10, survival: 0.50, tierlist: 0.85, kinetic: 0.75, wildlife: 0.40, compare: 0.20 }
+  - id: unsolved_mysteries
+    name: Bí Ẩn Chưa Lời Giải
+    scores: { folklore: 0.75, mystery: 1.00, newspaper: 0.95, vox: 0.85, chalk: 0.40, science: 0.50, survival: 0.50, tierlist: 0.75, kinetic: 0.80, wildlife: 0.20, compare: 0.20 }
+  - id: deep_space
+    name: Vũ Trụ & Vật Lý
+    scores: { folklore: 0.15, mystery: 0.60, newspaper: 0.50, vox: 0.95, chalk: 0.45, science: 1.00, survival: 0.75, tierlist: 0.80, kinetic: 0.85, wildlife: 0.10, compare: 0.50 }
+  - id: extreme_wildlife
+    name: Động Vật & Biển Sâu
+    scores: { folklore: 0.30, mystery: 0.50, newspaper: 0.40, vox: 0.80, chalk: 0.40, science: 0.85, survival: 0.80, tierlist: 0.90, kinetic: 0.70, wildlife: 1.00, compare: 0.50 }
+  - id: geopolitics_maps
+    name: Địa Chính Trị & Biên Giới
+    scores: { folklore: 0.10, mystery: 0.50, newspaper: 0.90, vox: 0.95, chalk: 1.00, science: 0.20, survival: 0.40, tierlist: 0.75, kinetic: 0.80, wildlife: 0.70, compare: 0.50 }
+  - id: dark_psychology
+    name: Tâm Lý Học & Hành Vi
+    scores: { folklore: 0.40, mystery: 0.85, newspaper: 0.70, vox: 0.95, chalk: 0.60, science: 0.75, survival: 0.50, tierlist: 0.70, kinetic: 1.00, wildlife: 0.20, compare: 0.20 }
+  - id: extreme_survival
+    name: Sinh Tồn & Thảm Hoạ
+    scores: { folklore: 0.30, mystery: 0.65, newspaper: 0.70, vox: 0.80, chalk: 0.75, science: 0.80, survival: 1.00, tierlist: 0.85, kinetic: 0.80, wildlife: 0.70, compare: 0.20 }
+  - id: tech_ai_future
+    name: Công Nghệ & Tương Lai AI
+    scores: { folklore: 0.10, mystery: 0.60, newspaper: 0.50, vox: 1.00, chalk: 0.60, science: 0.90, survival: 0.50, tierlist: 0.85, kinetic: 0.95, wildlife: 0.80, compare: 0.50 }
+  - id: economy_empires
+    name: Kinh Tế & Thương Trường
+    scores: { folklore: 0.10, mystery: 0.50, newspaper: 0.95, vox: 1.00, chalk: 0.85, science: 0.30, survival: 0.40, tierlist: 0.90, kinetic: 0.85, wildlife: 0.75, compare: 0.50 }
+  - id: lost_civilizations
+    name: Văn Minh Cổ Đại
+    scores: { folklore: 0.85, mystery: 0.90, newspaper: 0.95, vox: 0.85, chalk: 0.70, science: 0.80, survival: 0.50, tierlist: 0.75, kinetic: 0.50, wildlife: 0.30, compare: 0.20 }
+  - id: medical_anomalies
+    name: Y Học & Dị Biệt Sinh Học
+    scores: { folklore: 0.30, mystery: 0.90, newspaper: 0.80, vox: 0.90, chalk: 0.40, science: 1.00, survival: 0.75, tierlist: 0.70, kinetic: 0.75, wildlife: 0.40, compare: 0.20 }
+  - id: mega_catastrophes
+    name: Đại Thảm Hoạ Trái Đất
+    scores: { folklore: 0.20, mystery: 0.70, newspaper: 0.90, vox: 0.85, chalk: 0.80, science: 0.95, survival: 1.00, tierlist: 0.80, kinetic: 0.85, wildlife: 0.40, compare: 0.20 }
+  - id: infamous_figures
+    name: Nhân Vật Khét Tiếng
+    scores: { folklore: 0.30, mystery: 0.85, newspaper: 1.00, vox: 0.90, chalk: 0.80, science: 0.20, survival: 0.40, tierlist: 0.95, kinetic: 0.80, wildlife: 0.60, compare: 0.20 }
+  - id: forbidden_experiments
+    name: Thí Nghiệm Điên Rồ
+    scores: { folklore: 0.20, mystery: 1.00, newspaper: 0.95, vox: 0.90, chalk: 0.50, science: 0.95, survival: 0.75, tierlist: 0.80, kinetic: 0.75, wildlife: 0.30, compare: 0.20 }
+  - id: ocean_mysteries
+    name: Đại Dương & Rãnh Vực
+    scores: { folklore: 0.50, mystery: 0.85, newspaper: 0.50, vox: 0.85, chalk: 0.50, science: 0.95, survival: 0.85, tierlist: 0.85, kinetic: 0.75, wildlife: 1.00, compare: 0.50 }
+  - id: philosophy_paradox
+    name: Nghịch Lý Triết Học
+    scores: { folklore: 0.40, mystery: 0.70, newspaper: 0.50, vox: 0.95, chalk: 0.85, science: 0.80, survival: 0.30, tierlist: 0.80, kinetic: 1.00, wildlife: 0.50, compare: 0.20 }
+  - id: military_arsenal
+    name: Vũ Khí & Khí Tài
+    scores: { folklore: 0.10, mystery: 0.50, newspaper: 0.85, vox: 0.90, chalk: 1.00, science: 0.75, survival: 0.70, tierlist: 1.00, kinetic: 0.80, wildlife: 0.85, compare: 0.50 }
+  - id: ancient_mythology
+    name: Thần Thoại Cổ Đại
+    scores: { folklore: 1.00, mystery: 0.80, newspaper: 0.70, vox: 0.50, chalk: 0.40, science: 0.30, survival: 0.50, tierlist: 0.95, kinetic: 0.70, wildlife: 0.50, compare: 0.20 }

@@ -1,0 +1,3083 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bản Demo Hoạt Hình 2D Chuyển Động Tự Động (2D Cartoon Rig) — TokMatrix</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-base: #060813;
+      --bg-surface: rgba(15, 23, 42, 0.75);
+      --bg-surface-hover: rgba(30, 41, 59, 0.85);
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --border-focus: rgba(16, 185, 129, 0.5);
+      
+      --accent-emerald: #10b981;
+      --accent-emerald-glow: rgba(16, 185, 129, 0.4);
+      --accent-mint: #34d399;
+      --accent-amber: #f59e0b;
+      --accent-amber-glow: rgba(245, 158, 11, 0.35);
+      --accent-rose: #f43f5e;
+      --accent-rose-glow: rgba(244, 63, 94, 0.35);
+      --accent-cyan: #06b6d4;
+      --accent-purple: #a855f7;
+      
+      --text-white: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --radius-xl: 32px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg-base);
+      background-image: 
+        radial-gradient(1200px circle at 15% 5%, rgba(16, 185, 129, 0.12) 0%, transparent 60%),
+        radial-gradient(900px circle at 85% 15%, rgba(168, 85, 247, 0.1) 0%, transparent 55%),
+        radial-gradient(800px circle at 50% 95%, rgba(245, 158, 11, 0.07) 0%, transparent 60%);
+      background-attachment: fixed;
+      color: var(--text-white);
+      min-height: 100vh;
+      padding: 24px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.2); }
+    ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #475569; }
+
+    .container {
+      max-width: 1280px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+    }
+
+    /* ===================================================
+       1. TOP HEADER BAR
+       =================================================== */
+    .header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--border-subtle);
+      box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.08);
+      padding: 16px 24px;
+      border-radius: var(--radius-lg);
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .title-box {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .title-box h1 {
+      font-size: 21px;
+      font-weight: 900;
+      letter-spacing: -0.5px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: linear-gradient(135deg, #ffffff 30%, #34d399 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .badge-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .badge-pill {
+      font-size: 11px;
+      font-weight: 800;
+      padding: 3px 10px;
+      border-radius: 20px;
+      letter-spacing: 0.4px;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .badge-emerald {
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid rgba(16, 185, 129, 0.4);
+      color: #34d399;
+    }
+    .badge-purple {
+      background: rgba(168, 85, 247, 0.15);
+      border: 1px solid rgba(168, 85, 247, 0.4);
+      color: #c084fc;
+    }
+    .badge-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #34d399;
+      box-shadow: 0 0 8px #34d399;
+      animation: pulseDot 1.4s infinite;
+    }
+    @keyframes pulseDot {
+      0%, 100% { opacity: 0.4; transform: scale(0.8); }
+      50% { opacity: 1; transform: scale(1.3); }
+    }
+
+    /* Action Buttons */
+    .header-actions {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .btn-action {
+      padding: 9px 18px;
+      border-radius: var(--radius-sm);
+      font-size: 12.5px;
+      font-weight: 800;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      border: 1px solid transparent;
+      text-decoration: none;
+      user-select: none;
+    }
+    .btn-primary-glow {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      color: #fff;
+      box-shadow: 0 4px 18px rgba(16, 185, 129, 0.45);
+    }
+    .btn-primary-glow:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 24px rgba(16, 185, 129, 0.65);
+      filter: brightness(1.08);
+    }
+    .btn-record-glow {
+      background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+      color: #0b0f19;
+      box-shadow: 0 4px 18px rgba(245, 158, 11, 0.35);
+    }
+    .btn-record-glow:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 24px rgba(245, 158, 11, 0.55);
+      filter: brightness(1.08);
+    }
+    .btn-glass {
+      background: rgba(30, 41, 59, 0.6);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--border-subtle);
+      color: #cbd5e1;
+    }
+    .btn-glass:hover {
+      background: rgba(51, 65, 85, 0.8);
+      border-color: rgba(255,255,255,0.2);
+      color: #fff;
+      transform: translateY(-2px);
+    }
+
+    /* ===================================================
+       2. MAIN TWO-COLUMN LAYOUT
+       =================================================== */
+    .layout-grid {
+      display: grid;
+      grid-template-columns: 420px 1fr;
+      gap: 28px;
+      align-items: start;
+    }
+    @media (max-width: 980px) {
+      .layout-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ===================================================
+       3. PHONE PLAYER STAGE (TITANIUM FRAME)
+       =================================================== */
+    .phone-stage {
+      background: #000;
+      border: 4px solid #1e293b;
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      aspect-ratio: 9/16;
+      max-height: 700px;
+      position: relative;
+      box-shadow: 
+        0 25px 60px -15px rgba(0,0,0,0.85),
+        0 0 50px rgba(16, 185, 129, 0.22),
+        inset 0 1px 1px rgba(255,255,255,0.25),
+        inset 0 -2px 4px rgba(0,0,0,0.9);
+      display: flex;
+      flex-direction: column;
+    }
+
+    canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+      background: #87ceeb;
+    }
+
+    /* Dynamic Island Speaker Pill */
+    .dynamic-speaker-pill {
+      position: absolute;
+      top: 14px;
+      left: 14px;
+      right: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(0, 0, 0, 0.68);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 11.5px;
+      font-weight: 800;
+      color: #f1f5f9;
+      pointer-events: none;
+      z-index: 25;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+      transition: all 0.25s ease;
+    }
+    .speaker-name-box {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .wave-bars {
+      display: flex;
+      align-items: flex-end;
+      gap: 2.5px;
+      height: 14px;
+    }
+    .wave-bar {
+      width: 3px;
+      background: #34d399;
+      border-radius: 2px;
+      height: 4px;
+      transition: height 0.08s ease;
+    }
+    .wave-bar:nth-child(1) { height: 6px; }
+    .wave-bar:nth-child(2) { height: 12px; }
+    .wave-bar:nth-child(3) { height: 8px; }
+    .wave-bar:nth-child(4) { height: 14px; }
+    .playing .wave-bar { animation: barBounce 0.5s ease-in-out infinite alternate; }
+    .playing .wave-bar:nth-child(1) { animation-delay: 0.1s; }
+    .playing .wave-bar:nth-child(2) { animation-delay: 0.25s; }
+    .playing .wave-bar:nth-child(3) { animation-delay: 0.05s; }
+    .playing .wave-bar:nth-child(4) { animation-delay: 0.35s; }
+    @keyframes barBounce {
+      0% { height: 3px; }
+      100% { height: 14px; }
+    }
+
+    /* Subtitles on Canvas */
+    .sub-banner {
+      position: absolute;
+      bottom: 78px;
+      left: 12px;
+      right: 12px;
+      text-align: center;
+      pointer-events: none;
+      z-index: 20;
+    }
+    .sub-chip {
+      display: inline-block;
+      font-size: 14.5px;
+      font-weight: 900;
+      color: #ffe600;
+      text-shadow: 
+        -2px -2px 0 #000,  
+         2px -2px 0 #000,
+        -2px  2px 0 #000,
+         2px  2px 0 #000,
+         0px  3px 8px rgba(0,0,0,0.9);
+      background: rgba(0, 0, 0, 0.72);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      padding: 7px 16px;
+      border-radius: 12px;
+      line-height: 1.38;
+      max-width: 94%;
+      border: 1px solid rgba(255, 230, 0, 0.35);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.6);
+      transition: transform 0.1s ease;
+    }
+
+    /* Player Controls Bar */
+    .player-controls {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(180deg, transparent, rgba(6, 9, 19, 0.88) 35%, rgba(6, 9, 19, 0.98));
+      padding: 14px 18px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      z-index: 30;
+    }
+
+    .progress-bar-container {
+      width: 100%;
+      height: 7px;
+      background: rgba(255,255,255,0.18);
+      border-radius: 4px;
+      cursor: pointer;
+      position: relative;
+      transition: height 0.15s;
+    }
+    .progress-bar-container:hover {
+      height: 9px;
+    }
+    .progress-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #10b981 0%, #06b6d4 60%, #34d399 100%);
+      border-radius: 4px;
+      width: 0%;
+      position: relative;
+      transition: width 0.05s linear;
+      box-shadow: 0 0 12px rgba(16, 185, 129, 0.7);
+    }
+    .progress-bar-fill::after {
+      content: '';
+      position: absolute;
+      right: -4px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 11px;
+      height: 11px;
+      background: #fff;
+      border: 2px solid #10b981;
+      border-radius: 50%;
+      opacity: 0;
+      transition: opacity 0.15s;
+    }
+    .progress-bar-container:hover .progress-bar-fill::after {
+      opacity: 1;
+    }
+
+    .controls-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .ctrl-buttons-group {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+    .ctrl-btn {
+      background: rgba(30, 41, 59, 0.7);
+      backdrop-filter: blur(6px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #fff;
+      padding: 7px 15px;
+      border-radius: var(--radius-sm);
+      font-size: 12px;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s;
+      user-select: none;
+    }
+    .ctrl-btn:hover {
+      background: #10b981;
+      border-color: #10b981;
+      color: #000;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+    }
+    .time-badge {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 12.5px;
+      font-weight: 800;
+      color: #cbd5e1;
+      background: rgba(15, 23, 42, 0.6);
+      padding: 4px 10px;
+      border-radius: 6px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      letter-spacing: 0.5px;
+    }
+
+    /* ===================================================
+       4. RIGHT DETAILS PANEL & CARDS
+       =================================================== */
+    .info-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .card {
+      background: var(--bg-surface);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 20px 24px;
+      box-shadow: 0 12px 35px -10px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.06);
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .card-head {
+      font-size: 13.5px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+      color: var(--text-white);
+    }
+    .card-head-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* ===================================================
+       5. BEAUTIFIED ITEM GROUP: FEATURE CARDS
+       =================================================== */
+    .features-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 12px;
+    }
+    
+    .feat-item {
+      background: rgba(11, 15, 25, 0.65);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: var(--radius-md);
+      padding: 14px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .feat-item:hover {
+      background: rgba(20, 28, 48, 0.85);
+      border-color: rgba(16, 185, 129, 0.35);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px -6px rgba(0,0,0,0.6), 0 0 20px rgba(16, 185, 129, 0.15);
+    }
+    .feat-item.active {
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.14) 0%, rgba(15, 23, 42, 0.8) 100%);
+      border-color: #10b981;
+      box-shadow: 0 0 25px rgba(16, 185, 129, 0.35), inset 0 0 12px rgba(16, 185, 129, 0.15);
+    }
+    .feat-item.active-shake {
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.18) 0%, rgba(15, 23, 42, 0.8) 100%);
+      border-color: #f59e0b;
+      box-shadow: 0 0 25px rgba(245, 158, 11, 0.4);
+    }
+    .feat-item.active-cut {
+      background: linear-gradient(135deg, rgba(244, 63, 94, 0.18) 0%, rgba(15, 23, 42, 0.8) 100%);
+      border-color: #f43f5e;
+      box-shadow: 0 0 25px rgba(244, 63, 94, 0.4);
+    }
+
+    .feat-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .feat-title-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .feat-icon-badge {
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      flex-shrink: 0;
+      transition: all 0.2s;
+    }
+    .feat-item:hover .feat-icon-badge {
+      transform: scale(1.08);
+      background: rgba(16, 185, 129, 0.15);
+      border-color: rgba(16, 185, 129, 0.4);
+    }
+    .feat-title {
+      font-size: 13px;
+      font-weight: 800;
+      color: #f8fafc;
+      letter-spacing: -0.2px;
+    }
+    .feat-tag {
+      font-size: 9.5px;
+      font-weight: 800;
+      padding: 2px 7px;
+      border-radius: 12px;
+      letter-spacing: 0.3px;
+      text-transform: uppercase;
+      background: rgba(255, 255, 255, 0.06);
+      color: #94a3b8;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .feat-item.active .feat-tag {
+      background: rgba(16, 185, 129, 0.25);
+      color: #34d399;
+      border-color: rgba(16, 185, 129, 0.5);
+    }
+    .feat-desc {
+      font-size: 11.5px;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+    .feat-desc strong {
+      color: #e2e8f0;
+    }
+
+    /* ===================================================
+       6. BEAUTIFIED ITEM GROUP: CHAPTER QUICK JUMP
+       =================================================== */
+    .chapter-nav {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      padding-bottom: 8px;
+      margin-bottom: 12px;
+    }
+    .chap-btn {
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid var(--border-subtle);
+      color: #94a3b8;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 700;
+      white-space: nowrap;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .chap-btn:hover {
+      background: rgba(30, 41, 59, 0.8);
+      color: #f8fafc;
+      border-color: rgba(255,255,255,0.2);
+    }
+    .chap-btn.active {
+      background: rgba(16, 185, 129, 0.2);
+      border-color: #10b981;
+      color: #34d399;
+      box-shadow: 0 0 12px rgba(16, 185, 129, 0.3);
+    }
+
+    /* ===================================================
+       7. BEAUTIFIED ITEM GROUP: SCRIPT TIMELINE BEATS
+       =================================================== */
+    .timeline-box {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      max-height: 290px;
+      overflow-y: auto;
+      padding-right: 6px;
+      scroll-behavior: smooth;
+    }
+    
+    .timeline-item {
+      background: rgba(11, 15, 25, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: var(--radius-md);
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      cursor: pointer;
+      transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+    }
+    .timeline-item:hover {
+      background: rgba(30, 41, 59, 0.6);
+      border-color: rgba(255, 255, 255, 0.15);
+      transform: translateX(3px);
+    }
+    .timeline-item.active {
+      background: linear-gradient(90deg, rgba(16, 185, 129, 0.16) 0%, rgba(15, 23, 42, 0.85) 100%);
+      border-color: rgba(16, 185, 129, 0.5);
+      border-left: 4px solid #10b981;
+      box-shadow: 0 4px 20px -4px rgba(0,0,0,0.6), inset 0 0 15px rgba(16, 185, 129, 0.1);
+    }
+
+    .t-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex: 1;
+      min-width: 0;
+    }
+    .t-sec-badge {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 11px;
+      font-weight: 800;
+      color: #34d399;
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid rgba(16, 185, 129, 0.35);
+      padding: 4px 8px;
+      border-radius: 6px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .t-content {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      min-width: 0;
+    }
+    .t-speaker-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .speaker-chip {
+      font-size: 10px;
+      font-weight: 800;
+      padding: 1px 6px;
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+    .chip-a { background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
+    .chip-b { background: rgba(56, 189, 248, 0.2); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); }
+    .chip-farmer { background: rgba(245, 158, 11, 0.2); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3); }
+    .chip-narrator { background: rgba(168, 85, 247, 0.2); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.3); }
+    
+    .t-act-text {
+      font-size: 12px;
+      font-weight: 700;
+      color: #f1f5f9;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .t-tag {
+      font-size: 10.5px;
+      font-weight: 700;
+      color: var(--text-dim);
+      background: rgba(255, 255, 255, 0.04);
+      padding: 2px 8px;
+      border-radius: 6px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .timeline-item.active .t-tag {
+      color: #34d399;
+      background: rgba(16, 185, 129, 0.2);
+    }
+
+    /* ===================================================
+       8. STUDIO SPECS FOOTER
+       =================================================== */
+    .specs-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-top: 14px;
+      padding-top: 14px;
+      border-top: 1px solid var(--border-subtle);
+    }
+    @media (max-width: 680px) {
+      .specs-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    .spec-item {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .spec-label {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .spec-val {
+      font-size: 12px;
+      font-weight: 800;
+      color: #cbd5e1;
+    }
+    /* Light studio shell; the animated artwork keeps its own saturated palette. */
+    body { background: #f4f7fb; background-image: radial-gradient(circle at 12% 8%, #e0efff 0, transparent 34%), radial-gradient(circle at 88% 12%, #e8fff2 0, transparent 32%); color: #172033; }
+    .header-bar, .card { background: rgba(255,255,255,.94); border-color: #dbe3ef; box-shadow: 0 16px 42px rgba(31,50,81,.10); }
+    .title-box h1 { background: none; color: #172033; -webkit-text-fill-color: currentColor; }
+    .btn-glass { background: #fff; border-color: #dbe3ef; color: #334155; }
+    .btn-glass:hover { background: #f8fafc; color: #172033; border-color: #9fb8df; }
+    .card-head, .feat-title, .timeline-item, .spec-val { color: #172033; }
+    .feat-desc, .t-act-text, .spec-label { color: #64748b; }
+    .feat-item, .timeline-item, .spec-item { background: #f8fafc; border-color: #e1e8f2; }
+    .timeline-box { scrollbar-color: #b8c5d8 transparent; }
+    .locale-control { display:flex; align-items:center; gap:8px; padding:7px 10px; background:#fff; border:1px solid #cfd9e8; border-radius:10px; color:#334155; font-size:12px; font-weight:800; }
+    .locale-control select { border:0; background:transparent; color:#172033; font:inherit; outline:none; max-width:170px; }
+    .layout-grid, .info-panel, .card, .features-list, .timeline-box, .specs-grid { min-width:0; max-width:100%; }
+    @media (max-width: 980px) {
+      .features-list { grid-template-columns:repeat(2,minmax(0,1fr)); }
+      .specs-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+      .card-head { flex-wrap:wrap; }
+      .chapter-nav { max-width:100%; overflow-x:auto; justify-content:flex-start; }
+    }
+    @media (max-width: 560px) {
+      body { padding:12px 10px; }
+      .header-bar { padding:14px; }
+      .header-actions { width:100%; }
+      .locale-control { width:100%; justify-content:space-between; }
+      .header-actions .btn-action { flex:1 1 calc(50% - 8px); justify-content:center; padding:9px 8px; }
+      .features-list, .specs-grid { grid-template-columns:1fr; }
+      .card { padding:16px 12px; }
+      .timeline-item { min-width:0; gap:8px; }
+      .t-left, .t-content, .t-speaker-row { min-width:0; }
+      .t-act-text { white-space:normal; overflow-wrap:anywhere; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- 1. Header Bar -->
+    <header class="header-bar">
+      <div class="title-box">
+        <h1>
+          <span>🍉</span> Hệ Thống Hoạt Hình 2D Cử Động Sống (Auto 2D Rigging Engine)
+        </h1>
+        <div class="badge-group">
+          <span class="badge-pill badge-emerald">
+            <span class="badge-dot"></span> 60 FPS REALTIME RIG
+          </span>
+          <span class="badge-pill badge-purple" id="locale-badge">
+            🎙️ LỒNG TIẾNG ĐA NHÂN VẬT VIỆT NAM
+          </span>
+          <span class="badge-pill badge-emerald">
+            📐 CHUẨN TIKTOK 9:16
+          </span>
+        </div>
+      </div>
+      <div class="header-actions">
+        <label class="locale-control" title="Đổi gói lồng tiếng theo quốc gia">
+          <span>🌍 Lồng tiếng</span>
+          <select id="locale-select"><option value="vi-VN">🇻🇳 Việt Nam</option></select>
+        </label>
+        <button type="button" class="btn-action btn-primary-glow" onclick="togglePlay()" id="btn-top-play">
+          ▶️ BẮT ĐẦU XEM DEMO
+        </button>
+        <button type="button" class="btn-action btn-record-glow" onclick="startExportRecording()" id="btn-record">
+          🔴 Quay &amp; Xuất MP4
+        </button>
+        <a href="/static/remake_hub.html" class="btn-action btn-glass" style="color: #38bdf8; border-color: rgba(56, 189, 248, 0.4);">
+          🚀 Trung Tâm Remake Hub
+        </a>
+        <a href="/static/remake_tomato_demo.html" class="btn-action btn-glass" style="color: #f87171; border-color: rgba(239, 68, 68, 0.4);">
+          🍅 Bản Cà Chua 5.mp4
+        </a>
+        <a href="/static/remake_preview.html" class="btn-action btn-glass">
+          👁️ So Sánh Các Bản
+        </a>
+      </div>
+    </header>
+
+    <!-- 2. Main Two-Column Layout -->
+    <div class="layout-grid">
+      <!-- Left Column: Phone Player Frame -->
+      <div class="phone-stage" id="phone-frame">
+        <canvas id="cartoonCanvas" width="720" height="1280"></canvas>
+        
+        <!-- Dynamic Island Speaker Status Pill -->
+        <div class="dynamic-speaker-pill" id="dynamic-speaker">
+          <div class="speaker-name-box">
+            <span id="speaker-avatar">🍉</span>
+            <span id="speaker-status-text">Đang chờ phát hoạt hình 2D...</span>
+          </div>
+          <div class="wave-bars" id="wave-bars">
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+          </div>
+        </div>
+
+        <!-- Floating Subtitles on Canvas -->
+        <div class="sub-banner">
+          <div class="sub-chip" id="sub-chip">Bấm Play để xem hoạt hình 2D tự động cử động &amp; nhép miệng!</div>
+        </div>
+
+        <!-- Controls Overlay -->
+        <div class="player-controls">
+          <div class="progress-bar-container" id="prog-container" onclick="onSeek(event)">
+            <div class="progress-bar-fill" id="prog-fill"></div>
+          </div>
+          <div class="controls-row">
+            <div class="ctrl-buttons-group">
+              <button type="button" class="ctrl-btn" onclick="togglePlay()" id="btn-play">▶ Phát</button>
+              <button type="button" class="ctrl-btn" onclick="restart()">🔄 Xem lại</button>
+            </div>
+            <div class="time-badge" id="time-text">00:00 / 00:52</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column: Technical Details & Interactive Control -->
+      <div class="info-panel">
+        <!-- 1. Interactive Motion Feature Cards -->
+        <div class="card" style="border-left: 4px solid var(--accent-emerald);">
+          <div class="card-head">
+            <div class="card-head-left" style="color: var(--accent-mint);">
+              <span>⚡</span> 6 Cơ Chế Chuyển Động Tự Động (Real-time Live Engine)
+            </div>
+            <span style="font-size: 11px; color: var(--text-dim); font-weight: 700;">Nhấp thẻ để nhảy ngay đến cảnh</span>
+          </div>
+          
+          <div class="features-list">
+            <!-- Feat 1: Lip Sync -->
+            <div class="feat-item" id="feat-lipsync" onclick="jumpTo(0.5)">
+              <div class="feat-header">
+                <div class="feat-title-group">
+                  <div class="feat-icon-badge" style="color: #38bdf8; border-color: rgba(56,189,248,0.3);">👄</div>
+                  <div class="feat-title">1. Tự Động Nhép Miệng</div>
+                </div>
+                <span class="feat-tag" id="tag-lipsync">LIP-SYNC</span>
+              </div>
+              <div class="feat-desc">
+                Khẩu hình miệng mở to, khép, tròn môi luân phiên <strong>khớp chuẩn từng từ</strong> giọng nói tiếng Việt. Khi nghỉ ngậm miệng cười.
+              </div>
+            </div>
+
+            <!-- Feat 2: Eye Blink -->
+            <div class="feat-item" id="feat-blink" onclick="jumpTo(3.0)">
+              <div class="feat-header">
+                <div class="feat-title-group">
+                  <div class="feat-icon-badge" style="color: #34d399; border-color: rgba(52,211,153,0.3);">👁️</div>
+                  <div class="feat-title">2. Tự Động Chớp Mắt</div>
+                </div>
+                <span class="feat-tag" id="tag-blink">EYE-RIG</span>
+              </div>
+              <div class="feat-desc">
+                Hai quả dưa tự động <strong>chớp mắt sau mỗi 3.2s</strong>, tròng mắt liếc nhìn theo từng cử chỉ của bác nông dân.
+              </div>
+            </div>
+
+            <!-- Feat 3: Squash & Stretch -->
+            <div class="feat-item" id="feat-squash" onclick="jumpTo(0.5)">
+              <div class="feat-header">
+                <div class="feat-title-group">
+                  <div class="feat-icon-badge" style="color: #c084fc; border-color: rgba(192,132,252,0.3);">🫀</div>
+                  <div class="feat-title">3. Thở &amp; Nhún Nhảy</div>
+                </div>
+                <span class="feat-tag" id="tag-squash">PHYSICS</span>
+              </div>
+              <div class="feat-desc">
+                Thân quả dưa lắc lư, <strong>phập phồng co giãn liên tục</strong> theo nhịp điệu nhạc nền sinh động, cử động cực kỳ mềm mại.
+              </div>
+            </div>
+
+            <!-- Feat 4: Screen Shake -->
+            <div class="feat-item" id="feat-shake" onclick="jumpTo(18.2)">
+              <div class="feat-header">
+                <div class="feat-title-group">
+                  <div class="feat-icon-badge" style="color: #fb923c; border-color: rgba(251,146,60,0.3);">⚡</div>
+                  <div class="feat-title">4. Rung Màn Hình (19s)</div>
+                </div>
+                <span class="feat-tag" id="tag-shake">SHAKE FX</span>
+              </div>
+              <div class="feat-desc">
+                Khoảnh khắc quả dưa giật đứt cuống, toàn bộ khung hình <strong>rung chấn dữ dội</strong> kèm tiếng đứt cuống <code>pop</code> giòn tan!
+              </div>
+            </div>
+
+            <!-- Feat 5: Cut & Split -->
+            <div class="feat-item" id="feat-cut" onclick="jumpTo(22.2)">
+              <div class="feat-header">
+                <div class="feat-title-group">
+                  <div class="feat-icon-badge" style="color: #f43f5e; border-color: rgba(244,63,94,0.3);">🔪</div>
+                  <div class="feat-title">5. Cảnh Bổ Dưa (23s)</div>
+                </div>
+                <span class="feat-tag" id="tag-cut">CLIMAX</span>
+              </div>
+              <div class="feat-desc">
+                Dao chém xuống, quả dưa <strong>tách đôi làm 2 mảnh dạt sang hai bên</strong>, lộ ruột non trắng bệch, mắt xoay chóng mặt!
+              </div>
+            </div>
+
+            <!-- Feat 6: Sound Waves & Tips -->
+            <div class="feat-item" id="feat-tips" onclick="jumpTo(43.2)">
+              <div class="feat-header">
+                <div class="feat-title-group">
+                  <div class="feat-icon-badge" style="color: #facc15; border-color: rgba(250,204,21,0.3);">🎵</div>
+                  <div class="feat-title">6. Sóng Âm &amp; Mẹo Hay (43s)</div>
+                </div>
+                <span class="feat-tag" id="tag-tips">AUDIO WAVE</span>
+              </div>
+              <div class="feat-desc">
+                Bàn tay gõ vào dưa và <strong>các vòng sóng âm nốt nhạc tỏa sáng</strong> rực rỡ minh họa trực quan 3 mẹo chọn dưa ngọt lịm.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. Story Timeline Beat Sheet -->
+        <div class="card">
+          <div class="card-head">
+            <div class="card-head-left">
+              <span>📜</span> Danh Sách Phân Cảnh &amp; Lời Thoại Kịch Bản:
+            </div>
+            <span id="cue-counter" style="font-size: 11px; color: var(--accent-mint); font-weight: 800;">0 / 9 Phân đoạn</span>
+          </div>
+
+          <!-- Quick Chapter Selector Strip -->
+          <div class="chapter-nav" id="chapter-nav">
+            <button type="button" class="chap-btn" onclick="jumpTo(0.5)">① Tắm nắng (0s)</button>
+            <button type="button" class="chap-btn" onclick="jumpTo(6.4)">② Chào nông dân (6s)</button>
+            <button type="button" class="chap-btn" onclick="jumpTo(10.4)">③ Bác dặn dò (10s)</button>
+            <button type="button" class="chap-btn" onclick="jumpTo(17.8)">④ Bứt cuống (18s)</button>
+            <button type="button" class="chap-btn" onclick="jumpTo(22.2)">⑤ Bổ dưa (22s)</button>
+            <button type="button" class="chap-btn" onclick="jumpTo(34.2)">⑥ So sánh (34s)</button>
+            <button type="button" class="chap-btn" onclick="jumpTo(43.2)">⑦ 3 Mẹo chọn (43s)</button>
+          </div>
+
+          <div class="timeline-box" id="timeline-box">
+            <div class="timeline-item" onclick="jumpTo(0.5)">
+              <div class="t-left">
+                <span class="t-sec-badge">00:00.5</span>
+                <div class="t-content">
+                  <div class="t-speaker-row">
+                    <span class="speaker-chip chip-a">Dưa A</span>
+                    <span class="t-act-text">"Anh Hai ơi, tụi mình bự chảng ngần này rồi..."</span>
+                  </div>
+                </div>
+              </div>
+              <span class="t-tag">👄 Nhép miệng</span>
+            </div>
+
+            <div class="timeline-item" onclick="jumpTo(6.4)">
+              <div class="t-left">
+                <span class="t-sec-badge">00:06.4</span>
+                <div class="t-content">
+                  <div class="t-speaker-row">
+                    <span class="speaker-chip chip-a">Dưa A</span>
+                    <span class="t-act-text">"Ủa bác đi đâu đấy? Tưởng tới hái tụi cháu chớ?"</span>
+                  </div>
+                </div>
+              </div>
+              <span class="t-tag">👋 Vẫy tay chào</span>
+            </div>
+
+            <div class="timeline-item" onclick="jumpTo(10.4)">
+              <div class="t-left">
+                <span class="t-sec-badge">00:10.4</span>
+                <div class="t-content">
+                  <div class="t-speaker-row">
+                    <span class="speaker-chip chip-farmer">Bác Nông Dân</span>
+                    <span class="t-act-text">"To xác chưa chắc đã chín đâu con! Hai đứa bay..."</span>
+                  </div>
+                </div>
+              </div>
+              <span class="t-tag">😔 Xụ mặt buồn</span>
+            </div>
+
+            <div class="timeline-item" onclick="jumpTo(15.0)">
+              <div class="t-left">
+                <span class="t-sec-badge">00:15.0</span>
+                <div class="t-content">
+                  <div class="t-speaker-row">
+                    <span class="speaker-chip chip-a">Dưa A</span>
+                    <span class="t-act-text">"Ai mà thèm đợi nữa chứ! Cứ bắt người ta..."</span>
+                  </div>
+                </div>
+              </div>
+              <span class="t-tag">😤 Hờn dỗi</span>
+            </div>
+
+            <div class="timeline-item" onclick="jumpTo(17.8)">
+              <div class="t-left">
+                <span class="t-sec-badge">00:17.8</span>
+                <div class="t-content">
+                  <div class="t-speaker-row">
+                    <span class="speaker-chip chip-b">Bé Dưa B</span>
+                    <span class="t-act-text">"Ủa mày tính làm gì đó? Tự bứt cuống luôn!"</span>
+                  </div>
+                </div>
+              </div>
+              <span class="t-tag" style="color: #fb923c;">💥 Bứt cuống</span>
+            </div>
+
+            <div class="timeline-item" onclick="jumpTo(22.2)">
+              <div class="t-left">
+                <span class="t-sec-badge">00:22.2</span>
+                <div class="t-content">
+                  <div class="t-speaker-row">
+                    <span class="speaker-chip chip-farmer">Bác Nông Dân</span>
+                    <span class="t-act-text">"Ủa cuống rụng rồi à? Thôi bổ ăn thử... Trời đất ơi!"</span>
+                  </div>
+                </div>
+              </div>
+              <span class="t-tag" style="color: #f43f5e;">🔪 Bổ dưa</span>
+            </div>
+
+            <div class="timeline-item" onclick="jumpTo(30.2)">
+              <div class="t-left">
+                <span class="t-sec-badge">00:30.2</span>
+                <div class="t-content">
+                  <div class="t-speaker-row">
+                    <span class="speaker-chip chip-farmer">Bác Nông Dân</span>
+                    <span class="t-act-text">"Phải đợi thêm thời gian thì dưa mới tích đủ mật ngọt chứ!"</span>
+                  </div>
+                </div>
+              </div>
+              <span class="t-tag">💡 Bài học</span>
+            </div>
+
+            <div class="timeline-item" onclick="jumpTo(34.2)">
+              <div class="t-left">
+                <span class="t-sec-badge">00:34.2</span>
+                <div class="t-content">
+                  <div class="t-speaker-row">
+                    <span class="speaker-chip chip-narrator">Lời Bình</span>
+                    <span class="t-act-text">"Bài học: Dưa hấu đạt kích thước tối đa vẫn cần thêm thời gian..."</span>
+                  </div>
+                </div>
+              </div>
+              <span class="t-tag">⚖️ So sánh</span>
+            </div>
+
+            <div class="timeline-item" onclick="jumpTo(43.2)">
+              <div class="t-left">
+                <span class="t-sec-badge">00:43.2</span>
+                <div class="t-content">
+                  <div class="t-speaker-row">
+                    <span class="speaker-chip chip-narrator">Lời Bình</span>
+                    <span class="t-act-text">"Mẹo chọn dưa: Vệt vàng cam dưới đáy, cuống khô teo..."</span>
+                  </div>
+                </div>
+              </div>
+              <span class="t-tag" style="color: #facc15;">🎵 3 Mẹo hay</span>
+            </div>
+          </div>
+
+          <!-- Studio Specs Sub-Grid -->
+          <div class="specs-grid">
+            <div class="spec-item">
+              <span class="spec-label">Độ Phân Giải</span>
+              <span class="spec-val">720 × 1280 (9:16)</span>
+            </div>
+            <div class="spec-item">
+              <span class="spec-label">Khung Hình</span>
+              <span class="spec-val" style="color: #34d399;">60 FPS Vector Rig</span>
+            </div>
+            <div class="spec-item">
+              <span class="spec-label">Lồng Tiếng AI</span>
+              <span class="spec-val">2 Giọng Nam + Nữ</span>
+            </div>
+            <div class="spec-item">
+              <span class="spec-label">Định Dạng Xuất</span>
+              <span class="spec-val">WebM / MP4 30fps</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Audio Element -->
+  <audio id="masterAudio" src="/static/remake_dua_hau_preview.mp4" preload="auto"></audio>
+
+  <script>
+    const canvas = document.getElementById('cartoonCanvas');
+    const ctx = canvas.getContext('2d');
+    const audio = document.getElementById('masterAudio');
+
+    let cues = [
+      { start: 0.5, end: 4.2, text: "Anh Hai ơi, tụi mình bự chảng ngần này rồi, sao chưa ai tới hái vậy cà?", speaker: "a", name: "Dưa A", avatar: "🍉" },
+      { start: 6.4, end: 10.2, text: "Ủa bác đi đâu đấy? Tưởng tới hái tụi cháu chớ? Tụi cháu to bự lắm rồi nè!", speaker: "a", name: "Dưa A", avatar: "🍉" },
+      { start: 10.4, end: 14.8, text: "To xác chưa chắc đã chín đâu con! Hai đứa bay phải nằm phơi nắng thêm mấy ngày nữa!", speaker: "farmer", name: "Bác Nông Dân", avatar: "👨‍🌾" },
+      { start: 15.0, end: 17.6, text: "Ai mà thèm đợi nữa chứ! Cứ bắt người ta nằm chờ hoài hà!", speaker: "a", name: "Dưa A", avatar: "🍉" },
+      { start: 17.8, end: 22.0, text: "Ủa mày tính làm gì đó? Tự bứt cuống luôn! Buộc phải bưng tụi mình về nha!", speaker: "b", name: "Bé Dưa B", avatar: "🍈" },
+      { start: 22.2, end: 29.4, text: "Ủa cuống rụng rồi à? Thôi bổ ăn thử... Trời đất ơi! To xác mà ruột trắng bệch, nhạt toẹt, tiếc ghê!", speaker: "farmer", name: "Bác Nông Dân", avatar: "👨‍🌾" },
+      { start: 30.2, end: 33.5, text: "Phải đợi thêm thời gian thì dưa mới tích đủ mật ngọt chứ!", speaker: "farmer", name: "Bác Nông Dân", avatar: "👨‍🌾" },
+      { start: 34.2, end: 42.5, text: "Bài học: Dưa hấu đạt kích thước tối đa vẫn cần thêm thời gian để tích lũy độ ngọt tự nhiên.", speaker: "narrator", name: "Lời Bình", avatar: "🎙️" },
+      { start: 43.2, end: 51.5, text: "Mẹo chọn dưa: Vệt vàng cam dưới đáy, cuống khô teo và gõ nghe tiếng đục mới là dưa chín ngọt nha!", speaker: "narrator", name: "Lời Bình", avatar: "🎙️" }
+    ];
+    const vietnameseCues = cues.map(cue => ({ ...cue }));
+
+    const projectId = new URLSearchParams(location.search).get('project');
+    const localeSelect = document.getElementById('locale-select');
+
+    async function loadProjectLocales() {
+      if (!projectId || !/^[a-z0-9_-]{1,80}$/.test(projectId)) return;
+      try {
+        const response = await fetch(`/static/remake_projects/${encodeURIComponent(projectId)}/manifest.json`, { cache: 'no-store' });
+        if (!response.ok) return;
+        const manifest = await response.json();
+        const localizations = manifest.localizations || {};
+        localeSelect.replaceChildren();
+        for (const [code, item] of Object.entries(localizations)) {
+          if (item.status !== 'ready') continue;
+          const option = document.createElement('option');
+          option.value = code;
+          option.textContent = `${item.country?.flag || (code === 'vi-VN' ? '🇻🇳' : '🌍')} ${item.country?.country || (code === 'vi-VN' ? 'Việt Nam' : code)}`;
+          localeSelect.append(option);
+        }
+        if (!localeSelect.options.length) {
+          const option = document.createElement('option'); option.value = 'vi-VN'; option.textContent = '🇻🇳 Việt Nam'; localeSelect.append(option);
+        }
+        const vietnamese = localizations['vi-VN'];
+        if (vietnamese?.audio_url) audio.src = vietnamese.audio_url;
+      } catch (error) {
+        console.warn('Không tải được gói quốc gia:', error);
+      }
+    }
+
+    async function switchLocale(locale) {
+      if (!projectId) return;
+      const wasPlaying = !audio.paused;
+      const current = audio.currentTime || 0;
+      const manifestResponse = await fetch(`/static/remake_projects/${encodeURIComponent(projectId)}/manifest.json`, { cache: 'no-store' });
+      if (!manifestResponse.ok) throw new Error('Không tải được manifest lồng tiếng');
+      const manifest = await manifestResponse.json();
+      const localization = manifest.localizations?.[locale];
+      if (!localization || localization.status !== 'ready') throw new Error('Gói lồng tiếng chưa sẵn sàng');
+      if (localization.dialogue_url) {
+        const dialogueResponse = await fetch(localization.dialogue_url, { cache: 'no-store' });
+        if (!dialogueResponse.ok) throw new Error('Không tải được kịch bản bản địa hóa');
+        const packageData = await dialogueResponse.json();
+        cues = packageData.cues.map(cue => ({ ...cue, name: cue.character_name || cue.speaker, avatar: ({melon_a:'🍉',melon_b:'🍈',farmer:'👨‍🌾',narrator:'🎙️'})[cue.speaker] || '🎙️' }));
+      } else cues = vietnameseCues.map(cue => ({ ...cue }));
+      audio.src = localization.audio_url;
+      audio.currentTime = Math.min(current, 51.5);
+      document.getElementById('locale-badge').textContent = `🎙️ LỒNG TIẾNG ĐA NHÂN VẬT · ${locale}`;
+      document.querySelectorAll('.timeline-item').forEach((item, index) => {
+        const text = item.querySelector('.t-act-text');
+        const chip = item.querySelector('.speaker-chip');
+        if (text && cues[index]) text.textContent = `“${cues[index].text}”`;
+        if (chip && cues[index]) chip.textContent = cues[index].name;
+      });
+      if (wasPlaying) await audio.play();
+    }
+
+    localeSelect.addEventListener('change', () => switchLocale(localeSelect.value).catch(error => alert(error.message)));
+    loadProjectLocales();
+
+    let isPlaying = false;
+    let shakeIntensity = 0;
+    let knifeY = -200;
+    let cutProgress = 0; // 0: intact, 1: fully split
+    let stemSnapped = false;
+    let lastActiveCueIndex = -1;
+
+    // Cloud positions
+    const clouds = [
+      { x: 50, y: 120, s: 1.1 },
+      { x: 420, y: 180, s: 0.8 },
+      { x: 260, y: 80, s: 1.4 },
+    ];
+
+    function togglePlay() {
+      if (audio.paused) {
+        audio.play();
+        isPlaying = true;
+        document.getElementById('btn-play').textContent = '⏸ Tạm dừng';
+        document.getElementById('btn-top-play').textContent = '⏸ TẠM DỪNG';
+        document.getElementById('dynamic-speaker').classList.add('playing');
+      } else {
+        audio.pause();
+        isPlaying = false;
+        document.getElementById('btn-play').textContent = '▶ Phát';
+        document.getElementById('btn-top-play').textContent = '▶️ TIẾP TỤC XEM';
+        document.getElementById('dynamic-speaker').classList.remove('playing');
+      }
+    }
+
+    function restart() {
+      audio.currentTime = 0;
+      audio.play();
+      isPlaying = true;
+      document.getElementById('btn-play').textContent = '⏸ Tạm dừng';
+      document.getElementById('dynamic-speaker').classList.add('playing');
+    }
+
+    function jumpTo(sec) {
+      audio.currentTime = sec;
+      audio.play();
+      isPlaying = true;
+      document.getElementById('btn-play').textContent = '⏸ Tạm dừng';
+      document.getElementById('btn-top-play').textContent = '⏸ TẠM DỪNG';
+      document.getElementById('dynamic-speaker').classList.add('playing');
+    }
+
+    function onSeek(e) {
+      const rect = document.getElementById('prog-container').getBoundingClientRect();
+      const pct = (e.clientX - rect.left) / rect.width;
+      audio.currentTime = pct * (audio.duration || 52.7);
+    }
+
+    // Main Draw Function (60 FPS)
+    function render(timestamp) {
+      requestAnimationFrame(render);
+
+      const t = audio.currentTime || 0;
+      const dur = audio.duration || 52.7;
+
+      // Update progress bar
+      const fillPct = (t / dur) * 100;
+      document.getElementById('prog-fill').style.width = fillPct + '%';
+      
+      const m = Math.floor(t / 60);
+      const s = Math.floor(t % 60);
+      document.getElementById('time-text').textContent = 
+        `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')} / 00:52`;
+
+      // Update subtitle & Dynamic Island Speaker pill
+      const curCueIndex = cues.findIndex(c => t >= c.start && t <= c.end);
+      const curCue = cues[curCueIndex];
+      const subChip = document.getElementById('sub-chip');
+      const speakerAvatar = document.getElementById('speaker-avatar');
+      const speakerStatus = document.getElementById('speaker-status-text');
+      const dynamicPill = document.getElementById('dynamic-speaker');
+      
+      if (curCue) {
+        subChip.textContent = curCue.text;
+        subChip.style.display = 'inline-block';
+        const scale = 1 + Math.sin(timestamp * 0.01) * 0.025;
+        subChip.style.transform = `scale(${scale})`;
+
+        speakerAvatar.textContent = curCue.avatar;
+        speakerStatus.textContent = `${curCue.name} đang nói...`;
+        dynamicPill.classList.add('playing');
+        document.getElementById('cue-counter').textContent = `${curCueIndex + 1} / 9 Phân đoạn`;
+      } else {
+        subChip.style.display = 'none';
+        speakerAvatar.textContent = '🍉';
+        speakerStatus.textContent = isPlaying ? 'Đang phát hoạt hình 2D...' : 'Đang tạm dừng';
+        dynamicPill.classList.remove('playing');
+      }
+
+      // Timeline highlight & Auto-scroll to active beat
+      const timelineItems = document.querySelectorAll('.timeline-item');
+      timelineItems.forEach((el, idx) => {
+        const isActive = (idx === curCueIndex);
+        el.classList.toggle('active', isActive);
+        if (isActive && idx !== lastActiveCueIndex) {
+          el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+      });
+      lastActiveCueIndex = curCueIndex;
+
+      // Realtime Feature Card Highlighting
+      const isSpeakingNow = curCue && (curCue.speaker === 'a' || curCue.speaker === 'b');
+      const isShakeNow = (t >= 18.5 && t < 19.6);
+      const isCutNow = (t >= 22.2 && t < 34.0);
+      const isTipsNow = (t >= 43.0);
+
+      document.getElementById('feat-lipsync').classList.toggle('active', !!isSpeakingNow);
+      document.getElementById('tag-lipsync').textContent = isSpeakingNow ? 'ĐANG CHẠY 🟢' : 'LIP-SYNC';
+
+      document.getElementById('feat-shake').classList.toggle('active-shake', isShakeNow);
+      document.getElementById('tag-shake').textContent = isShakeNow ? 'ĐANG RUNG ⚡' : 'SHAKE FX';
+
+      document.getElementById('feat-cut').classList.toggle('active-cut', isCutNow);
+      document.getElementById('tag-cut').textContent = isCutNow ? 'ĐÃ BỔ ĐÔI 🔪' : 'CLIMAX';
+
+      document.getElementById('feat-tips').classList.toggle('active', isTipsNow);
+      document.getElementById('tag-tips').textContent = isTipsNow ? 'SÓNG ÂM 🎵' : 'AUDIO WAVE';
+
+      // Chapter navigation active state
+      const chapBtns = document.querySelectorAll('.chap-btn');
+      const chapTimes = [0, 6.4, 10.4, 17.8, 22.2, 34.2, 43.2];
+      chapBtns.forEach((btn, idx) => {
+        const nextTime = chapTimes[idx + 1] || 999;
+        btn.classList.toggle('active', t >= chapTimes[idx] && t < nextTime);
+      });
+
+      // Events
+      if (t >= 18.5 && t < 19.6) {
+        shakeIntensity = 18 * (1 - (t - 18.5));
+        stemSnapped = true;
+      } else if (t >= 23.0 && t < 23.6) {
+        shakeIntensity = 10 * (1 - (t - 23.0) / 0.6);
+      } else {
+        shakeIntensity = 0;
+      }
+
+      if (t < 18.5) stemSnapped = false;
+
+      // Knife animation
+      if (t >= 22.2 && t < 23.2) {
+        knifeY = -100 + (t - 22.2) * 800;
+        cutProgress = 0;
+      } else if (t >= 23.2 && t < 34.0) {
+        knifeY = 700;
+        cutProgress = Math.min(1, (t - 23.2) * 2.5); // splits apart
+      } else {
+        knifeY = -250;
+        cutProgress = 0;
+      }
+
+      // SCREEN SHAKE TRANSFORMATION
+      ctx.save();
+      if (shakeIntensity > 0) {
+        const ox = (Math.random() - 0.5) * shakeIntensity * 2;
+        const oy = (Math.random() - 0.5) * shakeIntensity * 2;
+        ctx.translate(ox, oy);
+      }
+
+      // 1. DRAW SKY BACKGROUND
+      const skyGrad = ctx.createLinearGradient(0, 0, 0, 750);
+      skyGrad.addColorStop(0, '#53aef5');
+      skyGrad.addColorStop(0.7, '#a6e3e9');
+      skyGrad.addColorStop(1, '#e3f6f5');
+      ctx.fillStyle = skyGrad;
+      ctx.fillRect(0, 0, 720, 1280);
+
+      // Clouds
+      clouds.forEach((c, idx) => {
+        c.x += 0.3 * c.s;
+        if (c.x > 800) c.x = -150;
+        drawCloud(c.x, c.y, c.s);
+      });
+
+      // Sun
+      drawSun(620, 140, timestamp);
+
+      // 2. DRAW GROUND / FARM SOIL
+      drawSoilAndField(timestamp);
+
+      // 3. DRAW SCENES DEPENDING ON TIMELINE
+      if (t < 34.0) {
+        // CHARACTERS STAGE
+        drawVineLines();
+
+        // Farmer hand arriving
+        if (t >= 6.4 && t < 15.0) {
+          drawFarmerHand(t);
+        }
+
+        // Melon B (Listening melon on right)
+        drawMelonB(520, 780, t, timestamp);
+
+        // Melon A (Main actor on left)
+        drawMelonA(240, 780, t, timestamp);
+
+        // Falling knife
+        if (knifeY > -200) {
+          drawKnife(240, knifeY);
+        }
+      } else if (t >= 34.0 && t < 43.0) {
+        // SCENE: EDUCATIONAL COMPARISON
+        drawComparisonStage(t, timestamp);
+      } else {
+        // SCENE: 3 TIPS STAGE
+        drawTipsStage(t, timestamp);
+      }
+
+      ctx.restore();
+    }
+
+    // ==========================================
+    // HIGH-END 2D CARTOON ILLUSTRATION ENGINE
+    // ==========================================
+
+    // 1. SCENERY: SUN & CLOUDS
+    function drawSun(x, y, ts) {
+      ctx.save();
+      ctx.translate(x, y);
+
+      // Outer glowing radial corona
+      const sunAura = ctx.createRadialGradient(0, 0, 30, 0, 0, 95);
+      sunAura.addColorStop(0, 'rgba(254, 240, 138, 0.55)');
+      sunAura.addColorStop(0.5, 'rgba(245, 158, 11, 0.2)');
+      sunAura.addColorStop(1, 'rgba(245, 158, 11, 0)');
+      ctx.fillStyle = sunAura;
+      ctx.beginPath();
+      ctx.arc(0, 0, 95, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Rotating stylized sun rays
+      const angle = (ts * 0.0004) % (Math.PI * 2);
+      ctx.fillStyle = 'rgba(253, 224, 71, 0.65)';
+      for (let i = 0; i < 12; i++) {
+        const a = angle + (i * Math.PI / 6);
+        ctx.save();
+        ctx.rotate(a);
+        ctx.beginPath();
+        ctx.moveTo(-7, 50);
+        ctx.lineTo(0, 78);
+        ctx.lineTo(7, 50);
+        ctx.closePath();
+        ctx.fill();
+        ctx.restore();
+      }
+
+      // Golden Sun Core
+      const sunGrad = ctx.createRadialGradient(-10, -10, 5, 0, 0, 46);
+      sunGrad.addColorStop(0, '#fef9c3');
+      sunGrad.addColorStop(0.5, '#fde047');
+      sunGrad.addColorStop(1, '#f59e0b');
+      ctx.fillStyle = sunGrad;
+      ctx.beginPath();
+      ctx.arc(0, 0, 46, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Sun Specular Shine
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+      ctx.beginPath();
+      ctx.ellipse(-14, -14, 12, 7, -Math.PI / 4, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.restore();
+    }
+
+    function drawCloud(x, y, s) {
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.scale(s, s);
+
+      // Cloud shadow underneath for 3D fluffiness
+      ctx.fillStyle = 'rgba(186, 230, 253, 0.45)';
+      ctx.beginPath();
+      ctx.arc(0, 8, 32, 0, Math.PI * 2);
+      ctx.arc(32, -4, 38, 0, Math.PI * 2);
+      ctx.arc(70, 8, 30, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Bright white cloud puff
+      ctx.fillStyle = '#ffffff';
+      ctx.beginPath();
+      ctx.arc(0, 0, 32, 0, Math.PI * 2);
+      ctx.arc(32, -12, 38, 0, Math.PI * 2);
+      ctx.arc(70, 0, 30, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Soft top highlight
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+      ctx.beginPath();
+      ctx.ellipse(32, -22, 22, 10, 0, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.restore();
+    }
+
+    // 2. SCENERY: ROLLING HILLS, RICHEST FARM SOIL & FLOWERS
+    function drawSoilAndField(ts) {
+      // Distant Emerald Rolling Hills
+      const hillGrad1 = ctx.createLinearGradient(0, 520, 0, 680);
+      hillGrad1.addColorStop(0, '#86efac');
+      hillGrad1.addColorStop(1, '#22c55e');
+      ctx.fillStyle = hillGrad1;
+      ctx.beginPath();
+      ctx.ellipse(220, 630, 480, 150, 0, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Second rolling hill on right with red barn silhouette
+      const hillGrad2 = ctx.createLinearGradient(0, 540, 0, 700);
+      hillGrad2.addColorStop(0, '#4ade80');
+      hillGrad2.addColorStop(1, '#16a34a');
+      ctx.fillStyle = hillGrad2;
+      ctx.beginPath();
+      ctx.ellipse(540, 650, 420, 140, 0, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Distant Red Barn Silhouette
+      ctx.fillStyle = '#b91c1c';
+      ctx.fillRect(580, 535, 48, 32);
+      ctx.beginPath();
+      ctx.moveTo(576, 535);
+      ctx.lineTo(604, 515);
+      ctx.lineTo(632, 535);
+      ctx.closePath();
+      ctx.fill();
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(598, 546, 12, 21); // barn door
+
+      // Rich Organic Tilled Loam (Multi-stop soil gradient)
+      const soilGrad = ctx.createLinearGradient(0, 650, 0, 1280);
+      soilGrad.addColorStop(0, '#92400e');
+      soilGrad.addColorStop(0.15, '#78350f');
+      soilGrad.addColorStop(0.5, '#59290a');
+      soilGrad.addColorStop(1, '#2c1205');
+      ctx.fillStyle = soilGrad;
+      ctx.beginPath();
+      ctx.moveTo(0, 650);
+      ctx.quadraticCurveTo(360, 615, 720, 650);
+      ctx.lineTo(720, 1280);
+      ctx.lineTo(0, 1280);
+      ctx.closePath();
+      ctx.fill();
+
+      // Farm soil furrow ridges
+      ctx.strokeStyle = 'rgba(44, 18, 5, 0.45)';
+      ctx.lineWidth = 6;
+      for (let y = 720; y < 1250; y += 75) {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.quadraticCurveTo(360, y - 25, 720, y);
+        ctx.stroke();
+      }
+
+      // Small organic soil clumps
+      ctx.fillStyle = 'rgba(69, 26, 3, 0.6)';
+      const soilClumps = [
+        [80, 710, 12, 7], [290, 735, 16, 9], [490, 705, 14, 8],
+        [180, 890, 18, 10], [420, 940, 20, 11], [630, 910, 15, 8],
+        [100, 1080, 22, 12], [340, 1140, 25, 13], [580, 1090, 18, 10]
+      ];
+      soilClumps.forEach(([cx, cy, rx, ry]) => {
+        ctx.beginPath();
+        ctx.ellipse(cx, cy, rx, ry, 0.2, 0, Math.PI * 2);
+        ctx.fill();
+      });
+
+      // Yellow farm blossoms with nectar glow
+      drawFlower(110, 725, 1.1);
+      drawFlower(380, 705, 0.95);
+      drawFlower(635, 735, 1.05);
+      drawFlower(260, 960, 1.15);
+      drawFlower(520, 980, 0.9);
+    }
+
+    function drawFlower(x, y, s = 1.0) {
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.scale(s, s);
+
+      // Flower petals (5 curved golden petals)
+      ctx.fillStyle = '#fde047';
+      for (let i = 0; i < 5; i++) {
+        const a = (i * Math.PI * 2) / 5;
+        ctx.save();
+        ctx.rotate(a);
+        ctx.beginPath();
+        ctx.ellipse(0, 10, 7, 11, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+      }
+
+      // Center pollen disc
+      ctx.fillStyle = '#ca8a04';
+      ctx.beginPath();
+      ctx.arc(0, 0, 6, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = '#fef08a';
+      ctx.beginPath();
+      ctx.arc(-2, -2, 2.5, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.restore();
+    }
+
+    // 3. VINES, TENDRILS & BROAD WATERMELON LEAVES
+    function drawVineLines() {
+      // Main thick runner vine
+      ctx.save();
+      ctx.strokeStyle = '#15803d';
+      ctx.lineWidth = 14;
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+      ctx.beginPath();
+      ctx.moveTo(-30, 810);
+      ctx.quadraticCurveTo(240, 730, 500, 810);
+      ctx.quadraticCurveTo(630, 840, 750, 780);
+      ctx.stroke();
+
+      // Top vine highlight sheen
+      ctx.strokeStyle = '#22c55e';
+      ctx.lineWidth = 4;
+      ctx.beginPath();
+      ctx.moveTo(-30, 807);
+      ctx.quadraticCurveTo(240, 727, 500, 807);
+      ctx.quadraticCurveTo(630, 837, 750, 777);
+      ctx.stroke();
+      ctx.restore();
+
+      // Curly tendril spirals
+      drawTendril(120, 760, -0.3);
+      drawTendril(360, 750, 0.4);
+      drawTendril(600, 800, -0.2);
+
+      // Scalloped green leaves
+      drawLeaf(90, 785, -0.4, 1.1);
+      drawLeaf(320, 750, 0.5, 1.25);
+      drawLeaf(440, 765, -0.3, 1.0);
+      drawLeaf(650, 805, 0.35, 1.15);
+    }
+
+    function drawTendril(x, y, rot) {
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.rotate(rot);
+      ctx.strokeStyle = '#16a34a';
+      ctx.lineWidth = 3.5;
+      ctx.lineCap = 'round';
+      ctx.beginPath();
+      ctx.moveTo(0, 0);
+      ctx.bezierCurveTo(15, -15, 25, 10, 35, -5);
+      ctx.bezierCurveTo(45, -20, 50, -5, 55, -12);
+      ctx.stroke();
+      ctx.restore();
+    }
+
+    function drawLeaf(x, y, rot, s = 1.0) {
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.rotate(rot);
+      ctx.scale(s, s);
+
+      // Leaf body (scalloped watermelon leaf lobes)
+      ctx.fillStyle = '#16a34a';
+      ctx.beginPath();
+      ctx.moveTo(0, 0);
+      ctx.bezierCurveTo(15, -25, 45, -20, 48, 0);
+      ctx.bezierCurveTo(55, 25, 20, 30, 0, 0);
+      ctx.fill();
+
+      // Center and side veins
+      ctx.strokeStyle = '#86efac';
+      ctx.lineWidth = 2.5;
+      ctx.beginPath();
+      ctx.moveTo(0, 0);
+      ctx.lineTo(44, 0);
+      ctx.moveTo(16, 0);
+      ctx.lineTo(26, -10);
+      ctx.moveTo(16, 0);
+      ctx.lineTo(26, 10);
+      ctx.moveTo(28, 0);
+      ctx.lineTo(38, -8);
+      ctx.moveTo(28, 0);
+      ctx.lineTo(38, 8);
+      ctx.stroke();
+
+      ctx.restore();
+    }
+
+    // ==========================================
+    // 4. HERO CHARACTER: MELON A (PRO 2D CARTOON)
+    // ==========================================
+    function drawMelonA(x, y, t, ts) {
+      ctx.save();
+
+      const isSpeaking = (t >= 0.5 && t < 4.2) || (t >= 6.4 && t < 10.2) || (t >= 15.0 && t < 17.6) || (t >= 20.0 && t < 22.0);
+      const isSad = (t >= 10.4 && t < 14.8);
+      const isStraining = (t >= 18.0 && t < 19.5);
+
+      // Breathing & Squash
+      const breath = Math.sin(ts * 0.005) * 0.035;
+      const squashY = 1 + (isSpeaking ? Math.sin(ts * 0.02) * 0.06 : breath);
+      const squashX = 1 - (squashY - 1) * 0.55;
+
+      ctx.translate(x, y);
+
+      // If cut progress > 0 (t >= 22.2s), split in half!
+      if (cutProgress > 0) {
+        const splitDist = cutProgress * 75;
+        // Left half
+        ctx.save();
+        ctx.translate(-splitDist, cutProgress * 20);
+        ctx.rotate(-cutProgress * 0.25);
+        drawMelonHalf(true, t, ts);
+        ctx.restore();
+
+        // Right half
+        ctx.save();
+        ctx.translate(splitDist, cutProgress * 20);
+        ctx.rotate(cutProgress * 0.25);
+        drawMelonHalf(false, t, ts);
+        ctx.restore();
+
+        // --- PROPER CALLOUT BADGE (UNROTATED & PERFECTLY CENTERED) ---
+        drawCutWarningBadge(ts);
+
+        ctx.restore();
+        return;
+      }
+
+      // Soft Ground Drop Shadow
+      ctx.save();
+      ctx.fillStyle = 'rgba(20, 10, 5, 0.45)';
+      ctx.beginPath();
+      ctx.ellipse(0, 128, 115 * squashX, 26, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+
+      ctx.scale(squashX, squashY);
+
+      if (isStraining) {
+        // Tremble violently while pulling vine
+        ctx.translate((Math.random() - 0.5) * 8, 0);
+      } else if (isSad) {
+        ctx.rotate(-0.06); // Droop head
+      } else if (isSpeaking) {
+        ctx.rotate(Math.sin(ts * 0.008) * 0.03); // Waving body
+      }
+
+      // Cute little chubby feet
+      drawLittleFeet();
+
+      // Stem on top
+      if (!stemSnapped) {
+        // Curled organic stalk with leaf
+        ctx.save();
+        ctx.strokeStyle = '#15803d';
+        ctx.lineWidth = 14;
+        ctx.lineCap = 'round';
+        ctx.beginPath();
+        ctx.moveTo(0, -122);
+        ctx.quadraticCurveTo(-18, -165, -42, -182);
+        ctx.stroke();
+
+        // Stalk highlight
+        ctx.strokeStyle = '#4ade80';
+        ctx.lineWidth = 4;
+        ctx.beginPath();
+        ctx.moveTo(0, -122);
+        ctx.quadraticCurveTo(-15, -162, -38, -178);
+        ctx.stroke();
+
+        // Cute Leaf attached to stalk
+        drawLeaf(-15, -155, -0.6, 0.9);
+        // Springy tendril
+        drawTendril(-30, -175, 0.5);
+        ctx.restore();
+      } else {
+        // Snapped stem piece
+        ctx.save();
+        ctx.strokeStyle = '#ca8a04';
+        ctx.lineWidth = 12;
+        ctx.lineCap = 'round';
+        ctx.beginPath();
+        ctx.moveTo(0, -122);
+        ctx.lineTo(-10, -145);
+        ctx.stroke();
+
+        // Particle burst
+        if (t >= 18.5 && t < 20.2) {
+          ctx.fillStyle = '#fbbf24';
+          ctx.font = '900 36px "Plus Jakarta Sans"';
+          ctx.shadowColor = '#000';
+          ctx.shadowBlur = 10;
+          ctx.textAlign = 'center';
+          ctx.fillText('💥 BỨT CUỐNG!', 0, -175);
+        }
+        ctx.restore();
+      }
+
+      // Chubby Leaf Arms
+      drawArms(isSpeaking, ts);
+
+      // --- MAIN WATERMELON BODY SPHERE ---
+      const melonRadius = 125;
+      const bodyGrad = ctx.createRadialGradient(-35, -35, 20, 0, 0, melonRadius);
+      bodyGrad.addColorStop(0, '#86efac'); // bright lime highlight
+      bodyGrad.addColorStop(0.35, '#22c55e'); // lush fresh green
+      bodyGrad.addColorStop(0.75, '#15803d'); // rich body green
+      bodyGrad.addColorStop(1, '#064e3b'); // deep rim shadow
+      ctx.fillStyle = bodyGrad;
+      ctx.beginPath();
+      ctx.arc(0, 0, melonRadius, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Outer clean outline
+      ctx.strokeStyle = '#064e3b';
+      ctx.lineWidth = 4;
+      ctx.stroke();
+
+      // --- WATERMELON STRIPES (CLIPPED INSIDE BODY) ---
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(0, 0, melonRadius - 1, 0, Math.PI * 2);
+      ctx.clip(); // 100% CLIPPED INSIDE! ZERO EXTRUDING BRISTLES!
+
+      // Draw 5 organic wavy watermelon stripes
+      const stripeOffsets = [-85, -45, 0, 45, 85];
+      stripeOffsets.forEach(ox => {
+        // Dark green jagged stripe
+        ctx.fillStyle = '#064e3b';
+        ctx.beginPath();
+        ctx.moveTo(ox * 0.45, -melonRadius);
+        ctx.bezierCurveTo(ox * 1.35 - 12, -40, ox * 1.35 + 12, 40, ox * 0.45, melonRadius);
+        ctx.bezierCurveTo(ox * 1.35 + 24, 40, ox * 1.35 - 2, -40, ox * 0.45 + 14, -melonRadius);
+        ctx.closePath();
+        ctx.fill();
+
+        // Light yellow-green streak accent
+        ctx.fillStyle = 'rgba(167, 243, 208, 0.4)';
+        ctx.beginPath();
+        ctx.moveTo(ox * 0.45 + 5, -melonRadius * 0.85);
+        ctx.bezierCurveTo(ox * 1.35, -30, ox * 1.35, 30, ox * 0.45 + 5, melonRadius * 0.85);
+        ctx.lineTo(ox * 0.45 + 8, melonRadius * 0.85);
+        ctx.bezierCurveTo(ox * 1.35 + 3, 30, ox * 1.35 + 3, -30, ox * 0.45 + 8, -melonRadius * 0.85);
+        ctx.closePath();
+        ctx.fill();
+      });
+
+      // Glossy Specular Light Arc on Top-Left
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.35)';
+      ctx.beginPath();
+      ctx.ellipse(-45, -55, 65, 30, -Math.PI / 4, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.restore(); // end clip
+
+      // --- EYES: DISNEY / ANIME STYLE EXPRESSIVE EYES ---
+      const blink = (ts % 3400) < 130;
+      const eyeLookX = (t >= 6.4 && t < 15.0) ? 10 : 0; // look up right at farmer
+      const eyeLookY = (t >= 6.4 && t < 15.0) ? -9 : 0;
+
+      if (isStraining) {
+        // Straining eyes `> <`
+        ctx.save();
+        ctx.strokeStyle = '#064e3b';
+        ctx.lineWidth = 7;
+        ctx.lineCap = 'round';
+        ctx.beginPath();
+        ctx.moveTo(-60, -22); ctx.lineTo(-38, -12); ctx.lineTo(-60, -2);
+        ctx.moveTo(38, -22); ctx.lineTo(60, -12); ctx.lineTo(38, -2);
+        ctx.stroke();
+        ctx.restore();
+      } else if (blink) {
+        // Happy closed smiling eye arcs `^ ^`
+        ctx.save();
+        ctx.strokeStyle = '#064e3b';
+        ctx.lineWidth = 6;
+        ctx.lineCap = 'round';
+        ctx.beginPath();
+        ctx.arc(-42, -14, 20, Math.PI * 1.15, Math.PI * 1.85);
+        ctx.arc(42, -14, 20, Math.PI * 1.15, Math.PI * 1.85);
+        ctx.stroke();
+        ctx.restore();
+      } else {
+        // Big sparkling cartoon eyes
+        drawProEye(-44, -16, eyeLookX, eyeLookY, 1.05);
+        drawProEye(44, -16, eyeLookX, eyeLookY, 1.05);
+      }
+
+      // --- ROSY BLUSHING CHEEKS WITH SPARKLES ---
+      const blushGrad = ctx.createRadialGradient(0, 0, 4, 0, 0, 22);
+      blushGrad.addColorStop(0, 'rgba(251, 113, 133, 0.7)');
+      blushGrad.addColorStop(1, 'rgba(251, 113, 133, 0)');
+      
+      ctx.save();
+      ctx.fillStyle = blushGrad;
+      ctx.translate(-62, 18);
+      ctx.beginPath(); ctx.arc(0, 0, 22, 0, Math.PI * 2); ctx.fill();
+      // Little white sparkle
+      ctx.fillStyle = '#ffffff';
+      ctx.beginPath(); ctx.arc(-4, -4, 2.5, 0, Math.PI * 2); ctx.fill();
+      ctx.restore();
+
+      ctx.save();
+      ctx.fillStyle = blushGrad;
+      ctx.translate(62, 18);
+      ctx.beginPath(); ctx.arc(0, 0, 22, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = '#ffffff';
+      ctx.beginPath(); ctx.arc(4, -4, 2.5, 0, Math.PI * 2); ctx.fill();
+      ctx.restore();
+
+      // --- MOUTH & LIP-SYNC RIGGING ---
+      drawProMouth(0, 36, isSpeaking, isSad, ts);
+
+      // Emotion Sticker Badge
+      if (t >= 15.0 && t < 17.6) {
+        ctx.font = '32px sans-serif';
+        ctx.fillText('💢', 68, -85);
+      } else if (t >= 6.4 && t < 10.2) {
+        ctx.font = '32px sans-serif';
+        ctx.fillText('✨', 70, -85);
+      }
+
+      ctx.restore();
+    }
+
+    // Helper: Chubby Little Feet
+    function drawLittleFeet() {
+      ctx.save();
+      const footGrad = ctx.createLinearGradient(0, 110, 0, 135);
+      footGrad.addColorStop(0, '#16a34a');
+      footGrad.addColorStop(1, '#064e3b');
+      ctx.fillStyle = footGrad;
+
+      // Left foot
+      ctx.beginPath();
+      ctx.ellipse(-48, 124, 24, 13, -0.15, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = '#064e3b';
+      ctx.lineWidth = 3;
+      ctx.stroke();
+
+      // Right foot
+      ctx.beginPath();
+      ctx.ellipse(48, 124, 24, 13, 0.15, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.stroke();
+      ctx.restore();
+    }
+
+    // Helper: Chubby Leaf Arms
+    function drawArms(isSpeaking, ts) {
+      ctx.save();
+      // Left Arm: Waving happily when speaking
+      const waveAngle = isSpeaking ? (Math.sin(ts * 0.018) * 0.45 - 0.6) : -0.2;
+      ctx.save();
+      ctx.translate(-112, 10);
+      ctx.rotate(waveAngle);
+      ctx.fillStyle = '#16a34a';
+      ctx.beginPath();
+      ctx.ellipse(0, 0, 30, 15, -0.4, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = '#064e3b';
+      ctx.lineWidth = 3;
+      ctx.stroke();
+      // Little hand leaf thumb
+      ctx.beginPath();
+      ctx.ellipse(-18, -12, 10, 7, -0.2, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.stroke();
+      ctx.restore();
+
+      // Right Arm: Resting peacefully on hip
+      ctx.save();
+      ctx.translate(112, 15);
+      ctx.rotate(0.3);
+      ctx.fillStyle = '#16a34a';
+      ctx.beginPath();
+      ctx.ellipse(0, 0, 30, 15, 0.4, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = '#064e3b';
+      ctx.lineWidth = 3;
+      ctx.stroke();
+      ctx.restore();
+
+      ctx.restore();
+    }
+
+    // Helper: Pro Expressive Cartoon Eye
+    function drawProEye(ex, ey, lookX, lookY, scale = 1.0) {
+      ctx.save();
+      ctx.translate(ex, ey);
+      ctx.scale(scale, scale);
+
+      // White Sclera
+      ctx.fillStyle = '#ffffff';
+      ctx.beginPath();
+      ctx.ellipse(0, 0, 22, 28, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = '#064e3b';
+      ctx.lineWidth = 4;
+      ctx.stroke();
+
+      // Iris (Warm golden brown Pixar gradient)
+      const irisGrad = ctx.createLinearGradient(lookX, lookY - 14, lookX, lookY + 14);
+      irisGrad.addColorStop(0, '#78350f');
+      irisGrad.addColorStop(0.6, '#d97706');
+      irisGrad.addColorStop(1, '#f59e0b');
+      ctx.fillStyle = irisGrad;
+      ctx.beginPath();
+      ctx.arc(lookX, lookY, 14, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Deep Black Pupil
+      ctx.fillStyle = '#090d16';
+      ctx.beginPath();
+      ctx.arc(lookX, lookY, 8.5, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Catchlight 1 (Primary large sparkle top-left)
+      ctx.fillStyle = '#ffffff';
+      ctx.beginPath();
+      ctx.arc(lookX - 4.5, lookY - 5, 4.5, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Catchlight 2 (Secondary small sparkle bottom-right)
+      ctx.beginPath();
+      ctx.arc(lookX + 4, lookY + 4, 2.2, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Cute Eyelash line on top
+      ctx.strokeStyle = '#064e3b';
+      ctx.lineWidth = 4.5;
+      ctx.lineCap = 'round';
+      ctx.beginPath();
+      ctx.arc(0, -5, 23, Math.PI * 1.15, Math.PI * 1.85);
+      ctx.stroke();
+
+      ctx.restore();
+    }
+
+    // Helper: Pro Animated Mouth with Teeth & Tongue
+    function drawProMouth(mx, my, isSpeaking, isSad, ts) {
+      ctx.save();
+      ctx.translate(mx, my);
+
+      if (isSad) {
+        // Disappointed downturned mouth
+        ctx.strokeStyle = '#064e3b';
+        ctx.lineWidth = 6;
+        ctx.lineCap = 'round';
+        ctx.beginPath();
+        ctx.arc(0, 22, 22, Math.PI * 1.25, Math.PI * 1.75);
+        ctx.stroke();
+        ctx.restore();
+        return;
+      }
+
+      if (!isSpeaking) {
+        // Sweet dimpled resting smile
+        ctx.strokeStyle = '#064e3b';
+        ctx.lineWidth = 6;
+        ctx.lineCap = 'round';
+        ctx.beginPath();
+        ctx.arc(0, -6, 26, Math.PI * 0.18, Math.PI * 0.82);
+        ctx.stroke();
+
+        // Cute smile dimples
+        ctx.beginPath();
+        ctx.arc(-24, 8, 4, Math.PI * 0.6, Math.PI * 1.4);
+        ctx.arc(24, 8, 4, Math.PI * 1.6, Math.PI * 0.4);
+        ctx.stroke();
+      } else {
+        // Dynamic Lip-sync syllables
+        const cycle = Math.floor(ts * 0.016) % 3;
+        ctx.fillStyle = '#881337'; // deep mouth cavity
+        ctx.strokeStyle = '#064e3b';
+        ctx.lineWidth = 5;
+
+        if (cycle === 0) {
+          // Open Wide "A"
+          ctx.beginPath();
+          ctx.ellipse(0, 8, 24, 20, 0, 0, Math.PI);
+          ctx.closePath();
+          ctx.fill();
+          ctx.stroke();
+
+          // Pearly white upper teeth
+          ctx.fillStyle = '#ffffff';
+          ctx.beginPath();
+          ctx.roundRect(-18, 7, 36, 8, [0, 0, 4, 4]);
+          ctx.fill();
+
+          // Cute pink tongue
+          ctx.fillStyle = '#fb7185';
+          ctx.beginPath();
+          ctx.arc(0, 20, 14, Math.PI, 0);
+          ctx.fill();
+        } else if (cycle === 1) {
+          // Round "O"
+          ctx.beginPath();
+          ctx.ellipse(0, 6, 17, 18, 0, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.stroke();
+
+          // Tongue
+          ctx.fillStyle = '#fb7185';
+          ctx.beginPath();
+          ctx.ellipse(0, 14, 10, 7, 0, 0, Math.PI * 2);
+          ctx.fill();
+        } else {
+          // Smiling "E" with teeth
+          ctx.beginPath();
+          ctx.ellipse(0, 4, 26, 12, 0, 0, Math.PI);
+          ctx.closePath();
+          ctx.fill();
+          ctx.stroke();
+
+          // Full teeth smile
+          ctx.fillStyle = '#ffffff';
+          ctx.beginPath();
+          ctx.roundRect(-20, 3, 40, 7, [0, 0, 4, 4]);
+          ctx.fill();
+        }
+      }
+
+      ctx.restore();
+    }
+
+    // ==========================================
+    // 5. COMPANION: MELON B (PRO 2D CARTOON)
+    // ==========================================
+    function drawMelonB(x, y, t, ts) {
+      ctx.save();
+      ctx.translate(x, y);
+
+      const isShocked = (t >= 18.0 && t < 22.0);
+      const isSpeaking = (t >= 17.8 && t < 20.0);
+      const breath = Math.cos(ts * 0.004) * 0.03;
+
+      // Soft Ground Drop Shadow
+      ctx.save();
+      ctx.fillStyle = 'rgba(20, 10, 5, 0.45)';
+      ctx.beginPath();
+      ctx.ellipse(0, 106, 95, 22, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+
+      if (isShocked) {
+        ctx.translate((Math.random() - 0.5) * 4, 0);
+        ctx.scale(1.08, 1.08);
+      } else {
+        ctx.scale(1 - breath * 0.4, 1 + breath);
+      }
+
+      // Little feet
+      ctx.save();
+      ctx.fillStyle = '#15803d';
+      ctx.beginPath();
+      ctx.ellipse(-38, 102, 20, 11, -0.15, 0, Math.PI * 2);
+      ctx.ellipse(38, 102, 20, 11, 0.15, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = '#064e3b';
+      ctx.lineWidth = 3;
+      ctx.stroke();
+      ctx.restore();
+
+      // Stem on top
+      ctx.save();
+      ctx.strokeStyle = '#15803d';
+      ctx.lineWidth = 11;
+      ctx.lineCap = 'round';
+      ctx.beginPath();
+      ctx.moveTo(0, -100);
+      ctx.quadraticCurveTo(12, -135, 30, -148);
+      ctx.stroke();
+      drawLeaf(15, -128, 0.5, 0.85);
+      ctx.restore();
+
+      // Cute Little Leaf Arms
+      ctx.save();
+      ctx.fillStyle = '#16a34a';
+      ctx.strokeStyle = '#064e3b';
+      ctx.lineWidth = 3;
+      if (isShocked) {
+        // Hands up to cheeks in shock!
+        ctx.beginPath();
+        ctx.ellipse(-85, -10, 22, 12, -0.8, 0, Math.PI * 2);
+        ctx.ellipse(85, -10, 22, 12, 0.8, 0, Math.PI * 2);
+        ctx.fill(); ctx.stroke();
+      } else {
+        // Cute resting leaf arms
+        ctx.beginPath();
+        ctx.ellipse(-92, 15, 24, 12, -0.3, 0, Math.PI * 2);
+        ctx.ellipse(92, 15, 24, 12, 0.3, 0, Math.PI * 2);
+        ctx.fill(); ctx.stroke();
+      }
+      ctx.restore();
+
+      // Main Melon B Sphere
+      const r = 104;
+      const bGrad = ctx.createRadialGradient(-25, -25, 15, 0, 0, r);
+      bGrad.addColorStop(0, '#a7f3d0');
+      bGrad.addColorStop(0.35, '#34d399');
+      bGrad.addColorStop(0.75, '#16a34a');
+      bGrad.addColorStop(1, '#064e3b');
+      ctx.fillStyle = bGrad;
+      ctx.beginPath();
+      ctx.arc(0, 0, r, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = '#064e3b';
+      ctx.lineWidth = 4;
+      ctx.stroke();
+
+      // Clipped Organic Stripes
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(0, 0, r - 1, 0, Math.PI * 2);
+      ctx.clip(); // CLIPPED INSIDE!
+
+      const bStripes = [-70, -25, 25, 70];
+      bStripes.forEach(ox => {
+        ctx.fillStyle = '#064e3b';
+        ctx.beginPath();
+        ctx.moveTo(ox * 0.45, -r);
+        ctx.bezierCurveTo(ox * 1.3 - 10, -30, ox * 1.3 + 10, 30, ox * 0.45, r);
+        ctx.bezierCurveTo(ox * 1.3 + 20, 30, ox * 1.3, -30, ox * 0.45 + 12, -r);
+        ctx.closePath();
+        ctx.fill();
+      });
+
+      // Top-Left Gloss
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.35)';
+      ctx.beginPath();
+      ctx.ellipse(-35, -45, 52, 24, -Math.PI / 4, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.restore(); // end clip
+
+      // Face
+      if (isShocked) {
+        // Big shocked eyes
+        drawProEye(-38, -14, -6, 0, 1.3);
+        drawProEye(38, -14, -6, 0, 1.3);
+
+        // Gasping round mouth
+        ctx.fillStyle = '#881337';
+        ctx.strokeStyle = '#064e3b';
+        ctx.lineWidth = 4;
+        ctx.beginPath();
+        ctx.ellipse(0, 30, 15, 22, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+
+        // Big animated sweat droplet
+        ctx.font = '36px sans-serif';
+        ctx.fillText('💧', 52, -70);
+      } else {
+        // Cute attentive friend
+        const bBlink = (ts % 3800) < 130;
+        if (bBlink) {
+          ctx.strokeStyle = '#064e3b';
+          ctx.lineWidth = 5;
+          ctx.lineCap = 'round';
+          ctx.beginPath();
+          ctx.arc(-36, -12, 17, Math.PI * 1.15, Math.PI * 1.85);
+          ctx.arc(36, -12, 17, Math.PI * 1.15, Math.PI * 1.85);
+          ctx.stroke();
+        } else {
+          drawProEye(-36, -14, -4, 0, 0.95);
+          drawProEye(36, -14, -4, 0, 0.95);
+        }
+
+        // Rosy cheeks
+        ctx.fillStyle = 'rgba(251, 113, 133, 0.55)';
+        ctx.beginPath();
+        ctx.arc(-52, 14, 16, 0, Math.PI * 2);
+        ctx.arc(52, 14, 16, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Smile
+        drawProMouth(0, 30, isSpeaking, false, ts);
+      }
+
+      ctx.restore();
+    }
+
+    // ==========================================
+    // 6. REALISTIC CARTOON FARMER ARM & HAND
+    // ==========================================
+    function drawFarmerHand(t) {
+      ctx.save();
+      // Smooth natural patting motion
+      const hy = 430 + Math.sin(t * 3.2) * 16;
+      ctx.translate(240, hy);
+
+      // 1. Blue Denim Shirt Sleeve with Cuff & Button
+      const sleeveGrad = ctx.createLinearGradient(-35, -450, 45, -450);
+      sleeveGrad.addColorStop(0, '#1d4ed8');
+      sleeveGrad.addColorStop(0.5, '#3b82f6');
+      sleeveGrad.addColorStop(1, '#1e40af');
+      ctx.fillStyle = sleeveGrad;
+      ctx.beginPath();
+      ctx.roundRect(-30, -450, 70, 360, [0, 0, 8, 8]);
+      ctx.fill();
+      ctx.strokeStyle = '#1e3a8a';
+      ctx.lineWidth = 4;
+      ctx.stroke();
+
+      // Rolled-up sleeve cuff
+      ctx.fillStyle = '#60a5fa';
+      ctx.beginPath();
+      ctx.roundRect(-35, -100, 80, 32, 8);
+      ctx.fill();
+      ctx.strokeStyle = '#1e3a8a';
+      ctx.lineWidth = 3;
+      ctx.stroke();
+      // Cuff button
+      ctx.fillStyle = '#fef08a';
+      ctx.beginPath();
+      ctx.arc(32, -84, 5, 0, Math.PI * 2);
+      ctx.fill();
+
+      // 2. Muscular Tanned Forearm (Skin Gradient)
+      const armGrad = ctx.createLinearGradient(-22, -70, 28, -70);
+      armGrad.addColorStop(0, '#fcd34d');
+      armGrad.addColorStop(0.5, '#f59e0b');
+      armGrad.addColorStop(1, '#d97706');
+      ctx.fillStyle = armGrad;
+      ctx.beginPath();
+      ctx.moveTo(-22, -70);
+      ctx.lineTo(28, -70);
+      ctx.lineTo(24, 0);
+      ctx.lineTo(-18, 0);
+      ctx.closePath();
+      ctx.fill();
+
+      // 3. Cartoon 4-Finger Hand (Pointing/Patting Down)
+      // Palm
+      ctx.beginPath();
+      ctx.ellipse(3, 10, 26, 22, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = '#b45309';
+      ctx.lineWidth = 3;
+      ctx.stroke();
+
+      // Curled Thumb on Left
+      ctx.beginPath();
+      ctx.ellipse(-20, 8, 11, 16, -0.4, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.stroke();
+
+      // Index Finger pointing down gently
+      ctx.beginPath();
+      ctx.roundRect(-6, 18, 18, 54, 9);
+      ctx.fill();
+      ctx.stroke();
+      // Index fingernail highlight
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+      ctx.beginPath();
+      ctx.ellipse(3, 62, 5, 4, 0, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Middle & Ring fingers curled in behind
+      ctx.fillStyle = '#d97706';
+      ctx.beginPath();
+      ctx.ellipse(16, 24, 10, 16, 0.2, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.stroke();
+
+      ctx.restore();
+    }
+
+    // ==========================================
+    // 7. JAPANESE CHEF KNIFE (STEEL SHINE GLINT)
+    // ==========================================
+    function drawKnife(kx, ky) {
+      ctx.save();
+      ctx.translate(kx, ky);
+      ctx.rotate(-0.15);
+
+      // Ergonomic Walnut Handle
+      ctx.save();
+      const woodGrad = ctx.createLinearGradient(-18, -230, 18, -230);
+      woodGrad.addColorStop(0, '#451a03');
+      woodGrad.addColorStop(0.5, '#78350f');
+      woodGrad.addColorStop(1, '#290e02');
+      ctx.fillStyle = woodGrad;
+      ctx.beginPath();
+      ctx.roundRect(-16, -240, 32, 115, [10, 10, 6, 6]);
+      ctx.fill();
+      ctx.strokeStyle = '#1e0a02';
+      ctx.lineWidth = 3;
+      ctx.stroke();
+
+      // Shiny Brass Rivets on handle
+      ctx.fillStyle = '#fef08a';
+      ctx.strokeStyle = '#ca8a04';
+      ctx.lineWidth = 1.5;
+      [-195, -155].forEach(ry => {
+        ctx.beginPath();
+        ctx.arc(0, ry, 4.5, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+      });
+
+      // Steel Bolster Collar
+      ctx.fillStyle = '#94a3b8';
+      ctx.fillRect(-18, -125, 36, 12);
+      ctx.restore();
+
+      // Stainless Steel Blade (Forged Santoku/Gyuto shape)
+      const bladeGrad = ctx.createLinearGradient(-24, -115, 24, 60);
+      bladeGrad.addColorStop(0, '#f8fafc');
+      bladeGrad.addColorStop(0.3, '#cbd5e1');
+      bladeGrad.addColorStop(0.6, '#94a3b8');
+      bladeGrad.addColorStop(1, '#e2e8f0');
+      ctx.fillStyle = bladeGrad;
+      ctx.beginPath();
+      ctx.moveTo(-20, -113);
+      ctx.lineTo(20, -113);
+      ctx.lineTo(20, 50);
+      ctx.quadraticCurveTo(15, 95, -2, 115); // sharp curved tip
+      ctx.lineTo(-20, 60);
+      ctx.closePath();
+      ctx.fill();
+      ctx.strokeStyle = '#475569';
+      ctx.lineWidth = 3;
+      ctx.stroke();
+
+      // Razor-Sharp Ground Cutting Bevel
+      ctx.strokeStyle = '#ffffff';
+      ctx.lineWidth = 4;
+      ctx.beginPath();
+      ctx.moveTo(-2, 114);
+      ctx.quadraticCurveTo(15, 94, 20, 48);
+      ctx.lineTo(20, -113);
+      ctx.stroke();
+
+      // Diagonal Light Gleam on blade
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+      ctx.beginPath();
+      ctx.moveTo(-16, -60);
+      ctx.lineTo(16, -30);
+      ctx.lineTo(16, -20);
+      ctx.lineTo(-16, -50);
+      ctx.closePath();
+      ctx.fill();
+
+      // Sparkling 4-point Glint Star at blade tip
+      ctx.fillStyle = '#ffffff';
+      ctx.save();
+      ctx.translate(-2, 112);
+      for (let i = 0; i < 2; i++) {
+        ctx.rotate(Math.PI / 4);
+        ctx.fillRect(-1.5, -12, 3, 24);
+        ctx.fillRect(-12, -1.5, 24, 3);
+      }
+      ctx.restore();
+
+      ctx.restore();
+    }
+
+    // ==========================================
+    // 8. SLICED WATERMELON (PALE UNRIPE WHITE CORE)
+    // ==========================================
+    function drawMelonHalf(isLeft, t, ts) {
+      ctx.save();
+      const r = 125;
+
+      // Outer Dark Green Rind
+      ctx.fillStyle = '#064e3b';
+      ctx.beginPath();
+      if (isLeft) ctx.arc(0, 0, r, Math.PI * 0.5, Math.PI * 1.5);
+      else ctx.arc(0, 0, r, Math.PI * 1.5, Math.PI * 0.5);
+      ctx.closePath();
+      ctx.fill();
+
+      // Mid Light Green Rind Layer (Albedo)
+      ctx.fillStyle = '#a7f3d0';
+      ctx.beginPath();
+      if (isLeft) ctx.arc(0, 0, r - 12, Math.PI * 0.5, Math.PI * 1.5);
+      else ctx.arc(0, 0, r - 12, Math.PI * 1.5, Math.PI * 0.5);
+      ctx.closePath();
+      ctx.fill();
+
+      // UNRIPE PALE WHITE / CREAM FLESH!
+      const fleshGrad = ctx.createRadialGradient(0, 0, 10, 0, 0, r - 22);
+      fleshGrad.addColorStop(0, '#ffffff');
+      fleshGrad.addColorStop(0.7, '#fefce8');
+      fleshGrad.addColorStop(1, '#ecfccb'); // pale yellow-green edge
+      ctx.fillStyle = fleshGrad;
+      ctx.beginPath();
+      if (isLeft) ctx.arc(0, 0, r - 22, Math.PI * 0.5, Math.PI * 1.5);
+      else ctx.arc(0, 0, r - 22, Math.PI * 1.5, Math.PI * 0.5);
+      ctx.closePath();
+      ctx.fill();
+
+      // Faint immature white seed pockets
+      ctx.fillStyle = '#f1f5f9';
+      ctx.strokeStyle = '#e2e8f0';
+      ctx.lineWidth = 1.5;
+      const seedOffsets = [-55, -20, 20, 55];
+      seedOffsets.forEach(sy => {
+        const sx = isLeft ? -55 : 55;
+        ctx.beginPath();
+        ctx.ellipse(sx, sy, 8, 4.5, isLeft ? -0.3 : 0.3, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+      });
+
+      // FACE ON RIGHT HALF: CARTOON DIZZY SWIRLY EYES (@_@)
+      if (!isLeft) {
+        // Dizzy Spinning Spirals in Eyes (Nicely centered on the right half flesh)
+        const spinAngle = ts * 0.012;
+        [35, 75].forEach(dx => {
+          ctx.save();
+          ctx.translate(dx, -22);
+          ctx.rotate(spinAngle);
+          ctx.strokeStyle = '#2563eb';
+          ctx.lineWidth = 3.5;
+          ctx.beginPath();
+          for (let a = 0; a < Math.PI * 5; a += 0.2) {
+            const rad = a * 2.2;
+            const px = Math.cos(a) * rad;
+            const py = Math.sin(a) * rad;
+            if (a === 0) ctx.moveTo(px, py);
+            else ctx.lineTo(px, py);
+          }
+          ctx.stroke();
+          ctx.restore();
+        });
+
+        // Wavy shocked mouth (Centered between eyes)
+        ctx.strokeStyle = '#064e3b';
+        ctx.lineWidth = 5;
+        ctx.beginPath();
+        ctx.moveTo(38, 22);
+        ctx.bezierCurveTo(48, 12, 58, 32, 68, 18);
+        ctx.stroke();
+
+        // Little sweat drop
+        ctx.fillStyle = '#60a5fa';
+        ctx.beginPath();
+        ctx.ellipse(88, -2, 6, 9, 0.2, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Floating dizzy stars above right half
+        const starAngle = ts * 0.005;
+        const starX = 55 + Math.cos(starAngle) * 35;
+        const starY = -85 + Math.sin(starAngle) * 12;
+        ctx.font = '28px sans-serif';
+        ctx.fillText('💫', starX, starY);
+      }
+
+      ctx.restore();
+    }
+
+    // ==========================================
+    // UNROTATED CALLOUT BADGE FOR SPLIT MELON
+    // ==========================================
+    function drawCutWarningBadge(ts) {
+      ctx.save();
+      const badgeY = 135 + Math.sin(ts * 0.008) * 3;
+      const badgeW = 340;
+      const badgeH = 52;
+
+      // Drop shadow
+      ctx.shadowColor = 'rgba(0, 0, 0, 0.65)';
+      ctx.shadowBlur = 18;
+      ctx.shadowOffsetY = 6;
+
+      // Upward pointer indicator pointing straight at the cut seam
+      ctx.fillStyle = '#dc2626';
+      ctx.beginPath();
+      ctx.moveTo(-14, badgeY - badgeH / 2 + 1);
+      ctx.lineTo(0, badgeY - badgeH / 2 - 12);
+      ctx.lineTo(14, badgeY - badgeH / 2 + 1);
+      ctx.closePath();
+      ctx.fill();
+      ctx.strokeStyle = '#ffffff';
+      ctx.lineWidth = 2.5;
+      ctx.stroke();
+
+      // Red pill gradient
+      const pillGrad = ctx.createLinearGradient(0, badgeY - badgeH / 2, 0, badgeY + badgeH / 2);
+      pillGrad.addColorStop(0, '#ef4444');
+      pillGrad.addColorStop(1, '#b91c1c');
+      ctx.fillStyle = pillGrad;
+      ctx.beginPath();
+      ctx.roundRect(-badgeW / 2, badgeY - badgeH / 2, badgeW, badgeH, 26);
+      ctx.fill();
+
+      // Crisp White Border
+      ctx.strokeStyle = '#ffffff';
+      ctx.lineWidth = 3;
+      ctx.stroke();
+
+      // Bold perfectly horizontal text
+      ctx.shadowColor = 'transparent';
+      ctx.fillStyle = '#ffffff';
+      ctx.font = '900 19px "Plus Jakarta Sans", sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('⚠️ RUỘT TRẮNG BỆCH! (CHƯA NGỌT)', 0, badgeY);
+
+      ctx.restore();
+    }
+
+    // ==========================================
+    // STAGE: COMPARISON & SCIENCE INFOGRAPHIC (34s - 43s)
+    // ==========================================
+    function drawComparisonStage(t, ts) {
+      ctx.save();
+
+      // 1. Deep Cinematic Background
+      const bgGrad = ctx.createLinearGradient(0, 0, 0, 1280);
+      bgGrad.addColorStop(0, '#060b18');
+      bgGrad.addColorStop(0.5, '#0b132b');
+      bgGrad.addColorStop(1, '#020617');
+      ctx.fillStyle = bgGrad;
+      ctx.fillRect(0, 0, 720, 1280);
+
+      // Left Ambient Spotlight (Cold Blue for unripe)
+      const leftGlow = ctx.createRadialGradient(185, 620, 20, 185, 620, 260);
+      leftGlow.addColorStop(0, 'rgba(56, 189, 248, 0.14)');
+      leftGlow.addColorStop(1, 'rgba(56, 189, 248, 0)');
+      ctx.fillStyle = leftGlow;
+      ctx.beginPath(); ctx.arc(185, 620, 260, 0, Math.PI * 2); ctx.fill();
+
+      // Right Ambient Spotlight (Vibrant Ruby & Emerald for ripe)
+      const rightGlow = ctx.createRadialGradient(535, 620, 20, 535, 620, 280);
+      rightGlow.addColorStop(0, 'rgba(239, 68, 68, 0.16)');
+      rightGlow.addColorStop(0.6, 'rgba(34, 197, 94, 0.1)');
+      rightGlow.addColorStop(1, 'rgba(34, 197, 94, 0)');
+      ctx.fillStyle = rightGlow;
+      ctx.beginPath(); ctx.arc(535, 620, 280, 0, Math.PI * 2); ctx.fill();
+
+      // Floating Sugar Crystals & Sparkles ✨
+      for (let i = 0; i < 20; i++) {
+        const px = (i * 37 + ts * 0.02) % 700 + 10;
+        const py = 1200 - ((ts * 0.035 + i * 65) % 1150);
+        const op = 0.2 + Math.sin(ts * 0.005 + i) * 0.18;
+        ctx.fillStyle = `rgba(253, 224, 71, ${op})`;
+        ctx.beginPath();
+        ctx.arc(px, py, (i % 3) + 1.2, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      // 2. TOP HEADER & TOPIC PILL
+      // Tag Pill at y = 85
+      ctx.save();
+      ctx.fillStyle = 'rgba(56, 189, 248, 0.12)';
+      ctx.strokeStyle = '#38bdf8';
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.roundRect(360 - 155, 75, 310, 34, 17);
+      ctx.fill();
+      ctx.stroke();
+
+      ctx.fillStyle = '#38bdf8';
+      ctx.font = '800 13px "Plus Jakarta Sans"';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('🔬 BÍ MẬT SINH HỌC CÂY TRỒNG', 360, 92);
+      ctx.restore();
+
+      // Main Title at y = 142
+      ctx.fillStyle = '#ffffff';
+      ctx.font = '900 33px "Plus Jakarta Sans"';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'alphabetic';
+      ctx.fillText('BÍ MẬT QUÁ TRÌNH TÍCH ĐƯỜNG', 360, 145);
+
+      // Subtitle at y = 178
+      ctx.fillStyle = '#fde047';
+      ctx.font = '600 16px "Plus Jakarta Sans"';
+      ctx.fillText('To xác đạt kích cỡ tối đa ≠ Đã tích lũy đủ độ ngọt!', 360, 178);
+
+      // 3. INFOGRAPHIC: 45-DAY MATURATION TIMELINE BAR (y = 205 to 330)
+      const tBoxX = 30, tBoxY = 205, tBoxW = 660, tBoxH = 120;
+      ctx.save();
+      ctx.fillStyle = 'rgba(15, 23, 42, 0.85)';
+      ctx.strokeStyle = '#334155';
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.roundRect(tBoxX, tBoxY, tBoxW, tBoxH, 16);
+      ctx.fill();
+      ctx.stroke();
+
+      ctx.fillStyle = '#94a3b8';
+      ctx.font = '800 13px "Plus Jakarta Sans"';
+      ctx.textAlign = 'left';
+      ctx.fillText('📊 BIỂU ĐỒ 45 NGÀY HÌNH THÀNH MẬT NGỌT', tBoxX + 22, tBoxY + 28);
+
+      // Dual progress bar
+      const barX = tBoxX + 22, barY = tBoxY + 40, barW = 616, barH = 26;
+      const s1W = barW * 0.58; // Phase 1: 58%
+      const s2W = barW * 0.42; // Phase 2: 42%
+
+      // Stage 1: Size growth
+      const s1Grad = ctx.createLinearGradient(barX, 0, barX + s1W, 0);
+      s1Grad.addColorStop(0, '#0284c7');
+      s1Grad.addColorStop(1, '#0d9488');
+      ctx.fillStyle = s1Grad;
+      ctx.beginPath();
+      ctx.roundRect(barX, barY, s1W, barH, [13, 0, 0, 13]);
+      ctx.fill();
+
+      // Stage 2: Sugar concentration
+      const s2Grad = ctx.createLinearGradient(barX + s1W, 0, barX + barW, 0);
+      s2Grad.addColorStop(0, '#f59e0b');
+      s2Grad.addColorStop(1, '#ef4444');
+      ctx.fillStyle = s2Grad;
+      ctx.beginPath();
+      ctx.roundRect(barX + s1W, barY, s2W, barH, [0, 13, 13, 0]);
+      ctx.fill();
+
+      // Pulsing glow border on Stage 2
+      const s2Pulse = 0.5 + Math.sin(ts * 0.008) * 0.45;
+      ctx.strokeStyle = `rgba(254, 240, 138, ${s2Pulse})`;
+      ctx.lineWidth = 2.5;
+      ctx.beginPath();
+      ctx.roundRect(barX + s1W, barY, s2W, barH, [0, 13, 13, 0]);
+      ctx.stroke();
+
+      // Labels inside bar
+      ctx.fillStyle = '#ffffff';
+      ctx.font = '800 11px "Plus Jakarta Sans"';
+      ctx.textAlign = 'center';
+      ctx.fillText('Ngày 1-32: Nở to kích thước (nhiều nước, ruột trắng)', barX + s1W / 2, barY + 17);
+      ctx.fillText('Ngày 33-45: TÍCH ĐƯỜNG ⭐', barX + s1W + s2W / 2, barY + 17);
+
+      // Key fact indicator
+      ctx.textAlign = 'center';
+      ctx.font = 'bold 13px "Plus Jakarta Sans"';
+      ctx.fillStyle = '#38bdf8';
+      ctx.fillText('⚡ 10 - 15 ngày phơi nắng cuối quyết định 80% độ ngọt và cát mịn!', 360, tBoxY + 100);
+      ctx.restore();
+
+      // 4. TWO SIDE-BY-SIDE PREMIUM COMPARISON CARDS (y = 345 to 895)
+      // CARD 1: LEFT - DƯA NON (CẮT SỚM)
+      const c1X = 30, c1Y = 345, cW = 318, cH = 540;
+      ctx.save();
+      ctx.fillStyle = 'rgba(23, 18, 48, 0.7)';
+      ctx.strokeStyle = '#ef4444';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.roundRect(c1X, c1Y, cW, cH, 20);
+      ctx.fill();
+      ctx.stroke();
+
+      // Card 1 Header Pill
+      ctx.fillStyle = '#dc2626';
+      ctx.beginPath();
+      ctx.roundRect(c1X + 24, c1Y + 16, cW - 48, 34, 17);
+      ctx.fill();
+      ctx.fillStyle = '#ffffff';
+      ctx.font = '900 13px "Plus Jakarta Sans"';
+      ctx.textAlign = 'center';
+      ctx.fillText('❌ CẮT SỚM (DƯA NON)', c1X + cW / 2, c1Y + 38);
+
+      // Unripe Slice Illustration (x = c1X + cW/2, y = c1Y + 145)
+      const uX = c1X + cW / 2, uY = c1Y + 145;
+      ctx.save();
+      ctx.translate(uX, uY);
+      // Rind
+      ctx.fillStyle = '#15803d';
+      ctx.beginPath(); ctx.arc(0, 0, 72, 0, Math.PI); ctx.fill();
+      // Pale Albedo
+      ctx.fillStyle = '#a7f3d0';
+      ctx.beginPath(); ctx.arc(0, 0, 62, 0, Math.PI); ctx.fill();
+      // White watery flesh
+      const uFlesh = ctx.createRadialGradient(0, 0, 5, 0, 0, 54);
+      uFlesh.addColorStop(0, '#ffffff');
+      uFlesh.addColorStop(0.8, '#fefce8');
+      uFlesh.addColorStop(1, '#ecfccb');
+      ctx.fillStyle = uFlesh;
+      ctx.beginPath(); ctx.arc(0, 0, 54, 0, Math.PI); ctx.fill();
+      // Pale seeds
+      ctx.fillStyle = '#cbd5e1';
+      [[-24, 22], [0, 32], [24, 22]].forEach(([sx, sy]) => {
+        ctx.beginPath(); ctx.ellipse(sx, sy, 4.5, 2.5, 0.3, 0, Math.PI * 2); ctx.fill();
+      });
+      // Disappointed Face `> <`
+      ctx.strokeStyle = '#064e3b';
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.moveTo(-18, -4); ctx.lineTo(-10, 0); ctx.lineTo(-18, 4);
+      ctx.moveTo(18, -4); ctx.lineTo(10, 0); ctx.lineTo(18, 4);
+      ctx.stroke();
+      // Sad mouth
+      ctx.beginPath();
+      ctx.arc(0, 16, 8, Math.PI * 1.2, Math.PI * 1.8);
+      ctx.stroke();
+      ctx.restore();
+
+      // Card 1 Slice Tag
+      ctx.fillStyle = '#f87171';
+      ctx.font = '800 15px "Plus Jakarta Sans"';
+      ctx.textAlign = 'center';
+      ctx.fillText('Ruột Trắng Bệch · Xốp Mềm', c1X + cW / 2, c1Y + 245);
+
+      // Card 1 Metric Specs Box
+      drawSpecBox(c1X + 16, c1Y + 265, cW - 32, [
+        { label: '📊 Độ ngọt (Brix)', val: '4° - 6° Brix (Nhạt)', bar: 0.32, barColor: '#64748b' },
+        { label: '💧 Thớ ruột', val: 'Xốp, nhiều nước lã' },
+        { label: '⏳ Thời gian', val: 'Thiếu 10-15 ngày nắng' },
+        { label: '🚫 Đánh giá', val: 'Không có vị ngọt & hương' }
+      ]);
+      ctx.restore();
+
+      // CARD 2: RIGHT - DƯA CHÍN TỰ NHIÊN (ĐẠT CHUẨN)
+      const c2X = 372, c2Y = 345;
+      ctx.save();
+      ctx.fillStyle = 'rgba(5, 46, 32, 0.65)';
+      ctx.strokeStyle = '#22c55e';
+      ctx.lineWidth = 2.5;
+      ctx.beginPath();
+      ctx.roundRect(c2X, c2Y, cW, cH, 20);
+      ctx.fill();
+      ctx.stroke();
+
+      // Card 2 Header Pill
+      ctx.fillStyle = '#16a34a';
+      ctx.beginPath();
+      ctx.roundRect(c2X + 24, c2Y + 16, cW - 48, 34, 17);
+      ctx.fill();
+      ctx.fillStyle = '#ffffff';
+      ctx.font = '900 13px "Plus Jakarta Sans"';
+      ctx.textAlign = 'center';
+      ctx.fillText('⭐ CHÍN TỰ NHIÊN (ĐẠT CHUẨN)', c2X + cW / 2, c2Y + 38);
+
+      // Ripe Ruby Slice Illustration (x = c2X + cW/2, y = c2Y + 145)
+      const rX = c2X + cW / 2, rY = c2Y + 145;
+      ctx.save();
+      ctx.translate(rX, rY);
+      // Rind
+      ctx.fillStyle = '#15803d';
+      ctx.beginPath(); ctx.arc(0, 0, 72, 0, Math.PI); ctx.fill();
+      // Thin white albedo
+      ctx.fillStyle = '#dcfce7';
+      ctx.beginPath(); ctx.arc(0, 0, 64, 0, Math.PI); ctx.fill();
+      // Ruby Red crystalline flesh
+      const rFlesh = ctx.createRadialGradient(0, 0, 5, 0, 0, 58);
+      rFlesh.addColorStop(0, '#f87171');
+      rFlesh.addColorStop(0.5, '#ef4444');
+      rFlesh.addColorStop(1, '#b91c1c');
+      ctx.fillStyle = rFlesh;
+      ctx.beginPath(); ctx.arc(0, 0, 58, 0, Math.PI); ctx.fill();
+      // Black glossy seeds with catchlights
+      ctx.fillStyle = '#000000';
+      [[-24, 22], [0, 32], [24, 22], [-12, 42], [12, 42]].forEach(([sx, sy]) => {
+        ctx.beginPath(); ctx.ellipse(sx, sy, 4.5, 2.5, 0.3, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = '#ffffff';
+        ctx.beginPath(); ctx.arc(sx - 1, sy - 1, 0.8, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = '#000000';
+      });
+      // Happy Smiling Anime Eyes `^ ^` & Rosy cheeks
+      ctx.strokeStyle = '#ffffff';
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.arc(-14, -2, 6, Math.PI * 1.15, Math.PI * 1.85);
+      ctx.arc(14, -2, 6, Math.PI * 1.15, Math.PI * 1.85);
+      ctx.stroke();
+      // Rosy cheeks
+      ctx.fillStyle = 'rgba(254, 205, 211, 0.8)';
+      ctx.beginPath(); ctx.arc(-22, 10, 6, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath(); ctx.arc(22, 10, 6, 0, Math.PI * 2); ctx.fill();
+      // Happy open smile
+      ctx.fillStyle = '#ffffff';
+      ctx.beginPath(); ctx.arc(0, 8, 8, 0, Math.PI); ctx.fill();
+      // Sparkle stars ✨
+      ctx.font = '22px sans-serif';
+      ctx.fillText('✨', 42, -18);
+      ctx.fillText('✨', -48, 15);
+      ctx.restore();
+
+      // Card 2 Slice Tag
+      ctx.fillStyle = '#4ade80';
+      ctx.font = '800 15px "Plus Jakarta Sans"';
+      ctx.textAlign = 'center';
+      ctx.fillText('Đỏ Thắm · Cát Mịn · Mọng Mật', c2X + cW / 2, c2Y + 245);
+
+      // Card 2 Metric Specs Box
+      drawSpecBox(c2X + 16, c2Y + 265, cW - 32, [
+        { label: '📊 Độ ngọt (Brix)', val: '12° - 14° Brix (Ngọt)', bar: 0.94, barColor: '#22c55e' },
+        { label: '🍉 Thớ ruột', val: 'Cát mịn, giòn mọng mật' },
+        { label: '☀️ Thời gian', val: 'Tích đủ ngày nắng tự nhiên' },
+        { label: '🏆 Đánh giá', val: 'Đậm vị thơm mát, chuẩn VIP' }
+      ]);
+      ctx.restore();
+
+      // 5. BOTTOM SUMMARY: PRO FARMER ADVICE BANNER (y = 910 to 1060)
+      const bBoxX = 30, bBoxY = 910, bBoxW = 660, bBoxH = 145;
+      ctx.save();
+      ctx.fillStyle = 'rgba(15, 23, 42, 0.9)';
+      ctx.strokeStyle = '#f59e0b';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.roundRect(bBoxX, bBoxY, bBoxW, bBoxH, 18);
+      ctx.fill();
+      ctx.stroke();
+
+      // Banner Header
+      ctx.fillStyle = '#fbbf24';
+      ctx.font = '900 17px "Plus Jakarta Sans"';
+      ctx.textAlign = 'left';
+      ctx.fillText('💡 NGUYÊN TẮC VÀNG TỪ BÁC NÔNG DÂN:', bBoxX + 24, bBoxY + 34);
+
+      // Banner 3 Key rules
+      ctx.fillStyle = '#f1f5f9';
+      ctx.font = '600 14px "Plus Jakarta Sans"';
+      ctx.fillText('• Quả to bự chỉ mới đạt kích thước bên ngoài, bên trong cần thêm nắng để cô đọng đường.', bBoxX + 24, bBoxY + 66);
+      ctx.fillText('• 5 - 7 ngày cuối trước khi thu hoạch là lúc tinh bột chuyển hóa thành mật ngọt tự nhiên.', bBoxX + 24, bBoxY + 94);
+      ctx.fillText('• Luôn kiểm tra cuống teo khô + vệt vàng cam dưới đáy trước khi quyết định cắt!', bBoxX + 24, bBoxY + 122);
+      ctx.restore();
+
+      ctx.restore();
+    }
+
+    // Helper: Draw Metric Specs inside cards
+    function drawSpecBox(x, y, w, rows) {
+      let curY = y + 10;
+      rows.forEach(item => {
+        ctx.fillStyle = '#94a3b8';
+        ctx.font = '700 12px "Plus Jakarta Sans"';
+        ctx.textAlign = 'left';
+        ctx.fillText(item.label, x + 8, curY + 14);
+
+        ctx.fillStyle = '#f8fafc';
+        ctx.font = 'bold 13px "Plus Jakarta Sans"';
+        ctx.textAlign = 'right';
+        ctx.fillText(item.val, x + w - 8, curY + 14);
+
+        curY += 22;
+
+        if (item.bar !== undefined) {
+          // Progress bar
+          ctx.fillStyle = 'rgba(255, 255, 255, 0.1)';
+          ctx.beginPath();
+          ctx.roundRect(x + 8, curY, w - 16, 8, 4);
+          ctx.fill();
+
+          ctx.fillStyle = item.barColor || '#22c55e';
+          ctx.beginPath();
+          ctx.roundRect(x + 8, curY, (w - 16) * item.bar, 8, 4);
+          ctx.fill();
+
+          curY += 16;
+        } else {
+          curY += 10;
+        }
+      });
+    }
+
+    // ==========================================
+    // STAGE: 3 TIPS (43s - 52s)
+    // ==========================================
+    function drawTipsStage(t, ts) {
+      ctx.save();
+      ctx.fillStyle = '#0b132b';
+      ctx.fillRect(0, 0, 720, 1280);
+
+      // Title
+      ctx.fillStyle = '#fbbf24';
+      ctx.font = '900 34px "Plus Jakarta Sans"';
+      ctx.textAlign = 'center';
+      ctx.fillText('3 MẸO CHỌN DƯA NGỌT 100%', 360, 200);
+
+      // Center Big Ripe Watermelon
+      ctx.save();
+      ctx.translate(360, 560);
+      const pulse = 1 + Math.sin(ts * 0.008) * 0.03;
+      ctx.scale(pulse, pulse);
+
+      // Body
+      const mGrad = ctx.createRadialGradient(-30, -30, 20, 0, 0, 150);
+      mGrad.addColorStop(0, '#4ade80');
+      mGrad.addColorStop(0.8, '#15803d');
+      mGrad.addColorStop(1, '#052e16');
+      ctx.fillStyle = mGrad;
+      ctx.beginPath();
+      ctx.arc(0, 0, 150, 0, Math.PI * 2);
+      ctx.fill();
+
+      // TIP 1: Golden Yellow Spot on Bottom
+      ctx.fillStyle = '#facc15';
+      ctx.beginPath();
+      ctx.ellipse(-30, 90, 55, 30, -0.2, 0, Math.PI * 2);
+      ctx.fill();
+
+      // TIP 2: Dry Curled Brown Stem
+      ctx.strokeStyle = '#78350f';
+      ctx.lineWidth = 14;
+      ctx.beginPath();
+      ctx.moveTo(0, -150);
+      ctx.bezierCurveTo(-20, -190, -60, -180, -40, -210);
+      ctx.stroke();
+
+      // TIP 3: Tapping Hand & Sound Waves
+      const tapWave = (ts * 0.01) % 40;
+      ctx.strokeStyle = '#fbbf24';
+      ctx.lineWidth = 4;
+      ctx.beginPath();
+      ctx.arc(0, -150, 40 + tapWave, Math.PI * 1.2, Math.PI * 1.8);
+      ctx.stroke();
+
+      ctx.font = '32px sans-serif';
+      ctx.fillText('🎵', 60, -190);
+      ctx.fillText('🎶', -80, -170);
+
+      ctx.restore();
+
+      // 3 Checkpoints Text Cards
+      drawTipCard(360, 840, '1. Đáy dưa có vệt vàng cam đậm', 'Càng vàng đậm chứng tỏ dưa càng già ngọt');
+      drawTipCard(360, 950, '2. Cuống dưa xoăn khô héo', 'Cuống héo là dưa chín tự nhiên trên cây');
+      drawTipCard(360, 1060, '3. Gõ nghe tiếng "bộp bộp" trầm đục', 'Tiếng trầm vang chứng tỏ ruột đặc, nhiều nước');
+
+      ctx.restore();
+    }
+
+    function drawTipCard(x, y, title, desc) {
+      ctx.fillStyle = '#1e293b';
+      ctx.beginPath();
+      ctx.roundRect(x - 280, y - 40, 560, 80, 14);
+      ctx.fill();
+      ctx.strokeStyle = '#334155';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      ctx.textAlign = 'left';
+      ctx.fillStyle = '#facc15';
+      ctx.font = 'bold 20px "Plus Jakarta Sans"';
+      ctx.fillText(title, x - 255, y - 10);
+
+      ctx.fillStyle = '#94a3b8';
+      ctx.font = '15px "Plus Jakarta Sans"';
+      ctx.fillText(desc, x - 255, y + 20);
+    }
+
+    // Video Recording / Export
+    let mediaRecorder = null;
+    let recordedChunks = [];
+
+    function startExportRecording() {
+      const btn = document.getElementById('btn-record');
+      if (mediaRecorder && mediaRecorder.state === 'recording') {
+        mediaRecorder.stop();
+        btn.textContent = '🔴 Quay & Xuất Video MP4';
+        btn.style.background = '#f59e0b';
+        return;
+      }
+
+      restart();
+      const stream = canvas.captureStream(30);
+
+      recordedChunks = [];
+      try {
+        mediaRecorder = new MediaRecorder(stream, { mimeType: 'video/webm;codecs=vp9' });
+      } catch (e) {
+        mediaRecorder = new MediaRecorder(stream);
+      }
+
+      mediaRecorder.ondataavailable = (e) => {
+        if (e.data.size > 0) recordedChunks.push(e.data);
+      };
+
+      mediaRecorder.onstop = () => {
+        const blob = new Blob(recordedChunks, { type: 'video/webm' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'remake_2d_cartoon_animation.webm';
+        a.click();
+        btn.textContent = '✓ Đã tải video!';
+        setTimeout(() => {
+          btn.textContent = '🔴 Quay & Xuất Video MP4';
+          btn.style.background = '#f59e0b';
+        }, 4000);
+      };
+
+      mediaRecorder.start();
+      btn.textContent = '⏹ Đang quay... Bấm để dừng';
+      btn.style.background = '#ef4444';
+    }
+
+    // Start 60fps loop
+    requestAnimationFrame(render);
+  </script>
+</body>
+</html>

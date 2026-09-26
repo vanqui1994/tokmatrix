@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Source-faithful Canvas Remake</title>
+  <style>
+    :root{color-scheme:light;--bg:#f4f7fb;--surface:#fff;--line:#dbe3ef;--text:#172033;--muted:#64748b;--blue:#2563eb;--green:#059669;--shadow:0 18px 50px rgba(31,50,81,.12)}
+    *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:14px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,sans-serif}
+    button,input{font:inherit}.app{max-width:1440px;margin:auto;padding:24px}.header,.card{background:var(--surface);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow)}
+    .header{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:18px 22px;margin-bottom:18px}.eyebrow{color:var(--green);font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase}h1{font-size:clamp(18px,2.4vw,28px);margin:3px 0}.meta{color:var(--muted)}
+    .status{display:flex;align-items:center;gap:8px;color:var(--green);font-weight:750;white-space:nowrap}.dot{width:9px;height:9px;border-radius:50%;background:var(--green);box-shadow:0 0 0 5px #d1fae5}
+    .workspace{display:grid;grid-template-columns:minmax(0,1fr) 350px;gap:18px}.stage-card{padding:16px;min-width:0}.stage{position:relative;display:grid;place-items:center;min-height:520px;border-radius:14px;overflow:hidden;background:#e7edf6}
+    canvas{display:block;max-width:100%;max-height:72vh;width:auto;height:auto;background:#fff;box-shadow:0 8px 30px rgba(15,23,42,.18)}
+    .caption{position:absolute;left:8%;right:8%;bottom:7%;padding:10px 14px;border-radius:12px;background:rgba(15,23,42,.86);color:#fff;text-align:center;font-weight:700;font-size:clamp(14px,2vw,22px);text-shadow:0 1px 2px #000;opacity:0;transition:opacity .12s}.caption.show{opacity:1}
+    .controls{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:12px;margin-top:14px}.play{width:44px;height:44px;border:0;border-radius:50%;background:var(--blue);color:#fff;cursor:pointer;font-size:17px}.seek{width:100%;accent-color:var(--blue)}.time{font-variant-numeric:tabular-nums;color:var(--muted);min-width:105px;text-align:right}
+    .side{display:flex;flex-direction:column;gap:18px}.panel{padding:18px}.panel h2{font-size:15px;margin:0 0 12px}.facts{display:grid;grid-template-columns:1fr auto;gap:9px 14px;color:var(--muted)}.facts strong{color:var(--text);text-align:right}.guard{display:flex;gap:9px;align-items:flex-start;padding:9px 0;border-top:1px solid #edf1f7}.guard:first-of-type{border-top:0}.check{color:var(--green);font-weight:900}.actions{display:grid;gap:9px}.btn{border:1px solid var(--line);background:#fff;color:var(--text);border-radius:10px;padding:10px 12px;font-weight:700;cursor:pointer}.btn:hover{border-color:#93b4f5;background:#f8fbff}.btn.active{background:#eff6ff;border-color:#93b4f5;color:#1d4ed8}
+    .source-reference{display:none;width:100%;max-height:360px;border-radius:12px;background:#000}.source-reference.show{display:block;margin-top:12px}.error{max-width:680px;margin:80px auto;padding:24px;background:#fff1f2;border:1px solid #fecdd3;border-radius:16px;color:#9f1239}
+    @media(max-width:900px){.app{padding:12px}.workspace{grid-template-columns:1fr}.stage{min-height:380px}.header{align-items:flex-start;flex-direction:column}.side{display:grid;grid-template-columns:1fr 1fr}.source-reference{grid-column:1/-1}}
+    @media(max-width:560px){.side{grid-template-columns:1fr}.stage{min-height:300px}.controls{grid-template-columns:auto 1fr}.time{grid-column:1/-1;text-align:center}.header{padding:15px}.panel,.stage-card{padding:12px}}
+  </style>
+</head>
+<body>
+  <main class="app" id="app" hidden>
+    <header class="header">
+      <div><div class="eyebrow">Native HTML5 Canvas · Source of truth</div><h1 id="title">Canvas Remake</h1><div class="meta" id="sourceMeta"></div></div>
+      <div class="status"><span class="dot"></span><span>Fidelity đã kiểm tra</span></div>
+    </header>
+    <section class="workspace">
+      <div class="card stage-card">
+        <div class="stage" id="stage"><canvas id="canvas"></canvas><div class="caption" id="caption"></div></div>
+        <div class="controls">
+          <button class="play" id="play" type="button" title="Phát hoặc tạm dừng">▶</button>
+          <input class="seek" id="seek" type="range" min="0" max="1000" value="0" title="Tua timeline">
+          <div class="time" id="time">00:00 / 00:00</div>
+        </div>
+        <audio id="audio" preload="metadata"></audio>
+      </div>
+      <aside class="side">
+        <section class="card panel"><h2>Dữ liệu nguồn</h2><div class="facts" id="facts"></div></section>
+        <section class="card panel"><h2>Cam kết nội dung</h2><div id="guards"></div></section>
+        <section class="card panel actions">
+          <button class="btn" id="toggleSource" type="button" title="So sánh trực tiếp với video gốc">Hiện video nguồn đối chiếu</button>
+          <button class="btn" id="toggleCaptions" type="button" title="Bật hoặc tắt transcript nguyên văn">Tắt phụ đề nguyên văn</button>
+          <video class="source-reference" id="sourceVideo" controls muted playsinline></video>
+        </section>
+      </aside>
+    </section>
+  </main>
+  <div class="error" id="error" hidden></div>
+  <script>
+  (() => {
+    'use strict';
+    const $ = id => document.getElementById(id);
+    const project = new URLSearchParams(location.search).get('project') || '';
+    const app = $('app'), errorBox = $('error'), canvas = $('canvas'), ctx = canvas.getContext('2d', {alpha:false});
+    const audio = $('audio'), sourceVideo = $('sourceVideo'), play = $('play'), seek = $('seek'), caption = $('caption');
+    let manifest, duration = 0, frames = [], cached = [], cues = [], captionsEnabled = true;
+    let silentPlaying = false, silentStart = 0, silentOffset = 0, raf = 0;
+
+    function fail(message){ errorBox.hidden=false; errorBox.textContent=message; app.hidden=true; }
+    function fmt(value){ const s=Math.max(0,Math.floor(value||0)); return `${String(Math.floor(s/60)).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`; }
+    function currentTime(){ return audio.src ? audio.currentTime : (silentPlaying ? Math.min(duration, silentOffset+(performance.now()-silentStart)/1000) : silentOffset); }
+    function setTime(value){ const t=Math.max(0,Math.min(duration,value)); if(audio.src) audio.currentTime=t; silentOffset=t; if(sourceVideo.src && Math.abs(sourceVideo.currentTime-t)>.35) sourceVideo.currentTime=t; render(t); }
+    function cacheFrame(frame){
+      const c=document.createElement('canvas'); c.width=frame.width; c.height=frame.height; const x=c.getContext('2d',{alpha:false});
+      x.fillStyle=frame.palette[0]||'#fff'; x.fillRect(0,0,c.width,c.height);
+      for(const rect of frame.rects){ x.fillStyle=frame.palette[rect[4]]; x.fillRect(rect[0],rect[1],rect[2],rect[3]); }
+      return c;
+    }
+    function frameIndexAt(t){ let low=0,high=frames.length-1; while(low<high){const mid=Math.ceil((low+high)/2); if(frames[mid].time<=t)low=mid;else high=mid-1;} return low; }
+    function drawCached(image, alpha){
+      const scale=Math.min(canvas.width/image.width,canvas.height/image.height), w=image.width*scale,h=image.height*scale;
+      ctx.globalAlpha=alpha; ctx.imageSmoothingEnabled=false; ctx.drawImage(image,(canvas.width-w)/2,(canvas.height-h)/2,w,h);
+    }
+    function render(t){
+      if(!frames.length)return; const i=frameIndexAt(t), next=Math.min(i+1,frames.length-1), start=frames[i].time,end=frames[next].time;
+      const mix=next===i?0:Math.max(0,Math.min(1,(t-start)/Math.max(.001,end-start)));
+      ctx.globalAlpha=1; ctx.fillStyle='#fff'; ctx.fillRect(0,0,canvas.width,canvas.height); drawCached(cached[i],1); if(mix>0)drawCached(cached[next],mix); ctx.globalAlpha=1;
+      const cue=cues.find(item=>t>=item.start&&t<item.end); caption.textContent=cue?cue.text:''; caption.classList.toggle('show',Boolean(cue&&captionsEnabled));
+      seek.value=duration?String(Math.round(t/duration*1000)):'0'; $('time').textContent=`${fmt(t)} / ${fmt(duration)}`;
+    }
+    function tick(){ const t=currentTime(); render(t); if(sourceVideo.src&&!sourceVideo.paused&&Math.abs(sourceVideo.currentTime-t)>.35)sourceVideo.currentTime=t; if(t>=duration&&!audio.src){silentPlaying=false;silentOffset=duration;play.textContent='▶';} raf=requestAnimationFrame(tick); }
+    async function togglePlay(){
+      if(audio.src){ if(audio.paused){await audio.play();play.textContent='❚❚';if(sourceVideo.classList.contains('show'))sourceVideo.play().catch(()=>{});}else{audio.pause();sourceVideo.pause();play.textContent='▶';} }
+      else if(silentPlaying){silentOffset=currentTime();silentPlaying=false;play.textContent='▶';}else{if(silentOffset>=duration)silentOffset=0;silentStart=performance.now();silentPlaying=true;play.textContent='❚❚';}
+    }
+    async function init(){
+      if(!/^[a-z0-9_-]{1,80}$/.test(project))throw new Error('Mã project không hợp lệ.');
+      const response=await fetch(`/static/remake_projects/${encodeURIComponent(project)}/manifest.json`,{cache:'no-store'}); if(!response.ok)throw new Error('Không tải được manifest của project.');
+      manifest=await response.json(); if(manifest.schema!=='tokmatrix.canvas-remake'||manifest.fidelity?.status!=='passed')throw new Error('Manifest chưa vượt qua kiểm tra fidelity.');
+      duration=manifest.timeline.duration; frames=manifest.timeline.vector_frames||[]; cues=manifest.timeline.cues||[]; if(!frames.length)throw new Error('Project không có vector keyframe.');
+      cached=frames.map(cacheFrame); const first=frames[0]; canvas.width=manifest.source.width; canvas.height=manifest.source.height;
+      canvas.style.aspectRatio=`${manifest.source.width}/${manifest.source.height}`;
+      $('title').textContent=manifest.project.name; document.title=manifest.project.name;
+      $('sourceMeta').textContent=`${manifest.source.width}×${manifest.source.height} · ${manifest.source.fps} FPS nguồn · ${duration.toFixed(2)} giây`;
+      const facts=[['Keyframe vector',frames.length],['Đoạn transcript',cues.length],['Audio',manifest.audio.mode==='preserve-source'?'Giữ nguyên nguồn':'Không có'],['SHA-256',manifest.source.sha256.slice(0,12)+'…']];
+      for(const [label,value] of facts){const a=document.createElement('span'),b=document.createElement('strong');a.textContent=label;b.textContent=value;$('facts').append(a,b);}
+      for(const rule of manifest.fidelity.rules){const row=document.createElement('div');row.className='guard';const mark=document.createElement('span'),text=document.createElement('span');mark.className='check';mark.textContent='✓';text.textContent=rule;row.append(mark,text);$('guards').append(row);}
+      if(manifest.audio.url)audio.src=manifest.audio.url; sourceVideo.src=manifest.source.source_url; app.hidden=false; render(0); tick();
+    }
+    play.addEventListener('click',()=>togglePlay().catch(err=>fail(err.message)));
+    seek.addEventListener('input',()=>setTime(Number(seek.value)/1000*duration));
+    audio.addEventListener('ended',()=>{play.textContent='▶';sourceVideo.pause();});
+    $('toggleSource').addEventListener('click',event=>{const shown=sourceVideo.classList.toggle('show');event.currentTarget.classList.toggle('active',shown);event.currentTarget.textContent=shown?'Ẩn video nguồn đối chiếu':'Hiện video nguồn đối chiếu';setTime(currentTime());});
+    $('toggleCaptions').addEventListener('click',event=>{captionsEnabled=!captionsEnabled;event.currentTarget.classList.toggle('active',!captionsEnabled);event.currentTarget.textContent=captionsEnabled?'Tắt phụ đề nguyên văn':'Bật phụ đề nguyên văn';render(currentTime());});
+    window.addEventListener('beforeunload',()=>cancelAnimationFrame(raf));
+    init().catch(err=>fail(err.message));
+  })();
+  </script>
+</body>
+</html>

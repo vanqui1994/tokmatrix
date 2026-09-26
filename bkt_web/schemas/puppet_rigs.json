@@ -1,0 +1,99 @@
+{
+  "schema": "tokmatrix.puppet-rig/v1",
+  "version": "1.0.0",
+  "note": "Rig 2D dùng chung cho puppet-2d-v1. Tỉ lệ chuẩn hoá theo chiều cao nhân vật = 1.0.",
+  "rigs": {
+    "puppet.rig.adult": {
+      "id": "puppet.rig.adult",
+      "version": "1.0.0",
+      "label": "Người lớn",
+      "proportions": {
+        "head_radius": 0.068,
+        "neck": 0.04,
+        "torso": 0.30,
+        "shoulder_offset": 0.095,
+        "hip_offset": 0.055,
+        "upper_arm": 0.165,
+        "forearm": 0.155,
+        "thigh": 0.225,
+        "shin": 0.215
+      },
+      "anchors": ["hips", "chest", "head", "mouth", "eye_l", "eye_r", "hand_l", "hand_r", "foot_l", "foot_r"],
+      "chains": {
+        "arm_l": {"root": "shoulder_l", "bones": ["upper_arm", "forearm"], "effector": "hand_l", "bend": 1},
+        "arm_r": {"root": "shoulder_r", "bones": ["upper_arm", "forearm"], "effector": "hand_r", "bend": -1},
+        "leg_l": {"root": "hip_l", "bones": ["thigh", "shin"], "effector": "foot_l", "bend": -1},
+        "leg_r": {"root": "hip_r", "bones": ["thigh", "shin"], "effector": "foot_r", "bend": 1}
+      },
+      "limits": {"elbow": [0, 155], "knee": [0, 145]}
+    },
+    "puppet.rig.child": {
+      "id": "puppet.rig.child",
+      "version": "1.0.0",
+      "label": "Trẻ em",
+      "proportions": {
+        "head_radius": 0.092,
+        "neck": 0.03,
+        "torso": 0.27,
+        "shoulder_offset": 0.085,
+        "hip_offset": 0.05,
+        "upper_arm": 0.145,
+        "forearm": 0.13,
+        "thigh": 0.20,
+        "shin": 0.185
+      },
+      "anchors": ["hips", "chest", "head", "mouth", "eye_l", "eye_r", "hand_l", "hand_r", "foot_l", "foot_r"],
+      "chains": {
+        "arm_l": {"root": "shoulder_l", "bones": ["upper_arm", "forearm"], "effector": "hand_l", "bend": 1},
+        "arm_r": {"root": "shoulder_r", "bones": ["upper_arm", "forearm"], "effector": "hand_r", "bend": -1},
+        "leg_l": {"root": "hip_l", "bones": ["thigh", "shin"], "effector": "foot_l", "bend": -1},
+        "leg_r": {"root": "hip_r", "bones": ["thigh", "shin"], "effector": "foot_r", "bend": 1}
+      },
+      "limits": {"elbow": [0, 160], "knee": [0, 150]}
+    },
+    "puppet.rig.presenter": {
+      "id": "puppet.rig.presenter",
+      "version": "1.0.0",
+      "label": "Người dẫn (nửa người)",
+      "proportions": {
+        "head_radius": 0.115,
+        "neck": 0.05,
+        "torso": 0.36,
+        "shoulder_offset": 0.135,
+        "hip_offset": 0.07,
+        "upper_arm": 0.185,
+        "forearm": 0.175,
+        "thigh": 0.10,
+        "shin": 0.09
+      },
+      "anchors": ["hips", "chest", "head", "mouth", "eye_l", "eye_r", "hand_l", "hand_r", "foot_l", "foot_r"],
+      "chains": {
+        "arm_l": {"root": "shoulder_l", "bones": ["upper_arm", "forearm"], "effector": "hand_l", "bend": 1},
+        "arm_r": {"root": "shoulder_r", "bones": ["upper_arm", "forearm"], "effector": "hand_r", "bend": -1},
+        "leg_l": {"root": "hip_l", "bones": ["thigh", "shin"], "effector": "foot_l", "bend": -1},
+        "leg_r": {"root": "hip_r", "bones": ["thigh", "shin"], "effector": "foot_r", "bend": 1}
+      },
+      "limits": {"elbow": [0, 150], "knee": [0, 120]}
+    }
+  },
+  "expressions": {
+    "neutral": {"brow": 0.0, "eye_open": 0.85, "mouth_curve": 0.0},
+    "happy": {"brow": 0.15, "eye_open": 0.7, "mouth_curve": 0.6},
+    "sad": {"brow": -0.3, "eye_open": 0.6, "mouth_curve": -0.5},
+    "surprised": {"brow": 0.45, "eye_open": 1.0, "mouth_curve": 0.1},
+    "worried": {"brow": -0.15, "eye_open": 0.8, "mouth_curve": -0.25},
+    "focused": {"brow": -0.05, "eye_open": 0.75, "mouth_curve": -0.05}
+  },
+  "visemes": {
+    "rest": {"open": 0.04, "wide": 0.35},
+    "mbp": {"open": 0.02, "wide": 0.32},
+    "fv": {"open": 0.12, "wide": 0.45},
+    "aa": {"open": 0.85, "wide": 0.55},
+    "e": {"open": 0.45, "wide": 0.72},
+    "i": {"open": 0.28, "wide": 0.8},
+    "o": {"open": 0.6, "wide": 0.3},
+    "u": {"open": 0.35, "wide": 0.22},
+    "l": {"open": 0.3, "wide": 0.5},
+    "s": {"open": 0.16, "wide": 0.62}
+  }
+}

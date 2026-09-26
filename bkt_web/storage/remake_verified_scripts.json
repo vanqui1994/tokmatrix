@@ -1,0 +1,1113 @@
+{
+  "da790a54a3095d7a2d084e38c424c0f9dab619099a658259eee668f11ba1c175": {
+    "theme": "papaya_latex",
+    "label": "Cây đu đủ & Nhựa đu đủ",
+    "renderer": "papaya-native-v1",
+    "review_basis": "Đối chiếu keyframe và phụ đề nguồn; mốc chuyển đo theo frame, độ chính xác khoảng 0.05s. Hình vẽ mới cần người dùng duyệt, không khẳng định pixel-identical.",
+    "characters": [
+      {
+        "id": "papaya_tree",
+        "name": "Cây đu đủ",
+        "role": "young_1"
+      },
+      {
+        "id": "knife",
+        "name": "Dao nhỏ",
+        "role": "adult"
+      },
+      {
+        "id": "farmer",
+        "name": "Nông dân",
+        "role": "adult"
+      }
+    ],
+    "scenes": [
+      {
+        "index": 0,
+        "start_time": 0,
+        "end_time": 7.35,
+        "renderer": "papaya-native-v1",
+        "characters_present": [
+          "papaya_tree",
+          "knife"
+        ],
+        "action": "Dao đến gần; cây thắc mắc",
+        "kind": "dialogue"
+      },
+      {
+        "index": 1,
+        "start_time": 7.35,
+        "end_time": 12.47,
+        "renderer": "papaya-native-v1",
+        "characters_present": [
+          "papaya_tree",
+          "knife"
+        ],
+        "action": "Dao rạch nông quả, nhựa trắng chảy; cây lo lắng",
+        "kind": "cut"
+      },
+      {
+        "index": 2,
+        "start_time": 12.47,
+        "end_time": 30.55,
+        "renderer": "papaya-native-v1",
+        "characters_present": [
+          "papaya_tree",
+          "knife"
+        ],
+        "action": "Dao giải thích; nhựa tiếp tục chảy",
+        "kind": "explain"
+      },
+      {
+        "index": 3,
+        "start_time": 30.55,
+        "end_time": 35,
+        "renderer": "papaya-native-v1",
+        "characters_present": [
+          "papaya_tree",
+          "knife"
+        ],
+        "action": "Cây đề nghị rạch thêm, dao di chuyển lên quả",
+        "kind": "cut_more"
+      },
+      {
+        "index": 4,
+        "start_time": 35,
+        "end_time": 36.5,
+        "renderer": "papaya-native-v1",
+        "characters_present": [],
+        "kind": "title",
+        "text": "Vài phút sau…"
+      },
+      {
+        "index": 5,
+        "start_time": 36.5,
+        "end_time": 48.413991,
+        "renderer": "papaya-native-v1",
+        "characters_present": [
+          "farmer"
+        ],
+        "action": "Nông dân bên xô nhựa, giải thích ứng dụng papain",
+        "kind": "farmer"
+      }
+    ],
+    "cues": [
+      {
+        "start": 0.11,
+        "end": 1.39,
+        "speaker": "papaya_tree",
+        "voice_role": "young_1",
+        "engine": "capcut",
+        "voice": "BV421_vivn_streaming",
+        "text": "Tớ còn chưa chín mà!",
+        "original_text": "我还没成熟",
+        "translation_verified": true,
+        "speaker_verified": true
+      },
+      {
+        "start": 1.39,
+        "end": 2.87,
+        "speaker": "papaya_tree",
+        "voice_role": "young_1",
+        "engine": "capcut",
+        "voice": "BV421_vivn_streaming",
+        "text": "Cậu cầm dao làm gì thế?",
+        "original_text": "你拿把刀干什么",
+        "translation_verified": true,
+        "speaker_verified": true
+      },
+      {
+        "start": 2.87,
+        "end": 5.99,
+        "speaker": "knife",
+        "voice_role": "adult",
+        "engine": "capcut",
+        "voice": "BV075_streaming",
+        "text": "Tớ đến lấy thứ còn đắt hơn cả quả đu đủ cơ.",
+        "original_text": "我是来收集比木瓜果子更值钱的东西",
+        "translation_verified": true,
+        "speaker_verified": true
+      },
+      {
+        "start": 5.99,
+        "end": 7.35,
+        "speaker": "papaya_tree",
+        "voice_role": "young_1",
+        "engine": "capcut",
+        "voice": "BV421_vivn_streaming",
+        "text": "Thứ gì vậy?",
+        "original_text": "那是什么东西",
+        "translation_verified": true,
+        "speaker_verified": true
+      },
+      {
+        "start": 8.71,
+        "end": 9.75,
+        "speaker": "papaya_tree",
+        "voice_role": "young_1",
+        "engine": "capcut",
+        "voice": "BV421_vivn_streaming",
+        "text": "Sao lại rạch tớ?",
+        "original_text": "你割我干什么",
+        "translation_verified": true,
+        "speaker_verified": true
+      },
+      {
+        "start": 9.75,
+        "end": 12.47,
+        "speaker": "papaya_tree",
+        "voice_role": "young_1",
+        "engine": "capcut",
+        "voice": "BV421_vivn_streaming",
+        "text": "Nhỡ tớ chảy hết nhựa rồi khô héo thì sao?",
+        "original_text": "要是我流干汁液枯死该怎么办",
+        "translation_verified": true,
+        "speaker_verified": true
+      },
+      {
+        "start": 12.47,
+        "end": 15.31,
+        "speaker": "knife",
+        "voice_role": "adult",
+        "engine": "capcut",
+        "voice": "BV075_streaming",
+        "text": "Chất trắng chảy ra không phải máu đâu.",
+        "original_text": "你流出来的白色液体不是血",
+        "translation_verified": true,
+        "speaker_verified": true
+      },
+      {
+        "start": 15.31,
+        "end": 16.71,
+        "speaker": "knife",
+        "voice_role": "adult",
+        "engine": "capcut",
+        "voice": "BV075_streaming",
+        "text": "Đó là nhựa đu đủ!",
+        "original_text": "是木瓜乳汁",
+        "translation_verified": true,
+        "speaker_verified": true
+      },
+      {
+        "start": 16.71,
+        "end": 19.03,
+        "speaker": "knife",
+        "voice_role": "adult",
+        "engine": "capcut",
+        "voice": "BV075_streaming",
+        "text": "Nhựa này còn đắt hơn cả quả đấy.",
+        "original_text": "这乳汁卖得比木瓜果子还贵",
+        "translation_verified": true,
+        "speaker_verified": true
+      },
+      {
+        "start": 19.03,
+        "end": 20.11,
+        "speaker": "papaya_tree",
+        "voice_role": "young_1",
+        "engine": "capcut",
+        "voice": "BV421_vivn_streaming",
+        "text": "Thật hả?",
+        "original_text": "真的假的",
+        "translation_verified": true,
+        "speaker_verified": true
+      },
+      {
+        "start": 20.11,
+        "end": 23.31,
+        "speaker": "knife",
+        "voice_role": "adult",
+        "engine": "capcut",
+        "voice": "BV075_streaming",
+        "text": "Trong nhựa đu đủ có enzyme papain.",
+        "original_text": "木瓜乳汁里含有木瓜蛋白酶",
+        "translation_verified": true,
+        "speaker_verified": true
+      },
+      {
+        "start": 23.31,
+        "end": 27.15,
+        "speaker": "knife",
+        "voice_role": "adult",
+        "engine": "capcut",
+        "voice": "BV075_streaming",
+        "text": "Dùng làm bột mềm thịt, thuốc, mỹ phẩm và chế biến thực phẩm.",
+        "original_text": "能用在嫩肉粉药品护肤品和食品加工里",
+        "translation_verified": true,
+        "speaker_verified": true
+      },
+      {
+        "start": 27.15,
+        "end": 28.87,
+        "speaker": "knife",
+        "voice_role": "adult",
+        "engine": "capcut",
+        "voice": "BV075_streaming",
+        "text": "Vì thế nó mới đắt đấy!",
+        "original_text": "这就是高价的原因",
+        "translation_verified": true,
+        "speaker_verified": true
+      },
+      {
+        "start": 29.27,
+        "end": 30.55,
+        "speaker": "papaya_tree",
+        "voice_role": "young_1",
+        "engine": "capcut",
+        "voice": "BV421_vivn_streaming",
+        "text": "À, ra là vậy!",
+        "original_text": "原来是这样",
+        "translation_verified": true,
+        "speaker_verified": true
+      },
+      {
+        "start": 30.55,
+        "end": 32.63,
+        "speaker": "papaya_tree",
+        "voice_role": "young_1",
+        "engine": "capcut",
+        "voice": "BV421_vivn_streaming",
+        "text": "Thế rạch thêm vài đường nữa đi!",
+        "original_text": "再多划几道口子",
+        "translation_verified": true,
+        "speaker_verified": true
+      },
+      {
+        "start": 35.08,
+        "end": 36.45,
+        "speaker": "narrator",
+        "voice_role": "narrator",
+        "engine": "capcut",
+        "voice": "BV560_streaming",
+        "text": "Vài phút sau…",
+        "original_text": "A few minutes later",
+        "translation_verified": true,
+        "speaker_verified": true
+      },
+      {
+        "start": 36.5,
+        "end": 38.06,
+        "speaker": "farmer",
+        "voice_role": "adult",
+        "engine": "capcut",
+        "voice": "BV560_streaming",
+        "text": "Rạch nông quả đu đủ xanh",
+        "original_text": "给青木瓜划浅口",
+        "translation_verified": true,
+        "speaker_verified": true
+      },
+      {
+        "start": 38.06,
+        "end": 40.06,
+        "speaker": "farmer",
+        "voice_role": "adult",
+        "engine": "capcut",
+        "voice": "BV560_streaming",
+        "text": "là lấy được nhựa bên trong.",
+        "original_text": "就能导出内部的木瓜乳汁",
+        "translation_verified": true,
+        "speaker_verified": true
+      },
+      {
+        "start": 40.06,
+        "end": 41.78,
+        "speaker": "farmer",
+        "voice_role": "adult",
+        "engine": "capcut",
+        "voice": "BV560_streaming",
+        "text": "Papain trong nhựa đu đủ",
+        "original_text": "乳汁里的木瓜蛋白酶",
+        "translation_verified": true,
+        "speaker_verified": true
+      },
+      {
+        "start": 41.78,
+        "end": 43.46,
+        "speaker": "farmer",
+        "voice_role": "adult",
+        "engine": "capcut",
+        "voice": "BV560_streaming",
+        "text": "dùng nhiều để làm mềm thịt,",
+        "original_text": "广泛用于嫩肉产品",
+        "translation_verified": true,
+        "speaker_verified": true
+      },
+      {
+        "start": 43.46,
+        "end": 45.98,
+        "speaker": "farmer",
+        "voice_role": "adult",
+        "engine": "capcut",
+        "voice": "BV560_streaming",
+        "text": "làm thuốc, mỹ phẩm và chế biến thực phẩm.",
+        "original_text": "医药美妆和食品加工行业",
+        "translation_verified": true,
+        "speaker_verified": true
+      },
+      {
+        "start": 45.98,
+        "end": 48.4,
+        "speaker": "farmer",
+        "voice_role": "adult",
+        "engine": "capcut",
+        "voice": "BV560_streaming",
+        "text": "Bảo sao nhựa đu đủ lại có giá đến thế!",
+        "original_text": "难怪这木瓜乳汁价值这么高",
+        "translation_verified": true,
+        "speaker_verified": true
+      }
+    ]
+  },
+  "91ff438871dfa3957ec1ac4971539b91984f93bddeab843b12ab8341598b6132": {
+    "theme": "cay_lac_nong_dan",
+    "label": "Cây Lạc & Bác Nông Dân",
+    "characters": [
+      {
+        "id": "dot_lac",
+        "name": "Đọt Ngọn Lạc",
+        "role": "young_1",
+        "avatar": "🥜",
+        "asset": "peanut_plant",
+        "face": true
+      },
+      {
+        "id": "canh_goc",
+        "name": "Cành Gốc & Hoa",
+        "role": "young_1",
+        "avatar": "🌸",
+        "asset": "peanut_plant",
+        "face": true
+      },
+      {
+        "id": "nong_dan",
+        "name": "Bác Nông Dân",
+        "role": "adult",
+        "avatar": "👨‍🌾",
+        "asset": "farmer",
+        "face": true
+      }
+    ],
+    "scenes": [
+      {
+        "id": "scene_0",
+        "start_time": 0,
+        "end_time": 20.57,
+        "renderer": "native-vector-v1",
+        "label": "Cảnh 1: Đọt lạc & Cành gốc trò chuyện",
+        "characters_present": [
+          "dot_lac",
+          "canh_goc"
+        ],
+        "background": {
+          "preset": "garden",
+          "weather": "clear",
+          "time": "day"
+        },
+        "poses": {
+          "dot_lac": [
+            {
+              "time": 0,
+              "x": 180,
+              "y": 700,
+              "height": 280,
+              "growth": 0.4,
+              "expression": "neutral"
+            },
+            {
+              "time": 1.55,
+              "x": 180,
+              "y": 700,
+              "height": 280,
+              "growth": 0.5,
+              "expression": "happy"
+            },
+            {
+              "time": 10,
+              "x": 180,
+              "y": 700,
+              "height": 300,
+              "growth": 0.6,
+              "expression": "worried"
+            },
+            {
+              "time": 20.57,
+              "x": 180,
+              "y": 700,
+              "height": 300,
+              "growth": 0.6,
+              "expression": "worried"
+            }
+          ],
+          "canh_goc": [
+            {
+              "time": 0,
+              "x": 400,
+              "y": 700,
+              "height": 320,
+              "growth": 0.7,
+              "expression": "neutral"
+            },
+            {
+              "time": 2.55,
+              "x": 400,
+              "y": 700,
+              "height": 320,
+              "growth": 0.7,
+              "expression": "surprised"
+            },
+            {
+              "time": 7.55,
+              "x": 400,
+              "y": 700,
+              "height": 330,
+              "growth": 0.7,
+              "expression": "angry"
+            },
+            {
+              "time": 20.57,
+              "x": 400,
+              "y": 700,
+              "height": 330,
+              "growth": 0.7,
+              "expression": "angry"
+            }
+          ]
+        },
+        "camera": [],
+        "actions": []
+      },
+      {
+        "id": "scene_1",
+        "start_time": 20.57,
+        "end_time": 44.118,
+        "renderer": "native-vector-v1",
+        "label": "Cảnh 2: Bác Nông Dân ép cành",
+        "characters_present": [
+          "canh_goc",
+          "nong_dan"
+        ],
+        "background": {
+          "preset": "garden",
+          "weather": "clear",
+          "time": "day"
+        },
+        "poses": {
+          "nong_dan": [
+            {
+              "time": 20.57,
+              "x": 288,
+              "y": 500,
+              "height": 400,
+              "expression": "neutral",
+              "arm": 0
+            },
+            {
+              "time": 26.57,
+              "x": 288,
+              "y": 500,
+              "height": 400,
+              "expression": "happy",
+              "arm": 0.5
+            },
+            {
+              "time": 35,
+              "x": 288,
+              "y": 520,
+              "height": 400,
+              "expression": "happy",
+              "arm": 0.8
+            },
+            {
+              "time": 44.118,
+              "x": 288,
+              "y": 520,
+              "height": 400,
+              "expression": "happy",
+              "arm": 0.3
+            }
+          ],
+          "canh_goc": [
+            {
+              "time": 20.57,
+              "x": 400,
+              "y": 700,
+              "height": 330,
+              "growth": 0.7,
+              "expression": "angry"
+            },
+            {
+              "time": 24.57,
+              "x": 400,
+              "y": 720,
+              "height": 300,
+              "growth": 0.7,
+              "expression": "worried",
+              "bend": 0.3
+            },
+            {
+              "time": 30.57,
+              "x": 400,
+              "y": 750,
+              "height": 260,
+              "growth": 0.8,
+              "expression": "surprised",
+              "bend": 0.6
+            },
+            {
+              "time": 44.118,
+              "x": 400,
+              "y": 750,
+              "height": 260,
+              "growth": 0.9,
+              "expression": "happy",
+              "bend": 0.5
+            }
+          ]
+        },
+        "camera": [],
+        "actions": []
+      }
+    ],
+    "cues": [
+      {
+        "start": 1.55,
+        "end": 2.55,
+        "speaker": "dot_lac",
+        "name": "Đọt Ngọn Lạc",
+        "text": "Alo!",
+        "engine": "capcut",
+        "voice": "BV421_vivn_streaming",
+        "avatar": "🥜",
+        "original_text": "Alo!",
+        "voice_role": "young_1",
+        "character_id": "dot_lac",
+        "speaker_verified": true,
+        "translation_verified": true
+      },
+      {
+        "start": 2.55,
+        "end": 4.05,
+        "speaker": "canh_goc",
+        "name": "Cành Gốc & Hoa",
+        "text": "Gì đó?",
+        "engine": "capcut",
+        "voice": "BV075_vivn_streaming",
+        "avatar": "🌸",
+        "original_text": "Gì đó?",
+        "voice_role": "young_1",
+        "character_id": "canh_goc",
+        "speaker_verified": true,
+        "translation_verified": true
+      },
+      {
+        "start": 4.05,
+        "end": 5.55,
+        "speaker": "dot_lac",
+        "name": "Đọt Ngọn Lạc",
+        "text": "Ăn ít đất thôi!",
+        "engine": "capcut",
+        "voice": "BV421_vivn_streaming",
+        "avatar": "🥜",
+        "original_text": "Ăn ít đất thôi!",
+        "voice_role": "young_1",
+        "character_id": "dot_lac",
+        "speaker_verified": true,
+        "translation_verified": true
+      },
+      {
+        "start": 5.55,
+        "end": 6.55,
+        "speaker": "canh_goc",
+        "name": "Cành Gốc & Hoa",
+        "text": "Đất cát gì chứ?",
+        "engine": "capcut",
+        "voice": "BV075_vivn_streaming",
+        "avatar": "🌸",
+        "original_text": "Đất cát gì chứ?",
+        "voice_role": "young_1",
+        "character_id": "canh_goc",
+        "speaker_verified": true,
+        "translation_verified": true
+      },
+      {
+        "start": 6.55,
+        "end": 7.55,
+        "speaker": "dot_lac",
+        "name": "Đọt Ngọn Lạc",
+        "text": "Rồi sao nữa?",
+        "engine": "capcut",
+        "voice": "BV421_vivn_streaming",
+        "avatar": "🥜",
+        "original_text": "Rồi sao nữa?",
+        "voice_role": "young_1",
+        "character_id": "dot_lac",
+        "speaker_verified": true,
+        "translation_verified": true
+      },
+      {
+        "start": 7.55,
+        "end": 9.55,
+        "speaker": "canh_goc",
+        "name": "Cành Gốc & Hoa",
+        "text": "Đi làm để lớn thành củ lạc chứ!",
+        "engine": "capcut",
+        "voice": "BV075_vivn_streaming",
+        "avatar": "🌸",
+        "original_text": "Đi làm để lớn thành củ lạc chứ!",
+        "voice_role": "young_1",
+        "character_id": "canh_goc",
+        "speaker_verified": true,
+        "translation_verified": true
+      },
+      {
+        "start": 9.55,
+        "end": 11.55,
+        "speaker": "dot_lac",
+        "name": "Đọt Ngọn Lạc",
+        "text": "Không đi làm có được không?",
+        "engine": "capcut",
+        "voice": "BV421_vivn_streaming",
+        "avatar": "🥜",
+        "original_text": "Không đi làm có được không?",
+        "voice_role": "young_1",
+        "character_id": "dot_lac",
+        "speaker_verified": true,
+        "translation_verified": true
+      },
+      {
+        "start": 11.55,
+        "end": 13.55,
+        "speaker": "canh_goc",
+        "name": "Cành Gốc & Hoa",
+        "text": "Không đi làm anh nuôi tôi à?!",
+        "engine": "capcut",
+        "voice": "BV075_vivn_streaming",
+        "avatar": "🌸",
+        "original_text": "Không đi làm anh nuôi tôi à?!",
+        "voice_role": "young_1",
+        "character_id": "canh_goc",
+        "speaker_verified": true,
+        "translation_verified": true
+      },
+      {
+        "start": 14.55,
+        "end": 16.55,
+        "speaker": "dot_lac",
+        "name": "Đọt Ngọn Lạc",
+        "text": "Alo, lại gì nữa?",
+        "engine": "capcut",
+        "voice": "BV421_vivn_streaming",
+        "avatar": "🥜",
+        "original_text": "Alo, lại gì nữa?",
+        "voice_role": "young_1",
+        "character_id": "dot_lac",
+        "speaker_verified": true,
+        "translation_verified": true
+      },
+      {
+        "start": 16.55,
+        "end": 17.55,
+        "speaker": "canh_goc",
+        "name": "Cành Gốc & Hoa",
+        "text": "Tôi nuôi bà chứ ai!",
+        "engine": "capcut",
+        "voice": "BV075_vivn_streaming",
+        "avatar": "🌸",
+        "original_text": "Tôi nuôi bà chứ ai!",
+        "voice_role": "young_1",
+        "character_id": "canh_goc",
+        "speaker_verified": true,
+        "translation_verified": true
+      },
+      {
+        "start": 20.57,
+        "end": 22.57,
+        "speaker": "nong_dan",
+        "name": "Bác Nông Dân",
+        "text": "Hai đứa bay không đi làm thì ai nuôi tao hả?!",
+        "engine": "capcut",
+        "voice": "BV560_vivn_streaming",
+        "avatar": "👨‍🌾",
+        "original_text": "Hai đứa bay không đi làm thì ai nuôi tao hả?!",
+        "voice_role": "adult",
+        "character_id": "nong_dan",
+        "speaker_verified": true,
+        "translation_verified": true
+      },
+      {
+        "start": 22.57,
+        "end": 24.57,
+        "speaker": "canh_goc",
+        "name": "Cành Gốc & Hoa",
+        "text": "Đi làm thì đi làm chứ!",
+        "engine": "capcut",
+        "voice": "BV075_vivn_streaming",
+        "avatar": "🌸",
+        "original_text": "Đi làm thì đi làm chứ!",
+        "voice_role": "young_1",
+        "character_id": "canh_goc",
+        "speaker_verified": true,
+        "translation_verified": true
+      },
+      {
+        "start": 24.57,
+        "end": 26.57,
+        "speaker": "canh_goc",
+        "name": "Cành Gốc & Hoa",
+        "text": "Ủa sao tự nhiên giẫm đạp tui vậy?!",
+        "engine": "capcut",
+        "voice": "BV075_vivn_streaming",
+        "avatar": "🌸",
+        "original_text": "Ủa sao tự nhiên giẫm đạp tui vậy?!",
+        "voice_role": "young_1",
+        "character_id": "canh_goc",
+        "speaker_verified": true,
+        "translation_verified": true
+      },
+      {
+        "start": 26.57,
+        "end": 28.57,
+        "speaker": "nong_dan",
+        "name": "Bác Nông Dân",
+        "text": "Ta đang giúp ngươi đấy!",
+        "engine": "capcut",
+        "voice": "BV560_vivn_streaming",
+        "avatar": "👨‍🌾",
+        "original_text": "Ta đang giúp ngươi đấy!",
+        "voice_role": "adult",
+        "character_id": "nong_dan",
+        "speaker_verified": true,
+        "translation_verified": true
+      },
+      {
+        "start": 28.57,
+        "end": 30.57,
+        "speaker": "nong_dan",
+        "name": "Bác Nông Dân",
+        "text": "Ép cành nhánh sát mặt đất mà lớn...",
+        "engine": "capcut",
+        "voice": "BV560_vivn_streaming",
+        "avatar": "👨‍🌾",
+        "original_text": "Ép cành nhánh sát mặt đất mà lớn...",
+        "voice_role": "adult",
+        "character_id": "nong_dan",
+        "speaker_verified": true,
+        "translation_verified": true
+      },
+      {
+        "start": 30.57,
+        "end": 32.57,
+        "speaker": "nong_dan",
+        "name": "Bác Nông Dân",
+        "text": "...thì mới đâm ra thật nhiều vòi hoa...",
+        "engine": "capcut",
+        "voice": "BV560_vivn_streaming",
+        "avatar": "👨‍🌾",
+        "original_text": "...thì mới đâm ra thật nhiều vòi hoa...",
+        "voice_role": "adult",
+        "character_id": "nong_dan",
+        "speaker_verified": true,
+        "translation_verified": true
+      },
+      {
+        "start": 32.57,
+        "end": 34.57,
+        "speaker": "nong_dan",
+        "name": "Bác Nông Dân",
+        "text": "...cắm thẳng sâu vào trong lòng đất...",
+        "engine": "capcut",
+        "voice": "BV560_vivn_streaming",
+        "avatar": "👨‍🌾",
+        "original_text": "...cắm thẳng sâu vào trong lòng đất...",
+        "voice_role": "adult",
+        "character_id": "nong_dan",
+        "speaker_verified": true,
+        "translation_verified": true
+      },
+      {
+        "start": 34.57,
+        "end": 36.57,
+        "speaker": "nong_dan",
+        "name": "Bác Nông Dân",
+        "text": "...làm cho sản lượng củ lạc tăng gấp đôi!",
+        "engine": "capcut",
+        "voice": "BV560_vivn_streaming",
+        "avatar": "👨‍🌾",
+        "original_text": "...làm cho sản lượng củ lạc tăng gấp đôi!",
+        "voice_role": "adult",
+        "character_id": "nong_dan",
+        "speaker_verified": true,
+        "translation_verified": true
+      },
+      {
+        "start": 37.0,
+        "end": 43.8,
+        "speaker": "nong_dan",
+        "name": "Bác Nông Dân",
+        "text": "Quả nhiên năng suất đỉnh chóp luôn haha!",
+        "engine": "capcut",
+        "voice": "BV560_vivn_streaming",
+        "avatar": "👨‍🌾",
+        "original_text": "Quả nhiên năng suất đỉnh chóp luôn haha!",
+        "voice_role": "adult",
+        "character_id": "nong_dan",
+        "speaker_verified": true,
+        "translation_verified": true
+      }
+    ],
+    "reviewed_by": "user",
+    "renderer": "native-vector-v1"
+  },
+  "73b3ba3c017d7a7cda6fa92f21781044b5da6eb5eb821a105914466647d0bbaf": {
+    "theme": "apple_orchard",
+    "label": "Vườn Táo Xanh & Táo Ruby",
+    "cues": [
+      {
+        "start": 0.2,
+        "end": 2.2,
+        "speaker": "green_apple",
+        "name": "Táo Xanh",
+        "text": "Ê! Đang làm cái trò gì đấy bạn ơi?!",
+        "engine": "capcut",
+        "voice": "BV421_vivn_streaming",
+        "avatar": "🍏"
+      },
+      {
+        "start": 2.4,
+        "end": 3.8,
+        "speaker": "bagged_apple",
+        "name": "Táo Bọc Túi",
+        "text": "Mau tháo cái túi bọc này ra cho tôi coi!",
+        "engine": "edge",
+        "voice": "vi-VN-NamMinhNeural",
+        "avatar": "📦"
+      },
+      {
+        "start": 4.0,
+        "end": 5.4,
+        "speaker": "green_apple",
+        "name": "Táo Xanh",
+        "text": "Hứ, còn lâu nhé! Cứ gọi thoải mái đi haha!",
+        "engine": "capcut",
+        "voice": "BV421_vivn_streaming",
+        "avatar": "🍏"
+      },
+      {
+        "start": 5.6,
+        "end": 8.0,
+        "speaker": "green_apple",
+        "name": "Táo Xanh",
+        "text": "Được trùm túi ấm áp thế kia sướng nhất rồi còn gì nữa!",
+        "engine": "capcut",
+        "voice": "BV421_vivn_streaming",
+        "avatar": "🍏"
+      },
+      {
+        "start": 9.0,
+        "end": 12.0,
+        "speaker": "bagged_apple",
+        "name": "Táo Bọc Túi",
+        "text": "Ủa mà bên ngoài đang xảy ra chuyện gì thế hả? Sao nghe ồn vậy?",
+        "engine": "edge",
+        "voice": "vi-VN-NamMinhNeural",
+        "avatar": "📦"
+      },
+      {
+        "start": 13.0,
+        "end": 15.2,
+        "speaker": "green_apple",
+        "name": "Táo Xanh",
+        "text": "Bị bọc kín mít trong túi rồi thì biết làm sao được!",
+        "engine": "capcut",
+        "voice": "BV421_vivn_streaming",
+        "avatar": "🍏"
+      },
+      {
+        "start": 15.4,
+        "end": 17.5,
+        "speaker": "green_apple",
+        "name": "Táo Xanh",
+        "text": "Nhưng mà tui hổng có thèm nói cho nghe đâu, lêu lêu!",
+        "engine": "capcut",
+        "voice": "BV421_vivn_streaming",
+        "avatar": "🍏"
+      },
+      {
+        "start": 18.0,
+        "end": 20.5,
+        "speaker": "bagged_apple",
+        "name": "Táo Bọc Túi",
+        "text": "Bên ngoài có cái gì thế? Sao động tĩnh dữ dội vậy trời?!",
+        "engine": "edge",
+        "voice": "vi-VN-NamMinhNeural",
+        "avatar": "📦"
+      },
+      {
+        "start": 21.0,
+        "end": 25.0,
+        "speaker": "green_apple",
+        "name": "Táo Xanh",
+        "text": "Chết rồi! Bão nấm bệnh với lũ sâu hại đang tràn tới kìa! Cứu tui với!",
+        "engine": "capcut",
+        "voice": "BV421_vivn_streaming",
+        "avatar": "🍏"
+      },
+      {
+        "start": 27.0,
+        "end": 30.5,
+        "speaker": "green_apple",
+        "name": "Táo Xanh",
+        "text": "Trời ơi nhìn đi! Thuốc trừ sâu xịt bay mù mịt dính đầy người tui rồi!",
+        "engine": "capcut",
+        "voice": "BV421_vivn_streaming",
+        "avatar": "🍏"
+      },
+      {
+        "start": 31.0,
+        "end": 34.5,
+        "speaker": "green_apple",
+        "name": "Táo Xanh",
+        "text": "Người tui nám đen sần sùi hết cả rồi nè, hu hu!",
+        "engine": "capcut",
+        "voice": "BV421_vivn_streaming",
+        "avatar": "🍏"
+      },
+      {
+        "start": 36.0,
+        "end": 38.2,
+        "speaker": "green_apple",
+        "name": "Táo Xanh",
+        "text": "Ơ kìa... sao cậu mở túi ra lại đỏ au bóng lộn đẹp trai thế kia?!",
+        "engine": "capcut",
+        "voice": "BV421_vivn_streaming",
+        "avatar": "🍏"
+      },
+      {
+        "start": 38.5,
+        "end": 41.8,
+        "speaker": "ruby_apple",
+        "name": "Táo Đỏ Ruby",
+        "text": "Haha! Nhờ có chiếc túi bọc trái cây này che chắn hết mọi bụi bẩn và sâu bọ đấy!",
+        "engine": "edge",
+        "voice": "vi-VN-NamMinhNeural",
+        "avatar": "🍎"
+      },
+      {
+        "start": 42.0,
+        "end": 45.8,
+        "speaker": "ruby_apple",
+        "name": "Táo Đỏ Ruby",
+        "text": "Vừa sạch sẽ vô công hại, không dính thuốc trừ sâu, quả lại ngọt lịm đạt chuẩn xuất khẩu luôn nha!",
+        "engine": "edge",
+        "voice": "vi-VN-NamMinhNeural",
+        "avatar": "🍎"
+      }
+    ]
+  },
+  "e559b1090b3ccc3f8edcb31430381d0ede4cdc84cecce34891ad4c337d2379fd": {
+    "theme": "tomato_garden",
+    "label": "Cây Cà Chua & Phân Bón",
+    "cues": [
+      {
+        "start": 0.2,
+        "end": 2.2,
+        "speaker": "tomato",
+        "name": "Cây Cà Chua",
+        "text": "Tôi đã nói với bạn bao nhiêu lần rồi hả?!",
+        "engine": "capcut",
+        "voice": "BV421_vivn_streaming",
+        "avatar": "🍅"
+      },
+      {
+        "start": 2.3,
+        "end": 4.3,
+        "speaker": "tomato",
+        "name": "Cây Cà Chua",
+        "text": "Tôi không thèm ăn phân bón hóa học đâu!",
+        "engine": "capcut",
+        "voice": "BV421_vivn_streaming",
+        "avatar": "🍅"
+      },
+      {
+        "start": 4.4,
+        "end": 6.6,
+        "speaker": "tomato",
+        "name": "Cây Cà Chua",
+        "text": "Tôi chỉ thích phân bón hữu cơ tự nhiên thôi!",
+        "engine": "capcut",
+        "voice": "BV421_vivn_streaming",
+        "avatar": "🍅"
+      },
+      {
+        "start": 6.8,
+        "end": 10.1,
+        "speaker": "gardener",
+        "name": "Người Làm Vườn",
+        "text": "Nhưng mà cậu đang còi cọc thiếu dinh dưỡng rồi này!",
+        "engine": "edge",
+        "voice": "vi-VN-NamMinhNeural",
+        "avatar": "👨‍🌾"
+      },
+      {
+        "start": 10.3,
+        "end": 13.6,
+        "speaker": "gardener",
+        "name": "Người Làm Vườn",
+        "text": "Không bón phân thì lấy sức đâu mà lớn hả nhóc?",
+        "engine": "edge",
+        "voice": "vi-VN-NamMinhNeural",
+        "avatar": "👨‍🌾"
+      },
+      {
+        "start": 13.8,
+        "end": 15.9,
+        "speaker": "tomato",
+        "name": "Cây Cà Chua",
+        "text": "Kệ tui! Tui hổng thèm quan tâm!",
+        "engine": "capcut",
+        "voice": "BV421_vivn_streaming",
+        "avatar": "🍅"
+      },
+      {
+        "start": 16.0,
+        "end": 17.9,
+        "speaker": "tomato",
+        "name": "Cây Cà Chua",
+        "text": "Hôm nay tui có bị đói lả người...",
+        "engine": "capcut",
+        "voice": "BV421_vivn_streaming",
+        "avatar": "🍅"
+      },
+      {
+        "start": 18.1,
+        "end": 20.6,
+        "speaker": "tomato",
+        "name": "Cây Cà Chua",
+        "text": "...cũng quyết không ăn một miếng phân hóa học nào đâu!",
+        "engine": "capcut",
+        "voice": "BV421_vivn_streaming",
+        "avatar": "🍅"
+      },
+      {
+        "start": 20.8,
+        "end": 24.8,
+        "speaker": "gardener",
+        "name": "Người Làm Vườn",
+        "text": "Thiệt tình... chưa từng thấy cây cà chua nào kén ăn như cậu luôn á!",
+        "engine": "edge",
+        "voice": "vi-VN-NamMinhNeural",
+        "avatar": "👨‍🌾"
+      },
+      {
+        "start": 25.0,
+        "end": 28.5,
+        "speaker": "gardener",
+        "name": "Người Làm Vườn",
+        "text": "Thôi được rồi, để tôi tìm cách khác cho cậu xem sao...",
+        "engine": "edge",
+        "voice": "vi-VN-NamMinhNeural",
+        "avatar": "👨‍🌾"
+      }
+    ]
+  }
+}

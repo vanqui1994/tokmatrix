@@ -1,0 +1,43 @@
+audio:
+  music_family: infamous_figures_editorial
+  sfx_density: medium
+  soundscape_id: vox
+  voice_id: de-DE-ConradNeural
+  voice_pitch: -1
+  voice_speed: 1.05
+channel_id: infamous_figures_13
+config_version: 4
+creative:
+  cut_cadence_seconds: 2.5
+  palette:
+    accent: '#D6A84F'
+    primary: '#111318'
+    text: '#F2EEE6'
+  preferred_engines:
+  - vox
+  - mystery
+  - chalk
+  visual_style_id: dark_mystery_v1
+name: Berüchtigte Gestalten 13
+niche_id: infamous_figures
+persona:
+  catchphrase_prefix: 'Điều đáng chú ý trong câu chuyện này là:'
+  energy_level: 0.7000000000000001
+  target_demographic: Vietnamese viewers aged 18-34
+  tone: evidence_first_editorial
+publishing:
+  default_schedule_window: 19:30-20:30
+  hashtags:
+  - infamousfigures
+  - khampha
+  - facts
+  language: de
+story:
+  pacing_beats: 12
+  preferred_blueprints:
+  - mystery_reveal
+  preferred_hook_types:
+  - evidence_hook
+  - paradox_question
+  target_duration_seconds: 53
+tiktok_account_ref: null

@@ -1,0 +1,31 @@
+channel_id: mystery_02
+config_version: 2
+niche_id: unsolved_mysteries
+name: Hồ Sơ Bất Khả Giải
+tiktok_account_ref: null
+persona:
+  tone: forensic_newsroom
+  energy_level: 0.62
+  target_demographic: Vietnamese viewers aged 20-39 interested in history and investigations
+  catchphrase_prefix: "Mốc thời gian này khiến toàn bộ lời giải trở nên khó hiểu:"
+story:
+  preferred_blueprints: [mystery_reveal]
+  preferred_hook_types: [timeline_gap, conflicting_evidence]
+  target_duration_seconds: 50
+  pacing_beats: 12
+creative:
+  preferred_engines: [newspaper, mystery, tierlist]
+  visual_style_id: dark_mystery_v1
+  cut_cadence_seconds: 2.6
+  palette: { primary: '#111318', accent: '#D6A84F', text: '#F2EEE6' }
+audio:
+  voice_id: vi-VN-HoaiMyNeural
+  voice_speed: 1.04
+  voice_pitch: 0
+  music_family: archival_investigation
+  soundscape_id: newspaper
+  sfx_density: low
+publishing:
+  language: vi
+  default_schedule_window: 19:30-20:30
+  hashtags: [hosobian, lichsu, giaithich, hosobatkhagia]

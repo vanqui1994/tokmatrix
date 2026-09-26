@@ -1,0 +1,494 @@
+<!doctype html>
+<html lang="vi">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Thư viện Vector · Xưởng Remake</title>
+    <style>
+        :root {
+            color-scheme: light;
+            --bg: #f3f5f9;
+            --card: #ffffff;
+            --text: #16203a;
+            --muted: #5b6882;
+            --faint: #8a95ab;
+            --line: #e1e6ef;
+            --accent: #3a5bdc;
+            --accent-soft: #eaf0ff;
+            --accent-ink: #1f3fb8;
+            --stage: #121c2c;
+            --ok: #1f7a45;
+            --err: #b3261e;
+            --radius: 14px;
+            --shadow: 0 1px 2px rgba(16, 24, 40, .05), 0 4px 16px rgba(16, 24, 40, .05);
+        }
+
+        * { box-sizing: border-box }
+        html { scroll-behavior: smooth }
+        body { margin: 0; background: var(--bg); color: var(--text); font: 14px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif }
+        h1, h2, h3 { margin: 0; line-height: 1.25 }
+        p { margin: 0 }
+        a { color: var(--accent) }
+        button, select, input, textarea { font: inherit; color: inherit }
+        :focus-visible { outline: 3px solid var(--accent); outline-offset: 2px }
+
+        /* ---- Top bar ---- */
+        .topbar { position: sticky; top: 0; z-index: 20; background: rgba(243, 245, 249, .92); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line) }
+        .topbar-inner { max-width: 1680px; margin: auto; padding: 12px 20px; display: flex; align-items: center; gap: 16px; flex-wrap: wrap }
+        .brand { display: flex; flex-direction: column; min-width: 0; margin-right: auto }
+        .brand h1 { font-size: 19px; font-weight: 750 }
+        .brand p { font-size: 12.5px; color: var(--muted) }
+        .modes { display: inline-flex; padding: 4px; background: #e6eaf2; border-radius: 12px; gap: 2px }
+        .modes button { border: 0; background: transparent; padding: 8px 14px; min-height: 40px; border-radius: 9px; cursor: pointer; font-weight: 600; color: var(--muted); white-space: nowrap }
+        .modes button[aria-pressed=true] { background: #fff; color: var(--accent-ink); box-shadow: 0 1px 3px rgba(16, 24, 40, .12) }
+        .search { position: relative; width: min(320px, 100%) }
+        .search input { width: 100%; min-height: 40px; border: 1px solid var(--line); background: #fff; border-radius: 10px; padding: 8px 12px 8px 34px }
+        .search::before { content: "⌕"; position: absolute; left: 12px; top: 50%; transform: translateY(-52%); color: var(--faint); font-size: 16px }
+        .back-link { text-decoration: none; font-weight: 600; font-size: 13px; padding: 8px 12px; border-radius: 9px; border: 1px solid var(--line); background: #fff; color: var(--text); white-space: nowrap }
+        .back-link:hover { background: var(--accent-soft) }
+
+        /* ---- Layout ---- */
+        .layout { max-width: 1680px; margin: auto; padding: 18px 20px 40px; display: grid; grid-template-columns: minmax(0, 1fr) 380px 300px; gap: 18px; align-items: start }
+        .panel { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); min-width: 0 }
+        .browser { padding: 14px 16px 18px }
+        .stage-panel { position: sticky; top: 84px; padding: 14px }
+        .side { display: flex; flex-direction: column; gap: 14px; position: sticky; top: 84px; max-height: calc(100vh - 100px); overflow: auto }
+        .side .panel { padding: 14px }
+
+        /* ---- Category chips ---- */
+        .cats { display: flex; gap: 6px; flex-wrap: wrap; padding-bottom: 12px; border-bottom: 1px solid var(--line); margin-bottom: 6px }
+        .chip { display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--line); background: #fff; border-radius: 999px; padding: 6px 12px; min-height: 36px; cursor: pointer; font-weight: 600; font-size: 13px; color: var(--muted) }
+        .chip .n { font-size: 11px; font-weight: 700; padding: 1px 7px; border-radius: 999px; background: #eef1f6; color: var(--muted) }
+        .chip:hover { border-color: #c9d3e6 }
+        .chip[aria-pressed=true] { background: var(--accent); border-color: var(--accent); color: #fff }
+        .chip[aria-pressed=true] .n { background: rgba(255, 255, 255, .22); color: #fff }
+
+        /* ---- Item grid ---- */
+        .items { display: block }
+        .section { padding-top: 12px }
+        .section[hidden] { display: none }
+        .section-head { display: flex; align-items: baseline; gap: 8px; margin: 4px 2px 10px }
+        .section-head h3 { font-size: 14.5px; font-weight: 700 }
+        .section-head .count { font-size: 12px; color: var(--faint) }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(132px, 1fr)); gap: 10px }
+        .item { display: flex; flex-direction: column; text-align: left; padding: 0; border: 1px solid var(--line); background: #fff; border-radius: 12px; overflow: hidden; cursor: pointer; transition: border-color .15s, box-shadow .15s, transform .15s; min-width: 0 }
+        .item:hover { border-color: #b9c6e4; box-shadow: 0 4px 14px rgba(16, 24, 40, .08); transform: translateY(-1px) }
+        .item[aria-pressed=true] { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent) }
+        .thumb { display: block; width: 100%; aspect-ratio: 4 / 5; background: linear-gradient(#dff3f6, #e9f1e2) }
+        .item .label { display: block; padding: 7px 9px 0; font-weight: 650; font-size: 13px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap }
+        .item small { display: block; padding: 0 9px 8px; color: var(--faint); font-size: 11px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-family: ui-monospace, SFMono-Regular, Menlo, monospace }
+        .empty { padding: 30px 10px; text-align: center; color: var(--muted) }
+        .summary { font-size: 12.5px; color: var(--muted) }
+        #counts { margin-top: 14px }
+
+        /* ---- Stage ---- */
+        .stage-head { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 10px }
+        .stage-head h2 { font-size: 16px; font-weight: 750 }
+        .pill { display: inline-block; padding: 2px 9px; border-radius: 999px; background: var(--accent-soft); color: var(--accent-ink); font-size: 11.5px; font-weight: 700; white-space: nowrap }
+        .viewer { background: var(--stage); border-radius: 12px; overflow: hidden; display: flex; justify-content: center; padding: 8px }
+        canvas#stage { display: block; width: 100%; max-width: 340px; height: auto; aspect-ratio: 9/16; border-radius: 6px }
+        .transport { display: flex; align-items: center; gap: 6px; margin-top: 10px }
+        .transport button { min-height: 40px; border: 1px solid var(--line); background: #fff; border-radius: 9px; padding: 0 12px; cursor: pointer; font-weight: 600 }
+        .transport button:hover { background: var(--accent-soft) }
+        .transport .primary { background: var(--accent); border-color: var(--accent); color: #fff; min-width: 96px }
+        .transport .primary:hover { background: var(--accent-ink) }
+        .time { margin-left: auto; font-variant-numeric: tabular-nums; font-size: 12.5px; color: var(--muted) }
+        input[type=range] { accent-color: var(--accent); width: 100%; min-height: 32px }
+        .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0) }
+        .checks { display: flex; flex-direction: column; gap: 4px; margin-top: 4px }
+        .check { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--muted); min-height: 32px }
+        .check input { width: 17px; height: 17px; accent-color: var(--accent) }
+        .status { min-height: 20px; font-size: 12.5px; color: var(--ok); margin-top: 6px }
+        .error { color: var(--err) }
+        #description { margin-top: 2px }
+        #showreel { font-size: 12.5px }
+
+        /* ---- Side panel ---- */
+        .side h2 { font-size: 14px; font-weight: 700; margin-bottom: 10px }
+        .field { margin: 10px 0 }
+        .field label { display: block; font-weight: 600; font-size: 12.5px; margin-bottom: 4px; color: var(--muted) }
+        select, input[type=search] { width: 100% }
+        select { min-height: 38px; border: 1px solid var(--line); background: #fff; border-radius: 9px; padding: 6px 10px }
+        select:disabled, input:disabled { opacity: .5 }
+        pre { font: 11.5px/1.55 ui-monospace, SFMono-Regular, Menlo, monospace; background: #f5f7fb; border: 1px solid var(--line); padding: 10px; border-radius: 9px; overflow: auto; max-height: 220px; margin: 0; white-space: pre-wrap; overflow-wrap: anywhere }
+        .notice { background: #fff8e8; border: 1px solid #efdcaa; border-radius: 9px; padding: 9px 10px; font-size: 12px; color: #6d521d; margin-top: 10px }
+        details summary { cursor: pointer; font-weight: 700; min-height: 32px; display: flex; align-items: center }
+        .buttons { display: flex; gap: 8px; flex-wrap: wrap; margin: 8px 0 }
+        .side button { min-height: 38px; border: 1px solid var(--line); background: #fff; border-radius: 9px; padding: 0 12px; cursor: pointer; font-weight: 600 }
+        .side button.primary { background: var(--accent); border-color: var(--accent); color: #fff; width: 100%; margin-top: 8px }
+        textarea { width: 100%; resize: vertical; min-height: 150px; padding: 10px; border: 1px solid var(--line); border-radius: 9px; font: 11.5px/1.5 ui-monospace, monospace }
+        .file { max-width: 100%; font-size: 12.5px }
+        .side .label { display: block; font-weight: 600; font-size: 12.5px; color: var(--muted); margin: 10px 0 4px }
+
+        @media (max-width: 1360px) {
+            .layout { grid-template-columns: minmax(0, 1fr) 360px }
+            .side { grid-column: 1 / -1; position: static; max-height: none; overflow: visible; display: grid; grid-template-columns: 1fr 1fr; align-items: start }
+        }
+        @media (max-width: 900px) {
+            .layout { grid-template-columns: 1fr; padding: 12px }
+            .stage-panel { position: static; order: -1 }
+            canvas#stage { max-width: 210px }
+            .stage-panel { padding: 12px }
+            .side { grid-template-columns: 1fr }
+            .topbar { position: static }
+            .topbar-inner { padding: 12px }
+            .search { width: 100% }
+            .grid { grid-template-columns: repeat(auto-fill, minmax(104px, 1fr)); gap: 8px }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            html { scroll-behavior: auto }
+            .item { transition: none }
+        }
+    </style>
+</head>
+
+<body>
+    <header class="topbar">
+        <div class="topbar-inner">
+            <div class="brand">
+                <h1>Thư viện nhân vật &amp; động tác</h1>
+                <p id="counts" class="summary">Đang nạp thư viện…</p>
+            </div>
+            <div class="modes" role="group" aria-label="Loại nội dung">
+                <button type="button" data-tab="assets" aria-pressed="true">Nhân vật &amp; đồ vật</button>
+                <button type="button" data-tab="actions" aria-pressed="false">Động tác</button>
+                <button type="button" data-tab="examples" aria-pressed="false">Mẫu</button>
+            </div>
+            <label class="search"><span class="sr">Tìm trong thư viện</span><input id="filter" type="search"
+                    placeholder="Tìm: trâu, xoài, hoa sen, cắt…"></label>
+            <a class="back-link" href="/static/remake_hub.html">← Xưởng Remake</a>
+        </div>
+    </header>
+    <main class="layout">
+        <section class="panel browser" aria-label="Danh mục">
+            <div id="cats" class="cats" role="group" aria-label="Lọc theo nhóm"></div>
+            <div id="items" class="items"></div>
+        </section>
+        <section class="panel stage-panel" aria-label="Xem thử">
+            <div class="stage-head">
+                <div style="min-width:0;flex:1">
+                    <h2 id="name">Đang nạp thư viện…</h2>
+                    <p id="description" class="summary"></p>
+                </div>
+                <span id="kind" class="pill"></span>
+            </div>
+            <div class="viewer"><canvas id="stage" width="576" height="1024"
+                    aria-label="Xem thử nhân vật và chuyển động"></canvas></div>
+            <div class="transport"><button id="play" class="primary" type="button"
+                    aria-pressed="false">Phát</button><button id="back" type="button" aria-label="Lùi một frame">−1</button><button
+                    id="next" type="button" aria-label="Tiến một frame">+1</button><output id="clock" class="time"
+                    for="seek">0.00s</output></div>
+            <label for="seek" class="sr">Timeline</label><input id="seek" type="range" min="0" max="6" step="0.033333"
+                value="0">
+            <div class="checks">
+                <label class="check"><input id="anchors" type="checkbox">Hiện điểm gắn / tiếp xúc</label>
+                <label class="check"><input id="cels" type="checkbox" disabled>Cel vẽ tay (ảnh tĩnh tham khảo — video xuất ra luôn là vector)</label>
+            </div>
+            <p id="status" class="status" role="status" aria-live="polite"></p>
+            <p><a id="showreel" href="/static/remake_vector-library-showreel_preview.mp4" target="_blank" rel="noopener"
+                    hidden>Xem video mẫu kỹ thuật toàn thư viện (không thoại)</a></p>
+        </section>
+        <aside class="side">
+            <div class="panel">
+                <h2>Điều chỉnh rig</h2>
+                <div class="field"><label for="expression">Biểu cảm</label><select id="expression"></select></div>
+                <div class="field"><label for="background">Bối cảnh</label><select id="background"></select></div>
+                <div class="field"><label for="growth">Mức sinh trưởng / chín</label><input id="growth" type="range"
+                        min="0" max="1" step="0.05" value="0.5"></div>
+                <div class="field"><label for="bend">Độ uốn cành</label><input id="bend" type="range" min="0" max="1"
+                        step="0.05" value="0"></div>
+                <label class="check"><input id="flip" type="checkbox">Lật hướng (trái ↔ phải)</label>
+                <p class="summary" style="margin-top:8px">Áp dụng khi xem một nhân vật/đồ vật. Chọn “Mẫu” để xem tương tác và chuyển cảnh.</p>
+            </div>
+            <div class="panel">
+                <h2>Trạng thái tại frame</h2>
+                <pre id="inspector"></pre>
+                <p class="notice">Mẫu kỹ thuật của thư viện, không phải bản remake đã duyệt. Không gọi TTS, không tự xuất bản.</p>
+            </div>
+            <div class="panel">
+                <details>
+                    <summary>Storyboard JSON</summary>
+                    <div class="buttons"><button id="download" type="button">Tải JSON đang xem</button></div>
+                    <label class="label" for="import">Mở JSON từ máy (tối đa 2 MB)</label><input id="import" class="file"
+                        type="file" accept=".json,application/json">
+                    <label class="label" for="json">Dữ liệu đang xem</label><textarea id="json" spellcheck="false"></textarea>
+                    <button id="apply" class="primary" type="button">Kiểm tra &amp; xem thử JSON</button>
+                    <p class="summary" style="margin-top:6px">Kiểm tra JSON không đồng nghĩa với duyệt kịch bản hay xác minh nguồn.</p>
+                </details>
+            </div>
+        </aside>
+    </main>
+
+    <script src="/static/remake_vector_engine.js?v=1.11.0"></script>
+    <script>
+        const $ = id => document.getElementById(id);
+        fetch('/static/remake_vector-library-showreel_preview.mp4', { method: 'HEAD' }).then(r => { $('showreel').hidden = !r.ok; }).catch(() => { });
+        let celsOn = false, catalog, samples, story, renderer, tab = 'assets', selected = 'watermelon', custom = false, t = 0, playing = false, raf = 0, origin = 0, last = 0;
+        let category = 'all', listedTab = null;
+        function notify(message, error = false) { $('status').textContent = message; $('status').classList.toggle('error', error); }
+        function stop() { playing = false; cancelAnimationFrame(raf); $('play').textContent = 'Phát'; $('play').setAttribute('aria-pressed', 'false'); }
+        function draw(value) { if (!renderer) return; t = Math.max(0, Math.min(story.duration, value)); const f = renderer.render(t, $('anchors').checked); $('seek').value = t; $('clock').textContent = `${t.toFixed(2)} / ${story.duration.toFixed(2)}s`; $('inspector').textContent = JSON.stringify({ scene: f.scene.index ?? story.scenes.indexOf(f.scene), speaker: f.cue?.character_id || null, actions: f.actions.filter(a => a.active).map(a => a.type), actors: Object.values(f.states).map(s => ({ id: s.id, expression: s.expression, x: Math.round(s.x), y: Math.round(s.y) })) }, null, 2); }
+        function tick(now) { if (!playing) return; if (now - last > 30) { draw((now - origin) / 1000); last = now; } if (t >= story.duration) { if (!(tab === 'assets' && !custom)) { stop(); return; } origin = now; draw(0); } raf = requestAnimationFrame(tick); }
+        // Tab Nhân vật tự phát lặp để thấy nháy mắt, bước đi, khẩu hình; không chạy khi render=1.
+        function autoplay() { if (tab !== 'assets' || custom || !renderer || new URLSearchParams(location.search).has('render') || matchMedia('(prefers-reduced-motion: reduce)').matches) return; playing = true; origin = performance.now() - t * 1000; $('play').textContent = 'Tạm dừng'; $('play').setAttribute('aria-pressed', 'true'); raf = requestAnimationFrame(tick); }
+        function loadStory(value, title) { stop(); for (const id of ['expression', 'growth', 'bend', 'background', 'flip']) $(id).disabled = custom || tab !== 'assets'; story = structuredClone(value); renderer = new RemakeVector.Renderer($('stage'), catalog, story, { cels: celsOn && $('cels').checked }); $('name').textContent = title || story.name || 'Storyboard tùy chỉnh'; $('description').textContent = story.note || (tab === 'assets' && !custom ? `${categoryOf(selected).label} · ${selected}` : 'Mẫu vector độc lập, không dùng hình nền nguồn.'); $('kind').textContent = custom ? 'JSON tuỳ chỉnh' : { assets: 'Rig', actions: 'Động tác', examples: 'Mẫu' }[tab]; $('seek').max = story.duration; $('json').value = JSON.stringify(story, null, 2); draw(0); notify('Sẵn sàng. Bấm Phát hoặc kéo timeline.'); }
+        function baseStory(id, characters, poses, actions = []) { return { id, name: id, renderer: catalog.renderer, fidelity: 'technical-demo', duration: 6, characters, scenes: [{ renderer: catalog.renderer, kind: 'scene', start_time: 0, end_time: 6, characters_present: characters.map(c => c.id), poses, actions, background: { preset: $('background').value || 'garden' } }], cues: [] }; }
+
+        // ---- Phân loại -------------------------------------------------------
+        // Catalog chỉ có `group`; tách thêm hoa / gia súc / chim / côn trùng theo id để dễ tìm.
+        // Rig mới chưa có trong các danh sách dưới sẽ tự rơi vào nhóm theo `group` của nó.
+        const PEOPLE = new Set(['farmer', 'fisherman', 'farmer_woman']);
+        const BODY = new Set(['hand', 'hand_right', 'foot', 'face']);
+        const FLOWERS = new Set(['sunflower', 'rose', 'lotus', 'tulip', 'daisy', 'marigold', 'hibiscus', 'orchid', 'peach_blossom', 'apricot_blossom', 'lily']);
+        const MAMMALS = new Set(['buffalo', 'cow', 'pig', 'goat', 'sheep', 'horse', 'dog', 'cat', 'rabbit', 'mouse']);
+        const BIRDS = new Set(['chicken', 'duck', 'chick', 'rooster', 'sparrow']);
+        const ASSET_CATS = [
+            ['people', 'Con người', '🧑‍🌾'], ['body', 'Tay, chân & khuôn mặt', '✋'], ['fruit', 'Trái cây', '🍉'], ['vegetable', 'Rau củ', '🥕'],
+            ['plant', 'Cây trồng', '🌱'], ['flower', 'Hoa', '🌸'], ['mammal', 'Gia súc & thú', '🐃'], ['bird', 'Chim & gia cầm', '🐔'],
+            ['bug', 'Côn trùng & con nhỏ', '🐝'], ['water', 'Cá & thuỷ quái', '🐟'], ['tool', 'Dụng cụ', '🛠️'], ['prop', 'Đồ vật', '🧺'], ['other', 'Khác', '✨'],
+        ];
+        const ACTION_FAMILY = {
+            farm: ['cut', 'slice', 'spray', 'cover', 'uncover', 'press', 'fertilize', 'grow', 'uproot', 'drip', 'water', 'dig'],
+            hands: ['gesture', 'grip', 'release', 'reach', 'carry'],
+            creature: ['crawl', 'peck', 'graze', 'pollinate', 'hop', 'fly', 'swim'],
+            sea: ['cast', 'set_hook', 'reel', 'splash', 'emerge', 'whip', 'roar', 'strike'],
+        };
+        const ACTION_CATS = [['farm', 'Làm vườn & chế biến', '🌾'], ['hands', 'Cầm, nắm & di chuyển', '🤲'], ['creature', 'Con vật', '🐾'], ['sea', 'Câu cá & biển', '🎣'], ['other', 'Khác', '✨']];
+        function categoryOf(id) {
+            const spec = catalog.assets[id], group = spec?.group;
+            const key = PEOPLE.has(id) ? 'people' : BODY.has(id) || group === 'rig' ? 'body' : group === 'vegetable' ? 'vegetable' : group === 'fruit' ? 'fruit'
+                : FLOWERS.has(id) ? 'flower' : group === 'plant' ? 'plant' : MAMMALS.has(id) ? 'mammal' : BIRDS.has(id) ? 'bird'
+                    : group === 'animal' ? 'bug' : group === 'fish' || group === 'monster' ? 'water' : group === 'tool' ? 'tool'
+                        : group === 'prop' ? 'prop' : group === 'human' ? 'people' : 'other';
+            const [, label, icon] = ASSET_CATS.find(c => c[0] === key) || ['other', 'Khác', '✨'];
+            return { key, label, icon };
+        }
+        function actionCategoryOf(id) {
+            const key = Object.keys(ACTION_FAMILY).find(k => ACTION_FAMILY[k].includes(id)) || 'other';
+            const [, label, icon] = ACTION_CATS.find(c => c[0] === key);
+            return { key, label, icon };
+        }
+        function entries() {
+            if (tab === 'examples') return samples.map(s => ({ id: s.id, label: s.name, cat: { key: 'examples', label: 'Mẫu kỹ thuật', icon: '🎬' } }));
+            if (tab === 'actions') return Object.entries(catalog.actions).map(([id, a]) => ({ id, label: a.label, cat: actionCategoryOf(id) }));
+            return Object.entries(catalog.assets).map(([id, a]) => ({ id, label: a.label, cat: categoryOf(id) }));
+        }
+        function categoryList() {
+            if (tab === 'examples') return [['examples', 'Mẫu kỹ thuật', '🎬']];
+            return tab === 'actions' ? ACTION_CATS : ASSET_CATS;
+        }
+
+        // ---- Ảnh thu nhỏ -----------------------------------------------------
+        // Vẽ bằng chính engine lên một canvas dùng chung, cắt vùng quanh nhân vật, lưu lại theo tab:id.
+        // Chỉ vẽ khi card lọt vào màn hình (IntersectionObserver), mỗi lượt rảnh vài card.
+        const thumbCache = new Map(), thumbQueue = [], work = document.createElement('canvas');
+        let thumbTimer = 0;
+        function thumbStory(kind, id) {
+            if (kind === 'examples') { const s = samples.find(x => x.id === id); return { story: s, at: s.duration * .4, crop: null }; }
+            if (kind === 'actions') { const s = actionStory(id); return { story: s, at: 2.5, crop: null }; }
+            const spec = catalog.assets[id], water = spec.group === 'fish' || spec.group === 'monster';
+            const s = assetStory(id); const pose = s.scenes[0].poses.subject[0];
+            s.scenes[0].poses.subject = [{ ...pose, flip: false }]; s.scenes[0].actions = []; s.cues = [];
+            s.scenes[0].background = { preset: water ? 'underwater' : 'garden' };
+            const h = pose.height, w = h * 1.05;
+            return { story: s, at: .6, crop: [pose.x - w / 2, pose.y - h * 1.12, w, h * 1.31] };
+        }
+        function paintThumb(canvas) {
+            const key = canvas.dataset.key;
+            if (!thumbCache.has(key)) {
+                const [kind, id] = key.split(':');
+                try {
+                    const { story: s, at, crop } = thumbStory(kind, id);
+                    new RemakeVector.Renderer(work, catalog, s).render(at);
+                    const [sx, sy, sw, sh] = crop || [0, 1024 * .18, 576, 576 * 1.25];
+                    const out = document.createElement('canvas'); out.width = 240; out.height = 300;
+                    const g = out.getContext('2d'); g.fillStyle = '#e4eef3'; g.fillRect(0, 0, 240, 300);
+                    const scale = Math.min(240 / sw, 300 / sh), dw = sw * scale, dh = sh * scale;
+                    g.drawImage(work, sx, sy, sw, sh, (240 - dw) / 2, (300 - dh) / 2, dw, dh);
+                    thumbCache.set(key, out);
+                } catch (err) { thumbCache.set(key, null); console.warn('thumb', key, err); }
+            }
+            const src = thumbCache.get(key);
+            if (src) canvas.getContext('2d').drawImage(src, 0, 0, canvas.width, canvas.height);
+        }
+        function pumpThumbs() {
+            thumbTimer = 0;
+            const started = performance.now();
+            while (thumbQueue.length && performance.now() - started < 24) { const c = thumbQueue.shift(); if (c.isConnected) paintThumb(c); }
+            if (thumbQueue.length) thumbTimer = requestAnimationFrame(pumpThumbs);
+        }
+        const observer = 'IntersectionObserver' in window ? new IntersectionObserver(list => {
+            for (const e of list) if (e.isIntersecting) { observer.unobserve(e.target); thumbQueue.push(e.target); }
+            if (thumbQueue.length && !thumbTimer) thumbTimer = requestAnimationFrame(pumpThumbs);
+        }, { rootMargin: '300px' }) : null;
+
+        function assetStory(asset) { return liven(asset, baseStory(asset, [{ id: 'subject', name: catalog.assets[asset].label, asset }], { subject: [{ time: 0, x: 288, y: 780, height: ({ knife: 350, hand: 350, hand_right: 350, buffalo: 330, earthworm: 300, basket: 330, watering_can: 360, cabbage: 420, carrot: 340, cow: 380, pig: 320, goat: 340, sheep: 340, horse: 410, dog: 310, cat: 280, rabbit: 240, mouse: 160, grass_tuft: 220, duck: 320, chick: 200, rooster: 360, sparrow: 220, butterfly: 240, dragonfly: 240, ladybug: 160, ant: 150, caterpillar: 160, frog: 240, jackfruit: 520, pineapple: 460, durian: 480, watermelon: 460, banana_fruit: 380, mango: 380, orange: 380, guava: 360, avocado: 380, coconut: 400, dragon_fruit: 400, starfruit: 380, lime: 320, grape: 400, strawberry: 300, lychee: 300, rambutan: 300, mangosteen: 340, rose: 400, lotus: 380, tulip: 400, daisy: 380, marigold: 380, hibiscus: 400, orchid: 420, peach_blossom: 420, apricot_blossom: 420, lily: 420, shovel: 380, rake: 380, axe: 360, pruning_shears: 320, soil_bed: 280, wheelbarrow: 360, crate: 320, sack: 360, hay_bale: 300, egg: 220, nest: 260, beehive: 380, lantern: 340, bowl: 260, fence: 360, mango_tree: 480, orange_tree: 460, lime_tree: 450, apple_tree: 460, coconut_palm: 520, durian_tree: 500, jackfruit_tree: 500, lychee_tree: 470, rambutan_tree: 470, guava_tree: 460, avocado_tree: 480, dragon_fruit_cactus: 420, pineapple_plant: 360, strawberry_plant: 280, mangosteen_tree: 470, starfruit_tree: 470, trellis_a: 440, trellis_net: 440, pergola: 440, cucumber: 360, bitter_melon: 350, luffa: 380, bottle_gourd: 380, winter_melon: 400, passion_fruit: 320, chayote: 320, long_bean: 380, kiwi: 300, cucumber_vine: 440, bitter_melon_vine: 440, luffa_vine: 440, bottle_gourd_vine: 440, winter_melon_vine: 440, passion_fruit_vine: 440, chayote_vine: 440, long_bean_vine: 440, grape_vine: 440, kiwi_vine: 440, pear: 360, peach: 340, plum: 320, cherry: 320, persimmon: 340, blueberry: 300, raspberry: 320, apricot: 320, pomegranate: 360, persimmon_tree: 480, peach_tree: 470, pear_tree: 470, cherry_tree: 470, kohlrabi: 360, potato: 340, sweet_potato: 350, cassava: 360, taro: 340, radish: 360, beet: 340, onion: 330, garlic: 320, ginger: 320, cauliflower: 380, broccoli: 380, okra: 320, chili: 300, mushroom: 300, kohlrabi_plant: 420, potato_plant: 420, sweet_potato_plant: 420, cassava_plant: 460, taro_plant: 440, radish_plant: 420, beet_plant: 400, onion_plant: 400, garlic_plant: 400, ginger_plant: 400, cauliflower_plant: 440, broccoli_plant: 440, lettuce: 360, napa_cabbage: 380, water_spinach: 380, mustard_greens: 380, spring_onion: 380, giant_radish: 540 })[asset] || 460, flip: $('flip').checked, growth: Number($('growth').value), bend: Number($('bend').value), expression: $('expression').value || 'neutral', roots: asset === 'peanut_plant' ? .5 : asset === 'carrot' ? 1 : 0 }] })); }
+        // Xem thử một rig: thêm vài key để thấy nháy mắt, bước đi, vẫy tay và khẩu hình khi nói.
+        function liven(asset, story) {
+            const spec = catalog.assets[asset], scene = story.scenes[0], base = scene.poses.subject[0], expression = base.expression;
+            const people = ['farmer', 'fisherman', 'farmer_woman'].includes(asset), walker = people || ['fruit', 'vegetable', 'animal', 'fish'].includes(spec.group);
+            if (walker) {
+                const step = ['buffalo', 'cow', 'horse'].includes(asset) ? 70 : 90;
+                scene.poses.subject = [base, { ...base, time: 1.2 }, { ...base, time: 2.4, x: base.x + step, ease: 'smooth' }, { ...base, time: 2.6, x: base.x + step, flip: !base.flip }, { ...base, time: 3.8, x: base.x - step * .4, flip: !base.flip, ease: 'smooth' }, { ...base, time: 4, x: base.x - step * .4 }, { ...base, time: 4.6, ease: 'smooth' }];
+            } else if (['tool', 'prop'].includes(spec.group) && asset !== 'scarecrow') {
+                scene.poses.subject = [base, { ...base, time: 1.5, rotation: -8, ease: 'smooth' }, { ...base, time: 3, rotation: 8, ease: 'smooth' }, { ...base, time: 4.5, rotation: 0, ease: 'back' }];
+            }
+            if (people || asset === 'hand' || asset === 'hand_right') scene.actions.push({ type: 'gesture', actor: 'subject', start: .2, end: 1.2 });
+            if (spec.face) story.cues = [{ start: 4.6, end: 5.9, character_id: 'subject', text: spec.label, expression }];
+            return story;
+        }
+        function actionStory(type) {
+            const spec = catalog.actions[type], characters = [], poses = {}, action = { type, start: 1, end: 4 };
+            // Vị trí quả lấy từ remake_vector.tree_fruit_placement (tâm quả = fruit_N, gốc quả = tâm + nửa chiều cao).
+            if (type === 'pick') {
+                characters.push({ id: 'tree', asset: 'mango_tree' }, { id: 'hand', asset: 'hand' }, { id: 'fruit', asset: 'mango', face: false });
+                poses.tree = [
+                    { time: 0, x: 260, y: 810, height: 480, growth: 1, fruits: 6 },
+                    { time: 1.6, x: 260, y: 810, height: 480, growth: 1, fruits: 5 },
+                    { time: 4.0, x: 260, y: 810, height: 480, growth: 1, fruits: 5 }
+                ];
+                poses.hand = [
+                    { time: 0, x: 430, y: 600, height: 160 },
+                    { time: 4.0, x: 400, y: 700, height: 160 }
+                ];
+                poses.fruit = [
+                    { time: 1.6, x: 298.4, y: 620.4, height: 81.6 },
+                    { time: 4.0, x: 298.4, y: 620.4, height: 81.6 }
+                ];
+                return baseStory(type, characters, poses, [
+                    { type: 'pick', actor: 'hand', target: 'tree', target_anchor: 'fruit_6', start: 1, end: 2.2 },
+                    { type: 'grip', actor: 'hand', target: 'fruit', start: 1.6, end: 4.0 }
+                ]);
+            }
+            if (type === 'shake') {
+                characters.push({ id: 'tree', asset: 'durian_tree' }, { id: 'farmer', asset: 'farmer' }, { id: 'fruit', asset: 'durian', face: false });
+                poses.tree = [
+                    { time: 0, x: 240, y: 810, height: 480, growth: 1, fruits: 5 },
+                    { time: 1.4, x: 240, y: 810, height: 480, growth: 1, fruits: 4 },
+                    { time: 4.0, x: 240, y: 810, height: 480, growth: 1, fruits: 4 }
+                ];
+                poses.farmer = [
+                    { time: 0, x: 400, y: 810, height: 360, z: 3 },
+                    { time: 4.0, x: 400, y: 810, height: 360, z: 3 }
+                ];
+                poses.fruit = [
+                    { time: 1.4, x: 211.2, y: 591.6, height: 81.6 },
+                    { time: 1.85, x: 211.2, y: 810, height: 81.6, ease: 'ease_in' },
+                    { time: 1.97, x: 211.2, y: 795, height: 81.6, ease: 'ease_out' },
+                    { time: 2.1, x: 211.2, y: 810, height: 81.6, ease: 'ease_in' },
+                    { time: 4.0, x: 211.2, y: 810, height: 81.6 }
+                ];
+                return baseStory(type, characters, poses, [
+                    { type: 'shake', actor: 'farmer', target: 'tree', start: 1, end: 3 }
+                ]);
+            }
+
+            if (spec.targets.length) { const asset = spec.targets[0]; characters.push({ id: 'target', asset }); poses.target = [{ time: 0, x: 260, y: 800, height: catalog.assets[asset].group === 'plant' ? 430 : 240, growth: .2 }]; action.target = 'target'; } if (spec.actors.length) { const asset = spec.actors[0]; characters.push({ id: 'actor', asset }); poses.actor = [{ time: 0, x: 435, y: 400, height: asset === 'farmer' ? 460 : 170, z: 2 }]; action.actor = 'actor'; } if (type === 'cover') poses.actor[0].height = 260; if (type === 'uncover') { poses.actor = [{ time: 0, x: 260, y: 800, height: 260, z: 2 }]; } if (type === 'drip') { poses.actor = [{ time: 0, x: 265, y: 800, height: 610, cut: 1 }]; poses.target = [{ time: 0, x: 204, y: 965, height: 175 }]; } if (type === 'gesture') { poses.actor = [{ time: 0, x: 288, y: 850, height: 460 }]; } if (type === 'peck') { poses.actor = [{ time: 0, x: 170, y: 900, height: 200, z: 2 }]; poses.target = [{ time: 0, x: 330, y: 905, height: 90 }]; } if (type === 'graze') { poses.actor = [{ time: 0, x: 220, y: 840, height: 320, z: 2 }]; poses.target = [{ time: 0, x: 440, y: 845, height: 190 }]; } if (type === 'hop') { poses.actor = [{ time: 0, x: 288, y: 840, height: 240 }]; } if (type === 'fly') { poses.actor = [{ time: 0, x: 288, y: 550, height: 220 }]; } if (type === 'pollinate') { poses.actor = [{ time: 0, x: 288, y: 550, height: 180 }]; poses.target = [{ time: 0, x: 288, y: 800, height: 420, growth: 0.8 }]; } if (type === 'dig') { poses.actor = [{ time: 0, x: 288, y: 700, height: 320, z: 2 }]; poses.target = [{ time: 0, x: 288, y: 840, height: 260 }]; } if (type === 'release') { action.start = 3; action.end = 4; return baseStory(type, characters, poses, [{ type: 'grip', actor: 'actor', target: 'target', start: .5, end: 3 }, action]); } return baseStory(type, characters, poses, [action]); }
+
+        function select(id) {
+            custom = false;
+            for (const button of document.querySelectorAll('[data-tab]')) button.setAttribute('aria-pressed', String(button.dataset.tab === tab));
+            selected = id;
+            if (tab === 'assets') loadStory(assetStory(id), catalog.assets[id].label);
+            else if (tab === 'actions') loadStory(actionStory(id), catalog.actions[id].label);
+            else loadStory(samples.find(s => s.id === id));
+            renderList();
+            autoplay();
+        }
+        function markSelected() {
+            for (const button of $('items').querySelectorAll('.item')) button.setAttribute('aria-pressed', String(button.dataset.id === selected && !custom));
+        }
+        function renderList() {
+            // Cùng tab, cùng bộ lọc → chỉ đổi ô đang chọn, không dựng lại lưới (giữ ảnh thu nhỏ và vị trí cuộn).
+            const query = $('filter').value.trim().toLocaleLowerCase('vi');
+            const signature = `${tab}|${category}|${query}`;
+            if (listedTab === signature) { markSelected(); return; }
+            if (listedTab && listedTab.split('|')[0] !== tab) category = 'all';
+            listedTab = `${tab}|${category}|${query}`;
+            const all = entries();
+            const matches = all.filter(e => !query || `${e.id} ${e.label} ${e.cat.label}`.toLocaleLowerCase('vi').includes(query));
+            // Chip nhóm (ngoài #items để #items chỉ chứa nút chọn rig).
+            const cats = categoryList().filter(([key]) => all.some(e => e.cat.key === key));
+            $('cats').replaceChildren(...(cats.length > 1 ? [['all', 'Tất cả', '']].concat(cats) : []).map(([key, label, icon]) => {
+                const chip = document.createElement('button');
+                chip.type = 'button'; chip.className = 'chip'; chip.setAttribute('aria-pressed', String(category === key));
+                const n = key === 'all' ? matches.length : matches.filter(e => e.cat.key === key).length;
+                chip.innerHTML = `${icon ? `<span aria-hidden="true">${icon}</span>` : ''}<span></span><span class="n">${n}</span>`;
+                chip.children[icon ? 1 : 0].textContent = label;
+                chip.onclick = () => { category = key; listedTab = null; renderList(); };
+                return chip;
+            }));
+            $('cats').hidden = cats.length <= 1;
+            const frag = document.createDocumentFragment();
+            for (const [key, label, icon] of categoryList()) {
+                const inCat = matches.filter(e => e.cat.key === key);
+                if (!inCat.length || (category !== 'all' && category !== key)) continue;
+                const section = document.createElement('section'); section.className = 'section';
+                const head = document.createElement('div'); head.className = 'section-head';
+                const h = document.createElement('h3'); h.textContent = `${icon} ${label}`;
+                const count = document.createElement('span'); count.className = 'count'; count.textContent = `${inCat.length}`;
+                head.append(h, count);
+                const grid = document.createElement('div'); grid.className = 'grid';
+                for (const e of inCat) {
+                    const button = document.createElement('button');
+                    button.type = 'button'; button.className = 'item'; button.dataset.id = e.id;
+                    button.setAttribute('aria-pressed', String(e.id === selected && !custom));
+                    const canvas = document.createElement('canvas'); canvas.className = 'thumb'; canvas.width = 240; canvas.height = 300;
+                    canvas.dataset.key = `${tab}:${e.id}`; canvas.setAttribute('aria-hidden', 'true');
+                    const name = document.createElement('span'); name.className = 'label'; name.textContent = e.label;
+                    const detail = document.createElement('small'); detail.textContent = e.id;
+                    button.append(canvas, name, detail);
+                    button.onclick = () => select(e.id);
+                    grid.append(button);
+                    if (thumbCache.has(canvas.dataset.key) || !observer) thumbQueue.push(canvas); else observer.observe(canvas);
+                }
+                section.append(head, grid); frag.append(section);
+            }
+            $('items').replaceChildren(frag);
+            if (!$('items').children.length) { const empty = document.createElement('p'); empty.className = 'empty'; empty.textContent = 'Không tìm thấy mục nào khớp.'; $('items').append(empty); }
+            if (thumbQueue.length && !thumbTimer) thumbTimer = requestAnimationFrame(pumpThumbs);
+            $('counts').textContent = `${Object.keys(catalog.assets).length} rig · ${Object.keys(catalog.actions).length} động tác · ${samples.length} mẫu · ${catalog.backgrounds.length} bối cảnh`;
+        }
+
+        async function applyJSON() { const button = $('apply'); if (button.disabled) return; button.disabled = true; try { if (new Blob([$('json').value]).size > 2 * 1024 * 1024) throw new Error('JSON vượt quá 2 MB'); const value = JSON.parse($('json').value); const response = await fetch('/api/remake/library/validate', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(value) }); const result = await response.json(); if (!response.ok) throw new Error(typeof result.detail === 'string' ? result.detail : 'Dữ liệu storyboard không hợp lệ'); custom = true; loadStory(value); renderList(); notify(result.message); } catch (error) { notify(error.message, true); } finally { button.disabled = false; } }
+        $('play').onclick = () => { if (playing) { stop(); return; } if (!renderer) return; if (t >= story.duration) draw(0); playing = true; origin = performance.now() - t * 1000; $('play').textContent = 'Tạm dừng'; $('play').setAttribute('aria-pressed', 'true'); raf = requestAnimationFrame(tick); };
+        $('seek').oninput = () => { stop(); draw(Number($('seek').value)); }; $('back').onclick = () => { stop(); draw(t - 1 / 30); }; $('next').onclick = () => { stop(); draw(t + 1 / 30); }; $('anchors').onchange = () => draw(t); $('cels').onchange = () => { const at = t; loadStory(story, $('name').textContent); draw(at); }; $('filter').oninput = renderList;
+        for (const id of ['expression', 'growth', 'bend', 'background', 'flip']) $(id).oninput = () => { if (tab === 'assets' && catalog.assets[selected]) select(selected); };
+        for (const button of document.querySelectorAll('[data-tab]')) button.onclick = () => { if (!catalog) return; tab = button.dataset.tab; $('filter').value = ''; for (const b of document.querySelectorAll('[data-tab]')) b.setAttribute('aria-pressed', String(b === button)); select(tab === 'examples' ? samples[0].id : Object.keys(catalog[tab])[0]); };
+        $('download').onclick = () => { if (!story) return; const blob = new Blob([JSON.stringify(story, null, 2)], { type: 'application/json' }), url = URL.createObjectURL(blob), link = document.createElement('a'); link.href = url; link.download = `vector-${story.id || 'storyboard'}.json`; link.click(); setTimeout(() => URL.revokeObjectURL(url), 1000); };
+        $('import').onchange = async () => { const file = $('import').files[0]; if (!file) return; if (file.size > 2 * 1024 * 1024) { notify('JSON vượt quá 2 MB', true); return; } $('json').value = await file.text(); await applyJSON(); }; $('apply').onclick = applyJSON;
+        Promise.all([
+            RemakeVector.loadCelSheets().then(() => { celsOn = true; $('cels').disabled = false; }).catch(err => { $('cels').checked = false; console.warn(err); }),
+            fetch('/static/remake_vector_catalog.json', { cache: 'no-cache' }).then(r => { if (!r.ok) throw new Error('Không nạp được catalog'); return r.json(); }),
+            fetch('/static/remake_vector_examples.json', { cache: 'no-cache' }).then(r => { if (!r.ok) throw new Error('Chưa có mẫu. Chạy python3 -m bkt_web.remake_vector --build-showcase'); return r.json(); })
+        ]).then(async ([, c, e]) => {
+            catalog = c;
+            samples = e;
+            if (c.engine_packs && c.engine_packs.length) {
+                for (const pack of c.engine_packs) {
+                    await new Promise((res, rej) => {
+                        const s = document.createElement('script');
+                        s.src = `/static/remake_vector_packs/${pack}.js?v=1.11.0`;
+                        s.onload = res;
+                        s.onerror = rej;
+                        document.head.appendChild(s);
+                    });
+                }
+            }
+            for (const value of c.expressions) {
+                const option = new Option(({ neutral: 'Bình thường', happy: 'Vui', worried: 'Lo lắng', angry: 'Tức giận', sad: 'Buồn', surprised: 'Ngạc nhiên', smug: 'Đắc ý', sleep: 'Ngủ' })[value] || value, value);
+                $('expression').add(option);
+            }
+            for (const value of c.backgrounds) {
+                const label = c.background_specs?.[value]?.label || ({ garden: 'Vườn', orchard: 'Cành cây / vườn quả', balcony: 'Ban công', pepper_patch: 'Vườn ớt', soil_cutaway: 'Mặt cắt đất', pond: 'Ao', river: 'Sông', sea: 'Biển', underwater: 'Dưới nước' })[value] || value;
+                $('background').add(new Option(label, value));
+            }
+            window.vectorShowcase = { get renderer() { return renderer; }, get story() { return story; }, samples, catalog, selectExample(id) { tab = 'examples'; select(id); }, selectAction(id) { tab = 'actions'; select(id); }, seek: draw };
+            select(selected);
+        }).catch(error => notify(error.message, true));
+
+    </script>
+</body>
+
+</html>

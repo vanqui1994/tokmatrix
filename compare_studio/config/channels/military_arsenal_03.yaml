@@ -1,0 +1,43 @@
+channel_id: military_arsenal_03
+config_version: 4
+niche_id: military_arsenal
+name: Weapons & War Machines 03
+tiktok_account_ref: null
+persona:
+  tone: evidence_first_editorial
+  energy_level: 0.65
+  target_demographic: Vietnamese viewers aged 18-34
+  catchphrase_prefix: 'Điều đáng chú ý trong câu chuyện này là:'
+story:
+  preferred_blueprints:
+  - mystery_reveal
+  preferred_hook_types:
+  - evidence_hook
+  - paradox_question
+  target_duration_seconds: 54
+  pacing_beats: 12
+creative:
+  preferred_engines:
+  - vox
+  - newspaper
+  - wildlife
+  visual_style_id: dark_mystery_v1
+  cut_cadence_seconds: 2.4
+  palette:
+    primary: '#111318'
+    accent: '#D6A84F'
+    text: '#F2EEE6'
+audio:
+  voice_id: en-US-AndrewNeural
+  voice_speed: 1.02
+  voice_pitch: -1
+  music_family: military_arsenal_editorial
+  soundscape_id: vox
+  sfx_density: medium
+publishing:
+  language: en
+  default_schedule_window: 19:30-20:30
+  hashtags:
+  - militaryarsenal
+  - khampha
+  - facts

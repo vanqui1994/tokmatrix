@@ -1,0 +1,82 @@
+{
+  "description": "Offline synthetic golden inputs for universal video analysis, routing, and fidelity tests.",
+  "expectations": {
+    "path": "expectations.json",
+    "sha256": "363d3a34259c452d23f96ff6ed96d5e289c3d4051eeec84ff683f9d6efc0d266"
+  },
+  "fixture_format": "universal-video-golden-manifest/1.0",
+  "fixtures": [
+    {
+      "category": "agriculture",
+      "id": "agriculture_harvest",
+      "media": {
+        "license": "CC0-1.0",
+        "media_type": "image/svg+xml",
+        "network_required": false,
+        "path": "media/agriculture.svg",
+        "provenance": "Original synthetic vector scene authored for this test suite; no private or third-party source media.",
+        "sha256": "dea15d524634d8f01e895453b83908e0e00744d45b17d2c6f4f43a6f11f15df4"
+      }
+    },
+    {
+      "category": "talking_head",
+      "id": "talking_head_intro",
+      "media": {
+        "license": "CC0-1.0",
+        "media_type": "image/svg+xml",
+        "network_required": false,
+        "path": "media/talking_head.svg",
+        "provenance": "Original synthetic vector scene authored for this test suite; no private or third-party source media.",
+        "sha256": "01b84841a26871c462a57c9a38a76ef5aa96952a2b41380404cca28d2dd1f76a"
+      }
+    },
+    {
+      "category": "product_review",
+      "id": "product_review_demo",
+      "media": {
+        "license": "CC0-1.0",
+        "media_type": "image/svg+xml",
+        "network_required": false,
+        "path": "media/product_review.svg",
+        "provenance": "Original synthetic vector scene authored for this test suite; no private or third-party source media.",
+        "sha256": "7b560a8543cb5d24998c3ee75a278862b16d738eaeb75609348317c85c25cfaa"
+      }
+    },
+    {
+      "category": "ui_tutorial",
+      "id": "ui_tutorial_form",
+      "media": {
+        "license": "CC0-1.0",
+        "media_type": "image/svg+xml",
+        "network_required": false,
+        "path": "media/ui_tutorial.svg",
+        "provenance": "Original synthetic vector scene authored for this test suite; no private or third-party source media.",
+        "sha256": "d66f6eda237a82f276f71225fc57e7329f5ca7fc2bd0648813118a2d3f240d5b"
+      }
+    },
+    {
+      "category": "infographic",
+      "id": "infographic_growth",
+      "media": {
+        "license": "CC0-1.0",
+        "media_type": "image/svg+xml",
+        "network_required": false,
+        "path": "media/infographic.svg",
+        "provenance": "Original synthetic vector scene authored for this test suite; no private or third-party source media.",
+        "sha256": "09ee6c71e3184c4f0d9340ec1c45ba6313d18adbe1f12ad7a1743c1c6423d2a3"
+      }
+    },
+    {
+      "category": "footage_composite",
+      "id": "footage_composite_overlay",
+      "media": {
+        "license": "CC0-1.0",
+        "media_type": "image/svg+xml",
+        "network_required": false,
+        "path": "media/footage_composite.svg",
+        "provenance": "Original synthetic vector proxy plate authored for this test suite; no private or third-party source media.",
+        "sha256": "ef9da5ec9ac1302ce705377858899f487b58d468f69fe6f642829a2cb7ce679d"
+      }
+    }
+  ]
+}

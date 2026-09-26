@@ -1,0 +1,8 @@
+[Unit]
+Description=Ghi mau so lieu Autopilot (chi doc) vao bkt_web/storage/metrics
+
+[Service]
+Type=oneshot
+User=tokmatrix
+WorkingDirectory=/opt/tokmatrix
+ExecStart=/opt/tokmatrix/venv/bin/python deploy/autopilot_metrics.py

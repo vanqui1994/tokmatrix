@@ -1,0 +1,13 @@
+style_id: cosmic_space_v1
+name: Cosmic Science Atlas
+visual_language: Scientifically grounded space imagery, deep blacks, crisp luminous objects, elegant scale cues and editorial contrast.
+prompt_tags:
+  - scientifically grounded space illustration
+  - editorial science documentary
+  - deep space atmosphere
+  - vertical composition
+palette:
+  primary: '#0B0C10'
+  accent: '#66FCF1'
+  text: '#C5C6C7'
+negative_prompt: fantasy spacecraft presented as real, inaccurate labels, fabricated readable text, watermark, logo

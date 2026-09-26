@@ -1,0 +1,44 @@
+channel_id: space_03
+config_version: 3
+niche_id: deep_space
+name: Physics In A Minute
+tiktok_account_ref: null
+persona:
+  tone: rigorous_conversational_science
+  energy_level: 0.72
+  target_demographic: Vietnamese students and curious adults aged 18-35
+  catchphrase_prefix: 'Thí nghiệm tưởng tượng này giúp ta nhìn ra một quy luật thật:'
+story:
+  preferred_blueprints:
+  - science_explainer
+  preferred_hook_types:
+  - thought_experiment
+  - everyday_physics
+  target_duration_seconds: 55
+  pacing_beats: 12
+creative:
+  preferred_engines:
+  - science
+  - kinetic
+  - vox
+  visual_style_id: cosmic_space_v1
+  cut_cadence_seconds: 2.7
+  palette:
+    primary: '#0B0C10'
+    accent: '#66FCF1'
+    text: '#C5C6C7'
+audio:
+  voice_id: de-DE-ConradNeural
+  voice_speed: 1.02
+  voice_pitch: 0
+  music_family: minimal_science_ambient
+  soundscape_id: science
+  sfx_density: low
+publishing:
+  language: de
+  default_schedule_window: 19:30-20:30
+  hashtags:
+  - vatly
+  - khoahoc
+  - thunghiem
+  - physicsinaminute

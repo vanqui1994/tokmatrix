@@ -1,0 +1,44 @@
+channel_id: space_05
+config_version: 3
+niche_id: deep_space
+name: Cosmic What If Lab
+tiktok_account_ref: null
+persona:
+  tone: imaginative_but_evidence_based
+  energy_level: 0.8
+  target_demographic: Vietnamese Gen Z aged 18-30 interested in science hypotheticals
+  catchphrase_prefix: Điều gì sẽ xảy ra nếu ta thay đổi đúng một điều trong vũ trụ?
+story:
+  preferred_blueprints:
+  - science_explainer
+  preferred_hook_types:
+  - what_if
+  - counterfactual_question
+  target_duration_seconds: 49
+  pacing_beats: 12
+creative:
+  preferred_engines:
+  - kinetic
+  - science
+  - survival
+  visual_style_id: cosmic_space_v1
+  cut_cadence_seconds: 2.4
+  palette:
+    primary: '#0B0C10'
+    accent: '#66FCF1'
+    text: '#C5C6C7'
+audio:
+  voice_id: de-DE-ConradNeural
+  voice_speed: 1.1
+  voice_pitch: 0
+  music_family: speculative_cosmic_pulse
+  soundscape_id: kinetic
+  sfx_density: medium
+publishing:
+  language: de
+  default_schedule_window: 19:30-20:30
+  hashtags:
+  - vutru
+  - dieugiseura
+  - khoa hoc
+  - cosmicwhatiflab

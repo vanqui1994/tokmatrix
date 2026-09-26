@@ -1,0 +1,7 @@
+[Unit]
+Description=Giao task kich ban trong script_bridge/inbox cho agent Antigravity
+After=antigravity.service tokmatrix-web.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/tokmatrix-script-bridge-run

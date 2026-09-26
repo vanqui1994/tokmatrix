@@ -1,0 +1,5 @@
+niche_id: folklore_legends
+name: Dân Gian & Tâm Linh
+language: vi
+summary: Truyền thuyết dân gian, tín ngưỡng và folklore; phân biệt rõ văn hóa với khẳng định sự thật.
+allowed_engines: [folklore, mystery, newspaper, tierlist, kinetic]

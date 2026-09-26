@@ -1,0 +1,433 @@
+{
+  "schema_version": "1.0.0",
+  "analysis_id": "analysis_harvest_clip",
+  "source": {
+    "source_id": "source_harvest_clip",
+    "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "media_type": "video/mp4",
+    "width": 1080,
+    "height": 1920,
+    "frame_rate": 30.0
+  },
+  "timebase": {
+    "unit": "seconds",
+    "origin_seconds": 0,
+    "precision": 3
+  },
+  "duration_seconds": 6.0,
+  "analyzers": [
+    {
+      "analyzer_id": "analyzer_shots",
+      "kind": "shot",
+      "name": "fixture-shot-detector",
+      "version": "1.0.0",
+      "ran_at": "2026-09-21T02:00:00Z"
+    },
+    {
+      "analyzer_id": "analyzer_speech",
+      "kind": "transcript",
+      "name": "fixture-asr",
+      "version": "1.0.0"
+    },
+    {
+      "analyzer_id": "analyzer_vision",
+      "kind": "multi",
+      "name": "fixture-vision",
+      "version": "1.0.0"
+    }
+  ],
+  "evidence": [
+    {
+      "evidence_id": "evidence_shot_one",
+      "kind": "frame_range",
+      "source_id": "source_harvest_clip",
+      "interval": {
+        "start": 0,
+        "end": 3
+      }
+    },
+    {
+      "evidence_id": "evidence_shot_two",
+      "kind": "frame_range",
+      "source_id": "source_harvest_clip",
+      "interval": {
+        "start": 3,
+        "end": 6
+      }
+    },
+    {
+      "evidence_id": "evidence_speech",
+      "kind": "audio_range",
+      "source_id": "source_harvest_clip",
+      "interval": {
+        "start": 0.4,
+        "end": 2.6
+      },
+      "quote": "Quả này chín rồi."
+    },
+    {
+      "evidence_id": "evidence_hand_box",
+      "kind": "frame",
+      "source_id": "source_harvest_clip",
+      "interval": {
+        "start": 1.0,
+        "end": 1.0
+      },
+      "region": {
+        "space": "normalized_source",
+        "x": 0.31,
+        "y": 0.42,
+        "width": 0.14,
+        "height": 0.12
+      }
+    },
+    {
+      "evidence_id": "evidence_caption",
+      "kind": "ocr_region",
+      "source_id": "source_harvest_clip",
+      "interval": {
+        "start": 0.2,
+        "end": 1.8
+      },
+      "region": {
+        "space": "normalized_source",
+        "x": 0.08,
+        "y": 0.78,
+        "width": 0.84,
+        "height": 0.08
+      },
+      "quote": "MÙA THU HOẠCH"
+    }
+  ],
+  "observations": [
+    {
+      "observation_id": "observation_shot_one",
+      "kind": "shot",
+      "analyzer_id": "analyzer_shots",
+      "source_interval": {
+        "start": 0,
+        "end": 3
+      },
+      "confidence": 0.94,
+      "evidence_ids": [
+        "evidence_shot_one"
+      ],
+      "index": 0,
+      "boundary": "cut"
+    },
+    {
+      "observation_id": "observation_shot_two",
+      "kind": "shot",
+      "analyzer_id": "analyzer_shots",
+      "source_interval": {
+        "start": 3,
+        "end": 6
+      },
+      "confidence": 0.91,
+      "evidence_ids": [
+        "evidence_shot_two"
+      ],
+      "index": 1,
+      "boundary": "cut"
+    },
+    {
+      "observation_id": "observation_speech_one",
+      "kind": "transcript",
+      "analyzer_id": "analyzer_speech",
+      "source_interval": {
+        "start": 0.4,
+        "end": 2.6
+      },
+      "confidence": 0.88,
+      "evidence_ids": [
+        "evidence_speech"
+      ],
+      "text": "Quả này chín rồi.",
+      "language": "vi",
+      "speaker_label": "speaker_00",
+      "words": [
+        {
+          "text": "Quả",
+          "start": 0.4,
+          "end": 0.7,
+          "confidence": 0.9
+        },
+        {
+          "text": "này",
+          "start": 0.7,
+          "end": 1.0,
+          "confidence": 0.87
+        },
+        {
+          "text": "chín",
+          "start": 1.1,
+          "end": 1.6,
+          "confidence": 0.9
+        },
+        {
+          "text": "rồi",
+          "start": 1.7,
+          "end": 2.6,
+          "confidence": 0.84
+        }
+      ]
+    },
+    {
+      "observation_id": "observation_caption",
+      "kind": "ocr",
+      "analyzer_id": "analyzer_vision",
+      "source_interval": {
+        "start": 0.2,
+        "end": 1.8
+      },
+      "confidence": 0.79,
+      "evidence_ids": [
+        "evidence_caption"
+      ],
+      "text": "MÙA THU HOẠCH",
+      "language": "vi",
+      "region": {
+        "space": "normalized_source",
+        "x": 0.08,
+        "y": 0.78,
+        "width": 0.84,
+        "height": 0.08
+      }
+    },
+    {
+      "observation_id": "observation_track_hand",
+      "kind": "track",
+      "analyzer_id": "analyzer_vision",
+      "source_interval": {
+        "start": 0.5,
+        "end": 3.5
+      },
+      "confidence": 0.83,
+      "evidence_ids": [
+        "evidence_hand_box"
+      ],
+      "label": "right hand",
+      "category": "hand",
+      "identity_resolved": true,
+      "samples": [
+        {
+          "time": 0.5,
+          "region": {
+            "space": "normalized_source",
+            "x": 0.28,
+            "y": 0.45,
+            "width": 0.13,
+            "height": 0.11
+          },
+          "confidence": 0.8
+        },
+        {
+          "time": 1.0,
+          "region": {
+            "space": "normalized_source",
+            "x": 0.31,
+            "y": 0.42,
+            "width": 0.14,
+            "height": 0.12
+          },
+          "confidence": 0.86
+        },
+        {
+          "time": 2.0,
+          "region": {
+            "space": "normalized_source",
+            "x": 0.4,
+            "y": 0.39,
+            "width": 0.14,
+            "height": 0.12
+          },
+          "confidence": 0.81
+        }
+      ]
+    },
+    {
+      "observation_id": "observation_track_fruit",
+      "kind": "track",
+      "analyzer_id": "analyzer_vision",
+      "source_interval": {
+        "start": 0.5,
+        "end": 4.0
+      },
+      "confidence": 0.77,
+      "evidence_ids": [
+        "evidence_hand_box"
+      ],
+      "label": "red round object",
+      "category": "object",
+      "alternatives": [
+        {
+          "label": "apple",
+          "confidence": 0.34
+        },
+        {
+          "label": "tomato",
+          "confidence": 0.41
+        }
+      ],
+      "samples": [
+        {
+          "time": 0.5,
+          "region": {
+            "space": "normalized_source",
+            "x": 0.44,
+            "y": 0.36,
+            "width": 0.07,
+            "height": 0.07
+          },
+          "confidence": 0.75
+        },
+        {
+          "time": 2.0,
+          "region": {
+            "space": "normalized_source",
+            "x": 0.42,
+            "y": 0.38,
+            "width": 0.07,
+            "height": 0.07
+          },
+          "confidence": 0.78
+        }
+      ]
+    },
+    {
+      "observation_id": "observation_pose_farmer",
+      "kind": "pose",
+      "analyzer_id": "analyzer_vision",
+      "source_interval": {
+        "start": 1.0,
+        "end": 1.0
+      },
+      "confidence": 0.72,
+      "evidence_ids": [
+        "evidence_hand_box"
+      ],
+      "track_ref": "observation_track_hand",
+      "time": 1.0,
+      "keypoints": [
+        {
+          "name": "wrist.right",
+          "x": 0.33,
+          "y": 0.46,
+          "confidence": 0.81
+        },
+        {
+          "name": "elbow.right",
+          "x": 0.29,
+          "y": 0.55,
+          "confidence": 0.74
+        },
+        {
+          "name": "shoulder.right",
+          "x": 0.26,
+          "y": 0.63,
+          "confidence": 0.69,
+          "visible": false
+        }
+      ]
+    },
+    {
+      "observation_id": "observation_action_pick",
+      "kind": "action",
+      "analyzer_id": "analyzer_vision",
+      "source_interval": {
+        "start": 1.8,
+        "end": 3.1
+      },
+      "confidence": 0.64,
+      "evidence_ids": [
+        "evidence_hand_box",
+        "evidence_shot_one"
+      ],
+      "label": "detach",
+      "actor_track_ref": "observation_track_hand",
+      "target_track_ref": "observation_track_fruit",
+      "alternatives": [
+        {
+          "label": "touch",
+          "confidence": 0.3
+        }
+      ],
+      "notes": "Contact is visible but the moment of separation is partly occluded."
+    },
+    {
+      "observation_id": "observation_camera_hold",
+      "kind": "camera",
+      "analyzer_id": "analyzer_vision",
+      "source_interval": {
+        "start": 0,
+        "end": 3
+      },
+      "confidence": 0.9,
+      "evidence_ids": [
+        "evidence_shot_one"
+      ],
+      "movement": "static",
+      "magnitude": 0.02
+    },
+    {
+      "observation_id": "observation_camera_push",
+      "kind": "camera",
+      "analyzer_id": "analyzer_vision",
+      "source_interval": {
+        "start": 3,
+        "end": 6
+      },
+      "confidence": 0.71,
+      "evidence_ids": [
+        "evidence_shot_two"
+      ],
+      "movement": "zoom",
+      "magnitude": 0.35,
+      "subject_track_ref": "observation_track_fruit"
+    },
+    {
+      "observation_id": "observation_audio_speech",
+      "kind": "audio_event",
+      "analyzer_id": "analyzer_speech",
+      "source_interval": {
+        "start": 0.4,
+        "end": 2.6
+      },
+      "confidence": 0.86,
+      "evidence_ids": [
+        "evidence_speech"
+      ],
+      "category": "speech",
+      "speaker_label": "speaker_00",
+      "loudness_lufs": -17.5,
+      "peak_db": -3.1
+    },
+    {
+      "observation_id": "observation_audio_room",
+      "kind": "audio_event",
+      "analyzer_id": "analyzer_speech",
+      "source_interval": {
+        "start": 2.6,
+        "end": 6.0
+      },
+      "confidence": 0.58,
+      "evidence_ids": [
+        "evidence_shot_two"
+      ],
+      "category": "ambience",
+      "loudness_lufs": -34.0
+    }
+  ],
+  "failures": [
+    {
+      "failure_id": "failure_depth",
+      "analyzer_id": "analyzer_vision",
+      "reason": "unsupported_media",
+      "message": "Depth estimation is not available for this fixture.",
+      "covered": {
+        "start": 0,
+        "end": 6
+      }
+    }
+  ]
+}

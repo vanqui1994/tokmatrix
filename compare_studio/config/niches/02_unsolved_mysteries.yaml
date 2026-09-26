@@ -1,0 +1,11 @@
+niche_id: unsolved_mysteries
+name: Bí Ẩn Chưa Lời Giải
+language: vi
+summary: Hồ sơ bí ẩn, sự kiện chưa có lời giải và các giả thuyết được phân biệt rõ với dữ kiện.
+allowed_engines:
+  - folklore
+  - mystery
+  - newspaper
+  - vox
+  - tierlist
+  - kinetic

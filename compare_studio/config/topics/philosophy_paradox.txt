@@ -1,0 +1,31 @@
+# Mỗi dòng một topic (tiếng Anh; angle/kịch bản được viết theo ngôn ngữ của kênh). Autopilot lấy dòng đầu chưa dùng.
+The Ship of Theseus paradox
+Zeno's paradox of Achilles and the tortoise
+The trolley problem and why it matters
+Schrödinger's cat explained simply
+The Fermi paradox: where is everybody
+The grandfather paradox of time travel
+Plato's allegory of the cave
+The Monty Hall problem
+The Sorites paradox of the heap
+Why the liar paradox breaks logic
+The birthday paradox in probability
+Descartes and "I think therefore I am"
+The paradox of choice
+The prisoner's dilemma
+Newcomb's paradox
+The Ship of Theseus applied to the human body
+Buridan's donkey and indecision
+The bootstrap paradox
+Occam's razor and simple explanations
+The Chinese room argument about AI
+The paradox of tolerance
+Pascal's wager
+The brain in a vat thought experiment
+The Banach-Tarski paradox
+Hilbert's infinite hotel
+The experience machine thought experiment
+The simulation hypothesis
+Why the unexpected hanging paradox confuses logicians
+The Epicurean paradox
+Theseus, Heraclitus and never stepping in the same river twice

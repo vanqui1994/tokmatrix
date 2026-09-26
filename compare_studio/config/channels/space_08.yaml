@@ -1,0 +1,43 @@
+channel_id: space_08
+config_version: 4
+niche_id: deep_space
+name: Kosmos & Physik 08
+tiktok_account_ref: null
+persona:
+  tone: evidence_first_editorial
+  energy_level: 0.75
+  target_demographic: Vietnamese viewers aged 18-34
+  catchphrase_prefix: 'Điều đáng chú ý trong câu chuyện này là:'
+story:
+  preferred_blueprints:
+  - science_explainer
+  preferred_hook_types:
+  - evidence_hook
+  - paradox_question
+  target_duration_seconds: 48
+  pacing_beats: 12
+creative:
+  preferred_engines:
+  - vox
+  - kinetic
+  - tierlist
+  visual_style_id: cosmic_space_v1
+  cut_cadence_seconds: 2.8
+  palette:
+    primary: '#0B0C10'
+    accent: '#66FCF1'
+    text: '#C5C6C7'
+audio:
+  voice_id: de-DE-ConradNeural
+  voice_speed: 1.02
+  voice_pitch: -1
+  music_family: deep_space_editorial
+  soundscape_id: vox
+  sfx_density: medium
+publishing:
+  language: de
+  default_schedule_window: 19:30-20:30
+  hashtags:
+  - deepspace
+  - khampha
+  - facts

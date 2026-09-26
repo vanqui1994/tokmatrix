@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Đăng nhập — TokMatrix</title>
+<link rel="icon" href="/favicon.ico">
+<style>
+  :root {
+    --bg: #070b14;
+    --panel: #0f172a;
+    --border: #1e293b;
+    --text: #e2e8f0;
+    --dim: #94a3b8;
+    --accent: #38bdf8;
+    --danger: #f87171;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background:
+      radial-gradient(1000px 600px at 15% -10%, rgba(56,189,248,.14), transparent 60%),
+      radial-gradient(800px 500px at 110% 110%, rgba(129,140,248,.12), transparent 60%),
+      var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  }
+  .card {
+    width: 100%;
+    max-width: 380px;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 32px 28px 26px;
+    box-shadow: 0 24px 60px rgba(0,0,0,.5);
+  }
+  .brand { text-align: center; margin-bottom: 24px; }
+  .brand .mark { font-size: 32px; line-height: 1; }
+  .brand h1 { margin: 10px 0 4px; font-size: 19px; letter-spacing: -.01em; }
+  .brand p { margin: 0; font-size: 12.5px; color: var(--dim); }
+  label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--dim);
+    margin-bottom: 6px;
+    letter-spacing: .02em;
+  }
+  input {
+    width: 100%;
+    padding: 11px 13px;
+    margin-bottom: 16px;
+    font-size: 14px;
+    font-family: inherit;
+    color: var(--text);
+    background: #0b1220;
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    outline: none;
+    transition: border-color .15s, box-shadow .15s;
+  }
+  input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(56,189,248,.14);
+  }
+  button {
+    width: 100%;
+    padding: 12px;
+    font-size: 14px;
+    font-weight: 700;
+    font-family: inherit;
+    color: #041018;
+    background: linear-gradient(180deg, #56c9fb, var(--accent));
+    border: 0;
+    border-radius: 9px;
+    cursor: pointer;
+    transition: filter .15s, transform .05s;
+  }
+  button:hover:not(:disabled) { filter: brightness(1.07); }
+  button:active:not(:disabled) { transform: translateY(1px); }
+  button:disabled { opacity: .6; cursor: progress; }
+  .msg {
+    display: none;
+    margin-bottom: 16px;
+    padding: 10px 12px;
+    font-size: 12.5px;
+    line-height: 1.45;
+    color: var(--danger);
+    background: rgba(248,113,113,.1);
+    border: 1px solid rgba(248,113,113,.3);
+    border-radius: 8px;
+  }
+  .msg.show { display: block; }
+  .foot {
+    margin-top: 18px;
+    text-align: center;
+    font-size: 11.5px;
+    color: #64748b;
+  }
+</style>
+</head>
+<body>
+  <form class="card" id="form" autocomplete="on">
+    <div class="brand">
+      <div class="mark">🎬</div>
+      <h1>TokMatrix</h1>
+      <p>Đăng nhập để tiếp tục</p>
+    </div>
+
+    <div class="msg" id="msg" role="alert"></div>
+
+    <label for="username">Tên đăng nhập</label>
+    <input id="username" name="username" type="text" autocomplete="username"
+           autocapitalize="none" autocorrect="off" spellcheck="false" required autofocus>
+
+    <label for="password">Mật khẩu</label>
+    <input id="password" name="password" type="password" autocomplete="current-password" required>
+
+    <button type="submit" id="submit">Đăng nhập</button>
+
+    <div class="foot">Phiên đăng nhập có hiệu lực 14 ngày</div>
+  </form>
+
+<script>
+(function () {
+  var form = document.getElementById('form');
+  var msg = document.getElementById('msg');
+  var btn = document.getElementById('submit');
+
+  function fail(text) {
+    msg.textContent = text;
+    msg.classList.add('show');
+    btn.disabled = false;
+    btn.textContent = 'Đăng nhập';
+  }
+
+  form.addEventListener('submit', async function (e) {
+    e.preventDefault();
+    msg.classList.remove('show');
+    btn.disabled = true;
+    btn.textContent = 'Đang kiểm tra…';
+
+    try {
+      var res = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          username: document.getElementById('username').value,
+          password: document.getElementById('password').value
+        })
+      });
+      var data = await res.json().catch(function () { return {}; });
+      if (res.ok && data.success) {
+        // Quay lại đúng trang người dùng định vào trước khi bị chặn.
+        var next = new URLSearchParams(location.search).get('next') || '/';
+        if (next.charAt(0) !== '/' || next.charAt(1) === '/') next = '/';
+        location.replace(next);
+        return;
+      }
+      fail(data.detail || 'Đăng nhập thất bại.');
+    } catch (err) {
+      fail('Không kết nối được tới máy chủ.');
+    }
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hoạt Hình Tách Lớp 3D Pixar (Layered 2.5D Rigging & Lip-Sync) — TokMatrix</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #090d16;
+      --card: #131b2e;
+      --border: #1f2d48;
+      --accent: #a855f7;
+      --accent-glow: rgba(168, 85, 247, 0.45);
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --green: #22c55e;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .container {
+      max-width: 1260px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 16px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .title-box h1 {
+      font-size: 22px;
+      font-weight: 900;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .badge {
+      background: rgba(168, 85, 247, 0.18);
+      border: 1px solid rgba(168, 85, 247, 0.4);
+      color: #c084fc;
+      font-size: 11px;
+      font-weight: 800;
+      padding: 4px 12px;
+      border-radius: 20px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .badge-fixed {
+      background: rgba(34, 197, 94, 0.18);
+      border: 1px solid rgba(34, 197, 94, 0.4);
+      color: #4ade80;
+      font-size: 11px;
+      font-weight: 800;
+      padding: 4px 12px;
+      border-radius: 20px;
+    }
+
+    .layout-grid {
+      display: grid;
+      grid-template-columns: 430px 1fr;
+      gap: 28px;
+    }
+    @media (max-width: 980px) {
+      .layout-grid { grid-template-columns: 1fr; }
+    }
+
+    /* Phone Player Frame */
+    .phone-stage {
+      background: #000;
+      border: 4px solid #1f2d48;
+      border-radius: 34px;
+      overflow: hidden;
+      aspect-ratio: 9/16;
+      max-height: 700px;
+      position: relative;
+      box-shadow: 0 25px 60px rgba(0,0,0,0.7), 0 0 50px var(--accent-glow);
+      display: flex;
+      flex-direction: column;
+    }
+
+    canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+      background: #000;
+    }
+
+    /* Floating Subtitles on Canvas */
+    .sub-banner {
+      position: absolute;
+      bottom: 78px;
+      left: 12px;
+      right: 12px;
+      text-align: center;
+      pointer-events: none;
+      z-index: 20;
+    }
+    .sub-chip {
+      display: inline-block;
+      font-size: 14.5px;
+      font-weight: 900;
+      color: #ffe600;
+      text-shadow: 
+        -2px -2px 0 #000,  
+         2px -2px 0 #000,
+        -2px  2px 0 #000,
+         2px  2px 0 #000,
+         0px  3px 8px rgba(0,0,0,0.9);
+      background: rgba(0, 0, 0, 0.72);
+      backdrop-filter: blur(6px);
+      padding: 7px 16px;
+      border-radius: 12px;
+      line-height: 1.38;
+      max-width: 94%;
+      border: 1px solid rgba(255, 230, 0, 0.3);
+    }
+
+    /* Speaking Status Pill */
+    .speaking-pill {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      background: rgba(0, 0, 0, 0.65);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(168, 85, 247, 0.4);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 800;
+      color: #c084fc;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      z-index: 25;
+    }
+    .pulse-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #c084fc;
+      animation: pulse 1.2s infinite;
+    }
+    @keyframes pulse {
+      0% { transform: scale(0.8); opacity: 0.5; }
+      50% { transform: scale(1.3); opacity: 1; }
+      100% { transform: scale(0.8); opacity: 0.5; }
+    }
+
+    /* Player Controls Bar */
+    .player-controls {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(180deg, transparent, rgba(0,0,0,0.88) 35%, rgba(0,0,0,0.98));
+      padding: 12px 16px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      z-index: 30;
+    }
+
+    .progress-bar-container {
+      width: 100%;
+      height: 6px;
+      background: rgba(255,255,255,0.22);
+      border-radius: 4px;
+      cursor: pointer;
+      position: relative;
+    }
+    .progress-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #a855f7, #c084fc);
+      border-radius: 4px;
+      width: 0%;
+      transition: width 0.05s linear;
+    }
+
+    .controls-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .ctrl-btn {
+      background: #1e293b;
+      border: 1px solid #334155;
+      color: #fff;
+      padding: 7px 15px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s;
+    }
+    .ctrl-btn:hover {
+      background: #a855f7;
+      border-color: #a855f7;
+      color: #fff;
+    }
+    .time-badge {
+      font-family: monospace;
+      font-size: 12px;
+      font-weight: 700;
+      color: #94a3b8;
+    }
+
+    /* Right Details Cards */
+    .info-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 18px 22px;
+    }
+    .card-head {
+      font-size: 13.5px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+      color: var(--text);
+    }
+
+    /* Asset Thumbnails Showcase */
+    .asset-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    @media (max-width: 1200px) {
+      .asset-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+    .asset-box {
+      background: #0b1120;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      aspect-ratio: 1/1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 8px;
+      position: relative;
+    }
+    .asset-box img {
+      max-width: 100%;
+      max-height: 75%;
+      object-fit: contain;
+    }
+    .asset-label {
+      font-size: 10px;
+      font-weight: 700;
+      color: #cbd5e1;
+      margin-top: 4px;
+      text-align: center;
+      line-height: 1.2;
+    }
+    .asset-tag {
+      position: absolute;
+      top: 4px;
+      right: 4px;
+      font-size: 9px;
+      font-weight: 800;
+      background: rgba(34, 197, 94, 0.25);
+      color: #4ade80;
+      border: 1px solid rgba(34, 197, 94, 0.4);
+      padding: 1px 5px;
+      border-radius: 8px;
+    }
+
+    /* Timeline Script Items */
+    .timeline-box {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      max-height: 250px;
+      overflow-y: auto;
+      padding-right: 6px;
+    }
+    .timeline-item {
+      background: rgba(11, 15, 25, 0.6);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 9px 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .timeline-item:hover, .timeline-item.active {
+      background: rgba(168, 85, 247, 0.14);
+      border-color: rgba(168, 85, 247, 0.5);
+    }
+    .timeline-item .sec {
+      font-family: monospace;
+      font-size: 11px;
+      font-weight: 800;
+      color: #c084fc;
+      background: rgba(168, 85, 247, 0.2);
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+    .timeline-item .act {
+      font-size: 12px;
+      font-weight: 700;
+      color: #f8fafc;
+    }
+
+    /* Comparison Checklist */
+    .fix-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      font-size: 12.5px;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+    .fix-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+    }
+    .fix-icon {
+      color: #22c55e;
+      font-weight: 900;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <div class="header-bar">
+      <div class="title-box">
+        <h1>
+          <span>🎬</span> Hoạt Hình Tách Lớp 3D Pixar: Nhép Miệng + Không Nền
+        </h1>
+        <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+          <span class="badge">Modular Layered Animation</span>
+          <span class="badge-fixed">✓ Đã Khử 100% Nền Hộp Trắng</span>
+          <span class="badge-fixed">✓ Đã Thêm Nhép Miệng Tự Động</span>
+        </div>
+      </div>
+      <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+        <button type="button" class="ctrl-btn" onclick="togglePlay()" id="btn-top-play" style="background: linear-gradient(135deg, #a855f7, #9333ea); color: #fff; font-weight: 800;">
+          ▶️ PHÁT HOẠT HÌNH
+        </button>
+        <a href="/static/remake_preview.html" class="ctrl-btn">
+          👁️ Xem Các Bản Trước
+        </a>
+      </div>
+    </div>
+
+    <!-- Main Grid -->
+    <div class="layout-grid">
+      <!-- Left: Phone Canvas -->
+      <div class="phone-stage" id="phone-frame">
+        <canvas id="cartoonCanvas" width="720" height="1280"></canvas>
+        
+        <!-- Live Status Pill -->
+        <div class="speaking-pill" id="speak-status">
+          <div class="pulse-dot"></div>
+          <span id="speak-label">Đang chờ phát...</span>
+        </div>
+
+        <!-- Floating Subtitles -->
+        <div class="sub-banner">
+          <div class="sub-chip" id="sub-chip">Bấm Play để xem hoạt hình nhép miệng và cắt bổ dưa 3D!</div>
+        </div>
+
+        <!-- Controls Overlay -->
+        <div class="player-controls">
+          <div class="progress-bar-container" id="prog-container" onclick="onSeek(event)">
+            <div class="progress-bar-fill" id="prog-fill"></div>
+          </div>
+          <div class="controls-row">
+            <div style="display: flex; gap: 8px;">
+              <button type="button" class="ctrl-btn" onclick="togglePlay()" id="btn-play">▶ Phát</button>
+              <button type="button" class="ctrl-btn" onclick="restart()">🔄 Lại</button>
+            </div>
+            <div class="time-badge" id="time-text">00:00 / 00:52</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Technical Details & Assets Showcase -->
+      <div class="info-panel">
+        <!-- Asset Showcase -->
+        <div class="card" style="border-left: 4px solid #22c55e;">
+          <div class="card-head" style="color: #4ade80;">
+            <span>🧩</span> Các Mảnh Ghép Asset 3D Đã Tách Nền Trong Suốt (Alpha 100%):
+          </div>
+          <div class="asset-grid">
+            <div class="asset-box">
+              <span class="asset-tag">JPG</span>
+              <img src="/static/remake_modular/bg_farm.jpg" alt="Background Nông trại">
+              <span class="asset-label">1. Nền nông trại</span>
+            </div>
+            <div class="asset-box">
+              <span class="asset-tag">PNG</span>
+              <img src="/static/remake_modular/char_melon_a.png" alt="Dưa A Mở Miệng">
+              <span class="asset-label">2. Dưa A (Nói)</span>
+            </div>
+            <div class="asset-box">
+              <span class="asset-tag">PNG</span>
+              <img src="/static/remake_modular/char_melon_a_closed.png" alt="Dưa A Đóng Miệng">
+              <span class="asset-label">3. Dưa A (Cười nghỉ)</span>
+            </div>
+            <div class="asset-box">
+              <span class="asset-tag">PNG</span>
+              <img src="/static/remake_modular/prop_knife.png" alt="Con Dao 3D">
+              <span class="asset-label">4. Dao bếp 3D</span>
+            </div>
+            <div class="asset-box">
+              <span class="asset-tag">PNG</span>
+              <img src="/static/remake_modular/char_melon_cut.png" alt="Dưa Bổ Đôi 3D">
+              <span class="asset-label">5. Dưa bổ đôi 3D</span>
+            </div>
+          </div>
+          
+          <div class="fix-list">
+            <div class="fix-item">
+              <span class="fix-icon">✓</span>
+              <span><strong>Không còn hộp trắng dính nền:</strong> Toàn bộ dao bếp, nhân vật Dưa A, Dưa B và Dưa bổ đôi đã được xử lý qua AI background removal (rembg) với kênh Alpha chuẩn, không còn bất kỳ viền hộp trắng nào.</span>
+            </div>
+            <div class="fix-item">
+              <span class="fix-icon">✓</span>
+              <span><strong>Nhép miệng sống động (Lip-Sync Rigging):</strong> Khi nhân vật cất tiếng nói, khuôn miệng tự động nhấp nhô đóng-mở, tạo khẩu hình phát âm tự nhiên theo nhịp điệu tiếng nói. Khi ngừng nói, nhân vật mỉm cười nhẹ.</span>
+            </div>
+            <div class="fix-item">
+              <span class="fix-icon">✓</span>
+              <span><strong>Chớp mắt & Thở tự nhiên:</strong> Cứ mỗi 3-4 giây nhân vật chớp mắt 1 lần, cơ thể nhún nhảy thở phập phồng (squash & stretch) như phim hoạt hình Pixar thực thụ.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Timeline Events -->
+        <div class="card">
+          <div class="card-head">
+            <span>📜</span> Kịch Bản Hoạt Họa & Các Mốc Hiệu Ứng:
+          </div>
+          <div class="timeline-box" id="timeline-box">
+            <div class="timeline-item" onclick="jumpTo(0.5)">
+              <div>
+                <span class="sec">00:00.5</span>
+                <span class="act" style="margin-left: 8px;">Dưa A nhép miệng nói chuyện với Bé Dưa B, vẫy tay</span>
+              </div>
+            </div>
+            <div class="timeline-item" onclick="jumpTo(6.4)">
+              <div>
+                <span class="sec">00:06.4</span>
+                <span class="act" style="margin-left: 8px;">Dưa A nhép miệng gọi Bác Nông Dân</span>
+              </div>
+            </div>
+            <div class="timeline-item" onclick="jumpTo(10.4)">
+              <div>
+                <span class="sec">00:10.4</span>
+                <span class="act" style="margin-left: 8px;">Bác nông dân nói: Dưa A ngậm miệng, xụ mặt buồn</span>
+              </div>
+            </div>
+            <div class="timeline-item" onclick="jumpTo(17.8)">
+              <div>
+                <span class="sec">00:17.8</span>
+                <span class="act" style="margin-left: 8px; color: #fb923c;">⚡ BỨT CUỐNG: Bé Dưa B há hốc nói cảnh báo + Rung lắc POP!</span>
+              </div>
+            </div>
+            <div class="timeline-item" onclick="jumpTo(22.2)">
+              <div>
+                <span class="sec">00:22.2</span>
+                <span class="act" style="margin-left: 8px; color: #f43f5e;">🔪 BỔ DƯA: Dao 3D (không nền) chém xuống + Hiện dưa bổ đôi 3D Pixar</span>
+              </div>
+            </div>
+            <div class="timeline-item" onclick="jumpTo(34.2)">
+              <div>
+                <span class="sec">00:34.2</span>
+                <span class="act" style="margin-left: 8px;">So sánh đối chiếu: Dưa non trắng bệch vs Dưa đỏ ngọt mật</span>
+              </div>
+            </div>
+            <div class="timeline-item" onclick="jumpTo(43.2)">
+              <div>
+                <span class="sec">00:43.2</span>
+                <span class="act" style="margin-left: 8px; color: #eab308;">🎵 GÕ DƯA: 3 Mẹo chọn dưa chín ngọt lịm</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Audio Element with Master Soundtrack -->
+  <audio id="masterAudio" src="/static/remake_dua_hau_preview.mp4" preload="auto"></audio>
+
+  <script>
+    const canvas = document.getElementById('cartoonCanvas');
+    const ctx = canvas.getContext('2d');
+    const audio = document.getElementById('masterAudio');
+
+    // 1. Load All Pristine 3D Pixar Transparent Cutouts
+    const imgBg = new Image();
+    imgBg.src = '/static/remake_modular/bg_farm.jpg';
+
+    // Character A Mouth Flap States (Lip-Sync)
+    const imgMelonAOpen = new Image();
+    imgMelonAOpen.src = '/static/remake_modular/char_melon_a.png';
+
+    const imgMelonAHalf = new Image();
+    imgMelonAHalf.src = '/static/remake_modular/char_melon_a_half.png';
+
+    const imgMelonAClosed = new Image();
+    imgMelonAClosed.src = '/static/remake_modular/char_melon_a_closed.png';
+
+    // Character B (Companion)
+    const imgMelonBOpen = new Image();
+    imgMelonBOpen.src = '/static/remake_modular/char_melon_b.png';
+
+    const imgMelonBClosed = new Image();
+    imgMelonBClosed.src = '/static/remake_modular/char_melon_b_closed.png';
+
+    // 3D Cut Unripe Melon Asset (Dizzy Swirly Eyes + Pale White Flesh)
+    const imgMelonCut = new Image();
+    imgMelonCut.src = '/static/remake_modular/char_melon_cut.png';
+
+    // 3D Chef Knife Prop (Completely Transparent Alpha)
+    const imgKnife = new Image();
+    imgKnife.src = '/static/remake_modular/prop_knife.png';
+
+    // Educational Scenes
+    const imgCompare = new Image();
+    imgCompare.src = '/static/remake_3d_scenes/scene_5.jpg';
+
+    const imgTips = new Image();
+    imgTips.src = '/static/remake_3d_scenes/scene_6.jpg';
+
+    // Subtitle & Speech Cues
+    const cues = [
+      { start: 0.5, end: 4.2, speaker: 'A', text: "Anh Hai ơi, tụi mình bự chảng ngần này rồi, sao chưa ai tới hái vậy cà?" },
+      { start: 6.4, end: 10.2, speaker: 'A', text: "Ủa bác đi đâu đấy? Tưởng tới hái tụi cháu chớ? Tụi cháu to bự lắm rồi nè!" },
+      { start: 10.4, end: 14.8, speaker: 'FARMER', text: "To xác chưa chắc đã chín đâu con! Hai đứa bay phải nằm phơi nắng thêm mấy ngày nữa!" },
+      { start: 15.0, end: 17.6, speaker: 'A', text: "Ai mà thèm đợi nữa chứ! Cứ bắt người ta nằm chờ hoài hà!" },
+      { start: 17.8, end: 20.0, speaker: 'B', text: "Ủa mày tính làm gì đó? Tự bứt cuống luôn! Buộc phải bưng tụi mình về nha!" },
+      { start: 20.0, end: 22.0, speaker: 'A', text: "Buộc phải hái tụi mình thôi!" },
+      { start: 22.2, end: 29.4, speaker: 'FARMER', text: "Ủa cuống rụng rồi à? Thôi bổ ăn thử... Trời đất ơi! To xác mà ruột trắng bệch, nhạt toẹt, tiếc ghê!" },
+      { start: 30.2, end: 33.5, speaker: 'FARMER', text: "Phải đợi thêm thời gian thì dưa mới tích đủ mật ngọt chứ!" },
+      { start: 34.2, end: 42.5, speaker: 'NARRATOR', text: "Bài học: Dưa hấu đạt kích thước tối đa vẫn cần thêm thời gian để tích lũy độ ngọt tự nhiên." },
+      { start: 43.2, end: 51.5, speaker: 'NARRATOR', text: "Mẹo chọn dưa: Vệt vàng cam dưới đáy, cuống khô teo và gõ nghe tiếng đục mới là dưa chín ngọt nha!" }
+    ];
+
+    let shakeIntensity = 0;
+    let knifeY = -400;
+
+    function togglePlay() {
+      if (audio.paused) {
+        audio.play();
+        document.getElementById('btn-play').textContent = '⏸ Tạm dừng';
+        document.getElementById('btn-top-play').textContent = '⏸ TẠM DỪNG';
+      } else {
+        audio.pause();
+        document.getElementById('btn-play').textContent = '▶ Phát';
+        document.getElementById('btn-top-play').textContent = '▶️ PHÁT HOẠT HÌNH';
+      }
+    }
+
+    function restart() {
+      audio.currentTime = 0;
+      audio.play();
+    }
+
+    function jumpTo(sec) {
+      audio.currentTime = sec;
+      audio.play();
+    }
+
+    function onSeek(e) {
+      const rect = document.getElementById('prog-container').getBoundingClientRect();
+      const pct = (e.clientX - rect.left) / rect.width;
+      audio.currentTime = pct * (audio.duration || 52.7);
+    }
+
+    // Main 60 FPS Render Loop
+    function render(ts) {
+      requestAnimationFrame(render);
+
+      const t = audio.currentTime || 0;
+      const dur = audio.duration || 52.7;
+
+      // Update progress bar
+      const fillPct = (t / dur) * 100;
+      document.getElementById('prog-fill').style.width = fillPct + '%';
+
+      const m = Math.floor(t / 60);
+      const s = Math.floor(t % 60);
+      document.getElementById('time-text').textContent = 
+        `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')} / 00:52`;
+
+      // Update subtitle and speaker status
+      const curCue = cues.find(c => t >= c.start && t <= c.end);
+      const subChip = document.getElementById('sub-chip');
+      const speakLabel = document.getElementById('speak-label');
+      
+      if (curCue) {
+        subChip.textContent = curCue.text;
+        subChip.style.display = 'inline-block';
+        if (curCue.speaker === 'A') {
+          speakLabel.textContent = '🍉 Dưa A đang nhép miệng nói...';
+        } else if (curCue.speaker === 'B') {
+          speakLabel.textContent = '🍈 Bé Dưa B đang nhép miệng cảnh báo...';
+        } else if (curCue.speaker === 'FARMER') {
+          speakLabel.textContent = '👨‍🌾 Bác nông dân đang nói...';
+        } else {
+          speakLabel.textContent = '🎙️ Lời bình viên...';
+        }
+      } else {
+        subChip.style.display = 'none';
+        speakLabel.textContent = 'Đang xem hoạt hình...';
+      }
+
+      // Highlight timeline
+      document.querySelectorAll('.timeline-item').forEach((el, idx) => {
+        const c = cues[idx];
+        if (c) el.classList.toggle('active', t >= c.start && t <= c.end);
+      });
+
+      // Screen shake trigger
+      if (t >= 18.5 && t < 19.5) {
+        shakeIntensity = 24 * (1 - (t - 18.5));
+      } else if (t >= 23.0 && t < 23.6) {
+        shakeIntensity = 18 * (1 - (t - 23.0) / 0.6);
+      } else {
+        shakeIntensity = 0;
+      }
+
+      // Knife animation
+      if (t >= 22.2 && t < 23.0) {
+        // Knife plunges down fast
+        const prog = (t - 22.2) / 0.8;
+        knifeY = -350 + Math.pow(prog, 2) * 1150; // starts -350, drops to 800
+      } else if (t >= 23.0 && t < 23.4) {
+        knifeY = 820;
+      } else {
+        knifeY = -400;
+      }
+
+      ctx.save();
+      // Apply Screen Shake if active
+      if (shakeIntensity > 0) {
+        const ox = (Math.random() - 0.5) * shakeIntensity * 2;
+        const oy = (Math.random() - 0.5) * shakeIntensity * 2;
+        ctx.translate(ox, oy);
+      }
+
+      if (t < 34.0) {
+        // SCENE 1 - 4: FARM STAGE WITH LAYERED 2.5D ANIMATION & LIP-SYNC
+        drawFarmStage(t, ts);
+      } else if (t >= 34.0 && t < 43.0) {
+        // SCENE 5: EDUCATIONAL COMPARISON
+        if (imgCompare.complete) {
+          ctx.drawImage(imgCompare, 0, 0, 720, 1280);
+        }
+      } else {
+        // SCENE 6: 3 TIPS STAGE
+        if (imgTips.complete) {
+          ctx.drawImage(imgTips, 0, 0, 720, 1280);
+        }
+      }
+
+      ctx.restore();
+    }
+
+    function drawFarmStage(t, ts) {
+      // 1. LAYER 1: Background Clean Farm Plate
+      if (imgBg.complete) {
+        const bgZoom = 1 + (t * 0.001);
+        ctx.save();
+        ctx.translate(360, 640);
+        ctx.scale(bgZoom, bgZoom);
+        ctx.drawImage(imgBg, -360, -640, 720, 1280);
+        ctx.restore();
+      } else {
+        ctx.fillStyle = '#1e293b';
+        ctx.fillRect(0, 0, 720, 1280);
+      }
+
+      // 2. LAYER 2: Character Melon B (Companion on Right)
+      const isMelonBSpeaking = (t >= 17.8 && t < 20.0);
+      const isMelonBShocked = (t >= 18.0 && t < 22.0);
+      
+      ctx.save();
+      const bBreath = Math.sin(ts * 0.004) * 0.03;
+      const bBounce = Math.cos(ts * 0.006) * 5;
+      ctx.translate(490, 910 + bBounce);
+
+      if (isMelonBShocked) {
+        // Shocked pose: bigger, shaking slightly
+        const shakeX = (Math.random() - 0.5) * 3;
+        ctx.translate(shakeX, 0);
+        ctx.scale(0.92, 0.94);
+      } else {
+        ctx.scale(0.85 * (1 - bBreath * 0.4), 0.85 * (1 + bBreath));
+      }
+
+      // Choose Melon B asset based on speaking/shocked state
+      let melonBImg = imgMelonBClosed;
+      if (isMelonBSpeaking) {
+        // Lip sync flap for Melon B
+        const bMouthCycle = Math.sin(ts * 0.024);
+        melonBImg = (bMouthCycle > 0) ? imgMelonBOpen : imgMelonBClosed;
+      } else if (isMelonBShocked) {
+        melonBImg = imgMelonBOpen; // mouth open in shock
+      }
+
+      if (melonBImg.complete) {
+        ctx.drawImage(melonBImg, -200, -225, 400, 450);
+      }
+
+      // Melon B natural eye blink (every 3.8s, for 120ms)
+      const bBlinkPhase = (ts % 3800);
+      if (bBlinkPhase < 130 && !isMelonBShocked) {
+        drawBlink(ctx, -60, -35, 32);
+        drawBlink(ctx, 45, -35, 32);
+      }
+
+      // Shock sweat droplets
+      if (isMelonBShocked) {
+        ctx.font = '40px sans-serif';
+        ctx.fillText('💧', 110, -110);
+      }
+      ctx.restore();
+
+      // 3. LAYER 3: Character Melon A (Hero on Left)
+      const isCut = (t >= 23.1);
+
+      if (isCut) {
+        // Sliced Stage: Draw 3D Pixar Unripe Melon with Swirly Eyes!
+        if (imgMelonCut.complete) {
+          ctx.save();
+          // Slight dizzy wobble
+          const wobble = Math.sin(ts * 0.012) * 4;
+          const wobbleRot = Math.sin(ts * 0.008) * 0.03;
+          ctx.translate(340, 910 + wobble);
+          ctx.rotate(wobbleRot);
+          // Scale nicely
+          ctx.drawImage(imgMelonCut, -310, -255, 620, 510);
+
+          // Dizzy stars floating above head
+          const starAngle = ts * 0.004;
+          const sx1 = Math.cos(starAngle) * 70;
+          const sy1 = -240 + Math.sin(starAngle) * 20;
+          const sx2 = Math.cos(starAngle + Math.PI) * 70;
+          const sy2 = -240 + Math.sin(starAngle + Math.PI) * 20;
+
+          ctx.font = '32px sans-serif';
+          ctx.fillText('💫', sx1 - 16, sy1);
+          ctx.fillText('⭐', sx2 - 16, sy2);
+
+          // Impact label
+          ctx.save();
+          ctx.font = '900 24px "Plus Jakarta Sans"';
+          ctx.fillStyle = '#ffffff';
+          ctx.shadowColor = 'rgba(0,0,0,0.8)';
+          ctx.shadowBlur = 10;
+          ctx.textAlign = 'center';
+          ctx.fillText('Ruột Trắng Bệch · Nhạt Toẹt!', 0, 240);
+          ctx.restore();
+
+          ctx.restore();
+        }
+      } else {
+        // Alive Whole Melon A
+        const isSpeaking = (t >= 0.5 && t < 4.2) || (t >= 6.4 && t < 10.2) || (t >= 15.0 && t < 17.6) || (t >= 20.0 && t < 22.0);
+        const isSad = (t >= 10.4 && t < 14.8); // Farmer says "To xác chưa chắc đã chín"
+        const isPullingStem = (t >= 18.2 && t < 22.0);
+
+        ctx.save();
+        const aBounce = isSpeaking ? Math.sin(ts * 0.018) * 9 : Math.sin(ts * 0.005) * 4;
+        const aSquashY = 1 + (isSpeaking ? Math.sin(ts * 0.02) * 0.06 : Math.sin(ts * 0.005) * 0.02);
+        const aSquashX = 1 - (aSquashY - 1) * 0.5;
+
+        ctx.translate(230, 880 + aBounce);
+        ctx.scale(aSquashX, aSquashY);
+
+        // Character tilt / reaction
+        if (isSad) {
+          ctx.rotate(-0.06); // Droop in disappointment
+        } else if (isSpeaking) {
+          ctx.rotate(Math.sin(ts * 0.008) * 0.03); // Waving body while talking
+        }
+
+        if (isPullingStem) {
+          // Tremble violently while straining to snap stem
+          const tremble = (Math.random() - 0.5) * 8;
+          ctx.translate(tremble, 0);
+        }
+
+        // --- DYNAMIC LIP-SYNC ENGINE ---
+        let currentMelonAImg = imgMelonAClosed; // Default: closed cute smile
+
+        if (isSpeaking) {
+          // Calculate natural speech syllable visemes
+          // Cycle with combination frequencies to simulate irregular natural syllable rates
+          const syllableScore = Math.sin(ts * 0.026) * 0.55 + Math.sin(ts * 0.042) * 0.45;
+          if (syllableScore > 0.45) {
+            currentMelonAImg = imgMelonAOpen;   // Wide open 'A' mouth
+          } else if (syllableScore > -0.2) {
+            currentMelonAImg = imgMelonAHalf;   // Half open transition mouth
+          } else {
+            currentMelonAImg = imgMelonAClosed; // Consonant closure
+          }
+        } else if (isSad) {
+          currentMelonAImg = imgMelonAClosed;
+        }
+
+        if (currentMelonAImg.complete) {
+          ctx.drawImage(currentMelonAImg, -240, -260, 480, 520);
+        }
+
+        // Natural eye blink for Melon A (every 3.2s, for 120ms)
+        const aBlinkPhase = (ts % 3200);
+        if (aBlinkPhase < 120 && !isPullingStem) {
+          drawBlink(ctx, -75, -55, 38);
+          drawBlink(ctx, 48, -55, 38);
+        }
+
+        // Snapped Stem Particle Burst at 18.8s
+        if (t >= 18.8 && t < 20.2) {
+          ctx.save();
+          ctx.fillStyle = '#fbbf24';
+          ctx.font = 'bold 36px "Plus Jakarta Sans"';
+          ctx.shadowColor = '#000';
+          ctx.shadowBlur = 8;
+          ctx.fillText('💥 BỨT CUỐNG!', -90, -260);
+          ctx.restore();
+        }
+
+        ctx.restore();
+      }
+
+      // 4. LAYER 4: 3D Chef Knife Prop (Zero Background Box)
+      if (imgKnife.complete && knifeY > -300) {
+        ctx.save();
+        ctx.translate(260, knifeY);
+        ctx.rotate(-0.32);
+        // Draw with proper aspect ratio (887 x 215)
+        const kw = 380;
+        const kh = 380 * (215 / 887);
+        ctx.drawImage(imgKnife, -kw/2, -kh/2, kw, kh);
+
+        // Brilliant Slash Streak upon impact
+        if (t >= 22.9 && t < 23.3) {
+          ctx.strokeStyle = 'rgba(255, 255, 255, 0.95)';
+          ctx.lineWidth = 10;
+          ctx.lineCap = 'round';
+          ctx.beginPath();
+          ctx.moveTo(-180, -120);
+          ctx.lineTo(180, 120);
+          ctx.stroke();
+
+          // Flash glow
+          ctx.strokeStyle = 'rgba(192, 132, 252, 0.6)';
+          ctx.lineWidth = 22;
+          ctx.stroke();
+        }
+        ctx.restore();
+      }
+    }
+
+    // Helper: Draw curved cartoon eyelid blink
+    function drawBlink(context, x, y, radius) {
+      context.save();
+      context.beginPath();
+      context.arc(x, y, radius, 0.15 * Math.PI, 0.85 * Math.PI, false);
+      context.lineWidth = 6;
+      context.strokeStyle = '#233d14';
+      context.lineCap = 'round';
+      context.stroke();
+      context.restore();
+    }
+
+    // Start 60 FPS loop
+    requestAnimationFrame(render);
+  </script>
+</body>
+</html>

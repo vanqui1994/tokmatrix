@@ -1,0 +1,482 @@
+{
+  "schema": "tokmatrix.director-profiles/v1",
+  "version": "1.0.0",
+  "notes": "Creative profiles for UV-502. A profile only expresses preference: it never carries scene times, speaker identity, dialogue text or action order, because those are hard source facts the director refuses to overwrite. Safe areas are inset fractions of the frame (top/bottom/left/right); captions must stay inside the remaining box. min_shot_seconds and max_cuts_per_second are advisory and produce review items, never a retime. renderer.preferred_ids is an ordered wish list only: the router (UV-104) owns selection by capability, and a pick outside the list raises a review item rather than overriding a hard capability gate.",
+  "aspects": {
+    "9:16": 0.5625,
+    "4:5": 0.8,
+    "1:1": 1.0,
+    "16:9": 1.7777777777777777
+  },
+  "profiles": {
+    "source-faithful": {
+      "id": "source-faithful",
+      "label": "Source faithful",
+      "description": "Reproduce the source: keep its framing, staging and rhythm; only fill in what the source cannot provide.",
+      "source_faithful": true,
+      "framing": {
+        "default": "medium",
+        "allow_reframe": false,
+        "by_action": {},
+        "by_role": {}
+      },
+      "staging": {
+        "max_subjects": 6,
+        "primary_side": "center",
+        "margin_fraction": 0.04,
+        "rule_of_thirds": false
+      },
+      "captions": {
+        "enabled": true,
+        "position": "bottom",
+        "max_chars_per_line": 42,
+        "safe_area": {
+          "9:16": {
+            "top": 0.08,
+            "bottom": 0.14,
+            "left": 0.06,
+            "right": 0.06
+          },
+          "4:5": {
+            "top": 0.07,
+            "bottom": 0.12,
+            "left": 0.06,
+            "right": 0.06
+          },
+          "1:1": {
+            "top": 0.07,
+            "bottom": 0.1,
+            "left": 0.06,
+            "right": 0.06
+          },
+          "16:9": {
+            "top": 0.06,
+            "bottom": 0.1,
+            "left": 0.05,
+            "right": 0.05
+          },
+          "custom": {
+            "top": 0.08,
+            "bottom": 0.14,
+            "left": 0.06,
+            "right": 0.06
+          }
+        }
+      },
+      "continuity": {
+        "min_shot_seconds": 0.4,
+        "max_cuts_per_second": 4.0,
+        "lock_speaker_screen_side": true,
+        "preserve_entity_side": true
+      },
+      "renderer": {
+        "preferred_ids": [
+          "native-vector-v1",
+          "puppet-2d-v1",
+          "footage-composite-v1",
+          "screen-ui-v1",
+          "motion-graphics-v1"
+        ],
+        "min_fidelity": {}
+      }
+    },
+    "tiktok-fast": {
+      "id": "tiktok-fast",
+      "label": "TikTok fast",
+      "description": "Vertical, tight framing, busy captions, quick cuts — without touching the source's timing or speakers.",
+      "source_faithful": false,
+      "framing": {
+        "default": "close_up",
+        "allow_reframe": true,
+        "by_action": {
+          "talk": "close_up",
+          "reach": "medium",
+          "carry": "medium",
+          "walk": "full",
+          "speak": "close_up"
+        },
+        "by_role": {
+          "actor": "close_up",
+          "product": "close_up",
+          "background": "wide",
+          "speaker": "close_up"
+        }
+      },
+      "staging": {
+        "max_subjects": 3,
+        "primary_side": "center",
+        "margin_fraction": 0.08,
+        "rule_of_thirds": true
+      },
+      "captions": {
+        "enabled": true,
+        "position": "center",
+        "max_chars_per_line": 24,
+        "safe_area": {
+          "9:16": {
+            "top": 0.12,
+            "bottom": 0.22,
+            "left": 0.08,
+            "right": 0.08
+          },
+          "4:5": {
+            "top": 0.1,
+            "bottom": 0.18,
+            "left": 0.08,
+            "right": 0.08
+          },
+          "1:1": {
+            "top": 0.09,
+            "bottom": 0.16,
+            "left": 0.08,
+            "right": 0.08
+          },
+          "16:9": {
+            "top": 0.08,
+            "bottom": 0.14,
+            "left": 0.06,
+            "right": 0.06
+          },
+          "custom": {
+            "top": 0.12,
+            "bottom": 0.22,
+            "left": 0.08,
+            "right": 0.08
+          }
+        }
+      },
+      "continuity": {
+        "min_shot_seconds": 0.8,
+        "max_cuts_per_second": 2.0,
+        "lock_speaker_screen_side": false,
+        "preserve_entity_side": false
+      },
+      "renderer": {
+        "preferred_ids": [
+          "puppet-2d-v1",
+          "native-vector-v1",
+          "motion-graphics-v1"
+        ],
+        "min_fidelity": {
+          "character_motion": 0.6
+        }
+      }
+    },
+    "educational": {
+      "id": "educational",
+      "label": "Educational",
+      "description": "Readable diagrams and steady shots; captions never cover the subject being explained.",
+      "source_faithful": false,
+      "framing": {
+        "default": "medium",
+        "allow_reframe": true,
+        "by_action": {
+          "talk": "medium",
+          "point": "medium",
+          "grow": "full",
+          "speak": "medium"
+        },
+        "by_role": {
+          "actor": "medium",
+          "diagram": "full",
+          "screen": "screen_capture",
+          "speaker": "medium"
+        }
+      },
+      "staging": {
+        "max_subjects": 4,
+        "primary_side": "left",
+        "margin_fraction": 0.1,
+        "rule_of_thirds": true
+      },
+      "captions": {
+        "enabled": true,
+        "position": "bottom",
+        "max_chars_per_line": 38,
+        "safe_area": {
+          "9:16": {
+            "top": 0.1,
+            "bottom": 0.2,
+            "left": 0.08,
+            "right": 0.08
+          },
+          "4:5": {
+            "top": 0.09,
+            "bottom": 0.16,
+            "left": 0.08,
+            "right": 0.08
+          },
+          "1:1": {
+            "top": 0.08,
+            "bottom": 0.14,
+            "left": 0.08,
+            "right": 0.08
+          },
+          "16:9": {
+            "top": 0.07,
+            "bottom": 0.12,
+            "left": 0.06,
+            "right": 0.06
+          },
+          "custom": {
+            "top": 0.1,
+            "bottom": 0.2,
+            "left": 0.08,
+            "right": 0.08
+          }
+        }
+      },
+      "continuity": {
+        "min_shot_seconds": 1.5,
+        "max_cuts_per_second": 0.8,
+        "lock_speaker_screen_side": true,
+        "preserve_entity_side": true
+      },
+      "renderer": {
+        "preferred_ids": [
+          "motion-graphics-v1",
+          "screen-ui-v1",
+          "native-vector-v1"
+        ],
+        "min_fidelity": {
+          "typography": 0.4
+        }
+      }
+    },
+    "product": {
+      "id": "product",
+      "label": "Product",
+      "description": "The product stays the subject: tight shots, clean margins, captions out of the product area.",
+      "source_faithful": false,
+      "framing": {
+        "default": "close_up",
+        "allow_reframe": true,
+        "by_action": {
+          "grip": "close_up",
+          "carry": "medium",
+          "place": "medium",
+          "talk": "medium",
+          "speak": "medium"
+        },
+        "by_role": {
+          "product": "extreme_close_up",
+          "actor": "medium",
+          "speaker": "medium"
+        }
+      },
+      "staging": {
+        "max_subjects": 2,
+        "primary_side": "right",
+        "margin_fraction": 0.12,
+        "rule_of_thirds": true
+      },
+      "captions": {
+        "enabled": true,
+        "position": "bottom",
+        "max_chars_per_line": 30,
+        "safe_area": {
+          "9:16": {
+            "top": 0.1,
+            "bottom": 0.18,
+            "left": 0.1,
+            "right": 0.1
+          },
+          "4:5": {
+            "top": 0.09,
+            "bottom": 0.15,
+            "left": 0.1,
+            "right": 0.1
+          },
+          "1:1": {
+            "top": 0.08,
+            "bottom": 0.13,
+            "left": 0.1,
+            "right": 0.1
+          },
+          "16:9": {
+            "top": 0.07,
+            "bottom": 0.11,
+            "left": 0.07,
+            "right": 0.07
+          },
+          "custom": {
+            "top": 0.1,
+            "bottom": 0.18,
+            "left": 0.1,
+            "right": 0.1
+          }
+        }
+      },
+      "continuity": {
+        "min_shot_seconds": 1.2,
+        "max_cuts_per_second": 1.2,
+        "lock_speaker_screen_side": false,
+        "preserve_entity_side": true
+      },
+      "renderer": {
+        "preferred_ids": [
+          "footage-composite-v1",
+          "motion-graphics-v1",
+          "native-vector-v1"
+        ],
+        "min_fidelity": {}
+      }
+    },
+    "news": {
+      "id": "news",
+      "label": "News",
+      "description": "Sober framing, lower-third captions, no invented emphasis; the speaker's side of frame is locked.",
+      "source_faithful": false,
+      "framing": {
+        "default": "medium",
+        "allow_reframe": true,
+        "by_action": {
+          "talk": "medium",
+          "point": "medium",
+          "speak": "medium"
+        },
+        "by_role": {
+          "actor": "medium",
+          "anchor": "medium",
+          "background": "wide",
+          "speaker": "medium"
+        }
+      },
+      "staging": {
+        "max_subjects": 3,
+        "primary_side": "left",
+        "margin_fraction": 0.08,
+        "rule_of_thirds": false
+      },
+      "captions": {
+        "enabled": true,
+        "position": "lower_third",
+        "max_chars_per_line": 40,
+        "safe_area": {
+          "9:16": {
+            "top": 0.08,
+            "bottom": 0.2,
+            "left": 0.06,
+            "right": 0.06
+          },
+          "4:5": {
+            "top": 0.07,
+            "bottom": 0.17,
+            "left": 0.06,
+            "right": 0.06
+          },
+          "1:1": {
+            "top": 0.07,
+            "bottom": 0.15,
+            "left": 0.06,
+            "right": 0.06
+          },
+          "16:9": {
+            "top": 0.06,
+            "bottom": 0.13,
+            "left": 0.05,
+            "right": 0.05
+          },
+          "custom": {
+            "top": 0.08,
+            "bottom": 0.2,
+            "left": 0.06,
+            "right": 0.06
+          }
+        }
+      },
+      "continuity": {
+        "min_shot_seconds": 2.0,
+        "max_cuts_per_second": 0.5,
+        "lock_speaker_screen_side": true,
+        "preserve_entity_side": true
+      },
+      "renderer": {
+        "preferred_ids": [
+          "motion-graphics-v1",
+          "footage-composite-v1",
+          "native-vector-v1"
+        ],
+        "min_fidelity": {
+          "typography": 0.4
+        }
+      }
+    },
+    "meme": {
+      "id": "meme",
+      "label": "Meme",
+      "description": "Loud captions and punchy framing. Still refuses to move a word of dialogue or a second of timing.",
+      "source_faithful": false,
+      "framing": {
+        "default": "close_up",
+        "allow_reframe": true,
+        "by_action": {
+          "talk": "extreme_close_up",
+          "reach": "close_up",
+          "speak": "extreme_close_up"
+        },
+        "by_role": {
+          "actor": "extreme_close_up",
+          "speaker": "extreme_close_up"
+        }
+      },
+      "staging": {
+        "max_subjects": 2,
+        "primary_side": "center",
+        "margin_fraction": 0.06,
+        "rule_of_thirds": false
+      },
+      "captions": {
+        "enabled": true,
+        "position": "top",
+        "max_chars_per_line": 20,
+        "safe_area": {
+          "9:16": {
+            "top": 0.14,
+            "bottom": 0.24,
+            "left": 0.05,
+            "right": 0.05
+          },
+          "4:5": {
+            "top": 0.12,
+            "bottom": 0.2,
+            "left": 0.05,
+            "right": 0.05
+          },
+          "1:1": {
+            "top": 0.1,
+            "bottom": 0.18,
+            "left": 0.05,
+            "right": 0.05
+          },
+          "16:9": {
+            "top": 0.09,
+            "bottom": 0.15,
+            "left": 0.05,
+            "right": 0.05
+          },
+          "custom": {
+            "top": 0.14,
+            "bottom": 0.24,
+            "left": 0.05,
+            "right": 0.05
+          }
+        }
+      },
+      "continuity": {
+        "min_shot_seconds": 0.5,
+        "max_cuts_per_second": 3.0,
+        "lock_speaker_screen_side": false,
+        "preserve_entity_side": false
+      },
+      "renderer": {
+        "preferred_ids": [
+          "native-vector-v1",
+          "puppet-2d-v1",
+          "motion-graphics-v1"
+        ],
+        "min_fidelity": {}
+      }
+    }
+  }
+}

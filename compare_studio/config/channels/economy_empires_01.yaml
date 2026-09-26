@@ -1,0 +1,43 @@
+channel_id: economy_empires_01
+config_version: 4
+niche_id: economy_empires
+name: Wirtschaft & Märkte 01
+tiktok_account_ref: null
+persona:
+  tone: evidence_first_editorial
+  energy_level: 0.7000000000000001
+  target_demographic: Vietnamese viewers aged 18-34
+  catchphrase_prefix: 'Điều đáng chú ý trong câu chuyện này là:'
+story:
+  preferred_blueprints:
+  - mystery_reveal
+  preferred_hook_types:
+  - evidence_hook
+  - paradox_question
+  target_duration_seconds: 50
+  pacing_beats: 12
+creative:
+  preferred_engines:
+  - vox
+  - newspaper
+  - tierlist
+  visual_style_id: dark_mystery_v1
+  cut_cadence_seconds: 2.6
+  palette:
+    primary: '#111318'
+    accent: '#D6A84F'
+    text: '#F2EEE6'
+audio:
+  voice_id: de-DE-ConradNeural
+  voice_speed: 1.02
+  voice_pitch: -1
+  music_family: economy_empires_editorial
+  soundscape_id: vox
+  sfx_density: medium
+publishing:
+  language: de
+  default_schedule_window: 19:30-20:30
+  hashtags:
+  - economyempires
+  - khampha
+  - facts

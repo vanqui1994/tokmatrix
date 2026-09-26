@@ -1,0 +1,82 @@
+__pycache__/
+*.py[cod]
+.DS_Store
+
+# Local secrets and account state
+.env
+.env.*
+!.env.example
+!**/.env.example
+*.key
+*.pem
+*.fernet
+*.db
+*.db-*
+bkt_web/.secret.key
+bkt_web/.bkt_secrets.key
+bkt_web/*.db
+bkt_web/*.db-*
+bkt_web/*.fernet
+bkt_web/backups/
+bkt_web/*.txt
+bkt_web/vpn_configs/
+bkt_web/profiles/
+bkt_web/nuoinick_settings.json
+data/Cookies
+last_location/api_cookie.json
+/40uk a Qui.txt
+deploy/antigravity_accounts_pool.json
+
+# Generated media
+bkt_web/storage/downloads/
+bkt_web/storage/rendered/
+bkt_web/storage/remake_uploads/
+bkt_web/storage/generated_scripts/
+bkt_web/storage/learning_reports/
+bkt_web/storage/autopilot_topics/
+bkt_web/storage/image_queue.json*
+bkt_web/storage/remake_bridge_tasks.json
+bkt_web/storage/remake_projects.json
+bkt_web/storage/antigravity_bridge/inbox/
+bkt_web/storage/antigravity_bridge/outbox/
+bkt_web/storage/script_bridge/inbox/
+bkt_web/storage/script_bridge/outbox/
+bkt_web/static/.playwright_video/
+compare_studio/videos/
+*.mp4
+*.webm
+*.part
+
+# Local environments and logs
+.venv/
+venv/
+node_modules/
+dist/
+.cache/
+.runtime/
+*.log
+
+# Artifact sinh ra khi chạy — đã dọn ngày 2026-09-22, đừng đưa lên VPS
+scratch/
+bkt_web/static/remake_projects/
+bkt_web/static/generated_images/
+bkt_web/static/remake_sprites_*/
+bkt_web/static/remake_*_preview.mp4
+bkt_web/static/remake_*_animated.html
+bkt_web/storage/remake_scratch/
+bkt_web/storage/antigravity_bridge/archive/
+bkt_web/*.bak-*
+bkt_web/static/*.bak-*.html
+bkt_web/storage/*.bak-*.json
+compare_studio/videos/*/renders/
+compare_studio/videos/*/snapshots/
+
+# Dữ liệu tài khoản dạng văn bản thường — không bao giờ commit hay upload
+bkt_web/quy.txt
+bkt_web/store_emails*.txt
+bkt_web/*uk.txt
+
+# Mật khẩu máy chủ — không commit
+VPS_CREDENTIALS.md
+.session_token
+.webauth.json

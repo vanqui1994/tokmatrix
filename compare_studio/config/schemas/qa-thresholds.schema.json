@@ -1,0 +1,108 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "qa-thresholds.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "policy_version",
+    "default_similarity_threshold",
+    "shortlist_size",
+    "max_registry_candidates",
+    "max_script_duration_seconds",
+    "max_hook_duration_seconds",
+    "minimum_script_qa_score",
+    "forbidden_phrases",
+    "niches"
+  ],
+  "properties": {
+    "policy_version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "default_similarity_threshold": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "shortlist_size": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 100
+    },
+    "max_registry_candidates": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 10000
+    },
+    "max_script_duration_seconds": {
+      "type": "number",
+      "exclusiveMinimum": 0,
+      "maximum": 180
+    },
+    "max_hook_duration_seconds": {
+      "type": "number",
+      "exclusiveMinimum": 0,
+      "maximum": 10
+    },
+    "minimum_script_qa_score": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "forbidden_phrases": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "niches": {
+      "type": "object",
+      "minProperties": 18,
+      "maxProperties": 18,
+      "patternProperties": {
+        "^[a-z][a-z0-9_]*$": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "policy_version",
+            "similarity_threshold"
+          ],
+          "properties": {
+            "policy_version": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "similarity_threshold": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "lexical_similarity_threshold": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "embedding_similarity_threshold": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "lexical_similarity_threshold": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "embedding_similarity_threshold": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    }
+  }
+}

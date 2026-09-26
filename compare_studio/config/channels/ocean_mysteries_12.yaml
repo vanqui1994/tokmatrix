@@ -1,0 +1,43 @@
+audio:
+  music_family: ocean_mysteries_editorial
+  sfx_density: medium
+  soundscape_id: mystery
+  voice_id: ko-KR-InJoonNeural
+  voice_pitch: -1
+  voice_speed: 1.05
+channel_id: ocean_mysteries_12
+config_version: 4
+creative:
+  cut_cadence_seconds: 2.7
+  palette:
+    accent: '#D6A84F'
+    primary: '#111318'
+    text: '#F2EEE6'
+  preferred_engines:
+  - tierlist
+  - mystery
+  - survival
+  visual_style_id: dark_mystery_v1
+name: 바다와 심해 해구 12
+niche_id: ocean_mysteries
+persona:
+  catchphrase_prefix: 'Điều đáng chú ý trong câu chuyện này là:'
+  energy_level: 0.7000000000000001
+  target_demographic: Vietnamese viewers aged 18-34
+  tone: evidence_first_editorial
+publishing:
+  default_schedule_window: 19:30-20:30
+  hashtags:
+  - oceanmysteries
+  - khampha
+  - facts
+  language: ko
+story:
+  pacing_beats: 12
+  preferred_blueprints:
+  - mystery_reveal
+  preferred_hook_types:
+  - evidence_hook
+  - paradox_question
+  target_duration_seconds: 51
+tiktok_account_ref: null

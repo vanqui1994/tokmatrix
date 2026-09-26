@@ -1,0 +1,14 @@
+blueprint_id: mystery_reveal
+name: Mystery Reveal
+description: Dẫn dắt từ một dị thường, lần theo bằng chứng rồi kết thúc bằng câu hỏi còn bỏ ngỏ.
+beats:
+  - id: hook_anomaly
+    purpose: Nêu chi tiết bất thường đủ cụ thể để tạo câu hỏi.
+  - id: historical_clue
+    purpose: Đặt sự kiện vào bối cảnh và đưa ra manh mối có nguồn.
+  - id: contradiction
+    purpose: Đối chiếu dữ kiện không khớp, tránh khẳng định giả thuyết là sự thật.
+  - id: shocking_twist
+    purpose: Mở ra cách diễn giải khác có căn cứ.
+  - id: unresolved_loop
+    purpose: Khép lại bằng câu hỏi hoặc điều chưa thể kết luận.

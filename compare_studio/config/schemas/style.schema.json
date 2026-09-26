@@ -1,0 +1,22 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "style.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["style_id", "name", "visual_language", "prompt_tags", "palette", "negative_prompt"],
+  "properties": {
+    "style_id": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
+    "name": { "type": "string", "minLength": 1 },
+    "visual_language": { "type": "string", "minLength": 1 },
+    "prompt_tags": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "type": "string", "minLength": 1 } },
+    "palette": {
+      "type": "object", "additionalProperties": false, "required": ["primary", "accent", "text"],
+      "properties": {
+        "primary": { "type": "string", "pattern": "^#[0-9A-Fa-f]{6}$" },
+        "accent": { "type": "string", "pattern": "^#[0-9A-Fa-f]{6}$" },
+        "text": { "type": "string", "pattern": "^#[0-9A-Fa-f]{6}$" }
+      }
+    },
+    "negative_prompt": { "type": "string", "minLength": 1 }
+  }
+}

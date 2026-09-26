@@ -1,0 +1,11 @@
+[Unit]
+Description=Ghi so lieu Autopilot moi 10 phut
+
+[Timer]
+OnCalendar=*:0/10
+AccuracySec=30s
+Persistent=true
+Unit=tokmatrix-metrics.service
+
+[Install]
+WantedBy=timers.target

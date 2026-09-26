@@ -1,0 +1,453 @@
+{
+  "schema": "tokmatrix.interaction-composites/v1",
+  "version": "1.0.0",
+  "notes": "Composite actions are data only. Every step must be a primitive of the UV-203 interaction grammar or a UV-201 lifecycle action; a step may never name another composite, which keeps expansion single-pass and terminating. Step times are ratios of the composite interval, so a composite is duration independent. actor_roles bind to entity ids because Universal Storyboard v2 requires Action.actor_ids to be entities; the component or anchor that actually makes contact is bound through parameters.actor_ref.",
+  "composites": {
+    "harvest_fruit": {
+      "id": "harvest_fruit",
+      "summary": "Reach a fruit, pluck it off the plant, carry it over and drop it into a basket.",
+      "roles": [
+        "farmer",
+        "hand",
+        "fruit",
+        "basket"
+      ],
+      "steps": [
+        {
+          "step_id": "touch",
+          "type": "touch",
+          "start_ratio": 0.0,
+          "end_ratio": 0.25,
+          "actor_roles": [
+            "farmer"
+          ],
+          "target_roles": [
+            "fruit"
+          ],
+          "parameters": {
+            "actor_ref": {
+              "$role": "hand"
+            }
+          }
+        },
+        {
+          "step_id": "pluck",
+          "type": "pluck",
+          "start_ratio": 0.25,
+          "end_ratio": 0.35,
+          "actor_roles": [
+            "farmer"
+          ],
+          "target_roles": [
+            "fruit"
+          ],
+          "parameters": {
+            "actor_ref": {
+              "$role": "hand"
+            }
+          }
+        },
+        {
+          "step_id": "drag",
+          "type": "drag",
+          "start_ratio": 0.35,
+          "end_ratio": 0.85,
+          "actor_roles": [
+            "farmer"
+          ],
+          "target_roles": [
+            "fruit"
+          ],
+          "parameters": {
+            "to": {
+              "$param": "drop_point"
+            },
+            "actor_ref": {
+              "$role": "hand"
+            }
+          }
+        },
+        {
+          "step_id": "place",
+          "type": "place",
+          "start_ratio": 0.85,
+          "end_ratio": 1.0,
+          "actor_roles": [
+            "farmer"
+          ],
+          "target_roles": [
+            "fruit"
+          ],
+          "parameters": {
+            "container_ref": {
+              "$role": "basket"
+            },
+            "bounds": {
+              "$param": "basket_bounds"
+            },
+            "actor_ref": {
+              "$role": "hand"
+            }
+          }
+        }
+      ]
+    },
+    "water_plant": {
+      "id": "water_plant",
+      "summary": "Pick up a watering can, tip it over the soil and pour.",
+      "roles": [
+        "farmer",
+        "hand",
+        "can",
+        "soil"
+      ],
+      "steps": [
+        {
+          "step_id": "touch",
+          "type": "touch",
+          "start_ratio": 0.0,
+          "end_ratio": 0.2,
+          "actor_roles": [
+            "farmer"
+          ],
+          "target_roles": [
+            "can"
+          ],
+          "parameters": {
+            "actor_ref": {
+              "$role": "hand"
+            }
+          }
+        },
+        {
+          "step_id": "tip",
+          "type": "fold",
+          "start_ratio": 0.2,
+          "end_ratio": 0.4,
+          "actor_roles": [
+            "farmer"
+          ],
+          "target_roles": [
+            "can"
+          ],
+          "parameters": {
+            "to_degrees": {
+              "$param": "tip_degrees"
+            },
+            "actor_ref": {
+              "$role": "hand"
+            }
+          }
+        },
+        {
+          "step_id": "pour",
+          "type": "pour",
+          "start_ratio": 0.4,
+          "end_ratio": 1.0,
+          "actor_roles": [
+            "farmer"
+          ],
+          "target_roles": [
+            "soil"
+          ],
+          "parameters": {
+            "material": "water",
+            "rate": 1.0,
+            "actor_ref": {
+              "$role": "can"
+            }
+          }
+        }
+      ]
+    },
+    "hand_over_item": {
+      "id": "hand_over_item",
+      "summary": "One character hands an item to another and the item changes owner.",
+      "roles": [
+        "giver",
+        "giver_hand",
+        "item",
+        "receiver_hand"
+      ],
+      "steps": [
+        {
+          "step_id": "offer",
+          "type": "touch",
+          "start_ratio": 0.0,
+          "end_ratio": 0.3,
+          "actor_roles": [
+            "giver"
+          ],
+          "target_roles": [
+            "item"
+          ],
+          "parameters": {
+            "actor_ref": {
+              "$role": "receiver_hand"
+            }
+          }
+        },
+        {
+          "step_id": "transfer",
+          "type": "transfer",
+          "start_ratio": 0.3,
+          "end_ratio": 1.0,
+          "actor_roles": [
+            "giver"
+          ],
+          "target_roles": [
+            "item"
+          ],
+          "parameters": {
+            "parent_component_id": {
+              "$role": "receiver_hand"
+            },
+            "actor_ref": {
+              "$role": "giver_hand"
+            }
+          }
+        }
+      ]
+    },
+    "store_in_box": {
+      "id": "store_in_box",
+      "summary": "Open a lid, put an item inside the box and close the lid again.",
+      "roles": [
+        "actor",
+        "hand",
+        "lid",
+        "item",
+        "interior"
+      ],
+      "steps": [
+        {
+          "step_id": "open",
+          "type": "open",
+          "start_ratio": 0.0,
+          "end_ratio": 0.3,
+          "actor_roles": [
+            "actor"
+          ],
+          "target_roles": [
+            "lid"
+          ],
+          "parameters": {
+            "to_degrees": {
+              "$param": "open_degrees"
+            },
+            "actor_ref": {
+              "$role": "hand"
+            }
+          }
+        },
+        {
+          "step_id": "place",
+          "type": "place",
+          "start_ratio": 0.3,
+          "end_ratio": 0.7,
+          "actor_roles": [
+            "actor"
+          ],
+          "target_roles": [
+            "item"
+          ],
+          "parameters": {
+            "container_ref": {
+              "$role": "interior"
+            },
+            "bounds": {
+              "$param": "interior_bounds"
+            },
+            "actor_ref": {
+              "$role": "hand"
+            }
+          }
+        },
+        {
+          "step_id": "close",
+          "type": "close",
+          "start_ratio": 0.7,
+          "end_ratio": 1.0,
+          "actor_roles": [
+            "actor"
+          ],
+          "target_roles": [
+            "lid"
+          ],
+          "parameters": {
+            "to_degrees": 0,
+            "actor_ref": {
+              "$role": "hand"
+            }
+          }
+        }
+      ]
+    },
+    "push_object_aside": {
+      "id": "push_object_aside",
+      "summary": "Touch an object and push it to a new position, then let go.",
+      "roles": [
+        "actor",
+        "hand",
+        "object"
+      ],
+      "steps": [
+        {
+          "step_id": "touch",
+          "type": "touch",
+          "start_ratio": 0.0,
+          "end_ratio": 0.2,
+          "actor_roles": [
+            "actor"
+          ],
+          "target_roles": [
+            "object"
+          ],
+          "parameters": {
+            "actor_ref": {
+              "$role": "hand"
+            }
+          }
+        },
+        {
+          "step_id": "push",
+          "type": "push",
+          "start_ratio": 0.2,
+          "end_ratio": 0.9,
+          "actor_roles": [
+            "actor"
+          ],
+          "target_roles": [
+            "object"
+          ],
+          "parameters": {
+            "to": {
+              "$param": "to"
+            },
+            "actor_ref": {
+              "$role": "hand"
+            }
+          }
+        },
+        {
+          "step_id": "release",
+          "type": "release",
+          "start_ratio": 0.9,
+          "end_ratio": 1.0,
+          "actor_roles": [
+            "actor"
+          ],
+          "target_roles": [
+            "object"
+          ],
+          "parameters": {
+            "actor_ref": {
+              "$role": "hand"
+            }
+          }
+        }
+      ]
+    },
+    "spray_crop": {
+      "id": "spray_crop",
+      "summary": "Grab a sprayer, aim it at a plant and spray.",
+      "roles": [
+        "farmer",
+        "hand",
+        "sprayer",
+        "plant"
+      ],
+      "steps": [
+        {
+          "step_id": "touch",
+          "type": "touch",
+          "start_ratio": 0.0,
+          "end_ratio": 0.2,
+          "actor_roles": [
+            "farmer"
+          ],
+          "target_roles": [
+            "sprayer"
+          ],
+          "parameters": {
+            "actor_ref": {
+              "$role": "hand"
+            }
+          }
+        },
+        {
+          "step_id": "spray",
+          "type": "spray",
+          "start_ratio": 0.2,
+          "end_ratio": 1.0,
+          "actor_roles": [
+            "farmer"
+          ],
+          "target_roles": [
+            "plant"
+          ],
+          "parameters": {
+            "material": "fertilizer",
+            "rate": 0.6,
+            "spread": 0.35,
+            "actor_ref": {
+              "$role": "sprayer"
+            }
+          }
+        }
+      ]
+    },
+    "scatter_seed": {
+      "id": "scatter_seed",
+      "summary": "Pull a seed bag closer and scatter seed over a field.",
+      "roles": [
+        "farmer",
+        "hand",
+        "bag",
+        "field"
+      ],
+      "steps": [
+        {
+          "step_id": "pull",
+          "type": "pull",
+          "start_ratio": 0.0,
+          "end_ratio": 0.4,
+          "actor_roles": [
+            "farmer"
+          ],
+          "target_roles": [
+            "bag"
+          ],
+          "parameters": {
+            "to": {
+              "$param": "to"
+            },
+            "actor_ref": {
+              "$role": "hand"
+            }
+          }
+        },
+        {
+          "step_id": "scatter",
+          "type": "scatter",
+          "start_ratio": 0.4,
+          "end_ratio": 1.0,
+          "actor_roles": [
+            "farmer"
+          ],
+          "target_roles": [
+            "field"
+          ],
+          "parameters": {
+            "material": "seed",
+            "rate": 0.8,
+            "spread": 0.9,
+            "actor_ref": {
+              "$role": "bag"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

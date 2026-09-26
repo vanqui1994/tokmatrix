@@ -1,0 +1,5 @@
+niche_id: economy_empires
+name: Kinh Tế & Thương Trường
+language: vi
+summary: Lịch sử doanh nghiệp, kinh tế và cuộc cạnh tranh trên thị trường.
+allowed_engines: [newspaper, vox, chalk, tierlist, kinetic, wildlife]

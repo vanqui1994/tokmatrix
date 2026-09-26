@@ -1,0 +1,13 @@
+style_id: dark_mystery_v1
+name: Dark Mystery Archive
+visual_language: Documentary evidence board, archival paper, restrained noir lighting, credible and investigative rather than sensational.
+prompt_tags:
+  - cinematic documentary still
+  - archival evidence
+  - restrained shadows
+  - vertical composition
+palette:
+  primary: '#111318'
+  accent: '#D6A84F'
+  text: '#F2EEE6'
+negative_prompt: gore, fabricated readable text, sensationalized crime scene, graphic violence, watermark, logo

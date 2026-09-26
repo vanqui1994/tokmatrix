@@ -1,0 +1,41 @@
+<svg viewBox="0 0 200 200" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="eyeGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00FF88" stop-opacity="1"/>
+      <stop offset="100%" stop-color="#00E5FF" stop-opacity="0.9"/>
+    </linearGradient>
+    <filter id="badgeFilter" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <!-- Outer circle & sacred aura rays -->
+  <circle cx="100" cy="100" r="90" fill="none" stroke="url(#eyeGlow)" stroke-width="3" opacity="0.6"/>
+  <circle cx="100" cy="100" r="84" fill="none" stroke="#00FF88" stroke-width="1.5" stroke-dasharray="4 6" opacity="0.8"/>
+  <circle cx="100" cy="100" r="94" fill="#041208" fill-opacity="0.85"/>
+  
+  <!-- Radiating mystery rays -->
+  <g stroke="#00FF88" stroke-width="1.5" opacity="0.4">
+    <line x1="100" y1="10" x2="100" y2="35"/>
+    <line x1="100" y1="165" x2="100" y2="190"/>
+    <line x1="10" y1="100" x2="35" y2="100"/>
+    <line x1="165" y1="100" x2="190" y2="100"/>
+    <line x1="36" y1="36" x2="54" y2="54"/>
+    <line x1="146" y1="146" x2="164" y2="164"/>
+    <line x1="36" y1="164" x2="54" y2="146"/>
+    <line x1="146" y1="54" x2="164" y2="36"/>
+  </g>
+
+  <!-- Sacred Triangle / Pyramid -->
+  <polygon points="100,42 165,152 35,152" fill="none" stroke="url(#eyeGlow)" stroke-width="4.5" stroke-linejoin="round" filter="url(#badgeFilter)"/>
+  <polygon points="100,56 153,146 47,146" fill="none" stroke="#00FF88" stroke-width="1.5" opacity="0.7"/>
+
+  <!-- All-Seeing Eye Center -->
+  <path d="M 68 114 Q 100 86 132 114 Q 100 142 68 114 Z" fill="#02140A" stroke="#00FF88" stroke-width="3.5" filter="url(#badgeFilter)"/>
+  <circle cx="100" cy="114" r="13" fill="none" stroke="#00E5FF" stroke-width="2.5"/>
+  <circle cx="100" cy="114" r="7" fill="#00FF88"/>
+  <circle cx="102" cy="112" r="2.5" fill="#FFFFFF"/>
+</svg>

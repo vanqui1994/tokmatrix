@@ -1,0 +1,131 @@
+THỐNG KÊ VIEW ACC PUB1
+Thời điểm xuất: 2026-09-23 10:20:27
+Trạng thái quét: HOÀN TẤT
+Nguồn: quét danh sách video TikTok từ máy Mac (server local), DB bkt_web/bkt_channels.db
+
+TỔNG QUAN
+  Tổng acc pub1        : 110
+  Có view              : 64
+  0 view               : 34  (trong đó chưa đăng video nào: 0)
+  Quét lỗi             : 12
+  Chưa quét tới        : 0
+  Tổng view toàn pub1  : 38991
+
+=== ACC CÓ VIEW (64) ===
+  ID  USERNAME               STATUS     QG  VIDEO    VIEW
+---------------------------------------------------------
+  13  -                      DIE        DE     24   14728
+  77  user3347310980768      CHƯA BKT   DE      1    4311
+  68  user312837178508       CHƯA BKT   DE      1    3659
+  17  geh.angeln             CHƯA BKT   DE      2     630
+ 104  user9866175661504      CHƯA BKT   DE      1     569
+  58  user4961193959681      CHƯA BKT   DE      1     541
+  27  user9774811854930      LỖI MẠNG   DE      1     531
+  72  user8205777609537      CHƯA BKT   DE      1     504
+  63  user9761602361717      CHƯA BKT   DE      1     494
+  57  user7125080777616      CHƯA BKT   DE      1     493
+  26  user4130757795584      LỖI MẠNG   DE      1     457
+  60  user2054154530021      CHƯA BKT   DE      1     421
+  56  user8785593677977      CHƯA BKT   DE      1     401
+  61  user1117462676986      CHƯA BKT   DE     18     380
+ 102  user2019270576511      CHƯA BKT   DE      1     365
+  43  user160855595638       CHƯA BKT   DE      1     360
+  48  user8724138762040      CHƯA BKT   DE      1     345
+  81  user769472057666       CHƯA BKT   DE      1     337
+  59  user4279441242773      CHƯA BKT   DE      1     327
+  79  user9408000956944      CHƯA BKT   DE      1     325
+  46  user9447768673972      CHƯA BKT   DE      1     318
+  32  user8778474207766      CHƯA BKT   DE      1     317
+  64  user9563169541886      CHƯA BKT   DE      1     317
+  78  user2788439559049      CHƯA BKT   DE      1     312
+  31  user7477707425570      CHƯA BKT   DE      1     311
+  83  user9905315817734      CHƯA BKT   LU      1     305
+  53  user6978392560795      CHƯA BKT   DE      1     300
+  80  user3597140473004      CHƯA BKT   DE      1     296
+  73  user3265843343615      CHƯA BKT   DE      1     291
+  30  user7102997873234      CHƯA BKT   DE      1     287
+ 117  user4861450305104      CHƯA BKT   DE      1     284
+ 116  user8358000276307      CHƯA BKT   DE      1     282
+  71  user5469098420418      CHƯA BKT   DE      1     280
+  34  user8428042816004      CHƯA BKT   DE      1     278
+  44  user8357988869057      CHƯA BKT   DE      1     269
+  51  user2014301703816      CHƯA BKT   DE      1     268
+ 106  user8459502005571      CHƯA BKT   DE      1     268
+ 121  user8172785439793      CHƯA BKT   DE      3     268
+  29  user7204712620241      CHƯA BKT   DE      1     267
+ 122  markuniverse.kr        CHƯA BKT   DE     12     267
+ 113  user9459429329427      CHƯA BKT   DE      3     266
+  21  user7043007791600      LỖI MẠNG   DE      1     263
+  67  user6666066569177      CHƯA BKT   DE      1     259
+  18  user1611425540183      CHƯA BKT   DE      1     254
+  52  user6914156619797      CHƯA BKT   DE      1     253
+  90  user3374498226572      CHƯA BKT   DE      1     207
+  97  user597161008594       CHƯA BKT   DE      1      95
+  36  user6344388267855      CHƯA BKT   DE      1      91
+  39  user9820286853884      CHƯA BKT   DE      1      89
+  88  user1382161971232      CHƯA BKT   DE      1      89
+  25  user7299053878067      LỖI MẠNG   DE      1      86
+  22  user616193151490       LỖI MẠNG   DE      1      85
+  99  user1271237667526      CHƯA BKT   DE      3      85
+  24  user8409937368794      CHƯA BKT   DE      1      84
+  82  user3331006597569      CHƯA BKT   DE      1      84
+ 114  user5970697941380      LỖI MẠNG   DE      1      84
+  14  user3341569345749      CHƯA BKT   DE      3      83
+  76  user6254544639479      CHƯA BKT   DE      1      83 
+  47  user9711701375239      CHƯA BKT   DE      1      82
+  50  user9544842382211      CHƯA BKT   DE      1      82
+  85  user6795183288624      CHƯA BKT   DE      1      82
+  28  user5061398200363      CHƯA BKT   DE      1      81
+  66  user444796158221       CHƯA BKT   DE      1      81
+  95  user4917581540021      CHƯA BKT   DE      1      80
+
+=== ACC 0 VIEW (46) ===
+  ID  USERNAME               STATUS     QG  VIDEO    VIEW
+---------------------------------------------------------
+  15  user57381421093                    CHƯA BKT        DE      0       0  | HTTP 000
+  19  user1611418291194      CHƯA BKT   DE      1       0
+  20  user573815210935       CHƯA BKT   DE      1       0
+  23  user7126578122350      CHƯA BKT   DE      1       0
+  35  user1765153495922      CHƯA BKT   DE      1       0
+  37  user5105810915530      CHƯA BKT   DE      1       0
+  38  user5412231278597      CHƯA BKT   DE      1       0
+  40  user9538151012233      CHƯA BKT   DE      1       0
+  41  user5743835186301      CHƯA BKT   DE      1       0
+  42  user3129112699232      CHƯA BKT   DE      1       0
+  45  user1456669088177      CHƯA BKT   DE      1       0
+  49  user3786173821423      CHƯA BKT   DE      1       0
+  54  user1524861937599      CHƯA BKT   DE      2       0
+  55  user1639281565001      CHƯA BKT   DE      1       0
+  69  user2483979526673      CHƯA BKT   DE      1       0
+  70  user9497485480257      CHƯA BKT   DE      1       0
+  74  user7737082435805      CHƯA BKT   BG      1       0
+  75  user8379069698768      CHƯA BKT   DE      1       0
+  84  user1465784661340      CHƯA BKT   DE      1       0
+  86  user3768486138430      CHƯA BKT   DE      1       0
+  89  user2070502792312      CHƯA BKT   DE      1       0
+  92  user8197193766360      CHƯA BKT   DE      1       0
+  93  user3534613484961      CHƯA BKT   DE      1       0
+  98  user2984096683304      CHƯA BKT   DE      1       0
+ 100  user7798815551168      CHƯA BKT   DE      1       0
+ 103  user9196571999156      CHƯA BKT   DE      1       0
+ 105  user457811203519       CHƯA BKT   DE      1       0
+ 107  user9750666173868      CHƯA BKT   DE      1       0
+ 108  user6345136866575      CHƯA BKT   DE      1       0
+ 110  user650293880810       CHƯA BKT   DE      1       0
+ 111  user3282386834562      CHƯA BKT   DE      1       0
+ 112  user4329301946023      CHƯA BKT   DE      1       0
+ 118  user5309088173614      CHƯA BKT   DE      1       0
+ 119  user1771600615999      CHƯA BKT   DE      1       0
+ 120  user9352103169454      CHƯA BKT   DE      1       0
+  15  -                      DIE        DE      0       0  | HTTP 000
+  16  user4333573500378                   LỖI MẠNG   DE      0       0  | TikTok không gọi API danh sách video cho @ trong 15 giây (trang có thể đang hiện xác minh, hoặc kênh không tồn tại). Dữ liệu cache cũ được giữ nguyên.
+  33  user3159882756257                   DIE        DE      0       0  | TikTok không gọi API danh sách video cho @user3159882756257 trong 15 giây (trang có thể đang hiện xác minh, hoặc kênh không tồn tại). Dữ liệu cache cũ được giữ nguyên.
+  62  user3160137001918                   DIE        DE      0       0  | TikTok không gọi API danh sách video cho @user3160137001918 trong 15 giây (trang có thể đang hiện xác minh, hoặc kênh không tồn tại). Dữ liệu cache cũ được giữ nguyên.
+  65  user8216256883506                   DIE        DE      0       0  | TikTok không gọi API danh sách video cho @user8216256883506 trong 15 giây (trang có thể đang hiện xác minh, hoặc kênh không tồn tại). Dữ liệu cache cũ được giữ nguyên.
+  87  user3359725670336                   DIE        DE      0       0  | TikTok không gọi API danh sách video cho @user3359725670336 trong 15 giây (trang có thể đang hiện xác minh, hoặc kênh không tồn tại). Dữ liệu cache cũ được giữ nguyên.
+  91  user8231620313858                   DIE        DE      0       0  | TikTok không gọi API danh sách video cho @user8231620313858 trong 15 giây (trang có thể đang hiện xác minh, hoặc kênh không tồn tại). Dữ liệu cache cũ được giữ nguyên.
+  94  user4129553802824                   DIE        DE      0       0  | TikTok không gọi API danh sách video cho @user4129553802824 trong 15 giây (trang có thể đang hiện xác minh, hoặc kênh không tồn tại). Dữ liệu cache cũ được giữ nguyên.
+  96  user7672100105306                   DIE        DE      0       0  | TikTok không gọi API danh sách video cho @user7672100105306 trong 15 giây (trang có thể đang hiện xác minh, hoặc kênh không tồn tại). Dữ liệu cache cũ được giữ nguyên.
+ 101  user2461133800384                   DIE        DE      0       0  | TikTok không gọi API danh sách video cho @user2461133800384 trong 15 giây (trang có thể đang hiện xác minh, hoặc kênh không tồn tại). Dữ liệu cache cũ được giữ nguyên.
+ 109  user7165110168273                   DIE        DE      0       0  | TikTok không gọi API danh sách video cho @user7165110168273 trong 15 giây (trang có thể đang hiện xác minh, hoặc kênh không tồn tại). Dữ liệu cache cũ được giữ nguyên.
+ 115  user9161522652623                   LỖI MẠNG   DE      0       0  | TikTok không gọi API danh sách video cho @user9161522652623 trong 15 giây (trang có thể đang hiện xác minh, hoặc kênh không tồn tại). Dữ liệu cache cũ được giữ nguyên.

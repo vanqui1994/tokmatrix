@@ -1,0 +1,5 @@
+niche_id: mega_catastrophes
+name: Đại Thảm Hoạ Trái Đất
+language: vi
+summary: Các thảm họa tự nhiên quy mô lớn, nguyên nhân và bài học phòng ngừa.
+allowed_engines: [mystery, newspaper, vox, chalk, science, survival, tierlist, kinetic]

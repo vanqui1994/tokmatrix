@@ -1,0 +1,5 @@
+niche_id: infamous_figures
+name: Nhân Vật Khét Tiếng
+language: vi
+summary: Hồ sơ nhân vật lịch sử và tác động xã hội, dựa trên nguồn kiểm chứng.
+allowed_engines: [mystery, newspaper, vox, chalk, tierlist, kinetic, wildlife]

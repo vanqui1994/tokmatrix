@@ -1,0 +1,5 @@
+niche_id: ancient_mythology
+name: Thần Thoại Cổ Đại
+language: vi
+summary: Thần thoại và biểu tượng cổ đại trong bối cảnh văn hóa, lịch sử.
+allowed_engines: [folklore, mystery, newspaper, tierlist, kinetic]

@@ -1,0 +1,31 @@
+channel_id: mystery_01
+config_version: 2
+niche_id: unsolved_mysteries
+name: The Unsolved File
+tiktok_account_ref: null
+persona:
+  tone: evidence_first_investigative
+  energy_level: 0.68
+  target_demographic: Vietnamese viewers aged 18-34 interested in real mysteries
+  catchphrase_prefix: "Có một chi tiết trong hồ sơ này vẫn chưa ai giải thích được:"
+story:
+  preferred_blueprints: [mystery_reveal]
+  preferred_hook_types: [anomaly, unanswered_question]
+  target_duration_seconds: 52
+  pacing_beats: 12
+creative:
+  preferred_engines: [mystery, newspaper, vox]
+  visual_style_id: dark_mystery_v1
+  cut_cadence_seconds: 2.8
+  palette: { primary: '#111318', accent: '#D6A84F', text: '#F2EEE6' }
+audio:
+  voice_id: vi-VN-NamMinhNeural
+  voice_speed: 1.02
+  voice_pitch: -1
+  music_family: restrained_mystery_pulse
+  soundscape_id: mystery
+  sfx_density: low
+publishing:
+  language: vi
+  default_schedule_window: 19:30-20:30
+  hashtags: [bian, hosochuaGiai, khoahoc, theunsolvedfile]

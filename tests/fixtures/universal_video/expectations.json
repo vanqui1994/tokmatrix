@@ -1,0 +1,234 @@
+{
+  "fixture_format": "universal-video-golden-fixture/1.0",
+  "fixtures": [
+    {
+      "category": "agriculture",
+      "expected": {
+        "action_types": ["look_at", "reach", "grip", "pluck", "release"],
+        "dialogue": [
+          {"end": 1.0, "speaker_id": "farmer_1", "start": 0.2, "text": "Ready to pick."}
+        ],
+        "duration_seconds": 6.4,
+        "entities": [
+          {"id": "farmer_1", "kind": "person"},
+          {"id": "tree_1", "kind": "plant"},
+          {"id": "fruit_1", "kind": "object"}
+        ],
+        "fallback": {
+          "allowed": true,
+          "completion_claim": "needs-review",
+          "reason_code": "missing_articulated_plant_rig",
+          "route": "needs-review"
+        },
+        "scenes": [
+          {
+            "actions": [
+              {"actor": "farmer_1", "end": 1.1, "start": 0.4, "target": "fruit_1", "type": "look_at"},
+              {"actor": "farmer_1", "end": 2.3, "start": 1.1, "target": "fruit_1", "type": "reach"},
+              {"actor": "farmer_1", "end": 2.8, "start": 2.3, "target": "fruit_1", "type": "grip"},
+              {"actor": "farmer_1", "end": 3.7, "start": 2.8, "target": "fruit_1", "type": "pluck"},
+              {"actor": "farmer_1", "end": 5.5, "start": 5.0, "target": "fruit_1", "type": "release"}
+            ],
+            "end": 6.4,
+            "entity_ids": ["farmer_1", "tree_1", "fruit_1"],
+            "id": "agriculture_scene_1",
+            "speaker_ids": ["farmer_1"],
+            "start": 0.0
+          }
+        ],
+        "speakers": [{"entity_id": "farmer_1", "id": "farmer_1"}]
+      },
+      "id": "agriculture_harvest"
+    },
+    {
+      "category": "talking_head",
+      "expected": {
+        "action_types": ["speak", "gesture", "caption_show"],
+        "dialogue": [
+          {"end": 4.7, "speaker_id": "host_1", "start": 0.3, "text": "Here is the short update."}
+        ],
+        "duration_seconds": 5.2,
+        "entities": [
+          {"id": "host_1", "kind": "person"},
+          {"id": "caption_1", "kind": "text"}
+        ],
+        "fallback": {
+          "allowed": true,
+          "completion_claim": "partial-remake",
+          "reason_code": "face_rig_below_confidence",
+          "route": "footage-composite"
+        },
+        "scenes": [
+          {
+            "actions": [
+              {"actor": "host_1", "end": 4.7, "start": 0.3, "target": null, "type": "speak"},
+              {"actor": "host_1", "end": 2.2, "start": 1.4, "target": null, "type": "gesture"},
+              {"actor": "caption_1", "end": 5.0, "start": 0.6, "target": null, "type": "caption_show"}
+            ],
+            "end": 5.2,
+            "entity_ids": ["host_1", "caption_1"],
+            "id": "talking_head_scene_1",
+            "speaker_ids": ["host_1"],
+            "start": 0.0
+          }
+        ],
+        "speakers": [{"entity_id": "host_1", "id": "host_1"}]
+      },
+      "id": "talking_head_intro"
+    },
+    {
+      "category": "product_review",
+      "expected": {
+        "action_types": ["speak", "pick", "rotate", "point_at"],
+        "dialogue": [
+          {"end": 6.7, "speaker_id": "reviewer_1", "start": 0.2, "text": "This is the product under review."}
+        ],
+        "duration_seconds": 7.1,
+        "entities": [
+          {"id": "reviewer_1", "kind": "person"},
+          {"id": "product_1", "kind": "product"}
+        ],
+        "fallback": {
+          "allowed": true,
+          "completion_claim": "partial-remake",
+          "reason_code": "product_material_not_supported",
+          "route": "footage-composite"
+        },
+        "scenes": [
+          {
+            "actions": [
+              {"actor": "reviewer_1", "end": 6.7, "start": 0.2, "target": null, "type": "speak"},
+              {"actor": "reviewer_1", "end": 2.0, "start": 1.1, "target": "product_1", "type": "pick"},
+              {"actor": "reviewer_1", "end": 4.4, "start": 2.2, "target": "product_1", "type": "rotate"},
+              {"actor": "reviewer_1", "end": 5.8, "start": 4.9, "target": "product_1", "type": "point_at"}
+            ],
+            "end": 7.1,
+            "entity_ids": ["reviewer_1", "product_1"],
+            "id": "product_review_scene_1",
+            "speaker_ids": ["reviewer_1"],
+            "start": 0.0
+          }
+        ],
+        "speakers": [{"entity_id": "reviewer_1", "id": "reviewer_1"}]
+      },
+      "id": "product_review_demo"
+    },
+    {
+      "category": "ui_tutorial",
+      "expected": {
+        "action_types": ["pointer_move", "click", "type_text", "screen_highlight"],
+        "dialogue": [
+          {"end": 7.4, "speaker_id": "narrator_1", "start": 0.2, "text": "Enter the value, then select the blue button."}
+        ],
+        "duration_seconds": 8.0,
+        "entities": [
+          {"id": "screen_1", "kind": "screen"},
+          {"id": "cursor_1", "kind": "pointer"},
+          {"id": "field_1", "kind": "ui_control"},
+          {"id": "button_1", "kind": "ui_control"},
+          {"id": "narrator_1", "kind": "offscreen_speaker"}
+        ],
+        "fallback": {
+          "allowed": true,
+          "completion_claim": "needs-review",
+          "reason_code": "ui_target_not_resolved",
+          "route": "needs-review"
+        },
+        "scenes": [
+          {
+            "actions": [
+              {"actor": "cursor_1", "end": 1.6, "start": 0.7, "target": "field_1", "type": "pointer_move"},
+              {"actor": "cursor_1", "end": 1.8, "start": 1.6, "target": "field_1", "type": "click"},
+              {"actor": "cursor_1", "end": 3.7, "start": 1.9, "target": "field_1", "type": "type_text"},
+              {"actor": "cursor_1", "end": 5.0, "start": 4.2, "target": "button_1", "type": "pointer_move"},
+              {"actor": "cursor_1", "end": 5.2, "start": 5.0, "target": "button_1", "type": "click"},
+              {"actor": "screen_1", "end": 7.2, "start": 5.4, "target": "button_1", "type": "screen_highlight"}
+            ],
+            "end": 8.0,
+            "entity_ids": ["screen_1", "cursor_1", "field_1", "button_1", "narrator_1"],
+            "id": "ui_tutorial_scene_1",
+            "speaker_ids": ["narrator_1"],
+            "start": 0.0
+          }
+        ],
+        "speakers": [{"entity_id": "narrator_1", "id": "narrator_1"}]
+      },
+      "id": "ui_tutorial_form"
+    },
+    {
+      "category": "infographic",
+      "expected": {
+        "action_types": ["chart_reveal", "count_up", "highlight"],
+        "dialogue": [
+          {"end": 5.5, "speaker_id": "narrator_1", "start": 0.2, "text": "The final bar shows the largest increase."}
+        ],
+        "duration_seconds": 6.0,
+        "entities": [
+          {"id": "chart_1", "kind": "chart"},
+          {"id": "metric_1", "kind": "text"},
+          {"id": "narrator_1", "kind": "offscreen_speaker"}
+        ],
+        "fallback": {
+          "allowed": true,
+          "completion_claim": "needs-review",
+          "reason_code": "chart_semantics_unavailable",
+          "route": "needs-review"
+        },
+        "scenes": [
+          {
+            "actions": [
+              {"actor": "chart_1", "end": 2.2, "start": 0.5, "target": null, "type": "chart_reveal"},
+              {"actor": "metric_1", "end": 3.2, "start": 1.0, "target": null, "type": "count_up"},
+              {"actor": "chart_1", "end": 5.0, "start": 3.6, "target": "metric_1", "type": "highlight"}
+            ],
+            "end": 6.0,
+            "entity_ids": ["chart_1", "metric_1", "narrator_1"],
+            "id": "infographic_scene_1",
+            "speaker_ids": ["narrator_1"],
+            "start": 0.0
+          }
+        ],
+        "speakers": [{"entity_id": "narrator_1", "id": "narrator_1"}]
+      },
+      "id": "infographic_growth"
+    },
+    {
+      "category": "footage_composite",
+      "expected": {
+        "action_types": ["source_clip_play", "lower_third_show", "logo_show"],
+        "dialogue": [
+          {"end": 4.9, "speaker_id": "narrator_1", "start": 0.3, "text": "A title and logo are composited over the source plate."}
+        ],
+        "duration_seconds": 5.7,
+        "entities": [
+          {"id": "source_clip_1", "kind": "footage"},
+          {"id": "lower_third_1", "kind": "text"},
+          {"id": "logo_1", "kind": "graphic"},
+          {"id": "narrator_1", "kind": "offscreen_speaker"}
+        ],
+        "fallback": {
+          "allowed": true,
+          "completion_claim": "needs-review",
+          "reason_code": "source_media_unavailable",
+          "route": "needs-review"
+        },
+        "scenes": [
+          {
+            "actions": [
+              {"actor": "source_clip_1", "end": 5.7, "start": 0.0, "target": null, "type": "source_clip_play"},
+              {"actor": "lower_third_1", "end": 4.0, "start": 0.8, "target": null, "type": "lower_third_show"},
+              {"actor": "logo_1", "end": 5.3, "start": 4.4, "target": null, "type": "logo_show"}
+            ],
+            "end": 5.7,
+            "entity_ids": ["source_clip_1", "lower_third_1", "logo_1", "narrator_1"],
+            "id": "footage_composite_scene_1",
+            "speaker_ids": ["narrator_1"],
+            "start": 0.0
+          }
+        ],
+        "speakers": [{"entity_id": "narrator_1", "id": "narrator_1"}]
+      },
+      "id": "footage_composite_overlay"
+    }
+  ]
+}
