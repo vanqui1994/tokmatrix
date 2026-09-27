@@ -5,14 +5,17 @@ SwiftShader --no-browser-gpu cho tất định), ghép thành một PNG có nhã
     node tools/preview-variants.mjs --out /tmp/vp --include-reference
     python3 tools/variant_contact_sheet.py --manifest /tmp/vp/manifest.json --out /tmp/vp/sheet.png [--check-determinism]
 
-HYPERFRAMES_BIN chọn CLI (mặc định: npx --yes hyperframes@0.8.75). Không ghi gì vào repo.
+HYPERFRAMES_BIN chọn CLI (mặc định: npx hyperframes đúng bản production, pin trong matrix/render/native-engine-adapter.mjs —
+0.8.75 treo khi chụp giữa transition zoom_through). Không ghi gì vào repo.
 """
 from __future__ import annotations
 
 import argparse
 import hashlib
 import json
+import functools
 import os
+import re
 import shlex
 import subprocess
 import sys
@@ -27,15 +30,34 @@ THUMB_H = 384
 LABEL_H = 118
 
 
+COMPARE_DIR = Path(__file__).resolve().parent.parent
+
+
+def production_version() -> str:
+    source = (COMPARE_DIR / "matrix" / "render" / "native-engine-adapter.mjs").read_text(encoding="utf-8")
+    match = re.search(r'check: "npx --yes hyperframes@([0-9A-Za-z.-]+) check"', source)
+    if not match:
+        raise RuntimeError("cannot find the hyperframes version in native-engine-adapter.mjs")
+    return match.group(1)
+
+
 def hyperframes_cmd() -> List[str]:
-    return shlex.split(os.environ.get("HYPERFRAMES_BIN", "npx --yes hyperframes@0.8.75"))
+    return shlex.split(os.environ.get("HYPERFRAMES_BIN") or f"npx --yes hyperframes@{production_version()}")
+
+
+@functools.lru_cache(maxsize=1)
+def gpu_flags() -> List[str]:
+    """`--no-browser-gpu` (SwiftShader, tất định) chỉ có từ hyperframes 0.8; bản cũ báo "Unknown flag"."""
+    out = subprocess.run(hyperframes_cmd() + ["--version"], capture_output=True, text=True, timeout=300)
+    match = re.search(r"(\d+)\.(\d+)\.(\d+)", out.stdout + out.stderr)
+    return ["--no-browser-gpu"] if match and (int(match.group(1)), int(match.group(2))) >= (0, 8) else []
 
 
 def snapshot(project: Path, times: List[float], out_dir: Path) -> List[Path]:
     out_dir.mkdir(parents=True, exist_ok=True)
     at = ",".join(f"{t:.2f}" for t in times)
     cmd = hyperframes_cmd() + ["snapshot", str(project), "--at", at, "--no-end", "--describe", "false",
-                               "--no-browser-gpu", "-o", str(out_dir)]
+                               *gpu_flags(), "-o", str(out_dir)]
     subprocess.run(cmd, check=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, timeout=600)
     shots = sorted(out_dir.glob("*.png"))
     if len(shots) < len(times):
