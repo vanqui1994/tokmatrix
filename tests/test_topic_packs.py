@@ -78,6 +78,26 @@ class TopicPackTest(unittest.TestCase):
                 self.assertEqual(topic_packs.pack_topics("p_vs", "versus"), ["Orca vs Great White: who rules the ocean"])
                 self.assertEqual(len(topic_packs.pack_topics("p_vs", "free")), 2)
 
+    def test_pack_topics_are_not_repeated_across_the_niches_a_pack_serves(self):
+        from unittest import mock
+        from bkt_web.autopilot import planner
+
+        packs = {"p": {"id": "p", "format": "free", "niches": ["unsolved_mysteries", "infamous_figures"]}}
+        cfg = {"creative": {"variant_id": "x/y"}}
+        stock = ["Black Dahlia murder of 1947", "Hinterkaifeck farm murders", "Villisca axe murders"]
+        used = {("infamous_figures", "Black Dahlia murder of 1947")}
+        recent = {"infamous_figures": ["The Hinterkaifeck farm case revisited"]}
+        with mock.patch.object(planner.store, "is_topic_used", lambda niche, t: (niche, t) in used), \
+             mock.patch.object(planner.store, "recent_plan_topics", lambda niche, since: recent.get(niche, [])), \
+             mock.patch.object(planner.store, "log_event", lambda *a, **k: None), \
+             mock.patch.object(planner.topics, "refill_pack", lambda *a, **k: 0), \
+             mock.patch.object(planner.topic_packs, "channel_pack", lambda *a, **k: "p"), \
+             mock.patch.object(planner.topic_packs, "pack_topics", lambda pid, fmt=None: stock):
+            # used in the other niche, then planned there within the gap → the third topic
+            self.assertEqual(planner.pick_pack_topic("c1", "unsolved_mysteries", "d", [], cfg=cfg, packs=packs, since="d0"), "Villisca axe murders")
+            # without a gap window only "already used" counts
+            self.assertEqual(planner.pick_pack_topic("c1", "unsolved_mysteries", "d", [], cfg=cfg, packs=packs), "Hinterkaifeck farm murders")
+
     def test_every_registered_variant_pack_exists_in_the_repo(self):
         packs = topic_packs.load_packs()
         niches = list(creative_dna.load_niche_engines())
