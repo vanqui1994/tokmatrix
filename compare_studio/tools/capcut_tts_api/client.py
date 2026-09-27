@@ -503,9 +503,10 @@ class CapCutClient:
             query_tasks = (query_res.get("data") or {}).get("tasks") or []
             if query_tasks:
                 status = query_tasks[0].get("status")
-                if status == "success":
+                # API trả "succeed" (27/09); chỉ so "success" thì task xong vẫn chờ tới hết timeout.
+                if status in ("success", "succeed"):
                     return query_res
-                elif status == "failed":
+                elif status in ("failed", "fail"):
                     raise CapCutTaskError(f"STT Task failed: {query_res}")
             time.sleep(poll_interval)
 
