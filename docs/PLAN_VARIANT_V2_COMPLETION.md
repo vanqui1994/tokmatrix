@@ -5,7 +5,30 @@ Tài liệu kiến trúc gốc: `docs/MATRIX_VARIANT_SYSTEM_V2.md` (mục 1–27
 40 yêu cầu của brief kiến trúc với code thật và lập kế hoạch cho phần còn thiếu.
 
 **Trạng thái PR #1:** A–I của brief đã làm: audit, plan V2, self-review (mục 22), Phase 0, Phase 1–6, và công cụ canary.
-PR chưa merge vào `main`: lệnh merge bị chặn vì chưa có review, cần chủ repo bấm merge. Chưa deploy, chưa apply DNA cho kênh nào.
+PR #1 đã merge vào `main` (27/09). Chưa deploy, chưa apply DNA cho kênh nào.
+
+## 0. Tiến độ trên nhánh này (cập nhật 27/09)
+
+| Việc | Trạng thái | Ghi chú |
+|---|---|---|
+| A2 tín hiệu `text` | ✅ | `creative_similarity/textgeom.py` (Chromium, lưới 9×16), test `tests/test_creative_similarity.py` |
+| A3 tín hiệu `audio` | ✅ | chỉ mode `videos`; preview bỏ qua (tín hiệu thiếu ở một bên không tính vào composite) |
+| A4 `tools/similarity-run.sh` | ✅ | chụp khung song song (`--jobs`) |
+| A1 đo 5 ngôn ngữ + sinh lại conflicts | ⏳ | chạy sau khi H2 xanh (bố cục vừa đổi, KIT 7) |
+| WS-B sửa cấu trúc vượt ngưỡng | ⏳ | sau A1 |
+| C1 định dạng pack, C2 seed 132 × 10, C3 `same_subject` chéo pack/niche | ✅ | `topic_packs.fits_format`, `pick_pack_topic(since=…)` |
+| D1 chuỗi fallback, D2 cache ảnh theo acc, D3 Antigravity đứng đầu | ✅ | `asset-manager.mjs`, `account-cache.mjs`, `meta.creative.asset_fallbacks` |
+| H1 `tools/check-previews.mjs` | ✅ | hyperframes 0.7.58 như production |
+| H2 mọi preview qua `hyperframes check` | 🟡 | xem mục 0.1 |
+| H3 CI, H4 determinism | ✅ | `.github/workflows/matrix-variants.yml`, `tests/matrix-variants-determinism.test.mjs` |
+| E (stock), F (giọng), G (bench), I (canary) | 🔒 | cần Q3 / mạng / VPS / chủ repo |
+
+### 0.1 H2: lỗi `hyperframes check`
+
+Mốc: 118/608 preview (de+ja) lỗi. Phần lớn là báo giả của layout/contrast audit do cách kit dựng cảnh, sửa một lần trong kit (KIT 7):
+clip-path còn sót sau reveal/transition, clip cũ còn hiện đúng khung chuyển cảnh, nhãn giữa header đặt thẳng lên ảnh, tem xoay 8°,
+treatment overlay tràn khỏi khung ảnh, data-fit đo sai bề rộng flex item. Còn lại là lỗi thật từng engine (màu mực theo tone, ô chữ hẹp).
+Chi tiết từng luật trong AGENTS.md (dòng "Variant QA tools").
 
 ## 1. Đối chiếu 40 yêu cầu với code
 
