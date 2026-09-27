@@ -115,9 +115,14 @@ function span(ctx, wanted) {
   const room = Math.min(ctx.at - (ctx.prevStart ?? 0), ctx.nextDuration ?? Infinity);
   return Number(Math.max(0.05, Math.min(wanted, room * 0.4)).toFixed(3));
 }
+// Mọi exit kết thúc đúng mốc cảnh mới bắt đầu, nên kèm "hard kill" tl.set ở mốc đó: seek không tuyến tính có thể rơi
+// sau tween mà không đi qua nó (HyperFrames gsap_exit_missing_hard_kill).
 function exit(ctx, vars, wanted) {
   const d = span(ctx, wanted);
-  return { method: "to", target: ctx.prev, vars: { ...vars, duration: d, ease: "power2.in" }, at: Number((ctx.at - d).toFixed(3)) };
+  return [
+    { method: "to", target: ctx.prev, vars: { ...vars, duration: d, ease: "power2.in" }, at: Number((ctx.at - d).toFixed(3)) },
+    { method: "set", target: ctx.prev, vars: { ...vars }, at: ctx.at },
+  ];
 }
 function enter(ctx, from, vars, wanted) {
   const d = span(ctx, wanted);
@@ -125,7 +130,7 @@ function enter(ctx, from, vars, wanted) {
 }
 
 export const TRANSITIONS = Object.freeze({
-  version: 2,
+  version: 3, // 3: exit kèm tl.set hard kill ở mốc chuyển cảnh
   items: {
     cut: () => [],
     fade_black: (ctx) => [exit(ctx, { autoAlpha: 0 }, 0.3), enter(ctx, { autoAlpha: 0 }, { autoAlpha: 1 }, 0.3)],
@@ -169,7 +174,7 @@ export const TRANSITIONS = Object.freeze({
 export function transitionTweens(id, ctx) {
   const make = TRANSITIONS.items[id];
   if (!make) throw new Error(`unknown transition ${id}`);
-  return make(ctx);
+  return make(ctx).flat();
 }
 
 // --- Tone: dịch sắc độ/độ sáng trong họ màu của nước (0 = gốc). --------------------------------------------------
