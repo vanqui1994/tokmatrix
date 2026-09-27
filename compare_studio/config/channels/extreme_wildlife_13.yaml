@@ -4,9 +4,9 @@ audio:
   soundscape_id: survival
   voice_id: BV510_streaming
   voice_pitch: -1
-  voice_speed: 1.0
+  voice_speed: 0.99
 channel_id: extreme_wildlife_13
-config_version: 6
+config_version: 7
 creative:
   cut_cadence_seconds: 2.7
   palette:

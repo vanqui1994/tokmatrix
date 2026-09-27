@@ -3,10 +3,10 @@ audio:
   sfx_density: medium
   soundscape_id: science
   voice_id: de-DE-FlorianMultilingualNeural
-  voice_pitch: -1
-  voice_speed: 1.01
+  voice_pitch: 0
+  voice_speed: 0.96
 channel_id: lost_civilizations_11
-config_version: 6
+config_version: 7
 creative:
   cut_cadence_seconds: 2.9
   palette:

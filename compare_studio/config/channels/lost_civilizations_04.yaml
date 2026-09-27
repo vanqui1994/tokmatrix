@@ -1,5 +1,5 @@
 channel_id: lost_civilizations_04
-config_version: 7
+config_version: 8
 niche_id: lost_civilizations
 name: Antike Zivilisationen 04
 tiktok_account_ref: null
@@ -54,8 +54,8 @@ creative:
         caption: bottom
 audio:
   voice_id: de-DE-SeraphinaMultilingualNeural
-  voice_speed: 1.02
-  voice_pitch: -1
+  voice_speed: 0.96
+  voice_pitch: -2
   music_family: lost_civilizations_editorial
   soundscape_id: vox
   sfx_density: medium

@@ -1,5 +1,5 @@
 channel_id: extreme_survival_04
-config_version: 6
+config_version: 7
 niche_id: extreme_survival
 name: Überleben & Katastrophen 04
 tiktok_account_ref: null
@@ -43,7 +43,7 @@ creative:
 audio:
   voice_id: DiT_de_female_qingsong
   voice_speed: 1.02
-  voice_pitch: -1
+  voice_pitch: 0
   music_family: extreme_survival_editorial
   soundscape_id: science
   sfx_density: medium

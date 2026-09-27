@@ -1,5 +1,5 @@
 channel_id: economy_empires_08
-config_version: 7
+config_version: 8
 niche_id: economy_empires
 name: Wirtschaft & Märkte 08
 tiktok_account_ref: null
@@ -55,7 +55,7 @@ creative:
 audio:
   voice_id: de-DE-FlorianMultilingualNeural
   voice_speed: 1.02
-  voice_pitch: -1
+  voice_pitch: -2
   music_family: economy_empires_editorial
   soundscape_id: newspaper
   sfx_density: medium

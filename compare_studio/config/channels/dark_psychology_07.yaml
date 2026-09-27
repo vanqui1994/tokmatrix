@@ -1,5 +1,5 @@
 channel_id: dark_psychology_07
-config_version: 6
+config_version: 7
 niche_id: dark_psychology
 name: Psychologie & Verhalten 07
 tiktok_account_ref: null
@@ -43,7 +43,7 @@ creative:
 audio:
   voice_id: de-DE-KillianNeural
   voice_speed: 1.02
-  voice_pitch: -1
+  voice_pitch: -2
   music_family: dark_psychology_editorial
   soundscape_id: science
   sfx_density: medium

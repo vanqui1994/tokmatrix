@@ -1,5 +1,5 @@
 channel_id: forbidden_experiments_06
-config_version: 5
+config_version: 6
 niche_id: forbidden_experiments
 name: Verrückte Experimente 06
 tiktok_account_ref: null
@@ -42,8 +42,8 @@ creative:
         caption: top
 audio:
   voice_id: de-DE-ConradNeural
-  voice_speed: 1.02
-  voice_pitch: -1
+  voice_speed: 1.05
+  voice_pitch: 0
   music_family: forbidden_experiments_editorial
   soundscape_id: kinetic
   sfx_density: medium

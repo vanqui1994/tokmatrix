@@ -1,5 +1,5 @@
 channel_id: infamous_figures_05
-config_version: 6
+config_version: 7
 niche_id: infamous_figures
 name: Berüchtigte Gestalten 05
 tiktok_account_ref: null
@@ -42,8 +42,8 @@ creative:
         caption: top
 audio:
   voice_id: de-DE-SeraphinaMultilingualNeural
-  voice_speed: 1.02
-  voice_pitch: -1
+  voice_speed: 1.05
+  voice_pitch: 0
   music_family: infamous_figures_editorial
   soundscape_id: science
   sfx_density: medium

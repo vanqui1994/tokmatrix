@@ -4,9 +4,9 @@ audio:
   soundscape_id: science
   voice_id: en_male_artistic_layne
   voice_pitch: -1
-  voice_speed: 1.04
+  voice_speed: 0.99
 channel_id: military_arsenal_12
-config_version: 9
+config_version: 10
 creative:
   cut_cadence_seconds: 2.5
   palette:

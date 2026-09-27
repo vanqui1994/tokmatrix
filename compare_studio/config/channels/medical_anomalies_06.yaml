@@ -1,5 +1,5 @@
 channel_id: medical_anomalies_06
-config_version: 7
+config_version: 8
 niche_id: medical_anomalies
 name: Medizin & Biologische Rätsel 06
 tiktok_account_ref: null
@@ -55,7 +55,7 @@ creative:
 audio:
   voice_id: de-DE-FlorianMultilingualNeural
   voice_speed: 1.02
-  voice_pitch: -1
+  voice_pitch: 1
   music_family: medical_anomalies_editorial
   soundscape_id: survival
   sfx_density: medium

@@ -1,5 +1,5 @@
 channel_id: philosophy_paradox_03
-config_version: 7
+config_version: 8
 niche_id: philosophy_paradox
 name: 철학의 역설 03
 tiktok_account_ref: null
@@ -54,7 +54,7 @@ creative:
         caption: top
 audio:
   voice_id: ko-KR-HyunsuMultilingualNeural
-  voice_speed: 1.02
+  voice_speed: 0.99
   voice_pitch: -1
   music_family: philosophy_paradox_editorial
   soundscape_id: science

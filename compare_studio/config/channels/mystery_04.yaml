@@ -1,5 +1,5 @@
 channel_id: mystery_04
-config_version: 4
+config_version: 5
 niche_id: unsolved_mysteries
 name: Dấu Vết Trong Bóng Tối
 tiktok_account_ref: null
@@ -33,7 +33,7 @@ creative:
         caption: top
 audio:
   voice_id: multi_female_daqi_uranus_bigtts
-  voice_speed: 0.98
+  voice_speed: 0.99
   voice_pitch: -1
   music_family: archival_mystery_drone
   soundscape_id: mystery

@@ -4,9 +4,9 @@ audio:
   soundscape_id: kinetic
   voice_id: multi_female_xinwenjieshuo_uranus_bigtts
   voice_pitch: -1
-  voice_speed: 1.03
+  voice_speed: 0.99
 channel_id: unsolved_mysteries_11
-config_version: 6
+config_version: 7
 creative:
   cut_cadence_seconds: 2.4
   palette:

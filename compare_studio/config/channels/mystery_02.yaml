@@ -1,5 +1,5 @@
 channel_id: mystery_02
-config_version: 4
+config_version: 5
 niche_id: unsolved_mysteries
 name: Hồ Sơ Bất Khả Giải
 tiktok_account_ref: null
@@ -45,8 +45,8 @@ creative:
         caption: top
 audio:
   voice_id: vi-VN-HoaiMyNeural
-  voice_speed: 1.04
-  voice_pitch: 0
+  voice_speed: 0.99
+  voice_pitch: -1
   music_family: archival_investigation
   soundscape_id: newspaper
   sfx_density: low

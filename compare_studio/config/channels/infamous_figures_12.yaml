@@ -3,10 +3,10 @@ audio:
   sfx_density: medium
   soundscape_id: vox
   voice_id: de-DE-AmalaNeural
-  voice_pitch: -1
-  voice_speed: 1.01
+  voice_pitch: -2
+  voice_speed: 0.96
 channel_id: infamous_figures_12
-config_version: 5
+config_version: 6
 creative:
   cut_cadence_seconds: 2.2
   palette:

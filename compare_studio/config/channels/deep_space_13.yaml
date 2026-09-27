@@ -4,9 +4,9 @@ audio:
   soundscape_id: science
   voice_id: de-DE-AmalaNeural
   voice_pitch: -1
-  voice_speed: 0.98
+  voice_speed: 0.96
 channel_id: deep_space_13
-config_version: 6
+config_version: 7
 creative:
   cut_cadence_seconds: 2.6
   palette:

@@ -1,5 +1,5 @@
 channel_id: forbidden_experiments_07
-config_version: 6
+config_version: 7
 niche_id: forbidden_experiments
 name: Verrückte Experimente 07
 tiktok_account_ref: null
@@ -42,8 +42,8 @@ creative:
         caption: middle
 audio:
   voice_id: DiT_de_female_qingsong
-  voice_speed: 1.02
-  voice_pitch: -1
+  voice_speed: 0.99
+  voice_pitch: -2
   music_family: forbidden_experiments_editorial
   soundscape_id: survival
   sfx_density: medium

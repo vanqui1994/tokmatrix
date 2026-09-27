@@ -1,5 +1,5 @@
 channel_id: extreme_survival_03
-config_version: 7
+config_version: 8
 niche_id: extreme_survival
 name: Überleben & Katastrophen 03
 tiktok_account_ref: null
@@ -55,7 +55,7 @@ creative:
 audio:
   voice_id: de-DE-FlorianMultilingualNeural
   voice_speed: 1.02
-  voice_pitch: -1
+  voice_pitch: 0
   music_family: extreme_survival_editorial
   soundscape_id: kinetic
   sfx_density: medium

@@ -1,5 +1,5 @@
 channel_id: dark_psychology_08
-config_version: 6
+config_version: 7
 niche_id: dark_psychology
 name: Psychologie & Verhalten 08
 tiktok_account_ref: null
@@ -42,7 +42,7 @@ creative:
         caption: middle
 audio:
   voice_id: de-DE-SeraphinaMultilingualNeural
-  voice_speed: 1.02
+  voice_speed: 0.96
   voice_pitch: -1
   music_family: dark_psychology_editorial
   soundscape_id: kinetic

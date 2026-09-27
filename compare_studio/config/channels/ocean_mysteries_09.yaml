@@ -1,5 +1,5 @@
 channel_id: ocean_mysteries_09
-config_version: 5
+config_version: 6
 niche_id: ocean_mysteries
 name: 바다와 심해 해구 09
 tiktok_account_ref: null
@@ -42,7 +42,7 @@ creative:
         caption: bottom
 audio:
   voice_id: ko-KR-InJoonNeural
-  voice_speed: 1.02
+  voice_speed: 0.99
   voice_pitch: -1
   music_family: ocean_mysteries_editorial
   soundscape_id: science

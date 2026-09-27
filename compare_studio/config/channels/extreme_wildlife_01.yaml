@@ -1,5 +1,5 @@
 channel_id: extreme_wildlife_01
-config_version: 6
+config_version: 7
 niche_id: extreme_wildlife
 name: Creatures of the Deep 01
 tiktok_account_ref: null
@@ -54,7 +54,7 @@ creative:
         caption: middle
 audio:
   voice_id: en-US-AndrewNeural
-  voice_speed: 1.02
+  voice_speed: 0.99
   voice_pitch: -1
   music_family: extreme_wildlife_editorial
   soundscape_id: science

@@ -1,5 +1,5 @@
 channel_id: tech_ai_future_02
-config_version: 6
+config_version: 7
 niche_id: tech_ai_future
 name: Công Nghệ & Tương Lai AI 02
 tiktok_account_ref: null
@@ -66,7 +66,7 @@ creative:
         caption: top
 audio:
   voice_id: BV421_vivn_streaming
-  voice_speed: 1.02
+  voice_speed: 0.99
   voice_pitch: -1
   music_family: tech_ai_future_editorial
   soundscape_id: kinetic

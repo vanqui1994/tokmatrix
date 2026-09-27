@@ -1,5 +1,5 @@
 channel_id: folklore_legends_02
-config_version: 7
+config_version: 8
 niche_id: folklore_legends
 name: Folklore & The Unseen 02
 tiktok_account_ref: null
@@ -54,7 +54,7 @@ creative:
         caption: middle
 audio:
   voice_id: en-US-JennyNeural
-  voice_speed: 1.02
+  voice_speed: 0.99
   voice_pitch: -1
   music_family: folklore_legends_editorial
   soundscape_id: mystery

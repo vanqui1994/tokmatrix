@@ -1,5 +1,5 @@
 channel_id: ancient_mythology_02
-config_version: 6
+config_version: 7
 niche_id: ancient_mythology
 name: Antike Mythen 02
 tiktok_account_ref: null
@@ -54,7 +54,7 @@ creative:
         caption: middle
 audio:
   voice_id: de-DE-ConradNeural
-  voice_speed: 1.02
+  voice_speed: 0.99
   voice_pitch: -1
   music_family: ancient_mythology_editorial
   soundscape_id: science

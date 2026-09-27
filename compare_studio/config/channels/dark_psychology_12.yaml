@@ -3,10 +3,10 @@ audio:
   sfx_density: medium
   soundscape_id: mystery
   voice_id: de-DE-KillianNeural
-  voice_pitch: -1
-  voice_speed: 1.04
+  voice_pitch: 0
+  voice_speed: 1.02
 channel_id: dark_psychology_12
-config_version: 7
+config_version: 8
 creative:
   cut_cadence_seconds: 2.3
   palette:

@@ -1,5 +1,5 @@
 channel_id: ancient_mythology_10
-config_version: 7
+config_version: 8
 niche_id: ancient_mythology
 name: Antike Mythen 10
 tiktok_account_ref: null
@@ -54,7 +54,7 @@ creative:
         caption: bottom
 audio:
   voice_id: de-DE-SeraphinaMultilingualNeural
-  voice_speed: 1.02
+  voice_speed: 0.99
   voice_pitch: -1
   music_family: ancient_mythology_editorial
   soundscape_id: newspaper

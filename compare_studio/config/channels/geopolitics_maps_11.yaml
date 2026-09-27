@@ -3,10 +3,10 @@ audio:
   sfx_density: medium
   soundscape_id: kinetic
   voice_id: de-DE-AmalaNeural
-  voice_pitch: -1
-  voice_speed: 1.0
+  voice_pitch: -2
+  voice_speed: 1.05
 channel_id: geopolitics_maps_11
-config_version: 7
+config_version: 8
 creative:
   cut_cadence_seconds: 2.3
   palette:

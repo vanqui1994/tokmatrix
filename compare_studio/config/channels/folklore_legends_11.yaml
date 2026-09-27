@@ -4,9 +4,9 @@ audio:
   soundscape_id: kinetic
   voice_id: en-US-RogerNeural
   voice_pitch: -1
-  voice_speed: 1.01
+  voice_speed: 0.99
 channel_id: folklore_legends_11
-config_version: 6
+config_version: 7
 creative:
   cut_cadence_seconds: 2.9
   palette:

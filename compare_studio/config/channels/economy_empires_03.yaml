@@ -1,5 +1,5 @@
 channel_id: economy_empires_03
-config_version: 7
+config_version: 8
 niche_id: economy_empires
 name: Wirtschaft & Märkte 03
 tiktok_account_ref: null
@@ -55,7 +55,7 @@ creative:
 audio:
   voice_id: de-DE-SeraphinaMultilingualNeural
   voice_speed: 1.02
-  voice_pitch: -1
+  voice_pitch: 0
   music_family: economy_empires_editorial
   soundscape_id: science
   sfx_density: medium

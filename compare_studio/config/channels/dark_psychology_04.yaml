@@ -1,5 +1,5 @@
 channel_id: dark_psychology_04
-config_version: 8
+config_version: 9
 niche_id: dark_psychology
 name: Psychologie & Verhalten 04
 tiktok_account_ref: null
@@ -66,7 +66,7 @@ creative:
         caption: bottom
 audio:
   voice_id: DiT_de_male_koubo
-  voice_speed: 1.02
+  voice_speed: 0.96
   voice_pitch: -1
   music_family: dark_psychology_editorial
   soundscape_id: science

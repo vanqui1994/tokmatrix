@@ -4,9 +4,9 @@ audio:
   soundscape_id: science
   voice_id: en_male_artistic_layne
   voice_pitch: -1
-  voice_speed: 1.04
+  voice_speed: 1.02
 channel_id: mega_catastrophes_11
-config_version: 9
+config_version: 10
 creative:
   cut_cadence_seconds: 3.0
   palette:

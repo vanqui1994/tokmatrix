@@ -4,9 +4,9 @@ audio:
   soundscape_id: survival
   voice_id: en_us_006
   voice_pitch: -1
-  voice_speed: 1.03
+  voice_speed: 0.99
 channel_id: extreme_survival_11
-config_version: 7
+config_version: 8
 creative:
   cut_cadence_seconds: 2.3
   palette:

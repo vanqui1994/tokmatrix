@@ -1,5 +1,5 @@
 channel_id: geopolitics_maps_09
-config_version: 8
+config_version: 9
 niche_id: geopolitics_maps
 name: Geopolitik & Grenzen 09
 tiktok_account_ref: null
@@ -66,8 +66,8 @@ creative:
         caption: bottom
 audio:
   voice_id: DiT_de_male_koubo
-  voice_speed: 1.02
-  voice_pitch: -1
+  voice_speed: 1.05
+  voice_pitch: 0
   music_family: geopolitics_maps_editorial
   soundscape_id: newspaper
   sfx_density: medium

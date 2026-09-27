@@ -1,5 +1,5 @@
 channel_id: space_02
-config_version: 5
+config_version: 6
 niche_id: deep_space
 name: Scale Of The Cosmos
 tiktok_account_ref: null
@@ -54,8 +54,8 @@ creative:
         caption: bottom
 audio:
   voice_id: de-DE-KatjaNeural
-  voice_speed: 1.06
-  voice_pitch: 0
+  voice_speed: 0.99
+  voice_pitch: 1
   music_family: orbital_ambient
   soundscape_id: science
   sfx_density: low

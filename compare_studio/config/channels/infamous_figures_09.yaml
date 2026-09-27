@@ -1,5 +1,5 @@
 channel_id: infamous_figures_09
-config_version: 6
+config_version: 7
 niche_id: infamous_figures
 name: Berüchtigte Gestalten 09
 tiktok_account_ref: null
@@ -42,8 +42,8 @@ creative:
         caption: middle
 audio:
   voice_id: DiT_de_male_koubo
-  voice_speed: 1.02
-  voice_pitch: -1
+  voice_speed: 0.96
+  voice_pitch: -2
   music_family: infamous_figures_editorial
   soundscape_id: science
   sfx_density: medium

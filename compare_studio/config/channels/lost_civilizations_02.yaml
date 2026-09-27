@@ -1,5 +1,5 @@
 channel_id: lost_civilizations_02
-config_version: 5
+config_version: 6
 niche_id: lost_civilizations
 name: Antike Zivilisationen 02
 tiktok_account_ref: null
@@ -29,7 +29,7 @@ creative:
     text: '#F2EEE6'
 audio:
   voice_id: DiT_de_female_jiangshi
-  voice_speed: 1.02
+  voice_speed: 0.99
   voice_pitch: -1
   music_family: lost_civilizations_editorial
   soundscape_id: mystery

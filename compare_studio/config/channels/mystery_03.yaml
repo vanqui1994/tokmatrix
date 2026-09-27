@@ -1,5 +1,5 @@
 channel_id: mystery_03
-config_version: 4
+config_version: 5
 niche_id: unsolved_mysteries
 name: Strange But Documented
 tiktok_account_ref: null
@@ -33,8 +33,8 @@ creative:
         caption: middle
 audio:
   voice_id: multi_female_xyf04auto_uranus_bigtts
-  voice_speed: 1.08
-  voice_pitch: 0
+  voice_speed: 0.99
+  voice_pitch: -1
   music_family: curious_dark_ambient
   soundscape_id: vox
   sfx_density: medium

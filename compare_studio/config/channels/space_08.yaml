@@ -1,5 +1,5 @@
 channel_id: space_08
-config_version: 8
+config_version: 9
 niche_id: deep_space
 name: Kosmos & Physik 08
 tiktok_account_ref: null
@@ -54,8 +54,8 @@ creative:
         caption: top
 audio:
   voice_id: DiT_de_female_jiangshi
-  voice_speed: 1.02
-  voice_pitch: -1
+  voice_speed: 0.96
+  voice_pitch: -2
   music_family: deep_space_editorial
   soundscape_id: vox
   sfx_density: medium

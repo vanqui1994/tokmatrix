@@ -4,9 +4,9 @@ audio:
   soundscape_id: science
   voice_id: multi_female_sisi_uranus_bigtts
   voice_pitch: -1
-  voice_speed: 1.01
+  voice_speed: 0.99
 channel_id: tech_ai_future_11
-config_version: 6
+config_version: 7
 creative:
   cut_cadence_seconds: 2.3
   palette:

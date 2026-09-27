@@ -4,9 +4,9 @@ audio:
   soundscape_id: newspaper
   voice_id: de-DE-KillianNeural
   voice_pitch: -1
-  voice_speed: 1.04
+  voice_speed: 0.96
 channel_id: ancient_mythology_13
-config_version: 7
+config_version: 8
 creative:
   cut_cadence_seconds: 2.4
   palette:

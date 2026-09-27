@@ -1,5 +1,5 @@
 channel_id: economy_empires_04
-config_version: 6
+config_version: 7
 niche_id: economy_empires
 name: Wirtschaft & Märkte 04
 tiktok_account_ref: null
@@ -43,7 +43,7 @@ creative:
 audio:
   voice_id: DiT_de_male_koubo
   voice_speed: 1.02
-  voice_pitch: -1
+  voice_pitch: 0
   music_family: economy_empires_editorial
   soundscape_id: science
   sfx_density: medium
