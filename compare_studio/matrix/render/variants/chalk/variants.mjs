@@ -241,7 +241,7 @@ const whiteboard = defineVariant({
             { tweens: map.tweens(scene, i) },
           ),
           decor: [{ kind: "washi", x: 230, y: 1080, w: 170, rotate: -4, color: "rgba(80,140,230,.55)" }],
-          css: `${HEAD_CSS}${LEGEND_CSS}.f-bleed{background:transparent!important}.wb-hd2 .cm-hd-t{color:#1d4ed8;font-weight:800}.h-rule{background:#d62828!important}.h-center-label{color:#d62828!important}.wb-lg{background:linear-gradient(180deg,#ffc9d9,#ffb3c9);padding:26px 26px;box-shadow:0 14px 24px rgba(0,0,0,.25);transform:rotate(2deg)}.wb-lg .cm-lg-row{left:26px;right:26px}.wb-lg .cm-lg-title{color:#8a1538;font-weight:800}.wb-lg .cm-lg-t{color:#2a1a20;font-weight:700}`,
+          css: `${HEAD_CSS}${LEGEND_CSS}.f-bleed{background:transparent!important}.wb-hd2 .cm-hd-t{color:#1d4ed8;font-weight:800}.h-rule{background:#d62828!important}.wb-lg{background:linear-gradient(180deg,#ffc9d9,#ffb3c9);padding:26px 26px;box-shadow:0 14px 24px rgba(0,0,0,.25);transform:rotate(2deg)}.wb-lg .cm-lg-row{left:26px;right:26px}.wb-lg .cm-lg-title{color:#8a1538;font-weight:800}.wb-lg .cm-lg-t{color:#2a1a20;font-weight:700}`,
         };
       },
     },
@@ -388,7 +388,7 @@ const atlas = defineVariant({
           panel: (scene, i) => map.svg(scene, i),
           text: { style: "ink", region: { x: 80, y: 1400, w: 920, h: 270 }, size: 48, align: "center", enter: "clip" },
           sceneExtra: (scene, i) => merge(headline(scene, map.headline(i), { region: { x: 150, y: 368, w: 780, h: 76 }, cls: "at-hd", size: 38, enter: "pop" }), { tweens: map.tweens(scene, i) }),
-          css: `${HEAD_CSS}.at-hd{background:#a8322a;clip-path:polygon(0 0,100% 0,96% 50%,100% 100%,0 100%,4% 50%);padding:0 60px}.at-hd .cm-hd-t{color:#fbeed7;text-align:center;font-style:italic;font-weight:700}.t-ink .v-line{color:#3a2614!important}.h-center-label{color:#8a5a2a!important}.h-rule{background:#8a5a2a!important}`,
+          css: `${HEAD_CSS}.at-hd{background:#a8322a;clip-path:polygon(0 0,100% 0,96% 50%,100% 100%,0 100%,4% 50%);padding:0 60px}.at-hd .cm-hd-t{color:#fbeed7;text-align:center;font-style:italic;font-weight:700}.t-ink .v-line{color:#3a2614!important}.h-rule{background:#8a5a2a!important}`,
         };
       },
     },

@@ -47,7 +47,7 @@ const vnOriginal = defineVariant({
         ],
         css: "#root .f-bleed{-webkit-mask-image:linear-gradient(180deg,transparent 0%,#000 22%);mask-image:linear-gradient(180deg,transparent 0%,#000 22%)}"
           + ".v-bg-fill{background:linear-gradient(180deg,#040509 0%,#0b0c15 38%,#12131f 52%,#12131f 100%)!important}"
-          + ".h-center-label{color:rgba(239,233,220,.62)!important;font-size:26px!important}",
+          + ".h-center-label{font-size:26px!important}",
       }),
     },
     altar_niche: {
@@ -77,7 +77,7 @@ const vnOriginal = defineVariant({
 
 // ---------------------------------------------------------------------------------------------------------------------
 // 2. japanese-yokai-scroll — cuộn emaki. ja: chữ dọc (kiểu vertical của kit); Latin/Hàn: chữ ngang.
-const EMAKI_CSS = ".h-center-label{color:#8e1b12!important}#root .f-plain{border:0;background:#efe3c4;box-shadow:0 24px 40px rgba(60,40,10,.35);transform:none!important}"
+const EMAKI_CSS = "#root .f-plain{border:0;background:#efe3c4;box-shadow:0 24px 40px rgba(60,40,10,.35);transform:none!important}"
   + "#root .f-plain .v-img{filter:sepia(.35) saturate(.8)}"
   + ".t-ink{background:#f7efd9;border-top:4px solid #2b2118;border-bottom:4px solid #2b2118}.t-ink .v-line{color:#1f1812!important}"
   + ".t-vertical{background:#f7efd9!important;border-left:4px solid #2b2118;border-right:4px solid #2b2118}";
@@ -315,7 +315,7 @@ const runestone = defineVariant({
           text: { style: "engraved", region: { x: 150, y: 1350, w: 780, h: 300 }, size: 46, enter: "fade_up" },
           vars: { "--frame-edge": "#4c4841" },
           overlay: () => ({ html: band, css: ".fk-band{position:absolute;left:0;top:0}" }),
-          css: ".h-center-label{color:#2a1f14!important}#v-bg::after{content:'';position:absolute;left:100px;top:330px;width:880px;height:1400px;border-radius:440px 440px 40px 40px;background:radial-gradient(ellipse at 40% 30%,rgba(255,255,255,.12),transparent 60%),linear-gradient(180deg,#8d887d,#5f5b53);box-shadow:inset 0 0 60px rgba(0,0,0,.5),0 30px 60px rgba(0,0,0,.6)}",
+          css: "#v-bg::after{content:'';position:absolute;left:100px;top:330px;width:880px;height:1400px;border-radius:440px 440px 40px 40px;background:radial-gradient(ellipse at 40% 30%,rgba(255,255,255,.12),transparent 60%),linear-gradient(180deg,#8d887d,#5f5b53);box-shadow:inset 0 0 60px rgba(0,0,0,.5),0 30px 60px rgba(0,0,0,.6)}",
         };
       },
     },
