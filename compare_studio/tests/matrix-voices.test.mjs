@@ -27,7 +27,11 @@ test("assignment is deterministic, keeps balanced voices and spreads one niche o
   const pool = narrationPool("de");
   const perNiche = {};
   for (const row of first) (perNiche[row.niche] ||= new Set()).add(row.voice);
-  for (const voices of Object.values(perNiche)) assert.equal(voices.size, pool.length);
+  // Mỗi niche (8 kênh) nhận giọng khác nhau tới khi hết giọng: min(số kênh, số giọng của ngôn ngữ).
+  for (const [niche, voices] of Object.entries(perNiche)) {
+    const size = first.filter((row) => row.niche === niche).length;
+    assert.equal(voices.size, Math.min(size, pool.length));
+  }
   const again = assignVoices(first.map((row) => ({ ...row, voice: row.voice })));
   assert.ok(again.every((row) => row.status === "kept"));
 });

@@ -2,11 +2,11 @@ audio:
   music_family: tech_ai_future_editorial
   sfx_density: medium
   soundscape_id: science
-  voice_id: BV074_streaming
+  voice_id: multi_female_sisi_uranus_bigtts
   voice_pitch: -1
   voice_speed: 1.01
 channel_id: tech_ai_future_11
-config_version: 5
+config_version: 6
 creative:
   cut_cadence_seconds: 2.3
   palette:

@@ -1,5 +1,5 @@
 channel_id: space_03
-config_version: 6
+config_version: 7
 niche_id: deep_space
 name: Physics In A Minute
 tiktok_account_ref: null
@@ -53,7 +53,7 @@ creative:
         tone: 2
         caption: middle
 audio:
-  voice_id: DiT_de_male_koubo
+  voice_id: DiT_de_female_jiangshi
   voice_speed: 1.02
   voice_pitch: 0
   music_family: minimal_science_ambient

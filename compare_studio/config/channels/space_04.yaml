@@ -1,5 +1,5 @@
 channel_id: space_04
-config_version: 4
+config_version: 5
 niche_id: deep_space
 name: Beyond The Event Horizon
 tiktok_account_ref: null
@@ -42,7 +42,7 @@ creative:
         tone: 0
         caption: top
 audio:
-  voice_id: de-DE-KatjaNeural
+  voice_id: DiT_de_female_jiangshi
   voice_speed: 1.0
   voice_pitch: -1
   music_family: event_horizon_drone

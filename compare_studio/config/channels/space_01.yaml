@@ -1,5 +1,5 @@
 channel_id: space_01
-config_version: 6
+config_version: 7
 niche_id: deep_space
 name: Cosmic Impossible
 tiktok_account_ref: null
@@ -54,7 +54,7 @@ creative:
         tone: 3
         caption: middle
 audio:
-  voice_id: DiT_de_female_qingsong
+  voice_id: DiT_de_female_jiangshi
   voice_speed: 1.08
   voice_pitch: -1
   music_family: deep_cosmic_drone

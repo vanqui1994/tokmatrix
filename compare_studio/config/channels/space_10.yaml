@@ -1,5 +1,5 @@
 channel_id: space_10
-config_version: 6
+config_version: 7
 niche_id: deep_space
 name: Kosmos & Physik 10
 tiktok_account_ref: null
@@ -41,7 +41,7 @@ creative:
         tone: 6
         caption: middle
 audio:
-  voice_id: DiT_de_female_qingsong
+  voice_id: DiT_de_female_jiangshi
   voice_speed: 1.02
   voice_pitch: -1
   music_family: deep_space_editorial

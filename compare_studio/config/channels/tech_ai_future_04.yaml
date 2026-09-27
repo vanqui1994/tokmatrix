@@ -1,5 +1,5 @@
 channel_id: tech_ai_future_04
-config_version: 4
+config_version: 5
 niche_id: tech_ai_future
 name: Công Nghệ & Tương Lai AI 04
 tiktok_account_ref: null
@@ -41,7 +41,7 @@ creative:
         tone: 5
         caption: middle
 audio:
-  voice_id: BV075_streaming
+  voice_id: BV562_streaming
   voice_speed: 1.02
   voice_pitch: -1
   music_family: tech_ai_future_editorial

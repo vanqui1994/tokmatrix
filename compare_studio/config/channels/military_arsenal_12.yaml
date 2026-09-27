@@ -2,11 +2,11 @@ audio:
   music_family: military_arsenal_editorial
   sfx_density: medium
   soundscape_id: science
-  voice_id: en-GB-LibbyNeural
+  voice_id: en_male_artistic_layne
   voice_pitch: -1
   voice_speed: 1.04
 channel_id: military_arsenal_12
-config_version: 8
+config_version: 9
 creative:
   cut_cadence_seconds: 2.5
   palette:

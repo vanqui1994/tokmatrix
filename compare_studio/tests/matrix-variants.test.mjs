@@ -302,9 +302,11 @@ test("list-variants exposes registry, rules and a cost estimate for Python and r
   // Voice DNA dùng cả CapCut (không chỉ Edge); ứng viên CapCut lấy từ Voice.json, không gõ tay tên giọng.
   const voices = voicesJson();
   assert.ok(voices.voices.some((v) => v.provider === "capcut" && v.lang === "de"));
-  assert.ok(voices.capcut_candidates.some((v) => v.lang === "ja"));
+  // Ứng viên = giọng của Voice.json chưa đăng ký (sau khi thử giọng, một ngôn ngữ có thể không còn ứng viên nào).
+  const catalog = new Set(JSON.parse(fs.readFileSync(new URL("../tools/capcut_tts_api/Voice.json", import.meta.url), "utf8")).map((v) => v.voice_type));
   const registered = new Set(voices.voices.map((v) => v.id));
-  assert.ok(voices.capcut_candidates.every((v) => !registered.has(v.id)));
+  assert.ok(voices.capcut_candidates.every((v) => catalog.has(v.id) && !registered.has(v.id)));
+  assert.ok(voices.voices.some((v) => v.provider === "capcut" && v.lang === "ja"));
 });
 
 test("preview builds labelled, lint-clean projects for every composition and language", async () => {

@@ -1,5 +1,5 @@
 channel_id: tech_ai_future_07
-config_version: 4
+config_version: 5
 niche_id: tech_ai_future
 name: Công Nghệ & Tương Lai AI 07
 tiktok_account_ref: null
@@ -41,7 +41,7 @@ creative:
         tone: 5
         caption: top
 audio:
-  voice_id: multi_female_richgirl_uranus_bigtts
+  voice_id: multi_female_stokie_uranus_bigtts
   voice_speed: 1.02
   voice_pitch: -1
   music_family: tech_ai_future_editorial

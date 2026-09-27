@@ -1,0 +1,509 @@
+{
+  "generated_by": "tools/audition-voices.mjs --apply",
+  "voices": [
+    {
+      "id": "DiT_de_female_jiangshi",
+      "lang": "de",
+      "name": "TieFE Dozen",
+      "gender": "female",
+      "status": "pass",
+      "recall": 1
+    },
+    {
+      "id": "BV029_streaming",
+      "lang": "en",
+      "name": "American Female",
+      "gender": "female",
+      "status": "pass",
+      "recall": 1
+    },
+    {
+      "id": "BV072_streaming",
+      "lang": "en",
+      "name": "Suaraaa",
+      "gender": "any",
+      "status": "pass",
+      "recall": 1
+    },
+    {
+      "id": "BV503_streaming",
+      "lang": "en",
+      "name": "Energetic Famale",
+      "gender": "male",
+      "status": "pass",
+      "recall": 1
+    },
+    {
+      "id": "BV507_streaming",
+      "lang": "en",
+      "name": "Cute Boy",
+      "gender": "male",
+      "status": "pass",
+      "recall": 1
+    },
+    {
+      "id": "BV540_streaming",
+      "lang": "en",
+      "name": "Desti",
+      "gender": "any",
+      "status": "pass",
+      "recall": 1
+    },
+    {
+      "id": "DiT_en_female_jessie",
+      "lang": "en",
+      "name": "Jessie",
+      "gender": "female",
+      "status": "pass",
+      "recall": 1
+    },
+    {
+      "id": "DiT_en_male_trickster",
+      "lang": "en",
+      "name": "Trickster",
+      "gender": "male",
+      "status": "pass",
+      "recall": 1
+    },
+    {
+      "id": "en",
+      "lang": "en",
+      "name": "Male Eng",
+      "gender": "male",
+      "status": "error",
+      "recall": null
+    },
+    {
+      "id": "en_female_caroline_clone2",
+      "lang": "en",
+      "name": "Excited",
+      "gender": "female",
+      "status": "pass",
+      "recall": 1
+    },
+    {
+      "id": "en_female_loba_apex",
+      "lang": "en",
+      "name": "Robaa",
+      "gender": "female",
+      "status": "pass",
+      "recall": 1
+    },
+    {
+      "id": "en_female_nail_artist",
+      "lang": "en",
+      "name": "Artist",
+      "gender": "female",
+      "status": "pass",
+      "recall": 1
+    },
+    {
+      "id": "en_female_sherry",
+      "lang": "en",
+      "name": "Sherry",
+      "gender": "female",
+      "status": "pass",
+      "recall": 1
+    },
+    {
+      "id": "en_female_soothing_mars_bigtts",
+      "lang": "en",
+      "name": "Female Teacher",
+      "gender": "female",
+      "status": "pass",
+      "recall": 1
+    },
+    {
+      "id": "en_male_artistic_layne",
+      "lang": "en",
+      "name": "Mentor",
+      "gender": "male",
+      "status": "pass",
+      "recall": 1
+    },
+    {
+      "id": "en_male_deadpool",
+      "lang": "en",
+      "name": "Deadpool",
+      "gender": "male",
+      "status": "pass",
+      "recall": 1
+    },
+    {
+      "id": "en_male_death_rock",
+      "lang": "en",
+      "name": "Grim Rock",
+      "gender": "male",
+      "status": "fail",
+      "recall": 0.2
+    },
+    {
+      "id": "en_male_dramaqueen_zachk",
+      "lang": "en",
+      "name": "Dramaaa",
+      "gender": "female",
+      "status": "pass",
+      "recall": 1
+    },
+    {
+      "id": "en_male_m03_classical",
+      "lang": "en",
+      "name": "Classical Music",
+      "gender": "male",
+      "status": "fail",
+      "recall": 0
+    },
+    {
+      "id": "en_male_trickster_stream",
+      "lang": "en",
+      "name": "Trickster",
+      "gender": "male",
+      "status": "pass",
+      "recall": 1
+    },
+    {
+      "id": "en_us_002_dsp",
+      "lang": "en",
+      "name": "Dolly famle",
+      "gender": "any",
+      "status": "pass",
+      "recall": 1
+    },
+    {
+      "id": "en_us_007",
+      "lang": "en",
+      "name": "Male Profess",
+      "gender": "male",
+      "status": "pass",
+      "recall": 1
+    },
+    {
+      "id": "en_us_010",
+      "lang": "en",
+      "name": "Chrming Male",
+      "gender": "male",
+      "status": "pass",
+      "recall": 1
+    },
+    {
+      "id": "en-US-JennyMultilingualNeural",
+      "lang": "en",
+      "name": "Jenny",
+      "gender": "any",
+      "status": "error",
+      "recall": null
+    },
+    {
+      "id": "ICL_en_female_cc_bluetooth",
+      "lang": "en",
+      "name": "Bluetooth",
+      "gender": "female",
+      "status": "pass",
+      "recall": 1
+    },
+    {
+      "id": "ICL_en_female_ditie_dsp",
+      "lang": "en",
+      "name": "Creepy female",
+      "gender": "female",
+      "status": "pass",
+      "recall": 1
+    },
+    {
+      "id": "ICL_en_female_lisa",
+      "lang": "en",
+      "name": "Lisa",
+      "gender": "female",
+      "status": "pass",
+      "recall": 1
+    },
+    {
+      "id": "ICL_en_female_little_cute_dsp",
+      "lang": "en",
+      "name": "Cute Girl",
+      "gender": "female",
+      "status": "pass",
+      "recall": 1
+    },
+    {
+      "id": "ICL_en_male_305M_JamieTr",
+      "lang": "en",
+      "name": "Tinn",
+      "gender": "male",
+      "status": "pass",
+      "recall": 1
+    },
+    {
+      "id": "ICL_en_male_310M_CoreyK",
+      "lang": "en",
+      "name": "Kai",
+      "gender": "male",
+      "status": "pass",
+      "recall": 1
+    },
+    {
+      "id": "ICL_en_male_317M_BrianJW",
+      "lang": "en",
+      "name": "BrianJW",
+      "gender": "male",
+      "status": "pass",
+      "recall": 1
+    },
+    {
+      "id": "ICL_en_male_captain",
+      "lang": "en",
+      "name": "Captain",
+      "gender": "male",
+      "status": "pass",
+      "recall": 1
+    },
+    {
+      "id": "ICL_en_male_kevin2",
+      "lang": "en",
+      "name": "Mischief",
+      "gender": "male",
+      "status": "pass",
+      "recall": 1
+    },
+    {
+      "id": "ICL_en_male_oogie2",
+      "lang": "en",
+      "name": "Oogie",
+      "gender": "male",
+      "status": "pass",
+      "recall": 1
+    },
+    {
+      "id": "ICL_en_male_philosopher_dsp",
+      "lang": "en",
+      "name": "Narrator",
+      "gender": "male",
+      "status": "pass",
+      "recall": 1
+    },
+    {
+      "id": "multi_female_wenjingmaomao_moon_bigtts_cc",
+      "lang": "en",
+      "name": "Daiana",
+      "gender": "female",
+      "status": "pass",
+      "recall": 1
+    },
+    {
+      "id": "ICL_ja_female_kuaizui02",
+      "lang": "ja",
+      "name": "マネージャー",
+      "gender": "female",
+      "status": "pass",
+      "recall": 1
+    },
+    {
+      "id": "ICL_ja_female_lengjingnv",
+      "lang": "ja",
+      "name": "女性AI",
+      "gender": "female",
+      "status": "pass",
+      "recall": 1
+    },
+    {
+      "id": "ICL_ja_male_bobao2",
+      "lang": "ja",
+      "name": "穏やかな声優",
+      "gender": "male",
+      "status": "pass",
+      "recall": 1
+    },
+    {
+      "id": "ICL_ja_male_cute",
+      "lang": "ja",
+      "name": "cute",
+      "gender": "male",
+      "status": "pass",
+      "recall": 1
+    },
+    {
+      "id": "ICL_ja_male_gaoxiao",
+      "lang": "ja",
+      "name": "gaoxiao",
+      "gender": "male",
+      "status": "pass",
+      "recall": 1
+    },
+    {
+      "id": "ICL_ja_male_huolinan2",
+      "lang": "ja",
+      "name": "爽やかメンズ",
+      "gender": "male",
+      "status": "pass",
+      "recall": 1
+    },
+    {
+      "id": "ICL_ja_male_paoxiao",
+      "lang": "ja",
+      "name": "Ơaoxiao",
+      "gender": "male",
+      "status": "pass",
+      "recall": 1
+    },
+    {
+      "id": "ICL_ja_male_rap",
+      "lang": "ja",
+      "name": "Rap",
+      "gender": "male",
+      "status": "pass",
+      "recall": 1
+    },
+    {
+      "id": "ICL_ja_male_reborn",
+      "lang": "ja",
+      "name": "厳しい先生",
+      "gender": "male",
+      "status": "pass",
+      "recall": 1
+    },
+    {
+      "id": "ICL_jp_female_araisan",
+      "lang": "ja",
+      "name": "天真爛漫な娘",
+      "gender": "female",
+      "status": "pass",
+      "recall": 1
+    },
+    {
+      "id": "ICL_jp_female_hatunemiku",
+      "lang": "ja",
+      "name": "Hatunemiku",
+      "gender": "female",
+      "status": "pass",
+      "recall": 1
+    },
+    {
+      "id": "ICL_jp_female_tanhua",
+      "lang": "ja",
+      "name": "Tanhua",
+      "gender": "female",
+      "status": "pass",
+      "recall": 1
+    },
+    {
+      "id": "ICL_jp_male_dashu",
+      "lang": "ja",
+      "name": "Dashu",
+      "gender": "male",
+      "status": "pass",
+      "recall": 1
+    },
+    {
+      "id": "ICL_jp_male_yangguang",
+      "lang": "ja",
+      "name": "Yangguang",
+      "gender": "male",
+      "status": "pass",
+      "recall": 1
+    },
+    {
+      "id": "ICL_jp_male_zhenfennan",
+      "lang": "ja",
+      "name": "少年ヒーロー",
+      "gender": "male",
+      "status": "pass",
+      "recall": 1
+    },
+    {
+      "id": "BV075_streaming_vibrato_dsp",
+      "lang": "vi",
+      "name": "Việt Méo",
+      "gender": "any",
+      "status": "pass",
+      "recall": 1
+    },
+    {
+      "id": "BV560_streaming",
+      "lang": "vi",
+      "name": "Alex Đại Đế",
+      "gender": "any",
+      "status": "pass",
+      "recall": 1
+    },
+    {
+      "id": "BV562_streaming",
+      "lang": "vi",
+      "name": "Mai",
+      "gender": "any",
+      "status": "pass",
+      "recall": 1
+    },
+    {
+      "id": "multi_female_daqi_uranus_bigtts",
+      "lang": "vi",
+      "name": "Review Phim 3",
+      "gender": "female",
+      "status": "pass",
+      "recall": 0.786
+    },
+    {
+      "id": "multi_female_kiwi_uranus_bigtts",
+      "lang": "vi",
+      "name": "Sunny Idol",
+      "gender": "female",
+      "status": "pass",
+      "recall": 1
+    },
+    {
+      "id": "multi_female_peiqi_uranus_bigtts",
+      "lang": "vi",
+      "name": "Giọng Gái Mới Lớn",
+      "gender": "female",
+      "status": "pass",
+      "recall": 1
+    },
+    {
+      "id": "multi_female_sisi_uranus_bigtts",
+      "lang": "vi",
+      "name": "Bản Tin nữ",
+      "gender": "female",
+      "status": "pass",
+      "recall": 1
+    },
+    {
+      "id": "multi_female_stokie_uranus_bigtts",
+      "lang": "vi",
+      "name": "Review Phim 4",
+      "gender": "female",
+      "status": "pass",
+      "recall": 1
+    },
+    {
+      "id": "multi_female_tianmeijieshuo_uranus_bigtts",
+      "lang": "vi",
+      "name": "Quên Tên Tự Test",
+      "gender": "female",
+      "status": "fail",
+      "recall": 0
+    },
+    {
+      "id": "multi_female_xinwenjieshuo_uranus_bigtts",
+      "lang": "vi",
+      "name": "Nam bản tin",
+      "gender": "female",
+      "status": "pass",
+      "recall": 1
+    },
+    {
+      "id": "multi_female_xyf04auto_uranus_bigtts",
+      "lang": "vi",
+      "name": "Review Phim 2",
+      "gender": "female",
+      "status": "pass",
+      "recall": 1
+    },
+    {
+      "id": "multi_female_yangguangnv_uranus_bigtts",
+      "lang": "vi",
+      "name": "Ban Mai",
+      "gender": "female",
+      "status": "pass",
+      "recall": 1
+    }
+  ]
+}
