@@ -419,7 +419,7 @@ const microfilm = defineVariant({
 
 // --- 7. Ký hoạ phiên toà ---------------------------------------------------------------------------------------------
 const PENCIL = "grayscale(1) contrast(1.6) brightness(1.08)";
-const COURT_CSS = `.h-center-label,.h-label{color:#8a1c14}.h-center-label{background:none}.h-rule{background:#8a1c14}.h-title{color:#1d1d1d}
+const COURT_CSS = `.h-center-label,.h-label{color:#8a1c14}.h-rule{background:#8a1c14}.h-title{color:#1d1d1d}
 .t-ink{background:#fff;border:2px solid #b9b9b9;padding:26px 36px 26px 112px;background-image:linear-gradient(90deg,transparent 84px,#d9534f 84px 87px,transparent 87px),repeating-linear-gradient(180deg,transparent 0 55px,rgba(60,90,160,.14) 55px 57px)}.t-ink .v-line{color:#1d1d1d}
 .g-chip{background:#1d1d1d;color:#fbfbf7;font-size:26px}`;
 const court = defineVariant({
