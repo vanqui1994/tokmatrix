@@ -311,6 +311,57 @@ def format_table(plan: Dict[str, Any]) -> str:
     return "\n".join(lines)
 
 
+# --- Canary cohorts (Phase 7, docs mục 15.1) -----------------------------------------------------------------------
+# C1 ≤ 1 acc mỗi (engine, nước), tối đa 8 · C2 20 acc · C3 50% · C4 toàn bộ. Tính CỘNG DỒN: acc đã có DNA ("keep") được tính
+# vào cohort. Dòng hard (vd. VN không có variant) không bao giờ vào cohort — các kênh đó giữ đường legacy.
+CANARY_COHORTS = ("C1", "C2", "C3", "C4")
+
+
+def canary_plan(plan: Dict[str, Any], cohort: str) -> Dict[str, Any]:
+    """Tập con áp dụng được của plan cho một bậc canary; chọn tất định, rải đều engine và nước."""
+    if cohort not in CANARY_COHORTS:
+        raise ValueError(f"cohort phải là một trong {', '.join(CANARY_COHORTS)}")
+    usable = [r for r in plan["rows"] if r["variant_id"] and not str(r["collision"]).startswith("hard")]
+    kept = [r for r in usable if r["collision"] == "keep"]
+    fresh = [r for r in usable if r["collision"] != "keep"]
+    target = {"C1": 8, "C2": 20, "C3": (len(usable) + 1) // 2, "C4": len(usable)}[cohort]
+    picked = list(kept)
+    engines: Dict[str, int] = {}
+    countries: Dict[str, int] = {}
+    pairs = set()
+    for r in picked:
+        engines[r["engine"]] = engines.get(r["engine"], 0) + 1
+        countries[r["country"]] = countries.get(r["country"], 0) + 1
+        pairs.add((r["engine"], r["country"]))
+    rank = {"ok": 0, "soft:voice": 1, "soft:cross_country": 2}
+    while len(picked) < target:
+        pool = [r for r in fresh if r not in picked and (cohort != "C1" or (r["engine"], r["country"]) not in pairs)]
+        if not pool:
+            break
+        row = min(pool, key=lambda r: (engines.get(r["engine"], 0), countries.get(r["country"], 0),
+                                       rank.get(r["collision"], 3), _hash("canary", r["channel_id"])))
+        picked.append(row)
+        engines[row["engine"]] = engines.get(row["engine"], 0) + 1
+        countries[row["country"]] = countries.get(row["country"], 0) + 1
+        pairs.add((row["engine"], row["country"]))
+    rows = sorted(picked, key=lambda r: (r["country"], r["niche"] or "", r["channel_id"]))
+    out = {
+        "mode": f"canary-{cohort}",
+        "source_plan_sha256": plan["plan_sha256"],
+        "rows": rows,
+        "summary": {
+            "accounts": len(rows),
+            "new": sum(1 for r in rows if r["collision"] != "keep"),
+            "by_engine": {e: sum(1 for r in rows if r["engine"] == e) for e in sorted({r["engine"] for r in rows})},
+            "by_country": {c: sum(1 for r in rows if r["country"] == c) for c in sorted({r["country"] for r in rows})},
+            "left_legacy": sorted(r["channel_id"] for r in plan["rows"] if str(r["collision"]).startswith("hard")),
+            "applicable": True,
+        },
+    }
+    out["plan_sha256"] = recompute_sha(out)
+    return out
+
+
 # --- Apply (Phase 6) ---------------------------------------------------------------------------------------------------
 LOCK_NAME = ".migration.lock"
 DEFAULT_BACKUP_ROOT = Path("/opt/tokmatrix-backups")
@@ -520,6 +571,7 @@ def main(argv: Optional[List[str]] = None) -> int:
     parser.add_argument("--channels", help="comma-separated channel ids")
     parser.add_argument("--out", help="write the plan JSON here")
     parser.add_argument("--json", action="store_true")
+    parser.add_argument("--cohort", choices=CANARY_COHORTS, help="keep only the canary cohort (cumulative, hard rows excluded)")
     args = parser.parse_args(argv)
     try:
         if args.rollback:
@@ -547,6 +599,8 @@ def main(argv: Optional[List[str]] = None) -> int:
     only = [c.strip() for c in args.channels.split(",") if c.strip()] if args.channels else None
     config_dir = Path(args.config_dir) if args.config_dir else CONFIG_DIR
     plan = plan_assignments(load_channels(config_dir), load_registry(args.include_reference), load_niche_engines(config_dir), mapping, only)
+    if args.cohort:
+        plan = canary_plan(plan, args.cohort)
     if args.out:
         Path(args.out).write_text(json.dumps(plan, ensure_ascii=False, indent=2), encoding="utf-8")
     print(json.dumps(plan, ensure_ascii=False) if args.json else format_table(plan))

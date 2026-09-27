@@ -761,3 +761,38 @@ Hai pack bị đổi nghĩa so với tên để hợp niche compare: `compare_he
   - Hook `design.underlay?: (ctx) → { html, css, tweens }`: phần tử xuyên suốt nằm trong clip nền, dưới các cảnh.
 - Vài concept ở mục 20 không làm (science infographic/timeline/blueprint, newspaper Fraktur) vì dễ trùng engine khác.
 
+
+## 25. Phase 7 — runbook canary cho VPS (2026-09-27)
+
+Chủ repo đã duyệt Phase 7. Container phát triển không có DB thật (`autopilot_channel_map`) và không gọi được CapCut,
+HuggingFace hay VPS, nên các bước dưới chạy **trên VPS**, lần lượt từng bậc.
+
+### 25.1 Chọn cohort
+
+`python3 -m bkt_web.autopilot.creative_dna --from-db --cohort C1|C2|C3|C4 --out plan.json` in ra plan chỉ gồm cohort đó
+(`canary_plan`):
+
+- C1: ≤ 1 acc mỗi (engine, nước), tối đa 8. C2: 20 acc. C3: 50% số acc có variant. C4: toàn bộ.
+- **Cộng dồn**: acc đã có DNA (`keep`) được tính vào cohort, nên bậc sau chỉ thêm acc mới.
+- Chọn tất định, rải đều engine rồi nước, ưu tiên `ok` hơn `soft:*`.
+- Dòng `hard:*` không bao giờ vào cohort. Các kênh đó giữ đường legacy và được liệt kê trong `summary.left_legacy`.
+  Trước đây plan đầy đủ luôn bị `apply_plan` từ chối vì có 35 kênh VN `hard:capacity`.
+- Trên config repo: C1 = 8 acc (8 engine khác nhau, DE 3 · GB 2 · JP 1 · KR 2), C2 = 20, C3 = 101, C4 = 202.
+
+### 25.2 Một bậc
+
+1. `POST /api/autopilot/pause`, rồi chờ không còn tiến trình `batch-matrix`.
+2. Chạy lệnh 25.1, duyệt `plan.json` (bảng in ra), ghi lại `plan_sha256`.
+3. `python3 -m bkt_web.autopilot.creative_dna --apply --plan plan.json --plan-sha <sha>`. Ghi lại đường dẫn `inverse`.
+4. Chạy `matrix_config.sync_channel_configs`, rồi `POST /api/autopilot/resume`.
+5. Theo dõi theo tiêu chí mục 15.1: render ≥ 95%, Video QA đạt, không cặp nào vượt 0.62, bot `@tiktok_check_video_bot`
+   không báo trùng sau 24–72 h, tỉ lệ shadowban không tệ hơn legacy. Đạt thì lên bậc tiếp.
+6. Không đạt: pause, rồi `python3 -m bkt_web.autopilot.creative_dna --rollback <inverse.json>`, sync, rồi resume (mục 18).
+
+### 25.3 Việc chạy một lần trên máy có mạng
+
+- Giọng CapCut: `cd compare_studio && node tools/audition-voices.mjs --langs de,en,ja,ko --apply`, rồi commit
+  `config/voices/capcut_auditioned.json`. Trước khi có file này, plan chỉ gán giọng Edge.
+- Clone giọng (chỉ khi dùng): `pip install -r requirements-voice-clone.txt`, rồi `python3 -m bkt_web.voice_clone setup`,
+  rồi `enroll --consent owner|licensed`.
+- Đo chi phí render: ghi thời gian render và dung lượng MP4 của các video C1 so với legacy cùng engine.

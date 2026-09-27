@@ -165,5 +165,59 @@ class CreativeDnaApplyTest(unittest.TestCase):
         self.assertEqual(tree_hash(self.config), before, "validator failure changes nothing")
 
 
+class CreativeDnaCanaryTest(unittest.TestCase):
+    """Canary cohort (Phase 7): tập con tất định, cộng dồn, bỏ dòng hard; apply được trên bản sao."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.plan = cd.plan_assignments(cd.load_channels(), cd.load_registry(), cd.load_niche_engines())
+
+    def test_c1_takes_at_most_one_account_per_engine_and_country_and_is_deterministic(self):
+        c1 = cd.canary_plan(self.plan, "C1")
+        self.assertLessEqual(len(c1["rows"]), 8)
+        pairs = [(r["engine"], r["country"]) for r in c1["rows"]]
+        self.assertEqual(len(pairs), len(set(pairs)))
+        self.assertGreater(len({r["country"] for r in c1["rows"]}), 1, "C1 spreads over countries")
+        self.assertEqual(c1, cd.canary_plan(self.plan, "C1"))
+        self.assertEqual(c1["plan_sha256"], cd.recompute_sha(c1))
+        self.assertEqual(c1["source_plan_sha256"], self.plan["plan_sha256"])
+
+    def test_cohorts_grow_and_never_include_hard_rows(self):
+        hard = {r["channel_id"] for r in self.plan["rows"] if r["collision"].startswith("hard")}
+        sizes = []
+        for cohort in cd.CANARY_COHORTS:
+            plan = cd.canary_plan(self.plan, cohort)
+            self.assertFalse(hard & {r["channel_id"] for r in plan["rows"]})
+            self.assertEqual(sorted(hard), plan["summary"]["left_legacy"])
+            sizes.append(len(plan["rows"]))
+        self.assertEqual(sizes, sorted(sizes))
+        self.assertEqual(sizes[1], min(20, sizes[-1]))
+        self.assertEqual(sizes[-1], len(self.plan["rows"]) - len(hard))
+        with self.assertRaises(ValueError):
+            cd.canary_plan(self.plan, "C9")
+
+    def test_kept_accounts_count_toward_the_cohort(self):
+        plan = json.loads(json.dumps(self.plan))
+        usable = [r for r in plan["rows"] if r["variant_id"]]
+        for row in usable[:5]:
+            row["collision"] = "keep"
+        c1 = cd.canary_plan(plan, "C1")
+        self.assertEqual(len(c1["rows"]), 8)
+        self.assertEqual(c1["summary"]["new"], 3)
+
+    def test_cohort_plan_applies_on_a_copy(self):
+        import tempfile, shutil
+        tmp = Path(tempfile.mkdtemp())
+        self.addCleanup(shutil.rmtree, tmp, True)
+        config = tmp / "config"
+        shutil.copytree(cd.CONFIG_DIR, config)
+        c1 = cd.canary_plan(self.plan, "C1")
+        result = cd.apply_plan(c1, c1["plan_sha256"], config_dir=config, backup_root=tmp / "b", preflight=False)
+        self.assertEqual(result["applied"], len(c1["rows"]))
+        again = cd.plan_assignments(cd.load_channels(config), cd.load_registry(), cd.load_niche_engines(config))
+        kept = {r["channel_id"] for r in again["rows"] if r["collision"] == "keep"}
+        self.assertEqual(kept, {r["channel_id"] for r in c1["rows"]}, "the next dry-run keeps the canary DNA")
+
+
 if __name__ == "__main__":
     unittest.main()
