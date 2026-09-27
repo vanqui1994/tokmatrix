@@ -33,8 +33,16 @@ const LINES = {
     "오늘날 학자들은 우주 암석이 약 8킬로미터 상공에서 터졌다고 본다.",
     "그렇다면 왜 증거가 될 파편은 아직도 없을까?",
   ],
+  vi: [
+    "Ngày 30 tháng 6 năm 1908, một vụ nổ quật đổ 80 triệu cây ở Siberia.",
+    "Sức nổ mạnh gấp khoảng 1.000 lần quả bom Hiroshima.",
+    "Vậy mà ở tâm vụ nổ chưa từng tìm thấy miệng hố nào.",
+    "Đoàn khảo sát khoa học đầu tiên chỉ đến nơi vào năm 1927.",
+    "Ngày nay, đa số nhà nghiên cứu cho rằng một khối đá vũ trụ đã nổ tung ở độ cao khoảng 8 km.",
+    "Vậy tại sao đến giờ vẫn chưa có mảnh vỡ nào để chứng minh?",
+  ],
 };
-const TITLES = { en: "The Tunguska Blast", de: "Die Tunguska-Explosion", ja: "ツングースカ大爆発", ko: "퉁구스카 대폭발" };
+const TITLES = { en: "The Tunguska Blast", de: "Die Tunguska-Explosion", ja: "ツングースカ大爆発", ko: "퉁구스카 대폭발", vi: "Vụ nổ Tunguska" };
 
 export function voxSample(lang) {
   const code = LINES[lang] ? lang : "en";

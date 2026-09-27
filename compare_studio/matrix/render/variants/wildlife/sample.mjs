@@ -34,8 +34,16 @@ const LINES = {
     "두꺼운 꼬리로 얼굴을 감싸 영하의 밤을 견딘다.",
     "야생에 남은 개체는 겨우 수천 마리뿐이다.",
   ],
+  vi: [
+    "Trên vùng núi cao Trung Á có một loài mèo gần như chẳng ai từng thấy.",
+    "Bộ lông màu khói của báo tuyết hoà lẫn vào đá và tuyết.",
+    "Đôi bàn chân to đầy lông hoạt động như giày đi tuyết trên sườn dốc đóng băng.",
+    "Chỉ một cú nhảy có thể đưa nó vượt qua khe núi rộng vài mét.",
+    "Nó quấn chiếc đuôi dày quanh mặt để sống sót qua những đêm lạnh sâu dưới không độ.",
+    "Ngày nay chỉ còn vài nghìn cá thể trong tự nhiên.",
+  ],
 };
-const TITLES = { en: "Ghost of the Mountains", de: "Der Geist der Berge", ja: "山の幽霊ユキヒョウ", ko: "산의 유령, 눈표범" };
+const TITLES = { en: "Ghost of the Mountains", de: "Der Geist der Berge", ja: "山の幽霊ユキヒョウ", ko: "산의 유령, 눈표범", vi: "Bóng ma của núi rừng" };
 
 const EXTRAS = {
   en: {
@@ -77,6 +85,16 @@ const EXTRAS = {
       { label: "서식 고도", value: "3000–5500 m", level: 93 },
     ],
     callouts: [{ scene: 1, text: "산의 유령" }, { scene: 3, text: "설피 같은 발" }, { scene: 4, text: "매복 도약" }, { scene: 6, text: "개체 수 조사" }],
+  },
+  vi: {
+    common_name: "Báo tuyết", latin_name: "Panthera uncia", habitat: "Vùng núi cao Trung Á", iucn_status: "VU",
+    stats: [
+      { label: "TỐC ĐỘ TỐI ĐA", value: "~60 km/h", level: 62 },
+      { label: "CÂN NẶNG", value: "22–55 kg", level: 38 },
+      { label: "CHIỀU DÀI ĐUÔI", value: "80–105 cm", level: 84 },
+      { label: "ĐỘ CAO SINH SỐNG", value: "3000–5500 m", level: 93 },
+    ],
+    callouts: [{ scene: 1, text: "BÓNG MA NÚI RỪNG" }, { scene: 3, text: "BÀN CHÂN GIÀY TUYẾT" }, { scene: 4, text: "CÚ VỒ PHỤC KÍCH" }, { scene: 6, text: "KIỂM ĐẾM QUẦN THỂ" }],
   },
 };
 

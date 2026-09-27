@@ -11,7 +11,7 @@ import { escapeHtml } from "../matrix/render/variants/kit/primitives.mjs";
 import { salient } from "../matrix/render/variants/kit/textdata.mjs";
 
 const ENGINE = "science";
-const LANGS = ["en", "de", "ja", "ko"];
+const LANGS = ["en", "de", "ja", "ko", "vi"];
 const DURATIONS = [4.6, 3.9, 5.8, 4.4, 5.1, 4.2];
 const variants = listVariants(ENGINE);
 

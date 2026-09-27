@@ -205,6 +205,13 @@ class CreativeDnaCanaryTest(unittest.TestCase):
         self.assertEqual(len(c1["rows"]), 8)
         self.assertEqual(c1["summary"]["new"], 3)
 
+    def test_voice_changer_voices_are_never_assigned_as_narrator(self):
+        registry = cd.load_registry()
+        character = {v["id"] for v in registry["voices"] if v.get("character")}
+        self.assertIn("BV075_streaming_robot_dsp", character)
+        self.assertFalse(character & {r["voice"] for r in self.plan["rows"]})
+        self.assertTrue(any(r["country"] == "VN" and r["variant_id"] for r in self.plan["rows"]), "VN channels get variants")
+
     def test_cohort_plan_applies_on_a_copy(self):
         import tempfile, shutil
         tmp = Path(tempfile.mkdtemp())

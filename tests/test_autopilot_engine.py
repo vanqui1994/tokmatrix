@@ -387,6 +387,43 @@ class PublisherTest(AutopilotTestCase):
         with self.assertRaises(ValueError):
             store.validate_config("dup_check_mode", "strict")
 
+    def test_dupguard_records_composite_and_blocks_on_it_only_when_configured(self):
+        import tempfile
+        from bkt_web import creative_similarity as cs
+        from bkt_web.autopilot import dupguard
+        template = [0x0F0F0F0F0F0F0F0F ^ (i << 3) for i in range(24)]
+        far = [(0x1234567890ABCDEF * (i + 7)) & 0xFFFFFFFFFFFFFFFF for i in range(24)]
+        self._fp("mystery-a", far)                                     # khác khung…
+        self._fp("mystery-b", template)
+        self._fp("mystery-new", [h ^ 0xF0F0F0F0F0F0F0F0 for h in template])
+        self.sql("INSERT INTO upload_tasks(channel_id,video_path,status,video_slug) VALUES(80,'a','SUCCESS','mystery-a')")
+        self.sql("INSERT INTO upload_tasks(channel_id,video_path,status,video_slug) VALUES(81,'b','SUCCESS','mystery-b')")
+        features = {"mystery-new": {"n": 1}, "mystery-a": {"n": 2}, "mystery-b": {"n": 3}}
+        composite = {"mystery-a": 0.71, "mystery-b": 0.4}              # …nhưng cùng khuôn đa tín hiệu với mystery-a
+        with tempfile.TemporaryDirectory() as tmp, \
+                mock.patch.object(cs, "DB_PATH", Path(tmp) / "cs.db"), \
+                mock.patch.object(cs, "features_for", side_effect=lambda slug, conn: features[slug]), \
+                mock.patch.object(cs, "compare", side_effect=lambda a, b: {"layout": 0.9, "composite": composite[{2: "mystery-a", 3: "mystery-b"}[b["n"]]]}), \
+                mock.patch.object(video_fingerprint, "get_or_compute", side_effect=lambda conn, slug, videos_dir=None: video_fingerprint.load(conn, [slug])[slug]):
+            result = dupguard.check("mystery-new", 64)
+            self.assertEqual((result["composite"], result["composite_slug"], result["composite_channel"]), (0.71, "mystery-a", 80))
+            self.assertLess(result["frames"], dupguard.threshold())
+            self.assertEqual(dupguard.recent(1)[0]["composite_slug"], "mystery-a")
+            store.set_config("dup_check_mode", "block")
+            self.assertIsNone(dupguard.verdict("mystery-new", 64), "composite alone never blocks while the threshold is unset")
+            store.set_config("dup_composite_threshold", "0.62")
+            self.assertEqual(store.get_config("dup_composite_threshold"), "0.62")
+            self.assertIn("mystery-a", dupguard.verdict("mystery-new", 64))
+            store.set_config("dup_composite_threshold", "")
+            self.assertIsNone(dupguard.verdict("mystery-new", 64))
+        with mock.patch.object(cs, "features_for", side_effect=OSError("no meta.json")), \
+                mock.patch.object(video_fingerprint, "get_or_compute", side_effect=lambda conn, slug, videos_dir=None: video_fingerprint.load(conn, [slug])[slug]):
+            result = dupguard.check("mystery-new", 64, record=False)
+            self.assertIsNone(result["composite"], "a composite failure keeps the frame result")
+        for bad in ("abc", "0", "1.5"):
+            with self.assertRaises(ValueError):
+                store.validate_config("dup_composite_threshold", bad)
+
     def test_halted_plan_waiting_for_resume_still_publishes_finished_videos(self):
         plan_id = store.create_plan("2026-09-24", "space", "t", 1)
         store.update_plan(plan_id, batch_id="b1", status="planned")  # batch bị dừng, chờ --resume

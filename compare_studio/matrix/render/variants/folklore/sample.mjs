@@ -33,8 +33,16 @@ const LINES = {
     "새벽에 발견된 것은 갈대 속에서 타오르던 그의 등불뿐이었다.",
     "어둠 속에서 네 이름을 부르는 불빛을 따라가겠는가?",
   ],
+  vi: [
+    "Ngày xưa, dân làng dặn khách qua đường đừng bao giờ đi theo những đốm sáng trên đầm lầy.",
+    "Họ gọi chúng là ma trơi, những ngọn đèn của các vong hồn không yên.",
+    "Năm 1846, một cậu bé chăn cừu thấy một đốm sáng chập chờn gần con đường cũ qua bãi lầy.",
+    "Cậu đi theo nó hàng giờ, càng lúc càng sâu vào vùng nước đen.",
+    "Rạng sáng, người ta chỉ tìm thấy chiếc đèn lồng của cậu, vẫn còn cháy giữa đám lau sậy.",
+    "Bạn có dám đi theo một đốm sáng gọi tên mình trong bóng tối?",
+  ],
 };
-const TITLES = { en: "The Lights Over the Marsh", de: "Die Irrlichter im Moor", ja: "沼の鬼火", ko: "늪의 도깨비불" };
+const TITLES = { en: "The Lights Over the Marsh", de: "Die Irrlichter im Moor", ja: "沼の鬼火", ko: "늪의 도깨비불", vi: "Ma trơi trên đầm lầy" };
 
 export function folkloreSample(lang) {
   const code = LINES[lang] ? lang : "en";

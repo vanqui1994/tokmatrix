@@ -359,7 +359,8 @@ video A ↔ video B   visual 0.18  layout 0.24  motion 0.31  timing 0.42  color 
 - Thống kê theo nhóm (cùng engine, khác engine, cùng nước, khác nước, cùng variant khác DNA): `mean, median, p90, p95, max`.
 - **Nearest creative neighbor** cho từng acc/variant.
 - Composite chỉ so với **internal diversity threshold** (cấu hình); không có câu "an toàn với TikTok".
-- `dupguard` chuyển sang dùng composite khi Phase 1 xong (hiện chỉ dùng `frames`).
+- `dupguard` đo thêm composite với 5 video gần nhất theo khung (ghi `dup_checks.composite`); composite chỉ tham gia verdict
+  khi đặt `dup_composite_threshold` (mục 24.5).
 
 ```mermaid
 flowchart LR
@@ -726,10 +727,14 @@ Hai pack bị đổi nghĩa so với tên để hợp niche compare: `compare_he
 
 - Thuật toán: max matching (đường tăng Kuhn) giữa kênh và structural identity trong từng nước, sau khi giữ DNA đã có.
 - Dry-run trên config repo: `docs/creative_dna/dry-run-2026-09-27.{json,md}`.
-  - 202 kênh DE/GB/JP/KR đều có variant.
+  - Cả 237 kênh DE/GB/JP/KR/VN đều có variant; plan apply được (không dòng `hard`).
   - Trong mỗi nước không có hai kênh chung structural identity.
-  - GB/JP/KR dùng lại cấu trúc của DE (`soft:cross_country`), nhưng khác ngôn ngữ, giọng, theme và DNA.
-  - 35 kênh VN là `hard:capacity`: không variant nào khai nước VN, nên các kênh này giữ đường legacy.
+  - GB/JP/KR/VN dùng lại cấu trúc của DE (`soft:cross_country`), nhưng khác ngôn ngữ, giọng, theme và DNA.
+  - VN (35 kênh): mọi variant khai `vi` (nhãn UI tiếng Việt đã có sẵn; mẫu preview tiếng Việt cho cả 10 engine).
+    Typography `heavy` với tiếng Việt dùng Oswald vì Archivo Black không có dấu chồng (U+1EA0–1EF9); `TYPOGRAPHY.version` 3.
+    Bản dry-run đầu tiên (trước khi hỗ trợ VN) để 35 kênh này ở `hard:capacity`.
+  - Voice DNA bỏ giọng biến âm CapCut (`*_dsp`: trẻ em, hài, robot — cờ `character` trong `list-variants voices`) khỏi
+    bộ giọng dẫn; bản đầu có gán chúng cho kênh mystery/science VN.
 - Apply chỉ khi Autopilot tắt/pause và không có batch-matrix chạy. Trình tự:
   1. Khoá `config/channels/.migration.lock`; Autopilot không ghi YAML khi khoá tồn tại.
   2. Ghi vào bản sao và validate toàn bộ.
@@ -746,6 +751,11 @@ Hai pack bị đổi nghĩa so với tên để hợp niche compare: `compare_he
   asset .10, timing .05), gate nội bộ 0.62. Đây là gate nội bộ, không đảm bảo TikTok không báo trùng.
 - Asset ledger (`bkt_web/asset_ledger.py`): Autopilot chặn video có ảnh cảnh (sha256 hoặc pHash ≤ 6) đã đăng ở acc khác.
 - Nhãn AI TikTok: `TOKMATRIX_TIKTOK_AI_LABEL` = `off` (mặc định production) | `auto` | `on`.
+- `dupguard` (trước khi xếp lịch đăng): ngoài tỉ lệ khung pHash, đo composite đa tín hiệu với `COMPOSITE_NEIGHBORS` = 5
+  video giống nhất theo khung (features cache ở `storage/creative_similarity.db`), ghi `dup_checks.composite` +
+  `composite_slug` và in vào log. Config `dup_composite_threshold` mặc định trống = chỉ ghi; đặt số 0–1 thì composite ≥ ngưỡng
+  cũng hoãn video (thêm vào luật khung, không thay nó). Nên đặt sau khi có số liệu composite thật từ canary C1–C2.
+  Lỗi đo composite không chặn video.
 
 ### 24.6 Chưa làm / việc cho người vận hành
 
@@ -776,8 +786,8 @@ HuggingFace hay VPS, nên các bước dưới chạy **trên VPS**, lần lư�
 - **Cộng dồn**: acc đã có DNA (`keep`) được tính vào cohort, nên bậc sau chỉ thêm acc mới.
 - Chọn tất định, rải đều engine rồi nước, ưu tiên `ok` hơn `soft:*`.
 - Dòng `hard:*` không bao giờ vào cohort. Các kênh đó giữ đường legacy và được liệt kê trong `summary.left_legacy`.
-  Trước đây plan đầy đủ luôn bị `apply_plan` từ chối vì có 35 kênh VN `hard:capacity`.
-- Trên config repo: C1 = 8 acc (8 engine khác nhau, DE 3 · GB 2 · JP 1 · KR 2), C2 = 20, C3 = 101, C4 = 202.
+  Trước khi hỗ trợ VN, plan đầy đủ bị `apply_plan` từ chối vì có 35 kênh VN `hard:capacity`.
+- Trên config repo (có VN): C1 = 8 acc (DE 2 · GB 2 · JP 1 · KR 1 · VN 2), C2 = 20 (4 mỗi nước), C3 = 119, C4 = 237.
 
 ### 25.2 Một bậc
 

@@ -15,7 +15,7 @@ import { upper } from "../matrix/render/variants/kit/textdata.mjs";
 import { buildPreview } from "../tools/preview-variants.mjs";
 
 const ENGINE = "newspaper";
-const LANGS = ["en", "de", "ja", "ko"];
+const LANGS = ["en", "de", "ja", "ko", "vi"];
 const variants = listVariants(ENGINE);
 // Chữ hiển thị liền (bỏ thẻ và khoảng trắng): tiêu đề có thể bị tách thành mẩu (chữ cắt dán).
 const visibleText = (html) => html.replace(/<script[\s\S]*?<\/script>/gu, "").replace(/<[^>]+>/gu, "").replace(/\s+/gu, "");
@@ -85,13 +85,13 @@ test("every newspaper variant × composition × language builds lint-clean, dete
 
 test("newspaper UI labels are localised and shown for every country", () => {
   const expected = {
-    "newspaper/victorian-broadsheet": { en: "THE EVENING CHRONICLE", de: "ABENDCHRONIK", ja: "夕刊クロニクル", ko: "석간 크로니클" },
-    "newspaper/tabloid-extra": { en: "EXTRA!", de: "EXTRABLATT", ja: "号外", ko: "호외" },
-    "newspaper/wanted-poster": { en: "WANTED", de: "GESUCHT", ja: "指名手配", ko: "수배" },
-    "newspaper/telegram-wire": { en: "TELEGRAM", de: "TELEGRAMM", ja: "電報", ko: "전보" },
-    "newspaper/police-gazette": { en: "POLICE GAZETTE", de: "POLIZEIBLATT", ja: "警察新報", ko: "경찰 공보" },
-    "newspaper/microfilm": { en: "MICROFILM ARCHIVE", de: "MIKROFILMARCHIV", ja: "マイクロフィルム資料室", ko: "마이크로필름 자료실" },
-    "newspaper/court-sketch": { en: "COURTROOM SKETCH", de: "GERICHTSZEICHNUNG", ja: "法廷画", ko: "법정 스케치" },
+    "newspaper/victorian-broadsheet": { en: "THE EVENING CHRONICLE", de: "ABENDCHRONIK", ja: "夕刊クロニクル", ko: "석간 크로니클", vi: "BÁO CHIỀU" },
+    "newspaper/tabloid-extra": { en: "EXTRA!", de: "EXTRABLATT", ja: "号外", ko: "호외", vi: "ĐẶC BIỆT" },
+    "newspaper/wanted-poster": { en: "WANTED", de: "GESUCHT", ja: "指名手配", ko: "수배", vi: "TRUY NÃ" },
+    "newspaper/telegram-wire": { en: "TELEGRAM", de: "TELEGRAMM", ja: "電報", ko: "전보", vi: "ĐIỆN TÍN" },
+    "newspaper/police-gazette": { en: "POLICE GAZETTE", de: "POLIZEIBLATT", ja: "警察新報", ko: "경찰 공보", vi: "CÔNG BÁO CẢNH SÁT" },
+    "newspaper/microfilm": { en: "MICROFILM ARCHIVE", de: "MIKROFILMARCHIV", ja: "マイクロフィルム資料室", ko: "마이크로필름 자료실", vi: "KHO VI PHIM" },
+    "newspaper/court-sketch": { en: "COURTROOM SKETCH", de: "GERICHTSZEICHNUNG", ja: "法廷画", ko: "법정 스케치", vi: "KÝ HỌA PHIÊN TÒA" },
   };
   assert.deepEqual(variants.map((v) => v.id).sort(), Object.keys(expected).sort());
   for (const variant of variants) {

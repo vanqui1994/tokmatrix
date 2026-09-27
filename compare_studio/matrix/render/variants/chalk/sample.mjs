@@ -34,8 +34,16 @@ const LINES = {
     "홍해와 오만으로 가는 송유관이 이 요충지를 우회하려 한다.",
     "호르무즈가 막히면 세계 유가는 하룻밤 사이에 치솟는다.",
   ],
+  vi: [
+    "Mỗi ngày, khoảng một phần năm lượng dầu của thế giới đi qua một eo biển hẹp.",
+    "Ở chỗ hẹp nhất, eo biển Hormuz chỉ rộng khoảng 33 kilômét.",
+    "Tàu chở dầu từ Ả Rập Xê Út, Kuwait và Qatar đều phải đi qua đây.",
+    "Iran kiểm soát toàn bộ bờ phía bắc của lối đi này.",
+    "Các đường ống tới Biển Đỏ và Oman tìm cách vòng qua nút thắt.",
+    "Nếu Hormuz bị đóng, giá dầu khắp thế giới sẽ vọt lên chỉ sau một đêm.",
+  ],
 };
-const TITLES = { en: "Why Hormuz Rules the Oil World", de: "Warum Hormus den Ölmarkt beherrscht", ja: "ホルムズ海峡が石油を支配する理由", ko: "호르무즈가 석유를 지배하는 이유" };
+const TITLES = { en: "Why Hormuz Rules the Oil World", de: "Warum Hormus den Ölmarkt beherrscht", ja: "ホルムズ海峡が石油を支配する理由", ko: "호르무즈가 석유를 지배하는 이유", vi: "Vì sao Hormuz chi phối thế giới dầu mỏ" };
 
 // Bản đồ Trung Đông thật: nhãn theo ngôn ngữ.
 const ME_TEXT = {
@@ -48,6 +56,11 @@ const ME_TEXT = {
     heads: ["ひとつの狭い海峡", "幅わずか33キロ", "全タンカーがここを通る", "北岸はイランが支配", "迂回パイプライン", "一夜で閉鎖されたら？"],
     iran: "イラン", oman: "オマーン", saudi: "サウジアラビア", kuwait: "クウェート", qatar: "カタール", uae: "UAE", hormuz: "ホルムズ", km: "33キロ",
     pipeline: "パイプライン", asia: "アジアへ", europe: "欧州へ", closed: "閉鎖？", tankers: "タンカー",
+  },
+  vi: {
+    heads: ["MỘT EO BIỂN HẸP", "CHỈ RỘNG 33 KM", "MỌI TÀU DẦU ĐỀU QUA ĐÂY", "IRAN GIỮ BỜ BẮC", "ĐƯỜNG ỐNG VÒNG TRÁNH", "ĐÓNG CỬA QUA ĐÊM?"],
+    iran: "IRAN", oman: "OMAN", saudi: "Ả RẬP XÊ ÚT", kuwait: "KUWAIT", qatar: "QATAR", uae: "UAE", hormuz: "HORMUZ", km: "33 KM",
+    pipeline: "ĐƯỜNG ỐNG", asia: "TỚI CHÂU Á", europe: "TỚI CHÂU ÂU", closed: "BỊ ĐÓNG?", tankers: "TÀU DẦU",
   },
 };
 

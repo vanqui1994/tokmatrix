@@ -10,7 +10,7 @@ import { lintVariantHtml } from "../matrix/render/variants/kit/lint.mjs";
 import { resolveCreativeContext } from "../matrix/render/variants/kit/resolve.mjs";
 import { escapeHtml } from "../matrix/render/variants/kit/primitives.mjs";
 
-const LANGS = ["en", "de", "ja", "ko"];
+const LANGS = ["en", "de", "ja", "ko", "vi"];
 const DURATIONS = [4.6, 3.9, 5.8, 4.4, 5.1, 4.2];
 const variants = () => listVariants("tierlist");
 const PREFIX = { "tierlist/classic-rows": "tc", "tierlist/pyramid": "tp", "tierlist/weapon-rack": "tw", "tierlist/orbit": "to", "tierlist/podium": "tq", "tierlist/store-shelves": "th", "tierlist/unsolved-cases": "tu" };

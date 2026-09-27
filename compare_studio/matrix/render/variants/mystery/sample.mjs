@@ -32,8 +32,16 @@ const LINES = {
     "눈사태인가, 초저주파인가, 군사 실험인가, 논쟁은 계속된다.",
     "아홉 명은 왜 맨발로 눈 속에 나갔을까?",
   ],
+  vi: [
+    "Mùa đông năm 1959, chín người leo núi dày dạn biến mất trên dãy Ural.",
+    "Đội cứu hộ thấy chiếc lều của họ bị rạch toạc từ bên trong.",
+    "Dấu chân trần dẫn thẳng vào bóng tối băng giá.",
+    "Vài thi thể bị chấn thương nội tạng nặng mà không có vết thương bên ngoài.",
+    "Tuyết lở, hạ âm hay một cuộc thử nghiệm quân sự? Giới điều tra vẫn tranh cãi.",
+    "Vì sao chín người lại đi chân trần vào tuyết?",
+  ],
 };
-const TITLES = { en: "The Dyatlov Pass Mystery", de: "Das Rätsel am Djatlow-Pass", ja: "ディアトロフ峠の謎", ko: "댜틀로프 고개의 미스터리" };
+const TITLES = { en: "The Dyatlov Pass Mystery", de: "Das Rätsel am Djatlow-Pass", ja: "ディアトロフ峠の謎", ko: "댜틀로프 고개의 미스터리", vi: "Bí ẩn đèo Dyatlov" };
 
 export function mysterySample(lang) {
   const code = LINES[lang] ? lang : "en";

@@ -233,6 +233,8 @@ def plan_assignments(channels: Dict[str, Dict[str, Any]], registry: Dict[str, An
 
     voices_by_lang: Dict[str, List[Dict[str, Any]]] = {}
     for voice in registry["voices"]:
+        if voice.get("character"):  # giọng biến âm (CapCut `_dsp`) không làm giọng dẫn
+            continue
         voices_by_lang.setdefault(voice["lang"], []).append(voice)
 
     # 2) Danh tính cấu trúc: ghép cặp tối đa (Kuhn / augmenting path, = max-flow đơn vị) giữa acc và structural key

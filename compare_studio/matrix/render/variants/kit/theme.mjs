@@ -5,7 +5,7 @@ import { TONES } from "./profiles.mjs";
 
 export const SUPPORTED_LANGS = Object.freeze(["en", "de", "ja", "ko", "vi", "fr"]);
 
-const SCRIPT = { ja: "ja", ko: "ko" };
+const SCRIPT = { ja: "ja", ko: "ko", vi: "vi" };
 export function scriptFor(lang) {
   return SCRIPT[String(lang || "").slice(0, 2)] || "latin";
 }

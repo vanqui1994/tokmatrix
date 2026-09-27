@@ -33,8 +33,16 @@ const LINES = {
     "그래서 흩어진 파란빛이 사방에서 우리 눈에 들어온다.",
     "해 질 녘에는 빛의 길이 길어져 파란빛이 흩어져 버린다.",
   ],
+  vi: [
+    "Ánh nắng trông có màu trắng, nhưng ẩn chứa mọi màu của cầu vồng.",
+    "Trong khí quyển, ánh sáng dội lại khi gặp những phân tử nitơ li ti.",
+    "Ánh sáng xanh có bước sóng ngắn, khoảng 450 nanomet.",
+    "Sóng ngắn bị tán xạ mạnh gần gấp 5 lần ánh sáng đỏ.",
+    "Vì vậy ánh sáng xanh bị tán xạ đến mắt ta từ mọi hướng.",
+    "Lúc hoàng hôn, ánh sáng đi xa hơn và màu xanh bị tán xạ mất.",
+  ],
 };
-const TITLES = { en: "Why Is the Sky Blue?", de: "Warum ist der Himmel blau?", ja: "空はなぜ青い？", ko: "하늘은 왜 파랄까?" };
+const TITLES = { en: "Why Is the Sky Blue?", de: "Warum ist der Himmel blau?", ja: "空はなぜ青い？", ko: "하늘은 왜 파랄까?", vi: "Vì sao bầu trời màu xanh?" };
 
 export function scienceSample(lang) {
   const code = LINES[lang] ? lang : "en";

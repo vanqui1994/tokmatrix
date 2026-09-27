@@ -14,7 +14,7 @@ const LANGS = ["en", "de", "ja", "ko", "vi", "fr"];
 export function defineVariant(spec) {
   const {
     id, engine, name_vi, version = 1, status = "active", topicPacks, layoutFamily, axes, compositions, allowed,
-    audio = { gender: "any", fx: ["none"] }, asset, cost, countries = ["en", "de", "ja", "ko"], niches = null,
+    audio = { gender: "any", fx: ["none"] }, asset, cost, countries = ["en", "de", "ja", "ko", "vi"], niches = null,
     ui, sample, cfg,
   } = spec;
   if (!ui?.en) throw new Error(`${id}: ui.en is required`);

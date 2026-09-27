@@ -27,7 +27,7 @@ export function compareUi(own) {
   return Object.fromEntries(Object.keys(WORDS).map((lang) => [lang, { ...WORDS[lang], ...(own[lang] || own.en) }]));
 }
 
-export const compareBase = { engine: "compare", asset: SVG_ASSET, cost: NO_IMAGE_COST, countries: ["en", "de", "ja", "ko"] };
+export const compareBase = { engine: "compare", asset: SVG_ASSET, cost: NO_IMAGE_COST, countries: ["en", "de", "ja", "ko", "vi"] };
 
 const clean = (value) => String(value ?? "").replace(/[\u0000-\u001f\u007f]+/gu, " ").replace(/\s+/gu, " ").trim();
 

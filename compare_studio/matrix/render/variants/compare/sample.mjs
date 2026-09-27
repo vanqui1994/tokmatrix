@@ -33,8 +33,16 @@ const LINES = {
     "짧은 거리라면 둘 다 시속 약 60킬로미터로 달린다.",
     "더 무겁고 더 강한 호랑이가 왕좌를 차지한다.",
   ],
+  vi: [
+    "Sư tử đấu hổ: ai mới thật sự thắng trong trận chiến giữa hai loài mèo lớn nhất?",
+    "Một con hổ đực có thể nặng tới 300 kilôgam, còn sư tử chỉ khoảng 250.",
+    "Lực cắn của hổ đạt khoảng 1050 PSI, vượt xa mức 650 của sư tử.",
+    "Sư tử lớn lên trong những trận ẩu đả của bầy; hổ thì săn mồi hoàn toàn đơn độc.",
+    "Ở những cú bứt tốc ngắn, cả hai đều đạt khoảng 60 km/giờ.",
+    "Nặng hơn và đòn mạnh hơn, hổ giành ngôi vương.",
+  ],
 };
-const TITLES = { en: "Lion vs Tiger", de: "Löwe gegen Tiger", ja: "ライオン対トラ", ko: "사자 대 호랑이" };
+const TITLES = { en: "Lion vs Tiger", de: "Löwe gegen Tiger", ja: "ライオン対トラ", ko: "사자 대 호랑이", vi: "Sư tử đấu hổ" };
 
 const R = (criterion, valueA, valueB, scoreA, scoreB, winner) => ({ criterion, value_a: valueA, value_b: valueB, score_a: scoreA, score_b: scoreB, winner });
 const EXTRAS = {
@@ -61,6 +69,12 @@ const EXTRAS = {
     rounds: [R("최강의 대형 고양이는?", "", "", 0, 0, "NONE"), R("몸무게", "250kg", "300kg", 7, 9, "B"),
       R("무는 힘", "650 PSI", "1050 PSI", 6, 9, "B"), R("싸움 경험", "무리에서 단련", "단독 사냥꾼", 8, 6, "A"),
       R("최고 속도", "시속 60km", "시속 60km", 7, 7, "TIE"), R("종합 승자", "팀 파이터", "더 무겁고 강함", 6, 8, "B")],
+  },
+  vi: {
+    subject_a: { name: "Sư tử", tag: "Panthera leo" }, subject_b: { name: "Hổ", tag: "Panthera tigris" },
+    rounds: [R("Ai thắng trận đấu mèo lớn?", "", "", 0, 0, "NONE"), R("Cân nặng", "250 kg", "300 kg", 7, 9, "B"),
+      R("Lực cắn", "650 PSI", "1050 PSI", 6, 9, "B"), R("Kinh nghiệm chiến đấu", "Ẩu đả trong bầy", "Săn đơn độc", 8, 6, "A"),
+      R("Tốc độ tối đa", "60 km/h", "60 km/h", 7, 7, "TIE"), R("Người thắng chung cuộc", "Chiến binh đồng đội", "Nặng hơn, khoẻ hơn", 6, 8, "B")],
   },
 };
 

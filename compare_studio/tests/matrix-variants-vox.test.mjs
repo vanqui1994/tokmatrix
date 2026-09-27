@@ -15,7 +15,7 @@ import { upper } from "../matrix/render/variants/kit/textdata.mjs";
 import { buildPreview } from "../tools/preview-variants.mjs";
 
 const ENGINE = "vox";
-const LANGS = ["en", "de", "ja", "ko"];
+const LANGS = ["en", "de", "ja", "ko", "vi"];
 const variants = listVariants(ENGINE);
 // Chữ hiển thị liền (bỏ thẻ và khoảng trắng): tiêu đề có thể bị tách thành mẩu (chữ cắt dán).
 const visibleText = (html) => html.replace(/<script[\s\S]*?<\/script>/gu, "").replace(/<[^>]+>/gu, "").replace(/\s+/gu, "");
@@ -85,13 +85,13 @@ test("every vox variant × composition × language builds lint-clean, determinis
 
 test("vox UI labels are localised and shown for every country", () => {
   const expected = {
-    "vox/paper-collage": { en: "EXPLAINED", de: "ERKLÄRT", ja: "解説", ko: "해설" },
-    "vox/timeline-explainer": { en: "TIMELINE", de: "ZEITLEISTE", ja: "年表", ko: "타임라인" },
-    "vox/map-route": { en: "THE ROUTE", de: "DIE ROUTE", ja: "ルート", ko: "경로" },
-    "vox/split-then-now": { en: "THEN & NOW", de: "DAMALS & HEUTE", ja: "当時と現在", ko: "그때와 지금" },
-    "vox/data-card": { en: "BY THE NUMBERS", de: "IN ZAHLEN", ja: "数字で見る", ko: "숫자로 보기" },
-    "vox/documentary-lowerthird": { en: "DOCUMENTARY", de: "DOKUMENTATION", ja: "ドキュメンタリー", ko: "다큐멘터리" },
-    "vox/zine-xerox": { en: "ZINE", de: "FANZINE", ja: "ZINE", ko: "진" },
+    "vox/paper-collage": { en: "EXPLAINED", de: "ERKLÄRT", ja: "解説", ko: "해설", vi: "GIẢI THÍCH" },
+    "vox/timeline-explainer": { en: "TIMELINE", de: "ZEITLEISTE", ja: "年表", ko: "타임라인", vi: "DÒNG THỜI GIAN" },
+    "vox/map-route": { en: "THE ROUTE", de: "DIE ROUTE", ja: "ルート", ko: "경로", vi: "LỘ TRÌNH" },
+    "vox/split-then-now": { en: "THEN & NOW", de: "DAMALS & HEUTE", ja: "当時と現在", ko: "그때와 지금", vi: "XƯA & NAY" },
+    "vox/data-card": { en: "BY THE NUMBERS", de: "IN ZAHLEN", ja: "数字で見る", ko: "숫자로 보기", vi: "QUA CON SỐ" },
+    "vox/documentary-lowerthird": { en: "DOCUMENTARY", de: "DOKUMENTATION", ja: "ドキュメンタリー", ko: "다큐멘터리", vi: "PHÓNG SỰ" },
+    "vox/zine-xerox": { en: "ZINE", de: "FANZINE", ja: "ZINE", ko: "진", vi: "TẠP CHÍ PHOTO" },
   };
   assert.deepEqual(variants.map((v) => v.id).sort(), Object.keys(expected).sort());
   for (const variant of variants) {

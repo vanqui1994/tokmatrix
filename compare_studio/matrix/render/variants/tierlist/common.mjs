@@ -26,7 +26,7 @@ export function tierUi(own) {
   return Object.fromEntries(Object.keys(WORDS).map((lang) => [lang, { ...WORDS[lang], ...(own[lang] || own.en) }]));
 }
 
-export const tierBase = { engine: "tierlist", asset: IMAGE_ASSET, cost: IMAGE_COST, countries: ["en", "de", "ja", "ko"] };
+export const tierBase = { engine: "tierlist", asset: IMAGE_ASSET, cost: IMAGE_COST, countries: ["en", "de", "ja", "ko", "vi"] };
 
 /**
  * { headline, items[], byTier{SSS:[…]}, sceneRole[i] ("hook"|"item"|"outro"), sceneItem[i] (item|null), champion }

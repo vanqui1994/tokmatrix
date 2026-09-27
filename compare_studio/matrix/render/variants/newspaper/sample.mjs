@@ -33,8 +33,16 @@ const LINES = {
     "신문들은 선상 반란, 해적, 심지어 바다 괴물까지 탓했다.",
     "열 명은 왜 멀쩡한 배를 버렸을까?",
   ],
+  vi: [
+    "Tháng 12 năm 1872, một tàu Anh phát hiện Mary Celeste trôi dạt gần quần đảo Azores.",
+    "Trên tàu không còn một bóng người, nhưng hàng hoá vẫn nguyên vẹn.",
+    "Nhật ký của thuyền trưởng dừng lại chín ngày trước khi con tàu được tìm thấy.",
+    "Một chiếc xuồng cứu sinh đã biến mất, và một sợi dây thừng kéo lê dưới nước phía sau tàu.",
+    "Báo chí đổ lỗi cho binh biến, cướp biển, thậm chí cả thuỷ quái.",
+    "Điều gì khiến mười người bỏ lại một con tàu vẫn còn đi biển tốt?",
+  ],
 };
-const TITLES = { en: "The Ghost Ship Mary Celeste", de: "Das Geisterschiff Mary Celeste", ja: "幽霊船メアリー・セレスト号", ko: "유령선 메리 셀레스트호" };
+const TITLES = { en: "The Ghost Ship Mary Celeste", de: "Das Geisterschiff Mary Celeste", ja: "幽霊船メアリー・セレスト号", ko: "유령선 메리 셀레스트호", vi: "Con tàu ma Mary Celeste" };
 
 export function newspaperSample(lang) {
   const code = LINES[lang] ? lang : "en";

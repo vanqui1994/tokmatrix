@@ -33,8 +33,16 @@ const LINES = {
     "바다악어는 현존 동물 중 가장 강하게 문다. SSS 등급.",
     "포식자의 왕좌는 바다악어의 차지다.",
   ],
+  vi: [
+    "Chúng tôi xếp hạng những kẻ săn mồi nguy hiểm nhất Trái Đất, từ hạng D đến tận SSS.",
+    "Vết cắn có độc của rồng Komodo chậm nhưng không buông tha: hạng C.",
+    "Gấu xám có thể chạy nhanh hơn ngựa trên quãng ngắn: hạng A.",
+    "Cá mập trắng lớn ngửi thấy một giọt máu từ rất xa: hạng S.",
+    "Cá sấu nước mặn cắn mạnh hơn mọi loài vật còn sống: hạng SSS.",
+    "Cá sấu nước mặn một mình ngự trên ngai vàng của loài săn mồi.",
+  ],
 };
-const TITLES = { en: "Deadliest Predators Ranked", de: "Die tödlichsten Raubtiere", ja: "最強捕食者ランキング", ko: "최강 포식자 순위" };
+const TITLES = { en: "Deadliest Predators Ranked", de: "Die tödlichsten Raubtiere", ja: "最強捕食者ランキング", ko: "최강 포식자 순위", vi: "Xếp hạng kẻ săn mồi đáng sợ nhất" };
 
 const I = (name, subtitle, tier, scene) => ({ name, subtitle, tier, first_scene: scene, last_scene: scene });
 const EXTRAS = {
@@ -42,6 +50,7 @@ const EXTRAS = {
   de: { headline: "Welches Raubtier verdient SSS?", items: [I("Komodowaran", "Giftiger Lauerjäger", "C", 2), I("Grizzlybär", "Schnell und stark", "A", 3), I("Weißer Hai", "Wittert jedes Blut", "S", 4), I("Leistenkrokodil", "Beißkraftweltrekordhalter", "SSS", 5)] },
   ja: { headline: "SSSに値する捕食者は？", items: [I("コモドオオトカゲ", "毒で待ち伏せ", "C", 2), I("ハイイログマ", "速くて力強い", "A", 3), I("ホホジロザメ", "血を嗅ぎ分ける", "S", 4), I("イリエワニ", "史上最強の噛む力", "SSS", 5)] },
   ko: { headline: "SSS 등급의 포식자는?", items: [I("코모도왕도마뱀", "독으로 매복", "C", 2), I("회색곰", "빠르고 강하다", "A", 3), I("백상아리", "피 냄새 추적자", "S", 4), I("바다악어", "최강의 무는 힘", "SSS", 5)] },
+  vi: { headline: "Kẻ săn mồi nào xứng hạng SSS?", items: [I("Rồng Komodo", "Kẻ phục kích có độc", "C", 2), I("Gấu xám", "Nhanh và khoẻ", "A", 3), I("Cá mập trắng lớn", "Thợ săn đánh hơi máu", "S", 4), I("Cá sấu nước mặn", "Lực cắn kỷ lục", "SSS", 5)] },
 };
 
 export function tierlistSample(lang) {

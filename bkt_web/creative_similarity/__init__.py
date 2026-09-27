@@ -70,6 +70,18 @@ def extract_all(sample: Dict[str, Any], conn: Optional[sqlite3.Connection] = Non
     return out
 
 
+def features_for(slug: str, conn: sqlite3.Connection) -> Dict[str, Any]:
+    """Features của một video đã render (compare_studio/videos/<slug>): lấy từ cache, thiếu thì đọc MP4 một lần.
+    Tín hiệu `declared` luôn được trích (không cần khung) nên có nó trong cache = video đã được đo."""
+    rows = conn.execute("SELECT signal, version, features FROM features WHERE slug=?", (slug,)).fetchall()
+    cached = {name: json.loads(data) for name, version, data in rows if name in SIGNALS and SIGNALS[name].version == version}
+    if "declared" in cached:
+        return cached
+    from .__main__ import video_samples  # đọc khung MP4 bằng ffmpeg — chỉ khi chưa có cache
+
+    return extract_all(video_samples([slug])[0], conn)
+
+
 def compare(a: Dict[str, Any], b: Dict[str, Any]) -> Dict[str, float]:
     """Điểm từng tín hiệu + composite (trung bình có trọng số trên các tín hiệu cả hai bên đều có)."""
     scores: Dict[str, float] = {}

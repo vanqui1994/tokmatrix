@@ -163,6 +163,7 @@ DEFAULT_CONFIG = {
     # off | report (chỉ ghi dup_checks + log) | block (hoãn video có tỉ lệ khung giống ≥ ngưỡng).
     "dup_check_mode": "report",
     "dup_frames_threshold": "0.30",
+    "dup_composite_threshold": "",
     # Mỗi TikTok acc một plan + topic riêng mỗi ngày (26/09: 5 acc cùng đăng về tôm tít trong 16 phút
     # → TikTok đánh trùng dù khác khuôn hình). false = kiểu cũ, 1 topic cho cả niche.
     "topic_per_channel": "true",
@@ -251,6 +252,16 @@ def validate_config(key: str, value: str) -> str:
             raise ValueError("dup_frames_threshold phải là số 0–1") from None
         if not 0 < number <= 1:
             raise ValueError("dup_frames_threshold phải trong (0, 1]")
+        return f"{number:.2f}"
+    if key == "dup_composite_threshold":
+        if value.strip() == "":
+            return ""  # tắt: composite chỉ được ghi/báo, không tham gia verdict
+        try:
+            number = float(value)
+        except ValueError:
+            raise ValueError("dup_composite_threshold phải để trống hoặc là số 0–1") from None
+        if not 0 < number <= 1:
+            raise ValueError("dup_composite_threshold phải trong (0, 1]")
         return f"{number:.2f}"
     if key in ("priority_engines", "publish_block_engines"):
         engines = []

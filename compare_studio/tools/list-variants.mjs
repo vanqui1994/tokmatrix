@@ -51,7 +51,8 @@ export function variantsJson({ includeReference = false } = {}) {
  * và đăng ký vào voices.mjs (Phase 1).
  */
 export function voicesJson() {
-  const voices = COUNTRIES.flatMap((c) => c.voices.map((v) => ({ id: v.id, lang: c.code, provider: v.provider, gender: v.gender })));
+  // `_dsp` = giọng biến âm của CapCut (trẻ em, hài, robot): giọng nhân vật, không dùng làm giọng dẫn trong Voice DNA.
+  const voices = COUNTRIES.flatMap((c) => c.voices.map((v) => ({ id: v.id, lang: c.code, provider: v.provider, gender: v.gender, character: /_dsp$/u.test(v.id) })));
   const registered = new Set(voices.map((v) => v.id));
   const langs = new Set(COUNTRIES.map((c) => c.code));
   const capcut_candidates = getCapCutCatalog()

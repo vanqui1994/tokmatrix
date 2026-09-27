@@ -23,7 +23,9 @@ const cjk = (sans, serif) => ({
 });
 const JA = cjk('"Noto Sans JP", sans-serif', '"Noto Serif JP", serif');
 const KO = cjk('"Noto Sans KR", sans-serif', '"Noto Serif KR", serif');
-export const TYPOGRAPHY = Object.freeze({ version: 2, stacks: { latin: LATIN, ja: JA, ko: KO } });
+// Tiếng Việt: mọi họ Latin đều có lát `vietnamese` (dấu chồng U+1EA0–1EF9) trừ Archivo Black → "heavy" dùng Oswald.
+const VI = { ...LATIN, heavy: '"Oswald", sans-serif' };
+export const TYPOGRAPHY = Object.freeze({ version: 3, stacks: { latin: LATIN, ja: JA, ko: KO, vi: VI } });
 
 export function fontStack(style, script) {
   const table = TYPOGRAPHY.stacks[script] || TYPOGRAPHY.stacks.latin;
