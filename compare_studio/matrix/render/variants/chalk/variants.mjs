@@ -115,7 +115,9 @@ const warRoom = defineVariant({
             { tweens: map.tweens(scene, i) },
           ),
           vars: { "--frame-edge": "rgba(244,246,240,.55)" },
-          css: `${HEAD_CSS}${LEGEND_CSS}.h-side{background:linear-gradient(90deg,#4a321c,#6b4a2a 50%,#4a321c)!important;box-shadow:0 0 0 4px rgba(0,0,0,.35)}.h-side .h-title{color:#f4f1e6!important}.f-plain{background:rgba(255,255,255,.02);border-style:dashed!important;border-width:6px!important;box-shadow:none!important}.wr-hd2 .cm-hd-t{color:#ff9a92;text-transform:uppercase;letter-spacing:1px;text-shadow:0 0 10px rgba(255,90,79,.4)}.wr-lg .cm-lg-title{color:#ffd84a}.wr-lg .cm-lg-t{color:#f4f6f0}.wr-lg{border-right:3px dashed rgba(244,246,240,.35);padding-right:16px}`,
+          // Cảnh bị cắt ở x = 150 (mép thanh tựa dọc): khi chuyển cảnh kiểu trượt, nội dung biến mất ở mép thanh chứ không
+          // trượt xuống DƯỚI nó (hyperframes text_occluded). Nội dung cảnh vốn nằm từ x 172 nên không bị cắt lúc đứng yên.
+          css: `${HEAD_CSS}${LEGEND_CSS}.v-scene{clip-path:inset(0 0 0 150px)}.h-side{background:linear-gradient(90deg,#4a321c,#6b4a2a 50%,#4a321c)!important;box-shadow:0 0 0 4px rgba(0,0,0,.35)}.h-side .h-title{color:#f4f1e6!important}.f-plain{background:rgba(255,255,255,.02);border-style:dashed!important;border-width:6px!important;box-shadow:none!important}.wr-hd2 .cm-hd-t{color:#ff9a92;text-transform:uppercase;letter-spacing:1px;text-shadow:0 0 10px rgba(255,90,79,.4)}.wr-lg .cm-lg-title{color:#ffd84a}.wr-lg .cm-lg-t{color:#f4f6f0}.wr-lg{border-right:3px dashed rgba(244,246,240,.35);padding-right:16px}`,
         };
       },
     },
@@ -226,7 +228,8 @@ const whiteboard = defineVariant({
       axes: { composition: "card_stack", textPlacement: "left_column" },
       describe: "Bản đồ dạ phía trên; dưới là hai tờ giấy nhớ dán nghiêng: lời đọc (vàng, trái) và ghi chú các phần tử của cảnh (hồng, phải)",
       design: (ctx) => {
-        const map = chalkMap(ctx, LOOKS.whiteboard, { w: 1000, h: 640 });
+        // Dải đáy bản đồ để trống: tiêu đề cảnh nằm ngay dưới khung (y 1010), nhãn sát đáy sẽ chạm nó.
+        const map = chalkMap(ctx, LOOKS.whiteboard, { w: 1000, h: 640 }, { reserve: [{ x: 0, y: 590, w: 1000, h: 50 }] });
         return {
           header: { style: "centered", region: { x: 60, y: 120, w: 960, h: 220 } },
           visual: { allowOcclusion: true, frame: "bleed", region: { x: 40, y: 360, w: 1000, h: 640 } },

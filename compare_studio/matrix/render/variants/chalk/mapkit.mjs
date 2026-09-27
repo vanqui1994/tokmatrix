@@ -63,7 +63,8 @@ function estimateWidth(text, size) {
     if (/[　-鿿가-힯＀-￯]/u.test(char)) units += 1.02;
     else units += /[\p{Lu}0-9]/u.test(char) ? 0.74 : /\s/u.test(char) ? 0.3 : 0.62;
   }
-  return (units * size + size * 0.5) * 1.12;
+  // Nhãn dùng font thân của DNA (có họ rộng hơn ước lượng): 1.25 để tránh chồng nhãn với mọi typography.
+  return (units * size + size * 0.5) * 1.25;
 }
 
 const overlaps = (a, b) => a.x0 < b.x1 && b.x0 < a.x1 && a.y0 < b.y1 && b.y0 < a.y1;
