@@ -6,7 +6,7 @@ audio:
   voice_pitch: -1
   voice_speed: 0.99
 channel_id: extreme_wildlife_13
-config_version: 7
+config_version: 8
 creative:
   cut_cadence_seconds: 2.7
   palette:

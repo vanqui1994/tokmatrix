@@ -6,7 +6,7 @@ audio:
   voice_pitch: -1
   voice_speed: 0.99
 channel_id: extreme_survival_12
-config_version: 8
+config_version: 9
 creative:
   cut_cadence_seconds: 2.3
   palette:
