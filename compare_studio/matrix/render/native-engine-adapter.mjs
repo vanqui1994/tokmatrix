@@ -497,8 +497,10 @@ export async function buildNativeVideoProject({ job, manifest = job?.manifest, p
     await fs.cp(sourceCharacters, path.join(targetDir, "assets", "characters"), { recursive: true });
   }
   const variant = channelVariant(channel, engineType);
-  const staticAssets = (await extendedReady(engineType)?.prepareAssets?.({ targetDir, compareDir: COMPARE_DIR })) || [];
-  if (variant) staticAssets.push(...await prepareKitAssets({ targetDir, compareDir: COMPARE_DIR }));
+  // Variant chỉ dùng assets/kit và ảnh cảnh; tài nguyên riêng của engine legacy (SFX, mặt meme survival) không chép vào.
+  const staticAssets = variant
+    ? await prepareKitAssets({ targetDir, compareDir: COMPARE_DIR })
+    : (await extendedReady(engineType)?.prepareAssets?.({ targetDir, compareDir: COMPARE_DIR })) || [];
   const composed = await createEngineHtml({ engineType, slug, title, lang, scenes, channel, manifest, media, totalDuration, variant });
   // Variant tự co chữ bằng kit/fit (data-fit); bản sửa bố cục legacy chỉ dành cho template legacy.
   if (!variant) composed.html = applyMatrixLayoutFixes(composed.html, engineType);

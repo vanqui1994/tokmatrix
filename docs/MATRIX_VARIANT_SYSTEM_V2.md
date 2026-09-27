@@ -526,7 +526,7 @@ flowchart TB
   - `compare_studio/tools/matrix-pick-engine.mjs` (đường hồi sinh job của Autopilot cũng phải khoá engine theo variant)
   - `AGENTS.md`
 
-**Phase 1+ (dự kiến):**
+**Phase 1+ (dự kiến lúc viết plan; file thật đã đổi xem mục 24):**
 
 - `matrix/creative/visual-director.mjs`, `asset-manager.mjs`, `audio-orchestrator.mjs` (fx)
 - `tools/voices.mjs` (đăng ký giọng đã thử) + `config/voices/edge_voices.snapshot.json` (chụp trên máy có mạng tới Edge;
@@ -647,7 +647,7 @@ dry-run Phase 6 sẽ tính chính xác).
 | JSON registry/giọng/chi phí cho Python | xong | `tools/list-variants.mjs` |
 | 1 variant tham chiếu (2 composition, status `reference`) | xong | `variants/mystery/reference-dossier.mjs` |
 | Font offline (Latin/ja/ko) cho variant | xong | `variants/kit/fonts.mjs`, gói `@fontsource/*` |
-| Snapshot giọng Edge | **hoãn Phase 1** | cần mạng tới Edge |
+| Snapshot giọng Edge | thay bằng danh sách giọng Edge đã biết trong `tools/voices.mjs` (mục 24) | cần mạng tới Edge |
 | FX giọng, override asset type, topic pack, similarity đa tín hiệu, asset ledger, apply migration | Phase 1–6 | mục 15 |
 
 Nghiệm thu (mục 21, Phase 0):
@@ -666,3 +666,97 @@ Nghiệm thu (mục 21, Phase 0):
 - Phát hiện từ contact sheet (chưa sửa, làm ở Phase 1): câu tiếng Đức có từ ghép rất dài không có khoảng trắng
   (fixture cảnh 3) bị `data-fit` co tới cỡ chữ quá nhỏ. Cần `hyphens: auto` + `lang="de"` hoặc cỡ chữ tối thiểu kèm
   xuống dòng cứng trong `kit/fit`, rồi thêm test cỡ chữ tối thiểu.
+
+## 24. Phase 1–6 — trạng thái triển khai (2026-09-27)
+
+Phase 1–6 đã code xong trên nhánh `claude/matrix-variant-v2-3nx5cv` (PR #1). **Chưa deploy, chưa apply DNA vào config nào,
+chưa restart service.** Phase 7 (canary) chờ chủ repo duyệt plan.
+
+### 24.1 Variant đã có
+
+| Engine | Base variant | Composition | Asset | Preview `hyperframes check` | Similarity max (cùng nước, ngưỡng 0.62) |
+|---|---|---|---|---|---|
+| mystery | 9 (+1 reference) | 2–4 | IMAGE_AI | 76/76 | 0.605 |
+| newspaper | 7 | 2 | IMAGE_AI | 56/56 | 0.587 |
+| vox | 7 | 2 | IMAGE_AI | 56/56 | 0.616 |
+| folklore | 8 | 2 | IMAGE_AI | 64/64 | 0.606 |
+| science | 7 | 2 | IMAGE_AI | 56/56 | 0.602 |
+| wildlife | 8 | 2 | IMAGE_AI | 64/64 | 0.602 |
+| compare | 7 | 2 | SVG | 56/56 | 0.569 |
+| tierlist | 7 | 2 | IMAGE_AI | 56/56 | 0.604 |
+| chalk | 7 | 2 | TEXT | 56/56 | 0.611 |
+| survival | 7 | 2 | TEXT | 56/56 | 0.586 |
+
+Tổng 74 base variant đang active, khoảng 150 structural identity (variant#composition). Kinetic không có variant (theo brief).
+Mỗi engine giữ asset type của engine gốc (không đổi provider ảnh; ảnh vẫn qua hàng đợi Antigravity).
+
+Preview "-a" là 4 ngôn ngữ (en/de/ja/ko) × mọi composition. Contact sheet và `similarity.json` từng engine ở
+`/mnt/project-files/matrix-variant-v2/phase*-<engine>-*`.
+
+Quyết định thiết kế (theo mục 20):
+- Ô cửa tàu ngầm chỉ còn ở wildlife/deep-ocean; survival/deep-sea là thước độ sâu dọc + đồng hồ áp suất; mystery/sonar-log là
+  bản đồ sonar.
+- chalk/thermal dùng bảng màu nhiệt đỏ/cam, không HUD xanh; science không dùng bảng phấn/blueprint.
+- Survival: nhân vật phản ứng là SVG tất định tự vẽ (`variants/survival/reactor.mjs`), 7 biểu cảm, một danh tính cho mỗi
+  (variant, nước); không dùng mặt meme mrincredible. Adapter không chép tài nguyên riêng của engine legacy (SFX, mặt meme) vào
+  video có variant.
+- Compare variant: kênh được gán compare chỉ ở niche có điểm compare ≥ `COMPARE_TOPIC_MIN`, đề tài lấy từ pack `versus`.
+
+### 24.2 Giọng
+
+- FX: `none|creepy|whisper|radio` (`matrix/creative/voice-fx.mjs`, chuỗi ffmpeg cố định), phải nằm trong `audioProfile.fx`
+  của variant. Plan dry-run ghi `voice_fx` cho từng kênh; `--apply` ghi `audio.voice_fx` khi khác `none`.
+- CapCut: giọng chỉ vào catalog sau `node tools/audition-voices.mjs --apply` (tổng hợp thật + CapCut STT recall ≥ 0.6).
+  **Chưa chạy** vì container không gọi được API CapCut; chạy trên máy có mạng rồi commit `config/voices/capcut_auditioned.json`.
+- Clone giọng: OpenVoice V2 ToneColorConverter (MIT, khoảng 130 MB, chạy CPU), `bkt_web/voice_clone.py`. Chuỗi TTS (CapCut/Edge)
+  → clone → pitch → fx. Enroll bắt buộc `--consent owner|licensed`; seed tất định; watermark bật. Clone lỗi → job lỗi, không
+  quay về giọng gốc. **Chưa chạy model thật** trong container (HuggingFace/pytorch bị chặn); test dùng converter giả.
+
+### 24.3 Topic pack
+
+132 pack trong `config/topic_packs/<id>.yaml` (engine, `format` free/versus/ranking, `brief`, `niches`). Niche của pack được
+chọn tay sao cho engine của pack được phép ở niche đó, để acc quân sự không nhận đề tài chim chóc. Seed topic
+`config/topics/packs/<id>.txt` chưa viết: planner để Gemini viết thêm theo `brief` khi kho trống (`topics.refill_pack`),
+pack `free` hết topic thì quay về topic của niche, pack `versus`/`ranking` thì bỏ qua kênh hôm đó.
+
+Hai pack bị đổi nghĩa so với tên để hợp niche compare: `compare_health_food` (chế độ ăn/sinh tồn của hai loài) và
+`compare_games_characters` (hai công nghệ dạng thẻ bài).
+
+### 24.4 Gán DNA (Phase 6)
+
+- Thuật toán: max matching (đường tăng Kuhn) giữa kênh và structural identity trong từng nước, sau khi giữ DNA đã có.
+- Dry-run trên config repo: `docs/creative_dna/dry-run-2026-09-27.{json,md}`.
+  - 202 kênh DE/GB/JP/KR đều có variant.
+  - Trong mỗi nước không có hai kênh chung structural identity.
+  - GB/JP/KR dùng lại cấu trúc của DE (`soft:cross_country`), nhưng khác ngôn ngữ, giọng, theme và DNA.
+  - 35 kênh VN là `hard:capacity`: không variant nào khai nước VN, nên các kênh này giữ đường legacy.
+- Apply chỉ khi Autopilot tắt/pause và không có batch-matrix chạy. Trình tự:
+  1. Khoá `config/channels/.migration.lock`; Autopilot không ghi YAML khi khoá tồn tại.
+  2. Ghi vào bản sao và validate toàn bộ.
+  3. Backup vào `/opt/tokmatrix-backups/creative-dna-*`.
+  4. `os.replace` từng file; lỗi giữa chừng thì chép lại bản backup.
+  5. Ghi `inverse.json` cho `--rollback`.
+  Test apply + rollback chỉ chạy trên bản sao trong thư mục tạm.
+- Trên VPS: `python3 -m bkt_web.autopilot.creative_dna --dry-run --from-db --out plan.json`, duyệt, rồi
+  `--apply --plan plan.json --plan-sha <sha>`, rồi `matrix_config.sync_channel_configs`.
+
+### 24.5 Chống trùng khác
+
+- Similarity đa tín hiệu `bkt_web/creative_similarity` (layout .30, declared .15, visual .15, motion .15, color .10,
+  asset .10, timing .05), gate nội bộ 0.62. Đây là gate nội bộ, không đảm bảo TikTok không báo trùng.
+- Asset ledger (`bkt_web/asset_ledger.py`): Autopilot chặn video có ảnh cảnh (sha256 hoặc pHash ≤ 6) đã đăng ở acc khác.
+- Nhãn AI TikTok: `TOKMATRIX_TIKTOK_AI_LABEL` = `off` (mặc định production) | `auto` | `on`.
+
+### 24.6 Chưa làm / việc cho người vận hành
+
+- Phase 7 canary (mục 15.1): cần chủ repo duyệt plan và bật từng bậc.
+- Chạy audition CapCut và cài OpenVoice thật trên máy có mạng (`python3 -m bkt_web.voice_clone setup`, torch CPU).
+- Đo chi phí render thật trên VPS; wildlife stock-video ledger (mục 9) chưa có vì wildlife vẫn dùng ảnh AI.
+- Đề xuất kit các worker báo, chưa sửa core:
+  - Frame `stamp` đục lỗ khắp khung, không chỉ ở mép.
+  - Tâm ngắm của frame `scope` đè lên chữ.
+  - `fitText` không co được chữ trong khối `nowrap` hẹp hơn một từ dài.
+  - `label_title` nên `nowrap`.
+  - Cần hook `design.underlay`.
+- Vài concept ở mục 20 không làm (science infographic/timeline/blueprint, newspaper Fraktur) vì dễ trùng engine khác.
+
