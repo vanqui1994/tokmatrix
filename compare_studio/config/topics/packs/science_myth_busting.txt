@@ -1,0 +1,12 @@
+# Seed topics for topic pack science_myth_busting (free): Common science myths tested
+# Gemini adds more in storage/autopilot_topics/packs/science_myth_busting.txt when these run out.
+Does cracking your knuckles cause arthritis
+Do we lose most heat through our head
+Does sugar make children hyperactive
+Can you catch a cold from being cold
+Do vaccines cause autism: what the studies show
+Does shaving make hair grow back thicker
+Is the tongue map real
+Do we swallow spiders in our sleep
+Does lightning strike the same place twice
+Is blood blue inside the body

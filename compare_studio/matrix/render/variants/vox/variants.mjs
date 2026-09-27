@@ -363,7 +363,7 @@ const dataCard = defineVariant({
           };
         },
         vars: { "--frame-edge": "#fff" },
-        css: `${STAT_CSS}.vd-num{transform-origin:50% 50%}.vd-num-t{color:var(--accent-terra-ink);text-align:center}.vd-ring{position:absolute;z-index:0}[id^='v-frame-']{z-index:2}`,
+        css: `${STAT_CSS}.vd-num{transform-origin:50% 50%}.vd-num-t{color:var(--head-ink);text-align:center}.vd-ring{position:absolute;z-index:0}[id^='v-frame-']{z-index:2}`,
       }),
     },
   },

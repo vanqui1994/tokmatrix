@@ -1,0 +1,12 @@
+# Seed topics for topic pack wildlife_migration (free): Great animal migrations and navigation
+# Gemini adds more in storage/autopilot_topics/packs/wildlife_migration.txt when these run out.
+The wildebeest migration across the Mara
+The monarch butterflies' journey to Mexico
+The Arctic tern's pole-to-pole flight
+Salmon swimming back to their birth river
+The Christmas Island red crab march
+Humpback whales from Antarctica to the tropics
+The bar-tailed godwit's nonstop flight
+Caribou crossing the Arctic
+Sea turtles returning to their beach
+Eels migrating to the Sargasso Sea

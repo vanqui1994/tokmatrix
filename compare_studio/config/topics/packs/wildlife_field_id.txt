@@ -1,0 +1,12 @@
+# Seed topics for topic pack wildlife_field_id (free): How to recognise a species in the wild
+# Gemini adds more in storage/autopilot_topics/packs/wildlife_field_id.txt when these run out.
+How to identify a wolf track
+How to tell a hare from a rabbit
+Identifying venomous snakes in Europe
+How to recognise a golden eagle in flight
+Telling a leopard from a cheetah
+How to identify bear scat
+Recognising poisonous mushrooms
+How to tell a crocodile from an alligator
+Identifying owls by their call
+How to tell a lynx from a wildcat

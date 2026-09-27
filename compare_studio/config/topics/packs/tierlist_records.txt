@@ -1,0 +1,12 @@
+# Seed topics for topic pack tierlist_records (ranking): Ranking record holders: biggest, fastest, most extreme
+# Gemini adds more in storage/autopilot_topics/packs/tierlist_records.txt when these run out.
+Ranking the biggest animals ever to live
+Ranking the fastest land animals
+Ranking the deepest points on Earth
+Ranking the tallest mountains in the solar system
+Ranking the biggest stars known
+Ranking the loudest animals
+Ranking the hottest places on Earth
+Ranking the longest-living animals
+Ranking the coldest places on Earth
+Ranking the deepest dives by animals

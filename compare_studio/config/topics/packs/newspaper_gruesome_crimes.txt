@@ -1,0 +1,12 @@
+# Seed topics for topic pack newspaper_gruesome_crimes (free): Gruesome historic crimes told through period newspaper reports
+# Gemini adds more in storage/autopilot_topics/packs/newspaper_gruesome_crimes.txt when these run out.
+Jack the Ripper's autumn of terror
+H.H. Holmes and his murder castle
+The Ratcliff Highway murders
+Fritz Haarmann, the Butcher of Hanover
+Burke and Hare, the body snatchers
+The Düsseldorf Vampire Peter Kürten
+Belle Gunness and the Indiana farm
+Albert Fish's letter to a mother
+Elizabeth Báthory in historical records
+The Villisca axe murders in the Iowa press

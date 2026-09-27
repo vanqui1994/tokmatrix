@@ -89,7 +89,7 @@ const warRoom = defineVariant({
         const map = chalkMap(ctx, LOOKS.war_room, { w: 1080, h: 820 });
         return {
           header: { style: "chalk_title", region: { x: 60, y: 120, w: 960, h: 230 } },
-          visual: { frame: "bleed", region: { x: 0, y: 470, w: 1080, h: 820 } },
+          visual: { allowOcclusion: true, frame: "bleed", region: { x: 0, y: 470, w: 1080, h: 820 } },
           panel: (scene, i) => map.svg(scene, i),
           text: { style: "chalk", region: { x: 70, y: 1330, w: 940, h: 300 }, size: 50, enter: "clip" },
           tag: { style: "chalk", x: 70, y: 1660, format: (i, n, ui) => `${upper(ui.scene, ctx.lang)} ${pad2(i + 1)}/${pad2(n)}` },
@@ -106,7 +106,7 @@ const warRoom = defineVariant({
         const map = chalkMap(ctx, LOOKS.war_room, { w: 860, h: 960 }, { sizes: { hl: 40, hl2: 34 } });
         return {
           header: { style: "side", region: { x: 24, y: 140, w: 120, h: 1600 }, size: 56 },
-          visual: { frame: "plain", region: { x: 172, y: 150, w: 880, h: 980 } },
+          visual: { allowOcclusion: true, frame: "plain", region: { x: 172, y: 150, w: 880, h: 980 } },
           panel: (scene, i) => map.svg(scene, i),
           text: { style: "chalk", region: { x: 600, y: 1300, w: 452, h: 420 }, size: 46, align: "left", enter: "clip" },
           sceneExtra: (scene, i, c) => merge(
@@ -115,6 +115,8 @@ const warRoom = defineVariant({
             { tweens: map.tweens(scene, i) },
           ),
           vars: { "--frame-edge": "rgba(244,246,240,.55)" },
+          // Cảnh bị cắt ở x = 150 (mép thanh tựa dọc): khi chuyển cảnh kiểu trượt, nội dung biến mất ở mép thanh chứ không
+          // trượt xuống DƯỚI nó (hyperframes text_occluded). Nội dung cảnh vốn nằm từ x 172 nên không bị cắt lúc đứng yên.
           css: `${HEAD_CSS}${LEGEND_CSS}.h-side{background:linear-gradient(90deg,#4a321c,#6b4a2a 50%,#4a321c)!important;box-shadow:0 0 0 4px rgba(0,0,0,.35)}.h-side .h-title{color:#f4f1e6!important}.f-plain{background:rgba(255,255,255,.02);border-style:dashed!important;border-width:6px!important;box-shadow:none!important}.wr-hd2 .cm-hd-t{color:#ff9a92;text-transform:uppercase;letter-spacing:1px;text-shadow:0 0 10px rgba(255,90,79,.4)}.wr-lg .cm-lg-title{color:#ffd84a}.wr-lg .cm-lg-t{color:#f4f6f0}.wr-lg{border-right:3px dashed rgba(244,246,240,.35);padding-right:16px}`,
         };
       },
@@ -148,7 +150,7 @@ const blueprint = defineVariant({
         const map = chalkMap(ctx, LOOKS.blueprint, { w: 960, h: 840 });
         return {
           header: { style: "label_title", region: { x: 60, y: 120, w: 960, h: 220 } },
-          visual: { frame: "plain", region: { x: 50, y: 380, w: 980, h: 860 } },
+          visual: { allowOcclusion: true, frame: "plain", region: { x: 50, y: 380, w: 980, h: 860 } },
           panel: (scene, i) => map.svg(scene, i),
           text: { style: "osd", region: { x: 50, y: 1280, w: 630, h: 400 }, size: 42, enter: "type" },
           sceneExtra: (scene, i, c) => {
@@ -170,7 +172,7 @@ const blueprint = defineVariant({
         return {
           header: { style: "masthead", region: { x: 60, y: 110, w: 960, h: 230 }, size: 60 },
           text: { style: "osd", region: { x: 50, y: 370, w: 980, h: 230 }, size: 42, enter: "type" },
-          visual: { frame: "plain", region: { x: 50, y: 640, w: 980, h: 700 } },
+          visual: { allowOcclusion: true, frame: "plain", region: { x: 50, y: 640, w: 980, h: 700 } },
           panel: (scene, i) => map.svg(scene, i),
           sceneExtra: (scene, i, c) => {
             const rows = map.legend(i).slice(0, 3);
@@ -212,7 +214,7 @@ const whiteboard = defineVariant({
         const map = chalkMap(ctx, LOOKS.whiteboard, { w: 1000, h: 820 });
         return {
           header: { style: "label_title", region: { x: 60, y: 130, w: 960, h: 230 } },
-          visual: { frame: "bleed", region: { x: 40, y: 400, w: 1000, h: 820 } },
+          visual: { allowOcclusion: true, frame: "bleed", region: { x: 40, y: 400, w: 1000, h: 820 } },
           panel: (scene, i) => map.svg(scene, i),
           text: { style: "marker", region: { x: 60, y: 1350, w: 960, h: 310 }, size: 46, enter: "fade_up" },
           tag: { style: "chip", x: 820, y: 1690 },
@@ -226,10 +228,11 @@ const whiteboard = defineVariant({
       axes: { composition: "card_stack", textPlacement: "left_column" },
       describe: "Bản đồ dạ phía trên; dưới là hai tờ giấy nhớ dán nghiêng: lời đọc (vàng, trái) và ghi chú các phần tử của cảnh (hồng, phải)",
       design: (ctx) => {
-        const map = chalkMap(ctx, LOOKS.whiteboard, { w: 1000, h: 640 });
+        // Dải đáy bản đồ để trống: tiêu đề cảnh nằm ngay dưới khung (y 1010), nhãn sát đáy sẽ chạm nó.
+        const map = chalkMap(ctx, LOOKS.whiteboard, { w: 1000, h: 640 }, { reserve: [{ x: 0, y: 590, w: 1000, h: 50 }] });
         return {
           header: { style: "centered", region: { x: 60, y: 120, w: 960, h: 220 } },
-          visual: { frame: "bleed", region: { x: 40, y: 360, w: 1000, h: 640 } },
+          visual: { allowOcclusion: true, frame: "bleed", region: { x: 40, y: 360, w: 1000, h: 640 } },
           panel: (scene, i) => map.svg(scene, i),
           text: { style: "sticky", region: { x: 50, y: 1100, w: 500, h: 560 }, size: 46, enter: "drop" },
           sceneExtra: (scene, i, c) => merge(
@@ -271,7 +274,7 @@ const sandTable = defineVariant({
         const map = chalkMap(ctx, LOOKS.sand_table, { w: 988, h: 788 }, { sizes: { hl: 40, hl2: 34, marker: 32, arrow: 30, glyph: 26 } });
         return {
           header: { style: "plaque", region: { x: 140, y: 120, w: 800, h: 220 } },
-          visual: { frame: "plain", region: { x: 20, y: 470, w: 1040, h: 840 } },
+          visual: { allowOcclusion: true, frame: "plain", region: { x: 20, y: 470, w: 1040, h: 840 } },
           panel: (scene, i) => map.svg(scene, i),
           text: { style: "paper_note", region: { x: 90, y: 1370, w: 900, h: 300 }, size: 46, enter: "fade_up" },
           sceneExtra: (scene, i) => merge(headline(scene, map.headline(i), { region: { x: 200, y: 372, w: 680, h: 80 }, cls: "st-hd", size: 40, enter: "drop" }), { tweens: map.tweens(scene, i) }),
@@ -288,7 +291,7 @@ const sandTable = defineVariant({
           header: { style: "tab", region: { x: 60, y: 120, w: 960, h: 230 } },
           text: { style: "paper_note", region: { x: 70, y: 380, w: 760, h: 330 }, size: 46, enter: "fade_up" },
           tag: { style: "chip", x: 850, y: 400, format: (i, n, ui) => `${upper(ui.scene, ctx.lang)} ${i + 1}` },
-          visual: { frame: "plain", region: { x: 20, y: 830, w: 1040, h: 932 } },
+          visual: { allowOcclusion: true, frame: "plain", region: { x: 20, y: 830, w: 1040, h: 932 } },
           panel: (scene, i) => map.svg(scene, i),
           sceneExtra: (scene, i) => merge(headline(scene, map.headline(i), { region: { x: 60, y: 736, w: 960, h: 78 }, cls: "st-hd2", size: 40, enter: "slide" }), { tweens: map.tweens(scene, i) }),
           css: `${HEAD_CSS}${SAND_CSS.replace(/\.sand-tilt\{[^}]*\}/u, "")}.st-hd2{background:linear-gradient(180deg,#8a5a2e,#6b4424);border-radius:8px;padding:0 24px;box-shadow:0 8px 14px rgba(0,0,0,.4)}.st-hd2 .cm-hd-t{color:#fbeed2;font-weight:700;text-transform:uppercase}`,
@@ -324,7 +327,7 @@ const thermal = defineVariant({
         const map = chalkMap(ctx, LOOKS.thermal, { w: 1080, h: 1000 });
         return {
           header: { style: "osd_bar", region: { x: 0, y: 110, w: 1080, h: 96 } },
-          visual: { frame: "bleed", region: { x: 0, y: 230, w: 1080, h: 1000 } },
+          visual: { allowOcclusion: true, frame: "bleed", region: { x: 0, y: 230, w: 1080, h: 1000 } },
           panel: (scene, i) => map.svg(scene, i),
           text: { style: "lower_third", region: { x: 40, y: 1380, w: 1000, h: 280 }, size: 46, enter: "slide" },
           tag: { style: "osd", x: 40, y: 250 },
@@ -344,7 +347,7 @@ const thermal = defineVariant({
         return {
           header: { style: "centered", region: { x: 60, y: 110, w: 960, h: 210 } },
           text: { style: "osd", region: { x: 40, y: 350, w: 1000, h: 250 }, size: 44, enter: "type" },
-          visual: { frame: "circle", region: { x: 100, y: 640, w: 880, h: 880 } },
+          visual: { allowOcclusion: true, frame: "circle", region: { x: 100, y: 640, w: 880, h: 880 } },
           panel: (scene, i) => map.svg(scene, i),
           sceneExtra: (scene, i, c) => merge(headline(scene, `${upper(c.ui.hot, ctx.lang)} · ${map.headline(i)}`, { region: { x: 60, y: 1560, w: 960, h: 100 }, cls: "th-hd2", size: 40, enter: "pop" }), { tweens: map.tweens(scene, i) }),
           vars: { "--frame-edge": "#ff9a3c", "--gold": "#ffb347" },
@@ -381,7 +384,7 @@ const atlas = defineVariant({
         const map = chalkMap(ctx, LOOKS.atlas, { w: 868, h: 760 });
         return {
           header: { style: "centered", region: { x: 60, y: 120, w: 960, h: 230 } },
-          visual: { frame: "scroll", region: { x: 60, y: 440, w: 960, h: 900 } },
+          visual: { allowOcclusion: true, frame: "scroll", region: { x: 60, y: 440, w: 960, h: 900 } },
           panel: (scene, i) => map.svg(scene, i),
           text: { style: "ink", region: { x: 80, y: 1400, w: 920, h: 270 }, size: 48, align: "center", enter: "clip" },
           sceneExtra: (scene, i) => merge(headline(scene, map.headline(i), { region: { x: 150, y: 368, w: 780, h: 76 }, cls: "at-hd", size: 38, enter: "pop" }), { tweens: map.tweens(scene, i) }),
@@ -396,7 +399,7 @@ const atlas = defineVariant({
         const map = chalkMap(ctx, { ...LOOKS.atlas_chart, compassAt: [0.9, 0.66] }, { w: 1016, h: 1336 }, { reserve: [{ x: 0, y: 0, w: 1016, h: 50 }, { x: 30, y: 20, w: 400, h: 370 }, { x: 430, y: 20, w: 586, h: 120 }, { x: 60, y: 1060, w: 900, h: 276 }] });
         return {
           header: { style: "ribbon", region: { x: 90, y: 120, w: 900, h: 150 }, size: 52 },
-          visual: { frame: "torn", region: { x: 20, y: 300, w: 1060, h: 1380 } },
+          visual: { allowOcclusion: true, frame: "torn", region: { x: 20, y: 300, w: 1060, h: 1380 } },
           panel: (scene, i) => map.svg(scene, i),
           text: { style: "paper_note", region: { x: 100, y: 1380, w: 880, h: 260 }, size: 44, enter: "fade_up" },
           sceneExtra: (scene, i, c) => merge(
@@ -449,11 +452,11 @@ const satellite = defineVariant({
         const insets = [0, 1].map((k) => chalkMap(ctx, look, { w: 474, h: 246 }, { prefix: `cz${k}-`, sceneFor: (s) => focusScene(s, k), minFrac: 0.18, sizes: { hl: 30, hl2: 26, marker: 24, arrow: 22, glyph: 18 } }));
         return {
           header: { style: "label_title", region: { x: 60, y: 110, w: 960, h: 220 } },
-          visual: { frame: "plain", region: { x: 40, y: 360, w: 1000, h: 680 }, label: undefined },
+          visual: { allowOcclusion: true, frame: "plain", region: { x: 40, y: 360, w: 1000, h: 680 }, label: undefined },
           panel: (scene, i) => map.svg(scene, i),
           text: { style: "glass", region: { x: 40, y: 1400, w: 1000, h: 270 }, size: 44, enter: "fade_up" },
           sceneExtra: (scene, i, c) => {
-            const boxes = insets.map((inset, k) => `<div class="sat-in" data-layout-allow-overflow="true" id="sat-in-${scene.index}-${k}" style="${regionStyle({ x: 40 + k * 510, y: 1070, w: 490, h: 300 })}"><div class="sat-map" data-layout-allow-overflow="true">${inset.svg(scene, i)}</div><b>${escapeHtml(`${upper(c.ui.zoom, ctx.lang)} ${k + 1}`)}</b></div>`).join("");
+            const boxes = insets.map((inset, k) => `<div class="sat-in" data-layout-allow-overflow="true" id="sat-in-${scene.index}-${k}" style="${regionStyle({ x: 40 + k * 510, y: 1070, w: 490, h: 300 })}"><div class="sat-map" data-layout-allow-overflow="true" data-layout-allow-overlap="true">${inset.svg(scene, i)}</div><b>${escapeHtml(`${upper(c.ui.zoom, ctx.lang)} ${k + 1}`)}</b></div>`).join("");
             return merge(
               headline(scene, map.headline(i), { region: { x: 60, y: 380, w: 700, h: 70 }, cls: "sat-hd", size: 34, enter: "slide" }),
               { html: boxes, tweens: insets.flatMap((inset) => inset.tweens(scene, i)) },
@@ -473,7 +476,7 @@ const satellite = defineVariant({
         return {
           header: { style: "label_title", region: { x: 60, y: 110, w: 960, h: 210 }, size: 58 },
           text: { style: "glass", region: { x: 40, y: 340, w: 1000, h: 250 }, size: 44, enter: "fade_up" },
-          visual: { frame: "bleed", region: { x: 0, y: 630, w: 1080, h: 1080 } },
+          visual: { allowOcclusion: true, frame: "bleed", region: { x: 0, y: 630, w: 1080, h: 1080 } },
           panel: (scene, i) => map.svg(scene, i),
           tag: { style: "osd", x: 40, y: 1640 },
           sceneExtra: (scene, i) => merge(headline(scene, map.headline(i), { region: { x: 40, y: 660, w: 720, h: 80 }, cls: "sat-hd2", size: 38, enter: "drop" }), { tweens: map.tweens(scene, i) }),

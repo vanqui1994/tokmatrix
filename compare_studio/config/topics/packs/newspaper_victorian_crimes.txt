@@ -1,0 +1,12 @@
+# Seed topics for topic pack newspaper_victorian_crimes (free): Notorious crimes from Victorian-era newspaper reports
+# Gemini adds more in storage/autopilot_topics/packs/newspaper_victorian_crimes.txt when these run out.
+The Road Hill House murder
+The Bravo poisoning case
+Madeleine Smith and the arsenic letters
+Dr Thomas Neill Cream, the Lambeth poisoner
+The Great Gold Robbery of 1855
+The Whitechapel murders reported in The Star
+Mary Ann Cotton, Britain's first serial killer
+The Tichborne Claimant
+Charles Peace, the master burglar
+Florence Maybrick and the flypaper

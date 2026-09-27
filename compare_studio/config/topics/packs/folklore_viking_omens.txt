@@ -1,0 +1,12 @@
+# Seed topics for topic pack folklore_viking_omens (free): Viking omens, seers and prophecies
+# Gemini adds more in storage/autopilot_topics/packs/folklore_viking_omens.txt when these run out.
+Ravens of Odin as battle omens
+The völva seeresses of the sagas
+Dreams that foretold death in Njáls saga
+The blood eagle legend
+Valkyries choosing the slain
+Runes carved to see the future
+The fylgja, a spirit double that warns of doom
+Eclipses and the wolves chasing the sun
+The seiðr magic of Freyja
+Omens before the Battle of Stamford Bridge

@@ -1,0 +1,12 @@
+# Seed topics for topic pack tierlist_foods (ranking): Ranking survival foods or foods by a clear criterion
+# Gemini adds more in storage/autopilot_topics/packs/tierlist_foods.txt when these run out.
+Ranking survival foods by shelf life
+Ranking foods by calories per gram
+Ranking military rations from worst to best
+Ranking foods by how long they last without a fridge
+Ranking wild foods by safety
+Ranking foods astronauts eat
+Ranking foods by protein per euro
+Ranking emergency foods by weight
+Ranking insects by protein content
+Ranking foods that never spoil

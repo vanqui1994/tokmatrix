@@ -1,0 +1,12 @@
+# Seed topics for topic pack compare_everyday_choices (versus): Two everyday choices weighed with numbers: A vs B
+# Gemini adds more in storage/autopilot_topics/packs/compare_everyday_choices.txt when these run out.
+Renting vs Buying a home: the real cost
+Coffee vs Tea: caffeine and health numbers
+Stairs vs Elevator: calories and time
+Train vs Plane for a 600 km trip
+Leasing vs Buying a car
+Paper books vs E-readers: carbon footprint
+Tap water vs Bottled water: cost per litre
+Cooking at home vs Eating out: yearly cost
+Walking vs Cycling to work
+Laptop vs Desktop: lifetime cost compared

@@ -1,0 +1,12 @@
+# Seed topics for topic pack science_everyday_physics (free): Everyday physics questions explained
+# Gemini adds more in storage/autopilot_topics/packs/science_everyday_physics.txt when these run out.
+Why the sky is blue
+Why ice floats on water
+How a microwave heats food
+Why you feel lighter in a falling elevator
+How noise-cancelling headphones work
+Why metal feels colder than wood
+How a rainbow forms
+Why a spinning top stays upright
+How a refrigerator moves heat
+Why a bicycle stays balanced

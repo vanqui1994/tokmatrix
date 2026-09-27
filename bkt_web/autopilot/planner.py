@@ -75,7 +75,7 @@ def pick_topic(niche_id: str, avoid_subjects: Optional[List[str]] = None) -> Opt
 
 
 def pick_pack_topic(channel_id: str, niche_id: str, plan_date: str, avoid_subjects: Optional[List[str]] = None, *,
-                    cfg: Dict[str, Any], packs: Dict[str, Dict[str, Any]]) -> Optional[str]:
+                    cfg: Dict[str, Any], packs: Dict[str, Dict[str, Any]], since: Optional[str] = None) -> Optional[str]:
     """Kênh có variant: topic từ topic pack của variant (docs V2 mục 7).
 
     None → dùng topic của niche như cũ; "" → pack versus/ranking hết topic, kênh bỏ lượt (không lấy topic niche)."""
@@ -84,11 +84,22 @@ def pick_pack_topic(channel_id: str, niche_id: str, plan_date: str, avoid_subjec
     pack_id = topic_packs.channel_pack(channel_id, cfg, niche_id, plan_date, packs)
     if not pack_id:
         return None
-    avoid = avoid_subjects or []
+    avoid = list(avoid_subjects or [])
+    fmt = packs[pack_id].get("format")
+    # Một pack phục vụ nhiều niche: topic của pack đã dùng / vừa lên kế hoạch ở niche KHÁC của pack cũng phải tránh,
+    # nếu không hai acc khác niche nhận cùng một đề tài.
+    pack_niches = sorted({niche_id, *(packs[pack_id].get("niches") or [])})
+    if since:
+        for other in pack_niches:
+            if other != niche_id:
+                avoid += store.recent_plan_topics(other, since)
+
+    def used(candidate: str) -> bool:
+        return any(store.is_topic_used(niche, candidate) for niche in pack_niches)
 
     def first_free() -> Optional[str]:
-        for candidate in topic_packs.pack_topics(pack_id):
-            if not store.is_topic_used(niche_id, candidate) and not topics.same_subject(candidate, avoid):
+        for candidate in topic_packs.pack_topics(pack_id, fmt):
+            if not used(candidate) and not topics.same_subject(candidate, avoid):
                 return candidate
         return None
 
@@ -165,7 +176,7 @@ def _ensure_channel_plans(plan_date: str) -> Dict[str, Any]:
             topics.refill(niche_id, topic_candidates(niche_id), len(missing))
         for channel_id in missing:
             cfg = (configs.get(channel_id) or {}).get("config") or {}
-            topic = pick_pack_topic(channel_id, niche_id, plan_date, recent, cfg=cfg, packs=packs)
+            topic = pick_pack_topic(channel_id, niche_id, plan_date, recent, cfg=cfg, packs=packs, since=since if gap else None)
             if topic is None:
                 topic = pick_topic(niche_id, recent)
             if not topic:

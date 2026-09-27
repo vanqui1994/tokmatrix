@@ -1,0 +1,12 @@
+# Seed topics for topic pack newspaper_urgent_dispatches (free): Breaking dispatches from disasters, wars and historic turning points
+# Gemini adds more in storage/autopilot_topics/packs/newspaper_urgent_dispatches.txt when these run out.
+The eruption of Mount Pelée in 1902
+The San Francisco earthquake of 1906
+The Krakatoa eruption and its sound
+The fall of the Berlin Wall
+The Chernobyl disaster in the first dispatches
+The Apollo 11 landing front pages
+The attack on Pearl Harbor
+The 1953 North Sea flood
+The Tangshan earthquake cover-up
+The Armistice of 11 November 1918

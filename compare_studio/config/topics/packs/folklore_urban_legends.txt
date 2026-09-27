@@ -1,0 +1,12 @@
+# Seed topics for topic pack folklore_urban_legends (free): Modern urban legends
+# Gemini adds more in storage/autopilot_topics/packs/folklore_urban_legends.txt when these run out.
+The vanishing hitchhiker
+Bloody Mary in the bathroom mirror
+The kidney heist in a hotel bathtub
+Alligators in the New York sewers
+The killer in the back seat
+Slender Man and how he spread online
+The babysitter and the calls from inside the house
+Kuchisake-onna, the slit-mouthed woman
+The hook-handed man on lovers' lane
+The Black-eyed children at the door

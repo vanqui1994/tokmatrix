@@ -1,0 +1,12 @@
+# Seed topics for topic pack newspaper_famous_trials (free): Famous courtroom trials and their verdicts
+# Gemini adds more in storage/autopilot_topics/packs/newspaper_famous_trials.txt when these run out.
+The Nuremberg trials verdicts
+The Scopes Monkey Trial
+The trial of Lizzie Borden
+The Lindbergh baby kidnapping trial
+The Dreyfus affair and J'accuse
+The Chicago Seven trial
+The Rosenbergs' espionage trial
+The trial of Charles Manson
+The O.J. Simpson trial coverage
+The Eichmann trial in Jerusalem

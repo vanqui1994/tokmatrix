@@ -1,0 +1,12 @@
+# Seed topics for topic pack compare_military (versus): Two weapons systems compared on published specs: A vs B
+# Gemini adds more in storage/autopilot_topics/packs/compare_military.txt when these run out.
+F-22 Raptor vs Su-57: stealth fighters compared
+Leopard 2 vs M1 Abrams: main battle tanks
+Virginia class vs Yasen class: attack submarines
+Patriot vs S-400: air defence systems
+HIMARS vs Smerch: rocket artillery compared
+Eurofighter Typhoon vs Rafale
+AK-47 vs M16: the rifles that defined wars
+Gerald Ford class vs Liaoning: aircraft carriers
+Apache vs Ka-52: attack helicopters
+Tomahawk vs Kalibr: cruise missiles compared

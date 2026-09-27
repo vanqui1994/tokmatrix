@@ -482,7 +482,7 @@ function vhsExtra(scene, i, region, date, ui) {
 const VHS_CSS = "#root .f-plain{border:0;transform:none!important;box-shadow:none}"
   + "#root .f-plain .v-img{filter:saturate(.7) contrast(1.15) blur(.4px)}"
   + ".fk-vhs{position:absolute;z-index:6;pointer-events:none;overflow:hidden}"
-  + ".fk-osd{position:absolute;font-size:40px;letter-spacing:3px;color:#f4f4f4;text-shadow:3px 3px 0 #000;white-space:nowrap;display:flex;align-items:center;gap:14px}"
+  + ".fk-osd{position:absolute;font-size:40px;letter-spacing:3px;color:#f4f4f4;text-shadow:3px 3px 0 #000;background:rgba(0,0,0,.8);padding:2px 12px;white-space:nowrap;display:flex;align-items:center;gap:14px}"
   + ".fk-osd.tl{left:40px;top:30px}.fk-osd.tr{right:40px;top:30px}.fk-osd.bl{left:40px;bottom:30px}.fk-osd.br{right:40px;bottom:30px}"
   + ".fk-play{width:0;height:0;border-top:18px solid transparent;border-bottom:18px solid transparent;border-left:28px solid #f4f4f4}"
   + ".fk-track{position:absolute;left:0;top:0;width:100%;height:40px;background:repeating-linear-gradient(90deg,rgba(255,255,255,.55) 0 3px,transparent 3px 11px);mix-blend-mode:screen;opacity:.55}"

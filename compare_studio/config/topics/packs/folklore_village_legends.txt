@@ -1,0 +1,12 @@
+# Seed topics for topic pack folklore_village_legends (free): Village legends told as puppet plays
+# Gemini adds more in storage/autopilot_topics/packs/folklore_village_legends.txt when these run out.
+The Pied Piper of Hamelin
+The Legend of Tam and Cam
+Momotarō, the peach boy
+Hansel and Gretel and the famine behind it
+The Weaver Girl and the Cowherd
+Baba Yaga's hut on chicken legs
+The Rat Catcher's revenge
+Thánh Gióng, the boy who grew into a giant
+The Grateful Crane
+Rübezahl, the mountain spirit of Silesia

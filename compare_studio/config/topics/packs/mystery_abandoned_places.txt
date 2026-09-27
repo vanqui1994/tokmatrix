@@ -1,0 +1,12 @@
+# Seed topics for topic pack mystery_abandoned_places (free): Abandoned towns, bunkers and buildings with a dark history
+# Gemini adds more in storage/autopilot_topics/packs/mystery_abandoned_places.txt when these run out.
+Pripyat, the city frozen since the Chernobyl evacuation
+Hashima Island, Japan's abandoned coal fortress
+Centralia, the town with a fire burning underneath
+Kolmanskop, the diamond town swallowed by sand
+Beelitz-Heilstätten, the abandoned military hospital near Berlin
+Varosha, the resort city sealed off since 1974
+Craco, the Italian hilltop village left empty
+Duga radar, the Russian Woodpecker in the forest
+Oradour-sur-Glane, the village left as it was in 1944
+Kadykchan, the ghost town on the Road of Bones

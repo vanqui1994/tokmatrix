@@ -1,0 +1,12 @@
+# Seed topics for topic pack wildlife_birds (free): Bird identification, behaviour and field marks
+# Gemini adds more in storage/autopilot_topics/packs/wildlife_birds.txt when these run out.
+How to tell a crow from a raven
+The lyrebird that mimics chainsaws
+Why flamingos stand on one leg
+The shoebill's prehistoric stare
+How owls fly silently
+The bowerbird's decorated nest
+How hummingbirds hover
+The kakapo, the flightless parrot
+Why woodpeckers do not get headaches
+The albatross that sleeps while flying

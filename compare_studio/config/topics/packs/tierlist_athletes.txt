@@ -1,0 +1,12 @@
+# Seed topics for topic pack tierlist_athletes (ranking): Ranking record-breaking feats and the people behind them
+# Gemini adds more in storage/autopilot_topics/packs/tierlist_athletes.txt when these run out.
+Ranking the greatest comebacks in sports history
+Ranking world records that may never be broken
+Ranking marathon records from 1908 to today
+Ranking the longest winning streaks in sport
+Ranking Olympic performances by margin of victory
+Ranking the highest-paid athletes of all time
+Ranking endurance feats from least to most extreme
+Ranking record transfer fees in football
+Ranking the fastest 100-metre times ever run
+Ranking the heaviest weightlifting records

@@ -1,0 +1,12 @@
+# Seed topics for topic pack tierlist_science_extremes (ranking): Ranking the most extreme scientific phenomena
+# Gemini adds more in storage/autopilot_topics/packs/tierlist_science_extremes.txt when these run out.
+Ranking the most extreme objects in the universe
+Ranking the most dangerous experiments ever done
+Ranking the coldest temperatures ever made in a lab
+Ranking the rarest diseases
+Ranking the most radioactive places on Earth
+Ranking the strongest acids
+Ranking the hottest temperatures ever recorded
+Ranking the most toxic substances
+Ranking the strongest magnetic fields
+Ranking the loudest sounds ever recorded

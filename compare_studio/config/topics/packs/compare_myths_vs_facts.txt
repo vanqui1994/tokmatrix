@@ -1,0 +1,12 @@
+# Seed topics for topic pack compare_myths_vs_facts (versus): A popular claim against the evidence: myth vs fact
+# Gemini adds more in storage/autopilot_topics/packs/compare_myths_vs_facts.txt when these run out.
+Great Wall visible from space: myth vs fact
+We use only 10 percent of our brain: myth vs fact
+Goldfish have a three-second memory: myth vs fact
+Lightning never strikes twice: myth vs fact
+The dark side of the Moon: myth vs fact
+Sharks do not get cancer: myth vs fact
+Humans have five senses: myth vs fact
+Bulls hate the colour red: myth vs fact
+Astronauts float because there is no gravity: myth vs fact
+Ostriches bury their heads in sand: myth vs fact

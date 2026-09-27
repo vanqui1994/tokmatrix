@@ -1,0 +1,12 @@
+# Seed topics for topic pack survival_space (free): Surviving in space and what exposure would do
+# Gemini adds more in storage/autopilot_topics/packs/survival_space.txt when these run out.
+What happens to the body exposed to vacuum
+How astronauts lose bone mass in orbit
+The Soyuz 11 crew who died in space
+What space radiation does on a Mars trip
+How long could you survive on the Moon without a suit
+Why astronauts' eyes change shape
+The Apollo 13 fight for air
+What happens to muscles after a year in space
+Surviving re-entry heat
+How a spacesuit keeps you alive

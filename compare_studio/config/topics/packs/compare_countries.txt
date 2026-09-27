@@ -1,0 +1,12 @@
+# Seed topics for topic pack compare_countries (versus): Two countries compared on key facts: A vs B
+# Gemini adds more in storage/autopilot_topics/packs/compare_countries.txt when these run out.
+Germany vs Japan: two post-war economic miracles
+Canada vs Australia: vast lands, few people
+Norway vs Sweden: oil wealth against industry
+South Korea vs North Korea: one peninsula, two worlds
+Brazil vs Argentina: South America's rivals
+India vs China: the world's two giants compared
+Switzerland vs Austria: alpine neighbours compared
+Singapore vs Hong Kong: city-state rivals
+Egypt vs Ethiopia: the Nile dispute
+Poland vs Ukraine: neighbours with shared history

@@ -5,12 +5,45 @@ import { AI_IMAGE_SOURCES, ensureAntigravityImages, readImageState } from "../..
 import { recordSceneArtifact } from "../orchestrator/job-manager.mjs";
 import { renderNativeArtifact } from "./native-artifact-renderer.mjs";
 import { directSceneVisuals } from "./visual-director.mjs";
+import { channelCreative } from "../render/native-engine-adapter.mjs";
+import { DEFAULT_CACHE_ROOT, cacheEnabled, findImage, rememberImage } from "./account-cache.mjs";
 
 const PROJECT_DIR = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
 const VISUAL_ARTIFACT_TYPE = {
   IMAGE_AI: "image", CANVAS: "canvas", SVG: "svg", TEXT: "text",
   MAP: "map", CHART: "chart", EXISTING_ASSET: "existing_asset",
 };
+
+/**
+ * Chuỗi fallback ảnh của variant (assetProfile.fallback, docs/MATRIX_VARIANT_SYSTEM_V2.md mục 9.2) cho kênh có variant
+ * hoặc bộ da; null với kênh legacy (giữ hành vi cũ: chờ ảnh Antigravity).
+ */
+export function variantFallbackChain(channel, engineType) {
+  try {
+    return channelCreative(channel, engineType)?.variant?.assetProfile?.fallback || null;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Chạy chuỗi fallback cho một ảnh Antigravity đã hết lượt thử. Mỗi bước có handler thì thử; bước "fail" dừng bằng lỗi;
+ * bước chưa có handler (vd. reuse_account_cache trước WS-D2, stock trước WS-E) được bỏ qua. Không bao giờ đổi composition:
+ * handler chỉ trả một file cho đúng slot ảnh của cảnh.
+ * @returns {Promise<{step, file_path, source}|null>} null = không bước nào dùng được và chuỗi không có "fail".
+ */
+export async function runImageFallback({ chain, scene, key, handlers = {} }) {
+  for (const step of chain) {
+    if (step === "fail") {
+      throw new Error(`scene ${scene.scene_index}: AI image ${key} failed every attempt; fallback chain ${chain.join(" > ")} ended in fail`);
+    }
+    const handler = handlers[step];
+    if (typeof handler !== "function") continue;
+    const result = await handler({ scene, key });
+    if (result?.file_path) return { step, file_path: result.file_path, source: result.source || step };
+  }
+  return null;
+}
 
 function sceneList(manifest) {
   return manifest?.storyboard?.scenes || manifest?.scenes;
@@ -40,6 +73,8 @@ export async function prepareSceneAssets({
   imageStateReader = readImageState,
   artifactRenderer = renderNativeArtifact,
   recordArtifact = recordSceneArtifact,
+  fallbackHandlers = {},
+  accountCacheRoot = DEFAULT_CACHE_ROOT,
   dbPath,
   log = () => {},
 } = {}) {
@@ -67,6 +102,20 @@ export async function prepareSceneAssets({
     ? await imageGenerator({ dir: projectDir, slug: jobId, items: imageItems, timeoutMin, label: `Matrix ${jobId}`, log })
     : { ready: [], pending: [] };
   const readyImageKeys = new Set(imageStatus.ready || []);
+  const exhaustedKeys = new Set(imageStatus.exhausted || []);
+  const fallbackChain = variantFallbackChain(channel, engineType);
+  const fallbacks = [];
+  // Cache ảnh theo acc (chỉ kênh variant): ảnh AI đã về được giữ; bước reuse_account_cache tìm trong cache của CHÍNH kênh.
+  const useAccountCache = Boolean(fallbackChain) && cacheEnabled() && Boolean(channel?.channel_id);
+  const usedShas = new Set();
+  const handlers = { ...fallbackHandlers };
+  if (useAccountCache && !handlers.reuse_account_cache) {
+    handlers.reuse_account_cache = async ({ scene }) => {
+      const hit = await findImage({ channelId: channel.channel_id, sceneText: scene.visual_intent, exclude: usedShas, root: accountCacheRoot });
+      if (hit) usedShas.add(hit.sha256);
+      return hit;
+    };
+  }
   const updatedScenes = [];
   const pending = [];
   const registeredArtifacts = [];
@@ -93,9 +142,28 @@ export async function prepareSceneAssets({
         registeredArtifacts.push(record);
         readyTypes.add("image");
         scene.asset_source = source;
+        if (useAccountCache) {
+          usedShas.add(await rememberImage({ channelId: channel.channel_id, sceneText: scene.visual_intent, filePath, source, root: accountCacheRoot }));
+        }
       } else {
-        pending.push({ scene_index: sceneIndex, asset_type: scene.asset_type, key, file_path: filePath });
-        scene.asset_source = "pending";
+        const fallback = exhaustedKeys.has(key) && fallbackChain
+          ? await runImageFallback({ chain: fallbackChain, scene, key, handlers })
+          : null;
+        if (fallback) {
+          await fs.mkdir(path.dirname(filePath), { recursive: true });
+          await fs.copyFile(fallback.file_path, filePath);
+          const record = await recordArtifact({
+            job_id: jobId, scene_index: sceneIndex, artifact_type: "image", file_path: filePath, dbPath,
+          });
+          registeredArtifacts.push(record);
+          readyTypes.add("image");
+          scene.asset_source = `fallback:${fallback.source}`;
+          fallbacks.push({ scene: sceneIndex, from: "IMAGE_AI", to: fallback.step, source: fallback.source });
+          log(`  ↪ scene ${sceneIndex}: AI image unavailable, used fallback ${fallback.step}`);
+        } else {
+          pending.push({ scene_index: sceneIndex, asset_type: scene.asset_type, key, file_path: filePath });
+          scene.asset_source = "pending";
+        }
       }
     } else {
       const output = scene.asset_type === "EXISTING_ASSET"
@@ -131,6 +199,7 @@ export async function prepareSceneAssets({
     providers: { IMAGE_AI: "antigravity_queue", native: "engine_adapter" },
     scene_count: updatedScenes.length,
     pending_count: pending.length,
+    fallbacks,
   };
   return {
     manifest: updatedManifest,

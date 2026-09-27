@@ -1,0 +1,12 @@
+# Seed topics for topic pack science_materials (free): Materials science: why materials behave as they do
+# Gemini adds more in storage/autopilot_topics/packs/science_materials.txt when these run out.
+Why graphene is 200 times stronger than steel
+How Kevlar stops a bullet
+Why glass is transparent
+What makes stainless steel stainless
+How aerogel is almost weightless
+Why diamond is the hardest mineral
+How carbon fibre is made
+What makes Damascus steel patterns
+How self-healing concrete works
+Why titanium is used in aircraft

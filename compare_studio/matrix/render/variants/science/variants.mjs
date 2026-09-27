@@ -88,7 +88,7 @@ const labNotebook = defineVariant({
           const rows = ctx.scenes.map((other, k) => `<tr class="${k === i ? "on" : ""}"><td>${pad2(k + 1)}</td><td>${fit("sc-cell", key(other, ctx), 34, 14)}</td><td>${escapeHtml(num(other) || "—")}</td></tr>`).join("");
           return `<table class="sc-log"><thead><tr><th>#</th><th>${escapeHtml(ctx.ui.obs)}</th><th>${escapeHtml(ctx.ui.value)}</th></tr></thead><tbody>${rows}</tbody></table>`;
         },
-        css: ".sc-log{position:absolute;inset:0;width:100%;height:100%;border-collapse:collapse;background:#fff;table-layout:fixed}.sc-log th,.sc-log td{border-bottom:2px solid #9fb3d9;padding:0 16px;font-size:34px;color:#1c1c1c;text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}"
+        css: ".sc-log{position:absolute;left:0;right:0;bottom:0;top:48px;width:100%;height:calc(100% - 48px);border-collapse:collapse;background:#fff;table-layout:fixed}.sc-log th,.sc-log td{border-bottom:2px solid #9fb3d9;padding:0 16px;font-size:34px;color:#1c1c1c;text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}"
           + ".sc-log th{font-size:26px;letter-spacing:3px;color:#1b3fa6;height:80px}.sc-log th:first-child,.sc-log td:first-child{width:80px}.sc-log th:last-child,.sc-log td:last-child{width:190px;text-align:right}"
           + ".sc-cell{white-space:nowrap;max-width:100%}.sc-log tr.on td{background:#fff27a;font-weight:700}",
       }),

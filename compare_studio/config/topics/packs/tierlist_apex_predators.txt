@@ -1,0 +1,12 @@
+# Seed topics for topic pack tierlist_apex_predators (ranking): Ranking apex predators by danger or power
+# Gemini adds more in storage/autopilot_topics/packs/tierlist_apex_predators.txt when these run out.
+Ranking apex predators by bite force
+Ranking ocean predators from least to most dangerous
+Ranking big cats by hunting success rate
+Ranking snakes by venom potency
+Ranking predators by top speed
+Ranking crocodilians by size
+Ranking birds of prey by grip strength
+Ranking sharks by danger to humans
+Ranking pack hunters by teamwork
+Ranking prehistoric predators by size

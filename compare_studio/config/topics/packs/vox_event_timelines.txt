@@ -1,0 +1,12 @@
+# Seed topics for topic pack vox_event_timelines (free): A major event reconstructed as a timeline
+# Gemini adds more in storage/autopilot_topics/packs/vox_event_timelines.txt when these run out.
+The fall of Constantinople in 1453
+The Cuban Missile Crisis in 13 days
+The collapse of the Soviet Union
+The 2008 financial crisis step by step
+The Chernobyl night minute by minute
+The fall of the Berlin Wall
+The Apollo 13 mission timeline
+The rise and fall of Enron
+The Arab Spring month by month
+The sinking of the Titanic minute by minute

@@ -1,0 +1,12 @@
+# Seed topics for topic pack survival_mountains (free): Surviving high altitude and mountain conditions
+# Gemini adds more in storage/autopilot_topics/packs/survival_mountains.txt when these run out.
+What happens in the death zone above 8,000 metres
+How altitude sickness strikes
+The 1996 Everest disaster
+Joe Simpson's escape in Touching the Void
+How Sherpas adapted to altitude
+Surviving a night on K2
+What HAPE does to the lungs
+The Dyatlov Pass hikers' final night
+How climbers survive lightning on peaks
+Frostbite on Everest summits

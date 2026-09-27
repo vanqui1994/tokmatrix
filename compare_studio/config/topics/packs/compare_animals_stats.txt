@@ -1,0 +1,12 @@
+# Seed topics for topic pack compare_animals_stats (versus): Two animals compared on real stats like size, speed and bite: A vs B
+# Gemini adds more in storage/autopilot_topics/packs/compare_animals_stats.txt when these run out.
+Cheetah vs Pronghorn: sprint speed against stamina
+Blue Whale vs Sperm Whale: size and diving depth
+Elephant vs Rhino: weight and strength compared
+Peregrine Falcon vs Golden Eagle: dive speed and grip
+Bald Eagle vs Harpy Eagle: talon power compared
+Giraffe vs Ostrich: the tallest and the fastest runners
+Gorilla vs Chimpanzee: strength and intelligence
+Box Jellyfish vs Blue-Ringed Octopus: venom compared
+Hippo vs Crocodile: bite force in the river
+Arctic Tern vs Bar-Tailed Godwit: migration records

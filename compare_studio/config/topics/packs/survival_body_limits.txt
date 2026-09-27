@@ -1,0 +1,12 @@
+# Seed topics for topic pack survival_body_limits (free): How far the human body can be pushed before it fails
+# Gemini adds more in storage/autopilot_topics/packs/survival_body_limits.txt when these run out.
+How long can a human survive without sleep
+The highest body temperature ever survived
+How many g-forces a pilot can take
+How deep can a human free-dive
+How long can you survive without water
+The lowest body temperature ever survived
+How fast can a human run
+How much weight can a human lift
+How long can a human hold their breath
+What happens to the body in a 100-day hunger strike

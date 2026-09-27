@@ -1,0 +1,12 @@
+# Seed topics for topic pack compare_rivals (versus): Two famous rivals in a head-to-head matchup: A vs B
+# Gemini adds more in storage/autopilot_topics/packs/compare_rivals.txt when these run out.
+Apple vs Microsoft: the rivalry that built personal computing
+Ferrari vs Lamborghini: born from an argument
+Adidas vs Puma: the brothers' feud
+Marvel vs DC: the superhero rivalry
+Uber vs Lyft: the ride-hailing war
+SpaceX vs Blue Origin: the private space race
+Google vs Yahoo: how search was won
+Boeing vs Airbus: the duopoly duel
+Visa vs Mastercard: the payment giants
+Sony vs Nintendo: the console rivalry

@@ -55,6 +55,7 @@ const COMPOSITION_CSS = {
 .n-photo{box-shadow:18px 18px 0 var(--panel-edge-dim)}
 .n-caption{background:var(--fg-on-panel);border-top:12px solid var(--panel)}`,
   magazine_cover: `
+.n-paper{background:color-mix(in srgb,var(--panel) 25%,#060606)}
 .n-shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.62) 0%,rgba(0,0,0,.08) 34%,rgba(0,0,0,.1) 56%,rgba(0,0,0,.7) 100%)}
 .n-mast{position:absolute;left:60px;top:100px;width:960px;height:230px}
 .n-mast-name{position:absolute;left:0;top:0;width:960px;height:170px;display:flex;align-items:flex-end}

@@ -1,0 +1,12 @@
+# Seed topics for topic pack tierlist_ancient_civilizations (ranking): Ranking ancient civilizations by a clear criterion
+# Gemini adds more in storage/autopilot_topics/packs/tierlist_ancient_civilizations.txt when these run out.
+Ranking ancient civilizations by engineering feats
+Ranking ancient empires by size at their peak
+Ranking ancient civilizations by how long they lasted
+Ranking lost cities by how mysterious they remain
+Ranking ancient wonders by what survives today
+Ranking ancient civilizations by writing systems
+Ranking ancient capitals by population
+Ranking ancient navies by reach
+Ranking ancient medicine from worst to best
+Ranking ancient calendars by accuracy

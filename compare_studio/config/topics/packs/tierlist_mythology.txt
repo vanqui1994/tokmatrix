@@ -1,0 +1,12 @@
+# Seed topics for topic pack tierlist_mythology (ranking): Ranking mythological gods, heroes and monsters
+# Gemini adds more in storage/autopilot_topics/packs/tierlist_mythology.txt when these run out.
+Ranking Greek gods by power
+Ranking Norse gods from weakest to strongest
+Ranking mythological monsters by danger
+Ranking Egyptian gods by importance
+Ranking legendary swords from myth
+Ranking Greek heroes by their feats
+Ranking dragons from world mythology
+Ranking Japanese yokai by how dangerous they are
+Ranking Hindu gods' weapons
+Ranking underworlds from world mythology

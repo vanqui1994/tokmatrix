@@ -1,0 +1,12 @@
+# Seed topics for topic pack vox_places_then_now (free): How a place changed over time, then versus now
+# Gemini adds more in storage/autopilot_topics/packs/vox_places_then_now.txt when these run out.
+Dubai in 1990 vs today
+Shenzhen from fishing village to megacity
+Berlin before and after the Wall
+The Aral Sea then and now
+Pripyat in 1985 and today
+Singapore from swamp to skyline
+Venice's sinking over a century
+The Dead Sea shrinking
+Detroit's rise and fall
+Tokyo after the 1923 earthquake and today

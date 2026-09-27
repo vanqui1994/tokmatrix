@@ -1,0 +1,12 @@
+# Seed topics for topic pack compare_money (versus): Two economies, currencies or fortunes weighed: A vs B
+# Gemini adds more in storage/autopilot_topics/packs/compare_money.txt when these run out.
+Dollar vs Euro: which currency rules trade
+Gold vs Bitcoin: store of value compared
+Rockefeller vs Musk: fortunes adjusted for inflation
+Japan vs Germany: national debt compared
+Swiss franc vs Norwegian krone: safe havens
+Mansa Musa vs Augustus Caesar: the richest in history
+Dubai vs Monaco: where the rich live
+Yuan vs Dollar: the reserve currency race
+Stocks vs Real estate: 50 years of returns
+Oil money vs Tech money: Saudi Arabia vs Silicon Valley

@@ -1,0 +1,12 @@
+# Seed topics for topic pack tierlist_brands (ranking): Ranking brands and companies by a clear criterion
+# Gemini adds more in storage/autopilot_topics/packs/tierlist_brands.txt when these run out.
+Ranking car brands by reliability
+Ranking tech companies by market value
+Ranking fast food chains by size
+Ranking airlines by safety record
+Ranking smartphone brands by market share
+Ranking luxury brands by revenue
+Ranking soft drinks by sugar content
+Ranking streaming services by subscribers
+Ranking sportswear brands by sales
+Ranking coffee chains by number of stores

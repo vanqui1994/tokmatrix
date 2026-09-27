@@ -1,0 +1,12 @@
+# Seed topics for topic pack wildlife_ocean_giants (free): Whales, sharks and giant squid
+# Gemini adds more in storage/autopilot_topics/packs/wildlife_ocean_giants.txt when these run out.
+The blue whale's heartbeat
+The whale shark, the biggest fish
+The giant squid's eye
+The sperm whale's battle with squid
+The great white shark's size
+The humpback whale's bubble nets
+The manta ray's brain
+The colossal squid of Antarctica
+The basking shark's open mouth
+The fin whale, greyhound of the sea

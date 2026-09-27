@@ -1,0 +1,12 @@
+# Seed topics for topic pack folklore_old_spells (free): Folk charms, curses and old spell books
+# Gemini adds more in storage/autopilot_topics/packs/folklore_old_spells.txt when these run out.
+The Merseburg Charms, Germany's oldest spells
+Curse tablets thrown into Roman baths
+The witch bottle buried under English hearths
+The Key of Solomon grimoire
+Anglo-Saxon charms against elf-shot
+Hex signs on Pennsylvania Dutch barns
+The Galdrabók, an Icelandic book of magic
+Love spells in the Greek Magical Papyri
+Horseshoes nailed over doors against evil
+The Picatrix, a medieval book of astral magic

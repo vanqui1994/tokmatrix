@@ -1,0 +1,83 @@
+# Matrix variant system V2 (docs/PLAN_VARIANT_V2_COMPLETION.md WS-H3).
+# Chạy khi đổi variant/kit, planner Autopilot, gán DNA, similarity hay config kênh.
+name: matrix-variants
+
+on:
+  pull_request:
+    paths:
+      - "compare_studio/matrix/**"
+      - "compare_studio/tools/**"
+      - "compare_studio/config/**"
+      - "compare_studio/tests/**"
+      - "bkt_web/autopilot/**"
+      - "bkt_web/creative_similarity/**"
+      - "bkt_web/asset_ledger.py"
+      - "bkt_web/voice_clone.py"
+      - "tests/test_creative_*.py"
+      - "tests/test_topic_packs.py"
+      - "tests/test_asset_ledger.py"
+      - "tests/test_autopilot_*.py"
+      - ".github/workflows/matrix-variants.yml"
+  workflow_dispatch:
+
+jobs:
+  node:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    defaults:
+      run:
+        working-directory: compare_studio
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: compare_studio/package-lock.json
+      - run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - run: node tools/matrix-config-validator.mjs
+      - run: node --test tests/matrix-variants*.test.mjs tests/matrix-creative.test.mjs tests/matrix-engine-*.test.mjs tests/matrix-asset-fallback.test.mjs
+
+  python:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
+      - run: cd compare_studio && npm ci --ignore-scripts --no-audit --no-fund
+      - run: pip install -r requirements.txt
+      - run: python -m playwright install --with-deps chromium
+      - run: >-
+          python -m unittest tests.test_creative_dna tests.test_creative_similarity tests.test_topic_packs
+          tests.test_asset_ledger tests.test_voice_clone tests.test_autopilot_engine tests.test_autopilot_language
+
+  # hyperframes check (phiên bản production) trên preview của mọi cấu trúc, 1 ngôn ngữ; cùng build với determinism.
+  previews:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    defaults:
+      run:
+        working-directory: compare_studio
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: compare_studio/package-lock.json
+      - run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - run: node tools/check-previews.mjs --out /tmp/check-previews --langs de --jobs 4
+      - run: MATRIX_SLOW_TESTS=1 node --test tests/matrix-variants-determinism.test.mjs
+      - if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: check-report
+          path: /tmp/check-previews/check-report.json

@@ -1,0 +1,12 @@
+# Seed topics for topic pack compare_specs_sheet (versus): Two machines compared spec by spec: A vs B
+# Gemini adds more in storage/autopilot_topics/packs/compare_specs_sheet.txt when these run out.
+Falcon 9 vs Ariane 6: rocket specs compared
+James Webb vs Hubble: telescope specs
+Concorde vs Tu-144: supersonic airliners
+SR-71 vs MiG-25: the fastest jets
+Saturn V vs Starship: the biggest rockets
+Titanic vs Icon of the Seas: ships compared
+Airbus A380 vs Boeing 747
+Curiosity vs Perseverance: Mars rovers
+Seawolf vs Typhoon: submarine specs
+ISS vs Tiangong: space stations compared

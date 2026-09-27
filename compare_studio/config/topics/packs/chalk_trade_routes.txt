@@ -1,0 +1,12 @@
+# Seed topics for topic pack chalk_trade_routes (free): Trade routes, pipelines and who controls them
+# Gemini adds more in storage/autopilot_topics/packs/chalk_trade_routes.txt when these run out.
+The Silk Road from Xi'an to Constantinople
+The Druzhba pipeline carrying Russian oil to Europe
+How the spice trade built the Dutch empire
+The Northern Sea Route through the melting Arctic
+The transatlantic slave trade triangle
+The Amber Road from the Baltic to Rome
+How the tea horse road crossed the Himalayas
+The Trans-Saharan gold and salt trade
+The Hanseatic League's Baltic trade network
+Who controls the world's undersea internet cables

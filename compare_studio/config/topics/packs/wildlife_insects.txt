@@ -1,0 +1,12 @@
+# Seed topics for topic pack wildlife_insects (free): Insects and small invertebrates up close
+# Gemini adds more in storage/autopilot_topics/packs/wildlife_insects.txt when these run out.
+The bombardier beetle's boiling spray
+How leafcutter ants farm fungus
+The monarch butterfly's migration
+The Japanese giant hornet
+How fireflies make light
+The dung beetle that navigates by the Milky Way
+The praying mantis's strike
+How honeybees dance
+The Goliath beetle
+Army ants on the march

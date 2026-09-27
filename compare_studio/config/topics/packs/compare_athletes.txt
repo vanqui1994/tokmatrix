@@ -1,0 +1,12 @@
+# Seed topics for topic pack compare_athletes (versus): Two famous athletes compared on their career records: A vs B
+# Gemini adds more in storage/autopilot_topics/packs/compare_athletes.txt when these run out.
+Messi vs Ronaldo: career records side by side
+Michael Jordan vs LeBron James: the numbers
+Usain Bolt vs Carl Lewis: sprint careers compared
+Serena Williams vs Steffi Graf: Grand Slam records
+Federer vs Nadal: the rivalry in numbers
+Michael Phelps vs Mark Spitz: Olympic swimming records
+Muhammad Ali vs Mike Tyson: career stats compared
+Tom Brady vs Peyton Manning: quarterback records
+Pelé vs Maradona: the eternal debate in numbers
+Lewis Hamilton vs Michael Schumacher: Formula 1 records

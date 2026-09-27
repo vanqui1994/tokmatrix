@@ -1,0 +1,12 @@
+# Seed topics for topic pack compare_health_food (versus): Two animals' diets and survival strategies weighed: A vs B
+# Gemini adds more in storage/autopilot_topics/packs/compare_health_food.txt when these run out.
+Panda vs Koala: surviving on a single plant
+Vampire Bat vs Mosquito: living on blood
+Camel vs Kangaroo Rat: surviving without water
+Hummingbird vs Bee: fuelled by nectar
+Anteater vs Aardvark: eating 30,000 ants a day
+Blue Whale vs Whale Shark: feeding on tiny prey
+Vulture vs Hyena: the scavengers' diet
+Grizzly Bear vs Polar Bear: fattening up for winter
+Snake vs Crocodile: surviving months without food
+Cow vs Goat: digesting what others cannot

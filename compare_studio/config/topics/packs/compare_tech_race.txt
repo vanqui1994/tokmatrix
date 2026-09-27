@@ -1,0 +1,12 @@
+# Seed topics for topic pack compare_tech_race (versus): Two nations or companies in a technology race: A vs B
+# Gemini adds more in storage/autopilot_topics/packs/compare_tech_race.txt when these run out.
+USA vs China: the AI chip race
+Nvidia vs AMD: the GPU race
+NASA vs CNSA: the race back to the Moon
+TSMC vs Samsung: the chip foundry race
+OpenAI vs Google DeepMind: the AI lab race
+Europe vs USA: the battery gigafactory race
+Japan vs South Korea: the robotics race
+SpaceX vs China: the satellite constellation race
+IBM vs Google: the quantum computing race
+India vs China: the space programme race

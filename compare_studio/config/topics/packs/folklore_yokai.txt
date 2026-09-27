@@ -1,0 +1,12 @@
+# Seed topics for topic pack folklore_yokai (free): Japanese yokai creatures and their legends
+# Gemini adds more in storage/autopilot_topics/packs/folklore_yokai.txt when these run out.
+Kappa, the cucumber-loving river yokai
+Tengu, the mountain goblins with long noses
+Yuki-onna, the snow woman
+Jorōgumo, the spider woman
+Nekomata, the two-tailed cat
+Tanuki and their shape-shifting tricks
+Ittan-momen, the flying cloth
+Ubume, the ghost mother carrying a child
+Umibōzu, the giant sea monk
+Hitotsume-kozō, the one-eyed boy

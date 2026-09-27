@@ -1,0 +1,12 @@
+# Seed topics for topic pack vox_unsolved_explained (free): An unsolved case explained step by step with the known facts
+# Gemini adds more in storage/autopilot_topics/packs/vox_unsolved_explained.txt when these run out.
+The Dyatlov Pass incident explained step by step
+The Wow! signal and what it could be
+The Voynich manuscript theories explained
+The Mary Celeste theories
+The Tunguska event theories
+The Somerton Man case
+The Bermuda Triangle explained
+The Oak Island money pit
+The Nazca lines theories
+The Roanoke colony disappearance

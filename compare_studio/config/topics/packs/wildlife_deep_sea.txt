@@ -1,0 +1,12 @@
+# Seed topics for topic pack wildlife_deep_sea (free): Deep-sea creatures, bioluminescence and life at extreme depth
+# Gemini adds more in storage/autopilot_topics/packs/wildlife_deep_sea.txt when these run out.
+The anglerfish and its glowing lure
+The giant squid caught on camera
+The barreleye fish with a transparent head
+Vampire squid from hell
+The frilled shark, a living fossil
+Life around hydrothermal vents
+The goblin shark's jaw
+The dumbo octopus
+Bioluminescence in the midnight zone
+The Mariana snailfish, deepest fish

@@ -1,0 +1,12 @@
+# Seed topics for topic pack survival_toxic (free): Toxic exposures and their effects on the body
+# Gemini adds more in storage/autopilot_topics/packs/survival_toxic.txt when these run out.
+What carbon monoxide does to the body
+The Bhopal gas disaster
+What happens after a box jellyfish sting
+Lead poisoning and the fall of Rome theory
+The Minamata mercury poisoning
+What sarin does to the nervous system
+Arsenic in Bangladesh's wells
+The Lake Nyos gas cloud
+Poison dart frog toxins
+What mushroom poisoning does to the liver

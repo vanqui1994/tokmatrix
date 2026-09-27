@@ -1,0 +1,12 @@
+# Seed topics for topic pack vox_journeys_routes (free): Historic journeys, expeditions and trade routes on a map
+# Gemini adds more in storage/autopilot_topics/packs/vox_journeys_routes.txt when these run out.
+Magellan's voyage around the world
+Marco Polo's route to China
+The Lewis and Clark expedition
+Shackleton's Endurance expedition
+Ibn Battuta's 120,000 km journey
+The Kon-Tiki raft across the Pacific
+Zheng He's treasure fleet
+The first flight across the Atlantic
+The Oregon Trail
+The route of the first Everest ascent

@@ -44,20 +44,30 @@ def _creative_meta(index_html: str) -> Dict[str, Any]:
     return json.loads(html.unescape(match.group(1))) if match else {}
 
 
-def preview_samples(manifest_path: Path, work: Path) -> List[Dict[str, Any]]:
+def preview_samples(manifest_path: Path, work: Path, jobs: int = 1) -> List[Dict[str, Any]]:
     sheet = _contact_sheet_module()
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
-    samples = []
-    for entry in manifest["entries"]:
+
+    def shots_for(entry: Dict[str, Any]) -> List[Path]:
         frames_dir = work / "frames" / entry["slug"]
         shots = sorted(frames_dir.glob("*.png")) if frames_dir.exists() else []
         if len(shots) < len(POSITIONS):
             times = [round(entry["duration"] * p, 2) for p in POSITIONS]
             shots = sheet.snapshot(Path(entry["dir"]), times, frames_dir)
+        return shots
+
+    # Chụp khung là phần chậm (~10 s/preview): chạy song song `jobs` tiến trình hyperframes; features tính tuần tự.
+    from concurrent.futures import ThreadPoolExecutor
+
+    with ThreadPoolExecutor(max_workers=max(1, jobs)) as pool:
+        all_shots = list(pool.map(shots_for, manifest["entries"]))
+    samples = []
+    for entry, shots in zip(manifest["entries"], all_shots):
         frames = [np.asarray(Image.open(shot).convert("RGB").resize(FRAME_SIZE)) for shot in shots[: len(POSITIONS)]]
         index_html = (Path(entry["dir"]) / "index.html").read_text(encoding="utf-8")
         samples.append({
             "slug": entry["slug"], "frames": frames, "shots": [str(s) for s in shots[: len(POSITIONS)]],
+            "html_path": str(Path(entry["dir"]) / "index.html"), "duration": entry["duration"],
             "labels": {**entry["labels"], "engine": entry["labels"]["engine"], "variant": entry["labels"]["variant"]},
             "meta": {"creative": _creative_meta(index_html), "scene_durations": entry.get("scene_durations") or []},
         })
@@ -66,6 +76,24 @@ def preview_samples(manifest_path: Path, work: Path) -> List[Dict[str, Any]]:
 
 def _file_sha(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def _audio_info(vdir: Path, mp4: Path, creative: Dict[str, Any]) -> Dict[str, Any]:
+    """Vân tay âm thanh v1 (ffmpeg), giọng của kênh và md5 nhạc nền — tín hiệu `audio` của video thật."""
+    from bkt_web import video_fingerprint as vf
+
+    bgm = vdir / "assets" / "audio" / "bgm.mp3"
+    fingerprint = []
+    if mp4.exists():
+        try:
+            fingerprint = vf.audio_fingerprint(mp4).astype(int).tolist()
+        except Exception:  # video không có tiếng / ffmpeg lỗi → chỉ dùng giọng + nhạc nền
+            fingerprint = []
+    return {
+        "fingerprint": fingerprint,
+        "voice": ((creative.get("voice") or {}).get("voice_id") or ""),
+        "bgm_md5": hashlib.md5(bgm.read_bytes()).hexdigest() if bgm.exists() else "",
+    }
 
 
 def video_samples(slugs: List[str], videos_dir: Path = COMPARE_DIR / "videos") -> List[Dict[str, Any]]:
@@ -88,6 +116,8 @@ def video_samples(slugs: List[str], videos_dir: Path = COMPARE_DIR / "videos") -
         images = sorted((vdir / "assets" / "images").glob("*")) if (vdir / "assets" / "images").exists() else []
         samples.append({
             "slug": slug, "frames": frames,
+            "html_path": str(vdir / "index.html") if (vdir / "index.html").exists() else None, "duration": duration,
+            "audio": _audio_info(vdir, mp4, creative),
             "labels": {"engine": meta.get("type", ""), "variant": creative.get("variant_id") or f"legacy:{meta.get('type', '')}",
                        "composition": (creative.get("creative_dna") or {}).get("composition", ""), "country": creative.get("country") or meta.get("lang", ""),
                        "signature": creative.get("creative_signature", "")},
@@ -128,6 +158,7 @@ def main(argv=None) -> int:
     p.add_argument("--work", required=True)
     p.add_argument("--sheet")
     p.add_argument("--threshold", type=float)
+    p.add_argument("--jobs", type=int, default=1, help="parallel hyperframes snapshot processes")
     c = sub.add_parser("conflicts", help="gộp các similarity.json thành danh sách cặp cấu trúc vượt ngưỡng cho gán DNA")
     c.add_argument("--report", action="append", required=True)
     c.add_argument("--out", required=True)
@@ -148,7 +179,7 @@ def main(argv=None) -> int:
     if args.cmd == "previews":
         work = Path(args.work)
         work.mkdir(parents=True, exist_ok=True)
-        samples = preview_samples(Path(args.manifest), work)
+        samples = preview_samples(Path(args.manifest), work, args.jobs)
         # Preview: features phụ thuộc bản build → không cache vào DB chung (khoá slug trùng giữa các lần dựng).
         features = {s["slug"]: extract_all(s) for s in samples}
         if args.sheet:

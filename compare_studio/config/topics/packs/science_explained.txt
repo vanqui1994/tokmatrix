@@ -1,0 +1,12 @@
+# Seed topics for topic pack science_explained (free): Classic why/how science explainers
+# Gemini adds more in storage/autopilot_topics/packs/science_explained.txt when these run out.
+How the pyramids were aligned to the stars
+Why we have leap years
+How GPS knows where you are
+Why the Moon always shows the same face
+How vaccines train the immune system
+Why the ocean is salty
+How carbon dating works
+Why we dream
+How a nuclear reactor makes electricity
+Why the seasons change

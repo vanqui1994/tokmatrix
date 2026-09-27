@@ -1,0 +1,12 @@
+# Seed topics for topic pack folklore_witch_trials (free): Historical witch trials and their victims
+# Gemini adds more in storage/autopilot_topics/packs/folklore_witch_trials.txt when these run out.
+The Salem witch trials of 1692
+The Pendle witches of Lancashire
+The Würzburg witch trials
+The North Berwick witch trials and King James
+The Bamberg witch house
+The Basque witch trials of 1609
+Matthew Hopkins, the Witchfinder General
+The Trier witch trials
+The Torsåker witch trials in Sweden
+The Malleus Maleficarum and how it spread

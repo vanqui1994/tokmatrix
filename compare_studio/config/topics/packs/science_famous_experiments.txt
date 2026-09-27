@@ -1,0 +1,12 @@
+# Seed topics for topic pack science_famous_experiments (free): Landmark experiments in the history of science
+# Gemini adds more in storage/autopilot_topics/packs/science_famous_experiments.txt when these run out.
+The Stanford prison experiment
+Galileo's falling objects
+Pavlov's dogs
+The double-slit experiment
+The Milgram obedience experiment
+The Miller-Urey experiment
+Rutherford's gold foil experiment
+The Michelson-Morley experiment
+Harlow's monkey experiments
+Eddington's eclipse test of relativity

@@ -159,12 +159,18 @@ def refill_pack(pack: dict, niche_id: str, existing: List[str], need: int) -> in
     key = f"pack:{pack['id']}"
     if time.time() < _failed_until.get(key, 0):
         return 0
+    fmt = pack.get("format")
+    brief = " ".join(filter(None, [str(pack.get("brief") or ""), topic_packs.FORMAT_RULES.get(fmt, "")]))
     try:
-        fresh = generate(niche_id, existing, count=max(20, need * 2), brief=str(pack.get("brief") or ""))
+        fresh = generate(niche_id, existing, count=max(20, need * 2), brief=brief)
     except Exception as exc:
         _failed_until[key] = time.time() + 1800
         store.log_event(f"⚠️ Không sinh được topic cho pack {pack['id']}: {exc}", "warn")
         return 0
+    rejected = [t for t in fresh if not topic_packs.fits_format(t, fmt)]
+    fresh = [t for t in fresh if topic_packs.fits_format(t, fmt)]
+    if rejected:
+        store.log_event(f"⚠️ pack {pack['id']}: bỏ {len(rejected)} topic sai định dạng {fmt} (vd. {rejected[0]!r})", "warn")
     if not fresh:
         _failed_until[key] = time.time() + 1800
         return 0

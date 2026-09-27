@@ -1,0 +1,12 @@
+# Seed topics for topic pack compare_vehicles (versus): Two vehicles, aircraft or ships compared: A vs B
+# Gemini adds more in storage/autopilot_topics/packs/compare_vehicles.txt when these run out.
+Tesla Cybertruck vs Ford F-150 Lightning
+Chinook vs Mi-26: heavy-lift helicopters
+Hovercraft vs Amphibious car
+Airbus A350 vs Boeing 787 Dreamliner
+Ural truck vs Unimog: off-road trucks
+Sea Harrier vs F-35B: jump jets
+Nuclear icebreaker vs Diesel icebreaker
+Jet ski vs Speedboat
+Hyperloop vs High-speed rail
+Gyrocopter vs Helicopter

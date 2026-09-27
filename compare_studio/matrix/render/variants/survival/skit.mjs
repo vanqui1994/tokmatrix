@@ -71,7 +71,7 @@ ${has("severity") ? `<div class="sv-pips">${pips}</div>` : ""}
   const at = t3(scene.visualStart + 0.1);
   const tweens = [];
   if (has("label")) tweens.push({ method: "fromTo", target: `#${id}-label`, from: { y: 24, opacity: 0 }, vars: { y: 0, opacity: 1, duration: 0.4, ease: "power2.out" }, at });
-  if (has("status")) tweens.push({ method: "fromTo", target: `#${id}-status`, from: { scale: 1.5, opacity: 0 }, vars: { scale: 1, opacity: 1, duration: 0.35, ease: "back.out(2)" }, at: t3(at + 0.3) });
+  if (has("status")) tweens.push({ method: "fromTo", target: `#${id}-status`, from: { scale: 0.15 }, vars: { scale: 1, duration: 0.35, ease: "back.out(2)" }, at: t3(at + 0.3) }); // không mờ dần: chữ + nền đặc cùng lúc (contrast audit)
   return { html, tweens };
 }
 

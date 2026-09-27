@@ -1,0 +1,12 @@
+# Seed topics for topic pack science_kitchen_chemistry (free): Chemistry of food and the home
+# Gemini adds more in storage/autopilot_topics/packs/science_kitchen_chemistry.txt when these run out.
+Why onions make you cry
+What the Maillard reaction does to steak
+Why bread rises
+How baking soda and vinegar react
+Why chillies burn
+How cheese is made from milk
+Why apples turn brown
+What makes popcorn pop
+Why salt melts ice
+How fermentation makes kimchi sour

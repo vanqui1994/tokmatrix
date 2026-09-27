@@ -1,0 +1,12 @@
+# Seed topics for topic pack compare_tech_products (versus): Two technologies or products compared: A vs B
+# Gemini adds more in storage/autopilot_topics/packs/compare_tech_products.txt when these run out.
+OLED vs Mini-LED: which screen lasts longer
+SSD vs Hard drive: speed and lifespan
+Lithium-ion vs Solid-state batteries
+Wi-Fi 7 vs 5G: which is faster at home
+Mechanical vs Membrane keyboards
+ARM vs x86: the processor architecture war
+USB-C vs Lightning: the connector battle
+Mirrorless vs DSLR cameras
+Heat pump vs Gas boiler: running costs
+Smartwatch vs Fitness band: accuracy compared

@@ -1,0 +1,12 @@
+# Seed topics for topic pack science_chemistry (free): Chemical elements and reactions
+# Gemini adds more in storage/autopilot_topics/packs/science_chemistry.txt when these run out.
+Why sodium explodes in water
+How thermite burns through steel
+Why gold never rusts
+What makes fireworks different colours
+Why liquid nitrogen boils at room temperature
+How the Haber process feeds half the world
+Why mercury is liquid at room temperature
+What happens in a lithium battery fire
+Why helium makes your voice squeaky
+How glow sticks make light

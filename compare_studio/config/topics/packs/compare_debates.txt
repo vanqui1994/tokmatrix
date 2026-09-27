@@ -1,0 +1,12 @@
+# Seed topics for topic pack compare_debates (versus): Two sides of a well-known debate argued with facts: A vs B
+# Gemini adds more in storage/autopilot_topics/packs/compare_debates.txt when these run out.
+Nuclear power vs Solar power: which is cleaner per kilowatt
+Electric cars vs Hydrogen cars: the future of driving
+Remote work vs Office work: productivity studies compared
+Space exploration vs Ocean exploration: where the money goes
+Universal basic income vs Job guarantee
+Four-day week vs Five-day week: the trial results
+Cash vs Card: which is safer
+Public transport vs Private cars in big cities
+Organic farming vs Conventional farming: the yields
+Human drivers vs Self-driving cars: accident rates
