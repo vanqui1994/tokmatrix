@@ -15,6 +15,7 @@ import { captionHtml } from "./build-composition.mjs";
 import { computeTiming, gapsFor } from "./retime.mjs";
 import { getCountryTheme, formatPaletteCss } from "./themes/index.mjs";
 import { getSurvivalConfig } from "./survival-languages.mjs";
+import { reactorFace } from "../matrix/render/engines/survival.mjs";
 import { CURATED_MYSTERIES, MYSTERY_LANG_META } from "./mystery-configs.mjs";
 import { generateMysteryHtml } from "./create-mystery-video.mjs";
 import { VOX_LANG_META, CURATED_VOX_TOPICS } from "./vox-configs.mjs";
@@ -144,6 +145,11 @@ export function renderSurvivalTemplatePreview(langOrCfg = "en") {
     /<h1 class="main-title">[\s\S]*?<\/h1>/,
     `<h1 class="main-title">${cfg.title}</h1>`
   );
+
+  // Thay 10 ảnh mặt meme của template (IP bên thứ ba) bằng reactor SVG gốc, cùng id nên timeline giữ nguyên:
+  // bậc N của template = mức độ N (1–10).
+  html = html.replace(/<img id="meme-phase-(\d+)" class="meme-img"[^>]*>/gu, (_, n) =>
+    `<div id="meme-phase-${n}" class="meme-img" style="display:flex;align-items:flex-end;justify-content:center">${reactorFace(lang, Number(n), `rx-phase-${n}`)}</div>`);
 
   // Localize Meme Header Badge
   html = html.replace(
