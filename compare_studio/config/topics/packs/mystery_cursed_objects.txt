@@ -1,0 +1,12 @@
+# Seed topics for topic pack mystery_cursed_objects (free): Objects said to be cursed and the documented stories behind them
+# Gemini adds more in storage/autopilot_topics/packs/mystery_cursed_objects.txt when these run out.
+The Hope Diamond and its owners
+Annabelle, the doll in a glass case
+The Busby Stop Hour chair
+Robert the Doll of Key West
+The Basano vase
+The Dybbuk box sold on eBay
+The Koh-i-Noor diamond's curse on men
+The chair of the Hoia-Baciu forest legend
+The mummy's hand of Tutankhamun's tomb
+The Iceman Ötzi curse

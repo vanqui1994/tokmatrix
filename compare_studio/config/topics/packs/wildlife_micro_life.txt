@@ -1,0 +1,12 @@
+# Seed topics for topic pack wildlife_micro_life (free): Tardigrades, plankton and microscopic animals
+# Gemini adds more in storage/autopilot_topics/packs/wildlife_micro_life.txt when these run out.
+The tardigrade, the toughest animal
+Rotifers that survived 24,000 years frozen
+How plankton makes half our oxygen
+Copepods, the most numerous animals
+The water flea's transparent body
+Daphnia and their helmets
+Diatoms with glass shells
+Amoebas hunting under the microscope
+Bdelloid rotifers with no males
+Krill, small animals that feed giants

@@ -1,0 +1,12 @@
+# Seed topics for topic pack science_human_body (free): How the human body works, seen up close
+# Gemini adds more in storage/autopilot_topics/packs/science_human_body.txt when these run out.
+How the heart beats 100,000 times a day
+What happens when you hold your breath
+How the liver regrows itself
+Why we get goosebumps
+How the eye focuses light
+What stomach acid can dissolve
+Why we yawn
+How bones heal after a fracture
+What adrenaline does in a crisis
+How the brain stores memories

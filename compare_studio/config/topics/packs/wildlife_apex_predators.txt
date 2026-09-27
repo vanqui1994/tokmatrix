@@ -1,0 +1,12 @@
+# Seed topics for topic pack wildlife_apex_predators (free): Land predators on the hunt: speed, bite force, stalking
+# Gemini adds more in storage/autopilot_topics/packs/wildlife_apex_predators.txt when these run out.
+How a tiger stalks its prey
+The lion pride's cooperative hunt
+How a polar bear hunts seals
+The jaguar's skull-crushing bite
+How a wolf pack chooses its target
+The leopard's tree larder
+How a Komodo dragon's bite works
+The grizzly bear's salmon run
+How cheetahs lose their kills
+The snow leopard's mountain ambush

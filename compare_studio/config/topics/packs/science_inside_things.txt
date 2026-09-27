@@ -1,0 +1,12 @@
+# Seed topics for topic pack science_inside_things (free): What is inside everyday objects and machines
+# Gemini adds more in storage/autopilot_topics/packs/science_inside_things.txt when these run out.
+What is inside a smartphone battery
+Inside a jet engine
+What is inside a fire extinguisher
+Inside a quartz watch
+What is inside a nuclear warhead's casing
+Inside a lithium mine to battery chain
+What is inside a hard drive
+Inside a tank's composite armour
+What is inside a microchip
+Inside a submarine's reactor room

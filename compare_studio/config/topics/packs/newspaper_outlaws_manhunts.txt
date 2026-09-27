@@ -1,0 +1,12 @@
+# Seed topics for topic pack newspaper_outlaws_manhunts (free): Outlaws, bandits and historic manhunts
+# Gemini adds more in storage/autopilot_topics/packs/newspaper_outlaws_manhunts.txt when these run out.
+The hunt for Bonnie and Clyde
+Ned Kelly and his iron armour
+Jesse James and the bank raids
+The manhunt for John Dillinger
+Butch Cassidy and the Sundance Kid in Bolivia
+The Great Train Robbery of 1963
+The escape from Alcatraz
+Pancho Villa's raid on Columbus
+Billy the Kid's last escape
+The Stockholm bank robbery that named a syndrome

@@ -1,0 +1,12 @@
+# Seed topics for topic pack wildlife_nature_doc (free): Cinematic natural-history storytelling about one species
+# Gemini adds more in storage/autopilot_topics/packs/wildlife_nature_doc.txt when these run out.
+A year in the life of a snow leopard
+The emperor penguin's winter
+The life of a sea otter mother
+An orca pod's hunting season
+The first year of an elephant calf
+The life cycle of a salmon
+A cheetah mother raising cubs
+The humpback whale's song
+A beaver building its dam
+The lonely life of an orangutan

@@ -1,0 +1,12 @@
+# Seed topics for topic pack wildlife_nocturnal (free): Night hunters and nocturnal animals caught on camera
+# Gemini adds more in storage/autopilot_topics/packs/wildlife_nocturnal.txt when these run out.
+The aye-aye's night hunt
+How owls hunt in total darkness
+The fennec fox at night in the Sahara
+Bats that navigate by echo
+The slow loris's venomous bite
+Hyenas on the night shift
+The kiwi's night foraging
+Leopards on camera traps at night
+The tarsier's huge eyes
+Scorpions glowing under UV light

@@ -1,0 +1,12 @@
+# Seed topics for topic pack science_space (free): Space phenomena explained
+# Gemini adds more in storage/autopilot_topics/packs/science_space.txt when these run out.
+What happens inside a black hole
+How a neutron star forms
+Why stars twinkle
+What a solar flare does to Earth
+How big is the observable universe
+What dark matter might be
+How a supernova creates gold
+What a magnetar is
+Why the universe is expanding faster
+What gravitational waves sound like

@@ -1,0 +1,12 @@
+# Seed topics for topic pack mystery_codes_signals (free): Unbroken codes, cipher messages and unexplained radio signals
+# Gemini adds more in storage/autopilot_topics/packs/mystery_codes_signals.txt when these run out.
+The Wow! signal of 1977
+The Voynich manuscript nobody can read
+The Zodiac Killer's 340 cipher
+Kryptos, the unsolved sculpture at the CIA
+The Tamam Shud code of the Somerton Man
+UVB-76, the Buzzer radio station
+The Beale ciphers and the buried treasure
+The Dorabella cipher of Edward Elgar
+The Phaistos Disc from Crete
+Fast radio bursts from deep space

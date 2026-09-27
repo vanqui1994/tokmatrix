@@ -1,0 +1,12 @@
+# Seed topics for topic pack newspaper_monster_sightings (free): Sea serpents and monster sightings as reported in old papers
+# Gemini adds more in storage/autopilot_topics/packs/newspaper_monster_sightings.txt when these run out.
+The Gloucester sea serpent of 1817
+The Daedalus sea serpent sighting of 1848
+The Loch Ness surgeon's photograph of 1934
+The Flatwoods monster of 1952
+The Mothman reports of Point Pleasant
+The Beast of Bodmin Moor
+The Dover Demon of 1977
+The Champ monster of Lake Champlain
+The Ogopogo of Okanagan Lake
+The Jersey Devil panic of 1909

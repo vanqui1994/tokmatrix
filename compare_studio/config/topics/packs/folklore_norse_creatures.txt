@@ -1,0 +1,12 @@
+# Seed topics for topic pack folklore_norse_creatures (free): Draugr, trolls and other beings of Norse folklore
+# Gemini adds more in storage/autopilot_topics/packs/folklore_norse_creatures.txt when these run out.
+The draugr, the walking dead of Norse sagas
+Trolls that turn to stone in sunlight
+Fossegrim, the waterfall fiddler
+The Kraken of Norwegian sailors
+Mara, the nightmare that sits on your chest
+Huldra, the forest woman with a cow's tail
+Nisse, the farm spirit you must feed
+Nøkken, the shape-shifting water horse
+Fenrir, the wolf bound until Ragnarök
+Jötnar, the giants of Jötunheimr

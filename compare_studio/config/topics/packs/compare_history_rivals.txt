@@ -1,0 +1,12 @@
+# Seed topics for topic pack compare_history_rivals (versus): Two historic rivals put on trial with facts: A vs B
+# Gemini adds more in storage/autopilot_topics/packs/compare_history_rivals.txt when these run out.
+Rome vs Carthage: the Punic Wars on trial
+Athens vs Sparta: democracy against discipline
+Britain vs France: the Hundred Years' War
+Edison vs Tesla: the war of the currents
+USA vs USSR: the space race verdict
+Wellington vs Napoleon: the Waterloo decision
+Elizabeth I vs Mary Queen of Scots
+Ottoman Empire vs Habsburgs: the siege of Vienna
+Persia vs Greece: the Battle of Marathon
+Stalin vs Trotsky: the power struggle

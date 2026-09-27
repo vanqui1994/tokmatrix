@@ -1,0 +1,12 @@
+# Seed topics for topic pack tierlist_snacks_drinks (ranking): Ranking foods and drinks by a clear criterion
+# Gemini adds more in storage/autopilot_topics/packs/tierlist_snacks_drinks.txt when these run out.
+Ranking energy drinks by caffeine
+Ranking snacks by sugar content
+Ranking drinks by hydration
+Ranking fruits by vitamin C
+Ranking breakfast cereals by sugar
+Ranking chocolate by cocoa content
+Ranking fast food meals by calories
+Ranking sports drinks by electrolytes
+Ranking chips by salt content
+Ranking teas by caffeine

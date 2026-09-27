@@ -85,9 +85,10 @@ def pick_pack_topic(channel_id: str, niche_id: str, plan_date: str, avoid_subjec
     if not pack_id:
         return None
     avoid = avoid_subjects or []
+    fmt = packs[pack_id].get("format")
 
     def first_free() -> Optional[str]:
-        for candidate in topic_packs.pack_topics(pack_id):
+        for candidate in topic_packs.pack_topics(pack_id, fmt):
             if not store.is_topic_used(niche_id, candidate) and not topics.same_subject(candidate, avoid):
                 return candidate
         return None

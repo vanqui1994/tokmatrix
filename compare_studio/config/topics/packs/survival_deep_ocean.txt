@@ -1,0 +1,12 @@
+# Seed topics for topic pack survival_deep_ocean (free): Surviving pressure, cold and dark in the deep ocean
+# Gemini adds more in storage/autopilot_topics/packs/survival_deep_ocean.txt when these run out.
+What water pressure does at 1,000 metres
+How the Kursk crew tried to survive
+The Trieste dive to the Challenger Deep
+What decompression sickness does to divers
+How long could you survive in the deep ocean
+The Byford Dolphin diving accident
+How submarines escape at depth
+The Titan submersible implosion
+What cold does to a diver at 200 metres
+Surviving shark waters after a shipwreck

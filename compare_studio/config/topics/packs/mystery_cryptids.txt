@@ -1,0 +1,12 @@
+# Seed topics for topic pack mystery_cryptids (free): Cryptid sightings, tracks and the people who reported them
+# Gemini adds more in storage/autopilot_topics/packs/mystery_cryptids.txt when these run out.
+The Mokele-mbembe of the Congo
+The Yeren, China's wild man
+The Bunyip of Australian swamps
+The Chupacabra reports from Puerto Rico
+The Beast of Gévaudan
+The Mongolian death worm
+The Loch Ness Monster's surgeon's photo
+The Jersey Devil of the Pine Barrens
+The Yowie of the Australian bush
+The Orang Pendek of Sumatra

@@ -1,0 +1,12 @@
+# Seed topics for topic pack survival_radiation (free): What radiation exposure does to the body
+# Gemini adds more in storage/autopilot_topics/packs/survival_radiation.txt when these run out.
+What radiation sickness does day by day
+The Chernobyl liquidators
+Hisashi Ouchi and the Tokaimura accident
+The Demon Core accidents
+Surviving Hiroshima twice: Tsutomu Yamaguchi
+The Goiânia radiation accident
+How much radiation an astronaut absorbs
+The Radium Girls' bones
+What potassium iodide protects against
+Living in the Chernobyl exclusion zone today

@@ -1,0 +1,12 @@
+# Seed topics for topic pack newspaper_maritime_mysteries (free): Shipwrecks, ghost ships and lost crews reported in old newspapers
+# Gemini adds more in storage/autopilot_topics/packs/newspaper_maritime_mysteries.txt when these run out.
+The loss of the Titanic in the first reports
+The Lusitania sinking and the headlines
+The Edmund Fitzgerald on Lake Superior
+The SS Waratah lost without a trace
+The HMS Erebus and Terror expedition
+The Joyita found drifting in the Pacific
+The Octavius frozen ghost ship legend
+The USS Cyclops in the Bermuda Triangle
+The Andrea Doria collision
+The Baychimo ghost ship of the Arctic

@@ -1,0 +1,12 @@
+# Seed topics for topic pack tierlist_space_objects (ranking): Ranking planets, stars and cosmic objects
+# Gemini adds more in storage/autopilot_topics/packs/tierlist_space_objects.txt when these run out.
+Ranking planets by how hostile they are
+Ranking moons by how likely they host life
+Ranking the biggest stars we know
+Ranking black holes by mass
+Ranking planets by length of day
+Ranking galaxies near the Milky Way by size
+Ranking comets by fame
+Ranking exoplanets by how Earth-like they are
+Ranking the brightest stars in the night sky
+Ranking asteroids by threat to Earth

@@ -1,0 +1,12 @@
+# Seed topics for topic pack tierlist_tools_gear (ranking): Ranking survival tools and gear
+# Gemini adds more in storage/autopilot_topics/packs/tierlist_tools_gear.txt when these run out.
+Ranking survival knives by versatility
+Ranking fire starters from worst to best
+Ranking water filters by what they remove
+Ranking tents by weather resistance
+Ranking survival shelters by build time
+Ranking multitools by usefulness
+Ranking navigation tools without GPS
+Ranking sleeping bags by temperature rating
+Ranking emergency radios
+Ranking military backpacks by capacity

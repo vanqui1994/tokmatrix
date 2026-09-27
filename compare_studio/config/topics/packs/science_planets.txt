@@ -1,0 +1,12 @@
+# Seed topics for topic pack science_planets (free): Planets and moons
+# Gemini adds more in storage/autopilot_topics/packs/science_planets.txt when these run out.
+Why Venus is hotter than Mercury
+The ice volcanoes of Enceladus
+Why Mars lost its atmosphere
+The storms of Jupiter's Great Red Spot
+Why Uranus spins on its side
+The methane lakes of Titan
+The ocean under Europa's ice
+Why Saturn could float in water
+The diamond rain of Neptune
+Io, the most volcanic place in the solar system

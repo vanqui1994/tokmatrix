@@ -1,0 +1,12 @@
+# Seed topics for topic pack folklore_night_parade (free): The night parade of a hundred demons and related yokai tales
+# Gemini adds more in storage/autopilot_topics/packs/folklore_night_parade.txt when these run out.
+Hyakki Yagyō, the night parade of a hundred demons
+Tsukumogami, household objects that come alive
+The Nue, a chimera heard at night
+Nurarihyon, the leader of the yokai
+Rokurokubi, the woman with a stretching neck
+Kasa-obake, the one-eyed umbrella spirit
+Ōmukade, the giant centipede
+Gashadokuro, the giant skeleton of the starved
+Wanyūdō, the burning wheel demon
+The scrolls that recorded the night parade

@@ -1,0 +1,12 @@
+# Seed topics for topic pack science_fun_facts (free): Surprising, verifiable science facts
+# Gemini adds more in storage/autopilot_topics/packs/science_fun_facts.txt when these run out.
+Why octopuses have three hearts
+Why bananas are slightly radioactive
+Why a day on Venus is longer than its year
+How a tardigrade survives in space
+Why honey never spoils
+Why sharks existed before trees
+How much a cloud weighs
+Why hot water can freeze faster than cold
+Why there are more stars than grains of sand
+Why flamingos are pink

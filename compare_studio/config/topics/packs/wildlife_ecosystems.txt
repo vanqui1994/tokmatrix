@@ -1,0 +1,12 @@
+# Seed topics for topic pack wildlife_ecosystems (free): How habitats, food webs and seasonal movements work
+# Gemini adds more in storage/autopilot_topics/packs/wildlife_ecosystems.txt when these run out.
+How wolves changed the rivers of Yellowstone
+The coral reef food web
+The Serengeti's seasonal cycle
+How mangroves protect coastlines
+The kelp forest and the sea otter
+How the Amazon makes its own rain
+The African savanna's fire cycle
+Life in a single oak tree
+How salmon feed a forest
+The Arctic tundra's short summer

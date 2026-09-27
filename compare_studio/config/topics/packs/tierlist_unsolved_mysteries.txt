@@ -1,0 +1,12 @@
+# Seed topics for topic pack tierlist_unsolved_mysteries (ranking): Ranking unsolved mysteries by how baffling they are
+# Gemini adds more in storage/autopilot_topics/packs/tierlist_unsolved_mysteries.txt when these run out.
+Ranking unsolved mysteries by how baffling they are
+Ranking ocean mysteries by strangeness
+Ranking lost civilizations by how little we know
+Ranking unexplained disappearances
+Ranking undeciphered scripts by difficulty
+Ranking unexplained sounds
+Ranking mysterious artefacts by age
+Ranking ghost ships by how strange the story is
+Ranking UFO cases by evidence
+Ranking mysterious deaths in history

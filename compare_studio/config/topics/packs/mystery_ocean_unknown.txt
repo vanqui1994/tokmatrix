@@ -1,0 +1,12 @@
+# Seed topics for topic pack mystery_ocean_unknown (free): Unidentified sounds, wrecks and sightings from the deep ocean
+# Gemini adds more in storage/autopilot_topics/packs/mystery_ocean_unknown.txt when these run out.
+The Bloop, the loudest unexplained ocean sound
+The Baltic Sea anomaly on sonar
+The Julia sound recorded in 1999
+The Mary Celeste found adrift
+The SS Ourang Medan and its dead crew
+The Upsweep sound that repeats every season
+The Yonaguni monument under the sea
+The Carroll A. Deering ghost ship
+The Kaz II found with no crew
+The milky seas seen from space

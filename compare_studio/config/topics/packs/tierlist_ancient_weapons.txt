@@ -1,0 +1,12 @@
+# Seed topics for topic pack tierlist_ancient_weapons (ranking): Ranking ancient and medieval weapons
+# Gemini adds more in storage/autopilot_topics/packs/tierlist_ancient_weapons.txt when these run out.
+Ranking medieval swords by cutting power
+Ranking ancient siege weapons by destruction
+Ranking bows from the shortbow to the longbow
+Ranking ancient armour by protection
+Ranking polearms by battlefield impact
+Ranking Roman legion weapons
+Ranking samurai weapons from least to most deadly
+Ranking Viking weapons by effectiveness
+Ranking crossbows through history
+Ranking war elephants, chariots and cavalry

@@ -1,0 +1,12 @@
+# Seed topics for topic pack folklore_fortune_telling (free): Fortune-telling practices and the stories told about them
+# Gemini adds more in storage/autopilot_topics/packs/folklore_fortune_telling.txt when these run out.
+Reading tea leaves in Victorian parlours
+The I Ching coin oracle of ancient China
+Tarot cards from a card game to a fortune tool
+Palmistry and the lines of the hand
+Scrying mirrors used by John Dee
+The Oracle of Delphi and her vapours
+Rune casting in Viking Scandinavia
+Omikuji fortune slips in Japanese shrines
+Kau cim fortune sticks in Chinese temples
+Reading coffee grounds in Turkish tradition

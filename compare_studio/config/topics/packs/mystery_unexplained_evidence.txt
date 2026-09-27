@@ -1,0 +1,12 @@
+# Seed topics for topic pack mystery_unexplained_evidence (free): Physical evidence that investigators still cannot explain
+# Gemini adds more in storage/autopilot_topics/packs/mystery_unexplained_evidence.txt when these run out.
+The Antikythera mechanism
+The Baghdad battery
+The Saqqara bird
+The Nazca lines seen from the air
+The Piri Reis map
+The Baigong pipes of China
+The Costa Rica stone spheres
+The London hammer in rock
+The Dropa stones story
+The Kensington runestone

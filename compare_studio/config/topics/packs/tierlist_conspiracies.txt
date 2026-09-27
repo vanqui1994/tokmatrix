@@ -1,0 +1,12 @@
+# Seed topics for topic pack tierlist_conspiracies (ranking): Ranking famous conspiracy theories by evidence
+# Gemini adds more in storage/autopilot_topics/packs/tierlist_conspiracies.txt when these run out.
+Ranking conspiracy theories by evidence
+Ranking conspiracy theories that turned out true
+Ranking Moon landing claims from weakest to strongest
+Ranking Area 51 theories by plausibility
+Ranking historical cover-ups that were proven
+Ranking JFK theories by evidence
+Ranking secret society myths
+Ranking government experiments that were real
+Ranking disappearance theories for Flight MH370
+Ranking Titanic conspiracy theories

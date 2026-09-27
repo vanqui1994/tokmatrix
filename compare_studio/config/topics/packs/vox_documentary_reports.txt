@@ -1,0 +1,12 @@
+# Seed topics for topic pack vox_documentary_reports (free): Documentary-style report on one real case or event
+# Gemini adds more in storage/autopilot_topics/packs/vox_documentary_reports.txt when these run out.
+The Chernobyl disaster reconstructed
+The Thai cave rescue of 2018
+The collapse of Rana Plaza
+The Deepwater Horizon explosion
+The Fukushima meltdown hour by hour
+The Kursk submarine disaster
+The Challenger launch decision
+The 1918 flu pandemic
+The Aberfan disaster
+The Boeing 737 MAX crashes

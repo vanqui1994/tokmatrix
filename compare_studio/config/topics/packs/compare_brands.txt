@@ -1,0 +1,12 @@
+# Seed topics for topic pack compare_brands (versus): Two rival brands or companies compared: A vs B
+# Gemini adds more in storage/autopilot_topics/packs/compare_brands.txt when these run out.
+Coca-Cola vs Pepsi: the cola war in numbers
+Apple vs Samsung: who really wins the smartphone market
+Nike vs Adidas: the sneaker rivalry
+McDonald's vs Burger King: size and sales compared
+Toyota vs Volkswagen: the world's biggest carmaker
+Airbus vs Boeing: the aircraft duopoly
+Netflix vs Disney+: the streaming battle
+Tesla vs BYD: the electric car race
+Intel vs AMD: the processor rivalry
+Amazon vs Alibaba: e-commerce giants compared

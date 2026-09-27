@@ -1,0 +1,12 @@
+# Seed topics for topic pack mystery_cold_case (free): Decades-old unsolved murders and the evidence that remains
+# Gemini adds more in storage/autopilot_topics/packs/mystery_cold_case.txt when these run out.
+The Black Dahlia murder of 1947
+The Hinterkaifeck farm murders
+The Servant Girl Annihilator of Austin
+The Villisca axe murders
+The Axeman of New Orleans
+The Cleveland Torso Murders
+The Setagaya family murder in Tokyo
+The Hwaseong serial murders before the 2019 confession
+The Keddie cabin murders
+The Bear Brook murders and the barrels

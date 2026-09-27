@@ -1,0 +1,12 @@
+# Seed topics for topic pack compare_countries_stats (versus): Two countries compared on hard numbers: A vs B
+# Gemini adds more in storage/autopilot_topics/packs/compare_countries_stats.txt when these run out.
+USA vs China: military spending in numbers
+Russia vs Canada: the two largest countries by area
+Japan vs Germany: GDP, population and industry
+France vs United Kingdom: nuclear arsenals compared
+Indonesia vs Brazil: population and rainforest
+Saudi Arabia vs Iran: oil output and armed forces
+Nigeria vs Egypt: Africa's biggest economies
+Mexico vs Turkey: two emerging economies
+Israel vs Iran: defence budgets compared
+Vietnam vs Thailand: growth and exports

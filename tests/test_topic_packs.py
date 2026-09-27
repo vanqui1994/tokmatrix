@@ -38,13 +38,45 @@ class TopicPackTest(unittest.TestCase):
              mock.patch.object(planner.store, "log_event", lambda *a, **k: None), \
              mock.patch.object(planner.topics, "refill_pack", lambda *a, **k: 0), \
              mock.patch.object(planner, "topic_candidates", lambda niche: []), \
-             mock.patch.object(planner.topic_packs, "pack_topics", lambda pid: stock[pid]):
+             mock.patch.object(planner.topic_packs, "pack_topics", lambda pid, fmt=None: stock[pid]):
             with mock.patch.object(planner.topic_packs, "channel_pack", lambda *a, **k: "p_free"):
                 self.assertEqual(planner.pick_pack_topic("c1", "n", "d", [], cfg=cfg, packs=packs), "Orca pod tactics")
                 self.assertIsNone(planner.pick_pack_topic("c1", "n", "d", ["orca tactics"], cfg=cfg, packs=packs))
             with mock.patch.object(planner.topic_packs, "channel_pack", lambda *a, **k: "p_vs"):
                 self.assertEqual(planner.pick_pack_topic("c1", "n", "d", [], cfg=cfg, packs=packs), "")
             self.assertIsNone(planner.pick_pack_topic("c1", "n", "d", [], cfg={}, packs=packs))
+
+    def test_versus_and_ranking_topics_must_fit_their_format(self):
+        self.assertEqual(topic_packs.split_subjects("Lion vs Tiger: who wins the big-cat fight"), ["Lion", "Tiger"])
+        self.assertEqual(topic_packs.split_subjects("F-22 or J-20: which jet rules the sky"), ["F-22", "J-20"])
+        self.assertIsNone(topic_packs.split_subjects("The deadliest snake on earth"))
+        self.assertIsNone(topic_packs.split_subjects("Cats vs cats"))
+        self.assertTrue(topic_packs.fits_format("Ranking every Roman emperor by madness", "ranking"))
+        self.assertTrue(topic_packs.fits_format("Deadliest sharks ranked from least to most dangerous", "ranking"))
+        self.assertTrue(topic_packs.fits_format("Ancient civilizations tier list", "ranking"))
+        self.assertFalse(topic_packs.fits_format("The mystery of the Bermuda triangle", "ranking"))
+        self.assertTrue(topic_packs.fits_format("The mystery of the Bermuda triangle", "free"))
+
+    def test_wrong_format_topics_are_never_stored_or_picked(self):
+        import tempfile
+        from pathlib import Path
+        from unittest import mock
+        from bkt_web.autopilot import topics
+
+        with tempfile.TemporaryDirectory() as tmp:
+            generated = Path(tmp) / "p_vs.txt"
+            prompts = []
+            fake = lambda niche, existing, count, brief: prompts.append(brief) or ["Orca vs Great White: who rules the ocean", "The loneliest whale"]
+            with mock.patch.object(topics, "generate", fake), \
+                 mock.patch.object(topic_packs, "generated_file", lambda pid: generated), \
+                 mock.patch.object(topics.store, "log_event", lambda *a, **k: None):
+                added = topics.refill_pack({"id": "p_vs", "brief": "sea predators", "format": "versus"}, "ocean_mysteries", [], 5)
+                self.assertEqual(added, 1)
+                self.assertIn("vs", prompts[0])
+                self.assertEqual(generated.read_text().splitlines(), ["Orca vs Great White: who rules the ocean"])
+                generated.write_text(generated.read_text() + "A single-subject topic\n")
+                self.assertEqual(topic_packs.pack_topics("p_vs", "versus"), ["Orca vs Great White: who rules the ocean"])
+                self.assertEqual(len(topic_packs.pack_topics("p_vs", "free")), 2)
 
     def test_every_registered_variant_pack_exists_in_the_repo(self):
         packs = topic_packs.load_packs()
@@ -56,6 +88,10 @@ class TopicPackTest(unittest.TestCase):
         engines = creative_dna.load_niche_engines()
         for pack_id, pack in packs.items():
             self.assertTrue(any(pack["engine"] in engines.get(n, []) for n in pack["niches"]), pack_id)
+            # Seed có sẵn trong repo (không phụ thuộc Gemini ngày đầu), đúng định dạng của pack.
+            seed = topic_packs.PACK_TOPICS_DIR / f"{pack_id}.txt"
+            self.assertTrue(seed.exists(), f"{pack_id}: no seed topics")
+            self.assertGreaterEqual(len(topic_packs.pack_topics(pack_id, pack["format"])), 10, pack_id)
 
 
 if __name__ == "__main__":

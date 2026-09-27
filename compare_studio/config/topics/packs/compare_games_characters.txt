@@ -1,0 +1,12 @@
+# Seed topics for topic pack compare_games_characters (versus): Two technologies or machines compared as trading cards: A vs B
+# Gemini adds more in storage/autopilot_topics/packs/compare_games_characters.txt when these run out.
+ChatGPT vs Gemini: specs as trading cards
+iPhone vs Pixel: the camera card battle
+PlayStation 5 vs Xbox Series X: hardware cards
+Starlink vs Fiber: internet speed cards
+Boston Dynamics Atlas vs Tesla Optimus: robot cards
+DJI Mavic vs Skydio: drone cards
+Nvidia H100 vs Google TPU: AI chip cards
+Raspberry Pi vs Arduino: maker board cards
+Quest 3 vs Vision Pro: headset cards
+Kindle vs Kobo: e-reader cards

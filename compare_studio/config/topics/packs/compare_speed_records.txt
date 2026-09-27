@@ -1,0 +1,12 @@
+# Seed topics for topic pack compare_speed_records (versus): Two record holders racing on speed: A vs B
+# Gemini adds more in storage/autopilot_topics/packs/compare_speed_records.txt when these run out.
+Bugatti Chiron vs Koenigsegg Jesko: top speed
+Cheetah vs Greyhound: land sprinters
+Peregrine Falcon vs Swift: fastest birds
+Shinkansen vs Maglev: fastest trains
+Sailfish vs Marlin: fastest fish
+X-15 vs SR-71: the fastest aircraft
+Usain Bolt vs Florence Griffith-Joyner: sprint records
+Parker Solar Probe vs Voyager 1: fastest spacecraft
+Thrust SSC vs Bloodhound: land speed records
+Hovercraft vs Hydrofoil: fastest boats

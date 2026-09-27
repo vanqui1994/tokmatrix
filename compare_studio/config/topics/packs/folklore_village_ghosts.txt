@@ -1,0 +1,12 @@
+# Seed topics for topic pack folklore_village_ghosts (free): Village ghosts and spirits from traditional folk belief
+# Gemini adds more in storage/autopilot_topics/packs/folklore_village_ghosts.txt when these run out.
+The White Lady of castle legends
+La Llorona weeping by the river
+Pontianak, the vengeful spirit of Malay villages
+The Bell Witch of Tennessee
+The phantom coach of Irish roads
+Kuntilanak in Indonesian villages
+The headless horseman of Sleepy Hollow
+Ma da, the drowning ghosts of Vietnamese rivers
+The Grey Lady of English manor houses
+Phi Pop, the liver-eating spirit of Thailand

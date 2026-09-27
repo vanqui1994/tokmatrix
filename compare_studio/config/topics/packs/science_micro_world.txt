@@ -1,0 +1,12 @@
+# Seed topics for topic pack science_micro_world (free): Cells, microbes and the very small
+# Gemini adds more in storage/autopilot_topics/packs/science_micro_world.txt when these run out.
+How tardigrades survive being boiled
+What lives in a drop of pond water
+How bacteria share antibiotic resistance
+What a virus looks like up close
+How diatoms build glass shells
+The microbes living on your skin
+How slime moulds solve mazes
+What plankton does for our oxygen
+How cells divide
+The bacteria that eat plastic

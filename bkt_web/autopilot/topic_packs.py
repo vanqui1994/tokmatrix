@@ -12,6 +12,7 @@ from __future__ import annotations
 import functools
 import hashlib
 import json
+import re
 import subprocess
 from pathlib import Path
 from typing import Any, Dict, List, Optional
@@ -22,6 +23,51 @@ PACKS_DIR = store.COMPARE_DIR / "config" / "topic_packs"
 PACK_TOPICS_DIR = store.TOPICS_DIR / "packs"
 FORMATS = ("free", "versus", "ranking")
 REQUIRED = ("id", "engine", "brief", "format", "niches")
+
+# = VS_PATTERN / LEAD_PATTERN của compare_studio/matrix/render/engines/compare.mjs (splitSubjects): topic "versus" phải tách
+# được đúng như engine compare sẽ tách, nếu không video ra "OPTION A / OPTION B".
+_VS = re.compile(r"\s+(?:vs\.?|versus|gegen|oder|hay|hoặc|với|or|ou|contre|o|contra|или|対|대)\s+|\s+[/|]\s+", re.IGNORECASE)
+_LEAD = re.compile(r"^(?:so sánh|phân biệt|compare|comparing|vergleich|comparaison|comparación)\s+", re.IGNORECASE)
+_CUT = re.compile(r"[:：?？!！.。,，;；—–(]")
+_RANKING = re.compile(
+    r"\b(?:rank(?:ed|ing|s)?|tier[\s-]?list|tiers?|from\s+(?:the\s+)?(?:worst|weakest|least|smallest|slowest|lowest|best|strongest|"
+    r"biggest|fastest|most|deadliest|safest)\b.*\bto\b|top\s+\d+|\d+\s+\w+(?:\s+\w+)?\s+ranked|every\s+\w+.*\b(?:ranked|rated))\b",
+    re.IGNORECASE)
+
+
+def _tidy(text: str) -> str:
+    text = _LEAD.sub("", " ".join(str(text).split()))
+    return _CUT.split(text)[0].strip().strip("\"'“”„«»").strip()
+
+
+def split_subjects(topic: str) -> Optional[List[str]]:
+    """Hai chủ thể "A vs B" của topic, hoặc None (cùng luật với splitSubjects của engine compare)."""
+    text = " ".join(str(topic or "").split())
+    match = _VS.search(text)
+    if not match:
+        return None
+    left = _tidy(re.split(r"[:：?？!！]\s*", text[: match.start()])[-1])
+    right = _tidy(text[match.end():])
+    if left and right and left.lower() != right.lower():
+        return [left, right]
+    return None
+
+
+def fits_format(topic: str, fmt: Optional[str]) -> bool:
+    """versus → tách được 2 chủ thể; ranking → có cấu trúc xếp hạng (rank/tier/from X to Y/top N); free → luôn đúng."""
+    if fmt == "versus":
+        return split_subjects(topic) is not None
+    if fmt == "ranking":
+        return bool(_RANKING.search(str(topic or "")))
+    return True
+
+
+FORMAT_RULES = {
+    "versus": 'Every topic MUST compare exactly two subjects written as "<A> vs <B>: <angle>" (for example '
+              '"Lion vs Tiger: who wins a fight between the two biggest cats"). Never a single subject.',
+    "ranking": 'Every topic MUST be a ranking written as "Ranking <every / the N> <items> by <criterion>" or '
+               '"<items> ranked from <worst> to <best>". Never a single subject.',
+}
 
 
 def load_packs(packs_dir: Path = PACKS_DIR) -> Dict[str, Dict[str, Any]]:
@@ -46,6 +92,11 @@ def validate_packs(packs: Dict[str, Dict[str, Any]], variant_packs: Dict[str, Di
         for niche in pack.get("niches") or []:
             if niche not in niche_ids:
                 errors.append(f"topic pack {pack_id}: unknown niche {niche}")
+        seed = PACK_TOPICS_DIR / f"{pack_id}.txt"
+        if seed.exists():
+            for line in _topic_lines(seed):
+                if not fits_format(line, pack.get("format")):
+                    errors.append(f"topic pack {pack_id}: seed topic does not fit format {pack.get('format')}: {line}")
     for variant_id, weights in variant_packs.items():
         for pack_id in weights or {}:
             if pack_id not in packs:
@@ -101,9 +152,14 @@ def generated_file(pack_id: str) -> Path:
     return store.BKT_DIR / "storage" / "autopilot_topics" / "packs" / f"{pack_id}.txt"
 
 
-def pack_topics(pack_id: str) -> List[str]:
+def _topic_lines(path: Path) -> List[str]:
+    return [line.strip() for line in path.read_text(encoding="utf-8").splitlines() if line.strip() and not line.startswith("#")]
+
+
+def pack_topics(pack_id: str, fmt: Optional[str] = None) -> List[str]:
+    """Topic seed + topic Gemini viết của pack. `fmt` = format của pack: topic sai định dạng bị bỏ qua (không bao giờ dùng)."""
     out: List[str] = []
     for path in (PACK_TOPICS_DIR / f"{pack_id}.txt", generated_file(pack_id)):
         if path.exists():
-            out += [line.strip() for line in path.read_text(encoding="utf-8").splitlines() if line.strip() and not line.startswith("#")]
+            out += [line for line in _topic_lines(path) if fits_format(line, fmt)]
     return out

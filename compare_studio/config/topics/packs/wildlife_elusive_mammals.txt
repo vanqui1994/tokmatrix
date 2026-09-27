@@ -1,0 +1,12 @@
+# Seed topics for topic pack wildlife_elusive_mammals (free): Rarely seen, elusive mammals
+# Gemini adds more in storage/autopilot_topics/packs/wildlife_elusive_mammals.txt when these run out.
+The saola, the Asian unicorn
+The aye-aye of Madagascar
+The pangolin, the most trafficked mammal
+The okapi, the forest giraffe
+The Sumatran rhino
+The fossa, Madagascar's top predator
+The maned wolf of South America
+The Iberian lynx comeback
+The platypus and its venom
+The red panda's secret life

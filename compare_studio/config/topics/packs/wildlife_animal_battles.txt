@@ -1,0 +1,12 @@
+# Seed topics for topic pack wildlife_animal_battles (free): Head-to-head stat matchups between two animals
+# Gemini adds more in storage/autopilot_topics/packs/wildlife_animal_battles.txt when these run out.
+Jaguar against caiman on the riverbank
+Honey badger against cobra
+Lions against a buffalo herd
+Orcas hunting a great white shark
+Mongoose against black mamba
+Eagle against fox in the snow
+Hippo against crocodile at the waterhole
+Wolves against a bison
+Leopard against baboon troop
+Mantis shrimp against crab

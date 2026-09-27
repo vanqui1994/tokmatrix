@@ -1,0 +1,12 @@
+# Seed topics for topic pack folklore_trickster_tales (free): Trickster folk tales from around the world
+# Gemini adds more in storage/autopilot_topics/packs/folklore_trickster_tales.txt when these run out.
+Anansi the spider who owns all stories
+Loki and the building of Asgard's wall
+Coyote who stole fire
+Reynard the Fox of medieval Europe
+Kitsune, the Japanese fox who fools travellers
+Br'er Rabbit and the tar baby
+Hermes stealing Apollo's cattle
+Nasreddin Hodja's clever answers
+Till Eulenspiegel, the German prankster
+Sun Wukong, the Monkey King who defied heaven

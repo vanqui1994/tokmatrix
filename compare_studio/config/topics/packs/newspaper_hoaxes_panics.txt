@@ -1,0 +1,12 @@
+# Seed topics for topic pack newspaper_hoaxes_panics (free): Famous hoaxes and public panics and how newspapers covered them
+# Gemini adds more in storage/autopilot_topics/packs/newspaper_hoaxes_panics.txt when these run out.
+The War of the Worlds radio panic of 1938
+The Great Moon Hoax of 1835
+The Cardiff Giant
+The Cottingley Fairies photographs
+The Piltdown Man forgery
+The Hitler Diaries scandal
+The Tanganyika laughter epidemic
+The Mad Gasser of Mattoon
+The Y2K panic
+The Spaghetti tree hoax on the BBC

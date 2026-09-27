@@ -1,0 +1,12 @@
+# Seed topics for topic pack compare_animal_fights (versus): Two animals in a hypothetical fight: A vs B with real stats
+# Gemini adds more in storage/autopilot_topics/packs/compare_animal_fights.txt when these run out.
+Lion vs Tiger: who wins the big cat fight
+Orca vs Great White Shark: the ocean's apex duel
+Grizzly Bear vs Silverback Gorilla: raw power compared
+Saltwater Crocodile vs Hippo: the river showdown
+Jaguar vs Anaconda: the Amazon ambush
+Polar Bear vs Walrus: the Arctic clash
+King Cobra vs Mongoose: speed against venom
+Komodo Dragon vs Honey Badger: who backs down
+Wolf Pack vs Moose: numbers against size
+Leopard vs Hyena: the fight over a kill

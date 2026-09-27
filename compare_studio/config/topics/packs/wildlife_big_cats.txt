@@ -1,0 +1,12 @@
+# Seed topics for topic pack wildlife_big_cats (free): Lions, tigers, leopards and other big cats
+# Gemini adds more in storage/autopilot_topics/packs/wildlife_big_cats.txt when these run out.
+The last Asiatic lions of Gir forest
+Why tigers love water
+The Amur leopard, rarest big cat
+How jaguars differ from leopards
+The black panther explained
+Why cheetahs cannot roar
+The snow leopard's giant tail
+Lions of the Kalahari desert
+The clouded leopard's long canines
+The cougar's enormous range

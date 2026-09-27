@@ -1,0 +1,12 @@
+# Seed topics for topic pack wildlife_animal_records (free): Fastest, strongest, biggest: animal record holders
+# Gemini adds more in storage/autopilot_topics/packs/wildlife_animal_records.txt when these run out.
+The cheetah's 100 km/h sprint
+The blue whale, the largest animal ever
+The peregrine falcon's 390 km/h dive
+The Greenland shark's 400-year life
+The mantis shrimp's fastest punch
+The Arctic tern's longest migration
+The saltwater crocodile's bite force
+The sperm whale's deepest dive
+The pistol shrimp's sonic snap
+The elephant's long memory

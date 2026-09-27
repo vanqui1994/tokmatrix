@@ -1,0 +1,12 @@
+# Seed topics for topic pack newspaper_archived_cases (free): Forgotten cases rediscovered in newspaper archives
+# Gemini adds more in storage/autopilot_topics/packs/newspaper_archived_cases.txt when these run out.
+The 1902 poisoning case forgotten in the archives
+The Radium Girls and the newspapers that covered them
+The Tuskegee study exposed in 1972
+The Dancing Plague of 1518 in period accounts
+The Great Stink of London in 1858
+The Boston Molasses Flood of 1919
+The Halifax Explosion reported to the world
+The Hindenburg crash in the next morning's papers
+The Great Emu War in Australian papers
+The Thalidomide scandal in the press
