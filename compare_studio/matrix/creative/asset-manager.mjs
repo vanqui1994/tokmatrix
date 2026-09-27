@@ -6,6 +6,7 @@ import { recordSceneArtifact } from "../orchestrator/job-manager.mjs";
 import { renderNativeArtifact } from "./native-artifact-renderer.mjs";
 import { directSceneVisuals } from "./visual-director.mjs";
 import { channelCreative } from "../render/native-engine-adapter.mjs";
+import { DEFAULT_CACHE_ROOT, cacheEnabled, findImage, rememberImage } from "./account-cache.mjs";
 
 const PROJECT_DIR = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
 const VISUAL_ARTIFACT_TYPE = {
@@ -73,6 +74,7 @@ export async function prepareSceneAssets({
   artifactRenderer = renderNativeArtifact,
   recordArtifact = recordSceneArtifact,
   fallbackHandlers = {},
+  accountCacheRoot = DEFAULT_CACHE_ROOT,
   dbPath,
   log = () => {},
 } = {}) {
@@ -103,6 +105,17 @@ export async function prepareSceneAssets({
   const exhaustedKeys = new Set(imageStatus.exhausted || []);
   const fallbackChain = variantFallbackChain(channel, engineType);
   const fallbacks = [];
+  // Cache ảnh theo acc (chỉ kênh variant): ảnh AI đã về được giữ; bước reuse_account_cache tìm trong cache của CHÍNH kênh.
+  const useAccountCache = Boolean(fallbackChain) && cacheEnabled() && Boolean(channel?.channel_id);
+  const usedShas = new Set();
+  const handlers = { ...fallbackHandlers };
+  if (useAccountCache && !handlers.reuse_account_cache) {
+    handlers.reuse_account_cache = async ({ scene }) => {
+      const hit = await findImage({ channelId: channel.channel_id, sceneText: scene.visual_intent, exclude: usedShas, root: accountCacheRoot });
+      if (hit) usedShas.add(hit.sha256);
+      return hit;
+    };
+  }
   const updatedScenes = [];
   const pending = [];
   const registeredArtifacts = [];
@@ -129,9 +142,12 @@ export async function prepareSceneAssets({
         registeredArtifacts.push(record);
         readyTypes.add("image");
         scene.asset_source = source;
+        if (useAccountCache) {
+          usedShas.add(await rememberImage({ channelId: channel.channel_id, sceneText: scene.visual_intent, filePath, source, root: accountCacheRoot }));
+        }
       } else {
         const fallback = exhaustedKeys.has(key) && fallbackChain
-          ? await runImageFallback({ chain: fallbackChain, scene, key, handlers: fallbackHandlers })
+          ? await runImageFallback({ chain: fallbackChain, scene, key, handlers })
           : null;
         if (fallback) {
           await fs.mkdir(path.dirname(filePath), { recursive: true });
