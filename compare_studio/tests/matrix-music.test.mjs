@@ -141,7 +141,12 @@ test("assign-music --apply writes audio.bgm_pool, bumps config_version once and 
   const dir = tmpdir("matrix-music-apply-");
   try {
     const source = path.join(COMPARE_DIR, "config", "channels");
-    for (const name of fs.readdirSync(source).filter((file) => file.startsWith("deep_space_"))) fs.copyFileSync(path.join(source, name), path.join(dir, name));
+    // Bản sao kênh thật nhưng bỏ bgm_pool (repo đã được gán) → mô phỏng kênh chưa có nhạc riêng.
+    for (const name of fs.readdirSync(source).filter((file) => file.startsWith("deep_space_"))) {
+      const doc = YAML.parseDocument(fs.readFileSync(path.join(source, name), "utf8"));
+      doc.deleteIn(["audio", "bgm_pool"]);
+      fs.writeFileSync(path.join(dir, name), doc.toString({ lineWidth: 0, indentSeq: false }));
+    }
     const before = Object.fromEntries(fs.readdirSync(dir).map((name) => [name, YAML.parse(fs.readFileSync(path.join(dir, name), "utf8"))]));
     const written = applyMusic(planMusic({ dir }));
     assert.equal(written.length, Object.keys(before).length);
@@ -214,7 +219,9 @@ function withPool(base, pool) {
 test("audio orchestration: legacy channel unchanged, pool channel copies its CC0 track and records it, missing file fails", async () => {
   const dir = tmpdir("matrix-music-audio-");
   try {
-    const base = resolveChannelsForTopic("deep_space", 1)[0];
+    // Kênh legacy = kênh thật bỏ bgm_pool (repo đã gán nhạc riêng cho mọi kênh).
+    const base = structuredClone(resolveChannelsForTopic("deep_space", 1)[0]);
+    delete base.resolved_config.channel.audio.bgm_pool;
     assert.equal(base.resolved_config.channel.audio.bgm_pool, undefined);
     const legacy = await runAudio({ channel: base, projectDir: path.join(dir, "legacy"), musicCatalogPath: path.join(dir, "absent.json"), musicDir: path.join(dir, "absent") });
     assert.equal("bgm_track" in legacy.manifest.audio, false);
