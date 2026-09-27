@@ -170,6 +170,52 @@ def visual_compare(a: Dict[str, Any], b: Dict[str, Any]) -> float:
     return round(sum(1.0 - bin(int(x, 16) ^ int(y, 16)).count("1") / 64.0 for x, y in pairs) / len(pairs), 6)
 
 
+# --- text: hộp chữ thật (Chromium đo getClientRects), lưới 9×16, trung bình qua các mốc (WS-A2) -------------------
+TEXT_POSITIONS = (0.2, 0.35, 0.5, 0.65, 0.8, 0.92)
+
+
+def text_extract(sample: Dict[str, Any]) -> Any:
+    html = sample.get("html_path")
+    duration = float(sample.get("duration") or 0)
+    if not html or duration <= 0:
+        return None  # không có composition để đo → tín hiệu vắng mặt, không tính vào composite
+    from .textgeom import text_grids
+
+    grids = text_grids(html, [round(duration * p, 2) for p in TEXT_POSITIONS])
+    mean = np.mean(np.asarray(grids, dtype=np.float64), axis=0)
+    return {"grid": mean.round(5).tolist(), "coverage": round(float(mean.mean()), 5)}
+
+
+def text_compare(a: Dict[str, Any], b: Dict[str, Any]) -> float:
+    if not any(a["grid"]) or not any(b["grid"]):
+        return 1.0 if not any(a["grid"]) and not any(b["grid"]) else 0.0
+    return _correlation(a["grid"], b["grid"])
+
+
+# --- audio: vân tay âm thanh v1 + giọng + nhạc nền (chỉ video thật; preview có audio câm) (WS-A3) ----------------
+def audio_extract(sample: Dict[str, Any]) -> Any:
+    info = sample.get("audio") or {}
+    if not info.get("fingerprint") and not info.get("voice") and not info.get("bgm_md5"):
+        return None
+    return {"fingerprint": [int(x) for x in info.get("fingerprint") or []], "voice": info.get("voice") or "", "bgm_md5": info.get("bgm_md5") or ""}
+
+
+def audio_compare(a: Dict[str, Any], b: Dict[str, Any]) -> float:
+    from bkt_web.video_fingerprint import audio_similarity
+
+    parts, weights = [], []
+    if a["fingerprint"] and b["fingerprint"]:
+        parts.append(audio_similarity(np.asarray(a["fingerprint"], dtype=np.uint32), np.asarray(b["fingerprint"], dtype=np.uint32)))
+        weights.append(0.6)
+    if a["voice"] and b["voice"]:
+        parts.append(1.0 if a["voice"] == b["voice"] else 0.0)
+        weights.append(0.25)
+    if a["bgm_md5"] and b["bgm_md5"]:
+        parts.append(1.0 if a["bgm_md5"] == b["bgm_md5"] else 0.0)
+        weights.append(0.15)
+    return round(sum(p * w for p, w in zip(parts, weights)) / sum(weights), 6) if weights else 0.0
+
+
 class Signal:
     def __init__(self, name: str, version: int, weight: float, extract: Callable, compare: Callable, needs_frames: bool):
         self.name = name
@@ -180,15 +226,18 @@ class Signal:
         self.needs_frames = needs_frames
 
 
-# Trọng số composite: layout + declared là "khuôn hình" (TikTok gắn cờ vì khuôn dùng chung); timing thấp vì do TTS.
+# Trọng số composite: layout + declared + text là "khuôn hình" (TikTok gắn cờ vì khuôn dùng chung); timing thấp vì do
+# TTS. Composite chuẩn hoá trên các tín hiệu CẢ HAI bên đều có: preview không có audio thì audio không tính.
 SIGNALS: Dict[str, Signal] = {
     s.name: s for s in [
-        Signal("layout", 1, 0.30, layout_extract, layout_compare, True),
-        Signal("declared", 1, 0.15, declared_extract, declared_compare, False),
-        Signal("visual", 1, 0.15, visual_extract, visual_compare, True),
-        Signal("motion", 1, 0.15, motion_extract, motion_compare, True),
-        Signal("color", 1, 0.10, color_extract, color_compare, True),
-        Signal("asset", 1, 0.10, asset_extract, asset_compare, False),
-        Signal("timing", 1, 0.05, timing_extract, timing_compare, False),
+        Signal("layout", 1, 0.22, layout_extract, layout_compare, True),
+        Signal("declared", 1, 0.10, declared_extract, declared_compare, False),
+        Signal("text", 1, 0.14, text_extract, text_compare, False),
+        Signal("visual", 1, 0.13, visual_extract, visual_compare, True),
+        Signal("motion", 1, 0.13, motion_extract, motion_compare, True),
+        Signal("color", 1, 0.08, color_extract, color_compare, True),
+        Signal("asset", 1, 0.07, asset_extract, asset_compare, False),
+        Signal("timing", 1, 0.03, timing_extract, timing_compare, False),
+        Signal("audio", 1, 0.10, audio_extract, audio_compare, False),
     ]
 }

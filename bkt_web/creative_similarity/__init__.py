@@ -62,6 +62,8 @@ def extract_all(sample: Dict[str, Any], conn: Optional[sqlite3.Connection] = Non
             if signal.needs_frames and not sample.get("frames"):
                 continue
             cached = signal.extract(sample)
+            if cached is None:  # tín hiệu không áp dụng cho mẫu này (vd. preview không có audio)
+                continue
             if conn is not None:
                 conn.execute("INSERT OR REPLACE INTO features VALUES (?,?,?,?)", (sample["slug"], name, signal.version, json.dumps(cached)))
         out[name] = cached
