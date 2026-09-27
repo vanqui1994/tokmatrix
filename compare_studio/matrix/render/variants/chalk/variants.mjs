@@ -17,14 +17,14 @@ const base = { engine: "chalk", asset: TEXT_ASSET, cost: NO_IMAGE_COST, sample: 
 const SWATCH = { red: "red", yellow: "yellow", cyan: "cyan", white: "white" };
 
 /** Bản đồ của video cho một vùng hiển thị (`inner` = kích thước trong khung, px). Cache layout theo cảnh. */
-function chalkMap(ctx, look, inner, { sizes, prefix = "cm", sceneFor = (s) => s, minFrac } = {}) {
+function chalkMap(ctx, look, inner, { sizes, prefix = "cm", sceneFor = (s) => s, minFrac, reserve } = {}) {
   const ex = resolveChalkExtras(ctx);
   const cache = new Map();
   const get = (i) => {
     if (!cache.has(i)) {
       const scene = sceneFor(ex.data.scenes[i], i);
       const view = sceneView(ex.map, scene, inner.w / inner.h, minFrac ? { minFrac } : {});
-      cache.set(i, { scene, view, layout: layoutMapScene({ map: ex.map, scene, view, pxWidth: inner.w, zoneLabels: ex.zoneLabels, sizes }) });
+      cache.set(i, { scene, view, layout: layoutMapScene({ map: ex.map, scene, view, pxWidth: inner.w, zoneLabels: ex.zoneLabels, sizes, reserve }) });
     }
     return cache.get(i);
   };
@@ -393,7 +393,7 @@ const atlas = defineVariant({
       axes: { composition: "hero_image", textPlacement: "on_image", background: "wood_paper" },
       describe: "Hải đồ biển sẫm trên bàn gỗ — trang atlas xé mép tràn gần hết màn; ô chú giải (legend) góc trái trên và hộp lời đọc giấy da đè lên phần biển cuối trang",
       design: (ctx) => {
-        const map = chalkMap(ctx, { ...LOOKS.atlas_chart, compassAt: [0.9, 0.66] }, { w: 1016, h: 1336 });
+        const map = chalkMap(ctx, { ...LOOKS.atlas_chart, compassAt: [0.9, 0.66] }, { w: 1016, h: 1336 }, { reserve: [{ x: 0, y: 0, w: 1016, h: 50 }, { x: 30, y: 20, w: 400, h: 370 }, { x: 430, y: 20, w: 586, h: 120 }, { x: 60, y: 1060, w: 900, h: 276 }] });
         return {
           header: { style: "ribbon", region: { x: 90, y: 120, w: 900, h: 150 }, size: 52 },
           visual: { frame: "torn", region: { x: 20, y: 300, w: 1060, h: 1380 } },

@@ -116,10 +116,11 @@ function arrowGeometry(a, b, curve, obstacles, pad) {
 }
 
 /** Bố cục một cảnh trên khung nhìn `view` (đơn vị viewBox) cho vùng rộng `pxWidth` px. */
-export function layoutMapScene({ map, scene, view, pxWidth, zoneLabels = {}, sizes = {} }) {
+export function layoutMapScene({ map, scene, view, pxWidth, zoneLabels = {}, sizes = {}, reserve = [] }) {
   const unit = view.w / pxWidth;
   const size = { hl: 36, hl2: 30, marker: 28, arrow: 26, ambient: 25, glyph: 22, ...sizes };
-  const taken = [];
+  // Vùng bị khối HTML khác che (legend, headline, hộp lời đọc, mép khung) tính theo px của panel → nhãn tránh ra.
+  const taken = reserve.map((b) => ({ x0: view.x + b.x * unit, y0: view.y + b.y * unit, x1: view.x + (b.x + b.w) * unit, y1: view.y + (b.y + b.h) * unit }));
   const out = { unit, highlights: [], arrows: [], markers: [], ambient: [] };
   for (const marker of scene.markers || []) {
     const [x, y] = anchorOf(map, marker.at);
