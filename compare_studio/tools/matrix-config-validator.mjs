@@ -1,3 +1,5 @@
+import { cloneProblems } from "../matrix/creative/voice-clone.mjs";
+import { VOICE_FX, isVoiceFx } from "../matrix/creative/voice-fx.mjs";
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -145,12 +147,16 @@ function validateRelations(documents, errors) {
 export function validateChannelCreative(data) {
   const errors = [];
   const fx = data.audio?.voice_fx;
-  // FX giọng chưa có trong audio-orchestrator (Phase 1): chấp nhận giá trị khác "none" sẽ ghi sai meta.creative.
-  if (fx && fx !== "none") errors.push(`audio.voice_fx "${fx}" is not implemented yet (only "none")`);
+  if (fx && !isVoiceFx(fx)) errors.push(`audio.voice_fx "${fx}" is not one of ${Object.keys(VOICE_FX).join("|")}`);
+  errors.push(...cloneProblems(data.audio?.voice_clone, data.publishing?.language));
   const variantId = data.creative?.variant_id;
   if (!variantId) return errors;
   const variant = getVariant(variantId);
   if (!variant) return [...errors, `creative.variant_id ${variantId} is unknown or not active`];
+  // FX giọng phải nằm trong audioProfile.fx của variant (vd folklore chỉ nhận "creepy").
+  if (!variant.audioProfile.fx.includes(fx || "none")) {
+    errors.push(`audio.voice_fx "${fx || "none"}" is not allowed by ${variantId} (${variant.audioProfile.fx.join("|")})`);
+  }
   const engines = data.creative.preferred_engines || [];
   if (engines.length !== 1 || engines[0] !== variant.engine) {
     errors.push(`creative.preferred_engines must be exactly [${variant.engine}] for variant ${variantId}`);

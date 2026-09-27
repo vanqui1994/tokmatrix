@@ -73,7 +73,8 @@
         "music_family": { "type": "string", "minLength": 1 },
         "soundscape_id": { "type": "string", "enum": ["compare", "survival", "science", "mystery", "vox", "newspaper", "kinetic"] },
         "sfx_density": { "type": "string", "enum": ["low", "medium", "high"] },
-        "voice_fx": { "type": "string", "enum": ["none", "creepy", "whisper", "radio"] }
+        "voice_fx": { "type": "string", "enum": ["none", "creepy", "whisper", "radio"] },
+        "voice_clone": { "type": "string", "pattern": "^(none|[a-z0-9][a-z0-9_-]{1,63})$" }
       }
     },
     "publishing": {

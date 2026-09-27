@@ -16,12 +16,18 @@ export const FIT_SCRIPT = `<script data-variant-fit>
     el.style.maxWidth = innerW + "px";
     function overflows() { return el.scrollWidth > innerW + 1 || el.offsetHeight > innerH + 1; }
     el.style.overflowWrap = "normal";
+    // Một từ dài hơn cả dòng (từ ghép tiếng Đức) không được kéo cả khối xuống cỡ tí hon: tới "sàn đọc được"
+    // (62% cỡ gốc) thì cho ngắt giữa từ rồi mới co tiếp tới data-fit-min.
+    var floor = Math.max(min, Math.round(size * 0.62));
+    while (size > floor && overflows()) {
+      size -= 1;
+      el.style.fontSize = size + "px";
+    }
+    if (el.scrollWidth > innerW + 1) el.style.overflowWrap = "anywhere";
     while (size > min && overflows()) {
       size -= 1;
       el.style.fontSize = size + "px";
     }
-    // Co tới cỡ tối thiểu mà từ (vd từ ghép tiếng Đức) vẫn dài hơn dòng → mới cho ngắt giữa từ.
-    if (el.scrollWidth > innerW + 1) el.style.overflowWrap = "anywhere";
   }
   function fitAll() {
     var nodes = document.querySelectorAll("[data-fit]");

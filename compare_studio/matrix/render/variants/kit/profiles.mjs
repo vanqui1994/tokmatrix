@@ -33,7 +33,7 @@ export function fontStack(style, script) {
 }
 
 // --- Treatment: lớp phủ tĩnh (CSS + SVG feTurbulence có seed cố định — tất định). -------------------------------
-function noiseSvg(seed, opacity, frequency = 0.9) {
+export function noiseSvg(seed, opacity, frequency = 0.9) {
   const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='${frequency}' numOctaves='2' seed='${seed % 1000}' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(#n)' opacity='${opacity}'/></svg>`;
   return `url("data:image/svg+xml;utf8,${encodeURIComponent(svg)}")`;
 }
@@ -85,9 +85,11 @@ export const IMAGE_MOTION = Object.freeze({
     handheld: (rng, { target, start, duration }) => {
       // Rung máy nhẹ: các điểm lệch tính sẵn từ seed (không noise lúc chạy).
       const steps = Math.max(2, Math.round(duration / 0.8));
+      // Bước làm tròn XUỐNG tới ms: các tween nối nhau không chồng lên nhau (HyperFrames cảnh báo overlapping_gsap_tweens).
+      const step = Math.floor((duration / steps) * 1000) / 1000;
       const tweens = [{ method: "set", target, vars: { scale: 1.06 }, at: start }];
       for (let i = 0; i < steps; i += 1) {
-        tweens.push({ method: "to", target, vars: { x: rngRange(rng, -9, 9, 1), y: rngRange(rng, -7, 7, 1), rotation: rngRange(rng, -0.4, 0.4, 2), duration: Number((duration / steps).toFixed(3)), ease: "sine.inOut" }, at: Number((start + (duration / steps) * i).toFixed(3)) });
+        tweens.push({ method: "to", target, vars: { x: rngRange(rng, -9, 9, 1), y: rngRange(rng, -7, 7, 1), rotation: rngRange(rng, -0.4, 0.4, 2), duration: Number((step - 0.001).toFixed(3)), ease: "sine.inOut" }, at: Number((start + step * i).toFixed(3)) });
       }
       return tweens;
     },
@@ -121,7 +123,7 @@ function enter(ctx, from, vars, wanted) {
 }
 
 export const TRANSITIONS = Object.freeze({
-  version: 1,
+  version: 2,
   items: {
     cut: () => [],
     fade_black: (ctx) => [exit(ctx, { autoAlpha: 0 }, 0.3), enter(ctx, { autoAlpha: 0 }, { autoAlpha: 1 }, 0.3)],
@@ -137,6 +139,28 @@ export const TRANSITIONS = Object.freeze({
     ],
     wipe: (ctx) => [enter(ctx, { clipPath: "inset(0% 100% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)" }, 0.45)],
     folder_flip: (ctx) => [exit(ctx, { yPercent: -110, rotation: -4 }, 0.4), enter(ctx, { yPercent: 12 }, { yPercent: 0 }, 0.45)],
+    // v2: thêm 5 kiểu (trước chỉ có trong vocabulary trục, DNA không chọn được).
+    tv_noise: (ctx) => [
+      exit(ctx, { filter: "brightness(2.2) contrast(1.8)", skewX: 8 }, 0.18),
+      enter(ctx, { filter: "brightness(2.2) contrast(1.8)", skewX: -8 }, { filter: "brightness(1) contrast(1)", skewX: 0 }, 0.25),
+    ],
+    ink_bleed: (ctx) => [enter(ctx, { clipPath: "circle(0% at 50% 50%)" }, { clipPath: "circle(75% at 50% 50%)" }, 0.6)],
+    paper_tear: (ctx) => [
+      exit(ctx, { clipPath: "polygon(0% 0%,100% 0%,100% 0%,0% 0%)" }, 0.35),
+      enter(ctx, { clipPath: "polygon(0% 100%,100% 100%,100% 100%,0% 100%)" }, { clipPath: "polygon(0% 0%,100% 0%,100% 100%,0% 100%)" }, 0.4),
+    ],
+    flip_3d: (ctx) => [
+      exit(ctx, { rotationX: 90, transformOrigin: "50% 100%" }, 0.35),
+      enter(ctx, { rotationX: -90, transformOrigin: "50% 0%" }, { rotationX: 0 }, 0.4),
+    ],
+    glitch: (ctx) => {
+      const third = Math.floor((span(ctx, 0.3) / 3) * 1000) / 1000;
+      const at = ctx.at;
+      return [
+        { method: "fromTo", target: ctx.next, from: { x: -28, skewX: 12 }, vars: { x: 18, skewX: -6, duration: Number((third - 0.001).toFixed(3)), ease: "steps(2)" }, at },
+        { method: "to", target: ctx.next, vars: { x: 0, skewX: 0, duration: third, ease: "steps(2)" }, at: Number((at + third).toFixed(3)) },
+      ];
+    },
   },
 });
 

@@ -251,13 +251,30 @@ async def _debug_shot(page, db_path, task_id, channel_id, log, tag: str = "error
         pass
 
 
-def ai_label_enabled() -> bool:
-    """Nhãn "AI-generated content" trên TikTok: TẮT mặc định (yêu cầu của chủ kênh 25/09).
+AI_LABEL_MODES = ("off", "auto", "on")
 
-    Cờ ai_generated của task vẫn được giữ để thống kê, nhưng publisher chỉ bật nhãn khi
-    TOKMATRIX_TIKTOK_AI_LABEL=1.
+
+def ai_label_mode() -> str:
+    """Nhãn "AI-generated content" trên TikTok, TOKMATRIX_TIKTOK_AI_LABEL = off | auto | on.
+
+    off (mặc định, production — yêu cầu của chủ kênh 25/09): không bao giờ bật nhãn.
+    auto: bật khi task có cờ ai_generated (giá trị cũ "1/true/yes" = auto).
+    on:   bật cho mọi video.
+    Cờ ai_generated của task vẫn được giữ để thống kê. Giá trị lạ → off.
     """
-    return os.environ.get("TOKMATRIX_TIKTOK_AI_LABEL", "0").strip().lower() in ("1", "true", "yes", "on")
+    value = os.environ.get("TOKMATRIX_TIKTOK_AI_LABEL", "off").strip().lower()
+    if value in ("1", "true", "yes"):
+        return "auto"
+    return value if value in AI_LABEL_MODES else "off"
+
+
+def ai_label_enabled() -> bool:
+    return ai_label_mode() != "off"
+
+
+def should_label_ai(ai_generated: bool) -> bool:
+    mode = ai_label_mode()
+    return mode == "on" or (mode == "auto" and bool(ai_generated))
 
 
 POST_BUTTON_NAMES = ("Post", "Đăng", "Posten", "Publier", "Publicar", "投稿", "게시")
@@ -702,9 +719,9 @@ async def publish_tiktok_video(
             await page.wait_for_timeout(8000)
 
             await _dismiss_blocking_modals(page, log)
-            if ai_generated and not ai_label_enabled():
+            if ai_generated and not should_label_ai(ai_generated):
                 log("Không bật nhãn 'AI-generated content' (đã tắt theo cấu hình).", "info")
-            ai_generated = ai_generated and ai_label_enabled()
+            ai_generated = should_label_ai(ai_generated)
             if ai_generated:
                 await _enable_ai_label(page, log)
             await _dismiss_blocking_modals(page, log)

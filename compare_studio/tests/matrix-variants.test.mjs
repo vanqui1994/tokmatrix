@@ -14,6 +14,7 @@ import { lintVariantHtml } from "../matrix/render/variants/kit/lint.mjs";
 import { resolveCreativeContext } from "../matrix/render/variants/kit/resolve.mjs";
 import { countryTheme } from "../matrix/render/variants/kit/theme.mjs";
 import { TYPOGRAPHY } from "../matrix/render/variants/kit/profiles.mjs";
+import { KIT_VERSION } from "../matrix/render/variants/kit/VERSION.mjs";
 import { FONT_PACKAGES, fontFacesFor, stackFamily } from "../matrix/render/variants/kit/fonts.mjs";
 import { variantEngine } from "../matrix/planner/template-selector.mjs";
 import { validateChannelCreative, validateConfigs } from "../tools/matrix-config-validator.mjs";
@@ -52,13 +53,18 @@ async function build({ lang = "de", creative, env = {} } = {}) {
 }
 
 // --- Registry + schema -------------------------------------------------------------------------------------------
-test("registry is valid, has one index per engine and the Phase 0 reference variant only", () => {
-  assert.deepEqual(validateRegistry(), { errors: [], warnings: [] });
+test("registry is valid, has one index per engine, and only the Phase 0 reference variant is not active", () => {
+  const registry = validateRegistry();
+  assert.deepEqual(registry.errors, []);
+  assert.ok(registry.warnings.every((w) => w.includes(REF)), registry.warnings.join("\n"));
   const dir = path.resolve("matrix/render/variants");
   for (const engine of ENGINES) assert.ok(fs.existsSync(path.join(dir, engine, "index.mjs")), engine);
   assert.equal(ENGINES.length, 10);
   assert.ok(!ENGINES.includes("kinetic"));
-  assert.deepEqual(listVariants().map((v) => v.id), [REF]);
+  const ids = listVariants().map((v) => v.id);
+  assert.ok(ids.includes(REF));
+  assert.equal(new Set(ids).size, ids.length);
+  assert.ok(listVariants().every((v) => v.id === REF || v.status === "active"));
   assert.equal(reference().status, "reference");
   assert.deepEqual(validateVariant(reference()), []);
 });
@@ -66,15 +72,15 @@ test("registry is valid, has one index per engine and the Phase 0 reference vari
 test("reference variants are never returned for assignment unless explicitly allowed", () => {
   withEnv({ MATRIX_ALLOW_REFERENCE_VARIANTS: "0" }, () => {
     assert.equal(getVariant(REF), null);
-    assert.deepEqual(getVariantsForCountry("de"), []);
+    assert.ok(!getVariantsForCountry("de").some((v) => v.id === REF));
   });
   assert.ok(getVariant(REF, { allowReference: true }));
-  assert.deepEqual(getVariantsForCountry("de", { includeReference: true }).map((v) => v.id), [REF]);
+  assert.ok(getVariantsForCountry("de", { includeReference: true }).some((v) => v.id === REF));
   assert.deepEqual(getVariantCreativeCapacity(REF), { compositions: 2, structural: 2, combinations: 2 * 2 * 3 * 3 * 3 * 3 });
 });
 
 test("the 4/6 axis rule is enforced in code between base variants of one engine", () => {
-  const base = reference();
+  const base = { ...reference(), status: "active" }; // cặp có variant reference chỉ cảnh báo
   const twin = { ...base, id: "mystery/twin", visualProfile: { ...base.visualProfile, fingerprintAxes: { ...base.visualProfile.fingerprintAxes, typography: "serif", background: "paper" } } };
   assert.equal(compareVariantAxes(base, twin).differing, 2);
   const { errors } = validateVariantSet([base, twin]);
@@ -136,7 +142,7 @@ test("creative context merges layers in one place: country owns palette/script, 
   assert.notDeepEqual(de.theme.palette, countryTheme("de", 0).palette, "tone shifts the country palette");
   assert.equal(de.axes.composition, "split_vertical");
   assert.equal(de.axes.typography, "serif");
-  assert.equal(de.observability.renderer_version, "variant:mystery/reference-dossier@1+kit@2");
+  assert.equal(de.observability.renderer_version, `variant:mystery/reference-dossier@1+kit@${KIT_VERSION}`);
   const again = resolveCreativeContext({ variant, dna, lang: "de", channelId: "c1", slug: "s1" });
   assert.equal(again.seeds.video, de.seeds.video);
   assert.equal(again.treatmentCss, de.treatmentCss);
@@ -256,7 +262,7 @@ test("the real channel configs stay valid and none carries a variant yet", () =>
   assert.ok(result.documents.channels.every(({ data }) => !data.creative.variant_id));
 });
 
-test("channel validator enforces variant engine, allowed DNA, language and unimplemented voice fx", () => {
+test("channel validator enforces variant engine, allowed DNA, language and the variant's voice fx", () => {
   const dna = defaultDna(reference(), "hero_evidence");
   const channel = { niche_id: "unsolved_mysteries", creative: { preferred_engines: ["mystery"], variant_id: REF, dna }, audio: {}, publishing: { language: "de" } };
   withEnv({ MATRIX_ALLOW_REFERENCE_VARIANTS: "1" }, () => {
@@ -264,7 +270,8 @@ test("channel validator enforces variant engine, allowed DNA, language and unimp
     assert.ok(validateChannelCreative({ ...channel, creative: { ...channel.creative, preferred_engines: ["mystery", "kinetic"] } }).some((e) => e.includes("exactly [mystery]")));
     assert.ok(validateChannelCreative({ ...channel, creative: { ...channel.creative, dna: { ...dna, treatment: "vhs_noise" } } }).some((e) => e.includes("allowed")));
     assert.ok(validateChannelCreative({ ...channel, publishing: { language: "vi" } }).some((e) => e.includes("không hỗ trợ")));
-    assert.ok(validateChannelCreative({ ...channel, audio: { voice_fx: "creepy" } }).some((e) => e.includes("not implemented")));
+    assert.ok(validateChannelCreative({ ...channel, audio: { voice_fx: "creepy" } }).some((e) => e.includes("not allowed by")));
+    assert.ok(validateChannelCreative({ ...channel, audio: { voice_fx: "robot" } }).some((e) => e.includes("is not one of")));
   });
   withEnv({ MATRIX_ALLOW_REFERENCE_VARIANTS: "0" }, () => assert.ok(validateChannelCreative(channel)[0].includes("not active")));
   assert.deepEqual(validateChannelCreative({ creative: { preferred_engines: ["mystery", "vox"] }, audio: { voice_fx: "none" } }), []);
@@ -283,11 +290,11 @@ test("channel JSON schema requires variant_id and dna together", () => {
 // --- Tools -------------------------------------------------------------------------------------------------------
 test("list-variants exposes registry, rules and a cost estimate for Python and review", () => {
   const out = variantsJson({ includeReference: true });
-  assert.equal(out.variants.length, 1);
+  assert.equal(out.variants.length, listVariants().length);
   assert.equal(out.rules.min_axis_diff_same_engine, 4);
-  assert.equal(out.variants[0].compositions.evidence_strip.axes.background, "paper");
-  assert.equal(variantsJson().variants.length, 0, "reference variants are not assignable by default");
-  const cost = costJson({ scenes: 12, includeReference: true }).variants[0];
+  assert.equal(out.variants.find((v) => v.id === REF).compositions.evidence_strip.axes.background, "paper");
+  assert.ok(!variantsJson().variants.some((v) => v.id === REF), "reference variants are not assignable by default");
+  const cost = costJson({ scenes: 12, includeReference: true }).variants.find((v) => v.id === REF);
   assert.equal(cost.ai_images_per_video, 12);
   assert.equal(cost.ai_images_per_100_videos, 1200);
   assert.equal(cost.measured, null);

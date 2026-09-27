@@ -25,7 +25,10 @@ def tree_hash(path: Path) -> str:
 class CreativeDnaDryRunTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.registry = cd.load_registry(include_reference=True)
+        full = cd.load_registry(include_reference=True)
+        # Các test capacity dựng trên đúng một variant (reference, 2 composition), độc lập với số variant thật.
+        cls.full_registry = full
+        cls.registry = {**full, "variants": [v for v in full["variants"] if v["id"] == "mystery/reference-dossier"]}
         cls.channels = cd.load_channels()
         cls.niches = cd.load_niche_engines()
 
@@ -92,7 +95,7 @@ class CreativeDnaDryRunTest(unittest.TestCase):
         self.assertEqual(plan["rows"][0]["country"], "GB")
 
     def test_without_active_variants_nothing_is_assignable(self):
-        registry = cd.load_registry(include_reference=False)
+        registry = {**self.full_registry, "variants": []}
         plan = cd.plan_assignments(self.channels, registry, self.niches, None, CHANNELS[:1])
         self.assertEqual(plan["rows"][0]["collision"], "hard:capacity")
 

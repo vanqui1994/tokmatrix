@@ -85,7 +85,7 @@ export async function buildPreview({ variant, composition, lang, dna, dnaTag, ou
   fs.writeFileSync(path.join(dir, "hyperframes.json"), JSON.stringify({ paths: { assets: "assets" } }, null, 2));
   const o = creative.observability;
   return {
-    dir, slug, duration: totalDuration,
+    dir, slug, duration: totalDuration, scene_durations: scenes.map((scene) => scene.duration),
     labels: {
       engine: o.engine, variant: o.variant_id, country: o.country, composition: o.creative_dna.composition,
       motion: o.creative_dna.image_motion, typography: o.creative_dna.typography, transition: o.creative_dna.transition,

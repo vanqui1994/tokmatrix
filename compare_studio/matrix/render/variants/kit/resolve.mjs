@@ -48,6 +48,7 @@ export function resolveCreativeContext({ variant, dna, lang, channelId, slug }) 
       creative_dna: normalized,
       creative_signature: dnaSignature(normalized, { variantId: variant.id, country: lang }),
       structural_key: structuralKey(variant.id, normalized.composition),
+      axes: effectiveAxes(variant, normalized.composition, normalized),
       country: theme.lang,
       font_families: [stackFamily(bodyStack)],
       renderer_version: rendererVersion(variant),

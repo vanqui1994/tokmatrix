@@ -126,5 +126,17 @@ class AiLabelPolicyTest(unittest.TestCase):
         with mock.patch.dict(os.environ, {"TOKMATRIX_TIKTOK_AI_LABEL": "0"}):
             self.assertFalse(ai_label_enabled())
 
+    def test_ai_label_modes_off_auto_on(self):
+        from unittest import mock
+        from bkt_web.tiktok_publisher import ai_label_mode, should_label_ai
+        cases = {"off": (False, False), "auto": (True, False), "on": (True, True), "1": (True, False), "weird": (False, False)}
+        for value, (with_flag, without_flag) in cases.items():
+            with mock.patch.dict(os.environ, {"TOKMATRIX_TIKTOK_AI_LABEL": value}):
+                self.assertEqual(should_label_ai(True), with_flag, value)
+                self.assertEqual(should_label_ai(False), without_flag, value)
+        with mock.patch.dict(os.environ, {}, clear=False):
+            os.environ.pop("TOKMATRIX_TIKTOK_AI_LABEL", None)
+            self.assertEqual(ai_label_mode(), "off")
+
 if __name__ == "__main__":
     unittest.main()
