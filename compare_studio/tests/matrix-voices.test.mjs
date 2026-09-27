@@ -31,3 +31,14 @@ test("assignment is deterministic, keeps balanced voices and spreads one niche o
   const again = assignVoices(first.map((row) => ({ ...row, voice: row.voice })));
   assert.ok(again.every((row) => row.status === "kept"));
 });
+
+test("character, cloned-person and copyrighted CapCut voices never enter a narration pool", async () => {
+  const { isCharacterVoice, COUNTRIES } = await import("../tools/voices.mjs");
+  for (const id of ["en_male_deadpool", "ICL_jp_female_hatunemiku", "ICL_en_male_317M_BrianJW", "en_female_caroline_clone2", "ICL_en_female_ditie_dsp"]) {
+    assert.ok(isCharacterVoice(id), id);
+  }
+  assert.ok(!isCharacterVoice("BV029_streaming"));
+  for (const country of COUNTRIES) {
+    for (const id of narrationPool(country.code)) assert.ok(!isCharacterVoice(id), `${country.code}: ${id} is a character voice`);
+  }
+});

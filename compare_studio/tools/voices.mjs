@@ -137,6 +137,24 @@ export const COUNTRIES = [
 // vào đây — chỉ những giọng "pass". Giọng CapCut chưa thử không bao giờ được gán (docs/MATRIX_VARIANT_SYSTEM_V2.md mục 8).
 export const AUDITIONED_VOICES_FILE = path.join(__dirname, "..", "config", "voices", "capcut_auditioned.json");
 
+// Giọng CapCut KHÔNG được làm giọng đọc chính dù đã pass bài thử (27/09): nhân vật có bản quyền, clone giọng người thật,
+// giọng hiệu ứng/nhân vật (rap, hát, trẻ con, hài, robot…). Vẫn đăng ký nhưng `narration: false` → Voice DNA /
+// assign-voices không bao giờ gán làm người dẫn.
+export const CHARACTER_VOICE_IDS = Object.freeze(new Set([
+  // nhân vật có bản quyền
+  "en_male_deadpool", "ICL_jp_female_hatunemiku", "ICL_en_male_oogie2", "en_female_loba_apex",
+  // clone giọng người thật
+  "ICL_en_male_305M_JamieTr", "ICL_en_male_317M_BrianJW", "ICL_en_male_310M_CoreyK", "en_female_caroline_clone2",
+  // giọng hiệu ứng / nhân vật
+  "en_male_death_rock", "en_male_m03_classical", "en_male_trickster_stream", "DiT_en_male_trickster", "ICL_en_male_kevin2",
+  "en_male_dramaqueen_zachk", "ICL_en_female_cc_bluetooth", "BV507_streaming", "ICL_ja_male_rap", "ICL_ja_male_gaoxiao",
+  "ICL_ja_male_cute", "ICL_jp_male_zhenfennan", "ICL_jp_female_araisan", "BV560_streaming",
+]));
+
+export function isCharacterVoice(id) {
+  return CHARACTER_VOICE_IDS.has(id) || /_dsp$|clone|deadpool|miku|oogie|apex/iu.test(String(id || ""));
+}
+
 function registerAuditioned() {
   let data;
   try {
@@ -149,7 +167,7 @@ function registerAuditioned() {
     const country = COUNTRIES.find((c) => c.code === entry.lang);
     if (!country || country.voices.some((v) => v.id === entry.id)) continue;
     country.voices.push({ id: entry.id, name: `${entry.name} (CapCut)`, provider: "capcut", gender: entry.gender || "any",
-      desc: `CapCut 🎬 · ${entry.name} (auditioned)`, auditioned: true });
+      desc: `CapCut 🎬 · ${entry.name} (auditioned)`, auditioned: true, ...(isCharacterVoice(entry.id) ? { narration: false } : {}) });
   }
 }
 registerAuditioned();
