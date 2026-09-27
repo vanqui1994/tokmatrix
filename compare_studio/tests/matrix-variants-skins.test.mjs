@@ -137,7 +137,8 @@ test("skin rule flags pairs that share layout and colour", () => {
 
 test("every channel config already has a valid skin for each skin variant's engine", () => {
   const plan = planSkins({ dir: CHANNEL_DIR, variantId: NEWSPAPER.id });
-  assert.ok(plan.rows.length >= 80);
+  // 80 kênh newspaper trừ các kênh đã chuyển sang Creative DNA V2 (variant_id, không còn bộ da).
+  assert.ok(plan.rows.length >= 75);
   for (const variant of SKIN_VARIANT_IDS.map((id) => getVariant(id))) {
     const rows = planSkins({ dir: CHANNEL_DIR, variantId: variant.id });
     assert.deepEqual(rows.rows.filter((row) => row.status !== "kept").map((row) => row.channel_id), [], variant.id);
@@ -147,7 +148,7 @@ test("every channel config already has a valid skin for each skin variant's engi
 
 test("every survival channel has a niche-mapped survival skin and the per-country rule holds across variants", () => {
   const plan = planNicheSkins({ dir: CHANNEL_DIR, engine: "survival" });
-  assert.ok(plan.rows.length >= 44);
+  assert.ok(plan.rows.length >= 40); // 44 kênh survival trừ kênh đã có variant_id (Creative DNA V2)
   assert.deepEqual(plan.rows.filter((row) => row.status !== "kept").map((row) => `${row.channel_id}:${row.status}`), []);
   assert.deepEqual(plan.violations, []);
   const byId = new Map(plan.channels.map((channel) => [channel.channel_id, channel]));

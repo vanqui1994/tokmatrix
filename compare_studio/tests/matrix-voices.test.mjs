@@ -1,17 +1,31 @@
 // Bước 7 docs/PLAN_compare_per_country.md: mỗi ngôn ngữ dùng hết giọng kể chuyện, không giọng nào chiếm quá phần chia đều.
 import assert from "node:assert/strict";
+import fs from "node:fs";
+import path from "node:path";
 import test from "node:test";
+import { fileURLToPath } from "node:url";
+import YAML from "yaml";
 import { assignVoices, narrationPool, planVoices, voiceSpread } from "../tools/assign-voices.mjs";
 import { getVoice } from "../tools/voices.mjs";
+
+const CHANNEL_DIR = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../config/channels");
 
 test("repo channel configs already use every narration voice of their language, evenly", () => {
   const { rows } = planVoices();
   assert.deepEqual(rows.filter((row) => row.status !== "kept").map((row) => row.channel_id), []);
+  // Kênh có creative.variant_id giữ giọng của Voice DNA (plan đã duyệt) và không nằm trong phép chia này; mỗi kênh như vậy
+  // có thể để trống tối đa một giọng mà nó đã rời đi.
+  const dnaChannels = {};
+  for (const name of fs.readdirSync(CHANNEL_DIR).filter((f) => f.endsWith(".yaml"))) {
+    const data = YAML.parse(fs.readFileSync(path.join(CHANNEL_DIR, name), "utf8"));
+    if (data.creative?.variant_id) dnaChannels[data.publishing.language] = (dnaChannels[data.publishing.language] || 0) + 1;
+  }
   for (const [lang, spread] of Object.entries(voiceSpread(rows))) {
     const pool = narrationPool(lang);
     const total = Object.values(spread).reduce((a, b) => a + b, 0);
     const cap = Math.ceil(total / pool.length);
-    if (total >= pool.length) assert.deepEqual(Object.keys(spread).sort(), [...pool].sort(), `${lang} leaves voices unused`);
+    const unused = pool.filter((voice) => !spread[voice]);
+    if (total >= pool.length) assert.ok(unused.length <= (dnaChannels[lang] || 0), `${lang} leaves voices unused: ${unused.join(", ")}`);
     for (const [voice, count] of Object.entries(spread)) {
       assert.ok(count <= cap, `${lang} ${voice} has ${count} accounts (cap ${cap})`);
       assert.equal(getVoice(voice)?.lang, lang);

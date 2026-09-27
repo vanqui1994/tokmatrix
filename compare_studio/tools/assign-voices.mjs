@@ -92,8 +92,10 @@ export function loadVoiceChannels(dir = CHANNEL_DIR) {
     const file = path.join(dir, name);
     const doc = YAML.parseDocument(fs.readFileSync(file, "utf8"));
     const data = doc.toJS();
-    return { file, doc, channel_id: data.channel_id, lang: data.publishing?.language, niche: data.niche_id, voice: data.audio?.voice_id };
-  });
+    return { file, doc, variant: data.creative?.variant_id, channel_id: data.channel_id, lang: data.publishing?.language, niche: data.niche_id, voice: data.audio?.voice_id };
+  })
+    // Kênh có creative.variant_id: giọng là một phần Voice DNA trong plan đã duyệt (creative_dna) → không chia lại ở đây.
+    .filter((channel) => !channel.variant);
 }
 
 export function planVoices({ dir = CHANNEL_DIR, lang } = {}) {

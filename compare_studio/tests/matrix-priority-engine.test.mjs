@@ -29,8 +29,14 @@ test("priority list is read from MATRIX_PRIORITY_ENGINES", () => {
 test("an A-vs-B topic turns every channel of a compare-enabled niche into compare, other topics never", () => {
   assert.equal(isComparativeTopic("Lion vs Tiger: which big cat is stronger"), true);
   assert.equal(isComparativeTopic("How the Enigma machine was broken"), false);
-  const engines = (niche, topic) => new Set(resolveChannelsForTopic(niche, 50, { topic }).map((c) => c.engine_type));
+  // Kênh có creative.variant_id (Creative DNA V2) khoá engine của variant: đề tài "A vs B" không ép nó sang compare.
+  const resolved = (niche, topic) => resolveChannelsForTopic(niche, 50, { topic });
+  const legacy = (list) => list.filter((c) => !c.resolved_config.channel.creative.variant_id);
+  const engines = (niche, topic) => new Set(legacy(resolved(niche, topic)).map((c) => c.engine_type));
   assert.deepEqual([...engines("military_arsenal", "F-22 Raptor vs Su-57: which stealth fighter is better")], ["compare"]);
+  for (const c of resolved("military_arsenal", "F-22 Raptor vs Su-57").filter((c) => c.resolved_config.channel.creative.variant_id)) {
+    assert.equal(c.engine_type, c.resolved_config.channel.creative.preferred_engines[0], c.channel_id);
+  }
   assert.equal(engines("military_arsenal", "How the Enigma machine was broken").has("compare"), false);
   assert.equal(engines("folklore_legends", "Vampire vs Werewolf").has("compare"), false);   // niche không cho phép
 });

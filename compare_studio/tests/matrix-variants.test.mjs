@@ -257,10 +257,16 @@ test("a variant locks the engine: no topic/compare override, no fallback when bl
 });
 
 // --- Channel YAML schema + validator ------------------------------------------------------------------------------
-test("the real channel configs stay valid and none carries a variant yet", () => {
+test("the real channel configs stay valid; variant channels are locked to an active variant's engine without a skin there", () => {
   const result = validateConfigs();
   assert.deepEqual(result.errors, []);
-  assert.ok(result.documents.channels.every(({ data }) => !data.creative.variant_id));
+  // Kênh có variant chỉ đến từ plan Creative DNA đã duyệt (canary C1 từ 27/09).
+  for (const { data } of result.documents.channels.filter(({ data }) => data.creative.variant_id)) {
+    const variant = getVariant(data.creative.variant_id);
+    assert.ok(variant && variant.status === "active", data.channel_id);
+    assert.deepEqual(data.creative.preferred_engines, [variant.engine], data.channel_id);
+    assert.equal(data.creative.skins?.[variant.engine], undefined, data.channel_id);
+  }
 });
 
 test("channel validator enforces variant engine, allowed DNA, language and the variant's voice fx", () => {

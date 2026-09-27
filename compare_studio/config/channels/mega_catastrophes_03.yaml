@@ -1,5 +1,5 @@
 channel_id: mega_catastrophes_03
-config_version: 10
+config_version: 12
 niche_id: mega_catastrophes
 name: Naturkatastrophen der Erde 03
 tiktok_account_ref: null
@@ -53,8 +53,8 @@ creative:
         tone: 4
         caption: top
 audio:
-  voice_id: DiT_de_female_jiangshi
-  voice_speed: 0.96
+  voice_id: de-DE-AmalaNeural
+  voice_speed: 1.05
   voice_pitch: -1
   music_family: mega_catastrophes_editorial
   soundscape_id: newspaper

@@ -81,9 +81,11 @@ export function loadProsodyChannels(dir = CHANNEL_DIR) {
     const file = path.join(dir, name);
     const doc = YAML.parseDocument(fs.readFileSync(file, "utf8"));
     const data = doc.toJS();
-    return { file, doc, channel_id: data.channel_id, lang: data.publishing?.language, voice: data.audio?.voice_id,
+    return { file, doc, variant: data.creative?.variant_id, channel_id: data.channel_id, lang: data.publishing?.language, voice: data.audio?.voice_id,
       speed: Number(data.audio?.voice_speed), pitch: Number(data.audio?.voice_pitch) };
-  });
+  })
+    // Kênh có creative.variant_id: tốc độ/cao độ thuộc Voice DNA trong plan đã duyệt → không đổi ở đây.
+    .filter((channel) => !channel.variant);
 }
 
 export function planProsody({ dir = CHANNEL_DIR, lang } = {}) {

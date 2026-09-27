@@ -63,7 +63,8 @@ export function loadChannels(dir, engine) {
     const doc = YAML.parseDocument(fs.readFileSync(file, "utf8"));
     const data = doc.toJS();
     return { file, doc, data };
-  }).filter(({ data }) => data.creative?.preferred_engines?.includes(engine)).map((item) => ({
+  // Kênh có creative.variant_id do Creative DNA V2 quản lý (layout + engine chốt trong plan đã duyệt): không gán bộ da.
+  }).filter(({ data }) => !data.creative?.variant_id && data.creative?.preferred_engines?.includes(engine)).map((item) => ({
     ...item, channel_id: item.data.channel_id, lang: item.data.publishing?.language, niche: item.data.niche_id, skin: item.data.creative?.skins?.[engine],
   }));
 }
