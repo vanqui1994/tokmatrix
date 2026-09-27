@@ -792,7 +792,7 @@ def fill_profile_from_tiktok_api(res: Dict[str, Any], db_username: str = "", not
 # Chính sách: MỌI request chạm tới TikTok phải đi qua WireGuard VPN đúng vùng
 # của kênh. Không có tunnel thì KHÔNG gọi thẳng (tránh lộ IP thật) — hàm gọi
 # phải coi đó là lỗi và bỏ qua kênh.
-CHANNEL_PROXY_IDLE_TTL = int(os.environ.get("TOKMATRIX_CHANNEL_PROXY_IDLE_TTL", "900"))
+CHANNEL_PROXY_IDLE_TTL = int(os.environ.get("TOKMATRIX_CHANNEL_PROXY_IDLE_TTL", "300"))
 
 
 def _own_channel_proxy(ch_id: int, country: str = "", vpn_config: str = "") -> Dict[str, Any]:
@@ -4855,6 +4855,13 @@ def app_startup():
     conn.close()
     # Task đang đăng dở mà đã bấm "Đăng" → NEEDS_CHECK (không đăng lại); chờ render → ERROR.
     publish_flow.startup_cleanup(DB_PATH)
+    try:  # wireproxy mồ côi từ lần chạy trước chiếm kết nối NordVPN và giữ PrivateKey trong /tmp
+        from bkt_web import vpn_manager as _vpn
+        orphans = _vpn.cleanup_orphan_tunnels()
+        if orphans:
+            print(f"[VPN] Đã tắt {len(orphans)} tunnel wireproxy mồ côi: {orphans}")
+    except Exception as exc:
+        print(f"[VPN] Không dọn được tunnel mồ côi: {exc}")
     init_image_tables()
     init_script_tables()
     init_autopilot_db()

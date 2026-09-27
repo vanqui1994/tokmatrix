@@ -65,6 +65,8 @@ def system() -> dict:
             procs["hyperframes_render"] += 1
         if "tools/batch-matrix.mjs" in args:
             procs["batch_matrix"] += 1
+        if args.split(None, 1)[0].endswith("wireproxy"):
+            procs["vpn_tunnels"] += 1  # mọi tunnel dùng chung tài khoản NordVPN (~10 kết nối)
     return {
         "load": [float(x) for x in load],
         "cpus": os.cpu_count(),

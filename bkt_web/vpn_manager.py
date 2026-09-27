@@ -53,6 +53,10 @@ ACTIVE_TUNNELS: Dict[Any, Dict[str, Any]] = {}
 # Cấp cổng và spawn wireproxy phải nối tiếp nhau: FastAPI chạy endpoint sync
 # trong threadpool nên hai request song song có thể nhận trùng cổng.
 TUNNEL_LOCK = threading.RLock()
+# Mọi config NordVPN dùng chung 1–2 khoá của một tài khoản (giới hạn ~10 kết nối). Giữ tổng số tunnel
+# dưới ngưỡng đó; tunnel quét/kiểm kênh (có idle_ttl) bị tắt trước để nhường chỗ, tunnel đăng bài thì không.
+MAX_TUNNELS = max(1, int(os.environ.get("TOKMATRIX_MAX_TUNNELS", "6")))
+MAX_SCAN_TUNNELS = max(1, int(os.environ.get("TOKMATRIX_MAX_SCAN_TUNNELS", "4")))
 
 def get_free_port() -> int:
     """Finds a free local TCP port."""
@@ -493,6 +497,74 @@ def _ensure_reaper() -> None:
     threading.Thread(target=loop, name="vpn-tunnel-reaper", daemon=True).start()
 
 
+def _make_room_locked(scan: bool) -> List[Any]:
+    """Gọi khi đang giữ TUNNEL_LOCK, trước khi dựng tunnel mới: tắt tunnel quét dùng lâu nhất nếu vượt
+    MAX_SCAN_TUNNELS (tunnel quét mới) hoặc MAX_TUNNELS (mọi tunnel). Không bao giờ tắt tunnel đăng bài."""
+    evicted: List[Any] = []
+    while True:
+        scans = sorted(((info["expires_at"], key) for key, info in ACTIVE_TUNNELS.items() if info.get("expires_at")),
+                       key=lambda item: item[0])
+        over = len(ACTIVE_TUNNELS) >= MAX_TUNNELS or (scan and len(scans) >= MAX_SCAN_TUNNELS)
+        if not over or not scans:
+            return evicted
+        key = scans[0][1]
+        _discard_tunnel(ACTIVE_TUNNELS.pop(key))
+        evicted.append(key)
+
+
+def _proc_start_ticks(pid: int) -> Optional[int]:
+    try:
+        stat = Path(f"/proc/{pid}/stat").read_text()
+        return int(stat.rsplit(")", 1)[1].split()[19])
+    except (OSError, ValueError, IndexError):
+        return None
+
+
+def cleanup_orphan_tunnels() -> List[int]:
+    """Khi app khởi động (Linux): tắt tiến trình wireproxy cùng user mà app này không quản lý và đã chạy
+    trước app — mồ côi từ lần chạy cũ (27/09 có 6 tiến trình chạy 3–4 ngày, chiếm kết nối NordVPN) — và
+    xoá file config tạm chứa PrivateKey của chúng."""
+    proc_root = Path("/proc")
+    my_start = _proc_start_ticks(os.getpid())
+    if not proc_root.is_dir() or my_start is None:
+        return []
+    with TUNNEL_LOCK:
+        managed = {info.get("pid") for info in ACTIVE_TUNNELS.values()}
+    killed = []
+    uid = os.getuid()
+    for entry in proc_root.iterdir():
+        if not entry.name.isdigit():
+            continue
+        pid = int(entry.name)
+        try:
+            if entry.stat().st_uid != uid:
+                continue
+            argv = (entry / "cmdline").read_bytes().split(b"\0")
+        except OSError:
+            continue
+        if not argv or not argv[0].endswith(b"wireproxy") or pid in managed:
+            continue
+        start = _proc_start_ticks(pid)
+        if start is None or start >= my_start:
+            continue
+        try:
+            os.kill(pid, 15)
+            killed.append(pid)
+        except OSError:
+            continue
+        if b"-c" in argv[:-1]:
+            conf = Path(argv[argv.index(b"-c") + 1].decode(errors="ignore"))
+            if conf.parent == Path(tempfile.gettempdir()) and conf.suffix == ".conf":
+                conf.unlink(missing_ok=True)
+    return killed
+
+
+def tunnel_count() -> Dict[str, int]:
+    with TUNNEL_LOCK:
+        scan = sum(1 for info in ACTIVE_TUNNELS.values() if info.get("expires_at"))
+        return {"total": len(ACTIVE_TUNNELS), "scan": scan, "publish": len(ACTIVE_TUNNELS) - scan}
+
+
 def reap_idle_tunnels(now: Optional[float] = None) -> int:
     """Tắt tunnel mở với idle_ttl (quét/kiểm kênh) đã quá hạn. Tunnel không có hạn (đăng bài) không bị đụng."""
     now = time.time() if now is None else now
@@ -530,6 +602,8 @@ def start_wireguard_proxy(channel_id: Any, conf_rel_path: str, idle_ttl: Optiona
             # và file .conf chứa private key trong /tmp.
             ACTIVE_TUNNELS.pop(channel_id, None)
             _discard_tunnel(existing)
+
+        _make_room_locked(scan=bool(idle_ttl))
 
         wireproxy_exec = str(WIREPROXY_BIN)
         if not os.path.exists(wireproxy_exec):
@@ -577,6 +651,52 @@ def start_wireguard_proxy(channel_id: Any, conf_rel_path: str, idle_ttl: Optiona
 
         ACTIVE_TUNNELS[channel_id] = tunnel_info
         return _public_tunnel(tunnel_info)
+
+
+TUNNEL_PROBE_URL = "https://www.tiktok.com/"
+
+
+def tunnel_reaches(socks_port: int, url: str = TUNNEL_PROBE_URL, timeout: int = 8) -> bool:
+    """Tunnel đã thật sự ra được Internet chưa: gọi url qua SOCKS5 (cổng mở chưa chắc handshake xong)."""
+    try:
+        out = subprocess.run(
+            ["curl", "-s", "-o", "/dev/null", "-w", "%{http_code}", "--max-time", str(timeout),
+             "--socks5-hostname", f"127.0.0.1:{socks_port}", url],
+            capture_output=True, text=True, timeout=timeout + 5,
+        )
+    except (OSError, subprocess.SubprocessError):
+        return False
+    code = (out.stdout or "").strip()
+    return code.isdigit() and code != "000"
+
+
+def start_verified_wireguard_proxy(channel_id: Any, conf_rel_path: str, tunnels: int = 3, checks: int = 3,
+                                   check_gap: float = 5.0, probe=None, log=None) -> Dict[str, Any]:
+    """start_wireguard_proxy + chỉ trả tunnel khi gọi được TikTok qua nó.
+
+    NordVPN (mọi config dùng chung 1–2 khoá) thỉnh thoảng không bắt tay được trên tunnel mới: cổng SOCKS
+    vẫn mở nhưng mọi kết nối treo → trình duyệt ERR_TIMED_OUT sau 30 s (27/09: 7 task). Dựng lại tunnel
+    thường được ngay. Thử tối đa `tunnels` tunnel, mỗi tunnel `checks` lần cách `check_gap` giây.
+    """
+    probe = probe or tunnel_reaches
+    last_error = ""
+    for attempt in range(1, tunnels + 1):
+        try:
+            tunnel = start_wireguard_proxy(channel_id, conf_rel_path)
+        except Exception as exc:
+            last_error = str(exc)
+            tunnel = None
+        if tunnel:
+            for check in range(checks):
+                if probe(tunnel["socks_port"]):
+                    return tunnel
+                if check + 1 < checks:
+                    time.sleep(check_gap)
+            last_error = f"tunnel {format_vpn_location(conf_rel_path)} không gọi được TikTok"
+        stop_wireguard_proxy(channel_id)
+        if log and attempt < tunnels:
+            log(f"🛡️ VPN chưa thông ({last_error}) — dựng lại tunnel lần {attempt + 1}/{tunnels}", "warning")
+    raise RuntimeError(f"VPN không kết nối được tới TikTok sau {tunnels} lần dựng tunnel: {last_error}")
 
 
 def stop_wireguard_proxy(channel_id: Any):

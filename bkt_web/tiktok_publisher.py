@@ -571,7 +571,8 @@ async def publish_tiktok_video(
     if vpn_config:
         try:
             from bkt_web import vpn_manager
-            tunnel = vpn_manager.start_wireguard_proxy(channel_id, vpn_config)
+            # Chỉ mở trình duyệt khi tunnel đã gọi được TikTok (tunnel mới đôi khi treo → ERR_TIMED_OUT).
+            tunnel = await asyncio.to_thread(vpn_manager.start_verified_wireguard_proxy, channel_id, vpn_config, log=log)
             proxy_config = {"server": f"socks5://127.0.0.1:{tunnel['socks_port']}"}
             started_tunnel = True
             log(f"🛡️ Kích hoạt WireGuard VPN: {tunnel['location']} (SOCKS5 :{tunnel['socks_port']})", "info")
