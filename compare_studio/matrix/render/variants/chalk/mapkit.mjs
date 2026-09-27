@@ -311,7 +311,8 @@ ${layout.arrows.map((item, j) => `<mask id="${p}-am-${j}" maskUnits="userSpaceOn
     ...layout.markers.map((item) => labelSvg(item.label, lb.fill)),
     ...layout.arrows.map((item) => labelSvg(item.label, labelColor(item.color))),
   ].join("");
-  return `<svg class="cm-svg" data-layout-allow-overflow="true" viewBox="${view.x} ${view.y} ${view.w} ${view.h}" preserveAspectRatio="xMidYMid meet" width="100%" height="100%">${defs}${sea}${deco}${base}${highlights}${arrows}${markers}<g id="${p}-lb" class="cm-lb">${labels}</g>${look.front ? look.front({ view, unit, p, look }) : ""}</svg>`;
+  // display:block: SVG inline để lại khe baseline ~5px dưới đáy khung → hyperframes check báo clipped_text.
+  return `<svg class="cm-svg" data-layout-allow-overflow="true" style="display:block" viewBox="${view.x} ${view.y} ${view.w} ${view.h}" preserveAspectRatio="xMidYMid meet" width="100%" height="100%">${defs}${sea}${deco}${base}${highlights}${arrows}${markers}<g id="${p}-lb" class="cm-lb">${labels}</g>${look.front ? look.front({ view, unit, p, look }) : ""}</svg>`;
 }
 
 /**

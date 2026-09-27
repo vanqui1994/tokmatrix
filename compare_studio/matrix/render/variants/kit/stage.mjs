@@ -41,7 +41,7 @@ export function pad2(n) {
 
 // --- Đầu trang -----------------------------------------------------------------------------------------------------
 const HEADER_CSS = {
-  label_title: ".h-label{position:absolute;box-sizing:border-box;padding:8px 18px;font-size:32px;letter-spacing:7px;font-weight:700;background:var(--panel);color:var(--fg-on-panel);white-space:nowrap;overflow:hidden;text-overflow:clip}.h-title-box{position:absolute}.h-title{margin:0;font-size:64px;line-height:1.08;color:var(--head-ink)}",
+  label_title: ".h-label{position:absolute;box-sizing:border-box;padding:8px 18px;font-size:32px;line-height:1.3;letter-spacing:7px;font-weight:700;background:var(--panel);color:var(--fg-on-panel);white-space:nowrap;overflow:hidden;text-overflow:clip}.h-title-box{position:absolute}.h-title{margin:0;font-size:64px;line-height:1.08;color:var(--head-ink)}",
   masthead: ".h-mast{position:absolute;box-sizing:border-box;text-align:center;border-top:8px double var(--head-ink);border-bottom:8px double var(--head-ink);padding:10px 0}.h-mast-name{font-size:30px;letter-spacing:12px;color:var(--head-ink);font-weight:700}.h-title-box{position:absolute}.h-title{margin:0;font-size:78px;line-height:1.02;color:var(--head-ink);text-align:center;font-weight:700}",
   osd_bar: ".h-osd{position:absolute;box-sizing:border-box;display:flex;align-items:center;gap:24px;padding:0 26px;background:rgba(0,0,0,.72);border-bottom:3px solid var(--scope-ink,#7dffb0)}.h-osd .h-dot{width:26px;height:26px;border-radius:50%;background:#ff3b30;flex:none}.h-osd .h-label{font-size:30px;letter-spacing:5px;color:var(--scope-ink,#7dffb0);flex:none}.h-title-box{position:relative;flex:1;height:100%;display:flex;align-items:center}.h-title{margin:0;font-size:44px;line-height:1.1;color:#f2f2f2}",
   tab: ".h-tab{position:absolute;padding:14px 34px 10px;border-radius:18px 18px 0 0;background:#d8b778;font-size:30px;letter-spacing:6px;color:#3b2a10;font-weight:700}.h-title-box{position:absolute}.h-title{margin:0;font-size:62px;line-height:1.08;color:var(--head-ink)}",
@@ -171,6 +171,9 @@ export function buildStage(ctx, design, { ui, cfg = {} }) {
         sub: design.visual.sub ? escapeHtml(design.visual.sub(scene, i, ui)) : "",
         label: design.visual.label ? escapeHtml(design.visual.label(scene, i, ui)) : "",
       });
+      // visual.allowOcclusion: panel là hình minh hoạ có nhãn (bản đồ SVG) mà composition CỐ Ý đặt khối chú giải/tiêu đề đè
+      // lên (nhãn đã tránh các vùng đó). hyperframes coi cả SVG là một khối chữ nên cần khai báo lớp đè là có chủ đích.
+      if (design.visual.allowOcclusion) visual = visual.replace(/^<([a-z]+)/u, "<$1 data-layout-allow-occlusion");
       tweens.push(...imageMotionTweens(creative.dna.image_motion, rng, { target: `#v-img-${idx}`, start: scene.visualStart, duration: scene.visualDuration }));
       if (design.visual.frame === "radar") {
         tweens.push({ method: "fromTo", target: `#v-frame-${idx}-sweep`, from: { rotation: 0 }, vars: { rotation: 360 * Math.max(1, Math.round(scene.visualDuration / 3)), duration: scene.visualDuration, ease: "none" }, at: scene.visualStart });
