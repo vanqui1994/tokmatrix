@@ -1,5 +1,5 @@
 channel_id: mystery_05
-config_version: 3
+config_version: 4
 niche_id: unsolved_mysteries
 name: One Clue Later
 tiktok_account_ref: null
@@ -32,7 +32,7 @@ creative:
         tone: 8
         caption: top
 audio:
-  voice_id: vi-VN-NamMinhNeural
+  voice_id: multi_female_quanweinv_uranus_bigtts
   voice_speed: 1.1
   voice_pitch: 1
   music_family: investigative_ticking_pulse

@@ -61,7 +61,10 @@ def apply_language_to_channel_config(cfg: Dict[str, Any], language: str) -> bool
     """Đặt publishing.language + audio.voice_id cho khớp nhau. Trả True nếu có đổi."""
     publishing = cfg.setdefault("publishing", {})
     audio = cfg.setdefault("audio", {})
-    voice = voice_for_language(language, str(audio.get("voice_id") or ""))
+    current = str(audio.get("voice_id") or "")
+    # Ngôn ngữ không đổi → giữ giọng đã chia (tools/assign-voices.mjs; giọng CapCut như DiT_de_… không có tiền tố "de-",
+    # matrix-config-validator đã kiểm giọng khớp publishing.language).
+    voice = current if current and publishing.get("language") == language else voice_for_language(language, current)
     changed = publishing.get("language") != language or audio.get("voice_id") != voice
     publishing["language"] = language
     audio["voice_id"] = voice

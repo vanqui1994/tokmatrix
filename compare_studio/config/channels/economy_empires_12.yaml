@@ -2,11 +2,11 @@ audio:
   music_family: economy_empires_editorial
   sfx_density: medium
   soundscape_id: science
-  voice_id: de-DE-ConradNeural
+  voice_id: de-DE-KillianNeural
   voice_pitch: -1
   voice_speed: 1.02
 channel_id: economy_empires_12
-config_version: 5
+config_version: 6
 creative:
   cut_cadence_seconds: 2.9
   palette:

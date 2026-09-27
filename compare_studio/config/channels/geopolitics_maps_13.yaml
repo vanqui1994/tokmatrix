@@ -2,11 +2,11 @@ audio:
   music_family: geopolitics_maps_editorial
   sfx_density: medium
   soundscape_id: kinetic
-  voice_id: de-DE-ConradNeural
+  voice_id: DiT_de_female_qingsong
   voice_pitch: -1
   voice_speed: 1.01
 channel_id: geopolitics_maps_13
-config_version: 6
+config_version: 7
 creative:
   cut_cadence_seconds: 2.8
   palette:

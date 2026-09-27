@@ -1,5 +1,5 @@
 channel_id: mega_catastrophes_10
-config_version: 7
+config_version: 8
 niche_id: mega_catastrophes
 name: Earth's Great Disasters 10
 tiktok_account_ref: null
@@ -65,7 +65,7 @@ creative:
         tone: 1
         caption: bottom
 audio:
-  voice_id: en-US-AndrewNeural
+  voice_id: en-US-EricNeural
   voice_speed: 1.02
   voice_pitch: -1
   music_family: mega_catastrophes_editorial

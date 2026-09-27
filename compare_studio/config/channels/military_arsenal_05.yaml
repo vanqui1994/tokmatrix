@@ -1,5 +1,5 @@
 channel_id: military_arsenal_05
-config_version: 6
+config_version: 7
 niche_id: military_arsenal
 name: Weapons & War Machines 05
 tiktok_account_ref: null
@@ -53,7 +53,7 @@ creative:
         tone: 7
         caption: middle
 audio:
-  voice_id: en-US-AndrewNeural
+  voice_id: en-US-AvaNeural
   voice_speed: 1.02
   voice_pitch: -1
   music_family: military_arsenal_editorial

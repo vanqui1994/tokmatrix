@@ -2,11 +2,11 @@ audio:
   music_family: dark_psychology_editorial
   sfx_density: medium
   soundscape_id: mystery
-  voice_id: de-DE-ConradNeural
+  voice_id: DiT_de_female_qingsong
   voice_pitch: -1
   voice_speed: 1.02
 channel_id: dark_psychology_14
-config_version: 6
+config_version: 7
 creative:
   cut_cadence_seconds: 3.0
   palette:

@@ -2,11 +2,11 @@ audio:
   music_family: philosophy_paradox_editorial
   sfx_density: medium
   soundscape_id: science
-  voice_id: vi-VN-NamMinhNeural
+  voice_id: multi_female_quanweinv_uranus_bigtts
   voice_pitch: -1
   voice_speed: 1.05
 channel_id: philosophy_paradox_11
-config_version: 4
+config_version: 5
 creative:
   cut_cadence_seconds: 2.3
   palette:

@@ -1,5 +1,5 @@
 channel_id: infamous_figures_08
-config_version: 6
+config_version: 7
 niche_id: infamous_figures
 name: Berüchtigte Gestalten 08
 tiktok_account_ref: null
@@ -53,7 +53,7 @@ creative:
         tone: 4
         caption: bottom
 audio:
-  voice_id: de-DE-ConradNeural
+  voice_id: de-DE-FlorianMultilingualNeural
   voice_speed: 1.02
   voice_pitch: -1
   music_family: infamous_figures_editorial

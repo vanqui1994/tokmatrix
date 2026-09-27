@@ -2,11 +2,11 @@ audio:
   music_family: tech_ai_future_editorial
   sfx_density: medium
   soundscape_id: science
-  voice_id: vi-VN-NamMinhNeural
+  voice_id: vi_female_huong
   voice_pitch: -1
   voice_speed: 1.05
 channel_id: tech_ai_future_12
-config_version: 4
+config_version: 5
 creative:
   cut_cadence_seconds: 2.3
   palette:

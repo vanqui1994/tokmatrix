@@ -1,5 +1,5 @@
 channel_id: philosophy_paradox_04
-config_version: 6
+config_version: 7
 niche_id: philosophy_paradox
 name: 철학의 역설 04
 tiktok_account_ref: null
@@ -53,7 +53,7 @@ creative:
         tone: 8
         caption: bottom
 audio:
-  voice_id: ko-KR-InJoonNeural
+  voice_id: ko-KR-SunHiNeural
   voice_speed: 1.02
   voice_pitch: -1
   music_family: philosophy_paradox_editorial

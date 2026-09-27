@@ -1,5 +1,5 @@
 channel_id: forbidden_experiments_09
-config_version: 6
+config_version: 7
 niche_id: forbidden_experiments
 name: Verrückte Experimente 09
 tiktok_account_ref: null
@@ -53,7 +53,7 @@ creative:
         tone: 8
         caption: top
 audio:
-  voice_id: de-DE-ConradNeural
+  voice_id: de-DE-KatjaNeural
   voice_speed: 1.02
   voice_pitch: -1
   music_family: forbidden_experiments_editorial

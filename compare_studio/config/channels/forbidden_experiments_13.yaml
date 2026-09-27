@@ -2,11 +2,11 @@ audio:
   music_family: forbidden_experiments_editorial
   sfx_density: medium
   soundscape_id: science
-  voice_id: de-DE-ConradNeural
+  voice_id: de-DE-SeraphinaMultilingualNeural
   voice_pitch: -1
   voice_speed: 1.05
 channel_id: forbidden_experiments_13
-config_version: 6
+config_version: 7
 creative:
   cut_cadence_seconds: 2.7
   palette:

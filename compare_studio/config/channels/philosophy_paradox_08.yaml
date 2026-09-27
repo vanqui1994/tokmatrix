@@ -1,5 +1,5 @@
 channel_id: philosophy_paradox_08
-config_version: 3
+config_version: 4
 niche_id: philosophy_paradox
 name: Nghịch Lý Triết Học 08
 tiktok_account_ref: null
@@ -41,7 +41,7 @@ creative:
         tone: 2
         caption: bottom
 audio:
-  voice_id: vi-VN-NamMinhNeural
+  voice_id: BV075_streaming
   voice_speed: 1.02
   voice_pitch: -1
   music_family: philosophy_paradox_editorial

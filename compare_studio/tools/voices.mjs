@@ -32,10 +32,10 @@ export const COUNTRIES = [
       { id: "multi_male_felipe_uranus_bigtts", name: "Giọng Nam Trầm (CapCut)", provider: "capcut", gender: "male", desc: "CapCut 🎬 · Nam trầm ấm, hồ sơ tài liệu" },
       { id: "multi_female_richgirl_uranus_bigtts", name: "Review Phim (CapCut)", provider: "capcut", gender: "female", desc: "CapCut 🎬 · Nữ review phim TikTok hot" },
       { id: "multi_female_quanweinv_uranus_bigtts", name: "Bản Tin Nữ (CapCut)", provider: "capcut", gender: "female", desc: "CapCut 🎬 · Nữ phát thanh viên tin tức" },
-      { id: "BV074_streaming_dsp", name: "Giọng Bé (CapCut)", provider: "capcut", gender: "female", desc: "CapCut 🎬 · Hoạt hình trẻ em, dễ thương" },
+      { id: "BV074_streaming_dsp", name: "Giọng Bé (CapCut)", provider: "capcut", gender: "female", desc: "CapCut 🎬 · Hoạt hình trẻ em, dễ thương", narration: false },
       { id: "vi_female_huong", name: "Giọng Nữ Phổ Thông (CapCut)", provider: "capcut", gender: "female", desc: "CapCut 🎬 · Nữ phổ thông, rõ ràng" },
-      { id: "BV075_streaming_demon_dsp", name: "Kenny Đại Đế (CapCut)", provider: "capcut", gender: "male", desc: "CapCut 🎬 · Nam hài hước, hiệu ứng biến giọng" },
-      { id: "BV075_streaming_robot_dsp", name: "Robot VN (CapCut)", provider: "capcut", gender: "male", desc: "CapCut 🎬 · Giọng robot công nghệ" },
+      { id: "BV075_streaming_demon_dsp", name: "Kenny Đại Đế (CapCut)", provider: "capcut", gender: "male", desc: "CapCut 🎬 · Nam hài hước, hiệu ứng biến giọng", narration: false },
+      { id: "BV075_streaming_robot_dsp", name: "Robot VN (CapCut)", provider: "capcut", gender: "male", desc: "CapCut 🎬 · Giọng robot công nghệ", narration: false },
     ],
   },
   {
@@ -48,6 +48,16 @@ export const COUNTRIES = [
       // Edge TTS Neural
       { id: "en-US-AndrewNeural", name: "Andrew", provider: "edge", gender: "male", desc: "Male · Warm, confident narrator" },
       { id: "en-US-AvaNeural", name: "Ava", provider: "edge", gender: "female", desc: "Female · Natural, engaging voice" },
+      { id: "en-US-BrianNeural", name: "Brian", provider: "edge", gender: "male", desc: "Male · Casual, approachable" },
+      { id: "en-US-EmmaNeural", name: "Emma", provider: "edge", gender: "female", desc: "Female · Cheerful, clear" },
+      { id: "en-US-ChristopherNeural", name: "Christopher", provider: "edge", gender: "male", desc: "Male · Authoritative documentary" },
+      { id: "en-US-EricNeural", name: "Eric", provider: "edge", gender: "male", desc: "Male · Rational, calm" },
+      { id: "en-US-GuyNeural", name: "Guy", provider: "edge", gender: "male", desc: "Male · Passionate newscaster" },
+      { id: "en-US-JennyNeural", name: "Jenny", provider: "edge", gender: "female", desc: "Female · Friendly, considerate" },
+      { id: "en-US-MichelleNeural", name: "Michelle", provider: "edge", gender: "female", desc: "Female · Pleasant, steady" },
+      { id: "en-US-RogerNeural", name: "Roger", provider: "edge", gender: "male", desc: "Male · Lively storyteller" },
+      { id: "en-US-SteffanNeural", name: "Steffan", provider: "edge", gender: "male", desc: "Male · Measured explainer" },
+      { id: "en-US-AriaNeural", name: "Aria", provider: "edge", gender: "female", desc: "Female · Confident, positive" },
 
       // CapCut Viral Voices
       { id: "BV510_streaming", name: "English Narrator (CapCut)", provider: "capcut", gender: "male", desc: "CapCut 🎬 · Clear explainer & essay" },
@@ -66,6 +76,10 @@ export const COUNTRIES = [
     voices: [
       { id: "de-DE-ConradNeural", name: "Conrad", provider: "edge", gender: "male", desc: "Männlich · Klar und sachlich" },
       { id: "de-DE-KatjaNeural", name: "Katja", provider: "edge", gender: "female", desc: "Weiblich · Freundlich und lebendig" },
+      { id: "de-DE-AmalaNeural", name: "Amala", provider: "edge", gender: "female", desc: "Weiblich · Warm und ruhig" },
+      { id: "de-DE-KillianNeural", name: "Killian", provider: "edge", gender: "male", desc: "Männlich · Jung und direkt" },
+      { id: "de-DE-FlorianMultilingualNeural", name: "Florian", provider: "edge", gender: "male", desc: "Männlich · Erzähler, natürlich" },
+      { id: "de-DE-SeraphinaMultilingualNeural", name: "Seraphina", provider: "edge", gender: "female", desc: "Weiblich · Erzählerin, ausdrucksvoll" },
       { id: "DiT_de_male_koubo", name: "Koubo (CapCut)", provider: "capcut", gender: "male", desc: "CapCut 🎬 · Männlich, natürlich" },
       { id: "DiT_de_female_qingsong", name: "Sanfte Führerin (CapCut)", provider: "capcut", gender: "female", desc: "CapCut 🎬 · Weiblich, sanft" },
     ],
@@ -92,9 +106,10 @@ export const COUNTRIES = [
     voices: [
       { id: "ja-JP-KeitaNeural", name: "Keita (啓太)", provider: "edge", gender: "male", desc: "男性 · 明瞭で落ち着いた語り" },
       { id: "ja-JP-NanamiNeural", name: "Nanami (七海)", provider: "edge", gender: "female", desc: "女性 · 明るく親しみやすい" },
-      { id: "ICL_ja_female_zhiyu", name: "Lovely Idol (CapCut)", provider: "capcut", gender: "female", desc: "CapCut 🎬 · 女性, アイドル風・可愛い" },
-      { id: "ICL_jp_male_wutiaowu", name: "クールな青年 (CapCut)", provider: "capcut", gender: "male", desc: "CapCut 🎬 · 男性, アニメ風クール" },
+      { id: "ICL_ja_female_zhiyu", name: "Lovely Idol (CapCut)", provider: "capcut", gender: "female", desc: "CapCut 🎬 · 女性, アイドル風・可愛い", narration: false },
+      { id: "ICL_jp_male_wutiaowu", name: "クールな青年 (CapCut)", provider: "capcut", gender: "male", desc: "CapCut 🎬 · 男性, アニメ風クール", narration: false },
       { id: "ICL_ja_male_xinggan", name: "Xinggan (CapCut)", provider: "capcut", gender: "male", desc: "CapCut 🎬 · 男性, 低音ドキュメンタリー" },
+      { id: "ICL_ja_female_narrator", name: "Narrator (CapCut)", provider: "capcut", gender: "female", desc: "CapCut 🎬 · 女性, ナレーション" },
     ],
   },
   {
@@ -106,6 +121,7 @@ export const COUNTRIES = [
     voices: [
       { id: "ko-KR-InJoonNeural", name: "InJoon (인준)", provider: "edge", gender: "male", desc: "남성 · 신뢰감 있는 또렷한 목소리" },
       { id: "ko-KR-SunHiNeural", name: "SunHi (선희)", provider: "edge", gender: "female", desc: "여성 · 밝고 자연스러운 음성" },
+      { id: "ko-KR-HyunsuMultilingualNeural", name: "Hyunsu (현수)", provider: "edge", gender: "male", desc: "남성 · 차분한 내레이션" },
     ],
   },
 ];

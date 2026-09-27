@@ -1,5 +1,5 @@
 channel_id: medical_anomalies_08
-config_version: 5
+config_version: 6
 niche_id: medical_anomalies
 name: Medizin & Biologische Rätsel 08
 tiktok_account_ref: null
@@ -41,7 +41,7 @@ creative:
         tone: 4
         caption: middle
 audio:
-  voice_id: de-DE-ConradNeural
+  voice_id: de-DE-FlorianMultilingualNeural
   voice_speed: 1.02
   voice_pitch: -1
   music_family: medical_anomalies_editorial

@@ -1,5 +1,5 @@
 channel_id: ancient_mythology_06
-config_version: 5
+config_version: 6
 niche_id: ancient_mythology
 name: Antike Mythen 06
 tiktok_account_ref: null
@@ -41,7 +41,7 @@ creative:
         tone: 2
         caption: middle
 audio:
-  voice_id: de-DE-ConradNeural
+  voice_id: de-DE-KillianNeural
   voice_speed: 1.02
   voice_pitch: -1
   music_family: ancient_mythology_editorial

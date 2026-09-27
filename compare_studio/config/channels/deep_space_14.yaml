@@ -2,11 +2,11 @@ audio:
   music_family: deep_space_editorial
   sfx_density: medium
   soundscape_id: science
-  voice_id: de-DE-ConradNeural
+  voice_id: de-DE-FlorianMultilingualNeural
   voice_pitch: -1
   voice_speed: 1.05
 channel_id: deep_space_14
-config_version: 5
+config_version: 6
 creative:
   cut_cadence_seconds: 3.0
   palette:

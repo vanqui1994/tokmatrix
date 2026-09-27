@@ -1,5 +1,5 @@
 channel_id: mystery_09
-config_version: 3
+config_version: 4
 niche_id: unsolved_mysteries
 name: Bí Ẩn Chưa Lời Giải 09
 tiktok_account_ref: null
@@ -41,7 +41,7 @@ creative:
         tone: 7
         caption: bottom
 audio:
-  voice_id: vi-VN-NamMinhNeural
+  voice_id: BV075_streaming
   voice_speed: 1.02
   voice_pitch: -1
   music_family: unsolved_mysteries_editorial

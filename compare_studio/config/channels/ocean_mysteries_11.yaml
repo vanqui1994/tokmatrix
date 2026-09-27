@@ -2,11 +2,11 @@ audio:
   music_family: ocean_mysteries_editorial
   sfx_density: medium
   soundscape_id: mystery
-  voice_id: ko-KR-InJoonNeural
+  voice_id: ko-KR-SunHiNeural
   voice_pitch: -1
   voice_speed: 1.02
 channel_id: ocean_mysteries_11
-config_version: 5
+config_version: 6
 creative:
   cut_cadence_seconds: 2.6
   palette:

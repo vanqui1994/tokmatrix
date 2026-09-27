@@ -1,5 +1,5 @@
 channel_id: geopolitics_maps_10
-config_version: 6
+config_version: 7
 niche_id: geopolitics_maps
 name: Geopolitik & Grenzen 10
 tiktok_account_ref: null
@@ -53,7 +53,7 @@ creative:
         tone: 4
         caption: middle
 audio:
-  voice_id: de-DE-ConradNeural
+  voice_id: de-DE-FlorianMultilingualNeural
   voice_speed: 1.02
   voice_pitch: -1
   music_family: geopolitics_maps_editorial

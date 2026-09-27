@@ -2,11 +2,11 @@ audio:
   music_family: unsolved_mysteries_editorial
   sfx_density: medium
   soundscape_id: kinetic
-  voice_id: vi-VN-NamMinhNeural
+  voice_id: multi_female_quanweinv_uranus_bigtts
   voice_pitch: -1
   voice_speed: 1.02
 channel_id: unsolved_mysteries_12
-config_version: 4
+config_version: 5
 creative:
   cut_cadence_seconds: 2.9
   palette:

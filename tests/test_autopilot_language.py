@@ -34,6 +34,13 @@ class ChannelLanguageConfigTest(unittest.TestCase):
         self.assertEqual(cfg["audio"]["voice_id"], "de-DE-KatjaNeural")
         self.assertEqual(cfg["config_version"], 4)
 
+    def test_spread_voice_of_the_same_language_is_kept(self):
+        # tools/assign-voices.mjs chia cả giọng CapCut (không có tiền tố "de-") — đồng bộ ngôn ngữ không được đặt lại.
+        cfg = {"config_version": 7, "audio": {"voice_id": "DiT_de_male_koubo"}, "publishing": {"language": "de"}}
+        self.assertFalse(autopilot.apply_language_to_channel_config(cfg, "de"))
+        self.assertEqual(cfg["audio"]["voice_id"], "DiT_de_male_koubo")
+        self.assertEqual(cfg["config_version"], 7)
+
     def test_every_supported_language_has_both_voices(self):
         for language, voices in autopilot.LANGUAGE_VOICES.items():
             self.assertTrue(voices["male"].startswith(f"{language}-"))

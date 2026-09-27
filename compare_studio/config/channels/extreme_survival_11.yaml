@@ -2,11 +2,11 @@ audio:
   music_family: extreme_survival_editorial
   sfx_density: medium
   soundscape_id: survival
-  voice_id: en-US-AndrewNeural
+  voice_id: en_us_006
   voice_pitch: -1
   voice_speed: 1.03
 channel_id: extreme_survival_11
-config_version: 6
+config_version: 7
 creative:
   cut_cadence_seconds: 2.3
   palette:

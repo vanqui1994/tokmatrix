@@ -1,5 +1,5 @@
 channel_id: mega_catastrophes_05
-config_version: 5
+config_version: 6
 niche_id: mega_catastrophes
 name: Earth's Great Disasters 05
 tiktok_account_ref: null
@@ -41,7 +41,7 @@ creative:
         tone: 0
         caption: middle
 audio:
-  voice_id: en-US-AndrewNeural
+  voice_id: en_us_002
   voice_speed: 1.02
   voice_pitch: -1
   music_family: mega_catastrophes_editorial

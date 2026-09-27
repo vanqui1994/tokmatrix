@@ -1,5 +1,5 @@
 channel_id: geopolitics_maps_06
-config_version: 4
+config_version: 5
 niche_id: geopolitics_maps
 name: Geopolitik & Grenzen 06
 tiktok_account_ref: null
@@ -28,7 +28,7 @@ creative:
     accent: '#D6A84F'
     text: '#F2EEE6'
 audio:
-  voice_id: de-DE-ConradNeural
+  voice_id: de-DE-FlorianMultilingualNeural
   voice_speed: 1.02
   voice_pitch: -1
   music_family: geopolitics_maps_editorial

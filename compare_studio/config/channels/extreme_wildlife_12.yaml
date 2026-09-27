@@ -2,11 +2,11 @@ audio:
   music_family: extreme_wildlife_editorial
   sfx_density: medium
   soundscape_id: survival
-  voice_id: en-US-AndrewNeural
+  voice_id: en-US-BrianNeural
   voice_pitch: -1
   voice_speed: 0.98
 channel_id: extreme_wildlife_12
-config_version: 5
+config_version: 6
 creative:
   cut_cadence_seconds: 2.3
   palette:

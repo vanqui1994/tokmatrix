@@ -1,5 +1,5 @@
 channel_id: space_09
-config_version: 6
+config_version: 7
 niche_id: deep_space
 name: Kosmos & Physik 09
 tiktok_account_ref: null
@@ -53,7 +53,7 @@ creative:
         tone: 7
         caption: bottom
 audio:
-  voice_id: de-DE-ConradNeural
+  voice_id: DiT_de_male_koubo
   voice_speed: 1.02
   voice_pitch: -1
   music_family: deep_space_editorial

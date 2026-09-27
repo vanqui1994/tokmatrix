@@ -2,11 +2,11 @@ audio:
   music_family: medical_anomalies_editorial
   sfx_density: medium
   soundscape_id: vox
-  voice_id: de-DE-ConradNeural
+  voice_id: de-DE-KatjaNeural
   voice_pitch: -1
   voice_speed: 1.0
 channel_id: medical_anomalies_11
-config_version: 6
+config_version: 7
 creative:
   cut_cadence_seconds: 2.6
   palette:

@@ -2,11 +2,11 @@ audio:
   music_family: lost_civilizations_editorial
   sfx_density: medium
   soundscape_id: science
-  voice_id: de-DE-ConradNeural
+  voice_id: de-DE-FlorianMultilingualNeural
   voice_pitch: -1
   voice_speed: 1.01
 channel_id: lost_civilizations_11
-config_version: 5
+config_version: 6
 creative:
   cut_cadence_seconds: 2.9
   palette:

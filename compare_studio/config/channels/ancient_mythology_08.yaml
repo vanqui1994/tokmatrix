@@ -1,5 +1,5 @@
 channel_id: ancient_mythology_08
-config_version: 6
+config_version: 7
 niche_id: ancient_mythology
 name: Antike Mythen 08
 tiktok_account_ref: null
@@ -53,7 +53,7 @@ creative:
         tone: 7
         caption: middle
 audio:
-  voice_id: de-DE-ConradNeural
+  voice_id: de-DE-SeraphinaMultilingualNeural
   voice_speed: 1.02
   voice_pitch: -1
   music_family: ancient_mythology_editorial

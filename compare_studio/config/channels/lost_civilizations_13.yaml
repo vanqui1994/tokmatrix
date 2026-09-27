@@ -2,11 +2,11 @@ audio:
   music_family: lost_civilizations_editorial
   sfx_density: medium
   soundscape_id: science
-  voice_id: de-DE-ConradNeural
+  voice_id: DiT_de_male_koubo
   voice_pitch: -1
   voice_speed: 1.0
 channel_id: lost_civilizations_13
-config_version: 5
+config_version: 6
 creative:
   cut_cadence_seconds: 2.4
   palette:

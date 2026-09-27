@@ -1,5 +1,5 @@
 channel_id: economy_empires_07
-config_version: 6
+config_version: 7
 niche_id: economy_empires
 name: Wirtschaft & Märkte 07
 tiktok_account_ref: null
@@ -53,7 +53,7 @@ creative:
         tone: 7
         caption: middle
 audio:
-  voice_id: de-DE-ConradNeural
+  voice_id: de-DE-KillianNeural
   voice_speed: 1.02
   voice_pitch: -1
   music_family: economy_empires_editorial

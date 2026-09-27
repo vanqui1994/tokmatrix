@@ -2,11 +2,11 @@ audio:
   music_family: medical_anomalies_editorial
   sfx_density: medium
   soundscape_id: vox
-  voice_id: de-DE-ConradNeural
+  voice_id: DiT_de_female_qingsong
   voice_pitch: -1
   voice_speed: 0.98
 channel_id: medical_anomalies_12
-config_version: 6
+config_version: 7
 creative:
   cut_cadence_seconds: 2.3
   palette:
