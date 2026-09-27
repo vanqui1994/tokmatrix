@@ -1,0 +1,14 @@
+# Seed topics for topic pack kinetic_quick_facts (free): One surprising, verifiable fact told in short punchy lines
+# Gemini adds more in storage/autopilot_topics/packs/kinetic_quick_facts.txt when these run out.
+Why a day on Venus lasts longer than its year
+How Cleopatra lived closer in time to the Moon landing than to the Great Pyramid
+Why octopuses have three hearts and blue blood
+How a sneeze can travel eight metres across a room
+Why Oxford University is older than the Aztec Empire
+How the Eiffel Tower grows about 15 centimetres taller in summer
+Why honey found in Egyptian tombs was still edible
+How Napoleon was once attacked by a horde of rabbits
+Why sharks existed before trees appeared on Earth
+How a single bolt of lightning is five times hotter than the Sun's surface
+Why the Pacific Ocean shrinks by a few centimetres every year
+How the shortest war in history lasted under 40 minutes
