@@ -692,7 +692,8 @@ Tổng 74 base variant đang active, khoảng 150 structural identity (variant#c
 Mỗi engine giữ asset type của engine gốc (không đổi provider ảnh; ảnh vẫn qua hàng đợi Antigravity).
 
 Preview "-a" là 4 ngôn ngữ (en/de/ja/ko) × mọi composition. Contact sheet và `similarity.json` từng engine ở
-`/mnt/project-files/matrix-variant-v2/phase*-<engine>-*`.
+`/mnt/project-files/matrix-variant-v2/phase*-<engine>-*`. Cột similarity chỉ đo **trong một engine với DNA mẫu "-a"**;
+đo cross-engine và DNA "-b" ở mục 26 cho thấy có cặp vượt ngưỡng.
 
 Quyết định thiết kế (theo mục 20):
 - Ô cửa tàu ngầm chỉ còn ở wildlife/deep-ocean; survival/deep-sea là thước độ sâu dọc + đồng hồ áp suất; mystery/sonar-log là
@@ -787,7 +788,8 @@ HuggingFace hay VPS, nên các bước dưới chạy **trên VPS**, lần lư�
 - Chọn tất định, rải đều engine rồi nước, ưu tiên `ok` hơn `soft:*`.
 - Dòng `hard:*` không bao giờ vào cohort. Các kênh đó giữ đường legacy và được liệt kê trong `summary.left_legacy`.
   Trước khi hỗ trợ VN, plan đầy đủ bị `apply_plan` từ chối vì có 35 kênh VN `hard:capacity`.
-- Trên config repo (có VN): C1 = 8 acc (DE 2 · GB 2 · JP 1 · KR 1 · VN 2), C2 = 20 (4 mỗi nước), C3 = 119, C4 = 237.
+- Trên config repo (có VN, có `structure_conflicts.json`): C1 = 8 acc (DE 2 · GB 2 · JP 2 · KR 1 · VN 1), C2 = 20, C3 = 119,
+  C4 = 237.
 
 ### 25.2 Một bậc
 
@@ -806,3 +808,35 @@ HuggingFace hay VPS, nên các bước dưới chạy **trên VPS**, lần lư�
 - Clone giọng (chỉ khi dùng): `pip install -r requirements-voice-clone.txt`, rồi `python3 -m bkt_web.voice_clone setup`,
   rồi `enroll --consent owner|licensed`.
 - Đo chi phí render: ghi thời gian render và dung lượng MP4 của các video C1 so với legacy cùng engine.
+
+## 26. Similarity cross-engine (2026-09-27) và gán tránh cặp giống nhau
+
+Đo lần đầu **mọi engine cùng lúc**: 894 preview = 149 cấu trúc × de/en/vi × 2 DNA mẫu ("-a", "-b"), 6 khung mỗi preview
+(`hyperframes@0.8.75 snapshot`), 399 171 cặp, `python3 -m bkt_web.creative_similarity previews`.
+
+| Nhóm | n | mean | p95 | max |
+|---|---|---|---|---|
+| cross_engine | 359 208 | 0.344 | 0.474 | 0.685 |
+| same_engine | 39 963 | 0.402 | 0.707 | 0.897 |
+| same_variant_other_composition | 2 736 | 0.429 | 0.542 | 0.688 |
+| same_structure_diff_dna (không bị gate) | 2 235 | 0.793 | 0.879 | 0.897 |
+| **gate** (cùng nước, khác cấu trúc) | 132 312 | 0.348 | 0.481 | **0.688** |
+
+- **Gate không đạt:** 61 cặp mẫu cùng nước ≥ 0.62 (en 27 · de 20 · vi 14), gom lại thành **20 cặp cấu trúc** (30 cấu trúc).
+  Chỉ DNA "-a" thì trong-engine vẫn ≤ 0.616 (khớp mục 24.1), nhưng cross-engine đã có 9 cặp vượt; DNA "-b" thêm 15 cặp
+  trong-engine. Nặng nhất: `newspaper/court-sketch` sketch_pad ↔ easel_board 0.688, `science/xray#lightbox` ↔
+  `vox/timeline-explainer#track_below` 0.685, `folklore/korean-gwishin#moon_window` ↔ `mystery/decoded#cipher_hex` 0.666.
+- **Không nới ngưỡng.** Cặp vượt được ghi vào `compare_studio/config/structure_conflicts.json`
+  (`python3 -m bkt_web.creative_similarity conflicts --report similarity.json --out …`). `creative_dna.plan_assignments`
+  đọc file này: trong mỗi nước loại dần cấu trúc có nhiều xung đột nhất (tie: hash) miễn là số acc được ghép không giảm, nên
+  không nước nào có hai kênh mang hai cấu trúc của cùng một cặp. Cặp không tránh được (thiếu cấu trúc) bị đánh `soft:similar`
+  để người duyệt thấy; dòng `keep` không bị đổi.
+- Kết quả trên config repo: 237/237 kênh vẫn có variant, 0 cặp xung đột trong cùng nước, plan apply được
+  (`plan_sha256 = ad79d374…`, `docs/creative_dna/dry-run-2026-09-27.*`). Không có file conflicts thì plan y như trước.
+- ja/ko chưa có trong lần đo này; xung đột đo ở de/en/vi được áp cho mọi nước (xung đột nằm ở bố cục, không ở ngôn ngữ).
+- **Việc tiếp theo (không chặn canary):** sửa bố cục các cấu trúc nằm trong nhiều cặp nhất (court-sketch sketch_pad,
+  decoded cipher_hex, yokai-scroll emaki, korean-gwishin moon_window), đo lại, rồi sinh lại `structure_conflicts.json`.
+  Cặp nào hết vượt ngưỡng thì tự thôi ràng buộc việc gán.
+- Sau mỗi lần đổi layout/kit: build preview (`tools/preview-variants.mjs --langs de,en,vi`), chụp, đo, sinh lại file
+  conflicts, chạy lại dry-run. Đo cả DNA "-b": DNA mẫu "-a" một mình không đủ.
+

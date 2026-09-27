@@ -248,6 +248,21 @@ class CreativeDnaCanaryTest(unittest.TestCase):
         self.assertFalse(character & {r["voice"] for r in self.plan["rows"]})
         self.assertTrue(any(r["country"] == "VN" and r["variant_id"] for r in self.plan["rows"]), "VN channels get variants")
 
+    def test_committed_conflicts_name_real_structures_and_are_avoided_in_every_country(self):
+        conflicts = cd.load_conflicts()
+        self.assertTrue(conflicts, "compare_studio/config/structure_conflicts.json is committed")
+        registry = cd.load_registry()
+        structures = {f"{v['id']}#{c}" for v in registry["variants"] for c in v["compositions"]}
+        self.assertFalse(set(conflicts) - structures, "stale keys would silently stop constraining assignment")
+        plan = cd.plan_assignments(cd.load_channels(), registry, cd.load_niche_engines(), None, None, conflicts)
+        by_country = {}
+        for row in plan["rows"]:
+            if row["structural_key"]:
+                by_country.setdefault(row["country"], set()).add(row["structural_key"])
+        clashes = [(c, k) for c, keys in by_country.items() for k in keys if conflicts.get(k, set()) & keys]
+        self.assertEqual(clashes, [])
+        self.assertEqual(sum(1 for r in plan["rows"] if r["variant_id"]), sum(1 for r in self.plan["rows"] if r["variant_id"]))
+
     def test_cohort_plan_applies_on_a_copy(self):
         import tempfile, shutil
         tmp = Path(tempfile.mkdtemp())
