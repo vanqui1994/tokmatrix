@@ -1,0 +1,8 @@
+id: science_inside_things
+engine: science
+format: free
+brief: "What is inside everyday objects and machines"
+languages: [en, de, ko, ja]
+niches:
+  - tech_ai_future
+  - military_arsenal

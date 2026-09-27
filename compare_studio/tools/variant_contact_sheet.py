@@ -89,7 +89,11 @@ def main(argv=None) -> int:
     parser.add_argument("--out", required=True)
     parser.add_argument("--limit", type=int, default=0, help="chỉ lấy N preview đầu (0 = tất cả)")
     parser.add_argument("--check-determinism", action="store_true")
+    parser.add_argument("--positions", default="", help="tỉ lệ thời lượng, vd 0.2,0.45,0.8 (mặc định 0.2,0.5,0.8)")
     args = parser.parse_args(argv)
+    global POSITIONS
+    if args.positions:
+        POSITIONS = tuple(float(p) for p in args.positions.split(","))
     manifest = json.loads(Path(args.manifest).read_text(encoding="utf-8"))
     entries = manifest["entries"][: args.limit or None]
     work = Path(args.out).with_suffix("")

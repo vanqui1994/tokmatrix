@@ -1,9 +1,15 @@
+import { cloneProblems } from "../matrix/creative/voice-clone.mjs";
+import { VOICE_FX, isVoiceFx } from "../matrix/creative/voice-fx.mjs";
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import Ajv from "ajv";
 import YAML from "yaml";
 import { getVoice } from "./voices.mjs";
+import { getVariant } from "../matrix/render/variants/index.mjs";
+import { COMPARE_TOPIC_MIN } from "../matrix/planner/template-selector.mjs";
+import { validateDna } from "../matrix/render/variants/dna.mjs";
+import { skinViolations } from "../matrix/render/variants/skins.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../config");
 const CATEGORY_SCHEMAS = {
@@ -28,7 +34,7 @@ function readSchemas(configDir) {
 function listYamlFiles(dir) {
   return fs.readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
     const fullPath = path.join(dir, entry.name);
-    if (entry.isDirectory()) return entry.name === "schemas" ? [] : listYamlFiles(fullPath);
+    if (entry.isDirectory()) return ["schemas", "topic_packs"].includes(entry.name) ? [] : listYamlFiles(fullPath);
     return /\.ya?ml$/i.test(entry.name) ? [fullPath] : [];
   });
 }
@@ -95,11 +101,18 @@ function validateRelations(documents, errors) {
     }
     const compatible = new Set(engineIds.filter((id) => matrixNiche.scores[id] >= matrix.minimum_score));
     for (const engineId of data.creative.preferred_engines) {
-      if (!compatible.has(engineId) || !nicheConfig.allowed_engines.includes(engineId)) {
+      // Kênh variant compare: đề tài luôn "A vs B" (topic pack format versus), nên chỉ cần điểm compare của niche
+      // ≥ COMPARE_TOPIC_MIN như đường topicEngine — compare cố ý không nằm trong allowed_engines.
+      const compareVariant = engineId === "compare" && String(data.creative.variant_id || "").startsWith("compare/")
+        && (matrixNiche.scores.compare ?? 0) >= COMPARE_TOPIC_MIN;
+      if (!compareVariant && (!compatible.has(engineId) || !nicheConfig.allowed_engines.includes(engineId))) {
         errors.push(`${relativePath}: engine ${engineId} is not allowed for ${data.niche_id}`);
       }
     }
   }
+
+  for (const { data, relativePath } of channels) errors.push(...validateChannelCreative(data).map((error) => `${relativePath}: ${error}`));
+  validateSkins(channels, errors);
 
   for (const [nicheId, count] of channelCounts) {
     if (count < 10) errors.push(`${nicheId}: expected at least 10 channel configs, found ${count}`);
@@ -131,6 +144,58 @@ function validateRelations(documents, errors) {
         errors.push(`${relativePath}: filename must match ${idField} ${data[idField]}`);
       }
     }
+  }
+}
+
+/**
+ * Luật Creative DNA của một kênh (docs/MATRIX_VARIANT_SYSTEM_V2.md mục 12). Kênh không có creative.variant_id
+ * không bị kiểm gì thêm (đường legacy). Variant "reference" chỉ hợp lệ khi MATRIX_ALLOW_REFERENCE_VARIANTS=1.
+ */
+export function validateChannelCreative(data) {
+  const errors = [];
+  const fx = data.audio?.voice_fx;
+  if (fx && !isVoiceFx(fx)) errors.push(`audio.voice_fx "${fx}" is not one of ${Object.keys(VOICE_FX).join("|")}`);
+  errors.push(...cloneProblems(data.audio?.voice_clone, data.publishing?.language));
+  const variantId = data.creative?.variant_id;
+  if (!variantId) return errors;
+  const variant = getVariant(variantId);
+  // Một nguồn cho mỗi engine: variant_id của kênh thắng, nên bộ da cùng engine là cấu hình chết → lỗi.
+  if (variant && data.creative.skins?.[variant.engine]) {
+    errors.push(`creative.skins.${variant.engine} conflicts with creative.variant_id ${variantId} (same engine)`);
+  }
+  if (!variant) return [...errors, `creative.variant_id ${variantId} is unknown or not active`];
+  // FX giọng phải nằm trong audioProfile.fx của variant (vd folklore chỉ nhận "creepy").
+  if (!variant.audioProfile.fx.includes(fx || "none")) {
+    errors.push(`audio.voice_fx "${fx || "none"}" is not allowed by ${variantId} (${variant.audioProfile.fx.join("|")})`);
+  }
+  const engines = data.creative.preferred_engines || [];
+  if (engines.length !== 1 || engines[0] !== variant.engine) {
+    errors.push(`creative.preferred_engines must be exactly [${variant.engine}] for variant ${variantId}`);
+  }
+  const niches = variant.compatibility.niches;
+  if (Array.isArray(niches) && !niches.includes(data.niche_id)) errors.push(`variant ${variantId} does not allow niche ${data.niche_id}`);
+  errors.push(...validateDna(data.creative.dna, variant, data.publishing?.language).map((error) => `creative.${error}`));
+  return errors;
+}
+
+/** creative.skins: variant tồn tại + active, đúng engine, engine nằm trong preferred_engines, DNA hợp lệ với nước;
+ * và 2 acc cùng nước + cùng engine phải khác nhau đủ chiều (docs/PLAN_compare_per_country.md mục 2). */
+function validateSkins(channels, errors) {
+  const rowsByEngine = new Map();
+  for (const { data, relativePath } of channels) {
+    const lang = data.publishing?.language;
+    for (const [engine, skin] of Object.entries(data.creative?.skins || {})) {
+      const variant = getVariant(skin.variant_id, { allowReference: false });
+      if (!variant) { errors.push(`${relativePath}: skin ${engine} uses unknown or inactive variant ${skin.variant_id}`); continue; }
+      if (variant.engine !== engine) errors.push(`${relativePath}: skin ${engine} points at ${skin.variant_id} (engine ${variant.engine})`);
+      if (!data.creative.preferred_engines.includes(engine)) errors.push(`${relativePath}: skin ${engine} is not in preferred_engines`);
+      for (const problem of validateDna(skin.dna, variant, lang)) errors.push(`${relativePath}: skin ${engine}: ${problem}`);
+      if (!rowsByEngine.has(engine)) rowsByEngine.set(engine, []);
+      rowsByEngine.get(engine).push({ channel_id: data.channel_id, country: String(lang || "").slice(0, 2), dna: skin.dna });
+    }
+  }
+  for (const [engine, rows] of rowsByEngine) {
+    for (const v of skinViolations(rows)) errors.push(`skins ${engine}: ${v.a} and ${v.b} (${v.country}) differ in only ${v.distance} axes or share layout and colour`);
   }
 }
 

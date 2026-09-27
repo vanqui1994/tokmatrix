@@ -1,0 +1,8 @@
+id: chalk_frontlines
+engine: chalk
+format: free
+brief: "How a frontline moved during a conflict, step by step"
+languages: [en, de, ko, ja]
+niches:
+  - military_arsenal
+  - geopolitics_maps

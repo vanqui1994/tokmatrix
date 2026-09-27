@@ -252,6 +252,37 @@ test("selected TTS provider failures never silently cross-fallback", async () =>
   assert.equal(capcutCalls, 0);
 });
 
+test("voice clone runs after TTS and before pitch/fx, keys the cache and never falls back to the base voice", async () => {
+  const { cloneKeyPart, cloneProblems } = await import("../matrix/creative/voice-clone.mjs");
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "matrix-clone-"));
+  const calls = [];
+  const step = (name) => async (src, out) => { calls.push([name, path.basename(src), path.basename(out)]); fs.writeFileSync(out, fs.readFileSync(src)); };
+  const synthesize = createVoiceSynthesizer({
+    capcutProvider: async ({ outPath }) => { calls.push(["tts", path.basename(outPath)]); fs.writeFileSync(outPath, "raw"); },
+    cloneProcessor: step("clone"), pitchProcessor: step("pitch"), fxProcessor: step("fx"),
+  });
+  const outPath = path.join(dir, "narration.mp3");
+  await synthesize({ text: "Hallo", voice: { id: "DiT_de_male_koubo", provider: "capcut" }, rate: 1, pitch: -1, fx: "creepy", clone: "de_host_01", outPath });
+  assert.deepEqual(calls.map((c) => c[0]), ["tts", "clone", "pitch", "fx"]);
+  assert.equal(calls.at(-1)[2], "narration.mp3");
+  assert.deepEqual(fs.readdirSync(dir), ["narration.mp3"], "intermediate files are removed");
+
+  const failing = createVoiceSynthesizer({ capcutProvider: async ({ outPath: out }) => fs.writeFileSync(out, "raw"), cloneProcessor: async () => { throw new Error("converter missing"); } });
+  await assert.rejects(() => failing({ text: "Hallo", voice: { id: "x", provider: "capcut" }, rate: 1, pitch: 0, clone: "de_host_01", outPath: path.join(dir, "b.mp3") }), /converter missing/);
+  assert.ok(!fs.existsSync(path.join(dir, "b.mp3")));
+
+  const registry = { de_host_01: { lang: "de", consent: "owner", se_sha256: "abc" }, nope: { lang: "de", consent: "" } };
+  assert.deepEqual(cloneProblems("de_host_01", "de", registry), []);
+  assert.match(cloneProblems("de_host_01", "ja", registry)[0], /enrolled for de/u);
+  assert.match(cloneProblems("nope", "de", registry)[0], /consent/u);
+  assert.match(cloneProblems("ghost", "de", registry)[0], /not enrolled/u);
+  assert.match(cloneProblems("Bad Id", "de", {})[0], /valid clone id/u);
+  assert.deepEqual(cloneKeyPart(null, registry), {});
+  assert.deepEqual(cloneKeyPart("de_host_01", registry), { clone: "de_host_01", clone_version: 1, clone_se: "abc" });
+  assert.throws(() => cloneKeyPart("ghost", registry), /not enrolled/u);
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
 test("audio orchestration uses measured TTS durations, explicit providers and resumable voice artifacts", async () => {
   const directory = fs.mkdtempSync(path.join(os.tmpdir(), "matrix-audio-"));
   const channel = channelFor("unsolved_mysteries");

@@ -1,0 +1,9 @@
+id: compare_debates
+engine: compare
+format: versus
+brief: "Two sides of a well-known debate argued with facts: A vs B"
+languages: [en, de, ko, ja]
+niches:
+  - tech_ai_future
+  - economy_empires
+  - geopolitics_maps

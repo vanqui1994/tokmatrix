@@ -1,0 +1,7 @@
+id: compare_military
+engine: compare
+format: versus
+brief: "Two weapons systems compared on published specs: A vs B"
+languages: [en, de, ko, ja]
+niches:
+  - military_arsenal

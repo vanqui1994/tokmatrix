@@ -1,0 +1,9 @@
+id: folklore_viking_omens
+engine: folklore
+format: free
+brief: "Viking omens, seers and prophecies"
+languages: [en, de, ko, ja]
+niches:
+  - folklore_legends
+  - ancient_mythology
+  - lost_civilizations

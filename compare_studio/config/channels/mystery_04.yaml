@@ -1,5 +1,5 @@
 channel_id: mystery_04
-config_version: 2
+config_version: 3
 niche_id: unsolved_mysteries
 name: Dấu Vết Trong Bóng Tối
 tiktok_account_ref: null
@@ -9,15 +9,28 @@ persona:
   target_demographic: Vietnamese viewers aged 24-44 interested in historical mysteries
   catchphrase_prefix: "Manh mối cuối cùng được tìm thấy ở một nơi không ai ngờ tới:"
 story:
-  preferred_blueprints: [mystery_reveal]
-  preferred_hook_types: [lost_artifact, overlooked_testimony]
+  preferred_blueprints: [ mystery_reveal ]
+  preferred_hook_types: [ lost_artifact, overlooked_testimony ]
   target_duration_seconds: 56
   pacing_beats: 12
 creative:
-  preferred_engines: [folklore, mystery, newspaper]
+  preferred_engines: [ folklore, mystery, newspaper ]
   visual_style_id: dark_mystery_v1
   cut_cadence_seconds: 3.0
   palette: { primary: '#111318', accent: '#D6A84F', text: '#F2EEE6' }
+  skins:
+    newspaper:
+      variant_id: newspaper/front-page
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: front_page
+        typography: grotesk
+        treatment: paper_texture
+        image_motion: ken_burns_slow
+        transition: slide
+        tone: 1
+        caption: top
 audio:
   voice_id: vi-VN-HoaiMyNeural
   voice_speed: 0.98
@@ -28,4 +41,4 @@ audio:
 publishing:
   language: vi
   default_schedule_window: 19:30-20:30
-  hashtags: [dauvetlichsu, biandangian, hosoluutru, dauvettrongbongtoi]
+  hashtags: [ dauvetlichsu, biandangian, hosoluutru, dauvettrongbongtoi ]

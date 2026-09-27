@@ -1,0 +1,8 @@
+id: tierlist_foods
+engine: tierlist
+format: ranking
+brief: "Ranking survival foods or foods by a clear criterion"
+languages: [en, de, ko, ja]
+niches:
+  - extreme_survival
+  - medical_anomalies

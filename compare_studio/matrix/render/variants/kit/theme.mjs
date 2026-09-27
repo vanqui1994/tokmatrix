@@ -5,7 +5,7 @@ import { TONES } from "./profiles.mjs";
 
 export const SUPPORTED_LANGS = Object.freeze(["en", "de", "ja", "ko", "vi", "fr"]);
 
-const SCRIPT = { ja: "ja", ko: "ko" };
+const SCRIPT = { ja: "ja", ko: "ko", vi: "vi" };
 export function scriptFor(lang) {
   return SCRIPT[String(lang || "").slice(0, 2)] || "latin";
 }
@@ -13,6 +13,31 @@ export function scriptFor(lang) {
 const MOTIF = {
   de: "bauhaus_grid", en: "oxford_rule", ja: "seigaiha", ko: "dancheong", vi: "lotus_line", fr: "bistro_stripe",
 };
+
+// Font tiêu đề (masthead, nhãn) theo nước — lớp 1 "bộ nhận diện nước" (docs/PLAN_compare_per_country.md mục 2).
+// Font chữ thân vẫn do account DNA (typography) chọn. Chỉ họ font offline của kit/fonts.mjs (@fontsource ghim version),
+// không font hệ thống: `hyperframes check` từ chối font không có @font-face và chữ khác nhau giữa các máy.
+export const DISPLAY_FONTS = Object.freeze({
+  de: '"Oswald", sans-serif', // grotesk hẹp kiểu DIN/Bauhaus
+  en: '"Playfair Display", serif', // serif báo Anh
+  ja: '"Noto Serif JP", serif',
+  ko: '"Noto Sans KR", sans-serif',
+  vi: '"Inter", sans-serif', // có lát vietnamese
+  fr: '"Playfair Display", serif',
+});
+
+/**
+ * Hoa văn nền theo nước (CSS background thuần, tất định). Nhận 2 màu (đường, nền nhấn) → chuỗi khai báo CSS.
+ * Dùng cho dải trang trí/viền của mọi engine; không phủ lên ảnh hay chữ.
+ */
+export const MOTIF_CSS = Object.freeze({
+  bauhaus_grid: (line, dot) => `background-image:linear-gradient(${line} 2px,transparent 2px),linear-gradient(90deg,${line} 2px,transparent 2px),radial-gradient(circle at 24px 24px,${dot} 9px,transparent 10px);background-size:48px 48px,48px 48px,96px 96px`,
+  oxford_rule: (line, dot) => `background-image:repeating-linear-gradient(0deg,transparent 0 22px,${line} 22px 24px),repeating-linear-gradient(90deg,transparent 0 22px,${line} 22px 24px),repeating-linear-gradient(90deg,transparent 0 70px,${dot} 70px 74px)`,
+  seigaiha: (line, dot) => `background-image:radial-gradient(circle at 50% 100%,transparent 14px,${line} 15px 17px,transparent 18px 24px,${line} 25px 27px,transparent 28px),radial-gradient(circle at 0 50%,${dot} 0 3px,transparent 4px);background-size:56px 28px,56px 28px`,
+  dancheong: (line, dot) => `background-image:repeating-linear-gradient(45deg,${line} 0 6px,transparent 6px 22px),repeating-linear-gradient(-45deg,${dot} 0 6px,transparent 6px 22px)`,
+  lotus_line: (line, dot) => `background-image:radial-gradient(ellipse 18px 10px at 50% 50%,${dot} 0 70%,transparent 72%),repeating-linear-gradient(0deg,transparent 0 30px,${line} 30px 32px);background-size:60px 32px,60px 32px`,
+  bistro_stripe: (line, dot) => `background-image:repeating-linear-gradient(90deg,${line} 0 18px,transparent 18px 36px),linear-gradient(${dot},${dot})`,
+});
 
 function hexToHsl(hex) {
   const n = parseInt(hex.slice(1), 16);
@@ -56,6 +81,8 @@ export function countryTheme(lang, tone = 0) {
     script: scriptFor(code),
     palette,
     motif: MOTIF[code],
+    displayFont: DISPLAY_FONTS[code],
+    motifCss: (line, dot) => MOTIF_CSS[MOTIF[code]](line, dot),
     mascot: { name: base.mascotName, html: base.mascotHtml, css: base.mascotCss },
   };
 }

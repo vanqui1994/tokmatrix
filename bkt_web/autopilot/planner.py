@@ -12,7 +12,7 @@ import uuid
 from concurrent.futures import ThreadPoolExecutor
 from typing import Any, Callable, Dict, List, Optional
 
-from . import channels, proc, store, topics
+from . import channels, proc, store, topic_packs, topics
 
 try:
     from bkt_web import matrix_db
@@ -74,6 +74,38 @@ def pick_topic(niche_id: str, avoid_subjects: Optional[List[str]] = None) -> Opt
     return None
 
 
+def pick_pack_topic(channel_id: str, niche_id: str, plan_date: str, avoid_subjects: Optional[List[str]] = None, *,
+                    cfg: Dict[str, Any], packs: Dict[str, Dict[str, Any]]) -> Optional[str]:
+    """Kênh có variant: topic từ topic pack của variant (docs V2 mục 7).
+
+    None → dùng topic của niche như cũ; "" → pack versus/ranking hết topic, kênh bỏ lượt (không lấy topic niche)."""
+    if not (cfg.get("creative") or {}).get("variant_id"):
+        return None
+    pack_id = topic_packs.channel_pack(channel_id, cfg, niche_id, plan_date, packs)
+    if not pack_id:
+        return None
+    avoid = avoid_subjects or []
+
+    def first_free() -> Optional[str]:
+        for candidate in topic_packs.pack_topics(pack_id):
+            if not store.is_topic_used(niche_id, candidate) and not topics.same_subject(candidate, avoid):
+                return candidate
+        return None
+
+    topic = first_free()
+    if topic is None:
+        topics.refill_pack(packs[pack_id], niche_id, topic_packs.pack_topics(pack_id) + topic_candidates(niche_id), 5)
+        topic = first_free()
+    if topic:
+        store.log_event(f"🎯 {channel_id}: topic pack {pack_id}")
+        return topic
+    if packs[pack_id].get("format") != "free":
+        # Pack versus/ranking: topic thường của niche sẽ hỏng khuôn (compare ra "OPTION A / OPTION B") → bỏ lượt.
+        store.log_event(f"⚠️ {channel_id}: pack {pack_id} ({packs[pack_id].get('format')}) hết topic — bỏ lượt hôm nay", "warn")
+        return ""
+    return None
+
+
 # ---------------------------------------------------------------------------
 # Daily plan
 # ---------------------------------------------------------------------------
@@ -121,6 +153,8 @@ def _ensure_channel_plans(plan_date: str) -> Dict[str, Any]:
     since = (datetime.date.fromisoformat(plan_date) - datetime.timedelta(days=max(gap - 1, 0))).isoformat()
 
     created, no_topic = [], []
+    configs = channels.load_matrix_channel_configs()
+    packs = topic_packs.load_packs()
     for niche_id, channel_ids in sorted(channels.mapped_channels_by_niche().items()):
         missing = [cid for cid in channel_ids if (niche_id, cid) not in have]
         if niche_id in whole_niche or not missing:
@@ -130,7 +164,10 @@ def _ensure_channel_plans(plan_date: str) -> Dict[str, Any]:
         if len(stock) < len(missing) * 2:
             topics.refill(niche_id, topic_candidates(niche_id), len(missing))
         for channel_id in missing:
-            topic = pick_topic(niche_id, recent)
+            cfg = (configs.get(channel_id) or {}).get("config") or {}
+            topic = pick_pack_topic(channel_id, niche_id, plan_date, recent, cfg=cfg, packs=packs)
+            if topic is None:
+                topic = pick_topic(niche_id, recent)
             if not topic:
                 no_topic.append(channel_id)
                 continue

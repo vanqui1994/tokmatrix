@@ -1,0 +1,10 @@
+id: newspaper_archived_cases
+engine: newspaper
+format: free
+brief: "Forgotten cases rediscovered in newspaper archives"
+languages: [en, de, ko, ja]
+niches:
+  - unsolved_mysteries
+  - lost_civilizations
+  - medical_anomalies
+  - forbidden_experiments

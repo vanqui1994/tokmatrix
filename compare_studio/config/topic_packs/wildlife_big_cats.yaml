@@ -1,0 +1,7 @@
+id: wildlife_big_cats
+engine: wildlife
+format: free
+brief: "Lions, tigers, leopards and other big cats"
+languages: [en, de, ko, ja]
+niches:
+  - extreme_wildlife

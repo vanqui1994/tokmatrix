@@ -1,0 +1,9 @@
+id: compare_tech_race
+engine: compare
+format: versus
+brief: "Two nations or companies in a technology race: A vs B"
+languages: [en, de, ko, ja]
+niches:
+  - tech_ai_future
+  - deep_space
+  - economy_empires

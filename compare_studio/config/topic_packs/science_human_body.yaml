@@ -1,0 +1,10 @@
+id: science_human_body
+engine: science
+format: free
+brief: "How the human body works, seen up close"
+languages: [en, de, ko, ja]
+niches:
+  - medical_anomalies
+  - extreme_survival
+  - forbidden_experiments
+  - dark_psychology

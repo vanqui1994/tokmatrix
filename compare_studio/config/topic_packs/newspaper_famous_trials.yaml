@@ -1,0 +1,9 @@
+id: newspaper_famous_trials
+engine: newspaper
+format: free
+brief: "Famous courtroom trials and their verdicts"
+languages: [en, de, ko, ja]
+niches:
+  - infamous_figures
+  - dark_psychology
+  - economy_empires

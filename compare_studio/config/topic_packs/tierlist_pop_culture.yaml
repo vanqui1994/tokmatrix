@@ -1,0 +1,8 @@
+id: tierlist_pop_culture
+engine: tierlist
+format: ranking
+brief: "Ranking famous ideas, inventions or cultural phenomena"
+languages: [en, de, ko, ja]
+niches:
+  - tech_ai_future
+  - philosophy_paradox

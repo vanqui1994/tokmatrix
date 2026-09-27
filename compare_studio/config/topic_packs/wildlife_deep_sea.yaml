@@ -1,0 +1,8 @@
+id: wildlife_deep_sea
+engine: wildlife
+format: free
+brief: "Deep-sea creatures, bioluminescence and life at extreme depth"
+languages: [en, de, ko, ja]
+niches:
+  - ocean_mysteries
+  - extreme_wildlife

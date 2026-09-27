@@ -1,0 +1,7 @@
+id: survival_mountains
+engine: survival
+format: free
+brief: "Surviving high altitude and mountain conditions"
+languages: [en, de, ko, ja]
+niches:
+  - extreme_survival

@@ -1,0 +1,9 @@
+id: compare_vehicles
+engine: compare
+format: versus
+brief: "Two vehicles, aircraft or ships compared: A vs B"
+languages: [en, de, ko, ja]
+niches:
+  - military_arsenal
+  - tech_ai_future
+  - deep_space

@@ -1,0 +1,7 @@
+id: compare_health_food
+engine: compare
+format: versus
+brief: "Two animals' diets and survival strategies weighed: A vs B"
+languages: [en, de, ko, ja]
+niches:
+  - extreme_wildlife

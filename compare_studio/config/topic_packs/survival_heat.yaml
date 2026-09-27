@@ -1,0 +1,8 @@
+id: survival_heat
+engine: survival
+format: free
+brief: "Surviving heatwaves and heat stroke"
+languages: [en, de, ko, ja]
+niches:
+  - extreme_survival
+  - mega_catastrophes

@@ -1,0 +1,8 @@
+# Clone giọng (tuỳ chọn): bkt_web/voice_clone.py dùng OpenVoice V2 ToneColorConverter trên CPU.
+# Cài torch bản CPU trước để không kéo thư viện CUDA (~3 GB):
+#   python3 -m pip install torch --index-url https://download.pytorch.org/whl/cpu
+#   python3 -m pip install -r requirements-voice-clone.txt
+#   python3 -m bkt_web.voice_clone setup
+librosa>=0.10
+soundfile>=0.12
+wavmark==0.0.3

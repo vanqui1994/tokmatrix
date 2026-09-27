@@ -1,0 +1,9 @@
+id: newspaper_outlaws_manhunts
+engine: newspaper
+format: free
+brief: "Outlaws, bandits and historic manhunts"
+languages: [en, de, ko, ja]
+niches:
+  - infamous_figures
+  - unsolved_mysteries
+  - dark_psychology

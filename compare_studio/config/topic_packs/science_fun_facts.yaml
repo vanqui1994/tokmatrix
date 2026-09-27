@@ -1,0 +1,10 @@
+id: science_fun_facts
+engine: science
+format: free
+brief: "Surprising, verifiable science facts"
+languages: [en, de, ko, ja]
+niches:
+  - deep_space
+  - ocean_mysteries
+  - extreme_wildlife
+  - philosophy_paradox

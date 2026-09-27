@@ -1,0 +1,9 @@
+id: chalk_trade_routes
+engine: chalk
+format: free
+brief: "Trade routes, pipelines and who controls them"
+languages: [en, de, ko, ja]
+niches:
+  - economy_empires
+  - geopolitics_maps
+  - lost_civilizations

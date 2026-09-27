@@ -1,0 +1,7 @@
+id: science_space
+engine: science
+format: free
+brief: "Space phenomena explained"
+languages: [en, de, ko, ja]
+niches:
+  - deep_space

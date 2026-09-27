@@ -1,0 +1,7 @@
+id: compare_athletes
+engine: compare
+format: versus
+brief: "Two famous athletes compared on their career records: A vs B"
+languages: [en, de, ko, ja]
+niches:
+  - economy_empires

@@ -1,0 +1,8 @@
+id: folklore_omens
+engine: folklore
+format: free
+brief: "Death omens and folk warnings"
+languages: [en, de, ko, ja]
+niches:
+  - folklore_legends
+  - unsolved_mysteries

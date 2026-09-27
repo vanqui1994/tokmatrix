@@ -1,0 +1,9 @@
+id: survival_deprivation
+engine: survival
+format: free
+brief: "What happens without sleep, food or water"
+languages: [en, de, ko, ja]
+niches:
+  - medical_anomalies
+  - forbidden_experiments
+  - extreme_survival

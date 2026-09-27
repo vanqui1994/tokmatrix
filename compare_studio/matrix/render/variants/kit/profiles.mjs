@@ -3,43 +3,29 @@
 // bố cục là việc của composition preset trong variant.
 import { rngRange } from "./rng.mjs";
 
-// --- Typography: style trừu tượng → font stack theo hệ chữ (chỉ font local/hệ thống, không tải mạng). ----------
-// Be Vietnam Pro / JetBrains Mono nằm trong tools/template-kinetic/assets (kit/runtime chép vào video).
-// CJK dùng font hệ thống của máy render (VPS có Noto Serif/Sans CJK JP/KR); kiểm tồn tại ở Phase 1.
+// --- Typography: style trừu tượng → MỘT họ font offline (kit/fonts.mjs, gói @fontsource ghim version) + generic. ---
+// Không dùng font hệ thống: `hyperframes check` từ chối (font_family_without_font_face) và chữ khác nhau giữa các máy
+// (đo 26/09, 0.8.75 + 0.8.78). CJK không có đủ họ font cho mọi style: kiểu không chân → Noto Sans, có chân → Noto Serif
+// (trục typography với ja/ko yếu hơn Latin — V2 mục 22 #19).
 const LATIN = {
-  typewriter: '"JetBrains Mono", "Courier New", monospace',
-  mono: '"JetBrains Mono", "DejaVu Sans Mono", monospace',
-  serif: '"Noto Serif", "DejaVu Serif", Georgia, serif',
-  grotesk: '"Be Vietnam Pro", "DejaVu Sans", Arial, sans-serif',
-  condensed: '"Be Vietnam Pro", "Arial Narrow", sans-serif',
-  slab: '"Noto Serif", "Rockwell", "DejaVu Serif", serif',
-  handwritten: '"Comic Neue", "Segoe Print", "DejaVu Sans", cursive',
-  blackletter: '"UnifrakturMaguntia", "Noto Serif", serif',
-  rounded: '"Be Vietnam Pro", "Nunito", sans-serif',
+  typewriter: '"IBM Plex Mono", monospace',
+  mono: '"JetBrains Mono", monospace',
+  serif: '"EB Garamond", serif',
+  display_serif: '"Playfair Display", serif',
+  slab: '"Roboto Slab", serif',
+  grotesk: '"Inter", sans-serif',
+  condensed: '"Oswald", sans-serif',
+  rounded: '"Nunito", sans-serif',
+  heavy: '"Archivo Black", sans-serif',
 };
-const JA = {
-  typewriter: '"Noto Sans Mono CJK JP", "Noto Sans CJK JP", "Hiragino Sans", monospace',
-  mono: '"Noto Sans Mono CJK JP", "Noto Sans CJK JP", monospace',
-  serif: '"Noto Serif CJK JP", "Hiragino Mincho ProN", serif',
-  grotesk: '"Noto Sans CJK JP", "Hiragino Sans", sans-serif',
-  condensed: '"Noto Sans CJK JP", "Hiragino Sans", sans-serif',
-  slab: '"Noto Serif CJK JP", "Hiragino Mincho ProN", serif',
-  handwritten: '"Noto Sans CJK JP", "Hiragino Maru Gothic ProN", sans-serif',
-  blackletter: '"Noto Serif CJK JP", serif',
-  rounded: '"Noto Sans CJK JP", "Hiragino Maru Gothic ProN", sans-serif',
-};
-const KO = {
-  typewriter: '"Noto Sans Mono CJK KR", "Noto Sans CJK KR", "Apple SD Gothic Neo", monospace',
-  mono: '"Noto Sans Mono CJK KR", "Noto Sans CJK KR", monospace',
-  serif: '"Noto Serif CJK KR", "AppleMyungjo", serif',
-  grotesk: '"Noto Sans CJK KR", "Apple SD Gothic Neo", sans-serif',
-  condensed: '"Noto Sans CJK KR", "Apple SD Gothic Neo", sans-serif',
-  slab: '"Noto Serif CJK KR", "AppleMyungjo", serif',
-  handwritten: '"Noto Sans CJK KR", "Apple SD Gothic Neo", sans-serif',
-  blackletter: '"Noto Serif CJK KR", serif',
-  rounded: '"Noto Sans CJK KR", "Apple SD Gothic Neo", sans-serif',
-};
-export const TYPOGRAPHY = Object.freeze({ version: 1, stacks: { latin: LATIN, ja: JA, ko: KO } });
+const cjk = (sans, serif) => ({
+  typewriter: sans, mono: sans, serif, display_serif: serif, slab: serif, grotesk: sans, condensed: sans, rounded: sans, heavy: sans,
+});
+const JA = cjk('"Noto Sans JP", sans-serif', '"Noto Serif JP", serif');
+const KO = cjk('"Noto Sans KR", sans-serif', '"Noto Serif KR", serif');
+// Tiếng Việt: mọi họ Latin đều có lát `vietnamese` (dấu chồng U+1EA0–1EF9) trừ Archivo Black → "heavy" dùng Oswald.
+const VI = { ...LATIN, heavy: '"Oswald", sans-serif' };
+export const TYPOGRAPHY = Object.freeze({ version: 3, stacks: { latin: LATIN, ja: JA, ko: KO, vi: VI } });
 
 export function fontStack(style, script) {
   const table = TYPOGRAPHY.stacks[script] || TYPOGRAPHY.stacks.latin;
@@ -49,7 +35,7 @@ export function fontStack(style, script) {
 }
 
 // --- Treatment: lớp phủ tĩnh (CSS + SVG feTurbulence có seed cố định — tất định). -------------------------------
-function noiseSvg(seed, opacity, frequency = 0.9) {
+export function noiseSvg(seed, opacity, frequency = 0.9) {
   const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='${frequency}' numOctaves='2' seed='${seed % 1000}' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(#n)' opacity='${opacity}'/></svg>`;
   return `url("data:image/svg+xml;utf8,${encodeURIComponent(svg)}")`;
 }
@@ -101,9 +87,11 @@ export const IMAGE_MOTION = Object.freeze({
     handheld: (rng, { target, start, duration }) => {
       // Rung máy nhẹ: các điểm lệch tính sẵn từ seed (không noise lúc chạy).
       const steps = Math.max(2, Math.round(duration / 0.8));
+      // Bước làm tròn XUỐNG tới ms: các tween nối nhau không chồng lên nhau (HyperFrames cảnh báo overlapping_gsap_tweens).
+      const step = Math.floor((duration / steps) * 1000) / 1000;
       const tweens = [{ method: "set", target, vars: { scale: 1.06 }, at: start }];
       for (let i = 0; i < steps; i += 1) {
-        tweens.push({ method: "to", target, vars: { x: rngRange(rng, -9, 9, 1), y: rngRange(rng, -7, 7, 1), rotation: rngRange(rng, -0.4, 0.4, 2), duration: Number((duration / steps).toFixed(3)), ease: "sine.inOut" }, at: Number((start + (duration / steps) * i).toFixed(3)) });
+        tweens.push({ method: "to", target, vars: { x: rngRange(rng, -9, 9, 1), y: rngRange(rng, -7, 7, 1), rotation: rngRange(rng, -0.4, 0.4, 2), duration: Number((step - 0.001).toFixed(3)), ease: "sine.inOut" }, at: Number((start + step * i).toFixed(3)) });
       }
       return tweens;
     },
@@ -137,7 +125,7 @@ function enter(ctx, from, vars, wanted) {
 }
 
 export const TRANSITIONS = Object.freeze({
-  version: 1,
+  version: 2,
   items: {
     cut: () => [],
     fade_black: (ctx) => [exit(ctx, { autoAlpha: 0 }, 0.3), enter(ctx, { autoAlpha: 0 }, { autoAlpha: 1 }, 0.3)],
@@ -153,6 +141,28 @@ export const TRANSITIONS = Object.freeze({
     ],
     wipe: (ctx) => [enter(ctx, { clipPath: "inset(0% 100% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)" }, 0.45)],
     folder_flip: (ctx) => [exit(ctx, { yPercent: -110, rotation: -4 }, 0.4), enter(ctx, { yPercent: 12 }, { yPercent: 0 }, 0.45)],
+    // v2: thêm 5 kiểu (trước chỉ có trong vocabulary trục, DNA không chọn được).
+    tv_noise: (ctx) => [
+      exit(ctx, { filter: "brightness(2.2) contrast(1.8)", skewX: 8 }, 0.18),
+      enter(ctx, { filter: "brightness(2.2) contrast(1.8)", skewX: -8 }, { filter: "brightness(1) contrast(1)", skewX: 0 }, 0.25),
+    ],
+    ink_bleed: (ctx) => [enter(ctx, { clipPath: "circle(0% at 50% 50%)" }, { clipPath: "circle(75% at 50% 50%)" }, 0.6)],
+    paper_tear: (ctx) => [
+      exit(ctx, { clipPath: "polygon(0% 0%,100% 0%,100% 0%,0% 0%)" }, 0.35),
+      enter(ctx, { clipPath: "polygon(0% 100%,100% 100%,100% 100%,0% 100%)" }, { clipPath: "polygon(0% 0%,100% 0%,100% 100%,0% 100%)" }, 0.4),
+    ],
+    flip_3d: (ctx) => [
+      exit(ctx, { rotationX: 90, transformOrigin: "50% 100%" }, 0.35),
+      enter(ctx, { rotationX: -90, transformOrigin: "50% 0%" }, { rotationX: 0 }, 0.4),
+    ],
+    glitch: (ctx) => {
+      const third = Math.floor((span(ctx, 0.3) / 3) * 1000) / 1000;
+      const at = ctx.at;
+      return [
+        { method: "fromTo", target: ctx.next, from: { x: -28, skewX: 12 }, vars: { x: 18, skewX: -6, duration: Number((third - 0.001).toFixed(3)), ease: "steps(2)" }, at },
+        { method: "to", target: ctx.next, vars: { x: 0, skewX: 0, duration: third, ease: "steps(2)" }, at: Number((at + third).toFixed(3)) },
+      ];
+    },
   },
 });
 
@@ -168,12 +178,25 @@ export const TONES = Object.freeze({
   items: [
     { hue: 0, light: 0 }, { hue: 14, light: -4 }, { hue: -14, light: 3 },
     { hue: 28, light: -6 }, { hue: -26, light: 5 }, { hue: 180, light: 0 },
+    // 6–8 thêm cho "bộ da" (DE có 54 acc newspaper): chỉ nối thêm, không đổi các tone cũ.
+    { hue: 40, light: -8 }, { hue: -40, light: 6 }, { hue: 200, light: -6 },
   ],
+});
+
+// --- Caption: vị trí khối lời đọc so với ảnh chính (composition quyết định hình học cụ thể). -------------------
+// top = trên ảnh, middle = phủ lên phần dưới ảnh, bottom = dưới ảnh. Ánh xạ sang trục textPlacement của schema.
+// fixed = composition tự đặt chỗ lời đọc (không ghi đè textPlacement): mặc định của variant không khai trục này.
+export const CAPTIONS = Object.freeze({
+  version: 1,
+  items: {
+    top: { textPlacement: "top" }, middle: { textPlacement: "lower_third" }, bottom: { textPlacement: "bottom" },
+    fixed: { textPlacement: null },
+  },
 });
 
 export const PROFILE_VERSIONS = Object.freeze({
   typography: TYPOGRAPHY.version, treatment: TREATMENTS.version, image_motion: IMAGE_MOTION.version,
-  transition: TRANSITIONS.version, tone: TONES.version,
+  transition: TRANSITIONS.version, tone: TONES.version, caption: CAPTIONS.version,
 });
 
 /** Danh sách id hợp lệ cho từng trục DNA. */
@@ -183,6 +206,7 @@ export const DNA_AXIS_VALUES = Object.freeze({
   image_motion: Object.keys(IMAGE_MOTION.items),
   transition: Object.keys(TRANSITIONS.items),
   tone: TONES.items.map((_, index) => index),
+  caption: Object.keys(CAPTIONS.items),
 });
 
 /** Chuỗi JS cho một tween (số đã cố định). */

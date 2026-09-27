@@ -1,0 +1,10 @@
+id: vox_unsolved_explained
+engine: vox
+format: free
+brief: "An unsolved case explained step by step with the known facts"
+languages: [en, de, ko, ja]
+niches:
+  - unsolved_mysteries
+  - deep_space
+  - ocean_mysteries
+  - philosophy_paradox

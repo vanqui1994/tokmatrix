@@ -1,0 +1,9 @@
+id: survival_toxic
+engine: survival
+format: free
+brief: "Toxic exposures and their effects on the body"
+languages: [en, de, ko, ja]
+niches:
+  - forbidden_experiments
+  - medical_anomalies
+  - mega_catastrophes

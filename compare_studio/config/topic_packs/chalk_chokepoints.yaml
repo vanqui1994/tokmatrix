@@ -1,0 +1,9 @@
+id: chalk_chokepoints
+engine: chalk
+format: free
+brief: "Strategic straits, canals and chokepoints"
+languages: [en, de, ko, ja]
+niches:
+  - geopolitics_maps
+  - military_arsenal
+  - economy_empires

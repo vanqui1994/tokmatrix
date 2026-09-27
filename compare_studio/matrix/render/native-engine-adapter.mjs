@@ -13,6 +13,8 @@ import { getVariant, variantsEnabled } from "./variants/index.mjs";
 import { lintVariantHtml } from "./variants/kit/lint.mjs";
 import { resolveCreativeContext } from "./variants/kit/resolve.mjs";
 import { prepareKitAssets } from "./variants/kit/runtime.mjs";
+import { embedFonts } from "./variants/kit/fonts.mjs";
+import { channelSkin } from "./variants/skins.mjs";
 
 const execFileAsync = promisify(execFile);
 const COMPARE_DIR = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
@@ -255,19 +257,32 @@ async function copyMediaForScenes({ scenes, engineType, projectDir, videoDir }) 
 }
 
 /**
- * Variant của kênh (creative.variant_id), hoặc null → đường legacy. Kênh có variant KHÔNG bao giờ lùi sang engine
- * khác: variant lạ / sai engine là lỗi (docs/MATRIX_VARIANT_SYSTEM_V2.md C3). MATRIX_VARIANTS=0 tắt toàn cục.
+ * Variant + DNA của kênh cho engine của job, hoặc null → đường legacy. creative.variant_id (Creative DNA cả kênh,
+ * bkt_web/autopilot/creative_dna.py) thắng cho engine của nó; các engine khác dùng bộ da creative.skins.<engine>
+ * (docs/PLAN_compare_per_country.md); engine không có bộ da thì đi legacy như cũ.
+ * creative.variant_id (khoá cả kênh vào một engine) KHÔNG bao giờ lùi sang engine khác: variant lạ / sai engine là lỗi
+ * (docs/MATRIX_VARIANT_SYSTEM_V2.md C3). MATRIX_VARIANTS=0 tắt toàn cục.
  */
-export function channelVariant(channel, engineType) {
+export function channelCreative(channel, engineType) {
   const variantId = channel?.creative?.variant_id;
-  if (!variantId || !variantsEnabled()) return null;
+  // variant_id (Creative DNA cả kênh) thắng bộ da của engine đó; bộ da áp cho các engine còn lại.
+  if (!variantId || !variantsEnabled()) return channelSkin(channel, engineType);
+  const own = getVariant(variantId);
+  if (own && own.engine !== engineType) {
+    const skin = channelSkin(channel, engineType);
+    if (skin) return skin;
+  }
   const variant = getVariant(variantId);
   if (!variant) throw new Error(`channel ${channel.channel_id} uses unknown or inactive variant ${variantId}`);
   if (variant.engine !== engineType) throw new Error(`variant ${variantId} belongs to engine ${variant.engine}, job engine is ${engineType}`);
-  return variant;
+  return { variant, dna: channel.creative.dna };
 }
 
-async function createEngineHtml({ engineType, slug, title, lang, scenes, channel, manifest, media, totalDuration, variant }) {
+export function channelVariant(channel, engineType) {
+  return channelCreative(channel, engineType)?.variant || null;
+}
+
+async function createEngineHtml({ engineType, slug, title, lang, scenes, channel, manifest, media, totalDuration, variant, dna }) {
   const fullScriptHtml = scenes.map((scene) => escapeHtml(scene.line)).join(" ");
   const sfxCues = manifest.audio?.sfx_cues || [];
   const bgmSegments = manifest.audio?.bgm_segments || [];
@@ -285,7 +300,7 @@ async function createEngineHtml({ engineType, slug, title, lang, scenes, channel
 
   const extended = extendedReady(engineType);
   if (variant) {
-    const creative = resolveCreativeContext({ variant, dna: channel.creative.dna, lang, channelId: channel.channel_id, slug });
+    const creative = resolveCreativeContext({ variant, dna, lang, channelId: channel.channel_id, slug });
     const extras = !extended ? null : manifest.script?.engine_extras?.engine === engineType && manifest.script.engine_extras.data
       ? manifest.script.engine_extras.data
       : extended.extras.fallback(scenes, { title, language: lang });
@@ -294,7 +309,8 @@ async function createEngineHtml({ engineType, slug, title, lang, scenes, channel
     });
     const problems = lintVariantHtml(built.html);
     if (problems.length) throw new Error(`variant ${variant.id} produced forbidden HTML: ${problems.join("; ")}`);
-    return { ...built, creative: creative.observability };
+    // Variant có thể dùng thêm họ font (vd. font tiêu đề theo nước của newspaper/front-page).
+    return { ...built, creative: built.creative || creative.observability, fontFamilies: [...creative.fonts.families, ...(built.fontFamilies || [])] };
   }
   if (extended) {
     const extras = manifest.script?.engine_extras?.engine === engineType && manifest.script.engine_extras.data
@@ -495,12 +511,21 @@ export async function buildNativeVideoProject({ job, manifest = job?.manifest, p
     for (const filename of ["char-a.png", "char-b.png", "stomp-boot.png"]) await requiredFile(path.join(sourceCharacters, filename));
     await fs.cp(sourceCharacters, path.join(targetDir, "assets", "characters"), { recursive: true });
   }
-  const variant = channelVariant(channel, engineType);
-  const staticAssets = (await extendedReady(engineType)?.prepareAssets?.({ targetDir, compareDir: COMPARE_DIR })) || [];
-  if (variant) staticAssets.push(...await prepareKitAssets({ targetDir, compareDir: COMPARE_DIR }));
-  const composed = await createEngineHtml({ engineType, slug, title, lang, scenes, channel, manifest, media, totalDuration, variant });
+  const chosen = channelCreative(channel, engineType);
+  const variant = chosen?.variant || null;
+  // Variant chỉ dùng assets/kit và ảnh cảnh; tài nguyên riêng của engine legacy (SFX, mặt meme survival) không chép vào.
+  const staticAssets = variant
+    ? await prepareKitAssets({ targetDir, compareDir: COMPARE_DIR })
+    : (await extendedReady(engineType)?.prepareAssets?.({ targetDir, compareDir: COMPARE_DIR })) || [];
+  const composed = await createEngineHtml({ engineType, slug, title, lang, scenes, channel, manifest, media, totalDuration, variant, dna: chosen?.dna });
   // Variant tự co chữ bằng kit/fit (data-fit); bản sửa bố cục legacy chỉ dành cho template legacy.
   if (!variant) composed.html = applyMatrixLayoutFixes(composed.html, engineType);
+  else {
+    // Font offline: chỉ các lát unicode-range chứa ký tự của trang (kit/fonts.mjs).
+    const fonts = embedFonts({ html: composed.html, families: composed.fontFamilies, targetDir, compareDir: COMPARE_DIR });
+    composed.html = fonts.html;
+    staticAssets.push(...fonts.copied);
+  }
   // HyperFrames ≥ 0.8.77 từ chối media trùng id; bắt ngay khi dựng để lỗi chỉ đúng nguồn (engine vs auto-sfx).
   const duplicates = duplicateMediaIds(composed.html);
   if (duplicates.length) throw new Error(`composition has duplicate media ids: ${duplicates.join(", ")}`);

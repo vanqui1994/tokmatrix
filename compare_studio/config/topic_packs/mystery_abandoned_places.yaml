@@ -1,0 +1,10 @@
+id: mystery_abandoned_places
+engine: mystery
+format: free
+brief: "Abandoned towns, bunkers and buildings with a dark history"
+languages: [en, de, ko, ja]
+niches:
+  - unsolved_mysteries
+  - lost_civilizations
+  - mega_catastrophes
+  - extreme_survival

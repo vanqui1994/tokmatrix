@@ -1,0 +1,10 @@
+id: vox_numbers_behind
+engine: vox
+format: free
+brief: "The numbers behind a big story: costs, counts and scale"
+languages: [en, de, ko, ja]
+niches:
+  - economy_empires
+  - tech_ai_future
+  - geopolitics_maps
+  - military_arsenal

@@ -7,6 +7,7 @@ export const FIT_SCRIPT = `<script data-variant-fit>
     if (!box) return;
     var min = Number(el.getAttribute("data-fit-min") || 18);
     if (!el.dataset.fitBase) el.dataset.fitBase = String(parseFloat(getComputedStyle(el).fontSize) || 40);
+    el.style.scale = "";
     var size = Number(el.dataset.fitBase);
     el.style.fontSize = size + "px";
     var cs = getComputedStyle(box);
@@ -16,12 +17,25 @@ export const FIT_SCRIPT = `<script data-variant-fit>
     el.style.maxWidth = innerW + "px";
     function overflows() { return el.scrollWidth > innerW + 1 || el.offsetHeight > innerH + 1; }
     el.style.overflowWrap = "normal";
+    // Một từ dài hơn cả dòng (từ ghép tiếng Đức) không được kéo cả khối xuống cỡ tí hon: tới "sàn đọc được"
+    // (62% cỡ gốc) thì cho ngắt giữa từ rồi mới co tiếp tới data-fit-min.
+    var floor = Math.max(min, Math.round(size * 0.62));
+    while (size > floor && overflows()) {
+      size -= 1;
+      el.style.fontSize = size + "px";
+    }
+    if (el.scrollWidth > innerW + 1) el.style.overflowWrap = "anywhere";
     while (size > min && overflows()) {
       size -= 1;
       el.style.fontSize = size + "px";
     }
-    // Co tới cỡ tối thiểu mà từ (vd từ ghép tiếng Đức) vẫn dài hơn dòng → mới cho ngắt giữa từ.
-    if (el.scrollWidth > innerW + 1) el.style.overflowWrap = "anywhere";
+    // Khối nowrap không ngắt dòng được: tới data-fit-min vẫn tràn thì nén ngang (thuộc tính scale, không đụng transform
+    // mà timeline dùng) thay vì để bị cắt.
+    var ecs = getComputedStyle(el);
+    if (/^(nowrap|pre)$/.test(ecs.whiteSpace) && !/^vertical/.test(ecs.writingMode) && el.scrollWidth > innerW + 1) {
+      el.style.transformOrigin = "0 50%";
+      el.style.scale = (innerW / el.scrollWidth).toFixed(4) + " 1";
+    }
   }
   function fitAll() {
     var nodes = document.querySelectorAll("[data-fit]");

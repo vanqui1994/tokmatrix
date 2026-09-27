@@ -1,0 +1,10 @@
+id: compare_speed_records
+engine: compare
+format: versus
+brief: "Two record holders racing on speed: A vs B"
+languages: [en, de, ko, ja]
+niches:
+  - military_arsenal
+  - tech_ai_future
+  - extreme_wildlife
+  - deep_space

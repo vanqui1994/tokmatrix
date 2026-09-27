@@ -1,0 +1,9 @@
+id: folklore_witch_trials
+engine: folklore
+format: free
+brief: "Historical witch trials and their victims"
+languages: [en, de, ko, ja]
+niches:
+  - folklore_legends
+  - unsolved_mysteries
+  - lost_civilizations

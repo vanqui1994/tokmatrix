@@ -1,0 +1,11 @@
+id: vox_event_timelines
+engine: vox
+format: free
+brief: "A major event reconstructed as a timeline"
+languages: [en, de, ko, ja]
+niches:
+  - mega_catastrophes
+  - geopolitics_maps
+  - military_arsenal
+  - economy_empires
+  - infamous_figures
