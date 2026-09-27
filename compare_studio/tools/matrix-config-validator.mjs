@@ -6,6 +6,7 @@ import { fileURLToPath } from "node:url";
 import Ajv from "ajv";
 import YAML from "yaml";
 import { getVoice } from "./voices.mjs";
+import { catalogProblems, loadCatalog, trackMap } from "../matrix/creative/music-catalog.mjs";
 import { getVariant } from "../matrix/render/variants/index.mjs";
 import { COMPARE_TOPIC_MIN } from "../matrix/planner/template-selector.mjs";
 import { validateDna } from "../matrix/render/variants/dna.mjs";
@@ -46,9 +47,22 @@ function getCategory(relativePath) {
   return parts[0];
 }
 
-function validateRelations(documents, errors) {
+function validateRelations(documents, errors, configDir = ROOT) {
   const matrix = documents.compatibility_matrix?.[0]?.data;
   if (!matrix) return;
+  // Catalog nhạc CC0 chỉ đọc khi có kênh dùng bgm_pool (kênh cũ không phụ thuộc file này).
+  const musicCatalogFile = path.join(configDir, "music", "cc0_catalog.json");
+  let musicCache;
+  const musicTracks = () => {
+    if (musicCache !== undefined) return musicCache;
+    try {
+      const catalog = loadCatalog(musicCatalogFile);
+      musicCache = catalogProblems(catalog).length ? null : trackMap(catalog);
+    } catch {
+      musicCache = null;
+    }
+    return musicCache;
+  };
 
   const engineIds = matrix.engines.map(({ id }) => id);
   const nicheIds = matrix.niches.map(({ id }) => id);
@@ -98,6 +112,12 @@ function validateRelations(documents, errors) {
       errors.push(`${relativePath}: unknown voice_id ${data.audio?.voice_id}`);
     } else if (data.publishing?.language && voice.lang !== data.publishing.language) {
       errors.push(`${relativePath}: voice_id ${voice.id} speaks ${voice.lang} but publishing.language is ${data.publishing.language}`);
+    }
+    // Nhạc CC0 riêng của kênh: mọi id phải có trong config/music/cc0_catalog.json (file mp3 thì kiểm lúc render).
+    if (Array.isArray(data.audio?.bgm_pool)) {
+      const tracks = musicTracks();
+      if (!tracks) errors.push(`${relativePath}: audio.bgm_pool is set but ${path.relative(configDir, musicCatalogFile)} is missing or invalid`);
+      else for (const id of data.audio.bgm_pool) if (!tracks.has(id)) errors.push(`${relativePath}: audio.bgm_pool track ${id} is not in the CC0 music catalog`);
     }
     const compatible = new Set(engineIds.filter((id) => matrixNiche.scores[id] >= matrix.minimum_score));
     for (const engineId of data.creative.preferred_engines) {
@@ -247,6 +267,6 @@ export function validateConfigs({ configDir = ROOT } = {}) {
   }
 
   if (yamlFiles.length === 0) errors.push("config: no YAML files found");
-  validateRelations(documents, errors);
+  validateRelations(documents, errors, configDir);
   return { valid: errors.length === 0, files: yamlFiles.length, documents, errors };
 }
