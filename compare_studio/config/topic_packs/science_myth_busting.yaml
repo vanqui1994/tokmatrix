@@ -1,0 +1,9 @@
+id: science_myth_busting
+engine: science
+format: free
+brief: "Common science myths tested"
+languages: [en, de, ko, ja]
+niches:
+  - philosophy_paradox
+  - medical_anomalies
+  - dark_psychology

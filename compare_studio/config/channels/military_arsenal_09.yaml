@@ -1,5 +1,5 @@
 channel_id: military_arsenal_09
-config_version: 6
+config_version: 7
 niche_id: military_arsenal
 name: Weapons & War Machines 09
 tiktok_account_ref: null
@@ -41,7 +41,7 @@ creative:
         tone: 6
         caption: top
 audio:
-  voice_id: en_female_emotional_moon_bigtts
+  voice_id: en-GB-MaisieNeural
   voice_speed: 1.02
   voice_pitch: -1
   music_family: military_arsenal_editorial

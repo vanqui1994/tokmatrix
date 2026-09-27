@@ -1,0 +1,11 @@
+id: mystery_codes_signals
+engine: mystery
+format: free
+brief: "Unbroken codes, cipher messages and unexplained radio signals"
+languages: [en, de, ko, ja]
+niches:
+  - unsolved_mysteries
+  - tech_ai_future
+  - philosophy_paradox
+  - deep_space
+  - forbidden_experiments

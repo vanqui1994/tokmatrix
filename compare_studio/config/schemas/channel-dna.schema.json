@@ -70,8 +70,25 @@
             "accent": { "type": "string", "pattern": "^#[0-9A-Fa-f]{6}$" },
             "text": { "type": "string", "pattern": "^#[0-9A-Fa-f]{6}$" }
           }
+        },
+        "variant_id": { "type": "string", "pattern": "^[a-z]+/[a-z0-9-]+$" },
+        "dna": {
+          "type": "object", "additionalProperties": false,
+          "required": ["dna_version", "variant_version", "composition", "typography", "treatment", "image_motion", "transition", "tone", "caption"],
+          "properties": {
+            "dna_version": { "type": "integer", "minimum": 1 },
+            "variant_version": { "type": "integer", "minimum": 1 },
+            "composition": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
+            "typography": { "type": "string", "minLength": 1 },
+            "treatment": { "type": "string", "minLength": 1 },
+            "image_motion": { "type": "string", "minLength": 1 },
+            "transition": { "type": "string", "minLength": 1 },
+            "tone": { "type": "integer", "minimum": 0 },
+            "caption": { "type": "string", "minLength": 1 }
+          }
         }
-      }
+      },
+      "dependencies": { "variant_id": ["dna"], "dna": ["variant_id"] }
     },
     "audio": {
       "type": "object", "additionalProperties": false,
@@ -82,7 +99,9 @@
         "voice_pitch": { "type": "number", "minimum": -12, "maximum": 12 },
         "music_family": { "type": "string", "minLength": 1 },
         "soundscape_id": { "type": "string", "enum": ["compare", "survival", "science", "mystery", "vox", "newspaper", "kinetic"] },
-        "sfx_density": { "type": "string", "enum": ["low", "medium", "high"] }
+        "sfx_density": { "type": "string", "enum": ["low", "medium", "high"] },
+        "voice_fx": { "type": "string", "enum": ["none", "creepy", "whisper", "radio"] },
+        "voice_clone": { "type": "string", "pattern": "^(none|[a-z0-9][a-z0-9_-]{1,63})$" }
       }
     },
     "publishing": {

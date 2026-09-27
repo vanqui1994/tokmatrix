@@ -166,7 +166,7 @@ export default {
   engine: "science",
   name_vi: "Bảng giải thích (3 layout: bảng trắng / sổ thí nghiệm / màn HUD) + linh vật dẫn",
   status: "active",
-  contentProfile: { topicPacks: { everyday_science: 1 } },
+  contentProfile: { topicPacks: { science_explained: 0.5, science_fun_facts: 0.5 } },
   visualProfile: {
     layoutFamily: "explainer",
     fingerprintAxes: {

@@ -1,0 +1,8 @@
+id: compare_brands
+engine: compare
+format: versus
+brief: "Two rival brands or companies compared: A vs B"
+languages: [en, de, ko, ja]
+niches:
+  - economy_empires
+  - tech_ai_future

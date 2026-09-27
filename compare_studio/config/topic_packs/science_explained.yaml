@@ -1,0 +1,10 @@
+id: science_explained
+engine: science
+format: free
+brief: "Classic why/how science explainers"
+languages: [en, de, ko, ja]
+niches:
+  - philosophy_paradox
+  - deep_space
+  - tech_ai_future
+  - lost_civilizations

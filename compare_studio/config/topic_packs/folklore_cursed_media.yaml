@@ -1,0 +1,8 @@
+id: folklore_cursed_media
+engine: folklore
+format: free
+brief: "Cursed tapes, haunted recordings and media legends"
+languages: [en, de, ko, ja]
+niches:
+  - folklore_legends
+  - unsolved_mysteries

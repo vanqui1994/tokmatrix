@@ -1,0 +1,7 @@
+id: compare_tech_products
+engine: compare
+format: versus
+brief: "Two technologies or products compared: A vs B"
+languages: [en, de, ko, ja]
+niches:
+  - tech_ai_future

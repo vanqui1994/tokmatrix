@@ -1,0 +1,7 @@
+id: survival_desert
+engine: survival
+format: free
+brief: "Surviving extreme heat and desert conditions"
+languages: [en, de, ko, ja]
+niches:
+  - extreme_survival

@@ -6,6 +6,8 @@ import { execFile } from "node:child_process";
 import { promisify } from "node:util";
 import { fileURLToPath } from "node:url";
 import { synthesizeCapCut } from "../../tools/capcut-tts.mjs";
+import { applyVoiceFx, fxKeyPart, isVoiceFx } from "./voice-fx.mjs";
+import { applyVoiceClone, cloneKeyPart, cloneProblems } from "./voice-clone.mjs";
 import { computeDuckedBgmSegments, copyCinemaSfxFiles, detectSfxCues, generateCinemaAudioHtml } from "../../tools/auto-sfx.mjs";
 import { probeDuration, getVoice, synthesizeEdge } from "../../tools/voices.mjs";
 import { SFX_CATALOG, SOUNDSCAPE_PRESETS } from "../../tools/soundscapes.mjs";
@@ -32,8 +34,8 @@ function sceneList(manifest) {
   return manifest?.storyboard?.scenes || manifest?.scenes;
 }
 
-function audioRenderKey(line, voice, rate, pitch, role) {
-  return crypto.createHash("sha256").update(JSON.stringify({ version: 1, line, voice: voice.id, rate, pitch, provider: voice.provider, role })).digest("hex");
+function audioRenderKey(line, voice, rate, pitch, role, fx = "none", clone = {}) {
+  return crypto.createHash("sha256").update(JSON.stringify({ version: 1, line, voice: voice.id, rate, pitch, provider: voice.provider, role, ...fxKeyPart(fx), ...clone })).digest("hex");
 }
 
 async function hashFile(filePath) {
@@ -62,23 +64,37 @@ async function applyPitchShift(sourcePath, outputPath, pitch) {
   ]);
 }
 
-export function createVoiceSynthesizer({ edgeProvider = synthesizeEdge, capcutProvider = synthesizeCapCut, pitchProcessor = applyPitchShift } = {}) {
-  return async function synthesizeConfiguredVoice({ text, voice, rate, pitch, outPath }) {
-    const temporaryPath = pitch ? `${outPath}.unpitched.mp3` : outPath;
+export function createVoiceSynthesizer({ edgeProvider = synthesizeEdge, capcutProvider = synthesizeCapCut, pitchProcessor = applyPitchShift, fxProcessor = applyVoiceFx, cloneProcessor = applyVoiceClone } = {}) {
+  return async function synthesizeConfiguredVoice({ text, voice, rate, pitch, fx = "none", clone = null, outPath }) {
+    // TTS → clone (đổi âm sắc) → pitch → fx; mỗi bước ghi file mới (không ghi đè file đang đọc), bước cuối ghi outPath.
+    const steps = [];
+    if (clone && clone !== "none") steps.push(["cloned", (src, out) => cloneProcessor(src, out, clone)]);
+    if (pitch) steps.push(["pitched", (src, out) => pitchProcessor(src, out, pitch)]);
+    if (fx && fx !== "none") steps.push(["fx", (src, out) => fxProcessor(src, out, fx)]);
+    const rawPath = steps.length ? `${outPath}.raw.mp3` : outPath;
+    const temps = new Set([rawPath, ...steps.slice(0, -1).map(([name]) => `${outPath}.${name}.mp3`)].filter((file) => file !== outPath));
+    const cleanup = async () => {
+      for (const file of temps) await fs.promises.rm(file, { force: true });
+    };
     try {
       if (voice.provider === "edge") {
-        await edgeProvider({ text, voice: voice.id, outPath: temporaryPath, rate });
+        await edgeProvider({ text, voice: voice.id, outPath: rawPath, rate });
       } else if (voice.provider === "capcut") {
-        await capcutProvider({ text, voice: voice.id, outPath: temporaryPath, rate: String(rate) });
+        await capcutProvider({ text, voice: voice.id, outPath: rawPath, rate: String(rate) });
       } else {
         throw new Error(`unsupported TTS provider ${voice.provider}`);
       }
-      if (pitch) await pitchProcessor(temporaryPath, outPath, pitch);
+      let current = rawPath;
+      for (const [index, [name, run]] of steps.entries()) {
+        const next = index === steps.length - 1 ? outPath : `${outPath}.${name}.mp3`;
+        await run(current, next);
+        current = next;
+      }
     } catch (error) {
-      if (temporaryPath !== outPath) await fs.promises.rm(temporaryPath, { force: true });
+      await cleanup();
       throw error;
     }
-    if (temporaryPath !== outPath) await fs.promises.rm(temporaryPath, { force: true });
+    await cleanup();
   };
 }
 
@@ -114,6 +130,7 @@ export async function orchestrateAudioForJob({
   artifactWriter = recordSceneArtifact,
   pitchProcessor = applyPitchShift,
   sfxDetector = detectSfxCues,
+  cloneRegistry = undefined,
   log = () => {},
 } = {}) {
   if (!/^[a-zA-Z0-9][a-zA-Z0-9_-]{0,127}$/.test(jobId || "")) throw new Error("jobId must be a safe path component");
@@ -130,6 +147,12 @@ export async function orchestrateAudioForJob({
   }
   const rate = Number(dna.audio.voice_speed);
   const pitch = Number(dna.audio.voice_pitch);
+  const fx = dna.audio.voice_fx || "none";
+  if (!isVoiceFx(fx)) throw new Error(`Channel DNA voice_fx ${fx} is not supported`);
+  const clone = dna.audio.voice_clone && dna.audio.voice_clone !== "none" ? String(dna.audio.voice_clone) : null;
+  const cloneErrors = clone ? cloneProblems(clone, language, cloneRegistry) : [];
+  if (cloneErrors.length) throw new Error(cloneErrors.join("; "));
+  const cloneKey = clone ? cloneKeyPart(clone, cloneRegistry) : {};
   if (!Number.isFinite(rate) || rate < 0.5 || rate > 2 || !Number.isFinite(pitch) || pitch < -12 || pitch > 12) {
     throw new Error("Channel DNA voice_speed/voice_pitch are outside supported ranges");
   }
@@ -153,7 +176,7 @@ export async function orchestrateAudioForJob({
     const text = String(scene.line || "").trim();
     if (!text) throw new Error(`scene ${scene.scene_index} has no narration line`);
     const role = String(scene.speaker || "narrator");
-    const key = audioRenderKey(text, voice, rate, pitch, role);
+    const key = audioRenderKey(text, voice, rate, pitch, role, fx, cloneKey);
     const outputPath = path.join(projectDir, "scenes", `scene_${String(scene.scene_index).padStart(2, "0")}`, "narration.mp3");
     await fs.promises.mkdir(path.dirname(outputPath), { recursive: true });
     let artifact = existingNarration(existing, scene, key);
@@ -167,7 +190,7 @@ export async function orchestrateAudioForJob({
       if (!Number.isFinite(duration) || duration <= 0) artifact = null;
     }
     if (!artifact) {
-      await voiceSynthesizer({ text, voice, rate, pitch, role, outPath: outputPath, pitchProcessor });
+      await voiceSynthesizer({ text, voice, rate, pitch, fx, clone, role, outPath: outputPath, pitchProcessor });
       const stat = await fs.promises.stat(outputPath).catch(() => null);
       if (!stat?.isFile() || stat.size === 0) throw new Error(`TTS returned no audio for scene ${scene.scene_index}`);
       duration = await durationProbe(outputPath);
@@ -229,6 +252,8 @@ export async function orchestrateAudioForJob({
     voice_provider: voice.provider,
     voice_speed: rate,
     voice_pitch: pitch,
+    voice_fx: fx,
+    voice_clone: clone,
     music_family: dna.audio.music_family,
     soundscape_id: soundscape.id,
     bgm: path.relative(projectDir, bgmDestination),

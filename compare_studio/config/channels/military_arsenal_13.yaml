@@ -2,11 +2,11 @@ audio:
   music_family: military_arsenal_editorial
   sfx_density: medium
   soundscape_id: science
-  voice_id: en-US-RogerNeural
+  voice_id: en-GB-SoniaNeural
   voice_pitch: -1
   voice_speed: 1.05
 channel_id: military_arsenal_13
-config_version: 7
+config_version: 8
 creative:
   cut_cadence_seconds: 3.0
   palette:

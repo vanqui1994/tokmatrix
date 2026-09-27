@@ -137,7 +137,7 @@ export default {
   engine: "kinetic",
   name_vi: "Chữ động (3 layout: chữ giữa / dải màu + số / bảng nghiêng) + linh vật nước",
   status: "active",
-  contentProfile: { topicPacks: { quick_facts: 1 } },
+  contentProfile: { topicPacks: { kinetic_quick_facts: 1 } },
   visualProfile: {
     layoutFamily: "kinetic_type",
     fingerprintAxes: {

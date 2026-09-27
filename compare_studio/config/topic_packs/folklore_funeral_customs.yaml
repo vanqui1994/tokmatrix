@@ -1,0 +1,9 @@
+id: folklore_funeral_customs
+engine: folklore
+format: free
+brief: "Old burial and mourning rites and the stories behind them"
+languages: [en, de, ko, ja]
+niches:
+  - folklore_legends
+  - ancient_mythology
+  - lost_civilizations

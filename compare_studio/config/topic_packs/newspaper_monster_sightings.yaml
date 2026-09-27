@@ -1,0 +1,9 @@
+id: newspaper_monster_sightings
+engine: newspaper
+format: free
+brief: "Sea serpents and monster sightings as reported in old papers"
+languages: [en, de, ko, ja]
+niches:
+  - unsolved_mysteries
+  - folklore_legends
+  - ancient_mythology

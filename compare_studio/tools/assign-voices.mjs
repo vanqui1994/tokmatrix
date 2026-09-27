@@ -80,7 +80,8 @@ export function assignVoices(channels) {
     for (const channel of pending) {
       const voice = [...pool].filter((v) => used.get(v) < cap).sort((a, b) => nicheCount(channel.niche, a) - nicheCount(channel.niche, b)
         || used.get(a) - used.get(b) || rank(channel.channel_id, a).localeCompare(rank(channel.channel_id, b)))[0];
-      take(channel, voice, "new");
+      // Niche đầy (mọi giọng còn trống đã có trong niche): lượt 2 có thể chọn lại đúng giọng cũ → vẫn là "kept".
+      take(channel, voice, voice === channel.voice ? "kept" : "new");
     }
   }
   return rows.sort((a, b) => a.channel_id.localeCompare(b.channel_id));

@@ -14,7 +14,7 @@ export const AXIS_VOCAB = Object.freeze({
   textPlacement: ["top", "center", "bottom", "left_column", "right_column", "on_image", "vertical_side", "lower_third", "floating"],
   background: ["flat_color", "paper", "wood_paper", "fabric", "metal", "darkness", "map", "water", "tv_static",
     "chalkboard", "whiteboard", "blueprint", "sky", "stone", "velvet", "gradient"],
-  transition: [...DNA_AXIS_VALUES.transition, "tv_noise", "ink_bleed", "paper_tear", "flip_3d", "glitch"],
+  transition: [...new Set([...DNA_AXIS_VALUES.transition, "tv_noise", "ink_bleed", "paper_tear", "flip_3d", "glitch"])],
   imageMotion: DNA_AXIS_VALUES.image_motion,
   typography: DNA_AXIS_VALUES.typography,
 });
@@ -41,7 +41,8 @@ export function effectiveAxes(variant, compositionId, dna) {
     if (dna.transition) axes.transition = dna.transition;
     if (dna.image_motion) axes.imageMotion = dna.image_motion;
     if (dna.typography) axes.typography = dna.typography;
-    if (dna.caption) axes.textPlacement = CAPTIONS.items[dna.caption].textPlacement;
+    const placement = dna.caption ? CAPTIONS.items[dna.caption]?.textPlacement : null;
+    if (placement) axes.textPlacement = placement;
   }
   return axes;
 }
@@ -165,7 +166,11 @@ export function validateVariantSet(variants) {
       const b = variants[j];
       if (!a.visualProfile?.fingerprintAxes || !b.visualProfile?.fingerprintAxes) continue;
       const { differing, same } = compareVariantAxes(a, b);
-      if (a.engine === b.engine && differing < MIN_AXIS_DIFF_SAME_ENGINE) {
+      // Variant "reference" (khung Phase 0, không bao giờ gán cho acc) chỉ bị cảnh báo khi giống variant thật.
+      const assignable = a.status !== "reference" && b.status !== "reference";
+      if (a.engine === b.engine && differing < MIN_AXIS_DIFF_SAME_ENGINE && !assignable) {
+        warnings.push(`${a.id} ↔ ${b.id}: variant tham chiếu trùng trục với variant thật (${differing}/6)`);
+      } else if (a.engine === b.engine && differing < MIN_AXIS_DIFF_SAME_ENGINE) {
         errors.push(`${a.id} ↔ ${b.id}: chỉ khác ${differing}/6 trục (cần ≥ ${MIN_AXIS_DIFF_SAME_ENGINE}); trùng ${same.join(", ")}`);
       } else if (a.engine !== b.engine && differing < CROSS_ENGINE_WARN_BELOW) {
         warnings.push(`${a.id} ↔ ${b.id}: khác engine nhưng chỉ khác ${differing}/6 trục — review chéo`);

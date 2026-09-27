@@ -1,0 +1,8 @@
+id: survival_deep_ocean
+engine: survival
+format: free
+brief: "Surviving pressure, cold and dark in the deep ocean"
+languages: [en, de, ko, ja]
+niches:
+  - ocean_mysteries
+  - extreme_survival

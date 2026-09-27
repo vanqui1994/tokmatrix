@@ -1,0 +1,7 @@
+id: compare_money
+engine: compare
+format: versus
+brief: "Two economies, currencies or fortunes weighed: A vs B"
+languages: [en, de, ko, ja]
+niches:
+  - economy_empires

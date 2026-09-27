@@ -1,0 +1,9 @@
+id: chalk_borders
+engine: chalk
+format: free
+brief: "Why a border runs where it does, drawn on the map"
+languages: [en, de, ko, ja]
+niches:
+  - geopolitics_maps
+  - economy_empires
+  - lost_civilizations

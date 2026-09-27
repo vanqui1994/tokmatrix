@@ -1,0 +1,11 @@
+id: vox_documentary_reports
+engine: vox
+format: free
+brief: "Documentary-style report on one real case or event"
+languages: [en, de, ko, ja]
+niches:
+  - unsolved_mysteries
+  - mega_catastrophes
+  - forbidden_experiments
+  - medical_anomalies
+  - dark_psychology

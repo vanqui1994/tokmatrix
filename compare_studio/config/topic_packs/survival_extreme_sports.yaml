@@ -1,0 +1,7 @@
+id: survival_extreme_sports
+engine: survival
+format: free
+brief: "The physical limits of extreme sports"
+languages: [en, de, ko, ja]
+niches:
+  - extreme_survival

@@ -1,0 +1,9 @@
+id: compare_history_rivals
+engine: compare
+format: versus
+brief: "Two historic rivals put on trial with facts: A vs B"
+languages: [en, de, ko, ja]
+niches:
+  - geopolitics_maps
+  - military_arsenal
+  - economy_empires

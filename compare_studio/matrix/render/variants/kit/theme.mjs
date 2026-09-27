@@ -5,7 +5,7 @@ import { TONES } from "./profiles.mjs";
 
 export const SUPPORTED_LANGS = Object.freeze(["en", "de", "ja", "ko", "vi", "fr"]);
 
-const SCRIPT = { ja: "ja", ko: "ko" };
+const SCRIPT = { ja: "ja", ko: "ko", vi: "vi" };
 export function scriptFor(lang) {
   return SCRIPT[String(lang || "").slice(0, 2)] || "latin";
 }
@@ -15,14 +15,15 @@ const MOTIF = {
 };
 
 // Font tiêu đề (masthead, nhãn) theo nước — lớp 1 "bộ nhận diện nước" (docs/PLAN_compare_per_country.md mục 2).
-// Font chữ thân vẫn do account DNA (typography) chọn. Chỉ font local/hệ thống, không tải mạng.
+// Font chữ thân vẫn do account DNA (typography) chọn. Chỉ họ font offline của kit/fonts.mjs (@fontsource ghim version),
+// không font hệ thống: `hyperframes check` từ chối font không có @font-face và chữ khác nhau giữa các máy.
 export const DISPLAY_FONTS = Object.freeze({
-  de: '"Be Vietnam Pro", "DIN Alternate", "Liberation Sans", "DejaVu Sans", sans-serif', // Bauhaus/DIN grotesk
-  en: '"Noto Serif", "Liberation Serif", "DejaVu Serif", Georgia, serif', // serif báo Anh
-  ja: '"Noto Serif CJK JP", "Hiragino Mincho ProN", "IPAMincho", serif',
-  ko: '"Noto Sans CJK KR", "Apple SD Gothic Neo", "WenQuanYi Zen Hei", sans-serif',
-  vi: '"Be Vietnam Pro", "DejaVu Sans", sans-serif',
-  fr: '"Noto Serif", "Liberation Serif", "DejaVu Serif", serif',
+  de: '"Oswald", sans-serif', // grotesk hẹp kiểu DIN/Bauhaus
+  en: '"Playfair Display", serif', // serif báo Anh
+  ja: '"Noto Serif JP", serif',
+  ko: '"Noto Sans KR", sans-serif',
+  vi: '"Inter", sans-serif', // có lát vietnamese
+  fr: '"Playfair Display", serif',
 });
 
 /**

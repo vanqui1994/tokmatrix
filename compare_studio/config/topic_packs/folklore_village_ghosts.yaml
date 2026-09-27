@@ -1,0 +1,8 @@
+id: folklore_village_ghosts
+engine: folklore
+format: free
+brief: "Village ghosts and spirits from traditional folk belief"
+languages: [en, de, ko, ja]
+niches:
+  - folklore_legends
+  - unsolved_mysteries

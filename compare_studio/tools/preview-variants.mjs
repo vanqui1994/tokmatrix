@@ -13,6 +13,7 @@ import { DNA_FIELDS, defaultDna } from "../matrix/render/variants/dna.mjs";
 import { lintVariantHtml } from "../matrix/render/variants/kit/lint.mjs";
 import { resolveCreativeContext } from "../matrix/render/variants/kit/resolve.mjs";
 import { prepareKitAssets } from "../matrix/render/variants/kit/runtime.mjs";
+import { embedFonts } from "../matrix/render/variants/kit/fonts.mjs";
 import { loadChannels } from "./assign-skins.mjs";
 import { extendedEngine } from "../matrix/render/engines/index.mjs";
 
@@ -81,7 +82,8 @@ export async function buildPreview({ variant, composition, lang, dna, dnaTag, ou
   });
   const problems = lintVariantHtml(built.html);
   if (problems.length) throw new Error(`${slug}: ${problems.join("; ")}`);
-  fs.writeFileSync(path.join(dir, "index.html"), built.html);
+  const fonts = embedFonts({ html: built.html, families: [...creative.fonts.families, ...(built.fontFamilies || [])], targetDir: dir, compareDir: COMPARE_DIR });
+  fs.writeFileSync(path.join(dir, "index.html"), fonts.html);
   await prepareKitAssets({ targetDir: dir, compareDir: COMPARE_DIR });
   // Engine mở rộng (tierlist SFX, survival meme…) chép asset tĩnh như adapter thật.
   await extendedEngine(variant.engine)?.prepareAssets?.({ targetDir: dir, compareDir: COMPARE_DIR });
@@ -89,7 +91,7 @@ export async function buildPreview({ variant, composition, lang, dna, dnaTag, ou
   fs.writeFileSync(path.join(dir, "hyperframes.json"), JSON.stringify({ paths: { assets: "assets" } }, null, 2));
   const o = creative.observability;
   return {
-    dir, slug, duration: totalDuration,
+    dir, slug, duration: totalDuration, scene_durations: scenes.map((scene) => scene.duration),
     labels: {
       engine: channelId ? `${o.engine} · ${channelId}` : o.engine, variant: o.variant_id, country: o.country, composition: o.creative_dna.composition,
       motion: o.creative_dna.image_motion, typography: o.creative_dna.typography, transition: o.creative_dna.transition,

@@ -1,0 +1,8 @@
+id: folklore_fortune_telling
+engine: folklore
+format: free
+brief: "Fortune-telling practices and the stories told about them"
+languages: [en, de, ko, ja]
+niches:
+  - folklore_legends
+  - ancient_mythology

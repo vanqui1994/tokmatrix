@@ -1,0 +1,9 @@
+id: wildlife_ecosystems
+engine: wildlife
+format: free
+brief: "How habitats, food webs and seasonal movements work"
+languages: [en, de, ko, ja]
+niches:
+  - extreme_wildlife
+  - ocean_mysteries
+  - geopolitics_maps

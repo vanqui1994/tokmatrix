@@ -1,0 +1,10 @@
+id: mystery_missing_person
+engine: mystery
+format: free
+brief: "Real disappearances with no confirmed explanation"
+languages: [en, de, ko, ja]
+niches:
+  - unsolved_mysteries
+  - infamous_figures
+  - dark_psychology
+  - extreme_survival

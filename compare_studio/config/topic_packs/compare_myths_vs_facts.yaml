@@ -1,0 +1,9 @@
+id: compare_myths_vs_facts
+engine: compare
+format: versus
+brief: "A popular claim against the evidence: myth vs fact"
+languages: [en, de, ko, ja]
+niches:
+  - deep_space
+  - ocean_mysteries
+  - tech_ai_future

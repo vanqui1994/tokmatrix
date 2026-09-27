@@ -1,0 +1,9 @@
+id: mystery_ocean_unknown
+engine: mystery
+format: free
+brief: "Unidentified sounds, wrecks and sightings from the deep ocean"
+languages: [en, de, ko, ja]
+niches:
+  - ocean_mysteries
+  - unsolved_mysteries
+  - deep_space

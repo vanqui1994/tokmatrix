@@ -1,0 +1,9 @@
+id: mystery_cold_case
+engine: mystery
+format: free
+brief: "Decades-old unsolved murders and the evidence that remains"
+languages: [en, de, ko, ja]
+niches:
+  - unsolved_mysteries
+  - infamous_figures
+  - dark_psychology

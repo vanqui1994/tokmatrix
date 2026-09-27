@@ -1,0 +1,9 @@
+id: compare_specs_sheet
+engine: compare
+format: versus
+brief: "Two machines compared spec by spec: A vs B"
+languages: [en, de, ko, ja]
+niches:
+  - military_arsenal
+  - tech_ai_future
+  - deep_space

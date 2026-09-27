@@ -1,0 +1,7 @@
+id: tierlist_military_tech
+engine: tierlist
+format: ranking
+brief: "Ranking military technology by capability"
+languages: [en, de, ko, ja]
+niches:
+  - military_arsenal

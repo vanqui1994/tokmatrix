@@ -1,0 +1,9 @@
+id: wildlife_migration
+engine: wildlife
+format: free
+brief: "Great animal migrations and navigation"
+languages: [en, de, ko, ja]
+niches:
+  - extreme_wildlife
+  - ocean_mysteries
+  - geopolitics_maps

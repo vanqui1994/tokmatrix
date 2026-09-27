@@ -1,0 +1,9 @@
+id: mystery_unexplained_evidence
+engine: mystery
+format: free
+brief: "Physical evidence that investigators still cannot explain"
+languages: [en, de, ko, ja]
+niches:
+  - unsolved_mysteries
+  - lost_civilizations
+  - medical_anomalies

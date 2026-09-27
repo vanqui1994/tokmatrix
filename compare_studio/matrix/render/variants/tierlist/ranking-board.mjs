@@ -193,12 +193,12 @@ export default {
   engine: "tierlist",
   name_vi: "Bảng xếp hạng (3 layout: hàng ngang / ảnh lớn + thang gọn / kim tự tháp) + linh vật",
   status: "active",
-  contentProfile: { topicPacks: { rankings: 1 } },
+  contentProfile: { topicPacks: { tierlist_general: 1 } },
   visualProfile: {
     layoutFamily: "tier_board",
     fingerprintAxes: {
       composition: "ledger_columns", textPlacement: "bottom", background: "flat_color",
-      transition: "slide", imageMotion: "push_in", typography: "grotesk",
+      transition: "cut", imageMotion: "ken_burns_slow", typography: "grotesk",
     },
     compositions: {
       rows_board: { axes: { composition: "ledger_columns", textPlacement: "bottom", background: "flat_color" }, describe: "Bảng 6 hàng SSS→D ở trên, ảnh ứng viên + lời đọc phía dưới, linh vật góc phải" },

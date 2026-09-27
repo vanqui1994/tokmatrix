@@ -1,0 +1,10 @@
+id: newspaper_urgent_dispatches
+engine: newspaper
+format: free
+brief: "Breaking dispatches from disasters, wars and historic turning points"
+languages: [en, de, ko, ja]
+niches:
+  - mega_catastrophes
+  - military_arsenal
+  - geopolitics_maps
+  - extreme_survival

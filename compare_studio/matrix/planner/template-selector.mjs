@@ -2,6 +2,7 @@ import { resolvePilotChannelConfigs } from "../config/channel-config-resolver.mj
 import { validateConfigs } from "../../tools/matrix-config-validator.mjs";
 import { RENDERABLE_ENGINES } from "../render/native-engine-adapter.mjs";
 import { splitSubjects } from "../render/engines/compare.mjs";
+import { getVariant, variantsEnabled } from "../render/variants/index.mjs";
 
 export function resolveChannelsForTopic(nicheId, count = 10, { configDir, channelIds, topic } = {}) {
   if (!nicheId || !Number.isInteger(Number(count)) || Number(count) < 1) {
@@ -20,16 +21,40 @@ export function resolveChannelsForTopic(nicheId, count = 10, { configDir, channe
 
   const resolvedChannels = [];
   const skipped = [];
+  const variantSkipped = [];
   for (const resolved of channels) {
     if (resolvedChannels.length >= Number(count)) break;
     const allowed = allowedEngines();
+    const locked = variantEngine(resolved, allowed);
+    if (locked) {
+      if (locked.skip) variantSkipped.push(`${resolved.channel_id} (${locked.skip})`);
+      else resolvedChannels.push({ ...resolved, engine_type: locked.id, compatibility_score: locked.score });
+      continue;
+    }
     const engine = topicEngine(resolved, topic, allowed, compareScores(configDir)) || pickEngine(resolved, allowed) || { id: fallbackEngine(), score: 0, fallback: true };
     if (engine.fallback) skipped.push(resolved.channel_id);
     resolvedChannels.push({ ...resolved, engine_type: engine.id, compatibility_score: engine.score });
   }
+  if (variantSkipped.length) console.warn(`[MATRIX] ${variantSkipped.length} kênh có variant bị bỏ qua (không lùi sang engine khác): ${variantSkipped.join(", ")}`);
   if (skipped.length) console.warn(`[MATRIX] ${skipped.length} kênh không có engine render được trong danh sách tương thích → dùng ${fallbackEngine()}: ${skipped.join(", ")}`);
   if (!resolvedChannels.length) throw new Error(`no channel in niche ${nicheId} has a renderable engine`);
   return resolvedChannels;
+}
+
+/**
+ * Kênh có creative.variant_id: engine KHOÁ theo variant — không topicEngine (compare), không pickEngine, không
+ * fallbackEngine (docs/MATRIX_VARIANT_SYSTEM_V2.md C3). Engine bị dừng/không render được hoặc variant không dùng
+ * được → { skip } (kênh bị bỏ qua trong batch này). null = kênh legacy hoặc MATRIX_VARIANTS=0.
+ */
+export function variantEngine(resolved, renderable = allowedEngines(), env = process.env) {
+  const creative = resolved.resolved_config?.channel?.creative || resolved.channel?.creative;
+  const variantId = creative?.variant_id;
+  if (!variantId || !variantsEnabled(env)) return null;
+  const variant = getVariant(variantId);
+  if (!variant) return { skip: `variant ${variantId} unknown or inactive` };
+  if (!new Set(renderable).has(variant.engine)) return { skip: `engine ${variant.engine} blocked or not renderable` };
+  const score = resolved.resolved_config?.compatibility?.engines?.find((engine) => engine.id === variant.engine)?.score ?? 0;
+  return { id: variant.engine, score, variant_id: variant.id };
 }
 
 /**

@@ -1,0 +1,8 @@
+id: science_kitchen_chemistry
+engine: science
+format: free
+brief: "Chemistry of food and the home"
+languages: [en, de, ko, ja]
+niches:
+  - forbidden_experiments
+  - medical_anomalies

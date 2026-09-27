@@ -1,0 +1,9 @@
+id: compare_countries_stats
+engine: compare
+format: versus
+brief: "Two countries compared on hard numbers: A vs B"
+languages: [en, de, ko, ja]
+niches:
+  - geopolitics_maps
+  - economy_empires
+  - military_arsenal

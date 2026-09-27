@@ -1,0 +1,8 @@
+id: science_materials
+engine: science
+format: free
+brief: "Materials science: why materials behave as they do"
+languages: [en, de, ko, ja]
+niches:
+  - tech_ai_future
+  - military_arsenal

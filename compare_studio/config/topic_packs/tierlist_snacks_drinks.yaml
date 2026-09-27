@@ -1,0 +1,8 @@
+id: tierlist_snacks_drinks
+engine: tierlist
+format: ranking
+brief: "Ranking foods and drinks by a clear criterion"
+languages: [en, de, ko, ja]
+niches:
+  - extreme_survival
+  - medical_anomalies

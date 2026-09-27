@@ -4,6 +4,7 @@
 import { NEWSPAPER_LANG_META } from "../../../../tools/newspaper-configs.mjs";
 import { imageMotionTweens, transitionTweens } from "../kit/profiles.mjs";
 import { rngRange } from "../kit/rng.mjs";
+import { stackFamily } from "../kit/fonts.mjs";
 import { documentHtml, escapeHtml, fitText, overlayHtml, paletteCss, timelineJs, voiceClipsHtml } from "../kit/primitives.mjs";
 
 const COUNTER = { en: "PAGE", de: "SEITE", ja: "頁", ko: "면", vi: "TRANG", fr: "PAGE" };
@@ -48,17 +49,17 @@ const COMPOSITION_CSS = {
 .n-motif{position:absolute;inset:0;opacity:.28}
 .n-mast-name{position:absolute;left:0;top:120px;width:190px;height:1500px;display:flex;align-items:center;justify-content:center}
 .n-mast-name h2{margin:0;writing-mode:vertical-rl;transform:rotate(180deg);font-size:92px;line-height:1;letter-spacing:4px;color:var(--fg-on-panel);white-space:nowrap}
-.n-mast-meta{position:absolute;left:0;width:190px;top:1640px;text-align:center;font-size:24px;letter-spacing:3px;color:var(--panel-edge)}
+.n-mast-meta{position:absolute;left:0;width:190px;top:1640px;text-align:center;font-size:24px;letter-spacing:3px;color:var(--fg-on-panel)}
 .n-head{position:absolute;left:230px;top:150px;width:790px;height:290px;border-bottom:6px solid var(--panel-edge)}
-.n-head h1{margin:0;font-size:72px;line-height:1.05}
+.n-head h1{margin:0;font-size:72px;line-height:1.15}
 .n-photo{box-shadow:18px 18px 0 var(--panel-edge-dim)}
 .n-caption{background:var(--fg-on-panel);border-top:12px solid var(--panel)}`,
   magazine_cover: `
 .n-shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.62) 0%,rgba(0,0,0,.08) 34%,rgba(0,0,0,.1) 56%,rgba(0,0,0,.7) 100%)}
 .n-mast{position:absolute;left:60px;top:100px;width:960px;height:230px}
-.n-mast-name{position:absolute;left:0;top:0;width:960px;height:180px;display:flex;align-items:flex-end}
-.n-mast-name h2{margin:0;font-size:150px;line-height:.9;letter-spacing:-2px;color:var(--bg);text-transform:uppercase}
-.n-mast-meta{position:absolute;left:4px;top:196px;font-size:26px;letter-spacing:8px;color:var(--bg)}
+.n-mast-name{position:absolute;left:0;top:0;width:960px;height:170px;display:flex;align-items:flex-end}
+.n-mast-name h2{margin:0;font-size:150px;line-height:1;letter-spacing:-2px;color:var(--bg);text-transform:uppercase;white-space:nowrap}
+.n-mast-meta{position:absolute;left:4px;top:206px;font-size:26px;letter-spacing:8px;color:var(--bg)}
 .n-head{position:absolute;left:70px;top:1640px;width:820px;height:130px;border-top:6px solid var(--accent-terra)}
 .n-head h1{margin:0;font-size:46px;line-height:1.1;color:var(--bg)}
 .n-frame{position:absolute;inset:0;border:22px solid transparent;box-sizing:border-box}
@@ -90,8 +91,7 @@ function mastheadHtml(compositionId, meta, theme, sceneCount) {
   const motif = theme.motifCss("var(--panel-edge-dim)", "var(--accent-terra)");
   const edition = `${meta.breaking.split("//")[0].trim()} · ${String(sceneCount).padStart(2, "0")}`;
   if (compositionId === "magazine_cover") {
-    return `<div class="n-shade"></div>
-<div class="n-mast"><div class="n-mast-name">${fitText("h2", 'class="n-mast-title"', meta.masthead, 60)}</div><div class="n-mast-meta">${escapeHtml(edition)}</div></div>
+    return `<div class="n-mast"><div class="n-mast-name">${fitText("h2", 'class="n-mast-title"', meta.masthead, 60)}</div><div class="n-mast-meta">${escapeHtml(edition)}</div></div>
 <div class="n-frame"><div class="n-frame-motif" style="${motif}"></div><div class="n-frame-motif b" style="${motif}"></div></div>`;
   }
   return `<div class="n-mast"><div class="n-motif" style="${motif}"></div><div class="n-mast-name">${fitText("h2", 'class="n-mast-title"', meta.masthead, 40)}</div><div class="n-mast-meta">${escapeHtml(edition)}</div></div>`;
@@ -111,7 +111,7 @@ function buildHtml(ctx) {
   const scenesHtml = scenes.map((scene, i) => `
 <div id="n-scene-${scene.index}" class="clip n-scene" data-start="${scene.visualStart}" data-duration="${scene.visualDuration}" data-track-index="${scene.track}">
   <div class="n-inner" id="n-inner-${scene.index}">
-    <div class="n-photo" style="${box(geometry.photo)};transform:rotate(${tilts[i]}deg)"><img class="n-img" id="n-img-${scene.index}" src="${escapeHtml(scene.imgSrc)}" alt="">${overlayHtml(`n-tr-${scene.index}`, creative.treatmentCss)}</div>
+    <div class="n-photo" style="${box(geometry.photo)};transform:rotate(${tilts[i]}deg)"><img class="n-img" id="n-img-${scene.index}" src="${escapeHtml(scene.imgSrc)}" alt="">${overlayHtml(`n-tr-${scene.index}`, creative.treatmentCss)}</div>${cover ? '<div class="n-shade"></div>' : ""}
     <div class="n-caption" style="${box(geometry.caption)}" data-text-region="caption">
       <div class="n-tag">${escapeHtml(counter)} ${String(scene.index).padStart(2, "0")}/${String(scenes.length).padStart(2, "0")}</div>
       <div class="n-line-box">${fitText("p", `class="n-line" id="n-text-${scene.index}"`, scene.line, 22)}</div>
@@ -161,6 +161,7 @@ ${COMPOSITION_CSS[compositionId]}`;
   });
   return {
     html,
+    fontFamilies: [stackFamily(creative.theme.displayFont)],
     cfg: { variant_id: creative.variant.id, composition: compositionId, caption: creative.dna.caption, masthead: meta.masthead, scenes: scenes.length },
   };
 }
@@ -215,12 +216,15 @@ export default {
   engine: "newspaper",
   name_vi: "Trang báo (3 layout: khổ lớn / măng-sét dọc / bìa tạp chí)",
   status: "active",
-  contentProfile: { topicPacks: { documented_history: 1 } },
+  // documented_history (nhánh bộ da) không có file pack; dùng các pack newspaper có sẵn phủ nhiều niche.
+  contentProfile: { topicPacks: { newspaper_archived_cases: 0.4, newspaper_urgent_dispatches: 0.35, newspaper_hoaxes_panics: 0.25 } },
   visualProfile: {
     layoutFamily: "newsprint",
+    // transition / imageMotion / typography do DNA từng acc chọn; mặc định khai là lựa chọn khác victorian-broadsheet
+    // (luật ≥ 4/6 trục giữa base variant cùng engine).
     fingerprintAxes: {
       composition: "ledger_columns", textPlacement: "bottom", background: "paper",
-      transition: "page_turn", imageMotion: "ken_burns_slow", typography: "serif",
+      transition: "shutter", imageMotion: "pan_lateral", typography: "condensed",
     },
     compositions: {
       front_page: { axes: { composition: "ledger_columns", textPlacement: "bottom", background: "paper" }, describe: "Báo khổ lớn: măng-sét ngang viền kép, tiêu đề giữa, ảnh lớn, khối lời đọc trên/đè/dưới ảnh" },

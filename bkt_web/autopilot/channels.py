@@ -205,10 +205,15 @@ def mapped_channels_by_niche() -> Dict[str, List[str]]:
     return {niche: sorted(ids) for niche, ids in result.items()}
 
 
-def _write_yaml(path, cfg: Dict[str, Any]) -> None:
+def _write_yaml(path, cfg: Dict[str, Any]) -> bool:
+    """Ghi YAML kênh; bỏ qua (False) khi migration Creative DNA đang giữ khoá channels/.migration.lock."""
     import yaml
 
+    if (path.parent / ".migration.lock").exists():
+        store.log_event(f"⏸️ Bỏ qua ghi {path.name}: đang có migration Creative DNA (channels/.migration.lock)", "warn")
+        return False
     path.write_text(yaml.dump(cfg, allow_unicode=True, default_flow_style=False, sort_keys=False), encoding="utf-8")
+    return True
 
 
 def auto_link_channels() -> Dict[str, Any]:
@@ -242,8 +247,8 @@ def auto_link_channels() -> Dict[str, Any]:
         set_channel_mapping(mc["channel_id"], mc["niche_id"], ta["id"], country=ta["country"], language=language)
         entry = configs[mc["channel_id"]]
         if entry["path"].exists() and apply_language_to_channel_config(entry["config"], language):
-            _write_yaml(entry["path"], entry["config"])
-            lang_updated += 1
+            if _write_yaml(entry["path"], entry["config"]):
+                lang_updated += 1
         linked += 1
 
     return {
@@ -269,8 +274,10 @@ def sync_channel_languages() -> Dict[str, Any]:
             continue
         cfg = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
         if apply_language_to_channel_config(cfg, language):
-            _write_yaml(path, cfg)
-            updated.append(mapping["matrix_channel_id"])
+            if _write_yaml(path, cfg):
+                updated.append(mapping["matrix_channel_id"])
+            else:
+                skipped.append(mapping["matrix_channel_id"])
     return {"updated": updated, "skipped": skipped}
 
 

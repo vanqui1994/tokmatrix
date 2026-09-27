@@ -1,0 +1,8 @@
+id: tierlist_ancient_civilizations
+engine: tierlist
+format: ranking
+brief: "Ranking ancient civilizations by a clear criterion"
+languages: [en, de, ko, ja]
+niches:
+  - lost_civilizations
+  - ancient_mythology

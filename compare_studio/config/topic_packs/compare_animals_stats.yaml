@@ -1,0 +1,8 @@
+id: compare_animals_stats
+engine: compare
+format: versus
+brief: "Two animals compared on real stats like size, speed and bite: A vs B"
+languages: [en, de, ko, ja]
+niches:
+  - extreme_wildlife
+  - ocean_mysteries

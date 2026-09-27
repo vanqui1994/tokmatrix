@@ -1,0 +1,10 @@
+id: vox_strange_phenomena
+engine: vox
+format: free
+brief: "Strange natural or scientific phenomena explained"
+languages: [en, de, ko, ja]
+niches:
+  - unsolved_mysteries
+  - deep_space
+  - ocean_mysteries
+  - medical_anomalies

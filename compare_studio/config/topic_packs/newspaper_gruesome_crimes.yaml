@@ -1,0 +1,9 @@
+id: newspaper_gruesome_crimes
+engine: newspaper
+format: free
+brief: "Gruesome historic crimes told through period newspaper reports"
+languages: [en, de, ko, ja]
+niches:
+  - infamous_figures
+  - dark_psychology
+  - unsolved_mysteries

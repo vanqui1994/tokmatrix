@@ -1,0 +1,9 @@
+id: chalk_megaprojects
+engine: chalk
+format: free
+brief: "Giant infrastructure megaprojects mapped out"
+languages: [en, de, ko, ja]
+niches:
+  - economy_empires
+  - tech_ai_future
+  - geopolitics_maps

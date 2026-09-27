@@ -1,0 +1,9 @@
+id: mystery_caught_on_camera
+engine: mystery
+format: free
+brief: "Strange events recorded on security or phone cameras"
+languages: [en, de, ko, ja]
+niches:
+  - unsolved_mysteries
+  - dark_psychology
+  - tech_ai_future

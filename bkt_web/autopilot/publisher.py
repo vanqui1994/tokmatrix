@@ -19,8 +19,9 @@ from typing import Any, Callable, Dict, Mapping, Optional, Tuple
 from . import captions, channels, dupguard, safety, scheduler, store
 
 try:
-    from bkt_web import matrix_db, publish_flow
+    from bkt_web import asset_ledger, matrix_db, publish_flow
 except ImportError:
+    import asset_ledger
     import matrix_db
     import publish_flow
 
@@ -152,6 +153,11 @@ def _publish_job(job: Mapping[str, Any], plan: Mapping[str, Any], *, dry_run: bo
         report(job_id, f"🧊 {slug} → acc #{tiktok_id}: {wait}, giữ video chờ", "info")
         return {"outcome": "deferred", "tiktok_id": tiktok_id, "reason": wait}
 
+    reused = asset_ledger.verdict(slug, tiktok_id, videos_dir=store.VIDEOS_DIR)
+    if reused:
+        report(job_id, f"⛔ BẢO VỆ: {slug} → acc #{tiktok_id}: {reused}")
+        return {"outcome": "blocked", "tiktok_id": tiktok_id, "reason": reused}
+
     if not dry_run:  # đo vân tay có ghi DB → không chạy trong lượt chạy thử
         too_close = dupguard.verdict(slug, tiktok_id)
         if too_close:
@@ -190,6 +196,10 @@ def _publish_job(job: Mapping[str, Any], plan: Mapping[str, Any], *, dry_run: bo
         store.log_event(f"❌ Không tạo được task đăng {slug} → acc #{tiktok_id}: {exc.message}", "error")
         return {"outcome": "error", "tiktok_id": tiktok_id, "reason": exc.message}
 
+    try:
+        asset_ledger.record(slug, tiktok_id, videos_dir=store.VIDEOS_DIR)
+    except Exception as exc:  # ledger lỗi không được làm mất task đăng đã tạo
+        store.log_event(f"⚠️ asset ledger không ghi được {slug}: {exc}", "warn")
     _mark_scheduled(job_id)
     when = datetime.datetime.fromtimestamp(schedule_ts).strftime("%d/%m %H:%M")
     store.log_event(f"✅ {slug} → acc #{tiktok_id} lúc {when}")

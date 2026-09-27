@@ -1,0 +1,10 @@
+id: vox_journeys_routes
+engine: vox
+format: free
+brief: "Historic journeys, expeditions and trade routes on a map"
+languages: [en, de, ko, ja]
+niches:
+  - geopolitics_maps
+  - extreme_survival
+  - lost_civilizations
+  - economy_empires

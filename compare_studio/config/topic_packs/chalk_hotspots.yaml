@@ -1,0 +1,9 @@
+id: chalk_hotspots
+engine: chalk
+format: free
+brief: "Tension hotspots and why they matter"
+languages: [en, de, ko, ja]
+niches:
+  - geopolitics_maps
+  - military_arsenal
+  - mega_catastrophes
