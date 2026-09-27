@@ -14,7 +14,7 @@ const CSS = `
 .cg-nm{position:absolute;left:18px;right:18px;top:232px;height:72px;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.55);border-radius:14px;box-sizing:border-box;padding:0 12px}
 .cg-nm-t{margin:0;color:#fff;font-weight:800;text-align:center;line-height:1.05}
 .cg-tg{position:absolute;left:18px;right:18px;top:308px;height:38px;display:flex;align-items:center;justify-content:center}
-.cg-tg-t{margin:0;color:#fff;font-style:italic;text-align:center}
+.cg-tg-t{margin:0;color:#fff;font-style:italic;text-align:center;background:rgba(0,0,0,.5);padding:0 12px;border-radius:6px}
 .cg-stats{position:absolute;left:18px;right:18px;top:356px;height:340px}
 .cg-row{position:absolute;left:0;right:0;display:flex;gap:8px;box-sizing:border-box;padding:0 8px;background:rgba(255,255,255,.9);border-radius:10px}
 .cg-row.w{background:#fff3c4;box-shadow:inset 0 0 0 3px #e0a800}
