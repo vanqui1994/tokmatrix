@@ -56,3 +56,6 @@ studio/dist/
 # root tooling deps
 node_modules/
 .studio-tmp/
+
+# Nhạc nền CC0 (config/music/cc0_catalog.json): tải bằng `node tools/fetch-cc0-music.mjs`, không commit mp3
+shared/audio/cc0/

@@ -1,0 +1,1622 @@
+{
+  "catalog_version": 1,
+  "description": "CC0 / public-domain background music for Matrix videos. Metadata only; files are fetched by compare_studio/tools/fetch-cc0-music.mjs into shared/audio/cc0/<id>.mp3 and verified by sha256. Per-channel pools: audio.bgm_pool (tools/assign-music.mjs).",
+  "verified_at": "2026-09-27",
+  "sources": {
+    "freepd": {
+      "name": "FreePD.com (Kevin MacLeod and contributors)",
+      "license": "CC0-1.0",
+      "license_statement": "This music is all licensed CC0 1.0 Universal Public Domain Dedication. (FreePD.com home page, Legal section)",
+      "evidence_url": "https://web.archive.org/web/2024/https://freepd.com/",
+      "notes": "freepd.com closed in 2025 (the site now only shows a shutdown notice), so files are fetched from the Wayback Machine capture of the original https://freepd.com/music/<title>.mp3 URL; archive.org item 'freepd' (third-party mirror, only used when its md5 equals the Wayback file) is the second URL. Wayback can be slow (up to minutes per file) and occasionally rate-limits: the fetch script retries the next URL and can simply be rerun."
+    },
+    "opengameart": {
+      "name": "OpenGameArt.org",
+      "license": "CC0-1.0",
+      "license_statement": "Each track page lists 'License(s): CC0' (only single-licence CC0 submissions are used).",
+      "evidence_url": "https://opengameart.org/content/faq",
+      "notes": "Direct file links under https://opengameart.org/sites/default/files/ (hotlinking of downloads is allowed; the site is sometimes slow)."
+    }
+  },
+  "tracks": [
+    {
+      "id": "freepd-abstract-anxiety",
+      "title": "Abstract Anxiety",
+      "author": "Kevin MacLeod",
+      "source": "freepd",
+      "source_url": "https://web.archive.org/web/2024/https://freepd.com/misc.php",
+      "original_url": "https://freepd.com/music/Abstract%20Anxiety.mp3",
+      "download_urls": [
+        "https://web.archive.org/web/2024id_/https://freepd.com/music/Abstract%20Anxiety.mp3",
+        "https://archive.org/download/freepd/misc/Abstract%20Anxiety.mp3"
+      ],
+      "license": "CC0-1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "license_evidence": "https://web.archive.org/web/2024/https://freepd.com/",
+      "sha256": "0796da6d0061bd6e0b9cb95c09a997868e448a457bb975bf66c5fd6915969bec",
+      "bytes": 4305649,
+      "duration_seconds": 268.85,
+      "format": {
+        "codec": "mp3",
+        "sample_rate": 44100,
+        "channels": 2
+      },
+      "moods": [
+        "tense",
+        "dark",
+        "electronic"
+      ],
+      "description": "Dark, modern and cool track made with heavy bass, drums and sound effects. Superhero crime drama!"
+    },
+    {
+      "id": "freepd-action-strike",
+      "title": "Action Strike",
+      "author": "Rafael Krux",
+      "source": "freepd",
+      "source_url": "https://web.archive.org/web/2024/https://freepd.com/scoring.php",
+      "original_url": "https://freepd.com/music/Action%20Strike.mp3",
+      "download_urls": [
+        "https://web.archive.org/web/2024id_/https://freepd.com/music/Action%20Strike.mp3",
+        "https://archive.org/download/freepd/scoring/Action%20Strike.mp3"
+      ],
+      "license": "CC0-1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "license_evidence": "https://web.archive.org/web/2024/https://freepd.com/",
+      "sha256": "0a2305ad157fc35feceb4c61ff6686f9a8fca504d6f30d883f837449a53d758e",
+      "bytes": 5377644,
+      "duration_seconds": 134.44,
+      "format": {
+        "codec": "mp3",
+        "sample_rate": 44100,
+        "channels": 2
+      },
+      "moods": [
+        "epic",
+        "action",
+        "dark"
+      ],
+      "description": "Epic, dark and dramatic action track. Rush for king of the hill."
+    },
+    {
+      "id": "freepd-advertime",
+      "title": "Advertime",
+      "author": "Rafael Krux",
+      "source": "freepd",
+      "source_url": "https://web.archive.org/web/2024/https://freepd.com/upbeat.php",
+      "original_url": "https://freepd.com/music/Advertime.mp3",
+      "download_urls": [
+        "https://web.archive.org/web/2024id_/https://freepd.com/music/Advertime.mp3",
+        "https://archive.org/download/freepd/upbeat/Advertime.mp3"
+      ],
+      "license": "CC0-1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "license_evidence": "https://web.archive.org/web/2024/https://freepd.com/",
+      "sha256": "6f0d4433cf788304d60add551cc460dd877865e6d84a2ab3fa7d15ba3f55d6ce",
+      "bytes": 5360940,
+      "duration_seconds": 134.02,
+      "format": {
+        "codec": "mp3",
+        "sample_rate": 44100,
+        "channels": 2
+      },
+      "moods": [
+        "upbeat"
+      ],
+      "description": "Uplifting, positive and light track made with acoustic guitars, piano and light percussion. Perfect for commercials, advertising or generally happy moments."
+    },
+    {
+      "id": "freepd-alien-spaceship-atmosphere",
+      "title": "Alien Spaceship Atmosphere",
+      "author": "Kevin MacLeod",
+      "source": "freepd",
+      "source_url": "https://web.archive.org/web/2024/https://freepd.com/horror.php",
+      "original_url": "https://freepd.com/music/Alien%20Spaceship%20Atmosphere.mp3",
+      "download_urls": [
+        "https://web.archive.org/web/2024id_/https://freepd.com/music/Alien%20Spaceship%20Atmosphere.mp3",
+        "https://archive.org/download/freepd/horror/Alien%20Spaceship%20Atmosphere.mp3"
+      ],
+      "license": "CC0-1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "license_evidence": "https://web.archive.org/web/2024/https://freepd.com/",
+      "sha256": "e8feefb42d99ffb72aa6c64da6a5535f4f2080d51a3bf468bf4dcd3f8e4eb939",
+      "bytes": 2485206,
+      "duration_seconds": 124.06,
+      "format": {
+        "codec": "mp3",
+        "sample_rate": 44100,
+        "channels": 2
+      },
+      "moods": [
+        "dark_ambient",
+        "mysterious"
+      ],
+      "description": "Atmospheric, suspensful and dark. Horror filled soundspace full of eerie synths and sound design."
+    },
+    {
+      "id": "freepd-ancient-rite",
+      "title": "Ancient Rite",
+      "author": "Kevin MacLeod",
+      "source": "freepd",
+      "source_url": "https://web.archive.org/web/2024/https://freepd.com/epic.php",
+      "original_url": "https://freepd.com/music/Ancient%20Rite.mp3",
+      "download_urls": [
+        "https://web.archive.org/web/2024id_/https://freepd.com/music/Ancient%20Rite.mp3",
+        "https://archive.org/download/freepd/epic/Ancient%20Rite.mp3"
+      ],
+      "license": "CC0-1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "license_evidence": "https://web.archive.org/web/2024/https://freepd.com/",
+      "sha256": "3a0f9d6fc09c4d0605bfd07577600245fdd6c91394dc4037b5112c94a6d93756",
+      "bytes": 4663306,
+      "duration_seconds": 113.21,
+      "format": {
+        "codec": "mp3",
+        "sample_rate": 44100,
+        "channels": 2
+      },
+      "moods": [
+        "mysterious",
+        "epic"
+      ],
+      "description": "A solumn affair. Deep and religious."
+    },
+    {
+      "id": "freepd-aquatic-city-vanished",
+      "title": "Aquatic City Vanished",
+      "author": "Bryan Teoh",
+      "source": "freepd",
+      "source_url": "https://web.archive.org/web/2024/https://freepd.com/world.php",
+      "original_url": "https://freepd.com/music/Aquatic%20City%20Vanished.mp3",
+      "download_urls": [
+        "https://web.archive.org/web/2024id_/https://freepd.com/music/Aquatic%20City%20Vanished.mp3",
+        "https://archive.org/download/freepd/world/Aquatic%20City%20Vanished.mp3"
+      ],
+      "license": "CC0-1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "license_evidence": "https://web.archive.org/web/2024/https://freepd.com/",
+      "sha256": "450ea7731fa05cbb1d992540ddf7248d88473dd327bee082a1f8fccbb416a6e4",
+      "bytes": 2977174,
+      "duration_seconds": 148.75,
+      "format": {
+        "codec": "mp3",
+        "sample_rate": 48000,
+        "channels": 2
+      },
+      "moods": [
+        "mysterious",
+        "calm"
+      ],
+      "description": "Mysterious, intriguing, & liquidy"
+    },
+    {
+      "id": "freepd-arpent",
+      "title": "Arpent",
+      "author": "Kevin MacLeod",
+      "source": "freepd",
+      "source_url": "https://web.archive.org/web/2024/https://freepd.com/electronic.php",
+      "original_url": "https://freepd.com/music/Arpent.mp3",
+      "download_urls": [
+        "https://web.archive.org/web/2024id_/https://freepd.com/music/Arpent.mp3",
+        "https://archive.org/download/freepd/electronic/Arpent.mp3"
+      ],
+      "license": "CC0-1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "license_evidence": "https://web.archive.org/web/2024/https://freepd.com/",
+      "sha256": "ef06d8b524c196a31954dfb1f3261e7d37459e43f4afd9df31ee2965c6094a56",
+      "bytes": 6486643,
+      "duration_seconds": 162.06,
+      "format": {
+        "codec": "mp3",
+        "sample_rate": 44100,
+        "channels": 2
+      },
+      "moods": [
+        "upbeat",
+        "electronic",
+        "documentary"
+      ],
+      "description": "Upbeat, uplifting and inspiring. Technology and innovation."
+    },
+    {
+      "id": "freepd-behind-enemy-lines",
+      "title": "Behind Enemy Lines",
+      "author": "Rafael Krux",
+      "source": "freepd",
+      "source_url": "https://web.archive.org/web/2024/https://freepd.com/epic.php",
+      "original_url": "https://freepd.com/music/Behind%20Enemy%20Lines.mp3",
+      "download_urls": [
+        "https://web.archive.org/web/2024id_/https://freepd.com/music/Behind%20Enemy%20Lines.mp3",
+        "https://archive.org/download/freepd/epic/Behind%20Enemy%20Lines.mp3"
+      ],
+      "license": "CC0-1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "license_evidence": "https://web.archive.org/web/2024/https://freepd.com/",
+      "sha256": "2dbfbfd7f66f5f3748bde860235eaf18e386eeb2323f7edb23f30bd978f266e5",
+      "bytes": 4596506,
+      "duration_seconds": 114.91,
+      "format": {
+        "codec": "mp3",
+        "sample_rate": 44100,
+        "channels": 2
+      },
+      "moods": [
+        "tense",
+        "dark",
+        "action"
+      ],
+      "description": "Dark action track. Special forces entered the city ruins. Nobody is sage anymore."
+    },
+    {
+      "id": "freepd-big-eyes",
+      "title": "Big Eyes",
+      "author": "Rafael Krux",
+      "source": "freepd",
+      "source_url": "https://web.archive.org/web/2024/https://freepd.com/epic.php",
+      "original_url": "https://freepd.com/music/Big%20Eyes.mp3",
+      "download_urls": [
+        "https://web.archive.org/web/2024id_/https://freepd.com/music/Big%20Eyes.mp3",
+        "https://archive.org/download/freepd/epic/Big%20Eyes.mp3"
+      ],
+      "license": "CC0-1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "license_evidence": "https://web.archive.org/web/2024/https://freepd.com/",
+      "sha256": "393113f66996904b617f9f2aa38010a63902fa7d7e11006118cc6b2058f554a7",
+      "bytes": 5963233,
+      "duration_seconds": 149.08,
+      "format": {
+        "codec": "mp3",
+        "sample_rate": 44100,
+        "channels": 2
+      },
+      "moods": [
+        "mysterious",
+        "dark"
+      ],
+      "description": "Spooky and creepy horror track. The feel you get after you see an alien looking at you in your room in the middle of the night."
+    },
+    {
+      "id": "freepd-city-sunshine",
+      "title": "City Sunshine",
+      "author": "Kevin MacLeod",
+      "source": "freepd",
+      "source_url": "https://web.archive.org/web/2024/https://freepd.com/upbeat.php",
+      "original_url": "https://freepd.com/music/City%20Sunshine.mp3",
+      "download_urls": [
+        "https://web.archive.org/web/2024id_/https://freepd.com/music/City%20Sunshine.mp3",
+        "https://archive.org/download/freepd/upbeat/City%20Sunshine.mp3"
+      ],
+      "license": "CC0-1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "license_evidence": "https://web.archive.org/web/2024/https://freepd.com/",
+      "sha256": "e05c1bd683174cff77d492b7ac77262ff4617f99f69d82564b66831cf48352d6",
+      "bytes": 7402093,
+      "duration_seconds": 185.0,
+      "format": {
+        "codec": "mp3",
+        "sample_rate": 44100,
+        "channels": 2
+      },
+      "moods": [
+        "upbeat"
+      ],
+      "description": "Not your average corporate piece! The occasionally off-beat bass makes this is an excellent piece to add energy to your project."
+    },
+    {
+      "id": "freepd-cornfield-chase",
+      "title": "Cornfield Chase",
+      "author": "Rafael Krux",
+      "source": "freepd",
+      "source_url": "https://web.archive.org/web/2024/https://freepd.com/epic.php",
+      "original_url": "https://freepd.com/music/Cornfield%20Chase.mp3",
+      "download_urls": [
+        "https://web.archive.org/web/2024id_/https://freepd.com/music/Cornfield%20Chase.mp3",
+        "https://archive.org/download/freepd/epic/Cornfield%20Chase.mp3"
+      ],
+      "license": "CC0-1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "license_evidence": "https://web.archive.org/web/2024/https://freepd.com/",
+      "sha256": "0feeb056136489cfc4b66aedd544f6c86e8d8281a8a1a3523570c3f506d72bdb",
+      "bytes": 5512882,
+      "duration_seconds": 137.82,
+      "format": {
+        "codec": "mp3",
+        "sample_rate": 44100,
+        "channels": 2
+      },
+      "moods": [
+        "tense",
+        "action",
+        "dark"
+      ],
+      "description": "Dark action drama track. Running away in the cornfield while alien is trying to hunt you down."
+    },
+    {
+      "id": "freepd-desert-conflict",
+      "title": "Desert Conflict",
+      "author": "Rafael Krux",
+      "source": "freepd",
+      "source_url": "https://web.archive.org/web/2024/https://freepd.com/world.php",
+      "original_url": "https://freepd.com/music/Desert%20Conflict.mp3",
+      "download_urls": [
+        "https://web.archive.org/web/2024id_/https://freepd.com/music/Desert%20Conflict.mp3",
+        "https://archive.org/download/freepd/world/Desert%20Conflict.mp3"
+      ],
+      "license": "CC0-1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "license_evidence": "https://web.archive.org/web/2024/https://freepd.com/",
+      "sha256": "c8f0e9755b70d22518380ff0aebf7990bf112fb0f237b65dd041716f06fffb5a",
+      "bytes": 6388506,
+      "duration_seconds": 159.71,
+      "format": {
+        "codec": "mp3",
+        "sample_rate": 44100,
+        "channels": 2
+      },
+      "moods": [
+        "epic",
+        "documentary"
+      ],
+      "description": "Exotic, upbeat and inspiring track made with ethnic middle eastern instruments. Adventure to desert."
+    },
+    {
+      "id": "freepd-desert-fox-underscore",
+      "title": "Desert Fox Underscore",
+      "author": "Rafael Krux",
+      "source": "freepd",
+      "source_url": "https://web.archive.org/web/2024/https://freepd.com/scoring.php",
+      "original_url": "https://freepd.com/music/Desert%20Fox%20Underscore.mp3",
+      "download_urls": [
+        "https://web.archive.org/web/2024id_/https://freepd.com/music/Desert%20Fox%20Underscore.mp3",
+        "https://archive.org/download/freepd/scoring/Desert%20Fox%20Underscore.mp3"
+      ],
+      "license": "CC0-1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "license_evidence": "https://web.archive.org/web/2024/https://freepd.com/",
+      "sha256": "8fb3dfde65cc9686f736ac952a631ac8a88a70742fb9e86237465aae6bd50737",
+      "bytes": 5328980,
+      "duration_seconds": 133.22,
+      "format": {
+        "codec": "mp3",
+        "sample_rate": 44100,
+        "channels": 2
+      },
+      "moods": [
+        "mysterious",
+        "documentary"
+      ],
+      "description": "Same as Deser Fox track, only without melody."
+    },
+    {
+      "id": "freepd-driving-concern",
+      "title": "Driving Concern",
+      "author": "Kevin MacLeod",
+      "source": "freepd",
+      "source_url": "https://web.archive.org/web/2024/https://freepd.com/scoring.php",
+      "original_url": "https://freepd.com/music/Driving%20Concern.mp3",
+      "download_urls": [
+        "https://web.archive.org/web/2024id_/https://freepd.com/music/Driving%20Concern.mp3",
+        "https://archive.org/download/freepd/scoring/Driving%20Concern.mp3"
+      ],
+      "license": "CC0-1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "license_evidence": "https://web.archive.org/web/2024/https://freepd.com/",
+      "sha256": "35407f04ab4e982883a62b5bf559cace11404d979e3ebe59e404aef4e988832f",
+      "bytes": 8018584,
+      "duration_seconds": 200.41,
+      "format": {
+        "codec": "mp3",
+        "sample_rate": 44100,
+        "channels": 2
+      },
+      "moods": [
+        "documentary",
+        "tense"
+      ],
+      "description": "Need to keep people's interest while also cautioning them about something? You got it!"
+    },
+    {
+      "id": "freepd-drop-point",
+      "title": "Drop Point",
+      "author": "Bryan Teoh",
+      "source": "freepd",
+      "source_url": "https://web.archive.org/web/2024/https://freepd.com/misc.php",
+      "original_url": "https://freepd.com/music/Drop%20Point.mp3",
+      "download_urls": [
+        "https://web.archive.org/web/2024id_/https://freepd.com/music/Drop%20Point.mp3",
+        "https://archive.org/download/freepd/misc/Drop%20Point.mp3"
+      ],
+      "license": "CC0-1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "license_evidence": "https://web.archive.org/web/2024/https://freepd.com/",
+      "sha256": "00082677a2ca637d3b415a2afee1a2bad145adaf6b37c44fbf323605c8d84482",
+      "bytes": 3685788,
+      "duration_seconds": 184.18,
+      "format": {
+        "codec": "mp3",
+        "sample_rate": 48000,
+        "channels": 2
+      },
+      "moods": [
+        "playful",
+        "upbeat"
+      ],
+      "description": "Safe cracking hijinks boisterous fun."
+    },
+    {
+      "id": "freepd-evil-incoming",
+      "title": "Evil Incoming",
+      "author": "Kevin MacLeod",
+      "source": "freepd",
+      "source_url": "https://web.archive.org/web/2024/https://freepd.com/epic.php",
+      "original_url": "https://freepd.com/music/Evil%20Incoming.mp3",
+      "download_urls": [
+        "https://web.archive.org/web/2024id_/https://freepd.com/music/Evil%20Incoming.mp3",
+        "https://archive.org/download/freepd/epic/Evil%20Incoming.mp3"
+      ],
+      "license": "CC0-1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "license_evidence": "https://web.archive.org/web/2024/https://freepd.com/",
+      "sha256": "c3e4a55339eb79ebb29f51f29e5a4641cfe46dd6db49b257c280ace51462060e",
+      "bytes": 6988194,
+      "duration_seconds": 174.6,
+      "format": {
+        "codec": "mp3",
+        "sample_rate": 44100,
+        "channels": 2
+      },
+      "moods": [
+        "tense",
+        "dark",
+        "epic"
+      ],
+      "description": "Dark, action and dramatic track made with epic dark strings and energetic cinematic drums."
+    },
+    {
+      "id": "freepd-fresh-focus",
+      "title": "Fresh Focus",
+      "author": "Kevin MacLeod",
+      "source": "freepd",
+      "source_url": "https://web.archive.org/web/2024/https://freepd.com/upbeat.php",
+      "original_url": "https://freepd.com/music/Fresh%20Focus.mp3",
+      "download_urls": [
+        "https://web.archive.org/web/2024id_/https://freepd.com/music/Fresh%20Focus.mp3"
+      ],
+      "license": "CC0-1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "license_evidence": "https://web.archive.org/web/2024/https://freepd.com/",
+      "sha256": "87d70572729712abfb6d444b7de4cc7b0104eafca1f0fcfec1798fd824325c3c",
+      "bytes": 4966317,
+      "duration_seconds": 124.06,
+      "format": {
+        "codec": "mp3",
+        "sample_rate": 44100,
+        "channels": 2
+      },
+      "moods": [
+        "upbeat",
+        "calm"
+      ],
+      "description": "Bright and airy."
+    },
+    {
+      "id": "freepd-funkeriffic",
+      "title": "Funkeriffic",
+      "author": "Kevin MacLeod",
+      "source": "freepd",
+      "source_url": "https://web.archive.org/web/2024/https://freepd.com/misc.php",
+      "original_url": "https://freepd.com/music/Funkeriffic.mp3",
+      "download_urls": [
+        "https://web.archive.org/web/2024id_/https://freepd.com/music/Funkeriffic.mp3",
+        "https://archive.org/download/freepd/misc/Funkeriffic.mp3"
+      ],
+      "license": "CC0-1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "license_evidence": "https://web.archive.org/web/2024/https://freepd.com/",
+      "sha256": "e30cdab0e7e3c0d9fd7169f51c187356bed5d48b69ddd68a0ce5847e3929b235",
+      "bytes": 5045938,
+      "duration_seconds": 210.08,
+      "format": {
+        "codec": "mp3",
+        "sample_rate": 44100,
+        "channels": 2
+      },
+      "moods": [
+        "playful",
+        "upbeat"
+      ],
+      "description": "Upbeat, driving and cool groove based track. Crime/Drama/Jazzy"
+    },
+    {
+      "id": "freepd-funky-energy-loop",
+      "title": "Funky Energy Loop",
+      "author": "Kevin MacLeod",
+      "source": "freepd",
+      "source_url": "https://web.archive.org/web/2024/https://freepd.com/scoring.php",
+      "original_url": "https://freepd.com/music/Funky%20Energy%20Loop.mp3",
+      "download_urls": [
+        "https://web.archive.org/web/2024id_/https://freepd.com/music/Funky%20Energy%20Loop.mp3",
+        "https://archive.org/download/freepd/scoring/Funky%20Energy%20Loop.mp3"
+      ],
+      "license": "CC0-1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "license_evidence": "https://web.archive.org/web/2024/https://freepd.com/",
+      "sha256": "b7990b4287cc345b2f42af743c96e26e126b2b03adfad661961a28640fb94c55",
+      "bytes": 8102178,
+      "duration_seconds": 202.5,
+      "format": {
+        "codec": "mp3",
+        "sample_rate": 44100,
+        "channels": 2
+      },
+      "moods": [
+        "upbeat",
+        "playful"
+      ],
+      "description": "Designed to be played under people talking. Not enough to distract from the verbal messages, but enough to push the energy in your segment."
+    },
+    {
+      "id": "freepd-go-on-without-me",
+      "title": "Go On Without Me",
+      "author": "Bryan Teoh",
+      "source": "freepd",
+      "source_url": "https://web.archive.org/web/2024/https://freepd.com/epic.php",
+      "original_url": "https://freepd.com/music/Go%20On%20Without%20Me.mp3",
+      "download_urls": [
+        "https://web.archive.org/web/2024id_/https://freepd.com/music/Go%20On%20Without%20Me.mp3",
+        "https://archive.org/download/freepd/epic/Go%20On%20Without%20Me.mp3"
+      ],
+      "license": "CC0-1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "license_evidence": "https://web.archive.org/web/2024/https://freepd.com/",
+      "sha256": "5101fa0a410cff668fc036f021b12c2175f3bc695c61dd04088a340b9f62373f",
+      "bytes": 3903234,
+      "duration_seconds": 195.05,
+      "format": {
+        "codec": "mp3",
+        "sample_rate": 48000,
+        "channels": 2
+      },
+      "moods": [
+        "mysterious",
+        "epic"
+      ],
+      "description": "Mysterious, powerful, rising above and overcoming."
+    },
+    {
+      "id": "freepd-goodnightmare",
+      "title": "Goodnightmare",
+      "author": "Kevin MacLeod",
+      "source": "freepd",
+      "source_url": "https://web.archive.org/web/2024/https://freepd.com/electronic.php",
+      "original_url": "https://freepd.com/music/Goodnightmare.mp3",
+      "download_urls": [
+        "https://web.archive.org/web/2024id_/https://freepd.com/music/Goodnightmare.mp3",
+        "https://archive.org/download/freepd/electronic/Goodnightmare.mp3"
+      ],
+      "license": "CC0-1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "license_evidence": "https://web.archive.org/web/2024/https://freepd.com/",
+      "sha256": "b3793f15317a70bbbd857fa4a77872a42bcdc27445f25bce397bb7a442f91b9c",
+      "bytes": 7684215,
+      "duration_seconds": 240.07,
+      "format": {
+        "codec": "mp3",
+        "sample_rate": 44100,
+        "channels": 2
+      },
+      "moods": [
+        "upbeat",
+        "electronic",
+        "tense"
+      ],
+      "description": "Upbeat, driving and cool. Simple synths with heavy bass, perfect for explainers!"
+    },
+    {
+      "id": "freepd-guerilla-tactics",
+      "title": "Guerilla Tactics",
+      "author": "Rafael Krux",
+      "source": "freepd",
+      "source_url": "https://web.archive.org/web/2024/https://freepd.com/scoring.php",
+      "original_url": "https://freepd.com/music/Guerilla%20Tactics.mp3",
+      "download_urls": [
+        "https://web.archive.org/web/2024id_/https://freepd.com/music/Guerilla%20Tactics.mp3",
+        "https://archive.org/download/freepd/scoring/Guerilla%20Tactics.mp3"
+      ],
+      "license": "CC0-1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "license_evidence": "https://web.archive.org/web/2024/https://freepd.com/",
+      "sha256": "12b42daa4f1f8ca71947bd0d71e3382e3cea8ac29bd6ca291f5b313ada37e8a8",
+      "bytes": 4367674,
+      "duration_seconds": 109.19,
+      "format": {
+        "codec": "mp3",
+        "sample_rate": 44100,
+        "channels": 2
+      },
+      "moods": [
+        "mysterious",
+        "tense",
+        "action"
+      ],
+      "description": "Mysterious, suspensful and dark action dramatic track made with hollywood orchestra and light energetic percussion."
+    },
+    {
+      "id": "freepd-heroic-adventure",
+      "title": "Heroic Adventure",
+      "author": "Rafael Krux",
+      "source": "freepd",
+      "source_url": "https://web.archive.org/web/2024/https://freepd.com/epic.php",
+      "original_url": "https://freepd.com/music/Heroic%20Adventure.mp3",
+      "download_urls": [
+        "https://web.archive.org/web/2024id_/https://freepd.com/music/Heroic%20Adventure.mp3",
+        "https://archive.org/download/freepd/epic/Heroic%20Adventure.mp3"
+      ],
+      "license": "CC0-1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "license_evidence": "https://web.archive.org/web/2024/https://freepd.com/",
+      "sha256": "41355a9625e8ee15d678c1c8c512636b6610a750f61b79820b53286a0dc3836a",
+      "bytes": 5721778,
+      "duration_seconds": 142.94,
+      "format": {
+        "codec": "mp3",
+        "sample_rate": 44100,
+        "channels": 2
+      },
+      "moods": [
+        "epic",
+        "upbeat"
+      ],
+      "description": "Hollywood styled triumph and call to adventure. Positive, uplifting and epic."
+    },
+    {
+      "id": "freepd-hidden-truth",
+      "title": "Hidden Truth",
+      "author": "Rafael Krux",
+      "source": "freepd",
+      "source_url": "https://web.archive.org/web/2024/https://freepd.com/horror.php",
+      "original_url": "https://freepd.com/music/Hidden%20Truth.mp3",
+      "download_urls": [
+        "https://web.archive.org/web/2024id_/https://freepd.com/music/Hidden%20Truth.mp3",
+        "https://archive.org/download/freepd/horror/Hidden%20Truth.mp3"
+      ],
+      "license": "CC0-1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "license_evidence": "https://web.archive.org/web/2024/https://freepd.com/",
+      "sha256": "39af66accc2de04c8d21c6bc5a31dd1168bb75f7b723c901699f025d1923aa51",
+      "bytes": 3954019,
+      "duration_seconds": 98.8,
+      "format": {
+        "codec": "mp3",
+        "sample_rate": 44100,
+        "channels": 2
+      },
+      "moods": [
+        "mysterious",
+        "documentary"
+      ],
+      "description": "Long sad strings are indicative of things. But like sad things from the future!"
+    },
+    {
+      "id": "freepd-horror-mytery",
+      "title": "Horror Mytery",
+      "author": "Rafael Krux",
+      "source": "freepd",
+      "source_url": "https://web.archive.org/web/2024/https://freepd.com/horror.php",
+      "original_url": "https://freepd.com/music/Horror%20Mytery.mp3",
+      "download_urls": [
+        "https://web.archive.org/web/2024id_/https://freepd.com/music/Horror%20Mytery.mp3",
+        "https://archive.org/download/freepd/horror/Horror%20Mytery.mp3"
+      ],
+      "license": "CC0-1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "license_evidence": "https://web.archive.org/web/2024/https://freepd.com/",
+      "sha256": "2b927ffb79014193185940e52656bfcf1ef2d10269f3f19236e68570f81bba98",
+      "bytes": 4977894,
+      "duration_seconds": 124.45,
+      "format": {
+        "codec": "mp3",
+        "sample_rate": 44100,
+        "channels": 2
+      },
+      "moods": [
+        "dark_ambient",
+        "mysterious"
+      ],
+      "description": "Dark, ambient and spooky horror track. Suitable for those moments when you are wounded lying on the 20th floor of the ruined building and waiting for zombies to get you."
+    },
+    {
+      "id": "freepd-horror-suspense",
+      "title": "Horror Suspense",
+      "author": "Rafael Krux",
+      "source": "freepd",
+      "source_url": "https://web.archive.org/web/2024/https://freepd.com/horror.php",
+      "original_url": "https://freepd.com/music/Horror%20Suspense.mp3",
+      "download_urls": [
+        "https://web.archive.org/web/2024id_/https://freepd.com/music/Horror%20Suspense.mp3",
+        "https://archive.org/download/freepd/horror/Horror%20Suspense.mp3"
+      ],
+      "license": "CC0-1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "license_evidence": "https://web.archive.org/web/2024/https://freepd.com/",
+      "sha256": "d88e6965df394fc27106fb87a2f363798b5879c1d99f12fb2a167b71df2fe5d3",
+      "bytes": 5600653,
+      "duration_seconds": 140.02,
+      "format": {
+        "codec": "mp3",
+        "sample_rate": 44100,
+        "channels": 2
+      },
+      "moods": [
+        "tense",
+        "dark"
+      ],
+      "description": "Horror and nerve wrecking moments can be best described with this one."
+    },
+    {
+      "id": "freepd-horroriffic",
+      "title": "Horroriffic",
+      "author": "Kevin MacLeod",
+      "source": "freepd",
+      "source_url": "https://web.archive.org/web/2024/https://freepd.com/horror.php",
+      "original_url": "https://freepd.com/music/Horroriffic.mp3",
+      "download_urls": [
+        "https://web.archive.org/web/2024id_/https://freepd.com/music/Horroriffic.mp3",
+        "https://archive.org/download/freepd/horror/Horroriffic.mp3"
+      ],
+      "license": "CC0-1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "license_evidence": "https://web.archive.org/web/2024/https://freepd.com/",
+      "sha256": "17e1bdc984b5a968e87f87e3d10292a3c4373b63eff524c87098c923a6a7ff87",
+      "bytes": 3365533,
+      "duration_seconds": 168.07,
+      "format": {
+        "codec": "mp3",
+        "sample_rate": 44100,
+        "channels": 2
+      },
+      "moods": [
+        "dark",
+        "tense",
+        "dark_ambient"
+      ],
+      "description": "Suspensful and dark track made with creepy sounds of broken piano and screaming strings. Evolving/Dramatic"
+    },
+    {
+      "id": "freepd-ice-and-snow",
+      "title": "Ice and Snow",
+      "author": "Rafael Krux",
+      "source": "freepd",
+      "source_url": "https://web.archive.org/web/2024/https://freepd.com/scoring.php",
+      "original_url": "https://freepd.com/music/Ice%20and%20Snow.mp3",
+      "download_urls": [
+        "https://web.archive.org/web/2024id_/https://freepd.com/music/Ice%20and%20Snow.mp3",
+        "https://archive.org/download/freepd/scoring/Ice%20and%20Snow.mp3"
+      ],
+      "license": "CC0-1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "license_evidence": "https://web.archive.org/web/2024/https://freepd.com/",
+      "sha256": "61e8c88cff9d24eb03ffa8ab55adfefcaaf3f4e2dabf3dec6816d315f49aa99a",
+      "bytes": 5660213,
+      "duration_seconds": 141.51,
+      "format": {
+        "codec": "mp3",
+        "sample_rate": 44100,
+        "channels": 2
+      },
+      "moods": [
+        "calm",
+        "documentary",
+        "mysterious"
+      ],
+      "description": "Soft, atmospheric and warm cinematic track. Suitable for inspiring and mysterious moments/projects."
+    },
+    {
+      "id": "freepd-infinite-wonder",
+      "title": "Infinite Wonder",
+      "author": "Kevin MacLeod",
+      "source": "freepd",
+      "source_url": "https://web.archive.org/web/2024/https://freepd.com/misc.php",
+      "original_url": "https://freepd.com/music/Infinite%20Wonder.mp3",
+      "download_urls": [
+        "https://web.archive.org/web/2024id_/https://freepd.com/music/Infinite%20Wonder.mp3",
+        "https://archive.org/download/freepd/misc/Infinite%20Wonder.mp3"
+      ],
+      "license": "CC0-1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "license_evidence": "https://web.archive.org/web/2024/https://freepd.com/",
+      "sha256": "490f745de87525dd6da563da266c8823804a3f787573ff317b4788d6d5566e54",
+      "bytes": 7606774,
+      "duration_seconds": 190.07,
+      "format": {
+        "codec": "mp3",
+        "sample_rate": 44100,
+        "channels": 2
+      },
+      "moods": [
+        "documentary",
+        "calm"
+      ],
+      "description": "Inspiring and uplifting track made with beautiful vintage synths. Vangelis would be proud!"
+    },
+    {
+      "id": "freepd-inspiration",
+      "title": "Inspiration",
+      "author": "Rafael Krux",
+      "source": "freepd",
+      "source_url": "https://web.archive.org/web/2024/https://freepd.com/upbeat.php",
+      "original_url": "https://freepd.com/music/Inspiration.mp3",
+      "download_urls": [
+        "https://web.archive.org/web/2024id_/https://freepd.com/music/Inspiration.mp3",
+        "https://archive.org/download/freepd/upbeat/Inspiration.mp3"
+      ],
+      "license": "CC0-1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "license_evidence": "https://web.archive.org/web/2024/https://freepd.com/",
+      "sha256": "a254227da398809c79a0c753073a3a92c7341672abc92bb0166b6326e126f0b4",
+      "bytes": 5530068,
+      "duration_seconds": 138.25,
+      "format": {
+        "codec": "mp3",
+        "sample_rate": 44100,
+        "channels": 2
+      },
+      "moods": [
+        "upbeat",
+        "documentary"
+      ],
+      "description": "Positive, uplifting and inspiring track suitable for commercials and advertising."
+    },
+    {
+      "id": "freepd-inventing-flight",
+      "title": "Inventing Flight",
+      "author": "Bryan Teoh",
+      "source": "freepd",
+      "source_url": "https://web.archive.org/web/2024/https://freepd.com/upbeat.php",
+      "original_url": "https://freepd.com/music/Inventing%20Flight.mp3",
+      "download_urls": [
+        "https://web.archive.org/web/2024id_/https://freepd.com/music/Inventing%20Flight.mp3",
+        "https://archive.org/download/freepd/upbeat/Inventing%20Flight.mp3"
+      ],
+      "license": "CC0-1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "license_evidence": "https://web.archive.org/web/2024/https://freepd.com/",
+      "sha256": "916e736efa3caed4ea8534e727670dbac41af0fb44f00fa667aebaab9b2b6407",
+      "bytes": 2840034,
+      "duration_seconds": 141.89,
+      "format": {
+        "codec": "mp3",
+        "sample_rate": 48000,
+        "channels": 2
+      },
+      "moods": [
+        "documentary",
+        "upbeat"
+      ],
+      "description": "Delightful, pleasant, grand, discovery or NatGeo."
+    },
+    {
+      "id": "freepd-lonely-mountain",
+      "title": "Lonely Mountain",
+      "author": "Rafael Krux",
+      "source": "freepd",
+      "source_url": "https://web.archive.org/web/2024/https://freepd.com/epic.php",
+      "original_url": "https://freepd.com/music/Lonely%20Mountain.mp3",
+      "download_urls": [
+        "https://web.archive.org/web/2024id_/https://freepd.com/music/Lonely%20Mountain.mp3",
+        "https://archive.org/download/freepd/epic/Lonely%20Mountain.mp3"
+      ],
+      "license": "CC0-1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "license_evidence": "https://web.archive.org/web/2024/https://freepd.com/",
+      "sha256": "244917570f96506dd103bb34ab3b26c01ac007f1ba5b04f38e7c2493b41d060b",
+      "bytes": 7615217,
+      "duration_seconds": 190.38,
+      "format": {
+        "codec": "mp3",
+        "sample_rate": 44100,
+        "channels": 2
+      },
+      "moods": [
+        "mysterious",
+        "dark",
+        "epic"
+      ],
+      "description": "Dark, atmospheric and suspensful fantasy track made with dark epic classical orchestra. The beginning of medieval fantasy starts with this one."
+    },
+    {
+      "id": "freepd-mana-two-part-1",
+      "title": "Mana Two - Part 1",
+      "author": "Kevin MacLeod",
+      "source": "freepd",
+      "source_url": "https://web.archive.org/web/2024/https://freepd.com/misc.php",
+      "original_url": "https://freepd.com/music/Mana%20Two%20-%20Part%201.mp3",
+      "download_urls": [
+        "https://web.archive.org/web/2024id_/https://freepd.com/music/Mana%20Two%20-%20Part%201.mp3",
+        "https://archive.org/download/freepd/misc/Mana%20Two%20-%20Part%201.mp3"
+      ],
+      "license": "CC0-1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "license_evidence": "https://web.archive.org/web/2024/https://freepd.com/",
+      "sha256": "41047f29ea1679a0139947bde8864c7b38b3e97744285583efba5079a88f5a34",
+      "bytes": 9497023,
+      "duration_seconds": 234.02,
+      "format": {
+        "codec": "mp3",
+        "sample_rate": 44100,
+        "channels": 2
+      },
+      "moods": [
+        "calm",
+        "dark_ambient"
+      ],
+      "description": "Is nice? Is nice."
+    },
+    {
+      "id": "freepd-meditating-beat",
+      "title": "Meditating Beat",
+      "author": "Kevin MacLeod",
+      "source": "freepd",
+      "source_url": "https://web.archive.org/web/2024/https://freepd.com/electronic.php",
+      "original_url": "https://freepd.com/music/Meditating%20Beat.mp3",
+      "download_urls": [
+        "https://web.archive.org/web/2024id_/https://freepd.com/music/Meditating%20Beat.mp3",
+        "https://archive.org/download/freepd/electronic/Meditating%20Beat.mp3"
+      ],
+      "license": "CC0-1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "license_evidence": "https://web.archive.org/web/2024/https://freepd.com/",
+      "sha256": "e498c2015a413e6cba5ab8dbef2a60cdebf7c4d4a97f9edd84851752ff49d3b6",
+      "bytes": 6291368,
+      "duration_seconds": 157.23,
+      "format": {
+        "codec": "mp3",
+        "sample_rate": 44100,
+        "channels": 2
+      },
+      "moods": [
+        "electronic",
+        "calm"
+      ],
+      "description": "Corporate to casual gaming."
+    },
+    {
+      "id": "freepd-midnight-in-the-green-house",
+      "title": "Midnight in the Green House",
+      "author": "Kevin MacLeod",
+      "source": "freepd",
+      "source_url": "https://web.archive.org/web/2024/https://freepd.com/world.php",
+      "original_url": "https://freepd.com/music/Midnight%20in%20the%20Green%20House.mp3",
+      "download_urls": [
+        "https://web.archive.org/web/2024id_/https://freepd.com/music/Midnight%20in%20the%20Green%20House.mp3",
+        "https://archive.org/download/freepd/world/Midnight%20in%20the%20Green%20House.mp3"
+      ],
+      "license": "CC0-1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "license_evidence": "https://web.archive.org/web/2024/https://freepd.com/",
+      "sha256": "2a13476ce634cb8ec8fa553f212980e8f25e612c717bbd5133d73700d979571c",
+      "bytes": 8486578,
+      "duration_seconds": 212.06,
+      "format": {
+        "codec": "mp3",
+        "sample_rate": 44100,
+        "channels": 2
+      },
+      "moods": [
+        "mysterious",
+        "documentary"
+      ],
+      "description": "Exotic, slightly suspensful and atmospheric piece made with ethnic japanese instruments. World/Underscore"
+    },
+    {
+      "id": "freepd-mind-chaos",
+      "title": "Mind Chaos",
+      "author": "Kevin MacLeod",
+      "source": "freepd",
+      "source_url": "https://web.archive.org/web/2024/https://freepd.com/horror.php",
+      "original_url": "https://freepd.com/music/Mind%20Chaos.mp3",
+      "download_urls": [
+        "https://web.archive.org/web/2024id_/https://freepd.com/music/Mind%20Chaos.mp3",
+        "https://archive.org/download/freepd/horror/Mind%20Chaos.mp3"
+      ],
+      "license": "CC0-1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "license_evidence": "https://web.archive.org/web/2024/https://freepd.com/",
+      "sha256": "e4f81e329131070585f44fa2cb23620aef6dc26e4a4df09dbe21cdf9e9f8c736",
+      "bytes": 4210242,
+      "duration_seconds": 184.02,
+      "format": {
+        "codec": "mp3",
+        "sample_rate": 44100,
+        "channels": 2
+      },
+      "moods": [
+        "dark_ambient",
+        "dark"
+      ],
+      "description": "Horror soundscape."
+    },
+    {
+      "id": "freepd-mothership",
+      "title": "Mothership",
+      "author": "Rafael Krux",
+      "source": "freepd",
+      "source_url": "https://web.archive.org/web/2024/https://freepd.com/epic.php",
+      "original_url": "https://freepd.com/music/Mothership.mp3",
+      "download_urls": [
+        "https://web.archive.org/web/2024id_/https://freepd.com/music/Mothership.mp3",
+        "https://archive.org/download/freepd/epic/Mothership.mp3"
+      ],
+      "license": "CC0-1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "license_evidence": "https://web.archive.org/web/2024/https://freepd.com/",
+      "sha256": "424aa27f60cc1bfc8e4fba1079402e2544233f16cde2a668a5879e5ee16947fd",
+      "bytes": 5023870,
+      "duration_seconds": 125.6,
+      "format": {
+        "codec": "mp3",
+        "sample_rate": 44100,
+        "channels": 2
+      },
+      "moods": [
+        "dark",
+        "epic",
+        "mysterious"
+      ],
+      "description": "Dark, dramatic, epic and creepy track. Suitable for those moments when you accidentaly record a giant alien mothership in the skies."
+    },
+    {
+      "id": "freepd-motions",
+      "title": "Motions",
+      "author": "Rafael Krux",
+      "source": "freepd",
+      "source_url": "https://web.archive.org/web/2024/https://freepd.com/upbeat.php",
+      "original_url": "https://freepd.com/music/Motions.mp3",
+      "download_urls": [
+        "https://web.archive.org/web/2024id_/https://freepd.com/music/Motions.mp3",
+        "https://archive.org/download/freepd/upbeat/Motions.mp3"
+      ],
+      "license": "CC0-1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "license_evidence": "https://web.archive.org/web/2024/https://freepd.com/",
+      "sha256": "af6380fde14f41dc4762a0a69c558bfd03a8a88c10cb5c8f578a6d0bcb4750be",
+      "bytes": 4677248,
+      "duration_seconds": 116.93,
+      "format": {
+        "codec": "mp3",
+        "sample_rate": 44100,
+        "channels": 2
+      },
+      "moods": [
+        "documentary",
+        "calm"
+      ],
+      "description": "Emotional, uplifting and inspiring track made with warm cinematic piano and soft orchestral strings."
+    },
+    {
+      "id": "freepd-mysterious-lights",
+      "title": "Mysterious Lights",
+      "author": "Bryan Teoh",
+      "source": "freepd",
+      "source_url": "https://web.archive.org/web/2024/https://freepd.com/horror.php",
+      "original_url": "https://freepd.com/music/Mysterious%20Lights.mp3",
+      "download_urls": [
+        "https://web.archive.org/web/2024id_/https://freepd.com/music/Mysterious%20Lights.mp3",
+        "https://archive.org/download/freepd/featured/Mysterious%20Lights.mp3"
+      ],
+      "license": "CC0-1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "license_evidence": "https://web.archive.org/web/2024/https://freepd.com/",
+      "sha256": "1f0fb7f9ba9611bcdb9eef077cb0662d17e50d213e1f14ddfd1f6e6c90d1125f",
+      "bytes": 3579715,
+      "duration_seconds": 178.87,
+      "format": {
+        "codec": "mp3",
+        "sample_rate": 48000,
+        "channels": 2
+      },
+      "moods": [
+        "mysterious",
+        "dark_ambient"
+      ],
+      "description": "Creepy foreboding. The aliens are about to land but havent been discovered yet."
+    },
+    {
+      "id": "freepd-natural-vibes",
+      "title": "Natural Vibes",
+      "author": "Kevin MacLeod",
+      "source": "freepd",
+      "source_url": "https://web.archive.org/web/2024/https://freepd.com/upbeat.php",
+      "original_url": "https://freepd.com/music/Natural%20Vibes.mp3",
+      "download_urls": [
+        "https://web.archive.org/web/2024id_/https://freepd.com/music/Natural%20Vibes.mp3"
+      ],
+      "license": "CC0-1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "license_evidence": "https://web.archive.org/web/2024/https://freepd.com/",
+      "sha256": "12ac1554aa7d48a40a4c906ca1b89e81138093556f8c0f457f53040479226ad8",
+      "bytes": 5166937,
+      "duration_seconds": 129.07,
+      "format": {
+        "codec": "mp3",
+        "sample_rate": 44100,
+        "channels": 2
+      },
+      "moods": [
+        "upbeat",
+        "calm"
+      ],
+      "description": "Neutral and nice."
+    },
+    {
+      "id": "freepd-night-attack",
+      "title": "Night Attack",
+      "author": "Rafael Krux",
+      "source": "freepd",
+      "source_url": "https://web.archive.org/web/2024/https://freepd.com/epic.php",
+      "original_url": "https://freepd.com/music/Night%20Attack.mp3",
+      "download_urls": [
+        "https://web.archive.org/web/2024id_/https://freepd.com/music/Night%20Attack.mp3",
+        "https://archive.org/download/freepd/epic/Night%20Attack.mp3"
+      ],
+      "license": "CC0-1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "license_evidence": "https://web.archive.org/web/2024/https://freepd.com/",
+      "sha256": "aa52288cee980cbc8da8ffc087de6f92499a5a4130db6feab3f83d774501784c",
+      "bytes": 6126237,
+      "duration_seconds": 153.16,
+      "format": {
+        "codec": "mp3",
+        "sample_rate": 44100,
+        "channels": 2
+      },
+      "moods": [
+        "epic",
+        "dark",
+        "action"
+      ],
+      "description": "Explosive, epic and dramatic dark track made with epic orchestra. The invasion has started."
+    },
+    {
+      "id": "freepd-night-vigil",
+      "title": "Night Vigil",
+      "author": "Kevin MacLeod",
+      "source": "freepd",
+      "source_url": "https://web.archive.org/web/2024/https://freepd.com/epic.php",
+      "original_url": "https://freepd.com/music/Night%20Vigil.mp3",
+      "download_urls": [
+        "https://web.archive.org/web/2024id_/https://freepd.com/music/Night%20Vigil.mp3",
+        "https://archive.org/download/freepd/epic/Night%20Vigil.mp3"
+      ],
+      "license": "CC0-1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "license_evidence": "https://web.archive.org/web/2024/https://freepd.com/",
+      "sha256": "315009fda5154a093570b9f49c1d98202ab5ba4906078713380d130710ada442",
+      "bytes": 11667276,
+      "duration_seconds": 288.27,
+      "format": {
+        "codec": "mp3",
+        "sample_rate": 44100,
+        "channels": 2
+      },
+      "moods": [
+        "dark",
+        "epic",
+        "tense"
+      ],
+      "description": "This piece gives me the feels. Remember that episode in Game of Thrones where the dead were coming to Winterfell, but they'd be there later... so everyone is just waiting. Cleaning the horses, eating cold soup, hugging friends, stacking woo"
+    },
+    {
+      "id": "freepd-patron-saint-of-heists",
+      "title": "Patron Saint of Heists",
+      "author": "Bryan Teoh",
+      "source": "freepd",
+      "source_url": "https://web.archive.org/web/2024/https://freepd.com/scoring.php",
+      "original_url": "https://freepd.com/music/Patron%20Saint%20of%20Heists.mp3",
+      "download_urls": [
+        "https://web.archive.org/web/2024id_/https://freepd.com/music/Patron%20Saint%20of%20Heists.mp3",
+        "https://archive.org/download/freepd/scoring/Patron%20Saint%20of%20Heists.mp3"
+      ],
+      "license": "CC0-1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "license_evidence": "https://web.archive.org/web/2024/https://freepd.com/",
+      "sha256": "b82e8b44ce3dbd44c05d70d87130cef0eb323ee3a0d29ea3f92ad45f2c72fd9d",
+      "bytes": 3740520,
+      "duration_seconds": 186.91,
+      "format": {
+        "codec": "mp3",
+        "sample_rate": 48000,
+        "channels": 2
+      },
+      "moods": [
+        "playful",
+        "upbeat"
+      ],
+      "description": "Groovy, polished convertable passing neon lights in Nevada. Are you in or out?"
+    },
+    {
+      "id": "freepd-release-the-hybrids",
+      "title": "Release the Hybrids",
+      "author": "Bryan Teoh",
+      "source": "freepd",
+      "source_url": "https://web.archive.org/web/2024/https://freepd.com/epic.php",
+      "original_url": "https://freepd.com/music/Release%20the%20Hybrids.mp3",
+      "download_urls": [
+        "https://web.archive.org/web/2024id_/https://freepd.com/music/Release%20the%20Hybrids.mp3",
+        "https://archive.org/download/freepd/epic/Release%20the%20Hybrids.mp3"
+      ],
+      "license": "CC0-1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "license_evidence": "https://web.archive.org/web/2024/https://freepd.com/",
+      "sha256": "5bb3ef1893dfffb9bc2085bde5fddf6acea93aa75a6530df57e011ce852bb0d1",
+      "bytes": 2485172,
+      "duration_seconds": 124.15,
+      "format": {
+        "codec": "mp3",
+        "sample_rate": 48000,
+        "channels": 2
+      },
+      "moods": [
+        "tense",
+        "action"
+      ],
+      "description": "Industrial anticipation. Then really kicks in at a 1:12"
+    },
+    {
+      "id": "freepd-satin-danger",
+      "title": "Satin Danger",
+      "author": "Kevin MacLeod",
+      "source": "freepd",
+      "source_url": "https://web.archive.org/web/2024/https://freepd.com/horror.php",
+      "original_url": "https://freepd.com/music/Satin%20Danger.mp3",
+      "download_urls": [
+        "https://web.archive.org/web/2024id_/https://freepd.com/music/Satin%20Danger.mp3",
+        "https://archive.org/download/freepd/horror/Satin%20Danger.mp3"
+      ],
+      "license": "CC0-1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "license_evidence": "https://web.archive.org/web/2024/https://freepd.com/",
+      "sha256": "3298553520ae7f4133010ef578eeb88e7cf8e78d6e93f8f0c7f0d37be37556fb",
+      "bytes": 5252528,
+      "duration_seconds": 164.08,
+      "format": {
+        "codec": "mp3",
+        "sample_rate": 44100,
+        "channels": 2
+      },
+      "moods": [
+        "mysterious",
+        "calm"
+      ],
+      "description": "Relaxing and eerie at the same time. Spooky and soft - quirky combination of horror with a touch of crime drama."
+    },
+    {
+      "id": "freepd-soundtrack-from-the-starcourt-mall",
+      "title": "Soundtrack From the Starcourt Mall",
+      "author": "Bryan Teoh",
+      "source": "freepd",
+      "source_url": "https://web.archive.org/web/2024/https://freepd.com/misc.php",
+      "original_url": "https://freepd.com/music/Soundtrack%20From%20the%20Starcourt%20Mall.mp3",
+      "download_urls": [
+        "https://web.archive.org/web/2024id_/https://freepd.com/music/Soundtrack%20From%20the%20Starcourt%20Mall.mp3",
+        "https://archive.org/download/freepd/misc/Soundtrack%20From%20the%20Starcourt%20Mall.mp3"
+      ],
+      "license": "CC0-1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "license_evidence": "https://web.archive.org/web/2024/https://freepd.com/",
+      "sha256": "9199da36aefbe7974a75ad22084768ec77c1a98e14ac14ce36f193ece668b867",
+      "bytes": 4352052,
+      "duration_seconds": 217.49,
+      "format": {
+        "codec": "mp3",
+        "sample_rate": 48000,
+        "channels": 2
+      },
+      "moods": [
+        "calm",
+        "electronic"
+      ],
+      "description": "Retrofuturistic, chill."
+    },
+    {
+      "id": "freepd-spec-ops",
+      "title": "Spec Ops",
+      "author": "Rafael Krux",
+      "source": "freepd",
+      "source_url": "https://web.archive.org/web/2024/https://freepd.com/misc.php",
+      "original_url": "https://freepd.com/music/Spec%20Ops.mp3",
+      "download_urls": [
+        "https://web.archive.org/web/2024id_/https://freepd.com/music/Spec%20Ops.mp3",
+        "https://archive.org/download/freepd/misc/Spec%20Ops.mp3"
+      ],
+      "license": "CC0-1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "license_evidence": "https://web.archive.org/web/2024/https://freepd.com/",
+      "sha256": "02e9ffe34f58edb2533315d58ee7242324279dd7aebd8bb736202d73e7691dd2",
+      "bytes": 2184150,
+      "duration_seconds": 136.51,
+      "format": {
+        "codec": "mp3",
+        "sample_rate": 44100,
+        "channels": 2
+      },
+      "moods": [
+        "tense",
+        "action",
+        "dark"
+      ],
+      "description": "Action, dramatic and dark suspense track. They are elite squad armed with high tech toys."
+    },
+    {
+      "id": "freepd-study-and-relax",
+      "title": "Study and Relax",
+      "author": "Kevin MacLeod",
+      "source": "freepd",
+      "source_url": "https://web.archive.org/web/2024/https://freepd.com/misc.php",
+      "original_url": "https://freepd.com/music/Study%20and%20Relax.mp3",
+      "download_urls": [
+        "https://web.archive.org/web/2024id_/https://freepd.com/music/Study%20and%20Relax.mp3",
+        "https://archive.org/download/freepd/featured/Study%20and%20Relax.mp3"
+      ],
+      "license": "CC0-1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "license_evidence": "https://web.archive.org/web/2024/https://freepd.com/",
+      "sha256": "9cba2a3c2d1c9d364220db1691f618a0f25b8d9cf6f2a857fe389ef614fd18a4",
+      "bytes": 9070686,
+      "duration_seconds": 223.4,
+      "format": {
+        "codec": "mp3",
+        "sample_rate": 44100,
+        "channels": 2
+      },
+      "moods": [
+        "calm"
+      ],
+      "description": "Like a worn out record with a mis-punched spindle hole. Thanks, izope! :-)"
+    },
+    {
+      "id": "freepd-think-about-it",
+      "title": "Think About It",
+      "author": "Bryan Teoh",
+      "source": "freepd",
+      "source_url": "https://web.archive.org/web/2024/https://freepd.com/epic.php",
+      "original_url": "https://freepd.com/music/Think%20About%20It.mp3",
+      "download_urls": [
+        "https://web.archive.org/web/2024id_/https://freepd.com/music/Think%20About%20It.mp3",
+        "https://archive.org/download/freepd/epic/Think%20About%20It.mp3"
+      ],
+      "license": "CC0-1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "license_evidence": "https://web.archive.org/web/2024/https://freepd.com/",
+      "sha256": "aa39a8b1e51221155332f42a5a915fde237a72fc10229e8aafda64df1855604f",
+      "bytes": 2403087,
+      "duration_seconds": 120.05,
+      "format": {
+        "codec": "mp3",
+        "sample_rate": 48000,
+        "channels": 2
+      },
+      "moods": [
+        "documentary",
+        "tense"
+      ],
+      "description": "Slow, intense, and beautifully pensive"
+    },
+    {
+      "id": "freepd-travelers-notebook",
+      "title": "Travelers Notebook",
+      "author": "Rafael Krux",
+      "source": "freepd",
+      "source_url": "https://web.archive.org/web/2024/https://freepd.com/scoring.php",
+      "original_url": "https://freepd.com/music/Travelers%20Notebook.mp3",
+      "download_urls": [
+        "https://web.archive.org/web/2024id_/https://freepd.com/music/Travelers%20Notebook.mp3",
+        "https://archive.org/download/freepd/scoring/Travelers%20Notebook.mp3"
+      ],
+      "license": "CC0-1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "license_evidence": "https://web.archive.org/web/2024/https://freepd.com/",
+      "sha256": "1435dc65a285242e5012ae9e853a9db2a5e303bfdec243cfe67340e67284b7b1",
+      "bytes": 4923560,
+      "duration_seconds": 123.09,
+      "format": {
+        "codec": "mp3",
+        "sample_rate": 44100,
+        "channels": 2
+      },
+      "moods": [
+        "documentary",
+        "epic"
+      ],
+      "description": "Medieval fantasy adventure starts with this one. Epic drums and medieval cello."
+    },
+    {
+      "id": "freepd-video-game-blockbuster",
+      "title": "Video Game Blockbuster",
+      "author": "Rafael Krux",
+      "source": "freepd",
+      "source_url": "https://web.archive.org/web/2024/https://freepd.com/epic.php",
+      "original_url": "https://freepd.com/music/Video%20Game%20Blockbuster.mp3",
+      "download_urls": [
+        "https://web.archive.org/web/2024id_/https://freepd.com/music/Video%20Game%20Blockbuster.mp3",
+        "https://archive.org/download/freepd/epic/Video%20Game%20Blockbuster.mp3"
+      ],
+      "license": "CC0-1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "license_evidence": "https://web.archive.org/web/2024/https://freepd.com/",
+      "sha256": "c2f2e5010c6b62547c3b7eb9de14b58cb68b40fe036b8e6712a45a6a574c7262",
+      "bytes": 5702009,
+      "duration_seconds": 142.55,
+      "format": {
+        "codec": "mp3",
+        "sample_rate": 44100,
+        "channels": 2
+      },
+      "moods": [
+        "epic"
+      ],
+      "description": "Evolving, epic and uplifting dramatic track made with cinematic orchestra, massive choir and more!"
+    },
+    {
+      "id": "oga-at-the-end-of-hope",
+      "title": "At the end of hope",
+      "author": "Emma_MA",
+      "source": "opengameart",
+      "source_url": "https://opengameart.org/content/at-the-end-of-hope",
+      "original_url": "https://opengameart.org/sites/default/files/at%20the%20end%20of%20hope_0.mp3",
+      "download_urls": [
+        "https://opengameart.org/sites/default/files/at%20the%20end%20of%20hope_0.mp3"
+      ],
+      "license": "CC0-1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "license_evidence": "https://opengameart.org/content/at-the-end-of-hope",
+      "sha256": "c5c9a612ff8650b62b4be6c9276263b7c21ec4bcf6f28d1ba73d0b29034ae12a",
+      "bytes": 7315436,
+      "duration_seconds": 182.89,
+      "format": {
+        "codec": "mp3",
+        "sample_rate": 44100,
+        "channels": 2
+      },
+      "moods": [
+        "calm",
+        "documentary"
+      ],
+      "description": "A mildly depressing electronic piano track. The included files are the full song in mp3 format (3 minutes) and loop sections in wav format (intro + main song loop)."
+    },
+    {
+      "id": "oga-fantasy-orchestral-theme",
+      "title": "Fantasy Orchestral Theme",
+      "author": "Joth",
+      "source": "opengameart",
+      "source_url": "https://opengameart.org/content/fantasy-orchestral-theme",
+      "original_url": "https://opengameart.org/sites/default/files/FantasyOrchestralTheme_1.mp3",
+      "download_urls": [
+        "https://opengameart.org/sites/default/files/FantasyOrchestralTheme_1.mp3"
+      ],
+      "license": "CC0-1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "license_evidence": "https://opengameart.org/content/fantasy-orchestral-theme",
+      "sha256": "add1de5eae0771c4ce5b3782a6eae9c01f321d32446421691426587000e50cdc",
+      "bytes": 3837827,
+      "duration_seconds": 191.69,
+      "format": {
+        "codec": "mp3",
+        "sample_rate": 44100,
+        "channels": 2
+      },
+      "moods": [
+        "epic",
+        "documentary"
+      ],
+      "description": "A melodic orchestral piece with some subtle \"videogamey\" elements. Begins fairly slow and serene, but ends in a more intense crescendo. Intended to be an opening theme or music to accompany an opening credit sequence for a game. Enjoy!"
+    },
+    {
+      "id": "oga-november-snow",
+      "title": "November Snow",
+      "author": "cynicmusic",
+      "source": "opengameart",
+      "source_url": "https://opengameart.org/content/november-snow",
+      "original_url": "https://opengameart.org/sites/default/files/155%20November_snow-33_tape_leveled.mp3",
+      "download_urls": [
+        "https://opengameart.org/sites/default/files/155%20November_snow-33_tape_leveled.mp3"
+      ],
+      "license": "CC0-1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "license_evidence": "https://opengameart.org/content/november-snow",
+      "sha256": "7e4675f6fbc86b97603d620dc54b0753eb5fe773ccc2fab99bc863cb7afde32c",
+      "bytes": 13982823,
+      "duration_seconds": 349.51,
+      "format": {
+        "codec": "mp3",
+        "sample_rate": 44100,
+        "channels": 2
+      },
+      "moods": [
+        "calm",
+        "dark_ambient"
+      ],
+      "description": "November Snow - Ambient/downtempo music for your game, ethereal, calm and relaxing. I ran this to tape recorder for a lo-fi effect, see my site if you want the full version :) This is great music for relaxing and thinking. No time limit!! Y"
+    },
+    {
+      "id": "oga-sirens-in-darkness",
+      "title": "Sirens in Darkness",
+      "author": "cynicmusic",
+      "source": "opengameart",
+      "source_url": "https://opengameart.org/content/sirens-in-darkness",
+      "original_url": "https://opengameart.org/sites/default/files/012_Sirens_in_Darkness_0.mp3",
+      "download_urls": [
+        "https://opengameart.org/sites/default/files/012_Sirens_in_Darkness_0.mp3"
+      ],
+      "license": "CC0-1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "license_evidence": "https://opengameart.org/content/sirens-in-darkness",
+      "sha256": "54c1abdd5ca5d67cf43c29bdf9d8332510dd1d74e8498569e5d9a2824a77079e",
+      "bytes": 7042393,
+      "duration_seconds": 229.88,
+      "format": {
+        "codec": "mp3",
+        "sample_rate": 44100,
+        "channels": 2
+      },
+      "moods": [
+        "mysterious",
+        "dark_ambient"
+      ],
+      "description": "Sirens in Darkness - Ambient mysterious and mood music for your game, ethereal and pensive. You are sure to love this ambient theme with warm pads and piano!!!! Get in touch for variations and etc... Please credit -- The Cynic Project / pix"
+    },
+    {
+      "id": "oga-the-rush",
+      "title": "The Rush",
+      "author": "tebruno99",
+      "source": "opengameart",
+      "source_url": "https://opengameart.org/content/the-rush",
+      "original_url": "https://opengameart.org/sites/default/files/The%20Rush_2.mp3",
+      "download_urls": [
+        "https://opengameart.org/sites/default/files/The%20Rush_2.mp3"
+      ],
+      "license": "CC0-1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "license_evidence": "https://opengameart.org/content/the-rush",
+      "sha256": "25f3056aa69985f878fd70526b4661d3f0492f1c4adb1174dadea837ac265f5d",
+      "bytes": 3356965,
+      "duration_seconds": 139.7,
+      "format": {
+        "codec": "mp3",
+        "sample_rate": 44100,
+        "channels": 2
+      },
+      "moods": [
+        "action",
+        "upbeat"
+      ],
+      "description": "Some music I've worked on a little. Fun little tune maybe for some high action scene. I've made this CC0 so that it can be used on iOS/Apple App store. Please leave the id3 tags intact though if you can."
+    },
+    {
+      "id": "oga-underwater-theme",
+      "title": "Underwater Theme",
+      "author": "CleytonKauffman",
+      "source": "opengameart",
+      "source_url": "https://opengameart.org/content/underwater-theme",
+      "original_url": "https://opengameart.org/sites/default/files/Cleyton%20RX%20-%20Underwater_0.mp3",
+      "download_urls": [
+        "https://opengameart.org/sites/default/files/Cleyton%20RX%20-%20Underwater_0.mp3"
+      ],
+      "license": "CC0-1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "license_evidence": "https://opengameart.org/content/underwater-theme",
+      "sha256": "c2e7cb7a4c9bb350e12054001b78f53eccdee6411d91662a820d96201a0e4e97",
+      "bytes": 6808625,
+      "duration_seconds": 170.21,
+      "format": {
+        "codec": "mp3",
+        "sample_rate": 44100,
+        "channels": 2
+      },
+      "moods": [
+        "mysterious",
+        "calm"
+      ],
+      "description": "Music: Underwater. Looped: Yes. Format: MP3, WAV. -- Bell, flute and arpeggios. Suitable for underwater, cave level or puzzle game. Your feedback is highly appreciated!"
+    }
+  ]
+}

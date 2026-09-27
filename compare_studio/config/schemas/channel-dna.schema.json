@@ -101,7 +101,12 @@
         "soundscape_id": { "type": "string", "enum": ["compare", "survival", "science", "mystery", "vox", "newspaper", "kinetic"] },
         "sfx_density": { "type": "string", "enum": ["low", "medium", "high"] },
         "voice_fx": { "type": "string", "enum": ["none", "creepy", "whisper", "radio"] },
-        "voice_clone": { "type": "string", "pattern": "^(none|[a-z0-9][a-z0-9_-]{1,63})$" }
+        "voice_clone": { "type": "string", "pattern": "^(none|[a-z0-9][a-z0-9_-]{1,63})$" },
+        "bgm_pool": {
+          "description": "CC0 background-music pool (track ids of config/music/cc0_catalog.json, set by tools/assign-music.mjs). Absent = legacy soundscape BGM.",
+          "type": "array", "minItems": 1, "maxItems": 6, "uniqueItems": true,
+          "items": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]{1,79}$" }
+        }
       }
     },
     "publishing": {

@@ -11,6 +11,7 @@ import { applyVoiceClone, cloneKeyPart, cloneProblems } from "./voice-clone.mjs"
 import { computeDuckedBgmSegments, copyCinemaSfxFiles, detectSfxCues, generateCinemaAudioHtml } from "../../tools/auto-sfx.mjs";
 import { probeDuration, getVoice, synthesizeEdge } from "../../tools/voices.mjs";
 import { SFX_CATALOG, SOUNDSCAPE_PRESETS } from "../../tools/soundscapes.mjs";
+import { CATALOG_PATH, MUSIC_DIR, resolveBgmSource, trackRecord } from "./music-catalog.mjs";
 import { listSceneArtifacts, recordSceneArtifact } from "../orchestrator/job-manager.mjs";
 
 const execFileAsync = promisify(execFile);
@@ -131,6 +132,8 @@ export async function orchestrateAudioForJob({
   pitchProcessor = applyPitchShift,
   sfxDetector = detectSfxCues,
   cloneRegistry = undefined,
+  musicCatalogPath = CATALOG_PATH,
+  musicDir = MUSIC_DIR,
   log = () => {},
 } = {}) {
   if (!/^[a-zA-Z0-9][a-zA-Z0-9_-]{0,127}$/.test(jobId || "")) throw new Error("jobId must be a safe path component");
@@ -157,7 +160,11 @@ export async function orchestrateAudioForJob({
     throw new Error("Channel DNA voice_speed/voice_pitch are outside supported ranges");
   }
   const soundscape = getSoundscape(channel);
-  const bgmSource = path.join(SHARED_AUDIO_DIR, "bgm", `${soundscape.defaultBgm}.mp3`);
+  // Kênh có audio.bgm_pool: bài CC0 riêng (thiếu file → throw, không quay về bài chung). Không có pool: đường cũ.
+  const bgm = resolveBgmSource({
+    audio: dna.audio, soundscape, seed: jobId, catalogPath: musicCatalogPath, musicDir, legacyDir: path.join(SHARED_AUDIO_DIR, "bgm"),
+  });
+  const bgmSource = bgm.path;
   if (!fs.existsSync(bgmSource) || fs.statSync(bgmSource).size === 0) {
     throw new Error(`configured BGM asset is missing: ${bgmSource}`);
   }
@@ -261,6 +268,8 @@ export async function orchestrateAudioForJob({
     sfx_cues: sfxCues,
     duration_seconds: Number(start.toFixed(3)),
   };
+  // Chỉ kênh có pool mới có khoá này, để manifest (và source_hash) của kênh cũ giữ nguyên từng byte.
+  if (bgm.track) updatedManifest.audio.bgm_track = trackRecord(bgm.track);
   const audioHtml = generateCinemaAudioHtml({
     sfxCues,
     bgmSegments,
@@ -275,6 +284,7 @@ export async function orchestrateAudioForJob({
     voice_artifacts: voiceArtifacts,
     sfx_artifacts: sfxArtifacts,
     bgm_path: bgmDestination,
+    bgm_track: bgm.track ? trackRecord(bgm.track) : null,
     bgm_segments: bgmSegments,
     sfx_cues: sfxCues,
     html: audioHtml,

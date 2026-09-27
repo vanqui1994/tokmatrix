@@ -568,11 +568,15 @@ export async function buildNativeVideoProject({ job, manifest = job?.manifest, p
     },
     [extendedReady(engineType)?.configKey || CONFIG_KEY[engineType]]: composed.cfg,
   };
+  // Bài nhạc CC0 của kênh (audio.bgm_pool): ghi id + sha256 để similarity/fingerprint biết video dùng bài nào.
+  // Kênh cũ không có khoá này (meta.json giữ nguyên như trước).
+  if (manifest.audio?.bgm_track) metadata.bgm_track = manifest.audio.bgm_track;
   // Trả lời được "video này render bằng cấu hình nào": engine, variant, DNA, signature, nước, giọng, version.
   if (composed.creative) {
     metadata.creative = {
       ...composed.creative,
       voice: { voice_id: channel.audio?.voice_id, speed: channel.audio?.voice_speed, pitch: channel.audio?.voice_pitch, fx: channel.audio?.voice_fx || "none" },
+      ...(manifest.audio?.bgm_track ? { bgm: manifest.audio.bgm_track.id } : {}),
       config_version: metadata.matrix.channel_config_version,
       // Ảnh cảnh không lấy được từ Antigravity mà dùng bước fallback của variant (không bao giờ âm thầm).
       asset_fallbacks: manifest.asset_pipeline?.fallbacks || [],
