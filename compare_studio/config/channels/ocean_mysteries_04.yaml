@@ -1,5 +1,5 @@
 channel_id: ocean_mysteries_04
-config_version: 6
+config_version: 7
 niche_id: ocean_mysteries
 name: 海と深海海溝 04
 tiktok_account_ref: null
@@ -40,6 +40,18 @@ creative:
         transition: shutter
         tone: 2
         caption: middle
+    survival:
+      variant_id: survival/deep-sea
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: ruler_left
+        typography: mono
+        treatment: film_grain
+        image_motion: still_grain
+        transition: ink_bleed
+        tone: 4
+        caption: fixed
 audio:
   voice_id: ja-JP-NanamiNeural
   voice_speed: 1.02

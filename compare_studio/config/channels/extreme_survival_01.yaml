@@ -52,6 +52,18 @@ creative:
         transition: zoom_through
         tone: 6
         caption: top
+    survival:
+      variant_id: survival/endurance
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: race_lane
+        typography: heavy
+        treatment: clean
+        image_motion: handheld
+        transition: slide
+        tone: 4
+        caption: fixed
 audio:
   voice_id: de-DE-ConradNeural
   voice_speed: 1.05

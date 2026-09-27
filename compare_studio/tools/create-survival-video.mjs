@@ -1,5 +1,7 @@
 #!/usr/bin/env node
-// Generator for Survival / Progressive Escalation Tier List videos (Mr. Incredible Uncanny format).
+// Generator for Survival / Progressive Escalation Tier List videos.
+// Nhân vật phản ứng là reactor SVG gốc (matrix/render/variants/survival/reactor.mjs, chèn trong preview-template) —
+// không chép bộ mặt meme Mr. Incredible (IP bên thứ ba) vào video.
 // Supports 6 languages: vi, en, de, fr, ja, ko.
 
 import { spawn } from "node:child_process";
@@ -57,7 +59,6 @@ export async function createSurvivalVideo(opts) {
 
   log(`[1/6] Khởi tạo cấu trúc thư mục videos/${slug}`);
   fs.mkdirSync(dir, { recursive: true });
-  fs.mkdirSync(path.join(dir, "assets", "mrincredible"), { recursive: true });
   fs.mkdirSync(path.join(dir, "assets", "organs"), { recursive: true });
   fs.mkdirSync(path.join(dir, "assets", "audio", "sfx"), { recursive: true });
   fs.mkdirSync(path.join(dir, "assets", "vo"), { recursive: true });
@@ -108,7 +109,7 @@ export async function createSurvivalVideo(opts) {
   // BRIEF.md
   const brief = `---
 workflow: escalation-tier
-flow: uncanny-meme
+flow: reactor-escalation
 storyboard: no
 message: "${cfg.title} — ${cfg.prologueSpoken}"
 destination: reels
@@ -120,7 +121,7 @@ length: 65s
 ## Intent
 
 ${cfg.title} (${countryInfo.country}).
-Survival limits with escalating Mr. Incredible Becoming Uncanny meme faces and cyber-medical HUD visuals.
+Survival limits with an original drawn reaction character (expression worsens per level) and cyber-medical HUD visuals.
 `;
   fs.writeFileSync(path.join(dir, "BRIEF.md"), brief);
 
@@ -133,17 +134,7 @@ Survival limits with escalating Mr. Incredible Becoming Uncanny meme faces and c
     } catch {}
   }
 
-  log("[2/6] Sao chép tài nguyên đồ họa (Mr. Incredible Uncanny & Cyber Organs)");
-  // Copy Mr Incredible faces
-  const facesDir = path.join(TEMPLATE_VIDEO, "assets", "mrincredible");
-  if (fs.existsSync(facesDir)) {
-    for (const f of fs.readdirSync(facesDir)) {
-      if (f.endsWith(".png")) {
-        fs.copyFileSync(path.join(facesDir, f), path.join(dir, "assets", "mrincredible", f));
-      }
-    }
-  }
-
+  log("[2/6] Sao chép tài nguyên đồ họa (Cyber Organs, SFX)");
   // Copy Organs SVGs
   const organsDir = path.join(TEMPLATE_VIDEO, "assets", "organs");
   if (fs.existsSync(organsDir)) {

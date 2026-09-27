@@ -6,7 +6,7 @@ audio:
   voice_pitch: -1
   voice_speed: 1.05
 channel_id: extreme_survival_13
-config_version: 7
+config_version: 8
 creative:
   cut_cadence_seconds: 2.5
   palette:
@@ -43,6 +43,18 @@ creative:
         transition: zoom_through
         tone: 1
         caption: top
+    survival:
+      variant_id: survival/endurance
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: race_lane
+        typography: condensed
+        treatment: film_grain
+        image_motion: push_in
+        transition: zoom_through
+        tone: 1
+        caption: fixed
 name: Survival & Disaster 13
 niche_id: extreme_survival
 persona:

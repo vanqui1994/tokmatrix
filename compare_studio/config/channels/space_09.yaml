@@ -52,6 +52,18 @@ creative:
         transition: shutter
         tone: 7
         caption: bottom
+    survival:
+      variant_id: survival/space-exposure
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: visor
+        typography: mono
+        treatment: clean
+        image_motion: ken_burns_slow
+        transition: glitch
+        tone: 3
+        caption: fixed
 audio:
   voice_id: DiT_de_female_jiangshi
   voice_speed: 0.96

@@ -13,7 +13,7 @@ import { lintVariantHtml } from "../matrix/render/variants/kit/lint.mjs";
 import { resolveCreativeContext } from "../matrix/render/variants/kit/resolve.mjs";
 import { MIN_SKIN_DISTANCE, assignSkins, skinDistance, skinPairOk, skinViolations } from "../matrix/render/variants/skins.mjs";
 import { channelCreative } from "../matrix/render/native-engine-adapter.mjs";
-import { planSkins } from "../tools/assign-skins.mjs";
+import { NICHE_VARIANTS, planNicheSkins, planSkins } from "../tools/assign-skins.mjs";
 import { validateConfigs } from "../tools/matrix-config-validator.mjs";
 
 const COMPARE_DIR = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
@@ -143,6 +143,21 @@ test("every channel config already has a valid skin for each skin variant's engi
     assert.deepEqual(rows.rows.filter((row) => row.status !== "kept").map((row) => row.channel_id), [], variant.id);
     assert.deepEqual(rows.violations, [], variant.id);
   }
+});
+
+test("every survival channel has a niche-mapped survival skin and the per-country rule holds across variants", () => {
+  const plan = planNicheSkins({ dir: CHANNEL_DIR, engine: "survival" });
+  assert.ok(plan.rows.length >= 44);
+  assert.deepEqual(plan.rows.filter((row) => row.status !== "kept").map((row) => `${row.channel_id}:${row.status}`), []);
+  assert.deepEqual(plan.violations, []);
+  const byId = new Map(plan.channels.map((channel) => [channel.channel_id, channel]));
+  for (const row of plan.rows) assert.ok(NICHE_VARIANTS.survival[byId.get(row.channel_id).niche].includes(row.variant_id), row.channel_id);
+  // Nhiều variant cùng engine: kênh mới được chọn DNA xa với bộ da của variant khác cùng nước.
+  const others = [{ channel_id: "x", country: "de", dna: plan.rows.find((row) => row.country === "de").dna }];
+  const variant = getVariant("survival/endurance");
+  const result = assignSkins([{ channel_id: "y", lang: "de" }], variant, { others });
+  assert.deepEqual(result.violations, []);
+  assert.ok(skinPairOk(result.rows[0].dna, others[0].dna));
 });
 
 test("render adapter uses the channel's skin for that engine only", () => {

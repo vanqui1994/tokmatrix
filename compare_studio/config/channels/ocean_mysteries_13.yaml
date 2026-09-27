@@ -31,6 +31,18 @@ creative:
         transition: shutter
         tone: 2
         caption: middle
+    survival:
+      variant_id: survival/deep-sea
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: ruler_left
+        typography: mono
+        treatment: film_grain
+        image_motion: still_grain
+        transition: fade_black
+        tone: 2
+        caption: fixed
 name: 바다와 심해 해구 13
 niche_id: ocean_mysteries
 persona:

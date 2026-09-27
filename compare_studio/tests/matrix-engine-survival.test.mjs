@@ -5,7 +5,7 @@ import path from "node:path";
 import test from "node:test";
 import { resolveChannelsForTopic } from "../matrix/planner/template-selector.mjs";
 import { buildNativeVideoProject } from "../matrix/render/native-engine-adapter.mjs";
-import survival, { facePhase, sceneRoles } from "../matrix/render/engines/survival.mjs";
+import survival, { reactorFace, sceneRoles } from "../matrix/render/engines/survival.mjs";
 
 // 12 cảnh tiếng Đức, thời lượng đo từ TTS (không đều nhau), cảnh 1 là hook ngắn.
 export const GERMAN_LINES = [
@@ -110,8 +110,10 @@ test("survival module implements the extended engine contract without AI images"
   assert.equal(schema.properties.levels.maxItems, 12);
   assert.deepEqual(schema.required, ["eyebrow", "metric_labels", "levels"]);
   assert.deepEqual(sceneRoles(4), ["prologue", "level", "level", "outro"]);
-  assert.equal(facePhase(1), 1);
-  assert.equal(facePhase(10), 9);  // phase-10 (hình treo cổ) không bao giờ dùng
+  // Reactor SVG gốc: cùng nước → cùng nhân vật, biểu cảm đổi theo mức độ; không ảnh meme bên thứ ba.
+  assert.match(reactorFace("de", 1, "rx-a"), /^<svg class="rx-svg" id="rx-a"/u);
+  assert.notEqual(reactorFace("de", 1, "rx-a"), reactorFace("de", 10, "rx-a"));
+  assert.equal(survival.prepareAssets, undefined, "legacy survival copies no meme faces");
 });
 
 test("fallback extras are valid and deterministic for 8–16 scenes, prompt keeps narration", () => {
@@ -185,8 +187,14 @@ test("buildNativeVideoProject builds a seekable survival project from the German
     assert.ok(html.includes("PROLOG") && html.includes("FINALE"));
     assert.ok(html.includes("gsap.timeline({ paused: true })"));
     assert.ok(!/requestAnimationFrame|setInterval|Math\.random|Date\.now/.test(html));
-    assert.ok(!html.includes("phase-10.png"));
-    for (let phase = 1; phase <= 9; phase += 1) assert.ok(fs.existsSync(path.join(result.video_dir, "assets", "mrincredible", `phase-${phase}.png`)));
+    // Không còn mặt meme Mr. Incredible: reactor SVG inline, không file/đường dẫn mrincredible nào.
+    assert.ok(!/mrincredible|phase-\d+\.png/u.test(html), "legacy survival must not reference the meme faces");
+    assert.ok(!fs.existsSync(path.join(result.video_dir, "assets", "mrincredible")));
+    assert.ok(!JSON.stringify(meta).includes("mrincredible"));
+    assert.equal((html.match(/<svg class="rx-svg"/gu) || []).length, 12);
+    // .sec là clip: GSAP không được đặt autoAlpha lên chính nó (StaticGuard), chỉ lên lớp con .sec-in.
+    assert.ok(!/tl\.set\("\.sec"/u.test(html) && !/const sec = "#sec-" \+ i;/u.test(html));
+    assert.ok(html.includes('tl.set(".sec-in", { autoAlpha: 0 }, 0);'));
     assert.equal(result.duration_seconds, Math.ceil(fixture.manifest.scenes.at(-1).start_seconds + fixture.manifest.scenes.at(-1).duration_seconds + 1.2));
     assert.ok(html.includes(`data-duration="${result.duration_seconds}"`));
     // chạy lại cùng job → cùng HTML (xác định)

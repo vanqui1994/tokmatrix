@@ -1,30 +1,32 @@
-// Engine "survival" (Studio template "Sinh Tồn"): cấp độ leo thang, thanh chỉ số sinh học, mặt meme
-// Mr. Incredible biến dạng dần. Cảnh 1 = mở đầu (hook), cảnh cuối = kết/CTA, các cảnh giữa = cấp độ 1…L
-// (số cấp theo số cảnh, không cố định 10). Chữ lấy từ kịch bản Matrix + extras; không TTS/ảnh AI mới.
+// Engine "survival" (Studio template "Sinh Tồn"): cấp độ leo thang, thanh chỉ số sinh học, nhân vật phản ứng
+// (reactor SVG GỐC của variants/survival/reactor.mjs, biểu cảm theo mức độ — không còn mặt meme Mr. Incredible của
+// bên thứ ba). Cảnh 1 = mở đầu (hook), cảnh cuối = kết/CTA, các cảnh giữa = cấp độ 1…L (số cấp theo số cảnh,
+// không cố định 10). Chữ lấy từ kịch bản Matrix + extras; không TTS/ảnh AI mới.
 import fs from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { getSurvivalConfig } from "../../../tools/survival-languages.mjs";
+import { expressionLevel, reactorIdentity, reactorSvg } from "../variants/survival/reactor.mjs";
 import { escapeHtml, shortText, STRING, INTEGER } from "./common.mjs";
 
 const COMPARE_DIR = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../../..");
-const FACE_SOURCE_DIR = ["shared", "assets", "survival", "mrincredible"];
-// phase-10 của template là hình treo cổ — không dùng cho nội dung Matrix (rủi ro chính sách TikTok).
-const FACE_PHASES = 9;
+/** Seed danh tính reactor của đường legacy (một nhân vật cho mỗi nước, khác nhân vật của 7 variant V2). */
+export const LEGACY_REACTOR_ID = "survival/legacy";
+const REACTOR_LOOK = Object.freeze({ gear: "headband", accent: "#00F0FF", outline: { color: "#07090E", width: 4 }, ink: "#1f1a1a" });
 const FONT_DIR = ["tools", "template-kinetic", "assets"];
 const METRIC_COUNT = 3;
 const LIMITS = { eyebrow: 36, metricLabel: 20, label: 48, status: 24 };
 
 const UI = {
-  en: { metrics: ["HEALTH", "ENERGY", "SANITY"], status: ["SAFE", "STRAINED", "DANGER", "CRITICAL", "FATAL"], eyebrow: "SURVIVAL LEVELS", severity: "SEVERITY" },
-  vi: { metrics: ["SỨC KHỎE", "NĂNG LƯỢNG", "TINH THẦN"], status: ["AN TOÀN", "CĂNG THẲNG", "NGUY HIỂM", "NGUY KỊCH", "TỬ VONG"], eyebrow: "CÁC CẤP SINH TỒN", severity: "MỨC ĐỘ" },
-  de: { metrics: ["GESUNDHEIT", "ENERGIE", "VERSTAND"], status: ["SICHER", "BELASTET", "GEFAHR", "KRITISCH", "TÖDLICH"], eyebrow: "ÜBERLEBENSSTUFEN", severity: "SCHWEREGRAD" },
-  fr: { metrics: ["SANTÉ", "ÉNERGIE", "MENTAL"], status: ["SÛR", "TENDU", "DANGER", "CRITIQUE", "FATAL"], eyebrow: "NIVEAUX DE SURVIE", severity: "GRAVITÉ" },
-  es: { metrics: ["SALUD", "ENERGÍA", "CORDURA"], status: ["SEGURO", "TENSO", "PELIGRO", "CRÍTICO", "FATAL"], eyebrow: "NIVELES DE SUPERVIVENCIA", severity: "GRAVEDAD" },
-  ja: { metrics: ["体力", "エネルギー", "精神"], status: ["安全", "負荷", "危険", "重篤", "致命的"], eyebrow: "生存レベル", severity: "深刻度" },
-  ko: { metrics: ["건강", "에너지", "정신력"], status: ["안전", "긴장", "위험", "위독", "치명적"], eyebrow: "생존 단계", severity: "심각도" },
+  en: { metrics: ["HEALTH", "ENERGY", "SANITY"], status: ["SAFE", "STRAINED", "DANGER", "CRITICAL", "FATAL"], eyebrow: "SURVIVAL LEVELS", severity: "SEVERITY", reaction: "REACTION METER" },
+  vi: { metrics: ["SỨC KHỎE", "NĂNG LƯỢNG", "TINH THẦN"], status: ["AN TOÀN", "CĂNG THẲNG", "NGUY HIỂM", "NGUY KỊCH", "TỬ VONG"], eyebrow: "CÁC CẤP SINH TỒN", severity: "MỨC ĐỘ", reaction: "THANG PHẢN ỨNG" },
+  de: { metrics: ["GESUNDHEIT", "ENERGIE", "VERSTAND"], status: ["SICHER", "BELASTET", "GEFAHR", "KRITISCH", "TÖDLICH"], eyebrow: "ÜBERLEBENSSTUFEN", severity: "SCHWEREGRAD", reaction: "REAKTIONSSKALA" },
+  fr: { metrics: ["SANTÉ", "ÉNERGIE", "MENTAL"], status: ["SÛR", "TENDU", "DANGER", "CRITIQUE", "FATAL"], eyebrow: "NIVEAUX DE SURVIE", severity: "GRAVITÉ", reaction: "JAUGE DE RÉACTION" },
+  es: { metrics: ["SALUD", "ENERGÍA", "CORDURA"], status: ["SEGURO", "TENSO", "PELIGRO", "CRÍTICO", "FATAL"], eyebrow: "NIVELES DE SUPERVIVENCIA", severity: "GRAVEDAD", reaction: "REACCIÓN" },
+  ja: { metrics: ["体力", "エネルギー", "精神"], status: ["安全", "負荷", "危険", "重篤", "致命的"], eyebrow: "生存レベル", severity: "深刻度", reaction: "反応メーター" },
+  ko: { metrics: ["건강", "에너지", "정신력"], status: ["안전", "긴장", "위험", "위독", "치명적"], eyebrow: "생존 단계", severity: "심각도", reaction: "반응 미터" },
 };
-const LEVEL_WORDS = { es: { levelPrefix: "NIVEL", prologueTag: "PRÓLOGO", finalTag: "FINAL", reactionLabel: "REACCIÓN" } };
+const LEVEL_WORDS = { es: { levelPrefix: "NIVEL", prologueTag: "PRÓLOGO", finalTag: "FINAL" } };
 
 function ui(lang) {
   return UI[lang] || UI.en;
@@ -38,7 +40,8 @@ function labels(lang) {
     levelPrefix: extra.levelPrefix || (known ? base.levelPrefix : "LEVEL"),
     prologueTag: extra.prologueTag || (known ? base.prologueTag : "PROLOGUE"),
     finalTag: extra.finalTag || (known ? base.finalTag : "FINAL"),
-    reactionLabel: extra.reactionLabel || (known ? base.reactionLabel : "REACTION: UNCANNY METER"),
+    // Nhãn khung reactor của engine (không dùng nhãn "uncanny meter" của template meme cũ).
+    reactionLabel: ui(lang).reaction,
   };
 }
 
@@ -56,9 +59,9 @@ function statusFor(severity, lang) {
   return words[Math.min(words.length - 1, Math.floor((severity - 1) / 2))];
 }
 
-/** Mức độ 1–10 → mặt meme 1–9. */
-export function facePhase(severity) {
-  return 1 + Math.round(((Math.min(10, Math.max(1, severity)) - 1) * (FACE_PHASES - 1)) / 9);
+/** Reactor SVG gốc cho một cảnh: nhân vật cố định theo nước, biểu cảm theo mức độ 1–10. */
+export function reactorFace(lang, severity, id) {
+  return reactorSvg({ identity: reactorIdentity(LEGACY_REACTOR_ID, lang), severity, look: REACTOR_LOOK, id });
 }
 
 const SEVERITY_COLORS = ["#00FF88", "#00FF88", "#00F0FF", "#FFB800", "#FF7700", "#FF5500", "#FF003C", "#FF003C", "#E11D48", "#B56CFF"];
@@ -107,7 +110,7 @@ function prompt({ script, topic, language }) {
     return `${i + 1}. [${tag}] ${clean(scene.line)} (visual: ${clean(scene.visual_intent)})`;
   }).join("\n");
   return `Topic: ${topic || script?.title || ""}
-The video is an escalating "survival levels" countdown: each level is worse than the last, shown with biological status bars and a meme face that gets darker as severity rises.
+The video is an escalating "survival levels" countdown: each level is worse than the last, shown with biological status bars and a drawn reaction character whose expression worsens as severity rises.
 Narration (fixed, do NOT rewrite it), one entry per scene:
 ${listing}
 
@@ -201,22 +204,6 @@ function fallback(scenes, { title, language } = {}) {
   return { eyebrow: shortText(words.eyebrow, LIMITS.eyebrow), metric_labels: [...words.metrics], levels };
 }
 
-async function prepareAssets({ targetDir, compareDir = COMPARE_DIR }) {
-  const sourceDir = path.join(compareDir, ...FACE_SOURCE_DIR);
-  const destDir = path.join(targetDir, "assets", "mrincredible");
-  await fs.mkdir(destDir, { recursive: true });
-  const copied = [];
-  for (let phase = 1; phase <= FACE_PHASES; phase += 1) {
-    const source = path.join(sourceDir, `phase-${phase}.png`);
-    const stat = await fs.stat(source).catch(() => null);
-    if (!stat?.isFile() || !stat.size) throw new Error(`survival meme face is missing: ${source}`);
-    const dest = path.join(destDir, `phase-${phase}.png`);
-    await fs.copyFile(source, dest);
-    copied.push(dest);
-  }
-  return copied;
-}
-
 async function fontCss(compareDir = COMPARE_DIR) {
   const dir = path.join(compareDir, ...FONT_DIR);
   const css = await fs.readFile(path.join(dir, "fonts.css"), "utf8");
@@ -268,11 +255,11 @@ async function buildHtml(ctx) {
     const level = cleanLevel(extras.levels?.[i], derived.levels[i]);
     const tag = role === "prologue" ? words.prologueTag : role === "outro" ? words.finalTag : `${words.levelPrefix} ${levelNo}/${levelTotal}`;
     const progress = role === "prologue" ? 0.04 : role === "outro" ? 1 : levelNo / Math.max(1, levelTotal);
-    return { ...scene, role, begin: round(begin), end: round(end), level, tag, progress, phase: facePhase(level.severity), color: severityColor(level.severity) };
+    return { ...scene, role, begin: round(begin), end: round(end), level, tag, progress, expression: expressionLevel(level.severity), color: severityColor(level.severity) };
   });
 
   const sectionHtml = sections.map((s, i) => `
-      <section id="sec-${i}" class="sec clip" data-start="${s.begin}" data-duration="${round(s.end - s.begin)}" data-track-index="3" data-role="${s.role}">
+      <section id="sec-${i}" class="sec clip" data-start="${s.begin}" data-duration="${round(s.end - s.begin)}" data-track-index="3" data-role="${s.role}"><div class="sec-in">
         <div class="sec-glow" style="background:radial-gradient(circle, ${s.color}44 0%, transparent 70%)"></div>
         <div class="tier-tag" style="color:${s.color}"><span class="fit" data-fit-w="240" data-fit-h="44" data-fit-min="14">${escapeHtml(s.tag)}</span></div>
         <div class="scanner-card" style="border-color:${s.color}66">
@@ -295,11 +282,11 @@ async function buildHtml(ctx) {
             <div class="severity-value" style="color:${s.color}">${s.level.severity}<span class="severity-max">/10</span></div>
             <div class="pips">${Array.from({ length: 10 }, (_, p) => `<span class="pip" style="background:${p < s.level.severity ? severityColor(p + 1) : "rgba(255,255,255,0.1)"}"></span>`).join("")}</div>
           </div>
-          <img class="meme-img" id="face-${i}" src="assets/mrincredible/phase-${s.phase}.png" alt="">
+          <div class="meme-img" id="face-${i}">${reactorFace(lang, s.level.severity, `rx-${i}`)}</div>
           <div class="meme-badge"><span class="fit" data-fit-w="340" data-fit-h="30" data-fit-min="12">${escapeHtml(words.reactionLabel)}</span></div>
         </div>
         <div class="caption-zone"><p class="caption fit" data-fit-w="960" data-fit-h="176" data-fit-min="22">${escapeHtml(s.line)}</p></div>
-      </section>`).join("");
+      </div></section>`).join("");
 
   const voHtml = sections.map((s) => `      <audio id="vo-${s.index}" class="clip" src="${escapeHtml(s.voSrc)}" data-start="${round(s.start)}" data-duration="${round(s.duration)}" data-track-index="20"></audio>`).join("\n");
   const bgmHtml = bgmSegments.length ? "" : `      <audio id="bgm" class="clip" src="assets/audio/bgm.mp3" data-start="0" data-duration="${totalDuration}" data-track-index="30" data-volume="0.14"></audio>`;
@@ -331,7 +318,8 @@ ${await fontCss()}
       .main-title { width: 960px; font-size: 54px; line-height: 1.18; font-weight: 900; text-align: center; text-transform: uppercase; color: #FFFFFF; text-shadow: 0 0 30px rgba(0,240,255,0.35); }
       .meter-track { position: absolute; top: 230px; left: 0; width: 690px; height: 12px; background: rgba(255,255,255,0.1); border-radius: 6px; overflow: hidden; }
       #meter-fill { width: 100%; height: 100%; background: linear-gradient(90deg, #00F0FF, #FF003C); transform-origin: left center; transform: scaleX(0.04); }
-      .sec { position: absolute; inset: 0; opacity: 0; visibility: hidden; }
+      .sec { position: absolute; inset: 0; }
+      .sec-in { position: absolute; inset: 0; opacity: 0; visibility: hidden; }
       .sec-glow { position: absolute; left: 90px; top: 380px; width: 900px; height: 900px; border-radius: 50%; filter: blur(80px); }
       .tier-tag { position: absolute; top: 268px; left: 780px; width: 240px; height: 44px; display: flex; align-items: center; justify-content: flex-end; text-align: right; font: 700 26px "JetBrains Mono", monospace; letter-spacing: 1px; }
       .scanner-card { position: absolute; top: 350px; left: 60px; width: 960px; height: 720px; padding: 36px 40px; background: #0E131F; border: 2px solid rgba(0,240,255,0.25); border-radius: 36px; box-shadow: 0 20px 50px rgba(0,0,0,0.6); display: flex; flex-direction: column; }
@@ -353,7 +341,7 @@ ${await fontCss()}
       .bar-track { height: 26px; border-radius: 13px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12); overflow: hidden; }
       .bar-fill { height: 100%; border-radius: 13px; transform-origin: left center; box-shadow: 0 0 14px rgba(255,255,255,0.25); }
       .meme-card { position: absolute; top: 1100px; left: 60px; width: 960px; height: 520px; background: #0B0E14; border: 2px solid rgba(255,255,255,0.15); border-radius: 36px; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.7); }
-      .meme-img { position: absolute; top: 0; right: 0; width: 520px; height: 520px; object-fit: cover; object-position: 50% 35%; }
+      .meme-img { position: absolute; top: 40px; right: 20px; width: 480px; height: 480px; background: radial-gradient(circle at 50% 60%, rgba(0,240,255,0.18), transparent 70%); }
       .severity-panel { position: absolute; top: 96px; left: 36px; width: 360px; height: 390px; display: flex; flex-direction: column; justify-content: flex-start; gap: 18px; }
       .severity-name { width: 340px; font: 700 26px "JetBrains Mono", monospace; letter-spacing: 2px; color: #8B949E; white-space: nowrap; }
       .severity-value { height: 200px; font: 900 190px/1 "Be Vietnam Pro", sans-serif; letter-spacing: -6px; }
@@ -419,9 +407,10 @@ ${voHtml}
 
       const SECTIONS = ${json(timeline)};
       const tl = gsap.timeline({ paused: true });
-      tl.set(".sec", { autoAlpha: 0 }, 0);
+      // .sec là clip (framework bật/tắt theo data-start) — GSAP chỉ đụng lớp con .sec-in, không đụng chính clip.
+      tl.set(".sec-in", { autoAlpha: 0 }, 0);
       SECTIONS.forEach(function (s, i) {
-        const sec = "#sec-" + i;
+        const sec = "#sec-" + i + " .sec-in";
         const span = s.end - s.begin;
         const enter = Math.min(0.4, span * 0.2);
         tl.set(sec, { autoAlpha: 1 }, s.begin);
@@ -454,10 +443,10 @@ ${voHtml}
     title: clean(title),
     eyebrow,
     metricLabels,
-    faceSource: FACE_SOURCE_DIR.join("/"),
+    reactor: LEGACY_REACTOR_ID,
     levels: sections.map((s) => ({
       index: s.index, role: s.role, tag: s.tag, start: s.start, duration: s.duration, label: s.level.label,
-      status: s.level.status, severity: s.level.severity, metrics: s.level.metrics, face: `assets/mrincredible/phase-${s.phase}.png`, voSrc: s.voSrc,
+      status: s.level.status, severity: s.level.severity, metrics: s.level.metrics, expression: s.expression, voSrc: s.voSrc,
     })),
   };
   return { html, cfg };
@@ -473,7 +462,6 @@ export default {
   voPrefix: "line",
   assetType: "TEXT",
   extras: { schema, prompt, validate, fallback },
-  prepareAssets,
   buildHtml,
   compositionId: (slug) => slug,
 };

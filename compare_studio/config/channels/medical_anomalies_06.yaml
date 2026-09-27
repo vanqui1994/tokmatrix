@@ -52,6 +52,18 @@ creative:
         transition: slide
         tone: 5
         caption: top
+    survival:
+      variant_id: survival/lab-exposure
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: hazard_ring
+        typography: grotesk
+        treatment: vhs_noise
+        image_motion: still_grain
+        transition: cut
+        tone: 2
+        caption: fixed
 audio:
   voice_id: de-DE-FlorianMultilingualNeural
   voice_speed: 1.02

@@ -40,6 +40,18 @@ creative:
         transition: wipe
         tone: 2
         caption: middle
+    survival:
+      variant_id: survival/no-sleep
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: desk
+        typography: typewriter
+        treatment: film_grain
+        image_motion: handheld
+        transition: folder_flip
+        tone: 2
+        caption: fixed
 audio:
   voice_id: DiT_de_female_qingsong
   voice_speed: 0.99

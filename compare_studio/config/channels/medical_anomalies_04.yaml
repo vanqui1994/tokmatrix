@@ -52,6 +52,18 @@ creative:
         transition: slide
         tone: 8
         caption: middle
+    survival:
+      variant_id: survival/lab-exposure
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: bench
+        typography: mono
+        treatment: halftone
+        image_motion: scan_light
+        transition: tv_noise
+        tone: 0
+        caption: fixed
 audio:
   voice_id: de-DE-KillianNeural
   voice_speed: 1.02

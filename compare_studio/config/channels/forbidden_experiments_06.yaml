@@ -40,6 +40,18 @@ creative:
         transition: cut
         tone: 0
         caption: top
+    survival:
+      variant_id: survival/no-sleep
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: week_strip
+        typography: rounded
+        treatment: paper_texture
+        image_motion: handheld
+        transition: page_turn
+        tone: 1
+        caption: fixed
 audio:
   voice_id: de-DE-ConradNeural
   voice_speed: 1.05

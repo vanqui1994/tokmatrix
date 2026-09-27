@@ -1,5 +1,5 @@
 channel_id: extreme_wildlife_10
-config_version: 6
+config_version: 7
 niche_id: extreme_wildlife
 name: Creatures of the Deep 10
 tiktok_account_ref: null
@@ -40,6 +40,18 @@ creative:
         transition: shutter
         tone: 2
         caption: bottom
+    survival:
+      variant_id: survival/extreme-heat
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: thermo_left
+        typography: condensed
+        treatment: sepia_grain
+        image_motion: handheld
+        transition: fade_black
+        tone: 3
+        caption: fixed
 audio:
   voice_id: en-US-GuyNeural
   voice_speed: 1.02

@@ -1,5 +1,5 @@
 channel_id: military_arsenal_06
-config_version: 8
+config_version: 9
 niche_id: military_arsenal
 name: Weapons & War Machines 06
 tiktok_account_ref: null
@@ -52,6 +52,18 @@ creative:
         transition: slide
         tone: 3
         caption: bottom
+    survival:
+      variant_id: survival/endurance
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: stopwatch
+        typography: condensed
+        treatment: clean
+        image_motion: handheld
+        transition: cut
+        tone: 1
+        caption: fixed
 audio:
   voice_id: en-GB-LibbyNeural
   voice_speed: 1.02

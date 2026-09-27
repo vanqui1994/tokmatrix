@@ -43,6 +43,18 @@ creative:
         transition: slide
         tone: 7
         caption: bottom
+    survival:
+      variant_id: survival/deep-sea
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: ruler_left
+        typography: condensed
+        treatment: clean
+        image_motion: parallax
+        transition: ink_bleed
+        tone: 2
+        caption: fixed
 name: Survival & Disaster 12
 niche_id: extreme_survival
 persona:
