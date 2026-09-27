@@ -1,5 +1,5 @@
 channel_id: ocean_mysteries_01
-config_version: 5
+config_version: 6
 niche_id: ocean_mysteries
 name: 海と深海海溝 01
 tiktok_account_ref: null
@@ -47,6 +47,9 @@ audio:
   music_family: ocean_mysteries_editorial
   soundscape_id: science
   sfx_density: medium
+  bgm_pool:
+  - freepd-fresh-focus
+  - freepd-study-and-relax
 publishing:
   language: ja
   default_schedule_window: 19:30-20:30

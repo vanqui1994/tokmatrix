@@ -5,8 +5,11 @@ audio:
   voice_id: de-DE-SeraphinaMultilingualNeural
   voice_pitch: -2
   voice_speed: 0.99
+  bgm_pool:
+  - freepd-driving-concern
+  - freepd-inspiration
 channel_id: economy_empires_13
-config_version: 7
+config_version: 8
 creative:
   cut_cadence_seconds: 2.7
   palette:

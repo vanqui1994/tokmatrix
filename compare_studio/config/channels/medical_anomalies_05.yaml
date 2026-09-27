@@ -1,5 +1,5 @@
 channel_id: medical_anomalies_05
-config_version: 9
+config_version: 10
 niche_id: medical_anomalies
 name: Medizin & Biologische Rätsel 05
 tiktok_account_ref: null
@@ -71,6 +71,9 @@ audio:
   music_family: medical_anomalies_editorial
   soundscape_id: kinetic
   sfx_density: medium
+  bgm_pool:
+  - freepd-horror-mytery
+  - oga-sirens-in-darkness
 publishing:
   language: de
   default_schedule_window: 19:30-20:30

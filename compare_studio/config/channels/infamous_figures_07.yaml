@@ -1,5 +1,5 @@
 channel_id: infamous_figures_07
-config_version: 8
+config_version: 9
 niche_id: infamous_figures
 name: Berüchtigte Gestalten 07
 tiktok_account_ref: null
@@ -59,6 +59,9 @@ audio:
   music_family: infamous_figures_editorial
   soundscape_id: science
   sfx_density: medium
+  bgm_pool:
+  - freepd-abstract-anxiety
+  - freepd-arpent
 publishing:
   language: de
   default_schedule_window: 19:30-20:30

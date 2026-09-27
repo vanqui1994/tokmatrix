@@ -5,8 +5,11 @@ audio:
   voice_id: DiT_de_male_koubo
   voice_pitch: -2
   voice_speed: 1.02
+  bgm_pool:
+  - freepd-midnight-in-the-green-house
+  - freepd-mothership
 channel_id: dark_psychology_13
-config_version: 8
+config_version: 9
 creative:
   cut_cadence_seconds: 3.0
   palette:

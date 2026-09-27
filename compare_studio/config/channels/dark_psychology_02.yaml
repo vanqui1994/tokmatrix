@@ -1,5 +1,5 @@
 channel_id: dark_psychology_02
-config_version: 6
+config_version: 7
 niche_id: dark_psychology
 name: Psychologie & Verhalten 02
 tiktok_account_ref: null
@@ -47,6 +47,9 @@ audio:
   music_family: dark_psychology_editorial
   soundscape_id: vox
   sfx_density: medium
+  bgm_pool:
+  - freepd-goodnightmare
+  - freepd-spec-ops
 publishing:
   language: de
   default_schedule_window: 19:30-20:30

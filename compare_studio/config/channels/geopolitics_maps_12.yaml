@@ -5,8 +5,11 @@ audio:
   voice_id: de-DE-KatjaNeural
   voice_pitch: -2
   voice_speed: 0.99
+  bgm_pool:
+  - freepd-desert-conflict
+  - freepd-driving-concern
 channel_id: geopolitics_maps_12
-config_version: 8
+config_version: 9
 creative:
   cut_cadence_seconds: 2.2
   palette:

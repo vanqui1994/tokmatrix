@@ -1,5 +1,5 @@
 channel_id: military_arsenal_01
-config_version: 7
+config_version: 8
 niche_id: military_arsenal
 name: Weapons & War Machines 01
 tiktok_account_ref: null
@@ -47,6 +47,9 @@ audio:
   music_family: military_arsenal_editorial
   soundscape_id: science
   sfx_density: medium
+  bgm_pool:
+  - freepd-guerilla-tactics
+  - oga-fantasy-orchestral-theme
 publishing:
   language: en
   default_schedule_window: 19:30-20:30

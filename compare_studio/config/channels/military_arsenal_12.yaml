@@ -5,8 +5,11 @@ audio:
   voice_id: en_male_artistic_layne
   voice_pitch: -1
   voice_speed: 0.99
+  bgm_pool:
+  - freepd-cornfield-chase
+  - freepd-go-on-without-me
 channel_id: military_arsenal_12
-config_version: 10
+config_version: 11
 creative:
   cut_cadence_seconds: 2.5
   palette:

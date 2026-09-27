@@ -1,5 +1,5 @@
 channel_id: infamous_figures_10
-config_version: 6
+config_version: 7
 niche_id: infamous_figures
 name: Berüchtigte Gestalten 10
 tiktok_account_ref: null
@@ -34,6 +34,9 @@ audio:
   music_family: infamous_figures_editorial
   soundscape_id: vox
   sfx_density: medium
+  bgm_pool:
+  - freepd-cornfield-chase
+  - freepd-motions
 publishing:
   language: de
   default_schedule_window: 19:30-20:30

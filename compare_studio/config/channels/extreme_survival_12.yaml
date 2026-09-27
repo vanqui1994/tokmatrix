@@ -5,8 +5,11 @@ audio:
   voice_id: en_female_janeamber_mars_bigtts
   voice_pitch: -1
   voice_speed: 0.99
+  bgm_pool:
+  - freepd-action-strike
+  - freepd-behind-enemy-lines
 channel_id: extreme_survival_12
-config_version: 9
+config_version: 10
 creative:
   cut_cadence_seconds: 2.3
   palette:

@@ -1,5 +1,5 @@
 channel_id: philosophy_paradox_01
-config_version: 6
+config_version: 7
 niche_id: philosophy_paradox
 name: 철학의 역설 01
 tiktok_account_ref: null
@@ -47,6 +47,9 @@ audio:
   music_family: philosophy_paradox_editorial
   soundscape_id: kinetic
   sfx_density: medium
+  bgm_pool:
+  - freepd-inspiration
+  - freepd-mysterious-lights
 publishing:
   language: ko
   default_schedule_window: 19:30-20:30

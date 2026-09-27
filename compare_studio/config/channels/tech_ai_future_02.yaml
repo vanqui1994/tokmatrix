@@ -1,5 +1,5 @@
 channel_id: tech_ai_future_02
-config_version: 7
+config_version: 8
 niche_id: tech_ai_future
 name: Công Nghệ & Tương Lai AI 02
 tiktok_account_ref: null
@@ -71,6 +71,9 @@ audio:
   music_family: tech_ai_future_editorial
   soundscape_id: kinetic
   sfx_density: medium
+  bgm_pool:
+  - freepd-funkeriffic
+  - freepd-patron-saint-of-heists
 publishing:
   language: vi
   default_schedule_window: 19:30-20:30

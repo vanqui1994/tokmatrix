@@ -5,8 +5,11 @@ audio:
   voice_id: en_female_nail_artist
   voice_pitch: -1
   voice_speed: 1.02
+  bgm_pool:
+  - freepd-go-on-without-me
+  - freepd-horror-suspense
 channel_id: mega_catastrophes_12
-config_version: 9
+config_version: 10
 creative:
   cut_cadence_seconds: 2.8
   palette:

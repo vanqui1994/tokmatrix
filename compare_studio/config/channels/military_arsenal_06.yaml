@@ -1,5 +1,5 @@
 channel_id: military_arsenal_06
-config_version: 9
+config_version: 10
 niche_id: military_arsenal
 name: Weapons & War Machines 06
 tiktok_account_ref: null
@@ -71,6 +71,9 @@ audio:
   music_family: military_arsenal_editorial
   soundscape_id: kinetic
   sfx_density: medium
+  bgm_pool:
+  - freepd-ancient-rite
+  - freepd-goodnightmare
 publishing:
   language: en
   default_schedule_window: 19:30-20:30

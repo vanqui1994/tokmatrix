@@ -1,5 +1,5 @@
 channel_id: dark_psychology_05
-config_version: 8
+config_version: 9
 niche_id: dark_psychology
 name: Psychologie & Verhalten 05
 tiktok_account_ref: null
@@ -59,6 +59,9 @@ audio:
   music_family: dark_psychology_editorial
   soundscape_id: newspaper
   sfx_density: medium
+  bgm_pool:
+  - freepd-abstract-anxiety
+  - freepd-behind-enemy-lines
 publishing:
   language: de
   default_schedule_window: 19:30-20:30

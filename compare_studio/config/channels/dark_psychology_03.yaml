@@ -1,5 +1,5 @@
 channel_id: dark_psychology_03
-config_version: 8
+config_version: 9
 niche_id: dark_psychology
 name: Psychologie & Verhalten 03
 tiktok_account_ref: null
@@ -59,6 +59,9 @@ audio:
   music_family: dark_psychology_editorial
   soundscape_id: mystery
   sfx_density: medium
+  bgm_pool:
+  - freepd-desert-fox-underscore
+  - freepd-release-the-hybrids
 publishing:
   language: de
   default_schedule_window: 19:30-20:30

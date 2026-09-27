@@ -5,8 +5,11 @@ audio:
   voice_id: de-DE-ConradNeural
   voice_pitch: 0
   voice_speed: 1.02
+  bgm_pool:
+  - freepd-natural-vibes
+  - freepd-soundtrack-from-the-starcourt-mall
 channel_id: deep_space_12
-config_version: 7
+config_version: 8
 creative:
   cut_cadence_seconds: 2.9
   palette:

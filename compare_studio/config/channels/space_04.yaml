@@ -1,5 +1,5 @@
 channel_id: space_04
-config_version: 6
+config_version: 7
 niche_id: deep_space
 name: Beyond The Event Horizon
 tiktok_account_ref: null
@@ -48,6 +48,9 @@ audio:
   music_family: event_horizon_drone
   soundscape_id: mystery
   sfx_density: medium
+  bgm_pool:
+  - freepd-mysterious-lights
+  - freepd-satin-danger
 publishing:
   language: de
   default_schedule_window: 19:30-20:30

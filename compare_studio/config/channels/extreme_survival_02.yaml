@@ -1,5 +1,5 @@
 channel_id: extreme_survival_02
-config_version: 9
+config_version: 10
 niche_id: extreme_survival
 name: Überleben & Katastrophen 02
 tiktok_account_ref: null
@@ -71,6 +71,9 @@ audio:
   music_family: extreme_survival_editorial
   soundscape_id: science
   sfx_density: medium
+  bgm_pool:
+  - freepd-behind-enemy-lines
+  - freepd-mind-chaos
 publishing:
   language: de
   default_schedule_window: 19:30-20:30

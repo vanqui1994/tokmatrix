@@ -1,5 +1,5 @@
 channel_id: medical_anomalies_04
-config_version: 9
+config_version: 10
 niche_id: medical_anomalies
 name: Medizin & Biologische Rätsel 04
 tiktok_account_ref: null
@@ -71,6 +71,9 @@ audio:
   music_family: medical_anomalies_editorial
   soundscape_id: newspaper
   sfx_density: medium
+  bgm_pool:
+  - freepd-aquatic-city-vanished
+  - freepd-satin-danger
 publishing:
   language: de
   default_schedule_window: 19:30-20:30

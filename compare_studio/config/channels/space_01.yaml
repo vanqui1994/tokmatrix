@@ -1,5 +1,5 @@
 channel_id: space_01
-config_version: 8
+config_version: 9
 niche_id: deep_space
 name: Cosmic Impossible
 tiktok_account_ref: null
@@ -60,6 +60,9 @@ audio:
   music_family: deep_cosmic_drone
   soundscape_id: science
   sfx_density: medium
+  bgm_pool:
+  - freepd-mana-two-part-1
+  - oga-november-snow
 publishing:
   language: de
   default_schedule_window: 19:30-20:30

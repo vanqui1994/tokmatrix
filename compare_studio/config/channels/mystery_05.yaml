@@ -1,5 +1,5 @@
 channel_id: mystery_05
-config_version: 5
+config_version: 6
 niche_id: unsolved_mysteries
 name: One Clue Later
 tiktok_account_ref: null
@@ -38,6 +38,9 @@ audio:
   music_family: investigative_ticking_pulse
   soundscape_id: kinetic
   sfx_density: medium
+  bgm_pool:
+  - freepd-horror-mytery
+  - freepd-night-attack
 publishing:
   language: vi
   default_schedule_window: 19:30-20:30

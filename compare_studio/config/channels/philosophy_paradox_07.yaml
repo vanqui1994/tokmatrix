@@ -1,5 +1,5 @@
 channel_id: philosophy_paradox_07
-config_version: 5
+config_version: 6
 niche_id: philosophy_paradox
 name: Nghịch Lý Triết Học 07
 tiktok_account_ref: null
@@ -47,6 +47,9 @@ audio:
   music_family: philosophy_paradox_editorial
   soundscape_id: kinetic
   sfx_density: medium
+  bgm_pool:
+  - freepd-arpent
+  - freepd-inventing-flight
 publishing:
   language: vi
   default_schedule_window: 19:30-20:30

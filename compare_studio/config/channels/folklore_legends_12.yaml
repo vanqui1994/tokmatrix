@@ -5,8 +5,11 @@ audio:
   voice_id: en-US-BrianNeural
   voice_pitch: -1
   voice_speed: 1.05
+  bgm_pool:
+  - freepd-horror-suspense
+  - freepd-horroriffic
 channel_id: folklore_legends_12
-config_version: 6
+config_version: 7
 creative:
   cut_cadence_seconds: 2.5
   palette:

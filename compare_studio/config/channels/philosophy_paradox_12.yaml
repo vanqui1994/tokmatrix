@@ -5,8 +5,11 @@ audio:
   voice_id: multi_male_felipe_uranus_bigtts
   voice_pitch: -1
   voice_speed: 0.99
+  bgm_pool:
+  - freepd-lonely-mountain
+  - freepd-travelers-notebook
 channel_id: philosophy_paradox_12
-config_version: 6
+config_version: 7
 creative:
   cut_cadence_seconds: 2.4
   palette:

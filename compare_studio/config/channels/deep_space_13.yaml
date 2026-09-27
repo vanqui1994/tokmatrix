@@ -5,8 +5,11 @@ audio:
   voice_id: de-DE-AmalaNeural
   voice_pitch: -1
   voice_speed: 0.96
+  bgm_pool:
+  - freepd-fresh-focus
+  - freepd-meditating-beat
 channel_id: deep_space_13
-config_version: 8
+config_version: 9
 creative:
   cut_cadence_seconds: 2.6
   palette:

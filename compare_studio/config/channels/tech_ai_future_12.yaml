@@ -5,8 +5,11 @@ audio:
   voice_id: multi_female_peiqi_uranus_bigtts
   voice_pitch: -1
   voice_speed: 1.05
+  bgm_pool:
+  - freepd-hidden-truth
+  - freepd-meditating-beat
 channel_id: tech_ai_future_12
-config_version: 6
+config_version: 7
 creative:
   cut_cadence_seconds: 2.3
   palette:

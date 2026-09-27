@@ -1,5 +1,5 @@
 channel_id: lost_civilizations_02
-config_version: 6
+config_version: 7
 niche_id: lost_civilizations
 name: Antike Zivilisationen 02
 tiktok_account_ref: null
@@ -34,6 +34,9 @@ audio:
   music_family: lost_civilizations_editorial
   soundscape_id: mystery
   sfx_density: medium
+  bgm_pool:
+  - freepd-satin-danger
+  - freepd-video-game-blockbuster
 publishing:
   language: de
   default_schedule_window: 19:30-20:30

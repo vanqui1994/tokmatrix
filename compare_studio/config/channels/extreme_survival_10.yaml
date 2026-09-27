@@ -1,5 +1,5 @@
 channel_id: extreme_survival_10
-config_version: 8
+config_version: 9
 niche_id: extreme_survival
 name: Survival & Disaster 10
 tiktok_account_ref: null
@@ -71,6 +71,9 @@ audio:
   music_family: extreme_survival_editorial
   soundscape_id: survival
   sfx_density: medium
+  bgm_pool:
+  - freepd-heroic-adventure
+  - freepd-horror-suspense
 publishing:
   language: en
   default_schedule_window: 19:30-20:30

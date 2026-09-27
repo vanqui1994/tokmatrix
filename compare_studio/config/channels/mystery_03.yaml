@@ -1,5 +1,5 @@
 channel_id: mystery_03
-config_version: 5
+config_version: 6
 niche_id: unsolved_mysteries
 name: Strange But Documented
 tiktok_account_ref: null
@@ -38,6 +38,9 @@ audio:
   music_family: curious_dark_ambient
   soundscape_id: vox
   sfx_density: medium
+  bgm_pool:
+  - freepd-ice-and-snow
+  - oga-sirens-in-darkness
 publishing:
   language: vi
   default_schedule_window: 19:30-20:30

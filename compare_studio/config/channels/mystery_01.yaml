@@ -1,5 +1,5 @@
 channel_id: mystery_01
-config_version: 3
+config_version: 4
 niche_id: unsolved_mysteries
 name: The Unsolved File
 tiktok_account_ref: null
@@ -38,6 +38,9 @@ audio:
   music_family: restrained_mystery_pulse
   soundscape_id: mystery
   sfx_density: low
+  bgm_pool:
+  - freepd-mana-two-part-1
+  - oga-november-snow
 publishing:
   language: vi
   default_schedule_window: 19:30-20:30

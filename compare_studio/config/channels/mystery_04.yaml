@@ -1,5 +1,5 @@
 channel_id: mystery_04
-config_version: 5
+config_version: 6
 niche_id: unsolved_mysteries
 name: Dấu Vết Trong Bóng Tối
 tiktok_account_ref: null
@@ -38,6 +38,9 @@ audio:
   music_family: archival_mystery_drone
   soundscape_id: mystery
   sfx_density: low
+  bgm_pool:
+  - freepd-desert-fox-underscore
+  - freepd-think-about-it
 publishing:
   language: vi
   default_schedule_window: 19:30-20:30

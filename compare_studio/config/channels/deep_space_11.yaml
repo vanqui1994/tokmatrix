@@ -5,8 +5,11 @@ audio:
   voice_id: de-DE-ConradNeural
   voice_pitch: -2
   voice_speed: 1.02
+  bgm_pool:
+  - freepd-study-and-relax
+  - oga-fantasy-orchestral-theme
 channel_id: deep_space_11
-config_version: 7
+config_version: 8
 creative:
   cut_cadence_seconds: 2.7
   palette:

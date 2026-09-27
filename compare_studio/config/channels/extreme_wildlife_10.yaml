@@ -1,5 +1,5 @@
 channel_id: extreme_wildlife_10
-config_version: 7
+config_version: 8
 niche_id: extreme_wildlife
 name: Creatures of the Deep 10
 tiktok_account_ref: null
@@ -59,6 +59,9 @@ audio:
   music_family: extreme_wildlife_editorial
   soundscape_id: survival
   sfx_density: medium
+  bgm_pool:
+  - freepd-driving-concern
+  - freepd-lonely-mountain
 publishing:
   language: en
   default_schedule_window: 19:30-20:30

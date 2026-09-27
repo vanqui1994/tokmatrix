@@ -1,5 +1,5 @@
 channel_id: forbidden_experiments_05
-config_version: 9
+config_version: 10
 niche_id: forbidden_experiments
 name: Crazy Experiments 05
 tiktok_account_ref: null
@@ -71,6 +71,9 @@ audio:
   music_family: forbidden_experiments_editorial
   soundscape_id: science
   sfx_density: medium
+  bgm_pool:
+  - freepd-mind-chaos
+  - freepd-release-the-hybrids
 publishing:
   language: en
   default_schedule_window: 19:30-20:30

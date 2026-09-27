@@ -1,5 +1,5 @@
 channel_id: ocean_mysteries_04
-config_version: 7
+config_version: 8
 niche_id: ocean_mysteries
 name: 海と深海海溝 04
 tiktok_account_ref: null
@@ -59,6 +59,9 @@ audio:
   music_family: ocean_mysteries_editorial
   soundscape_id: survival
   sfx_density: medium
+  bgm_pool:
+  - freepd-meditating-beat
+  - freepd-motions
 publishing:
   language: ja
   default_schedule_window: 19:30-20:30

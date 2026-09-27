@@ -5,8 +5,11 @@ audio:
   voice_id: DiT_en_female_jessie
   voice_pitch: -1
   voice_speed: 1.02
+  bgm_pool:
+  - freepd-cornfield-chase
+  - freepd-release-the-hybrids
 channel_id: mega_catastrophes_13
-config_version: 9
+config_version: 10
 creative:
   cut_cadence_seconds: 2.4
   palette:

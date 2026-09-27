@@ -5,8 +5,11 @@ audio:
   voice_id: ICL_en_male_captain
   voice_pitch: -1
   voice_speed: 1.05
+  bgm_pool:
+  - freepd-mothership
+  - freepd-release-the-hybrids
 channel_id: military_arsenal_13
-config_version: 9
+config_version: 10
 creative:
   cut_cadence_seconds: 3.0
   palette:

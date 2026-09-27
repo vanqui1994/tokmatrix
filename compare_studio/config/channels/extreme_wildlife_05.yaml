@@ -1,5 +1,5 @@
 channel_id: extreme_wildlife_05
-config_version: 6
+config_version: 7
 niche_id: extreme_wildlife
 name: Creatures of the Deep 05
 tiktok_account_ref: null
@@ -47,6 +47,9 @@ audio:
   music_family: extreme_wildlife_editorial
   soundscape_id: vox
   sfx_density: medium
+  bgm_pool:
+  - freepd-hidden-truth
+  - freepd-infinite-wonder
 publishing:
   language: en
   default_schedule_window: 19:30-20:30

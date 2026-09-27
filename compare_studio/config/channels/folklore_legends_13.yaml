@@ -5,8 +5,11 @@ audio:
   voice_id: en_female_emotional_moon_bigtts
   voice_pitch: -1
   voice_speed: 0.99
+  bgm_pool:
+  - freepd-behind-enemy-lines
+  - freepd-night-vigil
 channel_id: folklore_legends_13
-config_version: 6
+config_version: 7
 creative:
   cut_cadence_seconds: 2.8
   palette:

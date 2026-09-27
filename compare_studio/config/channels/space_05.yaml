@@ -1,5 +1,5 @@
 channel_id: space_05
-config_version: 9
+config_version: 10
 niche_id: deep_space
 name: Cosmic What If Lab
 tiktok_account_ref: null
@@ -71,6 +71,9 @@ audio:
   music_family: speculative_cosmic_pulse
   soundscape_id: kinetic
   sfx_density: medium
+  bgm_pool:
+  - freepd-big-eyes
+  - oga-underwater-theme
 publishing:
   language: de
   default_schedule_window: 19:30-20:30

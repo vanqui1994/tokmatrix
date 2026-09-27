@@ -1,5 +1,5 @@
 channel_id: military_arsenal_03
-config_version: 8
+config_version: 9
 niche_id: military_arsenal
 name: Weapons & War Machines 03
 tiktok_account_ref: null
@@ -47,6 +47,9 @@ audio:
   music_family: military_arsenal_editorial
   soundscape_id: vox
   sfx_density: medium
+  bgm_pool:
+  - freepd-heroic-adventure
+  - freepd-think-about-it
 publishing:
   language: en
   default_schedule_window: 19:30-20:30

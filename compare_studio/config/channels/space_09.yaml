@@ -1,5 +1,5 @@
 channel_id: space_09
-config_version: 10
+config_version: 11
 niche_id: deep_space
 name: Kosmos & Physik 09
 tiktok_account_ref: null
@@ -71,6 +71,9 @@ audio:
   music_family: deep_space_editorial
   soundscape_id: kinetic
   sfx_density: medium
+  bgm_pool:
+  - freepd-desert-conflict
+  - freepd-driving-concern
 publishing:
   language: de
   default_schedule_window: 19:30-20:30

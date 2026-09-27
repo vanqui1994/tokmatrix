@@ -1,5 +1,5 @@
 channel_id: geopolitics_maps_09
-config_version: 9
+config_version: 10
 niche_id: geopolitics_maps
 name: Geopolitik & Grenzen 09
 tiktok_account_ref: null
@@ -71,6 +71,9 @@ audio:
   music_family: geopolitics_maps_editorial
   soundscape_id: newspaper
   sfx_density: medium
+  bgm_pool:
+  - freepd-inventing-flight
+  - freepd-lonely-mountain
 publishing:
   language: de
   default_schedule_window: 19:30-20:30

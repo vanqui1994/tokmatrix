@@ -5,8 +5,11 @@ audio:
   voice_id: en_us_006
   voice_pitch: -1
   voice_speed: 0.99
+  bgm_pool:
+  - freepd-abstract-anxiety
+  - freepd-release-the-hybrids
 channel_id: extreme_survival_11
-config_version: 9
+config_version: 10
 creative:
   cut_cadence_seconds: 2.3
   palette:

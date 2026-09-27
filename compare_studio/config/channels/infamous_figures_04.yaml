@@ -1,5 +1,5 @@
 channel_id: infamous_figures_04
-config_version: 7
+config_version: 8
 niche_id: infamous_figures
 name: Berüchtigte Gestalten 04
 tiktok_account_ref: null
@@ -47,6 +47,9 @@ audio:
   music_family: infamous_figures_editorial
   soundscape_id: mystery
   sfx_density: medium
+  bgm_pool:
+  - freepd-ice-and-snow
+  - freepd-mothership
 publishing:
   language: de
   default_schedule_window: 19:30-20:30

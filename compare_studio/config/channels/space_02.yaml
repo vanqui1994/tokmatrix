@@ -1,5 +1,5 @@
 channel_id: space_02
-config_version: 6
+config_version: 7
 niche_id: deep_space
 name: Scale Of The Cosmos
 tiktok_account_ref: null
@@ -59,6 +59,9 @@ audio:
   music_family: orbital_ambient
   soundscape_id: science
   sfx_density: low
+  bgm_pool:
+  - freepd-horror-mytery
+  - freepd-inspiration
 publishing:
   language: de
   default_schedule_window: 19:30-20:30

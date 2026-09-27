@@ -1,5 +1,5 @@
 channel_id: economy_empires_02
-config_version: 7
+config_version: 8
 niche_id: economy_empires
 name: Wirtschaft & Märkte 02
 tiktok_account_ref: null
@@ -59,6 +59,9 @@ audio:
   music_family: economy_empires_editorial
   soundscape_id: newspaper
   sfx_density: medium
+  bgm_pool:
+  - freepd-city-sunshine
+  - freepd-drop-point
 publishing:
   language: de
   default_schedule_window: 19:30-20:30

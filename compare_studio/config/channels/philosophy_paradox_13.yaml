@@ -5,8 +5,11 @@ audio:
   voice_id: vi-VN-HoaiMyNeural
   voice_pitch: -1
   voice_speed: 1.02
+  bgm_pool:
+  - freepd-driving-concern
+  - freepd-mothership
 channel_id: philosophy_paradox_13
-config_version: 5
+config_version: 6
 creative:
   cut_cadence_seconds: 2.9
   palette:

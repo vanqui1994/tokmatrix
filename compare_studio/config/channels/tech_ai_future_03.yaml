@@ -1,5 +1,5 @@
 channel_id: tech_ai_future_03
-config_version: 6
+config_version: 7
 niche_id: tech_ai_future
 name: Công Nghệ & Tương Lai AI 03
 tiktok_account_ref: null
@@ -59,6 +59,9 @@ audio:
   music_family: tech_ai_future_editorial
   soundscape_id: science
   sfx_density: medium
+  bgm_pool:
+  - freepd-advertime
+  - freepd-city-sunshine
 publishing:
   language: vi
   default_schedule_window: 19:30-20:30

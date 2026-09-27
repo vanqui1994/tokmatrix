@@ -1,5 +1,5 @@
 channel_id: space_06
-config_version: 8
+config_version: 9
 niche_id: deep_space
 name: Kosmos & Physik 06
 tiktok_account_ref: null
@@ -47,6 +47,9 @@ audio:
   music_family: deep_space_editorial
   soundscape_id: mystery
   sfx_density: medium
+  bgm_pool:
+  - freepd-aquatic-city-vanished
+  - freepd-travelers-notebook
 publishing:
   language: de
   default_schedule_window: 19:30-20:30

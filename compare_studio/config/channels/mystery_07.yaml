@@ -1,5 +1,5 @@
 channel_id: mystery_07
-config_version: 4
+config_version: 5
 niche_id: unsolved_mysteries
 name: Bí Ẩn Chưa Lời Giải 07
 tiktok_account_ref: null
@@ -47,6 +47,9 @@ audio:
   music_family: unsolved_mysteries_editorial
   soundscape_id: mystery
   sfx_density: medium
+  bgm_pool:
+  - freepd-horroriffic
+  - freepd-mysterious-lights
 publishing:
   language: vi
   default_schedule_window: 19:30-20:30

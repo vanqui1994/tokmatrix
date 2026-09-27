@@ -5,8 +5,11 @@ audio:
   voice_id: BV510_streaming
   voice_pitch: -1
   voice_speed: 0.99
+  bgm_pool:
+  - freepd-night-attack
+  - freepd-video-game-blockbuster
 channel_id: extreme_wildlife_13
-config_version: 8
+config_version: 9
 creative:
   cut_cadence_seconds: 2.7
   palette:

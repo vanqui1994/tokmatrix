@@ -5,8 +5,11 @@ audio:
   voice_id: DiT_de_female_qingsong
   voice_pitch: -1
   voice_speed: 0.99
+  bgm_pool:
+  - freepd-arpent
+  - oga-sirens-in-darkness
 channel_id: ancient_mythology_12
-config_version: 8
+config_version: 9
 creative:
   cut_cadence_seconds: 2.9
   palette:

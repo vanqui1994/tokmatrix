@@ -5,8 +5,11 @@ audio:
   voice_id: de-DE-KillianNeural
   voice_pitch: -1
   voice_speed: 1.05
+  bgm_pool:
+  - freepd-evil-incoming
+  - freepd-guerilla-tactics
 channel_id: forbidden_experiments_12
-config_version: 7
+config_version: 8
 creative:
   cut_cadence_seconds: 2.8
   palette:

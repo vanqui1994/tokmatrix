@@ -1,5 +1,5 @@
 channel_id: ancient_mythology_09
-config_version: 7
+config_version: 8
 niche_id: ancient_mythology
 name: Antike Mythen 09
 tiktok_account_ref: null
@@ -59,6 +59,9 @@ audio:
   music_family: ancient_mythology_editorial
   soundscape_id: kinetic
   sfx_density: medium
+  bgm_pool:
+  - freepd-lonely-mountain
+  - freepd-satin-danger
 publishing:
   language: de
   default_schedule_window: 19:30-20:30

@@ -1,5 +1,5 @@
 channel_id: forbidden_experiments_09
-config_version: 8
+config_version: 9
 niche_id: forbidden_experiments
 name: Verrückte Experimente 09
 tiktok_account_ref: null
@@ -59,6 +59,9 @@ audio:
   music_family: forbidden_experiments_editorial
   soundscape_id: newspaper
   sfx_density: medium
+  bgm_pool:
+  - freepd-desert-fox-underscore
+  - freepd-hidden-truth
 publishing:
   language: de
   default_schedule_window: 19:30-20:30

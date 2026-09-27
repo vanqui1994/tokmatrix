@@ -1,5 +1,5 @@
 channel_id: extreme_wildlife_08
-config_version: 8
+config_version: 9
 niche_id: extreme_wildlife
 name: Creatures of the Deep 08
 tiktok_account_ref: null
@@ -71,6 +71,9 @@ audio:
   music_family: extreme_wildlife_editorial
   soundscape_id: science
   sfx_density: medium
+  bgm_pool:
+  - freepd-ancient-rite
+  - freepd-think-about-it
 publishing:
   language: en
   default_schedule_window: 19:30-20:30

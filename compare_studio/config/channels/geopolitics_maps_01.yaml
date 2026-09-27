@@ -1,5 +1,5 @@
 channel_id: geopolitics_maps_01
-config_version: 6
+config_version: 7
 niche_id: geopolitics_maps
 name: Geopolitik & Grenzen 01
 tiktok_account_ref: null
@@ -47,6 +47,9 @@ audio:
   music_family: geopolitics_maps_editorial
   soundscape_id: science
   sfx_density: medium
+  bgm_pool:
+  - freepd-infinite-wonder
+  - freepd-video-game-blockbuster
 publishing:
   language: de
   default_schedule_window: 19:30-20:30

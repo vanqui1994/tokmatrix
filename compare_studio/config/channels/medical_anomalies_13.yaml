@@ -5,8 +5,11 @@ audio:
   voice_id: de-DE-AmalaNeural
   voice_pitch: 1
   voice_speed: 0.99
+  bgm_pool:
+  - freepd-release-the-hybrids
+  - oga-fantasy-orchestral-theme
 channel_id: medical_anomalies_13
-config_version: 8
+config_version: 9
 creative:
   cut_cadence_seconds: 3.0
   palette:

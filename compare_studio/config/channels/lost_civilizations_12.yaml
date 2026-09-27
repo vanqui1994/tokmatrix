@@ -5,8 +5,11 @@ audio:
   voice_id: de-DE-KillianNeural
   voice_pitch: -1
   voice_speed: 0.99
+  bgm_pool:
+  - freepd-arpent
+  - freepd-inventing-flight
 channel_id: lost_civilizations_12
-config_version: 6
+config_version: 7
 creative:
   cut_cadence_seconds: 2.8
   palette:

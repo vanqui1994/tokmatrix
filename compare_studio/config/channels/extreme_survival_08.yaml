@@ -1,5 +1,5 @@
 channel_id: extreme_survival_08
-config_version: 5
+config_version: 6
 niche_id: extreme_survival
 name: Survival & Disaster 08
 tiktok_account_ref: null
@@ -47,6 +47,9 @@ audio:
   music_family: extreme_survival_editorial
   soundscape_id: science
   sfx_density: medium
+  bgm_pool:
+  - freepd-night-attack
+  - oga-the-rush
 publishing:
   language: en
   default_schedule_window: 19:30-20:30

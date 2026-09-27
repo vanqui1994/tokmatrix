@@ -1,5 +1,5 @@
 channel_id: lost_civilizations_03
-config_version: 7
+config_version: 8
 niche_id: lost_civilizations
 name: Antike Zivilisationen 03
 tiktok_account_ref: null
@@ -47,6 +47,9 @@ audio:
   music_family: lost_civilizations_editorial
   soundscape_id: science
   sfx_density: medium
+  bgm_pool:
+  - freepd-aquatic-city-vanished
+  - oga-sirens-in-darkness
 publishing:
   language: de
   default_schedule_window: 19:30-20:30
