@@ -63,5 +63,12 @@ class AudioSignalTest(unittest.TestCase):
         self.assertAlmostEqual(sum(s.weight for s in signals.SIGNALS.values()), 1.0, places=6)
 
 
+def tearDownModule():
+    # textgeom giữ một trình duyệt Playwright (sync) suốt tiến trình để CLI chạy nhanh; trong bộ test phải đóng lại,
+    # nếu không event loop của nó làm asyncio.run() của test chạy sau (vd test_publisher_modals) hỏng.
+    from bkt_web.creative_similarity import textgeom
+    textgeom.close()
+
+
 if __name__ == "__main__":
     unittest.main()
