@@ -7,5 +7,6 @@ import podium from "./podium.mjs";
 import shelves from "./shelves.mjs";
 import pyramid from "./pyramid.mjs";
 import weaponRack from "./rack.mjs";
+import rankingBoard from "./ranking-board.mjs";
 
-export default [classicRows, pyramid, weaponRack, orbit, podium, shelves, unsolvedCases];
+export default [classicRows, pyramid, weaponRack, orbit, podium, shelves, unsolvedCases, rankingBoard];

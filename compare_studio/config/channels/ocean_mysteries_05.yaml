@@ -1,5 +1,5 @@
 channel_id: ocean_mysteries_05
-config_version: 4
+config_version: 7
 niche_id: ocean_mysteries
 name: 海と深海海溝 05
 tiktok_account_ref: null
@@ -27,8 +27,33 @@ creative:
     primary: '#111318'
     accent: '#D6A84F'
     text: '#F2EEE6'
+  skins:
+    kinetic:
+      variant_id: kinetic/type-poster
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: split_band
+        typography: slab
+        treatment: paper_texture
+        image_motion: push_in
+        transition: slide
+        tone: 6
+        caption: top
+    tierlist:
+      variant_id: tierlist/ranking-board
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: rows_board
+        typography: slab
+        treatment: halftone
+        image_motion: pan_lateral
+        transition: cut
+        tone: 5
+        caption: top
 audio:
-  voice_id: ja-JP-KeitaNeural
+  voice_id: ICL_ja_female_narrator
   voice_speed: 1.02
   voice_pitch: -1
   music_family: ocean_mysteries_editorial

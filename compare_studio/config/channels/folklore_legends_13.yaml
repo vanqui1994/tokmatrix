@@ -2,11 +2,11 @@ audio:
   music_family: folklore_legends_editorial
   sfx_density: medium
   soundscape_id: kinetic
-  voice_id: en-US-AndrewNeural
+  voice_id: en_female_emotional_moon_bigtts
   voice_pitch: -1
   voice_speed: 0.99
 channel_id: folklore_legends_13
-config_version: 4
+config_version: 6
 creative:
   cut_cadence_seconds: 2.8
   palette:
@@ -18,6 +18,19 @@ creative:
   - folklore
   - mystery
   visual_style_id: dark_mystery_v1
+  skins:
+    kinetic:
+      variant_id: kinetic/type-poster
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: center_stack
+        typography: slab
+        treatment: paper_texture
+        image_motion: push_in
+        transition: wipe
+        tone: 2
+        caption: bottom
 name: Folklore & The Unseen 13
 niche_id: folklore_legends
 persona:

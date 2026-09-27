@@ -1,5 +1,5 @@
 channel_id: ancient_mythology_07
-config_version: 4
+config_version: 7
 niche_id: ancient_mythology
 name: Antike Mythen 07
 tiktok_account_ref: null
@@ -27,8 +27,33 @@ creative:
     primary: '#111318'
     accent: '#D6A84F'
     text: '#F2EEE6'
+  skins:
+    kinetic:
+      variant_id: kinetic/type-poster
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: center_stack
+        typography: rounded
+        treatment: vignette_dark
+        image_motion: still_grain
+        transition: shutter
+        tone: 0
+        caption: bottom
+    tierlist:
+      variant_id: tierlist/ranking-board
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: rows_board
+        typography: condensed
+        treatment: halftone
+        image_motion: parallax
+        transition: zoom_through
+        tone: 6
+        caption: top
 audio:
-  voice_id: de-DE-ConradNeural
+  voice_id: DiT_de_female_qingsong
   voice_speed: 1.02
   voice_pitch: -1
   music_family: ancient_mythology_editorial

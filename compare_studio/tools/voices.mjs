@@ -32,10 +32,10 @@ export const COUNTRIES = [
       { id: "multi_male_felipe_uranus_bigtts", name: "Giọng Nam Trầm (CapCut)", provider: "capcut", gender: "male", desc: "CapCut 🎬 · Nam trầm ấm, hồ sơ tài liệu" },
       { id: "multi_female_richgirl_uranus_bigtts", name: "Review Phim (CapCut)", provider: "capcut", gender: "female", desc: "CapCut 🎬 · Nữ review phim TikTok hot" },
       { id: "multi_female_quanweinv_uranus_bigtts", name: "Bản Tin Nữ (CapCut)", provider: "capcut", gender: "female", desc: "CapCut 🎬 · Nữ phát thanh viên tin tức" },
-      { id: "BV074_streaming_dsp", name: "Giọng Bé (CapCut)", provider: "capcut", gender: "female", desc: "CapCut 🎬 · Hoạt hình trẻ em, dễ thương" },
+      { id: "BV074_streaming_dsp", name: "Giọng Bé (CapCut)", provider: "capcut", gender: "female", desc: "CapCut 🎬 · Hoạt hình trẻ em, dễ thương", narration: false },
       { id: "vi_female_huong", name: "Giọng Nữ Phổ Thông (CapCut)", provider: "capcut", gender: "female", desc: "CapCut 🎬 · Nữ phổ thông, rõ ràng" },
-      { id: "BV075_streaming_demon_dsp", name: "Kenny Đại Đế (CapCut)", provider: "capcut", gender: "male", desc: "CapCut 🎬 · Nam hài hước, hiệu ứng biến giọng" },
-      { id: "BV075_streaming_robot_dsp", name: "Robot VN (CapCut)", provider: "capcut", gender: "male", desc: "CapCut 🎬 · Giọng robot công nghệ" },
+      { id: "BV075_streaming_demon_dsp", name: "Kenny Đại Đế (CapCut)", provider: "capcut", gender: "male", desc: "CapCut 🎬 · Nam hài hước, hiệu ứng biến giọng", narration: false },
+      { id: "BV075_streaming_robot_dsp", name: "Robot VN (CapCut)", provider: "capcut", gender: "male", desc: "CapCut 🎬 · Giọng robot công nghệ", narration: false },
     ],
   },
   {
@@ -64,6 +64,7 @@ export const COUNTRIES = [
       { id: "en-GB-ThomasNeural", name: "Thomas (UK)", provider: "edge", gender: "male", desc: "Male · British, calm" },
       { id: "en-GB-LibbyNeural", name: "Libby (UK)", provider: "edge", gender: "female", desc: "Female · British, bright" },
       { id: "en-GB-MaisieNeural", name: "Maisie (UK)", provider: "edge", gender: "female", desc: "Female · British, young" },
+      { id: "en-US-SteffanNeural", name: "Steffan", provider: "edge", gender: "male", desc: "Male · Measured explainer" },
 
       // CapCut Viral Voices
       { id: "BV510_streaming", name: "English Narrator (CapCut)", provider: "capcut", gender: "male", desc: "CapCut 🎬 · Clear explainer & essay" },
@@ -112,9 +113,10 @@ export const COUNTRIES = [
     voices: [
       { id: "ja-JP-KeitaNeural", name: "Keita (啓太)", provider: "edge", gender: "male", desc: "男性 · 明瞭で落ち着いた語り" },
       { id: "ja-JP-NanamiNeural", name: "Nanami (七海)", provider: "edge", gender: "female", desc: "女性 · 明るく親しみやすい" },
-      { id: "ICL_ja_female_zhiyu", name: "Lovely Idol (CapCut)", provider: "capcut", gender: "female", desc: "CapCut 🎬 · 女性, アイドル風・可愛い" },
-      { id: "ICL_jp_male_wutiaowu", name: "クールな青年 (CapCut)", provider: "capcut", gender: "male", desc: "CapCut 🎬 · 男性, アニメ風クール" },
+      { id: "ICL_ja_female_zhiyu", name: "Lovely Idol (CapCut)", provider: "capcut", gender: "female", desc: "CapCut 🎬 · 女性, アイドル風・可愛い", narration: false },
+      { id: "ICL_jp_male_wutiaowu", name: "クールな青年 (CapCut)", provider: "capcut", gender: "male", desc: "CapCut 🎬 · 男性, アニメ風クール", narration: false },
       { id: "ICL_ja_male_xinggan", name: "Xinggan (CapCut)", provider: "capcut", gender: "male", desc: "CapCut 🎬 · 男性, 低音ドキュメンタリー" },
+      { id: "ICL_ja_female_narrator", name: "Narrator (CapCut)", provider: "capcut", gender: "female", desc: "CapCut 🎬 · 女性, ナレーション" },
     ],
   },
   {

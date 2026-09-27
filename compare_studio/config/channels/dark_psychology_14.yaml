@@ -2,11 +2,11 @@ audio:
   music_family: dark_psychology_editorial
   sfx_density: medium
   soundscape_id: mystery
-  voice_id: de-DE-ConradNeural
+  voice_id: DiT_de_female_qingsong
   voice_pitch: -1
   voice_speed: 1.02
 channel_id: dark_psychology_14
-config_version: 5
+config_version: 7
 creative:
   cut_cadence_seconds: 3.0
   palette:
@@ -31,6 +31,18 @@ creative:
         transition: slide
         tone: 8
         caption: middle
+    science:
+      variant_id: science/explainer-board
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: lab_notebook
+        typography: serif
+        treatment: halftone
+        image_motion: pan_lateral
+        transition: wipe
+        tone: 5
+        caption: top
 name: Psychologie & Verhalten 14
 niche_id: dark_psychology
 persona:

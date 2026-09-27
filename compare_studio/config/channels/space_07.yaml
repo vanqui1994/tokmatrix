@@ -1,5 +1,5 @@
 channel_id: space_07
-config_version: 4
+config_version: 7
 niche_id: deep_space
 name: Kosmos & Physik 07
 tiktok_account_ref: null
@@ -27,8 +27,33 @@ creative:
     primary: '#0B0C10'
     accent: '#66FCF1'
     text: '#C5C6C7'
+  skins:
+    kinetic:
+      variant_id: kinetic/type-poster
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: tilted_board
+        typography: grotesk
+        treatment: paper_texture
+        image_motion: pan_lateral
+        transition: shutter
+        tone: 0
+        caption: bottom
+    science:
+      variant_id: science/explainer-board
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: hud_panel
+        typography: mono
+        treatment: vignette_dark
+        image_motion: still_grain
+        transition: cut
+        tone: 3
+        caption: bottom
 audio:
-  voice_id: de-DE-ConradNeural
+  voice_id: de-DE-AmalaNeural
   voice_speed: 1.02
   voice_pitch: -1
   music_family: deep_space_editorial

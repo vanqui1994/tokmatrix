@@ -1,5 +1,5 @@
 channel_id: medical_anomalies_07
-config_version: 4
+config_version: 7
 niche_id: medical_anomalies
 name: Medizin & Biologische Rätsel 07
 tiktok_account_ref: null
@@ -27,8 +27,33 @@ creative:
     primary: '#111318'
     accent: '#D6A84F'
     text: '#F2EEE6'
+  skins:
+    science:
+      variant_id: science/explainer-board
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: lab_notebook
+        typography: rounded
+        treatment: paper_texture
+        image_motion: still_grain
+        transition: shutter
+        tone: 7
+        caption: bottom
+    tierlist:
+      variant_id: tierlist/ranking-board
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: showcase_top
+        typography: grotesk
+        treatment: clean
+        image_motion: ken_burns_slow
+        transition: shutter
+        tone: 3
+        caption: middle
 audio:
-  voice_id: de-DE-ConradNeural
+  voice_id: DiT_de_male_koubo
   voice_speed: 1.02
   voice_pitch: -1
   music_family: medical_anomalies_editorial

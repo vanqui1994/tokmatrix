@@ -1,5 +1,5 @@
 channel_id: military_arsenal_08
-config_version: 4
+config_version: 7
 niche_id: military_arsenal
 name: Weapons & War Machines 08
 tiktok_account_ref: null
@@ -27,8 +27,21 @@ creative:
     primary: '#111318'
     accent: '#D6A84F'
     text: '#F2EEE6'
+  skins:
+    tierlist:
+      variant_id: tierlist/ranking-board
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: rows_board
+        typography: condensed
+        treatment: halftone
+        image_motion: parallax
+        transition: slide
+        tone: 7
+        caption: middle
 audio:
-  voice_id: en-US-AndrewNeural
+  voice_id: en-US-SteveNeural
   voice_speed: 1.02
   voice_pitch: -1
   music_family: military_arsenal_editorial

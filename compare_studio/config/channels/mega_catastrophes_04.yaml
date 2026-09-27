@@ -1,5 +1,5 @@
 channel_id: mega_catastrophes_04
-config_version: 4
+config_version: 6
 niche_id: mega_catastrophes
 name: Earth's Great Disasters 04
 tiktok_account_ref: null
@@ -27,8 +27,21 @@ creative:
     primary: '#111318'
     accent: '#D6A84F'
     text: '#F2EEE6'
+  skins:
+    kinetic:
+      variant_id: kinetic/type-poster
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: split_band
+        typography: slab
+        treatment: clean
+        image_motion: push_in
+        transition: zoom_through
+        tone: 3
+        caption: bottom
 audio:
-  voice_id: en-US-AndrewNeural
+  voice_id: en_female_janeamber_mars_bigtts
   voice_speed: 1.02
   voice_pitch: -1
   music_family: mega_catastrophes_editorial

@@ -1,5 +1,5 @@
 channel_id: ancient_mythology_06
-config_version: 4
+config_version: 6
 niche_id: ancient_mythology
 name: Antike Mythen 06
 tiktok_account_ref: null
@@ -27,8 +27,21 @@ creative:
     primary: '#111318'
     accent: '#D6A84F'
     text: '#F2EEE6'
+  skins:
+    tierlist:
+      variant_id: tierlist/ranking-board
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: pyramid
+        typography: grotesk
+        treatment: vignette_dark
+        image_motion: ken_burns_slow
+        transition: cut
+        tone: 2
+        caption: middle
 audio:
-  voice_id: de-DE-ConradNeural
+  voice_id: de-DE-KillianNeural
   voice_speed: 1.02
   voice_pitch: -1
   music_family: ancient_mythology_editorial

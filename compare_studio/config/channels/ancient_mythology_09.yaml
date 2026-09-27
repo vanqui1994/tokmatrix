@@ -1,5 +1,5 @@
 channel_id: ancient_mythology_09
-config_version: 5
+config_version: 7
 niche_id: ancient_mythology
 name: Antike Mythen 09
 tiktok_account_ref: null
@@ -40,8 +40,20 @@ creative:
         transition: page_turn
         tone: 3
         caption: top
+    kinetic:
+      variant_id: kinetic/type-poster
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: split_band
+        typography: rounded
+        treatment: vignette_dark
+        image_motion: pan_lateral
+        transition: cut
+        tone: 8
+        caption: top
 audio:
-  voice_id: de-DE-ConradNeural
+  voice_id: de-DE-KatjaNeural
   voice_speed: 1.02
   voice_pitch: -1
   music_family: ancient_mythology_editorial

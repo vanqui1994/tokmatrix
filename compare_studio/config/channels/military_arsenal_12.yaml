@@ -2,11 +2,11 @@ audio:
   music_family: military_arsenal_editorial
   sfx_density: medium
   soundscape_id: science
-  voice_id: en-US-AndrewNeural
+  voice_id: en-GB-LibbyNeural
   voice_pitch: -1
   voice_speed: 1.04
 channel_id: military_arsenal_12
-config_version: 5
+config_version: 8
 creative:
   cut_cadence_seconds: 2.5
   palette:
@@ -30,6 +30,18 @@ creative:
         image_motion: ken_burns_slow
         transition: cut
         tone: 3
+        caption: middle
+    tierlist:
+      variant_id: tierlist/ranking-board
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: rows_board
+        typography: slab
+        treatment: clean
+        image_motion: parallax
+        transition: cut
+        tone: 5
         caption: middle
 name: Weapons & War Machines 12
 niche_id: military_arsenal

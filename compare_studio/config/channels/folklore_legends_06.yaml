@@ -1,5 +1,5 @@
 channel_id: folklore_legends_06
-config_version: 4
+config_version: 6
 niche_id: folklore_legends
 name: Folklore & The Unseen 06
 tiktok_account_ref: null
@@ -27,8 +27,21 @@ creative:
     primary: '#111318'
     accent: '#D6A84F'
     text: '#F2EEE6'
+  skins:
+    tierlist:
+      variant_id: tierlist/ranking-board
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: rows_board
+        typography: condensed
+        treatment: halftone
+        image_motion: push_in
+        transition: shutter
+        tone: 0
+        caption: bottom
 audio:
-  voice_id: en-US-AndrewNeural
+  voice_id: en_female_janeamber_mars_bigtts
   voice_speed: 1.02
   voice_pitch: -1
   music_family: folklore_legends_editorial

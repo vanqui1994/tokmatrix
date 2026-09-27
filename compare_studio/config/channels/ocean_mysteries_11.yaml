@@ -2,11 +2,11 @@ audio:
   music_family: ocean_mysteries_editorial
   sfx_density: medium
   soundscape_id: mystery
-  voice_id: ko-KR-InJoonNeural
+  voice_id: ko-KR-SunHiNeural
   voice_pitch: -1
   voice_speed: 1.02
 channel_id: ocean_mysteries_11
-config_version: 4
+config_version: 6
 creative:
   cut_cadence_seconds: 2.6
   palette:
@@ -18,6 +18,19 @@ creative:
   - tierlist
   - mystery
   visual_style_id: dark_mystery_v1
+  skins:
+    tierlist:
+      variant_id: tierlist/ranking-board
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: rows_board
+        typography: condensed
+        treatment: duotone
+        image_motion: push_in
+        transition: zoom_through
+        tone: 3
+        caption: bottom
 name: 바다와 심해 해구 11
 niche_id: ocean_mysteries
 persona:

@@ -2,11 +2,11 @@ audio:
   music_family: dark_psychology_editorial
   sfx_density: medium
   soundscape_id: mystery
-  voice_id: de-DE-ConradNeural
+  voice_id: DiT_de_male_koubo
   voice_pitch: -1
   voice_speed: 1.03
 channel_id: dark_psychology_13
-config_version: 5
+config_version: 7
 creative:
   cut_cadence_seconds: 3.0
   palette:
@@ -30,6 +30,18 @@ creative:
         image_motion: parallax
         transition: page_turn
         tone: 3
+        caption: bottom
+    science:
+      variant_id: science/explainer-board
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: whiteboard
+        typography: rounded
+        treatment: film_grain
+        image_motion: still_grain
+        transition: cut
+        tone: 4
         caption: bottom
 name: Psychologie & Verhalten 13
 niche_id: dark_psychology

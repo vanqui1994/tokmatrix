@@ -1,5 +1,5 @@
 channel_id: infamous_figures_05
-config_version: 4
+config_version: 6
 niche_id: infamous_figures
 name: Berüchtigte Gestalten 05
 tiktok_account_ref: null
@@ -27,8 +27,21 @@ creative:
     primary: '#111318'
     accent: '#D6A84F'
     text: '#F2EEE6'
+  skins:
+    kinetic:
+      variant_id: kinetic/type-poster
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: tilted_board
+        typography: rounded
+        treatment: vignette_dark
+        image_motion: still_grain
+        transition: zoom_through
+        tone: 1
+        caption: top
 audio:
-  voice_id: de-DE-ConradNeural
+  voice_id: de-DE-SeraphinaMultilingualNeural
   voice_speed: 1.02
   voice_pitch: -1
   music_family: infamous_figures_editorial

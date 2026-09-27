@@ -1,5 +1,5 @@
 channel_id: lost_civilizations_07
-config_version: 5
+config_version: 6
 niche_id: lost_civilizations
 name: Antike Zivilisationen 07
 tiktok_account_ref: null
@@ -41,7 +41,7 @@ creative:
         tone: 8
         caption: bottom
 audio:
-  voice_id: de-DE-ConradNeural
+  voice_id: de-DE-KatjaNeural
   voice_speed: 1.02
   voice_pitch: -1
   music_family: lost_civilizations_editorial

@@ -2,11 +2,11 @@ audio:
   music_family: mega_catastrophes_editorial
   sfx_density: medium
   soundscape_id: science
-  voice_id: en-US-AndrewNeural
+  voice_id: en-US-GuyNeural
   voice_pitch: -1
   voice_speed: 1.02
 channel_id: mega_catastrophes_12
-config_version: 5
+config_version: 8
 creative:
   cut_cadence_seconds: 2.8
   palette:
@@ -31,6 +31,30 @@ creative:
         transition: page_turn
         tone: 7
         caption: bottom
+    kinetic:
+      variant_id: kinetic/type-poster
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: split_band
+        typography: slab
+        treatment: halftone
+        image_motion: pan_lateral
+        transition: wipe
+        tone: 4
+        caption: bottom
+    science:
+      variant_id: science/explainer-board
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: hud_panel
+        typography: mono
+        treatment: halftone
+        image_motion: pan_lateral
+        transition: zoom_through
+        tone: 4
+        caption: top
 name: Earth's Great Disasters 12
 niche_id: mega_catastrophes
 persona:

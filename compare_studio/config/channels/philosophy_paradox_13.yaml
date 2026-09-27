@@ -2,11 +2,11 @@ audio:
   music_family: philosophy_paradox_editorial
   sfx_density: medium
   soundscape_id: science
-  voice_id: vi-VN-NamMinhNeural
+  voice_id: vi-VN-HoaiMyNeural
   voice_pitch: -1
   voice_speed: 1.02
 channel_id: philosophy_paradox_13
-config_version: 2
+config_version: 5
 creative:
   cut_cadence_seconds: 2.9
   palette:
@@ -18,6 +18,31 @@ creative:
   - tierlist
   - mystery
   visual_style_id: dark_mystery_v1
+  skins:
+    science:
+      variant_id: science/explainer-board
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: whiteboard
+        typography: mono
+        treatment: halftone
+        image_motion: still_grain
+        transition: wipe
+        tone: 0
+        caption: top
+    tierlist:
+      variant_id: tierlist/ranking-board
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: rows_board
+        typography: slab
+        treatment: duotone
+        image_motion: parallax
+        transition: zoom_through
+        tone: 2
+        caption: middle
 name: Nghịch Lý Triết Học 13
 niche_id: philosophy_paradox
 persona:

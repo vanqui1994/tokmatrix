@@ -1,0 +1,23 @@
+id: kinetic_quick_facts
+engine: kinetic
+format: free
+brief: "One surprising, verifiable fact told in short punchy lines"
+languages: [en, de, ko, ja, vi]
+niches:
+  - ancient_mythology
+  - dark_psychology
+  - deep_space
+  - economy_empires
+  - extreme_survival
+  - extreme_wildlife
+  - folklore_legends
+  - forbidden_experiments
+  - geopolitics_maps
+  - infamous_figures
+  - medical_anomalies
+  - mega_catastrophes
+  - military_arsenal
+  - ocean_mysteries
+  - philosophy_paradox
+  - tech_ai_future
+  - unsolved_mysteries

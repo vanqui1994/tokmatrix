@@ -2,11 +2,11 @@ audio:
   music_family: extreme_survival_editorial
   sfx_density: medium
   soundscape_id: survival
-  voice_id: en-US-AndrewNeural
+  voice_id: en_us_006
   voice_pitch: -1
   voice_speed: 1.03
 channel_id: extreme_survival_11
-config_version: 4
+config_version: 7
 creative:
   cut_cadence_seconds: 2.3
   palette:
@@ -18,6 +18,31 @@ creative:
   - kinetic
   - survival
   visual_style_id: dark_mystery_v1
+  skins:
+    kinetic:
+      variant_id: kinetic/type-poster
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: center_stack
+        typography: condensed
+        treatment: vignette_dark
+        image_motion: still_grain
+        transition: shutter
+        tone: 5
+        caption: middle
+    tierlist:
+      variant_id: tierlist/ranking-board
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: showcase_top
+        typography: slab
+        treatment: duotone
+        image_motion: ken_burns_fast
+        transition: cut
+        tone: 0
+        caption: bottom
 name: Survival & Disaster 11
 niche_id: extreme_survival
 persona:

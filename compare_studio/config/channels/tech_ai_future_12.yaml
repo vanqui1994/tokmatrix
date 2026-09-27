@@ -2,11 +2,11 @@ audio:
   music_family: tech_ai_future_editorial
   sfx_density: medium
   soundscape_id: science
-  voice_id: vi-VN-NamMinhNeural
+  voice_id: vi_female_huong
   voice_pitch: -1
   voice_speed: 1.05
 channel_id: tech_ai_future_12
-config_version: 2
+config_version: 5
 creative:
   cut_cadence_seconds: 2.3
   palette:
@@ -18,6 +18,31 @@ creative:
   - science
   - tierlist
   visual_style_id: dark_mystery_v1
+  skins:
+    science:
+      variant_id: science/explainer-board
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: hud_panel
+        typography: mono
+        treatment: clean
+        image_motion: parallax
+        transition: cut
+        tone: 8
+        caption: top
+    tierlist:
+      variant_id: tierlist/ranking-board
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: showcase_top
+        typography: grotesk
+        treatment: halftone
+        image_motion: ken_burns_fast
+        transition: zoom_through
+        tone: 3
+        caption: top
 name: Công Nghệ & Tương Lai AI 12
 niche_id: tech_ai_future
 persona:

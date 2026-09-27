@@ -2,11 +2,11 @@ audio:
   music_family: folklore_legends_editorial
   sfx_density: medium
   soundscape_id: kinetic
-  voice_id: en-US-AndrewNeural
+  voice_id: en-US-RogerNeural
   voice_pitch: -1
   voice_speed: 1.01
 channel_id: folklore_legends_11
-config_version: 4
+config_version: 6
 creative:
   cut_cadence_seconds: 2.9
   palette:
@@ -18,6 +18,19 @@ creative:
   - mystery
   - kinetic
   visual_style_id: dark_mystery_v1
+  skins:
+    kinetic:
+      variant_id: kinetic/type-poster
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: center_stack
+        typography: grotesk
+        treatment: paper_texture
+        image_motion: parallax
+        transition: shutter
+        tone: 3
+        caption: top
 name: Folklore & The Unseen 11
 niche_id: folklore_legends
 persona:

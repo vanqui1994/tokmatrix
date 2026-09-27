@@ -1,5 +1,5 @@
 channel_id: ancient_mythology_03
-config_version: 5
+config_version: 7
 niche_id: ancient_mythology
 name: Antike Mythen 03
 tiktok_account_ref: null
@@ -40,8 +40,20 @@ creative:
         transition: wipe
         tone: 2
         caption: middle
+    kinetic:
+      variant_id: kinetic/type-poster
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: split_band
+        typography: condensed
+        treatment: paper_texture
+        image_motion: ken_burns_slow
+        transition: zoom_through
+        tone: 4
+        caption: bottom
 audio:
-  voice_id: de-DE-ConradNeural
+  voice_id: de-DE-AmalaNeural
   voice_speed: 1.02
   voice_pitch: -1
   music_family: ancient_mythology_editorial

@@ -1,5 +1,5 @@
 channel_id: economy_empires_06
-config_version: 5
+config_version: 6
 niche_id: economy_empires
 name: Wirtschaft & Märkte 06
 tiktok_account_ref: null
@@ -41,7 +41,7 @@ creative:
         tone: 1
         caption: bottom
 audio:
-  voice_id: de-DE-ConradNeural
+  voice_id: de-DE-KatjaNeural
   voice_speed: 1.02
   voice_pitch: -1
   music_family: economy_empires_editorial

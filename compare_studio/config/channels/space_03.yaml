@@ -1,5 +1,5 @@
 channel_id: space_03
-config_version: 3
+config_version: 6
 niche_id: deep_space
 name: Physics In A Minute
 tiktok_account_ref: null
@@ -27,8 +27,33 @@ creative:
     primary: '#0B0C10'
     accent: '#66FCF1'
     text: '#C5C6C7'
+  skins:
+    kinetic:
+      variant_id: kinetic/type-poster
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: center_stack
+        typography: condensed
+        treatment: vignette_dark
+        image_motion: parallax
+        transition: zoom_through
+        tone: 8
+        caption: bottom
+    science:
+      variant_id: science/explainer-board
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: hud_panel
+        typography: serif
+        treatment: film_grain
+        image_motion: ken_burns_slow
+        transition: wipe
+        tone: 2
+        caption: middle
 audio:
-  voice_id: de-DE-ConradNeural
+  voice_id: DiT_de_male_koubo
   voice_speed: 1.02
   voice_pitch: 0
   music_family: minimal_science_ambient

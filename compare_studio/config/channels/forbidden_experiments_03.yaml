@@ -1,5 +1,5 @@
 channel_id: forbidden_experiments_03
-config_version: 4
+config_version: 7
 niche_id: forbidden_experiments
 name: Crazy Experiments 03
 tiktok_account_ref: null
@@ -27,8 +27,33 @@ creative:
     primary: '#111318'
     accent: '#D6A84F'
     text: '#F2EEE6'
+  skins:
+    science:
+      variant_id: science/explainer-board
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: whiteboard
+        typography: grotesk
+        treatment: film_grain
+        image_motion: still_grain
+        transition: zoom_through
+        tone: 0
+        caption: top
+    tierlist:
+      variant_id: tierlist/ranking-board
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: pyramid
+        typography: grotesk
+        treatment: halftone
+        image_motion: ken_burns_fast
+        transition: shutter
+        tone: 5
+        caption: middle
 audio:
-  voice_id: en-US-AndrewNeural
+  voice_id: en_us_006
   voice_speed: 1.02
   voice_pitch: -1
   music_family: forbidden_experiments_editorial

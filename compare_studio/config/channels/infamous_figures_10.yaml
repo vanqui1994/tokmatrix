@@ -1,5 +1,5 @@
 channel_id: infamous_figures_10
-config_version: 4
+config_version: 5
 niche_id: infamous_figures
 name: Berüchtigte Gestalten 10
 tiktok_account_ref: null
@@ -28,7 +28,7 @@ creative:
     accent: '#D6A84F'
     text: '#F2EEE6'
 audio:
-  voice_id: de-DE-ConradNeural
+  voice_id: DiT_de_female_qingsong
   voice_speed: 1.02
   voice_pitch: -1
   music_family: infamous_figures_editorial

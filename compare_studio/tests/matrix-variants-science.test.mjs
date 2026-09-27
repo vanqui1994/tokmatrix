@@ -8,12 +8,13 @@ import { defaultDna } from "../matrix/render/variants/dna.mjs";
 import { lintVariantHtml } from "../matrix/render/variants/kit/lint.mjs";
 import { resolveCreativeContext } from "../matrix/render/variants/kit/resolve.mjs";
 import { escapeHtml } from "../matrix/render/variants/kit/primitives.mjs";
+import { isSkinVariant } from "./skin-variant-ids.mjs";
 import { salient } from "../matrix/render/variants/kit/textdata.mjs";
 
 const ENGINE = "science";
 const LANGS = ["en", "de", "ja", "ko", "vi"];
 const DURATIONS = [4.6, 3.9, 5.8, 4.4, 5.1, 4.2];
-const variants = listVariants(ENGINE);
+const variants = listVariants(ENGINE).filter((v) => !isSkinVariant(v)); // science/explainer-board: tests/matrix-variants-skins.test.mjs
 
 function build(variant, composition, lang) {
   const sample = variant.sample(lang);

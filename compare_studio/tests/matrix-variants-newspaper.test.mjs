@@ -13,11 +13,12 @@ import { resolveCreativeContext } from "../matrix/render/variants/kit/resolve.mj
 import { escapeHtml } from "../matrix/render/variants/kit/primitives.mjs";
 import { upper } from "../matrix/render/variants/kit/textdata.mjs";
 import { buildPreview } from "../tools/preview-variants.mjs";
+import { isSkinVariant } from "./skin-variant-ids.mjs";
 
 const ENGINE = "newspaper";
 const LANGS = ["en", "de", "ja", "ko", "vi"];
 // newspaper/front-page (bộ da mỗi acc, 3 layout theo caption) có test riêng: tests/matrix-variants-skins.test.mjs.
-const variants = listVariants(ENGINE).filter((v) => v.id !== "newspaper/front-page");
+const variants = listVariants(ENGINE).filter((v) => !isSkinVariant(v));
 // Chữ hiển thị liền (bỏ thẻ và khoảng trắng): tiêu đề có thể bị tách thành mẩu (chữ cắt dán).
 const visibleText = (html) => html.replace(/<script[\s\S]*?<\/script>/gu, "").replace(/<[^>]+>/gu, "").replace(/\s+/gu, "");
 

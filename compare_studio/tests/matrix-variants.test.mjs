@@ -59,8 +59,9 @@ test("registry is valid, has one index per engine, and only the Phase 0 referenc
   assert.ok(registry.warnings.every((w) => w.includes(REF)), registry.warnings.join("\n"));
   const dir = path.resolve("matrix/render/variants");
   for (const engine of ENGINES) assert.ok(fs.existsSync(path.join(dir, engine, "index.mjs")), engine);
-  assert.equal(ENGINES.length, 10);
-  assert.ok(!ENGINES.includes("kinetic"));
+  assert.equal(ENGINES.length, 11);
+  // kinetic chỉ có bộ da mỗi acc (kinetic/type-poster), chưa có base variant V2.
+  assert.deepEqual(listVariants("kinetic").map((v) => v.id), ["kinetic/type-poster"]);
   const ids = listVariants().map((v) => v.id);
   assert.ok(ids.includes(REF));
   assert.equal(new Set(ids).size, ids.length);

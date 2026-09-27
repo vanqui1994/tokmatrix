@@ -15,6 +15,7 @@ import { resolveCreativeContext } from "../matrix/render/variants/kit/resolve.mj
 import { prepareKitAssets } from "../matrix/render/variants/kit/runtime.mjs";
 import { embedFonts } from "../matrix/render/variants/kit/fonts.mjs";
 import { loadChannels } from "./assign-skins.mjs";
+import { extendedEngine } from "../matrix/render/engines/index.mjs";
 
 const COMPARE_DIR = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const DURATIONS = [4.6, 3.9, 5.8, 4.4, 5.1, 4.2];
@@ -84,6 +85,8 @@ export async function buildPreview({ variant, composition, lang, dna, dnaTag, ou
   const fonts = embedFonts({ html: built.html, families: [...creative.fonts.families, ...(built.fontFamilies || [])], targetDir: dir, compareDir: COMPARE_DIR });
   fs.writeFileSync(path.join(dir, "index.html"), fonts.html);
   await prepareKitAssets({ targetDir: dir, compareDir: COMPARE_DIR });
+  // Engine mở rộng (tierlist SFX, survival meme…) chép asset tĩnh như adapter thật.
+  await extendedEngine(variant.engine)?.prepareAssets?.({ targetDir: dir, compareDir: COMPARE_DIR });
   fs.writeFileSync(path.join(dir, "meta.json"), JSON.stringify({ id: slug, name: sample.title, preview: true }, null, 2));
   fs.writeFileSync(path.join(dir, "hyperframes.json"), JSON.stringify({ paths: { assets: "assets" } }, null, 2));
   const o = creative.observability;

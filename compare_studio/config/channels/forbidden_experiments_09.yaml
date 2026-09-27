@@ -1,5 +1,5 @@
 channel_id: forbidden_experiments_09
-config_version: 5
+config_version: 7
 niche_id: forbidden_experiments
 name: Verrückte Experimente 09
 tiktok_account_ref: null
@@ -40,8 +40,20 @@ creative:
         transition: page_turn
         tone: 8
         caption: top
+    science:
+      variant_id: science/explainer-board
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: lab_notebook
+        typography: rounded
+        treatment: film_grain
+        image_motion: ken_burns_slow
+        transition: slide
+        tone: 8
+        caption: top
 audio:
-  voice_id: de-DE-ConradNeural
+  voice_id: de-DE-KatjaNeural
   voice_speed: 1.02
   voice_pitch: -1
   music_family: forbidden_experiments_editorial

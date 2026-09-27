@@ -1,5 +1,5 @@
 channel_id: mega_catastrophes_01
-config_version: 5
+config_version: 7
 niche_id: mega_catastrophes
 name: Naturkatastrophen der Erde 01
 tiktok_account_ref: null
@@ -40,8 +40,20 @@ creative:
         transition: cut
         tone: 5
         caption: top
+    science:
+      variant_id: science/explainer-board
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: whiteboard
+        typography: rounded
+        treatment: vignette_dark
+        image_motion: pan_lateral
+        transition: shutter
+        tone: 5
+        caption: top
 audio:
-  voice_id: de-DE-ConradNeural
+  voice_id: de-DE-KatjaNeural
   voice_speed: 1.02
   voice_pitch: -1
   music_family: mega_catastrophes_editorial

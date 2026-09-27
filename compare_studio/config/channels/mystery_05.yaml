@@ -1,5 +1,5 @@
 channel_id: mystery_05
-config_version: 2
+config_version: 4
 niche_id: unsolved_mysteries
 name: One Clue Later
 tiktok_account_ref: null
@@ -9,17 +9,30 @@ persona:
   target_demographic: Vietnamese viewers aged 18-30 who enjoy puzzle-like explanations
   catchphrase_prefix: "Hãy giữ lại chi tiết này, vì lát nữa nó sẽ đảo ngược mọi thứ:"
 story:
-  preferred_blueprints: [mystery_reveal]
-  preferred_hook_types: [logic_puzzle, hidden_connection]
+  preferred_blueprints: [ mystery_reveal ]
+  preferred_hook_types: [ logic_puzzle, hidden_connection ]
   target_duration_seconds: 48
   pacing_beats: 12
 creative:
-  preferred_engines: [kinetic, vox, mystery]
+  preferred_engines: [ kinetic, vox, mystery ]
   visual_style_id: dark_mystery_v1
   cut_cadence_seconds: 2.2
   palette: { primary: '#111318', accent: '#D6A84F', text: '#F2EEE6' }
+  skins:
+    kinetic:
+      variant_id: kinetic/type-poster
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: center_stack
+        typography: condensed
+        treatment: clean
+        image_motion: ken_burns_slow
+        transition: zoom_through
+        tone: 8
+        caption: top
 audio:
-  voice_id: vi-VN-NamMinhNeural
+  voice_id: multi_female_quanweinv_uranus_bigtts
   voice_speed: 1.1
   voice_pitch: 1
   music_family: investigative_ticking_pulse
@@ -28,4 +41,4 @@ audio:
 publishing:
   language: vi
   default_schedule_window: 19:30-20:30
-  hashtags: [giaima, manhmo, biandocla, onecluelater]
+  hashtags: [ giaima, manhmo, biandocla, onecluelater ]

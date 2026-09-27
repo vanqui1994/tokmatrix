@@ -9,10 +9,11 @@ import { defaultDna } from "../matrix/render/variants/dna.mjs";
 import { lintVariantHtml } from "../matrix/render/variants/kit/lint.mjs";
 import { resolveCreativeContext } from "../matrix/render/variants/kit/resolve.mjs";
 import { escapeHtml } from "../matrix/render/variants/kit/primitives.mjs";
+import { isSkinVariant } from "./skin-variant-ids.mjs";
 
 const LANGS = ["en", "de", "ja", "ko", "vi"];
 const DURATIONS = [4.6, 3.9, 5.8, 4.4, 5.1, 4.2];
-const variants = () => listVariants("tierlist");
+const variants = () => listVariants("tierlist").filter((v) => !isSkinVariant(v)); // tierlist/ranking-board: tests/matrix-variants-skins.test.mjs
 const PREFIX = { "tierlist/classic-rows": "tc", "tierlist/pyramid": "tp", "tierlist/weapon-rack": "tw", "tierlist/orbit": "to", "tierlist/podium": "tq", "tierlist/store-shelves": "th", "tierlist/unsolved-cases": "tu" };
 
 function scenesFor(lines) {

@@ -1,5 +1,5 @@
 channel_id: lost_civilizations_09
-config_version: 4
+config_version: 5
 niche_id: lost_civilizations
 name: Antike Zivilisationen 09
 tiktok_account_ref: null
@@ -28,7 +28,7 @@ creative:
     accent: '#D6A84F'
     text: '#F2EEE6'
 audio:
-  voice_id: de-DE-ConradNeural
+  voice_id: DiT_de_female_qingsong
   voice_speed: 1.02
   voice_pitch: -1
   music_family: lost_civilizations_editorial

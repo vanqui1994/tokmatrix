@@ -3,6 +3,7 @@
 import chalk from "./chalk/index.mjs";
 import compare from "./compare/index.mjs";
 import folklore from "./folklore/index.mjs";
+import kinetic from "./kinetic/index.mjs";
 import mystery from "./mystery/index.mjs";
 import newspaper from "./newspaper/index.mjs";
 import science from "./science/index.mjs";
@@ -13,7 +14,7 @@ import wildlife from "./wildlife/index.mjs";
 import { variantCreativeCapacity } from "./dna.mjs";
 import { validateVariantSet } from "./schema.mjs";
 
-const ALL = Object.freeze([chalk, compare, folklore, mystery, newspaper, science, survival, tierlist, vox, wildlife]
+const ALL = Object.freeze([chalk, compare, folklore, kinetic, mystery, newspaper, science, survival, tierlist, vox, wildlife]
   .flat()
   .sort((a, b) => a.id.localeCompare(b.id)));
 const BY_ID = new Map(ALL.map((variant) => [variant.id, variant]));

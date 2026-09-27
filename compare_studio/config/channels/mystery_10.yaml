@@ -1,5 +1,5 @@
 channel_id: mystery_10
-config_version: 2
+config_version: 5
 niche_id: unsolved_mysteries
 name: Bí Ẩn Chưa Lời Giải 10
 tiktok_account_ref: null
@@ -10,25 +10,50 @@ persona:
   catchphrase_prefix: "Điều đáng chú ý trong câu chuyện này là:"
 story:
   preferred_blueprints:
-    - mystery_reveal
+  - mystery_reveal
   preferred_hook_types:
-    - evidence_hook
-    - paradox_question
+  - evidence_hook
+  - paradox_question
   target_duration_seconds: 52
   pacing_beats: 12
 creative:
   preferred_engines:
-    - kinetic
-    - folklore
-    - tierlist
+  - kinetic
+  - folklore
+  - tierlist
   visual_style_id: dark_mystery_v1
   cut_cadence_seconds: 2.6
   palette:
     primary: "#111318"
     accent: "#D6A84F"
     text: "#F2EEE6"
+  skins:
+    kinetic:
+      variant_id: kinetic/type-poster
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: tilted_board
+        typography: condensed
+        treatment: halftone
+        image_motion: push_in
+        transition: slide
+        tone: 4
+        caption: middle
+    tierlist:
+      variant_id: tierlist/ranking-board
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: pyramid
+        typography: slab
+        treatment: film_grain
+        image_motion: pan_lateral
+        transition: zoom_through
+        tone: 8
+        caption: bottom
 audio:
-  voice_id: vi-VN-NamMinhNeural
+  voice_id: vi_female_huong
   voice_speed: 1.02
   voice_pitch: -1
   music_family: unsolved_mysteries_editorial
@@ -38,6 +63,6 @@ publishing:
   language: vi
   default_schedule_window: 19:30-20:30
   hashtags:
-    - unsolvedmysteries
-    - khampha
-    - facts
+  - unsolvedmysteries
+  - khampha
+  - facts

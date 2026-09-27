@@ -2,11 +2,11 @@ audio:
   music_family: economy_empires_editorial
   sfx_density: medium
   soundscape_id: science
-  voice_id: de-DE-ConradNeural
+  voice_id: de-DE-KillianNeural
   voice_pitch: -1
   voice_speed: 1.02
 channel_id: economy_empires_12
-config_version: 4
+config_version: 6
 creative:
   cut_cadence_seconds: 2.9
   palette:
@@ -18,6 +18,19 @@ creative:
   - chalk
   - kinetic
   visual_style_id: dark_mystery_v1
+  skins:
+    kinetic:
+      variant_id: kinetic/type-poster
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: tilted_board
+        typography: slab
+        treatment: halftone
+        image_motion: ken_burns_slow
+        transition: shutter
+        tone: 7
+        caption: bottom
 name: Wirtschaft & Märkte 12
 niche_id: economy_empires
 persona:

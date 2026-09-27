@@ -3,7 +3,7 @@
 import { CAPTIONS, DNA_AXIS_VALUES } from "./kit/profiles.mjs";
 import { SUPPORTED_LANGS } from "./kit/theme.mjs";
 
-export const ENGINES = Object.freeze(["mystery", "newspaper", "vox", "folklore", "compare", "chalk", "wildlife", "survival", "tierlist", "science"]);
+export const ENGINES = Object.freeze(["mystery", "newspaper", "vox", "folklore", "compare", "chalk", "wildlife", "survival", "tierlist", "science", "kinetic"]);
 export const AXES = Object.freeze(["composition", "textPlacement", "background", "transition", "imageMotion", "typography"]);
 
 // Vocabulary cố định cho từng trục: so sánh chỉ có nghĩa khi hai variant dùng chung từ vựng.

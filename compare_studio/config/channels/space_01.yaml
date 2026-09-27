@@ -1,5 +1,5 @@
 channel_id: space_01
-config_version: 3
+config_version: 6
 niche_id: deep_space
 name: Cosmic Impossible
 tiktok_account_ref: null
@@ -28,8 +28,33 @@ creative:
     primary: '#0B0C10'
     accent: '#66FCF1'
     text: '#C5C6C7'
+  skins:
+    kinetic:
+      variant_id: kinetic/type-poster
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: split_band
+        typography: rounded
+        treatment: film_grain
+        image_motion: pan_lateral
+        transition: wipe
+        tone: 0
+        caption: middle
+    science:
+      variant_id: science/explainer-board
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: hud_panel
+        typography: serif
+        treatment: paper_texture
+        image_motion: pan_lateral
+        transition: slide
+        tone: 3
+        caption: middle
 audio:
-  voice_id: de-DE-ConradNeural
+  voice_id: DiT_de_female_qingsong
   voice_speed: 1.08
   voice_pitch: -1
   music_family: deep_cosmic_drone
