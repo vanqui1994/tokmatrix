@@ -1,5 +1,5 @@
 channel_id: geopolitics_maps_08
-config_version: 5
+config_version: 6
 niche_id: geopolitics_maps
 name: Geopolitik & Grenzen 08
 tiktok_account_ref: null
@@ -40,6 +40,18 @@ creative:
         transition: cut
         tone: 5
         caption: middle
+    kinetic:
+      variant_id: kinetic/type-poster
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: split_band
+        typography: slab
+        treatment: clean
+        image_motion: pan_lateral
+        transition: zoom_through
+        tone: 1
+        caption: bottom
 audio:
   voice_id: de-DE-ConradNeural
   voice_speed: 1.02

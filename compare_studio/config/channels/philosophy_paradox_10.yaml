@@ -1,5 +1,5 @@
 channel_id: philosophy_paradox_10
-config_version: 2
+config_version: 4
 niche_id: philosophy_paradox
 name: Nghịch Lý Triết Học 10
 tiktok_account_ref: null
@@ -10,23 +10,48 @@ persona:
   catchphrase_prefix: "Điều đáng chú ý trong câu chuyện này là:"
 story:
   preferred_blueprints:
-    - mystery_reveal
+  - mystery_reveal
   preferred_hook_types:
-    - evidence_hook
-    - paradox_question
+  - evidence_hook
+  - paradox_question
   target_duration_seconds: 52
   pacing_beats: 12
 creative:
   preferred_engines:
-    - science
-    - tierlist
-    - mystery
+  - science
+  - tierlist
+  - mystery
   visual_style_id: dark_mystery_v1
   cut_cadence_seconds: 2.6
   palette:
     primary: "#111318"
     accent: "#D6A84F"
     text: "#F2EEE6"
+  skins:
+    science:
+      variant_id: science/explainer-board
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: whiteboard
+        typography: rounded
+        treatment: clean
+        image_motion: still_grain
+        transition: cut
+        tone: 4
+        caption: middle
+    tierlist:
+      variant_id: tierlist/ranking-board
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: pyramid
+        typography: rounded
+        treatment: vignette_dark
+        image_motion: ken_burns_fast
+        transition: wipe
+        tone: 3
+        caption: middle
 audio:
   voice_id: vi-VN-NamMinhNeural
   voice_speed: 1.02
@@ -38,6 +63,6 @@ publishing:
   language: vi
   default_schedule_window: 19:30-20:30
   hashtags:
-    - philosophyparadox
-    - khampha
-    - facts
+  - philosophyparadox
+  - khampha
+  - facts

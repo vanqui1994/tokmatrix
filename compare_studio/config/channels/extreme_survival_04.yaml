@@ -1,5 +1,5 @@
 channel_id: extreme_survival_04
-config_version: 4
+config_version: 5
 niche_id: extreme_survival
 name: Überleben & Katastrophen 04
 tiktok_account_ref: null
@@ -27,6 +27,19 @@ creative:
     primary: '#111318'
     accent: '#D6A84F'
     text: '#F2EEE6'
+  skins:
+    science:
+      variant_id: science/explainer-board
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: lab_notebook
+        typography: rounded
+        treatment: vignette_dark
+        image_motion: parallax
+        transition: wipe
+        tone: 2
+        caption: middle
 audio:
   voice_id: de-DE-ConradNeural
   voice_speed: 1.02

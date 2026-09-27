@@ -1,5 +1,5 @@
 channel_id: military_arsenal_10
-config_version: 5
+config_version: 6
 niche_id: military_arsenal
 name: Weapons & War Machines 10
 tiktok_account_ref: null
@@ -40,6 +40,18 @@ creative:
         transition: slide
         tone: 5
         caption: middle
+    tierlist:
+      variant_id: tierlist/ranking-board
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: showcase_top
+        typography: grotesk
+        treatment: film_grain
+        image_motion: pan_lateral
+        transition: zoom_through
+        tone: 8
+        caption: bottom
 audio:
   voice_id: en-US-AndrewNeural
   voice_speed: 1.02

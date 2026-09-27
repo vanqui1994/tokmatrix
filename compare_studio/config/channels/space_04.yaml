@@ -1,13 +1,12 @@
 channel_id: space_04
-config_version: 3
+config_version: 4
 niche_id: deep_space
 name: Beyond The Event Horizon
 tiktok_account_ref: null
 persona:
   tone: cinematic_celestial_narrator
   energy_level: 0.64
-  target_demographic: Vietnamese viewers aged 20-39 interested in black holes and
-    cosmology
+  target_demographic: Vietnamese viewers aged 20-39 interested in black holes and cosmology
   catchphrase_prefix: 'Ở ranh giới này, trực giác của chúng ta bắt đầu thất bại:'
 story:
   preferred_blueprints:
@@ -29,6 +28,19 @@ creative:
     primary: '#0B0C10'
     accent: '#66FCF1'
     text: '#C5C6C7'
+  skins:
+    science:
+      variant_id: science/explainer-board
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: lab_notebook
+        typography: rounded
+        treatment: clean
+        image_motion: still_grain
+        transition: cut
+        tone: 0
+        caption: top
 audio:
   voice_id: de-DE-KatjaNeural
   voice_speed: 1.0

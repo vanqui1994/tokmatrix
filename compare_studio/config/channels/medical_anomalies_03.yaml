@@ -1,5 +1,5 @@
 channel_id: medical_anomalies_03
-config_version: 5
+config_version: 6
 niche_id: medical_anomalies
 name: Medizin & Biologische Rätsel 03
 tiktok_account_ref: null
@@ -40,6 +40,18 @@ creative:
         transition: page_turn
         tone: 5
         caption: bottom
+    kinetic:
+      variant_id: kinetic/type-poster
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: tilted_board
+        typography: condensed
+        treatment: clean
+        image_motion: parallax
+        transition: shutter
+        tone: 0
+        caption: top
 audio:
   voice_id: de-DE-ConradNeural
   voice_speed: 1.02

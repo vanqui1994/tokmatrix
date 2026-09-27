@@ -1,5 +1,5 @@
 channel_id: ancient_mythology_05
-config_version: 5
+config_version: 6
 niche_id: ancient_mythology
 name: Antike Mythen 05
 tiktok_account_ref: null
@@ -40,6 +40,18 @@ creative:
         transition: shutter
         tone: 5
         caption: top
+    tierlist:
+      variant_id: tierlist/ranking-board
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: rows_board
+        typography: rounded
+        treatment: clean
+        image_motion: push_in
+        transition: wipe
+        tone: 5
+        caption: bottom
 audio:
   voice_id: de-DE-ConradNeural
   voice_speed: 1.02

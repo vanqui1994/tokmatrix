@@ -6,7 +6,7 @@ audio:
   voice_pitch: -1
   voice_speed: 1.01
 channel_id: ancient_mythology_11
-config_version: 5
+config_version: 6
 creative:
   cut_cadence_seconds: 2.7
   palette:
@@ -31,6 +31,18 @@ creative:
         transition: page_turn
         tone: 4
         caption: middle
+    tierlist:
+      variant_id: tierlist/ranking-board
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: showcase_top
+        typography: grotesk
+        treatment: halftone
+        image_motion: push_in
+        transition: shutter
+        tone: 4
+        caption: bottom
 name: Antike Mythen 11
 niche_id: ancient_mythology
 persona:

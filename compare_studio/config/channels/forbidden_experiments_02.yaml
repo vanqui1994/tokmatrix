@@ -1,5 +1,5 @@
 channel_id: forbidden_experiments_02
-config_version: 5
+config_version: 6
 niche_id: forbidden_experiments
 name: Crazy Experiments 02
 tiktok_account_ref: null
@@ -39,6 +39,18 @@ creative:
         image_motion: ken_burns_fast
         transition: wipe
         tone: 3
+        caption: bottom
+    science:
+      variant_id: science/explainer-board
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: lab_notebook
+        typography: rounded
+        treatment: paper_texture
+        image_motion: parallax
+        transition: wipe
+        tone: 5
         caption: bottom
 audio:
   voice_id: en-US-AndrewNeural

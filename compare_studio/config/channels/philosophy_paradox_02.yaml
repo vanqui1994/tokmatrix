@@ -1,5 +1,5 @@
 channel_id: philosophy_paradox_02
-config_version: 4
+config_version: 5
 niche_id: philosophy_paradox
 name: 철학의 역설 02
 tiktok_account_ref: null
@@ -27,6 +27,19 @@ creative:
     primary: '#111318'
     accent: '#D6A84F'
     text: '#F2EEE6'
+  skins:
+    science:
+      variant_id: science/explainer-board
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: whiteboard
+        typography: rounded
+        treatment: halftone
+        image_motion: push_in
+        transition: wipe
+        tone: 6
+        caption: middle
 audio:
   voice_id: ko-KR-InJoonNeural
   voice_speed: 1.02

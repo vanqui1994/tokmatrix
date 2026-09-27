@@ -1,5 +1,5 @@
 channel_id: mystery_06
-config_version: 3
+config_version: 4
 niche_id: unsolved_mysteries
 name: Bí Ẩn Chưa Lời Giải 06
 tiktok_account_ref: null
@@ -40,6 +40,18 @@ creative:
         transition: shutter
         tone: 5
         caption: top
+    tierlist:
+      variant_id: tierlist/ranking-board
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: showcase_top
+        typography: rounded
+        treatment: halftone
+        image_motion: ken_burns_slow
+        transition: shutter
+        tone: 7
+        caption: middle
 audio:
   voice_id: vi-VN-NamMinhNeural
   voice_speed: 1.02

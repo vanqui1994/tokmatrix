@@ -6,7 +6,7 @@ audio:
   voice_pitch: -1
   voice_speed: 1.01
 channel_id: ocean_mysteries_13
-config_version: 4
+config_version: 5
 creative:
   cut_cadence_seconds: 2.4
   palette:
@@ -18,6 +18,19 @@ creative:
   - survival
   - tierlist
   visual_style_id: dark_mystery_v1
+  skins:
+    tierlist:
+      variant_id: tierlist/ranking-board
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: pyramid
+        typography: rounded
+        treatment: vignette_dark
+        image_motion: ken_burns_slow
+        transition: shutter
+        tone: 2
+        caption: middle
 name: 바다와 심해 해구 13
 niche_id: ocean_mysteries
 persona:

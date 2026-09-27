@@ -1,5 +1,5 @@
 channel_id: tech_ai_future_03
-config_version: 2
+config_version: 4
 niche_id: tech_ai_future
 name: Công Nghệ & Tương Lai AI 03
 tiktok_account_ref: null
@@ -10,23 +10,48 @@ persona:
   catchphrase_prefix: "Điều đáng chú ý trong câu chuyện này là:"
 story:
   preferred_blueprints:
-    - mystery_reveal
+  - mystery_reveal
   preferred_hook_types:
-    - evidence_hook
-    - paradox_question
+  - evidence_hook
+  - paradox_question
   target_duration_seconds: 54
   pacing_beats: 12
 creative:
   preferred_engines:
-    - science
-    - tierlist
-    - wildlife
+  - science
+  - tierlist
+  - wildlife
   visual_style_id: dark_mystery_v1
   cut_cadence_seconds: 2.4
   palette:
     primary: "#111318"
     accent: "#D6A84F"
     text: "#F2EEE6"
+  skins:
+    science:
+      variant_id: science/explainer-board
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: lab_notebook
+        typography: grotesk
+        treatment: clean
+        image_motion: pan_lateral
+        transition: zoom_through
+        tone: 6
+        caption: middle
+    tierlist:
+      variant_id: tierlist/ranking-board
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: showcase_top
+        typography: rounded
+        treatment: duotone
+        image_motion: pan_lateral
+        transition: cut
+        tone: 4
+        caption: bottom
 audio:
   voice_id: vi-VN-NamMinhNeural
   voice_speed: 1.02
@@ -38,6 +63,6 @@ publishing:
   language: vi
   default_schedule_window: 19:30-20:30
   hashtags:
-    - techaifuture
-    - khampha
-    - facts
+  - techaifuture
+  - khampha
+  - facts

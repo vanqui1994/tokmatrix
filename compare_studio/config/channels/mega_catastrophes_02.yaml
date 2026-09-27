@@ -1,5 +1,5 @@
 channel_id: mega_catastrophes_02
-config_version: 5
+config_version: 7
 niche_id: mega_catastrophes
 name: Naturkatastrophen der Erde 02
 tiktok_account_ref: null
@@ -39,6 +39,30 @@ creative:
         image_motion: parallax
         transition: slide
         tone: 2
+        caption: bottom
+    kinetic:
+      variant_id: kinetic/type-poster
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: center_stack
+        typography: slab
+        treatment: clean
+        image_motion: parallax
+        transition: slide
+        tone: 3
+        caption: bottom
+    science:
+      variant_id: science/explainer-board
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: lab_notebook
+        typography: mono
+        treatment: vignette_dark
+        image_motion: parallax
+        transition: slide
+        tone: 1
         caption: bottom
 audio:
   voice_id: de-DE-ConradNeural

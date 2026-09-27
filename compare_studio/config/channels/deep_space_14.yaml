@@ -6,7 +6,7 @@ audio:
   voice_pitch: -1
   voice_speed: 1.05
 channel_id: deep_space_14
-config_version: 4
+config_version: 5
 creative:
   cut_cadence_seconds: 3.0
   palette:
@@ -18,6 +18,19 @@ creative:
   - mystery
   - tierlist
   visual_style_id: cosmic_space_v1
+  skins:
+    tierlist:
+      variant_id: tierlist/ranking-board
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: pyramid
+        typography: slab
+        treatment: halftone
+        image_motion: ken_burns_slow
+        transition: slide
+        tone: 1
+        caption: bottom
 name: Kosmos & Physik 14
 niche_id: deep_space
 persona:

@@ -6,7 +6,7 @@ audio:
   voice_pitch: -1
   voice_speed: 1.05
 channel_id: military_arsenal_13
-config_version: 5
+config_version: 6
 creative:
   cut_cadence_seconds: 3.0
   palette:
@@ -31,6 +31,18 @@ creative:
         transition: page_turn
         tone: 1
         caption: top
+    tierlist:
+      variant_id: tierlist/ranking-board
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: pyramid
+        typography: grotesk
+        treatment: duotone
+        image_motion: ken_burns_fast
+        transition: wipe
+        tone: 8
+        caption: bottom
 name: Weapons & War Machines 13
 niche_id: military_arsenal
 persona:

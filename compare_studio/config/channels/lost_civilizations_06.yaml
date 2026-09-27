@@ -1,5 +1,5 @@
 channel_id: lost_civilizations_06
-config_version: 5
+config_version: 6
 niche_id: lost_civilizations
 name: Antike Zivilisationen 06
 tiktok_account_ref: null
@@ -40,6 +40,18 @@ creative:
         transition: slide
         tone: 3
         caption: top
+    tierlist:
+      variant_id: tierlist/ranking-board
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: rows_board
+        typography: rounded
+        treatment: film_grain
+        image_motion: parallax
+        transition: cut
+        tone: 2
+        caption: middle
 audio:
   voice_id: de-DE-ConradNeural
   voice_speed: 1.02

@@ -6,7 +6,7 @@ audio:
   voice_pitch: -1
   voice_speed: 1.0
 channel_id: extreme_wildlife_13
-config_version: 4
+config_version: 5
 creative:
   cut_cadence_seconds: 2.7
   palette:
@@ -18,6 +18,19 @@ creative:
   - vox
   - kinetic
   visual_style_id: dark_mystery_v1
+  skins:
+    kinetic:
+      variant_id: kinetic/type-poster
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: center_stack
+        typography: rounded
+        treatment: film_grain
+        image_motion: pan_lateral
+        transition: slide
+        tone: 7
+        caption: bottom
 name: Creatures of the Deep 13
 niche_id: extreme_wildlife
 persona:

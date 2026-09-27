@@ -6,7 +6,7 @@ audio:
   voice_pitch: -1
   voice_speed: 1.01
 channel_id: tech_ai_future_11
-config_version: 2
+config_version: 4
 creative:
   cut_cadence_seconds: 2.3
   palette:
@@ -18,6 +18,31 @@ creative:
   - wildlife
   - science
   visual_style_id: dark_mystery_v1
+  skins:
+    science:
+      variant_id: science/explainer-board
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: lab_notebook
+        typography: rounded
+        treatment: vignette_dark
+        image_motion: ken_burns_slow
+        transition: slide
+        tone: 5
+        caption: middle
+    tierlist:
+      variant_id: tierlist/ranking-board
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: rows_board
+        typography: rounded
+        treatment: halftone
+        image_motion: parallax
+        transition: wipe
+        tone: 8
+        caption: bottom
 name: Công Nghệ & Tương Lai AI 11
 niche_id: tech_ai_future
 persona:

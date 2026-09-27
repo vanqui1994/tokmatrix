@@ -1,5 +1,5 @@
 channel_id: lost_civilizations_05
-config_version: 4
+config_version: 6
 niche_id: lost_civilizations
 name: Antike Zivilisationen 05
 tiktok_account_ref: null
@@ -27,6 +27,31 @@ creative:
     primary: '#111318'
     accent: '#D6A84F'
     text: '#F2EEE6'
+  skins:
+    science:
+      variant_id: science/explainer-board
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: hud_panel
+        typography: mono
+        treatment: vignette_dark
+        image_motion: push_in
+        transition: slide
+        tone: 5
+        caption: middle
+    tierlist:
+      variant_id: tierlist/ranking-board
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: showcase_top
+        typography: grotesk
+        treatment: vignette_dark
+        image_motion: ken_burns_slow
+        transition: slide
+        tone: 8
+        caption: top
 audio:
   voice_id: de-DE-ConradNeural
   voice_speed: 1.02

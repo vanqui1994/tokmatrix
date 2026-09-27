@@ -6,7 +6,7 @@ import path from "node:path";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
 import YAML from "yaml";
-import { getVariant, validateRegistry } from "../matrix/render/variants/index.mjs";
+import { getVariant, listVariants, validateRegistry } from "../matrix/render/variants/index.mjs";
 import { defaultDna } from "../matrix/render/variants/dna.mjs";
 import { lintVariantHtml } from "../matrix/render/variants/kit/lint.mjs";
 import { resolveCreativeContext } from "../matrix/render/variants/kit/resolve.mjs";
@@ -59,6 +59,42 @@ test("newspaper builds clean, deterministic HTML for every layout × caption × 
   }
 });
 
+async function buildSample(variant, lang, dna, slug = "variant-test") {
+  let start = 0.3;
+  const scenes = variant.sample(lang).lines.map((line, i) => {
+    const duration = [4.6, 3.9, 5.2, 4.1, 4.8, 3.7, 4.4, 5.0][i % 8];
+    const scene = { index: i + 1, id: `scene-${i + 1}`, line, start: Number(start.toFixed(2)), duration, imgSrc: `assets/images/scene-${i + 1}.jpg`, voSrc: `assets/vo/act-${i + 1}.mp3` };
+    start += duration + 0.3;
+    return scene;
+  });
+  const totalDuration = Math.ceil(start + 1);
+  const sample = variant.sample(lang);
+  const creative = resolveCreativeContext({ variant, dna, lang, channelId: `test_${lang}`, slug });
+  return variant.renderer.buildHtml({ slug, title: sample.title, lang, totalDuration, extras: sample.extras || null, cinemaAudioHtml: "", sfxCues: [], bgmSegments: [], common: { lang }, scenes, creative });
+}
+
+test("every active variant builds clean, deterministic HTML for every layout × caption × country", async () => {
+  const active = listVariants().filter((variant) => variant.status === "active");
+  assert.ok(active.length >= 4);
+  for (const variant of active) {
+    assert.equal(Object.keys(variant.visualProfile.compositions).length, 3, `${variant.id} needs 3 layouts`);
+    for (const lang of variant.compatibility.countries) {
+      for (const composition of Object.keys(variant.visualProfile.compositions)) {
+        for (const caption of variant.visualProfile.allowed.caption) {
+          const dna = { ...defaultDna(variant, composition), caption };
+          const label = `${variant.id} ${lang}/${composition}/${caption}`;
+          const first = await buildSample(variant, lang, dna);
+          const second = await buildSample(variant, lang, dna);
+          assert.equal(first.html, second.html, `${label} is not deterministic`);
+          assert.deepEqual(lintVariantHtml(first.html), [], label);
+          assert.equal(first.cfg.composition, composition, label);
+          assert.equal(first.cfg.caption, caption, label);
+        }
+      }
+    }
+  }
+});
+
 test("country theme changes the masthead font and motif, not the layout", async () => {
   const dna = defaultDna(NEWSPAPER, "front_page");
   const de = (await buildNewspaper("de", dna)).html;
@@ -97,11 +133,14 @@ test("skin rule flags pairs that share layout and colour", () => {
   assert.equal(skinViolations([{ channel_id: "a", country: "de", dna: a }, { channel_id: "b", country: "en", dna: b }]).length, 0);
 });
 
-test("every channel config that uses newspaper already has a valid skin", () => {
+test("every channel config already has a valid skin for each active variant's engine", () => {
   const plan = planSkins({ dir: CHANNEL_DIR, variantId: NEWSPAPER.id });
   assert.ok(plan.rows.length >= 80);
-  assert.deepEqual(plan.rows.filter((row) => row.status !== "kept").map((row) => row.channel_id), []);
-  assert.deepEqual(plan.violations, []);
+  for (const variant of listVariants().filter((v) => v.status === "active")) {
+    const rows = planSkins({ dir: CHANNEL_DIR, variantId: variant.id });
+    assert.deepEqual(rows.rows.filter((row) => row.status !== "kept").map((row) => row.channel_id), [], variant.id);
+    assert.deepEqual(rows.violations, [], variant.id);
+  }
 });
 
 test("render adapter uses the channel's skin for that engine only", () => {

@@ -1,5 +1,5 @@
 channel_id: extreme_wildlife_02
-config_version: 4
+config_version: 6
 niche_id: extreme_wildlife
 name: Creatures of the Deep 02
 tiktok_account_ref: null
@@ -27,6 +27,31 @@ creative:
     primary: '#111318'
     accent: '#D6A84F'
     text: '#F2EEE6'
+  skins:
+    science:
+      variant_id: science/explainer-board
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: whiteboard
+        typography: rounded
+        treatment: halftone
+        image_motion: ken_burns_slow
+        transition: shutter
+        tone: 2
+        caption: top
+    tierlist:
+      variant_id: tierlist/ranking-board
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: showcase_top
+        typography: grotesk
+        treatment: clean
+        image_motion: ken_burns_slow
+        transition: shutter
+        tone: 3
+        caption: bottom
 audio:
   voice_id: en-US-AndrewNeural
   voice_speed: 1.02

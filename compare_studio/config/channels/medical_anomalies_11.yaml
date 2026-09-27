@@ -6,7 +6,7 @@ audio:
   voice_pitch: -1
   voice_speed: 1.0
 channel_id: medical_anomalies_11
-config_version: 5
+config_version: 6
 creative:
   cut_cadence_seconds: 2.6
   palette:
@@ -31,6 +31,18 @@ creative:
         transition: page_turn
         tone: 0
         caption: bottom
+    kinetic:
+      variant_id: kinetic/type-poster
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: split_band
+        typography: grotesk
+        treatment: film_grain
+        image_motion: parallax
+        transition: cut
+        tone: 2
+        caption: middle
 name: Medizin & Biologische Rätsel 11
 niche_id: medical_anomalies
 persona:

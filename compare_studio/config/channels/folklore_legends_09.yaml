@@ -1,5 +1,5 @@
 channel_id: folklore_legends_09
-config_version: 5
+config_version: 6
 niche_id: folklore_legends
 name: Folklore & The Unseen 09
 tiktok_account_ref: null
@@ -40,6 +40,18 @@ creative:
         transition: cut
         tone: 2
         caption: middle
+    kinetic:
+      variant_id: kinetic/type-poster
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: tilted_board
+        typography: rounded
+        treatment: vignette_dark
+        image_motion: parallax
+        transition: zoom_through
+        tone: 5
+        caption: bottom
 audio:
   voice_id: en-US-AndrewNeural
   voice_speed: 1.02

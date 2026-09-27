@@ -6,7 +6,7 @@ audio:
   voice_pitch: -1
   voice_speed: 1.05
 channel_id: folklore_legends_12
-config_version: 4
+config_version: 5
 creative:
   cut_cadence_seconds: 2.5
   palette:
@@ -18,6 +18,19 @@ creative:
   - kinetic
   - folklore
   visual_style_id: dark_mystery_v1
+  skins:
+    kinetic:
+      variant_id: kinetic/type-poster
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: tilted_board
+        typography: rounded
+        treatment: halftone
+        image_motion: pan_lateral
+        transition: cut
+        tone: 0
+        caption: middle
 name: Folklore & The Unseen 12
 niche_id: folklore_legends
 persona:

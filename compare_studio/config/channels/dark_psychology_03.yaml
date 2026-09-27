@@ -1,5 +1,5 @@
 channel_id: dark_psychology_03
-config_version: 5
+config_version: 6
 niche_id: dark_psychology
 name: Psychologie & Verhalten 03
 tiktok_account_ref: null
@@ -39,6 +39,18 @@ creative:
         image_motion: ken_burns_fast
         transition: wipe
         tone: 7
+        caption: top
+    science:
+      variant_id: science/explainer-board
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: hud_panel
+        typography: serif
+        treatment: film_grain
+        image_motion: parallax
+        transition: cut
+        tone: 3
         caption: top
 audio:
   voice_id: de-DE-ConradNeural

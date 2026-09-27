@@ -1,5 +1,5 @@
 channel_id: infamous_figures_07
-config_version: 5
+config_version: 6
 niche_id: infamous_figures
 name: Berüchtigte Gestalten 07
 tiktok_account_ref: null
@@ -39,6 +39,18 @@ creative:
         image_motion: ken_burns_fast
         transition: slide
         tone: 6
+        caption: top
+    tierlist:
+      variant_id: tierlist/ranking-board
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: pyramid
+        typography: slab
+        treatment: halftone
+        image_motion: parallax
+        transition: cut
+        tone: 7
         caption: top
 audio:
   voice_id: de-DE-ConradNeural

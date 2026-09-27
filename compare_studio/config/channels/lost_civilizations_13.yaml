@@ -6,7 +6,7 @@ audio:
   voice_pitch: -1
   voice_speed: 1.0
 channel_id: lost_civilizations_13
-config_version: 4
+config_version: 5
 creative:
   cut_cadence_seconds: 2.4
   palette:
@@ -18,6 +18,19 @@ creative:
   - vox
   - science
   visual_style_id: dark_mystery_v1
+  skins:
+    science:
+      variant_id: science/explainer-board
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: lab_notebook
+        typography: grotesk
+        treatment: film_grain
+        image_motion: still_grain
+        transition: zoom_through
+        tone: 2
+        caption: top
 name: Antike Zivilisationen 13
 niche_id: lost_civilizations
 persona:

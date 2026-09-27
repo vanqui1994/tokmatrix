@@ -1,5 +1,5 @@
 channel_id: space_10
-config_version: 4
+config_version: 5
 niche_id: deep_space
 name: Kosmos & Physik 10
 tiktok_account_ref: null
@@ -27,6 +27,19 @@ creative:
     primary: '#0B0C10'
     accent: '#66FCF1'
     text: '#C5C6C7'
+  skins:
+    tierlist:
+      variant_id: tierlist/ranking-board
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: showcase_top
+        typography: condensed
+        treatment: halftone
+        image_motion: pan_lateral
+        transition: cut
+        tone: 6
+        caption: middle
 audio:
   voice_id: de-DE-ConradNeural
   voice_speed: 1.02
