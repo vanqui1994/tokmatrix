@@ -154,9 +154,47 @@ def _candidates(account: Dict[str, Any], variants: Dict[str, Dict[str, Any]], ni
     return [(vid, comp) for _, _, vid, comp in sorted(out)]
 
 
+STRUCTURE_CONFLICTS = CONFIG_DIR / "structure_conflicts.json"
+
+
+def load_conflicts(path: Path = STRUCTURE_CONFLICTS) -> Dict[str, set]:
+    """structural key → các key đo được quá giống nó (python3 -m bkt_web.creative_similarity conflicts). Không có file = rỗng."""
+    graph: Dict[str, set] = {}
+    if not Path(path).exists():
+        return graph
+    for pair in json.loads(Path(path).read_text(encoding="utf-8")).get("pairs", []):
+        graph.setdefault(pair["a"], set()).add(pair["b"])
+        graph.setdefault(pair["b"], set()).add(pair["a"])
+    return graph
+
+
+def _max_matching(accounts: List[Dict[str, Any]], cands: Dict[str, List[Tuple[str, str]]], banned: set) -> Dict[str, Tuple[str, str]]:
+    owner: Dict[Tuple[str, str], str] = {}
+
+    def augment(cid: str, seen: set) -> bool:
+        for cand in cands[cid]:
+            if cand in seen or f"{cand[0]}#{cand[1]}" in banned:
+                continue
+            seen.add(cand)
+            if cand not in owner or augment(owner[cand], seen):
+                owner[cand] = cid
+                return True
+        return False
+
+    # Acc ít lựa chọn nhất ghép trước (niche hẹp), để ghép ổn định và ít phải đảo.
+    for account in sorted(accounts, key=lambda a: (len(cands[a["channel_id"]]), a["channel_id"])):
+        augment(account["channel_id"], set())
+    return {cid: cand for cand, cid in owner.items()}
+
+
 def _match_structural(pending: List[Dict[str, Any]], assigned: List[Dict[str, Any]], variants: Dict[str, Dict[str, Any]],
-                      niche_engines: Dict[str, List[str]]) -> Dict[str, Tuple[str, str]]:
-    """Ghép cặp tối đa acc ↔ structural key theo từng nước; key đã giữ (keep) không được dùng lại."""
+                      niche_engines: Dict[str, List[str]], conflicts: Optional[Dict[str, set]] = None) -> Dict[str, Tuple[str, str]]:
+    """Ghép cặp tối đa acc ↔ structural key theo từng nước; key đã giữ (keep) không được dùng lại.
+
+    ``conflicts``: cặp cấu trúc đo được quá giống. Trong mỗi nước, loại dần cấu trúc có nhiều xung đột nhất (tie: hash)
+    miễn là số acc được ghép không giảm, để hai cấu trúc của một cặp không cùng xuất hiện trong nước. Cặp không tránh được
+    (thiếu cấu trúc) để lại cho plan đánh ``soft:similar``."""
+    conflicts = conflicts or {}
     result: Dict[str, Tuple[str, str]] = {}
     by_country: Dict[str, List[Dict[str, Any]]] = {}
     for account in pending:
@@ -164,28 +202,32 @@ def _match_structural(pending: List[Dict[str, Any]], assigned: List[Dict[str, An
     for country, accounts in by_country.items():
         taken = {r["structural_key"] for r in assigned if r["country"] == country and r["structural_key"]}
         cands = {a["channel_id"]: [c for c in _candidates(a, variants, niche_engines) if f"{c[0]}#{c[1]}" not in taken] for a in accounts}
-        owner: Dict[Tuple[str, str], str] = {}
-
-        def augment(cid: str, seen: set) -> bool:
-            for cand in cands[cid]:
-                if cand in seen:
-                    continue
-                seen.add(cand)
-                if cand not in owner or augment(owner[cand], seen):
-                    owner[cand] = cid
-                    return True
-            return False
-
-        # Acc ít lựa chọn nhất ghép trước (niche hẹp), để ghép ổn định và ít phải đảo.
-        for account in sorted(accounts, key=lambda a: (len(cands[a["channel_id"]]), a["channel_id"])):
-            augment(account["channel_id"], set())
-        for cand, cid in owner.items():
-            result[cid] = cand
+        usable = {f"{c[0]}#{c[1]}" for options in cands.values() for c in options} | taken
+        # Láng giềng của cấu trúc đã giữ bị loại trước (cấu trúc giữ không đổi được).
+        banned = {key for key in usable - taken if conflicts.get(key, set()) & taken}
+        best = _max_matching(accounts, cands, banned)
+        if len(best) < len(_max_matching(accounts, cands, set())):
+            banned, best = set(), _max_matching(accounts, cands, set())
+        tried: set = set()
+        while True:
+            live = usable - banned
+            degree = {key: len(conflicts.get(key, set()) & live) for key in live - taken - tried}
+            degree = {key: d for key, d in degree.items() if d}
+            if not degree:
+                break
+            key = max(degree, key=lambda k: (degree[k], _hash(country, k)))
+            tried.add(key)
+            trial = _max_matching(accounts, cands, banned | {key})
+            if len(trial) == len(best):
+                banned.add(key)
+                best = trial
+        result.update(best)
     return result
 
 
 def plan_assignments(channels: Dict[str, Dict[str, Any]], registry: Dict[str, Any], niche_engines: Dict[str, List[str]],
-                     mapping: Optional[Dict[str, Dict[str, Any]]] = None, only: Optional[Iterable[str]] = None) -> Dict[str, Any]:
+                     mapping: Optional[Dict[str, Dict[str, Any]]] = None, only: Optional[Iterable[str]] = None,
+                     conflicts: Optional[Dict[str, set]] = None) -> Dict[str, Any]:
     """Plan gán DNA (không ghi gì). ``mapping`` None → mọi kênh YAML, nước suy từ publishing.language."""
     variants = {v["id"]: v for v in registry["variants"]}
     axes = registry["axes"]
@@ -240,7 +282,7 @@ def plan_assignments(channels: Dict[str, Dict[str, Any]], registry: Dict[str, An
     # 2) Danh tính cấu trúc: ghép cặp tối đa (Kuhn / augmenting path, = max-flow đơn vị) giữa acc và structural key
     #    CHƯA dùng trong cùng nước. Ứng viên của mỗi acc xếp theo ưu tiên (giữ engine cũ, cân bằng engine theo hash),
     #    nên đường tăng luôn thử lựa chọn tốt trước — không còn "hard:capacity" giả như greedy Phase 0.
-    matched = _match_structural(pending, assigned, variants, niche_engines)
+    matched = _match_structural(pending, assigned, variants, niche_engines, conflicts)
 
     for account in pending:
         cid, country, lang = account["channel_id"], account["country"], account["lang"]
@@ -283,6 +325,11 @@ def plan_assignments(channels: Dict[str, Dict[str, Any]], registry: Dict[str, An
             status = "soft:cross_country"
         add(account, variant, dna, voice, status)
 
+    for r in assigned:  # hai acc cùng nước mang hai cấu trúc đo được quá giống (không tránh được do thiếu cấu trúc)
+        near = (conflicts or {}).get(r["structural_key"] or "", set())
+        if near and r["collision"] != "keep" and not r["collision"].startswith("hard") and any(
+                o["country"] == r["country"] and o["structural_key"] in near for o in assigned):
+            r["collision"] = "soft:similar"
     signatures = [r["signature"] for r in assigned if r["signature"]]
     for r in assigned:  # hai acc cùng signature = cùng cấu hình thị giác — lỗi cứng
         if r["signature"] and signatures.count(r["signature"]) > 1 and not r["collision"].startswith("hard"):
@@ -335,7 +382,7 @@ def canary_plan(plan: Dict[str, Any], cohort: str) -> Dict[str, Any]:
         engines[r["engine"]] = engines.get(r["engine"], 0) + 1
         countries[r["country"]] = countries.get(r["country"], 0) + 1
         pairs.add((r["engine"], r["country"]))
-    rank = {"ok": 0, "soft:voice": 1, "soft:cross_country": 2}
+    rank = {"ok": 0, "soft:voice": 1, "soft:cross_country": 2, "soft:similar": 3}
     while len(picked) < target:
         pool = [r for r in fresh if r not in picked and (cohort != "C1" or (r["engine"], r["country"]) not in pairs)]
         if not pool:
@@ -600,7 +647,8 @@ def main(argv: Optional[List[str]] = None) -> int:
         mapping = load_mapping_db()
     only = [c.strip() for c in args.channels.split(",") if c.strip()] if args.channels else None
     config_dir = Path(args.config_dir) if args.config_dir else CONFIG_DIR
-    plan = plan_assignments(load_channels(config_dir), load_registry(args.include_reference), load_niche_engines(config_dir), mapping, only)
+    plan = plan_assignments(load_channels(config_dir), load_registry(args.include_reference), load_niche_engines(config_dir), mapping, only,
+                            load_conflicts(config_dir / STRUCTURE_CONFLICTS.name))
     if args.cohort:
         plan = canary_plan(plan, args.cohort)
     if args.out:

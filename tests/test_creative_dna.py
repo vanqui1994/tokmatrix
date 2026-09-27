@@ -99,6 +99,42 @@ class CreativeDnaDryRunTest(unittest.TestCase):
         plan = cd.plan_assignments(self.channels, registry, self.niches, None, CHANNELS[:1])
         self.assertEqual(plan["rows"][0]["collision"], "hard:capacity")
 
+    def test_measured_conflicts_keep_similar_structures_out_of_one_country(self):
+        base = cd.plan_assignments(self.channels, self.full_registry, self.niches, None, None)
+        de = sorted(r["structural_key"] for r in base["rows"] if r["country"] == "DE" and r["structural_key"])
+        a, b = de[0], de[1]
+        conflicts = {a: {b}, b: {a}}
+        plan = cd.plan_assignments(self.channels, self.full_registry, self.niches, None, None, conflicts)
+        keys = {r["structural_key"] for r in plan["rows"] if r["country"] == "DE"}
+        self.assertFalse({a, b} <= keys, "two structures measured too similar never share a country")
+        self.assertEqual(sum(1 for r in plan["rows"] if r["variant_id"]), sum(1 for r in base["rows"] if r["variant_id"]))
+        self.assertNotIn("soft:similar", plan["summary"]["by_status"])
+        self.assertEqual(plan, cd.plan_assignments(self.channels, self.full_registry, self.niches, None, None, conflicts))
+
+    def test_unavoidable_conflict_is_reported_as_soft_similar(self):
+        # 1 variant × 2 compositions, 2 DE accounts: both compositions must be used, so the conflict stays visible.
+        only = ["ancient_mythology_01", "ancient_mythology_02"]
+        keys = [f"mystery/reference-dossier#{c}" for c in self.registry["variants"][0]["compositions"]]
+        plan = cd.plan_assignments(
+            self.channels, self.registry, self.niches, None, only, {keys[0]: {keys[1]}, keys[1]: {keys[0]}})
+        self.assertEqual([r["collision"] for r in plan["rows"]], ["soft:similar", "soft:similar"])
+        self.assertTrue(plan["summary"]["applicable"])
+
+    def test_conflict_file_is_built_from_similarity_reports(self):
+        import tempfile
+        from bkt_web.creative_similarity import conflict_pairs
+        row = lambda a, b, score, gate=True: {"a": f"p-{a}", "b": f"p-{b}", "a_structure": a, "b_structure": b, "gate": gate, "composite": score}
+        reports = [{"threshold": 0.62, "rows": [row("x#1", "y#1", 0.7), row("y#1", "x#1", 0.65), row("x#1", "z#1", 0.5),
+                                                 row("x#1", "x#1", 0.9, gate=False)]},
+                   {"threshold": 0.62, "rows": [row("z#1", "y#1", 0.63)]}]
+        pairs = conflict_pairs(reports)
+        self.assertEqual([(p["a"], p["b"], p["max_composite"]) for p in pairs], [("x#1", "y#1", 0.7), ("y#1", "z#1", 0.63)])
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "c.json"
+            path.write_text(json.dumps({"pairs": pairs}))
+            self.assertEqual(cd.load_conflicts(path), {"x#1": {"y#1"}, "y#1": {"x#1", "z#1"}, "z#1": {"y#1"}})
+            self.assertEqual(cd.load_conflicts(Path(tmp) / "missing.json"), {})
+
     def test_apply_needs_the_reviewed_plan_and_its_sha(self):
         self.assertEqual(cd.main(["--apply"]), 2)
 

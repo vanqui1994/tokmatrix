@@ -121,6 +121,24 @@ def stats(values: Iterable[float]) -> Dict[str, float]:
             "p90": pct(0.9), "p95": pct(0.95), "max": round(data[-1], 4)}
 
 
+def structure_key(labels: Dict[str, Any]) -> str:
+    """Danh tính cấu trúc "variant#composition" (= structural_key của Creative DNA)."""
+    return f"{labels['variant']}#{labels['composition']}"
+
+
+def conflict_pairs(reports: Iterable[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    """Cặp cấu trúc có ít nhất một cặp mẫu (cùng nước, khác cấu trúc) ≥ ngưỡng của report. Mỗi cặp một dòng, lấy max."""
+    worst: Dict[Tuple[str, str], Dict[str, Any]] = {}
+    for rep in reports:
+        for row in rep["rows"]:
+            if not row["gate"] or row["composite"] < rep["threshold"] or "a_structure" not in row:
+                continue
+            key = tuple(sorted((row["a_structure"], row["b_structure"])))
+            if key not in worst or row["composite"] > worst[key]["max_composite"]:
+                worst[key] = {"a": key[0], "b": key[1], "max_composite": row["composite"], "example": [row["a"], row["b"]]}
+    return [worst[key] for key in sorted(worst)]
+
+
 def gate_pair(a: Dict[str, Any], b: Dict[str, Any]) -> bool:
     """Cặp phải dưới ngưỡng: hai danh tính cấu trúc KHÁC nhau trong CÙNG một nước (hai acc cùng nước)."""
     return a["country"] == b["country"] and (a["variant"], a["composition"]) != (b["variant"], b["composition"])
@@ -131,7 +149,8 @@ def report(samples: List[Dict[str, Any]], features: Dict[str, Dict[str, Any]], t
     rows = []
     for a, b in combinations(samples, 2):
         scores = compare(features[a["slug"]], features[b["slug"]])
-        rows.append({"a": a["slug"], "b": b["slug"], "cohorts": cohorts(a["labels"], b["labels"]), "gate": gate_pair(a["labels"], b["labels"]), **scores})
+        rows.append({"a": a["slug"], "b": b["slug"], "a_structure": structure_key(a["labels"]), "b_structure": structure_key(b["labels"]),
+                     "cohorts": cohorts(a["labels"], b["labels"]), "gate": gate_pair(a["labels"], b["labels"]), **scores})
     by_cohort: Dict[str, List[float]] = {}
     for row in rows:
         for group in row["cohorts"]:

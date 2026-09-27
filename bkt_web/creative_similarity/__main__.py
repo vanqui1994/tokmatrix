@@ -23,7 +23,7 @@ from typing import Any, Dict, List
 import numpy as np
 from PIL import Image, ImageDraw, ImageFont
 
-from . import connect, diversity_threshold, extract_all, report
+from . import conflict_pairs, connect, diversity_threshold, extract_all, report
 
 ROOT = Path(__file__).resolve().parent.parent.parent
 COMPARE_DIR = ROOT / "compare_studio"
@@ -128,10 +128,22 @@ def main(argv=None) -> int:
     p.add_argument("--work", required=True)
     p.add_argument("--sheet")
     p.add_argument("--threshold", type=float)
+    c = sub.add_parser("conflicts", help="gộp các similarity.json thành danh sách cặp cấu trúc vượt ngưỡng cho gán DNA")
+    c.add_argument("--report", action="append", required=True)
+    c.add_argument("--out", required=True)
     v = sub.add_parser("videos")
     v.add_argument("slugs", nargs="+")
     v.add_argument("--threshold", type=float)
     args = parser.parse_args(argv)
+    if args.cmd == "conflicts":
+        reports = [json.loads(Path(path).read_text(encoding="utf-8")) for path in args.report]
+        pairs = conflict_pairs(reports)
+        out = {"note": "cặp variant#composition có composite ≥ internal diversity threshold trên preview cùng nước; "
+                       "creative_dna không gán hai cấu trúc của một cặp cho hai acc cùng nước",
+               "threshold": min(rep["threshold"] for rep in reports), "pairs": pairs}
+        Path(args.out).write_text(json.dumps(out, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+        print(f"{len(pairs)} conflicting structure pairs → {args.out}")
+        return 0
     conn = connect()
     if args.cmd == "previews":
         work = Path(args.work)
