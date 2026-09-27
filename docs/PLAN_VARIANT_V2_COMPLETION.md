@@ -19,7 +19,7 @@ PR #1 đã merge vào `main` (27/09). Chưa deploy, chưa apply DNA cho kênh n�
 | C1 định dạng pack, C2 seed 132 × 10, C3 `same_subject` chéo pack/niche | ✅ | `topic_packs.fits_format`, `pick_pack_topic(since=…)` |
 | D1 chuỗi fallback, D2 cache ảnh theo acc, D3 Antigravity đứng đầu | ✅ | `asset-manager.mjs`, `account-cache.mjs`, `meta.creative.asset_fallbacks` |
 | H1 `tools/check-previews.mjs` | ✅ | hyperframes 0.7.58 như production |
-| H2 mọi preview qua `hyperframes check` | 🟡 | xem mục 0.1 |
+| H2 mọi preview qua `hyperframes check` | ✅ | 5 ngôn ngữ × 2 DNA, hyperframes 0.7.58; xem mục 0.1 |
 | H3 CI, H4 determinism | ✅ | `.github/workflows/matrix-variants.yml`, `tests/matrix-variants-determinism.test.mjs` |
 | E stock video | 🟡 | `bkt_web/stock_video.py` + ledger chống trùng chéo provider, tắt mặc định (`TOKMATRIX_STOCK_VIDEO`); chuyển variant sang STOCK_VIDEO chờ Q3 + key |
 | F giọng CapCut | 🔒 | container bị proxy chặn CapCut (403); chạy `tools/audition-voices.mjs --apply` trên máy có mạng |
@@ -28,7 +28,7 @@ PR #1 đã merge vào `main` (27/09). Chưa deploy, chưa apply DNA cho kênh n�
 
 ### 0.1 H2: lỗi `hyperframes check`
 
-Mốc: 118/608 preview (de+ja) lỗi. Phần lớn là báo giả của layout/contrast audit do cách kit dựng cảnh, sửa một lần trong kit (KIT 7):
+Mốc: 118/608 preview (de+ja) lỗi. Kết quả: de+ja 608/608, ko/en/vi 966/966 (sau khi kiểm tra lại các variant đã sửa). Phần lớn là báo giả của layout/contrast audit do cách kit dựng cảnh, sửa một lần trong kit (KIT 7):
 clip-path còn sót sau reveal/transition, clip cũ còn hiện đúng khung chuyển cảnh, nhãn giữa header đặt thẳng lên ảnh, tem xoay 8°,
 treatment overlay tràn khỏi khung ảnh, data-fit đo sai bề rộng flex item. Còn lại là lỗi thật từng engine (màu mực theo tone, ô chữ hẹp).
 Chi tiết từng luật trong AGENTS.md (dòng "Variant QA tools").
