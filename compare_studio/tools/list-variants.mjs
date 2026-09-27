@@ -12,6 +12,7 @@ import { fileURLToPath } from "node:url";
 import { listVariants, validateRegistry } from "../matrix/render/variants/index.mjs";
 import { DNA_FIELDS, DNA_VERSION, dnaSignature, variantCreativeCapacity } from "../matrix/render/variants/dna.mjs";
 import { AXES, MIN_AXIS_DIFF_COMPOSITION, MIN_AXIS_DIFF_SAME_ENGINE, effectiveAxes } from "../matrix/render/variants/schema.mjs";
+import { CAPTIONS } from "../matrix/render/variants/kit/profiles.mjs";
 import { COUNTRIES } from "./voices.mjs";
 import { getCapCutCatalog } from "./capcut-tts.mjs";
 
@@ -24,6 +25,7 @@ export function variantsJson({ includeReference = false } = {}) {
     axes: AXES,
     // Trục DNA ghi đè trục hiệu lực (schema.effectiveAxes).
     dna_axis_overrides: { transition: "transition", image_motion: "imageMotion", typography: "typography" },
+    caption_placements: Object.fromEntries(Object.entries(CAPTIONS.items).map(([id, item]) => [id, item.textPlacement])),
     rules: { min_axis_diff_same_engine: MIN_AXIS_DIFF_SAME_ENGINE, min_axis_diff_composition: MIN_AXIS_DIFF_COMPOSITION },
     registry: { errors, warnings },
     variants: variants.map((v) => ({

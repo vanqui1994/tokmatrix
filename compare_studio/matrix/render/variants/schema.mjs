@@ -1,6 +1,6 @@
 // Schema của base variant + luật khác biệt trục (fingerprintAxes) — luật viết thành code để test chặn,
 // không để người làm tự nhớ kiểm bằng mắt. Xem docs/MATRIX_VARIANT_SYSTEM_V2.md mục 6.
-import { DNA_AXIS_VALUES } from "./kit/profiles.mjs";
+import { CAPTIONS, DNA_AXIS_VALUES } from "./kit/profiles.mjs";
 import { SUPPORTED_LANGS } from "./kit/theme.mjs";
 
 export const ENGINES = Object.freeze(["mystery", "newspaper", "vox", "folklore", "compare", "chalk", "wildlife", "survival", "tierlist", "science"]);
@@ -30,9 +30,9 @@ export const ASSET_TYPES = Object.freeze(["IMAGE_AI", "STOCK_VIDEO", "TEXT", "MA
 export const ASSET_SCOPES = Object.freeze(["GLOBAL", "COUNTRY", "VARIANT", "ACCOUNT", "VIDEO", "SCENE"]);
 export const FALLBACKS = Object.freeze(["reuse_account_cache", "stock", "svg", "text", "existing_asset", "fail"]);
 export const STATUSES = Object.freeze(["active", "reference", "draft"]);
-const DNA_ALLOWED_KEYS = Object.freeze(["typography", "treatment", "image_motion", "transition", "tone"]);
+const DNA_ALLOWED_KEYS = Object.freeze(["typography", "treatment", "image_motion", "transition", "tone", "caption"]);
 
-/** Trục hiệu lực = gốc ← composition ghi đè ← lựa chọn DNA (transition / imageMotion / typography). */
+/** Trục hiệu lực = gốc ← composition ghi đè ← lựa chọn DNA (transition / imageMotion / typography / caption→textPlacement). */
 export function effectiveAxes(variant, compositionId, dna) {
   const composition = variant.visualProfile.compositions[compositionId];
   if (!composition) throw new Error(`${variant.id} has no composition ${compositionId}`);
@@ -41,6 +41,8 @@ export function effectiveAxes(variant, compositionId, dna) {
     if (dna.transition) axes.transition = dna.transition;
     if (dna.image_motion) axes.imageMotion = dna.image_motion;
     if (dna.typography) axes.typography = dna.typography;
+    const placement = dna.caption ? CAPTIONS.items[dna.caption]?.textPlacement : null;
+    if (placement) axes.textPlacement = placement;
   }
   return axes;
 }
@@ -112,7 +114,8 @@ export function validateVariant(variant) {
   const allowed = visual?.allowed || {};
   for (const key of DNA_ALLOWED_KEYS) {
     const values = allowed[key];
-    if (!Array.isArray(values) || values.length < 1 || values.length > 6) { errors.push(`${id}: allowed.${key} cần 1–6 giá trị`); continue; }
+    const max = key === "tone" ? DNA_AXIS_VALUES.tone.length : 6;
+    if (!Array.isArray(values) || values.length < 1 || values.length > max) { errors.push(`${id}: allowed.${key} cần 1–${max} giá trị`); continue; }
     for (const value of values) if (!DNA_AXIS_VALUES[key].includes(value)) errors.push(`${id}: allowed.${key} có "${value}" không có trong kit/profiles`);
     if (new Set(values).size !== values.length) errors.push(`${id}: allowed.${key} bị trùng`);
   }

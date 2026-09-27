@@ -40,7 +40,7 @@ AUTOPILOT_DB = ROOT / "bkt_web" / "storage" / "autopilot.db"
 
 # Ngôn ngữ → nước mặc định khi không có mapping acc (202 acc hiện tại: DE, GB, JP, KR).
 LANGUAGE_COUNTRY = {"de": "DE", "en": "GB", "ja": "JP", "ko": "KR", "vi": "VN", "fr": "FR"}
-DNA_CHOICE_AXES = ("typography", "treatment", "image_motion", "transition", "tone")
+DNA_CHOICE_AXES = ("typography", "treatment", "image_motion", "transition", "tone", "caption")
 
 PLAN_COLUMNS = ("ACCOUNT", "COUNTRY", "OLD ENGINE", "OLD NICHE", "NEW ENGINE", "VARIANT", "COMPOSITION",
                 "MOTION", "TYPOGRAPHY", "VOICE", "DNA SIGNATURE", "COLLISION STATUS")
@@ -112,11 +112,16 @@ def load_mapping_db(db_path: Path = AUTOPILOT_DB) -> Dict[str, Dict[str, Any]]:
     return {r[0]: {"niche_id": r[1], "country": (r[2] or "").upper()} for r in rows}
 
 
-def effective_axes(variant: Dict[str, Any], composition: str, dna: Dict[str, Any], overrides: Dict[str, str]) -> Dict[str, Any]:
+def effective_axes(variant: Dict[str, Any], composition: str, dna: Dict[str, Any], overrides: Dict[str, str],
+                   captions: Optional[Dict[str, Optional[str]]] = None) -> Dict[str, Any]:
+    """= effectiveAxes (schema.mjs): gốc ← composition ← DNA; caption đổi textPlacement trừ "fixed" (composition tự đặt)."""
     axes = dict(variant["compositions"][composition]["axes"])
     for dna_key, axis in overrides.items():
         if dna.get(dna_key) is not None:
             axes[axis] = dna[dna_key]
+    placement = (captions or {}).get(dna.get("caption") or "")
+    if placement:
+        axes["textPlacement"] = placement
     return axes
 
 
@@ -232,6 +237,7 @@ def plan_assignments(channels: Dict[str, Dict[str, Any]], registry: Dict[str, An
     variants = {v["id"]: v for v in registry["variants"]}
     axes = registry["axes"]
     overrides = registry["dna_axis_overrides"]
+    captions = registry.get("caption_placements") or {}
     dna_fields = registry["dna_fields"]
     wanted = set(only or [])
 
@@ -256,9 +262,10 @@ def plan_assignments(channels: Dict[str, Dict[str, Any]], registry: Dict[str, An
             "old_niche": account["cfg"].get("niche_id"), "niche": account["niche"],
             "engine": variant["engine"] if variant else None, "variant_id": variant["id"] if variant else None,
             "composition": dna.get("composition") if dna else None, "dna": dna,
-            "axes": effective_axes(variant, dna["composition"], dna, overrides) if variant else None,
+            "axes": effective_axes(variant, dna["composition"], dna, overrides, captions) if variant else None,
             "voice": voice, "voice_fx": pick_voice_fx(variant, account["cfg"]) if variant else None, "structural_key": f"{variant['id']}#{dna['composition']}" if variant else None,
             "signature": dna_signature(dna, variant["id"], account["lang"], dna_fields) if variant else None,
+            "drops_skins": sorted(((account["cfg"].get("creative") or {}).get("skins") or {}).keys()) if variant else [],
             "collision": status,
         }
         assigned.append(row)
@@ -303,7 +310,7 @@ def plan_assignments(channels: Dict[str, Dict[str, Any]], registry: Dict[str, An
         dna = {key: dna[key] for key in dna_fields}
 
         # 4) Voice DNA: không trùng nearest neighbor, ít dùng nhất trong (nước, engine), đúng giới tính của variant.
-        axes_new = effective_axes(variant, comp, dna, overrides)
+        axes_new = effective_axes(variant, comp, dna, overrides, captions)
         nearest = max(same_country, key=lambda r: (len(axes) - axis_distance(axes_new, r["axes"], axes), r["channel_id"]), default=None)
         gender = (variant.get("audio") or {}).get("gender", "any")
         pool = [v for v in voices_by_lang.get(lang, []) if gender == "any" or v["gender"] == gender] or voices_by_lang.get(lang, [])
@@ -487,6 +494,9 @@ def apply_row(cfg: Dict[str, Any], row: Dict[str, Any]) -> Dict[str, Any]:
     creative["preferred_engines"] = [row["engine"]]
     creative["variant_id"] = row["variant_id"]
     creative["dna"] = row["dna"]
+    # Kênh khoá một engine → bộ da (creative.skins, docs/PLAN_compare_per_country.md) không còn dùng; variant_id thắng.
+    # Plan ghi rõ `drops_skins`; --rollback trả lại cả khối creative cũ.
+    creative.pop("skins", None)
     if row.get("voice"):
         new.setdefault("audio", {})["voice_id"] = row["voice"]
     fx = row.get("voice_fx")

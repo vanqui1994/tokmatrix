@@ -178,12 +178,25 @@ export const TONES = Object.freeze({
   items: [
     { hue: 0, light: 0 }, { hue: 14, light: -4 }, { hue: -14, light: 3 },
     { hue: 28, light: -6 }, { hue: -26, light: 5 }, { hue: 180, light: 0 },
+    // 6–8 thêm cho "bộ da" (DE có 54 acc newspaper): chỉ nối thêm, không đổi các tone cũ.
+    { hue: 40, light: -8 }, { hue: -40, light: 6 }, { hue: 200, light: -6 },
   ],
+});
+
+// --- Caption: vị trí khối lời đọc so với ảnh chính (composition quyết định hình học cụ thể). -------------------
+// top = trên ảnh, middle = phủ lên phần dưới ảnh, bottom = dưới ảnh. Ánh xạ sang trục textPlacement của schema.
+// fixed = composition tự đặt chỗ lời đọc (không ghi đè textPlacement): mặc định của variant không khai trục này.
+export const CAPTIONS = Object.freeze({
+  version: 1,
+  items: {
+    top: { textPlacement: "top" }, middle: { textPlacement: "lower_third" }, bottom: { textPlacement: "bottom" },
+    fixed: { textPlacement: null },
+  },
 });
 
 export const PROFILE_VERSIONS = Object.freeze({
   typography: TYPOGRAPHY.version, treatment: TREATMENTS.version, image_motion: IMAGE_MOTION.version,
-  transition: TRANSITIONS.version, tone: TONES.version,
+  transition: TRANSITIONS.version, tone: TONES.version, caption: CAPTIONS.version,
 });
 
 /** Danh sách id hợp lệ cho từng trục DNA. */
@@ -193,6 +206,7 @@ export const DNA_AXIS_VALUES = Object.freeze({
   image_motion: Object.keys(IMAGE_MOTION.items),
   transition: Object.keys(TRANSITIONS.items),
   tone: TONES.items.map((_, index) => index),
+  caption: Object.keys(CAPTIONS.items),
 });
 
 /** Chuỗi JS cho một tween (số đã cố định). */

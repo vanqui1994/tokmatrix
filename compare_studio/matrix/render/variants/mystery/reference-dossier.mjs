@@ -123,6 +123,7 @@ export default {
       image_motion: ["ken_burns_slow", "push_in", "handheld"],
       transition: ["folder_flip", "page_turn", "cut"],
       tone: [0, 1, 2],
+      caption: ["bottom"], // composition tự đặt chỗ lời đọc; variant tham chiếu không đổi theo trục này
     },
     slots: { mascot: false },
   },

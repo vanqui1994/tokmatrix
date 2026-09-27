@@ -37,6 +37,32 @@
         "preferred_engines": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "type": "string", "minLength": 1 } },
         "visual_style_id": { "type": "string", "minLength": 1 },
         "cut_cadence_seconds": { "type": "number", "exclusiveMinimum": 0 },
+        "skins": {
+          "type": "object",
+          "description": "Bộ da cố định theo engine (docs/PLAN_compare_per_country.md). Sinh bằng tools/assign-skins.mjs.",
+          "propertyNames": { "pattern": "^[a-z]+$" },
+          "additionalProperties": {
+            "type": "object", "additionalProperties": false, "required": ["variant_id", "dna"],
+            "properties": {
+              "variant_id": { "type": "string", "pattern": "^[a-z]+/[a-z0-9-]+$" },
+              "dna": {
+                "type": "object", "additionalProperties": false,
+                "required": ["dna_version", "variant_version", "composition", "typography", "treatment", "image_motion", "transition", "tone", "caption"],
+                "properties": {
+                  "dna_version": { "type": "integer", "minimum": 1 },
+                  "variant_version": { "type": "integer", "minimum": 1 },
+                  "composition": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
+                  "typography": { "type": "string", "minLength": 1 },
+                  "treatment": { "type": "string", "minLength": 1 },
+                  "image_motion": { "type": "string", "minLength": 1 },
+                  "transition": { "type": "string", "minLength": 1 },
+                  "tone": { "type": "integer", "minimum": 0 },
+                  "caption": { "type": "string", "minLength": 1 }
+                }
+              }
+            }
+          }
+        },
         "palette": {
           "type": "object", "additionalProperties": false, "required": ["primary", "accent", "text"],
           "properties": {
@@ -48,7 +74,7 @@
         "variant_id": { "type": "string", "pattern": "^[a-z]+/[a-z0-9-]+$" },
         "dna": {
           "type": "object", "additionalProperties": false,
-          "required": ["dna_version", "variant_version", "composition", "typography", "treatment", "image_motion", "transition", "tone"],
+          "required": ["dna_version", "variant_version", "composition", "typography", "treatment", "image_motion", "transition", "tone", "caption"],
           "properties": {
             "dna_version": { "type": "integer", "minimum": 1 },
             "variant_version": { "type": "integer", "minimum": 1 },
@@ -57,7 +83,8 @@
             "treatment": { "type": "string", "minLength": 1 },
             "image_motion": { "type": "string", "minLength": 1 },
             "transition": { "type": "string", "minLength": 1 },
-            "tone": { "type": "integer", "minimum": 0 }
+            "tone": { "type": "integer", "minimum": 0 },
+            "caption": { "type": "string", "minLength": 1 }
           }
         }
       },

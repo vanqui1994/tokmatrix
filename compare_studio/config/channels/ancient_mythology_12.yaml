@@ -6,7 +6,7 @@ audio:
   voice_pitch: -1
   voice_speed: 1.02
 channel_id: ancient_mythology_12
-config_version: 4
+config_version: 5
 creative:
   cut_cadence_seconds: 2.9
   palette:
@@ -18,6 +18,19 @@ creative:
   - newspaper
   - folklore
   visual_style_id: dark_mystery_v1
+  skins:
+    newspaper:
+      variant_id: newspaper/front-page
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: front_page
+        typography: condensed
+        treatment: clean
+        image_motion: pan_lateral
+        transition: shutter
+        tone: 0
+        caption: top
 name: Antike Mythen 12
 niche_id: ancient_mythology
 persona:

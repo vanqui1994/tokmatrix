@@ -9,7 +9,7 @@ import test from "node:test";
 import { buildNativeVideoProject, duplicateMediaIds } from "../matrix/render/native-engine-adapter.mjs";
 import { getVariant, getVariantCreativeCapacity, getVariantsForCountry, listVariants, validateRegistry } from "../matrix/render/variants/index.mjs";
 import { AXES, ENGINES, compareVariantAxes, validateVariant, validateVariantSet } from "../matrix/render/variants/schema.mjs";
-import { DNA_FIELDS, accountSeed, defaultDna, dnaSignature, validateDna } from "../matrix/render/variants/dna.mjs";
+import { DNA_FIELDS, DNA_VERSION, accountSeed, defaultDna, dnaSignature, validateDna } from "../matrix/render/variants/dna.mjs";
 import { lintVariantHtml } from "../matrix/render/variants/kit/lint.mjs";
 import { resolveCreativeContext } from "../matrix/render/variants/kit/resolve.mjs";
 import { countryTheme } from "../matrix/render/variants/kit/theme.mjs";
@@ -119,7 +119,7 @@ test("Creative DNA is deterministic, bounded by the variant and versioned", () =
     assert.notEqual(dnaSignature({ ...dna, [key]: value }, { variantId: variant.id, country: "de" }), sig, key);
   }
   assert.notEqual(dnaSignature(dna, { variantId: variant.id, country: "ja" }), sig);
-  assert.notEqual(dnaSignature({ ...dna, dna_version: 2 }, { variantId: variant.id, country: "de" }), sig);
+  assert.notEqual(dnaSignature({ ...dna, dna_version: DNA_VERSION + 1 }, { variantId: variant.id, country: "de" }), sig);
   assert.equal(accountSeed("ch_1", variant.id), accountSeed("ch_1", variant.id));
   assert.notEqual(accountSeed("ch_1", variant.id), accountSeed("ch_2", variant.id));
 

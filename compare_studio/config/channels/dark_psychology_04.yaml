@@ -1,5 +1,5 @@
 channel_id: dark_psychology_04
-config_version: 4
+config_version: 5
 niche_id: dark_psychology
 name: Psychologie & Verhalten 04
 tiktok_account_ref: null
@@ -27,6 +27,19 @@ creative:
     primary: '#111318'
     accent: '#D6A84F'
     text: '#F2EEE6'
+  skins:
+    newspaper:
+      variant_id: newspaper/front-page
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: magazine_cover
+        typography: condensed
+        treatment: halftone
+        image_motion: ken_burns_slow
+        transition: page_turn
+        tone: 0
+        caption: middle
 audio:
   voice_id: de-DE-ConradNeural
   voice_speed: 1.02

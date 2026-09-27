@@ -840,3 +840,33 @@ HuggingFace hay VPS, nên các bước dưới chạy **trên VPS**, lần lư�
 - Sau mỗi lần đổi layout/kit: build preview (`tools/preview-variants.mjs --langs de,en,vi`), chụp, đo, sinh lại file
   conflicts, chạy lại dry-run. Đo cả DNA "-b": DNA mẫu "-a" một mình không đủ.
 
+
+## 27. Gộp nhánh "bộ da" mỗi acc (docs/PLAN_compare_per_country.md, 2026-09-27)
+
+Nhánh `claude/project-thread-u1zyus` (bộ da newspaper, đã được duyệt) được merge vào PR này. Hai cơ chế cùng tồn tại:
+
+| | `creative.variant_id` + `creative.dna` (V2, mục 11) | `creative.skins.<engine>` (bộ da) |
+|---|---|---|
+| Phạm vi | cả kênh, khoá `preferred_engines = [variant.engine]` | từng engine mà kênh dùng |
+| Gán | `bkt_web/autopilot/creative_dna.py` (max matching, cấu trúc duy nhất mỗi nước, tránh `structure_conflicts.json`) | `tools/assign-skins.mjs` (tham lam, ≥ 4 chiều khác, cùng layout được lặp) |
+| Hiện trạng repo | chưa kênh nào | 80 kênh newspaper (DE 54, EN 20, VI 6) dùng `newspaper/front-page` |
+
+- **Thứ tự:** `native-engine-adapter.channelCreative`: `variant_id` thắng cho engine của nó; các engine khác dùng bộ da; không có gì
+  thì legacy. Validator báo lỗi khi kênh có cả `variant_id` và bộ da cùng engine.
+- **Apply V2 bỏ bộ da:** `apply_row` xoá `creative.skins` (kênh đã khoá một engine nên bộ da engine khác không hợp lệ nữa). Plan ghi
+  `drops_skins`; hiện là 80 dòng. `--rollback` trả lại toàn bộ `creative` cũ. Muốn giữ bộ da cho kênh nào thì loại kênh đó
+  khỏi plan (`--channels`).
+- **Khác biệt đo được:** bộ da cho phép nhiều acc cùng nước dùng chung một layout (3 layout × DNA cho 54 acc DE). Đo ở mục 26:
+  cùng cấu trúc khác DNA có composite trung bình 0.79 (> ngưỡng 0.62), nên bộ da yếu hơn V2 về chống trùng khuôn hình. Đây là
+  lựa chọn của chủ repo; số liệu để cân nhắc khi chọn apply V2 cho các kênh này.
+- **DNA v2:** trục `caption` (`top|middle|bottom|fixed`); `fixed` = composition tự đặt chỗ lời đọc, mặc định của mọi variant
+  không khai trục này (74 variant V2) nên trục hiệu lực của chúng không đổi. `DNA_VERSION` 2; 9 tone.
+- **Font:** giữ font offline của kit/fonts.mjs. Font tiêu đề theo nước của nhánh bộ da (vốn là font hệ thống: Be Vietnam Pro,
+  Noto Serif, Noto CJK…) đổi sang họ @fontsource: DE Oswald, EN/FR Playfair Display, JA Noto Serif JP, KR Noto Sans KR, VI Inter.
+  Variant trả thêm `fontFamilies` để adapter/preview nhúng font đó. `KIT_VERSION` 5.
+- **`newspaper/front-page`:** trục mặc định khai transition/imageMotion/typography khác `victorian-broadsheet` (luật 4/6); topic pack
+  `documented_history` không tồn tại nên đổi sang các pack newspaper có sẵn. Sửa khung hình để qua `hyperframes check`
+  (preview 30/30 trên en/de/ja/ko/vi; trên nhánh gốc 17/30): lớp tối `n-shade` của magazine_cover nằm trong cảnh (trên ảnh,
+  dưới lời đọc) thay vì phủ lên lời đọc; măng-sét bìa một dòng + khoảng cách tới dòng meta; tiêu đề side_masthead
+  `line-height` 1.15; meta side_masthead đủ tương phản. Chưa đo similarity cho `front-page` (chạy lại vòng đo mục 26).
+- Test của nhánh bộ da ở `compare_studio/tests/matrix-variants-skins.test.mjs`.

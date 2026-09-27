@@ -29,10 +29,12 @@ export function defineVariant(spec) {
     const design = composition.design({ ...ctx, ui: uiFor(lang) });
     return buildStage(ctx, design, { ui: uiFor(lang), cfg: cfg ? cfg(ctx) : {} });
   }
+  // Trục caption (DNA v2): variant không khai thì composition tự đặt chỗ lời đọc ("fixed").
+  const allowedAxes = { caption: ["fixed"], ...allowed };
   return Object.freeze({
     id, version, engine, name_vi, status,
     contentProfile: { topicPacks },
-    visualProfile: { layoutFamily, fingerprintAxes: axes, compositions: visualCompositions, allowed, slots: { mascot: false } },
+    visualProfile: { layoutFamily, fingerprintAxes: axes, compositions: visualCompositions, allowed: allowedAxes, slots: { mascot: false } },
     audioProfile: audio,
     assetProfile: asset,
     costProfile: cost,

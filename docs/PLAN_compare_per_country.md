@@ -1,6 +1,14 @@
 # Plan: mọi thể loại video khác nhau theo nước và theo acc
 
-Ngày lập: 26/09/2026. Trạng thái: **chờ duyệt** (Autopilot đang tạm dừng render và vẽ ảnh).
+Ngày lập: 26/09/2026. Trạng thái: **đã duyệt 27/09** (chấp nhận cả 4 đề xuất ở mục 5). Bước 1–3 đã làm, chờ duyệt khung hình newspaper trước khi làm bước 4.
+
+**Triển khai (27/09):** dựng trên hệ variant V2 có sẵn (`docs/MATRIX_VARIANT_SYSTEM_V2.md`), không làm `skins.mjs` song song:
+- Bộ da = `creative.skins.<engine> = { variant_id, dna }` trong YAML kênh, mỗi engine một bộ; engine chưa có bộ da vẫn chạy legacy.
+- Các chiều: `composition` (3 layout) · `caption` (trên/đè/dưới ảnh, trục DNA mới, `DNA_VERSION` 2) · `tone` (9 sắc độ) · `typography` · `treatment` (khung/lớp phủ) · `image_motion` · `transition`.
+- Luật: 2 acc cùng nước + cùng engine khác ≥ 4 chiều, trong đó có layout (composition/caption) hoặc màu (tone). Chỉ composition × tone (3 × 9 = 27) không đủ cho 54 acc newspaper DE, nên vị trí lời đọc được tính là layout.
+- Gán: `node compare_studio/tools/assign-skins.mjs --variant newspaper/front-page [--apply]` (tham lam, tất định, giữ bộ da cũ, tăng `config_version`). 80 kênh newspaper (DE 54, EN 20, VI 6) đã có bộ da; mọi cặp cùng nước khác ≥ 4 chiều.
+- Lớp 1 (theme nước) trong `kit/theme.mjs`: font tiêu đề + hoa văn nền theo nước. Linh vật cho các engine khác làm ở bước 4–5.
+- Xem trước bộ da thật: `node tools/preview-variants.mjs --out <dir> --engine newspaper --channels <ids|de:4>` rồi `python3 tools/variant_contact_sheet.py --manifest <dir>/manifest.json --out sheet.png --positions 0.2,0.45,0.8`.
 
 ## 1. Vì sao
 

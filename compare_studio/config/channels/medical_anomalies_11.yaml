@@ -6,7 +6,7 @@ audio:
   voice_pitch: -1
   voice_speed: 1.0
 channel_id: medical_anomalies_11
-config_version: 4
+config_version: 5
 creative:
   cut_cadence_seconds: 2.6
   palette:
@@ -18,6 +18,19 @@ creative:
   - kinetic
   - vox
   visual_style_id: dark_mystery_v1
+  skins:
+    newspaper:
+      variant_id: newspaper/front-page
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: front_page
+        typography: condensed
+        treatment: film_grain
+        image_motion: push_in
+        transition: page_turn
+        tone: 0
+        caption: bottom
 name: Medizin & Biologische Rätsel 11
 niche_id: medical_anomalies
 persona:
