@@ -4,6 +4,9 @@ import { fileURLToPath } from "node:url";
 import Ajv from "ajv";
 import YAML from "yaml";
 import { getVoice } from "./voices.mjs";
+import { getVariant } from "../matrix/render/variants/index.mjs";
+import { validateDna } from "../matrix/render/variants/dna.mjs";
+import { skinViolations } from "../matrix/render/variants/skins.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../config");
 const CATEGORY_SCHEMAS = {
@@ -101,6 +104,8 @@ function validateRelations(documents, errors) {
     }
   }
 
+  validateSkins(channels, errors);
+
   for (const [nicheId, count] of channelCounts) {
     if (count < 10) errors.push(`${nicheId}: expected at least 10 channel configs, found ${count}`);
   }
@@ -131,6 +136,27 @@ function validateRelations(documents, errors) {
         errors.push(`${relativePath}: filename must match ${idField} ${data[idField]}`);
       }
     }
+  }
+}
+
+/** creative.skins: variant tồn tại + active, đúng engine, engine nằm trong preferred_engines, DNA hợp lệ với nước;
+ * và 2 acc cùng nước + cùng engine phải khác nhau đủ chiều (docs/PLAN_compare_per_country.md mục 2). */
+function validateSkins(channels, errors) {
+  const rowsByEngine = new Map();
+  for (const { data, relativePath } of channels) {
+    const lang = data.publishing?.language;
+    for (const [engine, skin] of Object.entries(data.creative?.skins || {})) {
+      const variant = getVariant(skin.variant_id, { allowReference: false });
+      if (!variant) { errors.push(`${relativePath}: skin ${engine} uses unknown or inactive variant ${skin.variant_id}`); continue; }
+      if (variant.engine !== engine) errors.push(`${relativePath}: skin ${engine} points at ${skin.variant_id} (engine ${variant.engine})`);
+      if (!data.creative.preferred_engines.includes(engine)) errors.push(`${relativePath}: skin ${engine} is not in preferred_engines`);
+      for (const problem of validateDna(skin.dna, variant, lang)) errors.push(`${relativePath}: skin ${engine}: ${problem}`);
+      if (!rowsByEngine.has(engine)) rowsByEngine.set(engine, []);
+      rowsByEngine.get(engine).push({ channel_id: data.channel_id, country: String(lang || "").slice(0, 2), dna: skin.dna });
+    }
+  }
+  for (const [engine, rows] of rowsByEngine) {
+    for (const v of skinViolations(rows)) errors.push(`skins ${engine}: ${v.a} and ${v.b} (${v.country}) differ in only ${v.distance} axes or share layout and colour`);
   }
 }
 

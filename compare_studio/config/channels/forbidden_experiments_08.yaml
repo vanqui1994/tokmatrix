@@ -1,5 +1,5 @@
 channel_id: forbidden_experiments_08
-config_version: 4
+config_version: 5
 niche_id: forbidden_experiments
 name: Verrückte Experimente 08
 tiktok_account_ref: null
@@ -27,6 +27,19 @@ creative:
     primary: '#111318'
     accent: '#D6A84F'
     text: '#F2EEE6'
+  skins:
+    newspaper:
+      variant_id: newspaper/front-page
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: front_page
+        typography: serif
+        treatment: paper_texture
+        image_motion: parallax
+        transition: shutter
+        tone: 3
+        caption: middle
 audio:
   voice_id: de-DE-ConradNeural
   voice_speed: 1.02

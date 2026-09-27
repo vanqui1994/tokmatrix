@@ -1,5 +1,5 @@
 channel_id: lost_civilizations_07
-config_version: 4
+config_version: 5
 niche_id: lost_civilizations
 name: Antike Zivilisationen 07
 tiktok_account_ref: null
@@ -27,6 +27,19 @@ creative:
     primary: '#111318'
     accent: '#D6A84F'
     text: '#F2EEE6'
+  skins:
+    newspaper:
+      variant_id: newspaper/front-page
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: magazine_cover
+        typography: grotesk
+        treatment: clean
+        image_motion: pan_lateral
+        transition: shutter
+        tone: 8
+        caption: bottom
 audio:
   voice_id: de-DE-ConradNeural
   voice_speed: 1.02

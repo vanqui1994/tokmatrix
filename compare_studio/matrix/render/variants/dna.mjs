@@ -1,11 +1,13 @@
 // Creative DNA của một account: lựa chọn cố định (lưu trong YAML kênh), tất định, có version.
 // Signature là dấu vân tay CẤU HÌNH (không phải video) — cùng cấu hình → cùng signature.
 import crypto from "node:crypto";
+import { CAPTIONS } from "./kit/profiles.mjs";
 import { seedFrom } from "./kit/rng.mjs";
 
-export const DNA_VERSION = 1;
-export const DNA_FIELDS = Object.freeze(["dna_version", "variant_version", "composition", "typography", "treatment", "image_motion", "transition", "tone"]);
-const CHOICE_FIELDS = Object.freeze(["typography", "treatment", "image_motion", "transition", "tone"]);
+// 2: thêm trục caption (vị trí lời đọc) — PLAN_compare_per_country.md, "bộ da" mỗi acc.
+export const DNA_VERSION = 2;
+export const DNA_FIELDS = Object.freeze(["dna_version", "variant_version", "composition", "typography", "treatment", "image_motion", "transition", "tone", "caption"]);
+export const CHOICE_FIELDS = Object.freeze(["typography", "treatment", "image_motion", "transition", "tone", "caption"]);
 
 /** DNA với khoá theo thứ tự cố định (để YAML/signature ổn định). */
 export function normalizeDna(dna) {
@@ -60,6 +62,6 @@ export function defaultDna(variant, composition = Object.keys(variant.visualProf
   return normalizeDna({
     dna_version: DNA_VERSION, variant_version: variant.version, composition,
     typography: allowed.typography[0], treatment: allowed.treatment[0], image_motion: allowed.image_motion[0],
-    transition: allowed.transition[0], tone: allowed.tone[0],
+    transition: allowed.transition[0], tone: allowed.tone[0], caption: allowed.caption[0],
   });
 }

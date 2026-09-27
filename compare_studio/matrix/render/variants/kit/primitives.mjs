@@ -3,7 +3,11 @@
 import { KIT_VERSION } from "./VERSION.mjs";
 import { FIT_SCRIPT } from "./fit.mjs";
 import { kitHeadHtml } from "./runtime.mjs";
-import { tweenJs } from "./profiles.mjs";
+import { TYPOGRAPHY, tweenJs } from "./profiles.mjs";
+import { DISPLAY_FONTS } from "./theme.mjs";
+
+// Mọi font stack mà variant có thể dùng (khai @font-face cho tất cả, không phụ thuộc lựa chọn DNA).
+const ALL_STACKS = [...Object.values(TYPOGRAPHY.stacks).flatMap((table) => Object.values(table)), ...Object.values(DISPLAY_FONTS)];
 
 export function escapeHtml(value) {
   return String(value ?? "").replace(/[&<>"']/gu, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
@@ -24,7 +28,7 @@ export function documentHtml({ slug, lang, totalDuration, css, body, audioHtml, 
 <meta name="viewport" content="width=1080, height=1920">
 <meta name="matrix-creative" content="${meta}">
 <meta name="matrix-kit-version" content="${KIT_VERSION}">
-${kitHeadHtml()}
+${kitHeadHtml(ALL_STACKS)}
 <style>
 html,body{margin:0;padding:0;width:1080px;height:1920px;overflow:hidden;background:#000}
 #root{position:relative;width:1080px;height:1920px;overflow:hidden}
