@@ -12,6 +12,7 @@
 //   panel?:  (scene, i, ctx) → html                  // thay ảnh trong khung (engine TEXT/SVG) — nhận motion như ảnh
 //   sceneExtra?: (scene, i, ctx) → { html, tweens }  // phần tử thêm trong clip cảnh
 //   overlay?: (ctx) → { html, css, tweens }          // phần tử xuyên suốt (bảng tier, tỉ số…) — track 4
+//   underlay?: (ctx) → { html, css, tweens }         // phần tử xuyên suốt nằm DƯỚI cảnh (lưới, bản đồ nền…) — trong clip nền
 //   css?:    string
 // }
 import { backgroundCss, backgroundIsDark } from "./backgrounds.mjs";
@@ -40,7 +41,7 @@ export function pad2(n) {
 
 // --- Đầu trang -----------------------------------------------------------------------------------------------------
 const HEADER_CSS = {
-  label_title: ".h-label{position:absolute;padding:8px 18px;font-size:32px;letter-spacing:7px;font-weight:700;background:var(--panel);color:var(--fg-on-panel)}.h-title-box{position:absolute}.h-title{margin:0;font-size:64px;line-height:1.08;color:var(--head-ink)}",
+  label_title: ".h-label{position:absolute;box-sizing:border-box;padding:8px 18px;font-size:32px;letter-spacing:7px;font-weight:700;background:var(--panel);color:var(--fg-on-panel);white-space:nowrap;overflow:hidden;text-overflow:clip}.h-title-box{position:absolute}.h-title{margin:0;font-size:64px;line-height:1.08;color:var(--head-ink)}",
   masthead: ".h-mast{position:absolute;box-sizing:border-box;text-align:center;border-top:8px double var(--head-ink);border-bottom:8px double var(--head-ink);padding:10px 0}.h-mast-name{font-size:30px;letter-spacing:12px;color:var(--head-ink);font-weight:700}.h-title-box{position:absolute}.h-title{margin:0;font-size:78px;line-height:1.02;color:var(--head-ink);text-align:center;font-weight:700}",
   osd_bar: ".h-osd{position:absolute;box-sizing:border-box;display:flex;align-items:center;gap:24px;padding:0 26px;background:rgba(0,0,0,.72);border-bottom:3px solid var(--scope-ink,#7dffb0)}.h-osd .h-dot{width:26px;height:26px;border-radius:50%;background:#ff3b30;flex:none}.h-osd .h-label{font-size:30px;letter-spacing:5px;color:var(--scope-ink,#7dffb0);flex:none}.h-title-box{position:relative;flex:1;height:100%;display:flex;align-items:center}.h-title{margin:0;font-size:44px;line-height:1.1;color:#f2f2f2}",
   tab: ".h-tab{position:absolute;padding:14px 34px 10px;border-radius:18px 18px 0 0;background:#d8b778;font-size:30px;letter-spacing:6px;color:#3b2a10;font-weight:700}.h-title-box{position:absolute}.h-title{margin:0;font-size:62px;line-height:1.08;color:var(--head-ink)}",
@@ -59,7 +60,7 @@ function headerHtml(header, { title, ui, lang }) {
   let html;
   switch (header.style) {
     case "label_title":
-      html = `<div class="h-label" style="left:${r.x}px;top:${r.y}px">${label}</div><div class="h-title-box" style="${regionStyle({ x: r.x, y: r.y + 70, w: r.w, h: r.h - 70 })}">${titleFit(header.size || 64)}</div>`;
+      html = `<div class="h-label" style="left:${r.x}px;top:${r.y}px;max-width:${r.w}px">${label}</div><div class="h-title-box" style="${regionStyle({ x: r.x, y: r.y + 70, w: r.w, h: r.h - 70 })}">${titleFit(header.size || 64)}</div>`;
       break;
     case "masthead":
       html = `<div class="h-mast" style="${regionStyle({ x: r.x, y: r.y, w: r.w, h: 70 })}"><div class="h-mast-name">${label}</div></div><div class="h-title-box" style="${regionStyle({ x: r.x, y: r.y + 86, w: r.w, h: r.h - 86 })}">${titleFit(header.size || 78)}</div>`;
@@ -155,6 +156,7 @@ export function buildStage(ctx, design, { ui, cfg = {} }) {
   const under = decorHtml((design.decor || []).filter((item) => item.layer !== "over"), rng, "du");
   const over = decorHtml((design.decor || []).filter((item) => item.layer === "over"), rng, "do");
   const overlay = design.overlay ? design.overlay({ ...ctx, scenes, ui }) : null;
+  const underlay = design.underlay ? design.underlay({ ...ctx, scenes, ui }) : null;
 
   const tweens = [];
   const scenesHtml = scenes.map((scene, i) => {
@@ -193,6 +195,7 @@ export function buildStage(ctx, design, { ui, cfg = {} }) {
 </div>`;
   }).join("");
   if (overlay?.tweens) tweens.push(...overlay.tweens);
+  if (underlay?.tweens) tweens.push(...underlay.tweens);
   if (design.header?.style === "osd_bar") {
     // Chấm REC nhấp nháy: tween tất định theo nhịp 1 s (không vòng lặp tự chạy).
     for (let t = 0; t < totalDuration; t += 1) tweens.push({ method: "set", target: "#h-rec-dot", vars: { opacity: t % 2 ? 0.25 : 1 }, at: t });
@@ -200,7 +203,7 @@ export function buildStage(ctx, design, { ui, cfg = {} }) {
 
   const vars = Object.entries({ "--head-ink": headInk, ...(design.vars || {}) }).map(([k, v]) => `${k}:${v}`).join(";");
   const body = `
-<div id="v-bg" class="clip" data-start="0" data-duration="${totalDuration}" data-track-index="1"><div class="v-bg-fill"></div>${overlayHtml("v-tr-bg", creative.treatmentCss)}${under.html}</div>
+<div id="v-bg" class="clip" data-start="0" data-duration="${totalDuration}" data-track-index="1"><div class="v-bg-fill"></div>${overlayHtml("v-tr-bg", creative.treatmentCss)}${under.html}${underlay ? `<div id="v-underlay">${underlay.html}</div>` : ""}</div>
 <div id="v-head" class="clip" data-start="0" data-duration="${totalDuration}" data-track-index="2">${header.html}</div>
 ${scenesHtml}
 ${overlay ? `<div id="v-overlay" class="clip" data-start="0" data-duration="${totalDuration}" data-track-index="4">${overlay.html}</div>` : ""}
@@ -210,7 +213,8 @@ ${over.html ? `<div id="v-decor-top" class="clip" data-start="0" data-duration="
 :root{${vars}}
 #root{font-family:${creative.fonts.body};color:var(--fg);background:var(--bg)}
 ${backgroundCss(bg, creative.seeds.video)}
-#v-head,#v-overlay,#v-decor-top{pointer-events:none}
+#v-head,#v-overlay,#v-decor-top,#v-underlay{pointer-events:none}
+#v-underlay{position:absolute;inset:0}
 #v-overlay{z-index:15}#v-decor-top{z-index:18}#v-head{z-index:20}
 .v-inner{position:absolute;inset:0}
 .v-img{width:100%;height:100%;object-fit:${design.visual?.fit || "cover"};transform-origin:50% 50%;display:block}
@@ -223,6 +227,7 @@ ${design.tag ? TAG_CSS[design.tag.style] : ""}
 ${under.css}
 ${over.css}
 ${overlay?.css || ""}
+${underlay?.css || ""}
 ${design.css || ""}`;
 
   const observability = { ...creative.observability, layout: layoutRegions(design) };

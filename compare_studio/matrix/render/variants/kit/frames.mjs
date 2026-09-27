@@ -50,7 +50,7 @@ const FRAMES = {
     html: ({ id, region, inner }) => `<div class="f-porthole" id="${id}" style="${regionStyle(region)}">${RIVETS(12)}<div class="f-win">${inner}<i class="f-glass"></i></div></div>`,
   },
   scope: {
-    css: ".f-scope{position:absolute;box-sizing:border-box;border-radius:50%;overflow:hidden;border:6px solid var(--scope-ink,#7dffb0);box-shadow:0 0 40px color-mix(in srgb,var(--scope-ink,#7dffb0) 40%,transparent);background:#010}.f-scope .f-ret{position:absolute;inset:0;z-index:3;background:linear-gradient(var(--scope-ink,#7dffb0),var(--scope-ink,#7dffb0)) 50% 0/2px 100% no-repeat,linear-gradient(90deg,var(--scope-ink,#7dffb0),var(--scope-ink,#7dffb0)) 0 50%/100% 2px no-repeat,repeating-radial-gradient(circle,transparent 0 118px,color-mix(in srgb,var(--scope-ink,#7dffb0) 45%,transparent) 118px 120px);opacity:.75}.f-scope .f-vig{position:absolute;inset:0;z-index:2;background:radial-gradient(circle,transparent 55%,rgba(0,0,0,.7))}",
+    css: ".f-scope{position:absolute;isolation:isolate;box-sizing:border-box;border-radius:50%;overflow:hidden;border:6px solid var(--scope-ink,#7dffb0);box-shadow:0 0 40px color-mix(in srgb,var(--scope-ink,#7dffb0) 40%,transparent);background:#010}.f-scope .f-ret{position:absolute;inset:0;z-index:3;background:linear-gradient(var(--scope-ink,#7dffb0),var(--scope-ink,#7dffb0)) 50% 0/2px 100% no-repeat,linear-gradient(90deg,var(--scope-ink,#7dffb0),var(--scope-ink,#7dffb0)) 0 50%/100% 2px no-repeat,repeating-radial-gradient(circle,transparent 0 118px,color-mix(in srgb,var(--scope-ink,#7dffb0) 45%,transparent) 118px 120px);opacity:.75}.f-scope .f-vig{position:absolute;inset:0;z-index:2;background:radial-gradient(circle,transparent 55%,rgba(0,0,0,.7))}",
     html: ({ id, region, inner }) => `<div class="f-scope" id="${id}" style="${regionStyle(region)}">${inner}<i class="f-vig"></i><i class="f-ret"></i></div>`,
   },
   radar: {
@@ -106,7 +106,7 @@ const FRAMES = {
     html: ({ id, region, inner, rng }) => `<div class="f-folder" id="${id}" style="${regionStyle(region, `transform:rotate(${rngRange(rng, -1.2, 1.2, 2)}deg)`)}"><div class="f-win">${inner}</div><i class="f-clip"></i></div>`,
   },
   stamp: {
-    css: ".f-stamp{position:absolute;box-sizing:border-box;padding:30px;background:#fbf7ee;-webkit-mask:radial-gradient(circle 13px at 13px 13px,transparent 12px,#000 13px) -13px -13px/40px 40px;mask:radial-gradient(circle 13px at 13px 13px,transparent 12px,#000 13px) -13px -13px/40px 40px}.f-stamp .f-win{position:relative;width:100%;height:100%;overflow:hidden}",
+    css: ".f-stamp{position:absolute;box-sizing:border-box;padding:30px;background:#fbf7ee;-webkit-mask:linear-gradient(#000,#000) 13px 13px/calc(100% - 26px) calc(100% - 26px) no-repeat,radial-gradient(circle 13px at 13px 13px,transparent 12px,#000 13px) -13px -13px/40px 40px;mask:linear-gradient(#000,#000) 13px 13px/calc(100% - 26px) calc(100% - 26px) no-repeat,radial-gradient(circle 13px at 13px 13px,transparent 12px,#000 13px) -13px -13px/40px 40px}.f-stamp .f-win{position:relative;width:100%;height:100%;overflow:hidden}",
     html: ({ id, region, inner, rng }) => `<div class="f-stamp" id="${id}" style="${regionStyle(region, `transform:rotate(${rngRange(rng, -3, 3, 2)}deg)`)}"><div class="f-win">${inner}</div></div>`,
   },
   diamond: {
