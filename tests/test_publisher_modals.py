@@ -67,6 +67,97 @@ class PublisherModalTest(unittest.TestCase):
         asyncio.run(run())
 
 
+def _modal(title, primary, secondary, secondary_class="TUXButton TUXButton--secondary"):
+    return f'''<div contenteditable="true" id="cap" style="width:300px;height:60px">caption</div>
+<div id="portal" style="position:fixed;inset:0"><div class="TUXModal-overlay" style="position:fixed;inset:0;background:#0006"></div>
+<div role="dialog" class="TUXModal common-modal" style="position:fixed;top:30%;left:30%;background:#fff;padding:20px">
+<h2>{title}</h2>
+<button class="TUXButton TUXButton--primary" onclick="window.choice='turnon';document.getElementById('portal').remove()">{primary}</button>
+<button class="{secondary_class}" onclick="window.choice='cancel';document.getElementById('portal').remove()">{secondary}</button></div></div>
+<script>document.addEventListener('keydown',()=>{{window.esc=(window.esc||0)+1}});</script>'''
+
+
+# Acc Nhật/Hàn 27/09: hộp thoại theo tiếng của acc, Esc không đóng được, tour "확인".
+KO_TOUR = '''<div contenteditable="true" id="cap" style="width:300px;height:60px">caption</div>
+<div id="react-joyride-portal"><div class="react-joyride__overlay" style="position:fixed;inset:0;background:#0005"></div></div>
+<div class="__floater __floater__open" style="position:fixed;bottom:10px;right:10px;background:#fff;padding:12px">
+<div class="react-joyride__tooltip"><b>새로운 편집 기능이 추가되었습니다</b>
+<button data-action="primary" onclick="window.tour='done';document.getElementById('react-joyride-portal').remove();this.closest('.__floater').remove()">확인</button></div></div>'''
+
+
+class LocalizedModalTest(unittest.TestCase):
+    def _run(self, html, check):
+        from playwright.async_api import async_playwright
+        from bkt_web.tiktok_publisher import _dismiss_blocking_modals
+
+        async def run():
+            async with async_playwright() as p:
+                browser = await p.chromium.launch(executable_path=os.environ.get("TOKMATRIX_CHROME_PATH") or None)
+                page = await browser.new_page()
+                await page.set_content(html)
+                with self.assertRaises(Exception):
+                    await page.click("#cap", timeout=1000)
+                logs = []
+                self.assertGreaterEqual(await _dismiss_blocking_modals(page, lambda m, level="info": logs.append(m)), 1)
+                await check(page, logs)
+                await page.click("#cap", timeout=1000)
+                await browser.close()
+
+        asyncio.run(run())
+
+    def test_japanese_content_check_modal_is_declined(self):
+        async def check(page, logs):
+            self.assertEqual(await page.evaluate("window.choice"), "cancel")
+            self.assertFalse(await page.evaluate("window.esc || 0"))
+            self.assertIn("キャンセル", logs[0])
+        self._run(_modal("コンテンツの自動チェックをオンにしますか？", "オンにする", "キャンセル"), check)
+
+    def test_unknown_language_falls_back_to_the_secondary_button(self):
+        async def check(page, logs):
+            self.assertEqual(await page.evaluate("window.choice"), "cancel")  # không bao giờ bấm nút bật
+            self.assertIn("nút phụ", logs[0])
+        self._run(_modal("Ativar verificações automáticas?", "Ativar", "Agora não"), check)
+
+    def test_korean_feature_tour_is_closed(self):
+        async def check(page, logs):
+            self.assertEqual(await page.evaluate("window.tour"), "done")
+            self.assertTrue(any("새로운 편집 기능" in m for m in logs))
+        self._run(KO_TOUR, check)
+
+
+class CjkCaptionTest(unittest.TestCase):
+    """Caption Hàn/Nhật: cụm CJK chèn nguyên đoạn (insert_text), phần Latin/hashtag gõ phím như cũ."""
+    KO = "공간은 무한히 쪼개질까?\n\n아킬레우스가 거북이를 추월하지 못한다.\n\n#philosophy #paradox #추천 #상식 #fyp"
+
+    def test_chunks_keep_order_and_route_cjk_to_insert(self):
+        from bkt_web.tiktok_publisher import caption_chunks
+        chunks = caption_chunks(self.KO)
+        self.assertEqual("".join(c for _, c in chunks), self.KO)
+        self.assertEqual(chunks[0], ("insert", "공간은 무한히 쪼개질까?"))
+        self.assertIn(("insert", "아킬레우스가 거북이를 추월하지 못한다."), chunks)
+        self.assertIn(("type", "\n\n#philosophy #paradox #"), chunks)
+        self.assertEqual(caption_chunks("Crustaceans duel. #ocean"), [("type", "Crustaceans duel. #ocean")])
+
+    def test_caption_lands_verbatim_in_an_editor(self):
+        from playwright.async_api import async_playwright
+        from bkt_web.tiktok_publisher import _type_caption
+
+        async def run():
+            async with async_playwright() as p:
+                browser = await p.chromium.launch(executable_path=os.environ.get("TOKMATRIX_CHROME_PATH") or None)
+                page = await browser.new_page()
+                await page.set_content('<div contenteditable="true" id="cap" style="white-space:pre-wrap"></div>')
+                for text in (self.KO, "エベレストの限界とマリアナの深さ 11,000m。 #ocean #雑学"):
+                    await page.evaluate("document.getElementById('cap').textContent=''")
+                    await page.click("#cap")
+                    await _type_caption(page, text)
+                    written = await page.evaluate("document.getElementById('cap').innerText")
+                    self.assertEqual(" ".join(written.split()), " ".join(text.split()))
+                await browser.close()
+
+        asyncio.run(run())
+
+
 class PostButtonTest(unittest.TestCase):
     def test_form_post_button_is_chosen_not_sidebar_posts(self):
         from playwright.async_api import async_playwright

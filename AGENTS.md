@@ -2,6 +2,7 @@
 
 - `bkt_web/profile_session.py` quản lý Chrome profile theo kênh và các setting profile; không kill Chrome mở tay và không bấm Đăng lại task đã có `clicked_post_at`.
 
+- TikTok publisher (`bkt_web/tiktok_publisher.py`) on ja/ko accounts: Studio dialogs/tours come in the account's language and Esc does not close the "automatic content checks" dialog, so `MODAL_DISMISS_LABELS` lists decline labels in every account language first (confirm-type "ok"/"확인" last) and falls back to the TUX secondary button (`MODAL_SECONDARY_BUTTON`) / the joyride tooltip button before Esc. Captions go through `_type_caption`: CJK runs are inserted with `keyboard.insert_text` (typing Hangul/Kana key by key into TikTok's editor dropped or reordered text and tripped the caption-mismatch guard), Latin text and hashtags are still typed. Tests: `python3 -m unittest tests.test_publisher_modals` (on the VPS set `TOKMATRIX_CHROME_PATH=/usr/bin/google-chrome PLAYWRIGHT_BROWSERS_PATH=/opt/tokmatrix/.playwright`).
 - The FastAPI app runs with `python3 -m bkt_web.server` at `http://localhost:8080`. The existing server process does not automatically reload backend changes; ask before restarting a server you did not start.
 - Remake tests: `python3 -m unittest discover -s tests -p test_remake_pipeline.py`. Tests mock story-analysis network calls; the native-renderer smoke test requires installed Playwright Chromium.
 - JavaScript syntax: `node --check bkt_web/static/app.js`.

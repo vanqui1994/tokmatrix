@@ -1,4 +1,5 @@
 import os
+import re
 import sys
 import time
 import asyncio
@@ -149,11 +150,22 @@ async def _enable_ai_label(page, log) -> None:
 # bản nháp…) phủ lên cả trang: mọi cú click sau đó hết giờ chờ. Chỉ đóng TRƯỚC khi bấm Đăng,
 # ưu tiên nút từ chối/để sau để không vô tình bật tính năng hay bỏ bản đang soạn.
 MODAL_SELECTOR = '.TUXModal[role="dialog"], [role="dialog"].common-modal, [role="dialog"][aria-modal="true"]'
+# Thứ tự quan trọng: nút từ chối/huỷ của mọi ngôn ngữ trước, nút xác nhận chung ("ok", "확인") sau cùng.
+# Acc Nhật/Hàn (27/09) nhận hộp thoại "Bật kiểm tra nội dung tự động?" bằng tiếng của acc; trước đây chỉ
+# có nhãn Anh/Việt/Đức nên rơi xuống phím Esc — TikTok không đóng hộp thoại này bằng Esc → click hết giờ.
 MODAL_DISMISS_LABELS = (
-    "not now", "cancel", "maybe later", "skip", "got it", "ok", "close", "done",
-    "để sau", "không phải bây giờ", "hủy", "huỷ", "bỏ qua", "đã hiểu", "đóng",
-    "nicht jetzt", "abbrechen", "später", "verstanden", "schließen",
+    "not now", "cancel", "maybe later", "skip",
+    "để sau", "không phải bây giờ", "hủy", "huỷ", "bỏ qua",
+    "nicht jetzt", "abbrechen", "später",
+    "キャンセル", "後で", "今はしない", "スキップ",
+    "취소", "나중에", "지금은 안 함", "건너뛰기",
+    "annuler", "plus tard", "pas maintenant", "cancelar", "más tarde", "ahora no",
+    "got it", "đã hiểu", "verstanden", "了解", "알겠습니다",
+    "close", "đóng", "schließen", "閉じる", "닫기", "fermer", "cerrar",
+    "done", "ok", "확인",
 )
+# Nút phụ (từ chối) của hộp thoại TUX, không phụ thuộc ngôn ngữ — dùng khi không khớp nhãn nào.
+MODAL_SECONDARY_BUTTON = 'button[class*="TUXButton--secondary"], button[class*="secondary" i]'
 
 
 async def _click_labelled(scope, labels) -> Optional[str]:
@@ -176,9 +188,60 @@ async def _click_labelled(scope, labels) -> Optional[str]:
     return None
 
 
+# Chữ Hàn/Nhật/Trung gõ từng phím vào trình soạn của TikTok bị rơi/đảo (27/09: mất "아킬레우스가",
+# câu tiếng Nhật bị cụt, hashtag nhảy lên đầu). Đoạn CJK được chèn nguyên cụm (insert_text = một sự kiện
+# nhập, không qua bộ gõ); chữ Latin/hashtag vẫn gõ từng phím như cũ để TikTok nhận hashtag.
+_CJK = "ᄀ-ᇿ　-ヿ㄰-㆏㐀-鿿가-힯豈-﫿＀-￯"
+_CJK_RUN = re.compile(f"[{_CJK}]+(?:[ \\t]*[{_CJK}0-9.,!?%]+)*")
+
+
+def caption_chunks(text: str):
+    """[(cách nhập, đoạn)]: "insert" cho cụm CJK, "type" cho phần còn lại (giữ nguyên thứ tự)."""
+    chunks, pos = [], 0
+    text = text or ""
+    for match in _CJK_RUN.finditer(text):
+        if match.start() > pos:
+            chunks.append(("type", text[pos:match.start()]))
+        chunks.append(("insert", match.group(0)))
+        pos = match.end()
+    if pos < len(text):
+        chunks.append(("type", text[pos:]))
+    return chunks
+
+
+async def _type_caption(page, text: str) -> None:
+    for how, chunk in caption_chunks(text):
+        if how == "insert":
+            await page.keyboard.insert_text(chunk)
+            await page.wait_for_timeout(120)
+        else:
+            await page.keyboard.type(chunk, delay=25)
+
+
+async def _click_first_visible(locator, description: str) -> Optional[str]:
+    """Bấm phần tử đầu tiên đang hiện của locator; trả mô tả nếu bấm được."""
+    try:
+        count = min(await locator.count(), 6)
+    except Exception:
+        return None
+    for index in range(count):
+        candidate = locator.nth(index)
+        try:
+            if await candidate.is_visible():
+                await candidate.click(timeout=5000)
+                return description
+        except Exception:
+            continue
+    return None
+
+
 # Hướng dẫn "New editing features added" (react-joyride) và banner cookie cũng phủ lên trang.
 TOUR_SELECTOR = ".react-joyride__overlay, .react-joyride__tooltip, .react-joyride__spotlight, .__floater__open"
-TOUR_LABELS = ("got it", "skip", "đã hiểu", "bỏ qua", "verstanden", "überspringen", "close", "đóng")
+TOUR_LABELS = ("got it", "skip", "đã hiểu", "bỏ qua", "verstanden", "überspringen", "close", "đóng",
+               "スキップ", "閉じる", "건너뛰기", "닫기", "ok", "확인", "了解", "알겠습니다")
+# Nút của tooltip react-joyride theo thuộc tính, không phụ thuộc ngôn ngữ.
+TOUR_BUTTON = ('.react-joyride__tooltip button[data-action="skip"], .react-joyride__tooltip button[data-action="close"], '
+               '.react-joyride__tooltip button[data-action="primary"], .react-joyride__tooltip button, .__floater__open button')
 COOKIE_DECLINE_LABELS = ("decline optional cookies", "từ chối cookie tùy chọn", "từ chối cookie không bắt buộc", "optionale cookies ablehnen", "reject all")
 
 
@@ -196,7 +259,9 @@ async def _dismiss_blocking_modals(page, log, rounds: int = 4) -> int:
             how = await _click_labelled(modal, MODAL_DISMISS_LABELS)
             how = f'nút "{how}"' if how else None
             if not how:
-                close = modal.locator('[aria-label="Close" i], [aria-label="Đóng"], [aria-label="Schließen"], button[class*="close" i]')
+                how = await _click_first_visible(modal.locator(MODAL_SECONDARY_BUTTON), "nút phụ (từ chối)")
+            if not how:
+                close = modal.locator('[aria-label="Close" i], [aria-label="Đóng"], [aria-label="Schließen"], [aria-label="閉じる"], [aria-label="닫기"], button[class*="close" i]')
                 if await close.count() and await close.first.is_visible():
                     await close.first.click(timeout=5000)
                     how = "nút ×"
@@ -223,6 +288,7 @@ async def _dismiss_blocking_modals(page, log, rounds: int = 4) -> int:
             except Exception:
                 pass
             how = await _click_labelled(page, TOUR_LABELS)
+            how = f'nút "{how}"' if how else await _click_first_visible(page.locator(TOUR_BUTTON), "nút của hướng dẫn")
             if not how:
                 await page.keyboard.press("Escape")
                 how = "phím Esc"
@@ -700,7 +766,7 @@ async def publish_tiktok_video(
                     await page.wait_for_timeout(200)
                     if not ((await caption_el.inner_text()) or "").strip():
                         break
-                await page.keyboard.type(full_caption, delay=25)
+                await _type_caption(page, full_caption)
                 await page.keyboard.type(" ", delay=25)  # đóng danh sách gợi ý hashtag vừa gõ
                 await page.wait_for_timeout(600)
                 written = " ".join(((await caption_el.inner_text()) or "").split())
