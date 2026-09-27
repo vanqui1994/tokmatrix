@@ -55,7 +55,7 @@ function rackOverlay(model, scenes, r) {
 const PEG_CSS = `
 .tw-peg{position:absolute;box-sizing:border-box;background:radial-gradient(circle,#2a2e33 4px,transparent 5px) 0 0/34px 34px,linear-gradient(180deg,#aab1b8,#848b93);border:10px solid #50565d;border-radius:8px}
 .tw-zone{position:absolute;box-sizing:border-box;border:4px dashed rgba(20,22,26,.65);border-radius:10px}
-.tw-sten{position:absolute;left:8px;top:8px;width:84px;height:64px;display:flex;align-items:center;justify-content:center;border-radius:6px;background:#1d2024;font-size:40px;font-weight:900;letter-spacing:1px}
+.tw-sten{position:absolute;left:8px;top:8px;width:100px;height:64px;display:flex;align-items:center;justify-content:center;border-radius:6px;background:#1d2024;font-size:38px;font-weight:900;letter-spacing:1px}
 .tw-peg-tag{background:#fafafa;border-radius:4px}
 `;
 

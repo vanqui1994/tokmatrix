@@ -8,9 +8,12 @@ import { fileURLToPath } from "node:url";
 
 const configDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../config");
 
+// config/topic_packs/*.yaml thuộc bkt_web/autopilot/topic_packs.py (tests/test_topic_packs.py), validator Matrix không đọc.
+const NOT_MATRIX_CONFIG = new Set(["topic_packs"]);
+
 function yamlCount(dir) {
   return fs.readdirSync(dir, { withFileTypes: true }).reduce((total, entry) => total
-    + (entry.isDirectory() ? yamlCount(path.join(dir, entry.name)) : /\.ya?ml$/.test(entry.name) ? 1 : 0), 0);
+    + (entry.isDirectory() ? (NOT_MATRIX_CONFIG.has(entry.name) ? 0 : yamlCount(path.join(dir, entry.name))) : /\.ya?ml$/.test(entry.name) ? 1 : 0), 0);
 }
 
 function loadSchemas() {

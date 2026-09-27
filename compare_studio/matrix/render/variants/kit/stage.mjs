@@ -45,7 +45,7 @@ const HEADER_CSS = {
   masthead: ".h-mast{position:absolute;box-sizing:border-box;text-align:center;border-top:8px double var(--head-ink);border-bottom:8px double var(--head-ink);padding:10px 0}.h-mast-name{font-size:30px;letter-spacing:12px;color:var(--head-ink);font-weight:700}.h-title-box{position:absolute}.h-title{margin:0;font-size:78px;line-height:1.02;color:var(--head-ink);text-align:center;font-weight:700}",
   osd_bar: ".h-osd{position:absolute;box-sizing:border-box;display:flex;align-items:center;gap:24px;padding:0 26px;background:rgba(0,0,0,.72);border-bottom:3px solid var(--scope-ink,#7dffb0)}.h-osd .h-dot{width:26px;height:26px;border-radius:50%;background:#ff3b30;flex:none}.h-osd .h-label{font-size:30px;letter-spacing:5px;color:var(--scope-ink,#7dffb0);flex:none}.h-title-box{position:relative;flex:1;height:100%;display:flex;align-items:center}.h-title{margin:0;font-size:44px;line-height:1.1;color:#f2f2f2}",
   tab: ".h-tab{position:absolute;padding:14px 34px 10px;border-radius:18px 18px 0 0;background:#d8b778;font-size:30px;letter-spacing:6px;color:#3b2a10;font-weight:700}.h-title-box{position:absolute}.h-title{margin:0;font-size:62px;line-height:1.08;color:var(--head-ink)}",
-  centered: ".h-center-label{position:absolute;text-align:center;font-size:30px;letter-spacing:10px;color:var(--gold)}.h-title-box{position:absolute;text-align:center}.h-title{margin:0;font-size:70px;line-height:1.06;color:var(--head-ink);text-align:center}.h-rule{position:absolute;height:3px;background:var(--gold)}",
+  centered: ".h-center-label{position:absolute;text-align:center;font-size:30px;letter-spacing:10px}.h-center-label>span{display:inline-block;padding:3px 8px 3px 18px;background:var(--panel);color:var(--fg-on-panel);border-bottom:3px solid var(--gold);white-space:nowrap}.h-title-box{position:absolute;text-align:center}.h-title{margin:0;font-size:70px;line-height:1.06;color:var(--head-ink);text-align:center}.h-rule{position:absolute;height:3px;background:var(--gold)}",
   plaque: ".h-plaque{position:absolute;box-sizing:border-box;background:linear-gradient(180deg,#d8b86a,#a8832f);border-radius:12px;box-shadow:0 12px 24px rgba(0,0,0,.45)}.h-plaque .h-label{position:absolute;left:30px;right:30px;top:12px;height:40px;font-size:26px;line-height:40px;letter-spacing:6px;color:#3a2806;white-space:nowrap;overflow:hidden}.h-plaque .h-title-box{position:absolute;left:30px;right:30px;top:60px;bottom:14px}.h-title{margin:0;font-size:54px;line-height:1.08;color:#241703}",
   ribbon: ".h-ribbon{position:absolute;box-sizing:border-box;padding:18px 90px;background:var(--accent-terra-ink);clip-path:polygon(0 0,100% 0,95% 50%,100% 100%,0 100%,5% 50%);display:flex;align-items:center;justify-content:center}.h-title-box{position:relative;width:100%;height:100%;display:flex;align-items:center}.h-title{margin:0;font-size:58px;line-height:1.05;color:#fff8ee;text-align:center;width:100%}",
   side: ".h-side{position:absolute;box-sizing:border-box;writing-mode:vertical-rl;transform:rotate(180deg);display:flex;align-items:center;justify-content:center;background:var(--panel)}.h-side .h-title{margin:0;padding:0 14px;font-size:54px;line-height:1.4;color:var(--fg-on-panel);white-space:nowrap;max-height:100%}",
@@ -72,7 +72,7 @@ function headerHtml(header, { title, ui, lang }) {
       html = `<div class="h-tab" style="left:${r.x}px;top:${r.y}px">${label}</div><div class="h-title-box" style="${regionStyle({ x: r.x, y: r.y + 76, w: r.w, h: r.h - 76 })}">${titleFit(header.size || 62)}</div>`;
       break;
     case "centered":
-      html = `<div class="h-center-label" style="${regionStyle({ x: r.x, y: r.y, w: r.w, h: 40 })}">${label}</div><div class="h-rule" style="left:${r.x + r.w * 0.3}px;top:${r.y + 50}px;width:${r.w * 0.4}px"></div><div class="h-title-box" style="${regionStyle({ x: r.x, y: r.y + 64, w: r.w, h: r.h - 64 })}">${titleFit(header.size || 70)}</div>`;
+      html = `<div class="h-center-label" style="${regionStyle({ x: r.x, y: r.y, w: r.w, h: 40 })}"><span>${label}</span></div><div class="h-rule" style="left:${r.x + r.w * 0.3}px;top:${r.y + 50}px;width:${r.w * 0.4}px"></div><div class="h-title-box" style="${regionStyle({ x: r.x, y: r.y + 64, w: r.w, h: r.h - 64 })}">${titleFit(header.size || 70)}</div>`;
       break;
     case "plaque":
       html = `<div class="h-plaque" style="${regionStyle(r)}"><div class="h-label">${label}</div><div class="h-title-box">${titleFit(header.size || 54)}</div></div>`;
@@ -95,7 +95,7 @@ function headerHtml(header, { title, ui, lang }) {
 // --- Nhãn cảnh -----------------------------------------------------------------------------------------------------
 const TAG_CSS = {
   chip: ".g-chip{position:absolute;padding:6px 16px;font-size:30px;letter-spacing:4px;background:var(--panel);color:var(--fg-on-panel);white-space:nowrap}",
-  stamp: ".g-stamp{position:absolute;padding:4px 16px;font-size:34px;letter-spacing:5px;border:5px solid var(--accent-terra-ink);background:#fbf8ef;color:var(--accent-terra-ink);transform:rotate(-8deg);white-space:nowrap;font-weight:700}",
+  stamp: ".g-stamp{position:absolute;padding:8px 18px;font-size:34px;letter-spacing:5px;border:5px solid var(--accent-terra-ink);background:#fbf8ef;color:var(--accent-terra-ink);transform:rotate(-1.5deg);white-space:nowrap;font-weight:700}",
   counter: ".g-counter{position:absolute;font-size:150px;line-height:1;font-weight:700;color:var(--gold);opacity:.9;white-space:nowrap}",
   osd: ".g-osd{position:absolute;font-size:30px;letter-spacing:3px;color:var(--scope-ink,#7dffb0);background:rgba(0,0,0,.82);padding:4px 12px;white-space:nowrap}",
   chalk: ".g-chalkn{position:absolute;font-size:46px;color:#ffe08a;white-space:nowrap}",
@@ -110,15 +110,23 @@ function tagHtml(tag, { i, n, ui, lang, id }) {
 }
 
 // --- Chữ vào cảnh --------------------------------------------------------------------------------------------------
+// Hiện chữ bằng clip-path rồi gỡ clip-path (xem enter() trong profiles.mjs: clip sót làm layout audit báo giả).
+function clipReveal(lineId, from, span, ease, t) {
+  return [
+    { method: "fromTo", target: `#${lineId}`, from: { clipPath: from }, vars: { clipPath: "inset(0% 0% 0% 0%)", duration: span, ease }, at: t },
+    { method: "set", target: `#${lineId}`, vars: { clipPath: "none" }, at: Number((t + span).toFixed(3)) },
+  ];
+}
+
 function textEnterTweens(kind, { lineId, boxId, at, duration }) {
   const span = Number(Math.min(1.4, Math.max(0.3, duration * 0.35)).toFixed(3));
   const t = Number((at + 0.08).toFixed(3));
   switch (kind || "fade_up") {
     case "none": return [];
     case "fade_up": return [{ method: "fromTo", target: `#${lineId}`, from: { y: 26, autoAlpha: 0 }, vars: { y: 0, autoAlpha: 1, duration: 0.45, ease: "power2.out" }, at: t }];
-    case "clip": return [{ method: "fromTo", target: `#${lineId}`, from: { clipPath: "inset(0% 100% 0% 0%)" }, vars: { clipPath: "inset(0% 0% 0% 0%)", duration: span, ease: "power1.inOut" }, at: t }];
-    case "type": return [{ method: "fromTo", target: `#${lineId}`, from: { clipPath: "inset(0% 100% 0% 0%)" }, vars: { clipPath: "inset(0% 0% 0% 0%)", duration: span, ease: "steps(28)" }, at: t }];
-    case "drop": return [{ method: "fromTo", target: `#${lineId}`, from: { clipPath: "inset(0% 0% 100% 0%)" }, vars: { clipPath: "inset(0% 0% 0% 0%)", duration: span, ease: "power2.out" }, at: t }];
+    case "clip": return clipReveal(lineId, "inset(0% 100% 0% 0%)", span, "power1.inOut", t);
+    case "type": return clipReveal(lineId, "inset(0% 100% 0% 0%)", span, "steps(28)", t);
+    case "drop": return clipReveal(lineId, "inset(0% 0% 100% 0%)", span, "power2.out", t);
     case "pop": return [{ method: "fromTo", target: `#${boxId}`, from: { scale: 0.86 }, vars: { scale: 1, duration: 0.4, ease: "back.out(2)" }, at: t }];
     case "slide": return [{ method: "fromTo", target: `#${boxId}`, from: { xPercent: -8 }, vars: { xPercent: 0, duration: 0.45, ease: "power3.out" }, at: t }];
     default: throw new Error(`unknown text enter ${kind}`);
@@ -222,7 +230,7 @@ ${backgroundCss(bg, creative.seeds.video)}
 .v-inner{position:absolute;inset:0}
 .v-img{width:100%;height:100%;object-fit:${design.visual?.fit || "cover"};transform-origin:50% 50%;display:block}
 .v-panel{position:absolute;inset:0;transform-origin:50% 50%}
-.v-text{z-index:8}.g-chip,.g-stamp,.g-counter,.g-osd,.g-chalkn{z-index:9}
+[id^='v-frame-']{isolation:isolate}.v-text{z-index:8}.g-chip,.g-stamp,.g-counter,.g-osd,.g-chalkn{z-index:9}
 ${header.css}
 ${frameCss(frames)}
 ${textCss(textStyles)}

@@ -78,7 +78,7 @@ const endurance = defineVariant({
             { tweens: stage.tweens(scene, i) },
           ),
           vars: { "--frame-edge": "#1f2933" },
-          css: `${BASE_CSS}${SW_CSS}.f-plain{background:linear-gradient(180deg,#bfe3ff,#f4f8fb)}.en-card{color:var(--fg)}.en-card .sv-tag{color:var(--accent-terra-ink)}.en-card .sv-row{position:absolute;right:0;top:0;width:440px}.en-card .sv-label-box,.en-card .sv-eyebrow,.en-card .sv-tag{margin-right:460px}.en-card .sv-eyebrow{font-size:24px;letter-spacing:2px;color:var(--fg-dim)}.en-card{gap:8px}.en-card .sv-pips{position:absolute;right:0;bottom:0;width:440px}.en-mx .sv-m-t,.en-mx .sv-m-val{color:var(--fg)}.en-mx{--sv-track:rgba(31,41,51,.14)}`,
+          css: `${BASE_CSS}${SW_CSS}.f-plain{background:linear-gradient(180deg,#bfe3ff,#f4f8fb)}.en-card{color:var(--fg)}.en-card .sv-tag{color:var(--accent-terra-ink)}.en-card .sv-row{position:absolute;right:0;top:0;width:440px}.en-card .sv-label-box,.en-card .sv-eyebrow,.en-card .sv-tag{margin-right:460px}.en-card .sv-eyebrow{font-size:24px;letter-spacing:2px;color:var(--fg)}.en-card{gap:8px}.en-card .sv-pips{position:absolute;right:0;bottom:0;width:440px}.en-mx .sv-m-t,.en-mx .sv-m-val{color:var(--fg)}.en-mx{--sv-track:rgba(31,41,51,.14)}`,
         };
       },
     },
@@ -596,7 +596,7 @@ const labExposure = defineVariant({
             { tweens: stage.tweens(scene, i) },
           ),
           decor: [{ kind: "rule_lines", x: 60, y: 1262, w: 960, color: "#eab308", count: 2, gap: 10 }],
-          css: `${BASE_CSS}${GEIGER_CSS}.lb-card{color:var(--fg)}.lb-card .sv-tag{color:var(--accent-terra-ink)}.lb-card .sv-eyebrow{position:absolute;right:0;top:4px}.lb-card .sv-row{position:absolute;right:0;bottom:0;width:360px;justify-content:flex-end}.lb-card .sv-label-box{margin-right:380px}.lb-mx .sv-m-t,.lb-mx .sv-m-val{color:var(--fg)}.lb-mx .sv-m-h{grid-template-rows:34px 18px}.lb-mx{--sv-track:rgba(0,0,0,.12)}`,
+          css: `${BASE_CSS}${GEIGER_CSS}.lb-card{color:var(--fg)}.lb-card .sv-tag{color:var(--head-ink);border-left:6px solid var(--accent-terra-ink);padding-left:10px}.lb-card .sv-eyebrow{position:absolute;right:0;top:4px}.lb-card .sv-row{position:absolute;right:0;bottom:0;width:360px;justify-content:flex-end}.lb-card .sv-label-box{margin-right:380px}.lb-mx .sv-m-t,.lb-mx .sv-m-val{color:var(--fg)}.lb-mx .sv-m-h{grid-template-rows:34px 18px}.lb-mx{--sv-track:rgba(0,0,0,.12)}`,
         };
       },
     },
@@ -618,7 +618,7 @@ const labExposure = defineVariant({
             { tweens: stage.tweens(scene, i) },
           ),
           vars: { "--frame-edge": "#eab308" },
-          css: `${BASE_CSS}${GEIGER_CSS}.f-circle{border-style:dashed!important;border-width:18px!important;border-color:#1c1917!important;box-shadow:0 0 0 14px #eab308,0 30px 60px rgba(0,0,0,.35)!important}.lb-card2{color:var(--fg)}.lb-card2 .sv-tag{color:var(--accent-terra-ink)}.lb-mx2 .sv-m-t,.lb-mx2 .sv-m-val{color:var(--fg)}.lb-mx2{--sv-track:rgba(0,0,0,.12)}`,
+          css: `${BASE_CSS}${GEIGER_CSS}.f-circle{border-style:dashed!important;border-width:18px!important;border-color:#1c1917!important;box-shadow:0 0 0 14px #eab308,0 30px 60px rgba(0,0,0,.35)!important}.lb-card2{color:var(--fg)}.lb-card2 .sv-tag{color:var(--head-ink);border-left:6px solid var(--accent-terra-ink);padding-left:10px}.lb-mx2 .sv-m-t,.lb-mx2 .sv-m-val{color:var(--fg)}.lb-mx2{--sv-track:rgba(0,0,0,.12)}`,
         };
       },
     },

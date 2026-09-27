@@ -117,7 +117,7 @@ const warRoom = defineVariant({
           vars: { "--frame-edge": "rgba(244,246,240,.55)" },
           // Cảnh bị cắt ở x = 150 (mép thanh tựa dọc): khi chuyển cảnh kiểu trượt, nội dung biến mất ở mép thanh chứ không
           // trượt xuống DƯỚI nó (hyperframes text_occluded). Nội dung cảnh vốn nằm từ x 172 nên không bị cắt lúc đứng yên.
-          css: `${HEAD_CSS}${LEGEND_CSS}.v-scene{clip-path:inset(0 0 0 150px)}.h-side{background:linear-gradient(90deg,#4a321c,#6b4a2a 50%,#4a321c)!important;box-shadow:0 0 0 4px rgba(0,0,0,.35)}.h-side .h-title{color:#f4f1e6!important}.f-plain{background:rgba(255,255,255,.02);border-style:dashed!important;border-width:6px!important;box-shadow:none!important}.wr-hd2 .cm-hd-t{color:#ff9a92;text-transform:uppercase;letter-spacing:1px;text-shadow:0 0 10px rgba(255,90,79,.4)}.wr-lg .cm-lg-title{color:#ffd84a}.wr-lg .cm-lg-t{color:#f4f6f0}.wr-lg{border-right:3px dashed rgba(244,246,240,.35);padding-right:16px}`,
+          css: `${HEAD_CSS}${LEGEND_CSS}.h-side{background:linear-gradient(90deg,#4a321c,#6b4a2a 50%,#4a321c)!important;box-shadow:0 0 0 4px rgba(0,0,0,.35)}.h-side .h-title{color:#f4f1e6!important}.f-plain{background:rgba(255,255,255,.02);border-style:dashed!important;border-width:6px!important;box-shadow:none!important}.wr-hd2 .cm-hd-t{color:#ff9a92;text-transform:uppercase;letter-spacing:1px;text-shadow:0 0 10px rgba(255,90,79,.4)}.wr-lg .cm-lg-title{color:#ffd84a}.wr-lg .cm-lg-t{color:#f4f6f0}.wr-lg{border-right:3px dashed rgba(244,246,240,.35);padding-right:16px}`,
         };
       },
     },
@@ -456,7 +456,7 @@ const satellite = defineVariant({
           panel: (scene, i) => map.svg(scene, i),
           text: { style: "glass", region: { x: 40, y: 1400, w: 1000, h: 270 }, size: 44, enter: "fade_up" },
           sceneExtra: (scene, i, c) => {
-            const boxes = insets.map((inset, k) => `<div class="sat-in" data-layout-allow-overflow="true" id="sat-in-${scene.index}-${k}" style="${regionStyle({ x: 40 + k * 510, y: 1070, w: 490, h: 300 })}"><div class="sat-map" data-layout-allow-overflow="true">${inset.svg(scene, i)}</div><b>${escapeHtml(`${upper(c.ui.zoom, ctx.lang)} ${k + 1}`)}</b></div>`).join("");
+            const boxes = insets.map((inset, k) => `<div class="sat-in" data-layout-allow-overflow="true" id="sat-in-${scene.index}-${k}" style="${regionStyle({ x: 40 + k * 510, y: 1070, w: 490, h: 300 })}"><div class="sat-map" data-layout-allow-overflow="true" data-layout-allow-overlap="true">${inset.svg(scene, i)}</div><b>${escapeHtml(`${upper(c.ui.zoom, ctx.lang)} ${k + 1}`)}</b></div>`).join("");
             return merge(
               headline(scene, map.headline(i), { region: { x: 60, y: 380, w: 700, h: 70 }, cls: "sat-hd", size: 34, enter: "slide" }),
               { html: boxes, tweens: insets.flatMap((inset) => inset.tweens(scene, i)) },

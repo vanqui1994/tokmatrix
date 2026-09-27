@@ -56,6 +56,6 @@ test("scope isolates its reticle and stamp perforates only the edges", () => {
 
 test("fit script compresses nowrap text horizontally once data-fit-min is reached", () => {
   assert.match(FIT_SCRIPT, /\(nowrap\|pre\)/u);
-  assert.match(FIT_SCRIPT, /el\.style\.scale = \(innerW \/ el\.scrollWidth\)/u);
+  assert.match(FIT_SCRIPT, /el\.style\.scale = \(availW\(\) \/ el\.scrollWidth\)/u);
   assert.match(FIT_SCRIPT, /el\.style\.scale = "";/u, "a refit starts from the unscaled size");
 });

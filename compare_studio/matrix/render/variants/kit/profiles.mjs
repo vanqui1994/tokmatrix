@@ -124,13 +124,17 @@ function exit(ctx, vars, wanted) {
     { method: "set", target: ctx.prev, vars: { ...vars }, at: ctx.at },
   ];
 }
+// Vào bằng clip-path thì gỡ clip-path khi xong: clip "inset(0%)" còn sót khiến layout audit của HyperFrames dò điểm bằng
+// elementFromPoint, lớp phủ toàn màn (grain…) che điểm dò → coi cả khối cảnh là "bị cắt mất" và báo text_occluded giả.
 function enter(ctx, from, vars, wanted) {
   const d = span(ctx, wanted);
-  return { method: "fromTo", target: ctx.next, from, vars: { ...vars, duration: d, ease: "power2.out" }, at: ctx.at };
+  const tween = { method: "fromTo", target: ctx.next, from, vars: { ...vars, duration: d, ease: "power2.out" }, at: ctx.at };
+  if (!("clipPath" in vars)) return tween;
+  return [tween, { method: "set", target: ctx.next, vars: { clipPath: "none" }, at: Number((ctx.at + d).toFixed(3)) }];
 }
 
 export const TRANSITIONS = Object.freeze({
-  version: 3, // 3: exit kèm tl.set hard kill ở mốc chuyển cảnh
+  version: 4, // 3: exit kèm tl.set hard kill ở mốc chuyển cảnh; 4: gỡ clip-path sau khi vào, kiểu không exit cũng ẩn cảnh cũ
   items: {
     cut: () => [],
     fade_black: (ctx) => [exit(ctx, { autoAlpha: 0 }, 0.3), enter(ctx, { autoAlpha: 0 }, { autoAlpha: 1 }, 0.3)],
@@ -174,7 +178,12 @@ export const TRANSITIONS = Object.freeze({
 export function transitionTweens(id, ctx) {
   const make = TRANSITIONS.items[id];
   if (!make) throw new Error(`unknown transition ${id}`);
-  return make(ctx).flat();
+  const tweens = make(ctx).flat();
+  // Clip cũ kết thúc ở `at` vẫn còn hiện tại đúng khung `at` (HyperFrames tính biên cuối). Ẩn phần trong của nó bằng
+  // display:none (không phải visibility/opacity): chữ bị ẩn kiểu kia vẫn có hộp, layout audit coi cả clip là một khối
+  // chữ toàn màn và báo content_overlap/text_occluded với cảnh mới.
+  if (ctx.prev) tweens.push({ method: "set", target: ctx.prev, vars: { display: "none" }, at: ctx.at });
+  return tweens;
 }
 
 // --- Tone: dịch sắc độ/độ sáng trong họ màu của nước (0 = gốc). --------------------------------------------------
