@@ -1,5 +1,6 @@
 // Variant science: giải thích khoa học không ảnh (asset TEXT), 3 layout dựng tay, linh vật nước làm người dẫn
 // (docs/PLAN_compare_per_country.md bước 4). Mỗi cảnh: một "ý chính" rút từ lời đọc + sơ đồ SVG tất định + lời đọc.
+import { stackFamily } from "../kit/fonts.mjs";
 import { imageMotionTweens, transitionTweens } from "../kit/profiles.mjs";
 import { rngRange } from "../kit/rng.mjs";
 import { documentHtml, escapeHtml, fitText, overlayHtml, paletteCss, timelineJs, voiceClipsHtml } from "../kit/primitives.mjs";
@@ -53,7 +54,7 @@ const COMPOSITION_CSS = {
 .s-caption{background:rgba(0,0,0,.45);border:3px solid var(--panel-edge)}
 .s-caption .s-line{color:var(--fg-on-panel)}
 .s-diagram{--ink:var(--panel-edge)}
-.s-eyebrow{color:var(--panel-edge)!important}`,
+.s-eyebrow{border-left-color:var(--panel-edge)!important}`,
 };
 
 /** Sơ đồ tất định: quỹ đạo/vòng đo + các chấm; góc và số chấm lấy từ rng của video. */
@@ -121,7 +122,7 @@ ${scenesHtml}
 .s-caption{position:absolute;box-sizing:border-box;padding:24px 30px;display:flex}
 .s-line-box{flex:1;min-height:0;display:flex;align-items:center}
 .s-line{margin:0;font-size:50px;line-height:1.22;color:var(--fg)}
-.s-eyebrow{position:absolute;left:60px;top:70px;font-size:28px;letter-spacing:8px;font-weight:800;color:var(--accent-terra);font-family:${creative.theme.displayFont}}
+.s-eyebrow{position:absolute;left:60px;top:62px;font-size:28px;line-height:1.1;letter-spacing:8px;font-weight:800;color:var(--fg);border-left:6px solid var(--accent-terra);padding-left:12px;font-family:${creative.theme.displayFont}}
 .s-title{position:absolute;left:60px;top:110px;width:900px;height:${compositionId === "lab_notebook" ? 50 : 120}px}
 .s-title-text{margin:0;font-size:52px;line-height:1.08;font-weight:800;font-family:${creative.theme.displayFont};color:${compositionId === "hud_panel" ? "var(--fg-on-panel)" : "var(--fg)"}}
 ${mascotCss(creative.theme, layout.mascot)}
@@ -148,7 +149,8 @@ ${COMPOSITION_CSS[compositionId]}`;
     timelineJs: timelineJs(tweens),
     creative: creative.observability,
   });
-  return { html, cfg: { variant_id: creative.variant.id, composition: compositionId, caption: creative.dna.caption, scenes: scenes.length } };
+  // Font tiêu đề theo nước (theme.displayFont) phải được nhúng như font thân (@font-face offline).
+  return { html, fontFamilies: [stackFamily(creative.theme.displayFont)], cfg: { variant_id: creative.variant.id, composition: compositionId, caption: creative.dna.caption, scenes: scenes.length } };
 }
 
 const SAMPLE = {

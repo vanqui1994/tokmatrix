@@ -3,6 +3,7 @@
 // last_scene }; ảnh cảnh đầu của ứng viên làm icon; ứng viên "đập" vào bậc của nó ở cảnh cuối (cùng mốc slam + SFX).
 import tierlistEngine from "../../engines/tierlist.mjs";
 import { TIER_DEFINITIONS } from "../../../../tools/tierlist-configs.mjs";
+import { stackFamily } from "../kit/fonts.mjs";
 import { imageMotionTweens, transitionTweens } from "../kit/profiles.mjs";
 import { documentHtml, escapeHtml, fitText, overlayHtml, paletteCss, timelineJs, voiceClipsHtml } from "../kit/primitives.mjs";
 import { box, counterLabel, mascotCss, mascotHtml, mascotTweens, sceneWindows } from "../kit/scenes.mjs";
@@ -175,7 +176,8 @@ ${mascotCss(creative.theme, layout.mascot)}`;
     timelineJs: timelineJs(tweens),
     creative: creative.observability,
   });
-  return { html, cfg: { variant_id: creative.variant.id, composition: compositionId, caption: creative.dna.caption, items, headline: extras.headline } };
+  // Font tiêu đề theo nước (theme.displayFont) phải được nhúng như font thân (@font-face offline).
+  return { html, fontFamilies: [stackFamily(creative.theme.displayFont)], cfg: { variant_id: creative.variant.id, composition: compositionId, caption: creative.dna.caption, items, headline: extras.headline } };
 }
 
 const SAMPLE = {

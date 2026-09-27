@@ -1,6 +1,7 @@
 // Variant kinetic: chữ động không ảnh (asset TEXT), 3 layout dựng tay + linh vật nước (docs/PLAN_compare_per_country.md
 // bước 4). Mỗi cảnh: một cụm chữ lớn (rút từ lời đọc) + lời đọc đầy đủ + thẻ đếm; theme nước đặt font tiêu đề,
 // hoa văn và linh vật; bộ da chọn layout, vị trí lời đọc, font chữ thân, lớp phủ, chuyển động chữ, chuyển cảnh, sắc độ.
+import { stackFamily } from "../kit/fonts.mjs";
 import { imageMotionTweens, transitionTweens } from "../kit/profiles.mjs";
 import { rngRange } from "../kit/rng.mjs";
 import { documentHtml, escapeHtml, fitText, overlayHtml, paletteCss, timelineJs, voiceClipsHtml } from "../kit/primitives.mjs";
@@ -63,7 +64,7 @@ function buildHtml(ctx) {
   const scenesHtml = scenes.map((scene, i) => `
 <div id="k-scene-${scene.index}" class="clip k-scene" data-start="${scene.visualStart}" data-duration="${scene.visualDuration}" data-track-index="${scene.track}">
   <div class="k-inner" id="k-inner-${scene.index}">
-    ${creative.composition.id === "split_band" ? `<div class="k-num">${String(scene.index).padStart(2, "0")}</div>` : ""}
+    ${creative.composition.id === "split_band" ? `<div class="k-num" data-layout-ignore>${String(scene.index).padStart(2, "0")}</div>` : ""}
     <div class="k-word" style="${box(layout.word)}" data-text-region="headline"><div class="k-word-in" id="k-word-${scene.index}" style="transform:rotate(${creative.composition.id === "tilted_board" ? 0 : tilts[i]}deg)">${fitText("p", 'class="k-big"', scene.punchline || shortPhrase(scene.line), 40)}</div></div>
     <div class="k-caption" style="${box(captionBox)}" data-text-region="caption">
       <div class="k-tag">${escapeHtml(BADGE[code] || BADGE.en)} · ${counterLabel(scene.index, scenes.length)}</div>
@@ -94,7 +95,7 @@ ${scenesHtml}
 .k-line-box{flex:1;min-height:0;display:flex;align-items:center}
 .k-line{margin:0;font-size:50px;line-height:1.22}
 .k-title{position:absolute;left:60px;top:40px;width:820px;height:70px}
-.k-title-text{margin:0;font-size:36px;line-height:1.1;font-weight:800;font-family:${creative.theme.displayFont};color:var(--fg-dim)}
+.k-title-text{margin:0;font-size:36px;line-height:1.1;font-weight:800;font-family:${creative.theme.displayFont};color:var(--fg)}
 ${creative.composition.id === "split_band" ? ".k-title-text{color:var(--fg-on-panel)}" : ""}
 ${mascotCss(creative.theme, layout.mascot)}
 ${COMPOSITION_CSS[creative.composition.id]}`;
@@ -119,7 +120,8 @@ ${COMPOSITION_CSS[creative.composition.id]}`;
     timelineJs: timelineJs(tweens),
     creative: creative.observability,
   });
-  return { html, cfg: { variant_id: creative.variant.id, composition: creative.composition.id, caption: creative.dna.caption, scenes: scenes.length } };
+  // Font tiêu đề theo nước (theme.displayFont) phải được nhúng như font thân (@font-face offline).
+  return { html, fontFamilies: [stackFamily(creative.theme.displayFont)], cfg: { variant_id: creative.variant.id, composition: creative.composition.id, caption: creative.dna.caption, scenes: scenes.length } };
 }
 
 const SAMPLE = {
