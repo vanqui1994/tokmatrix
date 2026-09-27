@@ -44,16 +44,25 @@ def _creative_meta(index_html: str) -> Dict[str, Any]:
     return json.loads(html.unescape(match.group(1))) if match else {}
 
 
-def preview_samples(manifest_path: Path, work: Path) -> List[Dict[str, Any]]:
+def preview_samples(manifest_path: Path, work: Path, jobs: int = 1) -> List[Dict[str, Any]]:
     sheet = _contact_sheet_module()
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
-    samples = []
-    for entry in manifest["entries"]:
+
+    def shots_for(entry: Dict[str, Any]) -> List[Path]:
         frames_dir = work / "frames" / entry["slug"]
         shots = sorted(frames_dir.glob("*.png")) if frames_dir.exists() else []
         if len(shots) < len(POSITIONS):
             times = [round(entry["duration"] * p, 2) for p in POSITIONS]
             shots = sheet.snapshot(Path(entry["dir"]), times, frames_dir)
+        return shots
+
+    # Chụp khung là phần chậm (~10 s/preview): chạy song song `jobs` tiến trình hyperframes; features tính tuần tự.
+    from concurrent.futures import ThreadPoolExecutor
+
+    with ThreadPoolExecutor(max_workers=max(1, jobs)) as pool:
+        all_shots = list(pool.map(shots_for, manifest["entries"]))
+    samples = []
+    for entry, shots in zip(manifest["entries"], all_shots):
         frames = [np.asarray(Image.open(shot).convert("RGB").resize(FRAME_SIZE)) for shot in shots[: len(POSITIONS)]]
         index_html = (Path(entry["dir"]) / "index.html").read_text(encoding="utf-8")
         samples.append({
@@ -128,6 +137,7 @@ def main(argv=None) -> int:
     p.add_argument("--work", required=True)
     p.add_argument("--sheet")
     p.add_argument("--threshold", type=float)
+    p.add_argument("--jobs", type=int, default=1, help="parallel hyperframes snapshot processes")
     c = sub.add_parser("conflicts", help="gộp các similarity.json thành danh sách cặp cấu trúc vượt ngưỡng cho gán DNA")
     c.add_argument("--report", action="append", required=True)
     c.add_argument("--out", required=True)
@@ -148,7 +158,7 @@ def main(argv=None) -> int:
     if args.cmd == "previews":
         work = Path(args.work)
         work.mkdir(parents=True, exist_ok=True)
-        samples = preview_samples(Path(args.manifest), work)
+        samples = preview_samples(Path(args.manifest), work, args.jobs)
         # Preview: features phụ thuộc bản build → không cache vào DB chung (khoá slug trùng giữa các lần dựng).
         features = {s["slug"]: extract_all(s) for s in samples}
         if args.sheet:
