@@ -210,7 +210,7 @@ const mapRoute = defineVariant({
             return { ...route, html: route.html + box({ x: 830, y: 1400, w: 200, h: 200 }, "vm-compass"), css: `${route.css}.vm-compass{position:absolute;border-radius:50%;border:6px solid #18202c;background:conic-gradient(from -22.5deg,#d62b1f 0 45deg,transparent 45deg 180deg,#18202c 180deg 225deg,transparent 225deg);box-shadow:0 10px 20px rgba(0,0,0,.25)}` };
           },
           vars: { "--frame-edge": "#fff" },
-          css: `${MAP_TEXT_CSS}.h-center-label{color:#8a1c14}.h-rule{background:#8a1c14}#root .f-plain{border-radius:26px;border-width:12px}#v-overlay .vm-layer{pointer-events:none}${scenes.map((scene, k) => { const p = place(k); return `#v-frame-${scene.index}{left:${p.x}px!important;top:${p.y}px!important}`; }).join("")}`,
+          css: `${MAP_TEXT_CSS}.h-rule{background:#8a1c14}#root .f-plain{border-radius:26px;border-width:12px}#v-overlay .vm-layer{pointer-events:none}${scenes.map((scene, k) => { const p = place(k); return `#v-frame-${scene.index}{left:${p.x}px!important;top:${p.y}px!important}`; }).join("")}`,
         };
       },
     },
@@ -411,7 +411,7 @@ const docLowerThird = defineVariant({
         visual: { frame: "letterbox", region: { x: 0, y: 540, w: 1080, h: 700 } },
         text: { style: "glass", region: { x: 60, y: 1300, w: 960, h: 340 }, size: 48, enter: "fade_up" },
         tag: { style: "chip", x: 60, y: 470, format: (i, n, u) => `${upperText(u.scene, lang)} ${pad2(i + 1)}` },
-        css: ".h-center-label{color:var(--accent-terra-ink)}.h-rule{background:var(--accent-terra-ink)}.t-glass{background:rgba(10,12,16,.86)}",
+        css: ".h-rule{background:var(--accent-terra-ink)}.t-glass{background:rgba(10,12,16,.86)}",
       }),
     },
   },

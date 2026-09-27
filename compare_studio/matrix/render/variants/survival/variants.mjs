@@ -106,7 +106,7 @@ const endurance = defineVariant({
             return { html, css: ".en-lane{position:absolute;left:40px;top:630px;width:1000px;height:130px}.en-lane-track{position:absolute;left:0;right:0;top:52px;height:34px;background:#c2410c;border-top:4px solid #fff;border-bottom:4px solid #fff}.en-lane-mark{position:absolute;top:40px;width:6px;height:58px;margin-left:-3px;background:#fff}.en-runner{position:absolute;left:0;top:20px;width:64px;height:64px;margin-left:-32px;border-radius:50%;background:#111;border:8px solid #fde047;box-sizing:border-box}", tweens: stepTweens("#en-runner", c.scenes, (k) => x(k), { prop: "x", initial: x(0) }) };
           },
           vars: { "--frame-edge": "#c2410c" },
-          css: `${BASE_CSS}.h-center-label{color:#9a3412!important}.en-card2{color:var(--fg);padding:10px 0}.en-card2 .sv-tag{color:#c2410c}.en-card2 .sv-eyebrow{color:var(--fg-dim)}.en-mx2 .sv-m-t,.en-mx2 .sv-m-val{color:var(--fg)}`,
+          css: `${BASE_CSS}.en-card2{color:var(--fg);padding:10px 0}.en-card2 .sv-tag{color:#c2410c}.en-card2 .sv-eyebrow{color:var(--fg-dim)}.en-mx2 .sv-m-t,.en-mx2 .sv-m-val{color:var(--fg)}`,
         };
       },
     },

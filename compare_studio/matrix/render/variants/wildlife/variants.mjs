@@ -503,8 +503,9 @@ const statBattle = defineVariant({
             return {
               html: sp.stats.map((stat, k) => battleBlock(stat, cells[k], ids[k], { valueSize: 60, labelSize: 24 })).join("")
                 + box({ x: 50, y: 1370, w: 980, h: 130 }, "", { cls: "wl-sb-plate" })
-                + fitBox({ x: 74, y: 1380, w: 650, h: 70 }, upper(sp.name, ctx.lang), { cls: "wl-sb-name", size: 58 })
-                + fitBox({ x: 74, y: 1450, w: 650, h: 42 }, sp.latin || "—", { cls: "wl-sb-sub wl-sb-ital", size: 30 })
+                // Hộp chữ font CJK/chữ có dấu cao ~1.45× cỡ chữ: tên 52 px trong 74 px, dòng Latin bắt đầu sau đó (không chồng).
+                + fitBox({ x: 74, y: 1374, w: 650, h: 74 }, upper(sp.name, ctx.lang), { cls: "wl-sb-name", size: 52 })
+                + fitBox({ x: 74, y: 1452, w: 650, h: 42 }, sp.latin || "—", { cls: "wl-sb-sub wl-sb-ital", size: 28 })
                 + iucnBadge({ x: 746, y: 1384, w: 266, h: 102 }, sp, { size: 64 })
                 + fitBox({ x: 50, y: 1512, w: 600, h: 44 }, sp.habitat || "—", { cls: "wl-sb-sub", size: 28 })
                 + fitBox({ x: 660, y: 1512, w: 370, h: 44 }, `IUCN · ${sp.label}`, { cls: "wl-sb-sub wl-sb-right", size: 28 }),

@@ -262,7 +262,7 @@ function xrayPanel(scene, i, ctx, id, halves = true, kwSize = 50, kwMin = 20) {
   return `<div class="sc-xr"><div class="sc-half vis"><div class="sc-hl">${escapeHtml(ctx.ui.normal)}</div><div class="sc-blob"></div>${fit("sc-hk", key(scene, ctx), 50)}</div>`
     + `<div class="sc-half ray"><div class="sc-hl">${escapeHtml(ctx.ui.xray)}</div>${bones}${fit("sc-hk", key(scene, ctx), 50)}</div><i class="sc-scan" id="${id}"></i></div>`;
 }
-const XRAY_CSS = ".h-center-label{color:#0b3a5a!important}.sc-xr{position:absolute;inset:0;display:flex}.sc-half{position:relative;flex:1;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding:0 20px 40px;box-sizing:border-box}"
+const XRAY_CSS = ".sc-xr{position:absolute;inset:0;display:flex}.sc-half{position:relative;flex:1;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding:0 20px 40px;box-sizing:border-box}"
   + ".sc-half.vis{background:linear-gradient(180deg,#f6e7cf,#e0c49a)}.sc-half.ray{background:radial-gradient(ellipse,#16395a,#030a14 80%)}"
   + ".sc-hl{position:absolute;left:20px;top:20px;font-size:28px;letter-spacing:4px;padding:4px 12px}.vis .sc-hl{background:#3a2a18;color:#f6e7cf}.ray .sc-hl{background:#bfe9ff;color:#03101c}"
   + ".sc-blob{position:absolute;left:18%;top:18%;width:64%;height:52%;border-radius:45% 55% 40% 60%;background:radial-gradient(circle at 40% 35%,#d9a066,#9a5a2c)}"
@@ -332,7 +332,7 @@ function tileHtml(scene, i, ctx, cls = "sc-tile", nameSize = 44, nameMin = 18) {
   const k = key(scene, ctx);
   return `<div class="${cls}" style="--h:${(200 + i * 53) % 360}"><div class="sc-z">${escapeHtml(num(scene) || String(i + 1))}</div><div class="sc-sym">${escapeHtml(symbolOf(k, ctx.lang))}</div>${fit("sc-name", k, nameSize, nameMin)}</div>`;
 }
-const TILE_CSS = ".h-center-label{color:#5b2a00!important}.sc-tile{position:absolute;inset:0;box-sizing:border-box;padding:30px 36px;display:flex;flex-direction:column;justify-content:space-between;background:linear-gradient(160deg,hsl(var(--h),60%,34%),hsl(var(--h),60%,18%));border:8px solid #fff}"
+const TILE_CSS = ".sc-tile{position:absolute;inset:0;box-sizing:border-box;padding:30px 36px;display:flex;flex-direction:column;justify-content:space-between;background:linear-gradient(160deg,hsl(var(--h),60%,34%),hsl(var(--h),60%,18%));border:8px solid #fff}"
   + ".sc-z{font-size:60px;font-weight:700;color:#fff;white-space:nowrap}.sc-sym{font-size:260px;line-height:1;font-weight:700;color:#fff;text-align:center}.sc-name{color:#fff;text-align:center;white-space:nowrap;max-width:100%}";
 
 const periodic = defineVariant({
@@ -490,7 +490,7 @@ function slideHtml(scene, i, ctx) {
     + `<div class="sc-sk">${fit("sc-sk-t", key(scene, ctx), 80, 24)}</div>`
     + `<div class="sc-sf"><span>${escapeHtml(n ? `= ${n}` : "•")}</span><em>${escapeHtml(ctx.ui.scene)} ${i + 1}/${ctx.scenes.length}</em></div></div>`;
 }
-const SLIDE_CSS = ".h-center-label{color:#8a1c14!important}.sc-slide{position:absolute;inset:0;background:#fbfdff;display:flex;flex-direction:column;padding:34px 40px;box-sizing:border-box;border-top:22px solid var(--accent-terra-ink)}"
+const SLIDE_CSS = ".sc-slide{position:absolute;inset:0;background:#fbfdff;display:flex;flex-direction:column;padding:34px 40px;box-sizing:border-box;border-top:22px solid var(--accent-terra-ink)}"
   + ".sc-sth{height:48px;flex:none}.sc-st{color:#243240;white-space:nowrap;max-width:100%}.sc-sk{flex:1;display:flex;align-items:center;justify-content:center;min-height:0}.sc-sk-t{font-weight:700;color:#10202e;text-align:center;white-space:nowrap;max-width:100%}"
   + ".sc-sf{display:flex;justify-content:space-between;align-items:flex-end}.sc-sf span{font-size:64px;font-weight:700;color:var(--accent-terra-ink);white-space:nowrap}.sc-sf em{font-style:normal;font-size:28px;color:#556;white-space:nowrap}"
   + "#root .f-plain{border:10px solid #2d3238;transform:none!important}";
