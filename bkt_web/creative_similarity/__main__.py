@@ -15,6 +15,7 @@ import html
 import importlib.util
 import json
 import re
+import shutil
 import subprocess
 import sys
 from pathlib import Path
@@ -53,7 +54,12 @@ def preview_samples(manifest_path: Path, work: Path, jobs: int = 1) -> List[Dict
         shots = sorted(frames_dir.glob("*.png")) if frames_dir.exists() else []
         if len(shots) < len(POSITIONS):
             times = [round(entry["duration"] * p, 2) for p in POSITIONS]
-            shots = sheet.snapshot(Path(entry["dir"]), times, frames_dir)
+            try:
+                shots = sheet.snapshot(Path(entry["dir"]), times, frames_dir)
+            except (subprocess.TimeoutExpired, subprocess.CalledProcessError, RuntimeError):
+                # Một lần chụp treo/lỗi (Chrome bận khi chạy song song) không được bỏ cả lượt đo ~1 giờ: thử lại một lần.
+                shutil.rmtree(frames_dir, ignore_errors=True)
+                shots = sheet.snapshot(Path(entry["dir"]), times, frames_dir)
         return shots
 
     # Chụp khung là phần chậm (~10 s/preview): chạy song song `jobs` tiến trình hyperframes; features tính tuần tự.
