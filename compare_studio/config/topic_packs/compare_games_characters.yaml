@@ -1,0 +1,7 @@
+id: compare_games_characters
+engine: compare
+format: versus
+brief: "Two technologies or machines compared as trading cards: A vs B"
+languages: [en, de, ko, ja]
+niches:
+  - tech_ai_future

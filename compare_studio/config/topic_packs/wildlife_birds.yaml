@@ -1,0 +1,7 @@
+id: wildlife_birds
+engine: wildlife
+format: free
+brief: "Bird identification, behaviour and field marks"
+languages: [en, de, ko, ja]
+niches:
+  - extreme_wildlife

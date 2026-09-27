@@ -1,0 +1,8 @@
+id: folklore_yokai
+engine: folklore
+format: free
+brief: "Japanese yokai creatures and their legends"
+languages: [en, de, ko, ja]
+niches:
+  - folklore_legends
+  - ancient_mythology

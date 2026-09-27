@@ -225,11 +225,12 @@ ${over.css}
 ${overlay?.css || ""}
 ${design.css || ""}`;
 
+  const observability = { ...creative.observability, layout: layoutRegions(design) };
   const html = documentHtml({
     slug, lang, totalDuration, css, body,
     audioHtml: `${cinemaAudioHtml || ""}\n${voiceClipsHtml(scenes)}`,
     timelineJs: timelineJs(tweens),
-    creative: { ...creative.observability, layout: layoutRegions(design) },
+    creative: observability,
   });
-  return { html, cfg: { variant_id: creative.variant.id, composition: creative.composition.id, scenes: n, ...cfg } };
+  return { html, creative: observability, cfg: { variant_id: creative.variant.id, composition: creative.composition.id, scenes: n, ...cfg } };
 }

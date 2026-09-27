@@ -1,0 +1,7 @@
+id: wildlife_insects
+engine: wildlife
+format: free
+brief: "Insects and small invertebrates up close"
+languages: [en, de, ko, ja]
+niches:
+  - extreme_wildlife

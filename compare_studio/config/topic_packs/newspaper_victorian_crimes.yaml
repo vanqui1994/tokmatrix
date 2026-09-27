@@ -1,0 +1,9 @@
+id: newspaper_victorian_crimes
+engine: newspaper
+format: free
+brief: "Notorious crimes from Victorian-era newspaper reports"
+languages: [en, de, ko, ja]
+niches:
+  - unsolved_mysteries
+  - infamous_figures
+  - dark_psychology

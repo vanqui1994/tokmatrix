@@ -1,0 +1,8 @@
+id: compare_animal_fights
+engine: compare
+format: versus
+brief: "Two animals in a hypothetical fight: A vs B with real stats"
+languages: [en, de, ko, ja]
+niches:
+  - extreme_wildlife
+  - ocean_mysteries

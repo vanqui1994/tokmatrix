@@ -1,0 +1,7 @@
+id: wildlife_elusive_mammals
+engine: wildlife
+format: free
+brief: "Rarely seen, elusive mammals"
+languages: [en, de, ko, ja]
+niches:
+  - extreme_wildlife

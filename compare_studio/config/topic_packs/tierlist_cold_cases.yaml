@@ -1,0 +1,9 @@
+id: tierlist_cold_cases
+engine: tierlist
+format: ranking
+brief: "Ranking the most baffling cold cases"
+languages: [en, de, ko, ja]
+niches:
+  - unsolved_mysteries
+  - infamous_figures
+  - dark_psychology

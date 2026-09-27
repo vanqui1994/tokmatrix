@@ -1,0 +1,7 @@
+id: wildlife_animal_battles
+engine: wildlife
+format: free
+brief: "Head-to-head stat matchups between two animals"
+languages: [en, de, ko, ja]
+niches:
+  - extreme_wildlife

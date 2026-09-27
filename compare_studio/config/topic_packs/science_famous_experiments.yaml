@@ -1,0 +1,9 @@
+id: science_famous_experiments
+engine: science
+format: free
+brief: "Landmark experiments in the history of science"
+languages: [en, de, ko, ja]
+niches:
+  - forbidden_experiments
+  - philosophy_paradox
+  - dark_psychology

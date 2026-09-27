@@ -1,0 +1,8 @@
+id: tierlist_ancient_weapons
+engine: tierlist
+format: ranking
+brief: "Ranking ancient and medieval weapons"
+languages: [en, de, ko, ja]
+niches:
+  - military_arsenal
+  - lost_civilizations

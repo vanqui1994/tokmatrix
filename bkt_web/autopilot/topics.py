@@ -100,12 +100,16 @@ def _ask_gemini(prompt: str) -> str:
     raise RuntimeError("Gemini lỗi — " + "; ".join(errors))
 
 
-def generate(niche_id: str, existing: List[str], count: int = 40) -> List[str]:
-    """Gemini viết `count` topic tiếng Anh mới, mỗi topic một chủ thể khác nhau và khác mọi topic đã có."""
+def generate(niche_id: str, existing: List[str], count: int = 40, brief: str = "") -> List[str]:
+    """Gemini viết `count` topic tiếng Anh mới, mỗi topic một chủ thể khác nhau và khác mọi topic đã có.
+
+    `brief` (topic pack) thu hẹp mảng chủ đề trong niche."""
     sample = "\n".join(f"- {t}" for t in existing[-150:])
+    focus = f"Every topic must fit this series brief: {brief}\n" if brief else ""
     prompt = (
         f"You write video topics for a short-form (60-second) faceless TikTok channel in the niche "
         f"\"{_niche_name(niche_id)}\" (id: {niche_id}).\n"
+        f"{focus}"
         f"Write {count} NEW topics in English, one per line, no numbering, no quotes, 5-14 words each, "
         "in the same style as the existing ones (a concrete subject plus an angle).\n"
         "Rules:\n"
@@ -145,4 +149,28 @@ def refill(niche_id: str, existing: List[str], need: int) -> int:
     with generated_file(niche_id).open("a", encoding="utf-8") as handle:
         handle.write("\n".join(fresh) + "\n")
     store.log_event(f"🧠 {niche_id}: Gemini viết thêm {len(fresh)} topic (storage/autopilot_topics/{niche_id}.txt)")
+    return len(fresh)
+
+
+def refill_pack(pack: dict, niche_id: str, existing: List[str], need: int) -> int:
+    """Viết thêm topic cho một topic pack (theo brief) vào storage/autopilot_topics/packs/<pack>.txt."""
+    from . import topic_packs
+
+    key = f"pack:{pack['id']}"
+    if time.time() < _failed_until.get(key, 0):
+        return 0
+    try:
+        fresh = generate(niche_id, existing, count=max(20, need * 2), brief=str(pack.get("brief") or ""))
+    except Exception as exc:
+        _failed_until[key] = time.time() + 1800
+        store.log_event(f"⚠️ Không sinh được topic cho pack {pack['id']}: {exc}", "warn")
+        return 0
+    if not fresh:
+        _failed_until[key] = time.time() + 1800
+        return 0
+    path = topic_packs.generated_file(pack["id"])
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("a", encoding="utf-8") as handle:
+        handle.write("\n".join(fresh) + "\n")
+    store.log_event(f"🧠 pack {pack['id']}: Gemini viết thêm {len(fresh)} topic")
     return len(fresh)

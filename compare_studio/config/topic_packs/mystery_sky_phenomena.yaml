@@ -1,0 +1,9 @@
+id: mystery_sky_phenomena
+engine: mystery
+format: free
+brief: "Unexplained lights, radar contacts and sky phenomena"
+languages: [en, de, ko, ja]
+niches:
+  - unsolved_mysteries
+  - deep_space
+  - tech_ai_future

@@ -1,0 +1,8 @@
+id: science_everyday_physics
+engine: science
+format: free
+brief: "Everyday physics questions explained"
+languages: [en, de, ko, ja]
+niches:
+  - philosophy_paradox
+  - tech_ai_future

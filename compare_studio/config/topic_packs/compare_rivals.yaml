@@ -1,0 +1,9 @@
+id: compare_rivals
+engine: compare
+format: versus
+brief: "Two famous rivals in a head-to-head matchup: A vs B"
+languages: [en, de, ko, ja]
+niches:
+  - economy_empires
+  - tech_ai_future
+  - military_arsenal

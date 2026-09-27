@@ -1,0 +1,9 @@
+id: chalk_historic_campaigns
+engine: chalk
+format: free
+brief: "Famous military campaigns traced on the map"
+languages: [en, de, ko, ja]
+niches:
+  - military_arsenal
+  - lost_civilizations
+  - infamous_figures

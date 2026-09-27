@@ -1,0 +1,9 @@
+id: tierlist_conspiracies
+engine: tierlist
+format: ranking
+brief: "Ranking famous conspiracy theories by evidence"
+languages: [en, de, ko, ja]
+niches:
+  - unsolved_mysteries
+  - dark_psychology
+  - philosophy_paradox

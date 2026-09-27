@@ -1,0 +1,9 @@
+id: tierlist_science_extremes
+engine: tierlist
+format: ranking
+brief: "Ranking the most extreme scientific phenomena"
+languages: [en, de, ko, ja]
+niches:
+  - deep_space
+  - forbidden_experiments
+  - medical_anomalies

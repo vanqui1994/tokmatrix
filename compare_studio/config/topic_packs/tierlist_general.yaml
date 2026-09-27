@@ -1,0 +1,10 @@
+id: tierlist_general
+engine: tierlist
+format: ranking
+brief: "Ranking items in the niche by a clear criterion"
+languages: [en, de, ko, ja]
+niches:
+  - dark_psychology
+  - philosophy_paradox
+  - infamous_figures
+  - mega_catastrophes

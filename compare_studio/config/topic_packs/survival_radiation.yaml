@@ -1,0 +1,10 @@
+id: survival_radiation
+engine: survival
+format: free
+brief: "What radiation exposure does to the body"
+languages: [en, de, ko, ja]
+niches:
+  - forbidden_experiments
+  - mega_catastrophes
+  - medical_anomalies
+  - military_arsenal

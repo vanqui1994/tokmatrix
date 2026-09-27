@@ -7,6 +7,7 @@ import Ajv from "ajv";
 import YAML from "yaml";
 import { getVoice } from "./voices.mjs";
 import { getVariant } from "../matrix/render/variants/index.mjs";
+import { COMPARE_TOPIC_MIN } from "../matrix/planner/template-selector.mjs";
 import { validateDna } from "../matrix/render/variants/dna.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../config");
@@ -32,7 +33,7 @@ function readSchemas(configDir) {
 function listYamlFiles(dir) {
   return fs.readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
     const fullPath = path.join(dir, entry.name);
-    if (entry.isDirectory()) return entry.name === "schemas" ? [] : listYamlFiles(fullPath);
+    if (entry.isDirectory()) return ["schemas", "topic_packs"].includes(entry.name) ? [] : listYamlFiles(fullPath);
     return /\.ya?ml$/i.test(entry.name) ? [fullPath] : [];
   });
 }
@@ -99,7 +100,11 @@ function validateRelations(documents, errors) {
     }
     const compatible = new Set(engineIds.filter((id) => matrixNiche.scores[id] >= matrix.minimum_score));
     for (const engineId of data.creative.preferred_engines) {
-      if (!compatible.has(engineId) || !nicheConfig.allowed_engines.includes(engineId)) {
+      // Kênh variant compare: đề tài luôn "A vs B" (topic pack format versus), nên chỉ cần điểm compare của niche
+      // ≥ COMPARE_TOPIC_MIN như đường topicEngine — compare cố ý không nằm trong allowed_engines.
+      const compareVariant = engineId === "compare" && String(data.creative.variant_id || "").startsWith("compare/")
+        && (matrixNiche.scores.compare ?? 0) >= COMPARE_TOPIC_MIN;
+      if (!compareVariant && (!compatible.has(engineId) || !nicheConfig.allowed_engines.includes(engineId))) {
         errors.push(`${relativePath}: engine ${engineId} is not allowed for ${data.niche_id}`);
       }
     }

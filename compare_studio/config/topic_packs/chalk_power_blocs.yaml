@@ -1,0 +1,9 @@
+id: chalk_power_blocs
+engine: chalk
+format: free
+brief: "Alliances and power blocs and how they divide the map"
+languages: [en, de, ko, ja]
+niches:
+  - geopolitics_maps
+  - economy_empires
+  - military_arsenal

@@ -1,0 +1,9 @@
+id: mystery_cryptids
+engine: mystery
+format: free
+brief: "Cryptid sightings, tracks and the people who reported them"
+languages: [en, de, ko, ja]
+niches:
+  - unsolved_mysteries
+  - folklore_legends
+  - ancient_mythology

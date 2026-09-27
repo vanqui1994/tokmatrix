@@ -1,0 +1,8 @@
+id: folklore_trickster_tales
+engine: folklore
+format: free
+brief: "Trickster folk tales from around the world"
+languages: [en, de, ko, ja]
+niches:
+  - folklore_legends
+  - ancient_mythology

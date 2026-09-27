@@ -1,0 +1,7 @@
+id: science_planets
+engine: science
+format: free
+brief: "Planets and moons"
+languages: [en, de, ko, ja]
+niches:
+  - deep_space

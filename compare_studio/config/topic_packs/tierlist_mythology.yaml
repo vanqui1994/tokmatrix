@@ -1,0 +1,8 @@
+id: tierlist_mythology
+engine: tierlist
+format: ranking
+brief: "Ranking mythological gods, heroes and monsters"
+languages: [en, de, ko, ja]
+niches:
+  - ancient_mythology
+  - folklore_legends

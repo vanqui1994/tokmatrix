@@ -1,0 +1,9 @@
+id: newspaper_maritime_mysteries
+engine: newspaper
+format: free
+brief: "Shipwrecks, ghost ships and lost crews reported in old newspapers"
+languages: [en, de, ko, ja]
+niches:
+  - unsolved_mysteries
+  - mega_catastrophes
+  - extreme_survival

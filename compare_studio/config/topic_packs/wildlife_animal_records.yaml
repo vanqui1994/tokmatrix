@@ -1,0 +1,8 @@
+id: wildlife_animal_records
+engine: wildlife
+format: free
+brief: "Fastest, strongest, biggest: animal record holders"
+languages: [en, de, ko, ja]
+niches:
+  - extreme_wildlife
+  - ocean_mysteries

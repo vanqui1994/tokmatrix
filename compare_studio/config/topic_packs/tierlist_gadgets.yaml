@@ -1,0 +1,7 @@
+id: tierlist_gadgets
+engine: tierlist
+format: ranking
+brief: "Ranking gadgets and technologies"
+languages: [en, de, ko, ja]
+niches:
+  - tech_ai_future

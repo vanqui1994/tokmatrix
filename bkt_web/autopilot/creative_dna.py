@@ -1,11 +1,16 @@
-"""Gán Creative DNA cho account (docs/MATRIX_VARIANT_SYSTEM_V2.md mục 11) — Phase 0: chỉ DRY-RUN.
+"""Gán Creative DNA cho account (docs/MATRIX_VARIANT_SYSTEM_V2.md mục 11–12).
 
-Tất định: không đọc đồng hồ, không random; mọi tie-break là sha256 của (channel_id | …). Không ghi file nào
-trừ khi truyền ``--out`` (file plan JSON, nên đặt ngoài repo). ``--apply`` thuộc Phase 6 (transaction theo lô,
-khoá migration, Autopilot paused) và bị từ chối ở đây.
+Dry-run (mặc định) tất định: không đọc đồng hồ, không random; mọi tie-break là sha256 của (channel_id | …). Không
+ghi file nào trừ khi truyền ``--out`` (file plan JSON). Structural identity được ghép cặp tối đa theo từng nước.
+
+``--apply`` (Phase 6) nhận ĐÚNG file plan đã duyệt (``--plan`` + ``--plan-sha``), không tính lại; transaction theo lô:
+Autopilot paused/tắt, không có batch-matrix chạy, khoá ``channels/.migration.lock``, áp lên bản sao → validator toàn bộ
+→ backup → ``os.replace`` từng file (lỗi → khôi phục), ghi inverse plan để rollback (``--rollback <inverse.json>``).
 
     python3 -m bkt_web.autopilot.creative_dna --dry-run [--include-reference] [--mapping map.json | --from-db]
                                               [--channels a,b] [--out /tmp/plan.json] [--json]
+    python3 -m bkt_web.autopilot.creative_dna --apply --plan plan.json --plan-sha <sha> [--config-dir DIR] [--backup-dir DIR]
+    python3 -m bkt_web.autopilot.creative_dna --rollback /opt/tokmatrix-backups/creative-dna-<ts>/inverse.json
 
 Registry, luật trục và danh sách giọng đọc từ Node (``tools/list-variants.mjs``) — một nguồn sự thật.
 """
@@ -15,9 +20,14 @@ import argparse
 import hashlib
 import itertools
 import json
+import contextlib
+import os
+import shutil
 import sqlite3
 import subprocess
 import sys
+import tempfile
+import time
 from pathlib import Path
 from typing import Any, Dict, Iterable, List, Optional, Tuple
 
@@ -72,12 +82,23 @@ def load_channels(config_dir: Path = CONFIG_DIR) -> Dict[str, Dict[str, Any]]:
     return channels
 
 
+COMPARE_TOPIC_MIN = 0.5  # = COMPARE_TOPIC_MIN trong matrix/planner/template-selector.mjs
+
+
 def load_niche_engines(config_dir: Path = CONFIG_DIR) -> Dict[str, List[str]]:
+    """niche → engine gán được. compare không nằm trong allowed_engines (cố ý) nhưng kênh variant compare hợp lệ khi
+    điểm compare của niche ≥ COMPARE_TOPIC_MIN (validator cùng luật), vì topic pack versus luôn cho đề tài "A vs B"."""
     result = {}
     for path in sorted((config_dir / "niches").glob("*.yaml")):
         cfg = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
         if cfg.get("niche_id"):
             result[cfg["niche_id"]] = list(cfg.get("allowed_engines") or [])
+    matrix_file = config_dir / "compatibility_matrix.yaml"
+    if matrix_file.exists():
+        matrix = yaml.safe_load(matrix_file.read_text(encoding="utf-8")) or {}
+        for niche in matrix.get("niches", []):
+            if niche.get("id") in result and float((niche.get("scores") or {}).get("compare", 0)) >= COMPARE_TOPIC_MIN:
+                result[niche["id"]].append("compare")
     return result
 
 
@@ -117,6 +138,52 @@ def _existing(cfg: Dict[str, Any], variants: Dict[str, Dict[str, Any]], dna_fiel
     return variant, {key: dna.get(key) for key in dna_fields}
 
 
+def _candidates(account: Dict[str, Any], variants: Dict[str, Dict[str, Any]], niche_engines: Dict[str, List[str]]) -> List[Tuple[str, str]]:
+    """(variant_id, composition) hợp lệ cho acc, theo thứ tự ưu tiên: engine cũ của kênh trước, rồi hash ổn định."""
+    lang, niche = account["lang"], account["niche"]
+    allowed_engines = set(niche_engines.get(niche, []))
+    old_engines = set((account["cfg"].get("creative") or {}).get("preferred_engines") or [])
+    out = []
+    for variant in variants.values():
+        if variant["engine"] not in allowed_engines or lang not in variant["countries"]:
+            continue
+        if variant["niches"] is not None and niche not in variant["niches"]:
+            continue
+        for comp in variant["compositions"]:
+            out.append((0 if variant["engine"] in old_engines else 1, _hash(account["channel_id"], variant["id"], comp), variant["id"], comp))
+    return [(vid, comp) for _, _, vid, comp in sorted(out)]
+
+
+def _match_structural(pending: List[Dict[str, Any]], assigned: List[Dict[str, Any]], variants: Dict[str, Dict[str, Any]],
+                      niche_engines: Dict[str, List[str]]) -> Dict[str, Tuple[str, str]]:
+    """Ghép cặp tối đa acc ↔ structural key theo từng nước; key đã giữ (keep) không được dùng lại."""
+    result: Dict[str, Tuple[str, str]] = {}
+    by_country: Dict[str, List[Dict[str, Any]]] = {}
+    for account in pending:
+        by_country.setdefault(account["country"], []).append(account)
+    for country, accounts in by_country.items():
+        taken = {r["structural_key"] for r in assigned if r["country"] == country and r["structural_key"]}
+        cands = {a["channel_id"]: [c for c in _candidates(a, variants, niche_engines) if f"{c[0]}#{c[1]}" not in taken] for a in accounts}
+        owner: Dict[Tuple[str, str], str] = {}
+
+        def augment(cid: str, seen: set) -> bool:
+            for cand in cands[cid]:
+                if cand in seen:
+                    continue
+                seen.add(cand)
+                if cand not in owner or augment(owner[cand], seen):
+                    owner[cand] = cid
+                    return True
+            return False
+
+        # Acc ít lựa chọn nhất ghép trước (niche hẹp), để ghép ổn định và ít phải đảo.
+        for account in sorted(accounts, key=lambda a: (len(cands[a["channel_id"]]), a["channel_id"])):
+            augment(account["channel_id"], set())
+        for cand, cid in owner.items():
+            result[cid] = cand
+    return result
+
+
 def plan_assignments(channels: Dict[str, Dict[str, Any]], registry: Dict[str, Any], niche_engines: Dict[str, List[str]],
                      mapping: Optional[Dict[str, Dict[str, Any]]] = None, only: Optional[Iterable[str]] = None) -> Dict[str, Any]:
     """Plan gán DNA (không ghi gì). ``mapping`` None → mọi kênh YAML, nước suy từ publishing.language."""
@@ -148,7 +215,7 @@ def plan_assignments(channels: Dict[str, Dict[str, Any]], registry: Dict[str, An
             "engine": variant["engine"] if variant else None, "variant_id": variant["id"] if variant else None,
             "composition": dna.get("composition") if dna else None, "dna": dna,
             "axes": effective_axes(variant, dna["composition"], dna, overrides) if variant else None,
-            "voice": voice, "structural_key": f"{variant['id']}#{dna['composition']}" if variant else None,
+            "voice": voice, "voice_fx": pick_voice_fx(variant, account["cfg"]) if variant else None, "structural_key": f"{variant['id']}#{dna['composition']}" if variant else None,
             "signature": dna_signature(dna, variant["id"], account["lang"], dna_fields) if variant else None,
             "collision": status,
         }
@@ -168,37 +235,21 @@ def plan_assignments(channels: Dict[str, Dict[str, Any]], registry: Dict[str, An
     for voice in registry["voices"]:
         voices_by_lang.setdefault(voice["lang"], []).append(voice)
 
+    # 2) Danh tính cấu trúc: ghép cặp tối đa (Kuhn / augmenting path, = max-flow đơn vị) giữa acc và structural key
+    #    CHƯA dùng trong cùng nước. Ứng viên của mỗi acc xếp theo ưu tiên (giữ engine cũ, cân bằng engine theo hash),
+    #    nên đường tăng luôn thử lựa chọn tốt trước — không còn "hard:capacity" giả như greedy Phase 0.
+    matched = _match_structural(pending, assigned, variants, niche_engines)
+
     for account in pending:
         cid, country, lang = account["channel_id"], account["country"], account["lang"]
         same_country = [r for r in assigned if r["country"] == country and r["variant_id"]]
-        used_keys = {r["structural_key"] for r in same_country}
-        engine_use: Dict[str, int] = {}
-        for r in same_country:
-            engine_use[r["engine"]] = engine_use.get(r["engine"], 0) + 1
-        old_engines = set((account["cfg"].get("creative") or {}).get("preferred_engines") or [])
-        allowed_engines = set(niche_engines.get(account["niche"], []))
-
-        best = None
-        for variant in sorted(variants.values(), key=lambda v: v["id"]):
-            if variant["engine"] not in allowed_engines or lang not in variant["countries"]:
-                continue
-            if variant["niches"] is not None and account["niche"] not in variant["niches"]:
-                continue
-            for comp in sorted(variant["compositions"]):
-                if f"{variant['id']}#{comp}" in used_keys:
-                    continue  # luật cứng: structural key duy nhất trong nước
-                base = variant["compositions"][comp]["axes"]
-                min_dist = min((axis_distance(base, r["axes"], axes) for r in same_country), default=len(axes))
-                score = (min_dist, -engine_use.get(variant["engine"], 0), 1 if variant["engine"] in old_engines else 0)
-                key = (score, _hash(cid, variant["id"], comp))
-                if best is None or key > best[0]:
-                    best = (key, variant, comp)
-        if best is None:
+        choice = matched.get(cid)
+        if choice is None:
             add(account, None, None, None, "hard:capacity")
             continue
-        _, variant, comp = best
+        variant, comp = variants[choice[0]], choice[1]
 
-        # 2) Chọn DNA từng trục: ít bị dùng nhất trong cùng variant (mọi nước), tie-break hash — không tổ hợp bùng nổ.
+        # 3) Chọn DNA từng trục: ít bị dùng nhất trong cùng variant (mọi nước), tie-break hash — không tổ hợp bùng nổ.
         dna: Dict[str, Any] = {"dna_version": registry["dna_version"], "variant_version": variant["version"], "composition": comp}
         same_variant = [r for r in assigned if r["variant_id"] == variant["id"]]
         for axis in DNA_CHOICE_AXES:
@@ -207,7 +258,7 @@ def plan_assignments(channels: Dict[str, Dict[str, Any]], registry: Dict[str, An
                 sum(1 for r in same_variant if r["dna"][axis] == value), _hash(cid, variant["id"], axis, value)))
         dna = {key: dna[key] for key in dna_fields}
 
-        # 3) Voice DNA: không trùng nearest neighbor, ít dùng nhất trong (nước, engine), đúng giới tính của variant.
+        # 4) Voice DNA: không trùng nearest neighbor, ít dùng nhất trong (nước, engine), đúng giới tính của variant.
         axes_new = effective_axes(variant, comp, dna, overrides)
         nearest = max(same_country, key=lambda r: (len(axes) - axis_distance(axes_new, r["axes"], axes), r["channel_id"]), default=None)
         gender = (variant.get("audio") or {}).get("gender", "any")
@@ -260,19 +311,232 @@ def format_table(plan: Dict[str, Any]) -> str:
     return "\n".join(lines)
 
 
+# --- Apply (Phase 6) ---------------------------------------------------------------------------------------------------
+LOCK_NAME = ".migration.lock"
+DEFAULT_BACKUP_ROOT = Path("/opt/tokmatrix-backups")
+
+
+class ApplyError(RuntimeError):
+    pass
+
+
+def recompute_sha(plan: Dict[str, Any]) -> str:
+    body = json.dumps(plan["rows"], sort_keys=True, ensure_ascii=False, default=str)
+    return hashlib.sha256(body.encode("utf-8")).hexdigest()
+
+
+def autopilot_is_quiet(db_path: Path = AUTOPILOT_DB) -> Optional[str]:
+    """Lý do KHÔNG được apply (Autopilot bật và không paused), hoặc None. Đọc chỉ-đọc."""
+    if not Path(db_path).exists():
+        return None
+    conn = sqlite3.connect(f"file:{db_path}?mode=ro", uri=True, timeout=10)
+    try:
+        rows = dict(conn.execute("SELECT key, value FROM autopilot_config WHERE key IN ('enabled','paused')").fetchall())
+    except sqlite3.Error as exc:
+        return f"không đọc được autopilot_config: {exc}"
+    finally:
+        conn.close()
+    truthy = lambda v: str(v).strip().lower() in ("1", "true", "yes", "on")  # noqa: E731
+    if truthy(rows.get("enabled")) and not truthy(rows.get("paused")):
+        return "Autopilot đang chạy — pause trước khi apply"
+    return None
+
+
+def batch_running() -> Optional[str]:
+    out = subprocess.run(["pgrep", "-af", "batch-matrix"], capture_output=True, text=True, check=False).stdout
+    lines = [line for line in out.splitlines() if "pgrep" not in line]
+    return f"batch-matrix đang chạy ({len(lines)} tiến trình)" if lines else None
+
+
+@contextlib.contextmanager
+def migration_lock(channels_dir: Path):
+    path = Path(channels_dir) / LOCK_NAME
+    try:
+        fd = os.open(str(path), os.O_CREAT | os.O_EXCL | os.O_WRONLY, 0o644)
+    except FileExistsError:
+        raise ApplyError(f"đang có migration khác ({path})") from None
+    try:
+        os.write(fd, f"{os.getpid()} {int(time.time())}\n".encode())
+        os.close(fd)
+        yield path
+    finally:
+        with contextlib.suppress(FileNotFoundError):
+            path.unlink()
+
+
+def migration_locked(channels_dir: Path) -> bool:
+    """Các bộ ghi YAML khác (channels.apply_language / auto_link) phải bỏ qua khi khoá đang giữ."""
+    return (Path(channels_dir) / LOCK_NAME).exists()
+
+
+def _dump_yaml(cfg: Dict[str, Any]) -> str:
+    return yaml.dump(cfg, allow_unicode=True, default_flow_style=False, sort_keys=False)
+
+
+def pick_voice_fx(variant: Dict[str, Any], cfg: Dict[str, Any]) -> str:
+    """FX giọng hợp lệ với audioProfile.fx của variant: giữ FX đang có nếu được phép, rồi "none", rồi FX đầu tiên."""
+    allowed = list(((variant.get("audio") or {}).get("fx")) or ["none"])
+    current = (cfg.get("audio") or {}).get("voice_fx") or "none"
+    return current if current in allowed else ("none" if "none" in allowed else allowed[0])
+
+
+def apply_row(cfg: Dict[str, Any], row: Dict[str, Any]) -> Dict[str, Any]:
+    """Cấu hình mới cho một dòng plan: variant + DNA + engine khoá + giọng, config_version +1."""
+    new = json.loads(json.dumps(cfg))
+    creative = new.setdefault("creative", {})
+    creative["preferred_engines"] = [row["engine"]]
+    creative["variant_id"] = row["variant_id"]
+    creative["dna"] = row["dna"]
+    if row.get("voice"):
+        new.setdefault("audio", {})["voice_id"] = row["voice"]
+    fx = row.get("voice_fx")
+    if fx and (fx != "none" or (new.get("audio") or {}).get("voice_fx")):
+        new.setdefault("audio", {})["voice_fx"] = fx
+    new["config_version"] = int(new.get("config_version") or 0) + 1
+    return new
+
+
+def _validate_dir(config_dir: Path, compare_dir: Path = COMPARE_DIR) -> List[str]:
+    script = ("import('./tools/matrix-config-validator.mjs').then(m => { const r = m.validateConfigs({ configDir: process.argv[1] });"
+              " console.log(JSON.stringify(r.errors)); })")
+    out = subprocess.run(["node", "--input-type=module", "-e", script, str(config_dir)], cwd=str(compare_dir),
+                         capture_output=True, text=True, timeout=300, check=False, env={**os.environ, "MATRIX_ALLOW_REFERENCE_VARIANTS": "0"})
+    if out.returncode != 0:
+        return [f"validator failed: {(out.stderr or out.stdout)[-400:]}"]
+    return json.loads(out.stdout.strip().splitlines()[-1])
+
+
+def _replace_files(changes: Dict[Path, str], backup_channels: Path) -> None:
+    """os.replace từng file; lỗi giữa chừng → chép lại bản backup cho mọi file đã thay."""
+    done: List[Path] = []
+    try:
+        for path, text in changes.items():
+            tmp = path.with_suffix(path.suffix + ".tmp")
+            tmp.write_text(text, encoding="utf-8")
+            os.replace(tmp, path)
+            done.append(path)
+    except Exception:
+        for path in done:
+            shutil.copy2(backup_channels / path.name, path)
+        raise
+
+
+def apply_plan(plan: Dict[str, Any], plan_sha: str, *, config_dir: Path = CONFIG_DIR, backup_root: Path = DEFAULT_BACKUP_ROOT,
+               preflight: bool = True, validate=_validate_dir) -> Dict[str, Any]:
+    if plan.get("plan_sha256") != plan_sha or recompute_sha(plan) != plan_sha:
+        raise ApplyError("plan_sha256 không khớp file plan đã duyệt — không apply")
+    hard = [r["channel_id"] for r in plan["rows"] if str(r["collision"]).startswith("hard")]
+    if hard:
+        raise ApplyError(f"plan có dòng hard ({', '.join(hard[:5])}) — không apply")
+    if preflight:
+        for reason in (autopilot_is_quiet(), batch_running()):
+            if reason:
+                raise ApplyError(reason)
+    config_dir = Path(config_dir)
+    channels_dir = config_dir / "channels"
+    rows = [r for r in plan["rows"] if r["collision"] != "keep"]
+    with migration_lock(channels_dir):
+        files = {}
+        for path in sorted(channels_dir.glob("*.yaml")):
+            cfg = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+            files[cfg.get("channel_id", path.stem)] = (path, cfg)
+        missing = [r["channel_id"] for r in rows if r["channel_id"] not in files]
+        if missing:
+            raise ApplyError(f"không có YAML cho {', '.join(missing[:5])}")
+        changes: Dict[Path, str] = {}
+        inverse = []
+        for row in rows:
+            path, cfg = files[row["channel_id"]]
+            changes[path] = _dump_yaml(apply_row(cfg, row))
+            inverse.append({"channel_id": row["channel_id"], "file": path.name,
+                            "creative": cfg.get("creative"), "audio": cfg.get("audio")})
+        # 1) Áp lên bản sao TOÀN BỘ config rồi validate cả tập.
+        with tempfile.TemporaryDirectory() as tmp:
+            copy = Path(tmp) / "config"
+            shutil.copytree(config_dir, copy, ignore=shutil.ignore_patterns(LOCK_NAME))
+            for path, text in changes.items():
+                (copy / "channels" / path.name).write_text(text, encoding="utf-8")
+            errors = validate(copy)
+        if errors:
+            raise ApplyError("validator: " + "; ".join(errors[:8]))
+        # 2) Backup rồi thay từng file.
+        backup = Path(backup_root) / f"creative-dna-{time.strftime('%Y%m%d-%H%M%S')}-{plan_sha[:8]}"
+        shutil.copytree(channels_dir, backup / "channels", ignore=shutil.ignore_patterns(LOCK_NAME))
+        (backup / "plan.json").write_text(json.dumps(plan, ensure_ascii=False, indent=1), encoding="utf-8")
+        (backup / "inverse.json").write_text(json.dumps({"plan_sha256": plan_sha, "config_dir": str(config_dir), "rows": inverse},
+                                                        ensure_ascii=False, indent=1), encoding="utf-8")
+        _replace_files(changes, backup / "channels")
+    return {"applied": len(changes), "backup": str(backup), "inverse": str(backup / "inverse.json"),
+            "next": "chạy matrix_config.sync_channel_configs (kiểm version/hash) rồi resume Autopilot"}
+
+
+def rollback(inverse_path: Path, *, config_dir: Optional[Path] = None, preflight: bool = True, validate=_validate_dir) -> Dict[str, Any]:
+    """Khôi phục block creative/audio cũ; config_version vẫn +1 (không bao giờ giảm)."""
+    inverse = json.loads(Path(inverse_path).read_text(encoding="utf-8"))
+    config_dir = Path(config_dir or inverse["config_dir"])
+    if preflight:
+        for reason in (autopilot_is_quiet(), batch_running()):
+            if reason:
+                raise ApplyError(reason)
+    channels_dir = config_dir / "channels"
+    with migration_lock(channels_dir):
+        changes: Dict[Path, str] = {}
+        for row in inverse["rows"]:
+            path = channels_dir / row["file"]
+            cfg = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+            for key in ("creative", "audio"):
+                if row[key] is None:
+                    cfg.pop(key, None)
+                else:
+                    cfg[key] = row[key]
+            cfg["config_version"] = int(cfg.get("config_version") or 0) + 1
+            changes[path] = _dump_yaml(cfg)
+        with tempfile.TemporaryDirectory() as tmp:
+            copy = Path(tmp) / "config"
+            shutil.copytree(config_dir, copy, ignore=shutil.ignore_patterns(LOCK_NAME))
+            for path, text in changes.items():
+                (copy / "channels" / path.name).write_text(text, encoding="utf-8")
+            errors = validate(copy)
+        if errors:
+            raise ApplyError("validator: " + "; ".join(errors[:8]))
+        backup = Path(inverse_path).parent / f"before-rollback-{time.strftime('%Y%m%d-%H%M%S')}"
+        shutil.copytree(channels_dir, backup, ignore=shutil.ignore_patterns(LOCK_NAME))
+        _replace_files(changes, backup)
+    return {"rolled_back": len(changes), "backup": str(backup)}
+
+
 def main(argv: Optional[List[str]] = None) -> int:
-    parser = argparse.ArgumentParser(description="Creative DNA assignment (Phase 0: dry-run only)")
+    parser = argparse.ArgumentParser(description="Creative DNA assignment (dry-run / apply / rollback)")
     parser.add_argument("--dry-run", action="store_true", default=True)
-    parser.add_argument("--apply", action="store_true", help="Phase 6 — not available yet")
+    parser.add_argument("--apply", action="store_true", help="apply a reviewed plan file (needs --plan and --plan-sha)")
+    parser.add_argument("--plan", help="reviewed plan JSON written by --out")
+    parser.add_argument("--plan-sha", help="plan_sha256 of the reviewed plan (explicit confirmation)")
+    parser.add_argument("--rollback", help="inverse.json from an apply backup")
+    parser.add_argument("--config-dir", help="config dir to change (default: compare_studio/config)")
+    parser.add_argument("--backup-dir", help=f"backup root (default {DEFAULT_BACKUP_ROOT})")
     parser.add_argument("--include-reference", action="store_true", help="also assign Phase 0 reference variants (preview only)")
     parser.add_argument("--mapping", help="JSON {matrix_channel_id: {country, niche_id}}; only these accounts")
     parser.add_argument("--from-db", action="store_true", help="read autopilot_channel_map read-only")
     parser.add_argument("--channels", help="comma-separated channel ids")
-    parser.add_argument("--out", help="write the plan JSON here (keep it outside the repo)")
+    parser.add_argument("--out", help="write the plan JSON here")
     parser.add_argument("--json", action="store_true")
     args = parser.parse_args(argv)
-    if args.apply:
-        print("--apply is Phase 6 (batch transaction + migration lock + Autopilot paused); refusing.", file=sys.stderr)
+    try:
+        if args.rollback:
+            result = rollback(Path(args.rollback), config_dir=Path(args.config_dir) if args.config_dir else None)
+            print(json.dumps(result, ensure_ascii=False))
+            return 0
+        if args.apply:
+            if not args.plan or not args.plan_sha:
+                print("--apply needs --plan <file> and --plan-sha <sha256 of the reviewed plan>", file=sys.stderr)
+                return 2
+            plan = json.loads(Path(args.plan).read_text(encoding="utf-8"))
+            result = apply_plan(plan, args.plan_sha, config_dir=Path(args.config_dir or CONFIG_DIR),
+                                backup_root=Path(args.backup_dir or DEFAULT_BACKUP_ROOT))
+            print(json.dumps(result, ensure_ascii=False))
+            return 0
+    except ApplyError as exc:
+        print(f"refused: {exc}", file=sys.stderr)
         return 2
     mapping = None
     if args.mapping:
@@ -281,7 +545,8 @@ def main(argv: Optional[List[str]] = None) -> int:
     elif args.from_db:
         mapping = load_mapping_db()
     only = [c.strip() for c in args.channels.split(",") if c.strip()] if args.channels else None
-    plan = plan_assignments(load_channels(), load_registry(args.include_reference), load_niche_engines(), mapping, only)
+    config_dir = Path(args.config_dir) if args.config_dir else CONFIG_DIR
+    plan = plan_assignments(load_channels(config_dir), load_registry(args.include_reference), load_niche_engines(config_dir), mapping, only)
     if args.out:
         Path(args.out).write_text(json.dumps(plan, ensure_ascii=False, indent=2), encoding="utf-8")
     print(json.dumps(plan, ensure_ascii=False) if args.json else format_table(plan))

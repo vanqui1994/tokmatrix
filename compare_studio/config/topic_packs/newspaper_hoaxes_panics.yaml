@@ -1,0 +1,10 @@
+id: newspaper_hoaxes_panics
+engine: newspaper
+format: free
+brief: "Famous hoaxes and public panics and how newspapers covered them"
+languages: [en, de, ko, ja]
+niches:
+  - unsolved_mysteries
+  - dark_psychology
+  - infamous_figures
+  - forbidden_experiments

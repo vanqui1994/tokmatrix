@@ -295,7 +295,7 @@ async function createEngineHtml({ engineType, slug, title, lang, scenes, channel
     });
     const problems = lintVariantHtml(built.html);
     if (problems.length) throw new Error(`variant ${variant.id} produced forbidden HTML: ${problems.join("; ")}`);
-    return { ...built, creative: creative.observability, fontFamilies: creative.fonts.families };
+    return { ...built, creative: built.creative || creative.observability, fontFamilies: creative.fonts.families };
   }
   if (extended) {
     const extras = manifest.script?.engine_extras?.engine === engineType && manifest.script.engine_extras.data

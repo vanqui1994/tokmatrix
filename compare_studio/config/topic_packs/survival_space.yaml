@@ -1,0 +1,7 @@
+id: survival_space
+engine: survival
+format: free
+brief: "Surviving in space and what exposure would do"
+languages: [en, de, ko, ja]
+niches:
+  - deep_space

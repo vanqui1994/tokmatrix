@@ -99,8 +99,70 @@ class CreativeDnaDryRunTest(unittest.TestCase):
         plan = cd.plan_assignments(self.channels, registry, self.niches, None, CHANNELS[:1])
         self.assertEqual(plan["rows"][0]["collision"], "hard:capacity")
 
-    def test_apply_is_refused_in_phase_0(self):
+    def test_apply_needs_the_reviewed_plan_and_its_sha(self):
         self.assertEqual(cd.main(["--apply"]), 2)
+
+
+class CreativeDnaApplyTest(unittest.TestCase):
+    """Apply chỉ chạy trên BẢN SAO config trong test — không bao giờ đụng config của repo."""
+
+    def setUp(self):
+        import tempfile, shutil
+        self.tmp = Path(tempfile.mkdtemp())
+        self.addCleanup(shutil.rmtree, self.tmp, True)
+        self.config = self.tmp / "config"
+        shutil.copytree(cd.CONFIG_DIR, self.config)
+        self.repo_hash = tree_hash(cd.CONFIG_DIR)
+        registry = cd.load_registry(include_reference=False)
+        self.plan = cd.plan_assignments(cd.load_channels(self.config), registry, cd.load_niche_engines(self.config), None, CHANNELS)
+
+    def load(self, cid):
+        import yaml
+        return yaml.safe_load((self.config / "channels" / f"{cid}.yaml").read_text(encoding="utf-8"))
+
+    def test_apply_on_a_copy_validates_backs_up_and_rolls_back(self):
+        self.assertTrue(self.plan["summary"]["applicable"], self.plan["summary"])
+        before = {cid: self.load(cid) for cid in CHANNELS}
+        result = cd.apply_plan(self.plan, self.plan["plan_sha256"], config_dir=self.config, backup_root=self.tmp / "b", preflight=False)
+        self.assertEqual(result["applied"], len(CHANNELS))
+        for row in self.plan["rows"]:
+            cfg = self.load(row["channel_id"])
+            self.assertEqual(cfg["creative"]["variant_id"], row["variant_id"])
+            self.assertEqual(cfg["creative"]["preferred_engines"], [row["engine"]])
+            self.assertEqual(cfg["creative"]["dna"], row["dna"])
+            self.assertEqual(cfg["audio"]["voice_id"], row["voice"])
+            self.assertEqual(cfg["config_version"], before[row["channel_id"]]["config_version"] + 1)
+        self.assertFalse((self.config / "channels" / cd.LOCK_NAME).exists())
+        self.assertEqual(tree_hash(cd.CONFIG_DIR), self.repo_hash, "repo configs untouched")
+
+        cd.rollback(Path(result["inverse"]), config_dir=self.config, preflight=False)
+        for cid in CHANNELS:
+            cfg = self.load(cid)
+            self.assertEqual(cfg["creative"], before[cid]["creative"])
+            self.assertEqual(cfg["audio"], before[cid]["audio"])
+            self.assertEqual(cfg["config_version"], before[cid]["config_version"] + 2, "version never goes back")
+
+    def test_apply_refuses_wrong_sha_hard_rows_lock_and_invalid_result(self):
+        with self.assertRaises(cd.ApplyError):
+            cd.apply_plan(self.plan, "0" * 64, config_dir=self.config, backup_root=self.tmp / "b", preflight=False)
+        tampered = json.loads(json.dumps(self.plan))
+        tampered["rows"][0]["voice"] = "de-DE-KatjaNeural"
+        with self.assertRaises(cd.ApplyError):
+            cd.apply_plan(tampered, self.plan["plan_sha256"], config_dir=self.config, backup_root=self.tmp / "b", preflight=False)
+        hard = json.loads(json.dumps(self.plan))
+        hard["rows"][0]["collision"] = "hard:capacity"
+        hard["plan_sha256"] = cd.recompute_sha(hard)
+        with self.assertRaises(cd.ApplyError):
+            cd.apply_plan(hard, hard["plan_sha256"], config_dir=self.config, backup_root=self.tmp / "b", preflight=False)
+        (self.config / "channels" / cd.LOCK_NAME).write_text("other")
+        with self.assertRaises(cd.ApplyError):
+            cd.apply_plan(self.plan, self.plan["plan_sha256"], config_dir=self.config, backup_root=self.tmp / "b", preflight=False)
+        (self.config / "channels" / cd.LOCK_NAME).unlink()
+        before = tree_hash(self.config)
+        with self.assertRaises(cd.ApplyError):
+            cd.apply_plan(self.plan, self.plan["plan_sha256"], config_dir=self.config, backup_root=self.tmp / "b",
+                          preflight=False, validate=lambda _dir: ["boom"])
+        self.assertEqual(tree_hash(self.config), before, "validator failure changes nothing")
 
 
 if __name__ == "__main__":

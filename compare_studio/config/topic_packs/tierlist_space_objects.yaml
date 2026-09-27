@@ -1,0 +1,7 @@
+id: tierlist_space_objects
+engine: tierlist
+format: ranking
+brief: "Ranking planets, stars and cosmic objects"
+languages: [en, de, ko, ja]
+niches:
+  - deep_space

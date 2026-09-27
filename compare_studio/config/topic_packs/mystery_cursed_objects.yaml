@@ -1,0 +1,9 @@
+id: mystery_cursed_objects
+engine: mystery
+format: free
+brief: "Objects said to be cursed and the documented stories behind them"
+languages: [en, de, ko, ja]
+niches:
+  - unsolved_mysteries
+  - folklore_legends
+  - ancient_mythology

@@ -1,0 +1,8 @@
+id: wildlife_nocturnal
+engine: wildlife
+format: free
+brief: "Night hunters and nocturnal animals caught on camera"
+languages: [en, de, ko, ja]
+niches:
+  - extreme_wildlife
+  - extreme_survival

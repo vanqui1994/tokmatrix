@@ -1,0 +1,8 @@
+id: wildlife_nature_doc
+engine: wildlife
+format: free
+brief: "Cinematic natural-history storytelling about one species"
+languages: [en, de, ko, ja]
+niches:
+  - extreme_wildlife
+  - ocean_mysteries
