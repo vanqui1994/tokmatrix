@@ -3,9 +3,63 @@
  "threshold": 0.62,
  "pairs": [
   {
+   "a": "chalk/atlas#scroll_plate",
+   "b": "chalk/blueprint#detail_grid",
+   "max_composite": 0.6403,
+   "example": [
+    "preview-chalk-atlas-scroll-plate-vi-a",
+    "preview-chalk-blueprint-detail-grid-vi-a"
+   ]
+  },
+  {
+   "a": "chalk/atlas#scroll_plate",
+   "b": "chalk/whiteboard#sticky_notes",
+   "max_composite": 0.6273,
+   "example": [
+    "preview-chalk-atlas-scroll-plate-de-a",
+    "preview-chalk-whiteboard-sticky-notes-de-a"
+   ]
+  },
+  {
+   "a": "chalk/atlas#scroll_plate",
+   "b": "survival/endurance#race_lane",
+   "max_composite": 0.6245,
+   "example": [
+    "preview-chalk-atlas-scroll-plate-de-a",
+    "preview-survival-endurance-race-lane-de-a"
+   ]
+  },
+  {
+   "a": "chalk/blueprint#title_block",
+   "b": "chalk/war-room#board",
+   "max_composite": 0.6466,
+   "example": [
+    "preview-chalk-blueprint-title-block-ko-a",
+    "preview-chalk-war-room-board-ko-a"
+   ]
+  },
+  {
+   "a": "chalk/blueprint#title_block",
+   "b": "newspaper/microfilm#reader_screen",
+   "max_composite": 0.628,
+   "example": [
+    "preview-chalk-blueprint-title-block-de-a",
+    "preview-newspaper-microfilm-reader-screen-de-a"
+   ]
+  },
+  {
+   "a": "chalk/sand-table#tilted",
+   "b": "chalk/war-room#board",
+   "max_composite": 0.6211,
+   "example": [
+    "preview-chalk-sand-table-tilted-en-b",
+    "preview-chalk-war-room-board-en-a"
+   ]
+  },
+  {
    "a": "chalk/sand-table#tilted",
    "b": "folklore/japanese-yokai-scroll#kakejiku",
-   "max_composite": 0.6443,
+   "max_composite": 0.6499,
    "example": [
     "preview-chalk-sand-table-tilted-en-a",
     "preview-folklore-japanese-yokai-scroll-kakejiku-en-b"
@@ -14,25 +68,52 @@
   {
    "a": "chalk/satellite#feeds",
    "b": "newspaper/microfilm#reader_screen",
-   "max_composite": 0.6436,
+   "max_composite": 0.6686,
    "example": [
     "preview-chalk-satellite-feeds-en-a",
     "preview-newspaper-microfilm-reader-screen-en-a"
    ]
   },
   {
+   "a": "chalk/whiteboard#marker_map",
+   "b": "chalk/whiteboard#sticky_notes",
+   "max_composite": 0.6434,
+   "example": [
+    "preview-chalk-whiteboard-marker-map-ko-a",
+    "preview-chalk-whiteboard-sticky-notes-ko-a"
+   ]
+  },
+  {
+   "a": "folklore/european-grimoire#sigil_circle",
+   "b": "survival/endurance#race_lane",
+   "max_composite": 0.6238,
+   "example": [
+    "preview-folklore-european-grimoire-sigil-circle-en-a",
+    "preview-survival-endurance-race-lane-en-a"
+   ]
+  },
+  {
    "a": "folklore/haunted-vhs#cassette",
    "b": "wildlife/nature-doc#letterbox_band",
-   "max_composite": 0.6373,
+   "max_composite": 0.6436,
    "example": [
-    "preview-folklore-haunted-vhs-cassette-de-b",
-    "preview-wildlife-nature-doc-letterbox-band-de-b"
+    "preview-folklore-haunted-vhs-cassette-vi-a",
+    "preview-wildlife-nature-doc-letterbox-band-vi-b"
+   ]
+  },
+  {
+   "a": "folklore/haunted-vhs#tape_play",
+   "b": "folklore/korean-gwishin#moon_window",
+   "max_composite": 0.6474,
+   "example": [
+    "preview-folklore-haunted-vhs-tape-play-de-b",
+    "preview-folklore-korean-gwishin-moon-window-de-b"
    ]
   },
   {
    "a": "folklore/haunted-vhs#tape_play",
    "b": "mystery/cctv#single_monitor",
-   "max_composite": 0.6288,
+   "max_composite": 0.653,
    "example": [
     "preview-folklore-haunted-vhs-tape-play-vi-b",
     "preview-mystery-cctv-single-monitor-vi-b"
@@ -40,8 +121,17 @@
   },
   {
    "a": "folklore/haunted-vhs#tape_play",
+   "b": "newspaper/microfilm#reader_screen",
+   "max_composite": 0.6371,
+   "example": [
+    "preview-folklore-haunted-vhs-tape-play-en-b",
+    "preview-newspaper-microfilm-reader-screen-en-b"
+   ]
+  },
+  {
+   "a": "folklore/haunted-vhs#tape_play",
    "b": "science/space-hud#viewport",
-   "max_composite": 0.6293,
+   "max_composite": 0.66,
    "example": [
     "preview-folklore-haunted-vhs-tape-play-vi-b",
     "preview-science-space-hud-viewport-vi-a"
@@ -49,35 +139,233 @@
   },
   {
    "a": "folklore/japanese-yokai-scroll#emaki",
-   "b": "newspaper/court-sketch#sketch_pad",
-   "max_composite": 0.6329,
+   "b": "folklore/korean-gwishin#hanji_door",
+   "max_composite": 0.6443,
    "example": [
-    "preview-folklore-japanese-yokai-scroll-emaki-de-a",
-    "preview-newspaper-court-sketch-sketch-pad-de-a"
+    "preview-folklore-japanese-yokai-scroll-emaki-vi-b",
+    "preview-folklore-korean-gwishin-hanji-door-vi-a"
+   ]
+  },
+  {
+   "a": "folklore/japanese-yokai-scroll#emaki",
+   "b": "newspaper/court-sketch#easel_board",
+   "max_composite": 0.6403,
+   "example": [
+    "preview-folklore-japanese-yokai-scroll-emaki-en-b",
+    "preview-newspaper-court-sketch-easel-board-en-b"
+   ]
+  },
+  {
+   "a": "folklore/japanese-yokai-scroll#emaki",
+   "b": "newspaper/court-sketch#sketch_pad",
+   "max_composite": 0.6973,
+   "example": [
+    "preview-folklore-japanese-yokai-scroll-emaki-en-b",
+    "preview-newspaper-court-sketch-sketch-pad-en-b"
+   ]
+  },
+  {
+   "a": "folklore/japanese-yokai-scroll#emaki",
+   "b": "newspaper/victorian-broadsheet#columns_page",
+   "max_composite": 0.6312,
+   "example": [
+    "preview-folklore-japanese-yokai-scroll-emaki-en-b",
+    "preview-newspaper-victorian-broadsheet-columns-page-en-a"
+   ]
+  },
+  {
+   "a": "folklore/japanese-yokai-scroll#emaki",
+   "b": "vox/map-route#route_map",
+   "max_composite": 0.6472,
+   "example": [
+    "preview-folklore-japanese-yokai-scroll-emaki-de-b",
+    "preview-vox-map-route-route-map-de-a"
+   ]
+  },
+  {
+   "a": "folklore/japanese-yokai-scroll#emaki",
+   "b": "vox/timeline-explainer#track_below",
+   "max_composite": 0.6262,
+   "example": [
+    "preview-folklore-japanese-yokai-scroll-emaki-de-b",
+    "preview-vox-timeline-explainer-track-below-de-a"
+   ]
+  },
+  {
+   "a": "folklore/japanese-yokai-scroll#kakejiku",
+   "b": "folklore/korean-gwishin#hanji_door",
+   "max_composite": 0.6364,
+   "example": [
+    "preview-folklore-japanese-yokai-scroll-kakejiku-en-a",
+    "preview-folklore-korean-gwishin-hanji-door-en-b"
+   ]
+  },
+  {
+   "a": "folklore/japanese-yokai-scroll#kakejiku",
+   "b": "mystery/case-file#folder_card",
+   "max_composite": 0.6374,
+   "example": [
+    "preview-folklore-japanese-yokai-scroll-kakejiku-vi-a",
+    "preview-mystery-case-file-folder-card-vi-b"
+   ]
+  },
+  {
+   "a": "folklore/japanese-yokai-scroll#kakejiku",
+   "b": "mystery/cursed-objects#glass_case",
+   "max_composite": 0.6493,
+   "example": [
+    "preview-folklore-japanese-yokai-scroll-kakejiku-vi-b",
+    "preview-mystery-cursed-objects-glass-case-vi-a"
+   ]
+  },
+  {
+   "a": "folklore/japanese-yokai-scroll#kakejiku",
+   "b": "vox/data-card#ring_gauge",
+   "max_composite": 0.6244,
+   "example": [
+    "preview-folklore-japanese-yokai-scroll-kakejiku-en-a",
+    "preview-vox-data-card-ring-gauge-en-a"
+   ]
+  },
+  {
+   "a": "folklore/japanese-yokai-scroll#kakejiku",
+   "b": "wildlife/microscope#eyepiece",
+   "max_composite": 0.6373,
+   "example": [
+    "preview-folklore-japanese-yokai-scroll-kakejiku-en-b",
+    "preview-wildlife-microscope-eyepiece-en-a"
+   ]
+  },
+  {
+   "a": "folklore/korean-gwishin#hanji_door",
+   "b": "folklore/tarot-deck#card_flip",
+   "max_composite": 0.6358,
+   "example": [
+    "preview-folklore-korean-gwishin-hanji-door-en-b",
+    "preview-folklore-tarot-deck-card-flip-en-b"
+   ]
+  },
+  {
+   "a": "folklore/korean-gwishin#moon_window",
+   "b": "folklore/tarot-deck#three_card_spread",
+   "max_composite": 0.6223,
+   "example": [
+    "preview-folklore-korean-gwishin-moon-window-vi-b",
+    "preview-folklore-tarot-deck-three-card-spread-vi-b"
+   ]
+  },
+  {
+   "a": "folklore/korean-gwishin#moon_window",
+   "b": "mystery/cctv#single_monitor",
+   "max_composite": 0.6502,
+   "example": [
+    "preview-folklore-korean-gwishin-moon-window-en-b",
+    "preview-mystery-cctv-single-monitor-en-b"
    ]
   },
   {
    "a": "folklore/korean-gwishin#moon_window",
    "b": "mystery/decoded#cipher_hex",
-   "max_composite": 0.6656,
+   "max_composite": 0.6998,
    "example": [
     "preview-folklore-korean-gwishin-moon-window-en-b",
     "preview-mystery-decoded-cipher-hex-en-b"
    ]
   },
   {
+   "a": "folklore/korean-gwishin#moon_window",
+   "b": "mystery/lost-places#flashlight_circle",
+   "max_composite": 0.6491,
+   "example": [
+    "preview-folklore-korean-gwishin-moon-window-de-b",
+    "preview-mystery-lost-places-flashlight-circle-de-b"
+   ]
+  },
+  {
+   "a": "folklore/korean-gwishin#moon_window",
+   "b": "newspaper/microfilm#reader_screen",
+   "max_composite": 0.6301,
+   "example": [
+    "preview-folklore-korean-gwishin-moon-window-de-b",
+    "preview-newspaper-microfilm-reader-screen-de-b"
+   ]
+  },
+  {
+   "a": "folklore/korean-gwishin#moon_window",
+   "b": "vox/split-then-now#lens_reveal",
+   "max_composite": 0.6361,
+   "example": [
+    "preview-folklore-korean-gwishin-moon-window-vi-b",
+    "preview-vox-split-then-now-lens-reveal-vi-b"
+   ]
+  },
+  {
+   "a": "folklore/nordic-runestone#standing_stones",
+   "b": "folklore/shadow-puppet#tall_screen",
+   "max_composite": 0.6726,
+   "example": [
+    "preview-folklore-nordic-runestone-standing-stones-vi-a",
+    "preview-folklore-shadow-puppet-tall-screen-vi-b"
+   ]
+  },
+  {
+   "a": "folklore/shadow-puppet#paper_screen",
+   "b": "folklore/vn-original#altar_niche",
+   "max_composite": 0.65,
+   "example": [
+    "preview-folklore-shadow-puppet-paper-screen-vi-b",
+    "preview-folklore-vn-original-altar-niche-vi-a"
+   ]
+  },
+  {
+   "a": "folklore/shadow-puppet#paper_screen",
+   "b": "mystery/cursed-objects#glass_case",
+   "max_composite": 0.6351,
+   "example": [
+    "preview-folklore-shadow-puppet-paper-screen-en-b",
+    "preview-mystery-cursed-objects-glass-case-en-b"
+   ]
+  },
+  {
+   "a": "folklore/tarot-deck#card_flip",
+   "b": "mystery/cursed-objects#glass_case",
+   "max_composite": 0.6461,
+   "example": [
+    "preview-folklore-tarot-deck-card-flip-en-a",
+    "preview-mystery-cursed-objects-glass-case-en-a"
+   ]
+  },
+  {
    "a": "folklore/tarot-deck#three_card_spread",
    "b": "science/quiz-show#podium",
-   "max_composite": 0.6258,
+   "max_composite": 0.6798,
    "example": [
     "preview-folklore-tarot-deck-three-card-spread-en-a",
     "preview-science-quiz-show-podium-en-a"
    ]
   },
   {
+   "a": "kinetic/type-poster#center_stack",
+   "b": "kinetic/type-poster#tilted_board",
+   "max_composite": 0.6748,
+   "example": [
+    "preview-kinetic-type-poster-center-stack-ja-a",
+    "preview-kinetic-type-poster-tilted-board-ja-a"
+   ]
+  },
+  {
+   "a": "kinetic/type-poster#split_band",
+   "b": "kinetic/type-poster#tilted_board",
+   "max_composite": 0.6628,
+   "example": [
+    "preview-kinetic-type-poster-split-band-ja-a",
+    "preview-kinetic-type-poster-tilted-board-ja-a"
+   ]
+  },
+  {
    "a": "mystery/case-file#polaroid_spread",
    "b": "mystery/evidence-board#pinned_web",
-   "max_composite": 0.6267,
+   "max_composite": 0.6482,
    "example": [
     "preview-mystery-case-file-polaroid-spread-de-b",
     "preview-mystery-evidence-board-pinned-web-de-b"
@@ -86,25 +374,52 @@
   {
    "a": "mystery/cctv#single_monitor",
    "b": "newspaper/microfilm#reader_screen",
-   "max_composite": 0.6223,
+   "max_composite": 0.6496,
    "example": [
-    "preview-mystery-cctv-single-monitor-vi-a",
-    "preview-newspaper-microfilm-reader-screen-vi-a"
+    "preview-mystery-cctv-single-monitor-ja-a",
+    "preview-newspaper-microfilm-reader-screen-ja-a"
+   ]
+  },
+  {
+   "a": "mystery/cctv#single_monitor",
+   "b": "vox/documentary-lowerthird#letterbox",
+   "max_composite": 0.626,
+   "example": [
+    "preview-mystery-cctv-single-monitor-de-b",
+    "preview-vox-documentary-lowerthird-letterbox-de-a"
    ]
   },
   {
    "a": "mystery/decoded#cipher_hex",
    "b": "mystery/decoded#crt_terminal",
-   "max_composite": 0.648,
+   "max_composite": 0.6241,
    "example": [
-    "preview-mystery-decoded-crt-terminal-en-b",
-    "preview-mystery-decoded-cipher-hex-en-b"
+    "preview-mystery-decoded-crt-terminal-ko-b",
+    "preview-mystery-decoded-cipher-hex-ko-b"
+   ]
+  },
+  {
+   "a": "mystery/decoded#cipher_hex",
+   "b": "mystery/lost-places#flashlight_circle",
+   "max_composite": 0.6447,
+   "example": [
+    "preview-mystery-decoded-cipher-hex-de-a",
+    "preview-mystery-lost-places-flashlight-circle-de-b"
+   ]
+  },
+  {
+   "a": "mystery/decoded#cipher_hex",
+   "b": "science/microscope-zoom#zoom_levels",
+   "max_composite": 0.6402,
+   "example": [
+    "preview-mystery-decoded-cipher-hex-de-b",
+    "preview-science-microscope-zoom-zoom-levels-de-a"
    ]
   },
   {
    "a": "mystery/decoded#cipher_hex",
    "b": "vox/split-then-now#lens_reveal",
-   "max_composite": 0.6414,
+   "max_composite": 0.6674,
    "example": [
     "preview-mystery-decoded-cipher-hex-de-b",
     "preview-vox-split-then-now-lens-reveal-de-a"
@@ -113,73 +428,163 @@
   {
    "a": "mystery/lost-places#flashlight_circle",
    "b": "mystery/ufo-radar#radar_scope",
-   "max_composite": 0.6278,
+   "max_composite": 0.6735,
    "example": [
-    "preview-mystery-lost-places-flashlight-circle-en-b",
-    "preview-mystery-ufo-radar-radar-scope-en-b"
+    "preview-mystery-lost-places-flashlight-circle-vi-b",
+    "preview-mystery-ufo-radar-radar-scope-vi-b"
+   ]
+  },
+  {
+   "a": "mystery/lost-places#flashlight_circle",
+   "b": "newspaper/police-gazette#medallion",
+   "max_composite": 0.6375,
+   "example": [
+    "preview-mystery-lost-places-flashlight-circle-de-a",
+    "preview-newspaper-police-gazette-medallion-de-b"
    ]
   },
   {
    "a": "newspaper/court-sketch#easel_board",
    "b": "newspaper/court-sketch#sketch_pad",
-   "max_composite": 0.6875,
+   "max_composite": 0.731,
    "example": [
     "preview-newspaper-court-sketch-sketch-pad-de-b",
     "preview-newspaper-court-sketch-easel-board-de-b"
    ]
   },
   {
+   "a": "newspaper/court-sketch#easel_board",
+   "b": "vox/timeline-explainer#track_below",
+   "max_composite": 0.6208,
+   "example": [
+    "preview-newspaper-court-sketch-easel-board-vi-b",
+    "preview-vox-timeline-explainer-track-below-vi-a"
+   ]
+  },
+  {
    "a": "newspaper/court-sketch#sketch_pad",
    "b": "newspaper/microfilm#reader_screen",
-   "max_composite": 0.6286,
+   "max_composite": 0.667,
    "example": [
     "preview-newspaper-court-sketch-sketch-pad-de-a",
     "preview-newspaper-microfilm-reader-screen-de-b"
    ]
   },
   {
+   "a": "newspaper/front-page#front_page",
+   "b": "newspaper/front-page#side_masthead",
+   "max_composite": 0.6824,
+   "example": [
+    "preview-newspaper-front-page-front-page-de-a",
+    "preview-newspaper-front-page-side-masthead-de-a"
+   ]
+  },
+  {
+   "a": "newspaper/front-page#side_masthead",
+   "b": "newspaper/victorian-broadsheet#fold_story",
+   "max_composite": 0.6229,
+   "example": [
+    "preview-newspaper-front-page-side-masthead-de-a",
+    "preview-newspaper-victorian-broadsheet-fold-story-de-a"
+   ]
+  },
+  {
+   "a": "newspaper/microfilm#reader_screen",
+   "b": "vox/split-then-now#lens_reveal",
+   "max_composite": 0.6474,
+   "example": [
+    "preview-newspaper-microfilm-reader-screen-de-b",
+    "preview-vox-split-then-now-lens-reveal-de-a"
+   ]
+  },
+  {
+   "a": "newspaper/police-gazette#medallion",
+   "b": "vox/documentary-lowerthird#letterbox",
+   "max_composite": 0.6203,
+   "example": [
+    "preview-newspaper-police-gazette-medallion-de-b",
+    "preview-vox-documentary-lowerthird-letterbox-de-a"
+   ]
+  },
+  {
+   "a": "science/quiz-show#podium",
+   "b": "science/quiz-show#three_answers",
+   "max_composite": 0.6232,
+   "example": [
+    "preview-science-quiz-show-three-answers-de-b",
+    "preview-science-quiz-show-podium-de-b"
+   ]
+  },
+  {
    "a": "science/xray#lightbox",
    "b": "vox/timeline-explainer#track_below",
-   "max_composite": 0.6852,
+   "max_composite": 0.6741,
    "example": [
-    "preview-science-xray-lightbox-en-a",
-    "preview-vox-timeline-explainer-track-below-en-a"
+    "preview-science-xray-lightbox-ko-a",
+    "preview-vox-timeline-explainer-track-below-ko-a"
+   ]
+  },
+  {
+   "a": "survival/no-sleep#desk",
+   "b": "survival/no-sleep#week_strip",
+   "max_composite": 0.6557,
+   "example": [
+    "preview-survival-no-sleep-desk-de-a",
+    "preview-survival-no-sleep-week-strip-de-a"
    ]
   },
   {
    "a": "tierlist/classic-rows#tier_columns",
    "b": "tierlist/orbit#telescope",
-   "max_composite": 0.6344,
+   "max_composite": 0.6473,
    "example": [
-    "preview-tierlist-classic-rows-tier-columns-en-b",
-    "preview-tierlist-orbit-telescope-en-b"
+    "preview-tierlist-classic-rows-tier-columns-vi-b",
+    "preview-tierlist-orbit-telescope-vi-b"
+   ]
+  },
+  {
+   "a": "tierlist/classic-rows#tier_columns",
+   "b": "vox/split-then-now#side_by_side",
+   "max_composite": 0.6235,
+   "example": [
+    "preview-tierlist-classic-rows-tier-columns-de-b",
+    "preview-vox-split-then-now-side-by-side-de-a"
    ]
   },
   {
    "a": "tierlist/weapon-rack#pegboard",
    "b": "wildlife/microscope#eyepiece",
-   "max_composite": 0.6225,
+   "max_composite": 0.6419,
    "example": [
-    "preview-tierlist-weapon-rack-pegboard-de-b",
-    "preview-wildlife-microscope-eyepiece-de-a"
+    "preview-tierlist-weapon-rack-pegboard-en-b",
+    "preview-wildlife-microscope-eyepiece-en-a"
    ]
   },
   {
-   "a": "vox/timeline-explainer#track_below",
-   "b": "wildlife/migration-map#flyway_medallion",
-   "max_composite": 0.6286,
+   "a": "vox/map-route#photo_inset",
+   "b": "vox/timeline-explainer#band_middle",
+   "max_composite": 0.6243,
    "example": [
-    "preview-vox-timeline-explainer-track-below-en-a",
-    "preview-wildlife-migration-map-flyway-medallion-en-a"
+    "preview-vox-map-route-photo-inset-de-a",
+    "preview-vox-timeline-explainer-band-middle-de-a"
+   ]
+  },
+  {
+   "a": "wildlife/microscope#eyepiece",
+   "b": "wildlife/migration-map#flyway_medallion",
+   "max_composite": 0.6353,
+   "example": [
+    "preview-wildlife-microscope-eyepiece-vi-b",
+    "preview-wildlife-migration-map-flyway-medallion-vi-b"
    ]
   },
   {
    "a": "wildlife/microscope#eyepiece",
    "b": "wildlife/savanna-hud#scope_center",
-   "max_composite": 0.6356,
+   "max_composite": 0.6631,
    "example": [
-    "preview-wildlife-microscope-eyepiece-en-b",
-    "preview-wildlife-savanna-hud-scope-center-en-b"
+    "preview-wildlife-microscope-eyepiece-ja-b",
+    "preview-wildlife-savanna-hud-scope-center-ja-b"
    ]
   }
  ]
