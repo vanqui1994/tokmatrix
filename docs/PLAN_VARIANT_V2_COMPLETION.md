@@ -21,7 +21,10 @@ PR #1 đã merge vào `main` (27/09). Chưa deploy, chưa apply DNA cho kênh n�
 | H1 `tools/check-previews.mjs` | ✅ | hyperframes 0.7.58 như production |
 | H2 mọi preview qua `hyperframes check` | 🟡 | xem mục 0.1 |
 | H3 CI, H4 determinism | ✅ | `.github/workflows/matrix-variants.yml`, `tests/matrix-variants-determinism.test.mjs` |
-| E (stock), F (giọng), G (bench), I (canary) | 🔒 | cần Q3 / mạng / VPS / chủ repo |
+| E stock video | 🟡 | `bkt_web/stock_video.py` + ledger chống trùng chéo provider, tắt mặc định (`TOKMATRIX_STOCK_VIDEO`); chuyển variant sang STOCK_VIDEO chờ Q3 + key |
+| F giọng CapCut | 🔒 | container bị proxy chặn CapCut (403); chạy `tools/audition-voices.mjs --apply` trên máy có mạng |
+| G bench | 🟡 | `deploy/bench_variants.sh` → `docs/creative_dna/bench-<ngày>.md`; cần chạy trên VPS (thử ở container: vox/data-card 31 s → 137 s render, RAM đỉnh 1.3 GB, 1.6 MB) |
+| I canary | 🔒 | chủ repo duyệt plan dry-run, pause Autopilot, deploy |
 
 ### 0.1 H2: lỗi `hyperframes check`
 
