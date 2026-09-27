@@ -239,9 +239,11 @@ export async function ensureAntigravityImages({ dir, slug, items = null, timeout
 
   const ready = entries.filter(done).map(([k]) => k);
   const pending = entries.filter((e) => !done(e)).map(([k]) => k);
+  // Ảnh Antigravity đã lỗi MAX_ATTEMPTS lần: hàng đợi sẽ không tự xin lại nữa (variant dùng chuỗi fallback của nó).
+  const exhausted = entries.filter((e) => !done(e) && e[1].error && e[1].attempts >= MAX_ATTEMPTS).map(([k]) => k);
   log(`  Ảnh Antigravity: ${ready.length}/${entries.length} xong${pending.length ? `, còn chờ ${pending.length}: ${pending.join(", ")}` : ""}`);
   if (pending.length) log(`  ↻ Bấm "🎨 Ảnh Antigravity" trong Studio (hoặc chạy node tools/antigravity-images.mjs ${slug}) để lấy tiếp.`);
-  return { ready, pending };
+  return { ready, pending, exhausted };
 }
 
 /** Xin lại MỘT ảnh với prompt mới (nút "Đổi ảnh → AI" trong Studio). Không chờ. */

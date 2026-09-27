@@ -574,6 +574,8 @@ export async function buildNativeVideoProject({ job, manifest = job?.manifest, p
       ...composed.creative,
       voice: { voice_id: channel.audio?.voice_id, speed: channel.audio?.voice_speed, pitch: channel.audio?.voice_pitch, fx: channel.audio?.voice_fx || "none" },
       config_version: metadata.matrix.channel_config_version,
+      // Ảnh cảnh không lấy được từ Antigravity mà dùng bước fallback của variant (không bao giờ âm thầm).
+      asset_fallbacks: manifest.asset_pipeline?.fallbacks || [],
     };
   }
   const packageJson = {
