@@ -1,5 +1,5 @@
 channel_id: ocean_mysteries_01
-config_version: 6
+config_version: 7
 niche_id: ocean_mysteries
 name: 海と深海海溝 01
 tiktok_account_ref: null
@@ -18,8 +18,6 @@ story:
   pacing_beats: 12
 creative:
   preferred_engines:
-  - wildlife
-  - science
   - mystery
   visual_style_id: dark_mystery_v1
   cut_cadence_seconds: 2.6
@@ -27,21 +25,19 @@ creative:
     primary: '#111318'
     accent: '#D6A84F'
     text: '#F2EEE6'
-  skins:
-    science:
-      variant_id: science/explainer-board
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: hud_panel
-        typography: rounded
-        treatment: vignette_dark
-        image_motion: parallax
-        transition: slide
-        tone: 5
-        caption: top
+  variant_id: mystery/field-journal
+  dna:
+    dna_version: 2
+    variant_version: 1
+    composition: taped_page
+    typography: serif
+    treatment: clean
+    image_motion: pan_lateral
+    transition: paper_tear
+    tone: 0
+    caption: fixed
 audio:
-  voice_id: ja-JP-KeitaNeural
+  voice_id: ICL_ja_female_lengjingnv
   voice_speed: 1.02
   voice_pitch: -1
   music_family: ocean_mysteries_editorial

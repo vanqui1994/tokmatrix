@@ -1,5 +1,5 @@
 channel_id: military_arsenal_08
-config_version: 9
+config_version: 10
 niche_id: military_arsenal
 name: Weapons & War Machines 08
 tiktok_account_ref: null
@@ -19,41 +19,25 @@ story:
 creative:
   preferred_engines:
   - survival
-  - chalk
-  - tierlist
   visual_style_id: dark_mystery_v1
   cut_cadence_seconds: 2.8
   palette:
     primary: '#111318'
     accent: '#D6A84F'
     text: '#F2EEE6'
-  skins:
-    tierlist:
-      variant_id: tierlist/ranking-board
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: rows_board
-        typography: condensed
-        treatment: halftone
-        image_motion: parallax
-        transition: slide
-        tone: 7
-        caption: middle
-    survival:
-      variant_id: survival/extreme-cold
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: frosted_glass
-        typography: grotesk
-        treatment: vignette_dark
-        image_motion: ken_burns_slow
-        transition: fade_black
-        tone: 2
-        caption: fixed
+  variant_id: survival/no-sleep
+  dna:
+    dna_version: 2
+    variant_version: 1
+    composition: week_strip
+    typography: typewriter
+    treatment: clean
+    image_motion: still_grain
+    transition: page_turn
+    tone: 2
+    caption: fixed
 audio:
-  voice_id: en-US-SteveNeural
+  voice_id: multi_female_wenjingmaomao_moon_bigtts_cc
   voice_speed: 1.02
   voice_pitch: -1
   music_family: military_arsenal_editorial

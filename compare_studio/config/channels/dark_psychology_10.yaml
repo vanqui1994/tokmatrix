@@ -1,5 +1,5 @@
 channel_id: dark_psychology_10
-config_version: 9
+config_version: 10
 niche_id: dark_psychology
 name: Psychologie & Verhalten 10
 tiktok_account_ref: null
@@ -18,8 +18,6 @@ story:
   pacing_beats: 12
 creative:
   preferred_engines:
-  - mystery
-  - science
   - newspaper
   visual_style_id: dark_mystery_v1
   cut_cadence_seconds: 2.6
@@ -27,33 +25,19 @@ creative:
     primary: '#111318'
     accent: '#D6A84F'
     text: '#F2EEE6'
-  skins:
-    newspaper:
-      variant_id: newspaper/front-page
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: magazine_cover
-        typography: grotesk
-        treatment: clean
-        image_motion: push_in
-        transition: slide
-        tone: 2
-        caption: top
-    science:
-      variant_id: science/explainer-board
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: whiteboard
-        typography: serif
-        treatment: vignette_dark
-        image_motion: pan_lateral
-        transition: slide
-        tone: 2
-        caption: bottom
+  variant_id: newspaper/front-page
+  dna:
+    dna_version: 2
+    variant_version: 1
+    composition: side_masthead
+    typography: condensed
+    treatment: paper_texture
+    image_motion: push_in
+    transition: cut
+    tone: 6
+    caption: middle
 audio:
-  voice_id: de-DE-AmalaNeural
+  voice_id: de-DE-KatjaNeural
   voice_speed: 1.05
   voice_pitch: -1
   music_family: dark_psychology_editorial
