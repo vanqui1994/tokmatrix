@@ -3,11 +3,23 @@
 // neon), họ mũi tên và họ ký hiệu. Mọi độ dày tính theo px màn hình (nhân `unit`).
 const r = (value) => Math.round(value * 10) / 10;
 
+// Màu sáng hay tối (#rgb, #rrggbb, rgb()/rgba()) để chọn đĩa nền tương phản cho chữ N.
+function isLight(color) {
+  const hex = color.match(/^#([0-9a-f]{3}|[0-9a-f]{6})$/iu);
+  const rgb = hex
+    ? (hex[1].length === 3 ? [...hex[1]].map((c) => parseInt(c + c, 16)) : [0, 2, 4].map((i) => parseInt(hex[1].slice(i, i + 2), 16)))
+    : (color.match(/\d+(\.\d+)?/gu) || ["0", "0", "0"]).slice(0, 3).map(Number);
+  return 0.299 * rgb[0] + 0.587 * rgb[1] + 0.114 * rgb[2] > 140;
+}
+
 function compass({ view, unit, color, fill, x, y, size = 46 }) {
   const s = size * unit;
   const cx = view.x + view.w * x;
   const cy = view.y + view.h * y;
-  return `<g opacity=".9"><circle cx="${r(cx)}" cy="${r(cy)}" r="${r(s * 1.2)}" fill="none" stroke="${color}" stroke-width="${r(unit * 2)}"/><path d="M ${r(cx)} ${r(cy - s)} L ${r(cx + s * 0.22)} ${r(cy)} L ${r(cx)} ${r(cy + s)} L ${r(cx - s * 0.22)} ${r(cy)} Z" fill="${fill}" stroke="${color}" stroke-width="${r(unit * 1.5)}"/><path d="M ${r(cx - s)} ${r(cy)} L ${r(cx)} ${r(cy - s * 0.22)} L ${r(cx + s)} ${r(cy)} L ${r(cx)} ${r(cy + s * 0.22)} Z" fill="none" stroke="${color}" stroke-width="${r(unit * 1.5)}"/><text x="${r(cx)}" y="${r(cy - s * 1.35)}" font-size="${r(unit * 24)}" text-anchor="middle" fill="${color}" font-weight="700">N</text></g>`;
+  // Chữ N có đĩa nền riêng: đặt trên vùng bản đồ nào cũng đọc được (hyperframes contrast audit).
+  const backing = isLight(color) ? "rgba(10,14,22,.82)" : "rgba(250,247,238,.85)";
+  const disk = `<circle cx="${r(cx)}" cy="${r(cy - s * 1.35 - unit * 8.5)}" r="${r(unit * 17)}" fill="${backing}"/>`;
+  return `<g opacity=".9">${disk}<circle cx="${r(cx)}" cy="${r(cy)}" r="${r(s * 1.2)}" fill="none" stroke="${color}" stroke-width="${r(unit * 2)}"/><path d="M ${r(cx)} ${r(cy - s)} L ${r(cx + s * 0.22)} ${r(cy)} L ${r(cx)} ${r(cy + s)} L ${r(cx - s * 0.22)} ${r(cy)} Z" fill="${fill}" stroke="${color}" stroke-width="${r(unit * 1.5)}"/><path d="M ${r(cx - s)} ${r(cy)} L ${r(cx)} ${r(cy - s * 0.22)} L ${r(cx + s)} ${r(cy)} L ${r(cx)} ${r(cy + s * 0.22)} Z" fill="none" stroke="${color}" stroke-width="${r(unit * 1.5)}"/><text x="${r(cx)}" y="${r(cy - s * 1.35)}" font-size="${r(unit * 24)}" text-anchor="middle" fill="${color}" font-weight="700">N</text></g>`;
 }
 
 export const LOOKS = {
