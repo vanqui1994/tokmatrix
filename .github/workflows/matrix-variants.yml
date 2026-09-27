@@ -12,6 +12,7 @@ on:
       - "bkt_web/autopilot/**"
       - "bkt_web/creative_similarity/**"
       - "bkt_web/asset_ledger.py"
+      - "bkt_web/stock_video.py"
       - "bkt_web/voice_clone.py"
       - "tests/test_creative_*.py"
       - "tests/test_topic_packs.py"
@@ -37,7 +38,7 @@ jobs:
       - run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
       - run: npm ci --ignore-scripts --no-audit --no-fund
       - run: node tools/matrix-config-validator.mjs
-      - run: node --test tests/matrix-variants*.test.mjs tests/matrix-creative.test.mjs tests/matrix-engine-*.test.mjs tests/matrix-asset-fallback.test.mjs
+      - run: node --test tests/matrix-variants*.test.mjs tests/matrix-creative.test.mjs tests/matrix-engine-*.test.mjs tests/matrix-asset-fallback.test.mjs tests/matrix-bench.test.mjs
 
   python:
     runs-on: ubuntu-latest
@@ -56,7 +57,7 @@ jobs:
       - run: python -m playwright install --with-deps chromium
       - run: >-
           python -m unittest tests.test_creative_dna tests.test_creative_similarity tests.test_topic_packs
-          tests.test_asset_ledger tests.test_voice_clone tests.test_autopilot_engine tests.test_autopilot_language
+          tests.test_asset_ledger tests.test_voice_clone tests.test_stock_video tests.test_autopilot_engine tests.test_autopilot_language
 
   # hyperframes check (phiên bản production) trên preview của mọi cấu trúc, 1 ngôn ngữ; cùng build với determinism.
   previews:
