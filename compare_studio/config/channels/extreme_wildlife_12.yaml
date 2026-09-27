@@ -6,7 +6,7 @@ audio:
   voice_pitch: -1
   voice_speed: 0.98
 channel_id: extreme_wildlife_12
-config_version: 6
+config_version: 7
 creative:
   cut_cadence_seconds: 2.3
   palette:
@@ -31,6 +31,18 @@ creative:
         transition: slide
         tone: 6
         caption: middle
+    survival:
+      variant_id: survival/endurance
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: stopwatch
+        typography: grotesk
+        treatment: film_grain
+        image_motion: still_grain
+        transition: zoom_through
+        tone: 2
+        caption: fixed
 name: Creatures of the Deep 12
 niche_id: extreme_wildlife
 persona:

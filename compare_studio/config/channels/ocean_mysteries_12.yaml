@@ -6,7 +6,7 @@ audio:
   voice_pitch: -1
   voice_speed: 1.05
 channel_id: ocean_mysteries_12
-config_version: 6
+config_version: 7
 creative:
   cut_cadence_seconds: 2.7
   palette:
@@ -31,6 +31,18 @@ creative:
         transition: slide
         tone: 6
         caption: middle
+    survival:
+      variant_id: survival/extreme-cold
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: frosted_glass
+        typography: rounded
+        treatment: vignette_dark
+        image_motion: still_grain
+        transition: cut
+        tone: 4
+        caption: fixed
 name: 바다와 심해 해구 12
 niche_id: ocean_mysteries
 persona:

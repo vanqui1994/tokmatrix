@@ -1,5 +1,5 @@
 channel_id: space_09
-config_version: 8
+config_version: 9
 niche_id: deep_space
 name: Kosmos & Physik 09
 tiktok_account_ref: null
@@ -52,6 +52,18 @@ creative:
         transition: shutter
         tone: 7
         caption: bottom
+    survival:
+      variant_id: survival/space-exposure
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: visor
+        typography: mono
+        treatment: clean
+        image_motion: ken_burns_slow
+        transition: glitch
+        tone: 3
+        caption: fixed
 audio:
   voice_id: DiT_de_female_jiangshi
   voice_speed: 1.02

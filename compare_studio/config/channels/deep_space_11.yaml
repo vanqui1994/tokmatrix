@@ -6,7 +6,7 @@ audio:
   voice_pitch: -1
   voice_speed: 1.0
 channel_id: deep_space_11
-config_version: 5
+config_version: 6
 creative:
   cut_cadence_seconds: 2.7
   palette:
@@ -31,6 +31,18 @@ creative:
         transition: slide
         tone: 0
         caption: top
+    survival:
+      variant_id: survival/space-exposure
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: visor
+        typography: condensed
+        treatment: film_grain
+        image_motion: push_in
+        transition: fade_black
+        tone: 4
+        caption: fixed
 name: Kosmos & Physik 11
 niche_id: deep_space
 persona:

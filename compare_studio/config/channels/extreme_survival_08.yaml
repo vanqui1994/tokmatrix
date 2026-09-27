@@ -1,5 +1,5 @@
 channel_id: extreme_survival_08
-config_version: 4
+config_version: 5
 niche_id: extreme_survival
 name: Survival & Disaster 08
 tiktok_account_ref: null
@@ -27,6 +27,19 @@ creative:
     primary: '#111318'
     accent: '#D6A84F'
     text: '#F2EEE6'
+  skins:
+    survival:
+      variant_id: survival/endurance
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: stopwatch
+        typography: heavy
+        treatment: film_grain
+        image_motion: handheld
+        transition: slide
+        tone: 0
+        caption: fixed
 audio:
   voice_id: en-US-AndrewNeural
   voice_speed: 1.02

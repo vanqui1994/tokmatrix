@@ -1,5 +1,5 @@
 channel_id: extreme_survival_01
-config_version: 6
+config_version: 7
 niche_id: extreme_survival
 name: Überleben & Katastrophen 01
 tiktok_account_ref: null
@@ -52,6 +52,18 @@ creative:
         transition: zoom_through
         tone: 6
         caption: top
+    survival:
+      variant_id: survival/endurance
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: race_lane
+        typography: heavy
+        treatment: clean
+        image_motion: handheld
+        transition: slide
+        tone: 4
+        caption: fixed
 audio:
   voice_id: de-DE-ConradNeural
   voice_speed: 1.02

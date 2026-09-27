@@ -6,7 +6,7 @@ audio:
   voice_pitch: -1
   voice_speed: 1.02
 channel_id: deep_space_12
-config_version: 5
+config_version: 6
 creative:
   cut_cadence_seconds: 2.9
   palette:
@@ -31,6 +31,18 @@ creative:
         transition: cut
         tone: 5
         caption: middle
+    survival:
+      variant_id: survival/lab-exposure
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: hazard_ring
+        typography: slab
+        treatment: vhs_noise
+        image_motion: scan_light
+        transition: tv_noise
+        tone: 5
+        caption: fixed
 name: Kosmos & Physik 12
 niche_id: deep_space
 persona:

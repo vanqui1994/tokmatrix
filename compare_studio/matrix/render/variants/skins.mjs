@@ -59,13 +59,22 @@ function candidateKey(dna) {
  * Mỗi kênh mới nhận ứng viên xa nhất với mọi kênh cùng nước (điểm = khoảng cách nhỏ nhất, phạt nặng nếu trùng cả
  * layout lẫn màu; hoà thì tổng khoảng cách lớn hơn, rồi hash).
  *
+ * `others` = bộ da cố định của các kênh KHÁC cùng engine (variant khác, {channel_id, country, dna}): chúng được tính
+ * vào khoảng cách khi chọn và vào violations, để nhiều variant của một engine (vd survival theo niche) vẫn giữ luật.
+ *
  * @param {Array<{channel_id:string, lang:string, skin?:object}>} channels  kênh dùng engine này
  * @returns {{ rows: Array, violations: Array }} rows theo thứ tự channel_id; violations = cặp cùng nước phạm luật
  */
-export function assignSkins(channels, variant) {
+export function assignSkins(channels, variant, { others = [] } = {}) {
   const candidates = skinCandidates(variant);
   const sorted = [...channels].sort((a, b) => a.channel_id.localeCompare(b.channel_id));
+  const ids = new Set(sorted.map((channel) => channel.channel_id));
+  const outside = others.filter((row) => row.dna && !ids.has(row.channel_id));
   const byCountry = new Map();
+  for (const row of outside) {
+    if (!byCountry.has(row.country)) byCountry.set(row.country, []);
+    byCountry.get(row.country).push(normalizeDna(row.dna));
+  }
   const rows = [];
   const pending = [];
   for (const channel of sorted) {
@@ -111,7 +120,7 @@ export function assignSkins(channels, variant) {
     row.dna = best.dna;
     assigned.push(best.dna);
   }
-  return { rows, violations: skinViolations(rows) };
+  return { rows, violations: skinViolations([...rows, ...outside]) };
 }
 
 /** Các cặp cùng nước phạm luật MIN_SKIN_DISTANCE / STRUCTURAL_AXES. */

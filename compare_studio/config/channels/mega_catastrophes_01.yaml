@@ -1,5 +1,5 @@
 channel_id: mega_catastrophes_01
-config_version: 7
+config_version: 8
 niche_id: mega_catastrophes
 name: Naturkatastrophen der Erde 01
 tiktok_account_ref: null
@@ -52,6 +52,18 @@ creative:
         transition: shutter
         tone: 5
         caption: top
+    survival:
+      variant_id: survival/extreme-heat
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: thermo_left
+        typography: slab
+        treatment: sepia_grain
+        image_motion: ken_burns_fast
+        transition: zoom_through
+        tone: 1
+        caption: fixed
 audio:
   voice_id: de-DE-KatjaNeural
   voice_speed: 1.02
