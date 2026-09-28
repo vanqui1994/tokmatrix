@@ -133,7 +133,7 @@ function dossierDesign(ctx, layoutId) {
     header: null,
     visual: { frame: "polaroid", region: card, filter: "grayscale(.75) contrast(1.25) sepia(.2)" },
     text: { style: "ink", region: geo.chinText, size: 21, align: "left", enter: "fade_up" },
-    tag: { style: "chip", x: geo.chinTag.x, y: geo.chinTag.y, format: (i) => `${upper(ui.exhibit, lang)} #E-${pad2(i + 1)}` },
+    tag: { style: "chip", x: geo.chinTag.x, y: geo.chinTag.y, format: (i) => `${upper(ui.exhibit, lang)} #E\u2011${pad2(i + 1)}` },
     underlay: () => ({
       html: box({ x: 180, y: -120, w: 720, h: 900 }, "no-lamp") + box(folder, "no-folder") + box({ x: folder.x + 36, y: folder.y + 10, w: 40, h: 90 }, "no-clip", PAPER_CLIP),
       css: "",
