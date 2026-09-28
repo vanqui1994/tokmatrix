@@ -41,6 +41,12 @@ UPLOAD_COLUMNS = {
     "publish_mode": "TEXT DEFAULT ''",
 }
 NEARBY_WINDOW = 2 * 3600  # cảnh báo khi kênh đã có bài trong ±2 giờ quanh giờ hẹn
+# Mọi trạng thái dưới đây đều có thể đại diện cho một bài đã/đang chiếm slot.
+# NEEDS_CHECK đặc biệt quan trọng: TikTok đã nhận cú click Đăng nhưng backend chưa
+# xác nhận video lên hay chưa, vì vậy phải giữ slot để tránh đăng trùng.
+NEARBY_BLOCKING_STATUSES = (
+    "QUEUED", "PENDING", "UPLOADING", "SUCCESS", "WAITING_RENDER", "NEEDS_CHECK",
+)
 
 
 class PublishError(Exception):
@@ -82,11 +88,12 @@ def latest_mp4(slug: str) -> Optional[Path]:
 
 
 def nearby_posts(conn, channel_id: int, schedule_ts: int, exclude_id: Optional[int] = None) -> List[Dict[str, Any]]:
+    marks = ",".join("?" for _ in NEARBY_BLOCKING_STATUSES)
     rows = conn.execute(
-        """SELECT id, schedule_time, status, video_slug FROM upload_tasks
-           WHERE channel_id=? AND status IN ('QUEUED','PENDING','UPLOADING','SUCCESS','WAITING_RENDER')
-             AND ABS(COALESCE(NULLIF(uploaded_at,0), schedule_time) - ?) < ? AND id != ?""",
-        (channel_id, schedule_ts, NEARBY_WINDOW, exclude_id or -1),
+        f"""SELECT id, schedule_time, status, video_slug FROM upload_tasks
+            WHERE channel_id=? AND status IN ({marks})
+              AND ABS(COALESCE(NULLIF(uploaded_at,0), schedule_time) - ?) < ? AND id != ?""",
+        (channel_id, *NEARBY_BLOCKING_STATUSES, schedule_ts, NEARBY_WINDOW, exclude_id or -1),
     ).fetchall()
     return [{"id": r[0], "schedule_time": r[1], "status": r[2], "video_slug": r[3]} for r in rows]
 
@@ -132,7 +139,33 @@ def enqueue_upload(
     conn = _db(db_path)
     try:
         ensure_upload_columns(conn)
+        # Schema migration (nếu có) phải kết thúc trước khi lấy write lock. Sau đó
+        # giữ BEGIN IMMEDIATE xuyên suốt check-nearby → INSERT để hai request đồng
+        # thời không cùng vượt qua kiểm tra khoảng cách rồi tạo hai task.
+        conn.commit()
+        conn.execute("BEGIN IMMEDIATE")
         ch = _channel(conn, channel_id)
+
+        # Idempotency cho các caller có run_id/batch_id. Một retry của cùng run
+        # không được tạo task thứ hai cho cùng slug + kênh. Manual enqueue không có
+        # run_id vẫn giữ hành vi cũ để người dùng có thể chủ động repost về sau.
+        if run_id:
+            existing = conn.execute(
+                """SELECT id, status, video_path, schedule_time
+                   FROM upload_tasks
+                   WHERE channel_id=? AND video_slug=? AND run_id=?
+                     AND status NOT IN ('ERROR','CANCELLED')
+                   ORDER BY id DESC LIMIT 1""",
+                (ch["id"], slug, run_id),
+            ).fetchone()
+            if existing:
+                conn.commit()
+                return {
+                    "id": existing[0], "status": existing[1], "channel": ch,
+                    "schedule_time": existing[3], "video_path": existing[2] or "",
+                    "nearby": [], "reused": True,
+                }
+
         near = nearby_posts(conn, ch["id"], schedule_ts)
         if near and not confirm_nearby:
             raise PublishError(409, f"Kênh @{ch['username']} đã có {len(near)} bài trong vòng 2 giờ quanh giờ hẹn",
@@ -145,7 +178,7 @@ def enqueue_upload(
         )
         conn.commit()
         return {"id": cur.lastrowid, "status": status, "channel": ch, "schedule_time": schedule_ts,
-                "video_path": video_path, "nearby": near}
+                "video_path": video_path, "nearby": near, "reused": False}
     finally:
         conn.close()
 
