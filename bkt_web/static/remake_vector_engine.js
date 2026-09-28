@@ -428,8 +428,11 @@ globalThis.RemakeVector = (() => {
       // pose_defaults có wind: 0 nên phải xem keyframe có khai wind thật không, nếu không gió của cảnh bị bỏ qua.
       s.wind = keys.some(k => k.wind !== undefined) ? clamp(posed.wind, 0, 1) : windAuto;
       // Tuyết: người/chibi/thú có mặt tự run cầm cập; nắng nóng: tự đổ mồ hôi. Keyframe khai shiver/sweat (vd. 0 = mặc áo ấm) thì theo keyframe.
+      // Trang phục khai ở nhân vật là mặc định; keyframe `outfit` (đổi đồ giữa cảnh) được ưu tiên.
+      if (c.outfit && !keys.some(k => k.outfit !== undefined)) s.outfit = c.outfit;
       if (WEATHER_REACTORS.has(cat.assets[c.asset].group) && s.faceEnabled !== false) {
-        if (bgWeather === 'snow' && !keys.some(k => k.shiver !== undefined)) s.shiver = 1;
+        const warm = Boolean(cat.outfits?.[s.outfit]?.warm);  // áo ấm, đồ phi hành gia: không run
+        if (bgWeather === 'snow' && !warm && !keys.some(k => k.shiver !== undefined)) s.shiver = 1;
         if (bgWeather === 'hot' && !keys.some(k => k.sweat !== undefined)) s.sweat = 1;
       }
       s.speaking = (cue?.character_id || cue?.speaker || cue?.speaker_id) === id && !cue?.offscreen;
@@ -3200,6 +3203,8 @@ globalThis.RemakeVector = (() => {
     else if (group === 'monster') drawMonster(ctx, s, t);
     // Cel vẽ tay đã có sẵn mặt và bàn tay: vẽ thêm lớp vector sẽ thành hai khuôn mặt.
     if (!layer) { face(ctx, s, cat, t); handMarks(ctx, s, cat); }
+    // Lớp vẽ sau khuôn mặt của rig (khẩu trang, kính lặn, kính mũ phi hành gia che lên mắt/miệng).
+    if (!layer && RIG_OVERLAYS[s.asset]) RIG_OVERLAYS[s.asset](ctx, s, t, cat);
     if (s.wet > 0) for (let i = 0; i < 4; i++) ellipse(ctx, i * 9 - 16, -20 + (t * 8 + i * 4) % 17, 1.1, 2.2, '#70c8e0', null);
     ctx.restore();
   }
@@ -3312,6 +3317,23 @@ globalThis.RemakeVector = (() => {
       }
     }
   };
+  // Lũ (background.flood 0–1): nước đục dâng tới 150 px trên mặt đất, vẽ SAU nhân vật để ngập chân.
+  // Bụi mịn (background.dust 0–1): màn bụi vàng xám phủ cả cảnh.
+  function hazards(ctx, settings, t) {
+    const bg = BACKGROUNDS[settings.preset || 'garden'] || BACKGROUNDS.garden, flood = clamp(settings.flood || 0), dust = clamp(settings.dust || 0);
+    if (flood > 0) {
+      const level = bg.ground_y - flood * 150;
+      ctx.beginPath(); ctx.moveTo(-2000, level);
+      for (let x = -40; x <= W + 40; x += 24) ctx.lineTo(x, level + Math.sin(x * 0.05 + t * 2.4) * 4);
+      ctx.lineTo(W + 2000, 3000); ctx.lineTo(-2000, 3000); ctx.closePath();
+      ctx.fillStyle = 'rgba(94, 132, 150, 0.62)'; ctx.fill();
+      for (let i = 0; i < 9; i++) ellipse(ctx, (i * 71 + t * 22) % (W + 60) - 30, level + 12 + (i % 3) * 16, 22, 2.4, 'rgba(255, 255, 255, 0.35)', null);
+    }
+    if (dust > 0) {
+      ctx.fillStyle = `rgba(196, 180, 140, ${0.42 * dust})`; ctx.fillRect(-2000, -2000, 4500, 5000);
+      for (let i = 0; i < 40 * dust; i++) ellipse(ctx, (hash(`dust${i}`) % W + t * 9 * (1 + i % 3)) % W, hash(`dusty${i}`) % H, 1.6, 1.6, `rgba(120, 100, 70, ${0.4 * dust})`, null);
+    }
+  }
   function background(ctx, settings, t) {
     const preset = settings.preset || 'garden';
     const bg = BACKGROUNDS[preset] || BACKGROUNDS.garden;
@@ -3566,7 +3588,10 @@ globalThis.RemakeVector = (() => {
       }
       const bg = scene.background || {};
       ctx.fillStyle = '#c0eff1'; ctx.fillRect(0, 0, W, H);
-      ctx.save(); ctx.translate(W / 2, H / 2); ctx.scale(frame.camera.zoom, frame.camera.zoom); ctx.translate(-frame.camera.x, -frame.camera.y);
+      // Động đất (background.quake 0–1): rung khung hình tất định theo t.
+      const quake = clamp(bg.quake || 0);
+      const shakeX = quake ? Math.sin(frame.t * 47) * 7 * quake + Math.sin(frame.t * 23) * 3 * quake : 0, shakeY = quake ? Math.cos(frame.t * 39) * 4 * quake : 0;
+      ctx.save(); ctx.translate(W / 2 + shakeX, H / 2 + shakeY); ctx.scale(frame.camera.zoom, frame.camera.zoom); ctx.translate(-frame.camera.x, -frame.camera.y);
       background(ctx, bg, frame.t);
       // Vật gắn layer over_face đã được nâng z cao hơn cha lúc gắn (attach), nên chỉ cần sắp theo z.
       const ordered = Object.values(frame.states).sort((a, b) => a.z - b.z);
@@ -3578,7 +3603,7 @@ globalThis.RemakeVector = (() => {
         const p = worldAnchor(this.catalog, state, 'top');
         tierBadge(ctx, this.catalog.assets[state.asset].tier, p.x, p.y - 24);
       }
-      effects(ctx, frame, this.catalog); weather(ctx, bg, frame.t);
+      effects(ctx, frame, this.catalog); weather(ctx, bg, frame.t); hazards(ctx, bg, frame.t);
       if (debug) for (const s of ordered) for (const name of Object.keys(this.catalog.assets[s.asset].anchors)) {
         const p = worldAnchor(this.catalog, s, name); ellipse(ctx, p.x, p.y, 3, 3, '#fd3f65', null);
         ctx.font = '11px system-ui'; ctx.fillStyle = '#17252b'; ctx.textAlign = 'left'; ctx.fillText(`${s.id}.${name}`, p.x + 5, p.y);
@@ -3588,8 +3613,162 @@ globalThis.RemakeVector = (() => {
       return frame;
     }
   }
+  const PICTOGRAMS = {
+    traffic(ctx, cx, cy, size, type) {
+      ctx.save();
+      ctx.translate(cx, cy);
+      const r = size * 0.5;
+      if (type === 'stop_hand') {
+        path(ctx, `M ${-r*0.41} ${-r} L ${r*0.41} ${-r} L ${r} ${-r*0.41} L ${r} ${r*0.41} L ${r*0.41} ${r} L ${-r*0.41} ${r} L ${-r} ${r*0.41} L ${-r} ${-r*0.41} Z`, '#dc2626', '#ffffff', 2);
+        ellipse(ctx, 0, r*0.1, r*0.28, r*0.35, '#ffffff', null);
+        for (let i = -2; i <= 1; i++) {
+          line(ctx, [[i*r*0.12, -r*0.05], [i*r*0.12, -r*0.45]], '#ffffff', r*0.1);
+        }
+        line(ctx, [[-r*0.25, r*0.15], [-r*0.38, -r*0.05]], '#ffffff', r*0.1);
+      } else if (type === 'pedestrian') {
+        ellipse(ctx, 0, 0, r, r, '#2563eb', '#ffffff', 2);
+        ellipse(ctx, 0, -r*0.45, r*0.18, r*0.18, '#ffffff', null);
+        line(ctx, [[0, -r*0.25], [-r*0.1, r*0.15]], '#ffffff', 2.5);
+        line(ctx, [[-r*0.1, r*0.15], [-r*0.25, r*0.6]], '#ffffff', 2.5);
+        line(ctx, [[-r*0.1, r*0.15], [r*0.2, r*0.55]], '#ffffff', 2.5);
+        line(ctx, [[0, -r*0.1], [-r*0.25, r*0.1]], '#ffffff', 2.5);
+        line(ctx, [[0, -r*0.1], [r*0.25, 0]], '#ffffff', 2.5);
+      } else if (type === 'bicycle') {
+        ellipse(ctx, 0, 0, r, r, '#2563eb', '#ffffff', 2);
+        ellipse(ctx, -r*0.4, r*0.25, r*0.22, r*0.22, null, '#ffffff', 2);
+        ellipse(ctx, r*0.4, r*0.25, r*0.22, r*0.22, null, '#ffffff', 2);
+        line(ctx, [[-r*0.4, r*0.25], [0, r*0.25], [r*0.25, -r*0.15], [r*0.4, r*0.25]], '#ffffff', 2);
+        line(ctx, [[0, r*0.25], [-r*0.15, -r*0.15], [-r*0.4, r*0.25]], '#ffffff', 2);
+        line(ctx, [[-r*0.15, -r*0.15], [-r*0.2, -r*0.28]], '#ffffff', 2.5);
+        line(ctx, [[r*0.25, -r*0.15], [r*0.2, -r*0.35]], '#ffffff', 2.5);
+      } else if (type === 'children_crossing') {
+        path(ctx, `M 0 ${-r} L ${r*0.9} ${r*0.7} L ${-r*0.9} ${r*0.7} Z`, '#fbbf24', '#b45309', 2);
+        ellipse(ctx, -r*0.25, -r*0.15, r*0.14, r*0.14, '#1e293b', null);
+        line(ctx, [[-r*0.25, 0], [-r*0.25, r*0.45]], '#1e293b', 2.5);
+        ellipse(ctx, r*0.2, 0, r*0.12, r*0.12, '#1e293b', null);
+        line(ctx, [[r*0.2, r*0.12], [r*0.2, r*0.5]], '#1e293b', 2.5);
+      }
+      ctx.restore();
+    },
+    recycling(ctx, cx, cy, size, type) {
+      ctx.save();
+      ctx.translate(cx, cy);
+      const r = size * 0.5;
+      if (type === 'recycle_arrows') {
+        for (let i = 0; i < 3; i++) {
+          ctx.save();
+          ctx.rotate((i * 120 * Math.PI) / 180);
+          path(ctx, `M ${-r*0.4} ${-r*0.6} L ${r*0.2} ${-r*0.6} L ${r*0.3} ${-r*0.45} L ${r*0.15} ${-r*0.45} L ${r*0.1} ${-r*0.52} L ${-r*0.35} ${-r*0.52} Z`, '#16a34a', null);
+          path(ctx, `M ${r*0.2} ${-r*0.75} L ${r*0.45} ${-r*0.52} L ${r*0.2} ${-r*0.3} Z`, '#16a34a', null);
+          ctx.restore();
+        }
+      } else if (type === 'paper') {
+        path(ctx, `M ${-r*0.4} ${-r*0.6} L ${r*0.15} ${-r*0.6} L ${r*0.4} ${-r*0.3} L ${r*0.4} ${r*0.6} L ${-r*0.4} ${r*0.6} Z`, '#f8fafc', '#475569', 1.5);
+        path(ctx, `M ${r*0.15} ${-r*0.6} L ${r*0.15} ${-r*0.3} L ${r*0.4} ${-r*0.3} Z`, '#cbd5e1', '#475569', 1.2);
+        line(ctx, [[-r*0.25, 0], [r*0.25, 0]], '#94a3b8', 1.2);
+        line(ctx, [[-r*0.25, r*0.25], [r*0.25, r*0.25]], '#94a3b8', 1.2);
+      } else if (type === 'bottle') {
+        path(ctx, `M ${-r*0.12} ${-r*0.65} L ${r*0.12} ${-r*0.65} L ${r*0.12} ${-r*0.45} L ${r*0.28} ${-r*0.2} L ${r*0.28} ${r*0.6} L ${-r*0.28} ${r*0.6} L ${-r*0.28} ${-r*0.2} L ${-r*0.12} ${-r*0.45} Z`, '#38bdf8', '#0284c7', 1.5);
+      } else if (type === 'can') {
+        path(ctx, `M ${-r*0.22} ${-r*0.5} L ${r*0.22} ${-r*0.5} L ${r*0.22} ${r*0.5} L ${-r*0.22} ${r*0.5} Z`, '#94a3b8', '#475569', 1.5);
+        ellipse(ctx, 0, -r*0.5, r*0.22, r*0.08, '#cbd5e1', '#475569', 1.2);
+        ellipse(ctx, 0, r*0.5, r*0.22, r*0.08, '#94a3b8', '#475569', 1.2);
+      } else if (type === 'apple_core') {
+        path(ctx, `M ${-r*0.15} ${-r*0.4} Q ${r*0.3} 0 ${-r*0.15} ${r*0.4} L ${r*0.15} ${r*0.4} Q ${-r*0.3} 0 ${r*0.15} ${-r*0.4} Z`, '#fef08a', '#ca8a04', 1.5);
+        ellipse(ctx, 0, -r*0.1, r*0.04, r*0.06, '#713f12', null);
+        ellipse(ctx, 0, r*0.1, r*0.04, r*0.06, '#713f12', null);
+      } else if (type === 'battery') {
+        path(ctx, `M ${-r*0.25} ${-r*0.45} L ${r*0.25} ${-r*0.45} L ${r*0.25} ${r*0.55} L ${-r*0.25} ${r*0.55} Z`, '#e2e8f0', '#334155', 1.5);
+        path(ctx, `M ${-r*0.1} ${-r*0.58} L ${r*0.1} ${-r*0.58} L ${r*0.1} ${-r*0.45} L ${-r*0.1} ${-r*0.45} Z`, '#f59e0b', '#334155', 1.2);
+        line(ctx, [[0, -r*0.25], [0, r*0.05]], '#22c55e', 2);
+        line(ctx, [[-r*0.15, -r*0.1], [r*0.15, -r*0.1]], '#22c55e', 2);
+      }
+      ctx.restore();
+    },
+    emergency(ctx, cx, cy, size, type) {
+      ctx.save();
+      ctx.translate(cx, cy);
+      const r = size * 0.5;
+      if (type === 'running_exit') {
+        path(ctx, `M ${-r} ${-r*0.65} L ${r} ${-r*0.65} L ${r} ${r*0.65} L ${-r} ${r*0.65} Z`, '#15803d', '#ffffff', 1.5);
+        path(ctx, `M ${r*0.25} ${-r*0.45} L ${r*0.75} ${-r*0.45} L ${r*0.75} ${r*0.55} L ${r*0.25} ${r*0.55} Z`, '#ffffff', null);
+        ellipse(ctx, -r*0.2, -r*0.25, r*0.12, r*0.12, '#ffffff', null);
+        line(ctx, [[-r*0.2, -r*0.1], [-r*0.1, r*0.15], [-r*0.35, r*0.45]], '#ffffff', 2.2);
+        line(ctx, [[-r*0.1, r*0.15], [r*0.15, r*0.3]], '#ffffff', 2.2);
+        line(ctx, [[-r*0.18, 0], [r*0.1, -r*0.15]], '#ffffff', 2.2);
+      } else if (type === 'flame') {
+        path(ctx, `M 0 ${r*0.6} Q ${-r*0.6} ${r*0.2} ${-r*0.3} ${-r*0.2} Q ${-r*0.4} ${-r*0.5} 0 ${-r*0.7} Q ${r*0.5} ${-r*0.2} ${r*0.3} ${r*0.2} Q ${r*0.6} ${r*0.5} 0 ${r*0.6} Z`, '#ef4444', '#b91c1c', 1.5);
+        path(ctx, `M 0 ${r*0.5} Q ${-r*0.3} ${r*0.2} 0 ${-r*0.3} Q ${r*0.3} ${r*0.2} 0 ${r*0.5} Z`, '#fde047', null);
+      } else if (type === 'quake') {
+        path(ctx, `M 0 ${-r*0.65} L ${r*0.6} ${-r*0.15} L ${r*0.5} ${-r*0.15} L ${r*0.5} ${r*0.6} L ${-r*0.5} ${r*0.6} L ${-r*0.5} ${-r*0.15} L ${-r*0.6} ${-r*0.15} Z`, '#f8fafc', '#1e293b', 1.5);
+        path(ctx, `M 0 ${-r*0.2} L ${-r*0.12} 0 L ${r*0.12} ${r*0.25} L 0 ${r*0.6}`, null, '#dc2626', 2);
+        line(ctx, [[-r*0.8, -r*0.1], [-r*0.65, 0]], '#64748b', 1.5);
+        line(ctx, [[r*0.8, -r*0.1], [r*0.65, 0]], '#64748b', 1.5);
+      } else if (type === 'tsunami') {
+        path(ctx, `M ${-r*0.7} ${r*0.6} Q ${-r*0.2} ${r*0.6} ${-r*0.1} ${r*0.2} Q 0 ${-r*0.5} ${r*0.4} ${-r*0.5} Q ${r*0.6} ${-r*0.2} ${r*0.35} ${-r*0.05} Q ${r*0.65} ${r*0.1} ${r*0.7} ${r*0.6} Z`, '#0284c7', '#0369a1', 1.5);
+      } else if (type === 'arrow') {
+        path(ctx, `M ${-r*0.5} ${-r*0.15} L ${r*0.1} ${-r*0.15} L ${r*0.1} ${-r*0.4} L ${r*0.6} 0 L ${r*0.1} ${r*0.4} L ${r*0.1} ${r*0.15} L ${-r*0.5} ${r*0.15} Z`, '#22c55e', '#15803d', 1.5);
+      }
+      ctx.restore();
+    },
+    prohibition(ctx, cx, cy, size, type) {
+      ctx.save();
+      ctx.translate(cx, cy);
+      const r = size * 0.5;
+      if (type === 'no_swim') {
+        ellipse(ctx, 0, 0, r, r, '#ffffff', '#dc2626', 2.5);
+        ellipse(ctx, -r*0.2, -r*0.15, r*0.1, r*0.1, '#1e293b', null);
+        path(ctx, `M ${-r*0.5} ${r*0.2} Q ${-r*0.25} ${r*0.05} 0 ${r*0.2} Q ${r*0.25} ${r*0.35} ${r*0.5} ${r*0.2}`, null, '#0284c7', 2);
+        line(ctx, [[-r*0.7, -r*0.7], [r*0.7, r*0.7]], '#dc2626', 3.0);
+      } else if (type === 'warning_triangle') {
+        path(ctx, `M 0 ${-r} L ${r*0.95} ${r*0.7} L ${-r*0.95} ${r*0.7} Z`, '#facc15', '#b45309', 2.5);
+        ellipse(ctx, 0, -r*0.05, r*0.08, r*0.2, '#1e293b', null);
+        ellipse(ctx, 0, r*0.38, r*0.08, r*0.08, '#1e293b', null);
+      }
+      ctx.restore();
+    },
+    first_aid(ctx, cx, cy, size, type) {
+      ctx.save();
+      ctx.translate(cx, cy);
+      const r = size * 0.5;
+      if (type === 'heart') {
+        path(ctx, `M 0 ${r*0.7} Q ${-r*0.8} 0 ${-r*0.4} ${-r*0.6} Q 0 ${-r*0.6} 0 ${-r*0.1} Q 0 ${-r*0.6} ${r*0.4} ${-r*0.6} Q ${r*0.8} 0 0 ${r*0.7} Z`, '#ef4444', '#b91c1c', 1.5);
+      } else {
+        path(ctx, `M ${-r} ${-r} L ${r} ${-r} L ${r} ${r} L ${-r} ${r} Z`, '#10b981', '#059669', 1.5);
+        path(ctx, `M ${-r*0.2} ${-r*0.7} L ${r*0.2} ${-r*0.7} L ${r*0.2} ${-r*0.2} L ${r*0.7} ${-r*0.2} L ${r*0.7} ${r*0.2} L ${r*0.2} ${r*0.2} L ${r*0.2} ${r*0.7} L ${-r*0.2} ${r*0.7} L ${-r*0.2} ${r*0.2} L ${-r*0.7} ${r*0.2} L ${-r*0.7} ${-r*0.2} L ${-r*0.2} ${-r*0.2} Z`, '#ffffff', null);
+      }
+      ctx.restore();
+    },
+    ghs(ctx, cx, cy, size, symbol = 'skull') {
+      ctx.save();
+      ctx.translate(cx, cy);
+      const d = size;
+      path(ctx, `M 0 ${-d * 0.72} L ${d * 0.72} 0 L 0 ${d * 0.72} L ${-d * 0.72} 0 Z`, '#ffffff', '#d62424', 2.2);
+      if (symbol === 'skull') {
+        ellipse(ctx, 0, -d * 0.16, d * 0.28, d * 0.25, '#1e2422', null);
+        ellipse(ctx, -d * 0.1, -d * 0.16, d * 0.07, d * 0.08, '#ffffff', null);
+        ellipse(ctx, d * 0.1, -d * 0.16, d * 0.07, d * 0.08, '#ffffff', null);
+        path(ctx, `M ${-d * 0.12} ${-d * 0.02} L ${d * 0.12} ${-d * 0.02} L ${d * 0.08} ${d * 0.12} L ${-d * 0.08} ${d * 0.12} Z`, '#1e2422', null);
+        line(ctx, [[-d * 0.28, d * 0.24], [d * 0.28, -d * 0.24]], '#1e2422', 1.8);
+        line(ctx, [[-d * 0.28, -d * 0.24], [d * 0.28, d * 0.24]], '#1e2422', 1.8);
+      } else if (symbol === 'aquatic') {
+        path(ctx, `M ${-d * 0.24} ${d * 0.1} Q ${-d * 0.05} ${d * 0.2} ${d * 0.2} ${d * 0.06}`, null, '#1e2422', 1.6);
+        ellipse(ctx, 0, d * 0.08, d * 0.18, d * 0.09, '#1e2422', null, 0.2);
+        ellipse(ctx, -d * 0.1, d * 0.06, d * 0.04, d * 0.04, '#ffffff', null);
+        line(ctx, [[d * 0.12, -d * 0.22], [d * 0.12, d * 0.08]], '#1e2422', 1.8);
+        line(ctx, [[d * 0.12, -d * 0.1], [d * 0.24, -d * 0.18]], '#1e2422', 1.4);
+        line(ctx, [[d * 0.12, -d * 0.04], [0, -d * 0.12]], '#1e2422', 1.4);
+      } else {
+        ellipse(ctx, 0, -d * 0.1, d * 0.07, d * 0.18, '#1e2422', null);
+        ellipse(ctx, 0, d * 0.2, d * 0.07, d * 0.07, '#1e2422', null);
+      }
+      ctx.restore();
+    }
+  };
+
   const kit = {
     INK,
+    TAU,  // các gói lấy TAU từ kit; thiếu thì mọi arc/góc thành NaN và hình âm thầm biến mất
     tone,
     volume,
     cylinder,
@@ -3618,8 +3797,10 @@ globalThis.RemakeVector = (() => {
     chibiSkeleton,
     solveArm,
     rotate,
+    PICTOGRAMS,
   };
   const CUSTOM_EFFECTS = [];
+  const RIG_OVERLAYS = {};
   const ACTION_HOOKS = {};
   function register(pack) {
     if (!pack) return;
@@ -3654,6 +3835,7 @@ globalThis.RemakeVector = (() => {
         } else {
           RIG_DRAWERS[id] = def.drawActor || ((ctx, s, t, cat, cels) => def.draw(ctx, s, t, cat, kit));
         }
+        if (def.overlay) RIG_OVERLAYS[id] = def.overlay;
       }
     }
     if (pack.effects) {

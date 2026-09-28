@@ -2,7 +2,7 @@
   "id": "vector-library-showreel",
   "renderer": "native-vector-v1",
   "fidelity": "technical-demo",
-  "duration": 138.0,
+  "duration": 193.0,
   "characters": [
     {
       "id": "watermelon-left",
@@ -866,6 +866,307 @@
       "name": "Khay ăn dinh dưỡng",
       "asset": "lunch_tray",
       "face": false
+    },
+    {
+      "id": "scrape_battle-patch",
+      "name": "Mảng da Chibi biểu bì",
+      "asset": "skin_patch"
+    },
+    {
+      "id": "scrape_battle-germ",
+      "name": "Liên cầu khuẩn chuỗi",
+      "asset": "bacteria_chain"
+    },
+    {
+      "id": "scrape_battle-cluster",
+      "name": "Tụ cầu khuẩn chùm",
+      "asset": "bacteria_cluster"
+    },
+    {
+      "id": "scrape_battle-neutro",
+      "name": "Bạch cầu trung tính trinh sát",
+      "asset": "neutrophil_scout"
+    },
+    {
+      "id": "scrape_battle-macro",
+      "name": "Đại thực bào đầu bếp",
+      "asset": "macrophage_chef"
+    },
+    {
+      "id": "scrape_battle-archer",
+      "name": "Tế bào B xạ thủ",
+      "asset": "b_cell_archer"
+    },
+    {
+      "id": "scrape_battle-platelet",
+      "name": "Tiểu cầu thợ xây",
+      "asset": "platelet_builder"
+    },
+    {
+      "id": "virus_invasion-virus",
+      "name": "Virus gai núm",
+      "asset": "virus_spike"
+    },
+    {
+      "id": "virus_invasion-cell",
+      "name": "Tế bào bị nhiễm virus",
+      "asset": "infected_cell"
+    },
+    {
+      "id": "virus_invasion-knight",
+      "name": "Hiệp sĩ T diệt khuẩn",
+      "asset": "killer_t_knight"
+    },
+    {
+      "id": "virus_invasion-ninja",
+      "name": "Tế bào sát thủ tự nhiên NK",
+      "asset": "nk_ninja"
+    },
+    {
+      "id": "virus_invasion-brain",
+      "name": "Bộ não Chibi",
+      "asset": "brain_chibi"
+    },
+    {
+      "id": "vaccine_training-librarian",
+      "name": "Tế bào nhớ thủ thư",
+      "asset": "memory_cell_librarian"
+    },
+    {
+      "id": "vaccine_training-archer",
+      "name": "Tế bào B xạ thủ",
+      "asset": "b_cell_archer"
+    },
+    {
+      "id": "vaccine_training-spore",
+      "name": "Bào tử vi nấm",
+      "asset": "fungus_spore"
+    },
+    {
+      "id": "vaccine_training-captain",
+      "name": "Tế bào T chỉ huy",
+      "asset": "helper_t_captain"
+    },
+    {
+      "id": "body_tour-xray",
+      "name": "Khung X-quang cơ thể Chibi trong suốt",
+      "asset": "body_xray"
+    },
+    {
+      "id": "body_tour-heart",
+      "name": "Trái tim Chibi",
+      "asset": "heart_chibi",
+      "attach_to": {
+        "id": "body_tour-xray",
+        "anchor": "heart"
+      }
+    },
+    {
+      "id": "body_tour-lungs",
+      "name": "Lá phổi Chibi",
+      "asset": "lungs_chibi",
+      "attach_to": {
+        "id": "body_tour-xray",
+        "anchor": "lungs"
+      }
+    },
+    {
+      "id": "body_tour-stomach",
+      "name": "Dạ dày Chibi",
+      "asset": "stomach_chibi",
+      "attach_to": {
+        "id": "body_tour-xray",
+        "anchor": "stomach"
+      }
+    },
+    {
+      "id": "body_tour-brain",
+      "name": "Bộ não Chibi",
+      "asset": "brain_chibi",
+      "attach_to": {
+        "id": "body_tour-xray",
+        "anchor": "brain"
+      }
+    },
+    {
+      "id": "gut_team-good1",
+      "name": "Lợi khuẩn đường ruột",
+      "asset": "good_bacteria"
+    },
+    {
+      "id": "gut_team-good2",
+      "name": "Lợi khuẩn đường ruột",
+      "asset": "good_bacteria"
+    },
+    {
+      "id": "gut_team-bad",
+      "name": "Trực khuẩn que",
+      "asset": "bacteria_rod"
+    },
+    {
+      "id": "gut_team-intestine",
+      "name": "Đường ruột Chibi",
+      "asset": "intestine_chibi"
+    },
+    {
+      "id": "cavity_battle-tooth",
+      "name": "Răng Chibi",
+      "asset": "tooth_chibi"
+    },
+    {
+      "id": "cavity_battle-germ",
+      "name": "Vi khuẩn sâu răng máy khoan",
+      "asset": "cavity_germ"
+    },
+    {
+      "id": "cavity_battle-cilia",
+      "name": "Lông mao quét bụi",
+      "asset": "cilia_sweeper"
+    },
+    {
+      "id": "cavity_battle-goo",
+      "name": "Mảng bám răng nhầy",
+      "asset": "plaque_goo"
+    },
+    {
+      "id": "allergy_story-pollen",
+      "name": "Hạt phấn hoa tròn ngây thơ",
+      "asset": "pollen_puff"
+    },
+    {
+      "id": "allergy_story-mast",
+      "name": "Dưỡng bào báo động",
+      "asset": "mast_cell_alarm"
+    },
+    {
+      "id": "allergy_story-nose",
+      "name": "Chiếc mũi Chibi",
+      "asset": "nose_chibi"
+    },
+    {
+      "id": "recycling_sort-kid",
+      "name": "Bé mầm non",
+      "asset": "chibi_kid"
+    },
+    {
+      "id": "recycling_sort-bin_p",
+      "name": "Thùng rác nhựa/lon",
+      "asset": "bin_plastic"
+    },
+    {
+      "id": "recycling_sort-bin_pap",
+      "name": "Thùng rác giấy",
+      "asset": "bin_paper"
+    },
+    {
+      "id": "recycling_sort-bin_g",
+      "name": "Thùng rác thuỷ tinh",
+      "asset": "bin_glass"
+    },
+    {
+      "id": "recycling_sort-bin_b",
+      "name": "Thùng rác hữu cơ",
+      "asset": "bin_bio"
+    },
+    {
+      "id": "recycling_sort-bin_res",
+      "name": "Thùng rác vô cơ còn lại",
+      "asset": "bin_residual"
+    },
+    {
+      "id": "recycling_sort-bottle",
+      "name": "Chai nhựa tái chế",
+      "asset": "plastic_bottle"
+    },
+    {
+      "id": "recycling_sort-news",
+      "name": "Bó báo cũ tái chế",
+      "asset": "newspaper_bundle"
+    },
+    {
+      "id": "recycling_sort-peel",
+      "name": "Vỏ chuối hữu cơ",
+      "asset": "banana_peel"
+    },
+    {
+      "id": "recycling_sort-batt",
+      "name": "Pin cũ thu gom riêng",
+      "asset": "battery"
+    },
+    {
+      "id": "bottle_journey-truck",
+      "name": "Xe chở rác",
+      "asset": "garbage_truck"
+    },
+    {
+      "id": "bottle_journey-bottle",
+      "name": "Chai nhựa tái chế",
+      "asset": "plastic_bottle"
+    },
+    {
+      "id": "bottle_journey-plant",
+      "name": "Nhà máy tái chế",
+      "asset": "recycling_plant"
+    },
+    {
+      "id": "crossing_street-kid",
+      "name": "Bé mầm non",
+      "asset": "chibi_kid"
+    },
+    {
+      "id": "crossing_street-light",
+      "name": "traffic_light",
+      "asset": "traffic_light"
+    },
+    {
+      "id": "crossing_street-zebra",
+      "name": "crosswalk",
+      "asset": "crosswalk"
+    },
+    {
+      "id": "crossing_street-cone",
+      "name": "traffic_cone",
+      "asset": "traffic_cone"
+    },
+    {
+      "id": "disaster_safety-kid",
+      "name": "Bé mầm non",
+      "asset": "chibi_kid"
+    },
+    {
+      "id": "disaster_safety-detector",
+      "name": "smoke_detector",
+      "asset": "smoke_detector"
+    },
+    {
+      "id": "disaster_safety-blanket",
+      "name": "fire_blanket",
+      "asset": "fire_blanket"
+    },
+    {
+      "id": "disaster_safety-table",
+      "name": "Bàn học/bàn làm việc",
+      "asset": "desk"
+    },
+    {
+      "id": "disaster_safety-bag",
+      "name": "Balo khẩn cấp thiên tai",
+      "asset": "emergency_backpack"
+    },
+    {
+      "id": "disaster_safety-radio_rig",
+      "name": "radio",
+      "asset": "radio"
+    },
+    {
+      "id": "disaster_safety-sand",
+      "name": "sandbag",
+      "asset": "sandbag"
+    },
+    {
+      "id": "disaster_safety-buoy",
+      "name": "rescue_buoy",
+      "asset": "rescue_buoy"
     }
   ],
   "scenes": [
@@ -6717,13 +7018,2728 @@
     },
     {
       "renderer": "native-vector-v1",
-      "kind": "title",
+      "kind": "scene",
       "start_time": 136.5,
-      "end_time": 138.0,
+      "end_time": 138.16666666666666,
+      "characters_present": [
+        "scrape_battle-patch",
+        "scrape_battle-germ",
+        "scrape_battle-neutro"
+      ],
+      "poses": {
+        "scrape_battle-patch": [
+          {
+            "time": 136.5,
+            "x": 200,
+            "y": 810,
+            "height": 180,
+            "wound": 0.8
+          },
+          {
+            "time": 138.16666666666666,
+            "x": 200,
+            "y": 810,
+            "height": 180,
+            "wound": 0.8
+          }
+        ],
+        "scrape_battle-germ": [
+          {
+            "time": 136.5,
+            "x": 420,
+            "y": 810,
+            "height": 120
+          },
+          {
+            "time": 137.16666666666666,
+            "x": 340,
+            "y": 810,
+            "height": 120
+          },
+          {
+            "time": 138.16666666666666,
+            "x": 340,
+            "y": 810,
+            "height": 120,
+            "stunned": 1.0
+          }
+        ],
+        "scrape_battle-neutro": [
+          {
+            "time": 136.5,
+            "x": 100,
+            "y": 810,
+            "height": 140
+          },
+          {
+            "time": 137.16666666666666,
+            "x": 260,
+            "y": 810,
+            "height": 140
+          },
+          {
+            "time": 138.16666666666666,
+            "x": 260,
+            "y": 810,
+            "height": 140
+          }
+        ]
+      },
+      "actions": [
+        {
+          "type": "charge",
+          "start": 136.66666666666666,
+          "end": 137.33333333333334,
+          "target": "scrape_battle-germ",
+          "actor": "scrape_battle-neutro"
+        },
+        {
+          "type": "net_trap",
+          "start": 137.23333333333332,
+          "end": 138.1,
+          "target": "scrape_battle-germ",
+          "actor": "scrape_battle-neutro"
+        }
+      ],
+      "background": {
+        "preset": "wound_site"
+      },
+      "index": 65,
+      "camera": [
+        {
+          "time": 136.5,
+          "x": 255.5,
+          "y": 557.06,
+          "zoom": 1.134
+        }
+      ]
+    },
+    {
+      "renderer": "native-vector-v1",
+      "kind": "scene",
+      "start_time": 138.16666666666666,
+      "end_time": 139.83333333333334,
+      "characters_present": [
+        "scrape_battle-patch",
+        "scrape_battle-germ",
+        "scrape_battle-macro",
+        "scrape_battle-archer",
+        "scrape_battle-cluster"
+      ],
+      "poses": {
+        "scrape_battle-patch": [
+          {
+            "time": 138.16666666666666,
+            "x": 200,
+            "y": 810,
+            "height": 180,
+            "wound": 0.8
+          },
+          {
+            "time": 139.83333333333334,
+            "x": 200,
+            "y": 810,
+            "height": 180,
+            "wound": 0.8
+          }
+        ],
+        "scrape_battle-germ": [
+          {
+            "time": 138.16666666666666,
+            "x": 340,
+            "y": 810,
+            "height": 120,
+            "stunned": 1.0
+          },
+          {
+            "time": 139.0,
+            "x": 280,
+            "y": 780,
+            "height": 60,
+            "opacity": 0.3
+          },
+          {
+            "time": 139.83333333333334,
+            "x": 280,
+            "y": 780,
+            "height": 20,
+            "opacity": 0.0
+          }
+        ],
+        "scrape_battle-macro": [
+          {
+            "time": 138.16666666666666,
+            "x": 240,
+            "y": 810,
+            "height": 170,
+            "engulf": 0.0
+          },
+          {
+            "time": 139.0,
+            "x": 280,
+            "y": 810,
+            "height": 170,
+            "engulf": 1.0
+          },
+          {
+            "time": 139.83333333333334,
+            "x": 280,
+            "y": 810,
+            "height": 170,
+            "engulf": 0.0
+          }
+        ],
+        "scrape_battle-archer": [
+          {
+            "time": 138.16666666666666,
+            "x": 120,
+            "y": 810,
+            "height": 140
+          },
+          {
+            "time": 139.83333333333334,
+            "x": 120,
+            "y": 810,
+            "height": 140
+          }
+        ],
+        "scrape_battle-cluster": [
+          {
+            "time": 138.16666666666666,
+            "x": 440,
+            "y": 810,
+            "height": 130
+          },
+          {
+            "time": 139.16666666666666,
+            "x": 440,
+            "y": 810,
+            "height": 130,
+            "tagged": 0.0
+          },
+          {
+            "time": 139.83333333333334,
+            "x": 440,
+            "y": 810,
+            "height": 130,
+            "tagged": 1.0
+          }
+        ]
+      },
+      "actions": [
+        {
+          "type": "engulf",
+          "start": 138.33333333333334,
+          "end": 139.66666666666666,
+          "target": "scrape_battle-germ",
+          "actor": "scrape_battle-macro"
+        },
+        {
+          "type": "shoot_antibody",
+          "start": 138.66666666666666,
+          "end": 139.76666666666668,
+          "target": "scrape_battle-cluster",
+          "actor": "scrape_battle-archer"
+        }
+      ],
+      "background": {
+        "preset": "wound_site"
+      },
+      "index": 66,
+      "camera": [
+        {
+          "time": 138.16666666666666,
+          "x": 277.75,
+          "y": 554.45,
+          "zoom": 1.122
+        }
+      ]
+    },
+    {
+      "renderer": "native-vector-v1",
+      "kind": "scene",
+      "start_time": 139.83333333333334,
+      "end_time": 141.5,
+      "characters_present": [
+        "scrape_battle-patch",
+        "scrape_battle-platelet",
+        "scrape_battle-macro"
+      ],
+      "poses": {
+        "scrape_battle-patch": [
+          {
+            "time": 139.83333333333334,
+            "x": 200,
+            "y": 810,
+            "height": 180,
+            "wound": 0.8
+          },
+          {
+            "time": 141.0,
+            "x": 200,
+            "y": 810,
+            "height": 180,
+            "wound": 0.0
+          },
+          {
+            "time": 141.5,
+            "x": 200,
+            "y": 810,
+            "height": 180,
+            "wound": 0.0
+          }
+        ],
+        "scrape_battle-platelet": [
+          {
+            "time": 139.83333333333334,
+            "x": 260,
+            "y": 810,
+            "height": 100
+          },
+          {
+            "time": 141.5,
+            "x": 260,
+            "y": 810,
+            "height": 100
+          }
+        ],
+        "scrape_battle-macro": [
+          {
+            "time": 139.83333333333334,
+            "x": 380,
+            "y": 810,
+            "height": 170
+          },
+          {
+            "time": 141.5,
+            "x": 380,
+            "y": 810,
+            "height": 170,
+            "glow": 1.0
+          }
+        ]
+      },
+      "actions": [
+        {
+          "type": "patch_wound",
+          "start": 140.0,
+          "end": 141.1,
+          "target": "scrape_battle-patch",
+          "actor": "scrape_battle-platelet"
+        },
+        {
+          "type": "victory",
+          "start": 141.1,
+          "end": 141.5,
+          "actor": "scrape_battle-macro"
+        }
+      ],
+      "background": {
+        "preset": "wound_site"
+      },
+      "index": 67,
+      "camera": [
+        {
+          "time": 139.83333333333334,
+          "x": 287.75,
+          "y": 614.65,
+          "zoom": 1.468
+        }
+      ]
+    },
+    {
+      "renderer": "native-vector-v1",
+      "kind": "scene",
+      "start_time": 141.5,
+      "end_time": 143.16666666666666,
+      "characters_present": [
+        "virus_invasion-virus",
+        "virus_invasion-cell"
+      ],
+      "poses": {
+        "virus_invasion-virus": [
+          {
+            "time": 141.5,
+            "x": 180,
+            "y": 810,
+            "height": 120
+          },
+          {
+            "time": 142.33333333333334,
+            "x": 280,
+            "y": 770,
+            "height": 100
+          },
+          {
+            "time": 143.16666666666666,
+            "x": 280,
+            "y": 770,
+            "height": 40,
+            "opacity": 0.0
+          }
+        ],
+        "virus_invasion-cell": [
+          {
+            "time": 141.5,
+            "x": 340,
+            "y": 810,
+            "height": 150,
+            "infected": 0.2
+          },
+          {
+            "time": 142.5,
+            "x": 340,
+            "y": 810,
+            "height": 150,
+            "infected": 0.8
+          },
+          {
+            "time": 143.16666666666666,
+            "x": 340,
+            "y": 810,
+            "height": 150,
+            "infected": 1.0
+          }
+        ]
+      },
+      "actions": [
+        {
+          "type": "hijack",
+          "start": 141.83333333333334,
+          "end": 143.0,
+          "target": "virus_invasion-cell",
+          "actor": "virus_invasion-virus"
+        }
+      ],
+      "background": {
+        "preset": "blood_vessel"
+      },
+      "index": 68,
+      "camera": [
+        {
+          "time": 141.5,
+          "x": 266.75,
+          "y": 647.06,
+          "zoom": 1.76
+        }
+      ]
+    },
+    {
+      "renderer": "native-vector-v1",
+      "kind": "scene",
+      "start_time": 143.16666666666666,
+      "end_time": 144.83333333333334,
+      "characters_present": [
+        "virus_invasion-cell",
+        "virus_invasion-knight",
+        "virus_invasion-ninja"
+      ],
+      "poses": {
+        "virus_invasion-cell": [
+          {
+            "time": 143.16666666666666,
+            "x": 340,
+            "y": 810,
+            "height": 150,
+            "infected": 1.0
+          },
+          {
+            "time": 144.33333333333334,
+            "x": 340,
+            "y": 810,
+            "height": 150,
+            "infected": 1.0,
+            "pop": 0.5
+          },
+          {
+            "time": 144.83333333333334,
+            "x": 340,
+            "y": 810,
+            "height": 150,
+            "infected": 1.0,
+            "pop": 1.0,
+            "opacity": 0.0
+          }
+        ],
+        "virus_invasion-knight": [
+          {
+            "time": 143.16666666666666,
+            "x": 180,
+            "y": 810,
+            "height": 150
+          },
+          {
+            "time": 144.16666666666666,
+            "x": 260,
+            "y": 810,
+            "height": 150
+          },
+          {
+            "time": 144.83333333333334,
+            "x": 260,
+            "y": 810,
+            "height": 150
+          }
+        ],
+        "virus_invasion-ninja": [
+          {
+            "time": 143.16666666666666,
+            "x": 440,
+            "y": 810,
+            "height": 140
+          },
+          {
+            "time": 144.83333333333334,
+            "x": 440,
+            "y": 810,
+            "height": 140
+          }
+        ]
+      },
+      "actions": [
+        {
+          "type": "strike_infected",
+          "start": 143.5,
+          "end": 144.66666666666666,
+          "target": "virus_invasion-cell",
+          "actor": "virus_invasion-knight"
+        }
+      ],
+      "background": {
+        "preset": "blood_vessel"
+      },
+      "index": 69,
+      "camera": [
+        {
+          "time": 143.16666666666666,
+          "x": 307.75,
+          "y": 583.97,
+          "zoom": 1.269
+        }
+      ]
+    },
+    {
+      "renderer": "native-vector-v1",
+      "kind": "scene",
+      "start_time": 144.83333333333334,
+      "end_time": 146.5,
+      "characters_present": [
+        "virus_invasion-brain"
+      ],
+      "poses": {
+        "virus_invasion-brain": [
+          {
+            "time": 144.83333333333334,
+            "x": 288,
+            "y": 810,
+            "height": 180,
+            "think": 0.5
+          },
+          {
+            "time": 145.66666666666666,
+            "x": 288,
+            "y": 810,
+            "height": 180,
+            "think": 1.0,
+            "thermostat": 0.8
+          },
+          {
+            "time": 146.5,
+            "x": 288,
+            "y": 810,
+            "height": 180,
+            "think": 0.0,
+            "thermostat": 0.0,
+            "glow": 1.0
+          }
+        ]
+      },
+      "actions": [],
+      "background": {
+        "preset": "brain_hq"
+      },
+      "index": 70,
+      "camera": [
+        {
+          "time": 144.83333333333334,
+          "x": 288.0,
+          "y": 666.64,
+          "zoom": 2.0
+        }
+      ]
+    },
+    {
+      "renderer": "native-vector-v1",
+      "kind": "scene",
+      "start_time": 146.5,
+      "end_time": 148.16666666666666,
+      "characters_present": [
+        "vaccine_training-librarian",
+        "vaccine_training-archer"
+      ],
+      "poses": {
+        "vaccine_training-librarian": [
+          {
+            "time": 146.5,
+            "x": 220,
+            "y": 810,
+            "height": 150,
+            "glow": 0.2
+          },
+          {
+            "time": 148.16666666666666,
+            "x": 220,
+            "y": 810,
+            "height": 150,
+            "glow": 0.8
+          }
+        ],
+        "vaccine_training-archer": [
+          {
+            "time": 146.5,
+            "x": 380,
+            "y": 810,
+            "height": 140
+          },
+          {
+            "time": 148.16666666666666,
+            "x": 380,
+            "y": 810,
+            "height": 140
+          }
+        ]
+      },
+      "actions": [
+        {
+          "type": "remember",
+          "start": 146.76666666666668,
+          "end": 148.0,
+          "actor": "vaccine_training-librarian"
+        }
+      ],
+      "background": {
+        "preset": "training_camp"
+      },
+      "index": 71,
+      "camera": [
+        {
+          "time": 146.5,
+          "x": 297.75,
+          "y": 641.86,
+          "zoom": 1.705
+        }
+      ]
+    },
+    {
+      "renderer": "native-vector-v1",
+      "kind": "scene",
+      "start_time": 148.16666666666666,
+      "end_time": 149.83333333333334,
+      "characters_present": [
+        "vaccine_training-librarian",
+        "vaccine_training-archer",
+        "vaccine_training-spore"
+      ],
+      "poses": {
+        "vaccine_training-librarian": [
+          {
+            "time": 148.16666666666666,
+            "x": 180,
+            "y": 810,
+            "height": 150
+          },
+          {
+            "time": 149.83333333333334,
+            "x": 180,
+            "y": 810,
+            "height": 150
+          }
+        ],
+        "vaccine_training-archer": [
+          {
+            "time": 148.16666666666666,
+            "x": 260,
+            "y": 810,
+            "height": 140
+          },
+          {
+            "time": 149.83333333333334,
+            "x": 260,
+            "y": 810,
+            "height": 140
+          }
+        ],
+        "vaccine_training-spore": [
+          {
+            "time": 148.16666666666666,
+            "x": 420,
+            "y": 810,
+            "height": 120
+          },
+          {
+            "time": 149.16666666666666,
+            "x": 420,
+            "y": 810,
+            "height": 120,
+            "tagged": 0.0
+          },
+          {
+            "time": 149.83333333333334,
+            "x": 420,
+            "y": 810,
+            "height": 120,
+            "tagged": 1.0
+          }
+        ]
+      },
+      "actions": [
+        {
+          "type": "shoot_antibody",
+          "start": 148.43333333333334,
+          "end": 149.66666666666666,
+          "target": "vaccine_training-spore",
+          "actor": "vaccine_training-archer"
+        }
+      ],
+      "background": {
+        "preset": "training_camp"
+      },
+      "index": 72,
+      "camera": [
+        {
+          "time": 148.16666666666666,
+          "x": 293.25,
+          "y": 600.76,
+          "zoom": 1.37
+        }
+      ]
+    },
+    {
+      "renderer": "native-vector-v1",
+      "kind": "scene",
+      "start_time": 149.83333333333334,
+      "end_time": 151.5,
+      "characters_present": [
+        "vaccine_training-captain",
+        "vaccine_training-archer"
+      ],
+      "poses": {
+        "vaccine_training-captain": [
+          {
+            "time": 149.83333333333334,
+            "x": 220,
+            "y": 810,
+            "height": 150,
+            "glow": 0.0
+          },
+          {
+            "time": 150.5,
+            "x": 220,
+            "y": 810,
+            "height": 150,
+            "glow": 1.0
+          },
+          {
+            "time": 151.5,
+            "x": 220,
+            "y": 810,
+            "height": 150,
+            "glow": 1.0
+          }
+        ],
+        "vaccine_training-archer": [
+          {
+            "time": 149.83333333333334,
+            "x": 360,
+            "y": 810,
+            "height": 140
+          },
+          {
+            "time": 151.5,
+            "x": 360,
+            "y": 810,
+            "height": 140,
+            "glow": 0.9
+          }
+        ]
+      },
+      "actions": [
+        {
+          "type": "rally",
+          "start": 150.0,
+          "end": 151.0,
+          "target": "vaccine_training-archer",
+          "actor": "vaccine_training-captain"
+        },
+        {
+          "type": "victory",
+          "start": 151.0,
+          "end": 151.5,
+          "actor": "vaccine_training-captain"
+        }
+      ],
+      "background": {
+        "preset": "lymph_node_base"
+      },
+      "index": 73,
+      "camera": [
+        {
+          "time": 149.83333333333334,
+          "x": 287.75,
+          "y": 653.43,
+          "zoom": 1.831
+        }
+      ]
+    },
+    {
+      "renderer": "native-vector-v1",
+      "kind": "scene",
+      "start_time": 151.5,
+      "end_time": 152.75,
+      "characters_present": [
+        "body_tour-xray",
+        "body_tour-heart"
+      ],
+      "poses": {
+        "body_tour-xray": [
+          {
+            "time": 151.5,
+            "x": 288,
+            "y": 810,
+            "height": 360,
+            "highlight": "heart"
+          },
+          {
+            "time": 152.75,
+            "x": 288,
+            "y": 810,
+            "height": 360,
+            "highlight": "heart"
+          }
+        ],
+        "body_tour-heart": [
+          {
+            "time": 151.5,
+            "x": 310,
+            "y": 666,
+            "height": 70
+          },
+          {
+            "time": 152.75,
+            "x": 310,
+            "y": 666,
+            "height": 70
+          }
+        ]
+      },
+      "actions": [],
+      "background": {
+        "preset": "body_inside"
+      },
+      "index": 74,
+      "camera": [
+        {
+          "time": 151.5,
+          "x": 288.0,
+          "y": 622.47,
+          "zoom": 1.529
+        }
+      ]
+    },
+    {
+      "renderer": "native-vector-v1",
+      "kind": "scene",
+      "start_time": 152.75,
+      "end_time": 154.0,
+      "characters_present": [
+        "body_tour-xray",
+        "body_tour-lungs"
+      ],
+      "poses": {
+        "body_tour-xray": [
+          {
+            "time": 152.75,
+            "x": 288,
+            "y": 810,
+            "height": 360,
+            "highlight": "lungs"
+          },
+          {
+            "time": 154.0,
+            "x": 288,
+            "y": 810,
+            "height": 360,
+            "highlight": "lungs"
+          }
+        ],
+        "body_tour-lungs": [
+          {
+            "time": 152.75,
+            "x": 288,
+            "y": 658,
+            "height": 80
+          },
+          {
+            "time": 154.0,
+            "x": 288,
+            "y": 658,
+            "height": 80
+          }
+        ]
+      },
+      "actions": [],
+      "background": {
+        "preset": "body_inside"
+      },
+      "index": 75,
+      "camera": [
+        {
+          "time": 152.75,
+          "x": 288.0,
+          "y": 622.47,
+          "zoom": 1.529
+        }
+      ]
+    },
+    {
+      "renderer": "native-vector-v1",
+      "kind": "scene",
+      "start_time": 154.0,
+      "end_time": 155.25,
+      "characters_present": [
+        "body_tour-xray",
+        "body_tour-stomach"
+      ],
+      "poses": {
+        "body_tour-xray": [
+          {
+            "time": 154.0,
+            "x": 288,
+            "y": 810,
+            "height": 360,
+            "highlight": "stomach"
+          },
+          {
+            "time": 155.25,
+            "x": 288,
+            "y": 810,
+            "height": 360,
+            "highlight": "stomach"
+          }
+        ],
+        "body_tour-stomach": [
+          {
+            "time": 154.0,
+            "x": 310,
+            "y": 695,
+            "height": 75
+          },
+          {
+            "time": 155.25,
+            "x": 310,
+            "y": 695,
+            "height": 75
+          }
+        ]
+      },
+      "actions": [],
+      "background": {
+        "preset": "body_inside"
+      },
+      "index": 76,
+      "camera": [
+        {
+          "time": 154.0,
+          "x": 288.0,
+          "y": 622.47,
+          "zoom": 1.529
+        }
+      ]
+    },
+    {
+      "renderer": "native-vector-v1",
+      "kind": "scene",
+      "start_time": 155.25,
+      "end_time": 156.5,
+      "characters_present": [
+        "body_tour-xray",
+        "body_tour-brain"
+      ],
+      "poses": {
+        "body_tour-xray": [
+          {
+            "time": 155.25,
+            "x": 288,
+            "y": 810,
+            "height": 360,
+            "highlight": "brain"
+          },
+          {
+            "time": 156.5,
+            "x": 288,
+            "y": 810,
+            "height": 360,
+            "highlight": "brain"
+          }
+        ],
+        "body_tour-brain": [
+          {
+            "time": 155.25,
+            "x": 288,
+            "y": 529,
+            "height": 80
+          },
+          {
+            "time": 156.5,
+            "x": 288,
+            "y": 529,
+            "height": 80
+          }
+        ]
+      },
+      "actions": [],
+      "background": {
+        "preset": "body_inside"
+      },
+      "index": 77,
+      "camera": [
+        {
+          "time": 155.25,
+          "x": 288.0,
+          "y": 622.47,
+          "zoom": 1.529
+        }
+      ]
+    },
+    {
+      "renderer": "native-vector-v1",
+      "kind": "scene",
+      "start_time": 156.5,
+      "end_time": 158.16666666666666,
+      "characters_present": [
+        "gut_team-good1",
+        "gut_team-good2"
+      ],
+      "poses": {
+        "gut_team-good1": [
+          {
+            "time": 156.5,
+            "x": 200,
+            "y": 810,
+            "height": 140
+          },
+          {
+            "time": 158.16666666666666,
+            "x": 200,
+            "y": 810,
+            "height": 140
+          }
+        ],
+        "gut_team-good2": [
+          {
+            "time": 156.5,
+            "x": 320,
+            "y": 810,
+            "height": 140
+          },
+          {
+            "time": 158.16666666666666,
+            "x": 320,
+            "y": 810,
+            "height": 140
+          }
+        ]
+      },
+      "actions": [
+        {
+          "type": "patrol",
+          "start": 156.66666666666666,
+          "end": 158.0,
+          "actor": "gut_team-good1"
+        },
+        {
+          "type": "patrol",
+          "start": 156.66666666666666,
+          "end": 158.0,
+          "actor": "gut_team-good2"
+        }
+      ],
+      "background": {
+        "preset": "intestine_town"
+      },
+      "index": 78,
+      "camera": [
+        {
+          "time": 156.5,
+          "x": 260.0,
+          "y": 666.64,
+          "zoom": 2.0
+        }
+      ]
+    },
+    {
+      "renderer": "native-vector-v1",
+      "kind": "scene",
+      "start_time": 158.16666666666666,
+      "end_time": 159.83333333333334,
+      "characters_present": [
+        "gut_team-good1",
+        "gut_team-good2",
+        "gut_team-bad"
+      ],
+      "poses": {
+        "gut_team-good1": [
+          {
+            "time": 158.16666666666666,
+            "x": 200,
+            "y": 810,
+            "height": 140
+          },
+          {
+            "time": 159.83333333333334,
+            "x": 200,
+            "y": 810,
+            "height": 140
+          }
+        ],
+        "gut_team-good2": [
+          {
+            "time": 158.16666666666666,
+            "x": 280,
+            "y": 810,
+            "height": 140
+          },
+          {
+            "time": 159.83333333333334,
+            "x": 280,
+            "y": 810,
+            "height": 140
+          }
+        ],
+        "gut_team-bad": [
+          {
+            "time": 158.16666666666666,
+            "x": 460,
+            "y": 810,
+            "height": 130
+          },
+          {
+            "time": 159.0,
+            "x": 360,
+            "y": 810,
+            "height": 130
+          },
+          {
+            "time": 159.83333333333334,
+            "x": 420,
+            "y": 810,
+            "height": 130,
+            "stunned": 0.8
+          }
+        ]
+      },
+      "actions": [
+        {
+          "type": "patrol",
+          "start": 158.33333333333334,
+          "end": 159.66666666666666,
+          "actor": "gut_team-good2"
+        }
+      ],
+      "background": {
+        "preset": "intestine_town"
+      },
+      "index": 79,
+      "camera": [
+        {
+          "time": 158.16666666666666,
+          "x": 327.75,
+          "y": 589.18,
+          "zoom": 1.298
+        }
+      ]
+    },
+    {
+      "renderer": "native-vector-v1",
+      "kind": "scene",
+      "start_time": 159.83333333333334,
+      "end_time": 161.5,
+      "characters_present": [
+        "gut_team-good1",
+        "gut_team-good2",
+        "gut_team-intestine"
+      ],
+      "poses": {
+        "gut_team-good1": [
+          {
+            "time": 159.83333333333334,
+            "x": 220,
+            "y": 810,
+            "height": 140
+          },
+          {
+            "time": 161.5,
+            "x": 220,
+            "y": 810,
+            "height": 140,
+            "glow": 1.0
+          }
+        ],
+        "gut_team-good2": [
+          {
+            "time": 159.83333333333334,
+            "x": 320,
+            "y": 810,
+            "height": 140
+          },
+          {
+            "time": 161.5,
+            "x": 320,
+            "y": 810,
+            "height": 140,
+            "glow": 1.0
+          }
+        ],
+        "gut_team-intestine": [
+          {
+            "time": 159.83333333333334,
+            "x": 430,
+            "y": 810,
+            "height": 160
+          },
+          {
+            "time": 161.5,
+            "x": 430,
+            "y": 810,
+            "height": 160,
+            "glow": 0.8
+          }
+        ]
+      },
+      "actions": [
+        {
+          "type": "victory",
+          "start": 160.16666666666666,
+          "end": 161.33333333333334,
+          "actor": "gut_team-good1"
+        },
+        {
+          "type": "victory",
+          "start": 160.16666666666666,
+          "end": 161.33333333333334,
+          "actor": "gut_team-good2"
+        }
+      ],
+      "background": {
+        "preset": "intestine_town"
+      },
+      "index": 80,
+      "camera": [
+        {
+          "time": 159.83333333333334,
+          "x": 329.5,
+          "y": 610.31,
+          "zoom": 1.436
+        }
+      ]
+    },
+    {
+      "renderer": "native-vector-v1",
+      "kind": "scene",
+      "start_time": 161.5,
+      "end_time": 163.16666666666666,
+      "characters_present": [
+        "cavity_battle-tooth",
+        "cavity_battle-germ"
+      ],
+      "poses": {
+        "cavity_battle-tooth": [
+          {
+            "time": 161.5,
+            "x": 220,
+            "y": 810,
+            "height": 170,
+            "cavity": 0.2
+          },
+          {
+            "time": 162.5,
+            "x": 220,
+            "y": 810,
+            "height": 170,
+            "cavity": 0.6
+          },
+          {
+            "time": 163.16666666666666,
+            "x": 220,
+            "y": 810,
+            "height": 170,
+            "cavity": 0.9,
+            "tears": 0.5
+          }
+        ],
+        "cavity_battle-germ": [
+          {
+            "time": 161.5,
+            "x": 380,
+            "y": 810,
+            "height": 120
+          },
+          {
+            "time": 162.16666666666666,
+            "x": 300,
+            "y": 810,
+            "height": 120
+          },
+          {
+            "time": 163.16666666666666,
+            "x": 300,
+            "y": 810,
+            "height": 120
+          }
+        ]
+      },
+      "actions": [
+        {
+          "type": "drill",
+          "start": 162.0,
+          "end": 163.1,
+          "target": "cavity_battle-tooth",
+          "actor": "cavity_battle-germ"
+        }
+      ],
+      "background": {
+        "preset": "mouth_cave"
+      },
+      "index": 81,
+      "camera": [
+        {
+          "time": 161.5,
+          "x": 288.75,
+          "y": 641.86,
+          "zoom": 1.705
+        }
+      ]
+    },
+    {
+      "renderer": "native-vector-v1",
+      "kind": "scene",
+      "start_time": 163.16666666666666,
+      "end_time": 164.83333333333334,
+      "characters_present": [
+        "cavity_battle-tooth",
+        "cavity_battle-cilia",
+        "cavity_battle-goo"
+      ],
+      "poses": {
+        "cavity_battle-tooth": [
+          {
+            "time": 163.16666666666666,
+            "x": 220,
+            "y": 810,
+            "height": 170,
+            "cavity": 0.9
+          },
+          {
+            "time": 164.16666666666666,
+            "x": 220,
+            "y": 810,
+            "height": 170,
+            "cavity": 0.4
+          },
+          {
+            "time": 164.83333333333334,
+            "x": 220,
+            "y": 810,
+            "height": 170,
+            "cavity": 0.0
+          }
+        ],
+        "cavity_battle-cilia": [
+          {
+            "time": 163.16666666666666,
+            "x": 380,
+            "y": 810,
+            "height": 140
+          },
+          {
+            "time": 164.83333333333334,
+            "x": 380,
+            "y": 810,
+            "height": 140
+          }
+        ],
+        "cavity_battle-goo": [
+          {
+            "time": 163.16666666666666,
+            "x": 310,
+            "y": 810,
+            "height": 100
+          },
+          {
+            "time": 164.16666666666666,
+            "x": 420,
+            "y": 780,
+            "height": 100
+          },
+          {
+            "time": 164.83333333333334,
+            "x": 560,
+            "y": 740,
+            "height": 100,
+            "opacity": 0.0
+          }
+        ]
+      },
+      "actions": [
+        {
+          "type": "sweep",
+          "start": 163.33333333333334,
+          "end": 164.66666666666666,
+          "target": "cavity_battle-goo",
+          "actor": "cavity_battle-cilia"
+        }
+      ],
+      "background": {
+        "preset": "mouth_cave"
+      },
+      "index": 82,
+      "camera": [
+        {
+          "time": 163.16666666666666,
+          "x": 307.69,
+          "y": 542.88,
+          "zoom": 1.073
+        }
+      ]
+    },
+    {
+      "renderer": "native-vector-v1",
+      "kind": "scene",
+      "start_time": 164.83333333333334,
+      "end_time": 166.5,
+      "characters_present": [
+        "cavity_battle-tooth"
+      ],
+      "poses": {
+        "cavity_battle-tooth": [
+          {
+            "time": 164.83333333333334,
+            "x": 288,
+            "y": 810,
+            "height": 170,
+            "cavity": 0.0,
+            "sparkle": 0.5
+          },
+          {
+            "time": 165.66666666666666,
+            "x": 288,
+            "y": 810,
+            "height": 170,
+            "cavity": 0.0,
+            "sparkle": 1.0
+          },
+          {
+            "time": 166.5,
+            "x": 288,
+            "y": 810,
+            "height": 170,
+            "cavity": 0.0,
+            "sparkle": 1.0,
+            "blush": 0.5
+          }
+        ]
+      },
+      "actions": [],
+      "background": {
+        "preset": "mouth_cave"
+      },
+      "index": 83,
+      "camera": [
+        {
+          "time": 164.83333333333334,
+          "x": 288.0,
+          "y": 666.64,
+          "zoom": 2.0
+        }
+      ]
+    },
+    {
+      "renderer": "native-vector-v1",
+      "kind": "scene",
+      "start_time": 166.5,
+      "end_time": 168.16666666666666,
+      "characters_present": [
+        "allergy_story-pollen",
+        "allergy_story-mast"
+      ],
+      "poses": {
+        "allergy_story-pollen": [
+          {
+            "time": 166.5,
+            "x": 420,
+            "y": 680,
+            "height": 100
+          },
+          {
+            "time": 167.33333333333334,
+            "x": 300,
+            "y": 720,
+            "height": 100
+          },
+          {
+            "time": 168.16666666666666,
+            "x": 240,
+            "y": 750,
+            "height": 100
+          }
+        ],
+        "allergy_story-mast": [
+          {
+            "time": 166.5,
+            "x": 160,
+            "y": 810,
+            "height": 140
+          },
+          {
+            "time": 168.16666666666666,
+            "x": 160,
+            "y": 810,
+            "height": 140
+          }
+        ]
+      },
+      "actions": [],
+      "background": {
+        "preset": "nose_cave"
+      },
+      "index": 84,
+      "camera": [
+        {
+          "time": 166.5,
+          "x": 281.0,
+          "y": 597.0,
+          "zoom": 1.346
+        }
+      ]
+    },
+    {
+      "renderer": "native-vector-v1",
+      "kind": "scene",
+      "start_time": 168.16666666666666,
+      "end_time": 169.83333333333334,
+      "characters_present": [
+        "allergy_story-pollen",
+        "allergy_story-mast"
+      ],
+      "poses": {
+        "allergy_story-pollen": [
+          {
+            "time": 168.16666666666666,
+            "x": 240,
+            "y": 750,
+            "height": 100
+          },
+          {
+            "time": 169.83333333333334,
+            "x": 240,
+            "y": 750,
+            "height": 100
+          }
+        ],
+        "allergy_story-mast": [
+          {
+            "time": 168.16666666666666,
+            "x": 160,
+            "y": 810,
+            "height": 140,
+            "alert": 0.0
+          },
+          {
+            "time": 169.0,
+            "x": 160,
+            "y": 810,
+            "height": 140,
+            "alert": 1.0
+          },
+          {
+            "time": 169.83333333333334,
+            "x": 160,
+            "y": 810,
+            "height": 140,
+            "alert": 1.0
+          }
+        ]
+      },
+      "actions": [
+        {
+          "type": "false_alarm",
+          "start": 168.33333333333334,
+          "end": 169.66666666666666,
+          "target": "allergy_story-pollen",
+          "actor": "allergy_story-mast"
+        }
+      ],
+      "background": {
+        "preset": "nose_cave"
+      },
+      "index": 85,
+      "camera": [
+        {
+          "time": 168.16666666666666,
+          "x": 191.0,
+          "y": 666.64,
+          "zoom": 2.0
+        }
+      ]
+    },
+    {
+      "renderer": "native-vector-v1",
+      "kind": "scene",
+      "start_time": 169.83333333333334,
+      "end_time": 171.5,
+      "characters_present": [
+        "allergy_story-nose",
+        "allergy_story-pollen"
+      ],
+      "poses": {
+        "allergy_story-nose": [
+          {
+            "time": 169.83333333333334,
+            "x": 220,
+            "y": 810,
+            "height": 160,
+            "sneeze": 0.0
+          },
+          {
+            "time": 170.5,
+            "x": 220,
+            "y": 810,
+            "height": 160,
+            "sneeze": 1.0
+          },
+          {
+            "time": 171.5,
+            "x": 220,
+            "y": 810,
+            "height": 160,
+            "sneeze": 0.0,
+            "blush": 0.5
+          }
+        ],
+        "allergy_story-pollen": [
+          {
+            "time": 169.83333333333334,
+            "x": 280,
+            "y": 750,
+            "height": 100
+          },
+          {
+            "time": 170.66666666666666,
+            "x": 450,
+            "y": 620,
+            "height": 80
+          },
+          {
+            "time": 171.5,
+            "x": 560,
+            "y": 520,
+            "height": 60,
+            "opacity": 0.0
+          }
+        ]
+      },
+      "actions": [],
+      "background": {
+        "preset": "nose_cave"
+      },
+      "index": 86,
+      "camera": [
+        {
+          "time": 169.83333333333334,
+          "x": 320.77,
+          "y": 555.9,
+          "zoom": 1.128
+        }
+      ]
+    },
+    {
+      "renderer": "native-vector-v1",
+      "kind": "scene",
+      "start_time": 171.5,
+      "end_time": 173.16666666666666,
+      "characters_present": [
+        "recycling_sort-kid",
+        "recycling_sort-bin_p",
+        "recycling_sort-bin_pap",
+        "recycling_sort-bottle",
+        "recycling_sort-news"
+      ],
+      "poses": {
+        "recycling_sort-kid": [
+          {
+            "time": 171.5,
+            "x": 200,
+            "y": 810,
+            "height": 260
+          },
+          {
+            "time": 172.33333333333334,
+            "x": 200,
+            "y": 810,
+            "height": 260
+          },
+          {
+            "time": 173.16666666666666,
+            "x": 200,
+            "y": 810,
+            "height": 260
+          }
+        ],
+        "recycling_sort-bin_p": [
+          {
+            "time": 171.5,
+            "x": 320,
+            "y": 810,
+            "height": 230
+          },
+          {
+            "time": 173.16666666666666,
+            "x": 320,
+            "y": 810,
+            "height": 230
+          }
+        ],
+        "recycling_sort-bin_pap": [
+          {
+            "time": 171.5,
+            "x": 440,
+            "y": 810,
+            "height": 230
+          },
+          {
+            "time": 173.16666666666666,
+            "x": 440,
+            "y": 810,
+            "height": 230
+          }
+        ],
+        "recycling_sort-bottle": [
+          {
+            "time": 171.5,
+            "x": 120,
+            "y": 750,
+            "height": 100
+          },
+          {
+            "time": 172.1,
+            "x": 320,
+            "y": 720,
+            "height": 100
+          },
+          {
+            "time": 172.23333333333332,
+            "x": 320,
+            "y": 750,
+            "height": 100,
+            "opacity": 0.0
+          },
+          {
+            "time": 173.16666666666666,
+            "x": 320,
+            "y": 750,
+            "height": 100,
+            "opacity": 0.0
+          }
+        ],
+        "recycling_sort-news": [
+          {
+            "time": 171.5,
+            "x": 150,
+            "y": 750,
+            "height": 72
+          },
+          {
+            "time": 172.76666666666668,
+            "x": 440,
+            "y": 720,
+            "height": 72
+          },
+          {
+            "time": 172.9,
+            "x": 440,
+            "y": 750,
+            "height": 72,
+            "opacity": 0.0
+          },
+          {
+            "time": 173.16666666666666,
+            "x": 440,
+            "y": 750,
+            "height": 72,
+            "opacity": 0.0
+          }
+        ]
+      },
+      "actions": [
+        {
+          "type": "sort",
+          "start": 171.66666666666666,
+          "end": 172.23333333333332,
+          "target": "recycling_sort-bin_p",
+          "actor": "recycling_sort-bottle"
+        },
+        {
+          "type": "sort",
+          "start": 172.33333333333334,
+          "end": 172.9,
+          "target": "recycling_sort-bin_pap",
+          "actor": "recycling_sort-news"
+        }
+      ],
+      "background": {
+        "preset": "recycling_yard"
+      },
+      "index": 87
+    },
+    {
+      "renderer": "native-vector-v1",
+      "kind": "scene",
+      "start_time": 173.16666666666666,
+      "end_time": 174.83333333333334,
+      "characters_present": [
+        "recycling_sort-kid",
+        "recycling_sort-bin_g",
+        "recycling_sort-bin_b",
+        "recycling_sort-peel"
+      ],
+      "poses": {
+        "recycling_sort-kid": [
+          {
+            "time": 173.16666666666666,
+            "x": 200,
+            "y": 810,
+            "height": 260
+          },
+          {
+            "time": 173.83333333333334,
+            "x": 200,
+            "y": 810,
+            "height": 260,
+            "expression": "surprised"
+          },
+          {
+            "time": 174.83333333333334,
+            "x": 200,
+            "y": 810,
+            "height": 260,
+            "expression": "happy"
+          }
+        ],
+        "recycling_sort-bin_g": [
+          {
+            "time": 173.16666666666666,
+            "x": 320,
+            "y": 810,
+            "height": 230
+          },
+          {
+            "time": 174.83333333333334,
+            "x": 320,
+            "y": 810,
+            "height": 230
+          }
+        ],
+        "recycling_sort-bin_b": [
+          {
+            "time": 173.16666666666666,
+            "x": 440,
+            "y": 810,
+            "height": 230
+          },
+          {
+            "time": 174.83333333333334,
+            "x": 440,
+            "y": 810,
+            "height": 230
+          }
+        ],
+        "recycling_sort-peel": [
+          {
+            "time": 173.16666666666666,
+            "x": 120,
+            "y": 750,
+            "height": 60
+          },
+          {
+            "time": 173.83333333333334,
+            "x": 280,
+            "y": 720,
+            "height": 60
+          },
+          {
+            "time": 174.56666666666666,
+            "x": 440,
+            "y": 720,
+            "height": 60
+          },
+          {
+            "time": 174.7,
+            "x": 440,
+            "y": 750,
+            "height": 60,
+            "opacity": 0.0
+          },
+          {
+            "time": 174.83333333333334,
+            "x": 440,
+            "y": 750,
+            "height": 60,
+            "opacity": 0.0
+          }
+        ]
+      },
+      "actions": [
+        {
+          "type": "sort",
+          "start": 174.0,
+          "end": 174.7,
+          "target": "recycling_sort-bin_b",
+          "actor": "recycling_sort-peel"
+        }
+      ],
+      "background": {
+        "preset": "recycling_yard"
+      },
+      "index": 88
+    },
+    {
+      "renderer": "native-vector-v1",
+      "kind": "scene",
+      "start_time": 174.83333333333334,
+      "end_time": 176.5,
+      "characters_present": [
+        "recycling_sort-kid",
+        "recycling_sort-bin_res",
+        "recycling_sort-batt"
+      ],
+      "poses": {
+        "recycling_sort-kid": [
+          {
+            "time": 174.83333333333334,
+            "x": 220,
+            "y": 810,
+            "height": 260
+          },
+          {
+            "time": 176.5,
+            "x": 220,
+            "y": 810,
+            "height": 260,
+            "expression": "happy"
+          }
+        ],
+        "recycling_sort-bin_res": [
+          {
+            "time": 174.83333333333334,
+            "x": 340,
+            "y": 810,
+            "height": 230
+          },
+          {
+            "time": 176.5,
+            "x": 340,
+            "y": 810,
+            "height": 230
+          }
+        ],
+        "recycling_sort-batt": [
+          {
+            "time": 174.83333333333334,
+            "x": 140,
+            "y": 750,
+            "height": 80
+          },
+          {
+            "time": 175.83333333333334,
+            "x": 340,
+            "y": 720,
+            "height": 80
+          },
+          {
+            "time": 176.0,
+            "x": 340,
+            "y": 750,
+            "height": 80,
+            "opacity": 0.0
+          },
+          {
+            "time": 176.5,
+            "x": 340,
+            "y": 750,
+            "height": 80,
+            "opacity": 0.0
+          }
+        ]
+      },
+      "actions": [
+        {
+          "type": "sort",
+          "start": 175.16666666666666,
+          "end": 176.0,
+          "target": "recycling_sort-bin_res",
+          "actor": "recycling_sort-batt"
+        }
+      ],
+      "background": {
+        "preset": "recycling_yard"
+      },
+      "index": 89
+    },
+    {
+      "renderer": "native-vector-v1",
+      "kind": "scene",
+      "start_time": 176.5,
+      "end_time": 178.16666666666666,
+      "characters_present": [
+        "bottle_journey-truck",
+        "bottle_journey-bottle"
+      ],
+      "poses": {
+        "bottle_journey-truck": [
+          {
+            "time": 176.5,
+            "x": 100,
+            "y": 810,
+            "height": 180
+          },
+          {
+            "time": 177.33333333333334,
+            "x": 300,
+            "y": 810,
+            "height": 180
+          },
+          {
+            "time": 178.16666666666666,
+            "x": 500,
+            "y": 810,
+            "height": 180
+          }
+        ],
+        "bottle_journey-bottle": [
+          {
+            "time": 176.5,
+            "x": 260,
+            "y": 810,
+            "height": 42
+          },
+          {
+            "time": 177.33333333333334,
+            "x": 360,
+            "y": 770,
+            "height": 42,
+            "squish": 0.8
+          },
+          {
+            "time": 177.5,
+            "x": 360,
+            "y": 770,
+            "height": 42,
+            "opacity": 0.0
+          },
+          {
+            "time": 178.16666666666666,
+            "x": 360,
+            "y": 770,
+            "height": 42,
+            "opacity": 0.0
+          }
+        ]
+      },
+      "actions": [
+        {
+          "type": "drive",
+          "start": 176.5,
+          "end": 178.16666666666666,
+          "actor": "bottle_journey-truck"
+        }
+      ],
+      "background": {
+        "preset": "street"
+      },
+      "index": 90
+    },
+    {
+      "renderer": "native-vector-v1",
+      "kind": "scene",
+      "start_time": 178.16666666666666,
+      "end_time": 179.83333333333334,
+      "characters_present": [
+        "bottle_journey-plant",
+        "bottle_journey-truck",
+        "bottle_journey-bottle"
+      ],
+      "poses": {
+        "bottle_journey-plant": [
+          {
+            "time": 178.16666666666666,
+            "x": 400,
+            "y": 810,
+            "height": 240
+          },
+          {
+            "time": 179.83333333333334,
+            "x": 400,
+            "y": 810,
+            "height": 240
+          }
+        ],
+        "bottle_journey-truck": [
+          {
+            "time": 178.16666666666666,
+            "x": 150,
+            "y": 810,
+            "height": 180
+          },
+          {
+            "time": 179.83333333333334,
+            "x": 250,
+            "y": 810,
+            "height": 180
+          }
+        ],
+        "bottle_journey-bottle": [
+          {
+            "time": 178.16666666666666,
+            "x": 150,
+            "y": 780,
+            "height": 42,
+            "opacity": 0.0
+          },
+          {
+            "time": 179.0,
+            "x": 250,
+            "y": 760,
+            "height": 42,
+            "opacity": 1.0
+          },
+          {
+            "time": 179.83333333333334,
+            "x": 350,
+            "y": 780,
+            "height": 42
+          }
+        ]
+      },
+      "actions": [
+        {
+          "type": "drive",
+          "start": 178.16666666666666,
+          "end": 179.83333333333334,
+          "actor": "bottle_journey-truck"
+        }
+      ],
+      "background": {
+        "preset": "recycling_yard"
+      },
+      "index": 91
+    },
+    {
+      "renderer": "native-vector-v1",
+      "kind": "scene",
+      "start_time": 179.83333333333334,
+      "end_time": 181.5,
+      "characters_present": [
+        "bottle_journey-plant",
+        "bottle_journey-bottle"
+      ],
+      "poses": {
+        "bottle_journey-plant": [
+          {
+            "time": 179.83333333333334,
+            "x": 288,
+            "y": 810,
+            "height": 260,
+            "cutaway": 1.0
+          },
+          {
+            "time": 181.5,
+            "x": 288,
+            "y": 810,
+            "height": 260,
+            "cutaway": 1.0
+          }
+        ],
+        "bottle_journey-bottle": [
+          {
+            "time": 179.83333333333334,
+            "x": 200,
+            "y": 740,
+            "height": 42
+          },
+          {
+            "time": 180.66666666666666,
+            "x": 288,
+            "y": 740,
+            "height": 42,
+            "slice": 1.0
+          },
+          {
+            "time": 181.5,
+            "x": 360,
+            "y": 740,
+            "height": 42,
+            "growth": 1.0
+          }
+        ]
+      },
+      "actions": [],
+      "background": {
+        "preset": "recycling_yard"
+      },
+      "index": 92
+    },
+    {
+      "renderer": "native-vector-v1",
+      "kind": "scene",
+      "start_time": 181.5,
+      "end_time": 183.16666666666666,
+      "characters_present": [
+        "crossing_street-kid",
+        "crossing_street-light",
+        "crossing_street-zebra",
+        "crossing_street-cone"
+      ],
+      "poses": {
+        "crossing_street-kid": [
+          {
+            "time": 181.5,
+            "x": 140,
+            "y": 810,
+            "height": 260,
+            "outfit": "hi_vis_vest"
+          },
+          {
+            "time": 182.33333333333334,
+            "x": 140,
+            "y": 810,
+            "height": 260,
+            "outfit": "hi_vis_vest"
+          },
+          {
+            "time": 183.16666666666666,
+            "x": 140,
+            "y": 810,
+            "height": 260,
+            "outfit": "hi_vis_vest"
+          }
+        ],
+        "crossing_street-light": [
+          {
+            "time": 181.5,
+            "x": 520,
+            "y": 810,
+            "height": 135,
+            "light": "red"
+          },
+          {
+            "time": 183.16666666666666,
+            "x": 520,
+            "y": 810,
+            "height": 135,
+            "light": "red"
+          }
+        ],
+        "crossing_street-zebra": [
+          {
+            "time": 181.5,
+            "x": 310,
+            "y": 810,
+            "height": 42
+          },
+          {
+            "time": 183.16666666666666,
+            "x": 310,
+            "y": 810,
+            "height": 42
+          }
+        ],
+        "crossing_street-cone": [
+          {
+            "time": 181.5,
+            "x": 210,
+            "y": 810,
+            "height": 48
+          },
+          {
+            "time": 183.16666666666666,
+            "x": 210,
+            "y": 810,
+            "height": 48
+          }
+        ]
+      },
+      "actions": [
+        {
+          "type": "wait_signal",
+          "start": 181.66666666666666,
+          "end": 183.0,
+          "target": "crossing_street-light",
+          "actor": "crossing_street-kid",
+          "locale": "jp"
+        }
+      ],
+      "background": {
+        "preset": "street"
+      },
+      "index": 93
+    },
+    {
+      "renderer": "native-vector-v1",
+      "kind": "scene",
+      "start_time": 183.16666666666666,
+      "end_time": 184.83333333333334,
+      "characters_present": [
+        "crossing_street-kid",
+        "crossing_street-light",
+        "crossing_street-zebra",
+        "crossing_street-cone"
+      ],
+      "poses": {
+        "crossing_street-kid": [
+          {
+            "time": 183.16666666666666,
+            "x": 140,
+            "y": 810,
+            "height": 260,
+            "outfit": "hi_vis_vest"
+          },
+          {
+            "time": 184.0,
+            "x": 310,
+            "y": 810,
+            "height": 260,
+            "outfit": "hi_vis_vest",
+            "hand_r_y": -65,
+            "expression": "happy"
+          },
+          {
+            "time": 184.83333333333334,
+            "x": 390,
+            "y": 810,
+            "height": 260,
+            "outfit": "hi_vis_vest",
+            "hand_r_y": -65,
+            "expression": "happy"
+          }
+        ],
+        "crossing_street-light": [
+          {
+            "time": 183.16666666666666,
+            "x": 520,
+            "y": 810,
+            "height": 135,
+            "light": "green"
+          },
+          {
+            "time": 184.83333333333334,
+            "x": 520,
+            "y": 810,
+            "height": 135,
+            "light": "green"
+          }
+        ],
+        "crossing_street-zebra": [
+          {
+            "time": 183.16666666666666,
+            "x": 310,
+            "y": 810,
+            "height": 42
+          },
+          {
+            "time": 184.83333333333334,
+            "x": 310,
+            "y": 810,
+            "height": 42
+          }
+        ],
+        "crossing_street-cone": [
+          {
+            "time": 183.16666666666666,
+            "x": 210,
+            "y": 810,
+            "height": 48
+          },
+          {
+            "time": 184.83333333333334,
+            "x": 210,
+            "y": 810,
+            "height": 48
+          }
+        ]
+      },
+      "actions": [
+        {
+          "type": "wait_signal",
+          "start": 183.16666666666666,
+          "end": 184.33333333333334,
+          "target": "crossing_street-light",
+          "actor": "crossing_street-kid",
+          "locale": "jp"
+        }
+      ],
+      "background": {
+        "preset": "street"
+      },
+      "index": 94
+    },
+    {
+      "renderer": "native-vector-v1",
+      "kind": "scene",
+      "start_time": 184.83333333333334,
+      "end_time": 186.5,
+      "characters_present": [
+        "crossing_street-kid",
+        "crossing_street-light",
+        "crossing_street-zebra",
+        "crossing_street-cone"
+      ],
+      "poses": {
+        "crossing_street-kid": [
+          {
+            "time": 184.83333333333334,
+            "x": 390,
+            "y": 810,
+            "height": 260,
+            "outfit": "hi_vis_vest",
+            "expression": "happy"
+          },
+          {
+            "time": 186.5,
+            "x": 390,
+            "y": 810,
+            "height": 260,
+            "outfit": "hi_vis_vest",
+            "expression": "happy"
+          }
+        ],
+        "crossing_street-light": [
+          {
+            "time": 184.83333333333334,
+            "x": 520,
+            "y": 810,
+            "height": 135,
+            "light": "green"
+          },
+          {
+            "time": 186.5,
+            "x": 520,
+            "y": 810,
+            "height": 135,
+            "light": "green"
+          }
+        ],
+        "crossing_street-zebra": [
+          {
+            "time": 184.83333333333334,
+            "x": 310,
+            "y": 810,
+            "height": 42
+          },
+          {
+            "time": 186.5,
+            "x": 310,
+            "y": 810,
+            "height": 42
+          }
+        ],
+        "crossing_street-cone": [
+          {
+            "time": 184.83333333333334,
+            "x": 210,
+            "y": 810,
+            "height": 48
+          },
+          {
+            "time": 186.5,
+            "x": 210,
+            "y": 810,
+            "height": 48
+          }
+        ]
+      },
+      "actions": [],
+      "background": {
+        "preset": "street"
+      },
+      "index": 95
+    },
+    {
+      "renderer": "native-vector-v1",
+      "kind": "scene",
+      "start_time": 186.5,
+      "end_time": 188.16666666666666,
+      "characters_present": [
+        "disaster_safety-kid",
+        "disaster_safety-detector",
+        "disaster_safety-blanket"
+      ],
+      "poses": {
+        "disaster_safety-kid": [
+          {
+            "time": 186.5,
+            "x": 140,
+            "y": 810,
+            "height": 260,
+            "sit": 1.0,
+            "lean": 0.6,
+            "expression": "worried"
+          },
+          {
+            "time": 187.33333333333334,
+            "x": 240,
+            "y": 810,
+            "height": 260,
+            "sit": 1.0,
+            "lean": 0.6,
+            "expression": "worried"
+          },
+          {
+            "time": 188.16666666666666,
+            "x": 340,
+            "y": 810,
+            "height": 260,
+            "sit": 1.0,
+            "lean": 0.6,
+            "expression": "neutral"
+          }
+        ],
+        "disaster_safety-detector": [
+          {
+            "time": 186.5,
+            "x": 280,
+            "y": 640,
+            "height": 32,
+            "alarm": true
+          },
+          {
+            "time": 188.16666666666666,
+            "x": 280,
+            "y": 640,
+            "height": 32,
+            "alarm": true
+          }
+        ],
+        "disaster_safety-blanket": [
+          {
+            "time": 186.5,
+            "x": 480,
+            "y": 750,
+            "height": 48
+          },
+          {
+            "time": 188.16666666666666,
+            "x": 480,
+            "y": 750,
+            "height": 48
+          }
+        ]
+      },
+      "actions": [
+        {
+          "type": "crawl_low",
+          "start": 186.66666666666666,
+          "end": 188.0,
+          "target": "disaster_safety-blanket",
+          "actor": "disaster_safety-kid"
+        }
+      ],
+      "background": {
+        "preset": "interior"
+      },
+      "index": 96
+    },
+    {
+      "renderer": "native-vector-v1",
+      "kind": "scene",
+      "start_time": 188.16666666666666,
+      "end_time": 189.83333333333334,
+      "characters_present": [
+        "disaster_safety-kid",
+        "disaster_safety-table",
+        "disaster_safety-bag",
+        "disaster_safety-radio_rig"
+      ],
+      "poses": {
+        "disaster_safety-kid": [
+          {
+            "time": 188.16666666666666,
+            "x": 200,
+            "y": 810,
+            "height": 200,
+            "outfit": "bosai_zukin",
+            "expression": "worried"
+          },
+          {
+            "time": 189.83333333333334,
+            "x": 200,
+            "y": 810,
+            "height": 200,
+            "outfit": "bosai_zukin",
+            "expression": "neutral"
+          }
+        ],
+        "disaster_safety-table": [
+          {
+            "time": 188.16666666666666,
+            "x": 300,
+            "y": 810,
+            "height": 360,
+            "z": 2
+          },
+          {
+            "time": 189.83333333333334,
+            "x": 300,
+            "y": 810,
+            "height": 360,
+            "z": 2
+          }
+        ],
+        "disaster_safety-bag": [
+          {
+            "time": 188.16666666666666,
+            "x": 160,
+            "y": 810,
+            "height": 50
+          },
+          {
+            "time": 189.83333333333334,
+            "x": 160,
+            "y": 810,
+            "height": 50
+          }
+        ],
+        "disaster_safety-radio_rig": [
+          {
+            "time": 188.16666666666666,
+            "x": 120,
+            "y": 810,
+            "height": 45
+          },
+          {
+            "time": 189.83333333333334,
+            "x": 120,
+            "y": 810,
+            "height": 45
+          }
+        ]
+      },
+      "actions": [
+        {
+          "type": "take_cover",
+          "start": 188.16666666666666,
+          "end": 189.66666666666666,
+          "target": "disaster_safety-table",
+          "actor": "disaster_safety-kid"
+        }
+      ],
+      "background": {
+        "preset": "interior",
+        "quake": 0.8
+      },
+      "index": 97
+    },
+    {
+      "renderer": "native-vector-v1",
+      "kind": "scene",
+      "start_time": 189.83333333333334,
+      "end_time": 191.5,
+      "characters_present": [
+        "disaster_safety-kid",
+        "disaster_safety-sand",
+        "disaster_safety-buoy",
+        "disaster_safety-radio_rig"
+      ],
+      "poses": {
+        "disaster_safety-kid": [
+          {
+            "time": 189.83333333333334,
+            "x": 160,
+            "y": 810,
+            "height": 260,
+            "outfit": "life_vest",
+            "expression": "happy"
+          },
+          {
+            "time": 191.5,
+            "x": 160,
+            "y": 810,
+            "height": 260,
+            "outfit": "life_vest",
+            "expression": "happy"
+          }
+        ],
+        "disaster_safety-sand": [
+          {
+            "time": 189.83333333333334,
+            "x": 340,
+            "y": 810,
+            "height": 25,
+            "count": 3
+          },
+          {
+            "time": 191.5,
+            "x": 340,
+            "y": 810,
+            "height": 25,
+            "count": 3
+          }
+        ],
+        "disaster_safety-buoy": [
+          {
+            "time": 189.83333333333334,
+            "x": 460,
+            "y": 810,
+            "height": 55
+          },
+          {
+            "time": 191.5,
+            "x": 460,
+            "y": 810,
+            "height": 55
+          }
+        ],
+        "disaster_safety-radio_rig": [
+          {
+            "time": 189.83333333333334,
+            "x": 240,
+            "y": 810,
+            "height": 45
+          },
+          {
+            "time": 191.5,
+            "x": 240,
+            "y": 810,
+            "height": 45
+          }
+        ]
+      },
+      "actions": [],
+      "background": {
+        "preset": "street",
+        "weather": "rain",
+        "flood": 0.45
+      },
+      "index": 98
+    },
+    {
+      "renderer": "native-vector-v1",
+      "kind": "title",
+      "start_time": 191.5,
+      "end_time": 193.0,
       "text": "Rig + hành động + timeline · Không phải bản remake đã duyệt",
       "characters_present": [],
       "poses": {},
-      "index": 65
+      "index": 99
     }
   ],
   "cues": [
@@ -6914,6 +9930,83 @@
       "end": 136.5,
       "character_id": "narrator",
       "text": "4 · Dinh dưỡng và rèn luyện: khay cơm đủ chất, ăn rau củ và tập thể dục thể thao",
+      "offscreen": true
+    },
+    {
+      "start": 136.5,
+      "end": 141.5,
+      "character_id": "narrator",
+      "text": "11 · Trận chiến trầy xước: bảo vệ vết thương, bắt vi khuẩn và tiểu cầu vá da",
+      "offscreen": true
+    },
+    {
+      "start": 141.5,
+      "end": 146.5,
+      "character_id": "narrator",
+      "text": "12 · Đột kích virus: T gây độc và sát thủ NK tiêu diệt tế bào nhiễm",
+      "offscreen": true
+    },
+    {
+      "start": 146.5,
+      "end": 151.5,
+      "character_id": "narrator",
+      "text": "13 · Trại tập luyện vaccine: tế bào nhớ học nhận diện mầm bệnh an toàn",
+      "offscreen": true
+    },
+    {
+      "start": 151.5,
+      "end": 156.5,
+      "character_id": "narrator",
+      "text": "14 · Du hành cơ thể: X-quang khám phá các cơ quan hoạt động nhịp nhàng",
+      "offscreen": true
+    },
+    {
+      "start": 156.5,
+      "end": 161.5,
+      "character_id": "narrator",
+      "text": "15 · Đội quân đường ruột: lợi khuẩn giữ chỗ và bảo vệ hệ tiêu hoá",
+      "offscreen": true
+    },
+    {
+      "start": 161.5,
+      "end": 166.5,
+      "character_id": "narrator",
+      "text": "16 · Thám hiểm khoang miệng: ngăn chặn vi khuẩn sâu răng và mảng bám",
+      "offscreen": true
+    },
+    {
+      "start": 166.5,
+      "end": 171.5,
+      "character_id": "narrator",
+      "text": "17 · Câu chuyện dị ứng: dưỡng bào báo động nhầm với phấn hoa vô hại",
+      "offscreen": true
+    },
+    {
+      "start": 171.5,
+      "end": 176.5,
+      "character_id": "narrator",
+      "text": "18 · Phân loại rác: Chibi thực hành bỏ rác đúng thùng và sửa lỗi nhầm",
+      "offscreen": true
+    },
+    {
+      "start": 176.5,
+      "end": 181.5,
+      "character_id": "narrator",
+      "text": "19 · Hành trình tái sinh: Chai nhựa qua xe rác và nhà máy biến thành sản phẩm mới",
+      "offscreen": true
+    },
+    {
+      "start": 181.5,
+      "end": 186.5,
+      "character_id": "narrator",
+      "text": "19 · Giao thông an toàn: Chibi quan sát đèn tín hiệu và qua đường an toàn",
+      "offscreen": true
+    },
+    {
+      "start": 186.5,
+      "end": 191.5,
+      "character_id": "narrator",
+      "text": "20 · Phòng chống thiên tai: Thoát hiểm hỏa hoạn, động đất và chuẩn bị bão lũ",
       "offscreen": true
     }
   ]

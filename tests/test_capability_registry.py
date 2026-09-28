@@ -496,6 +496,59 @@ class CapabilityRegistryTest(unittest.TestCase):
             "water_glass": {"wet"}, "first_aid_kit": {"wet"}, "ice_pack": {"wet"}, "hospital_bed": {"wet"},
             "wheelchair": {"wet"}, "crutches": {"wet"}, "scale": {"wet"}, "height_chart": {"wet"}, "lunch_tray": {"wet"},
             "good_bacteria": {"wet"}, "bacteria_rod": {"wet"}, "virus_spike": {"wet"}, "tooth_chibi": {"wet"},
+            # Phase I Body World Cells, Microbes & Organs
+            "rbc_courier": {"wet"}, "neutrophil_scout": {"wet"}, "macrophage_chef": {"wet"}, "dendritic_messenger": {"wet"},
+            "helper_t_captain": {"wet"}, "killer_t_knight": {"wet"}, "b_cell_archer": {"wet"}, "nk_ninja": {"wet"},
+            "platelet_builder": {"wet"}, "memory_cell_librarian": {"wet"}, "mast_cell_alarm": {"wet"}, "cilia_sweeper": {"wet"}, "skin_guard": {"wet"},
+            "bacteria_chain": {"wet"}, "bacteria_cluster": {"wet"}, "infected_cell": {"wet"}, "fungus_spore": {"wet"},
+            "parasite_worm": {"wet"}, "cavity_germ": {"wet"}, "plaque_goo": {"wet"}, "toxin_blob": {"wet"},
+            "pollen_puff": {"wet"}, "superbug_boss": {"wet"},
+            "heart_chibi": {"wet"}, "lungs_chibi": {"wet"}, "brain_chibi": {"wet"}, "stomach_chibi": {"wet"},
+            "intestine_chibi": {"wet"}, "liver_chibi": {"wet"}, "kidney_chibi": {"wet"}, "bladder_chibi": {"wet"},
+            "tongue_chibi": {"wet"}, "eye_chibi": {"wet"}, "ear_chibi": {"wet"}, "nose_chibi": {"wet"},
+            "skin_patch": {"wet"}, "bone_chibi": {"wet"}, "muscle_chibi": {"wet"}, "blood_drop_chibi": {"wet"},
+            "body_xray": {"wet"},
+            # Phase J Vehicles
+            "bicycle": {"wet"}, "car": {"wet"}, "school_bus": {"wet"}, "city_bus": {"wet"}, "fire_truck": {"wet"},
+            "ambulance": {"wet"}, "police_car": {"wet"}, "tractor": {"wet"}, "excavator": {"wet"}, "dump_truck": {"wet"},
+            "horse_cart": {"wet"}, "covered_wagon": {"wet"}, "motorcar_1886": {"wet"}, "steam_train": {"wet"},
+            "high_speed_train": {"wet"}, "tram": {"wet"}, "sailing_ship": {"wet"}, "longship": {"wet"},
+            "turtle_ship": {"wet"}, "biplane_1903": {"wet"}, "hot_air_balloon": {"wet"}, "rocket": {"wet"}, "lunar_lander": {"wet"},
+            # Phase J Buildings
+            "house": {"wet"}, "castle": {"wet"}, "pyramid": {"wet"}, "temple_classic": {"wet"}, "aqueduct": {"wet"},
+            "lighthouse": {"wet"}, "windmill": {"wet"}, "school_building": {"wet"}, "fire_station": {"wet"},
+            "shop_front": {"wet"}, "igloo": {"wet"}, "stone_hut": {"wet"}, "moai_generic": {"wet"}, "standing_stones": {"wet"},
+            # Phase J Foods
+            "bread_loaf": {"wet"}, "pretzel": {"wet"}, "pancake_stack": {"wet"}, "apple_pie": {"wet"},
+            "roast_turkey": {"wet"}, "gingerbread": {"wet"}, "easter_egg": {"wet"}, "christmas_cookie": {"wet"},
+            "hamburger": {"wet"}, "onigiri": {"wet"}, "bento_box": {"wet"}, "sushi": {"wet"}, "ramen_bowl": {"wet"},
+            "mochi": {"wet"}, "dango": {"wet"}, "kimchi": {"wet"}, "songpyeon": {"wet"}, "tteokguk": {"wet"},
+            "bibimbap": {"wet"}, "rice_bowl": {"wet"}, "soup_pot": {"wet"},
+            # Phase J Containers
+            "bin_paper": {"wet"}, "bin_plastic": {"wet"}, "bin_glass": {"wet"}, "bin_bio": {"wet"}, "bin_residual": {"wet"},
+            "onggi_jar": {"wet"}, "barrel": {"wet"}, "treasure_chest": {"wet"}, "amphora": {"wet"}, "lunchbox": {"wet"},
+            "emergency_backpack": {"wet"},
+            # Phase J Furniture
+            "desk": {"wet"}, "chair": {"wet"}, "table": {"wet"}, "low_table": {"wet"}, "kotatsu": {"wet"},
+            "bed": {"wet"}, "shelf": {"wet"}, "bookcase": {"wet"}, "workbench": {"wet"},
+            # Phase J Extended Tools & Props
+            "hammer": {"wet"}, "saw": {"wet"}, "chisel": {"wet"}, "trowel": {"wet"}, "pickaxe": {"wet"}, "rope": {"wet"}, "ladder": {"wet"},
+            "broom": {"wet"}, "dustpan": {"wet"}, "rice_paddle": {"wet"}, "chopsticks": {"wet"}, "fork": {"wet"}, "whisk": {"wet"},
+            "frying_pan": {"wet"}, "ladle": {"wet"}, "magnifier": {"wet"}, "telescope": {"wet"}, "compass": {"wet"},
+            "map_blank": {"wet"}, "paint_brush": {"wet"}, "quill": {"wet"}, "calligraphy_brush": {"wet"},
+            "flashlight": {"fire_extinguisher": {"wet"}, "whistle": {"wet"}, "umbrella": {"wet"}}.get("whistle", {"wet"}),
+            "fire_extinguisher": {"wet"}, "whistle": {"wet"}, "umbrella": {"wet"},
+            "kite": {"wet"}, "ball": {"wet"}, "jump_rope": {"wet"}, "lantern_star": {"wet"},
+            "gold_pan": {"wet"}, "wooden_shield": {"wet"}, "toy_sword": {"wet"}, "printing_press": {"wet"},
+            "early_bulb": {"wet"}, "sign_post": {"wet"}, "pictogram_card": {"wet"}, "screen": {"wet"},
+            # Phase K Recycling Rigs
+            "plastic_bottle": {"wet"}, "can": {"wet"}, "glass_jar": {"wet"}, "newspaper_bundle": {"wet"},
+            "cardboard_box": {"wet"}, "banana_peel": {"wet"}, "apple_core": {"wet"}, "battery": {"wet"},
+            "garbage_truck": {"wet"}, "recycling_plant": {"wet"},
+            # Phase L Safety & Disaster Rigs
+            "traffic_light": {"wet"}, "crosswalk": {"wet"}, "traffic_cone": {"wet"}, "smoke_detector": {"wet"},
+            "fire_blanket": {"wet"}, "swim_ring": {"wet"}, "rescue_buoy": {"wet"}, "radio": {"wet"},
+            "megaphone": {"wet"}, "sandbag": {"wet"},
         }
         self.assertEqual(set(document["assets"]), set(expected))
         for asset_id, states in expected.items():

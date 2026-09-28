@@ -2,6 +2,8 @@
 
 Cập nhật: 2026-09-25. Người thực hiện: agent code. Người duyệt: chủ repo.
 
+**Phần II (§17–§33, cập nhật 2026-09-28):** đợt 3 mở rộng chủ đề cho thị trường de/us/kr/jp (tái chế, an toàn, lịch sử, phát minh, 4 gói văn hoá, thiên nhiên, vũ trụ, đại dương, ngụ ngôn). Mọi chủ đề ghép từ 3 kho dùng chung: nhân vật (chibi + trang phục), vật thể (template + spec), đồ dùng (có `grip`).
+
 Đây là **đặc tả để làm**. Làm đúng thứ tự giai đoạn. Mỗi giai đoạn phải qua hết mục §14 "Kiểm tra" và có **bảng hình soi bằng mắt** gửi chủ repo duyệt, rồi mới sang giai đoạn sau. Không deploy lên VPS, chủ repo tự deploy.
 
 Hợp đồng kỹ thuật của đợt 1 (`docs/PLAN_remake_vector_expansion.md` §1) **vẫn áp dụng nguyên**: hộp 100 đơn vị, gốc ở đáy-giữa, y âm là đi lên; anchor bắt buộc; tất định; bộ hàm vẽ có sẵn; `face()`. Tài liệu này chỉ ghi phần **mới hoặc khác**.
@@ -612,3 +614,401 @@ Tổng cộng khoảng 190 rig mới (thư viện lên khoảng 300), khoảng 5
 3. **Chủ đề y tế:** mặc định chỉ gồm vệ sinh, phòng bệnh, khám và tiêm chủng cho trẻ, dinh dưỡng. Không có phẫu thuật, máu, thuốc kê đơn.
 4. **Kiểu tế bào trong cơ thể:** mặc định là sinh vật tròn/giọt có tay chân chibi và đồ nghề. Cách này dễ nhận ra là "tế bào" và tránh giống các phim có sẵn. Có thể chọn kiểu "người tí hon mặc đồng phục", nhưng khó tránh giống *Cells at Work!*.
 5. **Mức "chiến đấu":** mặc định là hoạt hình kiểu chơi đùa (lưới, cung bắn kháng thể, kiếm phát sáng; vi khuẩn thua thì nổ bong bóng). Hợp với trẻ nhỏ và chính sách TikTok. Có thể làm nhẹ hơn nữa (chỉ đẩy, bắt, dọn) cho kênh mầm non.
+
+---
+
+# PHẦN II — Đợt 3: mở rộng chủ đề cho thị trường de / us / kr / jp
+
+Cập nhật: 2026-09-28. Chủ repo đã duyệt danh sách chủ đề. Phần này dùng lại toàn bộ hợp đồng kỹ thuật, quy trình §14 (kiểm tra) và §15 (hoàn thành) của Phần I. Làm tuần tự từ Giai đoạn J. Giai đoạn I (`body_world`) đang làm dở, cứ làm tiếp độc lập.
+
+## 17. Mục tiêu và nguyên tắc
+
+### 17.1 Thị trường và định vị
+
+- **Thị trường:** Đức (`de`, đông tài khoản nhất), Mỹ (`us`), Hàn (`kr`), Nhật (`jp`).
+- **Không có chữ:** thư viện không vẽ chữ, nên **một story làm ra 4 bản**, mỗi bản đổi giọng TTS và bộ `locale` (§18.4).
+- **Định vị:** "hoạt hình kiến thức cho mọi lứa tuổi" (vui, có sự thật đúng), không phải video mầm non. Nội dung trông như "làm cho trẻ nhỏ" dễ bị TikTok hạn chế phân phối. Story mẫu dài 12–20 s; video thật trên 60 s để đạt điều kiện Creator Rewards.
+
+### 17.2 Nguyên tắc tái sử dụng (quan trọng nhất của đợt 3)
+
+Mọi chủ đề được **ghép từ 3 kho dùng chung**. Một chủ đề chỉ được thêm vài rig đặc thù thật sự không ghép được.
+
+| Kho | Gồm | Cách thêm mới |
+|---|---|---|
+| **Nhân vật** | 13 chibi + người lớn + ~100 con vật đã có | Một vai = chibi có sẵn + **trang phục** `outfit` (§18.1) + `style` màu. **Không** tạo rig nhân vật mới cho từng vai (hiệp sĩ, phi hành gia, samurai thợ rèn… đều là `chibi_* + outfit`). Rig nhân vật mới chỉ khi **dáng cơ thể khác** (con vật mới). |
+| **Vật thể** | xe, nhà/công trình, món ăn, đồ chứa, đồ nội thất, biển hình | Mỗi họ **một template + spec**, giống `drawFruitTree`/`drawRootCrop`: `drawVehicle`, `drawBuilding`, `drawFood`, `drawContainer`, `drawFurniture`, bảng `PICTOGRAMS` (§18.2). Một rig mới là **một mục spec**, không phải một hàm vẽ mới. |
+| **Đồ dùng** | dụng cụ cầm tay | Luôn có anchor `grip`, cộng một đầu làm việc (`tip`, `head`, `blade`, `bristles`…), để dùng `held_pose()` và `action.tool` như nhóm y tế (§18.3). |
+
+**Quy tắc bắt buộc:**
+1. **`topics`:** mỗi rig, trang phục và hình nền mới khai `topics: [...]` trong catalog, liệt kê **ít nhất 2 chủ đề** dùng tới nó (id chủ đề ở §19). Test sẽ kiểm tra điều này. Mục nào chỉ dùng cho 1 chủ đề (vd. kim tự tháp) thì khai `topics_exception: "<lý do>"` và ghi vào báo cáo giai đoạn.
+2. **Khác biệt theo nước đi qua `locale`, không nhân bản rig.** Ví dụ: màu thùng rác, màu xe buýt trường, kiểu đèn giao thông, kiểu mái nhà.
+3. **Không có nhánh `if (s.asset === …)`.** Test đếm nhánh ở §15 vẫn áp dụng.
+4. **Trang phục không bao giờ đổi anchor.** Đồ cầm tay, IK và các test chạm phải giữ nguyên dù nhân vật mặc gì.
+
+---
+
+## 18. Giai đoạn J — hạ tầng dùng chung (không có chủ đề riêng)
+
+### 18.1 Hệ trang phục chibi `outfit`
+
+- **Catalog:** `outfits: { id: { label, parts: { head, top, bottom, shoes, back, face_acc, hand_l, hand_r }, warm, era, locale, topics } }`. Mỗi `part` là id trong bảng `OUTFIT_PARTS` của gói `outfits`.
+- **Dùng trong story:** nhân vật khai `outfit: "<id>"`. Keyframe cũng được đổi `outfit` (đổi theo bậc, không nội suy) để làm cảnh "mặc đồ", thường đi kèm động tác `dress` (§18.3). Validator kiểm tra id có trong catalog.
+- **Cách vẽ:** `drawChibi` vẽ các lớp theo thứ tự `back → bottom → top → shoes → head → face_acc`. Tay áo và găng đi theo `chibiSkeleton` (vai → khuỷu → cổ tay), giống cách vẽ tay hiện nay. `outfit` rỗng hoặc `none` phải **giống từng pixel** với chibi hiện tại.
+- **`warm: true`** (áo khoác, đồ bông, đồ phi hành gia) tắt run tự động khi có tuyết. Engine hiện đọc keyframe `shiver`; từ đợt này đọc thêm cờ này.
+- **Danh sách trang phục đợt đầu (~40)**, mỗi bộ ghi các chủ đề dùng tới:
+
+| Nhóm | Trang phục |
+|---|---|
+| Nghề | `firefighter`, `pilot`, `astronaut` (warm), `construction` (áo phản quang, mũ bảo hộ), `scientist` (áo blouse, kính), `mail_carrier`, `train_conductor`, `chef` (đã có ở `chibi_chef` → tách thành outfit), `farmer_overalls`, `paleontologist`, `diver` |
+| Lịch sử | `stone_age` (da thú), `egypt_worker`, `egypt_noble` (không vẽ vương miện thần thánh), `greek_tunic`, `roman_citizen` (toga), `roman_soldier` (không vũ khí khi dùng mặc định), `viking`, `knight` (giáp, khiên gỗ), `medieval_villager`, `printer_1450` (tạp dề thợ in), `inventor_1900` (gi-lê, mũ quả dưa), `aviator_1903`, `pioneer` (mũ vải, váy dài / quần yếm), `cowboy`, `edo_merchant`, `edo_craftsman`, `joseon_scholar` (mũ `gat`), `joseon_villager` |
+| Văn hoá / lễ hội | `dirndl`, `lederhosen`, `yukata`, `kimono`, `hanbok`, `school_uniform_jp`, `school_uniform_kr`, `winter_coat` (warm), `raincoat` |
+| Hoá trang | `costume_ghost` (khăn trùm), `costume_pumpkin`, `costume_witch_hat` (chung chung), `costume_dinosaur`, `santa_like` (mũ đỏ viền trắng chung chung, không vẽ đúng ông già Noel của thương hiệu nào) |
+| An toàn | `life_vest`, `bike_helmet`, `hi_vis_vest`, `bosai_zukin` (mũ trùm chống thiên tai kiểu Nhật), `dust_mask_kr` (khẩu trang chống bụi mịn), `swim_ring` |
+
+### 18.2 Họ vật thể (template + spec)
+
+Mỗi họ là một template trong gói riêng. Spec nằm trong gói và được **nhân bản vào catalog**. `PackContractTest` kiểm tra hai bên khớp nhau, giống cây ăn quả.
+
+**`drawVehicle(ctx, s, t, spec)` — gói `vehicles`:**
+- **Spec:** `body` (id đường viền), `wheels: [[x, r], …]`, `windows`, `lights`, `color`, `locale_colors`.
+- **Anchor:** `seat_1…seat_n`, `door`, `wheel_1…`, `hitch`.
+- **Chuyển động:** bánh xe quay theo `s.vx`, thân nhún nhẹ.
+- **Rig:**
+  - đường bộ: `bicycle`, `car`, `school_bus` (locale), `city_bus`, `fire_truck`, `ambulance` (dấu cộng xanh/trái tim, **không** chữ thập đỏ), `police_car` (không huy hiệu, không chữ), `tractor`, `excavator`, `dump_truck`;
+  - xe cổ: `horse_cart` (dùng `horse` có sẵn kéo qua `hitch`), `covered_wagon`, `motorcar_1886` (xe ba bánh đời đầu, dáng chung chung);
+  - đường sắt: `steam_train`, `high_speed_train` (dáng chung, không logo hãng), `tram`;
+  - đường thuỷ: `sailing_ship`, `longship`, `turtle_ship` (§27), `boat` (đã có);
+  - trên không: `biplane_1903`, `hot_air_balloon`, `rocket`, `lunar_lander`.
+
+**`drawBuilding(ctx, s, t, spec)` — gói `buildings`, lắp theo mô-đun:**
+- **Mô-đun:**
+  - `walls`: `timber_frame` (nhà khung gỗ lộ kiểu Đức), `brick`, `stone`, `adobe`, `hanok`, `jp_wood`, `siding`;
+  - `roof`: `gable`, `hip`, `curved_tile`, `thatch`, `flat`, `dome`;
+  - `windows`, `door`, `chimney`, `towers`;
+  - `growth` làm công trình dựng dần từ móng lên, dùng cho động tác `build`;
+  - `cutaway` cho thấy các tầng bên trong.
+- **Anchor:** `door`, `window_1…`, `roof_top`, `floor_1…`.
+- **Rig:** `house` (locale), `castle` (tháp lắp ghép), `pyramid`, `temple_classic` (cột Hy Lạp – La Mã chung chung), `aqueduct`, `lighthouse`, `windmill`, `school_building` (locale), `fire_station`, `shop_front`, `igloo`, `stone_hut`, `moai_generic` (§28), `standing_stones` (§28).
+
+**`drawFood(ctx, s, t, spec)` — gói `foods`:**
+- Có mặt tuỳ chọn (`face_scale`). Món cắt được dùng lại `slice` và vẽ mặt cắt kiểu `FRUIT_SEEDS`. `steam` bốc hơi theo `t`.
+- **Món:** `bread_loaf`, `pretzel`, `pancake_stack`, `apple_pie`, `roast_turkey`, `gingerbread`, `easter_egg` (hoa văn), `christmas_cookie`, `hamburger`, `onigiri`, `bento_box` (các ô chứa thức ăn, dùng lại `FRUIT_BODIES` và `FOOD` nhỏ), `sushi`, `ramen_bowl`, `mochi`, `dango`, `kimchi`, `songpyeon`, `tteokguk`, `bibimbap`, `rice_bowl`, `soup_pot`.
+
+**`drawContainer(ctx, s, t, spec)` — gói `containers`:**
+- **Đồ chứa:** `bin_paper`, `bin_plastic`, `bin_glass`, `bin_bio`, `bin_residual` (màu theo `locale`, §18.4), `onggi_jar`, `barrel`, `treasure_chest`, `amphora`, `lunchbox`, `emergency_backpack`, `crate` (đã có).
+- **Anchor:** `opening` (miệng hoặc nắp) và `lid`.
+- **Trạng thái:** `open` 0–1 cho nắp, `fill` 0–1 cho mức đầy.
+
+**`drawFurniture(ctx, s, t, spec)` — gói `furniture`:**
+- **Đồ nội thất:** `desk`, `chair`, `table`, `low_table` (Hàn, Nhật), `kotatsu`, `bed`, `shelf`, `bookcase`, `workbench`.
+- **Anchor:** `top`, `under` (chỗ chui xuống khi `take_cover`), `seat`.
+
+**`PICTOGRAMS` — bảng biểu tượng không chữ trong `kit`:**
+- **Biểu tượng:**
+  - giao thông: người đi bộ, xe đạp, trẻ em qua đường, biển dừng (bát giác đỏ có hình bàn tay, **không** chữ STOP);
+  - tái chế: mũi tên tái chế, giấy, chai, lon, vỏ táo;
+  - thoát hiểm: người chạy ra cửa thoát hiểm, lửa, nhà rung (động đất), sóng thần, mũi tên sơ tán;
+  - cấm và cảnh báo: cấm bơi, tam giác cảnh báo;
+  - y tế: tim sơ cứu;
+  - hoá chất: các hình GHS (chuyển `drawGhsDiamond` của `agrochem` vào đây, rig cũ phải giống từng pixel).
+- **Rig dùng bảng này:** `sign_post` (`spec.symbol`), `pictogram_card`, `screen` (màn hình chỉ hiện hình), miếng dán trên thùng rác và xe cộ.
+- **Không** gọi `fillText` ở bất kỳ đâu. Test spy sẽ kiểm tra.
+
+### 18.3 Đồ dùng cầm tay và động tác dùng chung mới
+
+**Đồ dùng mới (gói `tools_ext`):** tất cả có `grip` + đầu làm việc, cầm bằng `attach_to` tay + `held_pose()`, không cần hook riêng.
+
+| Nhóm | Đồ dùng |
+|---|---|
+| Thợ | `hammer`, `saw`, `chisel`, `trowel`, `pickaxe`, `rope` (dùng cho `tug`, `haul`), `ladder` |
+| Việc nhà | `broom`, `dustpan`, `rice_paddle`, `chopsticks`, `fork`, `whisk`, `frying_pan`, `ladle` |
+| Học & khám phá | `magnifier`, `telescope`, `compass`, `map_blank` (bản đồ không chữ, không biên giới thật), `paint_brush`, `quill`, `calligraphy_brush` (nét trừu tượng, không phải chữ thật) |
+| An toàn | `flashlight`, `fire_extinguisher`, `whistle`, `umbrella` |
+| Chơi | `kite`, `ball`, `jump_rope`, `lantern_star` (đèn lồng rước đèn / Trung thu) |
+| Lịch sử | `gold_pan`, `wooden_shield`, `toy_sword` (gỗ); `printing_press` và `early_bulb` là prop đứng yên |
+
+**Quy tắc vũ khí:** không có súng. Vũ khí lịch sử chỉ là đạo cụ trưng bày hoặc tập luyện bằng gỗ, **không bao giờ** dùng lên nhân vật khác.
+
+**Động tác mới dùng chung.** Mỗi động tác có test đo điểm chạm (<12 px) như Phần I.
+
+| Động tác | Mô tả | Test chạm |
+|---|---|---|
+| `drive` | Xe chạy theo pose, bánh quay, thân nhún | Đáy bánh ở `ground_y` ±2 px |
+| `ride` | Nhân vật ngồi `seat_N` của xe hoặc con vật, đi theo xe | Hông chibi ↔ `seat_N` <6 px suốt động tác |
+| `build` | Công trình `growth` 0 → 1, người thợ dùng `hammer`/`trowel` chạm vào mép đang xây | `growth` tăng đơn điệu; đầu dụng cụ ↔ mép xây <12 px |
+| `haul` | Nhiều người kéo dây nối vật nặng (khối đá, thuyền); dùng lại chuỗi IK của `tug` nhưng vật trượt đi chứ không bật lên | Tay ↔ `rope` <12 px |
+| `carry_together` | 2 người khiêng một vật bằng `grip_l`/`grip_r` | Mỗi tay ↔ grip <10 px |
+| `row` | Chèo thuyền | — |
+| `sweep` | Quét nhà, quét lá | — |
+| `cook` | Khuấy nồi, bốc hơi, `food.cooked` 0 → 1 | Đầu `ladle` trong miệng nồi |
+| `dress` | Đổi `outfit` kèm lấp lánh | Anchor không đổi trước và sau |
+| `take_cover` | Chui xuống `furniture.under`, tay che đầu | Đỉnh đầu thấp hơn `top` của bàn trong suốt khoảng che |
+| `evacuate` | Đi theo các điểm của đường sơ tán tới cửa thoát hiểm | — |
+| `sort` | Ném hoặc bỏ vật vào `bin.opening`; vật biến mất trong thùng, `fill` tăng | Vật ↔ `opening` <10 px lúc chạm; sai thùng → `emote ?` |
+| `invent` | Bóng đèn ý tưởng, vật được phát minh hiện ra với `growth` | — |
+| `launch` | Tên lửa rung, khói, bay lên | — |
+| `float` | Lơ lửng không trọng lực, xoay chậm | — |
+| `paint` | Vẽ tranh hang động hoặc tranh treo tường | Đầu cọ ↔ mặt tranh <12 px |
+
+### 18.4 `locale` — một story, 4 bản
+
+- **Catalog:** `locales: ["neutral", "de", "us", "kr", "jp"]` và `locale_specs[locale]`. `locale_specs` gồm:
+  - màu từng loại thùng rác (theo quy định từng nước, chủ repo kiểm lại khi duyệt bảng hình);
+  - màu và dáng xe buýt trường;
+  - đèn giao thông ngang hay dọc;
+  - kiểu nhà và kiểu mái mặc định;
+  - bàn tay cầm lái trái hay phải (không cần với story ngắn);
+  - hình cây và hoa mặc định của nền đường phố.
+- **Thứ tự ưu tiên:** `scene.background.locale` là mặc định cho mọi rig của cảnh; `character.style.locale` ghi đè cho từng nhân vật; không khai gì thì là `neutral`.
+- **Hàm Python** `remake_vector.localize(story, locale)` trả về bản sao story với locale mới. Hàm không đụng pose, thời gian hay động tác. `--build-showcase` xuất đủ 4 bản cho mỗi story của đợt 3.
+
+### 18.5 Hình nền lắp ghép
+
+- **`drawStreet(ctx, settings, t, spec)`:** đường phố theo `locale`: `de` phố cổ nhà khung gỗ, `us` khu ngoại ô, `kr` chung cư cạnh hanok, `jp` phố mua sắm có mái che. Gồm vỉa hè, vạch qua đường, cột đèn, cây.
+- **`drawInterior(ctx, settings, t, spec)`:** phòng trong nhà theo locale: sàn gỗ, chiếu tatami, sàn sưởi ondol, thảm.
+- **Lớp học, bếp, phòng khách đã có:** chỉ thêm biến thể `locale`, **không** tạo hình nền mới.
+
+### 18.6 Kiểm tra riêng Giai đoạn J (thêm vào §14)
+
+- `outfit: none` giống pixel với chibi hiện tại. Với mọi trang phục, `worldAnchor` của 27 anchor bắt buộc giống hệt khi không mặc gì.
+- Mỗi mục mới có `topics` ≥ 2 hoặc `topics_exception`.
+- `localize()` với 5 locale: story vẫn hợp lệ; chỉ các trường locale thay đổi; mỗi locale tua lại ra đúng pixel.
+- Spy `fillText`/`strokeText` trên mọi rig, pictogram và hình nền: 0 lời gọi.
+- Xe: `drive` giữ đáy bánh ở `ground_y`; `ride` giữ người trên ghế.
+- `sort`, `take_cover`, `build`, `haul`, `cook`, `paint`: test chạm như bảng §18.3.
+
+---
+
+## 19. Danh sách chủ đề và ma trận tái sử dụng
+
+**Id chủ đề** (dùng trong `topics`): `recycling`, `safety`, `disaster`, `ancient`, `medieval`, `inventions`, `de_culture`, `jp_culture`, `kr_culture`, `us_culture`, `nature`, `space`, `ocean`, `mysteries`, `fables`, `food`, `festivals`, `jobs`, `school`, `body` (Giai đoạn I), `farm` (Phần I).
+
+Bảng dưới là **mục tiêu tái sử dụng**. Cột là chủ đề, ô ● là có dùng.
+
+| Kho dùng chung | recycling | safety / disaster | ancient / medieval | inventions | 4 gói văn hoá | nature / space | ocean / mysteries | fables |
+|---|---|---|---|---|---|---|---|---|
+| Chibi + outfit | ● | ● | ● | ● | ● | ● | ● | ● |
+| `drawVehicle` | ● (xe rác) | ● (xe cứu hoả, cứu thương, xe buýt) | ● (xe ngựa, longship) | ● (xe 1886, máy bay 1903) | ● | ● (tên lửa) | ● (thuyền, tàu) | |
+| `drawBuilding` | ● (nhà máy tái chế) | ● (trường, trạm cứu hoả) | ● (kim tự tháp, lâu đài) | ● (xưởng) | ● | | ● (đá dựng, tượng đá) | ● |
+| `drawFood` | ● (rác hữu cơ) | | ● | | ● | | | ● |
+| `drawContainer` | ● (thùng rác) | ● (ba lô khẩn cấp) | ● (vò, rương) | | ● (onggi, hộp cơm) | | ● (rương kho báu) | ● |
+| `drawFurniture` | | ● (chui gầm bàn) | ● | ● (bàn thợ) | ● (kotatsu, bàn thấp) | | | |
+| `PICTOGRAMS` | ● | ● | | | ● | | ● | |
+| Đồ dùng `tools_ext` | ● (chổi) | ● (đèn pin, bình chữa cháy) | ● (búa, dây, cọ) | ● (bút lông ngỗng, máy in) | ● | ● (kính thiên văn) | ● (kính lúp) | ● |
+| Thú đã có (≈100 con) | | | ● (ngựa, lừa) | | ● | ● | ● (rùa, cá) | ● (rùa, thỏ, kiến, cáo…) |
+
+---
+
+## 20. Giai đoạn K — Phân loại rác và môi trường (`recycling`) 🌐
+
+- **Rig mới (gói `recycling`):**
+  - vật tái chế có mặt, dùng `drawFood`/`drawContainer` với spec mới: `plastic_bottle`, `can`, `glass_jar`, `newspaper_bundle` (không chữ), `cardboard_box`, `banana_peel`, `apple_core`, `battery` (thu gom riêng);
+  - `garbage_truck` (spec `drawVehicle`), `recycling_plant` (spec `drawBuilding`, `cutaway` thấy băng chuyền).
+- **Dùng lại:** thùng rác theo locale (§18.2), `sort`, `sweep`, `compost_bin` và `compost_heap` (gói agrochem), trạng thái cây héo/tươi.
+- **Hình nền:** `street` (§18.5), `recycling_yard` (mới), `kitchen` và `school_yard` (biến thể locale).
+- **Story mẫu:**
+  - `recycling_sort`: chibi bỏ 6 món vào đúng thùng, bỏ sai thì `emote ?` rồi sửa lại;
+  - `bottle_journey`: chai nhựa đi qua xe rác, nhà máy, thành áo hoặc ghế mới (`growth`).
+
+## 21. Giai đoạn L — An toàn và phòng chống thiên tai (`safety`, `disaster`) 🌐
+
+- **Giao thông:**
+  - rig: `traffic_light` (dọc hoặc ngang theo locale, trạng thái `light` là đỏ/vàng/xanh), `crosswalk` (lớp decor trên `street`), `sign_post` với các pictogram;
+  - trang phục `bike_helmet`, `hi_vis_vest`;
+  - động tác `wait_signal` (đứng chờ đèn, nhìn trái phải).
+  - 🇯🇵 giơ tay khi qua đường; 🇩🇪 đi học theo nhóm với áo phản quang.
+- **Cháy:** `fire_extinguisher`, `smoke_detector`, cửa thoát hiểm bằng pictogram; động tác `crawl_low` (bò thấp dưới khói, dùng lại `crawl`); `evacuate`. Lửa hoạt hình tất định, không có người bị bỏng.
+- **Nước:** `life_vest`, `swim_ring`, pictogram cấm bơi; biến thể nền `pond`/`river`/`sea` có vùng nước sâu.
+- **Động đất và sóng thần** (🇯🇵 trọng tâm):
+  - `settings.quake` 0–1 làm camera rung tất định theo `t`, và đồ vật có `loose: true` lắc;
+  - `take_cover` dưới `desk`, mặc `bosai_zukin`;
+  - `evacuate` lên cao theo mũi tên sơ tán; sóng thần chỉ vẽ ở xa kèm pictogram, không vẽ người bị cuốn.
+- **Bão, lốc, lũ, bụi mịn:**
+  - `settings.flood` 0–1 dâng mực nước trên mặt đất (vật `float_on_water` nổi lên);
+  - `storm` và `wind` đã có;
+  - `settings.dust` 0–1 phủ màn bụi mịn, nhân vật đeo `dust_mask_kr`.
+- **Rig khác:** `emergency_backpack` (mở ra thấy đèn pin, nước, bánh), `flashlight`, `whistle`, `radio`.
+- **Story mẫu:** `crossing_street` (4 locale), `earthquake_drill`, `fire_drill`, `flood_ready`, `pack_emergency_bag`.
+
+## 22. Giai đoạn M — Lịch sử cổ đại (`ancient`) 🌐
+
+- **Chủ đề:**
+  - thời kỳ đồ đá: tạo lửa, vẽ hang, săn voi ma mút không máu (voi ma mút chạy mất, `run_away`);
+  - Ai Cập: xây kim tự tháp bằng `haul` và `build`, sông Nile, giấy papyrus;
+  - Hy Lạp: Olympic đầu tiên;
+  - La Mã: làm đường, cầu dẫn nước, trường học La Mã;
+  - Con đường tơ lụa: đoàn lạc đà.
+- **Trang phục:** `stone_age`, `egypt_worker`, `egypt_noble`, `greek_tunic`, `roman_citizen`, `roman_soldier`.
+- **Rig mới:**
+  - con vật: `mammoth`, `camel`;
+  - công trình và vật thể: `pyramid` (với `growth`, khai `topics_exception`), `stone_block`, `sledge` (xe trượt kéo đá), `temple_classic`, `aqueduct`, `amphora`, `papyrus_roll` (hình, không chữ), `campfire`, `cave_wall` (mặt tranh cho `paint`), `olive_tree` (spec cây ăn quả của `farm_trees`).
+- **Hình nền:** `stone_age_cave`, `nile_bank`, `desert_dunes`, `roman_town`, `greek_stadium`.
+- **Story mẫu:** `build_pyramid`, `first_fire`, `roman_road`, `silk_road_caravan`, `first_olympics`.
+
+## 23. Giai đoạn N — Trung cổ, hiệp sĩ, Viking (`medieval`) 🇩🇪🇺🇸
+
+- **Trang phục:** `knight`, `medieval_villager`, `viking`.
+- **Rig mới:** `castle` (spec `drawBuilding`: tháp, cổng, cầu treo `open` 0–1), `longship`, `well`, `market_stall` (dùng lại quầy của `village_market`), `anvil`.
+- **Dùng lại:** `hammer`, `horse`, `horse_cart`, `rope` + `haul`.
+- **Hình nền:** `castle_yard`, `medieval_village`, `viking_fjord`.
+- **Nội dung:** đời sống trong lâu đài, thợ rèn làm móng ngựa, chợ phiên, Viking đi biển (tàu và bản đồ sao, không vẽ cướp bóc), hội chợ Hanse (🇩🇪).
+- **Story mẫu:** `castle_life`, `blacksmith`, `viking_voyage`.
+
+## 24. Giai đoạn O — Lịch sử phát minh và đời sống xưa (`inventions`) 🌐
+
+- **Mỗi phát minh** = một prop hoặc xe + một nhân vật chibi mặc `inventor_1900` / `printer_1450` / `aviator_1903`. Nhân vật có thật được vẽ **chung chung, nhận ra nhờ đạo cụ**; không vẽ theo ảnh hay chân dung.
+- **Phát minh:**
+  - máy in (🇩🇪 Gutenberg), ô tô ba bánh 1886 (🇩🇪 Benz), xe đạp gỗ đời đầu 1817 (🇩🇪, không bàn đạp), bóng đèn và máy hát (🇺🇸);
+  - máy bay 1903 (🇺🇸 anh em Wright), điện thoại, đồng hồ nước và dụng cụ đo mưa (🇰🇷 Jang Yeong-sil, dùng lại ở §27);
+  - bản đồ đo đạc (🇯🇵 Inō Tadataka, `map_blank`), giấy, tiền xu, kính, bồn cầu, kem đánh răng (nối với gói y tế).
+- **Động tác:** `invent`, `build`, `ride`.
+- **Hình nền:** `workshop_1900` (biến thể `drawInterior`), `old_town_1900` (biến thể `drawStreet`).
+- **Story mẫu:** `first_flight`, `printing_press`, `first_car`, `then_and_now` (xưa và nay của một đồ vật, chia đôi khung hình).
+
+## 25. Giai đoạn P — Gói văn hoá Đức (`de_culture`) 🇩🇪
+
+- **Hình nền:** `black_forest_village` (nhà khung gỗ, rừng thông), `christmas_market`, `allotment_garden` (vườn thuê, dùng lại cây và rau của Phần I), `alpine_meadow`.
+- **Lễ hội:**
+  - Giáng sinh: `gingerbread`, `christmas_cookie`, cây thông trang trí (spec cây của `farm_trees`);
+  - Phục sinh: `easter_egg`, thỏ (`rabbit` có sẵn);
+  - rước đèn lồng Thánh Martin: `lantern_star`;
+  - ngày đầu đi học: túi quà `schultuete`.
+- **Truyện Grimm** (phạm vi công cộng; tự thiết kế, **không** giống bản của Disney):
+  - Những nhạc sĩ thành Bremen: `donkey`, `dog`, `cat`, `rooster` đều có sẵn;
+  - Hansel và Gretel: `gingerbread_house` (spec `drawBuilding`);
+  - Chú bé tí hon; Bà Holle: rũ gối làm tuyết rơi, dùng `snow`;
+  - Người thổi sáo thành Hamelin: chuột có sẵn, chỉ kể phần chuột đi theo tiếng sáo.
+- **Con vật mới:** `fox`, `owl`, `deer`, `wolf` (bản thân thiện, khác `armored_wolf`), `stork`, `wild_boar`.
+- **Story mẫu:** `bremen_musicians`, `st_martin_lanterns`, `hedgehog_winter`, `first_school_day`.
+
+## 26. Giai đoạn Q — Gói văn hoá Nhật (`jp_culture`) 🇯🇵
+
+- **Hình nền:** `edo_town`, `jp_school` (biến thể lớp học), `train_platform`, `shrine_generic` (cổng và mái chung chung, không phải đền thật cụ thể; chỉ làm nền), `onsen_snow`, `rice_terrace` (dùng lại `terraced_field`).
+- **Lễ hội và đời sống:**
+  - ngắm hoa anh đào (`cherry_tree` đã có, mùa xuân), ngắm trăng `tsukimi` với `dango`;
+  - Tanabata: `bamboo` với dải giấy màu, không chữ;
+  - lễ bé trai: cờ cá chép `koinobori`;
+  - Obon: `lantern`;
+  - giờ dọn dẹp ở trường: `broom`, `sweep`;
+  - hộp cơm `bento_box`, cơm nắm `onigiri`.
+- **Cổ tích** (tự thiết kế):
+  - Cậu bé quả đào Momotarō: `peach` có sẵn + `dog`, `cartoon_monkey`, `pheasant` (mới);
+  - Urashima Tarō: `turtle` có sẵn, `sea`/`underwater`, `treasure_chest`;
+  - Công chúa ống tre: `bamboo`;
+  - Cua và khỉ `saru_kani`: `crab` (mới), `persimmon` có sẵn;
+  - Ông lão làm hoa nở: `cherry_tree`.
+- **Con vật mới:** `pheasant`, `crab`, `tanuki`, `crane`, `koi` (spec `drawFish`), `snow_monkey` (hoặc `cartoon_monkey` + `style`).
+- **Story mẫu:** `momotaro`, `bento_morning`, `school_cleaning`, `tanabata_wish`.
+
+## 27. Giai đoạn R — Gói văn hoá Hàn (`kr_culture`) 🇰🇷
+
+- **Hình nền:** `hanok_village`, `joseon_palace_generic` (không phải cung điện thật cụ thể), `kr_market`, `kr_school` (biến thể), `apartment_street` (biến thể `drawStreet`).
+- **Lễ hội và đời sống:**
+  - Tết Seollal: cúi lạy chúc Tết (động tác `bow`), canh bánh gạo `tteokguk`, thả diều `kite`;
+  - Trung thu Chuseok: `songpyeon`, ngắm trăng;
+  - làm kimchi: `kimchi`, `onggi_jar`, `carry_together`;
+  - ngày bụi mịn (§21).
+- **Lịch sử:**
+  - vua Sejong tạo chữ Hangul: vẽ **nét cọ trừu tượng** và hình bộ phận phát âm, không viết chữ thật;
+  - nhà thiên văn Jang Yeong-sil: `water_clock`, `rain_gauge` (dùng chung với §24);
+  - thuyền rùa `turtle_ship`: chỉ tả kỹ thuật đóng thuyền, **không** cảnh đánh nhau hay đối đầu với Nhật.
+- **Cổ tích:**
+  - Hổ và quả hồng: `cartoon_tiger`, `persimmon` đều có sẵn;
+  - anh em Heungbu – Nolbu: `swallow` (mới), `gourd` (mới, cây leo giàn của gói `trellis`);
+  - Mặt trời và Mặt trăng: `rope` từ trời xuống;
+  - chàng tiều phu và nàng tiên: `deer` (dùng chung với §25).
+- **Con vật mới:** `swallow`, `magpie`, `crane` (dùng chung với §26).
+- **Story mẫu:** `tiger_and_persimmon`, `kimchi_day`, `seollal_morning`, `rain_gauge`.
+
+## 28. Giai đoạn S — Gói văn hoá Mỹ (`us_culture`) 🇺🇸
+
+- **Hình nền:** `suburb_backyard` (biến thể `drawStreet`), `national_park` (hẻm núi, thác), `wild_west_town`, `launch_pad`, `pumpkin_patch` (dùng lại `pumpkin` và rau của Phần I).
+- **Lễ hội:**
+  - Halloween: `costume_*`, đèn bí ngô (`pumpkin` + `cutaway`/`carve`);
+  - Lễ Tạ ơn: `roast_turkey`, `apple_pie`, mùa gặt;
+  - Ngày Độc lập: pháo hoa là hiệu ứng tất định, **không** vẽ cờ.
+- **Lịch sử và đời sống:**
+  - máy bay 1903 và Apollo 11: `rocket`, `lunar_lander`, `astronaut`, nền `moon_surface` (dùng chung với vũ trụ, §29);
+  - cơn sốt vàng: `gold_pan`, `pickaxe`;
+  - xe ngựa miền Tây: `covered_wagon`, `horse`;
+  - xây tượng Nữ thần Tự do (dáng tượng chung chung, dựng bằng `build`), đường sắt xuyên lục địa;
+  - xe buýt trường màu vàng, tuần lễ phòng cháy.
+- **Truyện:** Johnny Appleseed (`apple_tree`, `seed`, `grow_fast`), Paul Bunyan và bò xanh (`chibi_cow` + `style` xanh), Rip Van Winkle (`sleep` + `emote zzz`), ngụ ngôn Aesop (§30).
+- **Con vật mới:** `bison`, `bald_eagle` (hoặc `eagle` + `style`), `bear` (bản thân thiện, khác `armored_bear`), `prairie_dog`, `raccoon`, `salmon` (spec `drawFish`).
+- **Không làm ở đợt này:** nô lệ, Nội chiến, lịch sử người bản địa (xem §31).
+- **Story mẫu:** `apollo_11`, `thanksgiving_harvest`, `gold_rush`, `johnny_appleseed`.
+
+## 29. Giai đoạn T — Thiên nhiên, vũ trụ và khoa học (`nature`, `space`) 🌐
+
+- **Vũ trụ (gói `space`):**
+  - rig: `planet` có mặt (spec cho 8 hành tinh: màu, vành đai, kích thước tương đối có ghi chú), `sun` và `moon` có mặt (`phase` 0–1 cho các pha trăng), `comet`, `satellite`, `space_station`;
+  - dùng lại `rocket`, `astronaut`, `float`, `launch`;
+  - hình nền: `space_orbit`, `moon_surface`, `mars_surface`.
+- **Thời tiết và nước:** `cloud` có mặt (trạng thái mưa, sấm, `rain` 0–1), vòng tuần hoàn nước (`evaporate`, `condense`, `rain` là các hiệu ứng tất định), cầu vồng.
+- **Trái Đất:** `volcano` (`cutaway` thấy lớp macma, trạng thái `erupt` 0–1), mặt cắt Trái Đất, mảng kiến tạo vẽ chung chung (không ghi địa danh). Dùng chung với động đất ở §21.
+- **Máy đơn giản:** `lever`, `pulley`, `ramp`, `wheel_axle`, dùng cùng động tác `haul` và `carry_together`.
+- **Động vật:** di cư (chim, cá hồi, bướm); côn trùng dùng lại thú đã có; bắc cực dùng gói `polar_cartoon`; khủng long dùng gói `ancient_dinosaurs` + trang phục `paleontologist` + động tác `dig` hoá thạch (`fossil`, mới).
+- **Story mẫu:** `solar_system_tour`, `moon_phases`, `water_cycle`, `volcano`, `dino_dig`, `simple_machines`.
+
+## 30. Giai đoạn U — Đại dương, bí ẩn và ngụ ngôn (`ocean`, `mysteries`, `fables`) 🌐
+
+- **Đại dương:**
+  - rig mới: `sea_turtle`, `jellyfish`, `octopus`, `whale`, `seal`, `coral` (trạng thái `bleached` 0–1), `seaweed`, `anglerfish`;
+  - dùng lại `toxic`/`contaminated`, rác nhựa của §20, `diver`, `boat`, `sort` (dọn rác biển).
+- **Bí ẩn** (hoạt hình vui, nói sự thật, theo góc khảo cổ):
+  - `moai_generic`, `standing_stones`, `sunken_ship` (tàu chìm chung chung, không vẽ người chết), `atlantis_ruins` (kể như truyền thuyết), Pompeii (chỉ góc khảo cổ đào bới, không vẽ nạn nhân);
+  - dùng lại `dig`, `magnifier`, `paleontologist`/`scientist`.
+  - Hợp với niche Matrix `lost_civilizations`, `unsolved_mysteries`, `ocean_mysteries`.
+- **Ngụ ngôn** (chỉ story, gần như không cần rig mới):
+  - Rùa và thỏ: có sẵn;
+  - Kiến và châu chấu: `grasshopper` (mới);
+  - Cáo và chùm nho: `fox` (§25), nho giàn (`trellis`);
+  - Chuột thành phố và chuột đồng quê: `mouse`, `street`.
+- **Story mẫu:** `turtle_rescue`, `coral_reef`, `moai_mystery`, `tortoise_and_hare`, `ant_and_grasshopper`.
+
+---
+
+## 31. Vùng cấm nội dung (kiểm khi duyệt bảng hình và story)
+
+| Vùng | Quy tắc |
+|---|---|
+| 🇩🇪 Thời Quốc xã / Thế chiến II | **Tuyệt đối không** vẽ chữ vạn, SS hay bất kỳ biểu tượng nào của thời kỳ này (phạm luật ở Đức theo §86a Bộ luật Hình sự). Không làm story về Thế chiến II. Bức tường Berlin chỉ làm khi có kịch bản được chủ repo duyệt riêng. |
+| 🇰🇷🇯🇵 Quan hệ Hàn – Nhật | Không vẽ cờ Mặt trời mọc (kể cả dạng tia nắng đỏ trắng giống cờ), không vẽ bản đồ Dokdo/Takeshima hay Biển Đông/Biển Nhật Bản, không nói tới thời thuộc địa 1910–1945 và vấn đề phụ nữ mua vui thời chiến. Không làm story "Hàn – Nhật đối đầu"; thuyền rùa chỉ nói về kỹ thuật. |
+| 🇺🇸 Chủ đề nhạy cảm | Nô lệ, Nội chiến, lịch sử người bản địa, súng: không làm ở đợt này. Không vẽ trang phục bản địa làm đồ hoá trang. |
+| Chiến tranh nói chung | Chỉ vẽ kỹ thuật và đời sống (lâu đài, thuyền, đường xá). Không cảnh trận đánh, không thương vong, không máu. |
+| Tôn giáo | Đền, chùa, nhà thờ chỉ làm **nền chung chung**, không phải đền thật cụ thể; không làm đối tượng chế giễu; không vẽ thần thánh của tôn giáo đang tồn tại. |
+| Bản quyền nhân vật | Không giống: Pororo, Pinkfong/Baby Shark, Anpanman, Doraemon, Pokémon, Hello Kitty, Peppa Pig, chú chuột và chú voi của *Die Sendung mit der Maus*, Sesame Street, các nhân vật Disney/Pixar (kể cả bản Disney của truyện Grimm), Ghibli (Totoro, gấu mèo trong *Pom Poko*…). Tanuki và kitsune phải tự thiết kế. |
+| Thương hiệu | Không logo, không đúng hình dáng độc quyền: tàu Shinkansen và ICE, xe buýt trường của hãng cụ thể, bánh kẹo có nhãn hiệu, ông già Noel của Coca-Cola. |
+| Biểu tượng pháp lý | Không chữ thập đỏ (Phần I §2.3). Không cờ quốc gia làm đạo cụ chính. Không huy hiệu cảnh sát hay quân đội thật. |
+| Nhân vật lịch sử có thật | Vẽ chibi chung chung, nhận ra nhờ đạo cụ và bối cảnh; không vẽ theo ảnh hay chân dung; không đặt vào miệng họ lời nói bịa đặt như trích dẫn thật. |
+
+---
+
+## 32. Thứ tự và khối lượng ước tính
+
+| Giai đoạn | Nội dung | Rig mới | Trang phục | Động tác mới | Hình nền mới |
+|---|---|---|---|---|---|
+| J | Hạ tầng: outfit, 5 template, pictogram, `tools_ext`, `locale`, nền lắp ghép | ~70 (phần lớn là spec) | ~40 | 16 | 2 template |
+| K | Tái chế | ~10 | — | — | 1 |
+| L | An toàn, thiên tai | ~10 | (đã có ở J) | `wait_signal`, `crawl_low` | 0 (dùng `street`) |
+| M | Cổ đại | ~12 | (J) | — | 5 |
+| N | Trung cổ, Viking | ~5 | (J) | — | 3 |
+| O | Phát minh | ~8 | (J) | — | 2 biến thể |
+| P | Đức | ~10 (6 thú) | — | — | 4 |
+| Q | Nhật | ~10 (6 thú) | — | — | 5 |
+| R | Hàn | ~8 | — | `bow` | 5 |
+| S | Mỹ | ~12 (6 thú) | — | `carve` | 5 |
+| T | Thiên nhiên, vũ trụ | ~18 | — | `evaporate`, `condense`, `erupt` | 3 |
+| U | Đại dương, bí ẩn, ngụ ngôn | ~14 | — | — | 2 |
+
+- **Thứ tự:** J → K → L → P → M → O → Q → R → N → S → T → U.
+- **Lý do:** J phải xong trước vì mọi thứ khác ghép từ nó. K và L hợp cả bốn nước. P đứng sớm vì Đức đông tài khoản nhất. Giai đoạn I (`body_world`) làm song song.
+- **Tổng:** khoảng 190 rig (phần lớn là một mục spec), 40 trang phục, 20 động tác, 35 hình nền và biến thể.
+
+## 33. Câu hỏi để chủ repo chốt (đã có mặc định, không chặn việc)
+
+1. **Màu thùng rác theo từng nước:** mặc định lấy theo quy định phổ biến nhất của mỗi nước (Đức: vàng nhựa, xanh dương giấy, nâu hữu cơ, đen rác còn lại). Nhật và Hàn khác nhau theo địa phương, nên mặc định dùng bộ phổ biến ở Tokyo và Seoul. Chủ repo sửa khi duyệt bảng hình.
+2. **Truyện cổ tích:** mặc định kể **phiên bản nhẹ** (Hansel và Gretel không có cảnh đẩy vào lò; Người thổi sáo chỉ kể phần chuột).
+3. **Nhân vật lịch sử có tên:** mặc định lời dẫn nói tên, hình chỉ là chibi chung chung. Có thể chọn không nói tên, chỉ nói "một người thợ in ở Mainz".
+4. **Mức "trông như cho trẻ nhỏ":** mặc định là chibi 2.3 đầu, tông kiến thức cho mọi lứa tuổi. Có thể thêm một bộ màu "người lớn hơn" (ít bão hoà) cho các niche bí ẩn/lịch sử.
+5. **Gói văn hoá có dùng cho kênh nước khác không:** mặc định có. Ví dụ story Momotarō vẫn có bản de/us, vì khán giả nước ngoài thích văn hoá Nhật.

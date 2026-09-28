@@ -246,9 +246,15 @@ def validate_vector_scenes(characters, scenes):
             raise ValueError(f"{cid}: layer không hợp lệ")
         if c.get("material", "clean") not in cat["materials"]:
             raise ValueError(f"{cid}: material không có trong thư viện")
+        if "outfit" in c and c["outfit"] != "none" and c["outfit"] not in cat.get("outfits", {}):
+            raise ValueError(f"{cid}: outfit không có trong thư viện")
         if not isinstance(c.get("style", {}), dict):
             raise ValueError(f"{cid}: style phải là object")
         for key, color in c.get("style", {}).items():
+            if key == "locale":
+                if color not in cat.get("locales", []):
+                    raise ValueError(f"{cid}: locale style không hợp lệ")
+                continue
             if key not in cat["style_colors"] or not isinstance(color, str) or not re.fullmatch(r"#[0-9a-fA-F]{6}", color):
                 raise ValueError(f"{cid}: màu style không hợp lệ")
         cast[cid] = c
@@ -289,6 +295,8 @@ def validate_vector_scenes(characters, scenes):
             raise ValueError("Bối cảnh/thời tiết không có trong thư viện")
         if "season" in bg and bg["season"] not in cat.get("seasons", []):
             raise ValueError("Mùa không có trong thư viện")
+        if "locale" in bg and bg["locale"] not in cat.get("locales", []):
+            raise ValueError("Locale bối cảnh không có trong thư viện")
         start, end = scene["start_time"], scene["end_time"]
         present = set(scene.get("characters_present", []))
         poses = scene.get("poses", {})
@@ -340,6 +348,14 @@ def validate_vector_scenes(characters, scenes):
                         continue
                     elif field == "flip" and isinstance(value, bool):
                         continue
+                    elif field == "highlight" and (value is None or isinstance(value, str)):
+                        continue
+                    elif field == "outfit" and (value == "none" or value in cat.get("outfits", {})):
+                        continue
+                    elif field == "light" and value in ("red", "yellow", "green", "off"):
+                        continue
+                    elif field == "alarm" and isinstance(value, bool):
+                        continue
                     else:
                         raise ValueError(f"{cid}: thuộc tính pose không hợp lệ: {field}")
         cameras = scene.get("camera", [])
@@ -377,6 +393,7 @@ def validate_vector_scenes(characters, scenes):
                 else {"tool"} if kind in TOOL_ACTIONS
                 else {"exercise_type"} if kind == "exercise"
                 else {"food_id"} if kind == "eat"
+                else {"locale"} if kind == "wait_signal"
                 else set()
             )
             if set(action) - ({"type", "actor", "target", "start", "end", "amount", "stroke", "actor_anchor", "target_anchor", "hold"} | extra_fields):
@@ -436,7 +453,7 @@ def validate_vector_scenes(characters, scenes):
                 if cast[action["actor"]].get("attach_to"):
                     raise ValueError("Actor tương tác cần rig độc lập, không attach_to")
                 channels.append((action["actor"], "motion"))
-            if spec["channel"]:
+            if spec.get("channel"):
                 channel = action.get("target_anchor", "") if kind == "press" and action.get("target_anchor", "").startswith("branch_") else spec["channel"]
                 channels.append((action.get("target", action.get("actor")), channel))
             if kind == "uproot":
@@ -486,6 +503,29 @@ def validate_story(story):
         raise ValueError("Storyboard phải dùng native-vector-v1 cho mọi cảnh")
     validate_timeline(story["scenes"], story.get("cues", []), story["characters"], story["duration"])
     return story
+
+
+def localize(story: dict, locale: str) -> dict:
+    """Trả về bản sao story với locale mới cho mọi cảnh và nhân vật (§18.4).
+
+    Không làm thay đổi thời gian, pose hay động tác.
+    """
+    cat = _catalog()
+    valid_locales = cat.get("locales", ["neutral", "de", "us", "kr", "jp"])
+    if locale not in valid_locales:
+        raise ValueError(f"Locale '{locale}' không hợp lệ. Phải thuộc {valid_locales}")
+    story_copy = copy.deepcopy(story)
+    for scene in story_copy.get("scenes", []):
+        bg = scene.setdefault("background", {})
+        bg["locale"] = locale
+    chars = story_copy.get("characters", [])
+    if isinstance(chars, dict):
+        chars = chars.values()
+    for char in chars:
+        if isinstance(char, dict):
+            style = char.setdefault("style", {})
+            style["locale"] = locale
+    return story_copy
 
 
 def tree_fruit_placement(tree_asset: str, slot: int, tree_pos: dict) -> dict:
@@ -2215,9 +2255,864 @@ def nutrition_examples():
     return [story]
 
 
+def scrape_battle_examples():
+    """Technical showcase for Phase I: scrape wound on skin, neutrophil net trap, macrophage engulf, B cell antibody, and platelet wound patching."""
+    def actor(cid, asset, **extra):
+        return {"id": cid, "name": _catalog()["assets"][asset]["label"], "asset": asset, **extra}
+
+    def pose(t, x, y, h, **extra):
+        return {"time": t, "x": x, "y": y, "height": h, **extra}
+
+    def scene(start, end, poses, actions=(), bg="wound_site", **extra):
+        return {
+            "renderer": RENDERER,
+            "kind": "scene",
+            "start_time": start,
+            "end_time": end,
+            "characters_present": list(poses),
+            "poses": poses,
+            "actions": list(actions),
+            "background": {"preset": bg, **extra},
+        }
+
+    def action(kind, start, end, target=None, actor_id=None, **extra):
+        return {"type": kind, "start": start, "end": end, **({"target": target} if target else {}), **({"actor": actor_id} if actor_id else {}), **extra}
+
+    sc1 = scene(0, 5.0, {
+        "patch": [pose(0, 200, 810, 180, wound=0.8), pose(5.0, 200, 810, 180, wound=0.8)],
+        "germ": [pose(0, 420, 810, 120), pose(2.0, 340, 810, 120), pose(5.0, 340, 810, 120, stunned=1.0)],
+        "neutro": [pose(0, 100, 810, 140), pose(2.0, 260, 810, 140), pose(5.0, 260, 810, 140)],
+    }, actions=[
+        action("charge", 0.5, 2.5, actor_id="neutro", target="germ"),
+        action("net_trap", 2.2, 4.8, actor_id="neutro", target="germ"),
+    ], bg="wound_site")
+
+    sc2 = scene(5.0, 10.0, {
+        "patch": [pose(5.0, 200, 810, 180, wound=0.8), pose(10.0, 200, 810, 180, wound=0.8)],
+        "germ": [pose(5.0, 340, 810, 120, stunned=1.0), pose(7.5, 280, 780, 60, opacity=0.3), pose(10.0, 280, 780, 20, opacity=0.0)],
+        "macro": [pose(5.0, 240, 810, 170, engulf=0.0), pose(7.5, 280, 810, 170, engulf=1.0), pose(10.0, 280, 810, 170, engulf=0.0)],
+        "archer": [pose(5.0, 120, 810, 140), pose(10.0, 120, 810, 140)],
+        "cluster": [pose(5.0, 440, 810, 130), pose(8.0, 440, 810, 130, tagged=0.0), pose(10.0, 440, 810, 130, tagged=1.0)],
+    }, actions=[
+        action("engulf", 5.5, 9.5, actor_id="macro", target="germ"),
+        action("shoot_antibody", 6.5, 9.8, actor_id="archer", target="cluster"),
+    ], bg="wound_site")
+
+    sc3 = scene(10.0, 15.0, {
+        "patch": [pose(10.0, 200, 810, 180, wound=0.8), pose(13.5, 200, 810, 180, wound=0.0), pose(15.0, 200, 810, 180, wound=0.0)],
+        "platelet": [pose(10.0, 260, 810, 100), pose(15.0, 260, 810, 100)],
+        "macro": [pose(10.0, 380, 810, 170), pose(15.0, 380, 810, 170, glow=1.0)],
+    }, actions=[
+        action("patch_wound", 10.5, 13.8, actor_id="platelet", target="patch"),
+        action("victory", 13.8, 15.0, actor_id="macro"),
+    ], bg="wound_site")
+
+    story = {
+        "id": "scrape_battle",
+        "name": "11 · Trận chiến trầy xước: bảo vệ vết thương, bắt vi khuẩn và tiểu cầu vá da",
+        "renderer": RENDERER,
+        "fidelity": "technical-demo",
+        "note": "Mẫu kỹ thuật Phase I: Vết xước ngoài da, bạch cầu trung tính net_trap, đại thực bào engulf, tế bào B shoot_antibody và tiểu cầu patch_wound làm lành da.",
+        "duration": 15.0,
+        "characters": [
+            actor("patch", "skin_patch"),
+            actor("germ", "bacteria_chain"),
+            actor("cluster", "bacteria_cluster"),
+            actor("neutro", "neutrophil_scout"),
+            actor("macro", "macrophage_chef"),
+            actor("archer", "b_cell_archer"),
+            actor("platelet", "platelet_builder"),
+        ],
+        "scenes": [sc1, sc2, sc3],
+        "cues": [
+            {"start": 0.5, "end": 4.5, "character_id": "neutro", "text": "Có vết xước hở rồi, bạch cầu trung tính lập tức xông lên tung lưới chặn vi khuẩn!", "expression": "neutral"},
+            {"start": 5.5, "end": 9.5, "character_id": "macro", "text": "Đại thực bào dũng cảm nuốt trọn mầm bệnh và tế bào B bắn kháng thể đánh dấu!", "expression": "neutral"},
+            {"start": 10.5, "end": 14.5, "character_id": "platelet", "text": "Tiểu cầu kết mạng lưới làm lành vết thương, trả lại làn da mịn màng khoẻ mạnh!", "expression": "happy"},
+        ],
+    }
+    for index, item in enumerate(story["scenes"]):
+        item["index"] = index
+    auto_frame(story)
+    validate_story(story)
+    return [story]
+
+
+def virus_invasion_examples():
+    """Technical showcase for Phase I: virus hijack, killer T strike, and brain thermostat regulation."""
+    def actor(cid, asset, **extra):
+        return {"id": cid, "name": _catalog()["assets"][asset]["label"], "asset": asset, **extra}
+
+    def pose(t, x, y, h, **extra):
+        return {"time": t, "x": x, "y": y, "height": h, **extra}
+
+    def scene(start, end, poses, actions=(), bg="blood_vessel", **extra):
+        return {
+            "renderer": RENDERER,
+            "kind": "scene",
+            "start_time": start,
+            "end_time": end,
+            "characters_present": list(poses),
+            "poses": poses,
+            "actions": list(actions),
+            "background": {"preset": bg, **extra},
+        }
+
+    def action(kind, start, end, target=None, actor_id=None, **extra):
+        return {"type": kind, "start": start, "end": end, **({"target": target} if target else {}), **({"actor": actor_id} if actor_id else {}), **extra}
+
+    sc1 = scene(0, 5.0, {
+        "virus": [pose(0, 180, 810, 120), pose(2.5, 280, 770, 100), pose(5.0, 280, 770, 40, opacity=0.0)],
+        "cell": [pose(0, 340, 810, 150, infected=0.2), pose(3.0, 340, 810, 150, infected=0.8), pose(5.0, 340, 810, 150, infected=1.0)],
+    }, actions=[
+        action("hijack", 1.0, 4.5, actor_id="virus", target="cell"),
+    ], bg="blood_vessel")
+
+    sc2 = scene(5.0, 10.0, {
+        "cell": [pose(5.0, 340, 810, 150, infected=1.0), pose(8.5, 340, 810, 150, infected=1.0, pop=0.5), pose(10.0, 340, 810, 150, infected=1.0, pop=1.0, opacity=0.0)],
+        "knight": [pose(5.0, 180, 810, 150), pose(8.0, 260, 810, 150), pose(10.0, 260, 810, 150)],
+        "ninja": [pose(5.0, 440, 810, 140), pose(10.0, 440, 810, 140)],
+    }, actions=[
+        action("strike_infected", 6.0, 9.5, actor_id="knight", target="cell"),
+    ], bg="blood_vessel")
+
+    sc3 = scene(10.0, 15.0, {
+        "brain": [pose(10.0, 288, 810, 180, think=0.5), pose(12.5, 288, 810, 180, think=1.0, thermostat=0.8), pose(15.0, 288, 810, 180, think=0.0, thermostat=0.0, glow=1.0)],
+    }, bg="brain_hq")
+
+    story = {
+        "id": "virus_invasion",
+        "name": "12 · Đột kích virus: T gây độc và sát thủ NK tiêu diệt tế bào nhiễm",
+        "renderer": RENDERER,
+        "fidelity": "technical-demo",
+        "note": "Mẫu kỹ thuật Phase I: Virus xâm nhập tế bào hijack, hiệp sĩ T killer_t_knight strike_infected và não bộ brain_chibi điều chỉnh nhiệt kế bảo vệ cơ thể.",
+        "duration": 15.0,
+        "characters": [
+            actor("virus", "virus_spike"),
+            actor("cell", "infected_cell"),
+            actor("knight", "killer_t_knight"),
+            actor("ninja", "nk_ninja"),
+            actor("brain", "brain_chibi"),
+        ],
+        "scenes": [sc1, sc2, sc3],
+        "cues": [
+            {"start": 0.5, "end": 4.5, "character_id": "virus", "text": "Virus tìm cách bám vào tế bào và xâm nhập để biến nó thành ổ nhiễm bệnh!", "expression": "neutral"},
+            {"start": 5.5, "end": 9.5, "character_id": "knight", "text": "Hiệp sĩ T và ninja NK phối hợp chém trúng tế bào nhiễm, vô hiệu hoá virus!", "expression": "neutral"},
+            {"start": 10.5, "end": 14.5, "character_id": "brain", "text": "Não bộ điều chỉnh phản ứng sốt nhẹ hỗ trợ diệt khuẩn rồi nghỉ ngơi hồi phục hoàn toàn!", "expression": "happy"},
+        ],
+    }
+    for index, item in enumerate(story["scenes"]):
+        item["index"] = index
+    auto_frame(story)
+    validate_story(story)
+    return [story]
+
+
+def vaccine_training_examples():
+    """Technical showcase for Phase I: vaccine training camp, memory cell album learning, and fast defense."""
+    def actor(cid, asset, **extra):
+        return {"id": cid, "name": _catalog()["assets"][asset]["label"], "asset": asset, **extra}
+
+    def pose(t, x, y, h, **extra):
+        return {"time": t, "x": x, "y": y, "height": h, **extra}
+
+    def scene(start, end, poses, actions=(), bg="training_camp", **extra):
+        return {
+            "renderer": RENDERER,
+            "kind": "scene",
+            "start_time": start,
+            "end_time": end,
+            "characters_present": list(poses),
+            "poses": poses,
+            "actions": list(actions),
+            "background": {"preset": bg, **extra},
+        }
+
+    def action(kind, start, end, target=None, actor_id=None, **extra):
+        return {"type": kind, "start": start, "end": end, **({"target": target} if target else {}), **({"actor": actor_id} if actor_id else {}), **extra}
+
+    sc1 = scene(0, 5.0, {
+        "librarian": [pose(0, 220, 810, 150, glow=0.2), pose(5.0, 220, 810, 150, glow=0.8)],
+        "archer": [pose(0, 380, 810, 140), pose(5.0, 380, 810, 140)],
+    }, actions=[
+        action("remember", 0.8, 4.5, actor_id="librarian"),
+    ], bg="training_camp")
+
+    sc2 = scene(5.0, 10.0, {
+        "librarian": [pose(5.0, 180, 810, 150), pose(10.0, 180, 810, 150)],
+        "archer": [pose(5.0, 260, 810, 140), pose(10.0, 260, 810, 140)],
+        "spore": [pose(5.0, 420, 810, 120), pose(8.0, 420, 810, 120, tagged=0.0), pose(10.0, 420, 810, 120, tagged=1.0)],
+    }, actions=[
+        action("shoot_antibody", 5.8, 9.5, actor_id="archer", target="spore"),
+    ], bg="training_camp")
+
+    sc3 = scene(10.0, 15.0, {
+        "captain": [pose(10.0, 220, 810, 150, glow=0.0), pose(12.0, 220, 810, 150, glow=1.0), pose(15.0, 220, 810, 150, glow=1.0)],
+        "archer": [pose(10.0, 360, 810, 140), pose(15.0, 360, 810, 140, glow=0.9)],
+    }, actions=[
+        action("rally", 10.5, 13.5, actor_id="captain", target="archer"),
+        action("victory", 13.5, 15.0, actor_id="captain"),
+    ], bg="lymph_node_base")
+
+    story = {
+        "id": "vaccine_training",
+        "name": "13 · Trại tập luyện vaccine: tế bào nhớ học nhận diện mầm bệnh an toàn",
+        "renderer": RENDERER,
+        "fidelity": "technical-demo",
+        "note": "Mẫu kỹ thuật Phase I: Tại training_camp, tế bào nhớ memory_cell_librarian remember học tập nhận diện kháng nguyên, giúp hệ miễn dịch phản ứng tức thì.",
+        "duration": 15.0,
+        "characters": [
+            actor("librarian", "memory_cell_librarian"),
+            actor("archer", "b_cell_archer"),
+            actor("spore", "fungus_spore"),
+            actor("captain", "helper_t_captain"),
+        ],
+        "scenes": [sc1, sc2, sc3],
+        "cues": [
+            {"start": 0.5, "end": 4.5, "character_id": "librarian", "text": "Vaccine giúp thủ thư tế bào nhớ nhận diện trước hình ảnh mầm bệnh an toàn vào sổ tay!", "expression": "happy"},
+            {"start": 5.5, "end": 9.5, "character_id": "archer", "text": "Khi mầm bệnh thật xuất hiện, xạ thủ B lập tức bắn kháng thể chuẩn xác không một giây chậm trễ!", "expression": "neutral"},
+            {"start": 10.5, "end": 14.5, "character_id": "captain", "text": "Chỉ huy phát sóng tập hợp, toàn bộ cơ thể được bảo vệ an toàn tối đa!", "expression": "happy"},
+        ],
+    }
+    for index, item in enumerate(story["scenes"]):
+        item["index"] = index
+    auto_frame(story)
+    validate_story(story)
+    return [story]
+
+
+def body_tour_examples():
+    """Technical showcase for Phase I: transparent body xray tour highlighting heart, lungs, stomach, and brain."""
+    def actor(cid, asset, **extra):
+        return {"id": cid, "name": _catalog()["assets"][asset]["label"], "asset": asset, **extra}
+
+    def pose(t, x, y, h, **extra):
+        return {"time": t, "x": x, "y": y, "height": h, **extra}
+
+    def scene(start, end, poses, actions=(), bg="body_inside", **extra):
+        return {
+            "renderer": RENDERER,
+            "kind": "scene",
+            "start_time": start,
+            "end_time": end,
+            "characters_present": list(poses),
+            "poses": poses,
+            "actions": list(actions),
+            "background": {"preset": bg, **extra},
+        }
+
+    sc1 = scene(0, 4.0, {
+        "xray": [pose(0, 288, 810, 360, highlight="heart"), pose(4.0, 288, 810, 360, highlight="heart")],
+        "heart": [pose(0, 310, 666, 70), pose(4.0, 310, 666, 70)],
+    }, bg="body_inside")
+
+    sc2 = scene(4.0, 8.0, {
+        "xray": [pose(4.0, 288, 810, 360, highlight="lungs"), pose(8.0, 288, 810, 360, highlight="lungs")],
+        "lungs": [pose(4.0, 288, 658, 80), pose(8.0, 288, 658, 80)],
+    }, bg="body_inside")
+
+    sc3 = scene(8.0, 12.0, {
+        "xray": [pose(8.0, 288, 810, 360, highlight="stomach"), pose(12.0, 288, 810, 360, highlight="stomach")],
+        "stomach": [pose(8.0, 310, 695, 75), pose(12.0, 310, 695, 75)],
+    }, bg="body_inside")
+
+    sc4 = scene(12.0, 16.0, {
+        "xray": [pose(12.0, 288, 810, 360, highlight="brain"), pose(16.0, 288, 810, 360, highlight="brain")],
+        "brain": [pose(12.0, 288, 529, 80), pose(16.0, 288, 529, 80)],
+    }, bg="body_inside")
+
+    story = {
+        "id": "body_tour",
+        "name": "14 · Du hành cơ thể: X-quang khám phá các cơ quan hoạt động nhịp nhàng",
+        "renderer": RENDERER,
+        "fidelity": "technical-demo",
+        "note": "Mẫu kỹ thuật Phase I: Khung X-quang body_xray soi sáng từng cơ quan trong cơ thể: tim đập, phổi thở, dạ dày tiêu hoá và não bộ chỉ huy.",
+        "duration": 16.0,
+        "characters": [
+            actor("xray", "body_xray"),
+            actor("heart", "heart_chibi", attach_to={"id": "xray", "anchor": "heart"}),
+            actor("lungs", "lungs_chibi", attach_to={"id": "xray", "anchor": "lungs"}),
+            actor("stomach", "stomach_chibi", attach_to={"id": "xray", "anchor": "stomach"}),
+            actor("brain", "brain_chibi", attach_to={"id": "xray", "anchor": "brain"}),
+        ],
+        "scenes": [sc1, sc2, sc3, sc4],
+        "cues": [
+            {"start": 0.5, "end": 3.5, "character_id": "heart", "text": "Trái tim khoẻ mạnh đập nhịp nhàng bơm máu và dưỡng chất nuôi toàn thân!", "expression": "happy"},
+            {"start": 4.5, "end": 7.5, "character_id": "lungs", "text": "Hai lá phổi phồng xẹp hít thở không khí trong lành cung cấp oxy tươi mát!", "expression": "happy"},
+            {"start": 8.5, "end": 11.5, "character_id": "stomach", "text": "Dạ dày tiêu hoá thức ăn thành năng lượng nuôi dưỡng cơ thể tràn đầy sức sống!", "expression": "happy"},
+            {"start": 12.5, "end": 15.5, "character_id": "brain", "text": "Bộ não thông thái chỉ huy mọi giác quan và suy nghĩ điều tuyệt vời mỗi ngày!", "expression": "happy"},
+        ],
+    }
+    for index, item in enumerate(story["scenes"]):
+        item["index"] = index
+    auto_frame(story)
+    validate_story(story)
+    return [story]
+
+
+def gut_team_examples():
+    """Technical showcase for Phase I: friendly gut microbiome guarding against pathogenic bacteria in intestine town."""
+    def actor(cid, asset, **extra):
+        return {"id": cid, "name": _catalog()["assets"][asset]["label"], "asset": asset, **extra}
+
+    def pose(t, x, y, h, **extra):
+        return {"time": t, "x": x, "y": y, "height": h, **extra}
+
+    def scene(start, end, poses, actions=(), bg="intestine_town", **extra):
+        return {
+            "renderer": RENDERER,
+            "kind": "scene",
+            "start_time": start,
+            "end_time": end,
+            "characters_present": list(poses),
+            "poses": poses,
+            "actions": list(actions),
+            "background": {"preset": bg, **extra},
+        }
+
+    def action(kind, start, end, target=None, actor_id=None, **extra):
+        return {"type": kind, "start": start, "end": end, **({"target": target} if target else {}), **({"actor": actor_id} if actor_id else {}), **extra}
+
+    sc1 = scene(0, 5.0, {
+        "good1": [pose(0, 200, 810, 140), pose(5.0, 200, 810, 140)],
+        "good2": [pose(0, 320, 810, 140), pose(5.0, 320, 810, 140)],
+    }, actions=[
+        action("patrol", 0.5, 4.5, actor_id="good1"),
+        action("patrol", 0.5, 4.5, actor_id="good2"),
+    ], bg="intestine_town")
+
+    sc2 = scene(5.0, 10.0, {
+        "good1": [pose(5.0, 200, 810, 140), pose(10.0, 200, 810, 140)],
+        "good2": [pose(5.0, 280, 810, 140), pose(10.0, 280, 810, 140)],
+        "bad": [pose(5.0, 460, 810, 130), pose(7.5, 360, 810, 130), pose(10.0, 420, 810, 130, stunned=0.8)],
+    }, actions=[
+        action("patrol", 5.5, 9.5, actor_id="good2"),
+    ], bg="intestine_town")
+
+    sc3 = scene(10.0, 15.0, {
+        "good1": [pose(10.0, 220, 810, 140), pose(15.0, 220, 810, 140, glow=1.0)],
+        "good2": [pose(10.0, 320, 810, 140), pose(15.0, 320, 810, 140, glow=1.0)],
+        "intestine": [pose(10.0, 430, 810, 160), pose(15.0, 430, 810, 160, glow=0.8)],
+    }, actions=[
+        action("victory", 11.0, 14.5, actor_id="good1"),
+        action("victory", 11.0, 14.5, actor_id="good2"),
+    ], bg="intestine_town")
+
+    story = {
+        "id": "gut_team",
+        "name": "15 · Đội quân đường ruột: lợi khuẩn giữ chỗ và bảo vệ hệ tiêu hoá",
+        "renderer": RENDERER,
+        "fidelity": "technical-demo",
+        "note": "Mẫu kỹ thuật Phase I: Tại intestine_town, lợi khuẩn good_bacteria đông đúc giữ chỗ và đẩy lùi vi khuẩn xấu bacteria_rod, giữ ruột êm khoẻ.",
+        "duration": 15.0,
+        "characters": [
+            actor("good1", "good_bacteria"),
+            actor("good2", "good_bacteria"),
+            actor("bad", "bacteria_rod"),
+            actor("intestine", "intestine_chibi"),
+        ],
+        "scenes": [sc1, sc2, sc3],
+        "cues": [
+            {"start": 0.5, "end": 4.5, "character_id": "good1", "text": "Hàng triệu lợi khuẩn tí hon vui vẻ đi tuần bảo vệ từng ngọn đồi lông nhung đường ruột!", "expression": "happy"},
+            {"start": 5.5, "end": 9.5, "character_id": "good2", "text": "Khi vi khuẩn xấu mon men tới, đội quân lợi khuẩn xếp hàng vững chắc chặn lối!", "expression": "neutral"},
+            {"start": 10.5, "end": 14.5, "character_id": "intestine", "text": "Ăn nhiều rau xanh và sữa chua giúp bụng êm, tiêu hoá tốt và cơ thể khoẻ re!", "expression": "happy"},
+        ],
+    }
+    for index, item in enumerate(story["scenes"]):
+        item["index"] = index
+    auto_frame(story)
+    validate_story(story)
+    return [story]
+
+
+def cavity_examples():
+    """Technical showcase for Phase I: cavity germ drilling, gentle sweep clearing plaque, and sparkling tooth."""
+    def actor(cid, asset, **extra):
+        return {"id": cid, "name": _catalog()["assets"][asset]["label"], "asset": asset, **extra}
+
+    def pose(t, x, y, h, **extra):
+        return {"time": t, "x": x, "y": y, "height": h, **extra}
+
+    def scene(start, end, poses, actions=(), bg="mouth_cave", **extra):
+        return {
+            "renderer": RENDERER,
+            "kind": "scene",
+            "start_time": start,
+            "end_time": end,
+            "characters_present": list(poses),
+            "poses": poses,
+            "actions": list(actions),
+            "background": {"preset": bg, **extra},
+        }
+
+    def action(kind, start, end, target=None, actor_id=None, **extra):
+        return {"type": kind, "start": start, "end": end, **({"target": target} if target else {}), **({"actor": actor_id} if actor_id else {}), **extra}
+
+    sc1 = scene(0, 5.0, {
+        "tooth": [pose(0, 220, 810, 170, cavity=0.2), pose(3.0, 220, 810, 170, cavity=0.6), pose(5.0, 220, 810, 170, cavity=0.9, tears=0.5)],
+        "germ": [pose(0, 380, 810, 120), pose(2.0, 300, 810, 120), pose(5.0, 300, 810, 120)],
+    }, actions=[
+        action("drill", 1.5, 4.8, actor_id="germ", target="tooth"),
+    ], bg="mouth_cave")
+
+    sc2 = scene(5.0, 10.0, {
+        "tooth": [pose(5.0, 220, 810, 170, cavity=0.9), pose(8.0, 220, 810, 170, cavity=0.4), pose(10.0, 220, 810, 170, cavity=0.0)],
+        "cilia": [pose(5.0, 380, 810, 140), pose(10.0, 380, 810, 140)],
+        "goo": [pose(5.0, 310, 810, 100), pose(8.0, 420, 780, 100), pose(10.0, 560, 740, 100, opacity=0.0)],
+    }, actions=[
+        action("sweep", 5.5, 9.5, actor_id="cilia", target="goo"),
+    ], bg="mouth_cave")
+
+    sc3 = scene(10.0, 15.0, {
+        "tooth": [pose(10.0, 288, 810, 170, cavity=0.0, sparkle=0.5), pose(12.5, 288, 810, 170, cavity=0.0, sparkle=1.0), pose(15.0, 288, 810, 170, cavity=0.0, sparkle=1.0, blush=0.5)],
+    }, bg="mouth_cave")
+
+    story = {
+        "id": "cavity_battle",
+        "name": "16 · Thám hiểm khoang miệng: ngăn chặn vi khuẩn sâu răng và mảng bám",
+        "renderer": RENDERER,
+        "fidelity": "technical-demo",
+        "note": "Mẫu kỹ thuật Phase I: Trong mouth_cave, vi khuẩn sâu răng cavity_germ drill, lông chổi vệ sinh sweep mảng bám plaque_goo và răng tooth_chibi toả sáng sparkle.",
+        "duration": 15.0,
+        "characters": [
+            actor("tooth", "tooth_chibi"),
+            actor("germ", "cavity_germ"),
+            actor("cilia", "cilia_sweeper"),
+            actor("goo", "plaque_goo"),
+        ],
+        "scenes": [sc1, sc2, sc3],
+        "cues": [
+            {"start": 0.5, "end": 4.5, "character_id": "germ", "text": "Vi khuẩn sâu răng cầm máy khoan tí hon đục khoét men răng làm răng đau nhức!", "expression": "neutral"},
+            {"start": 5.5, "end": 9.5, "character_id": "cilia", "text": "Chải răng đúng cách quét sạch mảng bám dính và đuổi sạch vi khuẩn sâu răng đi!", "expression": "neutral"},
+            {"start": 10.5, "end": 14.5, "character_id": "tooth", "text": "Răng xinh trắng muốt toả sáng lấp lánh nụ cười tự tin rạng rỡ!", "expression": "happy"},
+        ],
+    }
+    for index, item in enumerate(story["scenes"]):
+        item["index"] = index
+    auto_frame(story)
+    validate_story(story)
+    return [story]
+
+
+def allergy_examples():
+    """Technical showcase for Phase I: pollen puff allergy false alarm triggering sneezing clearance."""
+    def actor(cid, asset, **extra):
+        return {"id": cid, "name": _catalog()["assets"][asset]["label"], "asset": asset, **extra}
+
+    def pose(t, x, y, h, **extra):
+        return {"time": t, "x": x, "y": y, "height": h, **extra}
+
+    def scene(start, end, poses, actions=(), bg="nose_cave", **extra):
+        return {
+            "renderer": RENDERER,
+            "kind": "scene",
+            "start_time": start,
+            "end_time": end,
+            "characters_present": list(poses),
+            "poses": poses,
+            "actions": list(actions),
+            "background": {"preset": bg, **extra},
+        }
+
+    def action(kind, start, end, target=None, actor_id=None, **extra):
+        return {"type": kind, "start": start, "end": end, **({"target": target} if target else {}), **({"actor": actor_id} if actor_id else {}), **extra}
+
+    sc1 = scene(0, 5.0, {
+        "pollen": [pose(0, 420, 680, 100), pose(2.5, 300, 720, 100), pose(5.0, 240, 750, 100)],
+        "mast": [pose(0, 160, 810, 140), pose(5.0, 160, 810, 140)],
+    }, bg="nose_cave")
+
+    sc2 = scene(5.0, 10.0, {
+        "pollen": [pose(5.0, 240, 750, 100), pose(10.0, 240, 750, 100)],
+        "mast": [pose(5.0, 160, 810, 140, alert=0.0), pose(7.5, 160, 810, 140, alert=1.0), pose(10.0, 160, 810, 140, alert=1.0)],
+    }, actions=[
+        action("false_alarm", 5.5, 9.5, actor_id="mast", target="pollen"),
+    ], bg="nose_cave")
+
+    sc3 = scene(10.0, 15.0, {
+        "nose": [pose(10.0, 220, 810, 160, sneeze=0.0), pose(12.0, 220, 810, 160, sneeze=1.0), pose(15.0, 220, 810, 160, sneeze=0.0, blush=0.5)],
+        "pollen": [pose(10.0, 280, 750, 100), pose(12.5, 450, 620, 80), pose(15.0, 560, 520, 60, opacity=0.0)],
+    }, bg="nose_cave")
+
+    story = {
+        "id": "allergy_story",
+        "name": "17 · Câu chuyện dị ứng: dưỡng bào báo động nhầm với phấn hoa vô hại",
+        "renderer": RENDERER,
+        "fidelity": "technical-demo",
+        "note": "Mẫu kỹ thuật Phase I: Hạt phấn hoa pollen_puff bay vào mũi nose_cave, dưỡng bào mast_cell_alarm rung chuông false_alarm khiến mũi hắt hơi đẩy phấn hoa ra ngoài.",
+        "duration": 15.0,
+        "characters": [
+            actor("pollen", "pollen_puff"),
+            actor("mast", "mast_cell_alarm"),
+            actor("nose", "nose_chibi"),
+        ],
+        "scenes": [sc1, sc2, sc3],
+        "cues": [
+            {"start": 0.5, "end": 4.5, "character_id": "pollen", "text": "Hạt phấn hoa bay trong gió mùa xuân vô hại vô tình lạc vào khoang mũi.", "expression": "neutral"},
+            {"start": 5.5, "end": 9.5, "character_id": "mast", "text": "Dưỡng bào giật mình rung chuông báo động nhầm lẫn làm kích hoạt phản ứng ngứa mũi!", "expression": "surprised"},
+            {"start": 10.5, "end": 14.5, "character_id": "nose", "text": "Chiếc mũi hắt hơi một cái thật to, đẩy toàn bộ hạt phấn hoa ra ngoài an toàn!", "expression": "happy"},
+        ],
+    }
+    for index, item in enumerate(story["scenes"]):
+        item["index"] = index
+    auto_frame(story)
+    validate_story(story)
+    return [story]
+
+
+def recycling_sort_examples():
+    """Mẫu kỹ thuật Phase K: Phân loại rác tại bãi tái chế và thùng rác locale."""
+    cat = catalog()
+
+    def actor(cid, asset, **extra):
+        lbl = cat["assets"][asset].get("label") or cat["assets"][asset].get("spec", {}).get("label") or asset
+        return {"id": cid, "name": lbl, "asset": asset, **extra}
+
+    def pose(t, x, y, h, **extra):
+        return {"time": t, "x": x, "y": y, "height": h, **extra}
+
+    def scene(start, end, poses, actions=(), bg="recycling_yard", **extra):
+        return {
+            "renderer": RENDERER,
+            "kind": "scene",
+            "start_time": start,
+            "end_time": end,
+            "characters_present": list(poses),
+            "poses": poses,
+            "actions": list(actions),
+            "background": {"preset": bg, **extra},
+        }
+
+    def action(kind, start, end, target=None, actor_id=None, **extra):
+        return {"type": kind, "start": start, "end": end, **({"target": target} if target else {}), **({"actor": actor_id} if actor_id else {}), **extra}
+
+    sc1 = scene(0, 5.0, {
+        "kid": [pose(0, 200, 810, 260), pose(2.5, 200, 810, 260), pose(5.0, 200, 810, 260)],
+        "bin_p": [pose(0, 320, 810, 230), pose(5.0, 320, 810, 230)],
+        "bin_pap": [pose(0, 440, 810, 230), pose(5.0, 440, 810, 230)],
+        "bottle": [pose(0, 120, 750, 100), pose(1.8, 320, 720, 100), pose(2.2, 320, 750, 100, opacity=0.0), pose(5.0, 320, 750, 100, opacity=0.0)],
+        "news": [pose(0, 150, 750, 72), pose(3.8, 440, 720, 72), pose(4.2, 440, 750, 72, opacity=0.0), pose(5.0, 440, 750, 72, opacity=0.0)],
+    }, actions=[
+        action("sort", 0.5, 2.2, actor_id="bottle", target="bin_p"),
+        action("sort", 2.5, 4.2, actor_id="news", target="bin_pap"),
+    ], bg="recycling_yard")
+
+    sc2 = scene(5.0, 10.0, {
+        "kid": [pose(5.0, 200, 810, 260), pose(7.0, 200, 810, 260, expression="surprised"), pose(10.0, 200, 810, 260, expression="happy")],
+        "bin_g": [pose(5.0, 320, 810, 230), pose(10.0, 320, 810, 230)],
+        "bin_b": [pose(5.0, 440, 810, 230), pose(10.0, 440, 810, 230)],
+        "peel": [pose(5.0, 120, 750, 60), pose(7.0, 280, 720, 60), pose(9.2, 440, 720, 60), pose(9.6, 440, 750, 60, opacity=0.0), pose(10.0, 440, 750, 60, opacity=0.0)],
+    }, actions=[
+        action("sort", 7.5, 9.6, actor_id="peel", target="bin_b"),
+    ], bg="recycling_yard")
+
+    sc3 = scene(10.0, 15.0, {
+        "kid": [pose(10.0, 220, 810, 260), pose(15.0, 220, 810, 260, expression="happy")],
+        "bin_res": [pose(10.0, 340, 810, 230), pose(15.0, 340, 810, 230)],
+        "batt": [pose(10.0, 140, 750, 80), pose(13.0, 340, 720, 80), pose(13.5, 340, 750, 80, opacity=0.0), pose(15.0, 340, 750, 80, opacity=0.0)],
+    }, actions=[
+        action("sort", 11.0, 13.5, actor_id="batt", target="bin_res"),
+    ], bg="recycling_yard")
+
+    story = {
+        "id": "recycling_sort",
+        "name": "18 · Phân loại rác: Chibi thực hành bỏ rác đúng thùng và sửa lỗi nhầm",
+        "renderer": RENDERER,
+        "fidelity": "technical-demo",
+        "note": "Mẫu kỹ thuật Phase K: Chibi phân loại chai nhựa, báo cũ, vỏ chuối và pin cũ vào đúng thùng rác theo quy định bảo vệ môi trường.",
+        "duration": 15.0,
+        "characters": [
+            actor("kid", "chibi_kid"),
+            actor("bin_p", "bin_plastic"),
+            actor("bin_pap", "bin_paper"),
+            actor("bin_g", "bin_glass"),
+            actor("bin_b", "bin_bio"),
+            actor("bin_res", "bin_residual"),
+            actor("bottle", "plastic_bottle"),
+            actor("news", "newspaper_bundle"),
+            actor("peel", "banana_peel"),
+            actor("batt", "battery"),
+        ],
+        "scenes": [sc1, sc2, sc3],
+        "cues": [
+            {"start": 0.5, "end": 4.5, "character_id": "kid", "text": "Chai nhựa bỏ vào thùng nhựa, giấy báo cũ bỏ vào thùng giấy tái chế nhé!", "expression": "happy"},
+            {"start": 5.5, "end": 9.5, "character_id": "kid", "text": "Khoan đã, vỏ chuối là rác hữu cơ, không được bỏ vào thùng thuỷ tinh!", "expression": "surprised"},
+            {"start": 10.5, "end": 14.5, "character_id": "kid", "text": "Pin cũ chứa hoá chất cần thu gom xử lý riêng biệt để bảo vệ môi trường!", "expression": "happy"},
+        ],
+    }
+    for index, item in enumerate(story["scenes"]):
+        item["index"] = index
+    validate_story(story)
+    return [story]
+
+
+def bottle_journey_examples():
+    """Mẫu kỹ thuật Phase K: Hành trình tái sinh của chai nhựa qua xe rác và nhà máy."""
+    cat = catalog()
+
+    def actor(cid, asset, **extra):
+        lbl = cat["assets"][asset].get("label") or cat["assets"][asset].get("spec", {}).get("label") or asset
+        return {"id": cid, "name": lbl, "asset": asset, **extra}
+
+    def pose(t, x, y, h, **extra):
+        return {"time": t, "x": x, "y": y, "height": h, **extra}
+
+    def scene(start, end, poses, actions=(), bg="street", **extra):
+        return {
+            "renderer": RENDERER,
+            "kind": "scene",
+            "start_time": start,
+            "end_time": end,
+            "characters_present": list(poses),
+            "poses": poses,
+            "actions": list(actions),
+            "background": {"preset": bg, **extra},
+        }
+
+    def action(kind, start, end, target=None, actor_id=None, **extra):
+        return {"type": kind, "start": start, "end": end, **({"target": target} if target else {}), **({"actor": actor_id} if actor_id else {}), **extra}
+
+    sc1 = scene(0, 5.0, {
+        "truck": [pose(0, 100, 810, 180), pose(2.5, 300, 810, 180), pose(5.0, 500, 810, 180)],
+        "bottle": [pose(0, 260, 810, 42), pose(2.5, 360, 770, 42, squish=0.8), pose(3.0, 360, 770, 42, opacity=0.0), pose(5.0, 360, 770, 42, opacity=0.0)],
+    }, actions=[
+        action("drive", 0, 5.0, actor_id="truck"),
+    ], bg="street")
+
+    sc2 = scene(5.0, 10.0, {
+        "plant": [pose(5.0, 400, 810, 240), pose(10.0, 400, 810, 240)],
+        "truck": [pose(5.0, 150, 810, 180), pose(10.0, 250, 810, 180)],
+        "bottle": [pose(5.0, 150, 780, 42, opacity=0.0), pose(7.5, 250, 760, 42, opacity=1.0), pose(10.0, 350, 780, 42)],
+    }, actions=[
+        action("drive", 5.0, 10.0, actor_id="truck"),
+    ], bg="recycling_yard")
+
+    sc3 = scene(10.0, 15.0, {
+        "plant": [pose(10.0, 288, 810, 260, cutaway=1.0), pose(15.0, 288, 810, 260, cutaway=1.0)],
+        "bottle": [pose(10.0, 200, 740, 42), pose(12.5, 288, 740, 42, slice=1.0), pose(15.0, 360, 740, 42, growth=1.0)],
+    }, bg="recycling_yard")
+
+    story = {
+        "id": "bottle_journey",
+        "name": "19 · Hành trình tái sinh: Chai nhựa qua xe rác và nhà máy biến thành sản phẩm mới",
+        "renderer": RENDERER,
+        "fidelity": "technical-demo",
+        "note": "Mẫu kỹ thuật Phase K: Chai nhựa được xe chở rác thu gom, đưa đến nhà máy tái chế và chuyển hoá qua băng chuyền.",
+        "duration": 15.0,
+        "characters": [
+            actor("truck", "garbage_truck"),
+            actor("bottle", "plastic_bottle"),
+            actor("plant", "recycling_plant"),
+        ],
+        "scenes": [sc1, sc2, sc3],
+        "cues": [
+            {"start": 0.5, "end": 4.5, "character_id": "truck", "text": "Xe chở rác chuyên dụng thu gom chai nhựa đã qua sử dụng trên các tuyến phố.", "expression": "neutral"},
+            {"start": 5.5, "end": 9.5, "character_id": "plant", "text": "Rác tái chế được tập kết tại bãi trung chuyển của nhà máy hiện đại.", "expression": "happy"},
+            {"start": 10.5, "end": 14.5, "character_id": "bottle", "text": "Qua hệ thống băng chuyền xử lý, chai nhựa được băm nhỏ và tái sinh thành đồ dùng mới!", "expression": "happy"},
+        ],
+    }
+    for index, item in enumerate(story["scenes"]):
+        item["index"] = index
+    validate_story(story)
+    return [story]
+
+
+def crossing_street_examples():
+    """Mẫu kỹ thuật Phase L: Giao thông an toàn, chờ đèn tín hiệu và qua đường."""
+    cat = catalog()
+
+    def actor(cid, asset, **extra):
+        lbl = cat["assets"][asset].get("label") or cat["assets"][asset].get("spec", {}).get("label") or asset
+        return {"id": cid, "name": lbl, "asset": asset, **extra}
+
+    def pose(t, x, y, h, **extra):
+        return {"time": t, "x": x, "y": y, "height": h, **extra}
+
+    def scene(start, end, poses, actions=(), bg="street", **extra):
+        return {
+            "renderer": RENDERER,
+            "kind": "scene",
+            "start_time": start,
+            "end_time": end,
+            "characters_present": list(poses),
+            "poses": poses,
+            "actions": list(actions),
+            "background": {"preset": bg, **extra},
+        }
+
+    def action(kind, start, end, target=None, actor_id=None, **extra):
+        return {"type": kind, "start": start, "end": end, **({"target": target} if target else {}), **({"actor": actor_id} if actor_id else {}), **extra}
+
+    sc1 = scene(0, 5.0, {
+        "kid": [pose(0, 140, 810, 260, outfit="hi_vis_vest"), pose(2.5, 140, 810, 260, outfit="hi_vis_vest"), pose(5.0, 140, 810, 260, outfit="hi_vis_vest")],
+        "light": [pose(0, 520, 810, 135, light="red"), pose(5.0, 520, 810, 135, light="red")],
+        "zebra": [pose(0, 310, 810, 42), pose(5.0, 310, 810, 42)],
+        "cone": [pose(0, 210, 810, 48), pose(5.0, 210, 810, 48)],
+    }, actions=[
+        action("wait_signal", 0.5, 4.5, actor_id="kid", target="light", locale="jp"),
+    ], bg="street")
+
+    sc2 = scene(5.0, 10.0, {
+        "kid": [pose(5.0, 140, 810, 260, outfit="hi_vis_vest"), pose(7.5, 310, 810, 260, outfit="hi_vis_vest", hand_r_y=-65, expression="happy"), pose(10.0, 390, 810, 260, outfit="hi_vis_vest", hand_r_y=-65, expression="happy")],
+        "light": [pose(5.0, 520, 810, 135, light="green"), pose(10.0, 520, 810, 135, light="green")],
+        "zebra": [pose(5.0, 310, 810, 42), pose(10.0, 310, 810, 42)],
+        "cone": [pose(5.0, 210, 810, 48), pose(10.0, 210, 810, 48)],
+    }, actions=[
+        action("wait_signal", 5.0, 8.5, actor_id="kid", target="light", locale="jp"),
+    ], bg="street")
+
+    sc3 = scene(10.0, 15.0, {
+        "kid": [pose(10.0, 390, 810, 260, outfit="hi_vis_vest", expression="happy"), pose(15.0, 390, 810, 260, outfit="hi_vis_vest", expression="happy")],
+        "light": [pose(10.0, 520, 810, 135, light="green"), pose(15.0, 520, 810, 135, light="green")],
+        "zebra": [pose(10.0, 310, 810, 42), pose(15.0, 310, 810, 42)],
+        "cone": [pose(10.0, 210, 810, 48), pose(15.0, 210, 810, 48)],
+    }, bg="street")
+
+    story = {
+        "id": "crossing_street",
+        "name": "19 · Giao thông an toàn: Chibi quan sát đèn tín hiệu và qua đường an toàn",
+        "renderer": RENDERER,
+        "fidelity": "technical-demo",
+        "note": "Mẫu kỹ thuật Phase L: Chibi mặc áo phản quang, quan sát đèn tín hiệu giao thông, giơ tay qua đường theo quy tắc an toàn.",
+        "duration": 15.0,
+        "characters": [
+            actor("kid", "chibi_kid"),
+            actor("light", "traffic_light"),
+            actor("zebra", "crosswalk"),
+            actor("cone", "traffic_cone"),
+        ],
+        "scenes": [sc1, sc2, sc3],
+        "cues": [
+            {"start": 0.5, "end": 4.5, "character_id": "kid", "text": "Đèn đỏ phải dừng lại quan sát hai bên đường thật cẩn thận nhé!", "expression": "neutral"},
+            {"start": 5.5, "end": 9.5, "character_id": "kid", "text": "Đèn xanh đã bật, giơ tay cao xin đường và bước đều qua vạch sang đường!", "expression": "happy"},
+            {"start": 10.5, "end": 14.5, "character_id": "kid", "text": "Đã qua đường an toàn rồi, luôn tuân thủ luật an toàn giao thông!", "expression": "happy"},
+        ],
+    }
+    for index, item in enumerate(story["scenes"]):
+        item["index"] = index
+    validate_story(story)
+    return [story]
+
+
+def disaster_safety_examples():
+    """Mẫu kỹ thuật Phase L: Diễn tập thoát hiểm khói cháy và phòng chống thiên tai."""
+    cat = catalog()
+
+    def actor(cid, asset, **extra):
+        lbl = cat["assets"][asset].get("label") or cat["assets"][asset].get("spec", {}).get("label") or asset
+        return {"id": cid, "name": lbl, "asset": asset, **extra}
+
+    def pose(t, x, y, h, **extra):
+        return {"time": t, "x": x, "y": y, "height": h, **extra}
+
+    def scene(start, end, poses, actions=(), bg="interior", **extra):
+        return {
+            "renderer": RENDERER,
+            "kind": "scene",
+            "start_time": start,
+            "end_time": end,
+            "characters_present": list(poses),
+            "poses": poses,
+            "actions": list(actions),
+            "background": {"preset": bg, **extra},
+        }
+
+    def action(kind, start, end, target=None, actor_id=None, **extra):
+        return {"type": kind, "start": start, "end": end, **({"target": target} if target else {}), **({"actor": actor_id} if actor_id else {}), **extra}
+
+    sc1 = scene(0, 5.0, {
+        "kid": [pose(0, 140, 810, 260, sit=1.0, lean=0.6, expression="worried"), pose(2.5, 240, 810, 260, sit=1.0, lean=0.6, expression="worried"), pose(5.0, 340, 810, 260, sit=1.0, lean=0.6, expression="neutral")],
+        "detector": [pose(0, 280, 640, 32, alarm=True), pose(5.0, 280, 640, 32, alarm=True)],
+        "blanket": [pose(0, 480, 750, 48), pose(5.0, 480, 750, 48)],
+    }, actions=[
+        action("crawl_low", 0.5, 4.5, actor_id="kid", target="blanket"),
+    ], bg="interior")
+
+    sc2 = scene(5.0, 10.0, {
+        "kid": [pose(5.0, 200, 810, 200, outfit="bosai_zukin", expression="worried"), pose(10.0, 200, 810, 200, outfit="bosai_zukin", expression="neutral")],
+        "table": [pose(5.0, 300, 810, 360, z=2), pose(10.0, 300, 810, 360, z=2)],
+        "bag": [pose(5.0, 160, 810, 50), pose(10.0, 160, 810, 50)],
+        "radio_rig": [pose(5.0, 120, 810, 45), pose(10.0, 120, 810, 45)],
+    }, actions=[
+        action("take_cover", 5.0, 9.5, actor_id="kid", target="table"),
+    ], bg="interior", quake=0.8)
+
+    sc3 = scene(10.0, 15.0, {
+        "kid": [pose(10.0, 160, 810, 260, outfit="life_vest", expression="happy"), pose(15.0, 160, 810, 260, outfit="life_vest", expression="happy")],
+        "sand": [pose(10.0, 340, 810, 25, count=3), pose(15.0, 340, 810, 25, count=3)],
+        "buoy": [pose(10.0, 460, 810, 55), pose(15.0, 460, 810, 55)],
+        "radio_rig": [pose(10.0, 240, 810, 45), pose(15.0, 240, 810, 45)],
+    }, bg="street", weather="rain", flood=0.45)
+
+    story = {
+        "id": "disaster_safety",
+        "name": "20 · Phòng chống thiên tai: Thoát hiểm hỏa hoạn, động đất và chuẩn bị bão lũ",
+        "renderer": RENDERER,
+        "fidelity": "technical-demo",
+        "note": "Mẫu kỹ thuật Phase L: Diễn tập bò thấp người thoát hiểm khói, chui gầm bàn chống động đất và đắp bao cát chuẩn bị ứng phó bão lũ.",
+        "duration": 15.0,
+        "characters": [
+            actor("kid", "chibi_kid"),
+            actor("detector", "smoke_detector"),
+            actor("blanket", "fire_blanket"),
+            actor("table", "desk"),
+            actor("bag", "emergency_backpack"),
+            actor("radio_rig", "radio"),
+            actor("sand", "sandbag"),
+            actor("buoy", "rescue_buoy"),
+        ],
+        "scenes": [sc1, sc2, sc3],
+        "cues": [
+            {"start": 0.5, "end": 4.5, "character_id": "kid", "text": "Chuông báo khói kêu vang, mau lấy khăn bịt mũi miệng và bò thấp người thoát hiểm!", "expression": "worried"},
+            {"start": 5.5, "end": 9.5, "character_id": "kid", "text": "Động đất rung lắc, đội mũ bảo hộ và chui ngay xuống gầm bàn kiên cố che đầu gáy!", "expression": "neutral"},
+            {"start": 10.5, "end": 14.5, "character_id": "kid", "text": "Khi bão lũ tới, xếp bao cát chắn nước ngập, mặc áo phao và bật đài radio theo dõi tin tức!", "expression": "happy"},
+        ],
+    }
+    for index, item in enumerate(story["scenes"]):
+        item["index"] = index
+    validate_story(story)
+    return [story]
+
+
+
+def auto_frame(story: dict, max_zoom: float = 2.0) -> dict:
+    """Đặt camera tĩnh cho mỗi cảnh chưa có camera để nhóm nhân vật nhỏ (tế bào, vi khuẩn) chiếm ~85% bề ngang.
+
+    Khung bao lấy từ mọi keyframe (x ± 0.45·height, y − height … y) của nhân vật không gắn attach_to; mặt đất
+    (đáy khung bao) nằm ở 78% chiều cao màn hình, phụ đề vẽ ngoài camera nên không bị zoom. Camera bị kẹp
+    trong khung 576×1024 để không lộ mép hình nền. Cảnh không cần phóng (zoom < 1.05) giữ nguyên.
+    """
+    W, H = 576, 1024
+    attached = {c["id"] for c in story["characters"] if c.get("attach_to")}
+    for scene in story["scenes"]:
+        if scene.get("camera") or scene.get("kind") == "title":
+            continue
+        boxes = [(k["x"] - 0.45 * k["height"], k["y"] - k["height"], k["x"] + 0.45 * k["height"], k["y"])
+                 for cid, keys in scene.get("poses", {}).items() if cid not in attached for k in keys]
+        if not boxes:
+            continue
+        x0, y0 = min(b[0] for b in boxes), min(b[1] for b in boxes)
+        x1, y1 = max(b[2] for b in boxes), max(b[3] for b in boxes)
+        zoom = min(max_zoom, 0.86 * W / max(1.0, x1 - x0), 0.62 * H / max(1.0, y1 - y0))
+        if zoom < 1.05:
+            continue
+        cx = min(max((x0 + x1) / 2, W / 2 / zoom), W - W / 2 / zoom)
+        cy = min(max(y1 - (0.78 * H - H / 2) / zoom, H / 2 / zoom), H - H / 2 / zoom)
+        scene["camera"] = [{"time": scene["start_time"], "x": round(cx, 2), "y": round(cy, 2), "zoom": round(zoom, 3)}]
+    return story
+
 def sample_stories():
-    """Every sample the library ships: farm stories, articulated hands, IK, fishing, sea monsters, orchard harvest, trellis, highland, vegetable cutaway, safe spraying, giant radish, handwashing, doctor visit, tooth care, and nutrition."""
-    return examples() + agriculture_examples() + farm_life_examples() + farm_animals_examples() + articulation_examples() + ik_examples() + fishing_examples() + monster_examples() + orchard_harvest_examples() + trellis_examples() + highland_examples() + vegetable_cutaway_examples() + safe_spraying_examples() + giant_radish_examples() + handwashing_examples() + doctor_visit_examples() + tooth_examples() + nutrition_examples()
+    """Every sample the library ships: farm stories, articulated hands, IK, fishing, sea monsters, orchard harvest, trellis, highland, vegetable cutaway, safe spraying, giant radish, handwashing, doctor visit, tooth care, nutrition, Phase I body world, Phase K recycling, and Phase L safety stories."""
+    return (
+        examples() + agriculture_examples() + farm_life_examples() + farm_animals_examples() +
+        articulation_examples() + ik_examples() + fishing_examples() + monster_examples() +
+        orchard_harvest_examples() + trellis_examples() + highland_examples() +
+        vegetable_cutaway_examples() + safe_spraying_examples() + giant_radish_examples() +
+        handwashing_examples() + doctor_visit_examples() + tooth_examples() + nutrition_examples() +
+        scrape_battle_examples() + virus_invasion_examples() + vaccine_training_examples() +
+        body_tour_examples() + gut_team_examples() + cavity_examples() + allergy_examples() +
+        recycling_sort_examples() + bottle_journey_examples() +
+        crossing_street_examples() + disaster_safety_examples()
+    )
 
 
 def showreel():

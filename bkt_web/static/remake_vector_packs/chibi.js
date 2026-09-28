@@ -193,6 +193,13 @@
   // HÀM VẼ TỔNG HỢP NHÂN VẬT CHIBI: drawChibi()
   // =========================================================================
 
+  // Khung dáng chibi dùng chung cho thân và lớp vẽ sau mặt (overlay): nhún khi đi, ngồi, nhảy.
+  function chibiFrame(s) {
+    const walk = s.walk || 0, stride = s.stride || 0, sit = s.sit || 0, jump = s.jump || 0;
+    const bobY = Math.abs(Math.sin(stride)) * 2.5 * walk - jump * 26 + sit * 8;
+    return { bobY, lean: (s.lean || 0) * 12, headY: -68 - bobY };
+  }
+
   function drawChibi(ctx, s, t, spec, cat) {
     const skin = (s.style && s.style.skin) || spec.skin || '#ffe0bd';
     const hairCol = (s.style && s.style.hair) || spec.hairColor || '#2e1c12';
@@ -204,13 +211,8 @@
     const walk = s.walk || 0;
     const stride = s.stride || 0;
     const sit = s.sit || 0;
-    const lie = s.lie || 0;
-    const lean = (s.lean || 0) * 12;
-    const jump = s.jump || 0;
     const wind = s.wind || 0;
-
-    // Bobbing nhún đầu và thân khi bước đi
-    const bobY = Math.abs(Math.sin(stride)) * 2.5 * walk - jump * 26 + sit * 8;
+    const { bobY, lean, headY } = chibiFrame(s);
     const legSwing = Math.sin(stride) * 16 * walk;
 
     ctx.save();
@@ -222,21 +224,42 @@
     const legLeftX = -8 + (sit > 0 ? -6 : legSwing * 0.5);
     const legRightX = 8 + (sit > 0 ? 6 : -legSwing * 0.5);
 
-    // Ống quần / chân trái & phải
-    taper(ctx, -7, -22 - bobY * 0.5, legLeftX, footLeftY - 5, 5.5, 4.5, pantsCol, INK, 1.4);
-    taper(ctx, 7, -22 - bobY * 0.5, legRightX, footRightY - 5, 5.5, 4.5, pantsCol, INK, 1.4);
-
-    // Giày tròn mập mạp kiểu Chibi
-    ellipse(ctx, legLeftX, footLeftY - 2, 6.2, 4.2, shoesCol, INK, 1.4);
-    ellipse(ctx, legRightX, footRightY - 2, 6.2, 4.2, shoesCol, INK, 1.4);
-    // Đế giày sáng nhẹ
-    ellipse(ctx, legLeftX, footLeftY, 5.8, 1.6, tone(shoesCol, 0.2), null);
-    ellipse(ctx, legRightX, footRightY, 5.8, 1.6, tone(shoesCol, 0.2), null);
-
-    // 2. THÂN & ÁO (y từ -46 đến -22)
     const torsoTopY = -46 - bobY;
     const torsoBotY = -22 - bobY;
 
+    const skel = chibiSkeleton(s);
+    const shoulderL = [skel.shoulder_l[0], skel.shoulder_l[1] - bobY];
+    const shoulderR = [skel.shoulder_r[0], skel.shoulder_r[1] - bobY];
+    const elbowL = [skel.elbow_l[0], skel.elbow_l[1] - bobY];
+    const elbowR = [skel.elbow_r[0], skel.elbow_r[1] - bobY];
+    const handL = [skel.hand_l[0], skel.hand_l[1] - bobY];
+    const handR = [skel.hand_r[0], skel.hand_r[1] - bobY];
+
+    // Trang phục (gói outfits): mỗi mảnh thay đúng một lớp; không mặc gì thì các lệnh vẽ giữ nguyên như cũ.
+    const fit = RemakeVector.kit.resolveOutfit ? RemakeVector.kit.resolveOutfit(cat, s) : null;
+    const v = { t, bobY, hipY: -22 - bobY * 0.5, footLeftY, footRightY, legLeftX, legRightX, torsoTopY, torsoBotY, headY,
+      shoulderL, shoulderR, elbowL, elbowR, handL, handR, skin, hairCol, shirtCol, pantsCol, shoesCol, wind };
+    if (fit && fit.back && fit.back.behind) fit.back.behind(ctx, v);
+
+    if (fit && fit.bottom) fit.bottom.draw(ctx, v);
+    else {
+      // Ống quần / chân trái & phải
+      taper(ctx, -7, -22 - bobY * 0.5, legLeftX, footLeftY - 5, 5.5, 4.5, pantsCol, INK, 1.4);
+      taper(ctx, 7, -22 - bobY * 0.5, legRightX, footRightY - 5, 5.5, 4.5, pantsCol, INK, 1.4);
+    }
+
+    if (fit && fit.shoes) fit.shoes.draw(ctx, v);
+    else {
+      // Giày tròn mập mạp kiểu Chibi
+      ellipse(ctx, legLeftX, footLeftY - 2, 6.2, 4.2, shoesCol, INK, 1.4);
+      ellipse(ctx, legRightX, footRightY - 2, 6.2, 4.2, shoesCol, INK, 1.4);
+      // Đế giày sáng nhẹ
+      ellipse(ctx, legLeftX, footLeftY, 5.8, 1.6, tone(shoesCol, 0.2), null);
+      ellipse(ctx, legRightX, footRightY, 5.8, 1.6, tone(shoesCol, 0.2), null);
+    }
+
+    if (fit && fit.top) fit.top.draw(ctx, v);
+    else {
     // Thân tròn hình quả lê / bầu dục béo lùn
     ctx.save();
     path(ctx, `M -14 ${torsoTopY} Q -17 ${torsoBotY + 2} -11 ${torsoBotY} L 11 ${torsoBotY} Q 17 ${torsoBotY + 2} 14 ${torsoTopY} Z`, shirtCol, INK, 1.8);
@@ -275,16 +298,13 @@
       ellipse(ctx, 0, torsoTopY + 16, 3.0, 3.0, '#94a3b8', INK, 1.0);
     }
     ctx.restore();
+    }
+    if (fit && fit.chest) fit.chest(ctx, v);
+    if (fit && fit.back && fit.back.front) fit.back.front(ctx, v);
 
     // 3. TAY VÀ BÀN TAY (IK 2 đoạn hoặc vị trí pose)
-    const skel = chibiSkeleton(s);
-    const shoulderL = [skel.shoulder_l[0], skel.shoulder_l[1] - bobY];
-    const shoulderR = [skel.shoulder_r[0], skel.shoulder_r[1] - bobY];
-    const elbowL = [skel.elbow_l[0], skel.elbow_l[1] - bobY];
-    const elbowR = [skel.elbow_r[0], skel.elbow_r[1] - bobY];
-    const handL = [skel.hand_l[0], skel.hand_l[1] - bobY];
-    const handR = [skel.hand_r[0], skel.hand_r[1] - bobY];
-
+    if (fit && fit.top) fit.top.arms(ctx, v);
+    else {
     // Vẽ tay trái (phía sau hoặc bên)
     taper(ctx, shoulderL[0], shoulderL[1], elbowL[0], elbowL[1], 4.2, 3.8, shirtCol, INK, 1.4);
     taper(ctx, elbowL[0], elbowL[1], handL[0], handL[1], 3.8, 3.2, skin, INK, 1.4);
@@ -294,6 +314,7 @@
     taper(ctx, shoulderR[0], shoulderR[1], elbowR[0], elbowR[1], 4.2, 3.8, shirtCol, INK, 1.4);
     taper(ctx, elbowR[0], elbowR[1], handR[0], handR[1], 3.8, 3.2, skin, INK, 1.4);
     mitten(ctx, handR[0], handR[1], 4.2, skin, Math.atan2(handR[1] - elbowR[1], handR[0] - elbowR[0]));
+    }
 
     // Gậy chống của ông cụ
     if (spec.accessory === 'glasses_cane') {
@@ -302,8 +323,7 @@
     }
 
     // 4. ĐẦU & TÓC (y từ -88 đến -48, tâm đầu y ≈ -68)
-    const headY = -68 - bobY;
-
+    if (fit && fit.head && fit.head.behind) fit.head.behind(ctx, v);
     // Cổ ngắn
     taper(ctx, 0, -48 - bobY, 0, -56 - bobY, 4.5, 4.5, skin, null);
 
@@ -353,8 +373,10 @@
     }
     ctx.restore();
 
-    // 5. PHỤ KIỆN TRÊN ĐẦU
-    if (spec.accessory === 'nurse_cap') {
+    // 5. PHỤ KIỆN TRÊN ĐẦU (mũ của trang phục thay cho mũ riêng của nhân vật)
+    if (fit && fit.head) {
+      if (fit.head.front) fit.head.front(ctx, v);
+    } else if (spec.accessory === 'nurse_cap') {
       // Mũ y tá trắng có DẤU CỘNG XANH LÁ / XANH DƯƠNG (KHÔNG DÙNG CHỮ THẬP ĐỎ!)
       const capY = headY - 19;
       drawPoly(ctx, [[-12, capY + 4], [12, capY + 4], [8, capY - 6], [-8, capY - 6]], '#ffffff', INK, 1.2);
@@ -383,9 +405,10 @@
       }
       line(ctx, [[-13, toqueY], [13, toqueY]], INK, 1.4);
     }
+    if (fit && fit.headAcc) fit.headAcc(ctx, v);
 
-    // Kính mắt bà cụ / ông cụ
-    if (spec.accessory === 'glasses' || spec.accessory === 'glasses_cane') {
+    // Kính mắt bà cụ / ông cụ (giữ cả khi mặc trang phục: là nét riêng của nhân vật)
+    if ((spec.accessory === 'glasses' || spec.accessory === 'glasses_cane') && !(fit && fit.coversEyes)) {
       const eyeY = headY - 1;
       ellipse(ctx, -9, eyeY, 6.5, 6.5, 'rgba(255, 255, 255, 0.4)', '#94a3b8', 1.4);
       ellipse(ctx, 9, eyeY, 6.5, 6.5, 'rgba(255, 255, 255, 0.4)', '#94a3b8', 1.4);
@@ -394,6 +417,17 @@
       line(ctx, [[15.5, eyeY], [19, eyeY - 2]], '#94a3b8', 1.2);
     }
 
+    ctx.restore();
+  }
+
+  // Lớp vẽ sau khuôn mặt: kính, khẩu trang, kính lặn, kính mũ phi hành gia của trang phục.
+  function drawChibiOverlay(ctx, s, t, spec, cat) {
+    const fit = RemakeVector.kit.resolveOutfit ? RemakeVector.kit.resolveOutfit(cat, s) : null;
+    if (!fit || !fit.overlay) return;
+    const { lean, headY, bobY } = chibiFrame(s);
+    ctx.save();
+    if (lean) ctx.rotate(lean * Math.PI / 180);
+    fit.overlay(ctx, { t, headY, bobY, torsoTopY: -46 - bobY });
     ctx.restore();
   }
 
@@ -409,6 +443,9 @@
       spec,
       draw(ctx, s, t, cat, kit) {
         drawChibi(ctx, s, t, spec, cat);
+      },
+      overlay(ctx, s, t, cat) {
+        drawChibiOverlay(ctx, s, t, spec, cat);
       },
     };
   }

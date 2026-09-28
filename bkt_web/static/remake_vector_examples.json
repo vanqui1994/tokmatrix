@@ -7328,5 +7328,3413 @@
         "expression": "happy"
       }
     ]
+  },
+  {
+    "id": "scrape_battle",
+    "name": "11 · Trận chiến trầy xước: bảo vệ vết thương, bắt vi khuẩn và tiểu cầu vá da",
+    "renderer": "native-vector-v1",
+    "fidelity": "technical-demo",
+    "note": "Mẫu kỹ thuật Phase I: Vết xước ngoài da, bạch cầu trung tính net_trap, đại thực bào engulf, tế bào B shoot_antibody và tiểu cầu patch_wound làm lành da.",
+    "duration": 15.0,
+    "characters": [
+      {
+        "id": "patch",
+        "name": "Mảng da Chibi biểu bì",
+        "asset": "skin_patch"
+      },
+      {
+        "id": "germ",
+        "name": "Liên cầu khuẩn chuỗi",
+        "asset": "bacteria_chain"
+      },
+      {
+        "id": "cluster",
+        "name": "Tụ cầu khuẩn chùm",
+        "asset": "bacteria_cluster"
+      },
+      {
+        "id": "neutro",
+        "name": "Bạch cầu trung tính trinh sát",
+        "asset": "neutrophil_scout"
+      },
+      {
+        "id": "macro",
+        "name": "Đại thực bào đầu bếp",
+        "asset": "macrophage_chef"
+      },
+      {
+        "id": "archer",
+        "name": "Tế bào B xạ thủ",
+        "asset": "b_cell_archer"
+      },
+      {
+        "id": "platelet",
+        "name": "Tiểu cầu thợ xây",
+        "asset": "platelet_builder"
+      }
+    ],
+    "scenes": [
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 0,
+        "end_time": 5.0,
+        "characters_present": [
+          "patch",
+          "germ",
+          "neutro"
+        ],
+        "poses": {
+          "patch": [
+            {
+              "time": 0,
+              "x": 200,
+              "y": 810,
+              "height": 180,
+              "wound": 0.8
+            },
+            {
+              "time": 5.0,
+              "x": 200,
+              "y": 810,
+              "height": 180,
+              "wound": 0.8
+            }
+          ],
+          "germ": [
+            {
+              "time": 0,
+              "x": 420,
+              "y": 810,
+              "height": 120
+            },
+            {
+              "time": 2.0,
+              "x": 340,
+              "y": 810,
+              "height": 120
+            },
+            {
+              "time": 5.0,
+              "x": 340,
+              "y": 810,
+              "height": 120,
+              "stunned": 1.0
+            }
+          ],
+          "neutro": [
+            {
+              "time": 0,
+              "x": 100,
+              "y": 810,
+              "height": 140
+            },
+            {
+              "time": 2.0,
+              "x": 260,
+              "y": 810,
+              "height": 140
+            },
+            {
+              "time": 5.0,
+              "x": 260,
+              "y": 810,
+              "height": 140
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "charge",
+            "start": 0.5,
+            "end": 2.5,
+            "target": "germ",
+            "actor": "neutro"
+          },
+          {
+            "type": "net_trap",
+            "start": 2.2,
+            "end": 4.8,
+            "target": "germ",
+            "actor": "neutro"
+          }
+        ],
+        "background": {
+          "preset": "wound_site"
+        },
+        "index": 0,
+        "camera": [
+          {
+            "time": 0,
+            "x": 255.5,
+            "y": 557.06,
+            "zoom": 1.134
+          }
+        ]
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 5.0,
+        "end_time": 10.0,
+        "characters_present": [
+          "patch",
+          "germ",
+          "macro",
+          "archer",
+          "cluster"
+        ],
+        "poses": {
+          "patch": [
+            {
+              "time": 5.0,
+              "x": 200,
+              "y": 810,
+              "height": 180,
+              "wound": 0.8
+            },
+            {
+              "time": 10.0,
+              "x": 200,
+              "y": 810,
+              "height": 180,
+              "wound": 0.8
+            }
+          ],
+          "germ": [
+            {
+              "time": 5.0,
+              "x": 340,
+              "y": 810,
+              "height": 120,
+              "stunned": 1.0
+            },
+            {
+              "time": 7.5,
+              "x": 280,
+              "y": 780,
+              "height": 60,
+              "opacity": 0.3
+            },
+            {
+              "time": 10.0,
+              "x": 280,
+              "y": 780,
+              "height": 20,
+              "opacity": 0.0
+            }
+          ],
+          "macro": [
+            {
+              "time": 5.0,
+              "x": 240,
+              "y": 810,
+              "height": 170,
+              "engulf": 0.0
+            },
+            {
+              "time": 7.5,
+              "x": 280,
+              "y": 810,
+              "height": 170,
+              "engulf": 1.0
+            },
+            {
+              "time": 10.0,
+              "x": 280,
+              "y": 810,
+              "height": 170,
+              "engulf": 0.0
+            }
+          ],
+          "archer": [
+            {
+              "time": 5.0,
+              "x": 120,
+              "y": 810,
+              "height": 140
+            },
+            {
+              "time": 10.0,
+              "x": 120,
+              "y": 810,
+              "height": 140
+            }
+          ],
+          "cluster": [
+            {
+              "time": 5.0,
+              "x": 440,
+              "y": 810,
+              "height": 130
+            },
+            {
+              "time": 8.0,
+              "x": 440,
+              "y": 810,
+              "height": 130,
+              "tagged": 0.0
+            },
+            {
+              "time": 10.0,
+              "x": 440,
+              "y": 810,
+              "height": 130,
+              "tagged": 1.0
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "engulf",
+            "start": 5.5,
+            "end": 9.5,
+            "target": "germ",
+            "actor": "macro"
+          },
+          {
+            "type": "shoot_antibody",
+            "start": 6.5,
+            "end": 9.8,
+            "target": "cluster",
+            "actor": "archer"
+          }
+        ],
+        "background": {
+          "preset": "wound_site"
+        },
+        "index": 1,
+        "camera": [
+          {
+            "time": 5.0,
+            "x": 277.75,
+            "y": 554.45,
+            "zoom": 1.122
+          }
+        ]
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 10.0,
+        "end_time": 15.0,
+        "characters_present": [
+          "patch",
+          "platelet",
+          "macro"
+        ],
+        "poses": {
+          "patch": [
+            {
+              "time": 10.0,
+              "x": 200,
+              "y": 810,
+              "height": 180,
+              "wound": 0.8
+            },
+            {
+              "time": 13.5,
+              "x": 200,
+              "y": 810,
+              "height": 180,
+              "wound": 0.0
+            },
+            {
+              "time": 15.0,
+              "x": 200,
+              "y": 810,
+              "height": 180,
+              "wound": 0.0
+            }
+          ],
+          "platelet": [
+            {
+              "time": 10.0,
+              "x": 260,
+              "y": 810,
+              "height": 100
+            },
+            {
+              "time": 15.0,
+              "x": 260,
+              "y": 810,
+              "height": 100
+            }
+          ],
+          "macro": [
+            {
+              "time": 10.0,
+              "x": 380,
+              "y": 810,
+              "height": 170
+            },
+            {
+              "time": 15.0,
+              "x": 380,
+              "y": 810,
+              "height": 170,
+              "glow": 1.0
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "patch_wound",
+            "start": 10.5,
+            "end": 13.8,
+            "target": "patch",
+            "actor": "platelet"
+          },
+          {
+            "type": "victory",
+            "start": 13.8,
+            "end": 15.0,
+            "actor": "macro"
+          }
+        ],
+        "background": {
+          "preset": "wound_site"
+        },
+        "index": 2,
+        "camera": [
+          {
+            "time": 10.0,
+            "x": 287.75,
+            "y": 614.65,
+            "zoom": 1.468
+          }
+        ]
+      }
+    ],
+    "cues": [
+      {
+        "start": 0.5,
+        "end": 4.5,
+        "character_id": "neutro",
+        "text": "Có vết xước hở rồi, bạch cầu trung tính lập tức xông lên tung lưới chặn vi khuẩn!",
+        "expression": "neutral"
+      },
+      {
+        "start": 5.5,
+        "end": 9.5,
+        "character_id": "macro",
+        "text": "Đại thực bào dũng cảm nuốt trọn mầm bệnh và tế bào B bắn kháng thể đánh dấu!",
+        "expression": "neutral"
+      },
+      {
+        "start": 10.5,
+        "end": 14.5,
+        "character_id": "platelet",
+        "text": "Tiểu cầu kết mạng lưới làm lành vết thương, trả lại làn da mịn màng khoẻ mạnh!",
+        "expression": "happy"
+      }
+    ]
+  },
+  {
+    "id": "virus_invasion",
+    "name": "12 · Đột kích virus: T gây độc và sát thủ NK tiêu diệt tế bào nhiễm",
+    "renderer": "native-vector-v1",
+    "fidelity": "technical-demo",
+    "note": "Mẫu kỹ thuật Phase I: Virus xâm nhập tế bào hijack, hiệp sĩ T killer_t_knight strike_infected và não bộ brain_chibi điều chỉnh nhiệt kế bảo vệ cơ thể.",
+    "duration": 15.0,
+    "characters": [
+      {
+        "id": "virus",
+        "name": "Virus gai núm",
+        "asset": "virus_spike"
+      },
+      {
+        "id": "cell",
+        "name": "Tế bào bị nhiễm virus",
+        "asset": "infected_cell"
+      },
+      {
+        "id": "knight",
+        "name": "Hiệp sĩ T diệt khuẩn",
+        "asset": "killer_t_knight"
+      },
+      {
+        "id": "ninja",
+        "name": "Tế bào sát thủ tự nhiên NK",
+        "asset": "nk_ninja"
+      },
+      {
+        "id": "brain",
+        "name": "Bộ não Chibi",
+        "asset": "brain_chibi"
+      }
+    ],
+    "scenes": [
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 0,
+        "end_time": 5.0,
+        "characters_present": [
+          "virus",
+          "cell"
+        ],
+        "poses": {
+          "virus": [
+            {
+              "time": 0,
+              "x": 180,
+              "y": 810,
+              "height": 120
+            },
+            {
+              "time": 2.5,
+              "x": 280,
+              "y": 770,
+              "height": 100
+            },
+            {
+              "time": 5.0,
+              "x": 280,
+              "y": 770,
+              "height": 40,
+              "opacity": 0.0
+            }
+          ],
+          "cell": [
+            {
+              "time": 0,
+              "x": 340,
+              "y": 810,
+              "height": 150,
+              "infected": 0.2
+            },
+            {
+              "time": 3.0,
+              "x": 340,
+              "y": 810,
+              "height": 150,
+              "infected": 0.8
+            },
+            {
+              "time": 5.0,
+              "x": 340,
+              "y": 810,
+              "height": 150,
+              "infected": 1.0
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "hijack",
+            "start": 1.0,
+            "end": 4.5,
+            "target": "cell",
+            "actor": "virus"
+          }
+        ],
+        "background": {
+          "preset": "blood_vessel"
+        },
+        "index": 0,
+        "camera": [
+          {
+            "time": 0,
+            "x": 266.75,
+            "y": 647.06,
+            "zoom": 1.76
+          }
+        ]
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 5.0,
+        "end_time": 10.0,
+        "characters_present": [
+          "cell",
+          "knight",
+          "ninja"
+        ],
+        "poses": {
+          "cell": [
+            {
+              "time": 5.0,
+              "x": 340,
+              "y": 810,
+              "height": 150,
+              "infected": 1.0
+            },
+            {
+              "time": 8.5,
+              "x": 340,
+              "y": 810,
+              "height": 150,
+              "infected": 1.0,
+              "pop": 0.5
+            },
+            {
+              "time": 10.0,
+              "x": 340,
+              "y": 810,
+              "height": 150,
+              "infected": 1.0,
+              "pop": 1.0,
+              "opacity": 0.0
+            }
+          ],
+          "knight": [
+            {
+              "time": 5.0,
+              "x": 180,
+              "y": 810,
+              "height": 150
+            },
+            {
+              "time": 8.0,
+              "x": 260,
+              "y": 810,
+              "height": 150
+            },
+            {
+              "time": 10.0,
+              "x": 260,
+              "y": 810,
+              "height": 150
+            }
+          ],
+          "ninja": [
+            {
+              "time": 5.0,
+              "x": 440,
+              "y": 810,
+              "height": 140
+            },
+            {
+              "time": 10.0,
+              "x": 440,
+              "y": 810,
+              "height": 140
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "strike_infected",
+            "start": 6.0,
+            "end": 9.5,
+            "target": "cell",
+            "actor": "knight"
+          }
+        ],
+        "background": {
+          "preset": "blood_vessel"
+        },
+        "index": 1,
+        "camera": [
+          {
+            "time": 5.0,
+            "x": 307.75,
+            "y": 583.97,
+            "zoom": 1.269
+          }
+        ]
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 10.0,
+        "end_time": 15.0,
+        "characters_present": [
+          "brain"
+        ],
+        "poses": {
+          "brain": [
+            {
+              "time": 10.0,
+              "x": 288,
+              "y": 810,
+              "height": 180,
+              "think": 0.5
+            },
+            {
+              "time": 12.5,
+              "x": 288,
+              "y": 810,
+              "height": 180,
+              "think": 1.0,
+              "thermostat": 0.8
+            },
+            {
+              "time": 15.0,
+              "x": 288,
+              "y": 810,
+              "height": 180,
+              "think": 0.0,
+              "thermostat": 0.0,
+              "glow": 1.0
+            }
+          ]
+        },
+        "actions": [],
+        "background": {
+          "preset": "brain_hq"
+        },
+        "index": 2,
+        "camera": [
+          {
+            "time": 10.0,
+            "x": 288.0,
+            "y": 666.64,
+            "zoom": 2.0
+          }
+        ]
+      }
+    ],
+    "cues": [
+      {
+        "start": 0.5,
+        "end": 4.5,
+        "character_id": "virus",
+        "text": "Virus tìm cách bám vào tế bào và xâm nhập để biến nó thành ổ nhiễm bệnh!",
+        "expression": "neutral"
+      },
+      {
+        "start": 5.5,
+        "end": 9.5,
+        "character_id": "knight",
+        "text": "Hiệp sĩ T và ninja NK phối hợp chém trúng tế bào nhiễm, vô hiệu hoá virus!",
+        "expression": "neutral"
+      },
+      {
+        "start": 10.5,
+        "end": 14.5,
+        "character_id": "brain",
+        "text": "Não bộ điều chỉnh phản ứng sốt nhẹ hỗ trợ diệt khuẩn rồi nghỉ ngơi hồi phục hoàn toàn!",
+        "expression": "happy"
+      }
+    ]
+  },
+  {
+    "id": "vaccine_training",
+    "name": "13 · Trại tập luyện vaccine: tế bào nhớ học nhận diện mầm bệnh an toàn",
+    "renderer": "native-vector-v1",
+    "fidelity": "technical-demo",
+    "note": "Mẫu kỹ thuật Phase I: Tại training_camp, tế bào nhớ memory_cell_librarian remember học tập nhận diện kháng nguyên, giúp hệ miễn dịch phản ứng tức thì.",
+    "duration": 15.0,
+    "characters": [
+      {
+        "id": "librarian",
+        "name": "Tế bào nhớ thủ thư",
+        "asset": "memory_cell_librarian"
+      },
+      {
+        "id": "archer",
+        "name": "Tế bào B xạ thủ",
+        "asset": "b_cell_archer"
+      },
+      {
+        "id": "spore",
+        "name": "Bào tử vi nấm",
+        "asset": "fungus_spore"
+      },
+      {
+        "id": "captain",
+        "name": "Tế bào T chỉ huy",
+        "asset": "helper_t_captain"
+      }
+    ],
+    "scenes": [
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 0,
+        "end_time": 5.0,
+        "characters_present": [
+          "librarian",
+          "archer"
+        ],
+        "poses": {
+          "librarian": [
+            {
+              "time": 0,
+              "x": 220,
+              "y": 810,
+              "height": 150,
+              "glow": 0.2
+            },
+            {
+              "time": 5.0,
+              "x": 220,
+              "y": 810,
+              "height": 150,
+              "glow": 0.8
+            }
+          ],
+          "archer": [
+            {
+              "time": 0,
+              "x": 380,
+              "y": 810,
+              "height": 140
+            },
+            {
+              "time": 5.0,
+              "x": 380,
+              "y": 810,
+              "height": 140
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "remember",
+            "start": 0.8,
+            "end": 4.5,
+            "actor": "librarian"
+          }
+        ],
+        "background": {
+          "preset": "training_camp"
+        },
+        "index": 0,
+        "camera": [
+          {
+            "time": 0,
+            "x": 297.75,
+            "y": 641.86,
+            "zoom": 1.705
+          }
+        ]
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 5.0,
+        "end_time": 10.0,
+        "characters_present": [
+          "librarian",
+          "archer",
+          "spore"
+        ],
+        "poses": {
+          "librarian": [
+            {
+              "time": 5.0,
+              "x": 180,
+              "y": 810,
+              "height": 150
+            },
+            {
+              "time": 10.0,
+              "x": 180,
+              "y": 810,
+              "height": 150
+            }
+          ],
+          "archer": [
+            {
+              "time": 5.0,
+              "x": 260,
+              "y": 810,
+              "height": 140
+            },
+            {
+              "time": 10.0,
+              "x": 260,
+              "y": 810,
+              "height": 140
+            }
+          ],
+          "spore": [
+            {
+              "time": 5.0,
+              "x": 420,
+              "y": 810,
+              "height": 120
+            },
+            {
+              "time": 8.0,
+              "x": 420,
+              "y": 810,
+              "height": 120,
+              "tagged": 0.0
+            },
+            {
+              "time": 10.0,
+              "x": 420,
+              "y": 810,
+              "height": 120,
+              "tagged": 1.0
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "shoot_antibody",
+            "start": 5.8,
+            "end": 9.5,
+            "target": "spore",
+            "actor": "archer"
+          }
+        ],
+        "background": {
+          "preset": "training_camp"
+        },
+        "index": 1,
+        "camera": [
+          {
+            "time": 5.0,
+            "x": 293.25,
+            "y": 600.76,
+            "zoom": 1.37
+          }
+        ]
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 10.0,
+        "end_time": 15.0,
+        "characters_present": [
+          "captain",
+          "archer"
+        ],
+        "poses": {
+          "captain": [
+            {
+              "time": 10.0,
+              "x": 220,
+              "y": 810,
+              "height": 150,
+              "glow": 0.0
+            },
+            {
+              "time": 12.0,
+              "x": 220,
+              "y": 810,
+              "height": 150,
+              "glow": 1.0
+            },
+            {
+              "time": 15.0,
+              "x": 220,
+              "y": 810,
+              "height": 150,
+              "glow": 1.0
+            }
+          ],
+          "archer": [
+            {
+              "time": 10.0,
+              "x": 360,
+              "y": 810,
+              "height": 140
+            },
+            {
+              "time": 15.0,
+              "x": 360,
+              "y": 810,
+              "height": 140,
+              "glow": 0.9
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "rally",
+            "start": 10.5,
+            "end": 13.5,
+            "target": "archer",
+            "actor": "captain"
+          },
+          {
+            "type": "victory",
+            "start": 13.5,
+            "end": 15.0,
+            "actor": "captain"
+          }
+        ],
+        "background": {
+          "preset": "lymph_node_base"
+        },
+        "index": 2,
+        "camera": [
+          {
+            "time": 10.0,
+            "x": 287.75,
+            "y": 653.43,
+            "zoom": 1.831
+          }
+        ]
+      }
+    ],
+    "cues": [
+      {
+        "start": 0.5,
+        "end": 4.5,
+        "character_id": "librarian",
+        "text": "Vaccine giúp thủ thư tế bào nhớ nhận diện trước hình ảnh mầm bệnh an toàn vào sổ tay!",
+        "expression": "happy"
+      },
+      {
+        "start": 5.5,
+        "end": 9.5,
+        "character_id": "archer",
+        "text": "Khi mầm bệnh thật xuất hiện, xạ thủ B lập tức bắn kháng thể chuẩn xác không một giây chậm trễ!",
+        "expression": "neutral"
+      },
+      {
+        "start": 10.5,
+        "end": 14.5,
+        "character_id": "captain",
+        "text": "Chỉ huy phát sóng tập hợp, toàn bộ cơ thể được bảo vệ an toàn tối đa!",
+        "expression": "happy"
+      }
+    ]
+  },
+  {
+    "id": "body_tour",
+    "name": "14 · Du hành cơ thể: X-quang khám phá các cơ quan hoạt động nhịp nhàng",
+    "renderer": "native-vector-v1",
+    "fidelity": "technical-demo",
+    "note": "Mẫu kỹ thuật Phase I: Khung X-quang body_xray soi sáng từng cơ quan trong cơ thể: tim đập, phổi thở, dạ dày tiêu hoá và não bộ chỉ huy.",
+    "duration": 16.0,
+    "characters": [
+      {
+        "id": "xray",
+        "name": "Khung X-quang cơ thể Chibi trong suốt",
+        "asset": "body_xray"
+      },
+      {
+        "id": "heart",
+        "name": "Trái tim Chibi",
+        "asset": "heart_chibi",
+        "attach_to": {
+          "id": "xray",
+          "anchor": "heart"
+        }
+      },
+      {
+        "id": "lungs",
+        "name": "Lá phổi Chibi",
+        "asset": "lungs_chibi",
+        "attach_to": {
+          "id": "xray",
+          "anchor": "lungs"
+        }
+      },
+      {
+        "id": "stomach",
+        "name": "Dạ dày Chibi",
+        "asset": "stomach_chibi",
+        "attach_to": {
+          "id": "xray",
+          "anchor": "stomach"
+        }
+      },
+      {
+        "id": "brain",
+        "name": "Bộ não Chibi",
+        "asset": "brain_chibi",
+        "attach_to": {
+          "id": "xray",
+          "anchor": "brain"
+        }
+      }
+    ],
+    "scenes": [
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 0,
+        "end_time": 4.0,
+        "characters_present": [
+          "xray",
+          "heart"
+        ],
+        "poses": {
+          "xray": [
+            {
+              "time": 0,
+              "x": 288,
+              "y": 810,
+              "height": 360,
+              "highlight": "heart"
+            },
+            {
+              "time": 4.0,
+              "x": 288,
+              "y": 810,
+              "height": 360,
+              "highlight": "heart"
+            }
+          ],
+          "heart": [
+            {
+              "time": 0,
+              "x": 310,
+              "y": 666,
+              "height": 70
+            },
+            {
+              "time": 4.0,
+              "x": 310,
+              "y": 666,
+              "height": 70
+            }
+          ]
+        },
+        "actions": [],
+        "background": {
+          "preset": "body_inside"
+        },
+        "index": 0,
+        "camera": [
+          {
+            "time": 0,
+            "x": 288.0,
+            "y": 622.47,
+            "zoom": 1.529
+          }
+        ]
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 4.0,
+        "end_time": 8.0,
+        "characters_present": [
+          "xray",
+          "lungs"
+        ],
+        "poses": {
+          "xray": [
+            {
+              "time": 4.0,
+              "x": 288,
+              "y": 810,
+              "height": 360,
+              "highlight": "lungs"
+            },
+            {
+              "time": 8.0,
+              "x": 288,
+              "y": 810,
+              "height": 360,
+              "highlight": "lungs"
+            }
+          ],
+          "lungs": [
+            {
+              "time": 4.0,
+              "x": 288,
+              "y": 658,
+              "height": 80
+            },
+            {
+              "time": 8.0,
+              "x": 288,
+              "y": 658,
+              "height": 80
+            }
+          ]
+        },
+        "actions": [],
+        "background": {
+          "preset": "body_inside"
+        },
+        "index": 1,
+        "camera": [
+          {
+            "time": 4.0,
+            "x": 288.0,
+            "y": 622.47,
+            "zoom": 1.529
+          }
+        ]
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 8.0,
+        "end_time": 12.0,
+        "characters_present": [
+          "xray",
+          "stomach"
+        ],
+        "poses": {
+          "xray": [
+            {
+              "time": 8.0,
+              "x": 288,
+              "y": 810,
+              "height": 360,
+              "highlight": "stomach"
+            },
+            {
+              "time": 12.0,
+              "x": 288,
+              "y": 810,
+              "height": 360,
+              "highlight": "stomach"
+            }
+          ],
+          "stomach": [
+            {
+              "time": 8.0,
+              "x": 310,
+              "y": 695,
+              "height": 75
+            },
+            {
+              "time": 12.0,
+              "x": 310,
+              "y": 695,
+              "height": 75
+            }
+          ]
+        },
+        "actions": [],
+        "background": {
+          "preset": "body_inside"
+        },
+        "index": 2,
+        "camera": [
+          {
+            "time": 8.0,
+            "x": 288.0,
+            "y": 622.47,
+            "zoom": 1.529
+          }
+        ]
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 12.0,
+        "end_time": 16.0,
+        "characters_present": [
+          "xray",
+          "brain"
+        ],
+        "poses": {
+          "xray": [
+            {
+              "time": 12.0,
+              "x": 288,
+              "y": 810,
+              "height": 360,
+              "highlight": "brain"
+            },
+            {
+              "time": 16.0,
+              "x": 288,
+              "y": 810,
+              "height": 360,
+              "highlight": "brain"
+            }
+          ],
+          "brain": [
+            {
+              "time": 12.0,
+              "x": 288,
+              "y": 529,
+              "height": 80
+            },
+            {
+              "time": 16.0,
+              "x": 288,
+              "y": 529,
+              "height": 80
+            }
+          ]
+        },
+        "actions": [],
+        "background": {
+          "preset": "body_inside"
+        },
+        "index": 3,
+        "camera": [
+          {
+            "time": 12.0,
+            "x": 288.0,
+            "y": 622.47,
+            "zoom": 1.529
+          }
+        ]
+      }
+    ],
+    "cues": [
+      {
+        "start": 0.5,
+        "end": 3.5,
+        "character_id": "heart",
+        "text": "Trái tim khoẻ mạnh đập nhịp nhàng bơm máu và dưỡng chất nuôi toàn thân!",
+        "expression": "happy"
+      },
+      {
+        "start": 4.5,
+        "end": 7.5,
+        "character_id": "lungs",
+        "text": "Hai lá phổi phồng xẹp hít thở không khí trong lành cung cấp oxy tươi mát!",
+        "expression": "happy"
+      },
+      {
+        "start": 8.5,
+        "end": 11.5,
+        "character_id": "stomach",
+        "text": "Dạ dày tiêu hoá thức ăn thành năng lượng nuôi dưỡng cơ thể tràn đầy sức sống!",
+        "expression": "happy"
+      },
+      {
+        "start": 12.5,
+        "end": 15.5,
+        "character_id": "brain",
+        "text": "Bộ não thông thái chỉ huy mọi giác quan và suy nghĩ điều tuyệt vời mỗi ngày!",
+        "expression": "happy"
+      }
+    ]
+  },
+  {
+    "id": "gut_team",
+    "name": "15 · Đội quân đường ruột: lợi khuẩn giữ chỗ và bảo vệ hệ tiêu hoá",
+    "renderer": "native-vector-v1",
+    "fidelity": "technical-demo",
+    "note": "Mẫu kỹ thuật Phase I: Tại intestine_town, lợi khuẩn good_bacteria đông đúc giữ chỗ và đẩy lùi vi khuẩn xấu bacteria_rod, giữ ruột êm khoẻ.",
+    "duration": 15.0,
+    "characters": [
+      {
+        "id": "good1",
+        "name": "Lợi khuẩn đường ruột",
+        "asset": "good_bacteria"
+      },
+      {
+        "id": "good2",
+        "name": "Lợi khuẩn đường ruột",
+        "asset": "good_bacteria"
+      },
+      {
+        "id": "bad",
+        "name": "Trực khuẩn que",
+        "asset": "bacteria_rod"
+      },
+      {
+        "id": "intestine",
+        "name": "Đường ruột Chibi",
+        "asset": "intestine_chibi"
+      }
+    ],
+    "scenes": [
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 0,
+        "end_time": 5.0,
+        "characters_present": [
+          "good1",
+          "good2"
+        ],
+        "poses": {
+          "good1": [
+            {
+              "time": 0,
+              "x": 200,
+              "y": 810,
+              "height": 140
+            },
+            {
+              "time": 5.0,
+              "x": 200,
+              "y": 810,
+              "height": 140
+            }
+          ],
+          "good2": [
+            {
+              "time": 0,
+              "x": 320,
+              "y": 810,
+              "height": 140
+            },
+            {
+              "time": 5.0,
+              "x": 320,
+              "y": 810,
+              "height": 140
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "patrol",
+            "start": 0.5,
+            "end": 4.5,
+            "actor": "good1"
+          },
+          {
+            "type": "patrol",
+            "start": 0.5,
+            "end": 4.5,
+            "actor": "good2"
+          }
+        ],
+        "background": {
+          "preset": "intestine_town"
+        },
+        "index": 0,
+        "camera": [
+          {
+            "time": 0,
+            "x": 260.0,
+            "y": 666.64,
+            "zoom": 2.0
+          }
+        ]
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 5.0,
+        "end_time": 10.0,
+        "characters_present": [
+          "good1",
+          "good2",
+          "bad"
+        ],
+        "poses": {
+          "good1": [
+            {
+              "time": 5.0,
+              "x": 200,
+              "y": 810,
+              "height": 140
+            },
+            {
+              "time": 10.0,
+              "x": 200,
+              "y": 810,
+              "height": 140
+            }
+          ],
+          "good2": [
+            {
+              "time": 5.0,
+              "x": 280,
+              "y": 810,
+              "height": 140
+            },
+            {
+              "time": 10.0,
+              "x": 280,
+              "y": 810,
+              "height": 140
+            }
+          ],
+          "bad": [
+            {
+              "time": 5.0,
+              "x": 460,
+              "y": 810,
+              "height": 130
+            },
+            {
+              "time": 7.5,
+              "x": 360,
+              "y": 810,
+              "height": 130
+            },
+            {
+              "time": 10.0,
+              "x": 420,
+              "y": 810,
+              "height": 130,
+              "stunned": 0.8
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "patrol",
+            "start": 5.5,
+            "end": 9.5,
+            "actor": "good2"
+          }
+        ],
+        "background": {
+          "preset": "intestine_town"
+        },
+        "index": 1,
+        "camera": [
+          {
+            "time": 5.0,
+            "x": 327.75,
+            "y": 589.18,
+            "zoom": 1.298
+          }
+        ]
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 10.0,
+        "end_time": 15.0,
+        "characters_present": [
+          "good1",
+          "good2",
+          "intestine"
+        ],
+        "poses": {
+          "good1": [
+            {
+              "time": 10.0,
+              "x": 220,
+              "y": 810,
+              "height": 140
+            },
+            {
+              "time": 15.0,
+              "x": 220,
+              "y": 810,
+              "height": 140,
+              "glow": 1.0
+            }
+          ],
+          "good2": [
+            {
+              "time": 10.0,
+              "x": 320,
+              "y": 810,
+              "height": 140
+            },
+            {
+              "time": 15.0,
+              "x": 320,
+              "y": 810,
+              "height": 140,
+              "glow": 1.0
+            }
+          ],
+          "intestine": [
+            {
+              "time": 10.0,
+              "x": 430,
+              "y": 810,
+              "height": 160
+            },
+            {
+              "time": 15.0,
+              "x": 430,
+              "y": 810,
+              "height": 160,
+              "glow": 0.8
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "victory",
+            "start": 11.0,
+            "end": 14.5,
+            "actor": "good1"
+          },
+          {
+            "type": "victory",
+            "start": 11.0,
+            "end": 14.5,
+            "actor": "good2"
+          }
+        ],
+        "background": {
+          "preset": "intestine_town"
+        },
+        "index": 2,
+        "camera": [
+          {
+            "time": 10.0,
+            "x": 329.5,
+            "y": 610.31,
+            "zoom": 1.436
+          }
+        ]
+      }
+    ],
+    "cues": [
+      {
+        "start": 0.5,
+        "end": 4.5,
+        "character_id": "good1",
+        "text": "Hàng triệu lợi khuẩn tí hon vui vẻ đi tuần bảo vệ từng ngọn đồi lông nhung đường ruột!",
+        "expression": "happy"
+      },
+      {
+        "start": 5.5,
+        "end": 9.5,
+        "character_id": "good2",
+        "text": "Khi vi khuẩn xấu mon men tới, đội quân lợi khuẩn xếp hàng vững chắc chặn lối!",
+        "expression": "neutral"
+      },
+      {
+        "start": 10.5,
+        "end": 14.5,
+        "character_id": "intestine",
+        "text": "Ăn nhiều rau xanh và sữa chua giúp bụng êm, tiêu hoá tốt và cơ thể khoẻ re!",
+        "expression": "happy"
+      }
+    ]
+  },
+  {
+    "id": "cavity_battle",
+    "name": "16 · Thám hiểm khoang miệng: ngăn chặn vi khuẩn sâu răng và mảng bám",
+    "renderer": "native-vector-v1",
+    "fidelity": "technical-demo",
+    "note": "Mẫu kỹ thuật Phase I: Trong mouth_cave, vi khuẩn sâu răng cavity_germ drill, lông chổi vệ sinh sweep mảng bám plaque_goo và răng tooth_chibi toả sáng sparkle.",
+    "duration": 15.0,
+    "characters": [
+      {
+        "id": "tooth",
+        "name": "Răng Chibi",
+        "asset": "tooth_chibi"
+      },
+      {
+        "id": "germ",
+        "name": "Vi khuẩn sâu răng máy khoan",
+        "asset": "cavity_germ"
+      },
+      {
+        "id": "cilia",
+        "name": "Lông mao quét bụi",
+        "asset": "cilia_sweeper"
+      },
+      {
+        "id": "goo",
+        "name": "Mảng bám răng nhầy",
+        "asset": "plaque_goo"
+      }
+    ],
+    "scenes": [
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 0,
+        "end_time": 5.0,
+        "characters_present": [
+          "tooth",
+          "germ"
+        ],
+        "poses": {
+          "tooth": [
+            {
+              "time": 0,
+              "x": 220,
+              "y": 810,
+              "height": 170,
+              "cavity": 0.2
+            },
+            {
+              "time": 3.0,
+              "x": 220,
+              "y": 810,
+              "height": 170,
+              "cavity": 0.6
+            },
+            {
+              "time": 5.0,
+              "x": 220,
+              "y": 810,
+              "height": 170,
+              "cavity": 0.9,
+              "tears": 0.5
+            }
+          ],
+          "germ": [
+            {
+              "time": 0,
+              "x": 380,
+              "y": 810,
+              "height": 120
+            },
+            {
+              "time": 2.0,
+              "x": 300,
+              "y": 810,
+              "height": 120
+            },
+            {
+              "time": 5.0,
+              "x": 300,
+              "y": 810,
+              "height": 120
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "drill",
+            "start": 1.5,
+            "end": 4.8,
+            "target": "tooth",
+            "actor": "germ"
+          }
+        ],
+        "background": {
+          "preset": "mouth_cave"
+        },
+        "index": 0,
+        "camera": [
+          {
+            "time": 0,
+            "x": 288.75,
+            "y": 641.86,
+            "zoom": 1.705
+          }
+        ]
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 5.0,
+        "end_time": 10.0,
+        "characters_present": [
+          "tooth",
+          "cilia",
+          "goo"
+        ],
+        "poses": {
+          "tooth": [
+            {
+              "time": 5.0,
+              "x": 220,
+              "y": 810,
+              "height": 170,
+              "cavity": 0.9
+            },
+            {
+              "time": 8.0,
+              "x": 220,
+              "y": 810,
+              "height": 170,
+              "cavity": 0.4
+            },
+            {
+              "time": 10.0,
+              "x": 220,
+              "y": 810,
+              "height": 170,
+              "cavity": 0.0
+            }
+          ],
+          "cilia": [
+            {
+              "time": 5.0,
+              "x": 380,
+              "y": 810,
+              "height": 140
+            },
+            {
+              "time": 10.0,
+              "x": 380,
+              "y": 810,
+              "height": 140
+            }
+          ],
+          "goo": [
+            {
+              "time": 5.0,
+              "x": 310,
+              "y": 810,
+              "height": 100
+            },
+            {
+              "time": 8.0,
+              "x": 420,
+              "y": 780,
+              "height": 100
+            },
+            {
+              "time": 10.0,
+              "x": 560,
+              "y": 740,
+              "height": 100,
+              "opacity": 0.0
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "sweep",
+            "start": 5.5,
+            "end": 9.5,
+            "target": "goo",
+            "actor": "cilia"
+          }
+        ],
+        "background": {
+          "preset": "mouth_cave"
+        },
+        "index": 1,
+        "camera": [
+          {
+            "time": 5.0,
+            "x": 307.69,
+            "y": 542.88,
+            "zoom": 1.073
+          }
+        ]
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 10.0,
+        "end_time": 15.0,
+        "characters_present": [
+          "tooth"
+        ],
+        "poses": {
+          "tooth": [
+            {
+              "time": 10.0,
+              "x": 288,
+              "y": 810,
+              "height": 170,
+              "cavity": 0.0,
+              "sparkle": 0.5
+            },
+            {
+              "time": 12.5,
+              "x": 288,
+              "y": 810,
+              "height": 170,
+              "cavity": 0.0,
+              "sparkle": 1.0
+            },
+            {
+              "time": 15.0,
+              "x": 288,
+              "y": 810,
+              "height": 170,
+              "cavity": 0.0,
+              "sparkle": 1.0,
+              "blush": 0.5
+            }
+          ]
+        },
+        "actions": [],
+        "background": {
+          "preset": "mouth_cave"
+        },
+        "index": 2,
+        "camera": [
+          {
+            "time": 10.0,
+            "x": 288.0,
+            "y": 666.64,
+            "zoom": 2.0
+          }
+        ]
+      }
+    ],
+    "cues": [
+      {
+        "start": 0.5,
+        "end": 4.5,
+        "character_id": "germ",
+        "text": "Vi khuẩn sâu răng cầm máy khoan tí hon đục khoét men răng làm răng đau nhức!",
+        "expression": "neutral"
+      },
+      {
+        "start": 5.5,
+        "end": 9.5,
+        "character_id": "cilia",
+        "text": "Chải răng đúng cách quét sạch mảng bám dính và đuổi sạch vi khuẩn sâu răng đi!",
+        "expression": "neutral"
+      },
+      {
+        "start": 10.5,
+        "end": 14.5,
+        "character_id": "tooth",
+        "text": "Răng xinh trắng muốt toả sáng lấp lánh nụ cười tự tin rạng rỡ!",
+        "expression": "happy"
+      }
+    ]
+  },
+  {
+    "id": "allergy_story",
+    "name": "17 · Câu chuyện dị ứng: dưỡng bào báo động nhầm với phấn hoa vô hại",
+    "renderer": "native-vector-v1",
+    "fidelity": "technical-demo",
+    "note": "Mẫu kỹ thuật Phase I: Hạt phấn hoa pollen_puff bay vào mũi nose_cave, dưỡng bào mast_cell_alarm rung chuông false_alarm khiến mũi hắt hơi đẩy phấn hoa ra ngoài.",
+    "duration": 15.0,
+    "characters": [
+      {
+        "id": "pollen",
+        "name": "Hạt phấn hoa tròn ngây thơ",
+        "asset": "pollen_puff"
+      },
+      {
+        "id": "mast",
+        "name": "Dưỡng bào báo động",
+        "asset": "mast_cell_alarm"
+      },
+      {
+        "id": "nose",
+        "name": "Chiếc mũi Chibi",
+        "asset": "nose_chibi"
+      }
+    ],
+    "scenes": [
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 0,
+        "end_time": 5.0,
+        "characters_present": [
+          "pollen",
+          "mast"
+        ],
+        "poses": {
+          "pollen": [
+            {
+              "time": 0,
+              "x": 420,
+              "y": 680,
+              "height": 100
+            },
+            {
+              "time": 2.5,
+              "x": 300,
+              "y": 720,
+              "height": 100
+            },
+            {
+              "time": 5.0,
+              "x": 240,
+              "y": 750,
+              "height": 100
+            }
+          ],
+          "mast": [
+            {
+              "time": 0,
+              "x": 160,
+              "y": 810,
+              "height": 140
+            },
+            {
+              "time": 5.0,
+              "x": 160,
+              "y": 810,
+              "height": 140
+            }
+          ]
+        },
+        "actions": [],
+        "background": {
+          "preset": "nose_cave"
+        },
+        "index": 0,
+        "camera": [
+          {
+            "time": 0,
+            "x": 281.0,
+            "y": 597.0,
+            "zoom": 1.346
+          }
+        ]
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 5.0,
+        "end_time": 10.0,
+        "characters_present": [
+          "pollen",
+          "mast"
+        ],
+        "poses": {
+          "pollen": [
+            {
+              "time": 5.0,
+              "x": 240,
+              "y": 750,
+              "height": 100
+            },
+            {
+              "time": 10.0,
+              "x": 240,
+              "y": 750,
+              "height": 100
+            }
+          ],
+          "mast": [
+            {
+              "time": 5.0,
+              "x": 160,
+              "y": 810,
+              "height": 140,
+              "alert": 0.0
+            },
+            {
+              "time": 7.5,
+              "x": 160,
+              "y": 810,
+              "height": 140,
+              "alert": 1.0
+            },
+            {
+              "time": 10.0,
+              "x": 160,
+              "y": 810,
+              "height": 140,
+              "alert": 1.0
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "false_alarm",
+            "start": 5.5,
+            "end": 9.5,
+            "target": "pollen",
+            "actor": "mast"
+          }
+        ],
+        "background": {
+          "preset": "nose_cave"
+        },
+        "index": 1,
+        "camera": [
+          {
+            "time": 5.0,
+            "x": 191.0,
+            "y": 666.64,
+            "zoom": 2.0
+          }
+        ]
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 10.0,
+        "end_time": 15.0,
+        "characters_present": [
+          "nose",
+          "pollen"
+        ],
+        "poses": {
+          "nose": [
+            {
+              "time": 10.0,
+              "x": 220,
+              "y": 810,
+              "height": 160,
+              "sneeze": 0.0
+            },
+            {
+              "time": 12.0,
+              "x": 220,
+              "y": 810,
+              "height": 160,
+              "sneeze": 1.0
+            },
+            {
+              "time": 15.0,
+              "x": 220,
+              "y": 810,
+              "height": 160,
+              "sneeze": 0.0,
+              "blush": 0.5
+            }
+          ],
+          "pollen": [
+            {
+              "time": 10.0,
+              "x": 280,
+              "y": 750,
+              "height": 100
+            },
+            {
+              "time": 12.5,
+              "x": 450,
+              "y": 620,
+              "height": 80
+            },
+            {
+              "time": 15.0,
+              "x": 560,
+              "y": 520,
+              "height": 60,
+              "opacity": 0.0
+            }
+          ]
+        },
+        "actions": [],
+        "background": {
+          "preset": "nose_cave"
+        },
+        "index": 2,
+        "camera": [
+          {
+            "time": 10.0,
+            "x": 320.77,
+            "y": 555.9,
+            "zoom": 1.128
+          }
+        ]
+      }
+    ],
+    "cues": [
+      {
+        "start": 0.5,
+        "end": 4.5,
+        "character_id": "pollen",
+        "text": "Hạt phấn hoa bay trong gió mùa xuân vô hại vô tình lạc vào khoang mũi.",
+        "expression": "neutral"
+      },
+      {
+        "start": 5.5,
+        "end": 9.5,
+        "character_id": "mast",
+        "text": "Dưỡng bào giật mình rung chuông báo động nhầm lẫn làm kích hoạt phản ứng ngứa mũi!",
+        "expression": "surprised"
+      },
+      {
+        "start": 10.5,
+        "end": 14.5,
+        "character_id": "nose",
+        "text": "Chiếc mũi hắt hơi một cái thật to, đẩy toàn bộ hạt phấn hoa ra ngoài an toàn!",
+        "expression": "happy"
+      }
+    ]
+  },
+  {
+    "id": "recycling_sort",
+    "name": "18 · Phân loại rác: Chibi thực hành bỏ rác đúng thùng và sửa lỗi nhầm",
+    "renderer": "native-vector-v1",
+    "fidelity": "technical-demo",
+    "note": "Mẫu kỹ thuật Phase K: Chibi phân loại chai nhựa, báo cũ, vỏ chuối và pin cũ vào đúng thùng rác theo quy định bảo vệ môi trường.",
+    "duration": 15.0,
+    "characters": [
+      {
+        "id": "kid",
+        "name": "Bé mầm non",
+        "asset": "chibi_kid"
+      },
+      {
+        "id": "bin_p",
+        "name": "Thùng rác nhựa/lon",
+        "asset": "bin_plastic"
+      },
+      {
+        "id": "bin_pap",
+        "name": "Thùng rác giấy",
+        "asset": "bin_paper"
+      },
+      {
+        "id": "bin_g",
+        "name": "Thùng rác thuỷ tinh",
+        "asset": "bin_glass"
+      },
+      {
+        "id": "bin_b",
+        "name": "Thùng rác hữu cơ",
+        "asset": "bin_bio"
+      },
+      {
+        "id": "bin_res",
+        "name": "Thùng rác vô cơ còn lại",
+        "asset": "bin_residual"
+      },
+      {
+        "id": "bottle",
+        "name": "Chai nhựa tái chế",
+        "asset": "plastic_bottle"
+      },
+      {
+        "id": "news",
+        "name": "Bó báo cũ tái chế",
+        "asset": "newspaper_bundle"
+      },
+      {
+        "id": "peel",
+        "name": "Vỏ chuối hữu cơ",
+        "asset": "banana_peel"
+      },
+      {
+        "id": "batt",
+        "name": "Pin cũ thu gom riêng",
+        "asset": "battery"
+      }
+    ],
+    "scenes": [
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 0,
+        "end_time": 5.0,
+        "characters_present": [
+          "kid",
+          "bin_p",
+          "bin_pap",
+          "bottle",
+          "news"
+        ],
+        "poses": {
+          "kid": [
+            {
+              "time": 0,
+              "x": 200,
+              "y": 810,
+              "height": 260
+            },
+            {
+              "time": 2.5,
+              "x": 200,
+              "y": 810,
+              "height": 260
+            },
+            {
+              "time": 5.0,
+              "x": 200,
+              "y": 810,
+              "height": 260
+            }
+          ],
+          "bin_p": [
+            {
+              "time": 0,
+              "x": 320,
+              "y": 810,
+              "height": 230
+            },
+            {
+              "time": 5.0,
+              "x": 320,
+              "y": 810,
+              "height": 230
+            }
+          ],
+          "bin_pap": [
+            {
+              "time": 0,
+              "x": 440,
+              "y": 810,
+              "height": 230
+            },
+            {
+              "time": 5.0,
+              "x": 440,
+              "y": 810,
+              "height": 230
+            }
+          ],
+          "bottle": [
+            {
+              "time": 0,
+              "x": 120,
+              "y": 750,
+              "height": 100
+            },
+            {
+              "time": 1.8,
+              "x": 320,
+              "y": 720,
+              "height": 100
+            },
+            {
+              "time": 2.2,
+              "x": 320,
+              "y": 750,
+              "height": 100,
+              "opacity": 0.0
+            },
+            {
+              "time": 5.0,
+              "x": 320,
+              "y": 750,
+              "height": 100,
+              "opacity": 0.0
+            }
+          ],
+          "news": [
+            {
+              "time": 0,
+              "x": 150,
+              "y": 750,
+              "height": 72
+            },
+            {
+              "time": 3.8,
+              "x": 440,
+              "y": 720,
+              "height": 72
+            },
+            {
+              "time": 4.2,
+              "x": 440,
+              "y": 750,
+              "height": 72,
+              "opacity": 0.0
+            },
+            {
+              "time": 5.0,
+              "x": 440,
+              "y": 750,
+              "height": 72,
+              "opacity": 0.0
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "sort",
+            "start": 0.5,
+            "end": 2.2,
+            "target": "bin_p",
+            "actor": "bottle"
+          },
+          {
+            "type": "sort",
+            "start": 2.5,
+            "end": 4.2,
+            "target": "bin_pap",
+            "actor": "news"
+          }
+        ],
+        "background": {
+          "preset": "recycling_yard"
+        },
+        "index": 0
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 5.0,
+        "end_time": 10.0,
+        "characters_present": [
+          "kid",
+          "bin_g",
+          "bin_b",
+          "peel"
+        ],
+        "poses": {
+          "kid": [
+            {
+              "time": 5.0,
+              "x": 200,
+              "y": 810,
+              "height": 260
+            },
+            {
+              "time": 7.0,
+              "x": 200,
+              "y": 810,
+              "height": 260,
+              "expression": "surprised"
+            },
+            {
+              "time": 10.0,
+              "x": 200,
+              "y": 810,
+              "height": 260,
+              "expression": "happy"
+            }
+          ],
+          "bin_g": [
+            {
+              "time": 5.0,
+              "x": 320,
+              "y": 810,
+              "height": 230
+            },
+            {
+              "time": 10.0,
+              "x": 320,
+              "y": 810,
+              "height": 230
+            }
+          ],
+          "bin_b": [
+            {
+              "time": 5.0,
+              "x": 440,
+              "y": 810,
+              "height": 230
+            },
+            {
+              "time": 10.0,
+              "x": 440,
+              "y": 810,
+              "height": 230
+            }
+          ],
+          "peel": [
+            {
+              "time": 5.0,
+              "x": 120,
+              "y": 750,
+              "height": 60
+            },
+            {
+              "time": 7.0,
+              "x": 280,
+              "y": 720,
+              "height": 60
+            },
+            {
+              "time": 9.2,
+              "x": 440,
+              "y": 720,
+              "height": 60
+            },
+            {
+              "time": 9.6,
+              "x": 440,
+              "y": 750,
+              "height": 60,
+              "opacity": 0.0
+            },
+            {
+              "time": 10.0,
+              "x": 440,
+              "y": 750,
+              "height": 60,
+              "opacity": 0.0
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "sort",
+            "start": 7.5,
+            "end": 9.6,
+            "target": "bin_b",
+            "actor": "peel"
+          }
+        ],
+        "background": {
+          "preset": "recycling_yard"
+        },
+        "index": 1
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 10.0,
+        "end_time": 15.0,
+        "characters_present": [
+          "kid",
+          "bin_res",
+          "batt"
+        ],
+        "poses": {
+          "kid": [
+            {
+              "time": 10.0,
+              "x": 220,
+              "y": 810,
+              "height": 260
+            },
+            {
+              "time": 15.0,
+              "x": 220,
+              "y": 810,
+              "height": 260,
+              "expression": "happy"
+            }
+          ],
+          "bin_res": [
+            {
+              "time": 10.0,
+              "x": 340,
+              "y": 810,
+              "height": 230
+            },
+            {
+              "time": 15.0,
+              "x": 340,
+              "y": 810,
+              "height": 230
+            }
+          ],
+          "batt": [
+            {
+              "time": 10.0,
+              "x": 140,
+              "y": 750,
+              "height": 80
+            },
+            {
+              "time": 13.0,
+              "x": 340,
+              "y": 720,
+              "height": 80
+            },
+            {
+              "time": 13.5,
+              "x": 340,
+              "y": 750,
+              "height": 80,
+              "opacity": 0.0
+            },
+            {
+              "time": 15.0,
+              "x": 340,
+              "y": 750,
+              "height": 80,
+              "opacity": 0.0
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "sort",
+            "start": 11.0,
+            "end": 13.5,
+            "target": "bin_res",
+            "actor": "batt"
+          }
+        ],
+        "background": {
+          "preset": "recycling_yard"
+        },
+        "index": 2
+      }
+    ],
+    "cues": [
+      {
+        "start": 0.5,
+        "end": 4.5,
+        "character_id": "kid",
+        "text": "Chai nhựa bỏ vào thùng nhựa, giấy báo cũ bỏ vào thùng giấy tái chế nhé!",
+        "expression": "happy"
+      },
+      {
+        "start": 5.5,
+        "end": 9.5,
+        "character_id": "kid",
+        "text": "Khoan đã, vỏ chuối là rác hữu cơ, không được bỏ vào thùng thuỷ tinh!",
+        "expression": "surprised"
+      },
+      {
+        "start": 10.5,
+        "end": 14.5,
+        "character_id": "kid",
+        "text": "Pin cũ chứa hoá chất cần thu gom xử lý riêng biệt để bảo vệ môi trường!",
+        "expression": "happy"
+      }
+    ]
+  },
+  {
+    "id": "bottle_journey",
+    "name": "19 · Hành trình tái sinh: Chai nhựa qua xe rác và nhà máy biến thành sản phẩm mới",
+    "renderer": "native-vector-v1",
+    "fidelity": "technical-demo",
+    "note": "Mẫu kỹ thuật Phase K: Chai nhựa được xe chở rác thu gom, đưa đến nhà máy tái chế và chuyển hoá qua băng chuyền.",
+    "duration": 15.0,
+    "characters": [
+      {
+        "id": "truck",
+        "name": "Xe chở rác",
+        "asset": "garbage_truck"
+      },
+      {
+        "id": "bottle",
+        "name": "Chai nhựa tái chế",
+        "asset": "plastic_bottle"
+      },
+      {
+        "id": "plant",
+        "name": "Nhà máy tái chế",
+        "asset": "recycling_plant"
+      }
+    ],
+    "scenes": [
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 0,
+        "end_time": 5.0,
+        "characters_present": [
+          "truck",
+          "bottle"
+        ],
+        "poses": {
+          "truck": [
+            {
+              "time": 0,
+              "x": 100,
+              "y": 810,
+              "height": 180
+            },
+            {
+              "time": 2.5,
+              "x": 300,
+              "y": 810,
+              "height": 180
+            },
+            {
+              "time": 5.0,
+              "x": 500,
+              "y": 810,
+              "height": 180
+            }
+          ],
+          "bottle": [
+            {
+              "time": 0,
+              "x": 260,
+              "y": 810,
+              "height": 42
+            },
+            {
+              "time": 2.5,
+              "x": 360,
+              "y": 770,
+              "height": 42,
+              "squish": 0.8
+            },
+            {
+              "time": 3.0,
+              "x": 360,
+              "y": 770,
+              "height": 42,
+              "opacity": 0.0
+            },
+            {
+              "time": 5.0,
+              "x": 360,
+              "y": 770,
+              "height": 42,
+              "opacity": 0.0
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "drive",
+            "start": 0,
+            "end": 5.0,
+            "actor": "truck"
+          }
+        ],
+        "background": {
+          "preset": "street"
+        },
+        "index": 0
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 5.0,
+        "end_time": 10.0,
+        "characters_present": [
+          "plant",
+          "truck",
+          "bottle"
+        ],
+        "poses": {
+          "plant": [
+            {
+              "time": 5.0,
+              "x": 400,
+              "y": 810,
+              "height": 240
+            },
+            {
+              "time": 10.0,
+              "x": 400,
+              "y": 810,
+              "height": 240
+            }
+          ],
+          "truck": [
+            {
+              "time": 5.0,
+              "x": 150,
+              "y": 810,
+              "height": 180
+            },
+            {
+              "time": 10.0,
+              "x": 250,
+              "y": 810,
+              "height": 180
+            }
+          ],
+          "bottle": [
+            {
+              "time": 5.0,
+              "x": 150,
+              "y": 780,
+              "height": 42,
+              "opacity": 0.0
+            },
+            {
+              "time": 7.5,
+              "x": 250,
+              "y": 760,
+              "height": 42,
+              "opacity": 1.0
+            },
+            {
+              "time": 10.0,
+              "x": 350,
+              "y": 780,
+              "height": 42
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "drive",
+            "start": 5.0,
+            "end": 10.0,
+            "actor": "truck"
+          }
+        ],
+        "background": {
+          "preset": "recycling_yard"
+        },
+        "index": 1
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 10.0,
+        "end_time": 15.0,
+        "characters_present": [
+          "plant",
+          "bottle"
+        ],
+        "poses": {
+          "plant": [
+            {
+              "time": 10.0,
+              "x": 288,
+              "y": 810,
+              "height": 260,
+              "cutaway": 1.0
+            },
+            {
+              "time": 15.0,
+              "x": 288,
+              "y": 810,
+              "height": 260,
+              "cutaway": 1.0
+            }
+          ],
+          "bottle": [
+            {
+              "time": 10.0,
+              "x": 200,
+              "y": 740,
+              "height": 42
+            },
+            {
+              "time": 12.5,
+              "x": 288,
+              "y": 740,
+              "height": 42,
+              "slice": 1.0
+            },
+            {
+              "time": 15.0,
+              "x": 360,
+              "y": 740,
+              "height": 42,
+              "growth": 1.0
+            }
+          ]
+        },
+        "actions": [],
+        "background": {
+          "preset": "recycling_yard"
+        },
+        "index": 2
+      }
+    ],
+    "cues": [
+      {
+        "start": 0.5,
+        "end": 4.5,
+        "character_id": "truck",
+        "text": "Xe chở rác chuyên dụng thu gom chai nhựa đã qua sử dụng trên các tuyến phố.",
+        "expression": "neutral"
+      },
+      {
+        "start": 5.5,
+        "end": 9.5,
+        "character_id": "plant",
+        "text": "Rác tái chế được tập kết tại bãi trung chuyển của nhà máy hiện đại.",
+        "expression": "happy"
+      },
+      {
+        "start": 10.5,
+        "end": 14.5,
+        "character_id": "bottle",
+        "text": "Qua hệ thống băng chuyền xử lý, chai nhựa được băm nhỏ và tái sinh thành đồ dùng mới!",
+        "expression": "happy"
+      }
+    ]
+  },
+  {
+    "id": "crossing_street",
+    "name": "19 · Giao thông an toàn: Chibi quan sát đèn tín hiệu và qua đường an toàn",
+    "renderer": "native-vector-v1",
+    "fidelity": "technical-demo",
+    "note": "Mẫu kỹ thuật Phase L: Chibi mặc áo phản quang, quan sát đèn tín hiệu giao thông, giơ tay qua đường theo quy tắc an toàn.",
+    "duration": 15.0,
+    "characters": [
+      {
+        "id": "kid",
+        "name": "Bé mầm non",
+        "asset": "chibi_kid"
+      },
+      {
+        "id": "light",
+        "name": "traffic_light",
+        "asset": "traffic_light"
+      },
+      {
+        "id": "zebra",
+        "name": "crosswalk",
+        "asset": "crosswalk"
+      },
+      {
+        "id": "cone",
+        "name": "traffic_cone",
+        "asset": "traffic_cone"
+      }
+    ],
+    "scenes": [
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 0,
+        "end_time": 5.0,
+        "characters_present": [
+          "kid",
+          "light",
+          "zebra",
+          "cone"
+        ],
+        "poses": {
+          "kid": [
+            {
+              "time": 0,
+              "x": 140,
+              "y": 810,
+              "height": 260,
+              "outfit": "hi_vis_vest"
+            },
+            {
+              "time": 2.5,
+              "x": 140,
+              "y": 810,
+              "height": 260,
+              "outfit": "hi_vis_vest"
+            },
+            {
+              "time": 5.0,
+              "x": 140,
+              "y": 810,
+              "height": 260,
+              "outfit": "hi_vis_vest"
+            }
+          ],
+          "light": [
+            {
+              "time": 0,
+              "x": 520,
+              "y": 810,
+              "height": 135,
+              "light": "red"
+            },
+            {
+              "time": 5.0,
+              "x": 520,
+              "y": 810,
+              "height": 135,
+              "light": "red"
+            }
+          ],
+          "zebra": [
+            {
+              "time": 0,
+              "x": 310,
+              "y": 810,
+              "height": 42
+            },
+            {
+              "time": 5.0,
+              "x": 310,
+              "y": 810,
+              "height": 42
+            }
+          ],
+          "cone": [
+            {
+              "time": 0,
+              "x": 210,
+              "y": 810,
+              "height": 48
+            },
+            {
+              "time": 5.0,
+              "x": 210,
+              "y": 810,
+              "height": 48
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "wait_signal",
+            "start": 0.5,
+            "end": 4.5,
+            "target": "light",
+            "actor": "kid",
+            "locale": "jp"
+          }
+        ],
+        "background": {
+          "preset": "street"
+        },
+        "index": 0
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 5.0,
+        "end_time": 10.0,
+        "characters_present": [
+          "kid",
+          "light",
+          "zebra",
+          "cone"
+        ],
+        "poses": {
+          "kid": [
+            {
+              "time": 5.0,
+              "x": 140,
+              "y": 810,
+              "height": 260,
+              "outfit": "hi_vis_vest"
+            },
+            {
+              "time": 7.5,
+              "x": 310,
+              "y": 810,
+              "height": 260,
+              "outfit": "hi_vis_vest",
+              "hand_r_y": -65,
+              "expression": "happy"
+            },
+            {
+              "time": 10.0,
+              "x": 390,
+              "y": 810,
+              "height": 260,
+              "outfit": "hi_vis_vest",
+              "hand_r_y": -65,
+              "expression": "happy"
+            }
+          ],
+          "light": [
+            {
+              "time": 5.0,
+              "x": 520,
+              "y": 810,
+              "height": 135,
+              "light": "green"
+            },
+            {
+              "time": 10.0,
+              "x": 520,
+              "y": 810,
+              "height": 135,
+              "light": "green"
+            }
+          ],
+          "zebra": [
+            {
+              "time": 5.0,
+              "x": 310,
+              "y": 810,
+              "height": 42
+            },
+            {
+              "time": 10.0,
+              "x": 310,
+              "y": 810,
+              "height": 42
+            }
+          ],
+          "cone": [
+            {
+              "time": 5.0,
+              "x": 210,
+              "y": 810,
+              "height": 48
+            },
+            {
+              "time": 10.0,
+              "x": 210,
+              "y": 810,
+              "height": 48
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "wait_signal",
+            "start": 5.0,
+            "end": 8.5,
+            "target": "light",
+            "actor": "kid",
+            "locale": "jp"
+          }
+        ],
+        "background": {
+          "preset": "street"
+        },
+        "index": 1
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 10.0,
+        "end_time": 15.0,
+        "characters_present": [
+          "kid",
+          "light",
+          "zebra",
+          "cone"
+        ],
+        "poses": {
+          "kid": [
+            {
+              "time": 10.0,
+              "x": 390,
+              "y": 810,
+              "height": 260,
+              "outfit": "hi_vis_vest",
+              "expression": "happy"
+            },
+            {
+              "time": 15.0,
+              "x": 390,
+              "y": 810,
+              "height": 260,
+              "outfit": "hi_vis_vest",
+              "expression": "happy"
+            }
+          ],
+          "light": [
+            {
+              "time": 10.0,
+              "x": 520,
+              "y": 810,
+              "height": 135,
+              "light": "green"
+            },
+            {
+              "time": 15.0,
+              "x": 520,
+              "y": 810,
+              "height": 135,
+              "light": "green"
+            }
+          ],
+          "zebra": [
+            {
+              "time": 10.0,
+              "x": 310,
+              "y": 810,
+              "height": 42
+            },
+            {
+              "time": 15.0,
+              "x": 310,
+              "y": 810,
+              "height": 42
+            }
+          ],
+          "cone": [
+            {
+              "time": 10.0,
+              "x": 210,
+              "y": 810,
+              "height": 48
+            },
+            {
+              "time": 15.0,
+              "x": 210,
+              "y": 810,
+              "height": 48
+            }
+          ]
+        },
+        "actions": [],
+        "background": {
+          "preset": "street"
+        },
+        "index": 2
+      }
+    ],
+    "cues": [
+      {
+        "start": 0.5,
+        "end": 4.5,
+        "character_id": "kid",
+        "text": "Đèn đỏ phải dừng lại quan sát hai bên đường thật cẩn thận nhé!",
+        "expression": "neutral"
+      },
+      {
+        "start": 5.5,
+        "end": 9.5,
+        "character_id": "kid",
+        "text": "Đèn xanh đã bật, giơ tay cao xin đường và bước đều qua vạch sang đường!",
+        "expression": "happy"
+      },
+      {
+        "start": 10.5,
+        "end": 14.5,
+        "character_id": "kid",
+        "text": "Đã qua đường an toàn rồi, luôn tuân thủ luật an toàn giao thông!",
+        "expression": "happy"
+      }
+    ]
+  },
+  {
+    "id": "disaster_safety",
+    "name": "20 · Phòng chống thiên tai: Thoát hiểm hỏa hoạn, động đất và chuẩn bị bão lũ",
+    "renderer": "native-vector-v1",
+    "fidelity": "technical-demo",
+    "note": "Mẫu kỹ thuật Phase L: Diễn tập bò thấp người thoát hiểm khói, chui gầm bàn chống động đất và đắp bao cát chuẩn bị ứng phó bão lũ.",
+    "duration": 15.0,
+    "characters": [
+      {
+        "id": "kid",
+        "name": "Bé mầm non",
+        "asset": "chibi_kid"
+      },
+      {
+        "id": "detector",
+        "name": "smoke_detector",
+        "asset": "smoke_detector"
+      },
+      {
+        "id": "blanket",
+        "name": "fire_blanket",
+        "asset": "fire_blanket"
+      },
+      {
+        "id": "table",
+        "name": "Bàn học/bàn làm việc",
+        "asset": "desk"
+      },
+      {
+        "id": "bag",
+        "name": "Balo khẩn cấp thiên tai",
+        "asset": "emergency_backpack"
+      },
+      {
+        "id": "radio_rig",
+        "name": "radio",
+        "asset": "radio"
+      },
+      {
+        "id": "sand",
+        "name": "sandbag",
+        "asset": "sandbag"
+      },
+      {
+        "id": "buoy",
+        "name": "rescue_buoy",
+        "asset": "rescue_buoy"
+      }
+    ],
+    "scenes": [
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 0,
+        "end_time": 5.0,
+        "characters_present": [
+          "kid",
+          "detector",
+          "blanket"
+        ],
+        "poses": {
+          "kid": [
+            {
+              "time": 0,
+              "x": 140,
+              "y": 810,
+              "height": 260,
+              "sit": 1.0,
+              "lean": 0.6,
+              "expression": "worried"
+            },
+            {
+              "time": 2.5,
+              "x": 240,
+              "y": 810,
+              "height": 260,
+              "sit": 1.0,
+              "lean": 0.6,
+              "expression": "worried"
+            },
+            {
+              "time": 5.0,
+              "x": 340,
+              "y": 810,
+              "height": 260,
+              "sit": 1.0,
+              "lean": 0.6,
+              "expression": "neutral"
+            }
+          ],
+          "detector": [
+            {
+              "time": 0,
+              "x": 280,
+              "y": 640,
+              "height": 32,
+              "alarm": true
+            },
+            {
+              "time": 5.0,
+              "x": 280,
+              "y": 640,
+              "height": 32,
+              "alarm": true
+            }
+          ],
+          "blanket": [
+            {
+              "time": 0,
+              "x": 480,
+              "y": 750,
+              "height": 48
+            },
+            {
+              "time": 5.0,
+              "x": 480,
+              "y": 750,
+              "height": 48
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "crawl_low",
+            "start": 0.5,
+            "end": 4.5,
+            "target": "blanket",
+            "actor": "kid"
+          }
+        ],
+        "background": {
+          "preset": "interior"
+        },
+        "index": 0
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 5.0,
+        "end_time": 10.0,
+        "characters_present": [
+          "kid",
+          "table",
+          "bag",
+          "radio_rig"
+        ],
+        "poses": {
+          "kid": [
+            {
+              "time": 5.0,
+              "x": 200,
+              "y": 810,
+              "height": 200,
+              "outfit": "bosai_zukin",
+              "expression": "worried"
+            },
+            {
+              "time": 10.0,
+              "x": 200,
+              "y": 810,
+              "height": 200,
+              "outfit": "bosai_zukin",
+              "expression": "neutral"
+            }
+          ],
+          "table": [
+            {
+              "time": 5.0,
+              "x": 300,
+              "y": 810,
+              "height": 360,
+              "z": 2
+            },
+            {
+              "time": 10.0,
+              "x": 300,
+              "y": 810,
+              "height": 360,
+              "z": 2
+            }
+          ],
+          "bag": [
+            {
+              "time": 5.0,
+              "x": 160,
+              "y": 810,
+              "height": 50
+            },
+            {
+              "time": 10.0,
+              "x": 160,
+              "y": 810,
+              "height": 50
+            }
+          ],
+          "radio_rig": [
+            {
+              "time": 5.0,
+              "x": 120,
+              "y": 810,
+              "height": 45
+            },
+            {
+              "time": 10.0,
+              "x": 120,
+              "y": 810,
+              "height": 45
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "take_cover",
+            "start": 5.0,
+            "end": 9.5,
+            "target": "table",
+            "actor": "kid"
+          }
+        ],
+        "background": {
+          "preset": "interior",
+          "quake": 0.8
+        },
+        "index": 1
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 10.0,
+        "end_time": 15.0,
+        "characters_present": [
+          "kid",
+          "sand",
+          "buoy",
+          "radio_rig"
+        ],
+        "poses": {
+          "kid": [
+            {
+              "time": 10.0,
+              "x": 160,
+              "y": 810,
+              "height": 260,
+              "outfit": "life_vest",
+              "expression": "happy"
+            },
+            {
+              "time": 15.0,
+              "x": 160,
+              "y": 810,
+              "height": 260,
+              "outfit": "life_vest",
+              "expression": "happy"
+            }
+          ],
+          "sand": [
+            {
+              "time": 10.0,
+              "x": 340,
+              "y": 810,
+              "height": 25,
+              "count": 3
+            },
+            {
+              "time": 15.0,
+              "x": 340,
+              "y": 810,
+              "height": 25,
+              "count": 3
+            }
+          ],
+          "buoy": [
+            {
+              "time": 10.0,
+              "x": 460,
+              "y": 810,
+              "height": 55
+            },
+            {
+              "time": 15.0,
+              "x": 460,
+              "y": 810,
+              "height": 55
+            }
+          ],
+          "radio_rig": [
+            {
+              "time": 10.0,
+              "x": 240,
+              "y": 810,
+              "height": 45
+            },
+            {
+              "time": 15.0,
+              "x": 240,
+              "y": 810,
+              "height": 45
+            }
+          ]
+        },
+        "actions": [],
+        "background": {
+          "preset": "street",
+          "weather": "rain",
+          "flood": 0.45
+        },
+        "index": 2
+      }
+    ],
+    "cues": [
+      {
+        "start": 0.5,
+        "end": 4.5,
+        "character_id": "kid",
+        "text": "Chuông báo khói kêu vang, mau lấy khăn bịt mũi miệng và bò thấp người thoát hiểm!",
+        "expression": "worried"
+      },
+      {
+        "start": 5.5,
+        "end": 9.5,
+        "character_id": "kid",
+        "text": "Động đất rung lắc, đội mũ bảo hộ và chui ngay xuống gầm bàn kiên cố che đầu gáy!",
+        "expression": "neutral"
+      },
+      {
+        "start": 10.5,
+        "end": 14.5,
+        "character_id": "kid",
+        "text": "Khi bão lũ tới, xếp bao cát chắn nước ngập, mặc áo phao và bật đài radio theo dõi tin tức!",
+        "expression": "happy"
+      }
+    ]
   }
 ]

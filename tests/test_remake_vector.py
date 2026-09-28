@@ -1938,12 +1938,146 @@ console.log("layer over_face test passed");
         )
         self.assertEqual(result.returncode, 0, result.stderr)
 
-    def test_phase_h_sample_stories_validate(self):
+    def test_phase_i_assets_and_backgrounds(self):
+        from bkt_web.remake_vector import catalog
+        cat = catalog()
+        cells = [
+            "rbc_courier", "neutrophil_scout", "macrophage_chef", "dendritic_messenger",
+            "helper_t_captain", "killer_t_knight", "b_cell_archer", "nk_ninja",
+            "platelet_builder", "memory_cell_librarian", "mast_cell_alarm", "cilia_sweeper", "skin_guard"
+        ]
+        microbes = [
+            "bacteria_chain", "bacteria_cluster", "infected_cell", "fungus_spore",
+            "parasite_worm", "cavity_germ", "plaque_goo", "toxin_blob",
+            "pollen_puff", "superbug_boss"
+        ]
+        organs = [
+            "heart_chibi", "lungs_chibi", "brain_chibi", "stomach_chibi",
+            "intestine_chibi", "liver_chibi", "kidney_chibi", "bladder_chibi",
+            "tongue_chibi", "eye_chibi", "ear_chibi", "nose_chibi",
+            "skin_patch", "bone_chibi", "muscle_chibi", "blood_drop_chibi", "body_xray"
+        ]
+        for aid in cells + microbes + organs:
+            self.assertIn(aid, cat["assets"], f"Asset {aid} thiếu trong catalog")
+            self.assertEqual(cat["assets"][aid]["pack"], "body_world")
+
+        # Kiểm tra anchor bắt buộc của cell
+        required_cell_anchors = {"root", "face", "mouth", "top", "surface", "back", "hand_l", "hand_r", "grip", "belly"}
+        for cid in cells:
+            for anc in required_cell_anchors:
+                self.assertIn(anc, cat["assets"][cid]["anchors"], f"Cell {cid} thiếu anchor {anc}")
+
+        # 12 Hình nền trong cơ thể
+        bgs = [
+            "blood_vessel", "lung_alveoli", "stomach_inside", "intestine_town",
+            "skin_surface", "wound_site", "mouth_cave", "nose_cave",
+            "lymph_node_base", "bone_marrow_factory", "brain_hq", "training_camp"
+        ]
+        for bg in bgs:
+            self.assertIn(bg, cat["backgrounds"])
+            self.assertIn(bg, cat["background_specs"])
+            spec = cat["background_specs"][bg]
+            self.assertEqual(spec["theme"], "body")
+            self.assertEqual(spec["ground_y"], 810)
+
+        # Bảng kiến thức đối chiếu
+        self.assertIn("body_world_facts", cat)
+        self.assertGreaterEqual(len(cat["body_world_facts"]), 10)
+        for item in cat["body_world_facts"]:
+            self.assertIn("metaphor", item)
+            self.assertIn("science", item)
+            self.assertIn("forbidden", item)
+
+    def test_phase_i_strike_infected_validator(self):
+        from bkt_web.remake_vector import validate_story, RENDERER
+        valid_story = {
+            "id": "test-strike-valid",
+            "renderer": RENDERER,
+            "duration": 2.0,
+            "characters": [
+                {"id": "knight", "asset": "killer_t_knight"},
+                {"id": "infected", "asset": "infected_cell"}
+            ],
+            "scenes": [{
+                "renderer": RENDERER, "kind": "scene", "start_time": 0, "end_time": 2.0,
+                "characters_present": ["knight", "infected"],
+                "background": {"preset": "blood_vessel"},
+                "poses": {
+                    "knight": [{"time": 0, "x": 100, "y": 810, "height": 150}],
+                    "infected": [{"time": 0, "x": 300, "y": 810, "height": 150, "infected": 1.0}]
+                },
+                "actions": [{"type": "strike_infected", "start": 0.5, "end": 1.5, "actor": "knight", "target": "infected"}]
+            }]
+        }
+        self.assertTrue(validate_story(valid_story))
+
+        # Rejected when target is healthy cell with infected <= 0.5
+        invalid_story = {
+            "id": "test-strike-invalid",
+            "renderer": RENDERER,
+            "duration": 2.0,
+            "characters": [
+                {"id": "knight", "asset": "killer_t_knight"},
+                {"id": "healthy", "asset": "neutrophil_scout"}
+            ],
+            "scenes": [{
+                "renderer": RENDERER, "kind": "scene", "start_time": 0, "end_time": 2.0,
+                "characters_present": ["knight", "healthy"],
+                "background": {"preset": "blood_vessel"},
+                "poses": {
+                    "knight": [{"time": 0, "x": 100, "y": 810, "height": 150}],
+                    "healthy": [{"time": 0, "x": 300, "y": 810, "height": 150, "infected": 0.2}]
+                },
+                "actions": [{"type": "strike_infected", "start": 0.5, "end": 1.5, "actor": "knight", "target": "healthy"}]
+            }]
+        }
+        with self.assertRaises(ValueError):
+            validate_story(invalid_story)
+
+    def test_phase_i_body_xray_anatomy_rules(self):
+        from bkt_web.remake_vector import catalog
+        cat = catalog()
+        xray = cat["assets"]["body_xray"]
+        anchors = xray["anchors"]
+        required_slots = [
+            "brain", "eye_l", "eye_r", "nose", "mouth", "lungs",
+            "heart", "stomach", "liver", "kidney_l", "kidney_r",
+            "intestine", "bladder", "bone_arm", "muscle_arm"
+        ]
+        for slot in required_slots:
+            self.assertIn(slot, anchors, f"body_xray thiếu slot {slot}")
+            sx, sy = anchors[slot]
+            # Mọi slot nằm trong bóng thân chibi (x trong [-25, 25], y trong [-95, 0])
+            self.assertGreaterEqual(sx, -25)
+            self.assertLessEqual(sx, 25)
+            self.assertGreaterEqual(sy, -95)
+            self.assertLessEqual(sy, 0)
+
+        # Khi không flip: tim ở bên trái nhân vật = x > 0 (bên phải màn hình)
+        heart_x, heart_y = anchors["heart"]
+        self.assertGreater(heart_x, 0, "Slot heart phải có x > 0 (bên phải màn hình = bên trái nhân vật)")
+
+        # Gan ở bên phải nhân vật = x < 0 (bên trái màn hình)
+        liver_x, liver_y = anchors["liver"]
+        self.assertLess(liver_x, 0, "Slot liver phải có x < 0 (bên trái màn hình = bên phải nhân vật)")
+
+        # Dạ dày thấp hơn tim (y tiến gần 0 hơn)
+        stomach_x, stomach_y = anchors["stomach"]
+        self.assertGreater(stomach_y, heart_y, "Slot stomach phải thấp hơn heart (y lớn hơn / gần đáy hơn)")
+
+    def test_phase_i_sample_stories_validate(self):
         from bkt_web.remake_vector import (
-            handwashing_examples, doctor_visit_examples,
-            tooth_examples, nutrition_examples, validate_story
+            scrape_battle_examples, virus_invasion_examples,
+            vaccine_training_examples, body_tour_examples,
+            gut_team_examples, cavity_examples, allergy_examples,
+            validate_story
         )
-        for fn in (handwashing_examples, doctor_visit_examples, tooth_examples, nutrition_examples):
+        stories_fns = [
+            scrape_battle_examples, virus_invasion_examples,
+            vaccine_training_examples, body_tour_examples,
+            gut_team_examples, cavity_examples, allergy_examples
+        ]
+        for fn in stories_fns:
             stories = fn()
             self.assertEqual(len(stories), 1)
             valid = validate_story(stories[0])
@@ -1952,7 +2086,578 @@ console.log("layer over_face test passed");
             self.assertLessEqual(valid["duration"], 20.0)
 
 
+    def test_phase_j_outfits_catalog_and_anchor_invariance(self):
+        from bkt_web.remake_vector import catalog, STATIC_DIR
+        cat = catalog()
+        self.assertIn("outfits", cat)
+        outfits = cat["outfits"]
+        self.assertGreaterEqual(len(outfits), 40)
+        for oid, odef in outfits.items():
+            self.assertIn("label", odef)
+            self.assertIn("parts", odef)
+            self.assertTrue(len(odef.get("topics", [])) >= 2 or "topics_exception" in odef)
+
+        program = r'''
+globalThis.Path2D = class { constructor() {} rect() {} arc() {} ellipse() {} };
+const fs = require('fs');
+const cat = require(process.argv[2]);
+require(process.argv[1]);
+for (const p of cat.engine_packs) {
+  require(process.argv[3] + '/' + p + '.js');
+}
+
+const required_anchors = [
+  'root', 'face', 'mouth', 'forehead', 'ear_l', 'ear_r', 'teeth', 'head_top', 'top',
+  'neck', 'chest', 'belly', 'back', 'waist', 'hip', 'shoulder_l', 'shoulder_r',
+  'elbow_l', 'elbow_r', 'wrist_l', 'wrist_r', 'hand_l', 'hand_r',
+  'knee_l', 'knee_r', 'foot_l', 'foot_r'
+];
+
+const baseState = { asset: 'chibi_kid', height: 320, x: 200, y: 810, rotation: 0, flip: false, outfit: 'none' };
+const baseAnchors = {};
+for (const anc of required_anchors) {
+  baseAnchors[anc] = RemakeVector.worldAnchor(cat, baseState, anc);
+}
+
+for (const outfitId of Object.keys(cat.outfits)) {
+  const outfitState = { asset: 'chibi_kid', height: 320, x: 200, y: 810, rotation: 0, flip: false, outfit: outfitId };
+  for (const anc of required_anchors) {
+    const pt = RemakeVector.worldAnchor(cat, outfitState, anc);
+    const basePt = baseAnchors[anc];
+    if (Math.abs(pt.x - basePt.x) > 0.001 || Math.abs(pt.y - basePt.y) > 0.001) {
+      throw new Error(`Anchor mismatch for outfit ${outfitId} on ${anc}`);
+    }
+  }
+}
+console.log('OK');
+'''
+        result = subprocess.run(
+            ["node", "-e", program, str(STATIC_DIR / "remake_vector_engine.js"), str(STATIC_DIR / "remake_vector_catalog.json"), str(STATIC_DIR / "remake_vector_packs")],
+            text=True, capture_output=True
+        )
+        self.assertEqual(result.returncode, 0, result.stderr)
+
+    def test_phase_j_topics_coverage_and_exceptions(self):
+        from bkt_web.remake_vector import catalog
+        cat = catalog()
+        j_packs = {"vehicles", "buildings", "foods", "containers", "furniture", "tools_ext"}
+        for rig_id, asset in cat["assets"].items():
+            if asset.get("pack") in j_packs:
+                topics = asset.get("topics", [])
+                has_exception = "topics_exception" in asset or ("spec" in asset and "topics_exception" in asset["spec"])
+                self.assertTrue(len(topics) >= 2 or has_exception, f"{rig_id} thiếu topics (>=2) hoặc topics_exception")
+
+        for oid, odef in cat.get("outfits", {}).items():
+            topics = odef.get("topics", [])
+            has_exception = "topics_exception" in odef
+            self.assertTrue(len(topics) >= 2 or has_exception, f"Outfit {oid} thiếu topics (>=2) hoặc topics_exception")
+
+    def test_phase_j_localization_and_locales(self):
+        from bkt_web.remake_vector import catalog, localize, validate_story, scrape_battle_examples
+        cat = catalog()
+        self.assertEqual(cat.get("locales"), ["neutral", "de", "us", "kr", "jp"])
+        for loc in ["neutral", "de", "us", "kr", "jp"]:
+            self.assertIn(loc, cat.get("locale_specs", {}))
+            spec = cat["locale_specs"][loc]
+            for key in ("bin_paper", "bin_plastic", "bin_glass", "bin_bio", "bin_residual", "school_bus", "traffic_light", "wall_style"):
+                self.assertIn(key, spec, f"locale_specs[{loc}] thiếu {key}")
+
+        story = scrape_battle_examples()[0]
+        for loc in ["neutral", "de", "us", "kr", "jp"]:
+            localized = localize(story, loc)
+            validate_story(localized)
+            for s in localized["scenes"]:
+                self.assertEqual(s["background"]["locale"], loc)
+            for c in localized["characters"]:
+                self.assertEqual(c["style"]["locale"], loc)
+
+        with self.assertRaises(ValueError):
+            localize(story, "invalid_locale_xyz")
+
+    def test_phase_j_zero_text_and_pictograms_spy(self):
+        from bkt_web.remake_vector import STATIC_DIR
+        program = r'''
+globalThis.Path2D = class { constructor() {} rect() {} arc() {} ellipse() {} };
+const cat = require(process.argv[2]);
+require(process.argv[1]);
+for (const p of cat.engine_packs) {
+  require(process.argv[3] + '/' + p + '.js');
+}
+
+let fillTextCalls = 0;
+let strokeTextCalls = 0;
+const mockCtx = {
+  save() {}, restore() {}, beginPath() {}, closePath() {},
+  moveTo() {}, lineTo() {}, bezierCurveTo() {}, quadraticCurveTo() {},
+  arc() {}, arcTo() {}, ellipse() {}, rect() {}, roundRect() {},
+  fill() {}, stroke() {}, clip() {},
+  scale() {}, translate() {}, rotate() {}, transform() {}, setTransform() {}, resetTransform() {},
+  clearRect() {}, fillRect() {}, strokeRect() {},
+  createLinearGradient() { return { addColorStop() {} }; },
+  createRadialGradient() { return { addColorStop() {} }; },
+  fillText() { fillTextCalls++; },
+  strokeText() { strokeTextCalls++; },
+  measureText() { return { width: 10 }; },
+  lineWidth: 1, strokeStyle: '#000', fillStyle: '#000', lineCap: 'butt', lineJoin: 'miter', miterLimit: 10,
+  globalAlpha: 1, globalCompositeOperation: 'source-over'
+};
+
+// 1. Pictograms
+for (const catName of ['traffic', 'recycling', 'emergency', 'prohibition', 'first_aid', 'ghs']) {
+  const table = RemakeVector.kit.PICTOGRAMS[catName];
+  if (!table) continue;
+  for (const [sym, fn] of Object.entries(table)) {
+    fn(mockCtx, 0, 0, 40, '#000', '#fff');
+  }
+}
+
+// 2. All Phase J rigs
+const jPacks = ['vehicles', 'buildings', 'foods', 'containers', 'furniture', 'tools_ext'];
+for (const [id, a] of Object.entries(cat.assets)) {
+  if (jPacks.includes(a.pack)) {
+    const drawer = RemakeVector.kit.RIG_DRAWERS[id];
+    if (drawer) {
+      drawer(mockCtx, { asset: id, height: 100, x: 0, y: 0, opacity: 1, vx: 5, growth: 0.5, cooked: 0.8, open: 0.5, fill: 0.5 }, 0, cat);
+    }
+  }
+}
+
+// 3. Modular backgrounds
+for (const bgId of ['street', 'interior']) {
+  const bg = RemakeVector.BACKGROUNDS[bgId];
+  if (bg && bg.draw) {
+    for (const loc of ['neutral', 'de', 'us', 'kr', 'jp']) {
+      bg.draw(mockCtx, { width: 1080, height: 1080, ground_y: 810, locale: loc }, 0);
+    }
+  }
+}
+
+if (fillTextCalls > 0 || strokeTextCalls > 0) {
+  throw new Error(`Spy failed: fillText=${fillTextCalls}, strokeText=${strokeTextCalls}`);
+}
+console.log('OK');
+'''
+        result = subprocess.run(
+            ["node", "-e", program, str(STATIC_DIR / "remake_vector_engine.js"), str(STATIC_DIR / "remake_vector_catalog.json"), str(STATIC_DIR / "remake_vector_packs")],
+            text=True, capture_output=True
+        )
+        self.assertEqual(result.returncode, 0, result.stderr)
+
+    def test_phase_j_action_contacts_and_rules(self):
+        from bkt_web.remake_vector import STATIC_DIR
+        program = r'''
+globalThis.Path2D = class { constructor() {} rect() {} arc() {} ellipse() {} };
+const cat = require(process.argv[2]);
+require(process.argv[1]);
+for (const p of cat.engine_packs) {
+  require(process.argv[3] + '/' + p + '.js');
+}
+
+// 1. DRIVE: car on road at ground_y 810
+const storyDrive = {
+  id: 'test-drive', renderer: 'native-vector-v1', duration: 2.0,
+  characters: [{ id: 'auto', asset: 'car' }],
+  scenes: [{
+    renderer: 'native-vector-v1', kind: 'scene', start_time: 0, end_time: 2.0,
+    characters_present: ['auto'],
+    background: { preset: 'street', ground_y: 810 },
+    poses: { auto: [{ time: 0, x: 200, y: 810, height: 180, vx: 50 }, { time: 2, x: 600, y: 810, height: 180, vx: 50 }] },
+    actions: [{ type: 'drive', start: 0, end: 2, actor: 'auto' }]
+  }]
+};
+const sampDrive = RemakeVector.sample(storyDrive, cat, 1.0);
+const carY = sampDrive.states.auto.y;
+if (Math.abs(carY - 810) > 2) throw new Error('Drive car bottom not at ground_y: ' + carY);
+
+// 2. RIDE: chibi riding bicycle (hip to seat_1 < 6px)
+const storyRide = {
+  id: 'test-ride', renderer: 'native-vector-v1', duration: 2.0,
+  characters: [{ id: 'kid', asset: 'chibi_kid' }, { id: 'bike', asset: 'bicycle' }],
+  scenes: [{
+    renderer: 'native-vector-v1', kind: 'scene', start_time: 0, end_time: 2.0,
+    characters_present: ['kid', 'bike'],
+    background: { preset: 'street', ground_y: 810 },
+    poses: {
+      bike: [{ time: 0, x: 300, y: 810, height: 160 }],
+      kid: [{ time: 0, x: 300, y: 810, height: 280 }]
+    },
+    actions: [{ type: 'ride', start: 0, end: 2, actor: 'kid', target: 'bike' }]
+  }]
+};
+const sampRide = RemakeVector.sample(storyRide, cat, 1.0);
+const seatPt = RemakeVector.worldAnchor(cat, sampRide.states.bike, 'seat_1');
+const hipPt = RemakeVector.worldAnchor(cat, sampRide.states.kid, 'hip');
+const rideDist = Math.hypot(seatPt.x - hipPt.x, seatPt.y - hipPt.y);
+if (rideDist > 6) throw new Error('Ride hip to seat distance too large: ' + rideDist);
+
+// 3. TAKE_COVER: head_top must be lower than table top (head_top.y > table.top.y)
+const storyCover = {
+  id: 'test-cover', renderer: 'native-vector-v1', duration: 2.0,
+  characters: [{ id: 'kid', asset: 'chibi_kid' }, { id: 'desk', asset: 'desk' }],
+  scenes: [{
+    renderer: 'native-vector-v1', kind: 'scene', start_time: 0, end_time: 2.0,
+    characters_present: ['kid', 'desk'],
+    background: { preset: 'interior', ground_y: 810 },
+    poses: {
+      desk: [{ time: 0, x: 400, y: 810, height: 180 }],
+      kid: [{ time: 0, x: 400, y: 810, height: 260 }]
+    },
+    actions: [{ type: 'take_cover', start: 0, end: 2, actor: 'kid', target: 'desk' }]
+  }]
+};
+const sampCover = RemakeVector.sample(storyCover, cat, 1.0);
+const tableTop = RemakeVector.worldAnchor(cat, sampCover.states.desk, 'top');
+const headTop = RemakeVector.worldAnchor(cat, sampCover.states.kid, 'head_top');
+if (headTop.y < tableTop.y) throw new Error('take_cover head is not below table top');
+
+// 4. SORT: item grip distance to opening < 10px at contact
+const storySort = {
+  id: 'test-sort', renderer: 'native-vector-v1', duration: 2.0,
+  characters: [{ id: 'apple', asset: 'apple' }, { id: 'bin', asset: 'bin_bio' }],
+  scenes: [{
+    renderer: 'native-vector-v1', kind: 'scene', start_time: 0, end_time: 2.0,
+    characters_present: ['apple', 'bin'],
+    background: { preset: 'street', ground_y: 810 },
+    poses: {
+      bin: [{ time: 0, x: 500, y: 810, height: 160 }],
+      apple: [{ time: 0, x: 300, y: 700, height: 40 }]
+    },
+    actions: [{ type: 'sort', start: 0, end: 2, actor: 'apple', target: 'bin' }]
+  }]
+};
+const sampSort = RemakeVector.sample(storySort, cat, 1.4);
+const binOpen = RemakeVector.worldAnchor(cat, sampSort.states.bin, 'opening');
+const appleGrip = RemakeVector.worldAnchor(cat, sampSort.states.apple, 'grip');
+const sortDist = Math.hypot(appleGrip.x - binOpen.x, appleGrip.y - binOpen.y);
+if (sortDist > 10) throw new Error('sort item to opening distance too large: ' + sortDist);
+
+// 5. BUILD: growth monotonic
+const storyBuild = {
+  id: 'test-build', renderer: 'native-vector-v1', duration: 2.0,
+  characters: [{ id: 'worker', asset: 'chibi_farmer' }, { id: 'hut', asset: 'stone_hut' }],
+  scenes: [{
+    renderer: 'native-vector-v1', kind: 'scene', start_time: 0, end_time: 2.0,
+    characters_present: ['worker', 'hut'],
+    background: { preset: 'street', ground_y: 810 },
+    poses: {
+      hut: [{ time: 0, x: 500, y: 810, height: 260 }],
+      worker: [{ time: 0, x: 380, y: 810, height: 280 }]
+    },
+    actions: [{ type: 'build', start: 0, end: 2, actor: 'worker', target: 'hut' }]
+  }]
+};
+const g0 = RemakeVector.sample(storyBuild, cat, 0.2).states.hut.growth;
+const g1 = RemakeVector.sample(storyBuild, cat, 1.0).states.hut.growth;
+const g2 = RemakeVector.sample(storyBuild, cat, 1.8).states.hut.growth;
+if (!(g0 < g1 && g1 < g2)) throw new Error('build growth not monotonic: ' + [g0, g1, g2]);
+
+console.log('OK');
+'''
+        result = subprocess.run(
+            ["node", "-e", program, str(STATIC_DIR / "remake_vector_engine.js"), str(STATIC_DIR / "remake_vector_catalog.json"), str(STATIC_DIR / "remake_vector_packs")],
+            text=True, capture_output=True
+        )
+    def test_phase_k_recycling_catalog_and_anchors(self):
+        from bkt_web.remake_vector import catalog
+        cat = catalog()
+        self.assertIn("recycling", cat.get("engine_packs", []))
+        self.assertIn("recycling_yard", cat.get("backgrounds", []))
+        bg_spec = cat.get("background_specs", {}).get("recycling_yard", {})
+        self.assertEqual(bg_spec.get("ground_y"), 810)
+        self.assertEqual(bg_spec.get("theme"), "urban")
+
+        expected_rigs = [
+            "plastic_bottle", "can", "glass_jar", "newspaper_bundle",
+            "cardboard_box", "banana_peel", "apple_core", "battery",
+            "garbage_truck", "recycling_plant"
+        ]
+        for rig_id in expected_rigs:
+            self.assertIn(rig_id, cat["assets"])
+            asset = cat["assets"][rig_id]
+            self.assertEqual(asset.get("pack"), "recycling")
+            self.assertGreaterEqual(len(asset.get("topics", [])), 2)
+            self.assertIn("root", asset.get("anchors", {}))
+            if rig_id in ["plastic_bottle", "can", "glass_jar", "newspaper_bundle", "cardboard_box", "banana_peel", "apple_core", "battery"]:
+                self.assertTrue(asset.get("face"))
+                self.assertIn("face", asset["anchors"])
+                self.assertIn("grip", asset["anchors"])
+                self.assertIn(rig_id, cat["actions"]["sort"]["actors"])
+
+        self.assertIn("garbage_truck", cat["actions"]["drive"]["actors"])
+        self.assertIn("recycling_plant", cat["actions"]["build"]["targets"])
+
+    def test_phase_k_recycling_stories_validate(self):
+        from bkt_web.remake_vector import recycling_sort_examples, bottle_journey_examples, validate_story
+        for fn in (recycling_sort_examples, bottle_journey_examples):
+            stories = fn()
+            self.assertEqual(len(stories), 1)
+            valid = validate_story(stories[0])
+            self.assertGreaterEqual(valid["duration"], 12.0)
+            self.assertLessEqual(valid["duration"], 20.0)
+
+    def test_phase_k_sorting_and_truck_lift_actions(self):
+        from bkt_web.remake_vector import STATIC_DIR
+        program = r'''
+globalThis.Path2D = class { constructor() {} rect() {} arc() {} ellipse() {} };
+const cat = require(process.argv[2]);
+require(process.argv[1]);
+for (const p of cat.engine_packs) {
+  require(process.argv[3] + '/' + p + '.js');
+}
+
+// 1. Sort plastic bottle into bin_plastic
+const storySort = {
+  id: 'test-k-sort', renderer: 'native-vector-v1', duration: 2.0,
+  characters: [{ id: 'bottle', asset: 'plastic_bottle' }, { id: 'bin', asset: 'bin_plastic' }],
+  scenes: [{
+    renderer: 'native-vector-v1', kind: 'scene', start_time: 0, end_time: 2.0,
+    characters_present: ['bottle', 'bin'],
+    background: { preset: 'recycling_yard', ground_y: 810 },
+    poses: {
+      bin: [{ time: 0, x: 400, y: 810, height: 160 }],
+      bottle: [{ time: 0, x: 200, y: 750, height: 42 }]
+    },
+    actions: [{ type: 'sort', start: 0, end: 2, actor: 'bottle', target: 'bin' }]
+  }]
+};
+const sampSort = RemakeVector.sample(storySort, cat, 1.4);
+const binOpen = RemakeVector.worldAnchor(cat, sampSort.states.bin, 'opening');
+const botGrip = RemakeVector.worldAnchor(cat, sampSort.states.bottle, 'grip');
+const dist = Math.hypot(botGrip.x - binOpen.x, botGrip.y - binOpen.y);
+if (dist > 10) throw new Error('Sort bottle to bin distance too large: ' + dist);
+
+// 2. Garbage truck drive
+const storyDrive = {
+  id: 'test-k-drive', renderer: 'native-vector-v1', duration: 2.0,
+  characters: [{ id: 'truck', asset: 'garbage_truck' }],
+  scenes: [{
+    renderer: 'native-vector-v1', kind: 'scene', start_time: 0, end_time: 2.0,
+    characters_present: ['truck'],
+    background: { preset: 'recycling_yard', ground_y: 810 },
+    poses: { truck: [{ time: 0, x: 200, y: 810, height: 180 }, { time: 2, x: 500, y: 810, height: 180 }] },
+    actions: [{ type: 'drive', start: 0, end: 2, actor: 'truck' }]
+  }]
+};
+const sampDrive = RemakeVector.sample(storyDrive, cat, 1.0);
+if (Math.abs(sampDrive.states.truck.y - 810) > 2) throw new Error('Garbage truck y not at ground_y: ' + sampDrive.states.truck.y);
+
+console.log('OK');
+'''
+        result = subprocess.run(
+            ["node", "-e", program, str(STATIC_DIR / "remake_vector_engine.js"), str(STATIC_DIR / "remake_vector_catalog.json"), str(STATIC_DIR / "remake_vector_packs")],
+            text=True, capture_output=True
+        )
+    def test_phase_l_safety_catalog_and_anchors(self):
+        from bkt_web.remake_vector import catalog
+        cat = catalog()
+        self.assertIn("safety", cat.get("engine_packs", []))
+
+        expected_rigs = [
+            "traffic_light", "crosswalk", "traffic_cone", "smoke_detector",
+            "fire_blanket", "swim_ring", "rescue_buoy", "radio",
+            "megaphone", "sandbag"
+        ]
+        for rig_id in expected_rigs:
+            self.assertIn(rig_id, cat["assets"])
+            asset = cat["assets"][rig_id]
+            self.assertEqual(asset.get("pack"), "safety")
+            self.assertGreaterEqual(len(asset.get("topics", [])), 2)
+            self.assertIn("root", asset.get("anchors", {}))
+
+        self.assertIn("light_red", cat["assets"]["traffic_light"]["anchors"])
+        self.assertIn("light_green", cat["assets"]["traffic_light"]["anchors"])
+        self.assertIn("center", cat["assets"]["crosswalk"]["anchors"])
+        self.assertIn("led", cat["assets"]["smoke_detector"]["anchors"])
+        self.assertIn("mount", cat["assets"]["fire_blanket"]["anchors"])
+        self.assertIn("float", cat["assets"]["swim_ring"]["anchors"])
+        self.assertIn("rope", cat["assets"]["rescue_buoy"]["anchors"])
+
+        self.assertIn("wait_signal", cat["actions"])
+        self.assertIn("crawl_low", cat["actions"])
+        self.assertIn("traffic_light", cat["actions"]["wait_signal"]["targets"])
+        self.assertIn("crosswalk", cat["actions"]["wait_signal"]["targets"])
+        self.assertIn("smoke_detector", cat["actions"]["crawl_low"]["targets"])
+        self.assertIn("fire_blanket", cat["actions"]["crawl_low"]["targets"])
+
+    def test_phase_l_safety_stories_validate(self):
+        from bkt_web.remake_vector import crossing_street_examples, disaster_safety_examples, validate_story
+        for fn in (crossing_street_examples, disaster_safety_examples):
+            stories = fn()
+            self.assertEqual(len(stories), 1)
+            valid = validate_story(stories[0])
+            self.assertEqual(valid["duration"], 15.0)
+
+    def test_phase_l_safety_actions(self):
+        from bkt_web.remake_vector import STATIC_DIR
+        program = r'''
+globalThis.Path2D = class { constructor() {} rect() {} arc() {} ellipse() {} };
+const cat = require(process.argv[2]);
+require(process.argv[1]);
+for (const p of cat.engine_packs) {
+  require(process.argv[3] + '/' + p + '.js');
+}
+
+// 1. Test wait_signal with JP hand raise
+const storyWait = {
+  id: 'test-l-wait', renderer: 'native-vector-v1', duration: 3.0,
+  characters: [{ id: 'kid', asset: 'chibi_kid' }, { id: 'light', asset: 'traffic_light' }],
+  scenes: [{
+    renderer: 'native-vector-v1', kind: 'scene', start_time: 0, end_time: 3.0,
+    characters_present: ['kid', 'light'],
+    background: { preset: 'street', ground_y: 810 },
+    poses: {
+      kid: [{ time: 0, x: 200, y: 810, height: 260 }],
+      light: [{ time: 0, x: 400, y: 810, height: 135, light: 'red' }]
+    },
+    actions: [{ type: 'wait_signal', start: 0, end: 3, actor: 'kid', target: 'light', locale: 'jp' }]
+  }]
+};
+const sampWait = RemakeVector.sample(storyWait, cat, 1.5);
+if (sampWait.states.kid.hand_r_y !== -65) {
+  throw new Error('wait_signal jp locale did not raise hand: ' + sampWait.states.kid.hand_r_y);
+}
+
+// 2. Test crawl_low posture
+const storyCrawl = {
+  id: 'test-l-crawl', renderer: 'native-vector-v1', duration: 3.0,
+  characters: [{ id: 'kid', asset: 'chibi_kid' }],
+  scenes: [{
+    renderer: 'native-vector-v1', kind: 'scene', start_time: 0, end_time: 3.0,
+    characters_present: ['kid'],
+    background: { preset: 'interior', ground_y: 810 },
+    poses: { kid: [{ time: 0, x: 200, y: 810, height: 260 }] },
+    actions: [{ type: 'crawl_low', start: 0, end: 3, actor: 'kid' }]
+  }]
+};
+const sampCrawl = RemakeVector.sample(storyCrawl, cat, 1.5);
+if (sampCrawl.states.kid.sit !== 1.0) throw new Error('crawl_low did not sit: ' + sampCrawl.states.kid.sit);
+if (sampCrawl.states.kid.lean !== 0.65) throw new Error('crawl_low did not lean: ' + sampCrawl.states.kid.lean);
+if (sampCrawl.states.kid.hand_l_y !== -35) throw new Error('crawl_low did not cover mouth: ' + sampCrawl.states.kid.hand_l_y);
+
+console.log('OK');
+'''
+        result = subprocess.run(
+            ["node", "-e", program, str(STATIC_DIR / "remake_vector_engine.js"), str(STATIC_DIR / "remake_vector_catalog.json"), str(STATIC_DIR / "remake_vector_packs")],
+            text=True, capture_output=True
+        )
+        self.assertEqual(result.returncode, 0, result.stderr)
+
+
 if __name__ == "__main__":
     unittest.main()
 
 
+
+
+
+class PhaseJKLReviewTest(unittest.TestCase):
+    """Canh các lỗi đã gặp khi review Giai đoạn I–L (28/09): hình âm thầm biến mất hoặc rơi về hình mặc định."""
+    _node = PackContractTest._node
+
+    def test_every_name_packs_take_from_the_kit_exists(self):
+        import re
+        from bkt_web.remake_vector import engine_sources
+        keys = set(self._node("console.log(JSON.stringify(Object.keys(V.kit)));"))
+        for src in engine_sources()[1:]:
+            text = src.read_text(encoding="utf-8")
+            for m in re.finditer(r"const\s*\{([^}]*)\}\s*=\s*(?:RemakeVector\.kit|kit)\s*;", text):
+                names = {n.strip().split(":")[0].strip() for n in m.group(1).split(",") if n.strip()}
+                self.assertEqual(names - keys, set(), f"{src.name}: tên không có trong RemakeVector.kit (sẽ là undefined)")
+
+    def test_svg_path_strings_contain_only_numbers(self):
+        """`M -w*0.5 0` trong template string là đường vẽ hỏng: không có gì được vẽ (kim tự tháp, lều tuyết…)."""
+        import re
+        from bkt_web.remake_vector import engine_sources
+        for src in engine_sources():
+            text = src.read_text(encoding="utf-8")
+            for m in re.finditer(r"`([^`]*)`", text):
+                body = re.sub(r"\$\{[^}]*\}", "0", m.group(1))
+                if re.match(r"\s*M\s", body):
+                    rest = re.sub(r"\b[MLQCAZHVSTmlqcazhvst]\b", " ", body)
+                    self.assertIsNone(re.search(r"[A-Za-z_*]", rest), f"{src.name}: {m.group(1)[:60]}")
+
+    def test_every_outfit_resolves_all_its_parts(self):
+        from bkt_web.remake_vector import catalog
+        out = self._node(r"""
+const {cat}=JSON.parse(fs.readFileSync(0,'utf8'));const bad={};
+for(const id of Object.keys(cat.outfits)){try{V.kit.resolveOutfit(cat,{outfit:id});}catch(e){bad[id]=String(e.message);}}
+console.log(JSON.stringify(bad));""", {"cat": catalog()})
+        self.assertEqual(out, {})
+
+    def test_character_outfit_applies_and_warm_clothes_stop_the_snow_shiver(self):
+        from bkt_web.remake_vector import catalog
+        out = self._node(r"""
+const {cat}=JSON.parse(fs.readFileSync(0,'utf8'));
+const mk=(outfit)=>({id:'o',renderer:'native-vector-v1',duration:2,characters:[{id:'k',asset:'chibi_kid',...(outfit?{outfit}:{})}],
+ scenes:[{renderer:'native-vector-v1',kind:'scene',start_time:0,end_time:2,characters_present:['k'],background:{preset:'garden',weather:'snow'},poses:{k:[{time:0,x:288,y:810,height:300}]},actions:[]}]});
+const a=V.sample(mk('astronaut'),cat,1).states.k,b=V.sample(mk('pilot'),cat,1).states.k,c=V.sample(mk(null),cat,1).states.k;
+console.log(JSON.stringify([a.outfit,a.shiver,b.shiver,c.shiver]));""", {"cat": catalog()})
+        self.assertEqual(out, ["astronaut", 0, 1, 1])
+
+    def test_extended_tools_have_their_own_drawing_and_matching_anchors(self):
+        from bkt_web.remake_vector import catalog
+        cat = catalog()
+        out = self._node(r"""
+globalThis.Path2D=class{constructor(){}addPath(){}};
+const {cat}=JSON.parse(fs.readFileSync(0,'utf8'));
+const ctx=new Proxy({},{get:(o,k)=>k in o?o[k]:(k==='createLinearGradient'||k==='createRadialGradient')?()=>({addColorStop(){}}):()=>{},set:(o,k,v)=>(o[k]=v,true)});
+const bad=[];for(const id of Object.keys(V.kit.TOOL_SPECS)){try{V.kit.RIG_DRAWERS[id](ctx,{...cat.pose_defaults,asset:id,style:{},id},1,cat);}catch(e){bad.push(id+': '+e.message);}}
+console.log(JSON.stringify({bad,anchors:V.kit.TOOL_ANCHORS}));""", {"cat": cat})
+        self.assertEqual(out["bad"], [])
+        for tool, anchors in out["anchors"].items():
+            for name, point in anchors.items():
+                self.assertEqual(cat["assets"][tool]["anchors"][name], point, f"{tool}.{name}")
+
+    def test_wheels_touch_the_ground(self):
+        """Đáy mọi bánh xe (anchor wheel_N + bán kính) nằm ở gốc rig = ground_y (sai 0.5 đơn vị)."""
+        from bkt_web.remake_vector import catalog
+        cat = catalog()
+        checked = 0
+        for aid, asset in cat["assets"].items():
+            spec = asset.get("spec") or {}
+            if asset.get("group") != "vehicle" or spec.get("category") == "water" or not spec.get("wheels") or spec.get("tracks"):  # xe xích: bánh nằm trong xích
+                continue
+            bottoms = [asset["anchors"][f"wheel_{i + 1}"][1] + r for i, (_, _, r) in enumerate(spec["wheels"])]
+            self.assertAlmostEqual(max(bottoms), 0, delta=0.5, msg=aid)
+            checked += 1
+        self.assertGreater(checked, 15)
+
+    def test_action_channels_are_numeric_and_never_move_the_body(self):
+        from bkt_web.remake_vector import catalog
+        cat = catalog()
+        for aid, action in cat["actions"].items():
+            channel = action.get("channel")
+            if not channel:
+                continue
+            self.assertNotIn(channel, ("x", "y", "rotation", "height"), aid)   # kênh đẩy giá trị về `amount` (0–1)
+            self.assertIsInstance(cat["pose_defaults"].get(channel, 0), (int, float), aid)
+
+    def test_buildings_default_to_finished_and_cell_hands_sit_beside_the_body(self):
+        from bkt_web.remake_vector import catalog
+        cat = catalog()
+        out = self._node(r"""
+const {cat}=JSON.parse(fs.readFileSync(0,'utf8'));
+const one=(asset)=>V.sample({id:'x',renderer:'native-vector-v1',duration:1,characters:[{id:'a',asset}],scenes:[{renderer:'native-vector-v1',kind:'scene',start_time:0,end_time:1,characters_present:['a'],background:{preset:'garden'},poses:{a:[{time:0,x:288,y:810,height:300}]},actions:[]}]},cat,0.5).states.a;
+const b=Object.keys(cat.assets).filter(k=>cat.assets[k].group==='building').map(k=>[k,one(k).growth]);
+const c=Object.keys(cat.assets).filter(k=>cat.assets[k].group==='cell').map(k=>{const s=one(k);return [k,s.hand_l_y,s.hand_r_y,cat.assets[k].anchors.top[1]];});
+console.log(JSON.stringify({b,c}));""", {"cat": cat})
+        for building, growth in out["b"]:
+            self.assertEqual(growth, 1, building)
+        for cell, left, right, top in out["c"]:
+            self.assertGreater(left, top, cell)    # y âm là đi lên: tay thấp hơn đỉnh đầu
+            self.assertGreater(right, top, cell)
+
+    def test_take_cover_keeps_the_head_below_the_desk_top(self):
+        from bkt_web.remake_vector import disaster_safety_examples
+        story = disaster_safety_examples()[0]
+        a = next(x for sc in story["scenes"] for x in sc["actions"] if x["type"] == "take_cover")
+        from bkt_web.remake_vector import catalog
+        out = self._node(r"""
+const {story,cat,a}=JSON.parse(fs.readFileSync(0,'utf8'));const rows=[];
+for(let t=a.start+(a.end-a.start)*0.3;t<=a.end;t+=0.25){const f=V.sample(story,cat,t);
+  rows.push([V.worldAnchor(cat,f.states[a.actor],'head_top').y,V.worldAnchor(cat,f.states[a.target],'top').y,f.states[a.actor].y]);}
+console.log(JSON.stringify(rows));""", {"story": story, "cat": catalog(), "a": a})
+        self.assertTrue(out)
+        for head, desk, foot in out:
+            self.assertGreater(head, desk)          # đầu thấp hơn mặt bàn
+            self.assertAlmostEqual(foot, 810, delta=0.5)   # không lún xuống sàn
