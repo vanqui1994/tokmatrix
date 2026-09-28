@@ -5,6 +5,10 @@ import { escapeHtml } from "./kit/primitives.mjs";
 
 export const IMAGE_ASSET = Object.freeze({ type: "IMAGE_AI", perScene: 1, aspect: "9:16", scope: "SCENE", fallback: ["reuse_account_cache", "fail"] });
 export const IMAGE_COST = Object.freeze({ aiImagesPerScene: 1, stockClipsPerScene: 0, reusableAssetRatio: 0 });
+// Ảnh cảnh = clip stock (Pexels/Pixabay, bkt_web.stock_video) khi TOKMATRIX_STOCK_VIDEO=1, ảnh AI khi tắt / không có clip
+// (vẫn là IMAGE_AI: slot ảnh luôn có poster hoặc ảnh AI, composition không đổi). aiImagesPerScene = trường hợp xấu nhất.
+export const STOCK_VIDEO_ASSET = Object.freeze({ ...IMAGE_ASSET, stockVideo: true });
+export const STOCK_VIDEO_COST = Object.freeze({ aiImagesPerScene: 1, stockClipsPerScene: 1, reusableAssetRatio: 0 });
 export const TEXT_ASSET = Object.freeze({ type: "TEXT", perScene: 0, aspect: "9:16", scope: "VIDEO", fallback: ["text", "fail"] });
 export const SVG_ASSET = Object.freeze({ type: "SVG", perScene: 0, aspect: "9:16", scope: "VIDEO", fallback: ["svg", "fail"] });
 export const NO_IMAGE_COST = Object.freeze({ aiImagesPerScene: 0, stockClipsPerScene: 0, reusableAssetRatio: 0 });

@@ -7,6 +7,7 @@ import { renderNativeArtifact } from "./native-artifact-renderer.mjs";
 import { directSceneVisuals } from "./visual-director.mjs";
 import { channelCreative } from "../render/native-engine-adapter.mjs";
 import { DEFAULT_CACHE_ROOT, cacheEnabled, findImage, rememberImage } from "./account-cache.mjs";
+import { STOCK_SOURCE, fetchSceneStock, sha256File, stockVideoEnabled } from "./stock-video.mjs";
 
 const PROJECT_DIR = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
 const VISUAL_ARTIFACT_TYPE = {
@@ -24,6 +25,29 @@ export function variantFallbackChain(channel, engineType) {
   } catch {
     return null;
   }
+}
+
+/**
+ * Variant "stock-first" (assetProfile.stockVideo, mục 9.3 docs/MATRIX_VARIANT_SYSTEM_V2.md): cảnh IMAGE_AI thử clip stock
+ * trước khi xếp hàng ảnh AI. Kênh legacy/variant khác: false.
+ */
+export function variantUsesStock(channel, engineType) {
+  try {
+    return channelCreative(channel, engineType)?.variant?.assetProfile?.stockVideo === true;
+  } catch {
+    return false;
+  }
+}
+
+/** Clip stock đã lấy ở lượt trước (job bị hoãn chờ ảnh AI rồi chạy lại): dùng lại nếu file còn nguyên, không gọi CLI lần nữa. */
+async function keptStock(scene, projectDir) {
+  const stock = scene.asset_source === STOCK_SOURCE ? scene.stock : null;
+  if (!stock?.clip_path || !stock.poster_path || !stock.file_sha256) return null;
+  const clip = path.resolve(projectDir, stock.clip_path);
+  const poster = await fs.stat(path.resolve(projectDir, stock.poster_path)).catch(() => null);
+  if (!poster?.isFile() || poster.size === 0) return null;
+  const sha = await sha256File(clip).catch(() => null);
+  return sha === stock.file_sha256 ? stock : null;
 }
 
 /**
@@ -75,6 +99,9 @@ export async function prepareSceneAssets({
   recordArtifact = recordSceneArtifact,
   fallbackHandlers = {},
   accountCacheRoot = DEFAULT_CACHE_ROOT,
+  stockEnabled = stockVideoEnabled(),
+  stockProvider,
+  stockMaterializer,
   dbPath,
   log = () => {},
 } = {}) {
@@ -91,7 +118,47 @@ export async function prepareSceneAssets({
     existingAssets.set(scene.scene_index, await assertExistingAsset(scene, baseDir));
   }
   await fs.mkdir(projectDir, { recursive: true });
-  const imageItems = visuals.filter((scene) => scene.asset_type === "IMAGE_AI").map((scene) => ({
+  const fallbacks = [];
+  // Clip stock trước ảnh AI (chỉ variant stock-first, chỉ khi TOKMATRIX_STOCK_VIDEO=1). Cảnh không có clip xếp hàng ảnh AI
+  // như cũ (Antigravity vẫn là nguồn ảnh đầu tiên) và được ghi vào asset_fallbacks — không bao giờ âm thầm.
+  const useStock = variantUsesStock(channel, engineType);
+  const stockScenes = new Map();
+  if (useStock) {
+    const usedClips = [];
+    const stockOptions = {
+      ...(stockProvider ? { stockProvider } : {}),
+      ...(stockMaterializer ? { materialize: stockMaterializer } : {}),
+    };
+    for (const scene of visuals.filter((item) => item.asset_type === "IMAGE_AI")) {
+      const sceneIndex = scene.scene_index;
+      const kept = await keptStock(scene, projectDir);
+      let miss = null;
+      if (kept) {
+        stockScenes.set(sceneIndex, kept);
+      } else if (!stockEnabled) {
+        miss = "disabled";
+      } else if (scene.stock_miss && scene.stock_miss !== "disabled") {
+        miss = scene.stock_miss;  // lượt trước đã không có clip: không tìm lại mỗi lần job chạy lại
+      } else {
+        const got = await fetchSceneStock({
+          scene, manifest, channelId: channel?.channel_id, projectDir, exclude: usedClips,
+          sceneDir: path.join(projectDir, "scenes", `scene_${String(sceneIndex).padStart(2, "0")}`), ...stockOptions,
+        });
+        if (got.stock) {
+          stockScenes.set(sceneIndex, got.stock);
+          log(`  🎞️ scene ${sceneIndex}: stock ${got.stock.provider}:${got.stock.provider_clip_id} [${got.stock.segment.join("–")}s]`);
+        } else {
+          miss = got.miss;
+          scene.stock_miss = miss;
+          log(`  ↪ scene ${sceneIndex}: no stock clip (${miss}), using the AI image`);
+        }
+      }
+      const stock = stockScenes.get(sceneIndex);
+      if (stock) usedClips.push(`${stock.provider}:${stock.provider_clip_id}`);
+      else fallbacks.push({ scene: sceneIndex, from: "stock_video", to: "IMAGE_AI", reason: miss });
+    }
+  }
+  const imageItems = visuals.filter((scene) => scene.asset_type === "IMAGE_AI" && !stockScenes.has(scene.scene_index)).map((scene) => ({
     key: `scene-${String(scene.scene_index).padStart(2, "0")}-image`,
     prompt: scene.image_prompt,
     negative: scene.negative_prompt,
@@ -104,7 +171,6 @@ export async function prepareSceneAssets({
   const readyImageKeys = new Set(imageStatus.ready || []);
   const exhaustedKeys = new Set(imageStatus.exhausted || []);
   const fallbackChain = variantFallbackChain(channel, engineType);
-  const fallbacks = [];
   // Cache ảnh theo acc (chỉ kênh variant): ảnh AI đã về được giữ; bước reuse_account_cache tìm trong cache của CHÍNH kênh.
   const useAccountCache = Boolean(fallbackChain) && cacheEnabled() && Boolean(channel?.channel_id);
   const usedShas = new Set();
@@ -126,7 +192,21 @@ export async function prepareSceneAssets({
     const visualType = VISUAL_ARTIFACT_TYPE[scene.asset_type];
     if (!required.includes(visualType)) throw new Error(`scene ${sceneIndex} is missing its visual artifact type ${visualType}`);
     const readyTypes = new Set();
-    if (scene.asset_type === "IMAGE_AI") {
+    if (scene.asset_type === "IMAGE_AI" && stockScenes.has(sceneIndex)) {
+      // Cảnh stock: slot ảnh giữ poster (khung cuối của đoạn, cho ảnh phụ/thumbnail + asset QA), clip là segment_video.
+      const stock = stockScenes.get(sceneIndex);
+      scene.stock = stock;
+      scene.asset_path = stock.poster_path;
+      scene.asset_source = STOCK_SOURCE;
+      delete scene.stock_miss;
+      scene.required_artifacts = [...new Set([...scene.required_artifacts, "segment_video"])];
+      for (const [artifactType, relative] of [["image", stock.poster_path], ["segment_video", stock.clip_path]]) {
+        registeredArtifacts.push(await recordArtifact({
+          job_id: jobId, scene_index: sceneIndex, artifact_type: artifactType, file_path: path.resolve(projectDir, relative), dbPath,
+        }));
+        readyTypes.add(artifactType);
+      }
+    } else if (scene.asset_type === "IMAGE_AI") {
       const key = `scene-${String(sceneIndex).padStart(2, "0")}-image`;
       const item = imageItems.find((candidate) => candidate.key === key);
       const filePath = path.join(projectDir, item.dest);
@@ -196,7 +276,7 @@ export async function prepareSceneAssets({
   else updatedManifest.scenes = updatedScenes;
   updatedManifest.asset_pipeline = {
     version: 1,
-    providers: { IMAGE_AI: "antigravity_queue", native: "engine_adapter" },
+    providers: { IMAGE_AI: "antigravity_queue", native: "engine_adapter", ...(useStock ? { STOCK_VIDEO: "stock_ledger" } : {}) },
     scene_count: updatedScenes.length,
     pending_count: pending.length,
     fallbacks,

@@ -4,6 +4,7 @@
 //
 //   node tools/preview-variants.mjs --out /tmp/vp [--engine mystery] [--variant mystery/x] [--langs en,de,ja,ko] [--include-reference]
 //   node tools/preview-variants.mjs --out /tmp/vp --engine newspaper --channels de:3,en:2   # bộ da thật của kênh (YAML)
+//   node tools/preview-variants.mjs --out /tmp/vp --engine wildlife --stock   # cảnh lẻ của variant stock-first = clip MP4 thử
 import { execFileSync } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
@@ -30,6 +31,7 @@ function args(argv) {
     else if (key === "--langs") out.langs = argv[++i].split(",").map((s) => s.trim()).filter(Boolean);
     else if (key === "--include-reference") out.includeReference = true;
     else if (key === "--channels") out.channels = argv[++i];
+    else if (key === "--stock") out.stock = true;
     else throw new Error(`unknown argument ${key}`);
   }
   if (!out.out) throw new Error("--out <dir> is required");
@@ -52,14 +54,26 @@ function placeholderSvg(index, lang) {
 <text x="540" y="1180" font-size="60" text-anchor="middle" fill="rgba(255,255,255,.45)" font-family="sans-serif">PREVIEW ${lang.toUpperCase()}</text></svg>`;
 }
 
+// Clip thử cho cảnh stock (--stock): MP4 câm 1080×1920 24 fps như stock-video.mjs xuất; ngắn hơn cảnh để thấy poster đỡ.
+function testClip(file, seconds, index) {
+  if (!fs.existsSync(file)) {
+    execFileSync("ffmpeg", ["-loglevel", "error", "-y", "-f", "lavfi", "-i", `testsrc2=size=1080x1920:rate=24`, "-t", String(seconds),
+      "-vf", `hue=h=${(index * 53) % 360},format=yuv420p`, "-an", "-c:v", "libx264", "-preset", "veryfast", "-crf", "30", file]);
+  }
+  const poster = file.replace(/\.mp4$/u, ".jpg");
+  if (!fs.existsSync(poster)) execFileSync("ffmpeg", ["-loglevel", "error", "-y", "-sseof", "-0.25", "-i", file, "-frames:v", "1", "-q:v", "4", poster]);
+  return poster;
+}
+
 function silentMp3(file, seconds) {
   if (fs.existsSync(file)) return;
   execFileSync("ffmpeg", ["-loglevel", "error", "-y", "-f", "lavfi", "-i", "anullsrc=r=22050:cl=mono", "-t", String(seconds), "-q:a", "9", file]);
 }
 
-export async function buildPreview({ variant, composition, lang, dna, dnaTag, outDir, channelId }) {
+export async function buildPreview({ variant, composition, lang, dna, dnaTag, outDir, channelId, stock = false }) {
   const sample = variant.sample(lang);
-  const slug = (channelId ? `preview-${channelId}-${variant.engine}` : `preview-${variant.id.replace("/", "-")}-${composition}-${lang}-${dnaTag}`).replace(/_/gu, "-");
+  const withStock = stock && variant.assetProfile?.stockVideo === true;
+  const slug = `${(channelId ? `preview-${channelId}-${variant.engine}` : `preview-${variant.id.replace("/", "-")}-${composition}-${lang}-${dnaTag}`).replace(/_/gu, "-")}${withStock ? "-stock" : ""}`;
   const dir = path.join(outDir, slug);
   fs.mkdirSync(path.join(dir, "assets", "images"), { recursive: true });
   fs.mkdirSync(path.join(dir, "assets", "vo"), { recursive: true });
@@ -71,6 +85,15 @@ export async function buildPreview({ variant, composition, lang, dna, dnaTag, ou
     const voSrc = `assets/vo/line-${i + 1}.mp3`;
     silentMp3(path.join(dir, voSrc), duration);
     const scene = { index: i + 1, id: `scene-${i + 1}`, line, visual_intent: `preview ${i + 1}`, start: Number(start.toFixed(2)), duration, imgSrc, voSrc };
+    if (withStock && i % 2 === 0) {
+      fs.mkdirSync(path.join(dir, "assets", "video"), { recursive: true });
+      const videoSrc = `assets/video/scene-${i + 1}.mp4`;
+      const clipSeconds = Number((duration * 0.8).toFixed(1));
+      const poster = testClip(path.join(dir, videoSrc), clipSeconds, i + 1);
+      scene.imgSrc = path.relative(dir, poster);
+      scene.videoSrc = videoSrc;
+      scene.videoDuration = clipSeconds;
+    }
     start += duration + 0.3;
     return scene;
   });
@@ -131,8 +154,8 @@ export async function main(argv = process.argv.slice(2)) {
   for (const variant of variants) {
     for (const composition of Object.keys(variant.visualProfile.compositions)) {
       for (const lang of opts.langs.filter((code) => variant.compatibility.countries.includes(code))) {
-        entries.push(await buildPreview({ variant, composition, lang, dna: defaultDna(variant, composition), dnaTag: "a", outDir: opts.out }));
-        entries.push(await buildPreview({ variant, composition, lang, dna: altDna(variant, composition), dnaTag: "b", outDir: opts.out }));
+        entries.push(await buildPreview({ variant, composition, lang, dna: defaultDna(variant, composition), dnaTag: "a", outDir: opts.out, stock: opts.stock }));
+        entries.push(await buildPreview({ variant, composition, lang, dna: altDna(variant, composition), dnaTag: "b", outDir: opts.out, stock: opts.stock }));
       }
     }
   }
