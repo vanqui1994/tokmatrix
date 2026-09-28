@@ -12,13 +12,15 @@ from . import proc, store
 
 try:
     from bkt_web import matrix_db
+    from bkt_web import upload_states as us
 except ImportError:
     import matrix_db
+    import upload_states as us
 
 ShouldHalt = Callable[[], bool]
 SAFE_NAME = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]{0,200}$")
 # Task còn cần file MP4 (đang chờ, đang đăng, cần người kiểm tra).
-ACTIVE_TASK_STATUSES = ("QUEUED", "PENDING", "UPLOADING", "WAITING_RENDER", "NEEDS_CHECK")
+ACTIVE_TASK_STATUSES = (us.QUEUED, us.PENDING, us.UPLOADING, us.WAITING_RENDER, us.NEEDS_CHECK)
 SSH_OPTS = ["-o", "BatchMode=yes", "-o", "ConnectTimeout=20"]
 BACKUP_TIMEOUT_SECONDS = 600
 
@@ -110,11 +112,11 @@ def _mark_archived(task_ids: List[int]) -> None:
 
 def _slug_still_needed(conn, slug: str, cutoff: int) -> bool:
     """Còn task khác cần MP4 này (chưa đăng xong, hoặc mới đăng chưa hết hạn lưu)."""
-    marks = ",".join("?" for _ in ACTIVE_TASK_STATUSES)
+    marks = us.sql_marks(ACTIVE_TASK_STATUSES)
     row = conn.execute(
         f"SELECT 1 FROM upload_tasks WHERE video_slug=? AND (status IN ({marks}) "
-        "OR (status='SUCCESS' AND uploaded_at >= ?)) LIMIT 1",
-        (slug, *ACTIVE_TASK_STATUSES, cutoff),
+        "OR (status=? AND uploaded_at >= ?)) LIMIT 1",
+        (slug, *ACTIVE_TASK_STATUSES, us.SUCCESS, cutoff),
     ).fetchone()
     return row is not None
 
@@ -146,9 +148,9 @@ def cleanup_posted_videos(should_halt: ShouldHalt = _never) -> Dict[str, Any]:
     conn = store.channels_db()
     try:
         rows = conn.execute(
-            "SELECT id, video_slug FROM upload_tasks WHERE status='SUCCESS' AND uploaded_at > 0 "
+            "SELECT id, video_slug FROM upload_tasks WHERE status=? AND uploaded_at > 0 "
             "AND uploaded_at < ? AND COALESCE(archived_at, 0) = 0 AND COALESCE(video_slug, '') != ''",
-            (cutoff,),
+            (us.SUCCESS, cutoff),
         ).fetchall()
         by_slug: Dict[str, List[int]] = {}
         for task_id, slug in rows:
@@ -198,8 +200,8 @@ def cleanup_failed_jobs(should_halt: ShouldHalt = _never) -> Dict[str, Any]:
         used = {
             job["video_slug"] for job in jobs
             if conn.execute(
-                "SELECT 1 FROM upload_tasks WHERE video_slug=? AND status NOT IN ('ERROR','CANCELLED') LIMIT 1",
-                (job["video_slug"],),
+                "SELECT 1 FROM upload_tasks WHERE video_slug=? AND status NOT IN (?,?) LIMIT 1",
+                (job["video_slug"], us.ERROR, us.CANCELLED),
             ).fetchone()
         }
     finally:
