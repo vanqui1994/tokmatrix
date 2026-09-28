@@ -14,10 +14,12 @@ from typing import Any, Dict, List, Optional
 try:
     from bkt_web.db_utils import connect_db
     from bkt_web import chocode_tiktok
+    from bkt_web import upload_states as us
     from bkt_web.profile_session import get_setting
 except ImportError:
     from db_utils import connect_db
     import chocode_tiktok
+    import upload_states as us
     from profile_session import get_setting
 
 logger = logging.getLogger("needs_check_verifier")
@@ -99,7 +101,7 @@ def verify_once(task_id: int, db_path: Optional[Path] = None) -> Dict[str, Any]:
         if not row:
             return {"success": False, "error": "Task không tồn tại"}
         task = dict(zip([d[0] for d in cur.description], row))
-        if task.get("status") != "NEEDS_CHECK":
+        if task.get("status") != us.NEEDS_CHECK:
             return {"success": False, "error": "Task không còn ở NEEDS_CHECK"}
         username = task.get("_username") or ""
         try:
@@ -118,22 +120,22 @@ def verify_once(task_id: int, db_path: Optional[Path] = None) -> Dict[str, Any]:
             note = f"Tìm thấy video {vid} lúc {time.strftime('%Y-%m-%d %H:%M', time.localtime(_created(video)))}"
             if get_setting("needs_check_auto_confirm", "false", db_path) == "true":
                 conn.execute(
-                    "UPDATE upload_tasks SET status='SUCCESS', uploaded_at=?, result_url=?, error_message='', "
+                    "UPDATE upload_tasks SET status=?, uploaded_at=?, result_url=?, error_message='', "
                     "published_video_id=?, verify_note=?, next_verify_at=0 "
-                    "WHERE id=? AND status='NEEDS_CHECK'",
-                    (int(time.time()), url, vid, note + " — tự xác nhận", task_id),
+                    "WHERE id=? AND status=?",
+                    (us.SUCCESS, int(time.time()), url, vid, note + " — tự xác nhận", task_id, us.NEEDS_CHECK),
                 )
             else:
                 conn.execute(
                     "UPDATE upload_tasks SET published_video_id=?, verify_note=?, next_verify_at=0 "
-                    "WHERE id=? AND status='NEEDS_CHECK'",
-                    (vid, note, task_id),
+                    "WHERE id=? AND status=?",
+                    (vid, note, task_id, us.NEEDS_CHECK),
                 )
         elif len(candidates) > 1:
             note = "Nhiều video khớp, kiểm tra tay: " + ", ".join(_video_id(v) for v in candidates)
             conn.execute(
-                "UPDATE upload_tasks SET verify_note=?, next_verify_at=0 WHERE id=? AND status='NEEDS_CHECK'",
-                (note, task_id),
+                "UPDATE upload_tasks SET verify_note=?, next_verify_at=0 WHERE id=? AND status=?",
+                (note, task_id, us.NEEDS_CHECK),
             )
         else:
             attempts = int(task.get("verify_attempts") or 0) + 1
@@ -141,8 +143,8 @@ def verify_once(task_id: int, db_path: Optional[Path] = None) -> Dict[str, Any]:
             note = FINAL_NOTE if not next_at else f"Chưa thấy video (lần {attempts})"
             conn.execute(
                 "UPDATE upload_tasks SET verify_attempts=?, next_verify_at=?, verify_note=? "
-                "WHERE id=? AND status='NEEDS_CHECK'",
-                (attempts, next_at, note, task_id),
+                "WHERE id=? AND status=?",
+                (attempts, next_at, note, task_id, us.NEEDS_CHECK),
             )
         conn.commit()
         return {"success": True, "matches": len(candidates)}
@@ -156,9 +158,9 @@ def schedule_new(db_path: Optional[Path] = None) -> int:
     try:
         cur = conn.execute(
             "UPDATE upload_tasks SET next_verify_at = clicked_post_at + ? "
-            "WHERE status='NEEDS_CHECK' AND clicked_post_at>0 AND COALESCE(next_verify_at,0)=0 "
+            "WHERE status=? AND clicked_post_at>0 AND COALESCE(next_verify_at,0)=0 "
             "AND COALESCE(verify_attempts,0)=0 AND COALESCE(verify_note,'')=''",
-            (VERIFY_DELAYS[0],),
+            (VERIFY_DELAYS[0], us.NEEDS_CHECK),
         )
         conn.commit()
         return cur.rowcount
@@ -174,9 +176,9 @@ def run_once(db_path: Optional[Path] = None, limit: int = 5) -> int:
     conn = connect_db(db_path)
     try:
         ids = [r[0] for r in conn.execute(
-            "SELECT id FROM upload_tasks WHERE status='NEEDS_CHECK' AND clicked_post_at>0 "
+            "SELECT id FROM upload_tasks WHERE status=? AND clicked_post_at>0 "
             "AND next_verify_at BETWEEN 1 AND ? ORDER BY next_verify_at LIMIT ?",
-            (int(time.time()), limit),
+            (us.NEEDS_CHECK, int(time.time()), limit),
         ).fetchall()]
     finally:
         conn.close()
