@@ -2,7 +2,7 @@ import unittest
 
 from bkt_web import upload_states as us
 from bkt_web import publish_flow
-from bkt_web.autopilot import cleanup
+from bkt_web.autopilot import cleanup, dupguard, scheduler
 
 
 class UploadStateVocabularyTest(unittest.TestCase):
@@ -20,6 +20,11 @@ class UploadStateVocabularyTest(unittest.TestCase):
         self.assertEqual(
             cleanup.ACTIVE_TASK_STATUSES,
             (us.QUEUED, us.PENDING, us.UPLOADING, us.WAITING_RENDER, us.NEEDS_CHECK),
+        )
+        self.assertEqual(scheduler.SCHEDULE_COUNTED_STATUSES, us.SLOT_BLOCKING_STATES)
+        self.assertEqual(
+            dupguard.COMPARE_STATUSES,
+            (us.SUCCESS, us.NEEDS_CHECK, us.UPLOADING, *us.QUEUE_STATES),
         )
 
     def test_sql_marks_matches_group_size(self):
