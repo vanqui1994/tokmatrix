@@ -11,7 +11,7 @@ from pathlib import Path
 import httpx
 
 from bkt_web import vpn_manager
-from bkt_web import server as server_module
+from bkt_web import dashboard_routes
 from bkt_web.ai_vision import encode_screenshot
 from bkt_web.server import app, build_ffmpeg_render_cmd
 
@@ -72,12 +72,7 @@ class DashboardUploadStateTest(unittest.TestCase):
                     "INSERT INTO upload_tasks (status, error_message, created_at) VALUES (?,?,?)",
                     [("ERROR", "boom", 1), ("NEEDS_CHECK", "verify", 2), ("WAITING_RENDER", "", 3)],
                 )
-            old_db = server_module.DB_PATH
-            server_module.DB_PATH = db
-            try:
-                upload = server_module.api_dashboard_summary()["data"]["upload"]
-            finally:
-                server_module.DB_PATH = old_db
+            upload = dashboard_routes.build_dashboard_summary(db)["data"]["upload"]
         self.assertEqual(upload["error"], 1)
         self.assertEqual(upload["needs_check"], 1)
         self.assertEqual(upload["waiting_render"], 1)
