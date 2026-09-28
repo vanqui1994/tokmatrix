@@ -38,10 +38,10 @@ async function build(variant, composition, lang, { extras } = {}) {
   });
 }
 
-test("survival registers 7 active TEXT variants with 2 hand-built compositions each and ≥ 4/6 differing axes", () => {
+test("survival registers 8 active TEXT variants (7 base + original look) with 2 hand-built compositions each and ≥ 4/6 differing axes", () => {
   assert.deepEqual(validateRegistry().errors, []);
   const list = variants();
-  assert.equal(list.length, 7);
+  assert.equal(list.length, 8);
   for (const variant of list) {
     assert.equal(variant.status, "active");
     assert.equal(variant.assetProfile.type, "TEXT");

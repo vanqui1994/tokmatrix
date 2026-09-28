@@ -245,7 +245,7 @@ function nameRegex(names, flags) {
 }
 
 /** Lời đọc đã escape, tên A/B (≥ 3 ký tự) được bọc màu của bên đó. */
-function captionHtml(line, nameA, nameB) {
+export function captionHtml(line, nameA, nameB) {
   const names = [[nameA, "kw-a"], [nameB, "kw-b"]].filter(([name]) => clean(name).length >= 3)
     .sort((x, y) => y[0].length - x[0].length);
   const text = clean(line);
@@ -257,7 +257,7 @@ function captionHtml(line, nameA, nameB) {
   }).join("");
 }
 
-function mentions(line, name) {
+export function mentions(line, name) {
   return clean(name).length >= 3 && nameRegex([name], "iu").test(clean(line));
 }
 

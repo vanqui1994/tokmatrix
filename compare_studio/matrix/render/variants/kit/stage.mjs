@@ -5,7 +5,7 @@
 // design = {
 //   header:  { style, region, align? } | null
 //   visual:  { frame, region, fit?, filter?, sub?(scene,i), label?(scene,i) } | null
-//   text:    { style, region, size?, align?, enter? } | null
+//   text:    { style, region, size?, align?, enter?, rich?(scene,i) → html đã escape } | null
 //   tag:     { style, x, y } | null
 //   decor:   [{ kind, layer?: "under"|"over", ...opts }]
 //   vars:    { "--scope-ink": "#…" }                 // biến vật liệu riêng variant
@@ -14,6 +14,7 @@
 //   overlay?: (ctx) → { html, css, tweens }          // phần tử xuyên suốt (bảng tier, tỉ số…) — track 4
 //   underlay?: (ctx) → { html, css, tweens }         // phần tử xuyên suốt nằm DƯỚI cảnh (lưới, bản đồ nền…) — trong clip nền
 //   css?:    string
+//   fontFamilies?: ["JetBrains Mono", …]            // họ font offline thêm ngoài font thân của DNA (kit/fonts.mjs)
 // }
 import { backgroundCss, backgroundIsDark } from "./backgrounds.mjs";
 import { decorHtml } from "./decor.mjs";
@@ -210,7 +211,7 @@ export function buildStage(ctx, design, { ui, cfg = {} }) {
       }
     }
     const text = design.text
-      ? textHtml(design.text.style, { id: `v-text-${idx}`, region: design.text.region, text: scene.line, rng, script, size: design.text.size, align: design.text.align })
+      ? textHtml(design.text.style, { id: `v-text-${idx}`, region: design.text.region, text: scene.line, html: design.text.rich ? design.text.rich(scene, i) : undefined, rng, script, size: design.text.size, align: design.text.align })
       : "";
     if (design.text) tweens.push(...textEnterTweens(design.text.enter, { lineId: `v-text-${idx}-line`, boxId: `v-text-${idx}`, at: scene.visualStart, duration: scene.visualDuration }));
     const tag = tagHtml(design.tag, { i, n, ui, lang, id: `v-tag-${idx}` });
@@ -283,5 +284,6 @@ ${design.css || ""}${stockScenes ? `\n${STOCK_CSS}` : ""}`;
     timelineJs: timelineJs(tweens),
     creative: observability,
   });
-  return { html, creative: observability, cfg: { variant_id: creative.variant.id, composition: creative.composition.id, scenes: n, ...cfg } };
+  const out = { html, creative: observability, cfg: { variant_id: creative.variant.id, composition: creative.composition.id, scenes: n, ...cfg } };
+  return design.fontFamilies?.length ? { ...out, fontFamilies: [...design.fontFamilies] } : out;
 }

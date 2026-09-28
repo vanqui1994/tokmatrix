@@ -41,13 +41,14 @@ export function textCss(styles) {
 /**
  * Khối chữ của một cảnh. `script` = "latin" | "ja" | "ko" (từ theme nước) — chữ dọc chỉ bật cho CJK.
  * Trả HTML; phần tử chữ có id `${id}-line` để timeline animate chữ (không animate .clip).
+ * `html` (tuỳ chọn) = chữ đã escape có span tô màu (vd tên A/B của compare/original); không có → escape `text`.
  */
-export function textHtml(style, { id, region, text, rng, script = "latin", size, align = "left", min = 22 }) {
+export function textHtml(style, { id, region, text, html, rng, script = "latin", size, align = "left", min = 22 }) {
   const def = STYLES[style];
   if (!def) throw new Error(`unknown text style ${style}`);
   const tilt = def.tilt ? rngRange(rng, -def.tilt, def.tilt, 2) : 0;
   const cjk = script === "ja" || script === "ko";
   const classes = `v-text t-${style}${cjk ? " is-cjk" : ""}`;
   const fontSize = size || def.size;
-  return `<div class="${classes}" id="${id}" style="${regionStyle(region, `${tilt ? `transform:rotate(${tilt}deg);` : ""}text-align:${align}`)}"><p class="v-line" id="${id}-line" style="font-size:${fontSize}px" data-fit data-fit-min="${min}">${escapeHtml(text)}</p></div>`;
+  return `<div class="${classes}" id="${id}" style="${regionStyle(region, `${tilt ? `transform:rotate(${tilt}deg);` : ""}text-align:${align}`)}"><p class="v-line" id="${id}-line" style="font-size:${fontSize}px" data-fit data-fit-min="${min}">${html ?? escapeHtml(text)}</p></div>`;
 }

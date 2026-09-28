@@ -13,7 +13,7 @@ import { escapeHtml } from "../matrix/render/variants/kit/primitives.mjs";
 
 const LANGS = ["en", "de", "ja", "ko", "vi"];
 const DURATIONS = [4.6, 3.9, 5.8, 4.4, 5.1, 4.2];
-const IDS = ["compare/boxing-ring", "compare/scale-balance", "compare/split-screen", "compare/card-game", "compare/race-track", "compare/courtroom", "compare/tier-duel"];
+const IDS = ["compare/boxing-ring", "compare/scale-balance", "compare/split-screen", "compare/card-game", "compare/race-track", "compare/courtroom", "compare/tier-duel", "compare/original"];
 const variants = () => listVariants("compare");
 
 function scenesFor(lines) {
@@ -51,7 +51,7 @@ function stressSample() {
   return { title: "Donaudampfschiff gegen Rindfleischetikett", lines, extras: { subject_a: { name: names[0].slice(0, 28), tag: "Sehr lange Bezeichnung" }, subject_b: { name: "Rindfleischetikett", tag: "Gesetzestext" }, rounds } };
 }
 
-test("compare registers 7 active SVG variants with 2 compositions each and ≥ 4/6 differing axes", () => {
+test("compare registers 8 active SVG variants (7 base + original look) with 2 compositions each and ≥ 4/6 differing axes", () => {
   assert.deepEqual(validateRegistry().errors, []);
   const list = variants();
   assert.deepEqual(list.map((v) => v.id).sort(), [...IDS].sort());

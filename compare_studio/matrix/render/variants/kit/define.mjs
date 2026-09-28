@@ -10,12 +10,13 @@ const LANGS = ["en", "de", "ja", "ko", "vi", "fr"];
  * @param {Record<string, {axes, describe, design: (ctx) => object}>} spec.compositions
  * @param {Record<string, object>} spec.ui   chữ UI theo ngôn ngữ (thiếu → en)
  * @param {(lang) => {title, lines, extras?}} spec.sample
+ * @param {{mascot: boolean}} [spec.slots]  chỗ cho linh vật nước (theme.mascot) — variant tự đặt linh vật trong design
  */
 export function defineVariant(spec) {
   const {
     id, engine, name_vi, version = 1, status = "active", topicPacks, layoutFamily, axes, compositions, allowed,
     audio = { gender: "any", fx: ["none"] }, asset, cost, countries = ["en", "de", "ja", "ko", "vi"], niches = null,
-    ui, sample, cfg,
+    ui, sample, cfg, slots = { mascot: false },
   } = spec;
   if (!ui?.en) throw new Error(`${id}: ui.en is required`);
   const uiFor = (lang) => ({ ...ui.en, ...(ui[String(lang || "").slice(0, 2)] || {}) });
@@ -34,7 +35,7 @@ export function defineVariant(spec) {
   return Object.freeze({
     id, version, engine, name_vi, status,
     contentProfile: { topicPacks },
-    visualProfile: { layoutFamily, fingerprintAxes: axes, compositions: visualCompositions, allowed: allowedAxes, slots: { mascot: false } },
+    visualProfile: { layoutFamily, fingerprintAxes: axes, compositions: visualCompositions, allowed: allowedAxes, slots },
     audioProfile: audio,
     assetProfile: asset,
     costProfile: cost,
