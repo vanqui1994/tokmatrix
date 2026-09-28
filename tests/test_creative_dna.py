@@ -13,6 +13,22 @@ CHANNELS = ["ancient_mythology_01", "ancient_mythology_02", "ancient_mythology_0
             "folklore_legends_01", "folklore_legends_02", "ocean_mysteries_01"]
 
 
+def pre_canary_copy(dst: Path) -> Path:
+    """Bản sao config của repo ở trạng thái TRƯỚC canary: bỏ variant_id/dna của kênh đã apply (C1 từ 27/09), để test
+    apply/canary luôn làm việc trên kênh legacy, không phụ thuộc repo đã apply cohort nào."""
+    import shutil
+    import yaml
+    shutil.copytree(cd.CONFIG_DIR, dst)
+    for path in (dst / "channels").glob("*.yaml"):
+        data = yaml.safe_load(path.read_text(encoding="utf-8"))
+        creative = data.get("creative") or {}
+        if creative.pop("variant_id", None):
+            creative.pop("dna", None)
+            data["config_version"] = int(data["config_version"]) + 1
+            path.write_text(yaml.safe_dump(data, allow_unicode=True, sort_keys=False), encoding="utf-8")
+    return dst
+
+
 def tree_hash(path: Path) -> str:
     digest = hashlib.sha256()
     for file in sorted(path.rglob("*")):
@@ -146,8 +162,7 @@ class CreativeDnaApplyTest(unittest.TestCase):
         import tempfile, shutil
         self.tmp = Path(tempfile.mkdtemp())
         self.addCleanup(shutil.rmtree, self.tmp, True)
-        self.config = self.tmp / "config"
-        shutil.copytree(cd.CONFIG_DIR, self.config)
+        self.config = pre_canary_copy(self.tmp / "config")
         self.repo_hash = tree_hash(cd.CONFIG_DIR)
         registry = cd.load_registry(include_reference=False)
         self.plan = cd.plan_assignments(cd.load_channels(self.config), registry, cd.load_niche_engines(self.config), None, CHANNELS)
@@ -206,7 +221,14 @@ class CreativeDnaCanaryTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.plan = cd.plan_assignments(cd.load_channels(), cd.load_registry(), cd.load_niche_engines())
+        import tempfile
+        cls._tmp = tempfile.TemporaryDirectory()
+        cls.config = pre_canary_copy(Path(cls._tmp.name) / "config")
+        cls.plan = cd.plan_assignments(cd.load_channels(cls.config), cd.load_registry(), cd.load_niche_engines(cls.config))
+
+    @classmethod
+    def tearDownClass(cls):
+        cls._tmp.cleanup()
 
     def test_c1_takes_at_most_one_account_per_engine_and_country_and_is_deterministic(self):
         c1 = cd.canary_plan(self.plan, "C1")
@@ -267,8 +289,7 @@ class CreativeDnaCanaryTest(unittest.TestCase):
         import tempfile, shutil
         tmp = Path(tempfile.mkdtemp())
         self.addCleanup(shutil.rmtree, tmp, True)
-        config = tmp / "config"
-        shutil.copytree(cd.CONFIG_DIR, config)
+        config = pre_canary_copy(tmp / "config")
         c1 = cd.canary_plan(self.plan, "C1")
         result = cd.apply_plan(c1, c1["plan_sha256"], config_dir=config, backup_root=tmp / "b", preflight=False)
         self.assertEqual(result["applied"], len(c1["rows"]))
