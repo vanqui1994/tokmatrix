@@ -7,6 +7,7 @@ import sqlite3
 import tempfile
 import unittest
 from pathlib import Path
+from types import SimpleNamespace
 
 import httpx
 
@@ -58,6 +59,23 @@ class RouteCollisionTest(unittest.IsolatedAsyncioTestCase):
     async def test_dashboard_router_is_mounted(self):
         response = await self.client.get("/api/dashboard/summary")
         self.assertEqual(response.status_code, 200)
+
+
+class LoginRateKeyTest(unittest.TestCase):
+    def _request(self, peer, real_ip=""):
+        return SimpleNamespace(client=SimpleNamespace(host=peer), headers={"x-real-ip": real_ip})
+
+    def test_local_reverse_proxy_uses_valid_real_ip(self):
+        from bkt_web.server import _login_rate_key
+        self.assertEqual(_login_rate_key(self._request("127.0.0.1", "203.0.113.9")), "203.0.113.9")
+
+    def test_direct_peer_cannot_spoof_real_ip_header(self):
+        from bkt_web.server import _login_rate_key
+        self.assertEqual(_login_rate_key(self._request("198.51.100.7", "203.0.113.9")), "198.51.100.7")
+
+    def test_invalid_proxy_header_falls_back_to_peer(self):
+        from bkt_web.server import _login_rate_key
+        self.assertEqual(_login_rate_key(self._request("127.0.0.1", "not-an-ip")), "127.0.0.1")
 
 
 class DashboardUploadStateTest(unittest.TestCase):
