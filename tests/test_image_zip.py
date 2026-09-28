@@ -44,6 +44,12 @@ class GalleryZipTest(unittest.TestCase):
         self.assertEqual(ctx.exception.status_code, 413)
         self.assertEqual(list(self.storage.glob("*.zip")), [])
 
+    def test_startup_cleanup_removes_interrupted_archives(self):
+        stale = self.storage / "tokmatrix_gallery_stale.zip"
+        stale.write_bytes(b"partial")
+        self.assertEqual(image_routes._cleanup_stale_gallery_zips(), 1)
+        self.assertFalse(stale.exists())
+
 
 if __name__ == "__main__":
     unittest.main()
