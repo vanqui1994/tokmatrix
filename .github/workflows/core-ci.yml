@@ -55,6 +55,9 @@ jobs:
             tests.test_tiktok_publisher_confirmation \
             tests.test_publisher_profile \
             tests.test_needs_check_verifier \
+            tests.test_profile_settings \
+            tests.test_notify \
+            tests.test_tiktok_dup_bot \
             tests.test_script_bridge \
             tests.test_webauth \
             tests.test_image_zip \
