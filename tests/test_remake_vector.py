@@ -2661,3 +2661,59 @@ console.log(JSON.stringify(rows));""", {"story": story, "cat": catalog(), "a": a
         for head, desk, foot in out:
             self.assertGreater(head, desk)          # đầu thấp hơn mặt bàn
             self.assertAlmostEqual(foot, 810, delta=0.5)   # không lún xuống sàn
+
+
+class SharedActionContactTest(unittest.TestCase):
+    """Plan §18.3: ride / haul / carry_together giữ điểm chạm suốt động tác (hold giữ trạng thái cuối)."""
+    _node = PackContractTest._node
+
+    @staticmethod
+    def _story(chars, poses, actions, duration=5):
+        from bkt_web.remake_vector import validate_story
+        return validate_story({"id": "contact", "renderer": "native-vector-v1", "duration": duration, "characters": chars,
+                               "scenes": [{"renderer": "native-vector-v1", "kind": "scene", "start_time": 0, "end_time": duration,
+                                           "characters_present": list(poses), "poses": poses, "actions": actions, "background": {"preset": "street"}}]})
+
+    def test_ride_keeps_the_hip_on_the_seat_while_the_car_drives(self):
+        from bkt_web.remake_vector import catalog
+        story = self._story([{"id": "kid", "asset": "chibi_kid"}, {"id": "car", "asset": "car"}],
+                            {"kid": [{"time": 0, "x": 60, "y": 810, "height": 150}],
+                             "car": [{"time": 0, "x": 120, "y": 810, "height": 200}, {"time": 5, "x": 430, "y": 810, "height": 200}]},
+                            [{"type": "ride", "actor": "kid", "target": "car", "start": 0.5, "end": 4}])
+        out = self._node(r"""
+const {story,cat}=JSON.parse(fs.readFileSync(0,'utf8'));const d=[];
+for(let t=0.5;t<=4.8;t+=0.25){const f=V.sample(story,cat,t);const h=V.worldAnchor(cat,f.states.kid,'hip'),s=V.worldAnchor(cat,f.states.car,'seat_1');d.push(Math.hypot(h.x-s.x,h.y-s.y));}
+console.log(JSON.stringify(d));""", {"story": story, "cat": catalog()})
+        self.assertLess(max(out), 6)   # cả sau end (hold) người vẫn ngồi trên xe đang chạy
+
+    def test_haul_puts_every_hand_on_the_rope_and_moves_the_load(self):
+        from bkt_web.remake_vector import catalog
+        story = self._story([{"id": "cart", "asset": "horse_cart"}, {"id": "a", "asset": "chibi_boy"}, {"id": "b", "asset": "chibi_girl"}],
+                            {"cart": [{"time": 0, "x": 150, "y": 810, "height": 180}],
+                             "a": [{"time": 0, "x": 320, "y": 810, "height": 200}], "b": [{"time": 0, "x": 400, "y": 810, "height": 200}]},
+                            [{"type": "haul", "actor": "a", "helpers": ["b"], "target": "cart", "start": 0.5, "end": 4, "distance": 90}])
+        out = self._node(r"""
+const {story,cat}=JSON.parse(fs.readFileSync(0,'utf8'));const rows=[];
+for(let t=0.6;t<=4.6;t+=0.25){const f=V.sample(story,cat,t),r=f.actions.find(a=>a.type==='haul')._rope;
+  const onRope=p=>{const [x1,y1,x2,y2]=r;const k=Math.max(0,Math.min(1,((p.x-x1)*(x2-x1)+(p.y-y1)*(y2-y1))/((x2-x1)**2+(y2-y1)**2)));return Math.hypot(p.x-(x1+k*(x2-x1)),p.y-(y1+k*(y2-y1)));};
+  const d=[];for(const id of ['a','b'])for(const h of ['hand_l','hand_r'])d.push(onRope(V.worldAnchor(cat,f.states[id],h)));rows.push({t,d:Math.max(...d),cart:f.states.cart.x});}
+console.log(JSON.stringify(rows));""", {"story": story, "cat": catalog()})
+        for row in out:
+            self.assertLess(row["d"], 12, row)
+        self.assertAlmostEqual(out[-1]["cart"], 150 + 90, delta=0.5)   # hold: xe dừng ở chỗ đã kéo tới
+
+    def test_carry_together_holds_both_ends_with_both_hands(self):
+        from bkt_web.remake_vector import catalog
+        story = self._story([{"id": "a", "asset": "chibi_boy"}, {"id": "b", "asset": "chibi_girl"}, {"id": "box", "asset": "barrel"}],
+                            {"a": [{"time": 0, "x": 180, "y": 810, "height": 220}, {"time": 5, "x": 300, "y": 810, "height": 220}],
+                             "b": [{"time": 0, "x": 330, "y": 810, "height": 220}, {"time": 5, "x": 450, "y": 810, "height": 220}],
+                             "box": [{"time": 0, "x": 255, "y": 810, "height": 110}]},
+                            [{"type": "carry_together", "actor": "a", "helper": "b", "target": "box", "start": 0.5, "end": 4.5}])
+        out = self._node(r"""
+const {story,cat}=JSON.parse(fs.readFileSync(0,'utf8'));const rows=[];const A=cat.assets.barrel.anchors,sc=110/100;
+for(let t=1.4;t<=4.9;t+=0.25){const f=V.sample(story,cat,t),o=f.states.box;
+  const ends=A.grip_l?[V.worldAnchor(cat,o,'grip_l'),V.worldAnchor(cat,o,'grip_r')]:[{x:o.x-40*sc,y:o.y-50*sc},{x:o.x+40*sc,y:o.y-50*sc}];
+  const d=[];for(const [id,e] of [['a',ends[0]],['b',ends[1]]])for(const h of ['hand_l','hand_r']){const p=V.worldAnchor(cat,f.states[id],h);d.push(Math.hypot(p.x-e.x,p.y-e.y));}
+  rows.push(Math.max(...d));}
+console.log(JSON.stringify(rows));""", {"story": story, "cat": catalog()})
+        self.assertLess(max(out), 10)

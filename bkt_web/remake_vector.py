@@ -391,6 +391,9 @@ def validate_vector_scenes(characters, scenes):
                 else {"pop_at", "helpers", "lift_amount"} if kind == "tug"
                 else {"step"} if kind == "wash_hands"
                 else {"tool"} if kind in TOOL_ACTIONS
+                else {"seat"} if kind == "ride"
+                else {"helpers", "distance"} if kind == "haul"
+                else {"helper"} if kind == "carry_together"
                 else {"exercise_type"} if kind == "exercise"
                 else {"food_id"} if kind == "eat"
                 else {"locale"} if kind == "wait_signal"
@@ -404,6 +407,14 @@ def validate_vector_scenes(characters, scenes):
                 if "helpers" in action:
                     if not isinstance(action["helpers"], list) or any(h not in cast for h in action["helpers"]):
                         raise ValueError("tug.helpers phải là danh sách nhân vật hợp lệ")
+            if kind == "haul" and "helpers" in action and (not isinstance(action["helpers"], list) or any(h not in cast for h in action["helpers"])):
+                raise ValueError("haul.helpers phải là danh sách nhân vật hợp lệ")
+            if kind == "haul" and "distance" in action:
+                _number(action["distance"], -600, 600, "haul.distance")
+            if kind == "carry_together" and "helper" in action and action["helper"] not in cast:
+                raise ValueError("carry_together cần helper là nhân vật khiêng cùng")
+            if kind == "ride" and "seat" in action and action["seat"] not in cat["assets"][cast[action["target"]]["asset"]]["anchors"]:
+                raise ValueError("ride.seat không có trên xe")
             if "tool" in action:
                 tool = cast.get(action["tool"])
                 if not tool or tool.get("attach_to", {}).get("id") != action.get("actor"):

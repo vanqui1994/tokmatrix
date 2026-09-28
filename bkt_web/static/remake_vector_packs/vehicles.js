@@ -29,7 +29,7 @@
       width: 80, height: 50,
       color: '#0284c7',
       wheels: [[-28, 15, 14], [28, 15, 14]],
-      seats: [[-6, -34]],
+      seats: [[-6, -28]],  // yên xe (vẽ ở y −28 trước khi nhấc)
       hitch: [35, -5],
       topics: ['safety', 'jobs']
     },
@@ -303,7 +303,7 @@
       // Ô tô con mui kín
       path(ctx, `M -50 8 L -48 -10 Q -40 -16 -24 -16 L -16 -38 Q 0 -44 20 -38 L 36 -16 Q 48 -16 52 -10 L 50 8 Z`, baseCol, INK, 2.0);
       // Cửa sổ
-      path(ctx, `M -12 -34 L 14 -34 L 28 -18 L -18 -18 Z`, '#7dd3fc', INK, 1.2);
+      path(ctx, `M -12 -34 L 14 -34 L 28 -18 L -18 -18 Z`, 'rgba(125, 211, 252, 0.55)', INK, 1.2);
       // Đèn pha
       ellipse(ctx, 48, -4, 3, 5, '#fef08a', INK, 1.0);
     } else if (id === 'school_bus' || id === 'city_bus') {
@@ -311,7 +311,7 @@
       path(ctx, `M -65 8 L -65 -48 Q -60 -58 -45 -58 L 50 -58 Q 66 -58 66 -35 L 66 8 Z`, baseCol, INK, 2.2);
       // Dãy cửa sổ kính
       for (let bx = -50; bx <= 35; bx += 22) {
-        path(ctx, `M ${bx} -48 L ${bx + 16} -48 L ${bx + 16} -28 L ${bx} -28 Z`, '#bae6fd', INK, 1.2);
+        path(ctx, `M ${bx} -48 L ${bx + 16} -48 L ${bx + 16} -28 L ${bx} -28 Z`, 'rgba(186, 230, 253, 0.55)', INK, 1.2);
       }
       // Dải sọc bên hông
       line(ctx, [[-64, -14], [65, -14]], '#1e293b', 2.0);
@@ -342,11 +342,11 @@
       path(ctx, `M -36 12 L -36 -52 L 2 -52 L 2 -24 L 44 -24 L 44 8 Z`, baseCol, INK, 2.2);
       // Ống khói
       line(ctx, [[28, -24], [28, -50]], '#0f172a', 3.0);
-      ellipse(ctx, -14, -38, 12, 10, '#bae6fd', INK, 1.2);
+      ellipse(ctx, -14, -38, 12, 10, 'rgba(186, 230, 253, 0.55)', INK, 1.2);
     } else if (id === 'excavator') {
       // Thân máy xúc & cần gầu đào
       path(ctx, `M -35 0 L -35 -48 L 10 -48 L 16 -10 L 25 0 Z`, baseCol, INK, 2.0);
-      ellipse(ctx, -10, -32, 12, 12, '#bae6fd', INK, 1.2);
+      ellipse(ctx, -10, -32, 12, 12, 'rgba(186, 230, 253, 0.55)', INK, 1.2);
       // Cần cẩu gấp khúc
       const armSwing = Math.sin(t * 3) * 0.2;
       ctx.save();
@@ -408,7 +408,7 @@
       // Tàu điện: thân hai màu, dãy cửa sổ, cửa gấp, mái và cần tiếp điện.
       path(ctx, 'M -62 8 L -62 -44 Q -62 -54 -52 -54 L 52 -54 Q 62 -54 62 -44 L 62 8 Z', baseCol, INK, 2.0);
       path(ctx, 'M -62 -12 L 62 -12 L 62 8 L -62 8 Z', tone(baseCol, -0.25), INK, 1.4);
-      for (let x = -54; x <= 36; x += 18) path(ctx, `M ${x} -46 L ${x + 14} -46 L ${x + 14} -24 L ${x} -24 Z`, '#bae6fd', INK, 1.1);
+      for (let x = -54; x <= 36; x += 18) path(ctx, `M ${x} -46 L ${x + 14} -46 L ${x + 14} -24 L ${x} -24 Z`, 'rgba(186, 230, 253, 0.55)', INK, 1.1);
       path(ctx, 'M 44 -46 L 56 -46 L 56 6 L 44 6 Z', '#e2e8f0', INK, 1.2);
       line(ctx, [[50, -46], [50, 6]], INK, 1);
       path(ctx, 'M -40 -54 L 40 -54 L 36 -60 L -36 -60 Z', '#475569', INK, 1.2);
@@ -453,7 +453,7 @@
     } else if (id === 'garbage_truck') {
       // Xe rác: cabin phía trước (trái) + thùng nén rác lớn phía sau; màu theo locale.
       path(ctx, 'M -72 10 L -72 -44 Q -70 -54 -58 -54 L -40 -54 L -34 -30 L -34 10 Z', baseCol, INK, 2.0);
-      path(ctx, 'M -66 -46 L -44 -46 L -40 -32 L -66 -32 Z', '#bae6fd', INK, 1.2);
+      path(ctx, 'M -66 -46 L -44 -46 L -40 -32 L -66 -32 Z', 'rgba(186, 230, 253, 0.55)', INK, 1.2);
       path(ctx, 'M -32 10 L -32 -64 Q -32 -72 -24 -72 L 62 -72 Q 72 -72 72 -62 L 72 10 Z', tone(baseCol, 0.12), INK, 2.2);
       for (let x = -22; x <= 60; x += 14) line(ctx, [[x, -66], [x, 4]], tone(baseCol, -0.2), 1.2);
       path(ctx, 'M -76 10 L 76 10 L 76 16 L -76 16 Z', '#334155', INK, 1.4);

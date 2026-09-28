@@ -192,6 +192,7 @@
   // -------------------------------------------------------------
   // 2. 16 ACTION HOOKS DÙNG CHUNG CỦA GIAI ĐOẠN J
   // -------------------------------------------------------------
+  const OPEN_VEHICLES = new Set(['bicycle', 'motorcar_1886', 'horse_cart', 'covered_wagon', 'tractor', 'hot_air_balloon', 'sailing_ship', 'longship', 'turtle_ship']);
   const ACTION_HOOKS = {
     // 1. DRIVE: Xe chạy, bánh lăn theo s.vx
     drive(a, states, t, p, u, amount, cat, active) {
@@ -202,19 +203,17 @@
       }
     },
 
-    // 2. RIDE: Nhân vật ngồi trên ghế xe hoặc lưng con vật
+    // 2. RIDE: hông người ngồi (hip/waist) đúng neo ghế `seat` (mặc định seat_1), ngồi co; đi theo xe.
     ride(a, states, t, p, u, amount, cat, active) {
-      const rider = states[a.actor];
-      const vehicle = states[a.target];
-      if (rider && vehicle) {
-        rider.sit = 1.0;
-        const seatName = a.seat || 'seat_1';
-        const seatPt = RemakeVector.worldAnchor(cat, vehicle, seatName);
-        const hipLocal = cat.assets[rider.asset]?.anchors?.hip || [0, -22];
-        const scale = (rider.height || 100) / 100;
-        rider.x = seatPt.x - hipLocal[0] * scale * (rider.flip ? -1 : 1);
-        rider.y = seatPt.y - hipLocal[1] * scale;
-      }
+      const rider = states[a.actor], vehicle = states[a.target];
+      if (!rider || !vehicle) return;
+      const seat = RemakeVector.worldAnchor(cat, vehicle, a.seat || 'seat_1');
+      rider.sit = 1;
+      const hipName = cat.assets[rider.asset].anchors.hip ? 'hip' : 'waist';
+      const hip = RemakeVector.worldAnchor(cat, rider, hipName);
+      rider.x += seat.x - hip.x; rider.y += seat.y - hip.y;
+      // Xe có buồng lái: người ngồi sau thân xe, thấy qua kính; xe hở (xe đạp, xe ngựa…): người ở phía trước.
+      if (!OPEN_VEHICLES.has(vehicle.asset)) rider.z = (vehicle.z || 0) - 0.01;
     },
 
     // 3. BUILD: Công trình growth tăng 0->1, thợ vung búa chạm mép
@@ -230,28 +229,53 @@
       }
     },
 
-    // 4. HAUL: Kéo vật nặng bằng dây
+    // 4. HAUL: actor (+ helpers) kéo vật nặng bằng dây. Dây thẳng từ neo `hitch` (hoặc grip/root) của vật tới
+    // người kéo cuối; mọi người đặt hai tay lên dây, ngả người ra sau. Vật và cả đoàn trượt `distance` px (mặc
+    // định 80) về phía người kéo trong suốt động tác; hold giữ vị trí cuối. Dây vẽ ở hiệu ứng (a._rope).
     haul(a, states, t, p, u, amount, cat, active) {
-      const puller = states[a.actor];
-      const heavyObj = states[a.target];
-      if (puller && heavyObj) {
-        puller.lean = -0.4;
-        heavyObj.x += p * 35;
+      const load = states[a.target], ids = [a.actor, ...(a.helpers || [])].filter(id => states[id]);
+      if (!load || !ids.length) return;
+      const dir = Math.sign(states[ids[0]].x - load.x) || 1, shift = dir * (a.distance ?? 80) * u * amount;
+      load.x += shift;
+      for (const id of ids) states[id].x += shift;
+      const anchors = cat.assets[load.asset].anchors, hitch = anchors.hitch ? 'hitch' : anchors.grip ? 'grip' : 'root';
+      const g = RemakeVector.worldAnchor(cat, load, hitch);
+      const last = states[ids[ids.length - 1]];
+      const end = { x: last.x + dir * last.height * 0.25, y: last.y - last.height * 0.3 };
+      const lineY = x => g.y + (end.y - g.y) * clamp((x - g.x) / ((end.x - g.x) || 1));
+      const heave = Math.max(0, Math.sin((t - a.start) * 5)) * (active ? 1 : 0);
+      for (const id of ids) {
+        const s = states[id], group = cat.assets[s.asset].group;
+        if (group !== 'human' && group !== 'chibi') continue;
+        s.rotation = (s.rotation || 0) + dir * (10 + 6 * heave);
+        for (const [side, dx] of [['hand_l', -0.14], ['hand_r', -0.06]]) {
+          const hx = s.x + dir * dx * s.height;
+          const local = RemakeVector.worldToLocal(s, { x: hx, y: lineY(hx) });
+          s[`${side}_x`] = local[0]; s[`${side}_y`] = local[1];
+        }
       }
+      a._rope = [g.x, g.y, end.x, end.y];
     },
 
-    // 5. CARRY_TOGETHER: 2 người khiêng một vật
+    // 5. CARRY_TOGETHER: actor và `helper` khiêng chung một vật: vật nằm giữa hai người ở tầm tay,
+    // mỗi người nắm một đầu vật (grip_l / grip_r, hoặc hai mép vật) bằng cả hai tay.
     carry_together(a, states, t, p, u, amount, cat, active) {
-      const p1 = states[a.actor];
-      const p2 = states[a.helper];
-      const obj = states[a.target];
-      if (p1 && obj) {
-        if (p2) {
-          obj.x = (p1.x + p2.x) * 0.5;
-          obj.y = Math.min(p1.y, p2.y) - 20;
-        } else {
-          obj.x = p1.x + 30;
-          obj.y = p1.y - 15;
+      const p1 = states[a.actor], p2 = states[a.helper], obj = states[a.target];
+      if (!p1 || !p2 || !obj) return;
+      const [left, right] = p1.x <= p2.x ? [p1, p2] : [p2, p1];
+      const k = smooth(clamp(p / 0.2));
+      const handY = (left.y - left.height * 0.36 + right.y - right.height * 0.36) / 2;
+      const anchors = cat.assets[obj.asset].anchors, sc = obj.height / 100;
+      const gl = anchors.grip_l || [-40, -50], gr = anchors.grip_r || [40, -50];
+      obj.x = mix(obj.x, (left.x + right.x) / 2 - (gl[0] + gr[0]) / 2 * sc, k);
+      obj.y = mix(obj.y, handY - (gl[1] + gr[1]) / 2 * sc, k);
+      const L = RemakeVector.worldAnchor(cat, obj, anchors.grip_l ? 'grip_l' : 'root'), R = RemakeVector.worldAnchor(cat, obj, anchors.grip_r ? 'grip_r' : 'root');
+      const ends = anchors.grip_l ? [L, R] : [{ x: obj.x + gl[0] * sc, y: obj.y + gl[1] * sc }, { x: obj.x + gr[0] * sc, y: obj.y + gr[1] * sc }];
+      for (const [person, pt] of [[left, ends[0]], [right, ends[1]]]) {
+        for (const [side, dy] of [['hand_l', -1.5], ['hand_r', 1.5]]) {
+          const local = RemakeVector.worldToLocal(person, { x: pt.x, y: pt.y + dy });
+          person[`${side}_x`] = mix(person[`${side}_x`] ?? local[0], local[0], k);
+          person[`${side}_y`] = mix(person[`${side}_y`] ?? local[1], local[1], k);
         }
       }
     },
@@ -414,11 +438,19 @@
     };
   }
 
+  // Dây kéo của haul (hình học tính trong hook, lưu ở a._rope).
+  function toolsExtEffects(ctx, snapshot) {
+    for (const a of snapshot.actions || []) if (a.type === 'haul' && a._rope) {
+      const [x1, y1, x2, y2] = a._rope;
+      line(ctx, [[x1, y1], [x2, y2]], INK, 4.2); line(ctx, [[x1, y1], [x2, y2]], '#c49a55', 2.6);
+    }
+  }
   RemakeVector.kit.TOOL_SPECS = TOOL_SPECS;
   RemakeVector.kit.TOOL_ANCHORS = TOOL_ANCHORS;
 
   RemakeVector.register({
     rigs: toolRigs,
+    effects: toolsExtEffects,
     actionHooks: ACTION_HOOKS
   });
 

@@ -17569,7 +17569,7 @@
         ],
         "seat_1": [
           -6,
-          -63
+          -57
         ],
         "wheel_1": [
           -28,
@@ -17605,7 +17605,7 @@
         "seats": [
           [
             -6,
-            -34
+            -28
           ]
         ],
         "hitch": [
@@ -30692,7 +30692,8 @@
         "turtle_ship"
       ],
       "motion": false,
-      "channel": "sit"
+      "channel": null,
+      "hold": true
     },
     "build": {
       "description": "Xây dựng công trình từ móng lên",
@@ -30765,8 +30766,9 @@
         "horse_cart",
         "tractor"
       ],
-      "motion": true,
-      "channel": "lean"
+      "motion": false,
+      "channel": null,
+      "hold": true
     },
     "carry_together": {
       "description": "Hai nhân vật phối hợp cùng khiêng một vật",
@@ -30831,8 +30833,9 @@
         "fire_blanket",
         "traffic_cone"
       ],
-      "motion": true,
-      "channel": "walk"
+      "motion": false,
+      "channel": null,
+      "hold": true
     },
     "row": {
       "description": "Chèo thuyền trên mặt nước",
