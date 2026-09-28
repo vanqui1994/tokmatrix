@@ -108,8 +108,8 @@ def nearby_posts(conn, channel_id: int, schedule_ts: int, exclude_id: Optional[i
         f"""SELECT id, schedule_time, status, video_slug FROM upload_tasks
             WHERE channel_id=? AND status IN ({marks}) AND id != ?
               AND (
-                    (COALESCE(uploaded_at,0) > 0 AND uploaded_at > ? AND uploaded_at < ?)
-                 OR (COALESCE(uploaded_at,0) = 0 AND schedule_time > ? AND schedule_time < ?)
+                    (uploaded_at > ? AND uploaded_at < ?)
+                 OR ((uploaded_at IS NULL OR uploaded_at = 0) AND schedule_time > ? AND schedule_time < ?)
               )""",
         (channel_id, *NEARBY_BLOCKING_STATUSES, exclude_id or -1, low, high, low, high),
     ).fetchall()
