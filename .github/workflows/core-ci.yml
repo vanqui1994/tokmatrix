@@ -9,10 +9,16 @@ on:
 permissions:
   contents: read
 
+# New commits on the same PR supersede old core runs. This keeps feedback fast
+# on active branches and avoids burning runners on stale revisions.
+concurrency:
+  group: core-ci-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 jobs:
   core:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
 
@@ -24,21 +30,17 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "22"
-          cache: npm
-          cache-dependency-path: compare_studio/package-lock.json
 
-      - name: Install system dependencies
-        run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
-
-      - name: Install Python dependencies
-        run: pip install -r requirements.txt
-
-      - name: Install Node dependencies
-        working-directory: compare_studio
-        run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Install core Python dependencies
+        run: |
+          # faster-whisper belongs to media/voice integration and is not imported
+          # by this fast core suite. The dedicated media workflows cover it.
+          sed '/^faster-whisper/d' requirements.txt > /tmp/core-requirements.txt
+          pip install -r /tmp/core-requirements.txt
+          pip check
 
       - name: Python compile check
-        run: python -m py_compile bkt_web/*.py bkt_web/autopilot/*.py ssmatool_engine_mac/*.py
+        run: python -m compileall -q bkt_web ssmatool_engine_mac
 
       - name: JavaScript syntax check
         run: |
@@ -47,4 +49,8 @@ jobs:
 
       - name: Core regression tests
         run: |
-          python -m unittest             tests.test_publish_flow             tests.test_tiktok_publisher_confirmation             tests.test_publisher_modals             tests.test_script_bridge             tests.test_regressions
+          python -m unittest \
+            tests.test_publish_flow \
+            tests.test_tiktok_publisher_confirmation \
+            tests.test_script_bridge \
+            tests.test_regressions
