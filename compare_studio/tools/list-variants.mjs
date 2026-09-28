@@ -30,6 +30,8 @@ export function variantsJson({ includeReference = false } = {}) {
     registry: { errors, warnings },
     variants: variants.map((v) => ({
       id: v.id, version: v.version, engine: v.engine, status: v.status, name_vi: v.name_vi,
+      // false = opt-in: creative_dna không bao giờ gán tự động (chỉ giữ khi kênh đã ghi rõ variant_id).
+      auto_assign: v.autoAssign !== false,
       topic_packs: v.contentProfile.topicPacks,
       layout_family: v.visualProfile.layoutFamily,
       fingerprint_axes: v.visualProfile.fingerprintAxes,

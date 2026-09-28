@@ -105,6 +105,25 @@ class CreativeDnaDryRunTest(unittest.TestCase):
         self.assertEqual(rows["ancient_mythology_01"]["composition"], first["composition"])
         self.assertNotEqual(rows["ancient_mythology_02"]["composition"], first["composition"])
 
+    def test_opt_in_variant_is_never_auto_assigned_but_an_explicit_choice_is_kept(self):
+        opt_in = [v for v in self.full_registry["variants"] if v.get("auto_assign") is False]
+        self.assertIn("survival/mr-incredible", {v["id"] for v in opt_in})
+        plan = cd.plan_assignments(self.channels, self.full_registry, self.niches, None, None)
+        self.assertFalse([r["channel_id"] for r in plan["rows"] if r["variant_id"] == "survival/mr-incredible" and r["collision"] != "keep"])
+        # Registry chỉ có variant opt-in → kênh survival không được gán gì.
+        only = {**self.full_registry, "variants": opt_in}
+        rows = cd.plan_assignments(self.channels, only, self.niches, None, ["extreme_survival_01"])["rows"]
+        self.assertEqual(rows[0]["collision"], "hard:capacity")
+        # Kênh ghi rõ creative.variant_id = variant opt-in thì giữ nguyên.
+        variant = next(v for v in opt_in if v["id"] == "survival/mr-incredible")
+        dna = {"dna_version": self.full_registry["dna_version"], "variant_version": variant["version"],
+               "composition": next(iter(variant["compositions"])),
+               **{axis: variant["allowed"][axis][0] for axis in cd.DNA_CHOICE_AXES}}
+        channels = json.loads(json.dumps(self.channels))
+        channels["extreme_survival_01"].setdefault("creative", {}).update({"variant_id": variant["id"], "dna": dna})
+        rows = cd.plan_assignments(channels, self.full_registry, self.niches, None, ["extreme_survival_01"])["rows"]
+        self.assertEqual((rows[0]["variant_id"], rows[0]["collision"]), ("survival/mr-incredible", "keep"))
+
     def test_mapping_limits_accounts_and_sets_country(self):
         plan = self.plan(only=None, mapping={"folklore_legends_01": {"country": "gb", "niche_id": "folklore_legends"}})
         self.assertEqual([r["channel_id"] for r in plan["rows"]], ["folklore_legends_01"])

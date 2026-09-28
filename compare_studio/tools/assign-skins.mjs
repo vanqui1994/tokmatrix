@@ -10,7 +10,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import YAML from "yaml";
-import { getVariant } from "../matrix/render/variants/index.mjs";
+import { getVariant, isAutoAssignable } from "../matrix/render/variants/index.mjs";
 import { SKIN_AXES, assignSkins, skinViolations } from "../matrix/render/variants/skins.mjs";
 
 const CHANNEL_DIR = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../config/channels");
@@ -74,6 +74,7 @@ const inNiches = (niches) => (channel) => !niches?.length || niches.includes(cha
 export function planSkins({ dir = CHANNEL_DIR, variantId, niches }) {
   const variant = getVariant(variantId, { allowReference: false });
   if (!variant) throw new Error(`variant ${variantId} is unknown or not active`);
+  if (!isAutoAssignable(variant)) throw new Error(`variant ${variantId} is opt-in (autoAssign: false): set creative.variant_id on the channel by hand instead`);
   const channels = loadChannels(dir, variant.engine).filter(inNiches(niches));
   const { rows, violations } = assignSkins(channels, variant);
   return { variant, engine: variant.engine, channels, rows: rows.map((row) => ({ ...row, variant_id: variant.id })), violations };
@@ -89,6 +90,7 @@ export function planNicheSkins({ dir = CHANNEL_DIR, engine, niches, nicheVariant
   for (const id of new Set(Object.values(nicheVariants).flat())) {
     const variant = getVariant(id, { allowReference: false });
     if (!variant || variant.engine !== engine) throw new Error(`variant ${id} is unknown, inactive or not ${engine}`);
+    if (!isAutoAssignable(variant)) throw new Error(`variant ${id} is opt-in (autoAssign: false) and cannot be assigned by niche`);
     variants.set(id, variant);
   }
   const all = loadChannels(dir, engine).sort((a, b) => a.channel_id.localeCompare(b.channel_id));

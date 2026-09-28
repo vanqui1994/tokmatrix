@@ -150,6 +150,10 @@ def _candidates(account: Dict[str, Any], variants: Dict[str, Dict[str, Any]], ni
     old_engines = set((account["cfg"].get("creative") or {}).get("preferred_engines") or [])
     out = []
     for variant in variants.values():
+        # Variant opt-in (auto_assign false, vd survival/mr-incredible): chỉ dùng khi kênh ghi rõ variant_id — không bao
+        # giờ là ứng viên gán tự động (kênh đã ghi rõ vẫn được giữ ở bước _existing).
+        if variant.get("auto_assign") is False:
+            continue
         if variant["engine"] not in allowed_engines or lang not in variant["countries"]:
             continue
         if variant["niches"] is not None and niche not in variant["niches"]:

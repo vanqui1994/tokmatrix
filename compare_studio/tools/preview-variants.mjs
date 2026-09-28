@@ -108,6 +108,7 @@ export async function buildPreview({ variant, composition, lang, dna, dnaTag, ou
   const fonts = embedFonts({ html: built.html, families: [...creative.fonts.families, ...(built.fontFamilies || [])], targetDir: dir, compareDir: COMPARE_DIR });
   fs.writeFileSync(path.join(dir, "index.html"), fonts.html);
   await prepareKitAssets({ targetDir: dir, compareDir: COMPARE_DIR });
+  await variant.prepareAssets?.({ targetDir: dir, compareDir: COMPARE_DIR });
   // Engine mở rộng (tierlist SFX, survival meme…) chép asset tĩnh như adapter thật.
   await extendedEngine(variant.engine)?.prepareAssets?.({ targetDir: dir, compareDir: COMPARE_DIR });
   fs.writeFileSync(path.join(dir, "meta.json"), JSON.stringify({ id: slug, name: sample.title, preview: true }, null, 2));

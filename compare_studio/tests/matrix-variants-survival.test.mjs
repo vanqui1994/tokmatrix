@@ -1,10 +1,15 @@
 // Variant của engine survival (Phase 2–5): registry, dựng HTML mọi variant × composition × nước (lint sạch, tất định),
 // dữ liệu engine (eyebrow, metric_labels, cấp/trạng thái/mức độ/chỉ số) phải hiện ra; reactor SVG gốc theo (variant, nước),
-// biểu cảm theo mức độ; không dùng bộ mặt meme Mr. Incredible.
+// biểu cảm theo mức độ; không dùng bộ mặt meme Mr. Incredible — trừ variant OPT-IN survival/mr-incredible (test riêng ở cuối).
 import assert from "node:assert/strict";
+import fs from "node:fs";
+import os from "node:os";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 import test from "node:test";
 import survivalEngine from "../matrix/render/engines/survival.mjs";
-import { listVariants, validateRegistry } from "../matrix/render/variants/index.mjs";
+import { getVariant, getVariantsForCountry, listVariants, validateRegistry } from "../matrix/render/variants/index.mjs";
+import { FACE_PHASES, facePhase } from "../matrix/render/variants/survival/mr-incredible.mjs";
 import { compareVariantAxes } from "../matrix/render/variants/schema.mjs";
 import { defaultDna } from "../matrix/render/variants/dna.mjs";
 import { lintVariantHtml } from "../matrix/render/variants/kit/lint.mjs";
@@ -14,7 +19,10 @@ import { EXPRESSIONS, expressionLevel, reactorIdentity, reactorSvg } from "../ma
 
 const LANGS = ["en", "de", "ja", "ko", "vi"];
 const DURATIONS = [4.6, 3.9, 5.8, 4.4, 5.1, 4.2];
-const variants = () => listVariants("survival");
+const MRI = "survival/mr-incredible";
+// Variant dùng reactor SVG gốc (mọi survival variant trừ variant opt-in mặt meme).
+const variants = () => listVariants("survival").filter((variant) => variant.id !== MRI);
+const COMPARE_DIR = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 
 function scenesFor(lines) {
   let start = 0.3;
@@ -38,10 +46,11 @@ async function build(variant, composition, lang, { extras } = {}) {
   });
 }
 
-test("survival registers 8 active TEXT variants (7 base + original look) with 2 hand-built compositions each and ≥ 4/6 differing axes", () => {
+test("survival registers 9 active TEXT variants (7 base + original look + opt-in meme) with 2 hand-built compositions each and ≥ 4/6 differing axes", () => {
   assert.deepEqual(validateRegistry().errors, []);
-  const list = variants();
-  assert.equal(list.length, 8);
+  assert.equal(variants().length, 8);
+  const list = listVariants("survival");
+  assert.equal(list.length, 9);
   for (const variant of list) {
     assert.equal(variant.status, "active");
     assert.equal(variant.assetProfile.type, "TEXT");
@@ -109,5 +118,50 @@ test("without LLM extras the engine fallback drives the same layout", async () =
     const built = await build(variant, composition, "ko", { extras: null });
     assert.deepEqual(lintVariantHtml(built.html), []);
     assert.match(built.html, /id="rx-6"/u);
+  }
+});
+
+test("survival/mr-incredible is opt-in only: never offered for automatic assignment", () => {
+  const variant = getVariant(MRI);
+  assert.ok(variant, "usable when a channel names it explicitly");
+  assert.equal(variant.autoAssign, false);
+  for (const lang of LANGS) assert.ok(!getVariantsForCountry(lang).some((v) => v.id === MRI), lang);
+  for (const other of variants()) assert.equal(other.autoAssign, true, other.id);
+  const warnings = validateRegistry().warnings.filter((w) => w.includes(MRI));
+  assert.deepEqual(warnings, []);
+});
+
+test("survival/mr-incredible: the face phase follows severity 1→9 and darkens; images copied offline", async () => {
+  assert.deepEqual(Array.from({ length: 10 }, (_, i) => facePhase(i + 1)), [1, 2, 3, 4, 5, 5, 6, 7, 8, 9]);
+  const variant = getVariant(MRI);
+  const sample = variant.sample("de");
+  const phases = sample.extras.levels.map((level) => facePhase(level.severity));
+  for (const composition of Object.keys(variant.visualProfile.compositions)) {
+    for (const lang of LANGS) {
+      const where = `${MRI}#${composition}/${lang}`;
+      const a = await build(variant, composition, lang);
+      const b = await build(variant, composition, lang);
+      assert.equal(a.html, b.html, `${where} is not deterministic`);
+      assert.deepEqual(lintVariantHtml(a.html), [], where);
+      assert.ok(!/https?:\/\/[^"']*phase-/u.test(a.html), `${where} must not hot-link faces`);
+      assert.ok(!/assets\/images\//u.test(a.html), `${where} uses no AI images`);
+      const { extras } = variant.sample(lang);
+      extras.levels.forEach((level, i) => {
+        assert.ok(a.html.includes(`src="assets/kit/mrincredible/phase-${facePhase(level.severity)}.png"`), `${where} face ${i + 1}`);
+        assert.ok(a.html.includes(escapeHtml(level.label)), `${where} level label ${i + 1}`);
+        assert.ok(a.html.includes(escapeHtml(level.status)), `${where} status ${i + 1}`);
+      });
+      assert.ok(a.html.includes(escapeHtml(extras.eyebrow)), `${where} eyebrow`);
+      if (lang === "de") assert.match(a.html, /STUFE 1\//u, `${where} STUFE label`);
+    }
+  }
+  assert.ok(phases.at(-1) > phases[0], "the face gets more uncanny as severity rises");
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "mri-"));
+  try {
+    const copied = await variant.prepareAssets({ targetDir: dir, compareDir: COMPARE_DIR });
+    assert.equal(copied.length, FACE_PHASES);
+    for (let phase = 1; phase <= FACE_PHASES; phase += 1) assert.ok(fs.statSync(path.join(dir, "assets/kit/mrincredible", `phase-${phase}.png`)).size > 0);
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true });
   }
 });

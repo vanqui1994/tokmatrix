@@ -161,6 +161,13 @@ test("every survival channel has a niche-mapped survival skin and the per-countr
   assert.ok(skinPairOk(result.rows[0].dna, others[0].dna));
 });
 
+test("assign-skins never assigns an opt-in variant (survival/mr-incredible), by variant or by niche", () => {
+  assert.throws(() => planSkins({ dir: CHANNEL_DIR, variantId: "survival/mr-incredible" }), /opt-in/u);
+  const nicheVariants = { ...NICHE_VARIANTS.survival, extreme_survival: ["survival/mr-incredible", "survival/endurance"] };
+  assert.throws(() => planNicheSkins({ dir: CHANNEL_DIR, engine: "survival", nicheVariants }), /opt-in/u);
+  for (const list of Object.values(NICHE_VARIANTS.survival)) assert.ok(!list.includes("survival/mr-incredible"));
+});
+
 test("render adapter uses the channel's skin for that engine only", () => {
   const skin = { variant_id: NEWSPAPER.id, dna: defaultDna(NEWSPAPER, "side_masthead") };
   const channel = { channel_id: "x", creative: { preferred_engines: ["newspaper", "vox"], skins: { newspaper: skin } } };

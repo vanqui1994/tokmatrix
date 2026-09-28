@@ -540,9 +540,10 @@ export async function buildNativeVideoProject({ job, manifest = job?.manifest, p
   }
   const chosen = channelCreative(channel, engineType);
   const variant = chosen?.variant || null;
-  // Variant chỉ dùng assets/kit và ảnh cảnh; tài nguyên riêng của engine legacy (SFX, mặt meme survival) không chép vào.
+  // Variant chỉ dùng assets/kit, ảnh cảnh và asset tĩnh riêng nó khai (prepareAssets, vd mặt meme của survival/mr-incredible);
+  // tài nguyên riêng của engine legacy (SFX…) không chép vào.
   const staticAssets = variant
-    ? await prepareKitAssets({ targetDir, compareDir: COMPARE_DIR })
+    ? [...await prepareKitAssets({ targetDir, compareDir: COMPARE_DIR }), ...((await variant.prepareAssets?.({ targetDir, compareDir: COMPARE_DIR })) || [])]
     : (await extendedReady(engineType)?.prepareAssets?.({ targetDir, compareDir: COMPARE_DIR })) || [];
   const composed = await createEngineHtml({ engineType, slug, title, lang, scenes, channel, manifest, media, totalDuration, variant, dna: chosen?.dna });
   // Variant tự co chữ bằng kit/fit (data-fit); bản sửa bố cục legacy chỉ dành cho template legacy.
