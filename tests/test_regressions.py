@@ -55,6 +55,10 @@ class RouteCollisionTest(unittest.IsolatedAsyncioTestCase):
         for path in ("/api/v1/profiles", "/api/v3/profiles"):
             self.assertEqual((await self.client.get(path)).status_code, 200, path)
 
+    async def test_dashboard_router_is_mounted(self):
+        response = await self.client.get("/api/dashboard/summary")
+        self.assertEqual(response.status_code, 200)
+
 
 class DashboardUploadStateTest(unittest.TestCase):
     def test_dashboard_uses_real_upload_states(self):
