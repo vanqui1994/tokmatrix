@@ -35,6 +35,24 @@ export function sceneWindows(scenes, totalDuration) {
   });
 }
 
+/**
+ * Cảnh có clip stock (scene.videoSrc): khung của variant chứa poster + <video class="clip"> câm. HyperFrames cấm
+ * <video data-start> nằm trong phần tử cũng có data-start (video bị đóng băng), nên cảnh stock KHÔNG là clip: wrapper
+ * `.v-scene-free` hiện/ẩn bằng set display ở đúng biên cảnh, còn video tự mang data-start/data-duration (giờ toàn cục,
+ * tối đa bằng độ dài đoạn clip). Poster (khung cuối của đoạn) nằm dưới video: cảnh dài hơn đoạn thì dừng ở khung cuối.
+ */
+function stockVisualHtml(scene, { filter }) {
+  const idx = scene.index;
+  const duration = Number(Math.min(scene.visualDuration, Number(scene.videoDuration) || scene.visualDuration).toFixed(3));
+  return `<div class="v-img v-vid" id="v-img-${idx}"${filter ? ` style="filter:${filter}"` : ""}>`
+    + `<img class="v-poster" src="${escapeHtml(scene.imgSrc)}" alt="">`
+    + `<video id="v-clip-${idx}" class="clip v-clip" src="${escapeHtml(scene.videoSrc)}" data-start="${scene.visualStart}" data-duration="${duration}" data-track-index="3" muted playsinline preload="auto"></video>`
+    + "</div>";
+}
+
+const STOCK_CSS = ".v-scene-free{position:absolute;inset:0;isolation:isolate}.v-vid{position:relative;overflow:hidden}"
+  + ".v-vid>.v-poster,.v-vid>.v-clip{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}";
+
 export function pad2(n) {
   return String(n).padStart(2, "0");
 }
@@ -167,13 +185,17 @@ export function buildStage(ctx, design, { ui, cfg = {} }) {
   const underlay = design.underlay ? design.underlay({ ...ctx, scenes, ui }) : null;
 
   const tweens = [];
+  let stockScenes = 0;
   const scenesHtml = scenes.map((scene, i) => {
     const idx = scene.index;
+    const stock = Boolean(scene.videoSrc && design.visual && !design.panel);
     let visual = "";
     if (design.visual) {
       const inner = design.panel
         ? `<div class="v-panel" id="v-img-${idx}">${design.panel(scene, i, { ...ctx, scenes, ui })}</div>`
-        : `<img class="v-img" id="v-img-${idx}" src="${escapeHtml(scene.imgSrc)}" alt="" style="${design.visual.filter ? `filter:${design.visual.filter}` : ""}">${overlayHtml(`v-tr-${idx}`, creative.treatmentCss)}`;
+        : stock
+          ? `${stockVisualHtml(scene, { filter: design.visual.filter })}${overlayHtml(`v-tr-${idx}`, creative.treatmentCss)}`
+          : `<img class="v-img" id="v-img-${idx}" src="${escapeHtml(scene.imgSrc)}" alt="" style="${design.visual.filter ? `filter:${design.visual.filter}` : ""}">${overlayHtml(`v-tr-${idx}`, creative.treatmentCss)}`;
       visual = frameHtml(design.visual.frame, {
         id: `v-frame-${idx}`, region: design.visual.region, inner, rng,
         sub: design.visual.sub ? escapeHtml(design.visual.sub(scene, i, ui)) : "",
@@ -199,6 +221,19 @@ export function buildStage(ctx, design, { ui, cfg = {} }) {
         prev: `#v-inner-${scenes[i - 1].index}`, next: `#v-inner-${idx}`, at: scene.visualStart,
         prevStart: scenes[i - 1].visualStart, nextDuration: scene.visualDuration,
       }));
+    }
+    if (stock) {
+      stockScenes += 1;
+      const end = Number((scene.visualStart + scene.visualDuration).toFixed(3));
+      // Trước cảnh: visibility (giữ hộp để kit/fit co chữ đúng khi font nạp xong); sau cảnh: display:none như cảnh cũ ở
+      // transitionTweens (layout audit không coi chữ đã hết cảnh là khối chữ đè lên cảnh mới).
+      if (scene.visualStart > 0) tweens.push({ method: "set", target: `#v-scene-${idx}`, vars: { visibility: "hidden" }, at: 0 });
+      tweens.push({ method: "set", target: `#v-scene-${idx}`, vars: { visibility: "visible", display: "block" }, at: scene.visualStart });
+      if (end < totalDuration) tweens.push({ method: "set", target: `#v-scene-${idx}`, vars: { display: "none" }, at: end });
+      return `
+<div id="v-scene-${idx}" class="v-scene v-scene-free" data-stock-scene="${idx}">
+  <div class="v-inner" id="v-inner-${idx}">${visual}${text}${tag}${extra?.html || ""}</div>
+</div>`;
     }
     return `
 <div id="v-scene-${idx}" class="clip v-scene" data-start="${scene.visualStart}" data-duration="${scene.visualDuration}" data-track-index="3">
@@ -239,7 +274,7 @@ ${under.css}
 ${over.css}
 ${overlay?.css || ""}
 ${underlay?.css || ""}
-${design.css || ""}`;
+${design.css || ""}${stockScenes ? `\n${STOCK_CSS}` : ""}`;
 
   const observability = { ...creative.observability, layout: layoutRegions(design) };
   const html = documentHtml({

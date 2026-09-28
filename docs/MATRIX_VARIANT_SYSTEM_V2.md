@@ -762,7 +762,8 @@ Hai pack bị đổi nghĩa so với tên để hợp niche compare: `compare_he
 
 - Phase 7 canary (mục 15.1): cần chủ repo duyệt plan và bật từng bậc.
 - Chạy audition CapCut và cài OpenVoice thật trên máy có mạng (`python3 -m bkt_web.voice_clone setup`, torch CPU).
-- Đo chi phí render thật trên VPS; wildlife stock-video ledger (mục 9) chưa có vì wildlife vẫn dùng ảnh AI.
+- Đo chi phí render thật trên VPS. Wildlife stock video (mục 9.3) đã nối (branch `claude/stock-wildlife`, AGENTS.md "Stock
+  video"): 6 variant stock-first lấy clip Pexels/Pixabay khi `TOKMATRIX_STOCK_VIDEO=1`, còn lại / không có clip → ảnh AI.
 - Đề xuất kit các worker báo — **đã sửa core, `KIT_VERSION` 4** (test `tests/matrix-variants-kit.test.mjs`):
   - Frame `stamp` chỉ đục lỗ ở mép (mask = khối đặc bên trong ∪ mẫu lỗ).
   - Frame `scope` có `isolation:isolate`: tâm ngắm nằm trong khung, nhãn cảnh (vd. wildlife `◎ TRACK`) vẽ đè lên nó.
