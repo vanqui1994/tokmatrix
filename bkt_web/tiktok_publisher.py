@@ -14,10 +14,12 @@ try:
     from bkt_web.db_utils import connect_db
     from bkt_web.security import SecretStore
     from bkt_web import profile_factory
+    from bkt_web import upload_states as us
 except ImportError:
     from db_utils import connect_db
     from security import SecretStore
     import profile_factory
+    import upload_states as us
 
 # Ngôn ngữ giao diện khai báo theo quốc gia của kênh. Một tài khoản Đức mở
 # TikTok bằng locale en-US là mâu thuẫn với múi giờ và IP của chính nó.
@@ -438,14 +440,14 @@ async def publish_tiktok_video(
         if not task_id or dry_run:
             return
         conn = connect_db(db_path)
-        if status == "SUCCESS":
+        if status == us.SUCCESS:
             conn.execute(
                 """
                 UPDATE upload_tasks
-                SET status='SUCCESS', uploaded_at=?, error_message='', result_url=?
+                SET status=?, uploaded_at=?, error_message='', result_url=?
                 WHERE id=?
                 """,
-                (int(time.time()), result_url, task_id),
+                (us.SUCCESS, int(time.time()), result_url, task_id),
             )
         else:
             conn.execute(
@@ -474,7 +476,7 @@ async def publish_tiktok_video(
     if not row or not row[1]:
         err = f"Không tìm thấy cookie hợp lệ cho kênh #{channel_id}"
         log(f"❌ {err}", "error")
-        mark_task("ERROR", err)
+        mark_task(us.ERROR, err)
         return {"success": False, "error": err}
 
     username, stored_cookie, country, vpn_config, vpn_location, profile_dir = row
@@ -501,24 +503,24 @@ async def publish_tiktok_video(
     if not os.path.exists(video_path):
         err = f"Tệp video không tồn tại tại: {video_path}"
         log(f"❌ {err}", "error")
-        mark_task("ERROR", err)
+        mark_task(us.ERROR, err)
         return {"success": False, "error": err}
 
     file_size_mb = round(os.path.getsize(video_path) / (1024 * 1024), 2)
     if Path(video_path).suffix.lower() not in {".mp4", ".mov", ".webm"}:
         err = "Định dạng video không được hỗ trợ; hãy dùng MP4, MOV hoặc WebM"
-        mark_task("ERROR", err)
+        mark_task(us.ERROR, err)
         return {"success": False, "error": err}
     if file_size_mb > 4096:
         err = "Video vượt quá giới hạn 4 GB"
-        mark_task("ERROR", err)
+        mark_task(us.ERROR, err)
         return {"success": False, "error": err}
     log(f"Tệp video MP4: {Path(video_path).name} ({file_size_mb} MB)", "info")
 
     full_caption = f"{caption} {hashtags}".strip()
     if len(full_caption) > 2200:
         err = f"Caption và hashtag dài {len(full_caption)} ký tự, vượt giới hạn 2200"
-        mark_task("ERROR", err)
+        mark_task(us.ERROR, err)
         return {"success": False, "error": err}
 
     try:
@@ -547,7 +549,7 @@ async def publish_tiktok_video(
         )
     except Exception as exc:
         err = f"Video không vượt qua kiểm tra kỹ thuật: {exc}"
-        mark_task("ERROR", err)
+        mark_task(us.ERROR, err)
         return {"success": False, "error": err}
 
     # Dấu vết của kênh: lấy đúng cấu hình đã ghi khi dựng profile, thiếu thì suy
@@ -579,7 +581,7 @@ async def publish_tiktok_video(
         except Exception as ve:
             err = f"Không thể khởi động VPN đã gán: {ve}"
             log(f"❌ {err}", "error")
-            mark_task("ERROR", err)
+            mark_task(us.ERROR, err)
             return {"success": False, "error": err}
 
     def stop_tunnel() -> None:
@@ -628,7 +630,7 @@ async def publish_tiktok_video(
                 log(f"❌ {err}", "error")
                 # Ghi ERROR để scheduler thử lại theo lượt như mọi lỗi trước khi bấm Đăng;
                 # trả về mà không đổi trạng thái sẽ để task kẹt ở UPLOADING.
-                mark_task("ERROR", err)
+                mark_task(us.ERROR, err)
                 stop_tunnel()
                 return {"success": False, "error": err}
         log(
@@ -696,12 +698,12 @@ async def publish_tiktok_video(
                 log(f"❌ {err}", "error")
                 profile_logged_out = True
                 profile_session.mark_session(channel_id, "LOGGED_OUT", "publish")
-                mark_task("ERROR", err)
+                mark_task(us.ERROR, err)
                 return {"success": False, "error": err, "no_retry": True, "logged_out": True}
             if "login" in curr_url.lower() or "passport" in curr_url.lower():
                 err = "Cookie kênh đã hết hạn hoặc cần xác minh đăng nhập (Login/Verify Required)"
                 log(f"❌ {err}", "error")
-                mark_task("ERROR", err)
+                mark_task(us.ERROR, err)
                 return {"success": False, "error": err}
 
             log("Đã truy cập thành công TikTok Studio! Tìm ô tải tệp lên...", "info")
@@ -725,7 +727,7 @@ async def publish_tiktok_video(
                 err = "Không tìm thấy nút tải tệp trên giao diện TikTok Studio"
                 log(f"❌ {err}", "error")
                 await _debug_shot(page, db_path, task_id, channel_id, log, 'no_file_input')
-                mark_task("ERROR", err)
+                mark_task(us.ERROR, err)
                 return {"success": False, "error": err}
 
             log("Đang nạp file video MP4 vào input...", "info")
@@ -776,7 +778,7 @@ async def publish_tiktok_video(
                     err = "Mô tả trên TikTok không khớp caption đã điền — dừng, không đăng"
                     log(f"❌ {err}: {written[:120]!r}", "error")
                     await _debug_shot(page, db_path, task_id, channel_id, log, "caption_mismatch")
-                    mark_task("ERROR", err)
+                    mark_task(us.ERROR, err)
                     return {"success": False, "error": err}
                 log(f"Đã điền nội dung caption thành công ({len(full_caption)} ký tự).", "info")
             else:
@@ -812,7 +814,7 @@ async def publish_tiktok_video(
                     err = "TikTok chưa hoàn tất xử lý video sau 120 giây"
                     log(f"❌ {err}", "error")
                     await _debug_shot(page, db_path, task_id, channel_id, log, 'not_ready')
-                    mark_task("ERROR", err)
+                    mark_task(us.ERROR, err)
                     return {"success": False, "error": err}
                 if dry_run:
                     shot = screenshot_path or str(Path(db_path).resolve().parent / "storage" / "publish_dryrun" / f"dryrun_{channel_id}_{int(time.time())}.png")
@@ -849,7 +851,7 @@ async def publish_tiktok_video(
                 if confirmed:
                     log("✅ TikTok đã xác nhận tiếp nhận video.", "success")
                     video_url = await _published_video_url(page, full_caption, log)
-                    mark_task("SUCCESS", result_url=video_url or page.url)
+                    mark_task(us.SUCCESS, result_url=video_url or page.url)
                     if video_url and task_id and not dry_run:
                         conn = connect_db(db_path)
                         conn.execute("UPDATE upload_tasks SET published_video_id=? WHERE id=?",
@@ -862,13 +864,13 @@ async def publish_tiktok_video(
                 err = ("Đã bấm Đăng nhưng chưa nhận được xác nhận từ TikTok — video CÓ THỂ đã lên. "
                        "Kiểm tra kênh rồi bấm 'Đã lên' hoặc 'Thử lại'.")
                 log(f"⚠️ {err}", "warning")
-                mark_task("NEEDS_CHECK", err)
+                mark_task(us.NEEDS_CHECK, err)
                 return {"success": False, "error": err, "clicked": True, "needs_check": True}
             else:
                 err = "Không tìm thấy nút Đăng sau khi tải video"
                 log(f"❌ {err}", "error")
                 await _debug_shot(page, db_path, task_id, channel_id, log, 'no_post_button')
-                mark_task("ERROR", err)
+                mark_task(us.ERROR, err)
                 return {"success": False, "error": err}
 
         except Exception as e:
@@ -880,14 +882,14 @@ async def publish_tiktok_video(
                 # video có thể đã lên dù Playwright không đọc được redirect/toast.
                 # Tuyệt đối không để scheduler tự xếp lại và đăng trùng.
                 uncertain = f"Lỗi sau khi đã bấm Đăng: {str(e)}"
-                mark_task("NEEDS_CHECK", uncertain)
+                mark_task(us.NEEDS_CHECK, uncertain)
                 return {
                     "success": False,
                     "error": uncertain,
                     "clicked": True,
                     "needs_check": True,
                 }
-            mark_task("ERROR", err)
+            mark_task(us.ERROR, err)
             return {"success": False, "error": err}
         finally:
             if use_profile_path and not profile_logged_out:
