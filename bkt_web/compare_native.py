@@ -39,8 +39,10 @@ from fastapi.responses import FileResponse, JSONResponse, Response, StreamingRes
 
 try:
     from bkt_web.security import safe_child
+    from bkt_web import upload_states as us
 except ImportError:  # chạy trực tiếp trong bkt_web/
     from security import safe_child
+    import upload_states as us
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 COMPARE_DIR = Path(
@@ -2147,7 +2149,7 @@ async def api_runs_create(request: Request):
             flow.enqueue_upload(
                 slug, publish.get("channel_id"), publish.get("caption") or "", publish.get("hashtags") or "",
                 schedule_ts=publish.get("schedule_ts"), ai_generated=publish.get("ai_generated", True) is not False,
-                status="WAITING_RENDER", run_id=run_id, confirm_nearby=bool(publish.get("confirm_nearby")),
+                status=us.WAITING_RENDER, run_id=run_id, confirm_nearby=bool(publish.get("confirm_nearby")),
             )
         except flow.PublishError as exc:
             return error(exc.status, exc.message, **exc.extra)
