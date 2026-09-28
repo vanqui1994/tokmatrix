@@ -3321,8 +3321,8 @@ def create_upload_task(item: UploadTaskCreate):
         c.execute("""
             INSERT INTO upload_tasks (channel_id, video_path, caption, hashtags, schedule_time, status, created_at,
                                       ai_generated, video_slug)
-            VALUES (?, ?, ?, ?, ?, 'QUEUED', ?, ?, ?)
-        """, (ch_id, video_file, item.caption, item.hashtags, sched_time, now, 1 if item.ai_generated else 0, video_slug))
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """, (ch_id, video_file, item.caption, item.hashtags, sched_time, us.QUEUED, now, 1 if item.ai_generated else 0, video_slug))
         created_ids.append(c.lastrowid)
     
     conn.commit()
@@ -3440,12 +3440,12 @@ def retry_upload_task(task_id: int):
     cur = conn.execute(
         """
         UPDATE upload_tasks
-        SET status='QUEUED', error_message='', next_retry_at=0, schedule_time=?,
+        SET status=?, error_message='', next_retry_at=0, schedule_time=?,
             attempt_count=0, clicked_post_at=0,
             verify_attempts=0, next_verify_at=0, verify_note='', published_video_id=''
-        WHERE id=? AND status IN ('ERROR', 'CANCELLED', 'NEEDS_CHECK')
+        WHERE id=? AND status IN (?,?,?)
         """,
-        (int(time.time()), task_id),
+        (us.QUEUED, int(time.time()), task_id, us.ERROR, us.CANCELLED, us.NEEDS_CHECK),
     )
     conn.commit()
     conn.close()
@@ -3457,9 +3457,11 @@ def retry_upload_task(task_id: int):
 @app.post("/api/upload/tasks/{task_id}/cancel")
 def cancel_upload_task(task_id: int):
     conn = connect_db(DB_PATH)
+    cancellable = (*us.QUEUE_STATES, us.WAITING_RENDER)
+    marks = us.sql_marks(cancellable)
     cur = conn.execute(
-        "UPDATE upload_tasks SET status='CANCELLED' WHERE id=? AND status IN ('QUEUED','PENDING','WAITING_RENDER')",
-        (task_id,),
+        f"UPDATE upload_tasks SET status=? WHERE id=? AND status IN ({marks})",
+        (us.CANCELLED, task_id, *cancellable),
     )
     conn.commit()
     conn.close()
@@ -3472,8 +3474,8 @@ def confirm_upload_task(task_id: int):
     """Người dùng đã kiểm tra kênh: video của task NEEDS_CHECK đã lên."""
     conn = connect_db(DB_PATH)
     cur = conn.execute(
-        "UPDATE upload_tasks SET status='SUCCESS', uploaded_at=?, error_message='' WHERE id=? AND status='NEEDS_CHECK'",
-        (int(time.time()), task_id),
+        "UPDATE upload_tasks SET status=?, uploaded_at=?, error_message='' WHERE id=? AND status=?",
+        (us.SUCCESS, int(time.time()), task_id, us.NEEDS_CHECK),
     )
     conn.commit()
     conn.close()
@@ -3577,10 +3579,11 @@ def profile_metrics(days: int = 7):
     days = max(1, min(60, int(days))); now = int(time.time()); since = now - days * 86400
     conn = connect_db(DB_PATH)
     modes = {}
+    outcome_states = (us.SUCCESS, us.NEEDS_CHECK, us.ERROR)
     for mode in ("profile", "clean"):
         rows = conn.execute("SELECT status,error_message FROM upload_tasks WHERE publish_mode=? AND started_at>=?", (mode, since)).fetchall()
-        total = len(rows); counts = {s: sum(1 for r in rows if r[0] == s) for s in ("SUCCESS","NEEDS_CHECK","ERROR")}
-        modes[mode] = {"started": total, **{k.lower(): v for k,v in counts.items()}, "rate": (round(counts["SUCCESS"]*100/total,2) if total else None), "deferred": sum(DEFERRED_PROFILE_BUSY in (r[1] or "") for r in rows)}
+        total = len(rows); counts = {s: sum(1 for r in rows if r[0] == s) for s in outcome_states}
+        modes[mode] = {"started": total, **{k.lower(): v for k,v in counts.items()}, "rate": (round(counts[us.SUCCESS]*100/total,2) if total else None), "deferred": sum(DEFERRED_PROFILE_BUSY in (r[1] or "") for r in rows)}
     events = conn.execute("SELECT source,COUNT(*),COUNT(DISTINCT channel_id) FROM channel_session_events WHERE state='LOGGED_OUT' AND created_at>=? GROUP BY source", (since,)).fetchall()
     first = conn.execute("SELECT MIN(started_at) FROM upload_tasks WHERE publish_mode='profile' AND started_at>0").fetchone()[0]
     baseline = None
@@ -3592,11 +3595,11 @@ def profile_metrics(days: int = 7):
             (first - days * 86400, first),
         ).fetchall()
         total = len(rows)
-        counts = {s: sum(1 for r in rows if r[0] == s) for s in ("SUCCESS", "NEEDS_CHECK", "ERROR")}
+        counts = {s: sum(1 for r in rows if r[0] == s) for s in outcome_states}
         baseline = {
             "since": first - days * 86400, "until": first, "started": total,
             **{k.lower(): v for k, v in counts.items()},
-            "rate": round(counts["SUCCESS"] * 100 / total, 2) if total else None,
+            "rate": round(counts[us.SUCCESS] * 100 / total, 2) if total else None,
         }
     conn.close()
     return {"days":days,"generated_at":now,"by_mode":modes,"session_events":{"by_source":{r[0]:{"events":r[1],"channels":r[2]} for r in events}},"baseline":baseline}
@@ -4165,9 +4168,9 @@ async def api_publish_now(req: PublishNowRequest, background_tasks: BackgroundTa
         cur = conn.execute(
             """
             INSERT INTO upload_tasks(channel_id,video_path,caption,hashtags,schedule_time,status,created_at,ai_generated,video_slug)
-            VALUES(?,?,?,?,?,'QUEUED',?,?,?)
+            VALUES(?,?,?,?,?,?,?,?,?)
             """,
-            (req.channel_id, str(video_path), req.caption, req.hashtags, int(time.time()), int(time.time()),
+            (req.channel_id, str(video_path), req.caption, req.hashtags, int(time.time()), us.QUEUED, int(time.time()),
              1 if req.ai_generated else 0, req.video_slug or ""),
         )
         task_id = cur.lastrowid
@@ -4200,8 +4203,8 @@ async def api_publish_now(req: PublishNowRequest, background_tasks: BackgroundTa
 
     conn = connect_db(DB_PATH)
     conn.execute(
-        "UPDATE upload_tasks SET status='UPLOADING', started_at=?, attempt_count=attempt_count+1 WHERE id=?",
-        (int(time.time()), task_id),
+        "UPDATE upload_tasks SET status=?, started_at=?, attempt_count=attempt_count+1 WHERE id=?",
+        (us.UPLOADING, int(time.time()), task_id),
     )
     conn.commit()
     conn.close()
@@ -4226,8 +4229,8 @@ async def api_publish_now(req: PublishNowRequest, background_tasks: BackgroundTa
             log_callback(f"❌ Ngoại lệ: {str(e)}", "error")
             conn = connect_db(DB_PATH)
             conn.execute(
-                "UPDATE upload_tasks SET status='ERROR', error_message=? WHERE id=?",
-                (str(e)[:1000], task_id),
+                "UPDATE upload_tasks SET status=?, error_message=? WHERE id=?",
+                (us.ERROR, str(e)[:1000], task_id),
             )
             conn.commit()
             conn.close()
