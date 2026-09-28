@@ -11,6 +11,7 @@ from pathlib import Path
 import httpx
 
 from bkt_web import vpn_manager
+from bkt_web import server as server_module
 from bkt_web.ai_vision import encode_screenshot
 from bkt_web.server import app, build_ffmpeg_render_cmd
 
@@ -53,6 +54,34 @@ class RouteCollisionTest(unittest.IsolatedAsyncioTestCase):
     async def test_gpm_compat_api_still_mounted_at_api_root(self):
         for path in ("/api/v1/profiles", "/api/v3/profiles"):
             self.assertEqual((await self.client.get(path)).status_code, 200, path)
+
+
+class DashboardUploadStateTest(unittest.TestCase):
+    def test_dashboard_uses_real_upload_states(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            db = Path(tmp) / "dashboard.db"
+            with sqlite3.connect(db) as conn:
+                conn.execute("""
+                    CREATE TABLE upload_tasks (
+                        id INTEGER PRIMARY KEY, status TEXT, error_message TEXT DEFAULT '',
+                        created_at INTEGER DEFAULT 0, caption TEXT DEFAULT '',
+                        schedule_time INTEGER DEFAULT 0, channel_id INTEGER DEFAULT 0
+                    )
+                """)
+                conn.executemany(
+                    "INSERT INTO upload_tasks (status, error_message, created_at) VALUES (?,?,?)",
+                    [("ERROR", "boom", 1), ("NEEDS_CHECK", "verify", 2), ("WAITING_RENDER", "", 3)],
+                )
+            old_db = server_module.DB_PATH
+            server_module.DB_PATH = db
+            try:
+                upload = server_module.api_dashboard_summary()["data"]["upload"]
+            finally:
+                server_module.DB_PATH = old_db
+        self.assertEqual(upload["error"], 1)
+        self.assertEqual(upload["needs_check"], 1)
+        self.assertEqual(upload["waiting_render"], 1)
+        self.assertNotIn("failed", upload)
 
 
 class FfmpegRenderCmdTest(unittest.TestCase):
