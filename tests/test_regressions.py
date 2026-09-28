@@ -101,6 +101,43 @@ class DashboardUploadStateTest(unittest.TestCase):
         self.assertNotIn("failed", upload)
 
 
+class UploadApiStateTest(unittest.TestCase):
+    def test_retry_confirm_and_cancel_use_canonical_transitions(self):
+        from bkt_web import server as server_module
+        from bkt_web import upload_states as us
+
+        with tempfile.TemporaryDirectory() as tmp:
+            db = Path(tmp) / "upload-api.db"
+            with sqlite3.connect(db) as conn:
+                conn.execute("""
+                    CREATE TABLE upload_tasks (
+                        id INTEGER PRIMARY KEY, status TEXT, schedule_time INTEGER DEFAULT 0,
+                        error_message TEXT DEFAULT '', next_retry_at INTEGER DEFAULT 0,
+                        attempt_count INTEGER DEFAULT 0, clicked_post_at INTEGER DEFAULT 0,
+                        verify_attempts INTEGER DEFAULT 0, next_verify_at INTEGER DEFAULT 0,
+                        verify_note TEXT DEFAULT '', published_video_id TEXT DEFAULT '',
+                        uploaded_at INTEGER DEFAULT 0
+                    )
+                """)
+                conn.executemany(
+                    "INSERT INTO upload_tasks (id,status) VALUES (?,?)",
+                    [(1, us.ERROR), (2, us.NEEDS_CHECK), (3, us.QUEUED)],
+                )
+
+            old_db = server_module.DB_PATH
+            server_module.DB_PATH = db
+            try:
+                server_module.retry_upload_task(1)
+                server_module.confirm_upload_task(2)
+                server_module.cancel_upload_task(3)
+            finally:
+                server_module.DB_PATH = old_db
+
+            with sqlite3.connect(db) as conn:
+                states = dict(conn.execute("SELECT id,status FROM upload_tasks"))
+        self.assertEqual(states, {1: us.QUEUED, 2: us.SUCCESS, 3: us.CANCELLED})
+
+
 class FfmpegRenderCmdTest(unittest.TestCase):
     """
     Đã -map video tường minh thì ffmpeg tắt chọn stream mặc định; thiếu
