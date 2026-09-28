@@ -45,6 +45,7 @@ class FakeTelegram:
 
     def close(self):
         self.server.shutdown()
+        self.server.server_close()
 
 
 class NotifyTestBase(unittest.TestCase):
