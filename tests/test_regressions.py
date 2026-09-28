@@ -12,7 +12,7 @@ from types import SimpleNamespace
 import httpx
 
 from bkt_web import vpn_manager
-from bkt_web import dashboard_routes
+from bkt_web import dashboard_routes, upload_routes
 from bkt_web.ai_vision import encode_screenshot
 from bkt_web.server import app, build_ffmpeg_render_cmd
 
@@ -60,6 +60,14 @@ class RouteCollisionTest(unittest.IsolatedAsyncioTestCase):
         response = await self.client.get("/api/dashboard/summary")
         self.assertEqual(response.status_code, 200)
 
+    async def test_upload_task_router_is_mounted_without_shadowing_publish_now(self):
+        self.assertEqual((await self.client.get("/api/upload/tasks")).status_code, 200)
+        response = await self.client.post("/api/upload/tasks/999/retry")
+        self.assertIn(response.status_code, (409, 404))
+        # publish-now remains owned by server.py and must still resolve as a real route.
+        response = await self.client.post("/api/upload/publish-now", json={})
+        self.assertNotEqual(response.status_code, 404)
+
 
 class LoginRateKeyTest(unittest.TestCase):
     def _request(self, peer, real_ip=""):
@@ -103,7 +111,6 @@ class DashboardUploadStateTest(unittest.TestCase):
 
 class UploadApiStateTest(unittest.TestCase):
     def test_retry_confirm_and_cancel_use_canonical_transitions(self):
-        from bkt_web import server as server_module
         from bkt_web import upload_states as us
 
         with tempfile.TemporaryDirectory() as tmp:
@@ -124,14 +131,14 @@ class UploadApiStateTest(unittest.TestCase):
                     [(1, us.ERROR), (2, us.NEEDS_CHECK), (3, us.QUEUED)],
                 )
 
-            old_db = server_module.DB_PATH
-            server_module.DB_PATH = db
+            old_db = upload_routes.DB_PATH
+            upload_routes.DB_PATH = db
             try:
-                server_module.retry_upload_task(1)
-                server_module.confirm_upload_task(2)
-                server_module.cancel_upload_task(3)
+                upload_routes.retry_upload_task(1)
+                upload_routes.confirm_upload_task(2)
+                upload_routes.cancel_upload_task(3)
             finally:
-                server_module.DB_PATH = old_db
+                upload_routes.DB_PATH = old_db
 
             with sqlite3.connect(db) as conn:
                 states = dict(conn.execute("SELECT id,status FROM upload_tasks"))
