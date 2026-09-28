@@ -59,6 +59,8 @@ try:
     from bkt_web.remake_routes import remake_router, start_remake_queue_worker, stop_remake_queue_worker
     from bkt_web.facebook_routes import fb_router, init_fb_db
     from bkt_web.facebook_reg_routes import fb_reg_router, init_fb_reg_db
+    from bkt_web.dashboard_routes import dashboard_router, dashboard_summary as api_dashboard_summary
+    from bkt_web import upload_states as us
 except ImportError:
     from db_utils import connect_db, configure_database
     from security import SecretStore, harden_file_permissions, safe_child, validate_slug
@@ -86,6 +88,8 @@ except ImportError:
     from remake_routes import remake_router, start_remake_queue_worker, stop_remake_queue_worker
     from facebook_routes import fb_router, init_fb_db
     from facebook_reg_routes import fb_reg_router, init_fb_reg_db
+    from dashboard_routes import dashboard_router, dashboard_summary as api_dashboard_summary
+    import upload_states as us
 
 CHROME_EXEC_PATH = os.environ.get(
     "TOKMATRIX_CHROME_PATH",
@@ -146,6 +150,7 @@ app.include_router(tiktok_api_router)
 app.include_router(flow_router)
 app.include_router(fb_router, prefix="/api/fb", tags=["facebook"])
 app.include_router(fb_reg_router, prefix="/api/fb-reg", tags=["facebook_reg"])
+app.include_router(dashboard_router)
 # Token phiên được giữ lại qua các lần khởi động lại server.
 #
 # Trước đây token sinh mới mỗi lần import, nên sau mỗi lần restart thì mọi tab
@@ -4439,83 +4444,8 @@ def api_channels_history_summary(days: int = 30):
     }
 
 
-@app.get("/api/dashboard/summary")
-def api_dashboard_summary():
-    """Số liệu gom cho Bảng Điều Khiển: kênh, render, lịch đăng, hàng đợi ảnh, nick."""
-    conn = connect_db(DB_PATH)
-
-    def scalar(sql, params=(), default=0):
-        try:
-            row = conn.execute(sql, params).fetchone()
-            return (row[0] if row and row[0] is not None else default)
-        except Exception:
-            return default
-
-    def rows(sql, params=()):
-        try:
-            return conn.execute(sql, params).fetchall()
-        except Exception:
-            return []
-
-    try:
-        today_start = int(time.mktime(time.strptime(time.strftime("%Y-%m-%d"), "%Y-%m-%d")))
-        data = {
-            "channels": {
-                "total": scalar("SELECT COUNT(*) FROM channels"),
-                "monetized": scalar("SELECT COUNT(*) FROM channels WHERE status LIKE '%BKT%' OR status LIKE '%Đã bật%'"),
-                "earned_total": round(scalar("SELECT SUM(earned) FROM channels") or 0, 2),
-                "balance_total": round(scalar("SELECT SUM(balance) FROM channels") or 0, 2),
-                "checked_today": scalar("SELECT COUNT(*) FROM channels WHERE last_checked >= ?", (today_start,)),
-            },
-            "render": {
-                "queued": scalar("SELECT COUNT(*) FROM render_tasks WHERE status='QUEUED'"),
-                "processing": scalar("SELECT COUNT(*) FROM render_tasks WHERE status='PROCESSING'"),
-                "done": scalar("SELECT COUNT(*) FROM render_tasks WHERE status='DONE'"),
-                "error": scalar("SELECT COUNT(*) FROM render_tasks WHERE status='ERROR'"),
-            },
-            "upload": {
-                "queued": scalar("SELECT COUNT(*) FROM upload_tasks WHERE status IN ('QUEUED','PENDING')"),
-                "uploading": scalar("SELECT COUNT(*) FROM upload_tasks WHERE status='UPLOADING'"),
-                "success": scalar("SELECT COUNT(*) FROM upload_tasks WHERE status='SUCCESS'"),
-                "error": scalar("SELECT COUNT(*) FROM upload_tasks WHERE status='ERROR'"),
-                "needs_check": scalar("SELECT COUNT(*) FROM upload_tasks WHERE status='NEEDS_CHECK'"),
-                "waiting_render": scalar("SELECT COUNT(*) FROM upload_tasks WHERE status='WAITING_RENDER'"),
-                "next": [
-                    {"id": r[0], "caption": (r[1] or "")[:60], "schedule_time": r[2], "channel_id": r[3]}
-                    for r in rows(
-                        """SELECT id, caption, schedule_time, channel_id FROM upload_tasks
-                           WHERE status IN ('QUEUED','PENDING') ORDER BY schedule_time ASC LIMIT 5"""
-                    )
-                ],
-            },
-            "images": {
-                "pending": scalar("SELECT COUNT(*) FROM image_queue WHERE status='pending'"),
-                "processing": scalar("SELECT COUNT(*) FROM image_queue WHERE status='processing'"),
-                "completed": scalar("SELECT COUNT(*) FROM image_queue WHERE status='completed'"),
-                "failed": scalar("SELECT COUNT(*) FROM image_queue WHERE status='failed'"),
-                "library": scalar("SELECT COUNT(*) FROM image_assets"),
-            },
-            "accounts": {
-                "fb_reg": scalar("SELECT COUNT(*) FROM fb_reg_accounts"),
-                "fb_live": scalar("SELECT COUNT(*) FROM fb_accounts"),
-                "nicks": scalar("SELECT COUNT(*) FROM FacebookAccounts")
-                         + scalar("SELECT COUNT(*) FROM TikTokAccounts"),
-            },
-            "recent_errors": [
-                {"kind": "Render", "id": r[0], "message": (r[1] or "")[:120], "at": r[2]}
-                for r in rows(
-                    "SELECT id, error_message, created_at FROM render_tasks WHERE status='ERROR' ORDER BY id DESC LIMIT 5"
-                )
-            ] + [
-                {"kind": "Đăng TikTok", "id": r[0], "message": (r[1] or "")[:120], "at": r[2]}
-                for r in rows(
-                    "SELECT id, error_message, created_at FROM upload_tasks WHERE status IN ('ERROR','NEEDS_CHECK') ORDER BY id DESC LIMIT 5"
-                )
-            ],
-        }
-    finally:
-        conn.close()
-    return {"success": True, "data": data}
+# Dashboard summary moved to bkt_web.dashboard_routes. The imported
+# api_dashboard_summary alias above is kept for internal/backward compatibility.
 
 
 # =============================================================================
@@ -4758,27 +4688,28 @@ def run_upload_scheduler():
             now = int(time.time())
             conn = connect_db(DB_PATH)
             conn.execute("BEGIN IMMEDIATE")
+            queue_marks = us.sql_marks(us.QUEUE_STATES)
             task = conn.execute(
-                """
+                f"""
                 SELECT id, channel_id, video_path, caption, hashtags, attempt_count, COALESCE(ai_generated, 1)
                 FROM upload_tasks
-                WHERE status IN ('QUEUED','PENDING')
+                WHERE status IN ({queue_marks})
                   AND schedule_time <= ?
                   AND (next_retry_at IS NULL OR next_retry_at <= ?)
                   AND attempt_count < 3
                 ORDER BY schedule_time, id
                 LIMIT 1
                 """,
-                (now, now),
+                (*us.QUEUE_STATES, now, now),
             ).fetchone()
             if task:
                 conn.execute(
-                    """
+                    f"""
                     UPDATE upload_tasks
-                    SET status='UPLOADING', started_at=?, attempt_count=attempt_count+1
-                    WHERE id=? AND status IN ('QUEUED','PENDING')
+                    SET status=?, started_at=?, attempt_count=attempt_count+1
+                    WHERE id=? AND status IN ({queue_marks})
                     """,
-                    (now, task[0]),
+                    (us.UPLOADING, now, task[0], *us.QUEUE_STATES),
                 )
             conn.commit()
             conn.close()
@@ -4821,8 +4752,8 @@ def run_upload_scheduler():
             elif result.get("deferred"):
                 conn = connect_db(DB_PATH)
                 conn.execute(
-                    "UPDATE upload_tasks SET status='QUEUED', attempt_count=?, next_retry_at=?, error_message=? WHERE id=?",
-                    (previous_attempts, int(time.time()) + 300, DEFERRED_PROFILE_BUSY, task_id),
+                    "UPDATE upload_tasks SET status=?, attempt_count=?, next_retry_at=?, error_message=? WHERE id=?",
+                    (us.QUEUED, previous_attempts, int(time.time()) + 300, DEFERRED_PROFILE_BUSY, task_id),
                 )
                 conn.commit(); conn.close()
                 scheduler_log("Profile đang bận — hoàn lượt và hoãn 5 phút", "warning")
@@ -4832,8 +4763,8 @@ def run_upload_scheduler():
                 retry_at = int(time.time()) + 60 * (2 ** previous_attempts)
                 conn = connect_db(DB_PATH)
                 conn.execute(
-                    "UPDATE upload_tasks SET status='QUEUED', next_retry_at=? WHERE id=?",
-                    (retry_at, task_id),
+                    "UPDATE upload_tasks SET status=?, next_retry_at=? WHERE id=?",
+                    (us.QUEUED, retry_at, task_id),
                 )
                 conn.commit()
                 conn.close()
@@ -4847,8 +4778,8 @@ def run_upload_scheduler():
                 if clicked and clicked[0]:
                     conn = connect_db(DB_PATH)
                     conn.execute(
-                        "UPDATE upload_tasks SET status='NEEDS_CHECK', error_message=? WHERE id=?",
-                        (f"Lỗi sau khi đã bấm Đăng: {exc}"[:1000], task[0]),
+                        "UPDATE upload_tasks SET status=?, error_message=? WHERE id=?",
+                        (us.NEEDS_CHECK, f"Lỗi sau khi đã bấm Đăng: {exc}"[:1000], task[0]),
                     )
                     conn.commit()
                     conn.close()
@@ -4862,7 +4793,7 @@ def run_upload_scheduler():
                     SET status=?, error_message=?, next_retry_at=?
                     WHERE id=?
                     """,
-                    ("QUEUED" if can_retry else "ERROR", str(exc)[:1000], retry_at, task[0]),
+                    (us.QUEUED if can_retry else us.ERROR, str(exc)[:1000], retry_at, task[0]),
                 )
                 conn.commit()
                 conn.close()
