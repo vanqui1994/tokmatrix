@@ -53,6 +53,7 @@ jobs:
             tests.test_upload_states \
             tests.test_upload_task_video \
             tests.test_publish_flow \
+            tests.test_upload_scheduler \
             tests.test_tiktok_publisher_confirmation \
             tests.test_publisher_profile \
             tests.test_needs_check_verifier \
