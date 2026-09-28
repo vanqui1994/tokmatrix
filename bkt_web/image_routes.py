@@ -5,7 +5,7 @@ Hàng đợi dùng SQLite (không phải file JSON) và có worker chạy nền 
 khoá bằng `BEGIN IMMEDIATE`, đếm số lần thử và hẹn giờ thử lại.
 """
 
-import io
+import tempfile
 import os
 import time
 import json
@@ -19,7 +19,8 @@ from typing import Optional, Dict, Any, List
 
 import httpx
 from fastapi import APIRouter, HTTPException, Query
-from fastapi.responses import StreamingResponse
+from fastapi.responses import FileResponse
+from starlette.background import BackgroundTask
 from pydantic import BaseModel
 
 try:
@@ -1240,28 +1241,81 @@ def bulk_delete_images(req: BulkFilesRequest):
     return {"success": True, "message": f"Đã xoá {removed}/{len(req.filenames)} ảnh", "removed": removed}
 
 
+MAX_GALLERY_ZIP_FILES = 500
+MAX_GALLERY_ZIP_SOURCE_BYTES = 2 * 1024 * 1024 * 1024  # 2 GiB source cap
+_ALREADY_COMPRESSED_IMAGE_SUFFIXES = {".jpg", ".jpeg", ".png", ".webp", ".gif", ".avif"}
+
+
+def _gallery_zip_sources(filenames: List[str]) -> List[Path]:
+    sources: List[Path] = []
+    seen = set()
+    total_bytes = 0
+    for name in filenames[:MAX_GALLERY_ZIP_FILES]:
+        safe_name = os.path.basename(name)
+        if not safe_name or safe_name in seen:
+            continue
+        seen.add(safe_name)
+        path = GENERATED_DIR / safe_name
+        if not path.is_file():
+            continue
+        try:
+            size = path.stat().st_size
+        except OSError:
+            continue
+        total_bytes += size
+        if total_bytes > MAX_GALLERY_ZIP_SOURCE_BYTES:
+            raise HTTPException(
+                status_code=413,
+                detail="Tổng dung lượng ảnh vượt 2 GB; hãy chọn ít ảnh hơn cho mỗi file ZIP",
+            )
+        sources.append(path)
+    return sources
+
+
+def _build_gallery_zip(filenames: List[str]) -> Path:
+    sources = _gallery_zip_sources(filenames)
+    if not sources:
+        raise HTTPException(status_code=404, detail="Không tìm thấy ảnh nào để tải")
+
+    fd, raw_path = tempfile.mkstemp(prefix="tokmatrix_gallery_", suffix=".zip", dir=str(STORAGE_DIR))
+    os.close(fd)
+    archive = Path(raw_path)
+    try:
+        with zipfile.ZipFile(archive, "w", allowZip64=True) as zf:
+            for path in sources:
+                # JPEG/PNG/WebP/AVIF đã nén sẵn; deflate lại chỉ tốn CPU mà gần
+                # như không giảm kích thước. Các định dạng text/khác vẫn deflate.
+                compression = (
+                    zipfile.ZIP_STORED
+                    if path.suffix.lower() in _ALREADY_COMPRESSED_IMAGE_SUFFIXES
+                    else zipfile.ZIP_DEFLATED
+                )
+                zf.write(path, arcname=path.name, compress_type=compression)
+        return archive
+    except Exception:
+        archive.unlink(missing_ok=True)
+        raise
+
+
+def _delete_gallery_zip(path: Path) -> None:
+    try:
+        path.unlink(missing_ok=True)
+    except OSError:
+        pass
+
+
 @image_router.post("/gallery/download-zip")
 def download_zip(req: BulkFilesRequest):
     if not req.filenames:
         raise HTTPException(status_code=400, detail="Chưa chọn ảnh nào")
 
-    buf = io.BytesIO()
-    added = 0
-    with zipfile.ZipFile(buf, "w", zipfile.ZIP_DEFLATED) as zf:
-        for name in req.filenames[:500]:
-            p = GENERATED_DIR / os.path.basename(name)
-            if p.exists():
-                zf.write(p, arcname=p.name)
-                added += 1
-    if added == 0:
-        raise HTTPException(status_code=404, detail="Không tìm thấy ảnh nào để tải")
-
-    buf.seek(0)
+    archive = _build_gallery_zip(req.filenames)
     stamp = time.strftime("%Y%m%d_%H%M%S")
-    return StreamingResponse(
-        buf,
+    return FileResponse(
+        str(archive),
         media_type="application/zip",
-        headers={"Content-Disposition": f'attachment; filename="anh_ai_{stamp}.zip"'},
+        filename=f"anh_ai_{stamp}.zip",
+        background=BackgroundTask(_delete_gallery_zip, archive),
     )
 
 
