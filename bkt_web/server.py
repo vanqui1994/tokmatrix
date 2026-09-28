@@ -57,6 +57,8 @@ try:
     from bkt_web import chocode_tiktok
     from bkt_web.autopilot import init_autopilot_db, start_autopilot, stop_autopilot
     from bkt_web.remake_routes import remake_router, start_remake_queue_worker, stop_remake_queue_worker
+    from bkt_web.facebook_routes import fb_router, init_fb_db
+    from bkt_web.facebook_reg_routes import fb_reg_router, init_fb_reg_db
 except ImportError:
     from db_utils import connect_db, configure_database
     from security import SecretStore, harden_file_permissions, safe_child, validate_slug
@@ -82,6 +84,8 @@ except ImportError:
     import chocode_tiktok
     from autopilot import init_autopilot_db, start_autopilot, stop_autopilot
     from remake_routes import remake_router, start_remake_queue_worker, stop_remake_queue_worker
+    from facebook_routes import fb_router, init_fb_db
+    from facebook_reg_routes import fb_reg_router, init_fb_reg_db
 
 CHROME_EXEC_PATH = os.environ.get(
     "TOKMATRIX_CHROME_PATH",
@@ -140,6 +144,8 @@ app.include_router(script_router)
 app.include_router(autopilot_router)
 app.include_router(tiktok_api_router)
 app.include_router(flow_router)
+app.include_router(fb_router, prefix="/api/fb", tags=["facebook"])
+app.include_router(fb_reg_router, prefix="/api/fb-reg", tags=["facebook_reg"])
 # Token phiên được giữ lại qua các lần khởi động lại server.
 #
 # Trước đây token sinh mới mỗi lần import, nên sau mỗi lần restart thì mọi tab
@@ -187,10 +193,10 @@ def _has_internal_token(request: Request) -> bool:
     if not INTERNAL_API_TOKEN:
         return False
     auth = (request.headers.get("authorization") or "").strip()
-    prefix = "Bearer "
-    if not auth.startswith(prefix):
+    scheme, sep, token = auth.partition(" ")
+    if not sep or scheme.lower() != "bearer":
         return False
-    return hmac.compare_digest(auth[len(prefix):].strip(), INTERNAL_API_TOKEN)
+    return hmac.compare_digest(token.strip(), INTERNAL_API_TOKEN)
 
 
 def _origin_is_allowed(request: Request, origin: str) -> bool:
@@ -755,6 +761,14 @@ def init_db():
     harden_file_permissions(sensitive_paths)
 
 init_db()
+# Facebook routers are part of the main API but own their tables. Initialize
+# them here as well so a fresh install and tests do not depend on a prior UI hit.
+_fb_conn = connect_db(DB_PATH)
+try:
+    init_fb_db(_fb_conn)
+    init_fb_reg_db(_fb_conn)
+finally:
+    _fb_conn.close()
 
 # --- Helper: Parse Cookies ---
 def parse_cookie_string(cookie_raw: str) -> Dict[str, str]:
