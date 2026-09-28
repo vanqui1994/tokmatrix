@@ -64,6 +64,20 @@ def ensure_upload_columns(conn) -> None:
     for name, definition in UPLOAD_COLUMNS.items():
         if name not in cols:
             conn.execute(f"ALTER TABLE upload_tasks ADD COLUMN {name} {definition}")
+    # Các query publish nóng đều lọc theo channel trước. Index theo lịch + thời
+    # điểm đăng giúp nearby check không phải quét toàn bộ bảng khi lịch sử lớn.
+    conn.execute(
+        "CREATE INDEX IF NOT EXISTS idx_upload_tasks_channel_schedule "
+        "ON upload_tasks(channel_id, status, schedule_time)"
+    )
+    conn.execute(
+        "CREATE INDEX IF NOT EXISTS idx_upload_tasks_channel_uploaded "
+        "ON upload_tasks(channel_id, status, uploaded_at)"
+    )
+    conn.execute(
+        "CREATE INDEX IF NOT EXISTS idx_upload_tasks_run_identity "
+        "ON upload_tasks(channel_id, video_slug, run_id) WHERE run_id <> ''"
+    )
 
 
 def _channel(conn, channel_id: Any) -> Dict[str, Any]:
@@ -89,11 +103,15 @@ def latest_mp4(slug: str) -> Optional[Path]:
 
 def nearby_posts(conn, channel_id: int, schedule_ts: int, exclude_id: Optional[int] = None) -> List[Dict[str, Any]]:
     marks = ",".join("?" for _ in NEARBY_BLOCKING_STATUSES)
+    low, high = schedule_ts - NEARBY_WINDOW, schedule_ts + NEARBY_WINDOW
     rows = conn.execute(
         f"""SELECT id, schedule_time, status, video_slug FROM upload_tasks
-            WHERE channel_id=? AND status IN ({marks})
-              AND ABS(COALESCE(NULLIF(uploaded_at,0), schedule_time) - ?) < ? AND id != ?""",
-        (channel_id, *NEARBY_BLOCKING_STATUSES, schedule_ts, NEARBY_WINDOW, exclude_id or -1),
+            WHERE channel_id=? AND status IN ({marks}) AND id != ?
+              AND (
+                    (COALESCE(uploaded_at,0) > 0 AND uploaded_at > ? AND uploaded_at < ?)
+                 OR (COALESCE(uploaded_at,0) = 0 AND schedule_time > ? AND schedule_time < ?)
+              )""",
+        (channel_id, *NEARBY_BLOCKING_STATUSES, exclude_id or -1, low, high, low, high),
     ).fetchall()
     return [{"id": r[0], "schedule_time": r[1], "status": r[2], "video_slug": r[3]} for r in rows]
 
