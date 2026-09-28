@@ -125,6 +125,27 @@ class EnqueueTests(PublishFlowBase):
         pf.enqueue_upload("vox-a-vi", 1, "c2", "#t", confirm_nearby=True)
         self.assertEqual(len(self.rows()), 2)
 
+    def test_needs_check_blocks_nearby_post(self):
+        self.video("vox-needs-check-vi")
+        with sqlite3.connect(self.db) as conn:
+            pf.ensure_upload_columns(conn)
+            conn.execute(
+                "INSERT INTO upload_tasks (channel_id, status, schedule_time, clicked_post_at, video_slug) VALUES (1, 'NEEDS_CHECK', ?, 123, 'old-video')",
+                (int(time.time()),),
+            )
+        with self.assertRaises(pf.PublishError) as ctx:
+            pf.enqueue_upload("vox-needs-check-vi", 1, "c", "#t")
+        self.assertEqual(ctx.exception.status, 409)
+        self.assertEqual(ctx.exception.extra["nearby"][0]["status"], "NEEDS_CHECK")
+
+    def test_same_run_id_is_idempotent(self):
+        self.video("vox-idempotent-vi")
+        first = pf.enqueue_upload("vox-idempotent-vi", 1, "c", "#t", run_id="batch-1")
+        second = pf.enqueue_upload("vox-idempotent-vi", 1, "c", "#t", run_id="batch-1")
+        self.assertEqual(first["id"], second["id"])
+        self.assertTrue(second["reused"])
+        self.assertEqual(len(self.rows()), 1)
+
 
 class WaitingRenderTests(PublishFlowBase):
     def test_fresh_render_activates_task(self):
