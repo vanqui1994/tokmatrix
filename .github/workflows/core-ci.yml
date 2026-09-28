@@ -53,4 +53,6 @@ jobs:
             tests.test_publish_flow \
             tests.test_tiktok_publisher_confirmation \
             tests.test_script_bridge \
+            tests.test_webauth \
+            tests.test_image_zip \
             tests.test_regressions
