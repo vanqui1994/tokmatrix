@@ -40,9 +40,9 @@ function buildFor(variant, composition, lang, dna = defaultDna(variant, composit
   };
 }
 
-test("vox registers 7 valid, structurally distinct base variants", () => {
+test("vox registers 8 valid, structurally distinct base variants", () => {
   assert.deepEqual(validateRegistry().errors, []);
-  assert.equal(variants.length, 7);
+  assert.equal(variants.length, 8);
   for (const v of variants) {
     assert.deepEqual(validateVariant(v), [], v.id);
     assert.equal(v.status, "active");
@@ -92,6 +92,7 @@ test("vox UI labels are localised and shown for every country", () => {
     "vox/data-card": { en: "BY THE NUMBERS", de: "IN ZAHLEN", ja: "数字で見る", ko: "숫자로 보기", vi: "QUA CON SỐ" },
     "vox/documentary-lowerthird": { en: "DOCUMENTARY", de: "DOKUMENTATION", ja: "ドキュメンタリー", ko: "다큐멘터리", vi: "PHÓNG SỰ" },
     "vox/zine-xerox": { en: "ZINE", de: "FANZINE", ja: "ZINE", ko: "진", vi: "TẠP CHÍ PHOTO" },
+    "vox/original": { en: "THE BREAKDOWN", de: "AKTE ERKLÄRT", ja: "徹底解剖ファイル", ko: "심층 해부 리포트", vi: "HỒ SƠ BÓC TÁCH" },
   };
   assert.deepEqual(variants.map((v) => v.id).sort(), Object.keys(expected).sort());
   for (const variant of variants) {
