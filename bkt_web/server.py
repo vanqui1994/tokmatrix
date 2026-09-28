@@ -323,12 +323,26 @@ class LoginItem(BaseModel):
     password: str
 
 
+def _login_rate_key(request: Request) -> str:
+    """Use the real client IP only when the immediate peer is our local proxy."""
+    peer = request.client.host if request.client else ""
+    if peer in {"127.0.0.1", "::1", "localhost", "testclient"}:
+        real_ip = (request.headers.get("x-real-ip") or "").strip()
+        if real_ip:
+            try:
+                ipaddress.ip_address(real_ip)
+                return real_ip
+            except ValueError:
+                pass
+    return peer or "unknown"
+
+
 @app.post("/api/auth/login")
 def api_auth_login(item: LoginItem, request: Request):
     if not webauth.has_credentials():
         raise HTTPException(status_code=409, detail="Chưa đặt tài khoản trên máy chủ")
 
-    client = request.client.host if request.client else "?"
+    client = _login_rate_key(request)
     if webauth.too_many_attempts(client):
         raise HTTPException(
             status_code=429,
