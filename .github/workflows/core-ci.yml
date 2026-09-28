@@ -1,0 +1,50 @@
+name: core-ci
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  core:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: compare_studio/package-lock.json
+
+      - name: Install system dependencies
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
+
+      - name: Install Python dependencies
+        run: pip install -r requirements.txt
+
+      - name: Install Node dependencies
+        working-directory: compare_studio
+        run: npm ci --ignore-scripts --no-audit --no-fund
+
+      - name: Python compile check
+        run: python -m py_compile bkt_web/*.py bkt_web/autopilot/*.py ssmatool_engine_mac/*.py
+
+      - name: JavaScript syntax check
+        run: |
+          node --check bkt_web/static/app.js
+          node --check bkt_web/static/flow_view.js
+
+      - name: Core regression tests
+        run: |
+          python -m unittest             tests.test_publish_flow             tests.test_tiktok_publisher_confirmation             tests.test_publisher_modals             tests.test_script_bridge             tests.test_regressions
