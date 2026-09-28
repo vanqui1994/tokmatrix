@@ -60,6 +60,10 @@ try:
     from bkt_web.facebook_routes import fb_router, init_fb_db
     from bkt_web.facebook_reg_routes import fb_reg_router, init_fb_reg_db
     from bkt_web.dashboard_routes import dashboard_router, dashboard_summary as api_dashboard_summary
+    from bkt_web.upload_routes import (
+        upload_router, list_upload_tasks, upload_task_video_file, upload_task_video,
+        delete_upload_task, retry_upload_task, cancel_upload_task, confirm_upload_task,
+    )
     from bkt_web import upload_states as us
 except ImportError:
     from db_utils import connect_db, configure_database
@@ -89,6 +93,10 @@ except ImportError:
     from facebook_routes import fb_router, init_fb_db
     from facebook_reg_routes import fb_reg_router, init_fb_reg_db
     from dashboard_routes import dashboard_router, dashboard_summary as api_dashboard_summary
+    from upload_routes import (
+        upload_router, list_upload_tasks, upload_task_video_file, upload_task_video,
+        delete_upload_task, retry_upload_task, cancel_upload_task, confirm_upload_task,
+    )
     import upload_states as us
 
 CHROME_EXEC_PATH = os.environ.get(
@@ -151,6 +159,7 @@ app.include_router(flow_router)
 app.include_router(fb_router, prefix="/api/fb", tags=["facebook"])
 app.include_router(fb_reg_router, prefix="/api/fb-reg", tags=["facebook_reg"])
 app.include_router(dashboard_router)
+app.include_router(upload_router)
 # Token phiên được giữ lại qua các lần khởi động lại server.
 #
 # Trước đây token sinh mới mỗi lần import, nên sau mỗi lần restart thì mọi tab
@@ -3333,155 +3342,8 @@ def create_upload_task(item: UploadTaskCreate):
         "success": True
     }
 
-@app.get("/api/upload/tasks")
-def list_upload_tasks():
-    conn = connect_db(DB_PATH)
-    c = conn.cursor()
-    c.execute("""
-        SELECT u.id, u.channel_id, u.video_path, u.caption, u.hashtags, u.schedule_time, u.status, u.result_url, u.error_message, u.created_at, u.uploaded_at,
-               u.attempt_count, u.next_retry_at, u.started_at,
-               c.username, c.note, c.country,
-               COALESCE(u.ai_generated, 1), COALESCE(u.video_slug, ''), COALESCE(u.clicked_post_at, 0),
-               COALESCE(u.verify_note, ''), COALESCE(u.published_video_id, ''), COALESCE(u.publish_mode, '')
-        FROM upload_tasks u
-        LEFT JOIN channels c ON u.channel_id = c.id
-        ORDER BY u.created_at DESC
-    """)
-    rows = c.fetchall()
-    conn.close()
-    try:  # chủ đề (niche) của từng acc theo mapping Autopilot; phụ, không làm hỏng danh sách
-        from bkt_web.autopilot.channels import account_topics
-        topics = account_topics()
-    except Exception:
-        topics = {}
-    items = []
-    for r in rows:
-        topic = topics.get(r[1]) or {}
-        items.append({
-            "niche_id": topic.get("niche_id", ""),
-            "niche_name": topic.get("niche_name", ""),
-            "matrix_channel_id": topic.get("matrix_channel_id", ""),
-            "matrix_channel_name": topic.get("matrix_channel_name", ""),
-            "id": r[0],
-            "channel_id": r[1],
-            "video_path": r[2],
-            "caption": r[3],
-            "hashtags": r[4],
-            "schedule_time": r[5],
-            "status": r[6],
-            "result_url": r[7],
-            "error_message": r[8],
-            "created_at": r[9],
-            "uploaded_at": r[10],
-            "attempt_count": r[11] or 0,
-            "next_retry_at": r[12] or 0,
-            "started_at": r[13] or 0,
-            "username": r[14] or r[15] or f"ID {r[1]}",
-            "country": r[16] or "KR",
-            "ai_generated": bool(r[17]),
-            "video_slug": r[18],
-            "clicked_post_at": r[19] or 0,
-            "verify_note": r[20],
-            "published_video_id": r[21],
-            "publish_mode": r[22],
-        })
-    return {"tasks": items}
-
-# Thư mục được phép phát video của tác vụ đăng (không cho đọc file tuỳ ý qua video_path).
-UPLOAD_VIDEO_ROOTS = (PROJECT_ROOT / "compare_studio" / "videos", STORAGE_DIR)
-
-
-def upload_task_video_file(video_path: str):
-    """Đường dẫn MP4 của tác vụ nếu nằm trong UPLOAD_VIDEO_ROOTS và tồn tại, ngược lại None."""
-    if not video_path or not str(video_path).lower().endswith(".mp4"):
-        return None
-    try:
-        path = Path(video_path).resolve()
-    except (OSError, RuntimeError):
-        return None
-    if not path.is_file():
-        return None
-    for root in UPLOAD_VIDEO_ROOTS:
-        try:
-            path.relative_to(root.resolve())
-            return path
-        except ValueError:
-            continue
-    return None
-
-
-@app.get("/api/upload/tasks/{task_id}/video")
-def upload_task_video(task_id: int):
-    """Phát đúng file MP4 sẽ được đăng của tác vụ (hỗ trợ Range để tua)."""
-    conn = connect_db(DB_PATH)
-    try:
-        row = conn.execute("SELECT video_path FROM upload_tasks WHERE id=?", (task_id,)).fetchone()
-    finally:
-        conn.close()
-    path = upload_task_video_file(row[0] if row else "")
-    if not path:
-        raise HTTPException(status_code=404, detail="Không tìm thấy file video của tác vụ")
-    return FileResponse(str(path), media_type="video/mp4", headers={"cache-control": "private, max-age=300"})
-
-
-@app.delete("/api/upload/tasks/{task_id}")
-def delete_upload_task(task_id: int):
-    conn = connect_db(DB_PATH)
-    c = conn.cursor()
-    c.execute("DELETE FROM upload_tasks WHERE id=?", (task_id,))
-    conn.commit()
-    conn.close()
-    return {"message": "Đã xóa tác vụ đăng bài"}
-
-
-@app.post("/api/upload/tasks/{task_id}/retry")
-def retry_upload_task(task_id: int):
-    conn = connect_db(DB_PATH)
-    cur = conn.execute(
-        """
-        UPDATE upload_tasks
-        SET status=?, error_message='', next_retry_at=0, schedule_time=?,
-            attempt_count=0, clicked_post_at=0,
-            verify_attempts=0, next_verify_at=0, verify_note='', published_video_id=''
-        WHERE id=? AND status IN (?,?,?)
-        """,
-        (us.QUEUED, int(time.time()), task_id, us.ERROR, us.CANCELLED, us.NEEDS_CHECK),
-    )
-    conn.commit()
-    conn.close()
-    if cur.rowcount == 0:
-        raise HTTPException(status_code=409, detail="Tác vụ không ở trạng thái có thể thử lại")
-    return {"message": "Đã đưa tác vụ trở lại hàng đợi"}
-
-
-@app.post("/api/upload/tasks/{task_id}/cancel")
-def cancel_upload_task(task_id: int):
-    conn = connect_db(DB_PATH)
-    cancellable = (*us.QUEUE_STATES, us.WAITING_RENDER)
-    marks = us.sql_marks(cancellable)
-    cur = conn.execute(
-        f"UPDATE upload_tasks SET status=? WHERE id=? AND status IN ({marks})",
-        (us.CANCELLED, task_id, *cancellable),
-    )
-    conn.commit()
-    conn.close()
-    if cur.rowcount == 0:
-        raise HTTPException(status_code=409, detail="Tác vụ đang chạy hoặc đã hoàn tất")
-    return {"message": "Đã hủy tác vụ"}
-
-@app.post("/api/upload/tasks/{task_id}/confirm")
-def confirm_upload_task(task_id: int):
-    """Người dùng đã kiểm tra kênh: video của task NEEDS_CHECK đã lên."""
-    conn = connect_db(DB_PATH)
-    cur = conn.execute(
-        "UPDATE upload_tasks SET status=?, uploaded_at=?, error_message='' WHERE id=? AND status=?",
-        (us.SUCCESS, int(time.time()), task_id, us.NEEDS_CHECK),
-    )
-    conn.commit()
-    conn.close()
-    if cur.rowcount == 0:
-        raise HTTPException(status_code=409, detail="Chỉ xác nhận được task đang 'Cần kiểm tra'")
-    return {"message": "Đã đánh dấu video đã lên kênh"}
+# Upload task list/video/retry/cancel/confirm routes live in bkt_web.upload_routes.
+# Function aliases are imported above for backward compatibility with internal callers/tests.
 
 
 class PublishDryRunRequest(BaseModel):
