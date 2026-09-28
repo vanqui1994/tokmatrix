@@ -215,6 +215,16 @@ globalThis.RemakeVector = (() => {
     line(ctx, points, ink, width + 2.6);
     line(ctx, points, color, width);
   }
+  // Ống côn giữa hai điểm (chân chibi, cán dụng cụ): bán kính r1 ở đầu (x1, y1), r2 ở đầu (x2, y2).
+  function taper(ctx, x1, y1, x2, y2, r1, r2, fill, stroke, strokeWidth = 1) {
+    const dx = x2 - x1, dy = y2 - y1, len = Math.hypot(dx, dy) || 1, nx = -dy / len, ny = dx / len;
+    ctx.beginPath();
+    ctx.moveTo(x1 + nx * r1, y1 + ny * r1); ctx.lineTo(x2 + nx * r2, y2 + ny * r2);
+    ctx.lineTo(x2 - nx * r2, y2 - ny * r2); ctx.lineTo(x1 - nx * r1, y1 - ny * r1);
+    ctx.closePath();
+    if (fill) { ctx.fillStyle = fill; ctx.fill(); }
+    if (stroke) { ctx.strokeStyle = stroke; ctx.lineWidth = strokeWidth; ctx.lineJoin = 'round'; ctx.stroke(); }
+  }
   function mitten(ctx, x, y, r, color, angle = 0) {
     ctx.save(); ctx.translate(x, y); ctx.rotate(angle);
     ellipse(ctx, 0, 0, r, r * 1.08, volume(ctx, 0, 0, r, r, color), INK, 1.3);
@@ -297,10 +307,10 @@ globalThis.RemakeVector = (() => {
     const grip = [(fingers[0][2][0] + fingers[1][2][0]) / 2, (fingers[0][2][1] + fingers[1][2][1]) / 2];
     return { wrist, palm, grip, fingers, base };
   }
-  function solveArm(shoulder, hand, bend = 1) {
+  function solveArm(shoulder, hand, bend = 1, segLen = 23) {
     const dx = hand[0] - shoulder[0], dy = hand[1] - shoulder[1], raw = Math.hypot(dx, dy) || .0001;
-    const distance = Math.min(raw, 45.5), ux = dx / raw, uy = dy / raw;
-    const along = distance / 2, height = Math.sqrt(Math.max(0, 23 * 23 - along * along));
+    const distance = Math.min(raw, segLen * 2 - 0.5), ux = dx / raw, uy = dy / raw;
+    const along = distance / 2, height = Math.sqrt(Math.max(0, segLen * segLen - along * along));
     return [shoulder[0] + ux * along - uy * height * bend, shoulder[1] + uy * along + ux * height * bend];
   }
   function farmerSkeleton(s) {
@@ -314,6 +324,20 @@ globalThis.RemakeVector = (() => {
       shoulder_l, shoulder_r, hand_l, hand_r,
       elbow_l: solveArm(shoulder_l, hand_l, 1),
       elbow_r: solveArm(shoulder_r, hand_r, -1)
+    };
+  }
+  const WEATHER_REACTORS = new Set(['human', 'chibi', 'animal']);
+  function chibiSkeleton(s) {
+    const shoulder_l = [-14, -44], shoulder_r = [14, -44];
+    let hand_l = [s.hand_l_x ?? -24, s.hand_l_y ?? -22], hand_r = [s.hand_r_x ?? 24, s.hand_r_y ?? -22];
+    if (s.arm) {
+      const moved = rotate(hand_l[0] - shoulder_l[0], hand_l[1] - shoulder_l[1], s.arm);
+      hand_l = [shoulder_l[0] + moved[0], shoulder_l[1] + moved[1]];
+    }
+    return {
+      shoulder_l, shoulder_r, hand_l, hand_r,
+      elbow_l: solveArm(shoulder_l, hand_l, 1, 14),
+      elbow_r: solveArm(shoulder_r, hand_r, -1, 14)
     };
   }
   function localAnchor(cat, s, name) {
@@ -335,6 +359,11 @@ globalThis.RemakeVector = (() => {
     }
     if (PEOPLE.has(s.asset)) {
       const skeleton = farmerSkeleton(s), key = name === 'hand' ? 'hand_l' : name === 'grip' ? 'hand_r' : name;
+      const resolved = key === 'wrist_l' ? 'hand_l' : key === 'wrist_r' ? 'hand_r' : key;
+      if (skeleton[resolved]) [x, y] = skeleton[resolved];
+    }
+    if (cat.assets[s.asset]?.group === 'chibi') {
+      const skeleton = chibiSkeleton(s), key = name === 'hand' ? 'hand_r' : name === 'grip' ? 'hand_r' : name;
       const resolved = key === 'wrist_l' ? 'hand_l' : key === 'wrist_r' ? 'hand_r' : key;
       if (skeleton[resolved]) [x, y] = skeleton[resolved];
     }
@@ -389,11 +418,20 @@ globalThis.RemakeVector = (() => {
       // identity is exposed on ones/twos/holds.
       states[id] = { ...cat.pose_defaults, ...posed, drawing_id: drawing.drawing_id, id, asset: c.asset, style: c.style || {}, material: c.material || 'clean', faceEnabled: c.face ?? cat.assets[c.asset].face };
       const s = states[id];
+      // Tư thế nghỉ riêng của rig (vd. tay chibi): pose_defaults là của người lớn nên chỉ áp cho thông số
+      // mà không keyframe nào khai.
+      const rest = cat.assets[c.asset].rest_pose;
+      if (rest) for (const [k, v] of Object.entries(rest)) if (!keys.some(f => f[k] !== undefined)) s[k] = v;
       s.season = scene.background?.season || 'summer';  // cây ăn quả đổi tán/hoa/quả theo mùa của cảnh
       const bgWeather = scene.background?.weather || scene.weather || '';
       const windAuto = bgWeather === 'wind' ? 0.65 + 0.35 * Math.sin(t * 3.2 + (hash(id) % 11) * 0.5) : bgWeather === 'storm' ? 0.85 + 0.15 * Math.sin(t * 4.5 + (hash(id) % 7)) : 0;
       // pose_defaults có wind: 0 nên phải xem keyframe có khai wind thật không, nếu không gió của cảnh bị bỏ qua.
       s.wind = keys.some(k => k.wind !== undefined) ? clamp(posed.wind, 0, 1) : windAuto;
+      // Tuyết: người/chibi/thú có mặt tự run cầm cập; nắng nóng: tự đổ mồ hôi. Keyframe khai shiver/sweat (vd. 0 = mặc áo ấm) thì theo keyframe.
+      if (WEATHER_REACTORS.has(cat.assets[c.asset].group) && s.faceEnabled !== false) {
+        if (bgWeather === 'snow' && !keys.some(k => k.shiver !== undefined)) s.shiver = 1;
+        if (bgWeather === 'hot' && !keys.some(k => k.sweat !== undefined)) s.sweat = 1;
+      }
       s.speaking = (cue?.character_id || cue?.speaker || cue?.speaker_id) === id && !cue?.offscreen;
       s.mouth = 0;
       if (s.speaking) {
@@ -402,6 +440,8 @@ globalThis.RemakeVector = (() => {
       }
       s.gait = 0;
       s.attached = Boolean(c.attach_to);
+      s.attach_to = c.attach_to || null;
+      s.layer = c.layer || (c.attach_to && c.attach_to.layer) || null;
       // Vận tốc của pose (không tính action) chỉ dùng cho chuyển động phụ khi vẽ:
       // bước chân, nhún, nghiêng. Không đụng toạ độ neo nên không đổi điểm tiếp xúc.
       const before = keys?.length ? track(keys, Math.max(0, t - 1 / 12), cat.pose_defaults) : posed;
@@ -453,6 +493,13 @@ globalThis.RemakeVector = (() => {
       if (ACTION_HOOKS[a.type]) ACTION_HOOKS[a.type](a, states, t, p, u, amount, cat, active);
       live.push({ ...a, p, active });
     }
+    // Nhiễm độc (toxic, từ pose hoặc spray_drift): cây úa vàng rủ lá (dùng lại damage), người/chibi đổi sắc mặt.
+    for (const s of Object.values(states)) {
+      if (!(s.toxic > .05)) continue;
+      const group = cat.assets[s.asset].group;
+      if (group === 'plant' || group === 'vegetable') { s.damage = Math.max(s.damage || 0, s.toxic * .8); s.bend = Math.max(s.bend || 0, s.toxic * .3); }
+      if ((group === 'human' || group === 'chibi') && ['neutral', 'happy', 'smug'].includes(s.expression)) s.expression = s.toxic > .6 ? 'sick' : 'worried';
+    }
     function attach(id, stack = new Set()) {
       if (stack.has(id)) throw new Error('Rig attachment cycle');
       const c = cast.get(id), s = states[id];
@@ -467,7 +514,7 @@ globalThis.RemakeVector = (() => {
     }
     for (const id of scene.characters_present) attach(id);
     // pick của người = vươn tay IK tới fruit_N trong 0.6 s đầu (không dời cả thân như tay rời).
-    const reachLike = item => item.type === 'reach' || (item.type === 'pick' && PEOPLE.has(states[item.actor].asset));
+    const reachLike = item => item.type === 'reach' || (item.type === 'pick' && (PEOPLE.has(states[item.actor].asset) || cat.assets[states[item.actor].asset]?.group === 'chibi'));
     for (const a of live.filter(reachLike)) {
       const actor = states[a.actor], target = states[a.target], hand = a.type === 'pick' ? (a.actor_anchor === 'hand_l' ? 'hand_l' : 'hand_r') : a.actor_anchor || 'hand_r';
       if (!actor || !target) continue;
@@ -483,7 +530,7 @@ globalThis.RemakeVector = (() => {
       if (!spec.motion) continue;
       const actor = states[a.actor], target = states[a.target];
       if (!actor || !target) continue;
-      if (a.type === 'pick' && PEOPLE.has(actor.asset)) continue;  // người: đã vươn tay IK ở trên
+      if (a.type === 'pick' && (PEOPLE.has(actor.asset) || cat.assets[actor.asset]?.group === 'chibi')) continue;  // người / chibi: đã vươn tay IK ở trên
       if (!a.active && ['cut', 'slice', 'press', 'peck', 'dig'].includes(a.type)) continue;
       const actorName = a.actor_anchor || (cat.assets[actor.asset].anchors[spec.actor_anchor] ? spec.actor_anchor : 'root');
       const targetName = a.target_anchor || (cat.assets[target.asset].anchors[spec.target_anchor] ? spec.target_anchor : 'face');
@@ -603,6 +650,9 @@ globalThis.RemakeVector = (() => {
           state.x = socket.x + delta[0]; state.y = socket.y + delta[1] - (state.lift || 0);
           state.rotation = socket.rotation + (parent.flip ? -local.rotation : local.rotation);
           state.flip = Boolean(parent.flip) !== Boolean(local.flip); state.opacity = local.opacity * parent.opacity;
+          if (state.layer === 'over_face' && parent) {
+            state.z = Math.max(state.z, (parent.z || 0) + 0.1);
+          }
         }
         visiting.delete(id); done.add(id);
       }
@@ -627,10 +677,16 @@ globalThis.RemakeVector = (() => {
     const blink = (t + (hash(s.id) % 97) / 23) % 3.8 > 3.66;
     const lx = clamp(s.look_x || 0, -1, 1) * 2.6, ly = clamp(s.look_y || 0, -1, 1) * 2.6;
     // Má hồng trước mắt để viền mắt đè lên.
-    ctx.save(); ctx.globalAlpha *= .42;
-    const blushCol = e === 'sick' ? '#68b878' : e === 'cold' ? '#8cb8ea' : e === 'hot' ? '#ff3b30' : '#ff7f86';
+    ctx.save();
+    const blushAlpha = Math.min(1.0, 0.42 + (s.blush || 0) * 0.45 + (s.fever || 0) * 0.35);
+    ctx.globalAlpha *= blushAlpha;
+    const blushCol = e === 'sick' || s.sick ? '#68b878' : e === 'cold' ? '#8cb8ea' : e === 'hot' || s.fever ? '#ff3b30' : '#ff7f86';
     for (const side of [-1, 1]) ellipse(ctx, side * 18, 9, 6.5, 3.8, blushCol, null);
+    if (s.fever > 0) ellipse(ctx, 0, -10, 14, 6, 'rgba(255, 60, 50, 0.25)', null);
     ctx.restore();
+    if (s.tears > 0) {
+      for (const side of [-1, 1]) ellipse(ctx, side * 15, 6, 2.2, 3.8, '#58b2e8', null);
+    }
     for (const side of [-1, 1]) {
       const ex = side * 10;
       if (e === 'sleep' || blink) {
@@ -3136,7 +3192,11 @@ globalThis.RemakeVector = (() => {
     else if (group === 'tool') drawTool(ctx, s, t);
     else if (group === 'prop') drawProp(ctx, s, t);
     else if (group === 'animal') drawAnimal(ctx, s, t);
-    else if (group === 'fish') drawFish(ctx, s, t);
+    else if (group === 'fish') {
+      // Nước nhiễm độc nặng: cá nổi bụng (lật dọc quanh thân).
+      if (s.toxic > .8) { ctx.translate(0, -48); ctx.scale(1, -1); ctx.translate(0, 48); }
+      drawFish(ctx, s, t);
+    }
     else if (group === 'monster') drawMonster(ctx, s, t);
     // Cel vẽ tay đã có sẵn mặt và bàn tay: vẽ thêm lớp vector sẽ thành hai khuôn mặt.
     if (!layer) { face(ctx, s, cat, t); handMarks(ctx, s, cat); }
@@ -3256,6 +3316,16 @@ globalThis.RemakeVector = (() => {
     const preset = settings.preset || 'garden';
     const bg = BACKGROUNDS[preset] || BACKGROUNDS.garden;
     bg.draw(ctx, settings, t, kit);
+    // Nước ao/sông ô nhiễm (background.contaminated 0–1): nước ngả xanh đục và có váng.
+    const dirty = clamp(settings.contaminated || 0);
+    if (dirty > 0 && bg.theme === 'water') {
+      const gy = bg.ground_y;
+      ctx.fillStyle = `rgba(122, 140, 48, ${.55 * dirty})`; ctx.fillRect(-2000, gy, 4500, 3000);
+      for (let i = 0; i < Math.round(14 * dirty); i++) {
+        const x = (hash(`scum${i}`) % (W + 80)) - 40, y = gy + 12 + (hash(`scumy${i}`) % 200);
+        ellipse(ctx, x + Math.sin(t * .5 + i) * 6, y, 26 + i % 4 * 9, 5, `rgba(196, 190, 92, ${.7 * dirty})`, null);
+      }
+    }
     // Tuyết đọng thành lớp gợn trên mặt đất (nền nước / dưới nước không đọng).
     if (settings.weather === 'snow' && bg.theme !== 'water') {
       const gy = bg.ground_y;
@@ -3498,6 +3568,7 @@ globalThis.RemakeVector = (() => {
       ctx.fillStyle = '#c0eff1'; ctx.fillRect(0, 0, W, H);
       ctx.save(); ctx.translate(W / 2, H / 2); ctx.scale(frame.camera.zoom, frame.camera.zoom); ctx.translate(-frame.camera.x, -frame.camera.y);
       background(ctx, bg, frame.t);
+      // Vật gắn layer over_face đã được nâng z cao hơn cha lúc gắn (attach), nên chỉ cần sắp theo z.
       const ordered = Object.values(frame.states).sort((a, b) => a.z - b.z);
       for (const state of ordered) contactShadow(ctx, state, this.catalog);
       motionTrails(ctx, frame, this.catalog, at => this.sample(at));
@@ -3522,6 +3593,7 @@ globalThis.RemakeVector = (() => {
     tone,
     volume,
     cylinder,
+    taper,
     limb,
     mitten,
     leaf,
@@ -3543,6 +3615,9 @@ globalThis.RemakeVector = (() => {
     FRUIT_LIMBS,
     BACKGROUNDS,
     RIG_DRAWERS,
+    chibiSkeleton,
+    solveArm,
+    rotate,
   };
   const CUSTOM_EFFECTS = [];
   const ACTION_HOOKS = {};
@@ -3596,6 +3671,7 @@ globalThis.RemakeVector = (() => {
     track,
     exposureTime,
     worldAnchor,
+    worldToLocal,
     localAnchor,
     handSkeleton,
     farmerSkeleton,

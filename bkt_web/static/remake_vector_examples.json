@@ -5215,6 +5215,18 @@
         "name": "Mặt nạ phòng độc",
         "asset": "ppe_mask",
         "face": false,
+        "layer": "over_face",
+        "attach_to": {
+          "id": "farmer",
+          "anchor": "mouth"
+        }
+      },
+      {
+        "id": "goggles",
+        "name": "Kính bảo hộ",
+        "asset": "ppe_goggles",
+        "face": false,
+        "layer": "over_face",
         "attach_to": {
           "id": "farmer",
           "anchor": "face"
@@ -5224,7 +5236,11 @@
         "id": "sprayer",
         "name": "Bình phun thuốc đeo lưng",
         "asset": "backpack_sprayer",
-        "face": false
+        "face": false,
+        "attach_to": {
+          "id": "farmer",
+          "anchor": "back"
+        }
       },
       {
         "id": "cabinet",
@@ -5276,6 +5292,7 @@
         "characters_present": [
           "farmer",
           "mask",
+          "goggles",
           "sprayer",
           "cabinet",
           "bottle",
@@ -5302,14 +5319,28 @@
             {
               "time": 0,
               "x": 0,
+              "y": 2,
+              "height": 105
+            },
+            {
+              "time": 5.0,
+              "x": 0,
+              "y": 2,
+              "height": 105
+            }
+          ],
+          "goggles": [
+            {
+              "time": 0,
+              "x": 0,
               "y": 0,
-              "height": 80
+              "height": 92
             },
             {
               "time": 5.0,
               "x": 0,
               "y": 0,
-              "height": 80
+              "height": 92
             }
           ],
           "sprayer": [
@@ -5393,6 +5424,7 @@
         "characters_present": [
           "farmer",
           "mask",
+          "goggles",
           "sprayer",
           "cabbage",
           "bystander"
@@ -5425,30 +5457,46 @@
             {
               "time": 5.0,
               "x": 0,
+              "y": 2,
+              "height": 105
+            },
+            {
+              "time": 10.0,
+              "x": 0,
+              "y": 2,
+              "height": 105
+            }
+          ],
+          "goggles": [
+            {
+              "time": 5.0,
+              "x": 0,
               "y": 0,
-              "height": 80
+              "height": 92
             },
             {
               "time": 10.0,
               "x": 0,
               "y": 0,
-              "height": 80
+              "height": 92
             }
           ],
           "sprayer": [
             {
               "time": 5.0,
-              "x": 180,
-              "y": 810,
               "height": 220,
-              "z": 1
+              "z": -1,
+              "x": -0.0,
+              "y": 88.0,
+              "rotation": 0
             },
             {
               "time": 10.0,
-              "x": 180,
-              "y": 810,
               "height": 220,
-              "z": 1
+              "z": -1,
+              "x": -0.0,
+              "y": 88.0,
+              "rotation": 0
             }
           ],
           "cabbage": [
@@ -5474,16 +5522,6 @@
               "y": 810,
               "height": 350,
               "expression": "happy",
-              "toxic": 0.0,
-              "z": 2
-            },
-            {
-              "time": 7.2,
-              "x": 470,
-              "y": 810,
-              "height": 350,
-              "expression": "worried",
-              "toxic": 0.7,
               "z": 2
             },
             {
@@ -5491,8 +5529,7 @@
               "x": 470,
               "y": 810,
               "height": 350,
-              "expression": "worried",
-              "toxic": 0.7,
+              "expression": "happy",
               "z": 2
             }
           ]
@@ -5662,14 +5699,19 @@
         "asset": "giant_radish"
       },
       {
-        "id": "farmer",
+        "id": "grandpa",
         "name": "Nông dân",
         "asset": "farmer"
       },
       {
-        "id": "woman",
+        "id": "grandma",
         "name": "Nông dân nữ",
         "asset": "farmer_woman"
+      },
+      {
+        "id": "kid",
+        "name": "Bé mầm non",
+        "asset": "chibi_kid"
       },
       {
         "id": "dog",
@@ -5695,45 +5737,38 @@
         "end_time": 5.0,
         "characters_present": [
           "radish",
-          "farmer"
+          "grandpa"
         ],
         "poses": {
           "radish": [
             {
               "time": 0,
-              "x": 140,
+              "x": 90,
               "y": 810,
-              "height": 440,
+              "height": 340,
               "growth": 1.0
             },
             {
               "time": 5.0,
-              "x": 140,
+              "x": 90,
               "y": 810,
-              "height": 440,
+              "height": 340,
               "growth": 1.0
             }
           ],
-          "farmer": [
+          "grandpa": [
             {
               "time": 0,
-              "x": 245,
+              "x": 200,
               "y": 810,
-              "height": 360,
+              "height": 340,
               "expression": "happy"
             },
             {
-              "time": 3.8,
-              "x": 245,
-              "y": 810,
-              "height": 360,
-              "expression": "worried"
-            },
-            {
               "time": 5.0,
-              "x": 245,
+              "x": 200,
               "y": 810,
-              "height": 360,
+              "height": 340,
               "expression": "worried"
             }
           ]
@@ -5744,13 +5779,14 @@
             "start": 1.0,
             "end": 4.0,
             "target": "radish",
-            "actor": "farmer"
+            "actor": "grandpa",
+            "pop_at": 4.0
           },
           {
             "type": "emote",
             "start": 4.1,
             "end": 5.0,
-            "actor": "farmer",
+            "actor": "grandpa",
             "emote": "!"
           }
         ],
@@ -5766,8 +5802,9 @@
         "end_time": 11.0,
         "characters_present": [
           "radish",
-          "farmer",
-          "woman",
+          "grandpa",
+          "grandma",
+          "kid",
           "dog",
           "cat",
           "mouse"
@@ -5776,87 +5813,119 @@
           "radish": [
             {
               "time": 5.0,
-              "x": 100,
+              "x": 40,
               "y": 810,
-              "height": 440,
+              "height": 340,
               "growth": 1.0
             },
             {
               "time": 11.0,
-              "x": 100,
+              "x": 40,
               "y": 810,
-              "height": 440,
+              "height": 340,
               "growth": 1.0
             }
           ],
-          "farmer": [
+          "grandpa": [
             {
               "time": 5.0,
-              "x": 190,
+              "x": 160,
               "y": 810,
-              "height": 360
+              "height": 330,
+              "z": 1
             },
             {
               "time": 11.0,
-              "x": 190,
+              "x": 160,
               "y": 810,
-              "height": 360
+              "height": 330,
+              "z": 1
             }
           ],
-          "woman": [
+          "grandma": [
             {
               "time": 5.0,
-              "x": 275,
+              "x": 240,
               "y": 810,
-              "height": 350
+              "height": 320,
+              "z": 2
             },
             {
               "time": 11.0,
-              "x": 275,
+              "x": 240,
               "y": 810,
-              "height": 350
+              "height": 320,
+              "z": 2
+            }
+          ],
+          "kid": [
+            {
+              "time": 5.0,
+              "x": 290,
+              "y": 810,
+              "height": 210,
+              "z": 3
+            },
+            {
+              "time": 11.0,
+              "x": 290,
+              "y": 810,
+              "height": 210,
+              "z": 3
             }
           ],
           "dog": [
             {
               "time": 5.0,
-              "x": 355,
+              "x": 350,
               "y": 810,
-              "height": 170
+              "height": 130,
+              "flip": true,
+              "z": 4
             },
             {
               "time": 11.0,
-              "x": 355,
+              "x": 350,
               "y": 810,
-              "height": 170
+              "height": 130,
+              "flip": true,
+              "z": 4
             }
           ],
           "cat": [
             {
               "time": 5.0,
-              "x": 430,
+              "x": 450,
               "y": 810,
-              "height": 140
+              "height": 110,
+              "flip": true,
+              "z": 5
             },
             {
               "time": 11.0,
-              "x": 430,
+              "x": 450,
               "y": 810,
-              "height": 140
+              "height": 110,
+              "flip": true,
+              "z": 5
             }
           ],
           "mouse": [
             {
               "time": 5.0,
-              "x": 500,
+              "x": 525,
               "y": 810,
-              "height": 90
+              "height": 70,
+              "flip": true,
+              "z": 6
             },
             {
               "time": 11.0,
-              "x": 500,
+              "x": 525,
               "y": 810,
-              "height": 90
+              "height": 70,
+              "flip": true,
+              "z": 6
             }
           ]
         },
@@ -5866,14 +5935,22 @@
             "start": 5.5,
             "end": 11.0,
             "target": "radish",
-            "actor": "farmer",
+            "actor": "grandpa",
             "helpers": [
-              "woman",
+              "grandma",
+              "kid",
               "dog",
               "cat",
               "mouse"
             ],
-            "pop_at": 9.6
+            "pop_at": 9.6,
+            "lift_amount": 120
+          },
+          {
+            "type": "dizzy",
+            "start": 10.3,
+            "end": 11.0,
+            "actor": "grandpa"
           }
         ],
         "background": {
@@ -5888,8 +5965,9 @@
         "end_time": 16.0,
         "characters_present": [
           "radish",
-          "farmer",
-          "woman",
+          "grandpa",
+          "grandma",
+          "kid",
           "dog",
           "cat",
           "mouse"
@@ -5898,99 +5976,123 @@
           "radish": [
             {
               "time": 11.0,
-              "x": 140,
-              "y": 810,
-              "height": 440,
+              "x": 120,
+              "y": 700,
+              "height": 240,
               "expression": "happy",
-              "growth": 1.0
+              "growth": 1.0,
+              "roots": 1.0,
+              "rotation": -8
             },
             {
               "time": 16.0,
-              "x": 140,
-              "y": 810,
-              "height": 440,
+              "x": 120,
+              "y": 700,
+              "height": 240,
               "expression": "happy",
-              "growth": 1.0
+              "growth": 1.0,
+              "roots": 1.0,
+              "rotation": -8
             }
           ],
-          "farmer": [
+          "grandpa": [
             {
               "time": 11.0,
-              "x": 280,
+              "x": 250,
               "y": 810,
-              "height": 360,
+              "height": 330,
               "expression": "happy"
             },
             {
               "time": 16.0,
-              "x": 280,
+              "x": 250,
               "y": 810,
-              "height": 360,
+              "height": 330,
               "expression": "happy"
             }
           ],
-          "woman": [
+          "grandma": [
             {
               "time": 11.0,
-              "x": 360,
+              "x": 340,
               "y": 810,
-              "height": 350,
+              "height": 320,
               "expression": "happy"
             },
             {
               "time": 16.0,
-              "x": 360,
+              "x": 340,
               "y": 810,
-              "height": 350,
+              "height": 320,
+              "expression": "happy"
+            }
+          ],
+          "kid": [
+            {
+              "time": 11.0,
+              "x": 420,
+              "y": 810,
+              "height": 210,
+              "expression": "happy"
+            },
+            {
+              "time": 16.0,
+              "x": 420,
+              "y": 810,
+              "height": 210,
               "expression": "happy"
             }
           ],
           "dog": [
             {
               "time": 11.0,
-              "x": 435,
+              "x": 480,
               "y": 810,
-              "height": 170,
-              "expression": "happy"
+              "height": 130,
+              "expression": "happy",
+              "flip": true
             },
             {
               "time": 16.0,
-              "x": 435,
+              "x": 480,
               "y": 810,
-              "height": 170,
-              "expression": "happy"
+              "height": 130,
+              "expression": "happy",
+              "flip": true
             }
           ],
           "cat": [
             {
               "time": 11.0,
-              "x": 495,
+              "x": 190,
               "y": 810,
-              "height": 140,
+              "height": 110,
               "expression": "happy"
             },
             {
               "time": 16.0,
-              "x": 495,
+              "x": 190,
               "y": 810,
-              "height": 140,
+              "height": 110,
               "expression": "happy"
             }
           ],
           "mouse": [
             {
               "time": 11.0,
-              "x": 545,
+              "x": 540,
               "y": 810,
-              "height": 90,
-              "expression": "happy"
+              "height": 70,
+              "expression": "happy",
+              "flip": true
             },
             {
               "time": 16.0,
-              "x": 545,
+              "x": 540,
               "y": 810,
-              "height": 90,
-              "expression": "happy"
+              "height": 70,
+              "expression": "happy",
+              "flip": true
             }
           ]
         },
@@ -5999,13 +6101,19 @@
             "type": "celebrate",
             "start": 11.2,
             "end": 15.8,
-            "actor": "farmer"
+            "actor": "grandpa"
           },
           {
             "type": "bounce",
             "start": 11.5,
             "end": 15.5,
             "actor": "dog"
+          },
+          {
+            "type": "bounce",
+            "start": 11.8,
+            "end": 15.5,
+            "actor": "kid"
           },
           {
             "type": "emote",
@@ -6025,22 +6133,1198 @@
       {
         "start": 0.5,
         "end": 3.5,
-        "character_id": "farmer",
+        "character_id": "grandpa",
         "text": "Củ cải to quá, một mình ta nhổ mãi không lay chuyển được!",
         "expression": "worried"
       },
       {
         "start": 6.0,
         "end": 9.2,
-        "character_id": "woman",
+        "character_id": "grandma",
         "text": "Nào cả nhà cùng chung sức, một hai ba kéo lên nào!",
         "expression": "happy"
       },
       {
         "start": 11.5,
         "end": 14.5,
-        "character_id": "farmer",
+        "character_id": "grandpa",
         "text": "Hoan hô, củ cải lên rồi! Cả nhà cùng vui múa ăn mừng thôi!",
+        "expression": "happy"
+      }
+    ]
+  },
+  {
+    "id": "handwashing",
+    "name": "1 · Rửa tay 6 bước: xà phòng tạo bọt, đánh bay vi khuẩn và đôi tay sáng bóng",
+    "renderer": "native-vector-v1",
+    "fidelity": "technical-demo",
+    "note": "Mẫu kỹ thuật Phase H: Chibi rửa tay 6 bước wash_hands, bọt tuyết xà phòng, vi khuẩn bacteria_rod / virus_spike vỡ bọt và hình nền bathroom_sink.",
+    "duration": 16.0,
+    "characters": [
+      {
+        "id": "kid",
+        "name": "Bé mầm non",
+        "asset": "chibi_kid"
+      },
+      {
+        "id": "soap",
+        "name": "Bánh xà phòng",
+        "asset": "soap",
+        "face": false
+      },
+      {
+        "id": "towel",
+        "name": "Khăn lau mềm",
+        "asset": "towel",
+        "face": false
+      },
+      {
+        "id": "bac1",
+        "name": "Trực khuẩn que",
+        "asset": "bacteria_rod",
+        "face": false
+      },
+      {
+        "id": "bac2",
+        "name": "Virus gai núm",
+        "asset": "virus_spike",
+        "face": false
+      }
+    ],
+    "scenes": [
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 0,
+        "end_time": 5.0,
+        "characters_present": [
+          "kid",
+          "soap",
+          "bac1",
+          "bac2"
+        ],
+        "poses": {
+          "kid": [
+            {
+              "time": 0,
+              "x": 180,
+              "y": 810,
+              "height": 320,
+              "expression": "worried"
+            },
+            {
+              "time": 5.0,
+              "x": 180,
+              "y": 810,
+              "height": 320,
+              "expression": "worried"
+            }
+          ],
+          "soap": [
+            {
+              "time": 0,
+              "x": 372,
+              "y": 652,
+              "height": 34
+            },
+            {
+              "time": 5.0,
+              "x": 372,
+              "y": 652,
+              "height": 34
+            }
+          ],
+          "bac1": [
+            {
+              "time": 0,
+              "x": 210,
+              "y": 680,
+              "height": 60
+            },
+            {
+              "time": 5.0,
+              "x": 215,
+              "y": 675,
+              "height": 60
+            }
+          ],
+          "bac2": [
+            {
+              "time": 0,
+              "x": 230,
+              "y": 710,
+              "height": 50
+            },
+            {
+              "time": 5.0,
+              "x": 225,
+              "y": 715,
+              "height": 50
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "germ_attack",
+            "start": 0.5,
+            "end": 4.8,
+            "target": "kid",
+            "actor": "bac1"
+          },
+          {
+            "type": "emote",
+            "start": 2.0,
+            "end": 4.0,
+            "actor": "kid",
+            "emote": "!"
+          }
+        ],
+        "background": {
+          "preset": "bathroom_sink"
+        },
+        "index": 0
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 5.0,
+        "end_time": 11.0,
+        "characters_present": [
+          "kid",
+          "soap",
+          "bac1",
+          "bac2"
+        ],
+        "poses": {
+          "kid": [
+            {
+              "time": 5.0,
+              "x": 250,
+              "y": 810,
+              "height": 320,
+              "expression": "neutral"
+            },
+            {
+              "time": 11.0,
+              "x": 250,
+              "y": 810,
+              "height": 320,
+              "expression": "happy"
+            }
+          ],
+          "soap": [
+            {
+              "time": 5.0,
+              "x": 372,
+              "y": 652,
+              "height": 34
+            },
+            {
+              "time": 11.0,
+              "x": 372,
+              "y": 652,
+              "height": 34
+            }
+          ],
+          "bac1": [
+            {
+              "time": 5.0,
+              "x": 215,
+              "y": 675,
+              "height": 60
+            },
+            {
+              "time": 8.0,
+              "x": 310,
+              "y": 500,
+              "height": 30
+            },
+            {
+              "time": 11.0,
+              "x": 420,
+              "y": 350,
+              "height": 10
+            }
+          ],
+          "bac2": [
+            {
+              "time": 5.0,
+              "x": 225,
+              "y": 715,
+              "height": 50
+            },
+            {
+              "time": 8.0,
+              "x": 330,
+              "y": 520,
+              "height": 25
+            },
+            {
+              "time": 11.0,
+              "x": 450,
+              "y": 380,
+              "height": 10
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "wash_hands",
+            "start": 5.2,
+            "end": 10.8,
+            "target": "soap",
+            "actor": "kid"
+          }
+        ],
+        "background": {
+          "preset": "bathroom_sink"
+        },
+        "index": 1
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 11.0,
+        "end_time": 16.0,
+        "characters_present": [
+          "kid",
+          "towel"
+        ],
+        "poses": {
+          "kid": [
+            {
+              "time": 11.0,
+              "x": 270,
+              "y": 810,
+              "height": 320,
+              "expression": "happy",
+              "sparkle": 1.0,
+              "blush": 0.5
+            },
+            {
+              "time": 16.0,
+              "x": 270,
+              "y": 810,
+              "height": 320,
+              "expression": "happy",
+              "sparkle": 1.0,
+              "blush": 0.5
+            }
+          ],
+          "towel": [
+            {
+              "time": 11.0,
+              "x": 450,
+              "y": 810,
+              "height": 90
+            },
+            {
+              "time": 16.0,
+              "x": 450,
+              "y": 810,
+              "height": 90
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "emote",
+            "start": 12.0,
+            "end": 15.5,
+            "actor": "kid",
+            "emote": "heart"
+          }
+        ],
+        "background": {
+          "preset": "bathroom_sink"
+        },
+        "index": 2
+      }
+    ],
+    "cues": [
+      {
+        "start": 0.5,
+        "end": 3.8,
+        "character_id": "kid",
+        "text": "Sau khi chơi đùa, vi khuẩn bám đầy trên tay phải rửa thật sạch ngay!",
+        "expression": "worried"
+      },
+      {
+        "start": 5.5,
+        "end": 9.5,
+        "character_id": "kid",
+        "text": "Lấy xà phòng, xoa đều mu bàn tay và từng kẽ ngón tay theo 6 bước chuẩn.",
+        "expression": "neutral"
+      },
+      {
+        "start": 11.5,
+        "end": 15.0,
+        "character_id": "kid",
+        "text": "Đôi tay đã sạch bong kin kít, thơm mát và an toàn cho sức khoẻ!",
+        "expression": "happy"
+      }
+    ]
+  },
+  {
+    "id": "doctor_visit",
+    "name": "2 · Khám bác sĩ Chibi: đo nhiệt kế, nghe nhịp tim, tiêm phòng và dán băng",
+    "renderer": "native-vector-v1",
+    "fidelity": "technical-demo",
+    "note": "Mẫu kỹ thuật Phase H: Bác sĩ chibi chibi_doctor khám bệnh cho chibi_patient, take_temperature, listen, vaccinate, apply_bandage tại clinic_room.",
+    "duration": 15.0,
+    "characters": [
+      {
+        "id": "doctor",
+        "name": "Bác sĩ",
+        "asset": "chibi_doctor"
+      },
+      {
+        "id": "patient",
+        "name": "Bệnh nhân",
+        "asset": "chibi_patient"
+      },
+      {
+        "id": "thermo",
+        "name": "Nhiệt kế điện tử",
+        "asset": "thermometer",
+        "face": false,
+        "attach_to": {
+          "id": "doctor",
+          "anchor": "hand_r"
+        }
+      },
+      {
+        "id": "stetho",
+        "name": "Ống nghe y tế",
+        "asset": "stethoscope",
+        "face": false,
+        "attach_to": {
+          "id": "doctor",
+          "anchor": "hand_r"
+        }
+      },
+      {
+        "id": "syringe",
+        "name": "Ống tiêm cho trẻ",
+        "asset": "syringe",
+        "face": false,
+        "attach_to": {
+          "id": "doctor",
+          "anchor": "hand_r"
+        }
+      },
+      {
+        "id": "bandaid",
+        "name": "Băng cá nhân",
+        "asset": "band_aid",
+        "face": false,
+        "layer": "over_face",
+        "attach_to": {
+          "id": "patient",
+          "anchor": "arm_l"
+        }
+      }
+    ],
+    "scenes": [
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 0,
+        "end_time": 5.0,
+        "characters_present": [
+          "doctor",
+          "patient",
+          "thermo"
+        ],
+        "poses": {
+          "doctor": [
+            {
+              "time": 0,
+              "x": 190,
+              "y": 810,
+              "height": 360,
+              "expression": "neutral"
+            },
+            {
+              "time": 5.0,
+              "x": 190,
+              "y": 810,
+              "height": 360,
+              "expression": "neutral"
+            }
+          ],
+          "patient": [
+            {
+              "time": 0,
+              "x": 360,
+              "y": 810,
+              "height": 310,
+              "expression": "sick",
+              "fever": 0.8,
+              "tears": 0.3
+            },
+            {
+              "time": 5.0,
+              "x": 360,
+              "y": 810,
+              "height": 310,
+              "expression": "sick",
+              "fever": 0.8,
+              "tears": 0.3
+            }
+          ],
+          "thermo": [
+            {
+              "time": 0,
+              "height": 70,
+              "opacity": 1.0,
+              "x": 42.59156803712129,
+              "y": 15.502062996235939,
+              "rotation": -70
+            },
+            {
+              "time": 5.0,
+              "height": 70,
+              "opacity": 1.0,
+              "x": 42.59156803712129,
+              "y": 15.502062996235939,
+              "rotation": -70
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "take_temperature",
+            "start": 0.8,
+            "end": 4.5,
+            "target": "patient",
+            "actor": "doctor",
+            "tool": "thermo"
+          }
+        ],
+        "background": {
+          "preset": "clinic_room"
+        },
+        "index": 0
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 5.0,
+        "end_time": 10.0,
+        "characters_present": [
+          "doctor",
+          "patient",
+          "stetho"
+        ],
+        "poses": {
+          "doctor": [
+            {
+              "time": 5.0,
+              "x": 210,
+              "y": 810,
+              "height": 360,
+              "expression": "neutral"
+            },
+            {
+              "time": 10.0,
+              "x": 210,
+              "y": 810,
+              "height": 360,
+              "expression": "happy"
+            }
+          ],
+          "patient": [
+            {
+              "time": 5.0,
+              "x": 350,
+              "y": 810,
+              "height": 310,
+              "expression": "surprised",
+              "fever": 0.3
+            },
+            {
+              "time": 10.0,
+              "x": 350,
+              "y": 810,
+              "height": 310,
+              "expression": "happy",
+              "fever": 0.1
+            }
+          ],
+          "stetho": [
+            {
+              "time": 5.0,
+              "height": 80,
+              "opacity": 1.0,
+              "x": 6.01955452253177,
+              "y": 16.53859012583199,
+              "rotation": -20
+            },
+            {
+              "time": 10.0,
+              "height": 80,
+              "opacity": 1.0,
+              "x": 6.01955452253177,
+              "y": 16.53859012583199,
+              "rotation": -20
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "listen",
+            "start": 5.5,
+            "end": 9.5,
+            "target": "patient",
+            "actor": "doctor",
+            "tool": "stetho"
+          }
+        ],
+        "background": {
+          "preset": "clinic_room"
+        },
+        "index": 1
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 10.0,
+        "end_time": 15.0,
+        "characters_present": [
+          "doctor",
+          "patient",
+          "syringe",
+          "bandaid"
+        ],
+        "poses": {
+          "doctor": [
+            {
+              "time": 10.0,
+              "x": 170,
+              "y": 810,
+              "height": 360,
+              "expression": "happy"
+            },
+            {
+              "time": 12.8,
+              "x": 170,
+              "y": 810,
+              "height": 360,
+              "expression": "happy"
+            },
+            {
+              "time": 13.2,
+              "x": 280,
+              "y": 810,
+              "height": 360,
+              "expression": "happy"
+            },
+            {
+              "time": 15.0,
+              "x": 280,
+              "y": 810,
+              "height": 360,
+              "expression": "happy"
+            }
+          ],
+          "patient": [
+            {
+              "time": 10.0,
+              "x": 400,
+              "y": 810,
+              "height": 310,
+              "expression": "neutral",
+              "blush": 0.4
+            },
+            {
+              "time": 15.0,
+              "x": 400,
+              "y": 810,
+              "height": 310,
+              "expression": "happy",
+              "blush": 0.6,
+              "sparkle": 1.0
+            }
+          ],
+          "syringe": [
+            {
+              "time": 10.0,
+              "height": 62,
+              "opacity": 1.0,
+              "x": 26.846787517317598,
+              "y": 15.500000000000004,
+              "rotation": -60
+            },
+            {
+              "time": 12.8,
+              "height": 62,
+              "opacity": 1.0,
+              "x": 26.846787517317598,
+              "y": 15.500000000000004,
+              "rotation": -60
+            },
+            {
+              "time": 13.0,
+              "height": 62,
+              "opacity": 0.0,
+              "x": 26.846787517317598,
+              "y": 15.500000000000004,
+              "rotation": -60
+            },
+            {
+              "time": 15.0,
+              "height": 62,
+              "opacity": 0.0,
+              "x": 26.846787517317598,
+              "y": 15.500000000000004,
+              "rotation": -60
+            }
+          ],
+          "bandaid": [
+            {
+              "time": 10.0,
+              "x": 0,
+              "y": 6,
+              "height": 22,
+              "rotation": 20,
+              "opacity": 0.0
+            },
+            {
+              "time": 14.0,
+              "x": 0,
+              "y": 6,
+              "height": 22,
+              "rotation": 20,
+              "opacity": 0.0
+            },
+            {
+              "time": 14.3,
+              "x": 0,
+              "y": 6,
+              "height": 22,
+              "rotation": 20
+            },
+            {
+              "time": 15.0,
+              "x": 0,
+              "y": 6,
+              "height": 22,
+              "rotation": 20
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "vaccinate",
+            "start": 10.3,
+            "end": 12.8,
+            "target": "patient",
+            "actor": "doctor",
+            "tool": "syringe"
+          },
+          {
+            "type": "apply_bandage",
+            "start": 13.0,
+            "end": 14.8,
+            "target": "patient",
+            "actor": "doctor"
+          },
+          {
+            "type": "emote",
+            "start": 13.5,
+            "end": 14.8,
+            "actor": "patient",
+            "emote": "heart"
+          }
+        ],
+        "background": {
+          "preset": "clinic_room"
+        },
+        "index": 2
+      }
+    ],
+    "cues": [
+      {
+        "start": 0.5,
+        "end": 4.0,
+        "character_id": "doctor",
+        "text": "Bé bị sốt nhẹ rồi, để bác sĩ đo nhiệt độ kiểm tra sức khoẻ nhé.",
+        "expression": "neutral"
+      },
+      {
+        "start": 5.5,
+        "end": 9.0,
+        "character_id": "doctor",
+        "text": "Nhịp tim đập rất đều và phổi khoẻ mạnh, không có gì đáng lo cả.",
+        "expression": "happy"
+      },
+      {
+        "start": 10.5,
+        "end": 14.2,
+        "character_id": "patient",
+        "text": "Tiêm một chút như kiến cắn thôi, dán băng xinh xắn là khoẻ re!",
+        "expression": "happy"
+      }
+    ]
+  },
+  {
+    "id": "tooth_care",
+    "name": "3 · Nha khoa Chibi: chữa sâu răng, chải răng sạch bọt và răng xinh toả sáng",
+    "renderer": "native-vector-v1",
+    "fidelity": "technical-demo",
+    "note": "Mẫu kỹ thuật Phase H: Chiếc răng tooth_chibi có vết sâu cavity, nha sĩ chibi_dentist chải răng brush_teeth làm sạch sâu và toả sáng lấp lánh sparkle.",
+    "duration": 16.0,
+    "characters": [
+      {
+        "id": "dentist",
+        "name": "Nha sĩ",
+        "asset": "chibi_dentist"
+      },
+      {
+        "id": "tooth",
+        "name": "Răng Chibi",
+        "asset": "tooth_chibi"
+      },
+      {
+        "id": "brush",
+        "name": "Bàn chải đánh răng",
+        "asset": "toothbrush",
+        "face": false,
+        "attach_to": {
+          "id": "dentist",
+          "anchor": "hand_r"
+        }
+      }
+    ],
+    "scenes": [
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 0,
+        "end_time": 5.0,
+        "characters_present": [
+          "dentist",
+          "tooth"
+        ],
+        "poses": {
+          "dentist": [
+            {
+              "time": 0,
+              "x": 190,
+              "y": 810,
+              "height": 360,
+              "expression": "neutral"
+            },
+            {
+              "time": 5.0,
+              "x": 190,
+              "y": 810,
+              "height": 360,
+              "expression": "neutral"
+            }
+          ],
+          "tooth": [
+            {
+              "time": 0,
+              "x": 360,
+              "y": 810,
+              "height": 180,
+              "cavity": 0.9,
+              "tears": 0.8,
+              "expression": "sad"
+            },
+            {
+              "time": 5.0,
+              "x": 360,
+              "y": 810,
+              "height": 180,
+              "cavity": 0.9,
+              "tears": 0.8,
+              "expression": "sad"
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "emote",
+            "start": 1.0,
+            "end": 3.5,
+            "actor": "tooth",
+            "emote": "!"
+          }
+        ],
+        "background": {
+          "preset": "dentist_room"
+        },
+        "index": 0
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 5.0,
+        "end_time": 11.0,
+        "characters_present": [
+          "dentist",
+          "tooth",
+          "brush"
+        ],
+        "poses": {
+          "dentist": [
+            {
+              "time": 5.0,
+              "x": 210,
+              "y": 810,
+              "height": 360,
+              "expression": "neutral"
+            },
+            {
+              "time": 11.0,
+              "x": 210,
+              "y": 810,
+              "height": 360,
+              "expression": "happy"
+            }
+          ],
+          "tooth": [
+            {
+              "time": 5.0,
+              "x": 340,
+              "y": 810,
+              "height": 180,
+              "cavity": 0.8,
+              "tears": 0.2
+            },
+            {
+              "time": 8.0,
+              "x": 340,
+              "y": 810,
+              "height": 180,
+              "cavity": 0.3,
+              "tears": 0.0
+            },
+            {
+              "time": 11.0,
+              "x": 340,
+              "y": 810,
+              "height": 180,
+              "cavity": 0.0,
+              "sparkle": 0.6,
+              "expression": "happy"
+            }
+          ],
+          "brush": [
+            {
+              "time": 5.0,
+              "height": 80,
+              "x": 39.2,
+              "y": 2.4003077263288123e-15,
+              "rotation": -90
+            },
+            {
+              "time": 11.0,
+              "height": 80,
+              "x": 39.2,
+              "y": 2.4003077263288123e-15,
+              "rotation": -90
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "brush_teeth",
+            "start": 5.5,
+            "end": 10.5,
+            "target": "tooth",
+            "actor": "dentist",
+            "tool": "brush"
+          }
+        ],
+        "background": {
+          "preset": "dentist_room"
+        },
+        "index": 1
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 11.0,
+        "end_time": 16.0,
+        "characters_present": [
+          "dentist",
+          "tooth"
+        ],
+        "poses": {
+          "dentist": [
+            {
+              "time": 11.0,
+              "x": 210,
+              "y": 810,
+              "height": 360,
+              "expression": "happy"
+            },
+            {
+              "time": 16.0,
+              "x": 210,
+              "y": 810,
+              "height": 360,
+              "expression": "happy"
+            }
+          ],
+          "tooth": [
+            {
+              "time": 11.0,
+              "x": 350,
+              "y": 810,
+              "height": 180,
+              "cavity": 0.0,
+              "sparkle": 1.0,
+              "blush": 0.5,
+              "expression": "happy"
+            },
+            {
+              "time": 16.0,
+              "x": 350,
+              "y": 810,
+              "height": 180,
+              "cavity": 0.0,
+              "sparkle": 1.0,
+              "blush": 0.5,
+              "expression": "happy"
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "emote",
+            "start": 11.5,
+            "end": 15.0,
+            "actor": "tooth",
+            "emote": "star"
+          }
+        ],
+        "background": {
+          "preset": "dentist_room"
+        },
+        "index": 2
+      }
+    ],
+    "cues": [
+      {
+        "start": 0.5,
+        "end": 4.0,
+        "character_id": "dentist",
+        "text": "Ăn nhiều đồ ngọt không chải răng làm sâu răng đau buốt rồi kìa!",
+        "expression": "neutral"
+      },
+      {
+        "start": 5.5,
+        "end": 9.5,
+        "character_id": "dentist",
+        "text": "Hãy chải răng thật kỹ mặt trong mặt ngoài theo vòng tròn nhé.",
+        "expression": "neutral"
+      },
+      {
+        "start": 11.5,
+        "end": 15.0,
+        "character_id": "tooth",
+        "text": "Răng đã sạch bóng và trắng tinh toả sáng lấp lánh rồi!",
+        "expression": "happy"
+      }
+    ]
+  },
+  {
+    "id": "nutrition_fitness",
+    "name": "4 · Dinh dưỡng và rèn luyện: khay cơm đủ chất, ăn rau củ và tập thể dục thể thao",
+    "renderer": "native-vector-v1",
+    "fidelity": "technical-demo",
+    "note": "Mẫu kỹ thuật Phase H: Chibi chibi_girl ăn trưa khay cơm dinh dưỡng lunch_tray bằng hành động eat, tập thể dục exercise và nhảy cao tại playground.",
+    "duration": 15.0,
+    "characters": [
+      {
+        "id": "kid",
+        "name": "Bé gái học sinh",
+        "asset": "chibi_girl"
+      },
+      {
+        "id": "tray",
+        "name": "Khay ăn dinh dưỡng",
+        "asset": "lunch_tray",
+        "face": false
+      }
+    ],
+    "scenes": [
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 0,
+        "end_time": 5.0,
+        "characters_present": [
+          "kid",
+          "tray"
+        ],
+        "poses": {
+          "kid": [
+            {
+              "time": 0,
+              "x": 200,
+              "y": 810,
+              "height": 320,
+              "expression": "happy",
+              "blush": 0.4
+            },
+            {
+              "time": 5.0,
+              "x": 200,
+              "y": 810,
+              "height": 320,
+              "expression": "happy",
+              "blush": 0.4
+            }
+          ],
+          "tray": [
+            {
+              "time": 0,
+              "x": 340,
+              "y": 810,
+              "height": 60
+            },
+            {
+              "time": 5.0,
+              "x": 340,
+              "y": 810,
+              "height": 60
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "eat",
+            "start": 0.8,
+            "end": 4.5,
+            "target": "tray",
+            "actor": "kid"
+          }
+        ],
+        "background": {
+          "preset": "classroom"
+        },
+        "index": 0
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 5.0,
+        "end_time": 10.0,
+        "characters_present": [
+          "kid"
+        ],
+        "poses": {
+          "kid": [
+            {
+              "time": 5.0,
+              "x": 270,
+              "y": 810,
+              "height": 320,
+              "expression": "happy"
+            },
+            {
+              "time": 10.0,
+              "x": 270,
+              "y": 810,
+              "height": 320,
+              "expression": "happy"
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "exercise",
+            "start": 5.5,
+            "end": 9.5,
+            "actor": "kid",
+            "exercise_type": "jumping_jacks"
+          }
+        ],
+        "background": {
+          "preset": "school_yard"
+        },
+        "index": 1
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 10.0,
+        "end_time": 15.0,
+        "characters_present": [
+          "kid"
+        ],
+        "poses": {
+          "kid": [
+            {
+              "time": 10.0,
+              "x": 270,
+              "y": 810,
+              "height": 320,
+              "expression": "happy",
+              "jump": 0.0,
+              "sparkle": 0.5
+            },
+            {
+              "time": 12.5,
+              "x": 270,
+              "y": 720,
+              "height": 320,
+              "expression": "happy",
+              "jump": 1.0,
+              "sparkle": 1.0
+            },
+            {
+              "time": 15.0,
+              "x": 270,
+              "y": 810,
+              "height": 320,
+              "expression": "happy",
+              "jump": 0.0,
+              "sparkle": 1.0
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "emote",
+            "start": 11.0,
+            "end": 14.5,
+            "actor": "kid",
+            "emote": "heart"
+          }
+        ],
+        "background": {
+          "preset": "playground"
+        },
+        "index": 2
+      }
+    ],
+    "cues": [
+      {
+        "start": 0.5,
+        "end": 4.0,
+        "character_id": "kid",
+        "text": "Khay cơm đầy đủ rau xanh, đạm và canh ngon giúp cơ thể phát triển khoẻ mạnh!",
+        "expression": "happy"
+      },
+      {
+        "start": 5.5,
+        "end": 9.0,
+        "character_id": "kid",
+        "text": "Ăn no đủ chất rồi thì cùng ra sân tập thể dục nhảy dây nâng cao thể lực nào.",
+        "expression": "happy"
+      },
+      {
+        "start": 10.5,
+        "end": 14.0,
+        "character_id": "kid",
+        "text": "Cơ thể tràn đầy năng lượng, sảng khoái và luôn tươi vui mỗi ngày!",
         "expression": "happy"
       }
     ]

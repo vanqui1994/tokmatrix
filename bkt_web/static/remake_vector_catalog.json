@@ -13,7 +13,9 @@
     "temperate_fruits",
     "vegetables",
     "agrochem",
-    "farm_fun"
+    "farm_fun",
+    "chibi",
+    "medical"
   ],
   "rig_style": {
     "name": "hand-drawn-whole-pose-cel",
@@ -26,7 +28,11 @@
       "prop",
       "fish",
       "monster",
-      "vegetable"
+      "vegetable",
+      "chibi",
+      "cell",
+      "microbe",
+      "organ"
     ]
   },
   "binding_contract": "grip owns the target transform from start until release, including after grip.end. Optional blend_in smooths acquisition in seconds. release captures the evaluated world transform at start; optional offset [dx,dy] in world pixels and spin in degrees move it until end, then it stays there. Re-grip or a new scene resets control. At most 32 grip/release events per scene. Hand-drawn poses may declare drawing_id plus exposure ones/twos/hold; drawing marks stay fixed for that exposure while contacts and root motion remain continuous.",
@@ -89,7 +95,18 @@
     "farm_warehouse",
     "kitchen",
     "farmyard_barn",
-    "village_market"
+    "village_market",
+    "living_room",
+    "bathroom_sink",
+    "classroom",
+    "school_yard",
+    "playground",
+    "clinic_room",
+    "hospital_ward",
+    "pharmacy",
+    "dentist_room",
+    "science_lab",
+    "body_inside"
   ],
   "background_specs": {
     "garden": {
@@ -356,6 +373,160 @@
       "label": "Chợ quê truyền thống",
       "theme": "market",
       "ground_y": 810
+    },
+    "living_room": {
+      "label": "Phòng khách",
+      "theme": "home",
+      "ground_y": 810,
+      "weather": [
+        "clear",
+        "rain",
+        "snow",
+        "wind",
+        "fog",
+        "storm",
+        "hot"
+      ]
+    },
+    "bathroom_sink": {
+      "label": "Phòng tắm & bồn rửa tay",
+      "theme": "home",
+      "ground_y": 810,
+      "weather": [
+        "clear",
+        "rain",
+        "snow",
+        "wind",
+        "fog",
+        "storm",
+        "hot"
+      ]
+    },
+    "classroom": {
+      "label": "Lớp học",
+      "theme": "school",
+      "ground_y": 810,
+      "weather": [
+        "clear",
+        "rain",
+        "snow",
+        "wind",
+        "fog",
+        "storm",
+        "hot"
+      ]
+    },
+    "school_yard": {
+      "label": "Sân trường",
+      "theme": "school",
+      "ground_y": 810,
+      "weather": [
+        "clear",
+        "rain",
+        "snow",
+        "wind",
+        "fog",
+        "storm",
+        "hot"
+      ]
+    },
+    "playground": {
+      "label": "Sân chơi thiếu nhi",
+      "theme": "school",
+      "ground_y": 810,
+      "weather": [
+        "clear",
+        "rain",
+        "snow",
+        "wind",
+        "fog",
+        "storm",
+        "hot"
+      ]
+    },
+    "clinic_room": {
+      "label": "Phòng khám bệnh",
+      "theme": "clinic",
+      "ground_y": 810,
+      "weather": [
+        "clear",
+        "rain",
+        "snow",
+        "wind",
+        "fog",
+        "storm",
+        "hot"
+      ]
+    },
+    "hospital_ward": {
+      "label": "Phòng bệnh nội trú",
+      "theme": "clinic",
+      "ground_y": 810,
+      "weather": [
+        "clear",
+        "rain",
+        "snow",
+        "wind",
+        "fog",
+        "storm",
+        "hot"
+      ]
+    },
+    "pharmacy": {
+      "label": "Nhà thuốc",
+      "theme": "clinic",
+      "ground_y": 810,
+      "weather": [
+        "clear",
+        "rain",
+        "snow",
+        "wind",
+        "fog",
+        "storm",
+        "hot"
+      ]
+    },
+    "dentist_room": {
+      "label": "Phòng khám nha khoa",
+      "theme": "clinic",
+      "ground_y": 810,
+      "weather": [
+        "clear",
+        "rain",
+        "snow",
+        "wind",
+        "fog",
+        "storm",
+        "hot"
+      ]
+    },
+    "science_lab": {
+      "label": "Phòng thí nghiệm",
+      "theme": "lab",
+      "ground_y": 810,
+      "weather": [
+        "clear",
+        "rain",
+        "snow",
+        "wind",
+        "fog",
+        "storm",
+        "hot"
+      ]
+    },
+    "body_inside": {
+      "label": "Bên trong cơ thể",
+      "theme": "body",
+      "ground_y": 810,
+      "weather": [
+        "clear",
+        "rain",
+        "snow",
+        "wind",
+        "fog",
+        "storm",
+        "hot"
+      ]
     }
   },
   "weather": [
@@ -605,6 +776,46 @@
     "celebrate": [
       0,
       1
+    ],
+    "sit": [
+      0,
+      1
+    ],
+    "lie": [
+      0,
+      1
+    ],
+    "lean": [
+      -1,
+      1
+    ],
+    "jump": [
+      0,
+      1
+    ],
+    "blush": [
+      0,
+      1
+    ],
+    "tears": [
+      0,
+      1
+    ],
+    "fever": [
+      0,
+      1
+    ],
+    "pale": [
+      0,
+      1
+    ],
+    "cavity": [
+      0,
+      1
+    ],
+    "sparkle": [
+      0,
+      1
     ]
   },
   "pose_defaults": {
@@ -665,7 +876,17 @@
     "sweat": 0,
     "bounce": 0,
     "dizzy": 0,
-    "celebrate": 0
+    "celebrate": 0,
+    "sit": 0,
+    "lie": 0,
+    "lean": 0,
+    "jump": 0,
+    "blush": 0,
+    "tears": 0,
+    "fever": 0,
+    "pale": 0,
+    "cavity": 0,
+    "sparkle": 0
   },
   "style_colors": [
     "body",
@@ -1263,6 +1484,14 @@
         "mouth": [
           2,
           -72
+        ],
+        "back": [
+          -4,
+          -60
+        ],
+        "waist": [
+          0,
+          -44
         ]
       }
     },
@@ -1330,6 +1559,14 @@
         "mouth": [
           2,
           -72
+        ],
+        "back": [
+          -4,
+          -60
+        ],
+        "waist": [
+          0,
+          -44
         ]
       }
     },
@@ -2385,6 +2622,14 @@
         "mouth": [
           2,
           -72
+        ],
+        "back": [
+          -4,
+          -60
+        ],
+        "waist": [
+          0,
+          -44
         ]
       }
     },
@@ -14521,6 +14766,2514 @@
           -17
         ]
       }
+    },
+    "chibi_boy": {
+      "label": "Bé trai học sinh",
+      "group": "chibi",
+      "face": true,
+      "face_scale": 0.56,
+      "pack": "chibi",
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "face": [
+          0,
+          -68
+        ],
+        "mouth": [
+          0,
+          -60
+        ],
+        "forehead": [
+          0,
+          -78
+        ],
+        "ear_l": [
+          -19,
+          -68
+        ],
+        "ear_r": [
+          19,
+          -68
+        ],
+        "teeth": [
+          0,
+          -60
+        ],
+        "head_top": [
+          0,
+          -90
+        ],
+        "top": [
+          0,
+          -95
+        ],
+        "neck": [
+          0,
+          -48
+        ],
+        "chest": [
+          0,
+          -38
+        ],
+        "belly": [
+          0,
+          -28
+        ],
+        "back": [
+          -12,
+          -36
+        ],
+        "waist": [
+          0,
+          -26
+        ],
+        "hip": [
+          0,
+          -22
+        ],
+        "shoulder_l": [
+          -14,
+          -44
+        ],
+        "shoulder_r": [
+          14,
+          -44
+        ],
+        "elbow_l": [
+          -20,
+          -34
+        ],
+        "elbow_r": [
+          20,
+          -34
+        ],
+        "wrist_l": [
+          -22,
+          -26
+        ],
+        "wrist_r": [
+          22,
+          -26
+        ],
+        "hand_l": [
+          -24,
+          -22
+        ],
+        "hand_r": [
+          24,
+          -22
+        ],
+        "hand": [
+          24,
+          -22
+        ],
+        "grip": [
+          24,
+          -22
+        ],
+        "arm_l": [
+          -18,
+          -38
+        ],
+        "knee_l": [
+          -8,
+          -12
+        ],
+        "knee_r": [
+          8,
+          -12
+        ],
+        "foot_l": [
+          -9,
+          0
+        ],
+        "foot_r": [
+          9,
+          0
+        ]
+      },
+      "rest_pose": {
+        "hand_l_x": -24,
+        "hand_l_y": -22,
+        "hand_r_x": 24,
+        "hand_r_y": -22
+      }
+    },
+    "chibi_girl": {
+      "label": "Bé gái học sinh",
+      "group": "chibi",
+      "face": true,
+      "face_scale": 0.56,
+      "pack": "chibi",
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "face": [
+          0,
+          -68
+        ],
+        "mouth": [
+          0,
+          -60
+        ],
+        "forehead": [
+          0,
+          -78
+        ],
+        "ear_l": [
+          -19,
+          -68
+        ],
+        "ear_r": [
+          19,
+          -68
+        ],
+        "teeth": [
+          0,
+          -60
+        ],
+        "head_top": [
+          0,
+          -90
+        ],
+        "top": [
+          0,
+          -95
+        ],
+        "neck": [
+          0,
+          -48
+        ],
+        "chest": [
+          0,
+          -38
+        ],
+        "belly": [
+          0,
+          -28
+        ],
+        "back": [
+          -12,
+          -36
+        ],
+        "waist": [
+          0,
+          -26
+        ],
+        "hip": [
+          0,
+          -22
+        ],
+        "shoulder_l": [
+          -14,
+          -44
+        ],
+        "shoulder_r": [
+          14,
+          -44
+        ],
+        "elbow_l": [
+          -20,
+          -34
+        ],
+        "elbow_r": [
+          20,
+          -34
+        ],
+        "wrist_l": [
+          -22,
+          -26
+        ],
+        "wrist_r": [
+          22,
+          -26
+        ],
+        "hand_l": [
+          -24,
+          -22
+        ],
+        "hand_r": [
+          24,
+          -22
+        ],
+        "hand": [
+          24,
+          -22
+        ],
+        "grip": [
+          24,
+          -22
+        ],
+        "arm_l": [
+          -18,
+          -38
+        ],
+        "knee_l": [
+          -8,
+          -12
+        ],
+        "knee_r": [
+          8,
+          -12
+        ],
+        "foot_l": [
+          -9,
+          0
+        ],
+        "foot_r": [
+          9,
+          0
+        ]
+      },
+      "rest_pose": {
+        "hand_l_x": -24,
+        "hand_l_y": -22,
+        "hand_r_x": 24,
+        "hand_r_y": -22
+      }
+    },
+    "chibi_kid": {
+      "label": "Bé mầm non",
+      "group": "chibi",
+      "face": true,
+      "face_scale": 0.56,
+      "pack": "chibi",
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "face": [
+          0,
+          -68
+        ],
+        "mouth": [
+          0,
+          -60
+        ],
+        "forehead": [
+          0,
+          -78
+        ],
+        "ear_l": [
+          -19,
+          -68
+        ],
+        "ear_r": [
+          19,
+          -68
+        ],
+        "teeth": [
+          0,
+          -60
+        ],
+        "head_top": [
+          0,
+          -90
+        ],
+        "top": [
+          0,
+          -95
+        ],
+        "neck": [
+          0,
+          -48
+        ],
+        "chest": [
+          0,
+          -38
+        ],
+        "belly": [
+          0,
+          -28
+        ],
+        "back": [
+          -12,
+          -36
+        ],
+        "waist": [
+          0,
+          -26
+        ],
+        "hip": [
+          0,
+          -22
+        ],
+        "shoulder_l": [
+          -14,
+          -44
+        ],
+        "shoulder_r": [
+          14,
+          -44
+        ],
+        "elbow_l": [
+          -20,
+          -34
+        ],
+        "elbow_r": [
+          20,
+          -34
+        ],
+        "wrist_l": [
+          -22,
+          -26
+        ],
+        "wrist_r": [
+          22,
+          -26
+        ],
+        "hand_l": [
+          -24,
+          -22
+        ],
+        "hand_r": [
+          24,
+          -22
+        ],
+        "hand": [
+          24,
+          -22
+        ],
+        "grip": [
+          24,
+          -22
+        ],
+        "arm_l": [
+          -18,
+          -38
+        ],
+        "knee_l": [
+          -8,
+          -12
+        ],
+        "knee_r": [
+          8,
+          -12
+        ],
+        "foot_l": [
+          -9,
+          0
+        ],
+        "foot_r": [
+          9,
+          0
+        ]
+      },
+      "rest_pose": {
+        "hand_l_x": -24,
+        "hand_l_y": -22,
+        "hand_r_x": 24,
+        "hand_r_y": -22
+      }
+    },
+    "chibi_teacher": {
+      "label": "Cô giáo",
+      "group": "chibi",
+      "face": true,
+      "face_scale": 0.56,
+      "pack": "chibi",
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "face": [
+          0,
+          -68
+        ],
+        "mouth": [
+          0,
+          -60
+        ],
+        "forehead": [
+          0,
+          -78
+        ],
+        "ear_l": [
+          -19,
+          -68
+        ],
+        "ear_r": [
+          19,
+          -68
+        ],
+        "teeth": [
+          0,
+          -60
+        ],
+        "head_top": [
+          0,
+          -90
+        ],
+        "top": [
+          0,
+          -95
+        ],
+        "neck": [
+          0,
+          -48
+        ],
+        "chest": [
+          0,
+          -38
+        ],
+        "belly": [
+          0,
+          -28
+        ],
+        "back": [
+          -12,
+          -36
+        ],
+        "waist": [
+          0,
+          -26
+        ],
+        "hip": [
+          0,
+          -22
+        ],
+        "shoulder_l": [
+          -14,
+          -44
+        ],
+        "shoulder_r": [
+          14,
+          -44
+        ],
+        "elbow_l": [
+          -20,
+          -34
+        ],
+        "elbow_r": [
+          20,
+          -34
+        ],
+        "wrist_l": [
+          -22,
+          -26
+        ],
+        "wrist_r": [
+          22,
+          -26
+        ],
+        "hand_l": [
+          -24,
+          -22
+        ],
+        "hand_r": [
+          24,
+          -22
+        ],
+        "hand": [
+          24,
+          -22
+        ],
+        "grip": [
+          24,
+          -22
+        ],
+        "arm_l": [
+          -18,
+          -38
+        ],
+        "knee_l": [
+          -8,
+          -12
+        ],
+        "knee_r": [
+          8,
+          -12
+        ],
+        "foot_l": [
+          -9,
+          0
+        ],
+        "foot_r": [
+          9,
+          0
+        ]
+      },
+      "rest_pose": {
+        "hand_l_x": -24,
+        "hand_l_y": -22,
+        "hand_r_x": 24,
+        "hand_r_y": -22
+      }
+    },
+    "chibi_doctor": {
+      "label": "Bác sĩ",
+      "group": "chibi",
+      "face": true,
+      "face_scale": 0.56,
+      "pack": "chibi",
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "face": [
+          0,
+          -68
+        ],
+        "mouth": [
+          0,
+          -60
+        ],
+        "forehead": [
+          0,
+          -78
+        ],
+        "ear_l": [
+          -19,
+          -68
+        ],
+        "ear_r": [
+          19,
+          -68
+        ],
+        "teeth": [
+          0,
+          -60
+        ],
+        "head_top": [
+          0,
+          -90
+        ],
+        "top": [
+          0,
+          -95
+        ],
+        "neck": [
+          0,
+          -48
+        ],
+        "chest": [
+          0,
+          -38
+        ],
+        "belly": [
+          0,
+          -28
+        ],
+        "back": [
+          -12,
+          -36
+        ],
+        "waist": [
+          0,
+          -26
+        ],
+        "hip": [
+          0,
+          -22
+        ],
+        "shoulder_l": [
+          -14,
+          -44
+        ],
+        "shoulder_r": [
+          14,
+          -44
+        ],
+        "elbow_l": [
+          -20,
+          -34
+        ],
+        "elbow_r": [
+          20,
+          -34
+        ],
+        "wrist_l": [
+          -22,
+          -26
+        ],
+        "wrist_r": [
+          22,
+          -26
+        ],
+        "hand_l": [
+          -24,
+          -22
+        ],
+        "hand_r": [
+          24,
+          -22
+        ],
+        "hand": [
+          24,
+          -22
+        ],
+        "grip": [
+          24,
+          -22
+        ],
+        "arm_l": [
+          -18,
+          -38
+        ],
+        "knee_l": [
+          -8,
+          -12
+        ],
+        "knee_r": [
+          8,
+          -12
+        ],
+        "foot_l": [
+          -9,
+          0
+        ],
+        "foot_r": [
+          9,
+          0
+        ]
+      },
+      "rest_pose": {
+        "hand_l_x": -24,
+        "hand_l_y": -22,
+        "hand_r_x": 24,
+        "hand_r_y": -22
+      }
+    },
+    "chibi_nurse": {
+      "label": "Y tá",
+      "group": "chibi",
+      "face": true,
+      "face_scale": 0.56,
+      "pack": "chibi",
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "face": [
+          0,
+          -68
+        ],
+        "mouth": [
+          0,
+          -60
+        ],
+        "forehead": [
+          0,
+          -78
+        ],
+        "ear_l": [
+          -19,
+          -68
+        ],
+        "ear_r": [
+          19,
+          -68
+        ],
+        "teeth": [
+          0,
+          -60
+        ],
+        "head_top": [
+          0,
+          -90
+        ],
+        "top": [
+          0,
+          -95
+        ],
+        "neck": [
+          0,
+          -48
+        ],
+        "chest": [
+          0,
+          -38
+        ],
+        "belly": [
+          0,
+          -28
+        ],
+        "back": [
+          -12,
+          -36
+        ],
+        "waist": [
+          0,
+          -26
+        ],
+        "hip": [
+          0,
+          -22
+        ],
+        "shoulder_l": [
+          -14,
+          -44
+        ],
+        "shoulder_r": [
+          14,
+          -44
+        ],
+        "elbow_l": [
+          -20,
+          -34
+        ],
+        "elbow_r": [
+          20,
+          -34
+        ],
+        "wrist_l": [
+          -22,
+          -26
+        ],
+        "wrist_r": [
+          22,
+          -26
+        ],
+        "hand_l": [
+          -24,
+          -22
+        ],
+        "hand_r": [
+          24,
+          -22
+        ],
+        "hand": [
+          24,
+          -22
+        ],
+        "grip": [
+          24,
+          -22
+        ],
+        "arm_l": [
+          -18,
+          -38
+        ],
+        "knee_l": [
+          -8,
+          -12
+        ],
+        "knee_r": [
+          8,
+          -12
+        ],
+        "foot_l": [
+          -9,
+          0
+        ],
+        "foot_r": [
+          9,
+          0
+        ]
+      },
+      "rest_pose": {
+        "hand_l_x": -24,
+        "hand_l_y": -22,
+        "hand_r_x": 24,
+        "hand_r_y": -22
+      }
+    },
+    "chibi_dentist": {
+      "label": "Nha sĩ",
+      "group": "chibi",
+      "face": true,
+      "face_scale": 0.56,
+      "pack": "chibi",
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "face": [
+          0,
+          -68
+        ],
+        "mouth": [
+          0,
+          -60
+        ],
+        "forehead": [
+          0,
+          -78
+        ],
+        "ear_l": [
+          -19,
+          -68
+        ],
+        "ear_r": [
+          19,
+          -68
+        ],
+        "teeth": [
+          0,
+          -60
+        ],
+        "head_top": [
+          0,
+          -90
+        ],
+        "top": [
+          0,
+          -95
+        ],
+        "neck": [
+          0,
+          -48
+        ],
+        "chest": [
+          0,
+          -38
+        ],
+        "belly": [
+          0,
+          -28
+        ],
+        "back": [
+          -12,
+          -36
+        ],
+        "waist": [
+          0,
+          -26
+        ],
+        "hip": [
+          0,
+          -22
+        ],
+        "shoulder_l": [
+          -14,
+          -44
+        ],
+        "shoulder_r": [
+          14,
+          -44
+        ],
+        "elbow_l": [
+          -20,
+          -34
+        ],
+        "elbow_r": [
+          20,
+          -34
+        ],
+        "wrist_l": [
+          -22,
+          -26
+        ],
+        "wrist_r": [
+          22,
+          -26
+        ],
+        "hand_l": [
+          -24,
+          -22
+        ],
+        "hand_r": [
+          24,
+          -22
+        ],
+        "hand": [
+          24,
+          -22
+        ],
+        "grip": [
+          24,
+          -22
+        ],
+        "arm_l": [
+          -18,
+          -38
+        ],
+        "knee_l": [
+          -8,
+          -12
+        ],
+        "knee_r": [
+          8,
+          -12
+        ],
+        "foot_l": [
+          -9,
+          0
+        ],
+        "foot_r": [
+          9,
+          0
+        ]
+      },
+      "rest_pose": {
+        "hand_l_x": -24,
+        "hand_l_y": -22,
+        "hand_r_x": 24,
+        "hand_r_y": -22
+      }
+    },
+    "chibi_pharmacist": {
+      "label": "Dược sĩ",
+      "group": "chibi",
+      "face": true,
+      "face_scale": 0.56,
+      "pack": "chibi",
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "face": [
+          0,
+          -68
+        ],
+        "mouth": [
+          0,
+          -60
+        ],
+        "forehead": [
+          0,
+          -78
+        ],
+        "ear_l": [
+          -19,
+          -68
+        ],
+        "ear_r": [
+          19,
+          -68
+        ],
+        "teeth": [
+          0,
+          -60
+        ],
+        "head_top": [
+          0,
+          -90
+        ],
+        "top": [
+          0,
+          -95
+        ],
+        "neck": [
+          0,
+          -48
+        ],
+        "chest": [
+          0,
+          -38
+        ],
+        "belly": [
+          0,
+          -28
+        ],
+        "back": [
+          -12,
+          -36
+        ],
+        "waist": [
+          0,
+          -26
+        ],
+        "hip": [
+          0,
+          -22
+        ],
+        "shoulder_l": [
+          -14,
+          -44
+        ],
+        "shoulder_r": [
+          14,
+          -44
+        ],
+        "elbow_l": [
+          -20,
+          -34
+        ],
+        "elbow_r": [
+          20,
+          -34
+        ],
+        "wrist_l": [
+          -22,
+          -26
+        ],
+        "wrist_r": [
+          22,
+          -26
+        ],
+        "hand_l": [
+          -24,
+          -22
+        ],
+        "hand_r": [
+          24,
+          -22
+        ],
+        "hand": [
+          24,
+          -22
+        ],
+        "grip": [
+          24,
+          -22
+        ],
+        "arm_l": [
+          -18,
+          -38
+        ],
+        "knee_l": [
+          -8,
+          -12
+        ],
+        "knee_r": [
+          8,
+          -12
+        ],
+        "foot_l": [
+          -9,
+          0
+        ],
+        "foot_r": [
+          9,
+          0
+        ]
+      },
+      "rest_pose": {
+        "hand_l_x": -24,
+        "hand_l_y": -22,
+        "hand_r_x": 24,
+        "hand_r_y": -22
+      }
+    },
+    "chibi_patient": {
+      "label": "Bệnh nhân",
+      "group": "chibi",
+      "face": true,
+      "face_scale": 0.56,
+      "pack": "chibi",
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "face": [
+          0,
+          -68
+        ],
+        "mouth": [
+          0,
+          -60
+        ],
+        "forehead": [
+          0,
+          -78
+        ],
+        "ear_l": [
+          -19,
+          -68
+        ],
+        "ear_r": [
+          19,
+          -68
+        ],
+        "teeth": [
+          0,
+          -60
+        ],
+        "head_top": [
+          0,
+          -90
+        ],
+        "top": [
+          0,
+          -95
+        ],
+        "neck": [
+          0,
+          -48
+        ],
+        "chest": [
+          0,
+          -38
+        ],
+        "belly": [
+          0,
+          -28
+        ],
+        "back": [
+          -12,
+          -36
+        ],
+        "waist": [
+          0,
+          -26
+        ],
+        "hip": [
+          0,
+          -22
+        ],
+        "shoulder_l": [
+          -14,
+          -44
+        ],
+        "shoulder_r": [
+          14,
+          -44
+        ],
+        "elbow_l": [
+          -20,
+          -34
+        ],
+        "elbow_r": [
+          20,
+          -34
+        ],
+        "wrist_l": [
+          -22,
+          -26
+        ],
+        "wrist_r": [
+          22,
+          -26
+        ],
+        "hand_l": [
+          -24,
+          -22
+        ],
+        "hand_r": [
+          24,
+          -22
+        ],
+        "hand": [
+          24,
+          -22
+        ],
+        "grip": [
+          24,
+          -22
+        ],
+        "arm_l": [
+          -18,
+          -38
+        ],
+        "knee_l": [
+          -8,
+          -12
+        ],
+        "knee_r": [
+          8,
+          -12
+        ],
+        "foot_l": [
+          -9,
+          0
+        ],
+        "foot_r": [
+          9,
+          0
+        ]
+      },
+      "rest_pose": {
+        "hand_l_x": -24,
+        "hand_l_y": -22,
+        "hand_r_x": 24,
+        "hand_r_y": -22
+      }
+    },
+    "chibi_grandma": {
+      "label": "Bà cụ",
+      "group": "chibi",
+      "face": true,
+      "face_scale": 0.56,
+      "pack": "chibi",
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "face": [
+          0,
+          -68
+        ],
+        "mouth": [
+          0,
+          -60
+        ],
+        "forehead": [
+          0,
+          -78
+        ],
+        "ear_l": [
+          -19,
+          -68
+        ],
+        "ear_r": [
+          19,
+          -68
+        ],
+        "teeth": [
+          0,
+          -60
+        ],
+        "head_top": [
+          0,
+          -90
+        ],
+        "top": [
+          0,
+          -95
+        ],
+        "neck": [
+          0,
+          -48
+        ],
+        "chest": [
+          0,
+          -38
+        ],
+        "belly": [
+          0,
+          -28
+        ],
+        "back": [
+          -12,
+          -36
+        ],
+        "waist": [
+          0,
+          -26
+        ],
+        "hip": [
+          0,
+          -22
+        ],
+        "shoulder_l": [
+          -14,
+          -44
+        ],
+        "shoulder_r": [
+          14,
+          -44
+        ],
+        "elbow_l": [
+          -20,
+          -34
+        ],
+        "elbow_r": [
+          20,
+          -34
+        ],
+        "wrist_l": [
+          -22,
+          -26
+        ],
+        "wrist_r": [
+          22,
+          -26
+        ],
+        "hand_l": [
+          -24,
+          -22
+        ],
+        "hand_r": [
+          24,
+          -22
+        ],
+        "hand": [
+          24,
+          -22
+        ],
+        "grip": [
+          24,
+          -22
+        ],
+        "arm_l": [
+          -18,
+          -38
+        ],
+        "knee_l": [
+          -8,
+          -12
+        ],
+        "knee_r": [
+          8,
+          -12
+        ],
+        "foot_l": [
+          -9,
+          0
+        ],
+        "foot_r": [
+          9,
+          0
+        ]
+      },
+      "rest_pose": {
+        "hand_l_x": -24,
+        "hand_l_y": -22,
+        "hand_r_x": 24,
+        "hand_r_y": -22
+      }
+    },
+    "chibi_grandpa": {
+      "label": "Ông cụ",
+      "group": "chibi",
+      "face": true,
+      "face_scale": 0.56,
+      "pack": "chibi",
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "face": [
+          0,
+          -68
+        ],
+        "mouth": [
+          0,
+          -60
+        ],
+        "forehead": [
+          0,
+          -78
+        ],
+        "ear_l": [
+          -19,
+          -68
+        ],
+        "ear_r": [
+          19,
+          -68
+        ],
+        "teeth": [
+          0,
+          -60
+        ],
+        "head_top": [
+          0,
+          -90
+        ],
+        "top": [
+          0,
+          -95
+        ],
+        "neck": [
+          0,
+          -48
+        ],
+        "chest": [
+          0,
+          -38
+        ],
+        "belly": [
+          0,
+          -28
+        ],
+        "back": [
+          -12,
+          -36
+        ],
+        "waist": [
+          0,
+          -26
+        ],
+        "hip": [
+          0,
+          -22
+        ],
+        "shoulder_l": [
+          -14,
+          -44
+        ],
+        "shoulder_r": [
+          14,
+          -44
+        ],
+        "elbow_l": [
+          -20,
+          -34
+        ],
+        "elbow_r": [
+          20,
+          -34
+        ],
+        "wrist_l": [
+          -22,
+          -26
+        ],
+        "wrist_r": [
+          22,
+          -26
+        ],
+        "hand_l": [
+          -24,
+          -22
+        ],
+        "hand_r": [
+          24,
+          -22
+        ],
+        "hand": [
+          24,
+          -22
+        ],
+        "grip": [
+          24,
+          -22
+        ],
+        "arm_l": [
+          -18,
+          -38
+        ],
+        "knee_l": [
+          -8,
+          -12
+        ],
+        "knee_r": [
+          8,
+          -12
+        ],
+        "foot_l": [
+          -9,
+          0
+        ],
+        "foot_r": [
+          9,
+          0
+        ]
+      },
+      "rest_pose": {
+        "hand_l_x": -24,
+        "hand_l_y": -22,
+        "hand_r_x": 24,
+        "hand_r_y": -22
+      }
+    },
+    "chibi_farmer": {
+      "label": "Em bé nông dân",
+      "group": "chibi",
+      "face": true,
+      "face_scale": 0.56,
+      "pack": "chibi",
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "face": [
+          0,
+          -68
+        ],
+        "mouth": [
+          0,
+          -60
+        ],
+        "forehead": [
+          0,
+          -78
+        ],
+        "ear_l": [
+          -19,
+          -68
+        ],
+        "ear_r": [
+          19,
+          -68
+        ],
+        "teeth": [
+          0,
+          -60
+        ],
+        "head_top": [
+          0,
+          -90
+        ],
+        "top": [
+          0,
+          -95
+        ],
+        "neck": [
+          0,
+          -48
+        ],
+        "chest": [
+          0,
+          -38
+        ],
+        "belly": [
+          0,
+          -28
+        ],
+        "back": [
+          -12,
+          -36
+        ],
+        "waist": [
+          0,
+          -26
+        ],
+        "hip": [
+          0,
+          -22
+        ],
+        "shoulder_l": [
+          -14,
+          -44
+        ],
+        "shoulder_r": [
+          14,
+          -44
+        ],
+        "elbow_l": [
+          -20,
+          -34
+        ],
+        "elbow_r": [
+          20,
+          -34
+        ],
+        "wrist_l": [
+          -22,
+          -26
+        ],
+        "wrist_r": [
+          22,
+          -26
+        ],
+        "hand_l": [
+          -24,
+          -22
+        ],
+        "hand_r": [
+          24,
+          -22
+        ],
+        "hand": [
+          24,
+          -22
+        ],
+        "grip": [
+          24,
+          -22
+        ],
+        "arm_l": [
+          -18,
+          -38
+        ],
+        "knee_l": [
+          -8,
+          -12
+        ],
+        "knee_r": [
+          8,
+          -12
+        ],
+        "foot_l": [
+          -9,
+          0
+        ],
+        "foot_r": [
+          9,
+          0
+        ]
+      },
+      "rest_pose": {
+        "hand_l_x": -24,
+        "hand_l_y": -22,
+        "hand_r_x": 24,
+        "hand_r_y": -22
+      }
+    },
+    "chibi_chef": {
+      "label": "Đầu bếp nhí",
+      "group": "chibi",
+      "face": true,
+      "face_scale": 0.56,
+      "pack": "chibi",
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "face": [
+          0,
+          -68
+        ],
+        "mouth": [
+          0,
+          -60
+        ],
+        "forehead": [
+          0,
+          -78
+        ],
+        "ear_l": [
+          -19,
+          -68
+        ],
+        "ear_r": [
+          19,
+          -68
+        ],
+        "teeth": [
+          0,
+          -60
+        ],
+        "head_top": [
+          0,
+          -90
+        ],
+        "top": [
+          0,
+          -95
+        ],
+        "neck": [
+          0,
+          -48
+        ],
+        "chest": [
+          0,
+          -38
+        ],
+        "belly": [
+          0,
+          -28
+        ],
+        "back": [
+          -12,
+          -36
+        ],
+        "waist": [
+          0,
+          -26
+        ],
+        "hip": [
+          0,
+          -22
+        ],
+        "shoulder_l": [
+          -14,
+          -44
+        ],
+        "shoulder_r": [
+          14,
+          -44
+        ],
+        "elbow_l": [
+          -20,
+          -34
+        ],
+        "elbow_r": [
+          20,
+          -34
+        ],
+        "wrist_l": [
+          -22,
+          -26
+        ],
+        "wrist_r": [
+          22,
+          -26
+        ],
+        "hand_l": [
+          -24,
+          -22
+        ],
+        "hand_r": [
+          24,
+          -22
+        ],
+        "hand": [
+          24,
+          -22
+        ],
+        "grip": [
+          24,
+          -22
+        ],
+        "arm_l": [
+          -18,
+          -38
+        ],
+        "knee_l": [
+          -8,
+          -12
+        ],
+        "knee_r": [
+          8,
+          -12
+        ],
+        "foot_l": [
+          -9,
+          0
+        ],
+        "foot_r": [
+          9,
+          0
+        ]
+      },
+      "rest_pose": {
+        "hand_l_x": -24,
+        "hand_l_y": -22,
+        "hand_r_x": 24,
+        "hand_r_y": -22
+      }
+    },
+    "stethoscope": {
+      "label": "Ống nghe y tế",
+      "group": "tool",
+      "face": false,
+      "pack": "medical",
+      "anchors": {
+        "root": [
+          0.0,
+          0.0
+        ],
+        "grip": [
+          0.0,
+          -22.0
+        ],
+        "chest_piece": [
+          0.0,
+          0.0
+        ],
+        "earpieces": [
+          0.0,
+          -88.0
+        ],
+        "top": [
+          0.0,
+          -99.0
+        ],
+        "surface": [
+          0.0,
+          -11.0
+        ]
+      }
+    },
+    "thermometer": {
+      "label": "Nhiệt kế điện tử",
+      "group": "tool",
+      "face": false,
+      "pack": "medical",
+      "anchors": {
+        "root": [
+          0.0,
+          0.0
+        ],
+        "grip": [
+          0.0,
+          -64.75
+        ],
+        "tip": [
+          0.0,
+          0.0
+        ],
+        "top": [
+          0.0,
+          -92.5
+        ],
+        "surface": [
+          0.0,
+          -3.7
+        ]
+      }
+    },
+    "syringe": {
+      "label": "Ống tiêm cho trẻ",
+      "group": "tool",
+      "face": false,
+      "pack": "medical",
+      "anchors": {
+        "root": [
+          0.0,
+          0.0
+        ],
+        "grip": [
+          0.0,
+          -50.0
+        ],
+        "needle": [
+          0.0,
+          0.0
+        ],
+        "plunger": [
+          0.0,
+          -100.0
+        ],
+        "top": [
+          0.0,
+          -100.0
+        ],
+        "surface": [
+          0.0,
+          -4.0
+        ]
+      }
+    },
+    "pill": {
+      "label": "Viên thuốc con nhộng",
+      "group": "prop",
+      "face": false,
+      "pack": "medical",
+      "anchors": {
+        "root": [
+          0.0,
+          0.0
+        ],
+        "grip": [
+          0.0,
+          -40.25
+        ],
+        "top": [
+          0.0,
+          -80.5
+        ],
+        "surface": [
+          0.0,
+          0.0
+        ]
+      }
+    },
+    "pill_bottle": {
+      "label": "Lọ thuốc",
+      "group": "prop",
+      "face": false,
+      "pack": "medical",
+      "anchors": {
+        "root": [
+          0.0,
+          0.0
+        ],
+        "grip": [
+          0.0,
+          -46.8
+        ],
+        "top": [
+          0.0,
+          -93.6
+        ],
+        "surface": [
+          0.0,
+          0.0
+        ]
+      }
+    },
+    "syrup_bottle": {
+      "label": "Chai siro ho",
+      "group": "prop",
+      "face": false,
+      "pack": "medical",
+      "anchors": {
+        "root": [
+          0.0,
+          0.0
+        ],
+        "grip": [
+          0.0,
+          -46.2
+        ],
+        "top": [
+          0.0,
+          -92.4
+        ],
+        "surface": [
+          0.0,
+          0.0
+        ]
+      }
+    },
+    "spoon": {
+      "label": "Thìa đong siro",
+      "group": "tool",
+      "face": false,
+      "pack": "medical",
+      "anchors": {
+        "root": [
+          0.0,
+          0.0
+        ],
+        "grip": [
+          0.0,
+          -43.5
+        ],
+        "tip": [
+          0.0,
+          0.0
+        ],
+        "top": [
+          0.0,
+          -92.8
+        ],
+        "surface": [
+          0.0,
+          0.0
+        ]
+      }
+    },
+    "band_aid": {
+      "label": "Băng cá nhân",
+      "group": "prop",
+      "face": false,
+      "pack": "medical",
+      "anchors": {
+        "root": [
+          0.0,
+          0.0
+        ],
+        "grip": [
+          0.0,
+          -8.55
+        ],
+        "top": [
+          0.0,
+          -17.1
+        ],
+        "surface": [
+          0.0,
+          0.0
+        ]
+      }
+    },
+    "bandage_roll": {
+      "label": "Cuộn băng gạc y tế",
+      "group": "prop",
+      "face": false,
+      "pack": "medical",
+      "anchors": {
+        "root": [
+          0.0,
+          0.0
+        ],
+        "grip": [
+          0.0,
+          -25.2
+        ],
+        "top": [
+          0.0,
+          -50.4
+        ],
+        "surface": [
+          0.0,
+          0.0
+        ]
+      }
+    },
+    "face_mask": {
+      "label": "Khẩu trang y tế",
+      "group": "prop",
+      "face": false,
+      "pack": "medical",
+      "anchors": {
+        "root": [
+          0.0,
+          0.0
+        ],
+        "grip": [
+          0.0,
+          0.0
+        ],
+        "top": [
+          0.0,
+          -32.4
+        ],
+        "surface": [
+          0.0,
+          0.0
+        ]
+      },
+      "layer": "over_face"
+    },
+    "soap": {
+      "label": "Bánh xà phòng",
+      "group": "prop",
+      "face": false,
+      "pack": "medical",
+      "anchors": {
+        "root": [
+          0.0,
+          0.0
+        ],
+        "grip": [
+          0.0,
+          -16.75
+        ],
+        "top": [
+          0.0,
+          -33.5
+        ],
+        "surface": [
+          0.0,
+          0.0
+        ]
+      }
+    },
+    "sanitizer": {
+      "label": "Chai cồn sát khuẩn",
+      "group": "tool",
+      "face": false,
+      "pack": "medical",
+      "anchors": {
+        "root": [
+          0.0,
+          0.0
+        ],
+        "grip": [
+          0.0,
+          -38.4
+        ],
+        "pump": [
+          0.0,
+          -91.2
+        ],
+        "top": [
+          0.0,
+          -96.0
+        ],
+        "surface": [
+          0.0,
+          0.0
+        ]
+      }
+    },
+    "towel": {
+      "label": "Khăn lau mềm",
+      "group": "prop",
+      "face": false,
+      "pack": "medical",
+      "anchors": {
+        "root": [
+          0.0,
+          0.0
+        ],
+        "grip": [
+          0.0,
+          -46.5
+        ],
+        "top": [
+          0.0,
+          -93.0
+        ],
+        "surface": [
+          0.0,
+          0.0
+        ]
+      }
+    },
+    "toothbrush": {
+      "label": "Bàn chải đánh răng",
+      "group": "tool",
+      "face": false,
+      "pack": "medical",
+      "anchors": {
+        "root": [
+          0.0,
+          0.0
+        ],
+        "grip": [
+          0.0,
+          -49.0
+        ],
+        "bristles": [
+          0.0,
+          0.0
+        ],
+        "top": [
+          0.0,
+          -93.1
+        ],
+        "surface": [
+          0.0,
+          0.0
+        ]
+      }
+    },
+    "toothpaste": {
+      "label": "Tuýp kem đánh răng",
+      "group": "prop",
+      "face": false,
+      "pack": "medical",
+      "anchors": {
+        "root": [
+          0.0,
+          0.0
+        ],
+        "grip": [
+          0.0,
+          -43.5
+        ],
+        "cap": [
+          0.0,
+          0.0
+        ],
+        "top": [
+          0.0,
+          -92.8
+        ],
+        "surface": [
+          0.0,
+          0.0
+        ]
+      }
+    },
+    "water_glass": {
+      "label": "Ly nước sạch",
+      "group": "prop",
+      "face": false,
+      "pack": "medical",
+      "anchors": {
+        "root": [
+          0.0,
+          0.0
+        ],
+        "grip": [
+          0.0,
+          -46.2
+        ],
+        "top": [
+          0.0,
+          -92.4
+        ],
+        "surface": [
+          0.0,
+          0.0
+        ]
+      }
+    },
+    "first_aid_kit": {
+      "label": "Hộp cứu thương",
+      "group": "prop",
+      "face": false,
+      "pack": "medical",
+      "anchors": {
+        "root": [
+          0.0,
+          0.0
+        ],
+        "grip": [
+          0.0,
+          -57.6
+        ],
+        "top": [
+          0.0,
+          -76.8
+        ],
+        "surface": [
+          0.0,
+          0.0
+        ]
+      }
+    },
+    "ice_pack": {
+      "label": "Túi chườm đá gel",
+      "group": "prop",
+      "face": false,
+      "pack": "medical",
+      "anchors": {
+        "root": [
+          0.0,
+          0.0
+        ],
+        "grip": [
+          0.0,
+          -32.5
+        ],
+        "top": [
+          0.0,
+          -65.0
+        ],
+        "surface": [
+          0.0,
+          0.0
+        ]
+      }
+    },
+    "hospital_bed": {
+      "label": "Giường bệnh viện",
+      "group": "prop",
+      "face": false,
+      "pack": "medical",
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "mattress": [
+          0,
+          -32
+        ],
+        "head": [
+          -38,
+          -48
+        ],
+        "foot": [
+          38,
+          -32
+        ],
+        "top": [
+          0,
+          -55
+        ],
+        "surface": [
+          0,
+          0
+        ]
+      }
+    },
+    "wheelchair": {
+      "label": "Xe lăn y tế",
+      "group": "prop",
+      "face": false,
+      "pack": "medical",
+      "anchors": {
+        "root": [
+          0.0,
+          0.0
+        ],
+        "seat": [
+          0.0,
+          -50.4
+        ],
+        "backrest": [
+          -25.2,
+          -79.2
+        ],
+        "grip": [
+          -32.4,
+          -86.4
+        ],
+        "top": [
+          0.0,
+          -93.6
+        ],
+        "surface": [
+          0.0,
+          0.0
+        ]
+      }
+    },
+    "crutches": {
+      "label": "Cặp nạng chống",
+      "group": "tool",
+      "face": false,
+      "pack": "medical",
+      "anchors": {
+        "root": [
+          0.0,
+          0.0
+        ],
+        "grip": [
+          0.0,
+          -48.0
+        ],
+        "armpit": [
+          0.0,
+          -87.0
+        ],
+        "top": [
+          0.0,
+          -90.0
+        ],
+        "surface": [
+          0.0,
+          0.0
+        ]
+      }
+    },
+    "scale": {
+      "label": "Cân sức khoẻ điện tử",
+      "group": "prop",
+      "face": false,
+      "pack": "medical",
+      "anchors": {
+        "root": [
+          0.0,
+          0.0
+        ],
+        "display": [
+          0.0,
+          -4.2
+        ],
+        "top": [
+          0.0,
+          -10.5
+        ],
+        "surface": [
+          0.0,
+          0.0
+        ]
+      }
+    },
+    "height_chart": {
+      "label": "Thước đo chiều cao",
+      "group": "prop",
+      "face": false,
+      "pack": "medical",
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "marker": [
+          0,
+          -50
+        ],
+        "top": [
+          0,
+          -95
+        ],
+        "surface": [
+          0,
+          0
+        ]
+      }
+    },
+    "lunch_tray": {
+      "label": "Khay ăn dinh dưỡng",
+      "group": "prop",
+      "face": false,
+      "pack": "medical",
+      "anchors": {
+        "root": [
+          0.0,
+          0.0
+        ],
+        "food_rice": [
+          -21.0,
+          -7.0
+        ],
+        "food_fish": [
+          0.0,
+          -7.0
+        ],
+        "food_veg": [
+          21.0,
+          -7.0
+        ],
+        "top": [
+          0.0,
+          -14.0
+        ],
+        "surface": [
+          0.0,
+          0.0
+        ]
+      }
+    },
+    "good_bacteria": {
+      "label": "Lợi khuẩn đường ruột",
+      "group": "cell",
+      "face": true,
+      "pack": "medical",
+      "anchors": {
+        "root": [
+          0.0,
+          0.0
+        ],
+        "face": [
+          0.0,
+          -51.8
+        ],
+        "mouth": [
+          0.0,
+          -40.7
+        ],
+        "top": [
+          0.0,
+          -103.6
+        ],
+        "surface": [
+          0.0,
+          -3.7
+        ]
+      }
+    },
+    "bacteria_rod": {
+      "label": "Trực khuẩn que",
+      "group": "microbe",
+      "face": true,
+      "pack": "medical",
+      "anchors": {
+        "root": [
+          0.0,
+          0.0
+        ],
+        "face": [
+          0.0,
+          -49.6
+        ],
+        "mouth": [
+          0.0,
+          -37.2
+        ],
+        "top": [
+          0.0,
+          -99.2
+        ],
+        "surface": [
+          0.0,
+          -3.1
+        ]
+      }
+    },
+    "virus_spike": {
+      "label": "Virus gai núm",
+      "group": "microbe",
+      "face": true,
+      "pack": "medical",
+      "anchors": {
+        "root": [
+          0.0,
+          0.0
+        ],
+        "face": [
+          0.0,
+          -40.0
+        ],
+        "mouth": [
+          0.0,
+          -30.0
+        ],
+        "top": [
+          0.0,
+          -80.0
+        ],
+        "surface": [
+          0.0,
+          -2.5
+        ]
+      }
+    },
+    "tooth_chibi": {
+      "label": "Răng Chibi",
+      "group": "organ",
+      "face": true,
+      "pack": "medical",
+      "anchors": {
+        "root": [
+          0.0,
+          0.0
+        ],
+        "face": [
+          0.0,
+          -51.3
+        ],
+        "mouth": [
+          0.0,
+          -39.9
+        ],
+        "top": [
+          0.0,
+          -96.9
+        ],
+        "surface": [
+          0.0,
+          -5.7
+        ]
+      }
     }
   },
   "actions": {
@@ -16011,7 +18764,7 @@
       "actor_anchor": "hand",
       "target_anchor": "soil",
       "channel": "nutrients",
-      "motion": true,
+      "motion": false,
       "hold": true
     },
     "spray_drift": {
@@ -16153,8 +18906,8 @@
       ],
       "actor_anchor": "nozzle",
       "target_anchor": "root",
-      "channel": "toxic",
-      "motion": true,
+      "channel": null,
+      "motion": false,
       "hold": true
     },
     "wash_produce": {
@@ -16382,7 +19135,7 @@
         "water_spinach",
         "winter_melon_vine"
       ],
-      "channel": "damage",
+      "channel": null,
       "motion": false,
       "hold": true,
       "target_anchor": "root"
@@ -16402,9 +19155,12 @@
         "avocado_tree",
         "axe",
         "backpack_sprayer",
+        "bacteria_rod",
         "bag",
         "banana_fruit",
         "banana_tree",
+        "band_aid",
+        "bandage_roll",
         "basket",
         "beaver",
         "bee",
@@ -16444,7 +19200,20 @@
         "chem_cabinet",
         "cherry",
         "cherry_tree",
+        "chibi_boy",
+        "chibi_chef",
         "chibi_cow",
+        "chibi_dentist",
+        "chibi_doctor",
+        "chibi_farmer",
+        "chibi_girl",
+        "chibi_grandma",
+        "chibi_grandpa",
+        "chibi_kid",
+        "chibi_nurse",
+        "chibi_patient",
+        "chibi_pharmacist",
+        "chibi_teacher",
         "chick",
         "chicken",
         "chili",
@@ -16457,6 +19226,7 @@
         "cow",
         "crate",
         "crocodile",
+        "crutches",
         "cucumber",
         "cucumber_vine",
         "daisy",
@@ -16474,10 +19244,12 @@
         "eggplant",
         "elephant",
         "face",
+        "face_mask",
         "farmer",
         "farmer_woman",
         "fence",
         "fertilizer_sack",
+        "first_aid_kit",
         "fish",
         "fisherman",
         "fishing_rod",
@@ -16491,6 +19263,7 @@
         "ginger_plant",
         "giraffe",
         "goat",
+        "good_bacteria",
         "gorilla",
         "granules",
         "grape",
@@ -16502,12 +19275,15 @@
         "hand_right",
         "hay_bale",
         "hedgehog",
+        "height_chart",
         "hibiscus",
         "hippo",
         "hoe",
         "hook",
         "horse",
+        "hospital_bed",
         "hyena",
+        "ice_pack",
         "insect",
         "jackfruit",
         "jackfruit_tree",
@@ -16529,6 +19305,7 @@
         "lotus",
         "luffa",
         "luffa_vine",
+        "lunch_tray",
         "lychee",
         "lychee_tree",
         "mango",
@@ -16565,6 +19342,8 @@
         "persimmon_tree",
         "pesticide_bottle",
         "pig",
+        "pill",
+        "pill_bottle",
         "pineapple",
         "pineapple_plant",
         "plum",
@@ -16593,6 +19372,8 @@
         "rooster",
         "rose",
         "sack",
+        "sanitizer",
+        "scale",
         "scarecrow",
         "sea_monster_behemoth",
         "sea_monster_crystal_whale",
@@ -16609,35 +19390,48 @@
         "sickle",
         "sloth",
         "snail",
+        "soap",
         "soil_bed",
         "sparrow",
+        "spoon",
         "sprayer",
         "spring_onion",
         "squirrel",
         "starfruit",
         "starfruit_tree",
+        "stethoscope",
         "strawberry",
         "strawberry_plant",
         "sunflower",
         "sweet_potato",
         "sweet_potato_plant",
+        "syringe",
+        "syrup_bottle",
         "taro",
         "taro_plant",
+        "thermometer",
         "tomato",
         "tomato_plant",
+        "tooth_chibi",
+        "toothbrush",
+        "toothpaste",
+        "towel",
         "trellis_a",
         "trellis_net",
         "trex",
         "triceratops",
         "tulip",
         "turtle",
+        "virus_spike",
         "vulture",
         "warning_sign",
         "warthog",
+        "water_glass",
         "water_spinach",
         "watering_can",
         "watermelon",
         "wheelbarrow",
+        "wheelchair",
         "white_goat",
         "wild_rabbit",
         "winter_melon",
@@ -16664,9 +19458,12 @@
         "avocado_tree",
         "axe",
         "backpack_sprayer",
+        "bacteria_rod",
         "bag",
         "banana_fruit",
         "banana_tree",
+        "band_aid",
+        "bandage_roll",
         "basket",
         "beaver",
         "bee",
@@ -16706,7 +19503,20 @@
         "chem_cabinet",
         "cherry",
         "cherry_tree",
+        "chibi_boy",
+        "chibi_chef",
         "chibi_cow",
+        "chibi_dentist",
+        "chibi_doctor",
+        "chibi_farmer",
+        "chibi_girl",
+        "chibi_grandma",
+        "chibi_grandpa",
+        "chibi_kid",
+        "chibi_nurse",
+        "chibi_patient",
+        "chibi_pharmacist",
+        "chibi_teacher",
         "chick",
         "chicken",
         "chili",
@@ -16719,6 +19529,7 @@
         "cow",
         "crate",
         "crocodile",
+        "crutches",
         "cucumber",
         "cucumber_vine",
         "daisy",
@@ -16736,10 +19547,12 @@
         "eggplant",
         "elephant",
         "face",
+        "face_mask",
         "farmer",
         "farmer_woman",
         "fence",
         "fertilizer_sack",
+        "first_aid_kit",
         "fish",
         "fisherman",
         "fishing_rod",
@@ -16753,6 +19566,7 @@
         "ginger_plant",
         "giraffe",
         "goat",
+        "good_bacteria",
         "gorilla",
         "granules",
         "grape",
@@ -16764,12 +19578,15 @@
         "hand_right",
         "hay_bale",
         "hedgehog",
+        "height_chart",
         "hibiscus",
         "hippo",
         "hoe",
         "hook",
         "horse",
+        "hospital_bed",
         "hyena",
+        "ice_pack",
         "insect",
         "jackfruit",
         "jackfruit_tree",
@@ -16791,6 +19608,7 @@
         "lotus",
         "luffa",
         "luffa_vine",
+        "lunch_tray",
         "lychee",
         "lychee_tree",
         "mango",
@@ -16827,6 +19645,8 @@
         "persimmon_tree",
         "pesticide_bottle",
         "pig",
+        "pill",
+        "pill_bottle",
         "pineapple",
         "pineapple_plant",
         "plum",
@@ -16855,6 +19675,8 @@
         "rooster",
         "rose",
         "sack",
+        "sanitizer",
+        "scale",
         "scarecrow",
         "sea_monster_behemoth",
         "sea_monster_crystal_whale",
@@ -16871,35 +19693,48 @@
         "sickle",
         "sloth",
         "snail",
+        "soap",
         "soil_bed",
         "sparrow",
+        "spoon",
         "sprayer",
         "spring_onion",
         "squirrel",
         "starfruit",
         "starfruit_tree",
+        "stethoscope",
         "strawberry",
         "strawberry_plant",
         "sunflower",
         "sweet_potato",
         "sweet_potato_plant",
+        "syringe",
+        "syrup_bottle",
         "taro",
         "taro_plant",
+        "thermometer",
         "tomato",
         "tomato_plant",
+        "tooth_chibi",
+        "toothbrush",
+        "toothpaste",
+        "towel",
         "trellis_a",
         "trellis_net",
         "trex",
         "triceratops",
         "tulip",
         "turtle",
+        "virus_spike",
         "vulture",
         "warning_sign",
         "warthog",
+        "water_glass",
         "water_spinach",
         "watering_can",
         "watermelon",
         "wheelbarrow",
+        "wheelchair",
         "white_goat",
         "wild_rabbit",
         "winter_melon",
@@ -16926,9 +19761,12 @@
         "avocado_tree",
         "axe",
         "backpack_sprayer",
+        "bacteria_rod",
         "bag",
         "banana_fruit",
         "banana_tree",
+        "band_aid",
+        "bandage_roll",
         "basket",
         "beaver",
         "bee",
@@ -16968,7 +19806,20 @@
         "chem_cabinet",
         "cherry",
         "cherry_tree",
+        "chibi_boy",
+        "chibi_chef",
         "chibi_cow",
+        "chibi_dentist",
+        "chibi_doctor",
+        "chibi_farmer",
+        "chibi_girl",
+        "chibi_grandma",
+        "chibi_grandpa",
+        "chibi_kid",
+        "chibi_nurse",
+        "chibi_patient",
+        "chibi_pharmacist",
+        "chibi_teacher",
         "chick",
         "chicken",
         "chili",
@@ -16981,6 +19832,7 @@
         "cow",
         "crate",
         "crocodile",
+        "crutches",
         "cucumber",
         "cucumber_vine",
         "daisy",
@@ -16998,10 +19850,12 @@
         "eggplant",
         "elephant",
         "face",
+        "face_mask",
         "farmer",
         "farmer_woman",
         "fence",
         "fertilizer_sack",
+        "first_aid_kit",
         "fish",
         "fisherman",
         "fishing_rod",
@@ -17015,6 +19869,7 @@
         "ginger_plant",
         "giraffe",
         "goat",
+        "good_bacteria",
         "gorilla",
         "granules",
         "grape",
@@ -17026,12 +19881,15 @@
         "hand_right",
         "hay_bale",
         "hedgehog",
+        "height_chart",
         "hibiscus",
         "hippo",
         "hoe",
         "hook",
         "horse",
+        "hospital_bed",
         "hyena",
+        "ice_pack",
         "insect",
         "jackfruit",
         "jackfruit_tree",
@@ -17053,6 +19911,7 @@
         "lotus",
         "luffa",
         "luffa_vine",
+        "lunch_tray",
         "lychee",
         "lychee_tree",
         "mango",
@@ -17089,6 +19948,8 @@
         "persimmon_tree",
         "pesticide_bottle",
         "pig",
+        "pill",
+        "pill_bottle",
         "pineapple",
         "pineapple_plant",
         "plum",
@@ -17117,6 +19978,8 @@
         "rooster",
         "rose",
         "sack",
+        "sanitizer",
+        "scale",
         "scarecrow",
         "sea_monster_behemoth",
         "sea_monster_crystal_whale",
@@ -17133,35 +19996,48 @@
         "sickle",
         "sloth",
         "snail",
+        "soap",
         "soil_bed",
         "sparrow",
+        "spoon",
         "sprayer",
         "spring_onion",
         "squirrel",
         "starfruit",
         "starfruit_tree",
+        "stethoscope",
         "strawberry",
         "strawberry_plant",
         "sunflower",
         "sweet_potato",
         "sweet_potato_plant",
+        "syringe",
+        "syrup_bottle",
         "taro",
         "taro_plant",
+        "thermometer",
         "tomato",
         "tomato_plant",
+        "tooth_chibi",
+        "toothbrush",
+        "toothpaste",
+        "towel",
         "trellis_a",
         "trellis_net",
         "trex",
         "triceratops",
         "tulip",
         "turtle",
+        "virus_spike",
         "vulture",
         "warning_sign",
         "warthog",
+        "water_glass",
         "water_spinach",
         "watering_can",
         "watermelon",
         "wheelbarrow",
+        "wheelchair",
         "white_goat",
         "wild_rabbit",
         "winter_melon",
@@ -17188,9 +20064,12 @@
         "avocado_tree",
         "axe",
         "backpack_sprayer",
+        "bacteria_rod",
         "bag",
         "banana_fruit",
         "banana_tree",
+        "band_aid",
+        "bandage_roll",
         "basket",
         "beaver",
         "bee",
@@ -17230,7 +20109,20 @@
         "chem_cabinet",
         "cherry",
         "cherry_tree",
+        "chibi_boy",
+        "chibi_chef",
         "chibi_cow",
+        "chibi_dentist",
+        "chibi_doctor",
+        "chibi_farmer",
+        "chibi_girl",
+        "chibi_grandma",
+        "chibi_grandpa",
+        "chibi_kid",
+        "chibi_nurse",
+        "chibi_patient",
+        "chibi_pharmacist",
+        "chibi_teacher",
         "chick",
         "chicken",
         "chili",
@@ -17243,6 +20135,7 @@
         "cow",
         "crate",
         "crocodile",
+        "crutches",
         "cucumber",
         "cucumber_vine",
         "daisy",
@@ -17260,10 +20153,12 @@
         "eggplant",
         "elephant",
         "face",
+        "face_mask",
         "farmer",
         "farmer_woman",
         "fence",
         "fertilizer_sack",
+        "first_aid_kit",
         "fish",
         "fisherman",
         "fishing_rod",
@@ -17277,6 +20172,7 @@
         "ginger_plant",
         "giraffe",
         "goat",
+        "good_bacteria",
         "gorilla",
         "granules",
         "grape",
@@ -17288,12 +20184,15 @@
         "hand_right",
         "hay_bale",
         "hedgehog",
+        "height_chart",
         "hibiscus",
         "hippo",
         "hoe",
         "hook",
         "horse",
+        "hospital_bed",
         "hyena",
+        "ice_pack",
         "insect",
         "jackfruit",
         "jackfruit_tree",
@@ -17315,6 +20214,7 @@
         "lotus",
         "luffa",
         "luffa_vine",
+        "lunch_tray",
         "lychee",
         "lychee_tree",
         "mango",
@@ -17351,6 +20251,8 @@
         "persimmon_tree",
         "pesticide_bottle",
         "pig",
+        "pill",
+        "pill_bottle",
         "pineapple",
         "pineapple_plant",
         "plum",
@@ -17379,6 +20281,8 @@
         "rooster",
         "rose",
         "sack",
+        "sanitizer",
+        "scale",
         "scarecrow",
         "sea_monster_behemoth",
         "sea_monster_crystal_whale",
@@ -17395,35 +20299,48 @@
         "sickle",
         "sloth",
         "snail",
+        "soap",
         "soil_bed",
         "sparrow",
+        "spoon",
         "sprayer",
         "spring_onion",
         "squirrel",
         "starfruit",
         "starfruit_tree",
+        "stethoscope",
         "strawberry",
         "strawberry_plant",
         "sunflower",
         "sweet_potato",
         "sweet_potato_plant",
+        "syringe",
+        "syrup_bottle",
         "taro",
         "taro_plant",
+        "thermometer",
         "tomato",
         "tomato_plant",
+        "tooth_chibi",
+        "toothbrush",
+        "toothpaste",
+        "towel",
         "trellis_a",
         "trellis_net",
         "trex",
         "triceratops",
         "tulip",
         "turtle",
+        "virus_spike",
         "vulture",
         "warning_sign",
         "warthog",
+        "water_glass",
         "water_spinach",
         "watering_can",
         "watermelon",
         "wheelbarrow",
+        "wheelchair",
         "white_goat",
         "wild_rabbit",
         "winter_melon",
@@ -17450,9 +20367,12 @@
         "avocado_tree",
         "axe",
         "backpack_sprayer",
+        "bacteria_rod",
         "bag",
         "banana_fruit",
         "banana_tree",
+        "band_aid",
+        "bandage_roll",
         "basket",
         "beaver",
         "bee",
@@ -17492,7 +20412,20 @@
         "chem_cabinet",
         "cherry",
         "cherry_tree",
+        "chibi_boy",
+        "chibi_chef",
         "chibi_cow",
+        "chibi_dentist",
+        "chibi_doctor",
+        "chibi_farmer",
+        "chibi_girl",
+        "chibi_grandma",
+        "chibi_grandpa",
+        "chibi_kid",
+        "chibi_nurse",
+        "chibi_patient",
+        "chibi_pharmacist",
+        "chibi_teacher",
         "chick",
         "chicken",
         "chili",
@@ -17505,6 +20438,7 @@
         "cow",
         "crate",
         "crocodile",
+        "crutches",
         "cucumber",
         "cucumber_vine",
         "daisy",
@@ -17522,10 +20456,12 @@
         "eggplant",
         "elephant",
         "face",
+        "face_mask",
         "farmer",
         "farmer_woman",
         "fence",
         "fertilizer_sack",
+        "first_aid_kit",
         "fish",
         "fisherman",
         "fishing_rod",
@@ -17539,6 +20475,7 @@
         "ginger_plant",
         "giraffe",
         "goat",
+        "good_bacteria",
         "gorilla",
         "granules",
         "grape",
@@ -17550,12 +20487,15 @@
         "hand_right",
         "hay_bale",
         "hedgehog",
+        "height_chart",
         "hibiscus",
         "hippo",
         "hoe",
         "hook",
         "horse",
+        "hospital_bed",
         "hyena",
+        "ice_pack",
         "insect",
         "jackfruit",
         "jackfruit_tree",
@@ -17577,6 +20517,7 @@
         "lotus",
         "luffa",
         "luffa_vine",
+        "lunch_tray",
         "lychee",
         "lychee_tree",
         "mango",
@@ -17613,6 +20554,8 @@
         "persimmon_tree",
         "pesticide_bottle",
         "pig",
+        "pill",
+        "pill_bottle",
         "pineapple",
         "pineapple_plant",
         "plum",
@@ -17641,6 +20584,8 @@
         "rooster",
         "rose",
         "sack",
+        "sanitizer",
+        "scale",
         "scarecrow",
         "sea_monster_behemoth",
         "sea_monster_crystal_whale",
@@ -17657,35 +20602,48 @@
         "sickle",
         "sloth",
         "snail",
+        "soap",
         "soil_bed",
         "sparrow",
+        "spoon",
         "sprayer",
         "spring_onion",
         "squirrel",
         "starfruit",
         "starfruit_tree",
+        "stethoscope",
         "strawberry",
         "strawberry_plant",
         "sunflower",
         "sweet_potato",
         "sweet_potato_plant",
+        "syringe",
+        "syrup_bottle",
         "taro",
         "taro_plant",
+        "thermometer",
         "tomato",
         "tomato_plant",
+        "tooth_chibi",
+        "toothbrush",
+        "toothpaste",
+        "towel",
         "trellis_a",
         "trellis_net",
         "trex",
         "triceratops",
         "tulip",
         "turtle",
+        "virus_spike",
         "vulture",
         "warning_sign",
         "warthog",
+        "water_glass",
         "water_spinach",
         "watering_can",
         "watermelon",
         "wheelbarrow",
+        "wheelchair",
         "white_goat",
         "wild_rabbit",
         "winter_melon",
@@ -17704,6 +20662,7 @@
         "ant",
         "armored_bear",
         "armored_wolf",
+        "bacteria_rod",
         "beaver",
         "bee",
         "black_goat",
@@ -17716,7 +20675,20 @@
         "cat",
         "caterpillar",
         "cheetah",
+        "chibi_boy",
+        "chibi_chef",
         "chibi_cow",
+        "chibi_dentist",
+        "chibi_doctor",
+        "chibi_farmer",
+        "chibi_girl",
+        "chibi_grandma",
+        "chibi_grandpa",
+        "chibi_kid",
+        "chibi_nurse",
+        "chibi_patient",
+        "chibi_pharmacist",
+        "chibi_teacher",
         "chick",
         "chicken",
         "cow",
@@ -17736,6 +20708,7 @@
         "frog",
         "giraffe",
         "goat",
+        "good_bacteria",
         "gorilla",
         "hand",
         "hand_right",
@@ -17761,9 +20734,11 @@
         "snail",
         "sparrow",
         "squirrel",
+        "tooth_chibi",
         "trex",
         "triceratops",
         "turtle",
+        "virus_spike",
         "vulture",
         "warthog",
         "white_goat",
@@ -17790,9 +20765,12 @@
         "avocado_tree",
         "axe",
         "backpack_sprayer",
+        "bacteria_rod",
         "bag",
         "banana_fruit",
         "banana_tree",
+        "band_aid",
+        "bandage_roll",
         "basket",
         "beaver",
         "bee",
@@ -17832,7 +20810,20 @@
         "chem_cabinet",
         "cherry",
         "cherry_tree",
+        "chibi_boy",
+        "chibi_chef",
         "chibi_cow",
+        "chibi_dentist",
+        "chibi_doctor",
+        "chibi_farmer",
+        "chibi_girl",
+        "chibi_grandma",
+        "chibi_grandpa",
+        "chibi_kid",
+        "chibi_nurse",
+        "chibi_patient",
+        "chibi_pharmacist",
+        "chibi_teacher",
         "chick",
         "chicken",
         "chili",
@@ -17845,6 +20836,7 @@
         "cow",
         "crate",
         "crocodile",
+        "crutches",
         "cucumber",
         "cucumber_vine",
         "daisy",
@@ -17862,10 +20854,12 @@
         "eggplant",
         "elephant",
         "face",
+        "face_mask",
         "farmer",
         "farmer_woman",
         "fence",
         "fertilizer_sack",
+        "first_aid_kit",
         "fish",
         "fisherman",
         "fishing_rod",
@@ -17879,6 +20873,7 @@
         "ginger_plant",
         "giraffe",
         "goat",
+        "good_bacteria",
         "gorilla",
         "granules",
         "grape",
@@ -17890,12 +20885,15 @@
         "hand_right",
         "hay_bale",
         "hedgehog",
+        "height_chart",
         "hibiscus",
         "hippo",
         "hoe",
         "hook",
         "horse",
+        "hospital_bed",
         "hyena",
+        "ice_pack",
         "insect",
         "jackfruit",
         "jackfruit_tree",
@@ -17917,6 +20915,7 @@
         "lotus",
         "luffa",
         "luffa_vine",
+        "lunch_tray",
         "lychee",
         "lychee_tree",
         "mango",
@@ -17953,6 +20952,8 @@
         "persimmon_tree",
         "pesticide_bottle",
         "pig",
+        "pill",
+        "pill_bottle",
         "pineapple",
         "pineapple_plant",
         "plum",
@@ -17981,6 +20982,8 @@
         "rooster",
         "rose",
         "sack",
+        "sanitizer",
+        "scale",
         "scarecrow",
         "sea_monster_behemoth",
         "sea_monster_crystal_whale",
@@ -17997,35 +21000,48 @@
         "sickle",
         "sloth",
         "snail",
+        "soap",
         "soil_bed",
         "sparrow",
+        "spoon",
         "sprayer",
         "spring_onion",
         "squirrel",
         "starfruit",
         "starfruit_tree",
+        "stethoscope",
         "strawberry",
         "strawberry_plant",
         "sunflower",
         "sweet_potato",
         "sweet_potato_plant",
+        "syringe",
+        "syrup_bottle",
         "taro",
         "taro_plant",
+        "thermometer",
         "tomato",
         "tomato_plant",
+        "tooth_chibi",
+        "toothbrush",
+        "toothpaste",
+        "towel",
         "trellis_a",
         "trellis_net",
         "trex",
         "triceratops",
         "tulip",
         "turtle",
+        "virus_spike",
         "vulture",
         "warning_sign",
         "warthog",
+        "water_glass",
         "water_spinach",
         "watering_can",
         "watermelon",
         "wheelbarrow",
+        "wheelchair",
         "white_goat",
         "wild_rabbit",
         "winter_melon",
@@ -18191,7 +21207,20 @@
         "cat",
         "caterpillar",
         "cheetah",
+        "chibi_boy",
+        "chibi_chef",
         "chibi_cow",
+        "chibi_dentist",
+        "chibi_doctor",
+        "chibi_farmer",
+        "chibi_girl",
+        "chibi_grandma",
+        "chibi_grandpa",
+        "chibi_kid",
+        "chibi_nurse",
+        "chibi_patient",
+        "chibi_pharmacist",
+        "chibi_teacher",
         "chick",
         "chicken",
         "cow",
@@ -18247,6 +21276,418 @@
       ],
       "actor_anchor": "grip",
       "target_anchor": "grip",
+      "motion": false,
+      "hold": true,
+      "channel": null
+    },
+    "wash_hands": {
+      "label": "Rửa tay 6 bước",
+      "actors": [
+        "chibi_boy",
+        "chibi_girl",
+        "chibi_kid",
+        "chibi_teacher",
+        "chibi_doctor",
+        "chibi_nurse",
+        "chibi_dentist",
+        "chibi_pharmacist",
+        "chibi_patient",
+        "chibi_grandma",
+        "chibi_grandpa",
+        "chibi_farmer",
+        "chibi_chef",
+        "farmer",
+        "farmer_woman",
+        "fisherman"
+      ],
+      "targets": [
+        "soap",
+        "sanitizer",
+        "towel"
+      ],
+      "actor_anchor": "hand_r",
+      "target_anchor": "root",
+      "motion": false,
+      "hold": true,
+      "channel": null
+    },
+    "brush_teeth": {
+      "label": "Đánh răng",
+      "actors": [
+        "chibi_boy",
+        "chibi_girl",
+        "chibi_kid",
+        "chibi_teacher",
+        "chibi_doctor",
+        "chibi_nurse",
+        "chibi_dentist",
+        "chibi_pharmacist",
+        "chibi_patient",
+        "chibi_grandma",
+        "chibi_grandpa",
+        "chibi_farmer",
+        "chibi_chef"
+      ],
+      "targets": [
+        "tooth_chibi",
+        "chibi_boy",
+        "chibi_girl",
+        "chibi_kid",
+        "chibi_teacher",
+        "chibi_doctor",
+        "chibi_nurse",
+        "chibi_dentist",
+        "chibi_pharmacist",
+        "chibi_patient",
+        "chibi_grandma",
+        "chibi_grandpa",
+        "chibi_farmer",
+        "chibi_chef"
+      ],
+      "actor_anchor": "hand_r",
+      "target_anchor": "mouth",
+      "motion": false,
+      "hold": true,
+      "channel": null
+    },
+    "cough_cover": {
+      "label": "Ho vào khuỷu tay",
+      "actors": [
+        "chibi_boy",
+        "chibi_girl",
+        "chibi_kid",
+        "chibi_teacher",
+        "chibi_doctor",
+        "chibi_nurse",
+        "chibi_dentist",
+        "chibi_pharmacist",
+        "chibi_patient",
+        "chibi_grandma",
+        "chibi_grandpa",
+        "chibi_farmer",
+        "chibi_chef"
+      ],
+      "targets": [],
+      "actor_anchor": "arm_l",
+      "motion": false,
+      "hold": true,
+      "channel": null
+    },
+    "sneeze": {
+      "label": "Hắt hơi",
+      "actors": [
+        "chibi_boy",
+        "chibi_girl",
+        "chibi_kid",
+        "chibi_teacher",
+        "chibi_doctor",
+        "chibi_nurse",
+        "chibi_dentist",
+        "chibi_pharmacist",
+        "chibi_patient",
+        "chibi_grandma",
+        "chibi_grandpa",
+        "chibi_farmer",
+        "chibi_chef",
+        "farmer",
+        "farmer_woman",
+        "fisherman"
+      ],
+      "targets": [],
+      "actor_anchor": "mouth",
+      "motion": false,
+      "hold": true,
+      "channel": null
+    },
+    "take_temperature": {
+      "label": "Đo nhiệt độ",
+      "actors": [
+        "chibi_boy",
+        "chibi_girl",
+        "chibi_kid",
+        "chibi_teacher",
+        "chibi_doctor",
+        "chibi_nurse",
+        "chibi_dentist",
+        "chibi_pharmacist",
+        "chibi_patient",
+        "chibi_grandma",
+        "chibi_grandpa",
+        "chibi_farmer",
+        "chibi_chef"
+      ],
+      "targets": [
+        "chibi_boy",
+        "chibi_girl",
+        "chibi_kid",
+        "chibi_teacher",
+        "chibi_doctor",
+        "chibi_nurse",
+        "chibi_dentist",
+        "chibi_pharmacist",
+        "chibi_patient",
+        "chibi_grandma",
+        "chibi_grandpa",
+        "chibi_farmer",
+        "chibi_chef"
+      ],
+      "actor_anchor": "hand_r",
+      "target_anchor": "forehead",
+      "motion": false,
+      "hold": true,
+      "channel": null
+    },
+    "listen": {
+      "label": "Nghe nhịp tim",
+      "actors": [
+        "chibi_boy",
+        "chibi_girl",
+        "chibi_kid",
+        "chibi_teacher",
+        "chibi_doctor",
+        "chibi_nurse",
+        "chibi_dentist",
+        "chibi_pharmacist",
+        "chibi_patient",
+        "chibi_grandma",
+        "chibi_grandpa",
+        "chibi_farmer",
+        "chibi_chef"
+      ],
+      "targets": [
+        "chibi_boy",
+        "chibi_girl",
+        "chibi_kid",
+        "chibi_teacher",
+        "chibi_doctor",
+        "chibi_nurse",
+        "chibi_dentist",
+        "chibi_pharmacist",
+        "chibi_patient",
+        "chibi_grandma",
+        "chibi_grandpa",
+        "chibi_farmer",
+        "chibi_chef"
+      ],
+      "actor_anchor": "hand_r",
+      "target_anchor": "chest",
+      "motion": false,
+      "hold": true,
+      "channel": null
+    },
+    "vaccinate": {
+      "label": "Tiêm chủng an toàn",
+      "actors": [
+        "chibi_boy",
+        "chibi_girl",
+        "chibi_kid",
+        "chibi_teacher",
+        "chibi_doctor",
+        "chibi_nurse",
+        "chibi_dentist",
+        "chibi_pharmacist",
+        "chibi_patient",
+        "chibi_grandma",
+        "chibi_grandpa",
+        "chibi_farmer",
+        "chibi_chef"
+      ],
+      "targets": [
+        "chibi_boy",
+        "chibi_girl",
+        "chibi_kid",
+        "chibi_teacher",
+        "chibi_doctor",
+        "chibi_nurse",
+        "chibi_dentist",
+        "chibi_pharmacist",
+        "chibi_patient",
+        "chibi_grandma",
+        "chibi_grandpa",
+        "chibi_farmer",
+        "chibi_chef"
+      ],
+      "actor_anchor": "hand_r",
+      "target_anchor": "arm_l",
+      "motion": false,
+      "hold": true,
+      "channel": null
+    },
+    "apply_bandage": {
+      "label": "Dán băng / quấn gạc",
+      "actors": [
+        "chibi_boy",
+        "chibi_girl",
+        "chibi_kid",
+        "chibi_teacher",
+        "chibi_doctor",
+        "chibi_nurse",
+        "chibi_dentist",
+        "chibi_pharmacist",
+        "chibi_patient",
+        "chibi_grandma",
+        "chibi_grandpa",
+        "chibi_farmer",
+        "chibi_chef"
+      ],
+      "targets": [
+        "chibi_boy",
+        "chibi_girl",
+        "chibi_kid",
+        "chibi_teacher",
+        "chibi_doctor",
+        "chibi_nurse",
+        "chibi_dentist",
+        "chibi_pharmacist",
+        "chibi_patient",
+        "chibi_grandma",
+        "chibi_grandpa",
+        "chibi_farmer",
+        "chibi_chef"
+      ],
+      "actor_anchor": "hand_r",
+      "target_anchor": "arm_l",
+      "motion": false,
+      "hold": true,
+      "channel": null
+    },
+    "swallow_pill": {
+      "label": "Uống thuốc",
+      "actors": [
+        "chibi_boy",
+        "chibi_girl",
+        "chibi_kid",
+        "chibi_teacher",
+        "chibi_doctor",
+        "chibi_nurse",
+        "chibi_dentist",
+        "chibi_pharmacist",
+        "chibi_patient",
+        "chibi_grandma",
+        "chibi_grandpa",
+        "chibi_farmer",
+        "chibi_chef"
+      ],
+      "targets": [
+        "pill",
+        "pill_bottle",
+        "syrup_bottle",
+        "spoon",
+        "water_glass"
+      ],
+      "actor_anchor": "hand_r",
+      "target_anchor": "grip",
+      "motion": false,
+      "hold": true,
+      "channel": null
+    },
+    "drink": {
+      "label": "Uống nước",
+      "actors": [
+        "chibi_boy",
+        "chibi_girl",
+        "chibi_kid",
+        "chibi_teacher",
+        "chibi_doctor",
+        "chibi_nurse",
+        "chibi_dentist",
+        "chibi_pharmacist",
+        "chibi_patient",
+        "chibi_grandma",
+        "chibi_grandpa",
+        "chibi_farmer",
+        "chibi_chef"
+      ],
+      "targets": [
+        "water_glass"
+      ],
+      "actor_anchor": "hand_r",
+      "target_anchor": "grip",
+      "motion": false,
+      "hold": true,
+      "channel": null
+    },
+    "exercise": {
+      "label": "Tập thể dục",
+      "actors": [
+        "chibi_boy",
+        "chibi_girl",
+        "chibi_kid",
+        "chibi_teacher",
+        "chibi_doctor",
+        "chibi_nurse",
+        "chibi_dentist",
+        "chibi_pharmacist",
+        "chibi_patient",
+        "chibi_grandma",
+        "chibi_grandpa",
+        "chibi_farmer",
+        "chibi_chef",
+        "farmer",
+        "farmer_woman",
+        "fisherman"
+      ],
+      "targets": [],
+      "actor_anchor": "root",
+      "motion": false,
+      "hold": true,
+      "channel": null
+    },
+    "eat": {
+      "label": "Ăn uống dinh dưỡng",
+      "actors": [
+        "chibi_boy",
+        "chibi_girl",
+        "chibi_kid",
+        "chibi_teacher",
+        "chibi_doctor",
+        "chibi_nurse",
+        "chibi_dentist",
+        "chibi_pharmacist",
+        "chibi_patient",
+        "chibi_grandma",
+        "chibi_grandpa",
+        "chibi_farmer",
+        "chibi_chef"
+      ],
+      "targets": [
+        "lunch_tray",
+        "apple",
+        "carrot",
+        "banana_fruit"
+      ],
+      "actor_anchor": "hand_r",
+      "target_anchor": "surface",
+      "motion": false,
+      "hold": true,
+      "channel": null
+    },
+    "germ_attack": {
+      "label": "Vi sinh tiếp cận",
+      "actors": [
+        "good_bacteria",
+        "bacteria_rod",
+        "virus_spike"
+      ],
+      "targets": [
+        "chibi_boy",
+        "chibi_girl",
+        "chibi_kid",
+        "chibi_teacher",
+        "chibi_doctor",
+        "chibi_nurse",
+        "chibi_dentist",
+        "chibi_pharmacist",
+        "chibi_patient",
+        "chibi_grandma",
+        "chibi_grandpa",
+        "chibi_farmer",
+        "chibi_chef",
+        "tooth_chibi",
+        "lunch_tray"
+      ],
+      "actor_anchor": "surface",
+      "target_anchor": "root",
       "motion": false,
       "hold": true,
       "channel": null

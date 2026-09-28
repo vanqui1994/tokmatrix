@@ -20,10 +20,7 @@
     ctx.translate(cx, cy);
     // Hình thoi viền đỏ nền trắng/vàng
     const d = size;
-    ctx.save();
-    ctx.rotate(Math.PI / 4);
-    ellipse(ctx, 0, 0, d * 0.7, d * 0.7, '#ffffff', '#d62424', 2.2);
-    ctx.restore();
+    path(ctx, `M 0 ${-d * 0.72} L ${d * 0.72} 0 L 0 ${d * 0.72} L ${-d * 0.72} 0 Z`, '#ffffff', '#d62424', 2.2);
 
     // Biểu tượng bên trong hình thoi (chỉ hình đồ họa, không có chữ)
     if (symbol === 'skull') {
@@ -413,6 +410,33 @@
   // 2. STATE VÀ HIỆU ỨNG: TOXIC & CONTAMINATED & SPRAY_DRIFT
   // -------------------------------------------------------------
 
+  // Luồng sương phun: đi SPRAY_RANGE px theo hướng vòi rồi bị gió (s.wind 0–1) đẩy sang phải màn hình
+  // thêm tới SPRAY_DRIFT px — cùng chiều với cây nghiêng trong gió. Hook và hiệu ứng dùng chung hình học này.
+  const SPRAY_RANGE = 70, SPRAY_DRIFT = 190, SPRAY_FRONT = 0.8, TOXIC_RISE = 1.2;
+  function plumePoint(pl, u) {
+    return { x: pl.nozzle.x + u * SPRAY_RANGE * pl.facing + u * u * pl.wind * SPRAY_DRIFT, y: pl.nozzle.y + u * 40 };
+  }
+  function sprayPlume(cat, actor, a) {
+    return { nozzle: RemakeVector.worldAnchor(cat, actor, a.actor_anchor || 'nozzle'), facing: actor.flip ? -1 : 1, wind: clamp(actor.wind || 0) };
+  }
+  // Hook chạy trước bước attach: bình phun đeo trên lưng (attach_to) còn giữ tư thế cục bộ, nên dựng lại vị trí thế giới như attach.
+  function worldState(cat, states, s) {
+    const link = s.attach_to, parent = link && states[link.id];
+    if (!parent) return s;
+    const base = worldState(cat, states, parent), socket = RemakeVector.worldAnchor(cat, base, link.anchor);
+    const d = rotate(s.x * (base.flip ? -1 : 1), s.y, base.rotation || 0);
+    return { ...s, x: socket.x + d[0], y: socket.y + d[1], rotation: (base.rotation || 0) + (base.flip ? -(s.rotation || 0) : (s.rotation || 0)), flip: Boolean(base.flip) !== Boolean(s.flip) };
+  }
+  // Thời điểm mép luồng sương chạm thân target (null = không chạm: sai phía hoặc quá xa).
+  function plumeContactTime(pl, a, target) {
+    const half = target.height * 0.15;  // phần thân, không tính tay dang
+    for (let i = 0; i <= 40; i++) {
+      const u = i / 40, q = plumePoint(pl, u);
+      if (Math.abs(q.x - target.x) <= half && q.y >= target.y - target.height && q.y <= target.y) return a.start + SPRAY_FRONT * u;
+    }
+    return null;
+  }
+
   // Hiệu ứng hạt sương độc hại và nước ô nhiễm
   function agrochemCustomEffects(ctx, snapshot, cat, kit) {
     const { ellipse, line, path } = kit;
@@ -442,20 +466,15 @@
       if (a.type === 'spray_drift') {
         const actor = snapshot.states[a.actor];
         if (!actor) continue;
-        const nozzle = RemakeVector.worldAnchor(cat, actor, a.actor_anchor || 'nozzle');
-        const wind = snapshot.wind || 0;
-        const windDir = actor.flip ? -1 : 1;
-        const driftX = wind * 140 * windDir;
-
+        if (!a.active) continue;
+        const pl = sprayPlume(cat, actor, a), front = clamp((t - a.start) / SPRAY_FRONT);
         ctx.save();
-        for (let i = 0; i < 28; i++) {
-          const age = ((t - a.start) * 2.8 - i / 28);
-          if (age < 0) continue;
-          const u = age % 1;
-          const px = nozzle.x + (u * 120 * (actor.flip ? -1 : 1)) + (u * u * driftX) + Math.sin(i * 11) * u * 20;
-          const py = nozzle.y + (u * 40) + Math.cos(i * 7) * u * 15;
-          const r = 2.5 + u * 10;
-          ellipse(ctx, px, py, r, r, 'rgba(180, 224, 76, 0.35)', null);
+        for (let i = 0; i < 36; i++) {
+          const u = ((t - a.start) * 1.6 + i / 36) % 1;
+          if (u > front) continue;
+          const q = plumePoint(pl, u);
+          const r = 3 + u * 13;
+          ellipse(ctx, q.x + Math.sin(i * 11) * u * 16, q.y + Math.cos(i * 7) * u * 12, r, r * 0.8, `rgba(170, 214, 70, ${0.5 - u * 0.25})`, null);
         }
         ctx.restore();
       } else if (a.type === 'pour') {
@@ -509,60 +528,45 @@
   }
 
   // Action hook xử lý cập nhật trạng thái động tác
+  // Hook chạy cả sau khi động tác hết (hold): p = 1, nên trạng thái cuối được giữ.
   const agrochemActionHooks = {
+    // Sương chỉ nhiễm vào target khi luồng (hướng vòi + gió) thật sự chạm thân; toxic tăng dần kể từ lúc chạm.
     spray_drift(a, states, t, p, u, amount, cat, active) {
-      const actor = states[a.actor];
-      if (actor) {
-        actor.spray = smooth(u);
-      }
-      // Khi sương trôi chạm vào target, kích hoạt toxic trên target
-      const target = states[a.target];
-      if (target && active) {
-        target.toxic = clamp((target.toxic || 0) + 0.5 * amount * smooth(clamp(p * 2)));
-      }
+      const actor = states[a.actor], target = states[a.target];
+      if (!actor) return;
+      if (active) actor.spray = 1;
+      if (!target) return;
+      const pl = sprayPlume(cat, worldState(cat, states, actor), a);
+      const hit = plumeContactTime(pl, a, worldState(cat, states, target));
+      if (hit === null) return;
+      const exposure = smooth(clamp((Math.min(t, a.end) - hit) / TOXIC_RISE));
+      if (exposure > 0) target.toxic = Math.max(target.toxic || 0, amount * exposure);
     },
+    // Kênh `fill` của catalog đã đổ đầy target; hook chỉ nghiêng chai khi đang rót.
     pour(a, states, t, p, u, amount, cat, active) {
       const actor = states[a.actor];
-      if (actor) {
-        actor.rotation = (actor.rotation || 0) + (actor.flip ? 45 : -45) * smooth(u);
-      }
-      const target = states[a.target];
-      if (target && active) {
-        target.fill = clamp((target.fill || 0) + 0.3 * amount * p);
-      }
+      if (actor && active) actor.rotation = (actor.rotation || 0) + (actor.flip ? 45 : -45) * smooth(clamp(p / .2)) * (1 - smooth(clamp((p - .85) / .15)));
     },
     scatter(a, states, t, p, u, amount, cat, active) {
       const actor = states[a.actor];
-      if (actor && actor.arm !== undefined) {
-        actor.arm = Math.sin(p * Math.PI) * 0.8;
-      }
-      const target = states[a.target];
-      if (target && active) {
-        target.nutrients = clamp((target.nutrients || 0) + 0.4 * amount * p);
-      }
+      if (actor && active) actor.arm = (actor.arm || 0) + Math.sin(p * Math.PI * 4) * 30 * amount;
     },
     wash_produce(a, states, t, p, u, amount, cat, active) {
       const target = states[a.target];
-      if (target && active) {
-        target.wet = 1.0;
-        // Giải độc và làm sạch
-        if (target.toxic) target.toxic = Math.max(0, target.toxic - 0.6 * p);
-        if (target.dirty) target.dirty = Math.max(0, target.dirty - 0.8 * p);
-      }
+      if (!target) return;
+      if (target.toxic) target.toxic = Math.max(0, target.toxic * (1 - u));
+      if (target.dirty) target.dirty = Math.max(0, target.dirty * (1 - u));
     },
+    // Kênh `damage` của catalog làm úa; hook thêm dáng rủ.
     wilt(a, states, t, p, u, amount, cat, active) {
       const target = states[a.target];
-      if (target && active) {
-        target.damage = clamp((target.damage || 0) + 0.6 * smooth(p));
-        target.bend = (target.bend || 0) + 0.35 * smooth(p);
-      }
+      if (target) target.bend = mix(target.bend || 0, Math.max(target.bend || 0, .35 * amount), u);
     },
     perk_up(a, states, t, p, u, amount, cat, active) {
       const target = states[a.target];
-      if (target && active) {
-        target.damage = Math.max(0, (target.damage || 0) - 0.7 * smooth(p));
-        target.bend = Math.max(0, (target.bend || 0) - 0.4 * smooth(p));
-      }
+      if (!target) return;
+      target.damage = mix(target.damage || 0, 0, u * amount);
+      target.bend = mix(target.bend || 0, 0, u * amount);
     }
   };
 

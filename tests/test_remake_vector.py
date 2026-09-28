@@ -499,6 +499,126 @@ console.log(JSON.stringify(rows));""", {"story": story, "cat": catalog()})
             self.assertAlmostEqual(row["y"], 810, delta=0.01)   # chân vẫn trên mặt đất
         self.assertLess(out[2]["d"], 3)                           # tay chạm quả lúc start + 0.6
 
+    def _medical_distances(self, story, pairs, start, end):
+        """Khoảng cách thế giới giữa các cặp (id, anchor) mỗi 0.1 s trong [start, end]."""
+        from bkt_web.remake_vector import catalog
+        return self._node(r"""
+const {story,cat,pairs,start,end}=JSON.parse(fs.readFileSync(0,'utf8'));const rows=[];
+for(let i=0;start+i*0.1<=end+1e-9;i++){const t=+(start+i*0.1).toFixed(3),f=V.sample(story,cat,t);
+  rows.push({t,d:pairs.map(([a,an,b,bn])=>{const p=V.worldAnchor(cat,f.states[a],an),q=V.worldAnchor(cat,f.states[b],bn);return Math.hypot(p.x-q.x,p.y-q.y);})});}
+console.log(JSON.stringify(rows));""", {"story": story, "cat": catalog(), "pairs": pairs, "start": start, "end": end})
+
+    @staticmethod
+    def _action(story, kind):
+        return next(a for sc in story["scenes"] for a in sc.get("actions", []) if a["type"] == kind)
+
+    def test_wash_hands_keeps_both_hands_rubbing_together(self):
+        """Plan §9: rửa tay 6 bước — hai bàn tay trong 14 px của nhau mỗi 0.1 s (ngoài lúc đưa tay vào/ra)."""
+        from bkt_web.remake_vector import handwashing_examples
+        story = handwashing_examples()[0]
+        a = self._action(story, "wash_hands")
+        d = a["end"] - a["start"]
+        rows = self._medical_distances(story, [["kid", "hand_l", "kid", "hand_r"]], a["start"] + .1 * d, a["end"] - .1 * d)
+        self.assertGreater(len(rows), 40)
+        for row in rows:
+            self.assertLessEqual(row["d"][0], 14, row)
+
+    def test_held_tools_touch_their_target_during_the_action(self):
+        """brush_teeth: lông bàn chải; take_temperature: đầu nhiệt kế; listen: mặt ống nghe — trong 14 px quanh đích."""
+        from bkt_web.remake_vector import doctor_visit_examples, tooth_examples
+        cases = [
+            (tooth_examples()[0], "brush_teeth", ["brush", "bristles", "tooth", "mouth"], .15, .85),
+            (doctor_visit_examples()[0], "take_temperature", ["thermo", "tip", "patient", "forehead"], .2, .85),
+            (doctor_visit_examples()[0], "listen", ["stetho", "chest_piece", "patient", "chest"], .2, .85),
+        ]
+        for story, kind, pair, lo, hi in cases:
+            with self.subTest(kind):
+                a = self._action(story, kind)
+                d = a["end"] - a["start"]
+                rows = self._medical_distances(story, [pair], a["start"] + lo * d, a["start"] + hi * d)
+                self.assertGreater(len(rows), 15)
+                for row in rows:
+                    self.assertLessEqual(row["d"][0], 14, (kind, row))
+
+    def test_vaccinate_needle_touches_the_arm_only_inside_the_contact_window(self):
+        """Kim chạm arm_l trong khoảng tiếp xúc [0.4, 0.6] và không chạm ngoài [0.35, 0.65] của action."""
+        from bkt_web.remake_vector import doctor_visit_examples
+        story = doctor_visit_examples()[0]
+        a = self._action(story, "vaccinate")
+        d = a["end"] - a["start"]
+        rows = self._medical_distances(story, [["syringe", "needle", "patient", "arm_l"]], a["start"] - .3, a["end"] + .2)
+        inside = [r for r in rows if a["start"] + .4 * d <= r["t"] <= a["start"] + .6 * d]
+        outside = [r for r in rows if not a["start"] + .35 * d <= r["t"] <= a["start"] + .65 * d]
+        self.assertTrue(inside and outside)
+        for row in inside:
+            self.assertLessEqual(row["d"][0], 14, row)
+        for row in outside:
+            self.assertGreater(row["d"][0], 14, row)
+        after = self._node(r"""
+const {story,cat,t}=JSON.parse(fs.readFileSync(0,'utf8'));const b=V.sample(story,cat,t-1.2).states.patient,f=V.sample(story,cat,t).states.patient;
+console.log(JSON.stringify([b.expression,f.expression,!!f.vaccinated]));""", {"story": story, "cat": __import__("bkt_web.remake_vector", fromlist=["catalog"]).catalog(), "t": a["end"] - .05})
+        self.assertEqual(after, ["worried", "happy", True])
+
+    def test_medical_tool_must_be_held_by_the_actor(self):
+        import copy
+        from bkt_web.remake_vector import doctor_visit_examples, validate_story
+        story = doctor_visit_examples()[0]
+        bad = copy.deepcopy(story)
+        next(c for c in bad["characters"] if c["id"] == "syringe")["attach_to"]["id"] = "patient"
+        with self.assertRaisesRegex(ValueError, "tool"):
+            validate_story(bad)
+        bad = copy.deepcopy(story)
+        self._action(bad, "vaccinate")["tool"] = "thermo_missing"
+        with self.assertRaisesRegex(ValueError, "tool"):
+            validate_story(bad)
+
+    def test_tug_chain_holds_the_one_in_front_until_the_pop(self):
+        """Plan §14: tug — tay (thú: miệng) của mỗi người kéo nằm trong 12 px quanh điểm nắm của người phía trước."""
+        from bkt_web.remake_vector import giant_radish_examples
+        story = giant_radish_examples()[0]
+        a = next(x for sc in story["scenes"] for x in sc["actions"] if x["type"] == "tug" and x.get("helpers"))
+        pairs = [["grandpa", "hand_l", "radish", "grip"], ["grandpa", "hand_r", "radish", "grip"],
+                 ["grandma", "hand_l", "grandpa", "waist"], ["kid", "hand_r", "grandma", "waist"],
+                 ["dog", "mouth", "kid", "waist"], ["cat", "mouth", "dog", "tail"], ["mouse", "mouth", "cat", "tail"]]
+        rows = self._medical_distances(story, pairs, a["start"], a["pop_at"] - .05)
+        self.assertGreater(len(rows), 30)
+        for row in rows:
+            self.assertLess(max(row["d"]), 12, row)
+        after = self._medical_distances(story, pairs[:1], a["end"] - .05, a["end"] - .05)
+        self.assertGreater(after[0]["d"][0], 40)   # đã buông tay, ngã ra sau
+
+    def test_spray_drift_only_poisons_whoever_the_wind_carries_it_to(self):
+        """spray_drift: người cuối gió nhiễm toxic sau khi luồng sương chạm; lặng gió thì luồng không tới được."""
+        import copy
+        from bkt_web.remake_vector import catalog, safe_spraying_examples
+        story = safe_spraying_examples()[0]
+        calm = copy.deepcopy(story)
+        calm["scenes"][1]["background"]["weather"] = "clear"
+        out = self._node(r"""
+const {story,calm,cat}=JSON.parse(fs.readFileSync(0,'utf8'));const tox=(st,t,id)=>V.sample(st,cat,t).states[id].toxic||0;
+console.log(JSON.stringify({start:tox(story,6.0,'bystander'),late:tox(story,9.0,'bystander'),held:tox(story,9.9,'bystander'),
+  sprayer:tox(story,9.0,'farmer'),calm:tox(calm,9.0,'bystander'),face:V.sample(story,cat,9.9).states.bystander.expression}));""",
+            {"story": story, "calm": calm, "cat": catalog()})
+        self.assertEqual(out["start"], 0)
+        self.assertGreater(out["late"], .8)
+        self.assertGreater(out["held"], .8)        # hold: vẫn nhiễm sau khi ngừng phun
+        self.assertEqual(out["sprayer"], 0)
+        self.assertEqual(out["calm"], 0)
+        self.assertEqual(out["face"], "sick")
+
+    def test_wilt_holds_and_perk_up_recovers(self):
+        from bkt_web.remake_vector import catalog, validate_story
+        def scene(start, end, actions):
+            return {"renderer": "native-vector-v1", "kind": "scene", "start_time": start, "end_time": end, "characters_present": ["p"],
+                    "poses": {"p": [{"time": start, "x": 288, "y": 810, "height": 300}]}, "actions": actions, "background": {"preset": "garden"}}
+        story = validate_story({"id": "wilt", "renderer": "native-vector-v1", "duration": 4, "characters": [{"id": "p", "asset": "chili_plant" if "chili_plant" in catalog()["assets"] else "tomato_plant"}],
+                                "scenes": [scene(0, 4, [{"type": "wilt", "target": "p", "start": .5, "end": 1.5}, {"type": "perk_up", "target": "p", "start": 2.5, "end": 3.5}])]})
+        out = self._node(r"""
+const {story,cat}=JSON.parse(fs.readFileSync(0,'utf8'));console.log(JSON.stringify([0.2,2.0,3.9].map(t=>V.sample(story,cat,t).states.p.damage)));""", {"story": story, "cat": catalog()})
+        self.assertLess(out[0], .05)
+        self.assertGreater(out[1], .9)    # héo và giữ nguyên sau khi wilt kết thúc
+        self.assertLess(out[2], .05)      # perk_up đưa về tươi, không đẩy damage lên 1
+
     def test_validator_rejects_bad_pick_and_shake(self):
         import copy
         from bkt_web.remake_vector import orchard_harvest_examples, validate_story
@@ -1036,13 +1156,14 @@ const fAfter = V.sample(story, cat, 10.0);
 console.log(JSON.stringify({
   radishLiftBefore: fBefore.states.radish.lift || 0,
   radishLiftAfter: fAfter.states.radish.lift || 0,
-  farmerRotAfter: fAfter.states.farmer.rotation || 0,
+  farmerRotAfter: fAfter.states.grandpa.rotation || 0,
 }));
 """
         out = self._node(program, {"story": story, "cat": catalog()})
-        self.assertEqual(out["radishLiftBefore"], 0)
+        self.assertLess(out["radishLiftBefore"], 15)   # trước pop_at củ chỉ rung, nhú vai
         self.assertGreater(out["radishLiftAfter"], 50)
-        self.assertLess(out["farmerRotAfter"], -15, "Người kéo phải ngã ngửa ra sau khi củ cải bật lên")
+        # Củ ở bên trái đoàn kéo: ngã ngửa = xoay theo chiều dương (đỉnh đầu ra xa củ)
+        self.assertGreater(out["farmerRotAfter"], 15, "Người kéo phải ngã ngửa ra sau khi củ cải bật lên")
 
     def test_phase_g_new_expressions_rendering_spy(self):
         """Hàm face() vẽ thành công không lỗi với 4 biểu cảm mới sick, cold, hot, dizzy."""
@@ -1726,6 +1847,109 @@ console.log('SHAKE_DETERMINISTIC_PASSED');
         self.assertEqual(len(stories), 1)
         valid = validate_story(stories[0])
         self.assertEqual(valid["id"], "highland_temperate")
+
+    def test_phase_h_chibi_anchors_and_specs(self):
+        from bkt_web.remake_vector import catalog
+        cat = catalog()
+        chibi_ids = [
+            "chibi_boy", "chibi_girl", "chibi_kid", "chibi_teacher",
+            "chibi_doctor", "chibi_nurse", "chibi_dentist", "chibi_pharmacist",
+            "chibi_patient", "chibi_grandma", "chibi_grandpa", "chibi_farmer", "chibi_chef"
+        ]
+        self.assertEqual(len(chibi_ids), 13)
+        required_anchors = {
+            "root", "face", "mouth", "forehead", "ear_l", "ear_r", "teeth", "head_top", "top",
+            "neck", "chest", "belly", "back", "waist", "hip", "shoulder_l", "shoulder_r",
+            "elbow_l", "elbow_r", "wrist_l", "wrist_r", "hand_l", "hand_r",
+            "knee_l", "knee_r", "foot_l", "foot_r"
+        }
+        for cid in chibi_ids:
+            self.assertIn(cid, cat["assets"])
+            asset = cat["assets"][cid]
+            self.assertEqual(asset["group"], "chibi")
+            self.assertEqual(asset["pack"], "chibi")
+            self.assertTrue(asset["face"])
+            for anchor in required_anchors:
+                self.assertIn(anchor, asset["anchors"], f"{cid} thiếu anchor {anchor}")
+
+    def test_phase_h_medical_assets_and_backgrounds(self):
+        from bkt_web.remake_vector import catalog
+        cat = catalog()
+        medical_props = [
+            "stethoscope", "thermometer", "syringe", "pill", "pill_bottle",
+            "syrup_bottle", "spoon", "band_aid", "bandage_roll", "face_mask",
+            "soap", "sanitizer", "towel", "toothbrush", "toothpaste",
+            "water_glass", "first_aid_kit", "ice_pack", "hospital_bed", "wheelchair",
+            "crutches", "scale", "height_chart", "lunch_tray"
+        ]
+        microbes_organs = ["good_bacteria", "bacteria_rod", "virus_spike", "tooth_chibi"]
+        for aid in medical_props + microbes_organs:
+            self.assertIn(aid, cat["assets"])
+            self.assertEqual(cat["assets"][aid]["pack"], "medical")
+
+        bgs = [
+            "living_room", "bathroom_sink", "classroom", "school_yard", "playground",
+            "clinic_room", "hospital_ward", "pharmacy", "dentist_room", "science_lab", "body_inside"
+        ]
+        for bg in bgs:
+            self.assertIn(bg, cat["backgrounds"])
+            self.assertIn(bg, cat["background_specs"])
+            spec = cat["background_specs"][bg]
+            self.assertIn("label", spec)
+            self.assertIn("theme", spec)
+            self.assertEqual(spec["ground_y"], 810)
+
+    def test_phase_h_layer_over_face_ordering(self):
+        from bkt_web.remake_vector import STATIC_DIR
+        program = r'''
+require(process.argv[1]);
+const R = RemakeVector;
+const cat = require(process.argv[2]);
+const story = {
+  id: "test-layer",
+  renderer: "native-vector-v1",
+  duration: 2.0,
+  characters: [
+    { id: "kid", asset: "chibi_kid" },
+    { id: "mask", asset: "face_mask", layer: "over_face", attach_to: { id: "kid", anchor: "face" } }
+  ],
+  scenes: [{
+    renderer: "native-vector-v1",
+    kind: "scene",
+    start_time: 0,
+    end_time: 2.0,
+    characters_present: ["kid", "mask"],
+    background: { preset: "clinic_room" },
+    poses: {
+      kid: [{ time: 0, x: 200, y: 810, height: 320 }],
+      mask: [{ time: 0, x: 200, y: 730, height: 40 }]
+    }
+  }]
+};
+const sampled = R.sample(story, cat, 0.5);
+if (sampled.states.mask.z <= sampled.states.kid.z) {
+  throw new Error("mask z should be greater than kid z when layer is over_face");
+}
+console.log("layer over_face test passed");
+'''
+        result = subprocess.run(
+            ["node", "-e", program, str(STATIC_DIR / "remake_vector_engine.js"), str(STATIC_DIR / "remake_vector_catalog.json")],
+            text=True, capture_output=True
+        )
+        self.assertEqual(result.returncode, 0, result.stderr)
+
+    def test_phase_h_sample_stories_validate(self):
+        from bkt_web.remake_vector import (
+            handwashing_examples, doctor_visit_examples,
+            tooth_examples, nutrition_examples, validate_story
+        )
+        for fn in (handwashing_examples, doctor_visit_examples, tooth_examples, nutrition_examples):
+            stories = fn()
+            self.assertEqual(len(stories), 1)
+            valid = validate_story(stories[0])
+            self.assertIn("id", valid)
+            self.assertGreaterEqual(valid["duration"], 12.0)
+            self.assertLessEqual(valid["duration"], 20.0)
 
 
 if __name__ == "__main__":

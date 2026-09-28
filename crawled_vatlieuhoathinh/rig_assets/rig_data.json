@@ -362,11 +362,11 @@
       "default_face": "face_a_01.png",
       "body_clean": "bodies_clean/hac_bach_kiem_ton.png",
       "face_box": [
-        0.542,
-        0.121,
-        0.3446
+        0.42,
+        0.27,
+        0.31
       ],
-      "face_box_source": "detected"
+      "face_box_source": "manual"
     },
     {
       "id": "chien_binh_cam_riu",
@@ -380,11 +380,11 @@
       "default_face": "face_a_01.png",
       "body_clean": "bodies_clean/chien_binh_cam_riu.png",
       "face_box": [
-        0.4608,
-        0.3062,
-        0.1788
+        0.41,
+        0.42,
+        0.22
       ],
-      "face_box_source": "detected"
+      "face_box_source": "manual"
     },
     {
       "id": "bo_cap_tinh",
@@ -416,11 +416,11 @@
       "default_face": "face_a_01.png",
       "body_clean": "bodies_clean/dau_gau_non_la_blank.png",
       "face_box": [
-        0.5,
-        0.2,
+        0.43,
+        0.64,
         0.4
       ],
-      "face_box_source": "detected"
+      "face_box_source": "manual"
     }
   ],
   "faces": [

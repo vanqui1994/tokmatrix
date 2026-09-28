@@ -6,13 +6,41 @@
   'use strict';
 
   if (typeof RemakeVector === 'undefined') {
-    if (typeof module !== 'undefined' && module.exports) {
-      // Node.js module loading stub
-    }
-    return;
+    throw new Error('farm_fun pack: RemakeVector core engine chưa được nạp.');
   }
 
-  const { path, line, ellipse, cylinder, volume, tone, INK, TAU, clamp, hash } = RemakeVector.kit;
+  const { path, line, ellipse, INK, TAU, clamp, hash, smooth, mix } = RemakeVector.kit;
+  const HANDED = new Set(['human', 'chibi']);
+
+  // tug: điểm người/thú phía sau nắm vào (người/chibi: thắt lưng, thú: đuôi).
+  function grabPoint(cat, s) {
+    const anchors = cat.assets[s.asset].anchors;
+    const name = ['waist', 'hip', 'tail', 'back'].find(n => anchors[n]) || 'root';
+    return RemakeVector.worldAnchor(cat, s, name);
+  }
+  // Đặt một người kéo vào chuỗi: người/chibi đứng cách điểm nắm một tầm tay và IK hai tay tới đó;
+  // thú không có tay thì ngậm bằng miệng: xoay thân (≤ 35°) cho miệng ngang tầm, trượt ngang cho miệng chạm,
+  // phần còn thiếu thì nhấc cả thân (treo lủng lẳng như chú chuột níu đuôi mèo).
+  function joinChain(cat, s, grab, dir) {
+    const group = cat.assets[s.asset].group;
+    if (HANDED.has(group)) {
+      s.x = grab.x + dir * s.height * (group === 'chibi' ? .2 : .26);
+      for (const side of ['hand_l', 'hand_r']) {
+        const local = RemakeVector.worldToLocal(s, { x: grab.x, y: grab.y + (side === 'hand_l' ? -2 : 2) });
+        s[`${side}_x`] = local[0]; s[`${side}_y`] = local[1];
+      }
+      return;
+    }
+    const mouth = cat.assets[s.asset].anchors.mouth ? 'mouth' : 'face';
+    let best = s.rotation || 0, gap = Infinity;
+    for (let r = -35; r <= 35; r += 1) {
+      const q = RemakeVector.worldAnchor(cat, { ...s, rotation: (s.rotation || 0) + r }, mouth);
+      if (Math.abs(q.y - grab.y) < gap) { gap = Math.abs(q.y - grab.y); best = (s.rotation || 0) + r; }
+    }
+    s.rotation = best;
+    const q = RemakeVector.worldAnchor(cat, s, mouth);
+    s.x += grab.x - q.x; s.y += grab.y - q.y;
+  }
 
   function drawPolygon(ctx, pts, fill, stroke, width = 1) {
     if (!pts || pts.length < 2) return;
@@ -288,61 +316,40 @@
   // =========================================================================
 
   const farmFunActionHooks = {
-    // 2.1 Kéo co tập thể (tug) nhổ củ khổng lồ
+    // 2.1 Kéo co (tug): actor nắm `grip` của củ, mỗi helper nắm người/thú đứng trước (grabPoint) suốt
+    // lúc kéo; cả đoàn ngả ra sau đồng pha, củ rung và nhú vai lên. Đến pop_at củ bật khỏi đất, cả đoàn
+    // buông tay và ngã ngửa. pop_at = end nghĩa là kéo không nổi. Sau end (hold) giữ nguyên trạng thái cuối.
     tug(a, states, t, p, u, amount, cat, active) {
-      if (!active) return;
-      const popAt = a.pop_at != null ? a.pop_at : (a.start + (a.end - a.start) * 0.72);
-      const pullers = [a.actor, ...(a.helpers || [])];
-
-      if (t < popAt) {
-        // Giai đoạn gồng mình kéo: giật lùi nhịp nhàng đồng pha
-        const cycle = (t - a.start) * 4.2;
-        const heave = Math.sin(cycle);
-        const lean = -14 - Math.max(0, heave) * 12; // Nghiêng người ra sau dồn lực
-        const heaveX = -Math.max(0, heave) * 16;   // Giật lùi ra sau
-
-        for (const pid of pullers) {
-          const s = states[pid];
-          if (!s) continue;
-          s.rotation = (s.rotation || 0) + (s.flip ? -lean : lean);
-          s.x += (s.flip ? -heaveX : heaveX);
-          s.expression = 'worried';
+      const radish = states[a.target], ids = [a.actor, ...(a.helpers || [])].filter(id => states[id]);
+      if (!radish || !ids.length) return;
+      const popAt = a.pop_at ?? a.start + (a.end - a.start) * 0.72;
+      const now = Math.min(t, a.end), dir = Math.sign(states[ids[0]].x - radish.x) || 1;
+      if (now < popAt || popAt >= a.end) {
+        const ramp = smooth(clamp((now - a.start) / .4)), heave = Math.max(0, Math.sin((now - a.start) * 4.2)) * ramp;
+        radish.x += Math.sin(now * 36) * 2.2 * heave;
+        radish.lift = 12 * heave * amount;
+        radish.y -= radish.lift;
+        radish.expression = 'worried';
+        let grab = RemakeVector.worldAnchor(cat, radish, a.target_anchor || 'grip');
+        for (const id of ids) {
+          const s = states[id];
+          if (HANDED.has(cat.assets[s.asset].group)) s.rotation = (s.rotation || 0) + dir * (8 + 10 * heave) * ramp;
+          if (s.faceEnabled !== false) s.expression = 'worried';
+          joinChain(cat, s, grab, dir);
+          grab = grabPoint(cat, s);
         }
-
-        // Củ cải đích rung rinh quằn quại trong lòng đất
-        const tgt = states[a.target];
-        if (tgt) {
-          tgt.x += Math.sin(t * 36) * 2.2;
-          tgt.expression = 'worried';
-        }
-      } else {
-        // Giai đoạn CỦ BẬT LÊN (POP) và CẢ ĐOÀN NGÃ NGỬA VUI NHỘN
-        const tAfter = t - popAt;
-        const popDuration = Math.max(0.3, (a.end - popAt) * 0.4);
-        const popP = Math.min(1, tAfter / popDuration);
-
-        // Củ cải vọt mạnh lên khỏi mặt đất
-        const tgt = states[a.target];
-        if (tgt) {
-          const jumpH = (a.lift_amount || 170) * Math.sin(popP * Math.PI * 0.5);
-          tgt.lift = (tgt.lift || 0) + jumpH;
-          tgt.rotation = (tgt.rotation || 0) + 16 * popP;
-          tgt.expression = 'surprised';
-        }
-
-        // Cả đoàn ngã ngửa ra đất
-        const fallAngle = -46 * popP;
-        const fallY = 46 * popP;
-        const fallX = -34 * popP;
-
-        for (const pid of pullers) {
-          const s = states[pid];
-          if (!s) continue;
-          s.rotation = (s.rotation || 0) + (s.flip ? -fallAngle : fallAngle);
-          s.y += fallY;
-          s.x += (s.flip ? -fallX : fallX);
-          s.expression = 'surprised';
-        }
+        return;
+      }
+      const popP = smooth(clamp((now - popAt) / Math.max(0.3, (a.end - popAt) * 0.4)));
+      radish.lift = (a.lift_amount ?? 170) * popP;
+      radish.y -= radish.lift;
+      radish.rotation = (radish.rotation || 0) - dir * 14 * popP;
+      radish.expression = 'surprised';
+      for (const id of ids) {
+        const s = states[id];
+        s.rotation = (s.rotation || 0) + dir * 55 * popP;
+        s.x += dir * 36 * popP;
+        if (s.faceEnabled !== false) s.expression = 'surprised';
       }
     },
 
@@ -358,43 +365,35 @@
 
     // 2.3 Chạy thục mạng tóe khói bụi (run_away)
     run_away(a, states, t, p, u, amount, cat, active) {
-      if (!active) return;
       const s = states[a.actor];
-      if (s) {
-        s.running_away = true;
-        const dir = s.flip ? -1 : 1;
-        s.x += dir * p * 220;
-        s.rotation = (s.rotation || 0) + (s.flip ? 14 : -14);
-        s.y -= Math.abs(Math.sin(p * Math.PI * 10)) * 14;
-      }
+      if (!s) return;
+      const dir = s.flip ? -1 : 1;
+      s.x += dir * p * 220 * amount;  // hold: sau end vẫn đứng ở chỗ đã chạy tới
+      if (!active) return;
+      s.running_away = true;
+      s.rotation = (s.rotation || 0) + dir * 14;
+      s.y -= Math.abs(Math.sin(p * Math.PI * 10)) * 14;
     },
 
     // 2.4 Lớn nhanh như thổi kèm lấp lánh (grow_fast)
     grow_fast(a, states, t, p, u, amount, cat, active) {
       if (!active) return;
       const tgt = states[a.target || a.actor];
-      if (tgt) {
-        tgt.growth = Math.min(1.0, Math.max(0.1, p * 1.25));
-        tgt.growing_fast = true;
-      }
+      if (tgt) tgt.growing_fast = true;  // growth do kênh `growth` của catalog tua tới 1
     },
 
     // 2.5 Run rẩy vì lạnh (shiver)
     shiver(a, states, t, p, u, amount, cat, active) {
       if (!active) return;
       const s = states[a.actor];
-      if (s) {
-        s.x += Math.sin(t * 42) * 3.2;
-      }
+      if (s) s.shiver = Math.max(s.shiver || 0, 1);
     },
 
     // 2.6 Toát mồ hôi vì nóng hoặc hoảng sợ (sweat)
     sweat(a, states, t, p, u, amount, cat, active) {
       if (!active) return;
       const s = states[a.actor];
-      if (s) {
-        s.sweating = true;
-      }
+      if (s) s.sweat = Math.max(s.sweat || 0, 1);
     },
 
     // 2.7 Choáng váng sao xoay (dizzy)
@@ -548,6 +547,29 @@
           path(ctx, 'M 0 -9 C 5 -3 7 4 3 8 C -1 11 -8 8 -8 3 C -8 -2 0 -9 0 -9 Z', '#4ac4ec', INK, 1.4);
           ellipse(ctx, -3, 3, 2, 3, '#ffffff', null, -0.3);
           ctx.restore();
+        }
+        ctx.restore();
+      }
+
+      // (A2) Mồ hôi (sweat: nắng nóng / hoảng) và run cầm cập (shiver: tuyết) quanh mặt
+      if ((s.sweat || 0) > .05 || (s.shiver || 0) > .05) {
+        const faceName = cat.assets[s.asset].anchors.face ? 'face' : 'top';
+        const f = RemakeVector.worldAnchor(cat, s, faceName), r = s.height * .16;
+        ctx.save();
+        if ((s.sweat || 0) > .05) {
+          ctx.globalAlpha = clamp(s.sweat);
+          for (let i = 0; i < 2; i++) {
+            const k = ((snapshot.t * .9 + i * .5) % 1), dx = (i ? 1 : -1) * r * .9, dy = -r * .4 + k * r * .9;
+            path(ctx, `M ${f.x + dx} ${f.y + dy - 7} C ${f.x + dx + 5} ${f.y + dy - 1} ${f.x + dx + 4} ${f.y + dy + 5} ${f.x + dx} ${f.y + dy + 5} C ${f.x + dx - 4} ${f.y + dy + 5} ${f.x + dx - 5} ${f.y + dy - 1} ${f.x + dx} ${f.y + dy - 7} Z`, '#8fdcf6', INK, 1.1);
+          }
+        }
+        if ((s.shiver || 0) > .05) {
+          ctx.globalAlpha = clamp(s.shiver);
+          const j = Math.sin(snapshot.t * 42) * 2;
+          for (const side of [-1, 1]) for (let i = 0; i < 3; i++) {
+            const x = f.x + side * (r * 1.15 + i * 5) + j, y = f.y - 8 + i * 8;
+            line(ctx, [[x, y - 5], [x + side * 3, y], [x, y + 5]], '#7aaee0', 1.6);
+          }
         }
         ctx.restore();
       }

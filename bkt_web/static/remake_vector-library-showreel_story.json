@@ -2,7 +2,7 @@
   "id": "vector-library-showreel",
   "renderer": "native-vector-v1",
   "fidelity": "technical-demo",
-  "duration": 118.0,
+  "duration": 138.0,
   "characters": [
     {
       "id": "watermelon-left",
@@ -654,6 +654,18 @@
       "name": "Mặt nạ phòng độc",
       "asset": "ppe_mask",
       "face": false,
+      "layer": "over_face",
+      "attach_to": {
+        "id": "safe_spraying-farmer",
+        "anchor": "mouth"
+      }
+    },
+    {
+      "id": "safe_spraying-goggles",
+      "name": "Kính bảo hộ",
+      "asset": "ppe_goggles",
+      "face": false,
+      "layer": "over_face",
       "attach_to": {
         "id": "safe_spraying-farmer",
         "anchor": "face"
@@ -663,7 +675,11 @@
       "id": "safe_spraying-sprayer",
       "name": "Bình phun thuốc đeo lưng",
       "asset": "backpack_sprayer",
-      "face": false
+      "face": false,
+      "attach_to": {
+        "id": "safe_spraying-farmer",
+        "anchor": "back"
+      }
     },
     {
       "id": "safe_spraying-cabinet",
@@ -711,14 +727,19 @@
       "asset": "giant_radish"
     },
     {
-      "id": "giant_radish-farmer",
+      "id": "giant_radish-grandpa",
       "name": "Nông dân",
       "asset": "farmer"
     },
     {
-      "id": "giant_radish-woman",
+      "id": "giant_radish-grandma",
       "name": "Nông dân nữ",
       "asset": "farmer_woman"
+    },
+    {
+      "id": "giant_radish-kid",
+      "name": "Bé mầm non",
+      "asset": "chibi_kid"
     },
     {
       "id": "giant_radish-dog",
@@ -734,6 +755,117 @@
       "id": "giant_radish-mouse",
       "name": "Chuột đồng",
       "asset": "mouse"
+    },
+    {
+      "id": "handwashing-kid",
+      "name": "Bé mầm non",
+      "asset": "chibi_kid"
+    },
+    {
+      "id": "handwashing-soap",
+      "name": "Bánh xà phòng",
+      "asset": "soap",
+      "face": false
+    },
+    {
+      "id": "handwashing-towel",
+      "name": "Khăn lau mềm",
+      "asset": "towel",
+      "face": false
+    },
+    {
+      "id": "handwashing-bac1",
+      "name": "Trực khuẩn que",
+      "asset": "bacteria_rod",
+      "face": false
+    },
+    {
+      "id": "handwashing-bac2",
+      "name": "Virus gai núm",
+      "asset": "virus_spike",
+      "face": false
+    },
+    {
+      "id": "doctor_visit-doctor",
+      "name": "Bác sĩ",
+      "asset": "chibi_doctor"
+    },
+    {
+      "id": "doctor_visit-patient",
+      "name": "Bệnh nhân",
+      "asset": "chibi_patient"
+    },
+    {
+      "id": "doctor_visit-thermo",
+      "name": "Nhiệt kế điện tử",
+      "asset": "thermometer",
+      "face": false,
+      "attach_to": {
+        "id": "doctor_visit-doctor",
+        "anchor": "hand_r"
+      }
+    },
+    {
+      "id": "doctor_visit-stetho",
+      "name": "Ống nghe y tế",
+      "asset": "stethoscope",
+      "face": false,
+      "attach_to": {
+        "id": "doctor_visit-doctor",
+        "anchor": "hand_r"
+      }
+    },
+    {
+      "id": "doctor_visit-syringe",
+      "name": "Ống tiêm cho trẻ",
+      "asset": "syringe",
+      "face": false,
+      "attach_to": {
+        "id": "doctor_visit-doctor",
+        "anchor": "hand_r"
+      }
+    },
+    {
+      "id": "doctor_visit-bandaid",
+      "name": "Băng cá nhân",
+      "asset": "band_aid",
+      "face": false,
+      "layer": "over_face",
+      "attach_to": {
+        "id": "doctor_visit-patient",
+        "anchor": "arm_l"
+      }
+    },
+    {
+      "id": "tooth_care-dentist",
+      "name": "Nha sĩ",
+      "asset": "chibi_dentist"
+    },
+    {
+      "id": "tooth_care-tooth",
+      "name": "Răng Chibi",
+      "asset": "tooth_chibi"
+    },
+    {
+      "id": "tooth_care-brush",
+      "name": "Bàn chải đánh răng",
+      "asset": "toothbrush",
+      "face": false,
+      "attach_to": {
+        "id": "tooth_care-dentist",
+        "anchor": "hand_r"
+      }
+    },
+    {
+      "id": "nutrition_fitness-kid",
+      "name": "Bé gái học sinh",
+      "asset": "chibi_girl"
+    },
+    {
+      "id": "nutrition_fitness-tray",
+      "name": "Khay ăn dinh dưỡng",
+      "asset": "lunch_tray",
+      "face": false
     }
   ],
   "scenes": [
@@ -4892,6 +5024,7 @@
       "characters_present": [
         "safe_spraying-farmer",
         "safe_spraying-mask",
+        "safe_spraying-goggles",
         "safe_spraying-sprayer",
         "safe_spraying-cabinet",
         "safe_spraying-bottle",
@@ -4918,14 +5051,28 @@
           {
             "time": 106.5,
             "x": 0,
+            "y": 2,
+            "height": 105
+          },
+          {
+            "time": 108.16666666666667,
+            "x": 0,
+            "y": 2,
+            "height": 105
+          }
+        ],
+        "safe_spraying-goggles": [
+          {
+            "time": 106.5,
+            "x": 0,
             "y": 0,
-            "height": 80
+            "height": 92
           },
           {
             "time": 108.16666666666667,
             "x": 0,
             "y": 0,
-            "height": 80
+            "height": 92
           }
         ],
         "safe_spraying-sprayer": [
@@ -5009,6 +5156,7 @@
       "characters_present": [
         "safe_spraying-farmer",
         "safe_spraying-mask",
+        "safe_spraying-goggles",
         "safe_spraying-sprayer",
         "safe_spraying-cabbage",
         "safe_spraying-bystander"
@@ -5041,30 +5189,46 @@
           {
             "time": 108.16666666666667,
             "x": 0,
+            "y": 2,
+            "height": 105
+          },
+          {
+            "time": 109.83333333333333,
+            "x": 0,
+            "y": 2,
+            "height": 105
+          }
+        ],
+        "safe_spraying-goggles": [
+          {
+            "time": 108.16666666666667,
+            "x": 0,
             "y": 0,
-            "height": 80
+            "height": 92
           },
           {
             "time": 109.83333333333333,
             "x": 0,
             "y": 0,
-            "height": 80
+            "height": 92
           }
         ],
         "safe_spraying-sprayer": [
           {
             "time": 108.16666666666667,
-            "x": 180,
-            "y": 810,
             "height": 220,
-            "z": 1
+            "z": -1,
+            "x": -0.0,
+            "y": 88.0,
+            "rotation": 0
           },
           {
             "time": 109.83333333333333,
-            "x": 180,
-            "y": 810,
             "height": 220,
-            "z": 1
+            "z": -1,
+            "x": -0.0,
+            "y": 88.0,
+            "rotation": 0
           }
         ],
         "safe_spraying-cabbage": [
@@ -5090,16 +5254,6 @@
             "y": 810,
             "height": 350,
             "expression": "happy",
-            "toxic": 0.0,
-            "z": 2
-          },
-          {
-            "time": 108.9,
-            "x": 470,
-            "y": 810,
-            "height": 350,
-            "expression": "worried",
-            "toxic": 0.7,
             "z": 2
           },
           {
@@ -5107,8 +5261,7 @@
             "x": 470,
             "y": 810,
             "height": 350,
-            "expression": "worried",
-            "toxic": 0.7,
+            "expression": "happy",
             "z": 2
           }
         ]
@@ -5246,45 +5399,38 @@
       "end_time": 113.0625,
       "characters_present": [
         "giant_radish-radish",
-        "giant_radish-farmer"
+        "giant_radish-grandpa"
       ],
       "poses": {
         "giant_radish-radish": [
           {
             "time": 111.5,
-            "x": 140,
+            "x": 90,
             "y": 810,
-            "height": 440,
+            "height": 340,
             "growth": 1.0
           },
           {
             "time": 113.0625,
-            "x": 140,
+            "x": 90,
             "y": 810,
-            "height": 440,
+            "height": 340,
             "growth": 1.0
           }
         ],
-        "giant_radish-farmer": [
+        "giant_radish-grandpa": [
           {
             "time": 111.5,
-            "x": 245,
+            "x": 200,
             "y": 810,
-            "height": 360,
+            "height": 340,
             "expression": "happy"
           },
           {
-            "time": 112.6875,
-            "x": 245,
-            "y": 810,
-            "height": 360,
-            "expression": "worried"
-          },
-          {
             "time": 113.0625,
-            "x": 245,
+            "x": 200,
             "y": 810,
-            "height": 360,
+            "height": 340,
             "expression": "worried"
           }
         ]
@@ -5295,13 +5441,14 @@
           "start": 111.8125,
           "end": 112.75,
           "target": "giant_radish-radish",
-          "actor": "giant_radish-farmer"
+          "actor": "giant_radish-grandpa",
+          "pop_at": 112.75
         },
         {
           "type": "emote",
           "start": 112.78125,
           "end": 113.0625,
-          "actor": "giant_radish-farmer",
+          "actor": "giant_radish-grandpa",
           "emote": "!"
         }
       ],
@@ -5317,8 +5464,9 @@
       "end_time": 114.9375,
       "characters_present": [
         "giant_radish-radish",
-        "giant_radish-farmer",
-        "giant_radish-woman",
+        "giant_radish-grandpa",
+        "giant_radish-grandma",
+        "giant_radish-kid",
         "giant_radish-dog",
         "giant_radish-cat",
         "giant_radish-mouse"
@@ -5327,87 +5475,119 @@
         "giant_radish-radish": [
           {
             "time": 113.0625,
-            "x": 100,
+            "x": 40,
             "y": 810,
-            "height": 440,
+            "height": 340,
             "growth": 1.0
           },
           {
             "time": 114.9375,
-            "x": 100,
+            "x": 40,
             "y": 810,
-            "height": 440,
+            "height": 340,
             "growth": 1.0
           }
         ],
-        "giant_radish-farmer": [
+        "giant_radish-grandpa": [
           {
             "time": 113.0625,
-            "x": 190,
+            "x": 160,
             "y": 810,
-            "height": 360
+            "height": 330,
+            "z": 1
           },
           {
             "time": 114.9375,
-            "x": 190,
+            "x": 160,
             "y": 810,
-            "height": 360
+            "height": 330,
+            "z": 1
           }
         ],
-        "giant_radish-woman": [
+        "giant_radish-grandma": [
           {
             "time": 113.0625,
-            "x": 275,
+            "x": 240,
             "y": 810,
-            "height": 350
+            "height": 320,
+            "z": 2
           },
           {
             "time": 114.9375,
-            "x": 275,
+            "x": 240,
             "y": 810,
-            "height": 350
+            "height": 320,
+            "z": 2
+          }
+        ],
+        "giant_radish-kid": [
+          {
+            "time": 113.0625,
+            "x": 290,
+            "y": 810,
+            "height": 210,
+            "z": 3
+          },
+          {
+            "time": 114.9375,
+            "x": 290,
+            "y": 810,
+            "height": 210,
+            "z": 3
           }
         ],
         "giant_radish-dog": [
           {
             "time": 113.0625,
-            "x": 355,
+            "x": 350,
             "y": 810,
-            "height": 170
+            "height": 130,
+            "flip": true,
+            "z": 4
           },
           {
             "time": 114.9375,
-            "x": 355,
+            "x": 350,
             "y": 810,
-            "height": 170
+            "height": 130,
+            "flip": true,
+            "z": 4
           }
         ],
         "giant_radish-cat": [
           {
             "time": 113.0625,
-            "x": 430,
+            "x": 450,
             "y": 810,
-            "height": 140
+            "height": 110,
+            "flip": true,
+            "z": 5
           },
           {
             "time": 114.9375,
-            "x": 430,
+            "x": 450,
             "y": 810,
-            "height": 140
+            "height": 110,
+            "flip": true,
+            "z": 5
           }
         ],
         "giant_radish-mouse": [
           {
             "time": 113.0625,
-            "x": 500,
+            "x": 525,
             "y": 810,
-            "height": 90
+            "height": 70,
+            "flip": true,
+            "z": 6
           },
           {
             "time": 114.9375,
-            "x": 500,
+            "x": 525,
             "y": 810,
-            "height": 90
+            "height": 70,
+            "flip": true,
+            "z": 6
           }
         ]
       },
@@ -5417,14 +5597,22 @@
           "start": 113.21875,
           "end": 114.9375,
           "target": "giant_radish-radish",
-          "actor": "giant_radish-farmer",
+          "actor": "giant_radish-grandpa",
           "helpers": [
-            "giant_radish-woman",
+            "giant_radish-grandma",
+            "giant_radish-kid",
             "giant_radish-dog",
             "giant_radish-cat",
             "giant_radish-mouse"
           ],
-          "pop_at": 114.5
+          "pop_at": 114.5,
+          "lift_amount": 120
+        },
+        {
+          "type": "dizzy",
+          "start": 114.71875,
+          "end": 114.9375,
+          "actor": "giant_radish-grandpa"
         }
       ],
       "background": {
@@ -5439,8 +5627,9 @@
       "end_time": 116.5,
       "characters_present": [
         "giant_radish-radish",
-        "giant_radish-farmer",
-        "giant_radish-woman",
+        "giant_radish-grandpa",
+        "giant_radish-grandma",
+        "giant_radish-kid",
         "giant_radish-dog",
         "giant_radish-cat",
         "giant_radish-mouse"
@@ -5449,99 +5638,123 @@
         "giant_radish-radish": [
           {
             "time": 114.9375,
-            "x": 140,
-            "y": 810,
-            "height": 440,
+            "x": 120,
+            "y": 700,
+            "height": 240,
             "expression": "happy",
-            "growth": 1.0
+            "growth": 1.0,
+            "roots": 1.0,
+            "rotation": -8
           },
           {
             "time": 116.5,
-            "x": 140,
-            "y": 810,
-            "height": 440,
+            "x": 120,
+            "y": 700,
+            "height": 240,
             "expression": "happy",
-            "growth": 1.0
+            "growth": 1.0,
+            "roots": 1.0,
+            "rotation": -8
           }
         ],
-        "giant_radish-farmer": [
+        "giant_radish-grandpa": [
           {
             "time": 114.9375,
-            "x": 280,
+            "x": 250,
             "y": 810,
-            "height": 360,
+            "height": 330,
             "expression": "happy"
           },
           {
             "time": 116.5,
-            "x": 280,
+            "x": 250,
             "y": 810,
-            "height": 360,
+            "height": 330,
             "expression": "happy"
           }
         ],
-        "giant_radish-woman": [
+        "giant_radish-grandma": [
           {
             "time": 114.9375,
-            "x": 360,
+            "x": 340,
             "y": 810,
-            "height": 350,
+            "height": 320,
             "expression": "happy"
           },
           {
             "time": 116.5,
-            "x": 360,
+            "x": 340,
             "y": 810,
-            "height": 350,
+            "height": 320,
+            "expression": "happy"
+          }
+        ],
+        "giant_radish-kid": [
+          {
+            "time": 114.9375,
+            "x": 420,
+            "y": 810,
+            "height": 210,
+            "expression": "happy"
+          },
+          {
+            "time": 116.5,
+            "x": 420,
+            "y": 810,
+            "height": 210,
             "expression": "happy"
           }
         ],
         "giant_radish-dog": [
           {
             "time": 114.9375,
-            "x": 435,
+            "x": 480,
             "y": 810,
-            "height": 170,
-            "expression": "happy"
+            "height": 130,
+            "expression": "happy",
+            "flip": true
           },
           {
             "time": 116.5,
-            "x": 435,
+            "x": 480,
             "y": 810,
-            "height": 170,
-            "expression": "happy"
+            "height": 130,
+            "expression": "happy",
+            "flip": true
           }
         ],
         "giant_radish-cat": [
           {
             "time": 114.9375,
-            "x": 495,
+            "x": 190,
             "y": 810,
-            "height": 140,
+            "height": 110,
             "expression": "happy"
           },
           {
             "time": 116.5,
-            "x": 495,
+            "x": 190,
             "y": 810,
-            "height": 140,
+            "height": 110,
             "expression": "happy"
           }
         ],
         "giant_radish-mouse": [
           {
             "time": 114.9375,
-            "x": 545,
+            "x": 540,
             "y": 810,
-            "height": 90,
-            "expression": "happy"
+            "height": 70,
+            "expression": "happy",
+            "flip": true
           },
           {
             "time": 116.5,
-            "x": 545,
+            "x": 540,
             "y": 810,
-            "height": 90,
-            "expression": "happy"
+            "height": 70,
+            "expression": "happy",
+            "flip": true
           }
         ]
       },
@@ -5550,13 +5763,19 @@
           "type": "celebrate",
           "start": 115.0,
           "end": 116.4375,
-          "actor": "giant_radish-farmer"
+          "actor": "giant_radish-grandpa"
         },
         {
           "type": "bounce",
           "start": 115.09375,
           "end": 116.34375,
           "actor": "giant_radish-dog"
+        },
+        {
+          "type": "bounce",
+          "start": 115.1875,
+          "end": 116.34375,
+          "actor": "giant_radish-kid"
         },
         {
           "type": "emote",
@@ -5573,13 +5792,938 @@
     },
     {
       "renderer": "native-vector-v1",
-      "kind": "title",
+      "kind": "scene",
       "start_time": 116.5,
-      "end_time": 118.0,
+      "end_time": 118.0625,
+      "characters_present": [
+        "handwashing-kid",
+        "handwashing-soap",
+        "handwashing-bac1",
+        "handwashing-bac2"
+      ],
+      "poses": {
+        "handwashing-kid": [
+          {
+            "time": 116.5,
+            "x": 180,
+            "y": 810,
+            "height": 320,
+            "expression": "worried"
+          },
+          {
+            "time": 118.0625,
+            "x": 180,
+            "y": 810,
+            "height": 320,
+            "expression": "worried"
+          }
+        ],
+        "handwashing-soap": [
+          {
+            "time": 116.5,
+            "x": 372,
+            "y": 652,
+            "height": 34
+          },
+          {
+            "time": 118.0625,
+            "x": 372,
+            "y": 652,
+            "height": 34
+          }
+        ],
+        "handwashing-bac1": [
+          {
+            "time": 116.5,
+            "x": 210,
+            "y": 680,
+            "height": 60
+          },
+          {
+            "time": 118.0625,
+            "x": 215,
+            "y": 675,
+            "height": 60
+          }
+        ],
+        "handwashing-bac2": [
+          {
+            "time": 116.5,
+            "x": 230,
+            "y": 710,
+            "height": 50
+          },
+          {
+            "time": 118.0625,
+            "x": 225,
+            "y": 715,
+            "height": 50
+          }
+        ]
+      },
+      "actions": [
+        {
+          "type": "germ_attack",
+          "start": 116.65625,
+          "end": 118.0,
+          "target": "handwashing-kid",
+          "actor": "handwashing-bac1"
+        },
+        {
+          "type": "emote",
+          "start": 117.125,
+          "end": 117.75,
+          "actor": "handwashing-kid",
+          "emote": "!"
+        }
+      ],
+      "background": {
+        "preset": "bathroom_sink"
+      },
+      "index": 53
+    },
+    {
+      "renderer": "native-vector-v1",
+      "kind": "scene",
+      "start_time": 118.0625,
+      "end_time": 119.9375,
+      "characters_present": [
+        "handwashing-kid",
+        "handwashing-soap",
+        "handwashing-bac1",
+        "handwashing-bac2"
+      ],
+      "poses": {
+        "handwashing-kid": [
+          {
+            "time": 118.0625,
+            "x": 250,
+            "y": 810,
+            "height": 320,
+            "expression": "neutral"
+          },
+          {
+            "time": 119.9375,
+            "x": 250,
+            "y": 810,
+            "height": 320,
+            "expression": "happy"
+          }
+        ],
+        "handwashing-soap": [
+          {
+            "time": 118.0625,
+            "x": 372,
+            "y": 652,
+            "height": 34
+          },
+          {
+            "time": 119.9375,
+            "x": 372,
+            "y": 652,
+            "height": 34
+          }
+        ],
+        "handwashing-bac1": [
+          {
+            "time": 118.0625,
+            "x": 215,
+            "y": 675,
+            "height": 60
+          },
+          {
+            "time": 119.0,
+            "x": 310,
+            "y": 500,
+            "height": 30
+          },
+          {
+            "time": 119.9375,
+            "x": 420,
+            "y": 350,
+            "height": 10
+          }
+        ],
+        "handwashing-bac2": [
+          {
+            "time": 118.0625,
+            "x": 225,
+            "y": 715,
+            "height": 50
+          },
+          {
+            "time": 119.0,
+            "x": 330,
+            "y": 520,
+            "height": 25
+          },
+          {
+            "time": 119.9375,
+            "x": 450,
+            "y": 380,
+            "height": 10
+          }
+        ]
+      },
+      "actions": [
+        {
+          "type": "wash_hands",
+          "start": 118.125,
+          "end": 119.875,
+          "target": "handwashing-soap",
+          "actor": "handwashing-kid"
+        }
+      ],
+      "background": {
+        "preset": "bathroom_sink"
+      },
+      "index": 54
+    },
+    {
+      "renderer": "native-vector-v1",
+      "kind": "scene",
+      "start_time": 119.9375,
+      "end_time": 121.5,
+      "characters_present": [
+        "handwashing-kid",
+        "handwashing-towel"
+      ],
+      "poses": {
+        "handwashing-kid": [
+          {
+            "time": 119.9375,
+            "x": 270,
+            "y": 810,
+            "height": 320,
+            "expression": "happy",
+            "sparkle": 1.0,
+            "blush": 0.5
+          },
+          {
+            "time": 121.5,
+            "x": 270,
+            "y": 810,
+            "height": 320,
+            "expression": "happy",
+            "sparkle": 1.0,
+            "blush": 0.5
+          }
+        ],
+        "handwashing-towel": [
+          {
+            "time": 119.9375,
+            "x": 450,
+            "y": 810,
+            "height": 90
+          },
+          {
+            "time": 121.5,
+            "x": 450,
+            "y": 810,
+            "height": 90
+          }
+        ]
+      },
+      "actions": [
+        {
+          "type": "emote",
+          "start": 120.25,
+          "end": 121.34375,
+          "actor": "handwashing-kid",
+          "emote": "heart"
+        }
+      ],
+      "background": {
+        "preset": "bathroom_sink"
+      },
+      "index": 55
+    },
+    {
+      "renderer": "native-vector-v1",
+      "kind": "scene",
+      "start_time": 121.5,
+      "end_time": 123.16666666666667,
+      "characters_present": [
+        "doctor_visit-doctor",
+        "doctor_visit-patient",
+        "doctor_visit-thermo"
+      ],
+      "poses": {
+        "doctor_visit-doctor": [
+          {
+            "time": 121.5,
+            "x": 190,
+            "y": 810,
+            "height": 360,
+            "expression": "neutral"
+          },
+          {
+            "time": 123.16666666666667,
+            "x": 190,
+            "y": 810,
+            "height": 360,
+            "expression": "neutral"
+          }
+        ],
+        "doctor_visit-patient": [
+          {
+            "time": 121.5,
+            "x": 360,
+            "y": 810,
+            "height": 310,
+            "expression": "sick",
+            "fever": 0.8,
+            "tears": 0.3
+          },
+          {
+            "time": 123.16666666666667,
+            "x": 360,
+            "y": 810,
+            "height": 310,
+            "expression": "sick",
+            "fever": 0.8,
+            "tears": 0.3
+          }
+        ],
+        "doctor_visit-thermo": [
+          {
+            "time": 121.5,
+            "height": 70,
+            "opacity": 1.0,
+            "x": 42.59156803712129,
+            "y": 15.502062996235939,
+            "rotation": -70
+          },
+          {
+            "time": 123.16666666666667,
+            "height": 70,
+            "opacity": 1.0,
+            "x": 42.59156803712129,
+            "y": 15.502062996235939,
+            "rotation": -70
+          }
+        ]
+      },
+      "actions": [
+        {
+          "type": "take_temperature",
+          "start": 121.76666666666667,
+          "end": 123.0,
+          "target": "doctor_visit-patient",
+          "actor": "doctor_visit-doctor",
+          "tool": "doctor_visit-thermo"
+        }
+      ],
+      "background": {
+        "preset": "clinic_room"
+      },
+      "index": 56
+    },
+    {
+      "renderer": "native-vector-v1",
+      "kind": "scene",
+      "start_time": 123.16666666666667,
+      "end_time": 124.83333333333333,
+      "characters_present": [
+        "doctor_visit-doctor",
+        "doctor_visit-patient",
+        "doctor_visit-stetho"
+      ],
+      "poses": {
+        "doctor_visit-doctor": [
+          {
+            "time": 123.16666666666667,
+            "x": 210,
+            "y": 810,
+            "height": 360,
+            "expression": "neutral"
+          },
+          {
+            "time": 124.83333333333333,
+            "x": 210,
+            "y": 810,
+            "height": 360,
+            "expression": "happy"
+          }
+        ],
+        "doctor_visit-patient": [
+          {
+            "time": 123.16666666666667,
+            "x": 350,
+            "y": 810,
+            "height": 310,
+            "expression": "surprised",
+            "fever": 0.3
+          },
+          {
+            "time": 124.83333333333333,
+            "x": 350,
+            "y": 810,
+            "height": 310,
+            "expression": "happy",
+            "fever": 0.1
+          }
+        ],
+        "doctor_visit-stetho": [
+          {
+            "time": 123.16666666666667,
+            "height": 80,
+            "opacity": 1.0,
+            "x": 6.01955452253177,
+            "y": 16.53859012583199,
+            "rotation": -20
+          },
+          {
+            "time": 124.83333333333333,
+            "height": 80,
+            "opacity": 1.0,
+            "x": 6.01955452253177,
+            "y": 16.53859012583199,
+            "rotation": -20
+          }
+        ]
+      },
+      "actions": [
+        {
+          "type": "listen",
+          "start": 123.33333333333333,
+          "end": 124.66666666666667,
+          "target": "doctor_visit-patient",
+          "actor": "doctor_visit-doctor",
+          "tool": "doctor_visit-stetho"
+        }
+      ],
+      "background": {
+        "preset": "clinic_room"
+      },
+      "index": 57
+    },
+    {
+      "renderer": "native-vector-v1",
+      "kind": "scene",
+      "start_time": 124.83333333333333,
+      "end_time": 126.5,
+      "characters_present": [
+        "doctor_visit-doctor",
+        "doctor_visit-patient",
+        "doctor_visit-syringe",
+        "doctor_visit-bandaid"
+      ],
+      "poses": {
+        "doctor_visit-doctor": [
+          {
+            "time": 124.83333333333333,
+            "x": 170,
+            "y": 810,
+            "height": 360,
+            "expression": "happy"
+          },
+          {
+            "time": 125.76666666666667,
+            "x": 170,
+            "y": 810,
+            "height": 360,
+            "expression": "happy"
+          },
+          {
+            "time": 125.9,
+            "x": 280,
+            "y": 810,
+            "height": 360,
+            "expression": "happy"
+          },
+          {
+            "time": 126.5,
+            "x": 280,
+            "y": 810,
+            "height": 360,
+            "expression": "happy"
+          }
+        ],
+        "doctor_visit-patient": [
+          {
+            "time": 124.83333333333333,
+            "x": 400,
+            "y": 810,
+            "height": 310,
+            "expression": "neutral",
+            "blush": 0.4
+          },
+          {
+            "time": 126.5,
+            "x": 400,
+            "y": 810,
+            "height": 310,
+            "expression": "happy",
+            "blush": 0.6,
+            "sparkle": 1.0
+          }
+        ],
+        "doctor_visit-syringe": [
+          {
+            "time": 124.83333333333333,
+            "height": 62,
+            "opacity": 1.0,
+            "x": 26.846787517317598,
+            "y": 15.500000000000004,
+            "rotation": -60
+          },
+          {
+            "time": 125.76666666666667,
+            "height": 62,
+            "opacity": 1.0,
+            "x": 26.846787517317598,
+            "y": 15.500000000000004,
+            "rotation": -60
+          },
+          {
+            "time": 125.83333333333333,
+            "height": 62,
+            "opacity": 0.0,
+            "x": 26.846787517317598,
+            "y": 15.500000000000004,
+            "rotation": -60
+          },
+          {
+            "time": 126.5,
+            "height": 62,
+            "opacity": 0.0,
+            "x": 26.846787517317598,
+            "y": 15.500000000000004,
+            "rotation": -60
+          }
+        ],
+        "doctor_visit-bandaid": [
+          {
+            "time": 124.83333333333333,
+            "x": 0,
+            "y": 6,
+            "height": 22,
+            "rotation": 20,
+            "opacity": 0.0
+          },
+          {
+            "time": 126.16666666666667,
+            "x": 0,
+            "y": 6,
+            "height": 22,
+            "rotation": 20,
+            "opacity": 0.0
+          },
+          {
+            "time": 126.26666666666667,
+            "x": 0,
+            "y": 6,
+            "height": 22,
+            "rotation": 20
+          },
+          {
+            "time": 126.5,
+            "x": 0,
+            "y": 6,
+            "height": 22,
+            "rotation": 20
+          }
+        ]
+      },
+      "actions": [
+        {
+          "type": "vaccinate",
+          "start": 124.93333333333334,
+          "end": 125.76666666666667,
+          "target": "doctor_visit-patient",
+          "actor": "doctor_visit-doctor",
+          "tool": "doctor_visit-syringe"
+        },
+        {
+          "type": "apply_bandage",
+          "start": 125.83333333333333,
+          "end": 126.43333333333334,
+          "target": "doctor_visit-patient",
+          "actor": "doctor_visit-doctor"
+        },
+        {
+          "type": "emote",
+          "start": 126.0,
+          "end": 126.43333333333334,
+          "actor": "doctor_visit-patient",
+          "emote": "heart"
+        }
+      ],
+      "background": {
+        "preset": "clinic_room"
+      },
+      "index": 58
+    },
+    {
+      "renderer": "native-vector-v1",
+      "kind": "scene",
+      "start_time": 126.5,
+      "end_time": 128.0625,
+      "characters_present": [
+        "tooth_care-dentist",
+        "tooth_care-tooth"
+      ],
+      "poses": {
+        "tooth_care-dentist": [
+          {
+            "time": 126.5,
+            "x": 190,
+            "y": 810,
+            "height": 360,
+            "expression": "neutral"
+          },
+          {
+            "time": 128.0625,
+            "x": 190,
+            "y": 810,
+            "height": 360,
+            "expression": "neutral"
+          }
+        ],
+        "tooth_care-tooth": [
+          {
+            "time": 126.5,
+            "x": 360,
+            "y": 810,
+            "height": 180,
+            "cavity": 0.9,
+            "tears": 0.8,
+            "expression": "sad"
+          },
+          {
+            "time": 128.0625,
+            "x": 360,
+            "y": 810,
+            "height": 180,
+            "cavity": 0.9,
+            "tears": 0.8,
+            "expression": "sad"
+          }
+        ]
+      },
+      "actions": [
+        {
+          "type": "emote",
+          "start": 126.8125,
+          "end": 127.59375,
+          "actor": "tooth_care-tooth",
+          "emote": "!"
+        }
+      ],
+      "background": {
+        "preset": "dentist_room"
+      },
+      "index": 59
+    },
+    {
+      "renderer": "native-vector-v1",
+      "kind": "scene",
+      "start_time": 128.0625,
+      "end_time": 129.9375,
+      "characters_present": [
+        "tooth_care-dentist",
+        "tooth_care-tooth",
+        "tooth_care-brush"
+      ],
+      "poses": {
+        "tooth_care-dentist": [
+          {
+            "time": 128.0625,
+            "x": 210,
+            "y": 810,
+            "height": 360,
+            "expression": "neutral"
+          },
+          {
+            "time": 129.9375,
+            "x": 210,
+            "y": 810,
+            "height": 360,
+            "expression": "happy"
+          }
+        ],
+        "tooth_care-tooth": [
+          {
+            "time": 128.0625,
+            "x": 340,
+            "y": 810,
+            "height": 180,
+            "cavity": 0.8,
+            "tears": 0.2
+          },
+          {
+            "time": 129.0,
+            "x": 340,
+            "y": 810,
+            "height": 180,
+            "cavity": 0.3,
+            "tears": 0.0
+          },
+          {
+            "time": 129.9375,
+            "x": 340,
+            "y": 810,
+            "height": 180,
+            "cavity": 0.0,
+            "sparkle": 0.6,
+            "expression": "happy"
+          }
+        ],
+        "tooth_care-brush": [
+          {
+            "time": 128.0625,
+            "height": 80,
+            "x": 39.2,
+            "y": 2.4003077263288123e-15,
+            "rotation": -90
+          },
+          {
+            "time": 129.9375,
+            "height": 80,
+            "x": 39.2,
+            "y": 2.4003077263288123e-15,
+            "rotation": -90
+          }
+        ]
+      },
+      "actions": [
+        {
+          "type": "brush_teeth",
+          "start": 128.21875,
+          "end": 129.78125,
+          "target": "tooth_care-tooth",
+          "actor": "tooth_care-dentist",
+          "tool": "tooth_care-brush"
+        }
+      ],
+      "background": {
+        "preset": "dentist_room"
+      },
+      "index": 60
+    },
+    {
+      "renderer": "native-vector-v1",
+      "kind": "scene",
+      "start_time": 129.9375,
+      "end_time": 131.5,
+      "characters_present": [
+        "tooth_care-dentist",
+        "tooth_care-tooth"
+      ],
+      "poses": {
+        "tooth_care-dentist": [
+          {
+            "time": 129.9375,
+            "x": 210,
+            "y": 810,
+            "height": 360,
+            "expression": "happy"
+          },
+          {
+            "time": 131.5,
+            "x": 210,
+            "y": 810,
+            "height": 360,
+            "expression": "happy"
+          }
+        ],
+        "tooth_care-tooth": [
+          {
+            "time": 129.9375,
+            "x": 350,
+            "y": 810,
+            "height": 180,
+            "cavity": 0.0,
+            "sparkle": 1.0,
+            "blush": 0.5,
+            "expression": "happy"
+          },
+          {
+            "time": 131.5,
+            "x": 350,
+            "y": 810,
+            "height": 180,
+            "cavity": 0.0,
+            "sparkle": 1.0,
+            "blush": 0.5,
+            "expression": "happy"
+          }
+        ]
+      },
+      "actions": [
+        {
+          "type": "emote",
+          "start": 130.09375,
+          "end": 131.1875,
+          "actor": "tooth_care-tooth",
+          "emote": "star"
+        }
+      ],
+      "background": {
+        "preset": "dentist_room"
+      },
+      "index": 61
+    },
+    {
+      "renderer": "native-vector-v1",
+      "kind": "scene",
+      "start_time": 131.5,
+      "end_time": 133.16666666666666,
+      "characters_present": [
+        "nutrition_fitness-kid",
+        "nutrition_fitness-tray"
+      ],
+      "poses": {
+        "nutrition_fitness-kid": [
+          {
+            "time": 131.5,
+            "x": 200,
+            "y": 810,
+            "height": 320,
+            "expression": "happy",
+            "blush": 0.4
+          },
+          {
+            "time": 133.16666666666666,
+            "x": 200,
+            "y": 810,
+            "height": 320,
+            "expression": "happy",
+            "blush": 0.4
+          }
+        ],
+        "nutrition_fitness-tray": [
+          {
+            "time": 131.5,
+            "x": 340,
+            "y": 810,
+            "height": 60
+          },
+          {
+            "time": 133.16666666666666,
+            "x": 340,
+            "y": 810,
+            "height": 60
+          }
+        ]
+      },
+      "actions": [
+        {
+          "type": "eat",
+          "start": 131.76666666666668,
+          "end": 133.0,
+          "target": "nutrition_fitness-tray",
+          "actor": "nutrition_fitness-kid"
+        }
+      ],
+      "background": {
+        "preset": "classroom"
+      },
+      "index": 62
+    },
+    {
+      "renderer": "native-vector-v1",
+      "kind": "scene",
+      "start_time": 133.16666666666666,
+      "end_time": 134.83333333333334,
+      "characters_present": [
+        "nutrition_fitness-kid"
+      ],
+      "poses": {
+        "nutrition_fitness-kid": [
+          {
+            "time": 133.16666666666666,
+            "x": 270,
+            "y": 810,
+            "height": 320,
+            "expression": "happy"
+          },
+          {
+            "time": 134.83333333333334,
+            "x": 270,
+            "y": 810,
+            "height": 320,
+            "expression": "happy"
+          }
+        ]
+      },
+      "actions": [
+        {
+          "type": "exercise",
+          "start": 133.33333333333334,
+          "end": 134.66666666666666,
+          "actor": "nutrition_fitness-kid",
+          "exercise_type": "jumping_jacks"
+        }
+      ],
+      "background": {
+        "preset": "school_yard"
+      },
+      "index": 63
+    },
+    {
+      "renderer": "native-vector-v1",
+      "kind": "scene",
+      "start_time": 134.83333333333334,
+      "end_time": 136.5,
+      "characters_present": [
+        "nutrition_fitness-kid"
+      ],
+      "poses": {
+        "nutrition_fitness-kid": [
+          {
+            "time": 134.83333333333334,
+            "x": 270,
+            "y": 810,
+            "height": 320,
+            "expression": "happy",
+            "jump": 0.0,
+            "sparkle": 0.5
+          },
+          {
+            "time": 135.66666666666666,
+            "x": 270,
+            "y": 720,
+            "height": 320,
+            "expression": "happy",
+            "jump": 1.0,
+            "sparkle": 1.0
+          },
+          {
+            "time": 136.5,
+            "x": 270,
+            "y": 810,
+            "height": 320,
+            "expression": "happy",
+            "jump": 0.0,
+            "sparkle": 1.0
+          }
+        ]
+      },
+      "actions": [
+        {
+          "type": "emote",
+          "start": 135.16666666666666,
+          "end": 136.33333333333334,
+          "actor": "nutrition_fitness-kid",
+          "emote": "heart"
+        }
+      ],
+      "background": {
+        "preset": "playground"
+      },
+      "index": 64
+    },
+    {
+      "renderer": "native-vector-v1",
+      "kind": "title",
+      "start_time": 136.5,
+      "end_time": 138.0,
       "text": "Rig + hành động + timeline · Không phải bản remake đã duyệt",
       "characters_present": [],
       "poses": {},
-      "index": 53
+      "index": 65
     }
   ],
   "cues": [
@@ -5742,6 +6886,34 @@
       "end": 116.5,
       "character_id": "narrator",
       "text": "1 · Củ cải khổng lồ: kéo co tập thể, ngã lăn và pháo hoa ăn mừng",
+      "offscreen": true
+    },
+    {
+      "start": 116.5,
+      "end": 121.5,
+      "character_id": "narrator",
+      "text": "1 · Rửa tay 6 bước: xà phòng tạo bọt, đánh bay vi khuẩn và đôi tay sáng bóng",
+      "offscreen": true
+    },
+    {
+      "start": 121.5,
+      "end": 126.5,
+      "character_id": "narrator",
+      "text": "2 · Khám bác sĩ Chibi: đo nhiệt kế, nghe nhịp tim, tiêm phòng và dán băng",
+      "offscreen": true
+    },
+    {
+      "start": 126.5,
+      "end": 131.5,
+      "character_id": "narrator",
+      "text": "3 · Nha khoa Chibi: chữa sâu răng, chải răng sạch bọt và răng xinh toả sáng",
+      "offscreen": true
+    },
+    {
+      "start": 131.5,
+      "end": 136.5,
+      "character_id": "narrator",
+      "text": "4 · Dinh dưỡng và rèn luyện: khay cơm đủ chất, ăn rau củ và tập thể dục thể thao",
       "offscreen": true
     }
   ]

@@ -12,6 +12,12 @@ STATIC_DIR = Path(__file__).resolve().parent / "static"
 RENDERER = "native-vector-v1"
 # Rig dùng farmerSkeleton (hai tay IK) và rig bàn tay có khớp ngón.
 PEOPLE = ("farmer", "fisherman", "farmer_woman")
+CHIBI_PEOPLE = (
+    "chibi_boy", "chibi_girl", "chibi_kid", "chibi_teacher",
+    "chibi_doctor", "chibi_nurse", "chibi_dentist", "chibi_pharmacist",
+    "chibi_patient", "chibi_grandma", "chibi_grandpa", "chibi_farmer", "chibi_chef",
+)
+ALL_PEOPLE = PEOPLE + CHIBI_PEOPLE
 HANDS = ("hand", "hand_right")
 
 
@@ -25,6 +31,16 @@ def catalog():
 
 
 GROUND_WARN_GROUPS = {"human", "chibi", "animal"}
+# Hành động y tế nhắm đầu dụng cụ đang cầm (action.tool, attach_to vào tay actor) vào đích: anchor của dụng cụ.
+TOOL_ACTIONS = {"brush_teeth": "bristles", "take_temperature": "tip", "listen": "chest_piece", "vaccinate": "needle"}
+
+
+def held_pose(asset: str, height: float, rotation: float = 0.0, anchor: str = "grip") -> dict:
+    """Tư thế cục bộ (x, y, rotation) để anchor (mặc định grip) của vật nằm đúng ổ gắn khi attach_to."""
+    gx, gy = _catalog()["assets"][asset]["anchors"][anchor]
+    r = math.radians(rotation)
+    k = height / 100
+    return {"x": -(gx * k * math.cos(r) - gy * k * math.sin(r)), "y": -(gx * k * math.sin(r) + gy * k * math.cos(r)), "rotation": rotation}
 GROUND_WARN_PX = 40
 CLOSEUP_ASSETS = {"hand", "hand_right", "foot"}
 
@@ -85,7 +101,7 @@ def _validate_grips(cast, scene):
     owners, slots, available, detached = {}, {}, {}, set()
     def slot(action):
         anchor = action.get("actor_anchor", "grip")
-        return (action["actor"], "left" if cast[action["actor"]]["asset"] in PEOPLE and anchor in ("hand", "hand_l", "wrist_l") else "right")
+        return (action["actor"], "left" if cast[action["actor"]]["asset"] in ALL_PEOPLE and anchor in ("hand", "hand_l", "wrist_l") else "right")
     for action in events:
         actor, target = action["actor"], action["target"]
         key = slot(action)
@@ -226,6 +242,8 @@ def validate_vector_scenes(characters, scenes):
             raise ValueError(f"{cid}: asset không có trong thư viện")
         if "face" in c and not isinstance(c["face"], bool):
             raise ValueError(f"{cid}: face phải là boolean")
+        if "layer" in c and c["layer"] not in ("default", "over_face", "under"):
+            raise ValueError(f"{cid}: layer không hợp lệ")
         if c.get("material", "clean") not in cat["materials"]:
             raise ValueError(f"{cid}: material không có trong thư viện")
         if not isinstance(c.get("style", {}), dict):
@@ -246,6 +264,8 @@ def validate_vector_scenes(characters, scenes):
                 raise ValueError("attach_to tạo vòng lặp")
             if attachment.get("anchor") not in cat["assets"][parent["asset"]]["anchors"]:
                 raise ValueError("Điểm gắn attach_to không tồn tại trên rig")
+            if "layer" in attachment and attachment["layer"] not in ("default", "over_face", "under"):
+                raise ValueError("layer trong attach_to không hợp lệ")
             seen.add(parent["id"])
             current = parent
     if len(scenes) > 300:
@@ -353,6 +373,10 @@ def validate_vector_scenes(characters, scenes):
                 else {"contact"} if kind == "pick"
                 else {"emote", "symbol"} if kind == "emote"
                 else {"pop_at", "helpers", "lift_amount"} if kind == "tug"
+                else {"step"} if kind == "wash_hands"
+                else {"tool"} if kind in TOOL_ACTIONS
+                else {"exercise_type"} if kind == "exercise"
+                else {"food_id"} if kind == "eat"
                 else set()
             )
             if set(action) - ({"type", "actor", "target", "start", "end", "amount", "stroke", "actor_anchor", "target_anchor", "hold"} | extra_fields):
@@ -363,6 +387,17 @@ def validate_vector_scenes(characters, scenes):
                 if "helpers" in action:
                     if not isinstance(action["helpers"], list) or any(h not in cast for h in action["helpers"]):
                         raise ValueError("tug.helpers phải là danh sách nhân vật hợp lệ")
+            if "tool" in action:
+                tool = cast.get(action["tool"])
+                if not tool or tool.get("attach_to", {}).get("id") != action.get("actor"):
+                    raise ValueError(f"{kind}.tool phải là nhân vật gắn (attach_to) vào chính actor")
+                if TOOL_ACTIONS[kind] not in cat["assets"][tool["asset"]]["anchors"]:
+                    raise ValueError(f"{kind}.tool thiếu anchor {TOOL_ACTIONS[kind]}")
+            if kind == "wash_hands" and "step" in action:
+                _number(action["step"], 1, 6, "wash_hands.step")
+            if kind == "exercise" and "exercise_type" in action:
+                if action["exercise_type"] not in ("jumping_jacks", "stretch", "squat", "run"):
+                    raise ValueError("Loại bài tập exercise_type không hợp lệ")
             if kind in ("grip", "release"):
                 if "amount" in action or "stroke" in action or action.get("hold", spec["hold"]) != spec["hold"]:
                     raise ValueError("Cầm/thả sử dụng ownership, không dùng amount/stroke hoặc đổi hold")
@@ -413,7 +448,7 @@ def validate_vector_scenes(characters, scenes):
                 channels.extend(((action["actor"], "ik-left"), (action["actor"], "ik-right"), (action["target"], "motion")))
             if kind == "grip":
                 channels.append((action["target"], "motion"))
-                if cast[action["actor"]]["asset"] in PEOPLE:
+                if cast[action["actor"]]["asset"] in ALL_PEOPLE:
                     hand = action.get("actor_anchor", spec["actor_anchor"])
                     channels.append((action["actor"], "ik-left" if hand == "hand_l" else "ik-right"))
             for owner, channel in channels:
@@ -1646,8 +1681,12 @@ def safe_spraying_examples():
         pose(5.0, 240, 810, 360, expression="happy"),
     ]
     s1_mask = [
-        pose(0, 0, 0, 80),
-        pose(5.0, 0, 0, 80),
+        pose(0, 0, 2, 105),
+        pose(5.0, 0, 2, 105),
+    ]
+    s1_goggles = [
+        pose(0, 0, 0, 92),
+        pose(5.0, 0, 0, 92),
     ]
     s1_sprayer = [
         pose(0, 160, 810, 220),
@@ -1671,6 +1710,7 @@ def safe_spraying_examples():
     sc1 = scene(0, 5.0, {
         "farmer": s1_farmer,
         "mask": s1_mask,
+        "goggles": s1_goggles,
         "sprayer": s1_sprayer,
         "cabinet": s1_cabinet,
         "bottle": s1_bottle,
@@ -1684,21 +1724,26 @@ def safe_spraying_examples():
         pose(10.0, 180, 810, 360, expression="worried"),
     ]
     s2_mask = [
-        pose(5.0, 0, 0, 80),
-        pose(10.0, 0, 0, 80),
+        pose(5.0, 0, 2, 105),
+        pose(10.0, 0, 2, 105),
     ]
+    s2_goggles = [
+        pose(5.0, 0, 0, 92),
+        pose(10.0, 0, 0, 92),
+    ]
+    worn = held_pose("backpack_sprayer", 220, 0, anchor="back")
     s2_sprayer = [
-        pose(5.0, 180, 810, 220, z=1),
-        pose(10.0, 180, 810, 220, z=1),
+        {"time": 5.0, "height": 220, "z": -1, **worn},
+        {"time": 10.0, "height": 220, "z": -1, **worn},
     ]
     s2_cabbage = [
         pose(5.0, 300, 810, 180, growth=1.0),
         pose(10.0, 300, 810, 180, growth=1.0),
     ]
+    # Người đứng cuối gió: spray_drift tự bật toxic (và sắc mặt) khi luồng sương bị gió đẩy tới chạm người.
     s2_bystander = [
-        pose(5.0, 470, 810, 350, expression="happy", toxic=0.0, z=2),
-        pose(7.2, 470, 810, 350, expression="worried", toxic=0.7, z=2),
-        pose(10.0, 470, 810, 350, expression="worried", toxic=0.7, z=2),
+        pose(5.0, 470, 810, 350, expression="happy", z=2),
+        pose(10.0, 470, 810, 350, expression="happy", z=2),
     ]
     s2_actions = [
         action("spray_drift", 6.0, 9.2, target="bystander", actor_id="sprayer"),
@@ -1706,6 +1751,7 @@ def safe_spraying_examples():
     sc2 = scene(5.0, 10.0, {
         "farmer": s2_farmer,
         "mask": s2_mask,
+        "goggles": s2_goggles,
         "sprayer": s2_sprayer,
         "cabbage": s2_cabbage,
         "bystander": s2_bystander,
@@ -1749,8 +1795,9 @@ def safe_spraying_examples():
         "duration": 15.0,
         "characters": [
             actor("farmer", "farmer"),
-            actor("mask", "ppe_mask", face=False, attach_to={"id": "farmer", "anchor": "face"}),
-            actor("sprayer", "backpack_sprayer", face=False),
+            actor("mask", "ppe_mask", face=False, layer="over_face", attach_to={"id": "farmer", "anchor": "mouth"}),
+            actor("goggles", "ppe_goggles", face=False, layer="over_face", attach_to={"id": "farmer", "anchor": "face"}),
+            actor("sprayer", "backpack_sprayer", face=False, attach_to={"id": "farmer", "anchor": "back"}),
             actor("cabinet", "chem_cabinet", face=False),
             actor("bottle", "pesticide_bottle", face=False),
             actor("sign", "warning_sign", face=False),
@@ -1795,38 +1842,42 @@ def giant_radish_examples():
     def action(kind, start, end, target=None, actor_id=None, **extra):
         return {"type": kind, "start": start, "end": end, **({"target": target} if target else {}), **({"actor": actor_id} if actor_id else {}), **extra}
 
-    # Scene 1: Farmer discovers giant radish and tries pulling alone (0 -> 5s)
+    # Scene 1: Ông nhổ một mình không nổi (pop_at = end: củ không bật) (0 -> 5s)
     sc1 = scene(0, 5.0, {
-        "radish": [pose(0, 140, 810, 440, growth=1.0), pose(5.0, 140, 810, 440, growth=1.0)],
-        "farmer": [pose(0, 245, 810, 360, expression="happy"), pose(3.8, 245, 810, 360, expression="worried"), pose(5.0, 245, 810, 360, expression="worried")],
+        "radish": [pose(0, 90, 810, 340, growth=1.0), pose(5.0, 90, 810, 340, growth=1.0)],
+        "grandpa": [pose(0, 200, 810, 340, expression="happy"), pose(5.0, 200, 810, 340, expression="worried")],
     }, actions=[
-        action("tug", 1.0, 4.0, target="radish", actor_id="farmer"),
-        action("emote", 4.1, 5.0, actor_id="farmer", emote="!"),
+        action("tug", 1.0, 4.0, target="radish", actor_id="grandpa", pop_at=4.0),
+        action("emote", 4.1, 5.0, actor_id="grandpa", emote="!"),
     ], bg="farmyard_barn")
 
-    # Scene 2: All team tug together, pop_at 9.6s and fall (5 -> 11s)
+    # Scene 2: Ông – bà – cháu – chó – mèo – chuột nối nhau kéo; pop_at 9.6 củ bật, cả đoàn ngã (5 -> 11s)
     sc2 = scene(5.0, 11.0, {
-        "radish": [pose(5.0, 100, 810, 440, growth=1.0), pose(11.0, 100, 810, 440, growth=1.0)],
-        "farmer": [pose(5.0, 190, 810, 360), pose(11.0, 190, 810, 360)],
-        "woman": [pose(5.0, 275, 810, 350), pose(11.0, 275, 810, 350)],
-        "dog": [pose(5.0, 355, 810, 170), pose(11.0, 355, 810, 170)],
-        "cat": [pose(5.0, 430, 810, 140), pose(11.0, 430, 810, 140)],
-        "mouse": [pose(5.0, 500, 810, 90), pose(11.0, 500, 810, 90)],
+        "radish": [pose(5.0, 40, 810, 340, growth=1.0), pose(11.0, 40, 810, 340, growth=1.0)],
+        "grandpa": [pose(5.0, 160, 810, 330, z=1), pose(11.0, 160, 810, 330, z=1)],
+        "grandma": [pose(5.0, 240, 810, 320, z=2), pose(11.0, 240, 810, 320, z=2)],
+        "kid": [pose(5.0, 290, 810, 210, z=3), pose(11.0, 290, 810, 210, z=3)],
+        "dog": [pose(5.0, 350, 810, 130, flip=True, z=4), pose(11.0, 350, 810, 130, flip=True, z=4)],
+        "cat": [pose(5.0, 450, 810, 110, flip=True, z=5), pose(11.0, 450, 810, 110, flip=True, z=5)],
+        "mouse": [pose(5.0, 525, 810, 70, flip=True, z=6), pose(11.0, 525, 810, 70, flip=True, z=6)],
     }, actions=[
-        action("tug", 5.5, 11.0, target="radish", actor_id="farmer", helpers=["woman", "dog", "cat", "mouse"], pop_at=9.6),
+        action("tug", 5.5, 11.0, target="radish", actor_id="grandpa", helpers=["grandma", "kid", "dog", "cat", "mouse"], pop_at=9.6, lift_amount=120),
+        action("dizzy", 10.3, 11.0, actor_id="grandpa"),
     ], bg="farmyard_barn")
 
-    # Scene 3: Celebrate with confetti at village market (11 -> 16s)
+    # Scene 3: Củ cải đã lên khỏi đất, cả nhà ăn mừng ở chợ quê (11 -> 16s)
     sc3 = scene(11.0, 16.0, {
-        "radish": [pose(11.0, 140, 810, 440, expression="happy", growth=1.0), pose(16.0, 140, 810, 440, expression="happy", growth=1.0)],
-        "farmer": [pose(11.0, 280, 810, 360, expression="happy"), pose(16.0, 280, 810, 360, expression="happy")],
-        "woman": [pose(11.0, 360, 810, 350, expression="happy"), pose(16.0, 360, 810, 350, expression="happy")],
-        "dog": [pose(11.0, 435, 810, 170, expression="happy"), pose(16.0, 435, 810, 170, expression="happy")],
-        "cat": [pose(11.0, 495, 810, 140, expression="happy"), pose(16.0, 495, 810, 140, expression="happy")],
-        "mouse": [pose(11.0, 545, 810, 90, expression="happy"), pose(16.0, 545, 810, 90, expression="happy")],
+        "radish": [pose(11.0, 120, 700, 240, expression="happy", growth=1.0, roots=1.0, rotation=-8), pose(16.0, 120, 700, 240, expression="happy", growth=1.0, roots=1.0, rotation=-8)],
+        "grandpa": [pose(11.0, 250, 810, 330, expression="happy"), pose(16.0, 250, 810, 330, expression="happy")],
+        "grandma": [pose(11.0, 340, 810, 320, expression="happy"), pose(16.0, 340, 810, 320, expression="happy")],
+        "kid": [pose(11.0, 420, 810, 210, expression="happy"), pose(16.0, 420, 810, 210, expression="happy")],
+        "dog": [pose(11.0, 480, 810, 130, expression="happy", flip=True), pose(16.0, 480, 810, 130, expression="happy", flip=True)],
+        "cat": [pose(11.0, 190, 810, 110, expression="happy"), pose(16.0, 190, 810, 110, expression="happy")],
+        "mouse": [pose(11.0, 540, 810, 70, expression="happy", flip=True), pose(16.0, 540, 810, 70, expression="happy", flip=True)],
     }, actions=[
-        action("celebrate", 11.2, 15.8, actor_id="farmer"),
+        action("celebrate", 11.2, 15.8, actor_id="grandpa"),
         action("bounce", 11.5, 15.5, actor_id="dog"),
+        action("bounce", 11.8, 15.5, actor_id="kid"),
         action("emote", 12.0, 15.5, actor_id="radish", emote="heart"),
     ], bg="village_market")
 
@@ -1839,17 +1890,323 @@ def giant_radish_examples():
         "duration": 16.0,
         "characters": [
             actor("radish", "giant_radish"),
-            actor("farmer", "farmer"),
-            actor("woman", "farmer_woman"),
+            actor("grandpa", "farmer"),
+            actor("grandma", "farmer_woman"),
+            actor("kid", "chibi_kid"),
             actor("dog", "dog"),
             actor("cat", "cat"),
             actor("mouse", "mouse"),
         ],
         "scenes": [sc1, sc2, sc3],
         "cues": [
-            {"start": 0.5, "end": 3.5, "character_id": "farmer", "text": "Củ cải to quá, một mình ta nhổ mãi không lay chuyển được!", "expression": "worried"},
-            {"start": 6.0, "end": 9.2, "character_id": "woman", "text": "Nào cả nhà cùng chung sức, một hai ba kéo lên nào!", "expression": "happy"},
-            {"start": 11.5, "end": 14.5, "character_id": "farmer", "text": "Hoan hô, củ cải lên rồi! Cả nhà cùng vui múa ăn mừng thôi!", "expression": "happy"},
+            {"start": 0.5, "end": 3.5, "character_id": "grandpa", "text": "Củ cải to quá, một mình ta nhổ mãi không lay chuyển được!", "expression": "worried"},
+            {"start": 6.0, "end": 9.2, "character_id": "grandma", "text": "Nào cả nhà cùng chung sức, một hai ba kéo lên nào!", "expression": "happy"},
+            {"start": 11.5, "end": 14.5, "character_id": "grandpa", "text": "Hoan hô, củ cải lên rồi! Cả nhà cùng vui múa ăn mừng thôi!", "expression": "happy"},
+        ],
+    }
+    for index, item in enumerate(story["scenes"]):
+        item["index"] = index
+    validate_story(story)
+    return [story]
+
+
+def handwashing_examples():
+    """Technical showcase for Phase H: 6-step hand hygiene, soap bubbles, germ detachment, and heart emote."""
+    def actor(cid, asset, **extra):
+        return {"id": cid, "name": _catalog()["assets"][asset]["label"], "asset": asset, **extra}
+
+    def pose(t, x, y, h, **extra):
+        return {"time": t, "x": x, "y": y, "height": h, **extra}
+
+    def scene(start, end, poses, actions=(), bg="bathroom_sink", **extra):
+        return {
+            "renderer": RENDERER,
+            "kind": "scene",
+            "start_time": start,
+            "end_time": end,
+            "characters_present": list(poses),
+            "poses": poses,
+            "actions": list(actions),
+            "background": {"preset": bg, **extra},
+        }
+
+    def action(kind, start, end, target=None, actor_id=None, **extra):
+        return {"type": kind, "start": start, "end": end, **({"target": target} if target else {}), **({"actor": actor_id} if actor_id else {}), **extra}
+
+    # Scene 1: Kid arrives with germs on hands (0 -> 5s)
+    sc1 = scene(0, 5.0, {
+        "kid": [pose(0, 180, 810, 320, expression="worried"), pose(5.0, 180, 810, 320, expression="worried")],
+        "soap": [pose(0, 372, 652, 34), pose(5.0, 372, 652, 34)],
+        "bac1": [pose(0, 210, 680, 60), pose(5.0, 215, 675, 60)],
+        "bac2": [pose(0, 230, 710, 50), pose(5.0, 225, 715, 50)],
+    }, actions=[
+        action("germ_attack", 0.5, 4.8, actor_id="bac1", target="kid"),
+        action("emote", 2.0, 4.0, actor_id="kid", emote="!"),
+    ], bg="bathroom_sink")
+
+    # Scene 2: 6-step handwashing with soap and lather bubbles (5 -> 11s)
+    sc2 = scene(5.0, 11.0, {
+        "kid": [pose(5.0, 250, 810, 320, expression="neutral"), pose(11.0, 250, 810, 320, expression="happy")],
+        "soap": [pose(5.0, 372, 652, 34), pose(11.0, 372, 652, 34)],
+        "bac1": [pose(5.0, 215, 675, 60), pose(8.0, 310, 500, 30), pose(11.0, 420, 350, 10)],
+        "bac2": [pose(5.0, 225, 715, 50), pose(8.0, 330, 520, 25), pose(11.0, 450, 380, 10)],
+    }, actions=[
+        action("wash_hands", 5.2, 10.8, actor_id="kid", target="soap"),
+    ], bg="bathroom_sink")
+
+    # Scene 3: Clean sparkly hands, healthy smile and heart emote (11 -> 16s)
+    sc3 = scene(11.0, 16.0, {
+        "kid": [pose(11.0, 270, 810, 320, expression="happy", sparkle=1.0, blush=0.5), pose(16.0, 270, 810, 320, expression="happy", sparkle=1.0, blush=0.5)],
+        "towel": [pose(11.0, 450, 810, 90), pose(16.0, 450, 810, 90)],
+    }, actions=[
+        action("emote", 12.0, 15.5, actor_id="kid", emote="heart"),
+    ], bg="bathroom_sink")
+
+    story = {
+        "id": "handwashing",
+        "name": "1 · Rửa tay 6 bước: xà phòng tạo bọt, đánh bay vi khuẩn và đôi tay sáng bóng",
+        "renderer": RENDERER,
+        "fidelity": "technical-demo",
+        "note": "Mẫu kỹ thuật Phase H: Chibi rửa tay 6 bước wash_hands, bọt tuyết xà phòng, vi khuẩn bacteria_rod / virus_spike vỡ bọt và hình nền bathroom_sink.",
+        "duration": 16.0,
+        "characters": [
+            actor("kid", "chibi_kid"),
+            actor("soap", "soap", face=False),
+            actor("towel", "towel", face=False),
+            actor("bac1", "bacteria_rod", face=False),
+            actor("bac2", "virus_spike", face=False),
+        ],
+        "scenes": [sc1, sc2, sc3],
+        "cues": [
+            {"start": 0.5, "end": 3.8, "character_id": "kid", "text": "Sau khi chơi đùa, vi khuẩn bám đầy trên tay phải rửa thật sạch ngay!", "expression": "worried"},
+            {"start": 5.5, "end": 9.5, "character_id": "kid", "text": "Lấy xà phòng, xoa đều mu bàn tay và từng kẽ ngón tay theo 6 bước chuẩn.", "expression": "neutral"},
+            {"start": 11.5, "end": 15.0, "character_id": "kid", "text": "Đôi tay đã sạch bong kin kít, thơm mát và an toàn cho sức khoẻ!", "expression": "happy"},
+        ],
+    }
+    for index, item in enumerate(story["scenes"]):
+        item["index"] = index
+    validate_story(story)
+    return [story]
+
+
+def doctor_visit_examples():
+    """Technical showcase for Phase H: clinic examination, thermometer fever check, stethoscope auscultation, vaccination, and bandage."""
+    def actor(cid, asset, **extra):
+        return {"id": cid, "name": _catalog()["assets"][asset]["label"], "asset": asset, **extra}
+
+    def pose(t, x, y, h, **extra):
+        return {"time": t, "x": x, "y": y, "height": h, **extra}
+
+    def scene(start, end, poses, actions=(), bg="clinic_room", **extra):
+        return {
+            "renderer": RENDERER,
+            "kind": "scene",
+            "start_time": start,
+            "end_time": end,
+            "characters_present": list(poses),
+            "poses": poses,
+            "actions": list(actions),
+            "background": {"preset": bg, **extra},
+        }
+
+    def action(kind, start, end, target=None, actor_id=None, **extra):
+        return {"type": kind, "start": start, "end": end, **({"target": target} if target else {}), **({"actor": actor_id} if actor_id else {}), **extra}
+
+    def tool(t, asset, h, rotation, opacity=1.0):
+        return {"time": t, "height": h, "opacity": opacity, **held_pose(asset, h, rotation)}
+
+    # Scene 1: Kid is sick with fever, doctor measures temperature (0 -> 5s)
+    sc1 = scene(0, 5.0, {
+        "doctor": [pose(0, 190, 810, 360, expression="neutral"), pose(5.0, 190, 810, 360, expression="neutral")],
+        "patient": [pose(0, 360, 810, 310, expression="sick", fever=0.8, tears=0.3), pose(5.0, 360, 810, 310, expression="sick", fever=0.8, tears=0.3)],
+        "thermo": [tool(0, "thermometer", 70, -70), tool(5.0, "thermometer", 70, -70)],
+    }, actions=[
+        action("take_temperature", 0.8, 4.5, actor_id="doctor", target="patient", tool="thermo"),
+    ], bg="clinic_room")
+
+    # Scene 2: Doctor listens to chest with stethoscope and checks heartbeat (5 -> 10s)
+    sc2 = scene(5.0, 10.0, {
+        "doctor": [pose(5.0, 210, 810, 360, expression="neutral"), pose(10.0, 210, 810, 360, expression="happy")],
+        "patient": [pose(5.0, 350, 810, 310, expression="surprised", fever=0.3), pose(10.0, 350, 810, 310, expression="happy", fever=0.1)],
+        "stetho": [tool(5.0, "stethoscope", 80, -20), tool(10.0, "stethoscope", 80, -20)],
+    }, actions=[
+        action("listen", 5.5, 9.5, actor_id="doctor", target="patient", tool="stetho"),
+    ], bg="clinic_room")
+
+    # Scene 3: Safe vaccination, protective band-aid, kid smiles healthy (10 -> 15s)
+    sc3 = scene(10.0, 15.0, {
+        "doctor": [pose(10.0, 170, 810, 360, expression="happy"), pose(12.8, 170, 810, 360, expression="happy"), pose(13.2, 280, 810, 360, expression="happy"), pose(15.0, 280, 810, 360, expression="happy")],
+        "patient": [pose(10.0, 400, 810, 310, expression="neutral", blush=0.4), pose(15.0, 400, 810, 310, expression="happy", blush=0.6, sparkle=1.0)],
+        "syringe": [tool(10.0, "syringe", 62, -60), tool(12.8, "syringe", 62, -60), tool(13.0, "syringe", 62, -60, opacity=0.0), tool(15.0, "syringe", 62, -60, opacity=0.0)],
+        "bandaid": [pose(10.0, 0, 6, 22, rotation=20, opacity=0.0), pose(14.0, 0, 6, 22, rotation=20, opacity=0.0), pose(14.3, 0, 6, 22, rotation=20), pose(15.0, 0, 6, 22, rotation=20)],
+    }, actions=[
+        action("vaccinate", 10.3, 12.8, actor_id="doctor", target="patient", tool="syringe"),
+        action("apply_bandage", 13.0, 14.8, actor_id="doctor", target="patient"),
+        action("emote", 13.5, 14.8, actor_id="patient", emote="heart"),
+    ], bg="clinic_room")
+
+    story = {
+        "id": "doctor_visit",
+        "name": "2 · Khám bác sĩ Chibi: đo nhiệt kế, nghe nhịp tim, tiêm phòng và dán băng",
+        "renderer": RENDERER,
+        "fidelity": "technical-demo",
+        "note": "Mẫu kỹ thuật Phase H: Bác sĩ chibi chibi_doctor khám bệnh cho chibi_patient, take_temperature, listen, vaccinate, apply_bandage tại clinic_room.",
+        "duration": 15.0,
+        "characters": [
+            actor("doctor", "chibi_doctor"),
+            actor("patient", "chibi_patient"),
+            actor("thermo", "thermometer", face=False, attach_to={"id": "doctor", "anchor": "hand_r"}),
+            actor("stetho", "stethoscope", face=False, attach_to={"id": "doctor", "anchor": "hand_r"}),
+            actor("syringe", "syringe", face=False, attach_to={"id": "doctor", "anchor": "hand_r"}),
+            actor("bandaid", "band_aid", face=False, layer="over_face", attach_to={"id": "patient", "anchor": "arm_l"}),
+        ],
+        "scenes": [sc1, sc2, sc3],
+        "cues": [
+            {"start": 0.5, "end": 4.0, "character_id": "doctor", "text": "Bé bị sốt nhẹ rồi, để bác sĩ đo nhiệt độ kiểm tra sức khoẻ nhé.", "expression": "neutral"},
+            {"start": 5.5, "end": 9.0, "character_id": "doctor", "text": "Nhịp tim đập rất đều và phổi khoẻ mạnh, không có gì đáng lo cả.", "expression": "happy"},
+            {"start": 10.5, "end": 14.2, "character_id": "patient", "text": "Tiêm một chút như kiến cắn thôi, dán băng xinh xắn là khoẻ re!", "expression": "happy"},
+        ],
+    }
+    for index, item in enumerate(story["scenes"]):
+        item["index"] = index
+    validate_story(story)
+    return [story]
+
+
+def tooth_examples():
+    """Technical showcase for Phase H: chibi dentist, tooth cavity, toothbrushing foam, and sparkling recovery."""
+    def actor(cid, asset, **extra):
+        return {"id": cid, "name": _catalog()["assets"][asset]["label"], "asset": asset, **extra}
+
+    def pose(t, x, y, h, **extra):
+        return {"time": t, "x": x, "y": y, "height": h, **extra}
+
+    def scene(start, end, poses, actions=(), bg="dentist_room", **extra):
+        return {
+            "renderer": RENDERER,
+            "kind": "scene",
+            "start_time": start,
+            "end_time": end,
+            "characters_present": list(poses),
+            "poses": poses,
+            "actions": list(actions),
+            "background": {"preset": bg, **extra},
+        }
+
+    def action(kind, start, end, target=None, actor_id=None, **extra):
+        return {"type": kind, "start": start, "end": end, **({"target": target} if target else {}), **({"actor": actor_id} if actor_id else {}), **extra}
+
+    # Scene 1: Tooth has a painful cavity and cries (0 -> 5s)
+    sc1 = scene(0, 5.0, {
+        "dentist": [pose(0, 190, 810, 360, expression="neutral"), pose(5.0, 190, 810, 360, expression="neutral")],
+        "tooth": [pose(0, 360, 810, 180, cavity=0.9, tears=0.8, expression="sad"), pose(5.0, 360, 810, 180, cavity=0.9, tears=0.8, expression="sad")],
+    }, actions=[
+        action("emote", 1.0, 3.5, actor_id="tooth", emote="!"),
+    ], bg="dentist_room")
+
+    # Scene 2: Dentist brushes teeth, bubbles remove cavity (5 -> 11s)
+    sc2 = scene(5.0, 11.0, {
+        "dentist": [pose(5.0, 210, 810, 360, expression="neutral"), pose(11.0, 210, 810, 360, expression="happy")],
+        "tooth": [pose(5.0, 340, 810, 180, cavity=0.8, tears=0.2), pose(8.0, 340, 810, 180, cavity=0.3, tears=0.0), pose(11.0, 340, 810, 180, cavity=0.0, sparkle=0.6, expression="happy")],
+        "brush": [{"time": 5.0, "height": 80, **held_pose("toothbrush", 80, -90)}, {"time": 11.0, "height": 80, **held_pose("toothbrush", 80, -90)}],
+    }, actions=[
+        action("brush_teeth", 5.5, 10.5, actor_id="dentist", target="tooth", tool="brush"),
+    ], bg="dentist_room")
+
+    # Scene 3: Clean, sparkling white tooth, cheerful smiles (11 -> 16s)
+    sc3 = scene(11.0, 16.0, {
+        "dentist": [pose(11.0, 210, 810, 360, expression="happy"), pose(16.0, 210, 810, 360, expression="happy")],
+        "tooth": [pose(11.0, 350, 810, 180, cavity=0.0, sparkle=1.0, blush=0.5, expression="happy"), pose(16.0, 350, 810, 180, cavity=0.0, sparkle=1.0, blush=0.5, expression="happy")],
+    }, actions=[
+        action("emote", 11.5, 15.0, actor_id="tooth", emote="star"),
+    ], bg="dentist_room")
+
+    story = {
+        "id": "tooth_care",
+        "name": "3 · Nha khoa Chibi: chữa sâu răng, chải răng sạch bọt và răng xinh toả sáng",
+        "renderer": RENDERER,
+        "fidelity": "technical-demo",
+        "note": "Mẫu kỹ thuật Phase H: Chiếc răng tooth_chibi có vết sâu cavity, nha sĩ chibi_dentist chải răng brush_teeth làm sạch sâu và toả sáng lấp lánh sparkle.",
+        "duration": 16.0,
+        "characters": [
+            actor("dentist", "chibi_dentist"),
+            actor("tooth", "tooth_chibi"),
+            actor("brush", "toothbrush", face=False, attach_to={"id": "dentist", "anchor": "hand_r"}),
+        ],
+        "scenes": [sc1, sc2, sc3],
+        "cues": [
+            {"start": 0.5, "end": 4.0, "character_id": "dentist", "text": "Ăn nhiều đồ ngọt không chải răng làm sâu răng đau buốt rồi kìa!", "expression": "neutral"},
+            {"start": 5.5, "end": 9.5, "character_id": "dentist", "text": "Hãy chải răng thật kỹ mặt trong mặt ngoài theo vòng tròn nhé.", "expression": "neutral"},
+            {"start": 11.5, "end": 15.0, "character_id": "tooth", "text": "Răng đã sạch bóng và trắng tinh toả sáng lấp lánh rồi!", "expression": "happy"},
+        ],
+    }
+    for index, item in enumerate(story["scenes"]):
+        item["index"] = index
+    validate_story(story)
+    return [story]
+
+
+def nutrition_examples():
+    """Technical showcase for Phase H: balanced school lunch tray, eating fresh vegetables, and energetic exercise."""
+    def actor(cid, asset, **extra):
+        return {"id": cid, "name": _catalog()["assets"][asset]["label"], "asset": asset, **extra}
+
+    def pose(t, x, y, h, **extra):
+        return {"time": t, "x": x, "y": y, "height": h, **extra}
+
+    def scene(start, end, poses, actions=(), bg="classroom", **extra):
+        return {
+            "renderer": RENDERER,
+            "kind": "scene",
+            "start_time": start,
+            "end_time": end,
+            "characters_present": list(poses),
+            "poses": poses,
+            "actions": list(actions),
+            "background": {"preset": bg, **extra},
+        }
+
+    def action(kind, start, end, target=None, actor_id=None, **extra):
+        return {"type": kind, "start": start, "end": end, **({"target": target} if target else {}), **({"actor": actor_id} if actor_id else {}), **extra}
+
+    # Scene 1: Chibi girl eats nutritious vegetables and soup from lunch tray (0 -> 5s)
+    sc1 = scene(0, 5.0, {
+        "kid": [pose(0, 200, 810, 320, expression="happy", blush=0.4), pose(5.0, 200, 810, 320, expression="happy", blush=0.4)],
+        "tray": [pose(0, 340, 810, 60), pose(5.0, 340, 810, 60)],
+    }, actions=[
+        action("eat", 0.8, 4.5, actor_id="kid", target="tray"),
+    ], bg="classroom")
+
+    # Scene 2: Filled with energy, kid exercises in the school yard (5 -> 10s)
+    sc2 = scene(5.0, 10.0, {
+        "kid": [pose(5.0, 270, 810, 320, expression="happy"), pose(10.0, 270, 810, 320, expression="happy")],
+    }, actions=[
+        action("exercise", 5.5, 9.5, actor_id="kid", exercise_type="jumping_jacks"),
+    ], bg="school_yard")
+
+    # Scene 3: Healthy, strong and cheerful on the playground (10 -> 15s)
+    sc3 = scene(10.0, 15.0, {
+        "kid": [pose(10.0, 270, 810, 320, expression="happy", jump=0.0, sparkle=0.5), pose(12.5, 270, 720, 320, expression="happy", jump=1.0, sparkle=1.0), pose(15.0, 270, 810, 320, expression="happy", jump=0.0, sparkle=1.0)],
+    }, actions=[
+        action("emote", 11.0, 14.5, actor_id="kid", emote="heart"),
+    ], bg="playground")
+
+    story = {
+        "id": "nutrition_fitness",
+        "name": "4 · Dinh dưỡng và rèn luyện: khay cơm đủ chất, ăn rau củ và tập thể dục thể thao",
+        "renderer": RENDERER,
+        "fidelity": "technical-demo",
+        "note": "Mẫu kỹ thuật Phase H: Chibi chibi_girl ăn trưa khay cơm dinh dưỡng lunch_tray bằng hành động eat, tập thể dục exercise và nhảy cao tại playground.",
+        "duration": 15.0,
+        "characters": [
+            actor("kid", "chibi_girl"),
+            actor("tray", "lunch_tray", face=False),
+        ],
+        "scenes": [sc1, sc2, sc3],
+        "cues": [
+            {"start": 0.5, "end": 4.0, "character_id": "kid", "text": "Khay cơm đầy đủ rau xanh, đạm và canh ngon giúp cơ thể phát triển khoẻ mạnh!", "expression": "happy"},
+            {"start": 5.5, "end": 9.0, "character_id": "kid", "text": "Ăn no đủ chất rồi thì cùng ra sân tập thể dục nhảy dây nâng cao thể lực nào.", "expression": "happy"},
+            {"start": 10.5, "end": 14.0, "character_id": "kid", "text": "Cơ thể tràn đầy năng lượng, sảng khoái và luôn tươi vui mỗi ngày!", "expression": "happy"},
         ],
     }
     for index, item in enumerate(story["scenes"]):
@@ -1859,8 +2216,8 @@ def giant_radish_examples():
 
 
 def sample_stories():
-    """Every sample the library ships: farm stories, articulated hands, IK, fishing, sea monsters, orchard harvest, trellis, highland, vegetable cutaway, safe spraying, and giant radish."""
-    return examples() + agriculture_examples() + farm_life_examples() + farm_animals_examples() + articulation_examples() + ik_examples() + fishing_examples() + monster_examples() + orchard_harvest_examples() + trellis_examples() + highland_examples() + vegetable_cutaway_examples() + safe_spraying_examples() + giant_radish_examples()
+    """Every sample the library ships: farm stories, articulated hands, IK, fishing, sea monsters, orchard harvest, trellis, highland, vegetable cutaway, safe spraying, giant radish, handwashing, doctor visit, tooth care, and nutrition."""
+    return examples() + agriculture_examples() + farm_life_examples() + farm_animals_examples() + articulation_examples() + ik_examples() + fishing_examples() + monster_examples() + orchard_harvest_examples() + trellis_examples() + highland_examples() + vegetable_cutaway_examples() + safe_spraying_examples() + giant_radish_examples() + handwashing_examples() + doctor_visit_examples() + tooth_examples() + nutrition_examples()
 
 
 def showreel():
@@ -1896,7 +2253,7 @@ def showreel():
                     action["blend_in"] = min(action["blend_in"] * ratio, action["end"] - action["start"])
                 if "helpers" in action and isinstance(action["helpers"], list):
                     action["helpers"] = [prefix + hid for hid in action["helpers"]]
-                for role in ("actor", "target"):
+                for role in ("actor", "target", "tool"):
                     if role in action:
                         action[role] = prefix + action[role]
             scenes.append(scene)

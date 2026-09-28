@@ -28,6 +28,9 @@ MANUAL_FACE_BOX = {  # không có ô mặt trống (đã có mặt sẵn) hoặc
     "ton_ngo_khong": [0.47, 0.135, 0.22],
     "tru_bat_gioi": [0.47, 0.20, 0.22],
     "sa_tang_dau_da": [0.62, 0.13, 0.24],
+    "hac_bach_kiem_ton": [0.42, 0.27, 0.31],   # mặt vẽ sẵn (bịt mắt): dò nhầm lên tóc
+    "chien_binh_cam_riu": [0.41, 0.42, 0.22],
+    "dau_gau_non_la": [0.43, 0.64, 0.40],      # chỉ có đầu gấu đội nón: dò nhầm lên nón
 }
 
 

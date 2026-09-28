@@ -1702,11 +1702,11 @@
       "b66603ef6baf8129"
     ],
     "pesticide_bottle": [
-      "ddfd32efcdd19fa8",
-      "ddfd32efcdd19fa8",
-      "ddfd32efcdd19fa8",
-      "ddfd32efcdd19fa8",
-      "ddfd32efcdd19fa8"
+      "af6961ef48972365",
+      "af6961ef48972365",
+      "af6961ef48972365",
+      "af6961ef48972365",
+      "af6961ef48972365"
     ],
     "backpack_sprayer": [
       "b2f7f6ef95f865aa",
@@ -1716,18 +1716,18 @@
       "b2f7f6ef95f865aa"
     ],
     "jerrycan": [
-      "e768baef8960e8c5",
-      "e768baef8960e8c5",
-      "e768baef8960e8c5",
-      "e768baef8960e8c5",
-      "e768baef8960e8c5"
+      "c50b47ef440d5f50",
+      "c50b47ef440d5f50",
+      "c50b47ef440d5f50",
+      "c50b47ef440d5f50",
+      "c50b47ef440d5f50"
     ],
     "chem_cabinet": [
-      "4a2550ef28ccc039",
-      "4a2550ef28ccc039",
-      "4a2550ef28ccc039",
-      "4a2550ef28ccc039",
-      "4a2550ef28ccc039"
+      "36e381efb2dacfe9",
+      "36e381efb2dacfe9",
+      "36e381efb2dacfe9",
+      "36e381efb2dacfe9",
+      "36e381efb2dacfe9"
     ],
     "ppe_gloves": [
       "ecac83ef777ef4b5",
@@ -1758,11 +1758,11 @@
       "b91fbdef0b184761"
     ],
     "warning_sign": [
-      "c2bfd5ef3cda04f9",
-      "c2bfd5ef3cda04f9",
-      "c2bfd5ef3cda04f9",
-      "c2bfd5ef3cda04f9",
-      "c2bfd5ef3cda04f9"
+      "d53436eff5fa9e49",
+      "d53436eff5fa9e49",
+      "d53436eff5fa9e49",
+      "d53436eff5fa9e49",
+      "d53436eff5fa9e49"
     ],
     "rinse_basin": [
       "84a141ef901b4ce1",
@@ -1770,6 +1770,293 @@
       "432769ef8a265e9b",
       "034c91ef4fa6a8b9",
       "949858ef4cf88faf"
+    ],
+    "chibi_boy": [
+      "5520a6efda9f4b89",
+      "5520a6efda9f4b89",
+      "5520a6efda9f4b89",
+      "5520a6efda9f4b89",
+      "689370ef91a10e85"
+    ],
+    "chibi_girl": [
+      "1e8485eff93da322",
+      "6c07deefff22ae83",
+      "b18648ef55852de8",
+      "ea18cdef1e3b10dd",
+      "d66a6bef8ab2e83f"
+    ],
+    "chibi_kid": [
+      "4c41ccef3925aff1",
+      "4c41ccef3925aff1",
+      "4c41ccef3925aff1",
+      "4c41ccef3925aff1",
+      "711b42efe6749405"
+    ],
+    "chibi_teacher": [
+      "4b7facef3f234d5c",
+      "4b7facef3f234d5c",
+      "4b7facef3f234d5c",
+      "4b7facef3f234d5c",
+      "da4d97ef94b096ee"
+    ],
+    "chibi_doctor": [
+      "30b07befc34d7cd4",
+      "30b07befc34d7cd4",
+      "30b07befc34d7cd4",
+      "30b07befc34d7cd4",
+      "857de9efa8301218"
+    ],
+    "chibi_nurse": [
+      "042a79efbc5f7a99",
+      "042a79efbc5f7a99",
+      "042a79efbc5f7a99",
+      "042a79efbc5f7a99",
+      "c76266ef917f30eb"
+    ],
+    "chibi_dentist": [
+      "63d810efdb09638b",
+      "63d810efdb09638b",
+      "63d810efdb09638b",
+      "63d810efdb09638b",
+      "b81106ef23bc8d37"
+    ],
+    "chibi_pharmacist": [
+      "d7e07fef1206971b",
+      "d7e07fef1206971b",
+      "d7e07fef1206971b",
+      "d7e07fef1206971b",
+      "b01db0efa44f96f1"
+    ],
+    "chibi_patient": [
+      "425ad4efb3dfd405",
+      "425ad4efb3dfd405",
+      "425ad4efb3dfd405",
+      "425ad4efb3dfd405",
+      "7f8b2eefcebf41cd"
+    ],
+    "chibi_grandma": [
+      "8eed21ef62140322",
+      "8eed21ef62140322",
+      "8eed21ef62140322",
+      "8eed21ef62140322",
+      "eed0b9ef7236aa2e"
+    ],
+    "chibi_grandpa": [
+      "8233b6ef94106aff",
+      "8233b6ef94106aff",
+      "8233b6ef94106aff",
+      "8233b6ef94106aff",
+      "fdcc66efadd648a5"
+    ],
+    "chibi_farmer": [
+      "4802bcef246492c1",
+      "4802bcef246492c1",
+      "4802bcef246492c1",
+      "4802bcef246492c1",
+      "1b6fd4efc2254f79"
+    ],
+    "chibi_chef": [
+      "5552d0ef704ce067",
+      "5552d0ef704ce067",
+      "5552d0ef704ce067",
+      "5552d0ef704ce067",
+      "40b492eff42919eb"
+    ],
+    "stethoscope": [
+      "6d83b7ef624fe1e5",
+      "6d83b7ef624fe1e5",
+      "6d83b7ef624fe1e5",
+      "6d83b7ef624fe1e5",
+      "6d83b7ef624fe1e5"
+    ],
+    "thermometer": [
+      "28e872efab6ce4e1",
+      "28e872efab6ce4e1",
+      "28e872efab6ce4e1",
+      "28e872efab6ce4e1",
+      "28e872efab6ce4e1"
+    ],
+    "syringe": [
+      "ef8c83ef328c8f52",
+      "ef8c83ef328c8f52",
+      "ef8c83ef328c8f52",
+      "ef8c83ef328c8f52",
+      "ef8c83ef328c8f52"
+    ],
+    "pill": [
+      "a4eca5efe175f5a6",
+      "a4eca5efe175f5a6",
+      "a4eca5efe175f5a6",
+      "a4eca5efe175f5a6",
+      "a4eca5efe175f5a6"
+    ],
+    "pill_bottle": [
+      "d66529ef3b90e27d",
+      "d66529ef3b90e27d",
+      "d66529ef3b90e27d",
+      "d66529ef3b90e27d",
+      "d66529ef3b90e27d"
+    ],
+    "syrup_bottle": [
+      "49d9f4effa390163",
+      "49d9f4effa390163",
+      "49d9f4effa390163",
+      "49d9f4effa390163",
+      "49d9f4effa390163"
+    ],
+    "spoon": [
+      "ee0635ef3708ab51",
+      "ee0635ef3708ab51",
+      "ee0635ef3708ab51",
+      "ee0635ef3708ab51",
+      "ee0635ef3708ab51"
+    ],
+    "band_aid": [
+      "de5f84eff1dd4feb",
+      "de5f84eff1dd4feb",
+      "de5f84eff1dd4feb",
+      "de5f84eff1dd4feb",
+      "de5f84eff1dd4feb"
+    ],
+    "bandage_roll": [
+      "f33850efb86b2348",
+      "f33850efb86b2348",
+      "f33850efb86b2348",
+      "f33850efb86b2348",
+      "f33850efb86b2348"
+    ],
+    "face_mask": [
+      "2f3905ef8f3069e7",
+      "2f3905ef8f3069e7",
+      "2f3905ef8f3069e7",
+      "2f3905ef8f3069e7",
+      "2f3905ef8f3069e7"
+    ],
+    "soap": [
+      "136b18ef16cf361e",
+      "136b18ef16cf361e",
+      "136b18ef16cf361e",
+      "136b18ef16cf361e",
+      "136b18ef16cf361e"
+    ],
+    "sanitizer": [
+      "1b4937ef9fab4104",
+      "1b4937ef9fab4104",
+      "1b4937ef9fab4104",
+      "1b4937ef9fab4104",
+      "1b4937ef9fab4104"
+    ],
+    "towel": [
+      "92c344ef2152084f",
+      "92c344ef2152084f",
+      "92c344ef2152084f",
+      "92c344ef2152084f",
+      "92c344ef2152084f"
+    ],
+    "toothbrush": [
+      "2e5d3fef0b96c9d7",
+      "2e5d3fef0b96c9d7",
+      "2e5d3fef0b96c9d7",
+      "2e5d3fef0b96c9d7",
+      "2e5d3fef0b96c9d7"
+    ],
+    "toothpaste": [
+      "850bfbef54c13e95",
+      "850bfbef54c13e95",
+      "850bfbef54c13e95",
+      "850bfbef54c13e95",
+      "850bfbef54c13e95"
+    ],
+    "water_glass": [
+      "39b78aefed210267",
+      "39b78aefed210267",
+      "39b78aefed210267",
+      "39b78aefed210267",
+      "39b78aefed210267"
+    ],
+    "first_aid_kit": [
+      "472965ef88431901",
+      "472965ef88431901",
+      "472965ef88431901",
+      "472965ef88431901",
+      "472965ef88431901"
+    ],
+    "ice_pack": [
+      "bb2468eff41e066c",
+      "bb2468eff41e066c",
+      "bb2468eff41e066c",
+      "bb2468eff41e066c",
+      "bb2468eff41e066c"
+    ],
+    "hospital_bed": [
+      "31a82cef18b21a6c",
+      "31a82cef18b21a6c",
+      "31a82cef18b21a6c",
+      "31a82cef18b21a6c",
+      "31a82cef18b21a6c"
+    ],
+    "wheelchair": [
+      "9930b5efc974a978",
+      "9930b5efc974a978",
+      "9930b5efc974a978",
+      "9930b5efc974a978",
+      "9930b5efc974a978"
+    ],
+    "crutches": [
+      "aea132efff1878ae",
+      "aea132efff1878ae",
+      "aea132efff1878ae",
+      "aea132efff1878ae",
+      "aea132efff1878ae"
+    ],
+    "scale": [
+      "9965f9ef506fef3d",
+      "9965f9ef506fef3d",
+      "9965f9ef506fef3d",
+      "9965f9ef506fef3d",
+      "9965f9ef506fef3d"
+    ],
+    "height_chart": [
+      "0f3bb4ef8328c9c1",
+      "0f3bb4ef8328c9c1",
+      "0f3bb4ef8328c9c1",
+      "0f3bb4ef8328c9c1",
+      "0f3bb4ef8328c9c1"
+    ],
+    "lunch_tray": [
+      "daadfaef56f5fe0a",
+      "daadfaef56f5fe0a",
+      "daadfaef56f5fe0a",
+      "daadfaef56f5fe0a",
+      "daadfaef56f5fe0a"
+    ],
+    "good_bacteria": [
+      "47bc25efd58e1be7",
+      "47bc25efd58e1be7",
+      "47bc25efd58e1be7",
+      "47bc25efd58e1be7",
+      "2d70f3ef42d92dea"
+    ],
+    "bacteria_rod": [
+      "aeb412ef98e7b78b",
+      "3fc478eff807c723",
+      "17b0abef12426d85",
+      "6112c0ef5688050d",
+      "835cf0ef57bb4831"
+    ],
+    "virus_spike": [
+      "f5ae0befd2bb7e82",
+      "9f101eef8ce10d82",
+      "6232ceef6ae3f381",
+      "34b7c2ef6c40a18d",
+      "414689ef23cb8ab9"
+    ],
+    "tooth_chibi": [
+      "41d98befbd7ccd81",
+      "41d98befbd7ccd81",
+      "41d98befbd7ccd81",
+      "41d98befbd7ccd81",
+      "9f813fef36c96f01"
     ]
   },
   "backgrounds": {
@@ -2486,6 +2773,380 @@
         "721e7fef8efdc296",
         "044504efb3de7c2b"
       ]
+    },
+    "living_room": {
+      "day": [
+        "48d40def734e8262",
+        "48d40def734e8262"
+      ],
+      "night": [
+        "a0d17cefc07d1e5e",
+        "a0d17cefc07d1e5e"
+      ],
+      "rain": [
+        "645e01eff9a65b7b",
+        "a85730ef70b603da"
+      ],
+      "snow": [
+        "9a7158efff839a70",
+        "3caff1ef30523937"
+      ],
+      "wind": [
+        "010a16ef392f6b97",
+        "e357e4ef45c51c1d"
+      ],
+      "fog": [
+        "622d5cefb2663d19",
+        "a8c2a1ef3b6bae29"
+      ],
+      "storm": [
+        "aabab6ef8fc2b4d9",
+        "f7665fef06372797"
+      ],
+      "hot": [
+        "eef100ef856bce51",
+        "3cfe5cef475d9d8a"
+      ]
+    },
+    "bathroom_sink": {
+      "day": [
+        "54353bef6910d2bd",
+        "54353bef6910d2bd"
+      ],
+      "night": [
+        "857f4cefdf448e97",
+        "857f4cefdf448e97"
+      ],
+      "rain": [
+        "6e8963ef4ced692d",
+        "c41d72efdddbfaa0"
+      ],
+      "snow": [
+        "df8bcaef7403f493",
+        "6e85feeffbcd1894"
+      ],
+      "wind": [
+        "4d972def0eef3831",
+        "053103ef46850d31"
+      ],
+      "fog": [
+        "e9703aef7d9ca05b",
+        "8855a6efd5383df8"
+      ],
+      "storm": [
+        "9b0373ef85387802",
+        "e003bfef83d54cef"
+      ],
+      "hot": [
+        "94c678ef14156be2",
+        "3c9bc5ef03b9209b"
+      ]
+    },
+    "classroom": {
+      "day": [
+        "aeae8aeffc61e623",
+        "aeae8aeffc61e623"
+      ],
+      "night": [
+        "993f50efb08dda8c",
+        "993f50efb08dda8c"
+      ],
+      "rain": [
+        "872100ef04b968e4",
+        "094aadef2c2edf27"
+      ],
+      "snow": [
+        "81bd62ef21fa2b64",
+        "92fed8ef88189212"
+      ],
+      "wind": [
+        "d24b51ef02194979",
+        "50a8c3ef489c2715"
+      ],
+      "fog": [
+        "ce21b4ef71b5e737",
+        "aa01aeef002348d4"
+      ],
+      "storm": [
+        "40d404ef17fa48c7",
+        "1a8d5cef13b012bb"
+      ],
+      "hot": [
+        "069379efabf04ef4",
+        "ef9044ef37efd869"
+      ]
+    },
+    "school_yard": {
+      "day": [
+        "3d4e41ef780de817",
+        "714943ef048ad516"
+      ],
+      "night": [
+        "159a78ef8a267ee5",
+        "bb2b78ef6e649e70"
+      ],
+      "rain": [
+        "4da76befd441f1a1",
+        "71688bef702b08bc"
+      ],
+      "snow": [
+        "b3c827ef17f90ff6",
+        "eed278ef67d3d48f"
+      ],
+      "wind": [
+        "7da7f7eff0b04698",
+        "52d4a3efbff689dc"
+      ],
+      "fog": [
+        "07e6f5efbb2149ef",
+        "1d0994effe8c5234"
+      ],
+      "storm": [
+        "0974d2ef1dc7ea80",
+        "45e2f1efb451ff98"
+      ],
+      "hot": [
+        "9f46faef25b41aea",
+        "41cc2cefe67c9b45"
+      ]
+    },
+    "playground": {
+      "day": [
+        "a61cc1ef80d168ba",
+        "42bb66efa9c000f7"
+      ],
+      "night": [
+        "324fcbef1b333166",
+        "64d618eff9cecf97"
+      ],
+      "rain": [
+        "192e5cef9077230c",
+        "94d83def2bf7ead4"
+      ],
+      "snow": [
+        "eb86ecef0a203e04",
+        "ac7988ef86ae0f84"
+      ],
+      "wind": [
+        "778bdfef03f1d3a4",
+        "192f13eff2bff147"
+      ],
+      "fog": [
+        "4376adefead4bdf0",
+        "23c91fef1c51e8a1"
+      ],
+      "storm": [
+        "e16bf2ef9674cf86",
+        "91b9c9efae451842"
+      ],
+      "hot": [
+        "45c744ef51df6f1a",
+        "6eb50cefd99cfa98"
+      ]
+    },
+    "clinic_room": {
+      "day": [
+        "0d687bef61d57aa0",
+        "0d687bef61d57aa0"
+      ],
+      "night": [
+        "90165eef80e5bd1e",
+        "90165eef80e5bd1e"
+      ],
+      "rain": [
+        "17982befe2d9ec6f",
+        "f23392ef651be0be"
+      ],
+      "snow": [
+        "8636e1efdb7ebed4",
+        "4f2656ef2212f83c"
+      ],
+      "wind": [
+        "4a76c2ef8548dd29",
+        "3a4a6aef9a9ceb84"
+      ],
+      "fog": [
+        "51a4bcef1901d730",
+        "a93403efbc720dc1"
+      ],
+      "storm": [
+        "d9bff9ef8ca7f70f",
+        "1e78c3efc993aa62"
+      ],
+      "hot": [
+        "58a87cefd080441f",
+        "ff44cbef3750ae0c"
+      ]
+    },
+    "hospital_ward": {
+      "day": [
+        "bafc52ef608c23a8",
+        "bafc52ef608c23a8"
+      ],
+      "night": [
+        "7c9f0fefe9f144fc",
+        "7c9f0fefe9f144fc"
+      ],
+      "rain": [
+        "c82be3ef29e3b748",
+        "3559adeff352be26"
+      ],
+      "snow": [
+        "cf2c2fef1a1cdbc6",
+        "a55eb3ef8e0816cb"
+      ],
+      "wind": [
+        "0e9a5aef9204258f",
+        "0548d5ef6fcf1bca"
+      ],
+      "fog": [
+        "1939bbef4898cfb0",
+        "f19071ef70c4a704"
+      ],
+      "storm": [
+        "58750fef79748f61",
+        "0eee7cef376795cb"
+      ],
+      "hot": [
+        "ca8d65ef8405868e",
+        "04ab90ef55693b6a"
+      ]
+    },
+    "pharmacy": {
+      "day": [
+        "53da3cefaf95115f",
+        "53da3cefaf95115f"
+      ],
+      "night": [
+        "cdbe6eefc190afd6",
+        "cdbe6eefc190afd6"
+      ],
+      "rain": [
+        "c8bcddef8c3f576c",
+        "5a54ebefc3e3f4d1"
+      ],
+      "snow": [
+        "0df03cef14f7e414",
+        "77ab7defee6259dd"
+      ],
+      "wind": [
+        "8a60ffef8112c20a",
+        "5f17c9ef5d6f9e6e"
+      ],
+      "fog": [
+        "c9e97cef8d7b0561",
+        "98233cefded7e43e"
+      ],
+      "storm": [
+        "363e8fefa28a9495",
+        "380aabefd3ac7e82"
+      ],
+      "hot": [
+        "e14ac3efd5f16afd",
+        "f21800ef3b40ec6d"
+      ]
+    },
+    "dentist_room": {
+      "day": [
+        "085f84efd5fcf2d3",
+        "085f84efd5fcf2d3"
+      ],
+      "night": [
+        "92aaceef4465d7d5",
+        "92aaceef4465d7d5"
+      ],
+      "rain": [
+        "4f1e12ef248b9b4c",
+        "109888ef93554b9f"
+      ],
+      "snow": [
+        "3936c8ef13ef0f2e",
+        "22d064ef930e2bd5"
+      ],
+      "wind": [
+        "47d3c2efd039e624",
+        "532025ef4edb1089"
+      ],
+      "fog": [
+        "fd2677efe55ad6ab",
+        "047573ef9a30771e"
+      ],
+      "storm": [
+        "705c19efdced324a",
+        "247af0ef3f65583d"
+      ],
+      "hot": [
+        "8a2910ef4a758912",
+        "1a4c47ef429912c6"
+      ]
+    },
+    "science_lab": {
+      "day": [
+        "d71be3ef7a5c4747",
+        "b0d031eff77127cf"
+      ],
+      "night": [
+        "e741acef8cc7f940",
+        "67925eefbf289e10"
+      ],
+      "rain": [
+        "89168eef788a608a",
+        "fb4aeaefe6b4f630"
+      ],
+      "snow": [
+        "61ddeeeff80ca208",
+        "5e2ae1ef0dbe1b3f"
+      ],
+      "wind": [
+        "437ab6ef80c4524c",
+        "112ddaef100f6b65"
+      ],
+      "fog": [
+        "3ec77defedac843a",
+        "dd685aefbfbde94c"
+      ],
+      "storm": [
+        "5fc03cef800eabcc",
+        "f2d0ddef3f9a0049"
+      ],
+      "hot": [
+        "b7772bef6f07610f",
+        "b63d2fef9c5dc816"
+      ]
+    },
+    "body_inside": {
+      "day": [
+        "696608efb6abec48",
+        "2460c7ef06be6831"
+      ],
+      "night": [
+        "696608efb6abec48",
+        "2460c7ef06be6831"
+      ],
+      "rain": [
+        "55539cefa09543ed",
+        "977c37ef48136432"
+      ],
+      "snow": [
+        "1cf460ef8cf1d1c8",
+        "f1c80aef10923142"
+      ],
+      "wind": [
+        "af259eefc4c8c735",
+        "0892fcef988feba3"
+      ],
+      "fog": [
+        "3d2205ef1cae0aac",
+        "78212aef9ccd1017"
+      ],
+      "storm": [
+        "62f893ef718040e1",
+        "42998aefa3f9cc88"
+      ],
+      "hot": [
+        "8e55d7efc8c78bba",
+        "d2edf0ef8ee784b7"
+      ]
     }
   },
   "stories": {
@@ -2625,9 +3286,9 @@
     "highland_temperate": [
       "c48c22ef8add927e",
       "51273eefbcc004d3",
-      "6b54bdefa6151d20",
-      "6c93c5ef2bbb8d7d",
-      "a32d52ef61bb90ec"
+      "3ecce3ef7d186a30",
+      "14af61eff6f39411",
+      "17132aef1dca7b0d"
     ],
     "vegetable_cutaway": [
       "1120b5eff6705025",
@@ -2637,18 +3298,46 @@
       "c277b8ef6156231a"
     ],
     "safe_spraying": [
-      "757db9efcc128138",
-      "326055ef60b59446",
-      "d5f223efea70bab4",
-      "6fbeb2ef171c6a15",
+      "4d2c4cefe285cb7d",
+      "d3baa2ef924c6ee2",
+      "713634efb89b8f42",
+      "f4e5e8ef0f1e4722",
       "892991ef5b54c9e7"
     ],
     "giant_radish": [
-      "5ef582ef572d4883",
-      "047d42ef4e1377ce",
-      "4f92d5ef0fd6babb",
-      "e638abef995dc218",
-      "46ccacefdfabd163"
+      "756698efa428384e",
+      "02906fefcad13c2f",
+      "f0c8f9efbbc27eb6",
+      "006c66ef043e5b6e",
+      "0e2149efb17c78ec"
+    ],
+    "handwashing": [
+      "a53baaefcc69756a",
+      "2f5c4deff7a358a1",
+      "a8fdc4ef3eb54399",
+      "8d3e37ef2237d22c",
+      "8c4e50eff3a8863c"
+    ],
+    "doctor_visit": [
+      "dc4d18ef34882be9",
+      "1b1abaefc9d89afa",
+      "741f81efedb91d7d",
+      "492457ef503af564",
+      "a52e87eff97fe45b"
+    ],
+    "tooth_care": [
+      "d46ffdef7b49fddc",
+      "429031efc0a730d4",
+      "fb63e1ef8d9a571c",
+      "23634fef7e3a9067",
+      "c80553ef0c3ba2df"
+    ],
+    "nutrition_fitness": [
+      "82bf58efa43427d4",
+      "f30830ef0ae735e1",
+      "e02641ef9a53a7ca",
+      "c1a7eaef5c17e196",
+      "cf3026ef525b4002"
     ]
   }
 }

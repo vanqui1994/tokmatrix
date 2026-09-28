@@ -486,6 +486,16 @@ class CapabilityRegistryTest(unittest.TestCase):
             # Polar Birds & Cartoon Specials
             "eagle": {"wet"}, "penguin": {"wet"}, "wild_rabbit": {"wet"}, "capybara": {"wet"}, "cartoon_tiger": {"wet"},
             "cartoon_monkey": {"wet"}, "armored_bear": {"wet"}, "armored_wolf": {"wet"}, "chibi_cow": {"wet"}, "cartoon_snake": {"wet"}, "vulture": {"wet"},
+            # Chibi & Medical
+            "chibi_boy": {"wet"}, "chibi_girl": {"wet"}, "chibi_kid": {"wet"}, "chibi_teacher": {"wet"},
+            "chibi_doctor": {"wet"}, "chibi_nurse": {"wet"}, "chibi_dentist": {"wet"}, "chibi_pharmacist": {"wet"},
+            "chibi_patient": {"wet"}, "chibi_grandma": {"wet"}, "chibi_grandpa": {"wet"}, "chibi_farmer": {"wet"}, "chibi_chef": {"wet"},
+            "stethoscope": {"wet"}, "thermometer": {"wet"}, "syringe": {"wet"}, "pill": {"wet"}, "pill_bottle": {"wet"},
+            "syrup_bottle": {"wet"}, "spoon": {"wet"}, "band_aid": {"wet"}, "bandage_roll": {"wet"}, "face_mask": {"wet"},
+            "soap": {"wet"}, "sanitizer": {"wet"}, "towel": {"wet"}, "toothbrush": {"wet"}, "toothpaste": {"wet"},
+            "water_glass": {"wet"}, "first_aid_kit": {"wet"}, "ice_pack": {"wet"}, "hospital_bed": {"wet"},
+            "wheelchair": {"wet"}, "crutches": {"wet"}, "scale": {"wet"}, "height_chart": {"wet"}, "lunch_tray": {"wet"},
+            "good_bacteria": {"wet"}, "bacteria_rod": {"wet"}, "virus_spike": {"wet"}, "tooth_chibi": {"wet"},
         }
         self.assertEqual(set(document["assets"]), set(expected))
         for asset_id, states in expected.items():
