@@ -65,6 +65,7 @@ try:
         delete_upload_task, retry_upload_task, cancel_upload_task, confirm_upload_task,
     )
     from bkt_web import upload_states as us
+    from bkt_web import upload_scheduler as upload_scheduler_service
 except ImportError:
     from db_utils import connect_db, configure_database
     from security import SecretStore, harden_file_permissions, safe_child, validate_slug
@@ -98,6 +99,7 @@ except ImportError:
         delete_upload_task, retry_upload_task, cancel_upload_task, confirm_upload_task,
     )
     import upload_states as us
+    import upload_scheduler as upload_scheduler_service
 
 CHROME_EXEC_PATH = os.environ.get(
     "TOKMATRIX_CHROME_PATH",
@@ -3965,6 +3967,7 @@ upload_live_status = {
     "logs": []
 }
 UPLOAD_LOCK = threading.Lock()
+DEFERRED_PROFILE_BUSY = upload_scheduler_service.DEFERRED_PROFILE_BUSY
 SCHEDULER_STOP = threading.Event()
 SCHEDULER_THREAD: Optional[threading.Thread] = None
 VERIFIER_THREAD: Optional[threading.Thread] = None
@@ -4537,148 +4540,6 @@ app.mount("/static", StaticFiles(directory=str(STATIC_DIR)), name="static")
 app.mount("/storage", StaticFiles(directory=str(STORAGE_DIR)), name="storage")
 
 
-DEFERRED_PROFILE_BUSY = "Profile đang mở — hoãn 5 phút"
-
-
-def upload_hold_active(now: Optional[float] = None) -> bool:
-    """Lệnh giữ đăng của Autopilot (publish_hold_until) cũng dừng các task đã QUEUED.
-
-    Trước 26/09 lệnh hold chỉ chặn xếp lịch mới, còn task đã trong hàng đợi vẫn đăng.
-    Nút "Đăng Ngay" (đăng tay) không đi qua đây nên vẫn dùng được khi đang giữ.
-    """
-    try:
-        from bkt_web.autopilot import store as autopilot_store
-        return autopilot_store.get_int("publish_hold_until") > (time.time() if now is None else now)
-    except Exception:
-        return False
-
-
-def run_upload_scheduler():
-    """Durable single-worker scheduler backed by the upload_tasks table."""
-    from bkt_web.tiktok_publisher import publish_tiktok_video
-
-    while not SCHEDULER_STOP.wait(3):
-        if upload_hold_active():
-            continue
-        if not UPLOAD_LOCK.acquire(blocking=False):
-            continue
-        task = None
-        try:
-            now = int(time.time())
-            conn = connect_db(DB_PATH)
-            conn.execute("BEGIN IMMEDIATE")
-            queue_marks = us.sql_marks(us.QUEUE_STATES)
-            task = conn.execute(
-                f"""
-                SELECT id, channel_id, video_path, caption, hashtags, attempt_count, COALESCE(ai_generated, 1)
-                FROM upload_tasks
-                WHERE status IN ({queue_marks})
-                  AND schedule_time <= ?
-                  AND (next_retry_at IS NULL OR next_retry_at <= ?)
-                  AND attempt_count < 3
-                ORDER BY schedule_time, id
-                LIMIT 1
-                """,
-                (*us.QUEUE_STATES, now, now),
-            ).fetchone()
-            if task:
-                conn.execute(
-                    f"""
-                    UPDATE upload_tasks
-                    SET status=?, started_at=?, attempt_count=attempt_count+1
-                    WHERE id=? AND status IN ({queue_marks})
-                    """,
-                    (us.UPLOADING, now, task[0], *us.QUEUE_STATES),
-                )
-            conn.commit()
-            conn.close()
-
-            if not task:
-                continue
-
-            task_id, channel_id, video_path, caption, hashtags, previous_attempts, ai_generated = task
-            upload_live_status.update({
-                "is_running": True,
-                "channel_id": channel_id,
-                "task_id": task_id,
-                "logs": [{
-                    "time": time.strftime("%H:%M:%S"),
-                    "msg": f"Scheduler bắt đầu tác vụ #{task_id}",
-                    "level": "info",
-                }],
-            })
-
-            def scheduler_log(message: str, level: str = "info"):
-                upload_live_status["logs"].append({
-                    "time": time.strftime("%H:%M:%S"),
-                    "msg": message,
-                    "level": level,
-                })
-
-            result = asyncio.run(publish_tiktok_video(
-                channel_id=channel_id,
-                video_path=video_path,
-                caption=caption,
-                hashtags=hashtags,
-                db_path=str(DB_PATH),
-                log_cb=scheduler_log,
-                task_id=task_id,
-                ai_generated=bool(ai_generated),
-            ))
-            if result.get("clicked"):
-                # Đã bấm Đăng mà không thấy xác nhận: publisher đã chuyển NEEDS_CHECK. Không thử lại.
-                scheduler_log("Đã bấm Đăng nhưng chưa xác nhận — chờ người kiểm tra kênh (không tự thử lại)", "warning")
-            elif result.get("deferred"):
-                conn = connect_db(DB_PATH)
-                conn.execute(
-                    "UPDATE upload_tasks SET status=?, attempt_count=?, next_retry_at=?, error_message=? WHERE id=?",
-                    (us.QUEUED, previous_attempts, int(time.time()) + 300, DEFERRED_PROFILE_BUSY, task_id),
-                )
-                conn.commit(); conn.close()
-                scheduler_log("Profile đang bận — hoàn lượt và hoãn 5 phút", "warning")
-            elif result.get("no_retry"):
-                scheduler_log("Tác vụ không được tự thử lại", "warning")
-            elif not result.get("success") and previous_attempts + 1 < 3:
-                retry_at = int(time.time()) + 60 * (2 ** previous_attempts)
-                conn = connect_db(DB_PATH)
-                conn.execute(
-                    "UPDATE upload_tasks SET status=?, next_retry_at=? WHERE id=?",
-                    (us.QUEUED, retry_at, task_id),
-                )
-                conn.commit()
-                conn.close()
-                scheduler_log(f"Sẽ thử lại lúc {datetime.datetime.fromtimestamp(retry_at):%H:%M:%S}", "warning")
-        except Exception as exc:
-            if task:
-                previous_attempts = task[5] or 0
-                conn = connect_db(DB_PATH)
-                clicked = conn.execute("SELECT COALESCE(clicked_post_at,0) FROM upload_tasks WHERE id=?", (task[0],)).fetchone()
-                conn.close()
-                if clicked and clicked[0]:
-                    conn = connect_db(DB_PATH)
-                    conn.execute(
-                        "UPDATE upload_tasks SET status=?, error_message=? WHERE id=?",
-                        (us.NEEDS_CHECK, f"Lỗi sau khi đã bấm Đăng: {exc}"[:1000], task[0]),
-                    )
-                    conn.commit()
-                    conn.close()
-                    continue
-                can_retry = previous_attempts + 1 < 3
-                retry_at = int(time.time()) + 60 * (2 ** previous_attempts) if can_retry else 0
-                conn = connect_db(DB_PATH)
-                conn.execute(
-                    """
-                    UPDATE upload_tasks
-                    SET status=?, error_message=?, next_retry_at=?
-                    WHERE id=?
-                    """,
-                    (us.QUEUED if can_retry else us.ERROR, str(exc)[:1000], retry_at, task[0]),
-                )
-                conn.commit()
-                conn.close()
-        finally:
-            upload_live_status["is_running"] = False
-            UPLOAD_LOCK.release()
 
 def app_startup():
     global SCHEDULER_THREAD, VERIFIER_THREAD, PROFILE_MAINT_THREAD
@@ -4708,7 +4569,17 @@ def app_startup():
     start_remake_queue_worker()
     SCHEDULER_STOP.clear()
     if not SCHEDULER_THREAD or not SCHEDULER_THREAD.is_alive():
-        SCHEDULER_THREAD = threading.Thread(target=run_upload_scheduler, name="upload-scheduler", daemon=True)
+        SCHEDULER_THREAD = threading.Thread(
+            target=upload_scheduler_service.run_upload_scheduler,
+            kwargs={
+                "db_path": DB_PATH,
+                "stop_event": SCHEDULER_STOP,
+                "upload_lock": UPLOAD_LOCK,
+                "live_status": upload_live_status,
+            },
+            name="upload-scheduler",
+            daemon=True,
+        )
         SCHEDULER_THREAD.start()
     if not VERIFIER_THREAD or not VERIFIER_THREAD.is_alive():
         from bkt_web import needs_check_verifier
