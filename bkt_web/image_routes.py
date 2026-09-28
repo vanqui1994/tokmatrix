@@ -83,8 +83,21 @@ def _db():
     return connect_db(DB_PATH)
 
 
+def _cleanup_stale_gallery_zips() -> int:
+    """Remove temp gallery archives left behind by an interrupted response/process."""
+    removed = 0
+    for path in STORAGE_DIR.glob("tokmatrix_gallery_*.zip"):
+        try:
+            path.unlink(missing_ok=True)
+            removed += 1
+        except OSError:
+            pass
+    return removed
+
+
 def init_image_tables() -> None:
     """Tạo bảng và nạp dữ liệu cũ (hàng đợi JSON + metadata .json rời)."""
+    _cleanup_stale_gallery_zips()
     conn = _db()
     try:
         conn.executescript(
