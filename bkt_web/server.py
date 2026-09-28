@@ -180,6 +180,17 @@ EXTRA_ORIGIN_HOSTS = {
     for h in os.environ.get("TOKMATRIX_ALLOWED_ORIGIN_HOSTS", "").split(",")
     if h.strip()
 }
+INTERNAL_API_TOKEN = os.environ.get("TOKMATRIX_INTERNAL_TOKEN", "").strip()
+
+
+def _has_internal_token(request: Request) -> bool:
+    if not INTERNAL_API_TOKEN:
+        return False
+    auth = (request.headers.get("authorization") or "").strip()
+    prefix = "Bearer "
+    if not auth.startswith(prefix):
+        return False
+    return hmac.compare_digest(auth[len(prefix):].strip(), INTERNAL_API_TOKEN)
 
 
 def _origin_is_allowed(request: Request, origin: str) -> bool:
@@ -212,7 +223,8 @@ async def secure_local_session(request: Request, call_next):
     # Những đường dẫn ai cũng vào được: trang đăng nhập, tài nguyên tĩnh của nó,
     # và API nội bộ gọi từ chính máy chủ.
     is_login_path = path in {"/login", "/api/auth/login", "/favicon.ico"} or path.startswith("/static/")
-    is_public_bootstrap = is_login_path or is_local_api
+    is_internal_api = path.startswith("/api/scripts/") and _has_internal_token(request)
+    is_public_bootstrap = is_login_path or is_local_api or is_internal_api
 
     # Chưa đặt tài khoản thì giữ nguyên hành vi cũ (cấp cookie cho mọi truy cập
     # vào "/") để không khoá người dùng ra ngoài sau khi cập nhật mã nguồn.
@@ -4451,7 +4463,9 @@ def api_dashboard_summary():
                 "queued": scalar("SELECT COUNT(*) FROM upload_tasks WHERE status IN ('QUEUED','PENDING')"),
                 "uploading": scalar("SELECT COUNT(*) FROM upload_tasks WHERE status='UPLOADING'"),
                 "success": scalar("SELECT COUNT(*) FROM upload_tasks WHERE status='SUCCESS'"),
-                "failed": scalar("SELECT COUNT(*) FROM upload_tasks WHERE status='FAILED'"),
+                "error": scalar("SELECT COUNT(*) FROM upload_tasks WHERE status='ERROR'"),
+                "needs_check": scalar("SELECT COUNT(*) FROM upload_tasks WHERE status='NEEDS_CHECK'"),
+                "waiting_render": scalar("SELECT COUNT(*) FROM upload_tasks WHERE status='WAITING_RENDER'"),
                 "next": [
                     {"id": r[0], "caption": (r[1] or "")[:60], "schedule_time": r[2], "channel_id": r[3]}
                     for r in rows(
@@ -4481,7 +4495,7 @@ def api_dashboard_summary():
             ] + [
                 {"kind": "Đăng TikTok", "id": r[0], "message": (r[1] or "")[:120], "at": r[2]}
                 for r in rows(
-                    "SELECT id, error_message, created_at FROM upload_tasks WHERE status='FAILED' ORDER BY id DESC LIMIT 5"
+                    "SELECT id, error_message, created_at FROM upload_tasks WHERE status IN ('ERROR','NEEDS_CHECK') ORDER BY id DESC LIMIT 5"
                 )
             ],
         }
