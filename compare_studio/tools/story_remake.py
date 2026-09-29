@@ -388,6 +388,104 @@ def check_and_render(vid, out):
     return mp4
 
 
+# ---------------------------------------------------------------- 5b. dựng bằng ffmpeg (mặc định)
+# HyperFrames chụp từng khung bằng Chrome: ~1 s/khung 1080×1920 trên VPS 4 lõi (29/09: 3 phút giọng → 39 phút render).
+# Video này chỉ là ảnh tĩnh + zoom/pan + dip đen + phụ đề + grain + 2 dải đen, nên ffmpeg dựng thẳng cùng hiệu ứng
+# (zoompan trên ảnh phóng 2× cho mượt, eq/hue/colorchannelmixer = filter CSS cũ, vignette = shade, fade = dip,
+# drawbox = bars, ASS = phụ đề; grain 140 chấm mờ 10% của bản cũ bị bỏ — noise mỗi khung làm file ~450 MB và ghép chậm gấp nhiều lần). STORY_REMAKE_RENDERER=hyperframes giữ đường cũ.
+FPS = 24
+
+
+def _ass_time(t):
+    t = max(0.0, t)
+    return f"{int(t // 3600)}:{int(t % 3600 // 60):02d}:{t % 60:05.2f}"
+
+
+def _captions_ass(words, total, path):
+    G = []
+    for a_, e_, w in words:
+        if G and a_ - G[-1][0] < 0.28 and len(G[-1][2]) < 18:
+            G[-1][2] += " " + w
+        else:
+            G.append([a_, e_, w])
+    head = ("[Script Info]\nScriptType: v4.00+\nPlayResX: 1080\nPlayResY: 1920\nWrapStyle: 0\n\n[V4+ Styles]\n"
+            "Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, "
+            "StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding\n"
+            # #f7f1e3 → &H00E3F1F7; viền + bóng đen như text-shadow cũ; căn giữa, đáy khối chữ ở y≈1560 (top cũ 1480)
+            "Style: Cap,DejaVu Serif,66,&H00E3F1F7,&H00E3F1F7,&H00000000,&H96000000,0,1,0,0,100,100,1,0,1,3,4,2,80,80,360,1\n\n"
+            "[Events]\nFormat: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text\n")
+    lines = []
+    for k, (a_, e_, w) in enumerate(G):
+        end = G[k + 1][0] if k + 1 < len(G) else total
+        text = w.replace("\\", "").replace("{", "(").replace("}", ")").replace("\n", " ")
+        lines.append(f"Dialogue: 0,{_ass_time(a_)},{_ass_time(end)},Cap,,0,0,0,,{text}")
+    Path(path).write_text(head + "\n".join(lines) + "\n", encoding="utf-8")
+
+
+def _scene_filter(i, s, d, last):
+    """zoompan + màu + vignette + dip cho cảnh i (d giây), toạ độ ảnh vào đã phóng 2× (2160×3840)."""
+    n = max(1, round(d * FPS))
+    p = f"(on/{max(1, n - 1)})"
+    ease = f"((1-cos(PI*{p}))/2)"
+    tense = bool(s.get("tense"))
+    cam = ["push", "pan_r", "pull", "pan_l"][i % 4]
+    # tâm phóng 50% / 42% như transform-origin cũ
+    cx, cy = "(iw/2-iw/zoom/2)", "(ih*0.42-ih*0.42/zoom)"
+    if tense:
+        z, x, y = f"1.04+0.22*{ease}", cx, f"{cy}+100*{ease}/zoom"
+    elif cam == "push":
+        z, x, y = f"1.02+0.13*{ease}", cx, cy
+    elif cam == "pull":
+        z, x, y = f"1.17-0.14*{ease}", cx, cy
+    else:
+        sx = 90 if cam == "pan_r" else -90  # ±45 px ở khung ra = ±90 ở ảnh 2×
+        z, x, y = "1.13", f"{cx}-({sx}-2*{sx}*{ease})/zoom", cy
+    grade = ("eq=saturation=0.8:brightness=-0.08:contrast=1.08,hue=h=-6" if tense
+             else "eq=saturation=1.02:brightness=-0.03:contrast=1.05,colorchannelmixer=.95:.04:.01:0:.03:.95:.02:0:.02:.04:.94")
+    vig = "vignette=angle=PI/3.2" if tense else "vignette=angle=PI/4.2"
+    fades = "fade=t=in:st=0:d=0.4"
+    if not last:
+        fades += f",fade=t=out:st={max(0.0, d - 0.42):.2f}:d=0.3"
+    return (f"scale=2160:3840:flags=lanczos,zoompan=z='{z}':x='{x}':y='{y}':d={n}:s=1080x1920:fps={FPS},"
+            f"{grade},{vig},{fades},format=yuv420p"), n
+
+
+def render_ffmpeg(vid, work, words, plan, jobs=None):
+    out = work / "ffm"; out.mkdir(exist_ok=True)
+    total = round(words[-1][1] + 0.4, 2)
+    sc = plan["scenes"]
+    starts = [round(s["t"], 2) for s in sc]
+    starts[0] = 0.0  # cảnh đầu phủ từ 0 như bản HyperFrames (không có khoảng đen trước lời đầu)
+    tasks = []
+    for i, s in enumerate(sc):
+        e = starts[i + 1] if i + 1 < len(sc) else total
+        vf, n = _scene_filter(i, s, e - starts[i], i + 1 == len(sc))
+        tasks.append((i, vf, n))
+
+    def one_scene(t):
+        i, vf, n = t
+        clip = out / f"sc{i:02d}.mp4"
+        subprocess.run(["ffmpeg", "-loglevel", "error", "-y", "-i", str(work / "img" / f"sc{i:02d}.png"), "-vf", vf,
+                        "-frames:v", str(n), "-r", str(FPS), "-c:v", "libx264", "-preset", "veryfast", "-crf", "14", "-pix_fmt", "yuv420p", str(clip)],
+                       check=True, capture_output=True, text=True)
+        return clip
+
+    workers = jobs or max(1, min(3, (os.cpu_count() or 2) - 1))
+    with ThreadPoolExecutor(workers) as ex:
+        clips = list(ex.map(one_scene, tasks))
+    (out / "list.txt").write_text("".join(f"file '{c.name}'\n" for c in clips))
+    _captions_ass(words, total, out / "caps.ass")
+    mp4 = out / "story.mp4"
+    # 2 dải đen 190 px + phụ đề ASS, giọng gốc; cắt đúng tổng thời lượng
+    vf = ("drawbox=x=0:y=0:w=iw:h=190:color=black:t=fill,drawbox=x=0:y=ih-190:w=iw:h=190:color=black:t=fill,"
+          "ass=caps.ass,format=yuv420p")
+    subprocess.run(["ffmpeg", "-loglevel", "error", "-y", "-f", "concat", "-safe", "0", "-i", "list.txt", "-i", str(work / "vo.mp3"),
+                    "-vf", vf, "-map", "0:v", "-map", "1:a", "-t", f"{total:.2f}", "-c:v", "libx264", "-preset", "fast", "-crf", "20",
+                    "-pix_fmt", "yuv420p", "-c:a", "aac", "-b:a", "192k", "-movflags", "+faststart", "story.mp4"],
+                   check=True, capture_output=True, text=True, cwd=str(out))
+    return mp4
+
+
 # ---------------------------------------------------------------- pipeline
 def remake(item, lang="auto"):
     vid = item["id"]; work = ROOT / vid; work.mkdir(parents=True, exist_ok=True)
@@ -405,8 +503,10 @@ def remake(item, lang="auto"):
         log(vid, f"{len(words)} từ, ngôn ngữ {tr['lang']}")
         plan = direct(vid, work, words, tr["lang"]); log(vid, f"{len(plan['scenes'])} cảnh ({plan['director']})")
         draw(vid, work, image_prompts(plan)); log(vid, "ảnh xong")
-        out = build(work, words, plan)
-        mp4 = check_and_render(vid, out)
+        if os.environ.get("STORY_REMAKE_RENDERER", "ffmpeg") == "hyperframes":
+            mp4 = check_and_render(vid, build(work, words, plan))
+        else:
+            t1 = time.time(); mp4 = render_ffmpeg(vid, work, words, plan); log(vid, f"render ffmpeg {time.time() - t1:.0f}s")
         final = ROOT / "out" / f"{vid}.mp4"; final.parent.mkdir(exist_ok=True); shutil.copy(mp4, final)
         state.pop("error", None); state.update(status="done", mp4=str(final), seconds=round(time.time() - t0), scenes=len(plan["scenes"]))
         log(vid, f"xong {final} ({state['seconds']}s)")
