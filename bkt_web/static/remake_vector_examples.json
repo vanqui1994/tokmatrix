@@ -16963,5 +16963,3065 @@
         "expression": "happy"
       }
     ]
+  },
+  {
+    "id": "apollo_11",
+    "name": "41 · Apollo 11: Bước chân đầu tiên trên Mặt Trăng",
+    "renderer": "native-vector-v1",
+    "fidelity": "technical-demo",
+    "note": "Mẫu kỹ thuật Phase S: Chuyến bay lịch sử của tên lửa Apollo 11 rời bệ phóng vươn lên không gian và mô-đun đổ bộ hạ cánh an toàn trên Mặt Trăng.",
+    "duration": 10.0,
+    "characters": [
+      {
+        "id": "rocket",
+        "name": "Tên lửa không gian",
+        "asset": "rocket"
+      },
+      {
+        "id": "astronaut",
+        "name": "Bé trai học sinh",
+        "asset": "chibi_boy",
+        "outfit": "astronaut"
+      },
+      {
+        "id": "lander",
+        "name": "Mô-đun đổ bộ mặt trăng",
+        "asset": "lunar_lander"
+      },
+      {
+        "id": "footprint",
+        "name": "Dấu chân trên Mặt Trăng",
+        "asset": "moon_footprint"
+      },
+      {
+        "id": "seismometer",
+        "name": "Thiết bị đo địa chấn Mặt Trăng",
+        "asset": "seismometer"
+      }
+    ],
+    "scenes": [
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 0,
+        "end_time": 5.0,
+        "characters_present": [
+          "rocket",
+          "astronaut"
+        ],
+        "poses": {
+          "rocket": [
+            {
+              "time": 0,
+              "x": 330,
+              "y": 810,
+              "height": 380
+            },
+            {
+              "time": 2.0,
+              "x": 330,
+              "y": 810,
+              "height": 380
+            },
+            {
+              "time": 5.0,
+              "x": 330,
+              "y": 330,
+              "height": 380
+            }
+          ],
+          "astronaut": [
+            {
+              "time": 0,
+              "x": 40,
+              "y": 830,
+              "height": 200,
+              "outfit": "astronaut",
+              "opacity": 1.0
+            },
+            {
+              "time": 1.5,
+              "x": 230,
+              "y": 830,
+              "height": 200,
+              "outfit": "astronaut",
+              "opacity": 1.0
+            },
+            {
+              "time": 1.7,
+              "x": 250,
+              "y": 830,
+              "height": 200,
+              "outfit": "astronaut",
+              "opacity": 0.0
+            },
+            {
+              "time": 5.0,
+              "x": 250,
+              "y": 830,
+              "height": 200,
+              "outfit": "astronaut",
+              "opacity": 0.0
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "launch",
+            "start": 2.0,
+            "end": 5.0,
+            "actor": "rocket"
+          }
+        ],
+        "background": {
+          "preset": "launch_pad",
+          "weather": "clear"
+        },
+        "index": 0
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 5.0,
+        "end_time": 10.0,
+        "characters_present": [
+          "lander",
+          "astronaut",
+          "footprint",
+          "seismometer"
+        ],
+        "poses": {
+          "lander": [
+            {
+              "time": 5.0,
+              "x": 400,
+              "y": 380,
+              "height": 300
+            },
+            {
+              "time": 7.5,
+              "x": 400,
+              "y": 810,
+              "height": 300
+            },
+            {
+              "time": 10.0,
+              "x": 400,
+              "y": 810,
+              "height": 300
+            }
+          ],
+          "astronaut": [
+            {
+              "time": 5.0,
+              "x": 400,
+              "y": 810,
+              "height": 200,
+              "outfit": "astronaut",
+              "opacity": 0.0
+            },
+            {
+              "time": 7.7,
+              "x": 400,
+              "y": 810,
+              "height": 200,
+              "outfit": "astronaut",
+              "opacity": 0.0
+            },
+            {
+              "time": 7.9,
+              "x": 330,
+              "y": 830,
+              "height": 200,
+              "outfit": "astronaut",
+              "opacity": 1.0
+            },
+            {
+              "time": 8.6,
+              "x": 240,
+              "y": 830,
+              "height": 200,
+              "outfit": "astronaut",
+              "opacity": 1.0
+            },
+            {
+              "time": 9.2,
+              "x": 180,
+              "y": 760,
+              "height": 200,
+              "outfit": "astronaut",
+              "opacity": 1.0
+            },
+            {
+              "time": 10.0,
+              "x": 120,
+              "y": 830,
+              "height": 200,
+              "outfit": "astronaut",
+              "opacity": 1.0
+            }
+          ],
+          "footprint": [
+            {
+              "time": 5.0,
+              "x": 250,
+              "y": 842,
+              "height": 34,
+              "opacity": 0.0
+            },
+            {
+              "time": 8.6,
+              "x": 250,
+              "y": 842,
+              "height": 34,
+              "opacity": 0.0
+            },
+            {
+              "time": 8.7,
+              "x": 250,
+              "y": 842,
+              "height": 34,
+              "opacity": 1.0
+            },
+            {
+              "time": 10.0,
+              "x": 250,
+              "y": 842,
+              "height": 34,
+              "opacity": 1.0
+            }
+          ],
+          "seismometer": [
+            {
+              "time": 5.0,
+              "x": 520,
+              "y": 830,
+              "height": 110
+            },
+            {
+              "time": 10.0,
+              "x": 520,
+              "y": 830,
+              "height": 110
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "emote",
+            "start": 8.8,
+            "end": 10.0,
+            "actor": "astronaut",
+            "emote": "idea"
+          }
+        ],
+        "background": {
+          "preset": "moon_surface",
+          "weather": "clear"
+        },
+        "index": 1
+      }
+    ],
+    "cues": [
+      {
+        "start": 0.5,
+        "end": 4.5,
+        "character_id": "astronaut",
+        "text": "Động cơ tên lửa gầm vang rực lửa, đưa tàu Apollo 11 vút lên bầu trời bao la hướng về không gian!",
+        "expression": "happy"
+      },
+      {
+        "start": 5.5,
+        "end": 9.5,
+        "character_id": "astronaut",
+        "text": "Tàu đổ bộ hạ cánh êm ái trên Mặt Trăng, phi hành gia bước xuống để lại dấu chân lịch sử trong trọng lực êm nhẹ!",
+        "expression": "happy"
+      }
+    ]
+  },
+  {
+    "id": "thanksgiving_harvest",
+    "name": "42 · Mùa gặt Tạ ơn: Thu hoạch bí ngô và sum họp gia đình",
+    "renderer": "native-vector-v1",
+    "fidelity": "technical-demo",
+    "note": "Mẫu kỹ thuật Phase S: Thu hoạch những quả bí ngô trĩu quả trên cánh đồng vàng mùa thu và bữa tiệc Tạ ơn đầm ấm.",
+    "duration": 10.0,
+    "characters": [
+      {
+        "id": "farmer",
+        "name": "Cô giáo",
+        "asset": "chibi_teacher",
+        "outfit": "farmer_overalls"
+      },
+      {
+        "id": "kid",
+        "name": "Bé mầm non",
+        "asset": "chibi_kid"
+      },
+      {
+        "id": "basket",
+        "name": "Giỏ thu hoạch mùa thu",
+        "asset": "harvest_basket"
+      },
+      {
+        "id": "pumpkin",
+        "name": "Bí ngô",
+        "asset": "pumpkin"
+      },
+      {
+        "id": "table",
+        "name": "Bàn ăn lớn",
+        "asset": "table"
+      },
+      {
+        "id": "turkey",
+        "name": "Gà tây nướng nguyên con",
+        "asset": "roast_turkey"
+      },
+      {
+        "id": "pie",
+        "name": "Bánh pie táo",
+        "asset": "apple_pie"
+      }
+    ],
+    "scenes": [
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 0,
+        "end_time": 5.0,
+        "characters_present": [
+          "basket",
+          "pumpkin",
+          "farmer",
+          "kid"
+        ],
+        "poses": {
+          "basket": [
+            {
+              "time": 0,
+              "x": 300,
+              "y": 830,
+              "height": 220,
+              "fill": 0.0
+            },
+            {
+              "time": 2.0,
+              "x": 300,
+              "y": 830,
+              "height": 220,
+              "fill": 1.0
+            },
+            {
+              "time": 2.5,
+              "x": 300,
+              "y": 830,
+              "height": 220,
+              "fill": 1.0
+            },
+            {
+              "time": 5.0,
+              "x": 470,
+              "y": 830,
+              "height": 220,
+              "fill": 1.0
+            }
+          ],
+          "pumpkin": [
+            {
+              "time": 0,
+              "x": 110,
+              "y": 840,
+              "height": 80,
+              "growth": 1.0
+            },
+            {
+              "time": 1.0,
+              "x": 110,
+              "y": 840,
+              "height": 80,
+              "growth": 1.0
+            },
+            {
+              "time": 2.0,
+              "x": 300,
+              "y": 775,
+              "height": 60,
+              "growth": 1.0
+            },
+            {
+              "time": 2.5,
+              "x": 300,
+              "y": 775,
+              "height": 60,
+              "growth": 1.0
+            },
+            {
+              "time": 5.0,
+              "x": 470,
+              "y": 775,
+              "height": 60,
+              "growth": 1.0
+            }
+          ],
+          "farmer": [
+            {
+              "time": 0,
+              "x": 400,
+              "y": 830,
+              "height": 230,
+              "outfit": "farmer_overalls"
+            },
+            {
+              "time": 2.5,
+              "x": 400,
+              "y": 830,
+              "height": 230,
+              "outfit": "farmer_overalls"
+            },
+            {
+              "time": 5.0,
+              "x": 570,
+              "y": 830,
+              "height": 230,
+              "outfit": "farmer_overalls"
+            }
+          ],
+          "kid": [
+            {
+              "time": 0,
+              "x": 170,
+              "y": 830,
+              "height": 200
+            },
+            {
+              "time": 1.0,
+              "x": 170,
+              "y": 830,
+              "height": 200
+            },
+            {
+              "time": 2.0,
+              "x": 220,
+              "y": 830,
+              "height": 200
+            },
+            {
+              "time": 2.5,
+              "x": 220,
+              "y": 830,
+              "height": 200
+            },
+            {
+              "time": 5.0,
+              "x": 390,
+              "y": 830,
+              "height": 200
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "carry_together",
+            "start": 2.5,
+            "end": 5.0,
+            "target": "basket",
+            "actor": "farmer",
+            "helper": "kid",
+            "hold": true
+          }
+        ],
+        "background": {
+          "preset": "pumpkin_patch",
+          "weather": "clear"
+        },
+        "index": 0
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 5.0,
+        "end_time": 10.0,
+        "characters_present": [
+          "kid",
+          "farmer",
+          "table",
+          "turkey",
+          "pie"
+        ],
+        "poses": {
+          "kid": [
+            {
+              "time": 5.0,
+              "x": -40,
+              "y": 830,
+              "height": 200,
+              "expression": "happy"
+            },
+            {
+              "time": 7.0,
+              "x": 130,
+              "y": 830,
+              "height": 200,
+              "expression": "happy"
+            },
+            {
+              "time": 10.0,
+              "x": 130,
+              "y": 830,
+              "height": 200,
+              "expression": "happy"
+            }
+          ],
+          "farmer": [
+            {
+              "time": 5.0,
+              "x": 470,
+              "y": 830,
+              "height": 230,
+              "expression": "happy",
+              "flip": true,
+              "outfit": "farmer_overalls"
+            },
+            {
+              "time": 10.0,
+              "x": 470,
+              "y": 830,
+              "height": 230,
+              "expression": "happy",
+              "flip": true,
+              "outfit": "farmer_overalls"
+            }
+          ],
+          "table": [
+            {
+              "time": 5.0,
+              "x": 300,
+              "y": 830,
+              "height": 230
+            },
+            {
+              "time": 10.0,
+              "x": 300,
+              "y": 830,
+              "height": 230
+            }
+          ],
+          "turkey": [
+            {
+              "time": 5.0,
+              "x": 265,
+              "y": 703,
+              "height": 150
+            },
+            {
+              "time": 10.0,
+              "x": 265,
+              "y": 703,
+              "height": 150
+            }
+          ],
+          "pie": [
+            {
+              "time": 5.0,
+              "x": 350,
+              "y": 703,
+              "height": 130
+            },
+            {
+              "time": 10.0,
+              "x": 350,
+              "y": 703,
+              "height": 130
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "emote",
+            "start": 7.0,
+            "end": 9.5,
+            "actor": "kid",
+            "emote": "heart"
+          },
+          {
+            "type": "emote",
+            "start": 7.5,
+            "end": 9.5,
+            "actor": "farmer",
+            "emote": "music"
+          }
+        ],
+        "background": {
+          "preset": "suburb_backyard",
+          "weather": "clear"
+        },
+        "index": 1
+      }
+    ],
+    "cues": [
+      {
+        "start": 0.5,
+        "end": 4.5,
+        "character_id": "kid",
+        "text": "Cả nhà cùng nhau thu hoạch những trái bí ngô căng tròn trên cánh đồng ngập tràn sắc thu vàng óng!",
+        "expression": "happy"
+      },
+      {
+        "start": 5.5,
+        "end": 9.5,
+        "character_id": "farmer",
+        "text": "Bàn tiệc Tạ ơn thơm nức gà tây và bánh táo nướng, ấm cúng tiếng cười sum vầy của cả gia đình!",
+        "expression": "happy"
+      }
+    ]
+  },
+  {
+    "id": "gold_rush",
+    "name": "43 · Cơn sốt vàng: Đãi vàng bên suối và chuyến xe viễn Tây",
+    "renderer": "native-vector-v1",
+    "fidelity": "technical-demo",
+    "note": "Mẫu kỹ thuật Phase S: Chàng cao bồi đãi những vảy vàng lấp lánh bên bờ suối hẻm núi và xe ngựa vượt hành trình miền Tây.",
+    "duration": 10.0,
+    "characters": [
+      {
+        "id": "cowboy",
+        "name": "Bé trai học sinh",
+        "asset": "chibi_boy",
+        "outfit": "cowboy"
+      },
+      {
+        "id": "pan",
+        "name": "Chảo đãi vàng",
+        "asset": "gold_pan",
+        "attach_to": {
+          "id": "cowboy",
+          "anchor": "hand_r"
+        }
+      },
+      {
+        "id": "horse",
+        "name": "Con ngựa",
+        "asset": "horse"
+      },
+      {
+        "id": "wagon",
+        "name": "Xe ngựa thùng có bạt",
+        "asset": "covered_wagon"
+      }
+    ],
+    "scenes": [
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 0,
+        "end_time": 5.0,
+        "characters_present": [
+          "cowboy",
+          "pan"
+        ],
+        "poses": {
+          "cowboy": [
+            {
+              "time": 0,
+              "x": 20,
+              "y": 830,
+              "height": 220,
+              "outfit": "cowboy",
+              "expression": "neutral"
+            },
+            {
+              "time": 1.2,
+              "x": 200,
+              "y": 830,
+              "height": 220,
+              "outfit": "cowboy",
+              "expression": "neutral"
+            },
+            {
+              "time": 3.4,
+              "x": 200,
+              "y": 830,
+              "height": 220,
+              "outfit": "cowboy",
+              "expression": "happy"
+            },
+            {
+              "time": 5.0,
+              "x": 200,
+              "y": 830,
+              "height": 220,
+              "outfit": "cowboy",
+              "expression": "happy"
+            }
+          ],
+          "pan": [
+            {
+              "time": 0,
+              "x": 42.5,
+              "y": 27.5,
+              "height": 250,
+              "rotation": 0,
+              "glint": 0.0
+            },
+            {
+              "time": 1.2,
+              "x": 42.5,
+              "y": 27.5,
+              "height": 250,
+              "rotation": 0,
+              "glint": 0.0
+            },
+            {
+              "time": 1.3,
+              "x": 35.85370153369836,
+              "y": 35.73530587993443,
+              "height": 250,
+              "rotation": 12,
+              "glint": 0.0
+            },
+            {
+              "time": 1.4,
+              "x": 27.64042426522603,
+              "y": 42.40880741589304,
+              "height": 250,
+              "rotation": 24,
+              "glint": 0.041666666666666664
+            },
+            {
+              "time": 1.5,
+              "x": 35.85370153369836,
+              "y": 35.73530587993443,
+              "height": 250,
+              "rotation": 12,
+              "glint": 0.08333333333333333
+            },
+            {
+              "time": 1.6,
+              "x": 42.5,
+              "y": 27.5,
+              "height": 250,
+              "rotation": 0,
+              "glint": 0.125
+            },
+            {
+              "time": 1.7,
+              "x": 47.28884452867512,
+              "y": 18.062812160424883,
+              "height": 250,
+              "rotation": -12,
+              "glint": 0.16666666666666666
+            },
+            {
+              "time": 1.8,
+              "x": 50.010939634395044,
+              "y": 7.836192754450014,
+              "height": 250,
+              "rotation": -24,
+              "glint": 0.20833333333333334
+            },
+            {
+              "time": 1.9,
+              "x": 47.28884452867512,
+              "y": 18.062812160424883,
+              "height": 250,
+              "rotation": -12,
+              "glint": 0.25
+            },
+            {
+              "time": 2.0,
+              "x": 42.5,
+              "y": 27.5,
+              "height": 250,
+              "rotation": 0,
+              "glint": 0.2916666666666667
+            },
+            {
+              "time": 2.1,
+              "x": 35.85370153369836,
+              "y": 35.73530587993443,
+              "height": 250,
+              "rotation": 12,
+              "glint": 0.3333333333333333
+            },
+            {
+              "time": 2.2,
+              "x": 27.64042426522603,
+              "y": 42.40880741589304,
+              "height": 250,
+              "rotation": 24,
+              "glint": 0.375
+            },
+            {
+              "time": 2.3,
+              "x": 35.85370153369836,
+              "y": 35.73530587993443,
+              "height": 250,
+              "rotation": 12,
+              "glint": 0.4166666666666667
+            },
+            {
+              "time": 2.4000000000000004,
+              "x": 42.5,
+              "y": 27.5,
+              "height": 250,
+              "rotation": 0,
+              "glint": 0.4583333333333333
+            },
+            {
+              "time": 2.5,
+              "x": 47.28884452867512,
+              "y": 18.062812160424883,
+              "height": 250,
+              "rotation": -12,
+              "glint": 0.5
+            },
+            {
+              "time": 2.6,
+              "x": 50.010939634395044,
+              "y": 7.836192754450014,
+              "height": 250,
+              "rotation": -24,
+              "glint": 0.5416666666666666
+            },
+            {
+              "time": 2.7,
+              "x": 47.28884452867512,
+              "y": 18.062812160424883,
+              "height": 250,
+              "rotation": -12,
+              "glint": 0.5833333333333334
+            },
+            {
+              "time": 2.8,
+              "x": 42.5,
+              "y": 27.5,
+              "height": 250,
+              "rotation": 0,
+              "glint": 0.625
+            },
+            {
+              "time": 2.9000000000000004,
+              "x": 35.85370153369836,
+              "y": 35.73530587993443,
+              "height": 250,
+              "rotation": 12,
+              "glint": 0.6666666666666666
+            },
+            {
+              "time": 3.0,
+              "x": 27.64042426522603,
+              "y": 42.40880741589304,
+              "height": 250,
+              "rotation": 24,
+              "glint": 0.7083333333333334
+            },
+            {
+              "time": 3.1,
+              "x": 35.85370153369836,
+              "y": 35.73530587993443,
+              "height": 250,
+              "rotation": 12,
+              "glint": 0.75
+            },
+            {
+              "time": 3.2,
+              "x": 42.5,
+              "y": 27.5,
+              "height": 250,
+              "rotation": 0,
+              "glint": 0.7916666666666666
+            },
+            {
+              "time": 3.3,
+              "x": 47.28884452867512,
+              "y": 18.062812160424883,
+              "height": 250,
+              "rotation": -12,
+              "glint": 0.8333333333333334
+            },
+            {
+              "time": 3.4000000000000004,
+              "x": 50.010939634395044,
+              "y": 7.836192754450014,
+              "height": 250,
+              "rotation": -24,
+              "glint": 0.875
+            },
+            {
+              "time": 3.5,
+              "x": 47.28884452867512,
+              "y": 18.062812160424883,
+              "height": 250,
+              "rotation": -12,
+              "glint": 0.9166666666666666
+            },
+            {
+              "time": 3.6000000000000005,
+              "x": 42.5,
+              "y": 27.5,
+              "height": 250,
+              "rotation": 0,
+              "glint": 0.9583333333333334
+            },
+            {
+              "time": 3.7,
+              "x": 35.85370153369836,
+              "y": 35.73530587993443,
+              "height": 250,
+              "rotation": 12,
+              "glint": 1.0
+            },
+            {
+              "time": 3.8,
+              "x": 27.64042426522603,
+              "y": 42.40880741589304,
+              "height": 250,
+              "rotation": 24,
+              "glint": 1.0
+            },
+            {
+              "time": 3.9000000000000004,
+              "x": 35.85370153369836,
+              "y": 35.73530587993443,
+              "height": 250,
+              "rotation": 12,
+              "glint": 1.0
+            },
+            {
+              "time": 4.0,
+              "x": 42.5,
+              "y": 27.5,
+              "height": 250,
+              "rotation": 0,
+              "glint": 1.0
+            },
+            {
+              "time": 4.1000000000000005,
+              "x": 47.28884452867512,
+              "y": 18.062812160424883,
+              "height": 250,
+              "rotation": -12,
+              "glint": 1.0
+            },
+            {
+              "time": 4.2,
+              "x": 50.010939634395044,
+              "y": 7.836192754450014,
+              "height": 250,
+              "rotation": -24,
+              "glint": 1.0
+            },
+            {
+              "time": 4.3,
+              "x": 47.28884452867512,
+              "y": 18.062812160424883,
+              "height": 250,
+              "rotation": -12,
+              "glint": 1.0
+            },
+            {
+              "time": 4.4,
+              "x": 42.5,
+              "y": 27.5,
+              "height": 250,
+              "rotation": 0,
+              "glint": 1.0
+            },
+            {
+              "time": 5.0,
+              "x": 42.5,
+              "y": 27.5,
+              "height": 250,
+              "rotation": 0,
+              "glint": 1.0
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "emote",
+            "start": 3.6,
+            "end": 4.9,
+            "actor": "cowboy",
+            "emote": "!"
+          }
+        ],
+        "background": {
+          "preset": "national_park",
+          "weather": "clear"
+        },
+        "index": 0
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 5.0,
+        "end_time": 10.0,
+        "characters_present": [
+          "horse",
+          "wagon",
+          "cowboy"
+        ],
+        "poses": {
+          "horse": [
+            {
+              "time": 5.0,
+              "x": 250,
+              "y": 830,
+              "height": 230
+            },
+            {
+              "time": 9.5,
+              "x": 470,
+              "y": 830,
+              "height": 230
+            },
+            {
+              "time": 10.0,
+              "x": 470,
+              "y": 830,
+              "height": 230
+            }
+          ],
+          "wagon": [
+            {
+              "time": 5.0,
+              "x": 100,
+              "y": 830,
+              "height": 200
+            },
+            {
+              "time": 9.5,
+              "x": 320,
+              "y": 830,
+              "height": 200
+            },
+            {
+              "time": 10.0,
+              "x": 320,
+              "y": 830,
+              "height": 200
+            }
+          ],
+          "cowboy": [
+            {
+              "time": 5.0,
+              "x": 250,
+              "y": 830,
+              "height": 190,
+              "outfit": "cowboy",
+              "expression": "happy"
+            },
+            {
+              "time": 10.0,
+              "x": 470,
+              "y": 830,
+              "height": 190,
+              "outfit": "cowboy",
+              "expression": "happy"
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "ride",
+            "start": 5.0,
+            "end": 10.0,
+            "target": "horse",
+            "actor": "cowboy",
+            "seat": "seat",
+            "hold": true
+          }
+        ],
+        "background": {
+          "preset": "wild_west_town",
+          "weather": "clear"
+        },
+        "index": 1
+      }
+    ],
+    "cues": [
+      {
+        "start": 0.5,
+        "end": 4.5,
+        "character_id": "cowboy",
+        "text": "Bên bờ suối mát lành, chiếc chảo đãi vàng nhịp nhàng gạn sỏi đá hé lộ những hạt vàng lấp lánh ánh kim!",
+        "expression": "happy"
+      },
+      {
+        "start": 5.5,
+        "end": 9.5,
+        "character_id": "cowboy",
+        "text": "Đoàn xe ngựa thùng vượt dặm đường viễn Tây tiến vào thị trấn rộn rã dưới nắng chiều rực rỡ!",
+        "expression": "happy"
+      }
+    ]
+  },
+  {
+    "id": "johnny_appleseed",
+    "name": "44 · Huyền thoại Johnny Appleseed: Gieo hạt lành nên rừng táo",
+    "renderer": "native-vector-v1",
+    "fidelity": "technical-demo",
+    "note": "Mẫu kỹ thuật Phase S: Người gieo những hạt táo mầm xanh vươn mình thành cổ thụ trĩu quả ngọt ngào cho thế hệ mai sau.",
+    "duration": 10.0,
+    "characters": [
+      {
+        "id": "johnny",
+        "name": "Cô giáo",
+        "asset": "chibi_teacher",
+        "outfit": "farmer_overalls"
+      },
+      {
+        "id": "seed",
+        "name": "Hạt đậu",
+        "asset": "seed"
+      },
+      {
+        "id": "apple_tree",
+        "name": "Cây táo",
+        "asset": "apple_tree"
+      },
+      {
+        "id": "kid",
+        "name": "Bé mầm non",
+        "asset": "chibi_kid"
+      },
+      {
+        "id": "picked_apple",
+        "name": "Táo",
+        "asset": "apple",
+        "face": false
+      }
+    ],
+    "scenes": [
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 0,
+        "end_time": 5.0,
+        "characters_present": [
+          "johnny",
+          "seed",
+          "apple_tree"
+        ],
+        "poses": {
+          "johnny": [
+            {
+              "time": 0,
+              "x": 40,
+              "y": 830,
+              "height": 220,
+              "walk": 1.0,
+              "expression": "neutral",
+              "outfit": "farmer_overalls"
+            },
+            {
+              "time": 2.0,
+              "x": 210,
+              "y": 830,
+              "height": 220,
+              "walk": 0.0,
+              "expression": "happy",
+              "outfit": "farmer_overalls"
+            },
+            {
+              "time": 5.0,
+              "x": 210,
+              "y": 830,
+              "height": 220,
+              "walk": 0.0,
+              "expression": "happy",
+              "outfit": "farmer_overalls"
+            }
+          ],
+          "seed": [
+            {
+              "time": 0,
+              "x": 40,
+              "y": 830,
+              "height": 70
+            },
+            {
+              "time": 1.5,
+              "x": 250,
+              "y": 830,
+              "height": 70
+            },
+            {
+              "time": 5.0,
+              "x": 250,
+              "y": 830,
+              "height": 70
+            }
+          ],
+          "apple_tree": [
+            {
+              "time": 0.0,
+              "x": 400,
+              "y": 810,
+              "height": 300,
+              "growth": 0.1,
+              "fruits": 0
+            },
+            {
+              "time": 3.0,
+              "x": 400,
+              "y": 810,
+              "height": 300,
+              "growth": 0.55,
+              "fruits": 0
+            },
+            {
+              "time": 4.8,
+              "x": 400,
+              "y": 810,
+              "height": 300,
+              "growth": 1.0,
+              "fruits": 6
+            },
+            {
+              "time": 5.0,
+              "x": 400,
+              "y": 810,
+              "height": 300,
+              "growth": 1.0,
+              "fruits": 6
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "grow_fast",
+            "start": 1.8,
+            "end": 4.8,
+            "target": "apple_tree"
+          }
+        ],
+        "background": {
+          "preset": "national_park",
+          "weather": "clear"
+        },
+        "index": 0
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 5.0,
+        "end_time": 10.0,
+        "characters_present": [
+          "apple_tree",
+          "kid",
+          "johnny",
+          "picked_apple"
+        ],
+        "poses": {
+          "apple_tree": [
+            {
+              "time": 5.0,
+              "x": 190,
+              "y": 810,
+              "height": 300,
+              "growth": 1,
+              "fruits": 6
+            },
+            {
+              "time": 5.6,
+              "x": 190,
+              "y": 810,
+              "height": 300,
+              "growth": 1,
+              "fruits": 5
+            },
+            {
+              "time": 10.0,
+              "x": 190,
+              "y": 810,
+              "height": 300,
+              "growth": 1.0,
+              "fruits": 5
+            }
+          ],
+          "kid": [
+            {
+              "time": 5.0,
+              "x": 318,
+              "y": 830,
+              "height": 240,
+              "expression": "happy"
+            },
+            {
+              "time": 10.0,
+              "x": 318,
+              "y": 830,
+              "height": 240,
+              "expression": "happy"
+            }
+          ],
+          "johnny": [
+            {
+              "time": 5.0,
+              "x": 640,
+              "y": 830,
+              "height": 220,
+              "walk": 1.0,
+              "expression": "happy",
+              "outfit": "farmer_overalls",
+              "flip": true
+            },
+            {
+              "time": 8.0,
+              "x": 470,
+              "y": 830,
+              "height": 220,
+              "walk": 0.0,
+              "expression": "happy",
+              "outfit": "farmer_overalls",
+              "flip": true
+            },
+            {
+              "time": 10.0,
+              "x": 470,
+              "y": 830,
+              "height": 220,
+              "walk": 0.0,
+              "expression": "happy",
+              "outfit": "farmer_overalls",
+              "flip": true
+            }
+          ],
+          "picked_apple": [
+            {
+              "time": 5.6,
+              "x": 280.0,
+              "y": 603.0,
+              "height": 42.0
+            },
+            {
+              "time": 9.6,
+              "x": 280.0,
+              "y": 603.0,
+              "height": 42.0
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "pick",
+            "actor": "kid",
+            "target": "apple_tree",
+            "target_anchor": "fruit_6",
+            "actor_anchor": "hand_l",
+            "start": 5.0,
+            "end": 6.0,
+            "contact": 5.6
+          },
+          {
+            "type": "grip",
+            "actor": "kid",
+            "target": "picked_apple",
+            "actor_anchor": "hand_l",
+            "start": 5.6,
+            "end": 9.6
+          },
+          {
+            "type": "emote",
+            "start": 7.5,
+            "end": 9.5,
+            "actor": "kid",
+            "emote": "heart"
+          }
+        ],
+        "background": {
+          "preset": "suburb_backyard",
+          "weather": "clear"
+        },
+        "index": 1
+      }
+    ],
+    "cues": [
+      {
+        "start": 0.5,
+        "end": 4.5,
+        "character_id": "johnny",
+        "text": "Johnny gieo từng hạt mầm nhỏ xuống lòng đất lành, chẳng mấy chốc cây non đã vươn mình thành rặng táo trù phú!",
+        "expression": "happy"
+      },
+      {
+        "start": 5.5,
+        "end": 9.5,
+        "character_id": "kid",
+        "text": "Những chùm táo đỏ chín mọng ngọt lành được hái trao tay, gửi gắm niềm vui và hy vọng khắp mọi miền!",
+        "expression": "happy"
+      }
+    ]
+  },
+  {
+    "id": "water_cycle",
+    "name": "45 · Vòng tuần hoàn của nước: Từ đại dương đến mây và mưa",
+    "renderer": "native-vector-v1",
+    "fidelity": "technical-demo",
+    "note": "Mẫu kỹ thuật Phase T: Vòng tuần hoàn của nước trong tự nhiên với giọt nước chibi bốc hơi từ biển lên mây, mây mưa đổ xuống sườn núi và cầu vồng 7 màu hiện ra.",
+    "duration": 15.0,
+    "characters": [
+      {
+        "id": "drop",
+        "name": "Giọt nước tuần hoàn chibi",
+        "asset": "raindrop_chibi"
+      },
+      {
+        "id": "cloud",
+        "name": "Đám mây thời tiết",
+        "asset": "cloud"
+      },
+      {
+        "id": "sun",
+        "name": "Mặt trời rực rỡ",
+        "asset": "sun"
+      },
+      {
+        "id": "rainbow",
+        "name": "Cầu vồng 7 màu",
+        "asset": "rainbow"
+      }
+    ],
+    "scenes": [
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 0,
+        "end_time": 5.0,
+        "characters_present": [
+          "sun",
+          "cloud",
+          "drop"
+        ],
+        "poses": {
+          "sun": [
+            {
+              "time": 0,
+              "x": 100,
+              "y": 240,
+              "height": 150
+            },
+            {
+              "time": 5.0,
+              "x": 100,
+              "y": 240,
+              "height": 150
+            }
+          ],
+          "cloud": [
+            {
+              "time": 0,
+              "x": 340,
+              "y": 320,
+              "height": 180,
+              "opacity": 0.3,
+              "rain": 0.0
+            },
+            {
+              "time": 5.0,
+              "x": 340,
+              "y": 320,
+              "height": 180,
+              "opacity": 0.9,
+              "rain": 0.0
+            }
+          ],
+          "drop": [
+            {
+              "time": 0,
+              "x": 100,
+              "y": 780,
+              "height": 140,
+              "expression": "happy"
+            },
+            {
+              "time": 2.5,
+              "x": 160,
+              "y": 600,
+              "height": 140,
+              "expression": "happy"
+            },
+            {
+              "time": 5.0,
+              "x": 220,
+              "y": 420,
+              "height": 140,
+              "expression": "happy"
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "evaporate",
+            "start": 0.5,
+            "end": 4.5,
+            "actor": "drop"
+          }
+        ],
+        "background": {
+          "preset": "water_cycle_valley",
+          "no_sun": true,
+          "weather": "clear"
+        },
+        "index": 0
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 5.0,
+        "end_time": 10.0,
+        "characters_present": [
+          "sun",
+          "cloud",
+          "drop"
+        ],
+        "poses": {
+          "sun": [
+            {
+              "time": 5.0,
+              "x": 100,
+              "y": 240,
+              "height": 150
+            },
+            {
+              "time": 10.0,
+              "x": 100,
+              "y": 240,
+              "height": 150
+            }
+          ],
+          "cloud": [
+            {
+              "time": 5.0,
+              "x": 380,
+              "y": 360,
+              "height": 190,
+              "rain": 0.0
+            },
+            {
+              "time": 7.5,
+              "x": 380,
+              "y": 360,
+              "height": 190,
+              "rain": 0.5
+            },
+            {
+              "time": 10.0,
+              "x": 380,
+              "y": 360,
+              "height": 190,
+              "rain": 1.0
+            }
+          ],
+          "drop": [
+            {
+              "time": 5.0,
+              "x": 380,
+              "y": 360,
+              "height": 140,
+              "expression": "surprised"
+            },
+            {
+              "time": 7.5,
+              "x": 410,
+              "y": 540,
+              "height": 140,
+              "expression": "happy"
+            },
+            {
+              "time": 10.0,
+              "x": 440,
+              "y": 720,
+              "height": 140,
+              "expression": "happy"
+            }
+          ]
+        },
+        "actions": [],
+        "background": {
+          "preset": "water_cycle_valley",
+          "no_sun": true,
+          "weather": "rain"
+        },
+        "index": 1
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 10.0,
+        "end_time": 15.0,
+        "characters_present": [
+          "sun",
+          "drop",
+          "rainbow"
+        ],
+        "poses": {
+          "sun": [
+            {
+              "time": 10.0,
+              "x": 100,
+              "y": 240,
+              "height": 150
+            },
+            {
+              "time": 15.0,
+              "x": 100,
+              "y": 240,
+              "height": 150
+            }
+          ],
+          "drop": [
+            {
+              "time": 10.0,
+              "x": 440,
+              "y": 720,
+              "height": 140,
+              "expression": "happy"
+            },
+            {
+              "time": 12.5,
+              "x": 280,
+              "y": 750,
+              "height": 140,
+              "expression": "happy"
+            },
+            {
+              "time": 15.0,
+              "x": 120,
+              "y": 780,
+              "height": 140,
+              "expression": "happy"
+            }
+          ],
+          "rainbow": [
+            {
+              "time": 10.0,
+              "x": 288,
+              "y": 700,
+              "height": 260,
+              "growth": 0.0
+            },
+            {
+              "time": 12.5,
+              "x": 288,
+              "y": 700,
+              "height": 260,
+              "growth": 0.5
+            },
+            {
+              "time": 15.0,
+              "x": 288,
+              "y": 700,
+              "height": 260,
+              "growth": 1.0
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "emote",
+            "start": 11.5,
+            "end": 14.5,
+            "actor": "drop",
+            "emote": "heart"
+          }
+        ],
+        "background": {
+          "preset": "water_cycle_valley",
+          "no_sun": true,
+          "weather": "clear"
+        },
+        "index": 2
+      }
+    ],
+    "cues": [
+      {
+        "start": 0.5,
+        "end": 4.5,
+        "character_id": "drop",
+        "text": "Dưới ánh nắng mặt trời ấm áp, giọt nước bốc hơi nhẹ nhàng bay vút lên bầu trời cao!",
+        "expression": "happy"
+      },
+      {
+        "start": 5.5,
+        "end": 9.5,
+        "character_id": "drop",
+        "text": "Hơi nước ngưng tụ thành những đám mây trĩu nặng rồi tạo thành từng giọt mưa tưới mát núi rừng!",
+        "expression": "happy"
+      },
+      {
+        "start": 10.5,
+        "end": 14.5,
+        "character_id": "drop",
+        "text": "Nước theo dòng sông hiền hoà chảy về biển cả bao la, vẽ nên chiếc cầu vồng bảy màu rực rỡ!",
+        "expression": "happy"
+      }
+    ]
+  },
+  {
+    "id": "moon_phases",
+    "name": "46 · Các pha của Mặt Trăng: Từ trăng non đến trăng rằm",
+    "renderer": "native-vector-v1",
+    "fidelity": "technical-demo",
+    "note": "Mẫu kỹ thuật Phase T: Chu kỳ các pha của Mặt Trăng qua ống kính thiên văn qua các đêm.",
+    "duration": 12.0,
+    "characters": [
+      {
+        "id": "child",
+        "name": "Bé trai học sinh",
+        "asset": "chibi_boy"
+      },
+      {
+        "id": "telescope",
+        "name": "Kính viễn vọng",
+        "asset": "telescope",
+        "attach_to": {
+          "id": "child",
+          "anchor": "hand_r"
+        }
+      },
+      {
+        "id": "moon",
+        "name": "Mặt trăng các pha",
+        "asset": "moon"
+      }
+    ],
+    "scenes": [
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 0,
+        "end_time": 6.0,
+        "characters_present": [
+          "child",
+          "telescope",
+          "moon"
+        ],
+        "poses": {
+          "child": [
+            {
+              "time": 0,
+              "x": 140,
+              "y": 810,
+              "height": 230,
+              "expression": "surprised",
+              "hand_r_x": 22,
+              "hand_r_y": -60
+            },
+            {
+              "time": 6.0,
+              "x": 140,
+              "y": 810,
+              "height": 230,
+              "expression": "happy",
+              "hand_r_x": 22,
+              "hand_r_y": -60
+            }
+          ],
+          "telescope": [
+            {
+              "time": 0,
+              "x": 14.571953894557296,
+              "y": 19.496362729875962,
+              "height": 170,
+              "rotation": -12
+            },
+            {
+              "time": 6.0,
+              "x": 14.571953894557296,
+              "y": 19.496362729875962,
+              "height": 170,
+              "rotation": -12
+            }
+          ],
+          "moon": [
+            {
+              "time": 0,
+              "x": 420,
+              "y": 360,
+              "height": 180,
+              "phase": 0.0
+            },
+            {
+              "time": 2.5,
+              "x": 420,
+              "y": 360,
+              "height": 180,
+              "phase": 0.25
+            },
+            {
+              "time": 6.0,
+              "x": 420,
+              "y": 360,
+              "height": 180,
+              "phase": 0.5
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "emote",
+            "start": 1.5,
+            "end": 4.5,
+            "actor": "child",
+            "emote": "idea"
+          }
+        ],
+        "background": {
+          "preset": "alpine_meadow",
+          "weather": "clear",
+          "time": "night"
+        },
+        "index": 0
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 6.0,
+        "end_time": 12.0,
+        "characters_present": [
+          "child",
+          "telescope",
+          "moon"
+        ],
+        "poses": {
+          "child": [
+            {
+              "time": 6.0,
+              "x": 140,
+              "y": 810,
+              "height": 230,
+              "expression": "happy",
+              "hand_r_x": 22,
+              "hand_r_y": -60
+            },
+            {
+              "time": 9.0,
+              "x": 310,
+              "y": 810,
+              "height": 230,
+              "expression": "happy",
+              "hand_r_x": 22,
+              "hand_r_y": -60
+            },
+            {
+              "time": 12.0,
+              "x": 310,
+              "y": 810,
+              "height": 230,
+              "expression": "happy",
+              "hand_r_x": 22,
+              "hand_r_y": -60
+            }
+          ],
+          "telescope": [
+            {
+              "time": 6.0,
+              "x": 14.571953894557296,
+              "y": 19.496362729875962,
+              "height": 170,
+              "rotation": -12
+            },
+            {
+              "time": 12.0,
+              "x": 14.571953894557296,
+              "y": 19.496362729875962,
+              "height": 170,
+              "rotation": -12
+            }
+          ],
+          "moon": [
+            {
+              "time": 6.0,
+              "x": 420,
+              "y": 360,
+              "height": 180,
+              "phase": 0.5
+            },
+            {
+              "time": 9.0,
+              "x": 420,
+              "y": 360,
+              "height": 180,
+              "phase": 0.75
+            },
+            {
+              "time": 12.0,
+              "x": 420,
+              "y": 360,
+              "height": 180,
+              "phase": 1.0
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "emote",
+            "start": 7.5,
+            "end": 11.0,
+            "actor": "child",
+            "emote": "heart"
+          }
+        ],
+        "background": {
+          "preset": "alpine_meadow",
+          "weather": "clear",
+          "time": "night"
+        },
+        "index": 1
+      }
+    ],
+    "cues": [
+      {
+        "start": 0.5,
+        "end": 5.5,
+        "character_id": "child",
+        "text": "Qua kính viễn vọng, bé quan sát vầng trăng khuyết đầu tháng dần tròn vành vạnh đêm rằm!",
+        "expression": "surprised"
+      },
+      {
+        "start": 6.5,
+        "end": 11.5,
+        "character_id": "child",
+        "text": "Rồi trăng lại khuyết dần sang phía ngược lại, hoàn thành trọn vẹn một chu kỳ kỳ diệu của tự nhiên!",
+        "expression": "happy"
+      }
+    ]
+  },
+  {
+    "id": "volcano",
+    "name": "47 · Núi lửa địa chất: Cấu tạo macma và phun trào an toàn",
+    "renderer": "native-vector-v1",
+    "fidelity": "technical-demo",
+    "note": "Mẫu kỹ thuật Phase T: Khám phá địa chất núi lửa với mặt cắt buồng macma và ống dẫn dung nham, nhà khoa học quan sát từ khoảng cách an toàn, không có thương vong (§31).",
+    "duration": 12.0,
+    "characters": [
+      {
+        "id": "volcano",
+        "name": "Núi lửa địa chất",
+        "asset": "volcano"
+      },
+      {
+        "id": "scientist",
+        "name": "Bé gái học sinh",
+        "asset": "chibi_girl"
+      },
+      {
+        "id": "thermo",
+        "name": "Nhiệt kế điện tử",
+        "asset": "thermometer",
+        "attach_to": {
+          "id": "scientist",
+          "anchor": "hand_r"
+        }
+      }
+    ],
+    "scenes": [
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 0,
+        "end_time": 6.0,
+        "characters_present": [
+          "volcano",
+          "scientist",
+          "thermo"
+        ],
+        "poses": {
+          "volcano": [
+            {
+              "time": 0,
+              "x": 160,
+              "y": 810,
+              "height": 280,
+              "cutaway": 0.0,
+              "erupt": 0.0
+            },
+            {
+              "time": 3.0,
+              "x": 160,
+              "y": 810,
+              "height": 280,
+              "cutaway": 0.5,
+              "erupt": 0.0
+            },
+            {
+              "time": 6.0,
+              "x": 160,
+              "y": 810,
+              "height": 280,
+              "cutaway": 1.0,
+              "erupt": 0.0
+            }
+          ],
+          "scientist": [
+            {
+              "time": 0,
+              "x": 450,
+              "y": 810,
+              "height": 230,
+              "outfit": "scientist",
+              "expression": "neutral"
+            },
+            {
+              "time": 6.0,
+              "x": 450,
+              "y": 810,
+              "height": 230,
+              "outfit": "scientist",
+              "expression": "happy"
+            }
+          ],
+          "thermo": [
+            {
+              "time": 0,
+              "x": 33.218706420505576,
+              "y": 91.26764579383135,
+              "height": 150,
+              "rotation": -20
+            },
+            {
+              "time": 6.0,
+              "x": 33.218706420505576,
+              "y": 91.26764579383135,
+              "height": 150,
+              "rotation": -20
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "emote",
+            "start": 2.0,
+            "end": 5.0,
+            "actor": "scientist",
+            "emote": "idea"
+          }
+        ],
+        "background": {
+          "preset": "volcano_island",
+          "weather": "clear"
+        },
+        "index": 0
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 6.0,
+        "end_time": 12.0,
+        "characters_present": [
+          "volcano",
+          "scientist",
+          "thermo"
+        ],
+        "poses": {
+          "volcano": [
+            {
+              "time": 6.0,
+              "x": 160,
+              "y": 810,
+              "height": 280,
+              "cutaway": 0.0,
+              "erupt": 0.0
+            },
+            {
+              "time": 9.0,
+              "x": 160,
+              "y": 810,
+              "height": 280,
+              "cutaway": 0.0,
+              "erupt": 0.5
+            },
+            {
+              "time": 12.0,
+              "x": 160,
+              "y": 810,
+              "height": 280,
+              "cutaway": 0.0,
+              "erupt": 1.0
+            }
+          ],
+          "scientist": [
+            {
+              "time": 6.0,
+              "x": 450,
+              "y": 810,
+              "height": 230,
+              "outfit": "scientist",
+              "expression": "surprised"
+            },
+            {
+              "time": 9.0,
+              "x": 480,
+              "y": 810,
+              "height": 230,
+              "outfit": "scientist",
+              "expression": "happy"
+            },
+            {
+              "time": 12.0,
+              "x": 480,
+              "y": 810,
+              "height": 230,
+              "outfit": "scientist",
+              "expression": "happy"
+            }
+          ],
+          "thermo": [
+            {
+              "time": 6.0,
+              "x": 33.218706420505576,
+              "y": 91.26764579383135,
+              "height": 150,
+              "rotation": -20
+            },
+            {
+              "time": 12.0,
+              "x": 33.218706420505576,
+              "y": 91.26764579383135,
+              "height": 150,
+              "rotation": -20
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "emote",
+            "start": 8.5,
+            "end": 11.5,
+            "actor": "scientist",
+            "emote": "heart"
+          }
+        ],
+        "background": {
+          "preset": "volcano_island",
+          "weather": "clear"
+        },
+        "index": 1
+      }
+    ],
+    "cues": [
+      {
+        "start": 0.5,
+        "end": 5.5,
+        "character_id": "scientist",
+        "text": "Mặt cắt địa chất hiển hiện buồng macma sâu thẳm cùng các ống dẫn dung nham đỏ rực trong lòng đất!",
+        "expression": "happy"
+      },
+      {
+        "start": 6.5,
+        "end": 11.5,
+        "character_id": "scientist",
+        "text": "Từ cự ly an toàn, nhà khoa học ghi nhận khoảnh khắc núi lửa phun trào tạo nên những tầng đất mới kỳ thú!",
+        "expression": "happy"
+      }
+    ]
+  },
+  {
+    "id": "dino_dig",
+    "name": "48 · Khai quật cổ sinh: Bộ xương hoá thạch và chú khủng long T-rex",
+    "renderer": "native-vector-v1",
+    "fidelity": "technical-demo",
+    "note": "Mẫu kỹ thuật Phase T: Khai quật khảo cổ sa thạch phát hiện hoá thạch khủng long, T-rex hiện về qua trí tưởng tượng thân thiện của nhà cổ sinh, không sống cùng thời (§31).",
+    "duration": 12.0,
+    "characters": [
+      {
+        "id": "paleo",
+        "name": "Bé trai học sinh",
+        "asset": "chibi_boy"
+      },
+      {
+        "id": "shovel",
+        "name": "Cái xẻng",
+        "asset": "shovel",
+        "attach_to": {
+          "id": "paleo",
+          "anchor": "hand_r"
+        }
+      },
+      {
+        "id": "fossil",
+        "name": "Hoá thạch khủng long",
+        "asset": "fossil"
+      },
+      {
+        "id": "trex",
+        "name": "Khủng long bạo chúa (T-Rex)",
+        "asset": "trex"
+      }
+    ],
+    "scenes": [
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 0,
+        "end_time": 6.0,
+        "characters_present": [
+          "paleo",
+          "shovel",
+          "fossil"
+        ],
+        "poses": {
+          "paleo": [
+            {
+              "time": 0,
+              "x": 180,
+              "y": 810,
+              "height": 230,
+              "outfit": "paleontologist",
+              "expression": "neutral"
+            },
+            {
+              "time": 6.0,
+              "x": 180,
+              "y": 810,
+              "height": 230,
+              "outfit": "paleontologist",
+              "expression": "happy"
+            }
+          ],
+          "shovel": [
+            {
+              "time": 0,
+              "x": -34.992792072129916,
+              "y": 75.04228476663461,
+              "height": 90,
+              "rotation": 25
+            },
+            {
+              "time": 6.0,
+              "x": -34.992792072129916,
+              "y": 75.04228476663461,
+              "height": 90,
+              "rotation": 25
+            }
+          ],
+          "fossil": [
+            {
+              "time": 0,
+              "x": 330,
+              "y": 810,
+              "height": 150,
+              "exposed": 0.0
+            },
+            {
+              "time": 3.0,
+              "x": 330,
+              "y": 810,
+              "height": 150,
+              "exposed": 0.5
+            },
+            {
+              "time": 6.0,
+              "x": 330,
+              "y": 810,
+              "height": 150,
+              "exposed": 1.0
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "dig",
+            "start": 0.5,
+            "end": 5.5,
+            "target": "fossil",
+            "actor": "shovel"
+          }
+        ],
+        "background": {
+          "preset": "dig_site",
+          "weather": "clear"
+        },
+        "index": 0
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 6.0,
+        "end_time": 12.0,
+        "characters_present": [
+          "paleo",
+          "shovel",
+          "fossil",
+          "trex"
+        ],
+        "poses": {
+          "paleo": [
+            {
+              "time": 6.0,
+              "x": 180,
+              "y": 810,
+              "height": 230,
+              "outfit": "paleontologist",
+              "expression": "happy"
+            },
+            {
+              "time": 8.5,
+              "x": 70,
+              "y": 810,
+              "height": 230,
+              "outfit": "paleontologist",
+              "expression": "happy"
+            },
+            {
+              "time": 12.0,
+              "x": 70,
+              "y": 810,
+              "height": 230,
+              "outfit": "paleontologist",
+              "expression": "happy"
+            }
+          ],
+          "shovel": [
+            {
+              "time": 6.0,
+              "x": -34.992792072129916,
+              "y": 75.04228476663461,
+              "height": 90,
+              "rotation": 25
+            },
+            {
+              "time": 12.0,
+              "x": -34.992792072129916,
+              "y": 75.04228476663461,
+              "height": 90,
+              "rotation": 25
+            }
+          ],
+          "fossil": [
+            {
+              "time": 6.0,
+              "x": 330,
+              "y": 810,
+              "height": 150,
+              "exposed": 1.0
+            },
+            {
+              "time": 7.0,
+              "x": 190,
+              "y": 830,
+              "height": 120,
+              "exposed": 1.0
+            },
+            {
+              "time": 12.0,
+              "x": 190,
+              "y": 830,
+              "height": 120,
+              "exposed": 1.0
+            }
+          ],
+          "trex": [
+            {
+              "time": 6.0,
+              "x": 400,
+              "y": 810,
+              "height": 180,
+              "opacity": 0.0
+            },
+            {
+              "time": 8.0,
+              "x": 400,
+              "y": 810,
+              "height": 180,
+              "opacity": 1.0
+            },
+            {
+              "time": 12.0,
+              "x": 400,
+              "y": 810,
+              "height": 180,
+              "opacity": 1.0
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "emote",
+            "start": 7.5,
+            "end": 11.5,
+            "actor": "trex",
+            "emote": "heart"
+          }
+        ],
+        "background": {
+          "preset": "dig_site",
+          "weather": "clear"
+        },
+        "index": 1
+      }
+    ],
+    "cues": [
+      {
+        "start": 0.5,
+        "end": 5.5,
+        "character_id": "paleo",
+        "text": "Cẩn trọng gạt từng lớp cát sa thạch, hộp sọ hoá thạch khủng long dần lộ diện nguyên vẹn!",
+        "expression": "happy"
+      },
+      {
+        "start": 6.5,
+        "end": 11.5,
+        "character_id": "paleo",
+        "text": "Trong trí tưởng tượng phong phú, chú khủng long bạo chúa T-rex hiện về thật đáng yêu và thân thiện!",
+        "expression": "happy"
+      }
+    ]
+  },
+  {
+    "id": "solar_system_tour",
+    "name": "49 · Du hành Hệ Mặt Trời: Hành trình khám phá 8 hành tinh",
+    "renderer": "native-vector-v1",
+    "fidelity": "technical-demo",
+    "note": "Mẫu kỹ thuật Phase T: Chuyến bay du hành vũ trụ của tên lửa qua đúng thứ tự 8 hành tinh từ Sao Thuỷ, Sao Kim, Trái Đất, Sao Hoả đến Sao Mộc, Sao Thổ, Sao Thiên Vương, Sao Hải Vương.",
+    "duration": 12.0,
+    "characters": [
+      {
+        "id": "ship",
+        "name": "Tên lửa không gian",
+        "asset": "rocket"
+      },
+      {
+        "id": "p1",
+        "name": "Hành tinh Hệ Mặt Trời",
+        "asset": "planet"
+      },
+      {
+        "id": "p2",
+        "name": "Hành tinh Hệ Mặt Trời",
+        "asset": "planet"
+      },
+      {
+        "id": "p3",
+        "name": "Hành tinh Hệ Mặt Trời",
+        "asset": "planet"
+      },
+      {
+        "id": "p4",
+        "name": "Hành tinh Hệ Mặt Trời",
+        "asset": "planet"
+      },
+      {
+        "id": "p5",
+        "name": "Hành tinh Hệ Mặt Trời",
+        "asset": "planet"
+      },
+      {
+        "id": "p6",
+        "name": "Hành tinh Hệ Mặt Trời",
+        "asset": "planet"
+      },
+      {
+        "id": "p7",
+        "name": "Hành tinh Hệ Mặt Trời",
+        "asset": "planet"
+      },
+      {
+        "id": "p8",
+        "name": "Hành tinh Hệ Mặt Trời",
+        "asset": "planet"
+      }
+    ],
+    "scenes": [
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 0,
+        "end_time": 6.0,
+        "characters_present": [
+          "ship",
+          "p1",
+          "p2",
+          "p3",
+          "p4"
+        ],
+        "poses": {
+          "ship": [
+            {
+              "time": 0,
+              "x": -60,
+              "y": 380,
+              "height": 110,
+              "rotation": 90
+            },
+            {
+              "time": 6.0,
+              "x": 600,
+              "y": 380,
+              "height": 110,
+              "rotation": 90
+            }
+          ],
+          "p1": [
+            {
+              "time": 0,
+              "x": 120,
+              "y": 530,
+              "height": 90,
+              "variant": "mercury"
+            },
+            {
+              "time": 6.0,
+              "x": 120,
+              "y": 530,
+              "height": 90,
+              "variant": "mercury"
+            }
+          ],
+          "p2": [
+            {
+              "time": 0,
+              "x": 230,
+              "y": 510,
+              "height": 110,
+              "variant": "venus"
+            },
+            {
+              "time": 6.0,
+              "x": 230,
+              "y": 510,
+              "height": 110,
+              "variant": "venus"
+            }
+          ],
+          "p3": [
+            {
+              "time": 0,
+              "x": 340,
+              "y": 520,
+              "height": 120,
+              "variant": "earth"
+            },
+            {
+              "time": 6.0,
+              "x": 340,
+              "y": 520,
+              "height": 120,
+              "variant": "earth"
+            }
+          ],
+          "p4": [
+            {
+              "time": 0,
+              "x": 450,
+              "y": 500,
+              "height": 100,
+              "variant": "mars"
+            },
+            {
+              "time": 6.0,
+              "x": 450,
+              "y": 500,
+              "height": 100,
+              "variant": "mars"
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "fly",
+            "start": 0.5,
+            "end": 5.5,
+            "actor": "ship"
+          }
+        ],
+        "background": {
+          "preset": "space_orbit",
+          "weather": "clear"
+        },
+        "index": 0
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 6.0,
+        "end_time": 12.0,
+        "characters_present": [
+          "ship",
+          "p5",
+          "p6",
+          "p7",
+          "p8"
+        ],
+        "poses": {
+          "ship": [
+            {
+              "time": 6.0,
+              "x": -60,
+              "y": 350,
+              "height": 110,
+              "rotation": 90
+            },
+            {
+              "time": 12.0,
+              "x": 600,
+              "y": 350,
+              "height": 110,
+              "rotation": 90
+            }
+          ],
+          "p5": [
+            {
+              "time": 6.0,
+              "x": 90,
+              "y": 560,
+              "height": 160,
+              "variant": "jupiter"
+            },
+            {
+              "time": 12.0,
+              "x": 90,
+              "y": 560,
+              "height": 160,
+              "variant": "jupiter"
+            }
+          ],
+          "p6": [
+            {
+              "time": 6.0,
+              "x": 260,
+              "y": 545,
+              "height": 140,
+              "variant": "saturn"
+            },
+            {
+              "time": 12.0,
+              "x": 260,
+              "y": 545,
+              "height": 140,
+              "variant": "saturn"
+            }
+          ],
+          "p7": [
+            {
+              "time": 6.0,
+              "x": 410,
+              "y": 530,
+              "height": 120,
+              "variant": "uranus"
+            },
+            {
+              "time": 12.0,
+              "x": 410,
+              "y": 530,
+              "height": 120,
+              "variant": "uranus"
+            }
+          ],
+          "p8": [
+            {
+              "time": 6.0,
+              "x": 515,
+              "y": 530,
+              "height": 110,
+              "variant": "neptune"
+            },
+            {
+              "time": 12.0,
+              "x": 515,
+              "y": 530,
+              "height": 110,
+              "variant": "neptune"
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "fly",
+            "start": 6.5,
+            "end": 11.5,
+            "actor": "ship"
+          }
+        ],
+        "background": {
+          "preset": "space_orbit",
+          "weather": "clear"
+        },
+        "index": 1
+      }
+    ],
+    "cues": [
+      {
+        "start": 0.5,
+        "end": 5.5,
+        "character_id": "ship",
+        "text": "Tên lửa xuất phát từ quỹ đạo, bay qua bốn hành tinh đất đá: Sao Thuỷ, Sao Kim, Trái Đất và Sao Hoả!",
+        "offscreen": true
+      },
+      {
+        "start": 6.5,
+        "end": 11.5,
+        "character_id": "ship",
+        "text": "Tiếp tục tiến sâu vào không gian qua bốn hành tinh khí khổng lồ: Sao Mộc, Sao Thổ, Sao Thiên Vương và Sao Hải Vương!",
+        "offscreen": true
+      }
+    ]
+  },
+  {
+    "id": "simple_machines",
+    "name": "50 · Máy cơ học đơn giản: Đòn bẩy, ròng rọc và mặt phẳng nghiêng",
+    "renderer": "native-vector-v1",
+    "fidelity": "technical-demo",
+    "note": "Mẫu kỹ thuật Phase T: Khám phá nguyên lý máy cơ học đơn giản giúp nâng và di chuyển vật nặng dễ dàng.",
+    "duration": 12.0,
+    "characters": [
+      {
+        "id": "kid",
+        "name": "Bé mầm non",
+        "asset": "chibi_kid"
+      },
+      {
+        "id": "lever",
+        "name": "Đòn bẩy cơ học",
+        "asset": "lever"
+      },
+      {
+        "id": "stone",
+        "name": "Khối đá xây kim tự tháp",
+        "asset": "stone_block"
+      },
+      {
+        "id": "pulley",
+        "name": "Ròng rọc cơ học",
+        "asset": "pulley"
+      },
+      {
+        "id": "bucket",
+        "name": "Xô hứng",
+        "asset": "bucket"
+      },
+      {
+        "id": "ramp",
+        "name": "Mặt phẳng nghiêng",
+        "asset": "ramp"
+      },
+      {
+        "id": "barrel",
+        "name": "Thùng gỗ tròn",
+        "asset": "barrel"
+      }
+    ],
+    "scenes": [
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 0,
+        "end_time": 6.0,
+        "characters_present": [
+          "lever",
+          "stone",
+          "kid"
+        ],
+        "poses": {
+          "lever": [
+            {
+              "time": 0,
+              "x": 280,
+              "y": 810,
+              "height": 180,
+              "tilt": 15.0
+            },
+            {
+              "time": 1.0,
+              "x": 280,
+              "y": 810,
+              "height": 180,
+              "tilt": 15.0
+            },
+            {
+              "time": 3.0,
+              "x": 280,
+              "y": 810,
+              "height": 180,
+              "tilt": -20.0
+            },
+            {
+              "time": 6.0,
+              "x": 280,
+              "y": 810,
+              "height": 180,
+              "tilt": -20.0
+            }
+          ],
+          "stone": [
+            {
+              "time": 0,
+              "x": 346,
+              "y": 781,
+              "height": 90
+            },
+            {
+              "time": 1.0,
+              "x": 346,
+              "y": 781,
+              "height": 90
+            },
+            {
+              "time": 3.0,
+              "x": 344,
+              "y": 740,
+              "height": 90
+            },
+            {
+              "time": 6.0,
+              "x": 344,
+              "y": 740,
+              "height": 90
+            }
+          ],
+          "kid": [
+            {
+              "time": 0,
+              "x": 150,
+              "y": 810,
+              "height": 220,
+              "expression": "neutral",
+              "hand_r_x": 29.1,
+              "hand_r_y": -29.3
+            },
+            {
+              "time": 1.0,
+              "x": 150,
+              "y": 810,
+              "height": 220,
+              "expression": "neutral",
+              "hand_r_x": 29.1,
+              "hand_r_y": -29.3
+            },
+            {
+              "time": 3.0,
+              "x": 150,
+              "y": 810,
+              "height": 220,
+              "expression": "happy",
+              "hand_r_x": 29.9,
+              "hand_r_y": -10.6
+            },
+            {
+              "time": 6.0,
+              "x": 150,
+              "y": 810,
+              "height": 220,
+              "expression": "happy",
+              "hand_r_x": 29.9,
+              "hand_r_y": -10.6
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "emote",
+            "start": 3.2,
+            "end": 5.8,
+            "actor": "kid",
+            "emote": "idea"
+          }
+        ],
+        "background": {
+          "preset": "water_cycle_valley",
+          "weather": "clear"
+        },
+        "index": 0
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 6.0,
+        "end_time": 12.0,
+        "characters_present": [
+          "pulley",
+          "bucket",
+          "ramp",
+          "barrel",
+          "kid"
+        ],
+        "poses": {
+          "pulley": [
+            {
+              "time": 6.0,
+              "x": 140,
+              "y": 810,
+              "height": 200,
+              "lift": 0.0
+            },
+            {
+              "time": 6.8,
+              "x": 140,
+              "y": 810,
+              "height": 200,
+              "lift": 0.0
+            },
+            {
+              "time": 9.0,
+              "x": 140,
+              "y": 810,
+              "height": 200,
+              "lift": 1.0
+            },
+            {
+              "time": 12.0,
+              "x": 140,
+              "y": 810,
+              "height": 200,
+              "lift": 1.0
+            }
+          ],
+          "bucket": [
+            {
+              "time": 6.0,
+              "x": 158,
+              "y": 813,
+              "height": 60
+            },
+            {
+              "time": 6.8,
+              "x": 158,
+              "y": 813,
+              "height": 60
+            },
+            {
+              "time": 9.0,
+              "x": 158,
+              "y": 729,
+              "height": 60
+            },
+            {
+              "time": 12.0,
+              "x": 158,
+              "y": 729,
+              "height": 60
+            }
+          ],
+          "ramp": [
+            {
+              "time": 6.0,
+              "x": 420,
+              "y": 810,
+              "height": 180
+            },
+            {
+              "time": 12.0,
+              "x": 420,
+              "y": 810,
+              "height": 180
+            }
+          ],
+          "barrel": [
+            {
+              "time": 6.0,
+              "x": 310,
+              "y": 810,
+              "height": 80
+            },
+            {
+              "time": 10.0,
+              "x": 310,
+              "y": 810,
+              "height": 80
+            },
+            {
+              "time": 10.5,
+              "x": 352,
+              "y": 806,
+              "height": 80
+            },
+            {
+              "time": 12.0,
+              "x": 474,
+              "y": 737,
+              "height": 80
+            }
+          ],
+          "kid": [
+            {
+              "time": 6.0,
+              "x": -60,
+              "y": 810,
+              "height": 220,
+              "expression": "happy"
+            },
+            {
+              "time": 6.8,
+              "x": 62,
+              "y": 810,
+              "height": 220,
+              "expression": "happy",
+              "hand_r_x": 27,
+              "hand_r_y": -36
+            },
+            {
+              "time": 9.0,
+              "x": 62,
+              "y": 810,
+              "height": 220,
+              "expression": "happy",
+              "hand_r_x": 27,
+              "hand_r_y": -16
+            },
+            {
+              "time": 10.0,
+              "x": 245,
+              "y": 810,
+              "height": 220,
+              "expression": "happy",
+              "hand_r_x": 24,
+              "hand_r_y": -22
+            },
+            {
+              "time": 10.5,
+              "x": 287,
+              "y": 808,
+              "height": 220,
+              "expression": "happy",
+              "hand_r_x": 24,
+              "hand_r_y": -22
+            },
+            {
+              "time": 12.0,
+              "x": 400,
+              "y": 760,
+              "height": 220,
+              "expression": "happy",
+              "hand_r_x": 24,
+              "hand_r_y": -22
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "emote",
+            "start": 10.8,
+            "end": 11.9,
+            "actor": "kid",
+            "emote": "heart"
+          }
+        ],
+        "background": {
+          "preset": "water_cycle_valley",
+          "weather": "clear"
+        },
+        "index": 1
+      }
+    ],
+    "cues": [
+      {
+        "start": 0.5,
+        "end": 5.5,
+        "character_id": "kid",
+        "text": "Nhờ đòn bẩy, bé chỉ cần ấn nhẹ một đầu là tảng đá lớn phía bên kia đã được bổng lên dễ dàng!",
+        "expression": "happy"
+      },
+      {
+        "start": 6.5,
+        "end": 11.5,
+        "character_id": "kid",
+        "text": "Ròng rọc kéo xô nước lên cao thoăn thoắt, còn con dốc nghiêng giúp lăn thùng gỗ lên nhẹ nhàng vô cùng!",
+        "expression": "happy"
+      }
+    ]
   }
 ]

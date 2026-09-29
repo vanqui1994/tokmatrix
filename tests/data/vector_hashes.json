@@ -3772,6 +3772,216 @@
       "e5406bef4ea5d287",
       "e5406bef4ea5d287",
       "e5406bef4ea5d287"
+    ],
+    "planet": [
+      "d9a59cefa62e1d34",
+      "d9a59cefa62e1d34",
+      "d9a59cefa62e1d34",
+      "d9a59cefa62e1d34",
+      "1211bbef483b10f0"
+    ],
+    "sun": [
+      "9bd7f6effb97c1b5",
+      "a85f31efef1b0b4d",
+      "7ccaa7ef0b239ad5",
+      "1a3490efa95a7778",
+      "899c73efb03fa1e8"
+    ],
+    "moon": [
+      "bdd0baef36530f89",
+      "bdd0baef36530f89",
+      "bdd0baef36530f89",
+      "bdd0baef36530f89",
+      "066472effa37fef1"
+    ],
+    "comet": [
+      "f7615bef350bb100",
+      "96b151efc481cc67",
+      "b55850efcd3b30da",
+      "6efdf2ef9ef4813d",
+      "c1d291ef851d0da4"
+    ],
+    "satellite": [
+      "bd1b38ef7efb6086",
+      "bd1b38ef7efb6086",
+      "bd1b38ef7efb6086",
+      "bd1b38ef7efb6086",
+      "bd1b38ef7efb6086"
+    ],
+    "space_station": [
+      "d31259ef2a83b825",
+      "d31259ef2a83b825",
+      "d31259ef2a83b825",
+      "d31259ef2a83b825",
+      "d31259ef2a83b825"
+    ],
+    "cloud": [
+      "951b48ef9d963777",
+      "951b48ef9d963777",
+      "951b48ef9d963777",
+      "951b48ef9d963777",
+      "d0b0e3efeb668374"
+    ],
+    "raindrop_chibi": [
+      "2409bcefb0e254ca",
+      "2409bcefb0e254ca",
+      "2409bcefb0e254ca",
+      "2409bcefb0e254ca",
+      "58e4deef28512cbf"
+    ],
+    "rainbow": [
+      "9d09fcef40c21d5e",
+      "9d09fcef40c21d5e",
+      "9d09fcef40c21d5e",
+      "9d09fcef40c21d5e",
+      "9d09fcef40c21d5e"
+    ],
+    "volcano": [
+      "128ef7ef832b9d75",
+      "128ef7ef832b9d75",
+      "128ef7ef832b9d75",
+      "128ef7ef832b9d75",
+      "128ef7ef832b9d75"
+    ],
+    "earth_cutaway": [
+      "6c961defc1b4d6ff",
+      "6c961defc1b4d6ff",
+      "6c961defc1b4d6ff",
+      "6c961defc1b4d6ff",
+      "6c961defc1b4d6ff"
+    ],
+    "fossil": [
+      "7e6661ef9fc73995",
+      "7e6661ef9fc73995",
+      "7e6661ef9fc73995",
+      "7e6661ef9fc73995",
+      "7e6661ef9fc73995"
+    ],
+    "lever": [
+      "a9b9faefea368455",
+      "a9b9faefea368455",
+      "a9b9faefea368455",
+      "a9b9faefea368455",
+      "a9b9faefea368455"
+    ],
+    "pulley": [
+      "2a873def73fa325c",
+      "2a873def73fa325c",
+      "2a873def73fa325c",
+      "2a873def73fa325c",
+      "2a873def73fa325c"
+    ],
+    "ramp": [
+      "516498efca54e517",
+      "516498efca54e517",
+      "516498efca54e517",
+      "516498efca54e517",
+      "516498efca54e517"
+    ],
+    "wheel_axle": [
+      "36874eef44b9a2c9",
+      "36874eef44b9a2c9",
+      "36874eef44b9a2c9",
+      "36874eef44b9a2c9",
+      "36874eef44b9a2c9"
+    ],
+    "bison": [
+      "c4da77ef083a2e71",
+      "c6f46fef656aad09",
+      "3ed223efbd106aee",
+      "521466efba1a200b",
+      "d6ac67ef9106b3a0"
+    ],
+    "bear": [
+      "f69a58ef7c124898",
+      "6cd170ef73df8b8a",
+      "621f11efef171707",
+      "068c0eefa39815b9",
+      "d7ab4cefeb9a2aa7"
+    ],
+    "prairie_dog": [
+      "b95c54ef5512b970",
+      "9b577bef4e097ab9",
+      "141ef5efa63b4e92",
+      "e21c9eefd9be78cc",
+      "176b46ef647d95f2"
+    ],
+    "raccoon": [
+      "65352cefa018145d",
+      "cd161beff293b79f",
+      "a0b638ef713e9570",
+      "9fc45def58f4fca7",
+      "5f9da6ef3a3039db"
+    ],
+    "salmon": [
+      "dce15def5a4d2d05",
+      "2b490eef97dbc97e",
+      "2e3fdaef885a4239",
+      "e5a91bef63e6da4d",
+      "cc0044efa7a5caf0"
+    ],
+    "jack_o_lantern": [
+      "d0b384ef93317695",
+      "d0b384ef93317695",
+      "d0b384ef93317695",
+      "d0b384ef93317695",
+      "d0b384ef93317695"
+    ],
+    "harvest_basket": [
+      "e6fe49ef15e1564a",
+      "e6fe49ef15e1564a",
+      "e6fe49ef15e1564a",
+      "e6fe49ef15e1564a",
+      "e6fe49ef15e1564a"
+    ],
+    "lemonade_stand": [
+      "9c7facef7fa0513a",
+      "9c7facef7fa0513a",
+      "9c7facef7fa0513a",
+      "9c7facef7fa0513a",
+      "9c7facef7fa0513a"
+    ],
+    "mailbox": [
+      "6c86b9efcbbfe5d0",
+      "6c86b9efcbbfe5d0",
+      "6c86b9efcbbfe5d0",
+      "6c86b9efcbbfe5d0",
+      "6c86b9efcbbfe5d0"
+    ],
+    "fire_hydrant": [
+      "77d362ef67c64165",
+      "77d362ef67c64165",
+      "77d362ef67c64165",
+      "77d362ef67c64165",
+      "77d362ef67c64165"
+    ],
+    "liberty_statue_generic": [
+      "f1cfd3ef1fe4ab22",
+      "5ee074ef9833849b",
+      "e3a436ef966b3ec2",
+      "fbd245efe0866604",
+      "b28234ef6be4996b"
+    ],
+    "railroad_track": [
+      "db6286ef44147152",
+      "db6286ef44147152",
+      "db6286ef44147152",
+      "db6286ef44147152",
+      "db6286ef44147152"
+    ],
+    "moon_footprint": [
+      "4c107bef38942af8",
+      "4c107bef38942af8",
+      "4c107bef38942af8",
+      "4c107bef38942af8",
+      "4c107bef38942af8"
+    ],
+    "seismometer": [
+      "ba790defb5669ac7",
+      "ba790defb5669ac7",
+      "ba790defb5669ac7",
+      "ba790defb5669ac7",
+      "ba790defb5669ac7"
     ]
   },
   "backgrounds": {
@@ -6188,6 +6398,380 @@
         "4968cfef601bdeaf",
         "8309b7ef49fbb3c4"
       ]
+    },
+    "space_orbit": {
+      "day": [
+        "8d2d38ef7c48b8a5",
+        "013d48ef363ec55a"
+      ],
+      "night": [
+        "ff4b60efeb8c477f",
+        "855f7fef7ba933c7"
+      ],
+      "rain": [
+        "5e3eb1efdb9ca91e",
+        "6dfcd6ef17348123"
+      ],
+      "snow": [
+        "11cc7cef6ac503cb",
+        "c265c5ef9882adc0"
+      ],
+      "wind": [
+        "1ddfbaefce81e911",
+        "42b3a3efd7525249"
+      ],
+      "fog": [
+        "aac012effd0f5b78",
+        "6d4d69efb70ab8d9"
+      ],
+      "storm": [
+        "43b573efede2fd05",
+        "41c8c6efb07845be"
+      ],
+      "hot": [
+        "c5bb97ef57cc545d",
+        "627b1bef3442ff74"
+      ]
+    },
+    "mars_surface": {
+      "day": [
+        "947765eff6a36667",
+        "947765eff6a36667"
+      ],
+      "night": [
+        "6301e5ef36e10430",
+        "6301e5ef36e10430"
+      ],
+      "rain": [
+        "57e47aef3a883285",
+        "325c87ef31d64f1e"
+      ],
+      "snow": [
+        "3b8ff5efd39ad39a",
+        "32b14eef46bca0de"
+      ],
+      "wind": [
+        "472195efcefe98ca",
+        "336b4eefb9b2b801"
+      ],
+      "fog": [
+        "3368e5ef312585f3",
+        "a7aaeaefc64794d1"
+      ],
+      "storm": [
+        "37035cef2aa2a58a",
+        "af0db0efac0d26ee"
+      ],
+      "hot": [
+        "48dbe8ef6a756a7c",
+        "9838bfef8f33f393"
+      ]
+    },
+    "water_cycle_valley": {
+      "day": [
+        "67b870ef3c0bd2d1",
+        "67b870ef3c0bd2d1"
+      ],
+      "night": [
+        "204bddef66013e57",
+        "204bddef66013e57"
+      ],
+      "rain": [
+        "dc2cbcef75244e68",
+        "91f1e4ef7405ac13"
+      ],
+      "snow": [
+        "dc65deef1e1b1549",
+        "6a10a2ef83610e88"
+      ],
+      "wind": [
+        "258c44ef9d1d68b9",
+        "2a0116ef10be4287"
+      ],
+      "fog": [
+        "472651ef20419591",
+        "b8eef7ef027443b1"
+      ],
+      "storm": [
+        "02b911eff5eaa2b1",
+        "031b23ef461144e2"
+      ],
+      "hot": [
+        "d116b1ef002201bf",
+        "8d9a51efeba436ce"
+      ]
+    },
+    "volcano_island": {
+      "day": [
+        "fe82baef932a72f6",
+        "fe82baef932a72f6"
+      ],
+      "night": [
+        "31259bef33de7b20",
+        "31259bef33de7b20"
+      ],
+      "rain": [
+        "77275fef623c3e05",
+        "d66cb5ef2200372b"
+      ],
+      "snow": [
+        "bb1807ef46802b7d",
+        "59f600ef5063158f"
+      ],
+      "wind": [
+        "56d242ef8cad9ae4",
+        "a4dfd9efdc3e688e"
+      ],
+      "fog": [
+        "a0a18def6d7f802a",
+        "f71d9bef91122ce0"
+      ],
+      "storm": [
+        "a87783ef2b9d3323",
+        "1bdfb4ef9bc477bd"
+      ],
+      "hot": [
+        "0ba541ef28eda99d",
+        "ea3b39ef6af27fed"
+      ]
+    },
+    "dig_site": {
+      "day": [
+        "2f025aefc7fcf408",
+        "2f025aefc7fcf408"
+      ],
+      "night": [
+        "ff2209ef98749a50",
+        "ff2209ef98749a50"
+      ],
+      "rain": [
+        "eb3d58ef2dc75438",
+        "94a339ef4471e061"
+      ],
+      "snow": [
+        "f77c07ef4d27adf5",
+        "6a6a10efca5d239b"
+      ],
+      "wind": [
+        "54df79ef5cef979b",
+        "14a617ef3b94bd88"
+      ],
+      "fog": [
+        "630686efc0da060c",
+        "cc51b1ef8990714d"
+      ],
+      "storm": [
+        "c1d846ef1cef27cc",
+        "1ebb83ef01e4a1f1"
+      ],
+      "hot": [
+        "de3a93efdbc97766",
+        "2943b4efe4b21ac6"
+      ]
+    },
+    "suburb_backyard": {
+      "day": [
+        "1561b2ef86c346ff",
+        "1561b2ef86c346ff"
+      ],
+      "night": [
+        "ab9574ef8600d447",
+        "ab9574ef8600d447"
+      ],
+      "rain": [
+        "a40b11ef15a81382",
+        "649020ef6108845c"
+      ],
+      "snow": [
+        "291ed5ef0bd031c4",
+        "a61797efddca11f3"
+      ],
+      "wind": [
+        "1ee593efd32c9301",
+        "8d32b6eff3f308eb"
+      ],
+      "fog": [
+        "ca7cebef84fb981b",
+        "0783bcefa429f20a"
+      ],
+      "storm": [
+        "9b9ea9ef4ba906ce",
+        "5b89bbef13eab96c"
+      ],
+      "hot": [
+        "93295def0ef279e0",
+        "b7f26cefcb43d040"
+      ]
+    },
+    "national_park": {
+      "day": [
+        "bf5aa6efefdbda52",
+        "bf5aa6efefdbda52"
+      ],
+      "night": [
+        "685eaaef87562026",
+        "685eaaef87562026"
+      ],
+      "rain": [
+        "13a0e5efaf6421db",
+        "9444bdefb5d8552c"
+      ],
+      "snow": [
+        "bd6f11ef92460079",
+        "b191ceefc25c614f"
+      ],
+      "wind": [
+        "075c20efcd49b046",
+        "bef4fcefc56e093c"
+      ],
+      "fog": [
+        "1b6adaef1a191c55",
+        "f16dceeff7c05bcd"
+      ],
+      "storm": [
+        "e4fc21eff5826a44",
+        "e84fb5ef109e5ade"
+      ],
+      "hot": [
+        "17edfbef1c27d9be",
+        "ae105fef7ba1d4d7"
+      ]
+    },
+    "wild_west_town": {
+      "day": [
+        "c6445befb0140c95",
+        "c6445befb0140c95"
+      ],
+      "night": [
+        "328fa9ef3666fc67",
+        "328fa9ef3666fc67"
+      ],
+      "rain": [
+        "27f0eceffbbebf3c",
+        "7fcbaaef5b2cef8f"
+      ],
+      "snow": [
+        "8db788ef6c88f02d",
+        "ec6ec6efad525bf1"
+      ],
+      "wind": [
+        "c347d8eff81fb5da",
+        "b5c48def87d300a4"
+      ],
+      "fog": [
+        "3e913cef2c893a4e",
+        "abe169eff4bc5616"
+      ],
+      "storm": [
+        "e3715befcec977f3",
+        "efe2e2ef92c6a541"
+      ],
+      "hot": [
+        "46deb4efef944de7",
+        "8142dbeff26d3837"
+      ]
+    },
+    "launch_pad": {
+      "day": [
+        "663986ef4b5eb3b9",
+        "663986ef4b5eb3b9"
+      ],
+      "night": [
+        "2690f3ef9c8279fa",
+        "2690f3ef9c8279fa"
+      ],
+      "rain": [
+        "cd634fef7439e88e",
+        "63ad31efb1a6bb9f"
+      ],
+      "snow": [
+        "0fd913ef0f84bc0b",
+        "ad533cef6e26cb2d"
+      ],
+      "wind": [
+        "2af882efe6090ba0",
+        "34a5fcef48cafb1a"
+      ],
+      "fog": [
+        "49c2f4ef5874a3a4",
+        "064f8def3a7338a0"
+      ],
+      "storm": [
+        "06621eef62da0b15",
+        "9eb502efa6d8b02d"
+      ],
+      "hot": [
+        "d8a7afef9f386d19",
+        "f80d15ef49b2abe2"
+      ]
+    },
+    "pumpkin_patch": {
+      "day": [
+        "a2e83aefd7a66fd8",
+        "a2e83aefd7a66fd8"
+      ],
+      "night": [
+        "36ca3aef29ee9c51",
+        "36ca3aef29ee9c51"
+      ],
+      "rain": [
+        "485c11ef3b817502",
+        "f8c9e1eff7f382e6"
+      ],
+      "snow": [
+        "1729c7efd3029c2c",
+        "dfe34fef23131cca"
+      ],
+      "wind": [
+        "3ff41eef2addd7db",
+        "ffaf8bef7f68b117"
+      ],
+      "fog": [
+        "e6b128efb441f174",
+        "3092c7ef0f4c7f41"
+      ],
+      "storm": [
+        "a42dd4ef3558c2e9",
+        "9466f1ef6d2aad8d"
+      ],
+      "hot": [
+        "ce34daef22c6c3da",
+        "5cd2ecef6e78adf5"
+      ]
+    },
+    "moon_surface": {
+      "day": [
+        "ebdf04ef3ee70001",
+        "ebdf04ef3ee70001"
+      ],
+      "night": [
+        "ebdf04ef3ee70001",
+        "ebdf04ef3ee70001"
+      ],
+      "rain": [
+        "d5ea77ef169b85f3",
+        "c23583ef5d85ea45"
+      ],
+      "snow": [
+        "4cbd88efadbace2e",
+        "e96cd9ef7147edda"
+      ],
+      "wind": [
+        "f49746efc9f2fe3a",
+        "0ee5f2eff8a43ef8"
+      ],
+      "fog": [
+        "12e1b1ef0fd53295",
+        "753de2efc6b6eb50"
+      ],
+      "storm": [
+        "daef8cefe4e6365c",
+        "168909ef336cc3c2"
+      ],
+      "hot": [
+        "bc78eeef65ce18aa",
+        "d8d986efdc0f8abf"
+      ]
     }
   },
   "stories": {
@@ -6631,6 +7215,76 @@
       "500537efc3c1a128",
       "c3c270efb5cb08ae",
       "1b7353ef4847868f"
+    ],
+    "apollo_11": [
+      "bafeffefb706be5c",
+      "d8f9a7ef3882fc00",
+      "cead05efbecc2c86",
+      "3773f5efd6b9cf54",
+      "eb5680ef34323cec"
+    ],
+    "thanksgiving_harvest": [
+      "eb0fe0efb53b4a2d",
+      "20bc58ef94300d36",
+      "6432d7efcbda9220",
+      "a614b3ef5fb89910",
+      "0b576eef3dd1b854"
+    ],
+    "gold_rush": [
+      "01440eef13560ff6",
+      "57327aefe83aca4f",
+      "de7180ef63cfaf10",
+      "dcc7adeff36329a1",
+      "2d8683efbbed8d99"
+    ],
+    "johnny_appleseed": [
+      "c227f3ef4f3eab33",
+      "7768d3efe691f149",
+      "fe3e2fef01bb4d57",
+      "830089ef6e09ac0f",
+      "bf4091ef8d54946c"
+    ],
+    "water_cycle": [
+      "689145ef0efaa09c",
+      "bc9a75ef82454764",
+      "13c6b5ef82d2150f",
+      "e4a60eefad6e8e9e",
+      "a47596efbae1be71"
+    ],
+    "moon_phases": [
+      "67ba8eef4ebe2a82",
+      "d0c412ef39d8694a",
+      "0e766cef8230c8bf",
+      "0a88e7ef3661e34a",
+      "f48e6aefd76cc25f"
+    ],
+    "volcano": [
+      "723ebcef4020a718",
+      "9caba6ef6ceab72d",
+      "c3753eef3f372530",
+      "2e1f52efed01cc9f",
+      "c62ecfefc16bfb71"
+    ],
+    "dino_dig": [
+      "26bb1fefc7623bc4",
+      "217811efbcebcbda",
+      "5cdeebefb07c471c",
+      "61468aef6b945b14",
+      "8f7dcfef20f37888"
+    ],
+    "solar_system_tour": [
+      "cf31d1efd4c35263",
+      "0abcb2ef9b710b73",
+      "15ca9feffdc95662",
+      "a822f1efbba7467c",
+      "997a67ef38b91e77"
+    ],
+    "simple_machines": [
+      "febc55ef9dae239c",
+      "f06eeceff02bfec8",
+      "aac864ef67b7a46c",
+      "395e84ef6cb40390",
+      "32d61aef5420f8ca"
     ]
   }
 }

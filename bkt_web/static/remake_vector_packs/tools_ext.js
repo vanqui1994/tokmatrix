@@ -175,7 +175,14 @@
     jump_rope(ctx) { path(ctx, 'M -14 -6 Q -18 -40 0 -39 Q 18 -40 14 -6', null, '#ec4899', 1.6); for (const x of [-14, 14]) path(ctx, `M ${x - 2} -8 L ${x + 2} -8 L ${x + 1.6} 0 L ${x - 1.6} 0 Z`, '#f59e0b', INK, 1); },
     // Đèn lồng ngôi sao (rước đèn Thánh Martin, Trung thu): que cầm + đèn hình sao phát sáng.
     lantern_star(ctx, s, t) { line(ctx, [[0, 0], [0, -22]], INK, 3.4); line(ctx, [[0, 0], [0, -22]], WOOD, 2); line(ctx, [[0, -22], [0, -20]], '#475569', 1); const pts = []; for (let i = 0; i < 10; i++) { const r = i % 2 ? 5.2 : 12, a = -Math.PI / 2 + i * Math.PI / 5; pts.push(`${(Math.cos(a) * r).toFixed(2)} ${(-32 + Math.sin(a) * r).toFixed(2)}`); } ellipse(ctx, 0, -32, 15, 15, `rgba(253, 224, 71, ${0.18 + 0.06 * Math.sin((t || 0) * 4)})`, null); path(ctx, `M ${pts.join(' L ')} Z`, '#fde047', '#ca8a04', 1.3); ellipse(ctx, 0, -32, 3.2, 3.2, '#fff7d6', null); },
-    gold_pan(ctx) { path(ctx, 'M -18 -12 L 18 -12 L 12 -2 L -12 -2 Z', '#78716c', INK, 1.3); ellipse(ctx, 0, -12, 18, 3, '#a8a29e', INK, 1.1); ellipse(ctx, 0, -11.5, 13, 2, '#7dd3fc', null); for (const [x, y] of [[-4, -11.5], [2, -12], [6, -11]]) ellipse(ctx, x, y, 1.4, 1, '#facc15', INK, 0.5); },
+    gold_pan(ctx, s, t) { path(ctx, 'M -18 -12 L 18 -12 L 12 -2 L -12 -2 Z', '#78716c', INK, 1.3); ellipse(ctx, 0, -12, 18, 3, '#a8a29e', INK, 1.1); ellipse(ctx, 0, -11.5, 13, 2, '#7dd3fc', null); for (const [x, y] of [[-4, -11.5], [2, -12], [6, -11]]) ellipse(ctx, x, y, 1.4, 1, '#facc15', INK, 0.5);
+      // s.glint 0–1: hạt vàng lấp lánh khi đãi (mặc định 0 giữ hình cũ).
+      const g = s && s.glint > 0 ? Math.min(1, s.glint) : 0;
+      if (g > 0) for (const [x, y, k] of [[-4, -11.5, 0], [2, -12, 1.7], [6, -11, 3.1]]) {
+        const r = g * (2.2 + 1.4 * Math.sin((t || 0) * 7 + k));
+        ctx.save(); ctx.globalAlpha = 0.9 * g; ctx.strokeStyle = '#fde047'; ctx.lineWidth = 0.9;
+        ctx.beginPath(); ctx.moveTo(x - r, y - 1.5); ctx.lineTo(x + r, y - 1.5); ctx.moveTo(x, y - 1.5 - r); ctx.lineTo(x, y - 1.5 + r); ctx.stroke(); ctx.restore();
+      } },
   };
   // Anchor khớp với hình (thay cho anchor theo tỉ lệ chiều cao): grip = chỗ tay cầm, còn lại = đầu làm việc.
   const TOOL_ANCHORS = {
@@ -192,7 +199,7 @@
   // -------------------------------------------------------------
   // 2. 16 ACTION HOOKS DÙNG CHUNG CỦA GIAI ĐOẠN J
   // -------------------------------------------------------------
-  const OPEN_VEHICLES = new Set(['bicycle', 'motorcar_1886', 'horse_cart', 'covered_wagon', 'tractor', 'hot_air_balloon', 'sailing_ship', 'longship', 'turtle_ship', 'camel', 'sledge', 'draisine_1817', 'biplane_1903']);
+  const OPEN_VEHICLES = new Set(['bicycle', 'motorcar_1886', 'horse_cart', 'covered_wagon', 'tractor', 'hot_air_balloon', 'sailing_ship', 'longship', 'turtle_ship', 'camel', 'horse', 'sledge', 'draisine_1817', 'biplane_1903']);
   const ACTION_HOOKS = {
     // 1. DRIVE: Xe chạy, bánh lăn theo s.vx
     drive(a, states, t, p, u, amount, cat, active) {

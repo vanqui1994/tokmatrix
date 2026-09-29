@@ -32,7 +32,10 @@
     "de_culture",
     "jp_culture",
     "kr_culture",
-    "medieval"
+    "medieval",
+    "space",
+    "nature",
+    "us_culture"
   ],
   "rig_style": {
     "name": "hand-drawn-whole-pose-cel",
@@ -168,7 +171,18 @@
     "apartment_street",
     "castle_yard",
     "medieval_village",
-    "viking_fjord"
+    "viking_fjord",
+    "space_orbit",
+    "mars_surface",
+    "water_cycle_valley",
+    "volcano_island",
+    "dig_site",
+    "suburb_backyard",
+    "national_park",
+    "wild_west_town",
+    "launch_pad",
+    "pumpkin_patch",
+    "moon_surface"
   ],
   "background_specs": {
     "garden": {
@@ -955,6 +969,126 @@
       "label": "Vịnh hẹp Viking Fjord",
       "theme": "water",
       "ground_y": 810
+    },
+    "space_orbit": {
+      "label": "Quỹ đạo không gian nhìn về Trái Đất",
+      "theme": "highland",
+      "ground_y": 810,
+      "weather": [
+        "clear",
+        "rain",
+        "snow",
+        "wind",
+        "fog",
+        "storm",
+        "hot"
+      ],
+      "topics": [
+        "space",
+        "nature"
+      ]
+    },
+    "mars_surface": {
+      "label": "Bề mặt Sao Hoả đỏ",
+      "theme": "farm",
+      "ground_y": 810,
+      "weather": [
+        "clear",
+        "rain",
+        "snow",
+        "wind",
+        "fog",
+        "storm",
+        "hot"
+      ],
+      "topics": [
+        "space",
+        "nature"
+      ]
+    },
+    "water_cycle_valley": {
+      "label": "Thung lũng vòng tuần hoàn nước",
+      "theme": "water",
+      "ground_y": 810,
+      "weather": [
+        "clear",
+        "rain",
+        "snow",
+        "wind",
+        "fog",
+        "storm",
+        "hot"
+      ],
+      "topics": [
+        "nature",
+        "daily_life"
+      ]
+    },
+    "volcano_island": {
+      "label": "Đảo núi lửa nhiệt đới",
+      "theme": "water",
+      "ground_y": 810,
+      "weather": [
+        "clear",
+        "rain",
+        "snow",
+        "wind",
+        "fog",
+        "storm",
+        "hot"
+      ],
+      "topics": [
+        "nature",
+        "disaster"
+      ]
+    },
+    "dig_site": {
+      "label": "Hố khai quật khảo cổ và cổ sinh",
+      "theme": "highland",
+      "ground_y": 810,
+      "weather": [
+        "clear",
+        "rain",
+        "snow",
+        "wind",
+        "fog",
+        "storm",
+        "hot"
+      ],
+      "topics": [
+        "nature",
+        "ancient"
+      ]
+    },
+    "suburb_backyard": {
+      "label": "Sân sau khu ngoại ô Mỹ",
+      "theme": "home",
+      "ground_y": 810
+    },
+    "national_park": {
+      "label": "Vườn quốc gia hẻm núi và thác nước",
+      "theme": "nature",
+      "ground_y": 810
+    },
+    "wild_west_town": {
+      "label": "Thị trấn miền Tây hoang dã",
+      "theme": "home",
+      "ground_y": 810
+    },
+    "launch_pad": {
+      "label": "Bệ phóng tên lửa bờ biển",
+      "theme": "space",
+      "ground_y": 810
+    },
+    "pumpkin_patch": {
+      "label": "Cánh đồng bí ngô mùa thu",
+      "theme": "farm",
+      "ground_y": 810
+    },
+    "moon_surface": {
+      "label": "Bề mặt Mặt Trăng với hố thiên thạch",
+      "theme": "space",
+      "ground_y": 810
     }
   },
   "weather": [
@@ -1408,6 +1542,42 @@
     "oars": [
       0,
       1
+    ],
+    "phase": [
+      0.0,
+      1.0
+    ],
+    "rain": [
+      0.0,
+      1.0
+    ],
+    "storm": [
+      0.0,
+      1.0
+    ],
+    "erupt": [
+      0.0,
+      1.0
+    ],
+    "exposed": [
+      0.0,
+      1.0
+    ],
+    "tilt": [
+      -90.0,
+      90.0
+    ],
+    "walk": [
+      0.0,
+      1.0
+    ],
+    "flag_up": [
+      0,
+      1
+    ],
+    "glint": [
+      0,
+      1
     ]
   },
   "pose_defaults": {
@@ -1420,7 +1590,6 @@
     "roots": 0,
     "cut": 0,
     "slice": 0,
-    "fill": 0,
     "cutaway": 0,
     "nutrients": 0,
     "wet": 0,
@@ -1484,7 +1653,8 @@
     "lit": 0,
     "playing": 0,
     "curl": 0,
-    "dirty": 0
+    "dirty": 0,
+    "fill": 0
   },
   "style_colors": [
     "body",
@@ -4693,6 +4863,10 @@
         "top": [
           40,
           -104
+        ],
+        "seat_1": [
+          -4,
+          -74
         ]
       }
     },
@@ -29280,6 +29454,1245 @@
       "rest_pose": {
         "growth": 1.0
       }
+    },
+    "planet": {
+      "label": "Hành tinh Hệ Mặt Trời",
+      "group": "prop",
+      "pack": "space",
+      "topics": [
+        "space",
+        "nature"
+      ],
+      "face": true,
+      "face_scale": 0.5,
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -50
+        ],
+        "face": [
+          0,
+          -50
+        ],
+        "top": [
+          0,
+          -94
+        ],
+        "ring_l": [
+          -56,
+          -50
+        ],
+        "ring_r": [
+          56,
+          -50
+        ]
+      },
+      "rest_pose": {
+        "variant": "earth"
+      }
+    },
+    "sun": {
+      "label": "Mặt trời rực rỡ",
+      "group": "prop",
+      "pack": "space",
+      "topics": [
+        "space",
+        "nature"
+      ],
+      "face": true,
+      "face_scale": 0.6,
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -50
+        ],
+        "face": [
+          0,
+          -50
+        ],
+        "top": [
+          0,
+          -93
+        ],
+        "ray_top": [
+          0,
+          -92
+        ],
+        "ray_bottom": [
+          0,
+          -8
+        ],
+        "ray_left": [
+          -42,
+          -50
+        ],
+        "ray_right": [
+          42,
+          -50
+        ]
+      }
+    },
+    "moon": {
+      "label": "Mặt trăng các pha",
+      "group": "prop",
+      "pack": "space",
+      "topics": [
+        "space",
+        "nature"
+      ],
+      "face": true,
+      "face_scale": 0.55,
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -50
+        ],
+        "face": [
+          0,
+          -50
+        ],
+        "top": [
+          0,
+          -85
+        ],
+        "crater": [
+          -10,
+          -58
+        ]
+      },
+      "rest_pose": {
+        "phase": 0.5
+      }
+    },
+    "comet": {
+      "label": "Sao chổi băng bụi",
+      "group": "prop",
+      "pack": "space",
+      "topics": [
+        "space",
+        "nature"
+      ],
+      "face": false,
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "nucleus": [
+          16,
+          -60
+        ],
+        "tail": [
+          -48,
+          -25
+        ],
+        "center": [
+          0,
+          -50
+        ],
+        "top": [
+          0,
+          -74
+        ]
+      }
+    },
+    "satellite": {
+      "label": "Vệ tinh viễn thông nhân tạo",
+      "group": "prop",
+      "pack": "space",
+      "topics": [
+        "space",
+        "inventions"
+      ],
+      "face": false,
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -50
+        ],
+        "body": [
+          0,
+          -50
+        ],
+        "panel_l": [
+          -46,
+          -50
+        ],
+        "panel_r": [
+          46,
+          -50
+        ],
+        "antenna": [
+          2,
+          -84
+        ],
+        "top": [
+          0,
+          -85
+        ]
+      }
+    },
+    "space_station": {
+      "label": "Trạm không gian quốc tế",
+      "group": "prop",
+      "pack": "space",
+      "topics": [
+        "space",
+        "inventions"
+      ],
+      "face": false,
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -50
+        ],
+        "core": [
+          0,
+          -50
+        ],
+        "dock": [
+          0,
+          -28
+        ],
+        "panel_l": [
+          -48,
+          -50
+        ],
+        "panel_r": [
+          48,
+          -50
+        ],
+        "top": [
+          0,
+          -74
+        ]
+      }
+    },
+    "cloud": {
+      "label": "Đám mây thời tiết",
+      "group": "prop",
+      "pack": "nature",
+      "topics": [
+        "nature",
+        "weather"
+      ],
+      "face": true,
+      "face_scale": 0.5,
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -52
+        ],
+        "face": [
+          0,
+          -52
+        ],
+        "top": [
+          0,
+          -74
+        ],
+        "cloud_l": [
+          -38,
+          -52
+        ],
+        "cloud_r": [
+          38,
+          -52
+        ],
+        "rain_bottom": [
+          0,
+          -4
+        ]
+      },
+      "rest_pose": {
+        "rain": 0.0,
+        "storm": 0.0
+      }
+    },
+    "raindrop_chibi": {
+      "label": "Giọt nước tuần hoàn chibi",
+      "group": "prop",
+      "pack": "nature",
+      "topics": [
+        "nature",
+        "weather"
+      ],
+      "face": true,
+      "face_scale": 0.6,
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -35
+        ],
+        "face": [
+          0,
+          -32
+        ],
+        "top": [
+          0,
+          -70
+        ],
+        "hand_l": [
+          -18,
+          -28
+        ],
+        "hand_r": [
+          18,
+          -28
+        ]
+      }
+    },
+    "rainbow": {
+      "label": "Cầu vồng 7 màu",
+      "group": "prop",
+      "pack": "nature",
+      "topics": [
+        "nature",
+        "weather"
+      ],
+      "face": false,
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "arc_top": [
+          0,
+          -88
+        ],
+        "arc_left": [
+          -88,
+          0
+        ],
+        "arc_right": [
+          88,
+          0
+        ],
+        "center": [
+          0,
+          -44
+        ],
+        "top": [
+          0,
+          -88
+        ]
+      },
+      "rest_pose": {
+        "growth": 1.0
+      }
+    },
+    "volcano": {
+      "label": "Núi lửa địa chất",
+      "group": "prop",
+      "pack": "nature",
+      "topics": [
+        "nature",
+        "disaster"
+      ],
+      "face": false,
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "crater": [
+          0,
+          -62
+        ],
+        "peak": [
+          0,
+          -62
+        ],
+        "magma_chamber": [
+          0,
+          -20
+        ],
+        "smoke_top": [
+          0,
+          -94
+        ],
+        "top": [
+          0,
+          -94
+        ]
+      },
+      "rest_pose": {
+        "cutaway": 0.0,
+        "erupt": 0.0
+      }
+    },
+    "earth_cutaway": {
+      "label": "Mặt cắt cấu tạo Trái Đất",
+      "group": "prop",
+      "pack": "nature",
+      "topics": [
+        "nature",
+        "inventions"
+      ],
+      "face": false,
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -50
+        ],
+        "crust": [
+          0,
+          -92
+        ],
+        "mantle": [
+          0,
+          -72
+        ],
+        "outer_core": [
+          0,
+          -62
+        ],
+        "inner_core": [
+          0,
+          -50
+        ],
+        "top": [
+          0,
+          -92
+        ]
+      }
+    },
+    "fossil": {
+      "label": "Hoá thạch khủng long",
+      "group": "prop",
+      "pack": "nature",
+      "topics": [
+        "nature",
+        "ancient"
+      ],
+      "face": false,
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -22
+        ],
+        "bone": [
+          0,
+          -22
+        ],
+        "surface": [
+          0,
+          -22
+        ],
+        "top": [
+          0,
+          -44
+        ],
+        "rock_base": [
+          0,
+          0
+        ]
+      },
+      "rest_pose": {
+        "exposed": 1.0
+      }
+    },
+    "lever": {
+      "label": "Đòn bẩy cơ học",
+      "group": "prop",
+      "pack": "nature",
+      "topics": [
+        "nature",
+        "inventions"
+      ],
+      "face": false,
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "fulcrum": [
+          0,
+          -26
+        ],
+        "effort_point": [
+          -38,
+          -26
+        ],
+        "load_point": [
+          38,
+          -26
+        ],
+        "center": [
+          0,
+          -26
+        ],
+        "top": [
+          0,
+          -53
+        ]
+      },
+      "rest_pose": {
+        "tilt": 0.0
+      }
+    },
+    "pulley": {
+      "label": "Ròng rọc cơ học",
+      "group": "prop",
+      "pack": "nature",
+      "topics": [
+        "nature",
+        "inventions"
+      ],
+      "face": false,
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "wheel": [
+          0,
+          -78
+        ],
+        "rope_pull": [
+          -9,
+          -40
+        ],
+        "load": [
+          9,
+          -20
+        ],
+        "top": [
+          0,
+          -88
+        ],
+        "center": [
+          0,
+          -46
+        ]
+      },
+      "rest_pose": {
+        "lift": 0.0
+      }
+    },
+    "ramp": {
+      "label": "Mặt phẳng nghiêng",
+      "group": "prop",
+      "pack": "nature",
+      "topics": [
+        "nature",
+        "inventions"
+      ],
+      "face": false,
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "bottom": [
+          -40,
+          0
+        ],
+        "top": [
+          38,
+          -44
+        ],
+        "slope_mid": [
+          -1,
+          -22
+        ],
+        "center": [
+          -1,
+          -22
+        ]
+      }
+    },
+    "wheel_axle": {
+      "label": "Bánh xe và trục",
+      "group": "prop",
+      "pack": "nature",
+      "topics": [
+        "nature",
+        "inventions"
+      ],
+      "face": false,
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "axle": [
+          0,
+          -44
+        ],
+        "wheel_l": [
+          -34,
+          -44
+        ],
+        "wheel_r": [
+          34,
+          -44
+        ],
+        "center": [
+          0,
+          -44
+        ],
+        "top": [
+          0,
+          -79
+        ]
+      }
+    },
+    "bison": {
+      "label": "Bò rừng bizon Bắc Mỹ",
+      "group": "animal",
+      "pack": "us_culture",
+      "topics": [
+        "us_culture",
+        "nature"
+      ],
+      "face": false,
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "top": [
+          0,
+          -82
+        ],
+        "head": [
+          -38,
+          -55
+        ],
+        "mouth": [
+          -52,
+          -45
+        ],
+        "horn": [
+          -40,
+          -74
+        ],
+        "back": [
+          10,
+          -75
+        ],
+        "hip": [
+          32,
+          -50
+        ],
+        "tail": [
+          50,
+          -42
+        ],
+        "eye": [
+          -42,
+          -55
+        ]
+      }
+    },
+    "bear": {
+      "label": "Gấu đen Bắc Mỹ thân thiện",
+      "group": "animal",
+      "pack": "us_culture",
+      "topics": [
+        "us_culture",
+        "nature"
+      ],
+      "face": false,
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "top": [
+          0,
+          -82
+        ],
+        "head": [
+          0,
+          -68
+        ],
+        "mouth": [
+          0,
+          -58
+        ],
+        "ear_l": [
+          -18,
+          -80
+        ],
+        "ear_r": [
+          18,
+          -80
+        ],
+        "chest": [
+          0,
+          -42
+        ],
+        "hand_l": [
+          -26,
+          -35
+        ],
+        "hand_r": [
+          26,
+          -35
+        ],
+        "back": [
+          0,
+          -48
+        ],
+        "surface": [
+          0,
+          -42
+        ]
+      }
+    },
+    "prairie_dog": {
+      "label": "Sóc thảo nguyên",
+      "group": "animal",
+      "pack": "us_culture",
+      "topics": [
+        "us_culture",
+        "nature"
+      ],
+      "face": false,
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "top": [
+          0,
+          -56
+        ],
+        "head": [
+          0,
+          -48
+        ],
+        "mouth": [
+          0,
+          -42
+        ],
+        "eye": [
+          4,
+          -48
+        ],
+        "paw_l": [
+          -8,
+          -30
+        ],
+        "paw_r": [
+          8,
+          -30
+        ],
+        "chest": [
+          0,
+          -28
+        ],
+        "back": [
+          0,
+          -32
+        ],
+        "tail": [
+          -14,
+          -12
+        ]
+      }
+    },
+    "raccoon": {
+      "label": "Gấu mèo Bắc Mỹ",
+      "group": "animal",
+      "pack": "us_culture",
+      "topics": [
+        "us_culture",
+        "nature"
+      ],
+      "face": false,
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "top": [
+          0,
+          -45
+        ],
+        "head": [
+          -18,
+          -36
+        ],
+        "mouth": [
+          -28,
+          -32
+        ],
+        "eye": [
+          -20,
+          -36
+        ],
+        "paw_l": [
+          -8,
+          -10
+        ],
+        "paw_r": [
+          12,
+          -10
+        ],
+        "back": [
+          10,
+          -32
+        ],
+        "tail": [
+          36,
+          -20
+        ]
+      }
+    },
+    "salmon": {
+      "label": "Cá hồi hoang dã",
+      "group": "animal",
+      "pack": "us_culture",
+      "topics": [
+        "us_culture",
+        "nature"
+      ],
+      "face": false,
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "top": [
+          0,
+          -35
+        ],
+        "mouth": [
+          -38,
+          -18
+        ],
+        "eye": [
+          -28,
+          -22
+        ],
+        "tail": [
+          38,
+          -18
+        ],
+        "dorsal": [
+          -2,
+          -34
+        ],
+        "belly": [
+          0,
+          -6
+        ],
+        "surface": [
+          0,
+          -18
+        ]
+      }
+    },
+    "jack_o_lantern": {
+      "label": "Đèn lồng bí ngô Halloween",
+      "group": "prop",
+      "pack": "us_culture",
+      "topics": [
+        "us_culture",
+        "festivals"
+      ],
+      "face": false,
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "top": [
+          0,
+          -56
+        ],
+        "stem": [
+          0,
+          -54
+        ],
+        "mouth": [
+          0,
+          -22
+        ],
+        "eye_l": [
+          -12,
+          -32
+        ],
+        "eye_r": [
+          12,
+          -32
+        ],
+        "grip": [
+          0,
+          -52
+        ],
+        "surface": [
+          0,
+          -26
+        ]
+      },
+      "rest_pose": {
+        "lit": 0.0
+      }
+    },
+    "harvest_basket": {
+      "label": "Giỏ thu hoạch mùa thu",
+      "group": "container",
+      "pack": "us_culture",
+      "topics": [
+        "us_culture",
+        "farm"
+      ],
+      "face": false,
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "top": [
+          0,
+          -52
+        ],
+        "handle": [
+          0,
+          -50
+        ],
+        "grip": [
+          0,
+          -50
+        ],
+        "grip_l": [
+          -18,
+          -48
+        ],
+        "grip_r": [
+          18,
+          -48
+        ],
+        "opening": [
+          0,
+          -28
+        ],
+        "surface": [
+          0,
+          -16
+        ]
+      },
+      "rest_pose": {
+        "fill": 0.0
+      }
+    },
+    "lemonade_stand": {
+      "label": "Quầy nước chanh gỗ",
+      "group": "furniture",
+      "pack": "us_culture",
+      "topics": [
+        "us_culture",
+        "jobs"
+      ],
+      "face": false,
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "top": [
+          0,
+          -96
+        ],
+        "counter": [
+          0,
+          -48
+        ],
+        "pitcher": [
+          -18,
+          -55
+        ],
+        "cups": [
+          18,
+          -52
+        ],
+        "surface": [
+          0,
+          -48
+        ]
+      }
+    },
+    "mailbox": {
+      "label": "Hộp thư kiểu Mỹ",
+      "group": "furniture",
+      "pack": "us_culture",
+      "topics": [
+        "us_culture",
+        "jobs"
+      ],
+      "face": false,
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "top": [
+          0,
+          -92
+        ],
+        "door": [
+          16,
+          -74
+        ],
+        "flag": [
+          -12,
+          -78
+        ],
+        "post": [
+          0,
+          -40
+        ],
+        "grip": [
+          16,
+          -74
+        ],
+        "surface": [
+          0,
+          -74
+        ]
+      },
+      "rest_pose": {
+        "flag_up": 0.0,
+        "open": 0.0
+      }
+    },
+    "fire_hydrant": {
+      "label": "Trụ nước cứu hoả",
+      "group": "furniture",
+      "pack": "us_culture",
+      "topics": [
+        "us_culture",
+        "safety"
+      ],
+      "face": false,
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "top": [
+          0,
+          -68
+        ],
+        "bonnet": [
+          0,
+          -62
+        ],
+        "nozzle_l": [
+          -18,
+          -38
+        ],
+        "nozzle_r": [
+          18,
+          -38
+        ],
+        "nozzle_f": [
+          0,
+          -36
+        ],
+        "grip": [
+          0,
+          -36
+        ],
+        "surface": [
+          0,
+          -36
+        ]
+      }
+    },
+    "liberty_statue_generic": {
+      "label": "Tượng giơ ngọn đuốc tự do",
+      "group": "building",
+      "pack": "us_culture",
+      "topics": [
+        "us_culture",
+        "fables"
+      ],
+      "face": false,
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "top": [
+          0,
+          -96
+        ],
+        "torch": [
+          16,
+          -92
+        ],
+        "tablet": [
+          -14,
+          -58
+        ],
+        "crown": [
+          0,
+          -78
+        ],
+        "head": [
+          0,
+          -74
+        ],
+        "pedestal": [
+          0,
+          -25
+        ],
+        "surface": [
+          0,
+          -48
+        ]
+      },
+      "rest_pose": {
+        "growth": 1.0
+      }
+    },
+    "railroad_track": {
+      "label": "Đường ray xe lửa",
+      "group": "building",
+      "pack": "us_culture",
+      "topics": [
+        "us_culture",
+        "inventions"
+      ],
+      "face": false,
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "top": [
+          0,
+          -18
+        ],
+        "start": [
+          -58,
+          0
+        ],
+        "end": [
+          58,
+          0
+        ],
+        "rail_l": [
+          0,
+          -10
+        ],
+        "rail_r": [
+          0,
+          -4
+        ],
+        "surface": [
+          0,
+          -6
+        ]
+      },
+      "rest_pose": {
+        "growth": 1.0
+      }
+    },
+    "moon_footprint": {
+      "label": "Dấu chân trên Mặt Trăng",
+      "group": "prop",
+      "pack": "us_culture",
+      "topics": [
+        "us_culture",
+        "space"
+      ],
+      "face": false,
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "top": [
+          0,
+          -55
+        ],
+        "surface": [
+          0,
+          -25
+        ],
+        "center": [
+          0,
+          -25
+        ]
+      }
+    },
+    "seismometer": {
+      "label": "Thiết bị đo địa chấn Mặt Trăng",
+      "group": "tool",
+      "pack": "us_culture",
+      "topics": [
+        "us_culture",
+        "space"
+      ],
+      "face": false,
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "top": [
+          0,
+          -38
+        ],
+        "dish": [
+          0,
+          -34
+        ],
+        "panel_l": [
+          -28,
+          -16
+        ],
+        "panel_r": [
+          28,
+          -16
+        ],
+        "surface": [
+          0,
+          -16
+        ]
+      }
     }
   },
   "actions": {
@@ -29859,7 +31272,20 @@
         "farmer",
         "fisherman",
         "hand_right",
-        "farmer_woman"
+        "farmer_woman",
+        "chibi_boy",
+        "chibi_girl",
+        "chibi_kid",
+        "chibi_teacher",
+        "chibi_doctor",
+        "chibi_nurse",
+        "chibi_dentist",
+        "chibi_pharmacist",
+        "chibi_patient",
+        "chibi_grandma",
+        "chibi_grandpa",
+        "chibi_farmer",
+        "chibi_chef"
       ],
       "targets": [
         "knife",
@@ -30135,7 +31561,8 @@
         "sack",
         "hay_bale",
         "egg",
-        "bowl"
+        "bowl",
+        "harvest_basket"
       ],
       "actor_anchor": "carry",
       "target_anchor": "root",
@@ -30463,7 +31890,8 @@
         "sparrow",
         "pterodactyl",
         "eagle",
-        "vulture"
+        "vulture",
+        "rocket"
       ],
       "targets": [],
       "actor_anchor": "root",
@@ -30505,12 +31933,13 @@
         "hoe"
       ],
       "targets": [
-        "soil_bed"
+        "soil_bed",
+        "fossil"
       ],
       "actor_anchor": "tip",
       "target_anchor": "surface",
       "channel": "cut",
-      "motion": true,
+      "motion": false,
       "hold": true
     },
     "pick": {
@@ -30520,7 +31949,20 @@
         "fisherman",
         "farmer_woman",
         "hand",
-        "hand_right"
+        "hand_right",
+        "chibi_boy",
+        "chibi_girl",
+        "chibi_kid",
+        "chibi_teacher",
+        "chibi_doctor",
+        "chibi_nurse",
+        "chibi_dentist",
+        "chibi_pharmacist",
+        "chibi_patient",
+        "chibi_grandma",
+        "chibi_grandpa",
+        "chibi_farmer",
+        "chibi_chef"
       ],
       "targets": [
         "mango_tree",
@@ -30567,7 +32009,20 @@
         "fisherman",
         "farmer_woman",
         "hand",
-        "hand_right"
+        "hand_right",
+        "chibi_boy",
+        "chibi_girl",
+        "chibi_kid",
+        "chibi_teacher",
+        "chibi_doctor",
+        "chibi_nurse",
+        "chibi_dentist",
+        "chibi_pharmacist",
+        "chibi_patient",
+        "chibi_grandma",
+        "chibi_grandpa",
+        "chibi_farmer",
+        "chibi_chef"
       ],
       "targets": [
         "mango_tree",
@@ -31441,7 +32896,12 @@
         "white_goat",
         "wild_rabbit",
         "winter_melon",
-        "winter_melon_vine"
+        "winter_melon_vine",
+        "raindrop_chibi",
+        "cloud",
+        "planet",
+        "sun",
+        "moon"
       ],
       "targets": [],
       "actor_anchor": "top",
@@ -33790,7 +35250,8 @@
         "turtle_ship",
         "camel",
         "sledge",
-        "draisine_1817"
+        "draisine_1817",
+        "horse"
       ],
       "motion": false,
       "channel": null,
@@ -33941,7 +35402,8 @@
         "paving_stone",
         "movable_type_tray",
         "paper_sheet_stack",
-        "workbench_clutter"
+        "workbench_clutter",
+        "harvest_basket"
       ],
       "motion": false,
       "channel": null,
@@ -34857,6 +36319,80 @@
         "medieval",
         "jobs"
       ]
+    },
+    "evaporate": {
+      "label": "Bốc hơi nước",
+      "actors": [
+        "raindrop_chibi"
+      ],
+      "targets": [],
+      "actor_anchor": "root",
+      "motion": false,
+      "channel": null,
+      "hold": true,
+      "pack": "nature",
+      "topics": [
+        "nature",
+        "weather"
+      ]
+    },
+    "condense": {
+      "label": "Ngưng tụ mây",
+      "actors": [
+        "cloud"
+      ],
+      "targets": [],
+      "actor_anchor": "center",
+      "motion": false,
+      "channel": null,
+      "hold": true,
+      "pack": "nature",
+      "topics": [
+        "nature",
+        "weather"
+      ]
+    },
+    "carve": {
+      "label": "Khắc bề mặt bí ngô",
+      "actors": [
+        "chibi_boy",
+        "chibi_girl",
+        "chibi_farmer",
+        "chibi_kid"
+      ],
+      "targets": [
+        "pumpkin",
+        "jack_o_lantern"
+      ],
+      "actor_anchor": "hand_r",
+      "target_anchor": "surface",
+      "channel": "cutaway",
+      "motion": false,
+      "hold": true,
+      "pack": "us_culture",
+      "topics": [
+        "us_culture",
+        "festivals"
+      ]
+    },
+    "fireworks": {
+      "label": "Bắn pháo hoa rực rỡ",
+      "actors": [
+        "chibi_kid",
+        "chibi_boy",
+        "chibi_girl"
+      ],
+      "targets": [],
+      "actor_anchor": "root",
+      "target_anchor": null,
+      "channel": null,
+      "motion": false,
+      "hold": false,
+      "pack": "us_culture",
+      "topics": [
+        "us_culture",
+        "festivals"
+      ]
     }
   },
   "locales": [
@@ -35707,6 +37243,23 @@
         "shoes": "barefoot",
         "face_acc": "goggles",
         "back": "ring_float"
+      }
+    },
+    "costume_witch": {
+      "label": "Trang phục phù thuỷ",
+      "warm": false,
+      "era": "modern",
+      "locale": "neutral",
+      "topics": [
+        "festivals",
+        "fables",
+        "us_culture"
+      ],
+      "parts": {
+        "head": "witch_hat",
+        "top": "black_dress",
+        "bottom": "purple_skirt",
+        "shoes": "boots"
       }
     }
   },

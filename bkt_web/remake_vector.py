@@ -362,6 +362,8 @@ def validate_vector_scenes(characters, scenes):
                         continue
                     elif field == "alarm" and isinstance(value, bool):
                         continue
+                    elif field == "variant" and isinstance(value, str):
+                        continue
                     else:
                         raise ValueError(f"{cid}: thuộc tính pose không hợp lệ: {field}")
         cameras = scene.get("camera", [])
@@ -5144,6 +5146,1018 @@ def village_fair_examples():
     return [story]
 
 
+def apollo_11_examples():
+    """Mẫu kỹ thuật Phase S: Chuyến bay lịch sử Apollo 11 lên Mặt Trăng."""
+    cat = catalog()
+
+    def actor(cid, asset, **extra):
+        lbl = cat["assets"][asset].get("label") or cat["assets"][asset].get("spec", {}).get("label") or asset
+        return {"id": cid, "name": lbl, "asset": asset, **extra}
+
+    def pose(t, x, y, h, **extra):
+        return {"time": t, "x": x, "y": y, "height": h, **extra}
+
+    def scene(start, end, poses, actions=(), bg="launch_pad", **extra):
+        return {
+            "renderer": RENDERER,
+            "kind": "scene",
+            "start_time": start,
+            "end_time": end,
+            "characters_present": list(poses),
+            "poses": poses,
+            "actions": list(actions),
+            "background": {"preset": bg, **extra},
+        }
+
+    def action(kind, start, end, target=None, actor_id=None, **extra):
+        return {"type": kind, "start": start, "end": end, **({"target": target} if target else {}), **({"actor": actor_id} if actor_id else {}), **extra}
+
+    # Cảnh 1: Tên lửa trên bệ phóng launch_pad, phóng vút lên >= 300 px
+    sc1 = scene(0, 5.0, {
+        "rocket": [
+            pose(0, 330, 810, 380),
+            pose(2.0, 330, 810, 380),
+            pose(5.0, 330, 330, 380),
+        ],
+        # Phi hành gia đi bộ tới chân tên lửa rồi vào khoang (ẩn đi) trước khi phóng.
+        "astronaut": [
+            pose(0, 40, 830, 200, outfit="astronaut", opacity=1.0),
+            pose(1.5, 230, 830, 200, outfit="astronaut", opacity=1.0),
+            pose(1.7, 250, 830, 200, outfit="astronaut", opacity=0.0),
+            pose(5.0, 250, 830, 200, outfit="astronaut", opacity=0.0),
+        ],
+    }, actions=[
+        action("launch", 2.0, 5.0, actor_id="rocket"),
+    ], bg="launch_pad", weather="clear")
+
+    # Cảnh 2: tàu đổ bộ hạ xuống moon_surface, chạm đất rồi phi hành gia mới bước ra, đi và nhảy chậm (trọng lực thấp),
+    # để lại dấu chân sau lưng.
+    sc2 = scene(5.0, 10.0, {
+        "lander": [
+            pose(5.0, 400, 380, 300),
+            pose(7.5, 400, 810, 300),
+            pose(10.0, 400, 810, 300),
+        ],
+        "astronaut": [
+            pose(5.0, 400, 810, 200, outfit="astronaut", opacity=0.0),
+            pose(7.7, 400, 810, 200, outfit="astronaut", opacity=0.0),
+            pose(7.9, 330, 830, 200, outfit="astronaut", opacity=1.0),
+            pose(8.6, 240, 830, 200, outfit="astronaut", opacity=1.0),
+            pose(9.2, 180, 760, 200, outfit="astronaut", opacity=1.0),
+            pose(10.0, 120, 830, 200, outfit="astronaut", opacity=1.0),
+        ],
+        "footprint": [
+            pose(5.0, 250, 842, 34, opacity=0.0),
+            pose(8.6, 250, 842, 34, opacity=0.0),
+            pose(8.7, 250, 842, 34, opacity=1.0),
+            pose(10.0, 250, 842, 34, opacity=1.0),
+        ],
+        "seismometer": [
+            pose(5.0, 520, 830, 110),
+            pose(10.0, 520, 830, 110),
+        ],
+    }, actions=[
+        action("emote", 8.8, 10.0, actor_id="astronaut", emote="idea"),
+    ], bg="moon_surface", weather="clear")
+
+    story = {
+        "id": "apollo_11",
+        "name": "41 · Apollo 11: Bước chân đầu tiên trên Mặt Trăng",
+        "renderer": RENDERER,
+        "fidelity": "technical-demo",
+        "note": "Mẫu kỹ thuật Phase S: Chuyến bay lịch sử của tên lửa Apollo 11 rời bệ phóng vươn lên không gian và mô-đun đổ bộ hạ cánh an toàn trên Mặt Trăng.",
+        "duration": 10.0,
+        "characters": [
+            actor("rocket", "rocket"),
+            actor("astronaut", "chibi_boy", outfit="astronaut"),
+            actor("lander", "lunar_lander"),
+            actor("footprint", "moon_footprint"),
+            actor("seismometer", "seismometer"),
+        ],
+        "scenes": [sc1, sc2],
+        "cues": [
+            {"start": 0.5, "end": 4.5, "character_id": "astronaut", "text": "Động cơ tên lửa gầm vang rực lửa, đưa tàu Apollo 11 vút lên bầu trời bao la hướng về không gian!", "expression": "happy"},
+            {"start": 5.5, "end": 9.5, "character_id": "astronaut", "text": "Tàu đổ bộ hạ cánh êm ái trên Mặt Trăng, phi hành gia bước xuống để lại dấu chân lịch sử trong trọng lực êm nhẹ!", "expression": "happy"},
+        ],
+    }
+    for index, item in enumerate(story["scenes"]):
+        item["index"] = index
+    validate_story(story)
+    return [story]
+
+
+def thanksgiving_harvest_examples():
+    """Mẫu kỹ thuật Phase S: Mùa gặt Tạ ơn thu hoạch bí ngô và sum họp gia đình."""
+    cat = catalog()
+
+    def actor(cid, asset, **extra):
+        lbl = cat["assets"][asset].get("label") or cat["assets"][asset].get("spec", {}).get("label") or asset
+        return {"id": cid, "name": lbl, "asset": asset, **extra}
+
+    def pose(t, x, y, h, **extra):
+        return {"time": t, "x": x, "y": y, "height": h, **extra}
+
+    def scene(start, end, poses, actions=(), bg="pumpkin_patch", **extra):
+        return {
+            "renderer": RENDERER,
+            "kind": "scene",
+            "start_time": start,
+            "end_time": end,
+            "characters_present": list(poses),
+            "poses": poses,
+            "actions": list(actions),
+            "background": {"preset": bg, **extra},
+        }
+
+    def action(kind, start, end, target=None, actor_id=None, **extra):
+        return {"type": kind, "start": start, "end": end, **({"target": target} if target else {}), **({"actor": actor_id} if actor_id else {}), **extra}
+
+    # Cảnh 1: Cánh đồng bí ngô, thu hoạch bỏ vào giỏ, khiêng cùng nhau về nhà >= 150 px
+    ow = dict(outfit="farmer_overalls")
+    sc1 = scene(0, 5.0, {
+        "basket": [
+            pose(0, 300, 830, 220, fill=0.0),
+            pose(2.0, 300, 830, 220, fill=1.0),
+            pose(2.5, 300, 830, 220, fill=1.0),
+            pose(5.0, 470, 830, 220, fill=1.0),
+        ],
+        # Bí ngô chín (growth 1) được bé bê từ luống bỏ vào giỏ, rồi đi theo giỏ.
+        "pumpkin": [
+            pose(0, 110, 840, 80, growth=1.0),
+            pose(1.0, 110, 840, 80, growth=1.0),
+            pose(2.0, 300, 775, 60, growth=1.0),
+            pose(2.5, 300, 775, 60, growth=1.0),
+            pose(5.0, 470, 775, 60, growth=1.0),
+        ],
+        "farmer": [
+            pose(0, 400, 830, 230, **ow),
+            pose(2.5, 400, 830, 230, **ow),
+            pose(5.0, 570, 830, 230, **ow),
+        ],
+        "kid": [
+            pose(0, 170, 830, 200),
+            pose(1.0, 170, 830, 200),
+            pose(2.0, 220, 830, 200),
+            pose(2.5, 220, 830, 200),
+            pose(5.0, 390, 830, 200),
+        ],
+    }, actions=[
+        action("carry_together", 2.5, 5.0, target="basket", actor_id="farmer", helper="kid", hold=True),
+    ], bg="pumpkin_patch", weather="clear")
+
+    # Cảnh 2: bàn tiệc ngoài sân với gà tây nướng và bánh táo, cả nhà ngồi hai bên, emote heart.
+    sc2 = scene(5.0, 10.0, {
+        "kid": [
+            pose(5.0, -40, 830, 200, expression="happy"),
+            pose(7.0, 130, 830, 200, expression="happy"),
+            pose(10.0, 130, 830, 200, expression="happy"),
+        ],
+        "farmer": [
+            pose(5.0, 470, 830, 230, expression="happy", flip=True, **ow),
+            pose(10.0, 470, 830, 230, expression="happy", flip=True, **ow),
+        ],
+        "table": [
+            pose(5.0, 300, 830, 230),
+            pose(10.0, 300, 830, 230),
+        ],
+        "turkey": [
+            pose(5.0, 265, 703, 150),
+            pose(10.0, 265, 703, 150),
+        ],
+        "pie": [
+            pose(5.0, 350, 703, 130),
+            pose(10.0, 350, 703, 130),
+        ],
+    }, actions=[
+        action("emote", 7.0, 9.5, actor_id="kid", emote="heart"),
+        action("emote", 7.5, 9.5, actor_id="farmer", emote="music"),
+    ], bg="suburb_backyard", weather="clear")
+
+    story = {
+        "id": "thanksgiving_harvest",
+        "name": "42 · Mùa gặt Tạ ơn: Thu hoạch bí ngô và sum họp gia đình",
+        "renderer": RENDERER,
+        "fidelity": "technical-demo",
+        "note": "Mẫu kỹ thuật Phase S: Thu hoạch những quả bí ngô trĩu quả trên cánh đồng vàng mùa thu và bữa tiệc Tạ ơn đầm ấm.",
+        "duration": 10.0,
+        "characters": [
+            actor("farmer", "chibi_teacher", outfit="farmer_overalls"),
+            actor("kid", "chibi_kid"),
+            actor("basket", "harvest_basket"),
+            actor("pumpkin", "pumpkin"),
+            actor("table", "table"),
+            actor("turkey", "roast_turkey"),
+            actor("pie", "apple_pie"),
+        ],
+        "scenes": [sc1, sc2],
+        "cues": [
+            {"start": 0.5, "end": 4.5, "character_id": "kid", "text": "Cả nhà cùng nhau thu hoạch những trái bí ngô căng tròn trên cánh đồng ngập tràn sắc thu vàng óng!", "expression": "happy"},
+            {"start": 5.5, "end": 9.5, "character_id": "farmer", "text": "Bàn tiệc Tạ ơn thơm nức gà tây và bánh táo nướng, ấm cúng tiếng cười sum vầy của cả gia đình!", "expression": "happy"},
+        ],
+    }
+    for index, item in enumerate(story["scenes"]):
+        item["index"] = index
+    validate_story(story)
+    return [story]
+
+
+def gold_rush_examples():
+    """Mẫu kỹ thuật Phase S: Chàng cao bồi đãi vàng bên suối và chuyến xe viễn Tây."""
+    cat = catalog()
+
+    def actor(cid, asset, **extra):
+        lbl = cat["assets"][asset].get("label") or cat["assets"][asset].get("spec", {}).get("label") or asset
+        return {"id": cid, "name": lbl, "asset": asset, **extra}
+
+    def pose(t, x, y, h, **extra):
+        return {"time": t, "x": x, "y": y, "height": h, **extra}
+
+    def scene(start, end, poses, actions=(), bg="national_park", **extra):
+        return {
+            "renderer": RENDERER,
+            "kind": "scene",
+            "start_time": start,
+            "end_time": end,
+            "characters_present": list(poses),
+            "poses": poses,
+            "actions": list(actions),
+            "background": {"preset": bg, **extra},
+        }
+
+    def action(kind, start, end, target=None, actor_id=None, **extra):
+        return {"type": kind, "start": start, "end": end, **({"target": target} if target else {}), **({"actor": actor_id} if actor_id else {}), **extra}
+
+    H = 250
+    pans = {r: held_pose("gold_pan", H, r) for r in (-24, -12, 0, 12, 24)}
+
+    def pan(t, r, glint=0.0):
+        return pose(t, pans[r]["x"], pans[r]["y"], H, rotation=r, glint=glint)
+
+    # Cảnh 1: cao bồi đi ra bờ suối, lắc chảo qua lại; hạt vàng lấp lánh dần (glint).
+    sc1 = scene(0, 5.0, {
+        "cowboy": [
+            pose(0, 20, 830, 220, outfit="cowboy", expression="neutral"),
+            pose(1.2, 200, 830, 220, outfit="cowboy", expression="neutral"),
+            pose(3.4, 200, 830, 220, outfit="cowboy", expression="happy"),
+            pose(5.0, 200, 830, 220, outfit="cowboy", expression="happy"),
+        ],
+        # Lắc qua lại, keyframe mỗi 12° để grip nội suy vẫn nằm trong tay (< 3 px).
+        "pan": [pan(0, 0), pan(1.2, 0)] + [pan(1.2 + 0.1 * (i + 1), [12, 24, 12, 0, -12, -24, -12, 0][i % 8], glint=min(1.0, i / 24)) for i in range(32)] + [pan(5.0, 0, glint=1.0)],
+    }, actions=[
+        action("emote", 3.6, 4.9, actor_id="cowboy", emote="!"),
+    ], bg="national_park", weather="clear")
+
+    # Cảnh 2: cao bồi cưỡi ngựa kéo xe thùng qua thị trấn wild_west_town (≥ 150 px).
+    sc2 = scene(5.0, 10.0, {
+        "horse": [
+            pose(5.0, 250, 830, 230),
+            pose(9.5, 470, 830, 230),
+            pose(10.0, 470, 830, 230),
+        ],
+        "wagon": [
+            pose(5.0, 100, 830, 200),
+            pose(9.5, 320, 830, 200),
+            pose(10.0, 320, 830, 200),
+        ],
+        "cowboy": [
+            pose(5.0, 250, 830, 190, outfit="cowboy", expression="happy"),
+            pose(10.0, 470, 830, 190, outfit="cowboy", expression="happy"),
+        ],
+    }, actions=[
+        action("ride", 5.0, 10.0, target="horse", actor_id="cowboy", seat="seat", hold=True),
+    ], bg="wild_west_town", weather="clear")
+
+    story = {
+        "id": "gold_rush",
+        "name": "43 · Cơn sốt vàng: Đãi vàng bên suối và chuyến xe viễn Tây",
+        "renderer": RENDERER,
+        "fidelity": "technical-demo",
+        "note": "Mẫu kỹ thuật Phase S: Chàng cao bồi đãi những vảy vàng lấp lánh bên bờ suối hẻm núi và xe ngựa vượt hành trình miền Tây.",
+        "duration": 10.0,
+        "characters": [
+            actor("cowboy", "chibi_boy", outfit="cowboy"),
+            actor("pan", "gold_pan", attach_to={"id": "cowboy", "anchor": "hand_r"}),
+            actor("horse", "horse"),
+            actor("wagon", "covered_wagon"),
+        ],
+        "scenes": [sc1, sc2],
+        "cues": [
+            {"start": 0.5, "end": 4.5, "character_id": "cowboy", "text": "Bên bờ suối mát lành, chiếc chảo đãi vàng nhịp nhàng gạn sỏi đá hé lộ những hạt vàng lấp lánh ánh kim!", "expression": "happy"},
+            {"start": 5.5, "end": 9.5, "character_id": "cowboy", "text": "Đoàn xe ngựa thùng vượt dặm đường viễn Tây tiến vào thị trấn rộn rã dưới nắng chiều rực rỡ!", "expression": "happy"},
+        ],
+    }
+    for index, item in enumerate(story["scenes"]):
+        item["index"] = index
+    validate_story(story)
+    return [story]
+
+
+def johnny_appleseed_examples():
+    """Mẫu kỹ thuật Phase S: Huyền thoại Johnny Appleseed gieo hạt táo."""
+    cat = catalog()
+
+    def actor(cid, asset, **extra):
+        lbl = cat["assets"][asset].get("label") or cat["assets"][asset].get("spec", {}).get("label") or asset
+        return {"id": cid, "name": lbl, "asset": asset, **extra}
+
+    def pose(t, x, y, h, **extra):
+        return {"time": t, "x": x, "y": y, "height": h, **extra}
+
+    def scene(start, end, poses, actions=(), bg="national_park", **extra):
+        return {
+            "renderer": RENDERER,
+            "kind": "scene",
+            "start_time": start,
+            "end_time": end,
+            "characters_present": list(poses),
+            "poses": poses,
+            "actions": list(actions),
+            "background": {"preset": bg, **extra},
+        }
+
+    def action(kind, start, end, target=None, actor_id=None, **extra):
+        return {"type": kind, "start": start, "end": end, **({"target": target} if target else {}), **({"actor": actor_id} if actor_id else {}), **extra}
+
+    # Cảnh 1: Johnny đi gieo hạt (walks >= 150 px: 80 -> 240), cây táo mọc lớn đơn điệu 0.1 -> 0.55 -> 1.0
+    sc1 = scene(0, 5.0, {
+        "johnny": [
+            pose(0, 40, 830, 220, walk=1.0, expression="neutral", outfit="farmer_overalls"),
+            pose(2.0, 210, 830, 220, walk=0.0, expression="happy", outfit="farmer_overalls"),
+            pose(5.0, 210, 830, 220, walk=0.0, expression="happy", outfit="farmer_overalls"),
+        ],
+        "seed": [
+            pose(0, 40, 830, 70),
+            pose(1.5, 250, 830, 70),
+            pose(5.0, 250, 830, 70),
+        ],
+        "apple_tree": [
+            pose(0.0, 400, 810, 300, growth=0.1, fruits=0),
+            pose(3.0, 400, 810, 300, growth=0.55, fruits=0),
+            pose(4.8, 400, 810, 300, growth=1.0, fruits=6),
+            pose(5.0, 400, 810, 300, growth=1.0, fruits=6),
+        ],
+    }, actions=[
+        action("grow_fast", 1.8, 4.8, target="apple_tree"),
+    ], bg="national_park", weather="clear")
+
+    # Cảnh 2: Cây táo trĩu quả, bé hái quả qua tree_pick_events, Johnny đi tiếp >= 150 px (260 -> 460)
+    pick_ev = tree_pick_events("apple_tree", "apple_tree", fruits_before=6, t=5.0, hand_char_id="kid", fruit_char_id="picked_apple", tree_pos={"x": 190, "y": 810, "height": 300}, hand="hand_l", grip_duration=4.0)
+    sc2 = scene(5.0, 10.0, {
+        "apple_tree": pick_ev["tree_keyframes"] + [pose(10.0, 190, 810, 300, growth=1.0, fruits=5)],
+        "kid": [
+            pose(5.0, 318, 830, 240, expression="happy"),
+            pose(10.0, 318, 830, 240, expression="happy"),
+        ],
+        "johnny": [
+            pose(5.0, 640, 830, 220, walk=1.0, expression="happy", outfit="farmer_overalls", flip=True),
+            pose(8.0, 470, 830, 220, walk=0.0, expression="happy", outfit="farmer_overalls", flip=True),
+            pose(10.0, 470, 830, 220, walk=0.0, expression="happy", outfit="farmer_overalls", flip=True),
+        ],
+        "picked_apple": pick_ev["fruit_keyframes"],
+    }, actions=[
+        pick_ev["pick_action"],
+        pick_ev["grip_action"],
+        action("emote", 7.5, 9.5, actor_id="kid", emote="heart"),
+    ], bg="suburb_backyard", weather="clear")
+
+    story = {
+        "id": "johnny_appleseed",
+        "name": "44 · Huyền thoại Johnny Appleseed: Gieo hạt lành nên rừng táo",
+        "renderer": RENDERER,
+        "fidelity": "technical-demo",
+        "note": "Mẫu kỹ thuật Phase S: Người gieo những hạt táo mầm xanh vươn mình thành cổ thụ trĩu quả ngọt ngào cho thế hệ mai sau.",
+        "duration": 10.0,
+        "characters": [
+            actor("johnny", "chibi_teacher", outfit="farmer_overalls"),
+            actor("seed", "seed"),
+            actor("apple_tree", "apple_tree"),
+            actor("kid", "chibi_kid"),
+            pick_ev["fruit_character"],
+        ],
+        "scenes": [sc1, sc2],
+        "cues": [
+            {"start": 0.5, "end": 4.5, "character_id": "johnny", "text": "Johnny gieo từng hạt mầm nhỏ xuống lòng đất lành, chẳng mấy chốc cây non đã vươn mình thành rặng táo trù phú!", "expression": "happy"},
+            {"start": 5.5, "end": 9.5, "character_id": "kid", "text": "Những chùm táo đỏ chín mọng ngọt lành được hái trao tay, gửi gắm niềm vui và hy vọng khắp mọi miền!", "expression": "happy"},
+        ],
+    }
+    for index, item in enumerate(story["scenes"]):
+        item["index"] = index
+    validate_story(story)
+    return [story]
+
+
+def water_cycle_examples():
+    """Mẫu kỹ thuật Phase T: Vòng tuần hoàn của nước trong tự nhiên."""
+    cat = catalog()
+
+    def actor(cid, asset, **extra):
+        lbl = cat["assets"][asset].get("label") or cat["assets"][asset].get("spec", {}).get("label") or asset
+        return {"id": cid, "name": lbl, "asset": asset, **extra}
+
+    def pose(t, x, y, h, **extra):
+        return {"time": t, "x": x, "y": y, "height": h, **extra}
+
+    def scene(start, end, poses, actions=(), bg="water_cycle_valley", **extra):
+        return {
+            "renderer": RENDERER,
+            "kind": "scene",
+            "start_time": start,
+            "end_time": end,
+            "characters_present": list(poses),
+            "poses": poses,
+            "actions": list(actions),
+            "background": {"preset": bg, **extra},
+        }
+
+    def action(kind, start, end, target=None, actor_id=None, **extra):
+        return {"type": kind, "start": start, "end": end, **({"target": target} if target else {}), **({"actor": actor_id} if actor_id else {}), **extra}
+
+    # Cảnh 1: Giọt nước bốc hơi từ biển bay lên cao (dy = 360 px >= 300 px)
+    sc1 = scene(0, 5.0, {
+        "sun": [
+            pose(0, 100, 240, 150),
+            pose(5.0, 100, 240, 150),
+        ],
+        "cloud": [
+            pose(0, 340, 320, 180, opacity=0.3, rain=0.0),
+            pose(5.0, 340, 320, 180, opacity=0.9, rain=0.0),
+        ],
+        "drop": [
+            pose(0, 100, 780, 140, expression="happy"),
+            pose(2.5, 160, 600, 140, expression="happy"),
+            pose(5.0, 220, 420, 140, expression="happy"),
+        ],
+    }, actions=[
+        action("evaporate", 0.5, 4.5, actor_id="drop"),
+    ], bg="water_cycle_valley", no_sun=True, weather="clear")
+
+    # Cảnh 2: Mây ngưng tụ sẫm màu, rain tăng 0 -> 1, giọt rơi xuống núi cao (dy = 360 px >= 150 px)
+    sc2 = scene(5.0, 10.0, {
+        "sun": [
+            pose(5.0, 100, 240, 150),
+            pose(10.0, 100, 240, 150),
+        ],
+        "cloud": [
+            pose(5.0, 380, 360, 190, rain=0.0),
+            pose(7.5, 380, 360, 190, rain=0.5),
+            pose(10.0, 380, 360, 190, rain=1.0),
+        ],
+        "drop": [
+            pose(5.0, 380, 360, 140, expression="surprised"),
+            pose(7.5, 410, 540, 140, expression="happy"),
+            pose(10.0, 440, 720, 140, expression="happy"),
+        ],
+    }, actions=[], bg="water_cycle_valley", no_sun=True, weather="rain")
+
+    # Cảnh 3: Giọt nước theo sông từ núi chảy về biển (dx = 320 px >= 150 px), cầu vồng growth tăng 0 -> 1
+    sc3 = scene(10.0, 15.0, {
+        "sun": [
+            pose(10.0, 100, 240, 150),
+            pose(15.0, 100, 240, 150),
+        ],
+        "drop": [
+            pose(10.0, 440, 720, 140, expression="happy"),
+            pose(12.5, 280, 750, 140, expression="happy"),
+            pose(15.0, 120, 780, 140, expression="happy"),
+        ],
+        "rainbow": [
+            pose(10.0, 288, 700, 260, growth=0.0),
+            pose(12.5, 288, 700, 260, growth=0.5),
+            pose(15.0, 288, 700, 260, growth=1.0),
+        ],
+    }, actions=[
+        action("emote", 11.5, 14.5, actor_id="drop", emote="heart"),
+    ], bg="water_cycle_valley", no_sun=True, weather="clear")
+
+    story = {
+        "id": "water_cycle",
+        "name": "45 · Vòng tuần hoàn của nước: Từ đại dương đến mây và mưa",
+        "renderer": RENDERER,
+        "fidelity": "technical-demo",
+        "note": "Mẫu kỹ thuật Phase T: Vòng tuần hoàn của nước trong tự nhiên với giọt nước chibi bốc hơi từ biển lên mây, mây mưa đổ xuống sườn núi và cầu vồng 7 màu hiện ra.",
+        "duration": 15.0,
+        "characters": [
+            actor("drop", "raindrop_chibi"),
+            actor("cloud", "cloud"),
+            actor("sun", "sun"),
+            actor("rainbow", "rainbow"),
+        ],
+        "scenes": [sc1, sc2, sc3],
+        "cues": [
+            {"start": 0.5, "end": 4.5, "character_id": "drop", "text": "Dưới ánh nắng mặt trời ấm áp, giọt nước bốc hơi nhẹ nhàng bay vút lên bầu trời cao!", "expression": "happy"},
+            {"start": 5.5, "end": 9.5, "character_id": "drop", "text": "Hơi nước ngưng tụ thành những đám mây trĩu nặng rồi tạo thành từng giọt mưa tưới mát núi rừng!", "expression": "happy"},
+            {"start": 10.5, "end": 14.5, "character_id": "drop", "text": "Nước theo dòng sông hiền hoà chảy về biển cả bao la, vẽ nên chiếc cầu vồng bảy màu rực rỡ!", "expression": "happy"},
+        ],
+    }
+    for index, item in enumerate(story["scenes"]):
+        item["index"] = index
+    validate_story(story)
+    return [story]
+
+
+def moon_phases_examples():
+    """Mẫu kỹ thuật Phase T: Các pha của Mặt Trăng qua kính thiên văn."""
+    cat = catalog()
+
+    def actor(cid, asset, **extra):
+        lbl = cat["assets"][asset].get("label") or cat["assets"][asset].get("spec", {}).get("label") or asset
+        return {"id": cid, "name": lbl, "asset": asset, **extra}
+
+    def pose(t, x, y, h, **extra):
+        return {"time": t, "x": x, "y": y, "height": h, **extra}
+
+    def scene(start, end, poses, actions=(), bg="alpine_meadow", **extra):
+        return {
+            "renderer": RENDERER,
+            "kind": "scene",
+            "start_time": start,
+            "end_time": end,
+            "characters_present": list(poses),
+            "poses": poses,
+            "actions": list(actions),
+            "background": {"preset": bg, **extra},
+        }
+
+    def action(kind, start, end, target=None, actor_id=None, **extra):
+        return {"type": kind, "start": start, "end": end, **({"target": target} if target else {}), **({"actor": actor_id} if actor_id else {}), **extra}
+
+    p_tele = held_pose("telescope", 170, -12, anchor="grip")
+
+    # Cảnh 1: Trẻ ngắm trăng từ trăng non (0.0) -> bán nguyệt (0.25) -> rằm tròn (0.5)
+    sc1 = scene(0, 6.0, {
+        "child": [
+            pose(0, 140, 810, 230, expression="surprised", hand_r_x=22, hand_r_y=-60),
+            pose(6.0, 140, 810, 230, expression="happy", hand_r_x=22, hand_r_y=-60),
+        ],
+        "telescope": [
+            pose(0, p_tele["x"], p_tele["y"], 170, rotation=p_tele["rotation"]),
+            pose(6.0, p_tele["x"], p_tele["y"], 170, rotation=p_tele["rotation"]),
+        ],
+        "moon": [
+            pose(0, 420, 360, 180, phase=0.0),
+            pose(2.5, 420, 360, 180, phase=0.25),
+            pose(6.0, 420, 360, 180, phase=0.5),
+        ],
+    }, actions=[
+        action("emote", 1.5, 4.5, actor_id="child", emote="idea"),
+    ], bg="alpine_meadow", weather="clear", time="night")
+
+    # Cảnh 2: Trẻ đi sang vị trí mới (dx = 170 px >= 150 px), trăng chuyển từ rằm (0.5) -> khuyết (0.75) -> non (1.0)
+    sc2 = scene(6.0, 12.0, {
+        "child": [
+            pose(6.0, 140, 810, 230, expression="happy", hand_r_x=22, hand_r_y=-60),
+            pose(9.0, 310, 810, 230, expression="happy", hand_r_x=22, hand_r_y=-60),
+            pose(12.0, 310, 810, 230, expression="happy", hand_r_x=22, hand_r_y=-60),
+        ],
+        "telescope": [
+            pose(6.0, p_tele["x"], p_tele["y"], 170, rotation=p_tele["rotation"]),
+            pose(12.0, p_tele["x"], p_tele["y"], 170, rotation=p_tele["rotation"]),
+        ],
+        "moon": [
+            pose(6.0, 420, 360, 180, phase=0.5),
+            pose(9.0, 420, 360, 180, phase=0.75),
+            pose(12.0, 420, 360, 180, phase=1.0),
+        ],
+    }, actions=[
+        action("emote", 7.5, 11.0, actor_id="child", emote="heart"),
+    ], bg="alpine_meadow", weather="clear", time="night")
+
+    story = {
+        "id": "moon_phases",
+        "name": "46 · Các pha của Mặt Trăng: Từ trăng non đến trăng rằm",
+        "renderer": RENDERER,
+        "fidelity": "technical-demo",
+        "note": "Mẫu kỹ thuật Phase T: Chu kỳ các pha của Mặt Trăng qua ống kính thiên văn qua các đêm.",
+        "duration": 12.0,
+        "characters": [
+            actor("child", "chibi_boy"),
+            actor("telescope", "telescope", attach_to={"id": "child", "anchor": "hand_r"}),
+            actor("moon", "moon"),
+        ],
+        "scenes": [sc1, sc2],
+        "cues": [
+            {"start": 0.5, "end": 5.5, "character_id": "child", "text": "Qua kính viễn vọng, bé quan sát vầng trăng khuyết đầu tháng dần tròn vành vạnh đêm rằm!", "expression": "surprised"},
+            {"start": 6.5, "end": 11.5, "character_id": "child", "text": "Rồi trăng lại khuyết dần sang phía ngược lại, hoàn thành trọn vẹn một chu kỳ kỳ diệu của tự nhiên!", "expression": "happy"},
+        ],
+    }
+    for index, item in enumerate(story["scenes"]):
+        item["index"] = index
+    validate_story(story)
+    return [story]
+
+
+def volcano_examples():
+    """Mẫu kỹ thuật Phase T: Cấu tạo macma núi lửa và phun trào an toàn."""
+    cat = catalog()
+
+    def actor(cid, asset, **extra):
+        lbl = cat["assets"][asset].get("label") or cat["assets"][asset].get("spec", {}).get("label") or asset
+        return {"id": cid, "name": lbl, "asset": asset, **extra}
+
+    def pose(t, x, y, h, **extra):
+        return {"time": t, "x": x, "y": y, "height": h, **extra}
+
+    def scene(start, end, poses, actions=(), bg="volcano_island", **extra):
+        return {
+            "renderer": RENDERER,
+            "kind": "scene",
+            "start_time": start,
+            "end_time": end,
+            "characters_present": list(poses),
+            "poses": poses,
+            "actions": list(actions),
+            "background": {"preset": bg, **extra},
+        }
+
+    def action(kind, start, end, target=None, actor_id=None, **extra):
+        return {"type": kind, "start": start, "end": end, **({"target": target} if target else {}), **({"actor": actor_id} if actor_id else {}), **extra}
+
+    p_thermo = held_pose("thermometer", 150, -20, anchor="grip")
+
+    # Cảnh 1: Nhà khoa học đứng xa quan sát (x=450, miệng núi x=160 -> khoảng cách 290 px >= 200 px), cutaway macma lộ dần
+    sc1 = scene(0, 6.0, {
+        "volcano": [
+            pose(0, 160, 810, 280, cutaway=0.0, erupt=0.0),
+            pose(3.0, 160, 810, 280, cutaway=0.5, erupt=0.0),
+            pose(6.0, 160, 810, 280, cutaway=1.0, erupt=0.0),
+        ],
+        "scientist": [
+            pose(0, 450, 810, 230, outfit="scientist", expression="neutral"),
+            pose(6.0, 450, 810, 230, outfit="scientist", expression="happy"),
+        ],
+        "thermo": [
+            pose(0, p_thermo["x"], p_thermo["y"], 150, rotation=p_thermo["rotation"]),
+            pose(6.0, p_thermo["x"], p_thermo["y"], 150, rotation=p_thermo["rotation"]),
+        ],
+    }, actions=[
+        action("emote", 2.0, 5.0, actor_id="scientist", emote="idea"),
+    ], bg="volcano_island", weather="clear")
+
+    # Cảnh 2: Nhà khoa học lùi thêm một đoạn an toàn (x=480), núi lửa phun trào erupt 0 -> 1, khói tro bốc lên, an toàn tuyệt đối
+    sc2 = scene(6.0, 12.0, {
+        "volcano": [
+            pose(6.0, 160, 810, 280, cutaway=0.0, erupt=0.0),
+            pose(9.0, 160, 810, 280, cutaway=0.0, erupt=0.5),
+            pose(12.0, 160, 810, 280, cutaway=0.0, erupt=1.0),
+        ],
+        "scientist": [
+            pose(6.0, 450, 810, 230, outfit="scientist", expression="surprised"),
+            pose(9.0, 480, 810, 230, outfit="scientist", expression="happy"),
+            pose(12.0, 480, 810, 230, outfit="scientist", expression="happy"),
+        ],
+        "thermo": [
+            pose(6.0, p_thermo["x"], p_thermo["y"], 150, rotation=p_thermo["rotation"]),
+            pose(12.0, p_thermo["x"], p_thermo["y"], 150, rotation=p_thermo["rotation"]),
+        ],
+    }, actions=[
+        action("emote", 8.5, 11.5, actor_id="scientist", emote="heart"),
+    ], bg="volcano_island", weather="clear")
+
+    story = {
+        "id": "volcano",
+        "name": "47 · Núi lửa địa chất: Cấu tạo macma và phun trào an toàn",
+        "renderer": RENDERER,
+        "fidelity": "technical-demo",
+        "note": "Mẫu kỹ thuật Phase T: Khám phá địa chất núi lửa với mặt cắt buồng macma và ống dẫn dung nham, nhà khoa học quan sát từ khoảng cách an toàn, không có thương vong (§31).",
+        "duration": 12.0,
+        "characters": [
+            actor("volcano", "volcano"),
+            actor("scientist", "chibi_girl"),
+            actor("thermo", "thermometer", attach_to={"id": "scientist", "anchor": "hand_r"}),
+        ],
+        "scenes": [sc1, sc2],
+        "cues": [
+            {"start": 0.5, "end": 5.5, "character_id": "scientist", "text": "Mặt cắt địa chất hiển hiện buồng macma sâu thẳm cùng các ống dẫn dung nham đỏ rực trong lòng đất!", "expression": "happy"},
+            {"start": 6.5, "end": 11.5, "character_id": "scientist", "text": "Từ cự ly an toàn, nhà khoa học ghi nhận khoảnh khắc núi lửa phun trào tạo nên những tầng đất mới kỳ thú!", "expression": "happy"},
+        ],
+    }
+    for index, item in enumerate(story["scenes"]):
+        item["index"] = index
+    validate_story(story)
+    return [story]
+
+
+def dino_dig_examples():
+    """Mẫu kỹ thuật Phase T: Khai quật cổ sinh học và hoá thạch khủng long."""
+    cat = catalog()
+
+    def actor(cid, asset, **extra):
+        lbl = cat["assets"][asset].get("label") or cat["assets"][asset].get("spec", {}).get("label") or asset
+        return {"id": cid, "name": lbl, "asset": asset, **extra}
+
+    def pose(t, x, y, h, **extra):
+        return {"time": t, "x": x, "y": y, "height": h, **extra}
+
+    def scene(start, end, poses, actions=(), bg="dig_site", **extra):
+        return {
+            "renderer": RENDERER,
+            "kind": "scene",
+            "start_time": start,
+            "end_time": end,
+            "characters_present": list(poses),
+            "poses": poses,
+            "actions": list(actions),
+            "background": {"preset": bg, **extra},
+        }
+
+    def action(kind, start, end, target=None, actor_id=None, **extra):
+        return {"type": kind, "start": start, "end": end, **({"target": target} if target else {}), **({"actor": actor_id} if actor_id else {}), **extra}
+
+    p_shovel = held_pose("shovel", 90, 25, anchor="grip")
+
+    # Cảnh 1: Nhà cổ sinh cầm xẻng đào hố khai quật, exposed tăng 0 -> 1
+    sc1 = scene(0, 6.0, {
+        "paleo": [
+            pose(0, 180, 810, 230, outfit="paleontologist", expression="neutral"),
+            pose(6.0, 180, 810, 230, outfit="paleontologist", expression="happy"),
+        ],
+        "shovel": [
+            pose(0, p_shovel["x"], p_shovel["y"], 90, rotation=p_shovel["rotation"]),
+            pose(6.0, p_shovel["x"], p_shovel["y"], 90, rotation=p_shovel["rotation"]),
+        ],
+        "fossil": [
+            pose(0, 330, 810, 150, exposed=0.0),
+            pose(3.0, 330, 810, 150, exposed=0.5),
+            pose(6.0, 330, 810, 150, exposed=1.0),
+        ],
+    }, actions=[
+        action("dig", 0.5, 5.5, actor_id="shovel", target="fossil"),
+    ], bg="dig_site", weather="clear")
+
+    # Cảnh 2: Nhà cổ sinh lùi bước, T-rex hiện về qua trí tưởng tượng thân thiện (emote heart)
+    sc2 = scene(6.0, 12.0, {
+        "paleo": [
+            pose(6.0, 180, 810, 230, outfit="paleontologist", expression="happy"),
+            pose(8.5, 70, 810, 230, outfit="paleontologist", expression="happy"),
+            pose(12.0, 70, 810, 230, outfit="paleontologist", expression="happy"),
+        ],
+        "shovel": [
+            pose(6.0, p_shovel["x"], p_shovel["y"], 90, rotation=p_shovel["rotation"]),
+            pose(12.0, p_shovel["x"], p_shovel["y"], 90, rotation=p_shovel["rotation"]),
+        ],
+        "fossil": [
+            pose(6.0, 330, 810, 150, exposed=1.0),
+            pose(7.0, 190, 830, 120, exposed=1.0),
+            pose(12.0, 190, 830, 120, exposed=1.0),
+        ],
+        "trex": [
+            pose(6.0, 400, 810, 180, opacity=0.0),
+            pose(8.0, 400, 810, 180, opacity=1.0),
+            pose(12.0, 400, 810, 180, opacity=1.0),
+        ],
+    }, actions=[
+        action("emote", 7.5, 11.5, actor_id="trex", emote="heart"),
+    ], bg="dig_site", weather="clear")
+
+    story = {
+        "id": "dino_dig",
+        "name": "48 · Khai quật cổ sinh: Bộ xương hoá thạch và chú khủng long T-rex",
+        "renderer": RENDERER,
+        "fidelity": "technical-demo",
+        "note": "Mẫu kỹ thuật Phase T: Khai quật khảo cổ sa thạch phát hiện hoá thạch khủng long, T-rex hiện về qua trí tưởng tượng thân thiện của nhà cổ sinh, không sống cùng thời (§31).",
+        "duration": 12.0,
+        "characters": [
+            actor("paleo", "chibi_boy"),
+            actor("shovel", "shovel", attach_to={"id": "paleo", "anchor": "hand_r"}),
+            actor("fossil", "fossil"),
+            actor("trex", "trex"),
+        ],
+        "scenes": [sc1, sc2],
+        "cues": [
+            {"start": 0.5, "end": 5.5, "character_id": "paleo", "text": "Cẩn trọng gạt từng lớp cát sa thạch, hộp sọ hoá thạch khủng long dần lộ diện nguyên vẹn!", "expression": "happy"},
+            {"start": 6.5, "end": 11.5, "character_id": "paleo", "text": "Trong trí tưởng tượng phong phú, chú khủng long bạo chúa T-rex hiện về thật đáng yêu và thân thiện!", "expression": "happy"},
+        ],
+    }
+    for index, item in enumerate(story["scenes"]):
+        item["index"] = index
+    validate_story(story)
+    return [story]
+
+
+def solar_system_tour_examples():
+    """Mẫu kỹ thuật Phase T: Chuyến bay du hành vũ trụ qua 8 hành tinh Hệ Mặt Trời."""
+    cat = catalog()
+
+    def actor(cid, asset, **extra):
+        lbl = cat["assets"][asset].get("label") or cat["assets"][asset].get("spec", {}).get("label") or asset
+        return {"id": cid, "name": lbl, "asset": asset, **extra}
+
+    def pose(t, x, y, h, **extra):
+        return {"time": t, "x": x, "y": y, "height": h, **extra}
+
+    def scene(start, end, poses, actions=(), bg="space_orbit", **extra):
+        return {
+            "renderer": RENDERER,
+            "kind": "scene",
+            "start_time": start,
+            "end_time": end,
+            "characters_present": list(poses),
+            "poses": poses,
+            "actions": list(actions),
+            "background": {"preset": bg, **extra},
+        }
+
+    def action(kind, start, end, target=None, actor_id=None, **extra):
+        return {"type": kind, "start": start, "end": end, **({"target": target} if target else {}), **({"actor": actor_id} if actor_id else {}), **extra}
+
+    # Cảnh 1: Tên lửa bay qua 4 hành tinh đất đá: Sao Thuỷ -> Sao Kim -> Trái Đất -> Sao Hoả (dx = 420 px >= 150 px)
+    sc1 = scene(0, 6.0, {
+        "ship": [
+            pose(0, -60, 380, 110, rotation=90),
+            pose(6.0, 600, 380, 110, rotation=90),
+        ],
+        "p1": [
+            pose(0, 120, 530, 90, variant="mercury"),
+            pose(6.0, 120, 530, 90, variant="mercury"),
+        ],
+        "p2": [
+            pose(0, 230, 510, 110, variant="venus"),
+            pose(6.0, 230, 510, 110, variant="venus"),
+        ],
+        "p3": [
+            pose(0, 340, 520, 120, variant="earth"),
+            pose(6.0, 340, 520, 120, variant="earth"),
+        ],
+        "p4": [
+            pose(0, 450, 500, 100, variant="mars"),
+            pose(6.0, 450, 500, 100, variant="mars"),
+        ],
+    }, actions=[
+        action("fly", 0.5, 5.5, actor_id="ship"),
+    ], bg="space_orbit", weather="clear")
+
+    # Cảnh 2: Tên lửa bay qua 4 hành tinh khí khổng lồ: Sao Mộc -> Sao Thổ -> Sao Thiên Vương -> Sao Hải Vương (dx = 440 px >= 150 px)
+    sc2 = scene(6.0, 12.0, {
+        "ship": [
+            pose(6.0, -60, 350, 110, rotation=90),
+            pose(12.0, 600, 350, 110, rotation=90),
+        ],
+        "p5": [
+            pose(6.0, 90, 560, 160, variant="jupiter"),
+            pose(12.0, 90, 560, 160, variant="jupiter"),
+        ],
+        "p6": [
+            pose(6.0, 260, 545, 140, variant="saturn"),
+            pose(12.0, 260, 545, 140, variant="saturn"),
+        ],
+        "p7": [
+            pose(6.0, 410, 530, 120, variant="uranus"),
+            pose(12.0, 410, 530, 120, variant="uranus"),
+        ],
+        "p8": [
+            pose(6.0, 515, 530, 110, variant="neptune"),
+            pose(12.0, 515, 530, 110, variant="neptune"),
+        ],
+    }, actions=[
+        action("fly", 6.5, 11.5, actor_id="ship"),
+    ], bg="space_orbit", weather="clear")
+
+    story = {
+        "id": "solar_system_tour",
+        "name": "49 · Du hành Hệ Mặt Trời: Hành trình khám phá 8 hành tinh",
+        "renderer": RENDERER,
+        "fidelity": "technical-demo",
+        "note": "Mẫu kỹ thuật Phase T: Chuyến bay du hành vũ trụ của tên lửa qua đúng thứ tự 8 hành tinh từ Sao Thuỷ, Sao Kim, Trái Đất, Sao Hoả đến Sao Mộc, Sao Thổ, Sao Thiên Vương, Sao Hải Vương.",
+        "duration": 12.0,
+        "characters": [
+            actor("ship", "rocket"),
+            actor("p1", "planet"),
+            actor("p2", "planet"),
+            actor("p3", "planet"),
+            actor("p4", "planet"),
+            actor("p5", "planet"),
+            actor("p6", "planet"),
+            actor("p7", "planet"),
+            actor("p8", "planet"),
+        ],
+        "scenes": [sc1, sc2],
+        "cues": [
+            {"start": 0.5, "end": 5.5, "character_id": "ship", "text": "Tên lửa xuất phát từ quỹ đạo, bay qua bốn hành tinh đất đá: Sao Thuỷ, Sao Kim, Trái Đất và Sao Hoả!", "offscreen": True},
+            {"start": 6.5, "end": 11.5, "character_id": "ship", "text": "Tiếp tục tiến sâu vào không gian qua bốn hành tinh khí khổng lồ: Sao Mộc, Sao Thổ, Sao Thiên Vương và Sao Hải Vương!", "offscreen": True},
+        ],
+    }
+    for index, item in enumerate(story["scenes"]):
+        item["index"] = index
+    validate_story(story)
+    return [story]
+
+
+def simple_machines_examples():
+    """Mẫu kỹ thuật Phase T: Các loại máy cơ học đơn giản."""
+    cat = catalog()
+
+    def actor(cid, asset, **extra):
+        lbl = cat["assets"][asset].get("label") or cat["assets"][asset].get("spec", {}).get("label") or asset
+        return {"id": cid, "name": lbl, "asset": asset, **extra}
+
+    def pose(t, x, y, h, **extra):
+        return {"time": t, "x": x, "y": y, "height": h, **extra}
+
+    def scene(start, end, poses, actions=(), bg="water_cycle_valley", **extra):
+        return {
+            "renderer": RENDERER,
+            "kind": "scene",
+            "start_time": start,
+            "end_time": end,
+            "characters_present": list(poses),
+            "poses": poses,
+            "actions": list(actions),
+            "background": {"preset": bg, **extra},
+        }
+
+    def action(kind, start, end, target=None, actor_id=None, **extra):
+        return {"type": kind, "start": start, "end": end, **({"target": target} if target else {}), **({"actor": actor_id} if actor_id else {}), **extra}
+
+    # Cơ học (tính từ anchor catalog): đòn bẩy h180 quay quanh fulcrum; tilt dương = đầu phải hạ.
+    # Bé ấn đầu trái (effort_point) xuống → đầu phải (load_point) nâng tảng đá lên.
+    sc1 = scene(0, 6.0, {
+        "lever": [
+            pose(0, 280, 810, 180, tilt=15.0),
+            pose(1.0, 280, 810, 180, tilt=15.0),
+            pose(3.0, 280, 810, 180, tilt=-20.0),
+            pose(6.0, 280, 810, 180, tilt=-20.0),
+        ],
+        "stone": [
+            pose(0, 346, 781, 90),
+            pose(1.0, 346, 781, 90),
+            pose(3.0, 344, 740, 90),
+            pose(6.0, 344, 740, 90),
+        ],
+        "kid": [
+            pose(0, 150, 810, 220, expression="neutral", hand_r_x=29.1, hand_r_y=-29.3),
+            pose(1.0, 150, 810, 220, expression="neutral", hand_r_x=29.1, hand_r_y=-29.3),
+            pose(3.0, 150, 810, 220, expression="happy", hand_r_x=29.9, hand_r_y=-10.6),
+            pose(6.0, 150, 810, 220, expression="happy", hand_r_x=29.9, hand_r_y=-10.6),
+        ],
+    }, actions=[
+        action("emote", 3.2, 5.8, actor_id="kid", emote="idea"),
+    ], bg="water_cycle_valley", weather="clear")
+
+    # Cảnh 2: bé kéo dây ròng rọc (tay trên rope_pull) → xô treo ở móc load đi lên theo lift;
+    # rồi đẩy thùng lăn từ chân (bottom) lên đỉnh (top) mặt phẳng nghiêng.
+    sc2 = scene(6.0, 12.0, {
+        "pulley": [
+            pose(6.0, 140, 810, 200, lift=0.0),
+            pose(6.8, 140, 810, 200, lift=0.0),
+            pose(9.0, 140, 810, 200, lift=1.0),
+            pose(12.0, 140, 810, 200, lift=1.0),
+        ],
+        "bucket": [
+            pose(6.0, 158, 813, 60),
+            pose(6.8, 158, 813, 60),
+            pose(9.0, 158, 729, 60),
+            pose(12.0, 158, 729, 60),
+        ],
+        "ramp": [
+            pose(6.0, 420, 810, 180),
+            pose(12.0, 420, 810, 180),
+        ],
+        "barrel": [
+            pose(6.0, 310, 810, 80),
+            pose(10.0, 310, 810, 80),
+            pose(10.5, 352, 806, 80),
+            pose(12.0, 474, 737, 80),
+        ],
+        "kid": [
+            pose(6.0, -60, 810, 220, expression="happy"),
+            pose(6.8, 62, 810, 220, expression="happy", hand_r_x=27, hand_r_y=-36),
+            pose(9.0, 62, 810, 220, expression="happy", hand_r_x=27, hand_r_y=-16),
+            pose(10.0, 245, 810, 220, expression="happy", hand_r_x=24, hand_r_y=-22),
+            pose(10.5, 287, 808, 220, expression="happy", hand_r_x=24, hand_r_y=-22),
+            pose(12.0, 400, 760, 220, expression="happy", hand_r_x=24, hand_r_y=-22),
+        ],
+    }, actions=[
+        action("emote", 10.8, 11.9, actor_id="kid", emote="heart"),
+    ], bg="water_cycle_valley", weather="clear")
+
+    story = {
+        "id": "simple_machines",
+        "name": "50 · Máy cơ học đơn giản: Đòn bẩy, ròng rọc và mặt phẳng nghiêng",
+        "renderer": RENDERER,
+        "fidelity": "technical-demo",
+        "note": "Mẫu kỹ thuật Phase T: Khám phá nguyên lý máy cơ học đơn giản giúp nâng và di chuyển vật nặng dễ dàng.",
+        "duration": 12.0,
+        "characters": [
+            actor("kid", "chibi_kid"),
+            actor("lever", "lever"),
+            actor("stone", "stone_block"),
+            actor("pulley", "pulley"),
+            actor("bucket", "bucket"),
+            actor("ramp", "ramp"),
+            actor("barrel", "barrel"),
+        ],
+        "scenes": [sc1, sc2],
+        "cues": [
+            {"start": 0.5, "end": 5.5, "character_id": "kid", "text": "Nhờ đòn bẩy, bé chỉ cần ấn nhẹ một đầu là tảng đá lớn phía bên kia đã được bổng lên dễ dàng!", "expression": "happy"},
+            {"start": 6.5, "end": 11.5, "character_id": "kid", "text": "Ròng rọc kéo xô nước lên cao thoăn thoắt, còn con dốc nghiêng giúp lăn thùng gỗ lên nhẹ nhàng vô cùng!", "expression": "happy"},
+        ],
+    }
+    for index, item in enumerate(story["scenes"]):
+        item["index"] = index
+    validate_story(story)
+    return [story]
+
+
 def auto_frame(story: dict, max_zoom: float = 2.0) -> dict:
     """Đặt camera tĩnh cho mỗi cảnh chưa có camera để nhóm nhân vật nhỏ (tế bào, vi khuẩn) chiếm ~85% bề ngang.
 
@@ -5171,7 +6185,7 @@ def auto_frame(story: dict, max_zoom: float = 2.0) -> dict:
     return story
 
 def sample_stories():
-    """Every sample the library ships: farm stories, articulated hands, IK, fishing, sea monsters, orchard harvest, trellis, highland, vegetable cutaway, safe spraying, giant radish, handwashing, doctor visit, tooth care, nutrition, Phase I body world, Phase K recycling, Phase L safety, Phase M ancient history, Phase O inventions, Phase P German culture, Phase Q Japanese culture, Phase R Korean culture, and Phase N medieval stories."""
+    """Every sample the library ships: farm stories, articulated hands, IK, fishing, sea monsters, orchard harvest, trellis, highland, vegetable cutaway, safe spraying, giant radish, handwashing, doctor visit, tooth care, nutrition, Phase I body world, Phase K recycling, Phase L safety, Phase M ancient history, Phase O inventions, Phase P German culture, Phase Q Japanese culture, Phase R Korean culture, Phase N medieval stories, Phase S US culture stories, and Phase T nature and space stories."""
     return (
         examples() + agriculture_examples() + farm_life_examples() + farm_animals_examples() +
         articulation_examples() + ik_examples() + fishing_examples() + monster_examples() +
@@ -5188,7 +6202,9 @@ def sample_stories():
         bremen_musicians_examples() + st_martin_lanterns_examples() + hedgehog_winter_examples() + first_school_day_examples() +
         momotaro_examples() + bento_morning_examples() + school_cleaning_examples() + tanabata_wish_examples() +
         tiger_and_persimmon_examples() + kimchi_day_examples() + seollal_morning_examples() + rain_gauge_examples() +
-        castle_life_examples() + blacksmith_examples() + viking_voyage_examples() + village_fair_examples()
+        castle_life_examples() + blacksmith_examples() + viking_voyage_examples() + village_fair_examples() +
+        apollo_11_examples() + thanksgiving_harvest_examples() + gold_rush_examples() + johnny_appleseed_examples() +
+        water_cycle_examples() + moon_phases_examples() + volcano_examples() + dino_dig_examples() + solar_system_tour_examples() + simple_machines_examples()
     )
 
 

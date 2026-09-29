@@ -580,6 +580,17 @@ class CapabilityRegistryTest(unittest.TestCase):
             "well": {"wet"}, "anvil": {"wet"}, "forge": {"wet"},
             "horseshoe": {"wet"}, "spinning_wheel": {"wet"}, "wool_basket": {"wet"},
             "banner_plain": {"wet"}, "star_compass_viking": {"wet"}, "viking_longhouse": {"wet"},
+            # Phase S US Culture Rigs
+            "bison": {"wet"}, "bear": {"wet"}, "prairie_dog": {"wet"}, "raccoon": {"wet"}, "salmon": {"wet"},
+            "jack_o_lantern": {"wet"}, "harvest_basket": {"wet"}, "lemonade_stand": {"wet"}, "mailbox": {"wet"},
+            "fire_hydrant": {"wet"}, "liberty_statue_generic": {"wet"}, "railroad_track": {"wet"},
+            "moon_footprint": {"wet"}, "seismometer": {"wet"},
+            # Phase T Nature & Space Rigs
+            "planet": {"wet"}, "sun": {"wet"}, "moon": {"wet"}, "comet": {"wet"},
+            "satellite": {"wet"}, "space_station": {"wet"},
+            "cloud": {"wet"}, "raindrop_chibi": {"wet"}, "rainbow": {"wet"},
+            "volcano": {"wet"}, "earth_cutaway": {"wet"}, "fossil": {"wet"},
+            "lever": {"wet"}, "pulley": {"wet"}, "ramp": {"wet"}, "wheel_axle": {"wet"},
         }
         self.assertEqual(set(document["assets"]), set(expected))
         for asset_id, states in expected.items():
