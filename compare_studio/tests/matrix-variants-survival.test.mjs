@@ -121,14 +121,12 @@ test("without LLM extras the engine fallback drives the same layout", async () =
   }
 });
 
-test("survival/mr-incredible is opt-in only: never offered for automatic assignment", () => {
+test("survival/mr-incredible is in the automatic assignment pool (owner decision 29/09)", () => {
   const variant = getVariant(MRI);
-  assert.ok(variant, "usable when a channel names it explicitly");
-  assert.equal(variant.autoAssign, false);
-  for (const lang of LANGS) assert.ok(!getVariantsForCountry(lang).some((v) => v.id === MRI), lang);
-  for (const other of variants()) assert.equal(other.autoAssign, true, other.id);
-  const warnings = validateRegistry().warnings.filter((w) => w.includes(MRI));
-  assert.deepEqual(warnings, []);
+  assert.ok(variant);
+  assert.equal(variant.autoAssign, true);
+  for (const lang of LANGS) assert.ok(getVariantsForCountry(lang).some((v) => v.id === MRI), lang);
+  assert.deepEqual(validateRegistry().warnings.filter((w) => w.includes(MRI)), []);
 });
 
 test("survival/mr-incredible: the face phase follows severity 1→9 and darkens; images copied offline", async () => {

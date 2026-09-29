@@ -106,12 +106,17 @@ class CreativeDnaDryRunTest(unittest.TestCase):
         self.assertNotEqual(rows["ancient_mythology_02"]["composition"], first["composition"])
 
     def test_opt_in_variant_is_never_auto_assigned_but_an_explicit_choice_is_kept(self):
-        opt_in = [v for v in self.full_registry["variants"] if v.get("auto_assign") is False]
+        # Không còn variant opt-in thật (mr-incredible vào pool 29/09): giả lập bằng bản sao registry.
+        registry = json.loads(json.dumps(self.full_registry))
+        for v in registry["variants"]:
+            if v["id"] == "survival/mr-incredible":
+                v["auto_assign"] = False
+        opt_in = [v for v in registry["variants"] if v.get("auto_assign") is False]
         self.assertIn("survival/mr-incredible", {v["id"] for v in opt_in})
-        plan = cd.plan_assignments(self.channels, self.full_registry, self.niches, None, None)
+        plan = cd.plan_assignments(self.channels, registry, self.niches, None, None)
         self.assertFalse([r["channel_id"] for r in plan["rows"] if r["variant_id"] == "survival/mr-incredible" and r["collision"] != "keep"])
         # Registry chỉ có variant opt-in → kênh survival không được gán gì.
-        only = {**self.full_registry, "variants": opt_in}
+        only = {**registry, "variants": opt_in}
         rows = cd.plan_assignments(self.channels, only, self.niches, None, ["extreme_survival_01"])["rows"]
         self.assertEqual(rows[0]["collision"], "hard:capacity")
         # Kênh ghi rõ creative.variant_id = variant opt-in thì giữ nguyên.
@@ -121,7 +126,7 @@ class CreativeDnaDryRunTest(unittest.TestCase):
                **{axis: variant["allowed"][axis][0] for axis in cd.DNA_CHOICE_AXES}}
         channels = json.loads(json.dumps(self.channels))
         channels["extreme_survival_01"].setdefault("creative", {}).update({"variant_id": variant["id"], "dna": dna})
-        rows = cd.plan_assignments(channels, self.full_registry, self.niches, None, ["extreme_survival_01"])["rows"]
+        rows = cd.plan_assignments(channels, registry, self.niches, None, ["extreme_survival_01"])["rows"]
         self.assertEqual((rows[0]["variant_id"], rows[0]["collision"]), ("survival/mr-incredible", "keep"))
 
     def test_mapping_limits_accounts_and_sets_country(self):

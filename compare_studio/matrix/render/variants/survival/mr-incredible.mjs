@@ -253,7 +253,6 @@ const mrIncredible = defineVariant({
   sample: survivalSample,
   id: "survival/mr-incredible",
   name_vi: "Mr. Incredible hoá uncanny (meme, opt-in)",
-  autoAssign: false,
   prepareAssets,
   topicPacks: { survival_body_limits: 0.5, survival_extreme_sports: 0.25, survival_deep_ocean: 0.25 },
   layoutFamily: "uncanny_meme",
