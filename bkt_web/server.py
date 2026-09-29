@@ -146,6 +146,18 @@ app.include_router(tiktok_api_router)
 app.include_router(flow_router)
 app.include_router(story_remake_router)
 app.include_router(muse_film_router)
+
+
+@app.on_event("startup")
+def _resume_story_remake():
+    try:
+        from bkt_web import story_remake_routes as _srr
+    except ImportError:
+        import story_remake_routes as _srr
+    try:
+        _srr.resume_interrupted()
+    except Exception as exc:  # noqa: BLE001 — không được chặn server khởi động
+        print(f"[story-remake] resume failed: {exc}")
 # Token phiên được giữ lại qua các lần khởi động lại server.
 #
 # Trước đây token sinh mới mỗi lần import, nên sau mỗi lần restart thì mọi tab

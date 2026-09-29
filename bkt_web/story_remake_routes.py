@@ -76,28 +76,45 @@ def _videos() -> List[Dict[str, Any]]:
     return sorted(out, key=lambda s: -s["updated"])
 
 
+def _launch(url: str, limit: int, jobs: int, lang: str, images: str, resumed: bool = False) -> int:
+    ROOT.mkdir(parents=True, exist_ok=True)
+    mode = "channel" if ("/@" in url or "/channel/" in url or "/c/" in url or "list=" in url) else "video"
+    cmd = [sys.executable, str(TOOL), mode, url] + (["--limit", str(limit), "--jobs", str(jobs)] if mode == "channel" else []) + ["--lang", lang]
+    log = open(LOG, "a" if resumed else "w")
+    if resumed:
+        log.write(f"\n[{time.strftime('%H:%M:%S')}] tự chạy tiếp sau khi web app khởi động lại\n"); log.flush()
+    env = {**os.environ, "STORY_REMAKE_IMAGES": images}
+    proc = subprocess.Popen(cmd, cwd=str(REPO), stdout=log, stderr=subprocess.STDOUT, start_new_session=True, env=env)
+    RUNNER.write_text(json.dumps({"pid": proc.pid, "url": url, "limit": limit, "jobs": jobs, "lang": lang, "images": images,
+                                  "started": int(time.time()), "active": True}))
+    return proc.pid
+
+
+def resume_interrupted() -> None:
+    """Gọi lúc server khởi động: lượt chạy chưa xong (active, tiến trình đã chết theo web app) → chạy lại, tool tự bỏ qua video đã xong."""
+    info = _runner()
+    if info.get("active") and not info.get("running") and info.get("url"):
+        _launch(info["url"], info.get("limit", 5), info.get("jobs", 1), info.get("lang", "auto"), info.get("images", "imagerouter"), resumed=True)
+
+
 @router.get("/status")
 def status():
     log = ""
     if LOG.exists():
         log = "\n".join(LOG.read_text(errors="ignore").splitlines()[-40:])
-    return {"runner": _runner(), "videos": _videos(), "log": log}
+    runner = _runner()
+    if runner.get("active") and not runner.get("running") and "tự chạy tiếp" not in log[-300:] and log.rstrip().endswith("}"):
+        runner.pop("running", None); runner["active"] = False  # lượt chạy kết thúc bình thường (in JSON tổng kết)
+        RUNNER.write_text(json.dumps(runner)); runner["running"] = False
+    return {"runner": runner, "videos": _videos(), "log": log}
 
 
 @router.post("/run")
 def run(req: RunRequest):
     if _runner().get("running"):
         raise HTTPException(409, "Đang có một lượt chạy — dừng lượt đó trước")
-    ROOT.mkdir(parents=True, exist_ok=True)
-    cmd = [sys.executable, str(TOOL), "channel" if ("/@" in req.url or "/channel/" in req.url or "/c/" in req.url or "list=" in req.url) else "video", req.url]
-    if cmd[2] == "channel":
-        cmd += ["--limit", str(req.limit), "--jobs", str(req.jobs)]
-    cmd += ["--lang", req.lang]
-    log = open(LOG, "w")
-    env = {**os.environ, "STORY_REMAKE_IMAGES": req.images}
-    proc = subprocess.Popen(cmd, cwd=str(REPO), stdout=log, stderr=subprocess.STDOUT, start_new_session=True, env=env)
-    RUNNER.write_text(json.dumps({"pid": proc.pid, "url": req.url, "limit": req.limit, "jobs": req.jobs, "images": req.images, "started": int(time.time())}))
-    return {"started": True, "pid": proc.pid}
+    pid = _launch(req.url, req.limit, req.jobs, req.lang, req.images)
+    return {"started": True, "pid": pid}
 
 
 @router.post("/stop")
@@ -109,6 +126,8 @@ def stop():
         os.killpg(info["pid"], signal.SIGTERM)
     except OSError:
         pass
+    info.pop("running", None); info["active"] = False
+    RUNNER.write_text(json.dumps(info))
     return {"stopped": True}
 
 
