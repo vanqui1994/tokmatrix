@@ -1049,6 +1049,7 @@ const WORKSTATION_TABS = {
   compare: { icon: '🎬', title: 'Xưởng Video AI Đa Phong Cách (Split-Screen)', pane: 'compare' },
   gpu: { icon: '🎞️', title: 'Render Video GPU H.264 / VideoToolbox', pane: 'gpu' },
   downloader: { icon: '📥', title: 'Tải Video TikTok Không Logo (No-Logo)', pane: 'downloader' },
+  story_remake: { icon: '🎞️', title: 'Story Remake — Kênh YouTube → Video Ảnh Phim (giữ audio gốc)', pane: 'story_remake' },
   tiktok_api: { icon: '📡', title: 'TikTok REST API (Chocode)', pane: 'tiktok_api' },
   flow: { icon: '🧭', title: 'Sơ Đồ Luồng Live — Autopilot · Đăng TikTok · Script Queue', pane: 'flow' },
   upload: { icon: '🚀', title: 'Lịch Đăng Video Tự Động TikTok', pane: 'upload' },
@@ -1093,6 +1094,8 @@ function switchTab(tabName) {
     if (typeof loadVpnWorkstation === 'function') loadVpnWorkstation();
   } else if (tabName === 'downloader') {
     loadDownloadedVideos();
+  } else if (tabName === 'story_remake') {
+    if (typeof loadStoryRemakeTab === 'function') loadStoryRemakeTab();
   } else if (tabName === 'tiktok_api') {
     if (typeof loadTiktokApiTab === 'function') loadTiktokApiTab();
   } else if (tabName === 'flow') {

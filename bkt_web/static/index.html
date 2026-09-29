@@ -162,6 +162,11 @@
               <span class="nav-text">Tải Video (No-Logo)</span>
               <span class="tab-badge badge-neutral" id="badge-dl-count">0</span>
             </button>
+            <button type="button" class="nav-tab" data-tab="story_remake" onclick="switchTab('story_remake')">
+              <span class="nav-icon">🎞️</span>
+              <span class="nav-text">Story Remake (YouTube)</span>
+              <span class="tab-badge badge-neutral" id="badge-story-status">--</span>
+            </button>
             <button type="button" class="nav-tab" data-tab="tiktok_api" onclick="switchTab('tiktok_api')">
               <span class="nav-icon">📡</span>
               <span class="nav-text">TikTok API (Chocode)</span>
@@ -590,6 +595,33 @@
             <span><i style="border-color:#2f7a5a"></i>Xong</span>
           </div>
           <aside class="fv-drawer" id="fv-drawer" aria-live="polite"></aside>
+        </div>
+      </div>
+    </div>
+
+    <div class="tab-pane" id="pane-story_remake" style="display: none;">
+      <div class="studio-grid-2col">
+        <div class="panel-card">
+          <div class="card-header"><h3>🎞️ Remake video kể chuyện từ kênh YouTube</h3></div>
+          <p style="font-size:13px;color:var(--color-ink-dim);margin:0 0 10px">Giữ nguyên giọng đọc + nhạc gốc, vẽ lại phần hình bằng ảnh phim AI (ImageRouter, Cloudflare dự phòng) với nhân vật cố định, phụ đề và chuyển động kiểu điện ảnh. Tự bỏ qua video không phải dạng kể chuyện.</p>
+          <label style="font-size:12px;font-weight:700">Link kênh hoặc video YouTube</label>
+          <input id="story-url" class="form-control" placeholder="https://www.youtube.com/@kenh" style="width:100%;margin:4px 0 10px">
+          <div style="display:flex;gap:10px;flex-wrap:wrap">
+            <label style="font-size:12px">Số video tối đa <input id="story-limit" type="number" min="1" max="50" value="5" class="form-control" style="width:80px"></label>
+            <label style="font-size:12px">Chạy song song <select id="story-jobs" class="form-control"><option>1</option><option>2</option><option>3</option></select></label>
+            <label style="font-size:12px">Ngôn ngữ <select id="story-lang" class="form-control"><option value="auto">Tự nhận</option><option value="de">de</option><option value="en">en</option><option value="vi">vi</option><option value="ja">ja</option><option value="ko">ko</option><option value="fr">fr</option></select></label>
+          </div>
+          <div style="display:flex;gap:10px;margin-top:12px">
+            <button id="story-run-btn" class="btn btn-primary" onclick="storyRun()">▶ Bắt đầu remake</button>
+            <button id="story-stop-btn" class="btn btn-secondary" onclick="storyStop()" style="display:none">■ Dừng</button>
+          </div>
+          <div id="story-runner" style="font-size:12px;color:var(--color-ink-dim);margin-top:10px"></div>
+          <pre id="story-log" style="font-size:11px;max-height:260px;overflow:auto;background:var(--color-surface);border:1px solid var(--color-line);border-radius:8px;padding:8px;margin-top:10px;white-space:pre-wrap"></pre>
+          <div id="story-player" style="margin-top:10px"></div>
+        </div>
+        <div class="panel-card">
+          <div class="card-header"><h3>Video <span id="story-count" style="font-size:12px;font-weight:400"></span></h3></div>
+          <div id="story-list"></div>
         </div>
       </div>
     </div>
@@ -5344,6 +5376,7 @@
 
   <script src="/static/app.js?v=6.17"></script>
   <script src="/static/tiktok_api.js?v=2"></script>
+  <script src="/static/story_remake.js?v=1"></script>
   <script src="/static/flow_view.js?v=6"></script>
 </body>
 </html>
