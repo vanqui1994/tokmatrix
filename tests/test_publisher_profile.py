@@ -84,7 +84,7 @@ class PublisherProfileTests(unittest.TestCase):
             mock.patch.object(tp, "SecretStore", FakeStore),
             mock.patch.object(tp.subprocess, "run", return_value=probe),
             mock.patch.object(tp, "async_playwright", return_value=FakePlaywrightCM()),
-            mock.patch("bkt_web.vpn_manager.start_wireguard_proxy",
+            mock.patch("bkt_web.vpn_manager.start_verified_wireguard_proxy",
                        return_value={"socks_port": 1080, "location": "DE", "socks5_url": ""}),
             mock.patch("bkt_web.vpn_manager.stop_wireguard_proxy", self.stop_vpn),
         ]

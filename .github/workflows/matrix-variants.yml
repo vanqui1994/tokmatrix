@@ -21,6 +21,10 @@ on:
       - ".github/workflows/matrix-variants.yml"
   workflow_dispatch:
 
+concurrency:
+  group: matrix-variants-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 jobs:
   node:
     runs-on: ubuntu-latest

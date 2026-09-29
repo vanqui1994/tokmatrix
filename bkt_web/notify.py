@@ -42,9 +42,11 @@ from typing import Any, Dict, Iterable, List, Optional, Sequence, Tuple
 
 try:
     from bkt_web import key_vault
+    from bkt_web import upload_states as us
     from bkt_web.db_utils import connect_db
 except ImportError:  # chạy trực tiếp trong bkt_web/
     import key_vault
+    import upload_states as us
     from db_utils import connect_db
 
 logger = logging.getLogger("notify")
@@ -412,7 +414,7 @@ def _json(value: Any) -> Dict[str, Any]:
 def _upload_for_slug(conn, slug: str) -> Optional[Tuple]:
     return conn.execute(
         "SELECT u.schedule_time, c.username FROM upload_tasks u LEFT JOIN channels c ON c.id=u.channel_id "
-        "WHERE u.video_slug=? AND u.status NOT IN ('CANCELLED') ORDER BY u.id DESC LIMIT 1", (slug,)
+        "WHERE u.video_slug=? AND u.status<>? ORDER BY u.id DESC LIMIT 1", (slug, us.CANCELLED)
     ).fetchone()
 
 
@@ -508,21 +510,23 @@ def check_jobs(conn) -> int:
 
 
 UPLOAD_EVENTS = {
-    "SUCCESS": ("upload_success", "info", "📤 <b>Đăng thành công</b>"),
-    "NEEDS_CHECK": ("upload_needs_check", "warn", "⚠️ <b>Cần kiểm tra bài đăng</b>\n<i>Đã bấm Đăng nhưng chưa thấy xác nhận — không tự đăng lại</i>"),
-    "ERROR": ("upload_error", "warn", "❌ <b>Đăng bài lỗi</b>"),
+    us.SUCCESS: ("upload_success", "info", "📤 <b>Đăng thành công</b>"),
+    us.NEEDS_CHECK: ("upload_needs_check", "warn", "⚠️ <b>Cần kiểm tra bài đăng</b>\n<i>Đã bấm Đăng nhưng chưa thấy xác nhận — không tự đăng lại</i>"),
+    us.ERROR: ("upload_error", "warn", "❌ <b>Đăng bài lỗi</b>"),
 }
 
 
 def check_uploads(conn) -> int:
     first = _state_get(conn, "init:uploads") == ""
     since = int(time.time()) - 7 * 86400
+    watched_states = (us.SUCCESS, us.NEEDS_CHECK, us.ERROR)
+    marks = us.sql_marks(watched_states)
     rows = conn.execute(
-        """SELECT u.id, u.status, u.result_url, u.error_message, u.video_slug, u.attempt_count, c.username
-           FROM upload_tasks u LEFT JOIN channels c ON c.id=u.channel_id
-           WHERE u.status IN ('SUCCESS','NEEDS_CHECK','ERROR') AND MAX(u.created_at, u.uploaded_at, u.started_at)>=?
-           ORDER BY u.id""",
-        (since,),
+        f"""SELECT u.id, u.status, u.result_url, u.error_message, u.video_slug, u.attempt_count, c.username
+            FROM upload_tasks u LEFT JOIN channels c ON c.id=u.channel_id
+            WHERE u.status IN ({marks}) AND MAX(u.created_at, u.uploaded_at, u.started_at)>=?
+            ORDER BY u.id""",
+        (*watched_states, since),
     ).fetchall()
     emitted = 0
     for task_id, status, url, error, slug, attempts, username in rows:
@@ -532,10 +536,10 @@ def check_uploads(conn) -> int:
             mark_seen(conn, key)
             continue
         lines = [head, f"👤 @{esc(username or '?')} · task #{task_id}"]
-        if status == "SUCCESS" and url:
+        if status == us.SUCCESS and url:
             lines.append(f"🔗 {esc(url)}")
-        if status != "SUCCESS" and error:
-            lines.append(f"💬 {esc(short(error, 400))}" + (f" (sau {attempts} lần)" if status == "ERROR" and attempts else ""))
+        if status != us.SUCCESS and error:
+            lines.append(f"💬 {esc(short(error, 400))}" + (f" (sau {attempts} lần)" if status == us.ERROR and attempts else ""))
         lines.append(f"<code>{esc(slug or '')}</code>")
         emitted += emit(event, "\n".join(lines), severity, key, cooldown=None, conn=conn)
     if first:
@@ -621,7 +625,7 @@ def metrics() -> Dict[str, Any]:
                 "SELECT COUNT(*) FROM image_queue WHERE status IN ('pending','processing')").fetchone()[0]
             day = int(datetime.datetime.combine(datetime.date.today(), datetime.time()).timestamp())
             data["posted_today"] = main.execute(
-                "SELECT COUNT(*) FROM upload_tasks WHERE status='SUCCESS' AND uploaded_at>=?", (day,)).fetchone()[0]
+                "SELECT COUNT(*) FROM upload_tasks WHERE status=? AND uploaded_at>=?", (us.SUCCESS, day)).fetchone()[0]
         except sqlite3.Error:
             pass
         finally:

@@ -26,6 +26,8 @@ import json
 import os
 import secrets
 import time
+import threading
+from collections import OrderedDict, deque
 from pathlib import Path
 from typing import Any, Dict, Optional
 
@@ -156,24 +158,69 @@ def read_session(value: str, signing_key: str) -> Optional[str]:
 
 
 # ------------------------------------------------- chặn dò mật khẩu đơn giản ---
-_ATTEMPTS: Dict[str, list] = {}
+# Bounded TTL/LRU cache: bản cũ là dict không giới hạn nên một lượng lớn IP giả
+# có thể làm process giữ key mãi cho tới restart. Giữ limiter trong RAM vẫn đủ
+# cho một worker, nhưng luôn có trần và tự dọn entry hết hạn.
+_ATTEMPTS = OrderedDict()
+_ATTEMPTS_LOCK = threading.Lock()
 MAX_ATTEMPTS = 6
 ATTEMPT_WINDOW = 600
+MAX_TRACKED_CLIENTS = 2048
+_PRUNE_INTERVAL = 60
+_LAST_PRUNE = 0.0
+
+
+def _prune_attempts(now: float, *, force: bool = False) -> None:
+    global _LAST_PRUNE
+    if not force and now - _LAST_PRUNE < _PRUNE_INTERVAL:
+        return
+    for client, hits in list(_ATTEMPTS.items()):
+        while hits and now - hits[0] >= ATTEMPT_WINDOW:
+            hits.popleft()
+        if not hits:
+            _ATTEMPTS.pop(client, None)
+    while len(_ATTEMPTS) > MAX_TRACKED_CLIENTS:
+        _ATTEMPTS.popitem(last=False)
+    _LAST_PRUNE = now
 
 
 def too_many_attempts(client: str) -> bool:
     now = time.time()
-    hits = [t for t in _ATTEMPTS.get(client, []) if now - t < ATTEMPT_WINDOW]
-    _ATTEMPTS[client] = hits
-    return len(hits) >= MAX_ATTEMPTS
+    key = client or "unknown"
+    with _ATTEMPTS_LOCK:
+        _prune_attempts(now)
+        hits = _ATTEMPTS.get(key)
+        if not hits:
+            return False
+        while hits and now - hits[0] >= ATTEMPT_WINDOW:
+            hits.popleft()
+        if not hits:
+            _ATTEMPTS.pop(key, None)
+            return False
+        _ATTEMPTS.move_to_end(key)
+        return len(hits) >= MAX_ATTEMPTS
 
 
 def record_failure(client: str) -> None:
-    _ATTEMPTS.setdefault(client, []).append(time.time())
+    now = time.time()
+    key = client or "unknown"
+    with _ATTEMPTS_LOCK:
+        _prune_attempts(now)
+        hits = _ATTEMPTS.get(key)
+        if hits is None:
+            if len(_ATTEMPTS) >= MAX_TRACKED_CLIENTS:
+                _ATTEMPTS.popitem(last=False)
+            hits = deque()
+            _ATTEMPTS[key] = hits
+        while hits and now - hits[0] >= ATTEMPT_WINDOW:
+            hits.popleft()
+        hits.append(now)
+        _ATTEMPTS.move_to_end(key)
 
 
 def clear_attempts(client: str) -> None:
-    _ATTEMPTS.pop(client, None)
+    with _ATTEMPTS_LOCK:
+        _ATTEMPTS.pop(client or "unknown", None)
 
 
 # -------------------------------------------------------------------- CLI ---

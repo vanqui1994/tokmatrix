@@ -16,8 +16,10 @@ from fastapi import APIRouter, HTTPException, Query
 
 try:
     from bkt_web import autopilot
+    from bkt_web import upload_states as us
 except ImportError:
     import autopilot
+    import upload_states as us
 
 router = APIRouter(prefix="/api/flow", tags=["flow"])
 
@@ -261,17 +263,17 @@ def autopilot_snapshot(hours: int) -> Dict[str, Any]:
         # Upload tasks sinh ra từ Autopilot
         up = nodes["upload"]
         for r in _rows(main, "SELECT status, COUNT(*) n FROM upload_tasks WHERE run_id LIKE 'autopilot-%' "
-                             "AND (status NOT IN ('SUCCESS','CANCELLED') OR created_at >= ?) GROUP BY status",
-                       (since,)):
+                             "AND (status NOT IN (?,?) OR created_at >= ?) GROUP BY status",
+                       (us.SUCCESS, us.CANCELLED, since)):
             _bump(up, r["status"], r["n"])
 
         # Dọn dẹp
         cl = nodes["cleanup"]
         archived = _rows(main, "SELECT COUNT(*) n FROM upload_tasks WHERE COALESCE(archived_at, 0) > 0")
         _bump(cl, "done", archived[0]["n"] if archived else 0)
-        success_old = _rows(main, "SELECT COUNT(*) n FROM upload_tasks WHERE status='SUCCESS' AND uploaded_at > 0 "
+        success_old = _rows(main, "SELECT COUNT(*) n FROM upload_tasks WHERE status=? AND uploaded_at > 0 "
                                   "AND uploaded_at < ? AND COALESCE(archived_at, 0) = 0",
-                            (now - int(float(cfg.get("cleanup_after_days", "2")) * 86400),))
+                            (us.SUCCESS, now - int(float(cfg.get("cleanup_after_days", "2")) * 86400),))
         pending_cleanup = success_old[0]["n"] if success_old else 0
         if pending_cleanup:
             _bump(cl, "waiting", pending_cleanup)

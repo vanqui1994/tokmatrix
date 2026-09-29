@@ -7,10 +7,12 @@ import sqlite3
 import tempfile
 import unittest
 from pathlib import Path
+from types import SimpleNamespace
 
 import httpx
 
 from bkt_web import vpn_manager
+from bkt_web import dashboard_routes, upload_routes
 from bkt_web.ai_vision import encode_screenshot
 from bkt_web.server import app, build_ffmpeg_render_cmd
 
@@ -53,6 +55,94 @@ class RouteCollisionTest(unittest.IsolatedAsyncioTestCase):
     async def test_gpm_compat_api_still_mounted_at_api_root(self):
         for path in ("/api/v1/profiles", "/api/v3/profiles"):
             self.assertEqual((await self.client.get(path)).status_code, 200, path)
+
+    async def test_dashboard_router_is_mounted(self):
+        response = await self.client.get("/api/dashboard/summary")
+        self.assertEqual(response.status_code, 200)
+
+    async def test_upload_task_router_is_mounted_without_shadowing_publish_now(self):
+        self.assertEqual((await self.client.get("/api/upload/tasks")).status_code, 200)
+        response = await self.client.post("/api/upload/tasks/999/retry")
+        self.assertIn(response.status_code, (409, 404))
+        # publish-now remains owned by server.py and must still resolve as a real route.
+        response = await self.client.post("/api/upload/publish-now", json={})
+        self.assertNotEqual(response.status_code, 404)
+
+
+class LoginRateKeyTest(unittest.TestCase):
+    def _request(self, peer, real_ip=""):
+        return SimpleNamespace(client=SimpleNamespace(host=peer), headers={"x-real-ip": real_ip})
+
+    def test_local_reverse_proxy_uses_valid_real_ip(self):
+        from bkt_web.server import _login_rate_key
+        self.assertEqual(_login_rate_key(self._request("127.0.0.1", "203.0.113.9")), "203.0.113.9")
+
+    def test_direct_peer_cannot_spoof_real_ip_header(self):
+        from bkt_web.server import _login_rate_key
+        self.assertEqual(_login_rate_key(self._request("198.51.100.7", "203.0.113.9")), "198.51.100.7")
+
+    def test_invalid_proxy_header_falls_back_to_peer(self):
+        from bkt_web.server import _login_rate_key
+        self.assertEqual(_login_rate_key(self._request("127.0.0.1", "not-an-ip")), "127.0.0.1")
+
+
+class DashboardUploadStateTest(unittest.TestCase):
+    def test_dashboard_uses_real_upload_states(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            db = Path(tmp) / "dashboard.db"
+            with sqlite3.connect(db) as conn:
+                conn.execute("""
+                    CREATE TABLE upload_tasks (
+                        id INTEGER PRIMARY KEY, status TEXT, error_message TEXT DEFAULT '',
+                        created_at INTEGER DEFAULT 0, caption TEXT DEFAULT '',
+                        schedule_time INTEGER DEFAULT 0, channel_id INTEGER DEFAULT 0
+                    )
+                """)
+                conn.executemany(
+                    "INSERT INTO upload_tasks (status, error_message, created_at) VALUES (?,?,?)",
+                    [("ERROR", "boom", 1), ("NEEDS_CHECK", "verify", 2), ("WAITING_RENDER", "", 3)],
+                )
+            upload = dashboard_routes.build_dashboard_summary(db)["data"]["upload"]
+        self.assertEqual(upload["error"], 1)
+        self.assertEqual(upload["needs_check"], 1)
+        self.assertEqual(upload["waiting_render"], 1)
+        self.assertNotIn("failed", upload)
+
+
+class UploadApiStateTest(unittest.TestCase):
+    def test_retry_confirm_and_cancel_use_canonical_transitions(self):
+        from bkt_web import upload_states as us
+
+        with tempfile.TemporaryDirectory() as tmp:
+            db = Path(tmp) / "upload-api.db"
+            with sqlite3.connect(db) as conn:
+                conn.execute("""
+                    CREATE TABLE upload_tasks (
+                        id INTEGER PRIMARY KEY, status TEXT, schedule_time INTEGER DEFAULT 0,
+                        error_message TEXT DEFAULT '', next_retry_at INTEGER DEFAULT 0,
+                        attempt_count INTEGER DEFAULT 0, clicked_post_at INTEGER DEFAULT 0,
+                        verify_attempts INTEGER DEFAULT 0, next_verify_at INTEGER DEFAULT 0,
+                        verify_note TEXT DEFAULT '', published_video_id TEXT DEFAULT '',
+                        uploaded_at INTEGER DEFAULT 0
+                    )
+                """)
+                conn.executemany(
+                    "INSERT INTO upload_tasks (id,status) VALUES (?,?)",
+                    [(1, us.ERROR), (2, us.NEEDS_CHECK), (3, us.QUEUED)],
+                )
+
+            old_db = upload_routes.DB_PATH
+            upload_routes.DB_PATH = db
+            try:
+                upload_routes.retry_upload_task(1)
+                upload_routes.confirm_upload_task(2)
+                upload_routes.cancel_upload_task(3)
+            finally:
+                upload_routes.DB_PATH = old_db
+
+            with sqlite3.connect(db) as conn:
+                states = dict(conn.execute("SELECT id,status FROM upload_tasks"))
+        self.assertEqual(states, {1: us.QUEUED, 2: us.SUCCESS, 3: us.CANCELLED})
 
 
 class FfmpegRenderCmdTest(unittest.TestCase):

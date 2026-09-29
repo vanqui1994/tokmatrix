@@ -57,6 +57,15 @@ try:
     from bkt_web import chocode_tiktok
     from bkt_web.autopilot import init_autopilot_db, start_autopilot, stop_autopilot
     from bkt_web.remake_routes import remake_router, start_remake_queue_worker, stop_remake_queue_worker
+    from bkt_web.facebook_routes import fb_router, init_fb_db
+    from bkt_web.facebook_reg_routes import fb_reg_router, init_fb_reg_db
+    from bkt_web.dashboard_routes import dashboard_router, dashboard_summary as api_dashboard_summary
+    from bkt_web.upload_routes import (
+        upload_router, list_upload_tasks, upload_task_video_file, upload_task_video,
+        delete_upload_task, retry_upload_task, cancel_upload_task, confirm_upload_task,
+    )
+    from bkt_web import upload_states as us
+    from bkt_web import upload_scheduler as upload_scheduler_service
 except ImportError:
     from db_utils import connect_db, configure_database
     from security import SecretStore, harden_file_permissions, safe_child, validate_slug
@@ -82,6 +91,15 @@ except ImportError:
     import chocode_tiktok
     from autopilot import init_autopilot_db, start_autopilot, stop_autopilot
     from remake_routes import remake_router, start_remake_queue_worker, stop_remake_queue_worker
+    from facebook_routes import fb_router, init_fb_db
+    from facebook_reg_routes import fb_reg_router, init_fb_reg_db
+    from dashboard_routes import dashboard_router, dashboard_summary as api_dashboard_summary
+    from upload_routes import (
+        upload_router, list_upload_tasks, upload_task_video_file, upload_task_video,
+        delete_upload_task, retry_upload_task, cancel_upload_task, confirm_upload_task,
+    )
+    import upload_states as us
+    import upload_scheduler as upload_scheduler_service
 
 CHROME_EXEC_PATH = os.environ.get(
     "TOKMATRIX_CHROME_PATH",
@@ -140,6 +158,10 @@ app.include_router(script_router)
 app.include_router(autopilot_router)
 app.include_router(tiktok_api_router)
 app.include_router(flow_router)
+app.include_router(fb_router, prefix="/api/fb", tags=["facebook"])
+app.include_router(fb_reg_router, prefix="/api/fb-reg", tags=["facebook_reg"])
+app.include_router(dashboard_router)
+app.include_router(upload_router)
 # Token phiên được giữ lại qua các lần khởi động lại server.
 #
 # Trước đây token sinh mới mỗi lần import, nên sau mỗi lần restart thì mọi tab
@@ -180,6 +202,17 @@ EXTRA_ORIGIN_HOSTS = {
     for h in os.environ.get("TOKMATRIX_ALLOWED_ORIGIN_HOSTS", "").split(",")
     if h.strip()
 }
+INTERNAL_API_TOKEN = os.environ.get("TOKMATRIX_INTERNAL_TOKEN", "").strip()
+
+
+def _has_internal_token(request: Request) -> bool:
+    if not INTERNAL_API_TOKEN:
+        return False
+    auth = (request.headers.get("authorization") or "").strip()
+    scheme, sep, token = auth.partition(" ")
+    if not sep or scheme.lower() != "bearer":
+        return False
+    return hmac.compare_digest(token.strip(), INTERNAL_API_TOKEN)
 
 
 def _origin_is_allowed(request: Request, origin: str) -> bool:
@@ -212,7 +245,8 @@ async def secure_local_session(request: Request, call_next):
     # Những đường dẫn ai cũng vào được: trang đăng nhập, tài nguyên tĩnh của nó,
     # và API nội bộ gọi từ chính máy chủ.
     is_login_path = path in {"/login", "/api/auth/login", "/favicon.ico"} or path.startswith("/static/")
-    is_public_bootstrap = is_login_path or is_local_api
+    is_internal_api = path.startswith("/api/scripts/") and _has_internal_token(request)
+    is_public_bootstrap = is_login_path or is_local_api or is_internal_api
 
     # Chưa đặt tài khoản thì giữ nguyên hành vi cũ (cấp cookie cho mọi truy cập
     # vào "/") để không khoá người dùng ra ngoài sau khi cập nhật mã nguồn.
@@ -300,12 +334,26 @@ class LoginItem(BaseModel):
     password: str
 
 
+def _login_rate_key(request: Request) -> str:
+    """Use the real client IP only when the immediate peer is our local proxy."""
+    peer = request.client.host if request.client else ""
+    if peer in {"127.0.0.1", "::1", "localhost", "testclient"}:
+        real_ip = (request.headers.get("x-real-ip") or "").strip()
+        if real_ip:
+            try:
+                ipaddress.ip_address(real_ip)
+                return real_ip
+            except ValueError:
+                pass
+    return peer or "unknown"
+
+
 @app.post("/api/auth/login")
 def api_auth_login(item: LoginItem, request: Request):
     if not webauth.has_credentials():
         raise HTTPException(status_code=409, detail="Chưa đặt tài khoản trên máy chủ")
 
-    client = request.client.host if request.client else "?"
+    client = _login_rate_key(request)
     if webauth.too_many_attempts(client):
         raise HTTPException(
             status_code=429,
@@ -743,6 +791,14 @@ def init_db():
     harden_file_permissions(sensitive_paths)
 
 init_db()
+# Facebook routers are part of the main API but own their tables. Initialize
+# them here as well so a fresh install and tests do not depend on a prior UI hit.
+_fb_conn = connect_db(DB_PATH)
+try:
+    init_fb_db(_fb_conn)
+    init_fb_reg_db(_fb_conn)
+finally:
+    _fb_conn.close()
 
 # --- Helper: Parse Cookies ---
 def parse_cookie_string(cookie_raw: str) -> Dict[str, str]:
@@ -3276,8 +3332,8 @@ def create_upload_task(item: UploadTaskCreate):
         c.execute("""
             INSERT INTO upload_tasks (channel_id, video_path, caption, hashtags, schedule_time, status, created_at,
                                       ai_generated, video_slug)
-            VALUES (?, ?, ?, ?, ?, 'QUEUED', ?, ?, ?)
-        """, (ch_id, video_file, item.caption, item.hashtags, sched_time, now, 1 if item.ai_generated else 0, video_slug))
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """, (ch_id, video_file, item.caption, item.hashtags, sched_time, us.QUEUED, now, 1 if item.ai_generated else 0, video_slug))
         created_ids.append(c.lastrowid)
     
     conn.commit()
@@ -3288,153 +3344,8 @@ def create_upload_task(item: UploadTaskCreate):
         "success": True
     }
 
-@app.get("/api/upload/tasks")
-def list_upload_tasks():
-    conn = connect_db(DB_PATH)
-    c = conn.cursor()
-    c.execute("""
-        SELECT u.id, u.channel_id, u.video_path, u.caption, u.hashtags, u.schedule_time, u.status, u.result_url, u.error_message, u.created_at, u.uploaded_at,
-               u.attempt_count, u.next_retry_at, u.started_at,
-               c.username, c.note, c.country,
-               COALESCE(u.ai_generated, 1), COALESCE(u.video_slug, ''), COALESCE(u.clicked_post_at, 0),
-               COALESCE(u.verify_note, ''), COALESCE(u.published_video_id, ''), COALESCE(u.publish_mode, '')
-        FROM upload_tasks u
-        LEFT JOIN channels c ON u.channel_id = c.id
-        ORDER BY u.created_at DESC
-    """)
-    rows = c.fetchall()
-    conn.close()
-    try:  # chủ đề (niche) của từng acc theo mapping Autopilot; phụ, không làm hỏng danh sách
-        from bkt_web.autopilot.channels import account_topics
-        topics = account_topics()
-    except Exception:
-        topics = {}
-    items = []
-    for r in rows:
-        topic = topics.get(r[1]) or {}
-        items.append({
-            "niche_id": topic.get("niche_id", ""),
-            "niche_name": topic.get("niche_name", ""),
-            "matrix_channel_id": topic.get("matrix_channel_id", ""),
-            "matrix_channel_name": topic.get("matrix_channel_name", ""),
-            "id": r[0],
-            "channel_id": r[1],
-            "video_path": r[2],
-            "caption": r[3],
-            "hashtags": r[4],
-            "schedule_time": r[5],
-            "status": r[6],
-            "result_url": r[7],
-            "error_message": r[8],
-            "created_at": r[9],
-            "uploaded_at": r[10],
-            "attempt_count": r[11] or 0,
-            "next_retry_at": r[12] or 0,
-            "started_at": r[13] or 0,
-            "username": r[14] or r[15] or f"ID {r[1]}",
-            "country": r[16] or "KR",
-            "ai_generated": bool(r[17]),
-            "video_slug": r[18],
-            "clicked_post_at": r[19] or 0,
-            "verify_note": r[20],
-            "published_video_id": r[21],
-            "publish_mode": r[22],
-        })
-    return {"tasks": items}
-
-# Thư mục được phép phát video của tác vụ đăng (không cho đọc file tuỳ ý qua video_path).
-UPLOAD_VIDEO_ROOTS = (PROJECT_ROOT / "compare_studio" / "videos", STORAGE_DIR)
-
-
-def upload_task_video_file(video_path: str):
-    """Đường dẫn MP4 của tác vụ nếu nằm trong UPLOAD_VIDEO_ROOTS và tồn tại, ngược lại None."""
-    if not video_path or not str(video_path).lower().endswith(".mp4"):
-        return None
-    try:
-        path = Path(video_path).resolve()
-    except (OSError, RuntimeError):
-        return None
-    if not path.is_file():
-        return None
-    for root in UPLOAD_VIDEO_ROOTS:
-        try:
-            path.relative_to(root.resolve())
-            return path
-        except ValueError:
-            continue
-    return None
-
-
-@app.get("/api/upload/tasks/{task_id}/video")
-def upload_task_video(task_id: int):
-    """Phát đúng file MP4 sẽ được đăng của tác vụ (hỗ trợ Range để tua)."""
-    conn = connect_db(DB_PATH)
-    try:
-        row = conn.execute("SELECT video_path FROM upload_tasks WHERE id=?", (task_id,)).fetchone()
-    finally:
-        conn.close()
-    path = upload_task_video_file(row[0] if row else "")
-    if not path:
-        raise HTTPException(status_code=404, detail="Không tìm thấy file video của tác vụ")
-    return FileResponse(str(path), media_type="video/mp4", headers={"cache-control": "private, max-age=300"})
-
-
-@app.delete("/api/upload/tasks/{task_id}")
-def delete_upload_task(task_id: int):
-    conn = connect_db(DB_PATH)
-    c = conn.cursor()
-    c.execute("DELETE FROM upload_tasks WHERE id=?", (task_id,))
-    conn.commit()
-    conn.close()
-    return {"message": "Đã xóa tác vụ đăng bài"}
-
-
-@app.post("/api/upload/tasks/{task_id}/retry")
-def retry_upload_task(task_id: int):
-    conn = connect_db(DB_PATH)
-    cur = conn.execute(
-        """
-        UPDATE upload_tasks
-        SET status='QUEUED', error_message='', next_retry_at=0, schedule_time=?,
-            attempt_count=0, clicked_post_at=0,
-            verify_attempts=0, next_verify_at=0, verify_note='', published_video_id=''
-        WHERE id=? AND status IN ('ERROR', 'CANCELLED', 'NEEDS_CHECK')
-        """,
-        (int(time.time()), task_id),
-    )
-    conn.commit()
-    conn.close()
-    if cur.rowcount == 0:
-        raise HTTPException(status_code=409, detail="Tác vụ không ở trạng thái có thể thử lại")
-    return {"message": "Đã đưa tác vụ trở lại hàng đợi"}
-
-
-@app.post("/api/upload/tasks/{task_id}/cancel")
-def cancel_upload_task(task_id: int):
-    conn = connect_db(DB_PATH)
-    cur = conn.execute(
-        "UPDATE upload_tasks SET status='CANCELLED' WHERE id=? AND status IN ('QUEUED','PENDING','WAITING_RENDER')",
-        (task_id,),
-    )
-    conn.commit()
-    conn.close()
-    if cur.rowcount == 0:
-        raise HTTPException(status_code=409, detail="Tác vụ đang chạy hoặc đã hoàn tất")
-    return {"message": "Đã hủy tác vụ"}
-
-@app.post("/api/upload/tasks/{task_id}/confirm")
-def confirm_upload_task(task_id: int):
-    """Người dùng đã kiểm tra kênh: video của task NEEDS_CHECK đã lên."""
-    conn = connect_db(DB_PATH)
-    cur = conn.execute(
-        "UPDATE upload_tasks SET status='SUCCESS', uploaded_at=?, error_message='' WHERE id=? AND status='NEEDS_CHECK'",
-        (int(time.time()), task_id),
-    )
-    conn.commit()
-    conn.close()
-    if cur.rowcount == 0:
-        raise HTTPException(status_code=409, detail="Chỉ xác nhận được task đang 'Cần kiểm tra'")
-    return {"message": "Đã đánh dấu video đã lên kênh"}
+# Upload task list/video/retry/cancel/confirm routes live in bkt_web.upload_routes.
+# Function aliases are imported above for backward compatibility with internal callers/tests.
 
 
 class PublishDryRunRequest(BaseModel):
@@ -3532,10 +3443,11 @@ def profile_metrics(days: int = 7):
     days = max(1, min(60, int(days))); now = int(time.time()); since = now - days * 86400
     conn = connect_db(DB_PATH)
     modes = {}
+    outcome_states = (us.SUCCESS, us.NEEDS_CHECK, us.ERROR)
     for mode in ("profile", "clean"):
         rows = conn.execute("SELECT status,error_message FROM upload_tasks WHERE publish_mode=? AND started_at>=?", (mode, since)).fetchall()
-        total = len(rows); counts = {s: sum(1 for r in rows if r[0] == s) for s in ("SUCCESS","NEEDS_CHECK","ERROR")}
-        modes[mode] = {"started": total, **{k.lower(): v for k,v in counts.items()}, "rate": (round(counts["SUCCESS"]*100/total,2) if total else None), "deferred": sum(DEFERRED_PROFILE_BUSY in (r[1] or "") for r in rows)}
+        total = len(rows); counts = {s: sum(1 for r in rows if r[0] == s) for s in outcome_states}
+        modes[mode] = {"started": total, **{k.lower(): v for k,v in counts.items()}, "rate": (round(counts[us.SUCCESS]*100/total,2) if total else None), "deferred": sum(DEFERRED_PROFILE_BUSY in (r[1] or "") for r in rows)}
     events = conn.execute("SELECT source,COUNT(*),COUNT(DISTINCT channel_id) FROM channel_session_events WHERE state='LOGGED_OUT' AND created_at>=? GROUP BY source", (since,)).fetchall()
     first = conn.execute("SELECT MIN(started_at) FROM upload_tasks WHERE publish_mode='profile' AND started_at>0").fetchone()[0]
     baseline = None
@@ -3547,11 +3459,11 @@ def profile_metrics(days: int = 7):
             (first - days * 86400, first),
         ).fetchall()
         total = len(rows)
-        counts = {s: sum(1 for r in rows if r[0] == s) for s in ("SUCCESS", "NEEDS_CHECK", "ERROR")}
+        counts = {s: sum(1 for r in rows if r[0] == s) for s in outcome_states}
         baseline = {
             "since": first - days * 86400, "until": first, "started": total,
             **{k.lower(): v for k, v in counts.items()},
-            "rate": round(counts["SUCCESS"] * 100 / total, 2) if total else None,
+            "rate": round(counts[us.SUCCESS] * 100 / total, 2) if total else None,
         }
     conn.close()
     return {"days":days,"generated_at":now,"by_mode":modes,"session_events":{"by_source":{r[0]:{"events":r[1],"channels":r[2]} for r in events}},"baseline":baseline}
@@ -4055,6 +3967,7 @@ upload_live_status = {
     "logs": []
 }
 UPLOAD_LOCK = threading.Lock()
+DEFERRED_PROFILE_BUSY = upload_scheduler_service.DEFERRED_PROFILE_BUSY
 SCHEDULER_STOP = threading.Event()
 SCHEDULER_THREAD: Optional[threading.Thread] = None
 VERIFIER_THREAD: Optional[threading.Thread] = None
@@ -4120,9 +4033,9 @@ async def api_publish_now(req: PublishNowRequest, background_tasks: BackgroundTa
         cur = conn.execute(
             """
             INSERT INTO upload_tasks(channel_id,video_path,caption,hashtags,schedule_time,status,created_at,ai_generated,video_slug)
-            VALUES(?,?,?,?,?,'QUEUED',?,?,?)
+            VALUES(?,?,?,?,?,?,?,?,?)
             """,
-            (req.channel_id, str(video_path), req.caption, req.hashtags, int(time.time()), int(time.time()),
+            (req.channel_id, str(video_path), req.caption, req.hashtags, int(time.time()), us.QUEUED, int(time.time()),
              1 if req.ai_generated else 0, req.video_slug or ""),
         )
         task_id = cur.lastrowid
@@ -4155,8 +4068,8 @@ async def api_publish_now(req: PublishNowRequest, background_tasks: BackgroundTa
 
     conn = connect_db(DB_PATH)
     conn.execute(
-        "UPDATE upload_tasks SET status='UPLOADING', started_at=?, attempt_count=attempt_count+1 WHERE id=?",
-        (int(time.time()), task_id),
+        "UPDATE upload_tasks SET status=?, started_at=?, attempt_count=attempt_count+1 WHERE id=?",
+        (us.UPLOADING, int(time.time()), task_id),
     )
     conn.commit()
     conn.close()
@@ -4181,8 +4094,8 @@ async def api_publish_now(req: PublishNowRequest, background_tasks: BackgroundTa
             log_callback(f"❌ Ngoại lệ: {str(e)}", "error")
             conn = connect_db(DB_PATH)
             conn.execute(
-                "UPDATE upload_tasks SET status='ERROR', error_message=? WHERE id=?",
-                (str(e)[:1000], task_id),
+                "UPDATE upload_tasks SET status=?, error_message=? WHERE id=?",
+                (us.ERROR, str(e)[:1000], task_id),
             )
             conn.commit()
             conn.close()
@@ -4413,81 +4326,8 @@ def api_channels_history_summary(days: int = 30):
     }
 
 
-@app.get("/api/dashboard/summary")
-def api_dashboard_summary():
-    """Số liệu gom cho Bảng Điều Khiển: kênh, render, lịch đăng, hàng đợi ảnh, nick."""
-    conn = connect_db(DB_PATH)
-
-    def scalar(sql, params=(), default=0):
-        try:
-            row = conn.execute(sql, params).fetchone()
-            return (row[0] if row and row[0] is not None else default)
-        except Exception:
-            return default
-
-    def rows(sql, params=()):
-        try:
-            return conn.execute(sql, params).fetchall()
-        except Exception:
-            return []
-
-    try:
-        today_start = int(time.mktime(time.strptime(time.strftime("%Y-%m-%d"), "%Y-%m-%d")))
-        data = {
-            "channels": {
-                "total": scalar("SELECT COUNT(*) FROM channels"),
-                "monetized": scalar("SELECT COUNT(*) FROM channels WHERE status LIKE '%BKT%' OR status LIKE '%Đã bật%'"),
-                "earned_total": round(scalar("SELECT SUM(earned) FROM channels") or 0, 2),
-                "balance_total": round(scalar("SELECT SUM(balance) FROM channels") or 0, 2),
-                "checked_today": scalar("SELECT COUNT(*) FROM channels WHERE last_checked >= ?", (today_start,)),
-            },
-            "render": {
-                "queued": scalar("SELECT COUNT(*) FROM render_tasks WHERE status='QUEUED'"),
-                "processing": scalar("SELECT COUNT(*) FROM render_tasks WHERE status='PROCESSING'"),
-                "done": scalar("SELECT COUNT(*) FROM render_tasks WHERE status='DONE'"),
-                "error": scalar("SELECT COUNT(*) FROM render_tasks WHERE status='ERROR'"),
-            },
-            "upload": {
-                "queued": scalar("SELECT COUNT(*) FROM upload_tasks WHERE status IN ('QUEUED','PENDING')"),
-                "uploading": scalar("SELECT COUNT(*) FROM upload_tasks WHERE status='UPLOADING'"),
-                "success": scalar("SELECT COUNT(*) FROM upload_tasks WHERE status='SUCCESS'"),
-                "failed": scalar("SELECT COUNT(*) FROM upload_tasks WHERE status='FAILED'"),
-                "next": [
-                    {"id": r[0], "caption": (r[1] or "")[:60], "schedule_time": r[2], "channel_id": r[3]}
-                    for r in rows(
-                        """SELECT id, caption, schedule_time, channel_id FROM upload_tasks
-                           WHERE status IN ('QUEUED','PENDING') ORDER BY schedule_time ASC LIMIT 5"""
-                    )
-                ],
-            },
-            "images": {
-                "pending": scalar("SELECT COUNT(*) FROM image_queue WHERE status='pending'"),
-                "processing": scalar("SELECT COUNT(*) FROM image_queue WHERE status='processing'"),
-                "completed": scalar("SELECT COUNT(*) FROM image_queue WHERE status='completed'"),
-                "failed": scalar("SELECT COUNT(*) FROM image_queue WHERE status='failed'"),
-                "library": scalar("SELECT COUNT(*) FROM image_assets"),
-            },
-            "accounts": {
-                "fb_reg": scalar("SELECT COUNT(*) FROM fb_reg_accounts"),
-                "fb_live": scalar("SELECT COUNT(*) FROM fb_accounts"),
-                "nicks": scalar("SELECT COUNT(*) FROM FacebookAccounts")
-                         + scalar("SELECT COUNT(*) FROM TikTokAccounts"),
-            },
-            "recent_errors": [
-                {"kind": "Render", "id": r[0], "message": (r[1] or "")[:120], "at": r[2]}
-                for r in rows(
-                    "SELECT id, error_message, created_at FROM render_tasks WHERE status='ERROR' ORDER BY id DESC LIMIT 5"
-                )
-            ] + [
-                {"kind": "Đăng TikTok", "id": r[0], "message": (r[1] or "")[:120], "at": r[2]}
-                for r in rows(
-                    "SELECT id, error_message, created_at FROM upload_tasks WHERE status='FAILED' ORDER BY id DESC LIMIT 5"
-                )
-            ],
-        }
-    finally:
-        conn.close()
-    return {"success": True, "data": data}
+# Dashboard summary moved to bkt_web.dashboard_routes. The imported
+# api_dashboard_summary alias above is kept for internal/backward compatibility.
 
 
 # =============================================================================
@@ -4700,147 +4540,6 @@ app.mount("/static", StaticFiles(directory=str(STATIC_DIR)), name="static")
 app.mount("/storage", StaticFiles(directory=str(STORAGE_DIR)), name="storage")
 
 
-DEFERRED_PROFILE_BUSY = "Profile đang mở — hoãn 5 phút"
-
-
-def upload_hold_active(now: Optional[float] = None) -> bool:
-    """Lệnh giữ đăng của Autopilot (publish_hold_until) cũng dừng các task đã QUEUED.
-
-    Trước 26/09 lệnh hold chỉ chặn xếp lịch mới, còn task đã trong hàng đợi vẫn đăng.
-    Nút "Đăng Ngay" (đăng tay) không đi qua đây nên vẫn dùng được khi đang giữ.
-    """
-    try:
-        from bkt_web.autopilot import store as autopilot_store
-        return autopilot_store.get_int("publish_hold_until") > (time.time() if now is None else now)
-    except Exception:
-        return False
-
-
-def run_upload_scheduler():
-    """Durable single-worker scheduler backed by the upload_tasks table."""
-    from bkt_web.tiktok_publisher import publish_tiktok_video
-
-    while not SCHEDULER_STOP.wait(3):
-        if upload_hold_active():
-            continue
-        if not UPLOAD_LOCK.acquire(blocking=False):
-            continue
-        task = None
-        try:
-            now = int(time.time())
-            conn = connect_db(DB_PATH)
-            conn.execute("BEGIN IMMEDIATE")
-            task = conn.execute(
-                """
-                SELECT id, channel_id, video_path, caption, hashtags, attempt_count, COALESCE(ai_generated, 1)
-                FROM upload_tasks
-                WHERE status IN ('QUEUED','PENDING')
-                  AND schedule_time <= ?
-                  AND (next_retry_at IS NULL OR next_retry_at <= ?)
-                  AND attempt_count < 3
-                ORDER BY schedule_time, id
-                LIMIT 1
-                """,
-                (now, now),
-            ).fetchone()
-            if task:
-                conn.execute(
-                    """
-                    UPDATE upload_tasks
-                    SET status='UPLOADING', started_at=?, attempt_count=attempt_count+1
-                    WHERE id=? AND status IN ('QUEUED','PENDING')
-                    """,
-                    (now, task[0]),
-                )
-            conn.commit()
-            conn.close()
-
-            if not task:
-                continue
-
-            task_id, channel_id, video_path, caption, hashtags, previous_attempts, ai_generated = task
-            upload_live_status.update({
-                "is_running": True,
-                "channel_id": channel_id,
-                "task_id": task_id,
-                "logs": [{
-                    "time": time.strftime("%H:%M:%S"),
-                    "msg": f"Scheduler bắt đầu tác vụ #{task_id}",
-                    "level": "info",
-                }],
-            })
-
-            def scheduler_log(message: str, level: str = "info"):
-                upload_live_status["logs"].append({
-                    "time": time.strftime("%H:%M:%S"),
-                    "msg": message,
-                    "level": level,
-                })
-
-            result = asyncio.run(publish_tiktok_video(
-                channel_id=channel_id,
-                video_path=video_path,
-                caption=caption,
-                hashtags=hashtags,
-                db_path=str(DB_PATH),
-                log_cb=scheduler_log,
-                task_id=task_id,
-                ai_generated=bool(ai_generated),
-            ))
-            if result.get("clicked"):
-                # Đã bấm Đăng mà không thấy xác nhận: publisher đã chuyển NEEDS_CHECK. Không thử lại.
-                scheduler_log("Đã bấm Đăng nhưng chưa xác nhận — chờ người kiểm tra kênh (không tự thử lại)", "warning")
-            elif result.get("deferred"):
-                conn = connect_db(DB_PATH)
-                conn.execute(
-                    "UPDATE upload_tasks SET status='QUEUED', attempt_count=?, next_retry_at=?, error_message=? WHERE id=?",
-                    (previous_attempts, int(time.time()) + 300, DEFERRED_PROFILE_BUSY, task_id),
-                )
-                conn.commit(); conn.close()
-                scheduler_log("Profile đang bận — hoàn lượt và hoãn 5 phút", "warning")
-            elif result.get("no_retry"):
-                scheduler_log("Tác vụ không được tự thử lại", "warning")
-            elif not result.get("success") and previous_attempts + 1 < 3:
-                retry_at = int(time.time()) + 60 * (2 ** previous_attempts)
-                conn = connect_db(DB_PATH)
-                conn.execute(
-                    "UPDATE upload_tasks SET status='QUEUED', next_retry_at=? WHERE id=?",
-                    (retry_at, task_id),
-                )
-                conn.commit()
-                conn.close()
-                scheduler_log(f"Sẽ thử lại lúc {datetime.datetime.fromtimestamp(retry_at):%H:%M:%S}", "warning")
-        except Exception as exc:
-            if task:
-                previous_attempts = task[5] or 0
-                conn = connect_db(DB_PATH)
-                clicked = conn.execute("SELECT COALESCE(clicked_post_at,0) FROM upload_tasks WHERE id=?", (task[0],)).fetchone()
-                conn.close()
-                if clicked and clicked[0]:
-                    conn = connect_db(DB_PATH)
-                    conn.execute(
-                        "UPDATE upload_tasks SET status='NEEDS_CHECK', error_message=? WHERE id=?",
-                        (f"Lỗi sau khi đã bấm Đăng: {exc}"[:1000], task[0]),
-                    )
-                    conn.commit()
-                    conn.close()
-                    continue
-                can_retry = previous_attempts + 1 < 3
-                retry_at = int(time.time()) + 60 * (2 ** previous_attempts) if can_retry else 0
-                conn = connect_db(DB_PATH)
-                conn.execute(
-                    """
-                    UPDATE upload_tasks
-                    SET status=?, error_message=?, next_retry_at=?
-                    WHERE id=?
-                    """,
-                    ("QUEUED" if can_retry else "ERROR", str(exc)[:1000], retry_at, task[0]),
-                )
-                conn.commit()
-                conn.close()
-        finally:
-            upload_live_status["is_running"] = False
-            UPLOAD_LOCK.release()
 
 def app_startup():
     global SCHEDULER_THREAD, VERIFIER_THREAD, PROFILE_MAINT_THREAD
@@ -4870,7 +4569,17 @@ def app_startup():
     start_remake_queue_worker()
     SCHEDULER_STOP.clear()
     if not SCHEDULER_THREAD or not SCHEDULER_THREAD.is_alive():
-        SCHEDULER_THREAD = threading.Thread(target=run_upload_scheduler, name="upload-scheduler", daemon=True)
+        SCHEDULER_THREAD = threading.Thread(
+            target=upload_scheduler_service.run_upload_scheduler,
+            kwargs={
+                "db_path": DB_PATH,
+                "stop_event": SCHEDULER_STOP,
+                "upload_lock": UPLOAD_LOCK,
+                "live_status": upload_live_status,
+            },
+            name="upload-scheduler",
+            daemon=True,
+        )
         SCHEDULER_THREAD.start()
     if not VERIFIER_THREAD or not VERIFIER_THREAD.is_alive():
         from bkt_web import needs_check_verifier

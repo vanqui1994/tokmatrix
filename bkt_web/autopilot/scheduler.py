@@ -11,11 +11,13 @@ from . import store
 
 try:
     from bkt_web.profile_factory import COUNTRY_TIMEZONES, FALLBACK_TIMEZONE
+    from bkt_web import upload_states as us
 except ImportError:
     from profile_factory import COUNTRY_TIMEZONES, FALLBACK_TIMEZONE
+    import upload_states as us
 
 # Task đã chiếm một lượt đăng của acc (đang chờ, đang đăng hoặc đã đăng).
-SCHEDULE_COUNTED_STATUSES = ("QUEUED", "PENDING", "UPLOADING", "WAITING_RENDER", "SUCCESS", "NEEDS_CHECK")
+SCHEDULE_COUNTED_STATUSES = us.SLOT_BLOCKING_STATES
 LOOKAHEAD_DAYS = 7
 MIN_LEAD_SECONDS = 300
 
@@ -42,7 +44,7 @@ def slot_offset_seconds(tiktok_id: int) -> int:
 
 
 def _used_times(tiktok_id: int, now: float) -> list:
-    placeholders = ",".join("?" for _ in SCHEDULE_COUNTED_STATUSES)
+    placeholders = us.sql_marks(SCHEDULE_COUNTED_STATUSES)
     conn = store.channels_db()
     try:
         rows = conn.execute(

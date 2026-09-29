@@ -89,6 +89,19 @@ class ScriptBridgeWorkerTest(unittest.TestCase):
         self.assertFalse(list((self.bridge / "inbox").glob("*.json")))
 
 
+class ScriptWriterHttpAuthTest(unittest.TestCase):
+    def test_internal_token_is_sent_as_bearer_header(self):
+        response = mock.MagicMock()
+        response.__enter__.return_value = response
+        response.__exit__.return_value = False
+        with mock.patch.dict(os.environ, {"TOKMATRIX_INTERNAL_TOKEN": "test-secret"}, clear=False), \
+             mock.patch("urllib.request.urlopen", return_value=response) as urlopen, \
+             mock.patch("json.load", return_value={"success": True}):
+            writer._request("http://127.0.0.1:8080", "/api/scripts/queue/stats")
+        request = urlopen.call_args.args[0]
+        self.assertEqual(request.get_header("Authorization"), "Bearer test-secret")
+
+
 class ScriptQueueCliTest(unittest.TestCase):
     def call(self, payload):
         out = subprocess.run([sys.executable, "-m", "bkt_web.script_queue_cli"], input=json.dumps(payload),

@@ -1,0 +1,66 @@
+name: core-ci
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# New commits on the same PR supersede old core runs. This keeps feedback fast
+# on active branches and avoids burning runners on stale revisions.
+concurrency:
+  group: core-ci-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  core:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Install core Python dependencies
+        run: |
+          # faster-whisper belongs to media/voice integration and is not imported
+          # by this fast core suite. The dedicated media workflows cover it.
+          sed '/^faster-whisper/d' requirements.txt > /tmp/core-requirements.txt
+          pip install -r /tmp/core-requirements.txt
+          pip check
+
+      - name: Python compile check
+        run: python -m compileall -q bkt_web ssmatool_engine_mac
+
+      - name: JavaScript syntax check
+        run: |
+          node --check bkt_web/static/app.js
+          node --check bkt_web/static/flow_view.js
+
+      - name: Core regression tests
+        run: |
+          python -m unittest \
+            tests.test_upload_states \
+            tests.test_upload_task_video \
+            tests.test_publish_flow \
+            tests.test_upload_scheduler \
+            tests.test_tiktok_publisher_confirmation \
+            tests.test_publisher_profile \
+            tests.test_needs_check_verifier \
+            tests.test_profile_settings \
+            tests.test_notify \
+            tests.test_tiktok_dup_bot \
+            tests.test_script_bridge \
+            tests.test_webauth \
+            tests.test_image_zip \
+            tests.test_regressions

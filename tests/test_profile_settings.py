@@ -10,7 +10,7 @@ from unittest import mock
 from fastapi import HTTPException
 from starlette.routing import Match
 
-from bkt_web import server
+from bkt_web import server, upload_routes
 
 
 def resolve(method, path):
@@ -46,9 +46,10 @@ class ServerDbBase(unittest.TestCase):
                     state TEXT, source TEXT, created_at INTEGER);
             """)
             conn.execute("INSERT INTO channels VALUES (3, '/p/3'), (7, '/p/7'), (9, '')")
-        p = mock.patch.object(server, "DB_PATH", self.db)
-        p.start()
-        self.addCleanup(p.stop)
+        for module in (server, upload_routes):
+            p = mock.patch.object(module, "DB_PATH", self.db)
+            p.start()
+            self.addCleanup(p.stop)
 
     def tearDown(self):
         self._tmp.cleanup()
@@ -123,9 +124,10 @@ class UploadTaskApiTests(unittest.TestCase):
                          "ai_generated, video_slug, clicked_post_at, verify_attempts, next_verify_at, verify_note, "
                          "published_video_id, publish_mode) VALUES (5, 1, '/v.mp4', '', '', 0, 'ERROR', '', 'x', 1, 0, 3, "
                          "99, 0, 1, 's', 1234, 2, 55, 'Tìm thấy video 7400', '7400', 'profile')")
-        p = mock.patch.object(server, "DB_PATH", self.db)
-        p.start()
-        self.addCleanup(p.stop)
+        for module in (server, upload_routes):
+            p = mock.patch.object(module, "DB_PATH", self.db)
+            p.start()
+            self.addCleanup(p.stop)
 
     def tearDown(self):
         self._tmp.cleanup()

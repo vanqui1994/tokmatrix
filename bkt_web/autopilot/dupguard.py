@@ -22,7 +22,12 @@ from typing import Any, Dict, List, Optional
 
 from . import store
 
-COMPARE_STATUSES = ("SUCCESS", "NEEDS_CHECK", "UPLOADING", "QUEUED", "PENDING")
+try:
+    from bkt_web import upload_states as us
+except ImportError:
+    import upload_states as us
+
+COMPARE_STATUSES = (us.SUCCESS, us.NEEDS_CHECK, us.UPLOADING, *us.QUEUE_STATES)
 COMPOSITE_NEIGHBORS = 5
 
 CHECKS_SQL = """
@@ -79,7 +84,7 @@ def _published_slugs(exclude: str) -> Dict[str, int]:
     """slug → acc của mọi video đã/đang/sắp đăng (trừ chính nó)."""
     conn = store.channels_db()
     try:
-        marks = ",".join("?" for _ in COMPARE_STATUSES)
+        marks = us.sql_marks(COMPARE_STATUSES)
         rows = conn.execute(
             f"SELECT video_slug, channel_id FROM upload_tasks WHERE status IN ({marks}) AND COALESCE(video_slug,'')<>''",
             COMPARE_STATUSES,

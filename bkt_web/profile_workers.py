@@ -13,10 +13,12 @@ from typing import List, Optional
 try:
     from bkt_web.db_utils import connect_db
     from bkt_web import profile_factory, profile_session
+    from bkt_web import upload_states as us
 except ImportError:
     from db_utils import connect_db
     import profile_factory
     import profile_session
+    import upload_states as us
 
 logger = logging.getLogger("profile_workers")
 
@@ -30,12 +32,14 @@ CACHE_CLEAN_BATCH = 20
 def cache_clean_candidates(now: int, db_path: Optional[Path] = None) -> List[int]:
     conn = connect_db(db_path or DB_PATH)
     try:
+        busy_states = (*us.QUEUE_STATES, us.UPLOADING)
+        marks = us.sql_marks(busy_states)
         rows = conn.execute(
             "SELECT c.id FROM channels c WHERE COALESCE(c.profile_dir,'')<>'' "
             "AND NOT EXISTS (SELECT 1 FROM upload_tasks u WHERE u.channel_id=c.id "
-            "AND u.status IN ('QUEUED','PENDING','UPLOADING') AND u.schedule_time BETWEEN ? AND ?) "
+            f"AND u.status IN ({marks}) AND u.schedule_time BETWEEN ? AND ?) "
             "ORDER BY c.id",
-            (now - SCHEDULE_GUARD, now + SCHEDULE_GUARD),
+            (*busy_states, now - SCHEDULE_GUARD, now + SCHEDULE_GUARD),
         ).fetchall()
     finally:
         conn.close()

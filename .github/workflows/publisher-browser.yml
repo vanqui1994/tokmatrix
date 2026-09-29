@@ -1,0 +1,42 @@
+name: publisher-browser
+
+on:
+  pull_request:
+    paths:
+      - "bkt_web/tiktok_publisher.py"
+      - "tests/test_publisher_modals.py"
+      - ".github/workflows/publisher-browser.yml"
+  push:
+    branches: [main]
+    paths:
+      - "bkt_web/tiktok_publisher.py"
+      - "tests/test_publisher_modals.py"
+      - ".github/workflows/publisher-browser.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: publisher-browser-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install browser test dependencies
+        run: |
+          pip install "playwright>=1.52,<2" "cryptography>=49,<50"
+          python -m playwright install --with-deps chromium
+
+      - name: TikTok Studio browser regressions
+        run: python -m unittest tests.test_publisher_modals

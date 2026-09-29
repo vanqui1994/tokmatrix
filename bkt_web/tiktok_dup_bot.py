@@ -24,9 +24,11 @@ from typing import Any, Dict, List, Optional
 
 try:
     from bkt_web import key_vault
+    from bkt_web import upload_states as us
     from bkt_web.db_utils import connect_db
 except ImportError:  # chạy trong thư mục bkt_web
     import key_vault
+    import upload_states as us
     from db_utils import connect_db
 
 from pathlib import Path
@@ -291,10 +293,10 @@ def due_tasks(conn, now: Optional[float] = None, limit: int = 5) -> List[Dict[st
     rows = conn.execute(
         """SELECT u.id, u.channel_id, u.result_url FROM upload_tasks u
            LEFT JOIN video_checks v ON v.task_id = u.id
-           WHERE u.status='SUCCESS' AND u.result_url LIKE '%/video/%' AND COALESCE(u.uploaded_at,0) <= ?
+           WHERE u.status=? AND u.result_url LIKE '%/video/%' AND COALESCE(u.uploaded_at,0) <= ?
              AND (v.task_id IS NULL OR (v.checked_at = 0 AND v.attempts < 3))
            ORDER BY u.uploaded_at LIMIT ?""",
-        (int(now - CHECK_DELAY_SECONDS), limit),
+        (us.SUCCESS, int(now - CHECK_DELAY_SECONDS), limit),
     ).fetchall()
     return [{"task_id": r[0], "channel_id": r[1], "video_url": r[2]} for r in rows]
 
@@ -399,11 +401,11 @@ def channels_due(conn, now: Optional[float] = None, limit: int = 5) -> List[Dict
                   COALESCE(k.checked_at, 0) AS checked
            FROM upload_tasks u JOIN channels c ON c.id = u.channel_id
            LEFT JOIN channel_checks k ON k.channel_id = u.channel_id
-           WHERE u.status IN ('SUCCESS','NEEDS_CHECK') AND COALESCE(c.username,'') <> ''
+           WHERE u.status IN (?,?) AND COALESCE(c.username,'') <> ''
            GROUP BY u.channel_id
            HAVING last_post <= ? AND (checked < last_post OR checked <= ?)
            ORDER BY (checked < last_post) DESC, checked ASC LIMIT ?""",
-        (int(now - CHECK_DELAY_SECONDS), int(now - CHANNEL_INTERVAL_SECONDS), limit),
+        (us.SUCCESS, us.NEEDS_CHECK, int(now - CHECK_DELAY_SECONDS), int(now - CHANNEL_INTERVAL_SECONDS), limit),
     ).fetchall()
     return [{"channel_id": r[0], "username": r[1], "last_post": r[2], "checked_at": r[3]} for r in rows]
 
@@ -419,8 +421,8 @@ def _match_task(conn, channel_id: int, video: Dict[str, Any]) -> Optional[Dict[s
     if len(title) < 12:
         return None
     for task_id, caption, published in conn.execute(
-            "SELECT id, caption, COALESCE(published_video_id,'') FROM upload_tasks WHERE channel_id=? AND status IN ('SUCCESS','NEEDS_CHECK')",
-            (channel_id,)):
+            "SELECT id, caption, COALESCE(published_video_id,'') FROM upload_tasks WHERE channel_id=? AND status IN (?,?)",
+            (channel_id, us.SUCCESS, us.NEEDS_CHECK)):
         if _norm(caption).startswith(title) or title.startswith(_norm(caption)[:40]):
             return {"task_id": task_id, "published_video_id": published}
     return None

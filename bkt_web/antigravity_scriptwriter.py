@@ -110,6 +110,9 @@ def _request(base_url: str, path: str, method: str = "GET", body: Any = None) ->
     url = base_url.rstrip("/") + path
     data = json.dumps(body).encode() if body is not None else None
     headers = {"Content-Type": "application/json"} if data else {}
+    internal_token = os.environ.get("TOKMATRIX_INTERNAL_TOKEN", "").strip()
+    if internal_token:
+        headers["Authorization"] = f"Bearer {internal_token}"
     req = urllib.request.Request(url, data=data, headers=headers, method=method)
     try:
         with urllib.request.urlopen(req, timeout=30) as resp:
