@@ -13,6 +13,8 @@
 //   sceneExtra?: (scene, i, ctx) → { html, tweens }  // phần tử thêm trong clip cảnh
 //   overlay?: (ctx) → { html, css, tweens }          // phần tử xuyên suốt (bảng tier, tỉ số…) — track 4
 //   underlay?: (ctx) → { html, css, tweens }         // phần tử xuyên suốt nằm DƯỚI cảnh (lưới, bản đồ nền…) — trong clip nền
+//   image?:  { region, frame? }                      // ảnh AI của cảnh đặt riêng khi khung visual là panel dữ liệu
+//                                                   // (compare…); chỉ vẽ khi cảnh có imgSrc, không có → HTML như cũ
 //   css?:    string
 //   fontFamilies?: ["JetBrains Mono", …]            // họ font offline thêm ngoài font thân của DNA (kit/fonts.mjs)
 // }
@@ -177,7 +179,7 @@ export function buildStage(ctx, design, { ui, cfg = {} }) {
   const bg = creative.axes.background;
   const headInk = backgroundIsDark(bg) ? "#f4f1ea" : "var(--fg)";
 
-  const frames = design.visual ? [design.visual.frame] : [];
+  const frames = [...new Set([...(design.visual ? [design.visual.frame] : []), ...(design.image ? [design.image.frame || "plain"] : [])])];
   const textStyles = design.text ? [design.text.style] : [];
   const header = headerHtml(design.header, { title, ui, lang });
   const under = decorHtml((design.decor || []).filter((item) => item.layer !== "over"), rng, "du");
@@ -215,6 +217,16 @@ export function buildStage(ctx, design, { ui, cfg = {} }) {
       : "";
     if (design.text) tweens.push(...textEnterTweens(design.text.enter, { lineId: `v-text-${idx}-line`, boxId: `v-text-${idx}`, at: scene.visualStart, duration: scene.visualDuration }));
     const tag = tagHtml(design.tag, { i, n, ui, lang, id: `v-tag-${idx}` });
+    // Ảnh AI riêng của cảnh cho composition có khung visual là panel dữ liệu (ảnh đã nằm trong khung thì bỏ qua).
+    let sceneImage = "";
+    if (design.image && scene.imgSrc && !(design.visual && !design.panel)) {
+      const region = typeof design.image.region === "function" ? design.image.region(scene, i) : design.image.region;
+      sceneImage = frameHtml(design.image.frame || "plain", {
+        id: `v-sframe-${idx}`, region, rng, sub: "", label: "",
+        inner: `<img class="v-img" id="v-simg-${idx}" src="${escapeHtml(scene.imgSrc)}" alt="">${overlayHtml(`v-str-${idx}`, creative.treatmentCss)}`,
+      });
+      tweens.push(...imageMotionTweens(creative.dna.image_motion, rng, { target: `#v-simg-${idx}`, start: scene.visualStart, duration: scene.visualDuration }));
+    }
     const extra = design.sceneExtra ? design.sceneExtra(scene, i, { ...ctx, scenes, ui }) : null;
     if (extra?.tweens) tweens.push(...extra.tweens);
     if (i > 0) {
@@ -233,12 +245,12 @@ export function buildStage(ctx, design, { ui, cfg = {} }) {
       if (end < totalDuration) tweens.push({ method: "set", target: `#v-scene-${idx}`, vars: { display: "none" }, at: end });
       return `
 <div id="v-scene-${idx}" class="v-scene v-scene-free" data-stock-scene="${idx}">
-  <div class="v-inner" id="v-inner-${idx}">${visual}${text}${tag}${extra?.html || ""}</div>
+  <div class="v-inner" id="v-inner-${idx}">${visual}${sceneImage}${text}${tag}${extra?.html || ""}</div>
 </div>`;
     }
     return `
 <div id="v-scene-${idx}" class="clip v-scene" data-start="${scene.visualStart}" data-duration="${scene.visualDuration}" data-track-index="3">
-  <div class="v-inner" id="v-inner-${idx}">${visual}${text}${tag}${extra?.html || ""}</div>
+  <div class="v-inner" id="v-inner-${idx}">${visual}${sceneImage}${text}${tag}${extra?.html || ""}</div>
 </div>`;
   }).join("");
   if (overlay?.tweens) tweens.push(...overlay.tweens);

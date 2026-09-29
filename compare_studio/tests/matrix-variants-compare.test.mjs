@@ -51,14 +51,15 @@ function stressSample() {
   return { title: "Donaudampfschiff gegen Rindfleischetikett", lines, extras: { subject_a: { name: names[0].slice(0, 28), tag: "Sehr lange Bezeichnung" }, subject_b: { name: "Rindfleischetikett", tag: "Gesetzestext" }, rounds } };
 }
 
-test("compare registers 8 active SVG variants (7 base + original look) with 2 compositions each and ≥ 4/6 differing axes", () => {
+test("compare registers 8 active IMAGE_AI variants (7 base + original look) with 2 compositions each and ≥ 4/6 differing axes", () => {
   assert.deepEqual(validateRegistry().errors, []);
   const list = variants();
   assert.deepEqual(list.map((v) => v.id).sort(), [...IDS].sort());
   for (const variant of list) {
     assert.equal(variant.status, "active");
-    assert.equal(variant.assetProfile.type, "SVG");
-    assert.equal(variant.costProfile.aiImagesPerScene, 0);
+    // Owner 29/09: mọi layout So Sánh có ảnh AI của cảnh (kit design.image) bên cạnh panel dữ liệu.
+    assert.equal(variant.assetProfile.type, "IMAGE_AI");
+    assert.equal(variant.costProfile.aiImagesPerScene, 1);
     assert.equal(Object.keys(variant.visualProfile.compositions).length, 2);
     assert.ok(Object.keys(variant.contentProfile.topicPacks).every((id) => id.startsWith("compare_")));
     assert.ok(variant.audioProfile.fx.every((fx) => ["none", "creepy", "whisper", "radio"].includes(fx)));
@@ -85,7 +86,7 @@ test("every compare variant × composition × country builds lint-clean, determi
         const b = await build(variant, composition, lang);
         assert.equal(a.html, b.html, `${where} is not deterministic`);
         assert.deepEqual(lintVariantHtml(a.html), [], where);
-        assert.ok(!/assets\/images\//u.test(a.html), `${where} must not request AI images`);
+        assert.ok(/id="v-sframe-\d+"/u.test(a.html), `${where} shows the scene's AI image`);
         assert.doesNotMatch(a.html, /Math\.random|Date\.now/u);
         const extras = variant.sample(lang).extras;
         for (const subject of [extras.subject_a, extras.subject_b]) assert.ok(a.html.includes(escapeHtml(subject.name)), `${where} subject ${subject.name}`);

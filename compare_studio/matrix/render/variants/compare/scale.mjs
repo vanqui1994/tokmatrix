@@ -165,6 +165,7 @@ const scaleBalance = defineVariant({
       design: (ctx) => {
         const model = compareModel(ctx, ctx.ui);
         return {
+          image: { region: { x: 140, y: 1665, w: 800, h: 210 } }, // ảnh AI của cảnh (owner 29/09: mọi layout So Sánh có hình)
           header: { style: "plaque", region: { x: 140, y: 110, w: 800, h: 170 }, size: 54 },
           text: { style: "engraved", region: { x: 60, y: 310, w: 960, h: 300 }, size: 46, enter: "fade_up" },
           visual: { frame: "bleed", region: { x: 140, y: 1360, w: 800, h: 280 } },
@@ -180,6 +181,7 @@ const scaleBalance = defineVariant({
       design: (ctx) => {
         const model = compareModel(ctx, ctx.ui);
         return {
+          image: { region: { x: 60, y: 1580, w: 960, h: 290 } }, // ảnh AI của cảnh (owner 29/09: mọi layout So Sánh có hình)
           header: { style: "label_title", region: { x: 60, y: 110, w: 960, h: 220 }, size: 60 },
           visual: { frame: "plain", region: { x: 70, y: 1010, w: 940, h: 330 } },
           panel: (scene, i) => weighCard(model.scenes[i], model, ctx.ui).replace('class="cs-card"', 'class="cs-slip"'),

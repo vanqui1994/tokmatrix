@@ -118,6 +118,7 @@ const tierDuel = defineVariant({
       design: (ctx) => {
         const model = compareModel(ctx, ctx.ui);
         return {
+          image: { region: { x: 60, y: 900, w: 960, h: 460 } }, // ảnh AI của cảnh (owner 29/09: mọi layout So Sánh có hình)
           header: { style: "label_title", region: { x: 60, y: 110, w: 960, h: 190 }, size: 56 },
           text: { style: "panel", region: { x: 60, y: 320, w: 960, h: 240 }, size: 46, enter: "clip" },
           sceneExtra: (scene, i) => {
@@ -140,6 +141,7 @@ const tierDuel = defineVariant({
       design: (ctx) => {
         const model = compareModel(ctx, ctx.ui);
         return {
+          image: { region: { x: 60, y: 1550, w: 960, h: 320 } }, // ảnh AI của cảnh (owner 29/09: mọi layout So Sánh có hình)
           header: { style: "centered", region: { x: 60, y: 100, w: 960, h: 190 }, size: 56 },
           visual: { frame: "bleed", region: { x: 40, y: 320, w: 1000, h: 1010 } },
           panel: (scene, i) => {

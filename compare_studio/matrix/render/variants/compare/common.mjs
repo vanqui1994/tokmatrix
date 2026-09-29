@@ -5,7 +5,7 @@
 // tất định của engine (mọi cảnh NONE, không điểm).
 import compareEngine, { sceneRoles } from "../../engines/compare.mjs";
 import { shortText } from "../../engines/common.mjs";
-import { SVG_ASSET, NO_IMAGE_COST } from "../common.mjs";
+import { IMAGE_ASSET, IMAGE_COST } from "../common.mjs";
 import { escapeHtml, fitText } from "../kit/primitives.mjs";
 import { upper } from "../kit/textdata.mjs";
 
@@ -27,7 +27,7 @@ export function compareUi(own) {
   return Object.fromEntries(Object.keys(WORDS).map((lang) => [lang, { ...WORDS[lang], ...(own[lang] || own.en) }]));
 }
 
-export const compareBase = { engine: "compare", asset: SVG_ASSET, cost: NO_IMAGE_COST, countries: ["en", "de", "ja", "ko", "vi"] };
+export const compareBase = { engine: "compare", asset: IMAGE_ASSET, cost: IMAGE_COST, countries: ["en", "de", "ja", "ko", "vi"] };
 
 const clean = (value) => String(value ?? "").replace(/[\u0000-\u001f\u007f]+/gu, " ").replace(/\s+/gu, " ").trim();
 

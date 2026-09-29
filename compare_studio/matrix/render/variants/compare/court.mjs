@@ -139,6 +139,7 @@ const courtroom = defineVariant({
       design: (ctx) => {
         const model = compareModel(ctx, ctx.ui);
         return {
+          image: { region: { x: 40, y: 1400, w: 1000, h: 460 } }, // ảnh AI của cảnh (owner 29/09: mọi layout So Sánh có hình)
           header: { style: "plaque", region: { x: 140, y: 100, w: 800, h: 190 }, size: 54 },
           visual: { frame: "plain", region: { x: 40, y: 580, w: 560, h: 380 } },
           panel: (scene, i) => exhibit(model.scenes[i], model),
@@ -161,6 +162,7 @@ const courtroom = defineVariant({
       design: (ctx) => {
         const model = compareModel(ctx, ctx.ui);
         return {
+          image: { region: { x: 60, y: 1580, w: 960, h: 290 } }, // ảnh AI của cảnh (owner 29/09: mọi layout So Sánh có hình)
           header: { style: "masthead", region: { x: 60, y: 100, w: 960, h: 230 }, size: 64 },
           sceneExtra: (scene, i) => {
             const s = model.scenes[i];

@@ -13,7 +13,7 @@ const CSS = `
 .cg-emb{position:absolute;left:127px;top:22px;width:200px;height:200px}
 .cg-nm{position:absolute;left:18px;right:18px;top:232px;height:72px;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.55);border-radius:14px;box-sizing:border-box;padding:0 12px}
 .cg-nm-t{margin:0;color:#fff;font-weight:800;text-align:center;line-height:1.05}
-.cg-tg{position:absolute;left:18px;right:18px;top:308px;height:38px;display:flex;align-items:center;justify-content:center}
+.cg-tg{position:absolute;left:18px;right:18px;top:308px;height:38px;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.45);border-radius:10px}
 .cg-tg-t{margin:0;color:#fff;font-style:italic;text-align:center}
 .cg-stats{position:absolute;left:18px;right:18px;top:356px;height:340px}
 .cg-row{position:absolute;left:0;right:0;display:flex;gap:8px;box-sizing:border-box;padding:0 8px;background:rgba(255,255,255,.9);border-radius:10px}
@@ -130,6 +130,7 @@ const cardGame = defineVariant({
       design: (ctx) => {
         const model = compareModel(ctx, ctx.ui);
         return {
+          image: { region: { x: 40, y: 1560, w: 1000, h: 320 } }, // ảnh AI của cảnh (owner 29/09: mọi layout So Sánh có hình)
           header: { style: "label_title", region: { x: 60, y: 110, w: 960, h: 200 }, size: 56 },
           visual: { frame: "plain", region: { x: 140, y: 1160, w: 800, h: 200 } },
           panel: (scene, i) => callout(model.scenes[i], model, ctx.ui),
@@ -146,6 +147,7 @@ const cardGame = defineVariant({
       design: (ctx) => {
         const model = compareModel(ctx, ctx.ui);
         return {
+          image: { region: { x: 60, y: 1655, w: 960, h: 220 } }, // ảnh AI của cảnh (owner 29/09: mọi layout So Sánh có hình)
           header: { style: "tab", region: { x: 60, y: 110, w: 960, h: 220 }, size: 56 },
           text: { style: "tape_label", region: { x: 60, y: 350, w: 960, h: 250 }, size: 42, enter: "type" },
           sceneExtra: (scene, i) => {

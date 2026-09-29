@@ -171,6 +171,7 @@ const boxingRing = defineVariant({
       design: (ctx) => {
         const model = compareModel(ctx, ctx.ui);
         return {
+          image: { region: { x: 60, y: 1590, w: 960, h: 280 } }, // ảnh AI của cảnh (owner 29/09: mọi layout So Sánh có hình)
           header: { style: "centered", region: { x: 60, y: 110, w: 960, h: 210 }, size: 64 },
           visual: { frame: "bleed", region: { x: 40, y: 500, w: 1000, h: 780 } },
           panel: (scene, i) => ringPanel(model.scenes[i], i, model, ctx.ui),
@@ -190,6 +191,7 @@ const boxingRing = defineVariant({
       design: (ctx) => {
         const model = compareModel(ctx, ctx.ui);
         return {
+          image: { region: { x: 90, y: 1195, w: 900, h: 225 } }, // ảnh AI của cảnh (owner 29/09: mọi layout So Sánh có hình)
           header: { style: "ribbon", region: { x: 60, y: 110, w: 960, h: 140 }, size: 56 },
           text: { style: "panel", region: { x: 60, y: 280, w: 960, h: 260 }, size: 46, enter: "fade_up" },
           visual: { frame: "bleed", region: { x: 40, y: 570, w: 1000, h: 260 } },

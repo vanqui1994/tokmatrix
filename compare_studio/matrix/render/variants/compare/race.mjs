@@ -122,6 +122,7 @@ const raceTrack = defineVariant({
       design: (ctx) => {
         const model = compareModel(ctx, ctx.ui);
         return {
+          image: { region: { x: 60, y: 1530, w: 960, h: 340 } }, // ảnh AI của cảnh (owner 29/09: mọi layout So Sánh có hình)
           header: { style: "label_title", region: { x: 60, y: 110, w: 960, h: 200 }, size: 58 },
           visual: { frame: "plain", region: { x: 60, y: 340, w: 960, h: 300 } },
           panel: (scene, i) => boardHtml(model.scenes[i], model),
@@ -139,6 +140,7 @@ const raceTrack = defineVariant({
       design: (ctx) => {
         const model = compareModel(ctx, ctx.ui);
         return {
+          image: { region: { x: 40, y: 1665, w: 1000, h: 215 } }, // ảnh AI của cảnh (owner 29/09: mọi layout So Sánh có hình)
           header: { style: "label_title", region: { x: 60, y: 110, w: 960, h: 200 }, size: 58 },
           visual: { frame: "plain", region: { x: 580, y: 330, w: 460, h: 300 } },
           panel: (scene, i) => boardHtml(model.scenes[i], model).replace('class="cr-board"', 'class="cr-board narrow"'),

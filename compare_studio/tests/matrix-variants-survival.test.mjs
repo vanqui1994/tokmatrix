@@ -174,6 +174,6 @@ test("an IMAGE_AI variant on a text engine queues AI images; legacy channels and
   const mri = { channel_id: "x", creative: { variant_id: MRI, dna } };
   assert.deepEqual(withVariantAssetType(scenes, mri, "survival").map((s) => s.asset_type), ["IMAGE_AI", "TEXT"]);
   assert.equal(withVariantAssetType(scenes, { channel_id: "legacy" }, "survival"), scenes);
-  const tierlist = { channel_id: "y", creative: { variant_id: "compare/boxing-ring", dna: defaultDna(getVariant("compare/boxing-ring"), Object.keys(getVariant("compare/boxing-ring").visualProfile.compositions)[0]) } };
-  assert.equal(withVariantAssetType(scenes, tierlist, "compare"), scenes, "SVG variants keep their asset type");
+  const chalk = { channel_id: "y", creative: { variant_id: "chalk/atlas", dna: defaultDna(getVariant("chalk/atlas"), Object.keys(getVariant("chalk/atlas").visualProfile.compositions)[0]) } };
+  assert.equal(withVariantAssetType(scenes, chalk, "chalk"), scenes, "TEXT variants keep their asset type");
 });

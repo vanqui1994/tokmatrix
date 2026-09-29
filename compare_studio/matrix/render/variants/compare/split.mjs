@@ -116,6 +116,7 @@ const splitScreen = defineVariant({
       design: (ctx) => {
         const model = compareModel(ctx, ctx.ui);
         return {
+          image: { region: { x: 90, y: 1620, w: 900, h: 250 } }, // ảnh AI của cảnh (owner 29/09: mọi layout So Sánh có hình)
           header: { style: "centered", region: { x: 60, y: 110, w: 960, h: 210 }, size: 64 },
           visual: { frame: "bleed", region: { x: 0, y: 0, w: 1080, h: 1920 } },
           panel: (scene, i) => {
@@ -142,6 +143,7 @@ const splitScreen = defineVariant({
       design: (ctx) => {
         const model = compareModel(ctx, ctx.ui);
         return {
+          image: { region: { x: 90, y: 1620, w: 900, h: 250 } }, // ảnh AI của cảnh (owner 29/09: mọi layout So Sánh có hình)
           header: { style: "label_title", region: { x: 60, y: 110, w: 960, h: 200 }, size: 58 },
           visual: { frame: "bleed", region: { x: 0, y: 0, w: 1080, h: 1920 } },
           panel: (scene, i) => {

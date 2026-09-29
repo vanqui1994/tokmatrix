@@ -22,8 +22,9 @@ const LAYOUT = {
     vs: { x: 480, y: 402 }, badgeY: 244,
     plateA: { x: 70, y: 690, w: 360, h: 120 }, plateB: { x: 650, y: 690, w: 360, h: 120 },
     score: { x: 440, y: 690, w: 200, h: 120 }, versus: { x: 70, y: 700, w: 940, h: 100 },
-    caption: { x: 90, y: 850, w: 900, h: 380 },
-    mascot: { left: 330, top: 1280, scale: 1 },
+    caption: { x: 90, y: 850, w: 900, h: 300 },
+    image: { x: 70, y: 1180, w: 600, h: 560 },
+    mascot: { left: 640, top: 1330, scale: 0.72 },
     glowTop: { x: 230, y: 150, s: 620 }, glowBottom: { x: 220, y: 1085, s: 640 },
   },
   columns: {
@@ -32,8 +33,9 @@ const LAYOUT = {
     vs: { x: 480, y: 402 }, badgeY: 244,
     plateA: { x: 90, y: 810, w: 410, h: 130 }, plateB: { x: 580, y: 810, w: 410, h: 130 },
     score: { x: 340, y: 986, w: 400, h: 120 }, versus: { x: 70, y: 1000, w: 940, h: 100 },
-    caption: { x: 90, y: 1120, w: 900, h: 320 },
-    mascot: { left: 330, top: 1392, scale: 0.8 },
+    caption: { x: 90, y: 1120, w: 900, h: 300 },
+    image: { x: 70, y: 1440, w: 600, h: 420 },
+    mascot: { left: 640, top: 1460, scale: 0.6 },
     glowTop: { x: 230, y: 150, s: 620 }, glowBottom: { x: 220, y: 1240, s: 640 },
   },
 };
@@ -239,6 +241,7 @@ function design(compId) {
       text: { style: "ink", region: L.caption, size: compId === "columns" ? 56 : 60, align: "center", enter: "fade_up", rich: (scene) => captionHtml(scene.line, model.a.name, model.b.name) },
       sceneExtra: (scene, i, sctx) => sceneParts(scene, i, sctx, model, L, compId),
       underlay: (uctx) => underlay(uctx, model, L),
+      image: { region: L.image }, // ảnh AI của cảnh bên trái, linh vật thu nhỏ bên phải (owner 29/09)
       overlay: (octx) => mascotOverlay(octx, model, L),
       fontFamilies: ["JetBrains Mono"],
       css: css(ctx, L),
