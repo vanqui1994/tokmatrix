@@ -4866,8 +4866,8 @@ def blacksmith_examples():
     # Cảnh 2: Thợ rèn giơ búa gõ xuống đe (hammer_anvil), đầu búa chạm anvil.surface < 12px
     sc2 = scene(5.0, 10.0, {
         "smith": [
-            pose(5.0, 300, 810, 230, outfit="medieval_villager", expression="happy"),
-            pose(10.0, 300, 810, 230, outfit="medieval_villager", expression="happy"),
+            pose(5.0, 350, 810, 230, outfit="medieval_villager", expression="happy"),
+            pose(10.0, 350, 810, 230, outfit="medieval_villager", expression="happy"),
         ],
         "hammer": [
             pose(5.0, p_hammer["x"], p_hammer["y"], 190, rotation=p_hammer["rotation"]),
@@ -4964,16 +4964,16 @@ def viking_voyage_examples():
     # Cảnh 1: Thuyền Longship rẽ sóng đi >= 150px (140 -> 360), thuỷ thủ chèo thuyền và hoa tiêu định vị
     sc1 = scene(0, 6.0, {
         "ship": [
-            pose(0, 110, 880, 260),
-            pose(6.0, 430, 880, 260),
+            pose(0, 110, 770, 260, oars=1),
+            pose(6.0, 430, 770, 260, oars=1),
         ],
         "rower": [
-            pose(0, 110, 880, 170, outfit="viking", expression="happy"),
-            pose(6.0, 430, 880, 170, outfit="viking", expression="happy"),
+            pose(0, 110, 770, 170, outfit="viking", expression="happy"),
+            pose(6.0, 430, 770, 170, outfit="viking", expression="happy"),
         ],
         "navigator": [
-            pose(0, 110, 880, 170, outfit="viking", expression="happy"),
-            pose(6.0, 430, 880, 170, outfit="viking", expression="happy"),
+            pose(0, 110, 770, 170, outfit="viking", expression="happy"),
+            pose(6.0, 430, 770, 170, outfit="viking", expression="happy"),
         ],
         "compass": [
             pose(0, p_compass["x"], p_compass["y"], 130, rotation=p_compass["rotation"]),
@@ -4989,21 +4989,21 @@ def viking_voyage_examples():
     # Cảnh 2: Thuyền cập bến bên nhà dài Viking, hai người bạn gặp gỡ và chào hỏi ấm áp (emote heart)
     sc2 = scene(6.0, 12.0, {
         "longhouse": [
-            pose(6.0, 420, 790, 150),
-            pose(12.0, 420, 790, 150),
+            pose(6.0, 440, 790, 150),
+            pose(12.0, 440, 790, 150),
         ],
         "navigator": [
-            pose(6.0, 40, 830, 220, outfit="viking", expression="happy"),
-            pose(9.0, 220, 830, 220, outfit="viking", expression="happy"),
-            pose(12.0, 220, 830, 220, outfit="viking", expression="happy"),
+            pose(6.0, -60, 830, 220, outfit="viking", expression="happy"),
+            pose(9.0, 110, 830, 220, outfit="viking", expression="happy"),
+            pose(12.0, 110, 830, 220, outfit="viking", expression="happy"),
         ],
         "compass": [
             pose(6.0, p_compass["x"], p_compass["y"], 130, rotation=p_compass["rotation"]),
             pose(12.0, p_compass["x"], p_compass["y"], 130, rotation=p_compass["rotation"]),
         ],
         "villager": [
-            pose(6.0, 400, 850, 220, outfit="medieval_villager", expression="happy", flip=True),
-            pose(12.0, 400, 850, 220, outfit="medieval_villager", expression="happy", flip=True),
+            pose(6.0, 250, 850, 220, outfit="medieval_villager", expression="happy", flip=True),
+            pose(12.0, 250, 850, 220, outfit="medieval_villager", expression="happy", flip=True),
         ],
     }, actions=[
         action("emote", 8.0, 11.5, actor_id="navigator", emote="heart"),

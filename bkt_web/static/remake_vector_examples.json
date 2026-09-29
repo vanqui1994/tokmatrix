@@ -16165,7 +16165,7 @@
           "smith": [
             {
               "time": 5.0,
-              "x": 300,
+              "x": 350,
               "y": 810,
               "height": 230,
               "outfit": "medieval_villager",
@@ -16173,7 +16173,7 @@
             },
             {
               "time": 10.0,
-              "x": 300,
+              "x": 350,
               "y": 810,
               "height": 230,
               "outfit": "medieval_villager",
@@ -16418,21 +16418,23 @@
             {
               "time": 0,
               "x": 110,
-              "y": 880,
-              "height": 260
+              "y": 770,
+              "height": 260,
+              "oars": 1
             },
             {
               "time": 6.0,
               "x": 430,
-              "y": 880,
-              "height": 260
+              "y": 770,
+              "height": 260,
+              "oars": 1
             }
           ],
           "rower": [
             {
               "time": 0,
               "x": 110,
-              "y": 880,
+              "y": 770,
               "height": 170,
               "outfit": "viking",
               "expression": "happy"
@@ -16440,7 +16442,7 @@
             {
               "time": 6.0,
               "x": 430,
-              "y": 880,
+              "y": 770,
               "height": 170,
               "outfit": "viking",
               "expression": "happy"
@@ -16450,7 +16452,7 @@
             {
               "time": 0,
               "x": 110,
-              "y": 880,
+              "y": 770,
               "height": 170,
               "outfit": "viking",
               "expression": "happy"
@@ -16458,7 +16460,7 @@
             {
               "time": 6.0,
               "x": 430,
-              "y": 880,
+              "y": 770,
               "height": 170,
               "outfit": "viking",
               "expression": "happy"
@@ -16535,13 +16537,13 @@
           "longhouse": [
             {
               "time": 6.0,
-              "x": 420,
+              "x": 440,
               "y": 790,
               "height": 150
             },
             {
               "time": 12.0,
-              "x": 420,
+              "x": 440,
               "y": 790,
               "height": 150
             }
@@ -16549,7 +16551,7 @@
           "navigator": [
             {
               "time": 6.0,
-              "x": 40,
+              "x": -60,
               "y": 830,
               "height": 220,
               "outfit": "viking",
@@ -16557,7 +16559,7 @@
             },
             {
               "time": 9.0,
-              "x": 220,
+              "x": 110,
               "y": 830,
               "height": 220,
               "outfit": "viking",
@@ -16565,7 +16567,7 @@
             },
             {
               "time": 12.0,
-              "x": 220,
+              "x": 110,
               "y": 830,
               "height": 220,
               "outfit": "viking",
@@ -16591,7 +16593,7 @@
           "villager": [
             {
               "time": 6.0,
-              "x": 400,
+              "x": 250,
               "y": 850,
               "height": 220,
               "outfit": "medieval_villager",
@@ -16600,7 +16602,7 @@
             },
             {
               "time": 12.0,
-              "x": 400,
+              "x": 250,
               "y": 850,
               "height": 220,
               "outfit": "medieval_villager",

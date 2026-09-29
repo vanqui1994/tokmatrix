@@ -206,7 +206,8 @@ cat["actions"]["hammer_anvil"] = {
 cat["pose_ranges"]["lift"] = [0, 1]
 cat["pose_ranges"]["spin"] = [-3600, 3600]
 cat["pose_ranges"]["hot"] = [0, 1]
-for k in ("lift", "spin", "hot"):
+cat["pose_ranges"]["oars"] = [0, 1]  # longship: mái chèo dài khua nhịp
+for k in ("lift", "spin", "hot", "oars"):
     cat["pose_defaults"].pop(k, None)
 
 CAT_PATH.write_text(json.dumps(cat, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")

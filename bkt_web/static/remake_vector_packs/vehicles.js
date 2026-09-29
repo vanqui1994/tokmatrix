@@ -427,7 +427,15 @@
         path(ctx, 'M 60 -15 Q 74 -30 70 -52 Q 64 -60 58 -52 Q 64 -44 60 -34 Z', baseCol, INK, 2);
         path(ctx, 'M -60 -15 Q -74 -30 -70 -48 Q -66 -54 -62 -48 Q -66 -38 -58 -30 Z', baseCol, INK, 2);
         ellipse(ctx, 64, -52, 3, 2.4, '#fef3c7', INK, 0.8);
-        for (let x = -44; x <= 44; x += 22) line(ctx, [[x + 4, -10], [x - 8, 16]], '#78350f', 2.2);
+        if ((s.oars || 0) > 0) {
+          // Mái chèo dài có lưỡi, khua theo nhịp (s.oars 0–1 = biên độ); mặc định 0 giữ hình cũ.
+          const sw = Math.sin(t * 4.2) * 0.45 * clamp(s.oars);
+          for (let x = -44; x <= 44; x += 22) {
+            const ex = x - 8 + Math.sin(sw) * 34, ey = 30 - Math.abs(Math.cos(sw)) * 4;
+            line(ctx, [[x + 6, -14], [ex, ey]], '#78350f', 2.6);
+            path(ctx, `M ${ex - 3} ${ey - 2} L ${ex + 3} ${ey - 2} L ${ex + 2} ${ey + 9} L ${ex - 2} ${ey + 9} Z`, '#a16207', INK, 1);
+          }
+        } else for (let x = -44; x <= 44; x += 22) line(ctx, [[x + 4, -10], [x - 8, 16]], '#78350f', 2.2);
         for (let x = -48; x <= 48; x += 12) ellipse(ctx, x, -17, 5.5, 5.5, (x / 12) % 2 ? '#b91c1c' : '#facc15', INK, 1.1);
         line(ctx, [[0, -20], [0, -92]], '#451a03', 3.5);
         line(ctx, [[-30, -86], [30, -86]], '#451a03', 2.5);
