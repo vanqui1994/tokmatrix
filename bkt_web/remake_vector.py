@@ -3085,6 +3085,352 @@ def disaster_safety_examples():
 
 
 
+def build_pyramid_examples():
+    """Mẫu kỹ thuật Phase M: Xây dựng kim tự tháp Ai Cập bằng haul và build."""
+    cat = catalog()
+
+    def actor(cid, asset, **extra):
+        lbl = cat["assets"][asset].get("label") or cat["assets"][asset].get("spec", {}).get("label") or asset
+        return {"id": cid, "name": lbl, "asset": asset, **extra}
+
+    def pose(t, x, y, h, **extra):
+        return {"time": t, "x": x, "y": y, "height": h, **extra}
+
+    def scene(start, end, poses, actions=(), bg="nile_bank", **extra):
+        return {
+            "renderer": RENDERER,
+            "kind": "scene",
+            "start_time": start,
+            "end_time": end,
+            "characters_present": list(poses),
+            "poses": poses,
+            "actions": list(actions),
+            "background": {"preset": bg, **extra},
+        }
+
+    def action(kind, start, end, target=None, actor_id=None, **extra):
+        return {"type": kind, "start": start, "end": end, **({"target": target} if target else {}), **({"actor": actor_id} if actor_id else {}), **extra}
+
+    sc1 = scene(0, 7.5, {
+        "sledge_1": [pose(0, 140, 810, 40), pose(7.5, 140, 810, 40)],
+        "stone": [pose(0, 0, 0, 70), pose(7.5, 0, 0, 70)],
+        "worker_1": [pose(0, 290, 810, 240, outfit="egypt_worker"), pose(7.5, 290, 810, 240, outfit="egypt_worker")],
+        "worker_2": [pose(0, 380, 810, 240, outfit="egypt_worker"), pose(7.5, 380, 810, 240, outfit="egypt_worker")],
+        "mason": [pose(0, 490, 810, 220, outfit="egypt_worker"), pose(7.5, 490, 810, 220, outfit="egypt_worker")],
+        "pyramid_1": [pose(0, 460, 810, 240, growth=0.0), pose(7.5, 460, 810, 240, growth=0.0)],
+        "scroll": [pose(0, 70, 810, 45), pose(7.5, 70, 810, 45)],
+    }, actions=[
+        action("haul", 0.5, 6.5, actor_id="worker_1", helpers=["worker_2"], target="sledge_1", distance=80),
+    ], bg="nile_bank")
+
+    sc2 = scene(7.5, 15.0, {
+        "sledge_1": [pose(7.5, 220, 810, 40), pose(15.0, 220, 810, 40)],
+        "stone": [pose(7.5, 0, 0, 70), pose(15.0, 0, 0, 70)],
+        "worker_1": [pose(7.5, 370, 810, 240, outfit="egypt_worker", expression="happy"), pose(15.0, 370, 810, 240, outfit="egypt_worker", expression="happy")],
+        "worker_2": [pose(7.5, 450, 810, 240, outfit="egypt_worker", expression="happy"), pose(15.0, 450, 810, 240, outfit="egypt_worker", expression="happy")],
+        "mason": [pose(7.5, 490, 810, 220, outfit="egypt_worker"), pose(15.0, 490, 810, 220, outfit="egypt_worker")],
+        "pyramid_1": [pose(7.5, 460, 810, 240, growth=0.0), pose(15.0, 460, 810, 240, growth=1.0)],
+        "scroll": [pose(7.5, 70, 810, 45), pose(15.0, 70, 810, 45)],
+    }, actions=[
+        action("build", 7.5, 15.0, actor_id="mason", target="pyramid_1", hold=True),
+    ], bg="nile_bank")
+
+    story = {
+        "id": "build_pyramid",
+        "name": "21 · Lịch sử cổ đại: Xây dựng kim tự tháp kỳ vĩ bên bờ sông Nile",
+        "renderer": RENDERER,
+        "fidelity": "technical-demo",
+        "note": "Mẫu kỹ thuật Phase M: Đội ngũ thợ Ai Cập cùng nhau kéo khối đá lớn trên xe trượt gỗ bằng động tác haul, công trình kim tự tháp tăng trưởng growth đơn điệu.",
+        "duration": 15.0,
+        "characters": [
+            actor("sledge_1", "sledge"),
+            actor("stone", "stone_block", attach_to={"id": "sledge_1", "anchor": "seat_1"}),
+            actor("worker_1", "chibi_boy"),
+            actor("worker_2", "chibi_girl"),
+            actor("mason", "chibi_kid"),
+            actor("pyramid_1", "pyramid"),
+            actor("scroll", "papyrus_roll"),
+        ],
+        "scenes": [sc1, sc2],
+        "cues": [
+            {"start": 0.5, "end": 7.0, "character_id": "worker_1", "text": "Những người thợ Ai Cập cùng nhau dồn sức kéo khối đá lớn trên xe trượt gỗ về công trình!", "expression": "neutral"},
+            {"start": 8.0, "end": 14.5, "character_id": "worker_2", "text": "Từng khối đá vôi được ghép nối chuẩn xác, kim tự tháp vươn cao sừng sững bên dòng sông Nile!", "expression": "happy"},
+        ],
+    }
+    for index, item in enumerate(story["scenes"]):
+        item["index"] = index
+    validate_story(story)
+    return [story]
+
+
+def first_fire_examples():
+    """Mẫu kỹ thuật Phase M: Thời kỳ đồ đá, phát minh ra lửa và vẽ tranh hang động."""
+    cat = catalog()
+
+    def actor(cid, asset, **extra):
+        lbl = cat["assets"][asset].get("label") or cat["assets"][asset].get("spec", {}).get("label") or asset
+        return {"id": cid, "name": lbl, "asset": asset, **extra}
+
+    def pose(t, x, y, h, **extra):
+        return {"time": t, "x": x, "y": y, "height": h, **extra}
+
+    def scene(start, end, poses, actions=(), bg="stone_age_cave", **extra):
+        return {
+            "renderer": RENDERER,
+            "kind": "scene",
+            "start_time": start,
+            "end_time": end,
+            "characters_present": list(poses),
+            "poses": poses,
+            "actions": list(actions),
+            "background": {"preset": bg, **extra},
+        }
+
+    def action(kind, start, end, target=None, actor_id=None, **extra):
+        return {"type": kind, "start": start, "end": end, **({"target": target} if target else {}), **({"actor": actor_id} if actor_id else {}), **extra}
+
+    sc1 = scene(0, 7.0, {
+        "kid": [pose(0, 180, 810, 240, outfit="stone_age"), pose(7.0, 180, 810, 240, outfit="stone_age", expression="happy")],
+        "fire": [pose(0, 300, 810, 130, lit=0.0), pose(1.5, 300, 810, 130, lit=0.0), pose(5.5, 300, 810, 130, lit=1.0), pose(7.0, 300, 810, 130, lit=1.0)],
+        "mammoth_1": [pose(0, 480, 810, 220), pose(7.0, 480, 810, 220)],
+    }, bg="stone_age_cave")
+
+    sc2 = scene(7.0, 14.0, {
+        "kid": [pose(7.0, 150, 810, 240, outfit="stone_age"), pose(14.0, 150, 810, 240, outfit="stone_age", expression="happy")],
+        "fire": [pose(7.0, 90, 810, 110, lit=1.0), pose(14.0, 90, 810, 110, lit=1.0)],
+        "wall": [pose(7.0, 290, 810, 300, z=-1), pose(14.0, 290, 810, 300, z=-1)],
+        "mammoth_1": [pose(7.0, 470, 810, 200), pose(14.0, 470, 810, 200)],
+    }, actions=[
+        action("paint", 7.5, 12.0, actor_id="kid", target="wall"),
+        action("run_away", 8.0, 13.5, actor_id="mammoth_1"),
+    ], bg="stone_age_cave")
+
+    story = {
+        "id": "first_fire",
+        "name": "22 · Lịch sử cổ đại: Phát minh ra lửa và bích hoạ hang động thời đồ đá",
+        "renderer": RENDERER,
+        "fidelity": "technical-demo",
+        "note": "Mẫu kỹ thuật Phase M: Khám phá tạo ra ngọn lửa đầu tiên lit 0 -> 1, vẽ bích họa hang động bằng paint và voi ma mút an toàn rời đi run_away.",
+        "duration": 14.0,
+        "characters": [
+            actor("kid", "chibi_kid"),
+            actor("fire", "campfire"),
+            actor("wall", "cave_wall"),
+            actor("mammoth_1", "mammoth"),
+        ],
+        "scenes": [sc1, sc2],
+        "cues": [
+            {"start": 0.5, "end": 6.5, "character_id": "kid", "text": "Ma sát tạo ra tia lửa, nhóm lên ngọn lửa ấm áp đầu tiên xua tan bóng tối giá lạnh!", "expression": "happy"},
+            {"start": 7.5, "end": 13.5, "character_id": "kid", "text": "Dưới ánh lửa bập bùng, con người vẽ lại hình ảnh thiên nhiên và muôn loài lên vách đá hang động!", "expression": "happy"},
+        ],
+    }
+    for index, item in enumerate(story["scenes"]):
+        item["index"] = index
+    validate_story(story)
+    return [story]
+
+
+def roman_road_examples():
+    """Mẫu kỹ thuật Phase M: Kỹ thuật xây đường đá kết nối các vùng La Mã cổ đại."""
+    cat = catalog()
+
+    def actor(cid, asset, **extra):
+        lbl = cat["assets"][asset].get("label") or cat["assets"][asset].get("spec", {}).get("label") or asset
+        return {"id": cid, "name": lbl, "asset": asset, **extra}
+
+    def pose(t, x, y, h, **extra):
+        return {"time": t, "x": x, "y": y, "height": h, **extra}
+
+    def scene(start, end, poses, actions=(), bg="roman_town", **extra):
+        return {
+            "renderer": RENDERER,
+            "kind": "scene",
+            "start_time": start,
+            "end_time": end,
+            "characters_present": list(poses),
+            "poses": poses,
+            "actions": list(actions),
+            "background": {"preset": bg, **extra},
+        }
+
+    def action(kind, start, end, target=None, actor_id=None, **extra):
+        return {"type": kind, "start": start, "end": end, **({"target": target} if target else {}), **({"actor": actor_id} if actor_id else {}), **extra}
+
+    sc1 = scene(0, 7.5, {
+        "builder": [pose(0, 90, 810, 240, outfit="roman_citizen"), pose(6.0, 250, 810, 240, outfit="roman_citizen"), pose(7.5, 250, 810, 240, outfit="roman_citizen")],
+        "soldier": [pose(0, 240, 810, 240, outfit="roman_soldier"), pose(6.0, 400, 810, 240, outfit="roman_soldier"), pose(7.5, 400, 810, 240, outfit="roman_soldier")],
+        "stone": [pose(0, 165, 810, 120), pose(7.5, 165, 810, 120)],
+    }, actions=[
+        action("carry_together", 0.3, 6.0, target="stone", actor_id="builder", helper="soldier"),
+    ], bg="roman_town")
+
+    sc2 = scene(7.5, 15.0, {
+        "builder": [pose(7.5, 200, 810, 240, outfit="roman_citizen", expression="happy"), pose(15.0, 200, 810, 240, outfit="roman_citizen", expression="happy")],
+        "soldier": [pose(7.5, 420, 810, 240, outfit="roman_soldier", expression="happy"), pose(15.0, 420, 810, 240, outfit="roman_soldier", expression="happy")],
+        "stone": [pose(7.5, 325, 812, 120), pose(15.0, 325, 812, 120)],
+        "tablet": [{"time": 7.5, "height": 90, **held_pose("chalkboard_wax_tablet", 90, 0)}, {"time": 15.0, "height": 90, **held_pose("chalkboard_wax_tablet", 90, 0)}],
+        "aqueduct_bg": [pose(7.5, 470, 700, 260, z=-2), pose(15.0, 470, 700, 260, z=-2)],
+    }, bg="roman_town")
+
+    story = {
+        "id": "roman_road",
+        "name": "23 · Lịch sử cổ đại: Làm đường đá kiên cố của đế chế La Mã",
+        "renderer": RENDERER,
+        "fidelity": "technical-demo",
+        "note": "Mẫu kỹ thuật Phase M: Thợ xây và người La Mã lát các khối đá bazan đa giác tạo nên những con đường bền vững hàng nghìn năm.",
+        "duration": 15.0,
+        "characters": [
+            actor("builder", "chibi_boy"),
+            actor("soldier", "chibi_kid"),
+            actor("stone", "paving_stone"),
+            actor("tablet", "chalkboard_wax_tablet", attach_to={"id": "builder", "anchor": "hand_r"}),
+            actor("aqueduct_bg", "aqueduct"),
+        ],
+        "scenes": [sc1, sc2],
+        "cues": [
+            {"start": 0.5, "end": 7.0, "character_id": "builder", "text": "Từng lớp sỏi cát và khối đá bazan được đẽo phẳng, lát khít thành mặt đường vững chắc!", "expression": "neutral"},
+            {"start": 8.0, "end": 14.5, "character_id": "soldier", "text": "Mọi ngả đường đều dẫn tới La Mã, giúp giao thương và văn hoá lan tỏa muôn nơi!", "expression": "happy"},
+        ],
+    }
+    for index, item in enumerate(story["scenes"]):
+        item["index"] = index
+    validate_story(story)
+    return [story]
+
+
+def silk_road_caravan_examples():
+    """Mẫu kỹ thuật Phase M: Đoàn buôn cưỡi lạc đà băng qua sa mạc Con đường tơ lụa."""
+    cat = catalog()
+
+    def actor(cid, asset, **extra):
+        lbl = cat["assets"][asset].get("label") or cat["assets"][asset].get("spec", {}).get("label") or asset
+        return {"id": cid, "name": lbl, "asset": asset, **extra}
+
+    def pose(t, x, y, h, **extra):
+        return {"time": t, "x": x, "y": y, "height": h, **extra}
+
+    def scene(start, end, poses, actions=(), bg="desert_dunes", **extra):
+        return {
+            "renderer": RENDERER,
+            "kind": "scene",
+            "start_time": start,
+            "end_time": end,
+            "characters_present": list(poses),
+            "poses": poses,
+            "actions": list(actions),
+            "background": {"preset": bg, **extra},
+        }
+
+    def action(kind, start, end, target=None, actor_id=None, **extra):
+        return {"type": kind, "start": start, "end": end, **({"target": target} if target else {}), **({"actor": actor_id} if actor_id else {}), **extra}
+
+    sc1 = scene(0, 8.0, {
+        "rider": [pose(0, 160, 810, 200, outfit="stone_age"), pose(8.0, 360, 810, 200, outfit="stone_age")],
+        "camel_1": [pose(0, 160, 810, 270), pose(8.0, 360, 810, 270)],
+        "camel_2": [pose(0, 40, 810, 230), pose(8.0, 240, 810, 230)],
+    }, actions=[
+        action("ride", 0.5, 7.8, actor_id="rider", target="camel_1"),
+    ], bg="desert_dunes")
+
+    sc2 = scene(8.0, 16.0, {
+        "rider": [pose(8.0, 360, 810, 200, outfit="stone_age", expression="happy"), pose(16.0, 500, 810, 200, outfit="stone_age", expression="happy")],
+        "camel_1": [pose(8.0, 360, 810, 270), pose(16.0, 500, 810, 270)],
+        "camel_2": [pose(8.0, 240, 810, 230), pose(16.0, 380, 810, 230)],
+    }, actions=[
+        action("ride", 8.0, 15.8, actor_id="rider", target="camel_1"),
+    ], bg="desert_dunes", time="night")
+
+    story = {
+        "id": "silk_road_caravan",
+        "name": "24 · Lịch sử cổ đại: Đoàn buôn lạc đà trên Con đường tơ lụa",
+        "renderer": RENDERER,
+        "fidelity": "technical-demo",
+        "note": "Mẫu kỹ thuật Phase M: Người cưỡi lạc đà hai bướu qua cồn cát sa mạc bằng động tác ride, giữ vị trí hông khớp seat_1 suốt hành trình.",
+        "duration": 16.0,
+        "characters": [
+            actor("rider", "chibi_boy"),
+            actor("camel_1", "camel"),
+            actor("camel_2", "camel"),
+        ],
+        "scenes": [sc1, sc2],
+        "cues": [
+            {"start": 0.5, "end": 7.5, "character_id": "rider", "text": "Đoàn lạc đà dẻo dai sải bước qua những cồn cát vàng rực rỡ của Con đường tơ lụa!", "expression": "happy"},
+            {"start": 8.5, "end": 15.5, "character_id": "rider", "text": "Dưới bầu trời đêm ngàn sao, hàng hóa lụa là và hương liệu được chuyên chở tới phương xa!", "expression": "happy"},
+        ],
+    }
+    for index, item in enumerate(story["scenes"]):
+        item["index"] = index
+    validate_story(story)
+    return [story]
+
+
+def first_olympics_examples():
+    """Mẫu kỹ thuật Phase M: Thế vận hội Olympic đầu tiên tại Hy Lạp cổ đại."""
+    cat = catalog()
+
+    def actor(cid, asset, **extra):
+        lbl = cat["assets"][asset].get("label") or cat["assets"][asset].get("spec", {}).get("label") or asset
+        return {"id": cid, "name": lbl, "asset": asset, **extra}
+
+    def pose(t, x, y, h, **extra):
+        return {"time": t, "x": x, "y": y, "height": h, **extra}
+
+    def scene(start, end, poses, actions=(), bg="greek_stadium", **extra):
+        return {
+            "renderer": RENDERER,
+            "kind": "scene",
+            "start_time": start,
+            "end_time": end,
+            "characters_present": list(poses),
+            "poses": poses,
+            "actions": list(actions),
+            "background": {"preset": bg, **extra},
+        }
+
+    def action(kind, start, end, target=None, actor_id=None, **extra):
+        return {"type": kind, "start": start, "end": end, **({"target": target} if target else {}), **({"actor": actor_id} if actor_id else {}), **extra}
+
+    sc1 = scene(0, 7.5, {
+        "runner": [pose(0, 40, 810, 240, outfit="greek_tunic", hand_r_x=20, hand_r_y=-40), pose(7.5, 300, 810, 240, outfit="greek_tunic", hand_r_x=20, hand_r_y=-40)],
+        "torch": [{"time": 0, "height": 130, **held_pose("laurel_torch", 130, 0)}, {"time": 7.5, "height": 130, **held_pose("laurel_torch", 130, 0)}],
+        "athlete": [pose(0, 470, 810, 240, outfit="greek_tunic"), pose(7.5, 470, 810, 240, outfit="greek_tunic")],
+        "javelin": [pose(0, 540, 810, 200), pose(7.5, 540, 810, 200)],
+    }, bg="greek_stadium")
+
+    sc2 = scene(7.5, 15.0, {
+        "runner": [pose(7.5, 80, 810, 240, outfit="greek_tunic", expression="happy", hand_r_x=20, hand_r_y=-40), pose(15.0, 80, 810, 240, outfit="greek_tunic", expression="happy", hand_r_x=20, hand_r_y=-40)],
+        "torch": [{"time": 7.5, "height": 130, **held_pose("laurel_torch", 130, 0)}, {"time": 15.0, "height": 130, **held_pose("laurel_torch", 130, 0)}],
+        "athlete": [pose(7.5, 250, 810, 240, outfit="greek_tunic"), pose(9.5, 250, 810, 240, outfit="greek_tunic", rotation=-12, hand_r_x=26, hand_r_y=-30), pose(10.2, 250, 810, 240, outfit="greek_tunic", rotation=8, hand_r_x=26, hand_r_y=-58), pose(15.0, 250, 810, 240, outfit="greek_tunic", expression="happy", hand_r_x=26, hand_r_y=-58)],
+        "disc": [pose(7.5, 310, 752, 70), pose(10.2, 318, 668, 70), pose(11.4, 420, 560, 70, rotation=300), pose(12.6, 520, 812, 70, rotation=600, ease="ease_in"), pose(15.0, 520, 812, 70, rotation=600)],
+    }, bg="greek_stadium")
+
+    story = {
+        "id": "first_olympics",
+        "name": "25 · Lịch sử cổ đại: Khai mạc Thế vận hội Olympic đầu tiên tại Olympia",
+        "renderer": RENDERER,
+        "fidelity": "technical-demo",
+        "note": "Mẫu kỹ thuật Phase M: Vận động viên cầm đuốc nguyệt quế và đạo cụ thể thao cổ đại thi đua trong tinh thần thể thao cao thượng.",
+        "duration": 15.0,
+        "characters": [
+            actor("runner", "chibi_boy"),
+            actor("torch", "laurel_torch", attach_to={"id": "runner", "anchor": "hand_r"}),
+            actor("athlete", "chibi_girl"),
+            actor("disc", "discus"),
+            actor("javelin", "javelin_training"),
+        ],
+        "scenes": [sc1, sc2],
+        "cues": [
+            {"start": 0.5, "end": 7.0, "character_id": "runner", "text": "Ngọn đuốc Olympic thắp sáng tinh thần hòa bình và thi đấu thể thao cao thượng tại Olympia!", "expression": "happy"},
+            {"start": 8.0, "end": 14.5, "character_id": "athlete", "text": "Các vận động viên sải bước tranh tài trong tiếng reo hò rộn rã khắp khán đài đá cổ!", "expression": "happy"},
+        ],
+    }
+    for index, item in enumerate(story["scenes"]):
+        item["index"] = index
+    validate_story(story)
+    return [story]
+
+
+
 def auto_frame(story: dict, max_zoom: float = 2.0) -> dict:
     """Đặt camera tĩnh cho mỗi cảnh chưa có camera để nhóm nhân vật nhỏ (tế bào, vi khuẩn) chiếm ~85% bề ngang.
 
@@ -3112,7 +3458,7 @@ def auto_frame(story: dict, max_zoom: float = 2.0) -> dict:
     return story
 
 def sample_stories():
-    """Every sample the library ships: farm stories, articulated hands, IK, fishing, sea monsters, orchard harvest, trellis, highland, vegetable cutaway, safe spraying, giant radish, handwashing, doctor visit, tooth care, nutrition, Phase I body world, Phase K recycling, and Phase L safety stories."""
+    """Every sample the library ships: farm stories, articulated hands, IK, fishing, sea monsters, orchard harvest, trellis, highland, vegetable cutaway, safe spraying, giant radish, handwashing, doctor visit, tooth care, nutrition, Phase I body world, Phase K recycling, Phase L safety, and Phase M ancient history stories."""
     return (
         examples() + agriculture_examples() + farm_life_examples() + farm_animals_examples() +
         articulation_examples() + ik_examples() + fishing_examples() + monster_examples() +
@@ -3122,7 +3468,9 @@ def sample_stories():
         scrape_battle_examples() + virus_invasion_examples() + vaccine_training_examples() +
         body_tour_examples() + gut_team_examples() + cavity_examples() + allergy_examples() +
         recycling_sort_examples() + bottle_journey_examples() +
-        crossing_street_examples() + disaster_safety_examples()
+        crossing_street_examples() + disaster_safety_examples() +
+        build_pyramid_examples() + first_fire_examples() + roman_road_examples() +
+        silk_road_caravan_examples() + first_olympics_examples()
     )
 
 
@@ -3159,7 +3507,7 @@ def showreel():
                     action["blend_in"] = min(action["blend_in"] * ratio, action["end"] - action["start"])
                 if "helpers" in action and isinstance(action["helpers"], list):
                     action["helpers"] = [prefix + hid for hid in action["helpers"]]
-                for role in ("actor", "target", "tool"):
+                for role in ("actor", "target", "tool", "helper"):
                     if role in action:
                         action[role] = prefix + action[role]
             scenes.append(scene)

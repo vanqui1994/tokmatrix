@@ -10736,5 +10736,1282 @@
         "expression": "happy"
       }
     ]
+  },
+  {
+    "id": "build_pyramid",
+    "name": "21 · Lịch sử cổ đại: Xây dựng kim tự tháp kỳ vĩ bên bờ sông Nile",
+    "renderer": "native-vector-v1",
+    "fidelity": "technical-demo",
+    "note": "Mẫu kỹ thuật Phase M: Đội ngũ thợ Ai Cập cùng nhau kéo khối đá lớn trên xe trượt gỗ bằng động tác haul, công trình kim tự tháp tăng trưởng growth đơn điệu.",
+    "duration": 15.0,
+    "characters": [
+      {
+        "id": "sledge_1",
+        "name": "Xe trượt kéo đá",
+        "asset": "sledge"
+      },
+      {
+        "id": "stone",
+        "name": "Khối đá xây kim tự tháp",
+        "asset": "stone_block",
+        "attach_to": {
+          "id": "sledge_1",
+          "anchor": "seat_1"
+        }
+      },
+      {
+        "id": "worker_1",
+        "name": "Bé trai học sinh",
+        "asset": "chibi_boy"
+      },
+      {
+        "id": "worker_2",
+        "name": "Bé gái học sinh",
+        "asset": "chibi_girl"
+      },
+      {
+        "id": "mason",
+        "name": "Bé mầm non",
+        "asset": "chibi_kid"
+      },
+      {
+        "id": "pyramid_1",
+        "name": "Kim tự tháp",
+        "asset": "pyramid"
+      },
+      {
+        "id": "scroll",
+        "name": "Cuộn giấy cói Ai Cập",
+        "asset": "papyrus_roll"
+      }
+    ],
+    "scenes": [
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 0,
+        "end_time": 7.5,
+        "characters_present": [
+          "sledge_1",
+          "stone",
+          "worker_1",
+          "worker_2",
+          "mason",
+          "pyramid_1",
+          "scroll"
+        ],
+        "poses": {
+          "sledge_1": [
+            {
+              "time": 0,
+              "x": 140,
+              "y": 810,
+              "height": 40
+            },
+            {
+              "time": 7.5,
+              "x": 140,
+              "y": 810,
+              "height": 40
+            }
+          ],
+          "stone": [
+            {
+              "time": 0,
+              "x": 0,
+              "y": 0,
+              "height": 70
+            },
+            {
+              "time": 7.5,
+              "x": 0,
+              "y": 0,
+              "height": 70
+            }
+          ],
+          "worker_1": [
+            {
+              "time": 0,
+              "x": 290,
+              "y": 810,
+              "height": 240,
+              "outfit": "egypt_worker"
+            },
+            {
+              "time": 7.5,
+              "x": 290,
+              "y": 810,
+              "height": 240,
+              "outfit": "egypt_worker"
+            }
+          ],
+          "worker_2": [
+            {
+              "time": 0,
+              "x": 380,
+              "y": 810,
+              "height": 240,
+              "outfit": "egypt_worker"
+            },
+            {
+              "time": 7.5,
+              "x": 380,
+              "y": 810,
+              "height": 240,
+              "outfit": "egypt_worker"
+            }
+          ],
+          "mason": [
+            {
+              "time": 0,
+              "x": 490,
+              "y": 810,
+              "height": 220,
+              "outfit": "egypt_worker"
+            },
+            {
+              "time": 7.5,
+              "x": 490,
+              "y": 810,
+              "height": 220,
+              "outfit": "egypt_worker"
+            }
+          ],
+          "pyramid_1": [
+            {
+              "time": 0,
+              "x": 460,
+              "y": 810,
+              "height": 240,
+              "growth": 0.0
+            },
+            {
+              "time": 7.5,
+              "x": 460,
+              "y": 810,
+              "height": 240,
+              "growth": 0.0
+            }
+          ],
+          "scroll": [
+            {
+              "time": 0,
+              "x": 70,
+              "y": 810,
+              "height": 45
+            },
+            {
+              "time": 7.5,
+              "x": 70,
+              "y": 810,
+              "height": 45
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "haul",
+            "start": 0.5,
+            "end": 6.5,
+            "target": "sledge_1",
+            "actor": "worker_1",
+            "helpers": [
+              "worker_2"
+            ],
+            "distance": 80
+          }
+        ],
+        "background": {
+          "preset": "nile_bank"
+        },
+        "index": 0
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 7.5,
+        "end_time": 15.0,
+        "characters_present": [
+          "sledge_1",
+          "stone",
+          "worker_1",
+          "worker_2",
+          "mason",
+          "pyramid_1",
+          "scroll"
+        ],
+        "poses": {
+          "sledge_1": [
+            {
+              "time": 7.5,
+              "x": 220,
+              "y": 810,
+              "height": 40
+            },
+            {
+              "time": 15.0,
+              "x": 220,
+              "y": 810,
+              "height": 40
+            }
+          ],
+          "stone": [
+            {
+              "time": 7.5,
+              "x": 0,
+              "y": 0,
+              "height": 70
+            },
+            {
+              "time": 15.0,
+              "x": 0,
+              "y": 0,
+              "height": 70
+            }
+          ],
+          "worker_1": [
+            {
+              "time": 7.5,
+              "x": 370,
+              "y": 810,
+              "height": 240,
+              "outfit": "egypt_worker",
+              "expression": "happy"
+            },
+            {
+              "time": 15.0,
+              "x": 370,
+              "y": 810,
+              "height": 240,
+              "outfit": "egypt_worker",
+              "expression": "happy"
+            }
+          ],
+          "worker_2": [
+            {
+              "time": 7.5,
+              "x": 450,
+              "y": 810,
+              "height": 240,
+              "outfit": "egypt_worker",
+              "expression": "happy"
+            },
+            {
+              "time": 15.0,
+              "x": 450,
+              "y": 810,
+              "height": 240,
+              "outfit": "egypt_worker",
+              "expression": "happy"
+            }
+          ],
+          "mason": [
+            {
+              "time": 7.5,
+              "x": 490,
+              "y": 810,
+              "height": 220,
+              "outfit": "egypt_worker"
+            },
+            {
+              "time": 15.0,
+              "x": 490,
+              "y": 810,
+              "height": 220,
+              "outfit": "egypt_worker"
+            }
+          ],
+          "pyramid_1": [
+            {
+              "time": 7.5,
+              "x": 460,
+              "y": 810,
+              "height": 240,
+              "growth": 0.0
+            },
+            {
+              "time": 15.0,
+              "x": 460,
+              "y": 810,
+              "height": 240,
+              "growth": 1.0
+            }
+          ],
+          "scroll": [
+            {
+              "time": 7.5,
+              "x": 70,
+              "y": 810,
+              "height": 45
+            },
+            {
+              "time": 15.0,
+              "x": 70,
+              "y": 810,
+              "height": 45
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "build",
+            "start": 7.5,
+            "end": 15.0,
+            "target": "pyramid_1",
+            "actor": "mason",
+            "hold": true
+          }
+        ],
+        "background": {
+          "preset": "nile_bank"
+        },
+        "index": 1
+      }
+    ],
+    "cues": [
+      {
+        "start": 0.5,
+        "end": 7.0,
+        "character_id": "worker_1",
+        "text": "Những người thợ Ai Cập cùng nhau dồn sức kéo khối đá lớn trên xe trượt gỗ về công trình!",
+        "expression": "neutral"
+      },
+      {
+        "start": 8.0,
+        "end": 14.5,
+        "character_id": "worker_2",
+        "text": "Từng khối đá vôi được ghép nối chuẩn xác, kim tự tháp vươn cao sừng sững bên dòng sông Nile!",
+        "expression": "happy"
+      }
+    ]
+  },
+  {
+    "id": "first_fire",
+    "name": "22 · Lịch sử cổ đại: Phát minh ra lửa và bích hoạ hang động thời đồ đá",
+    "renderer": "native-vector-v1",
+    "fidelity": "technical-demo",
+    "note": "Mẫu kỹ thuật Phase M: Khám phá tạo ra ngọn lửa đầu tiên lit 0 -> 1, vẽ bích họa hang động bằng paint và voi ma mút an toàn rời đi run_away.",
+    "duration": 14.0,
+    "characters": [
+      {
+        "id": "kid",
+        "name": "Bé mầm non",
+        "asset": "chibi_kid"
+      },
+      {
+        "id": "fire",
+        "name": "Lửa trại tiền sử",
+        "asset": "campfire"
+      },
+      {
+        "id": "wall",
+        "name": "Vách đá hang động",
+        "asset": "cave_wall"
+      },
+      {
+        "id": "mammoth_1",
+        "name": "Voi ma mút",
+        "asset": "mammoth"
+      }
+    ],
+    "scenes": [
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 0,
+        "end_time": 7.0,
+        "characters_present": [
+          "kid",
+          "fire",
+          "mammoth_1"
+        ],
+        "poses": {
+          "kid": [
+            {
+              "time": 0,
+              "x": 180,
+              "y": 810,
+              "height": 240,
+              "outfit": "stone_age"
+            },
+            {
+              "time": 7.0,
+              "x": 180,
+              "y": 810,
+              "height": 240,
+              "outfit": "stone_age",
+              "expression": "happy"
+            }
+          ],
+          "fire": [
+            {
+              "time": 0,
+              "x": 300,
+              "y": 810,
+              "height": 130,
+              "lit": 0.0
+            },
+            {
+              "time": 1.5,
+              "x": 300,
+              "y": 810,
+              "height": 130,
+              "lit": 0.0
+            },
+            {
+              "time": 5.5,
+              "x": 300,
+              "y": 810,
+              "height": 130,
+              "lit": 1.0
+            },
+            {
+              "time": 7.0,
+              "x": 300,
+              "y": 810,
+              "height": 130,
+              "lit": 1.0
+            }
+          ],
+          "mammoth_1": [
+            {
+              "time": 0,
+              "x": 480,
+              "y": 810,
+              "height": 220
+            },
+            {
+              "time": 7.0,
+              "x": 480,
+              "y": 810,
+              "height": 220
+            }
+          ]
+        },
+        "actions": [],
+        "background": {
+          "preset": "stone_age_cave"
+        },
+        "index": 0
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 7.0,
+        "end_time": 14.0,
+        "characters_present": [
+          "kid",
+          "fire",
+          "wall",
+          "mammoth_1"
+        ],
+        "poses": {
+          "kid": [
+            {
+              "time": 7.0,
+              "x": 150,
+              "y": 810,
+              "height": 240,
+              "outfit": "stone_age"
+            },
+            {
+              "time": 14.0,
+              "x": 150,
+              "y": 810,
+              "height": 240,
+              "outfit": "stone_age",
+              "expression": "happy"
+            }
+          ],
+          "fire": [
+            {
+              "time": 7.0,
+              "x": 90,
+              "y": 810,
+              "height": 110,
+              "lit": 1.0
+            },
+            {
+              "time": 14.0,
+              "x": 90,
+              "y": 810,
+              "height": 110,
+              "lit": 1.0
+            }
+          ],
+          "wall": [
+            {
+              "time": 7.0,
+              "x": 290,
+              "y": 810,
+              "height": 300,
+              "z": -1
+            },
+            {
+              "time": 14.0,
+              "x": 290,
+              "y": 810,
+              "height": 300,
+              "z": -1
+            }
+          ],
+          "mammoth_1": [
+            {
+              "time": 7.0,
+              "x": 470,
+              "y": 810,
+              "height": 200
+            },
+            {
+              "time": 14.0,
+              "x": 470,
+              "y": 810,
+              "height": 200
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "paint",
+            "start": 7.5,
+            "end": 12.0,
+            "target": "wall",
+            "actor": "kid"
+          },
+          {
+            "type": "run_away",
+            "start": 8.0,
+            "end": 13.5,
+            "actor": "mammoth_1"
+          }
+        ],
+        "background": {
+          "preset": "stone_age_cave"
+        },
+        "index": 1
+      }
+    ],
+    "cues": [
+      {
+        "start": 0.5,
+        "end": 6.5,
+        "character_id": "kid",
+        "text": "Ma sát tạo ra tia lửa, nhóm lên ngọn lửa ấm áp đầu tiên xua tan bóng tối giá lạnh!",
+        "expression": "happy"
+      },
+      {
+        "start": 7.5,
+        "end": 13.5,
+        "character_id": "kid",
+        "text": "Dưới ánh lửa bập bùng, con người vẽ lại hình ảnh thiên nhiên và muôn loài lên vách đá hang động!",
+        "expression": "happy"
+      }
+    ]
+  },
+  {
+    "id": "roman_road",
+    "name": "23 · Lịch sử cổ đại: Làm đường đá kiên cố của đế chế La Mã",
+    "renderer": "native-vector-v1",
+    "fidelity": "technical-demo",
+    "note": "Mẫu kỹ thuật Phase M: Thợ xây và người La Mã lát các khối đá bazan đa giác tạo nên những con đường bền vững hàng nghìn năm.",
+    "duration": 15.0,
+    "characters": [
+      {
+        "id": "builder",
+        "name": "Bé trai học sinh",
+        "asset": "chibi_boy"
+      },
+      {
+        "id": "soldier",
+        "name": "Bé mầm non",
+        "asset": "chibi_kid"
+      },
+      {
+        "id": "stone",
+        "name": "Đá lát đường La Mã",
+        "asset": "paving_stone"
+      },
+      {
+        "id": "tablet",
+        "name": "Bảng sáp La Mã",
+        "asset": "chalkboard_wax_tablet",
+        "attach_to": {
+          "id": "builder",
+          "anchor": "hand_r"
+        }
+      },
+      {
+        "id": "aqueduct_bg",
+        "name": "Cầu dẫn nước cổ đại",
+        "asset": "aqueduct"
+      }
+    ],
+    "scenes": [
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 0,
+        "end_time": 7.5,
+        "characters_present": [
+          "builder",
+          "soldier",
+          "stone"
+        ],
+        "poses": {
+          "builder": [
+            {
+              "time": 0,
+              "x": 90,
+              "y": 810,
+              "height": 240,
+              "outfit": "roman_citizen"
+            },
+            {
+              "time": 6.0,
+              "x": 250,
+              "y": 810,
+              "height": 240,
+              "outfit": "roman_citizen"
+            },
+            {
+              "time": 7.5,
+              "x": 250,
+              "y": 810,
+              "height": 240,
+              "outfit": "roman_citizen"
+            }
+          ],
+          "soldier": [
+            {
+              "time": 0,
+              "x": 240,
+              "y": 810,
+              "height": 240,
+              "outfit": "roman_soldier"
+            },
+            {
+              "time": 6.0,
+              "x": 400,
+              "y": 810,
+              "height": 240,
+              "outfit": "roman_soldier"
+            },
+            {
+              "time": 7.5,
+              "x": 400,
+              "y": 810,
+              "height": 240,
+              "outfit": "roman_soldier"
+            }
+          ],
+          "stone": [
+            {
+              "time": 0,
+              "x": 165,
+              "y": 810,
+              "height": 120
+            },
+            {
+              "time": 7.5,
+              "x": 165,
+              "y": 810,
+              "height": 120
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "carry_together",
+            "start": 0.3,
+            "end": 6.0,
+            "target": "stone",
+            "actor": "builder",
+            "helper": "soldier"
+          }
+        ],
+        "background": {
+          "preset": "roman_town"
+        },
+        "index": 0
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 7.5,
+        "end_time": 15.0,
+        "characters_present": [
+          "builder",
+          "soldier",
+          "stone",
+          "tablet",
+          "aqueduct_bg"
+        ],
+        "poses": {
+          "builder": [
+            {
+              "time": 7.5,
+              "x": 200,
+              "y": 810,
+              "height": 240,
+              "outfit": "roman_citizen",
+              "expression": "happy"
+            },
+            {
+              "time": 15.0,
+              "x": 200,
+              "y": 810,
+              "height": 240,
+              "outfit": "roman_citizen",
+              "expression": "happy"
+            }
+          ],
+          "soldier": [
+            {
+              "time": 7.5,
+              "x": 420,
+              "y": 810,
+              "height": 240,
+              "outfit": "roman_soldier",
+              "expression": "happy"
+            },
+            {
+              "time": 15.0,
+              "x": 420,
+              "y": 810,
+              "height": 240,
+              "outfit": "roman_soldier",
+              "expression": "happy"
+            }
+          ],
+          "stone": [
+            {
+              "time": 7.5,
+              "x": 325,
+              "y": 812,
+              "height": 120
+            },
+            {
+              "time": 15.0,
+              "x": 325,
+              "y": 812,
+              "height": 120
+            }
+          ],
+          "tablet": [
+            {
+              "time": 7.5,
+              "height": 90,
+              "x": -0.0,
+              "y": 13.5,
+              "rotation": 0
+            },
+            {
+              "time": 15.0,
+              "height": 90,
+              "x": -0.0,
+              "y": 13.5,
+              "rotation": 0
+            }
+          ],
+          "aqueduct_bg": [
+            {
+              "time": 7.5,
+              "x": 470,
+              "y": 700,
+              "height": 260,
+              "z": -2
+            },
+            {
+              "time": 15.0,
+              "x": 470,
+              "y": 700,
+              "height": 260,
+              "z": -2
+            }
+          ]
+        },
+        "actions": [],
+        "background": {
+          "preset": "roman_town"
+        },
+        "index": 1
+      }
+    ],
+    "cues": [
+      {
+        "start": 0.5,
+        "end": 7.0,
+        "character_id": "builder",
+        "text": "Từng lớp sỏi cát và khối đá bazan được đẽo phẳng, lát khít thành mặt đường vững chắc!",
+        "expression": "neutral"
+      },
+      {
+        "start": 8.0,
+        "end": 14.5,
+        "character_id": "soldier",
+        "text": "Mọi ngả đường đều dẫn tới La Mã, giúp giao thương và văn hoá lan tỏa muôn nơi!",
+        "expression": "happy"
+      }
+    ]
+  },
+  {
+    "id": "silk_road_caravan",
+    "name": "24 · Lịch sử cổ đại: Đoàn buôn lạc đà trên Con đường tơ lụa",
+    "renderer": "native-vector-v1",
+    "fidelity": "technical-demo",
+    "note": "Mẫu kỹ thuật Phase M: Người cưỡi lạc đà hai bướu qua cồn cát sa mạc bằng động tác ride, giữ vị trí hông khớp seat_1 suốt hành trình.",
+    "duration": 16.0,
+    "characters": [
+      {
+        "id": "rider",
+        "name": "Bé trai học sinh",
+        "asset": "chibi_boy"
+      },
+      {
+        "id": "camel_1",
+        "name": "Lạc đà hai bướu",
+        "asset": "camel"
+      },
+      {
+        "id": "camel_2",
+        "name": "Lạc đà hai bướu",
+        "asset": "camel"
+      }
+    ],
+    "scenes": [
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 0,
+        "end_time": 8.0,
+        "characters_present": [
+          "rider",
+          "camel_1",
+          "camel_2"
+        ],
+        "poses": {
+          "rider": [
+            {
+              "time": 0,
+              "x": 160,
+              "y": 810,
+              "height": 200,
+              "outfit": "stone_age"
+            },
+            {
+              "time": 8.0,
+              "x": 360,
+              "y": 810,
+              "height": 200,
+              "outfit": "stone_age"
+            }
+          ],
+          "camel_1": [
+            {
+              "time": 0,
+              "x": 160,
+              "y": 810,
+              "height": 270
+            },
+            {
+              "time": 8.0,
+              "x": 360,
+              "y": 810,
+              "height": 270
+            }
+          ],
+          "camel_2": [
+            {
+              "time": 0,
+              "x": 40,
+              "y": 810,
+              "height": 230
+            },
+            {
+              "time": 8.0,
+              "x": 240,
+              "y": 810,
+              "height": 230
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "ride",
+            "start": 0.5,
+            "end": 7.8,
+            "target": "camel_1",
+            "actor": "rider"
+          }
+        ],
+        "background": {
+          "preset": "desert_dunes"
+        },
+        "index": 0
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 8.0,
+        "end_time": 16.0,
+        "characters_present": [
+          "rider",
+          "camel_1",
+          "camel_2"
+        ],
+        "poses": {
+          "rider": [
+            {
+              "time": 8.0,
+              "x": 360,
+              "y": 810,
+              "height": 200,
+              "outfit": "stone_age",
+              "expression": "happy"
+            },
+            {
+              "time": 16.0,
+              "x": 500,
+              "y": 810,
+              "height": 200,
+              "outfit": "stone_age",
+              "expression": "happy"
+            }
+          ],
+          "camel_1": [
+            {
+              "time": 8.0,
+              "x": 360,
+              "y": 810,
+              "height": 270
+            },
+            {
+              "time": 16.0,
+              "x": 500,
+              "y": 810,
+              "height": 270
+            }
+          ],
+          "camel_2": [
+            {
+              "time": 8.0,
+              "x": 240,
+              "y": 810,
+              "height": 230
+            },
+            {
+              "time": 16.0,
+              "x": 380,
+              "y": 810,
+              "height": 230
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "ride",
+            "start": 8.0,
+            "end": 15.8,
+            "target": "camel_1",
+            "actor": "rider"
+          }
+        ],
+        "background": {
+          "preset": "desert_dunes",
+          "time": "night"
+        },
+        "index": 1
+      }
+    ],
+    "cues": [
+      {
+        "start": 0.5,
+        "end": 7.5,
+        "character_id": "rider",
+        "text": "Đoàn lạc đà dẻo dai sải bước qua những cồn cát vàng rực rỡ của Con đường tơ lụa!",
+        "expression": "happy"
+      },
+      {
+        "start": 8.5,
+        "end": 15.5,
+        "character_id": "rider",
+        "text": "Dưới bầu trời đêm ngàn sao, hàng hóa lụa là và hương liệu được chuyên chở tới phương xa!",
+        "expression": "happy"
+      }
+    ]
+  },
+  {
+    "id": "first_olympics",
+    "name": "25 · Lịch sử cổ đại: Khai mạc Thế vận hội Olympic đầu tiên tại Olympia",
+    "renderer": "native-vector-v1",
+    "fidelity": "technical-demo",
+    "note": "Mẫu kỹ thuật Phase M: Vận động viên cầm đuốc nguyệt quế và đạo cụ thể thao cổ đại thi đua trong tinh thần thể thao cao thượng.",
+    "duration": 15.0,
+    "characters": [
+      {
+        "id": "runner",
+        "name": "Bé trai học sinh",
+        "asset": "chibi_boy"
+      },
+      {
+        "id": "torch",
+        "name": "Đuốc nguyệt quế",
+        "asset": "laurel_torch",
+        "attach_to": {
+          "id": "runner",
+          "anchor": "hand_r"
+        }
+      },
+      {
+        "id": "athlete",
+        "name": "Bé gái học sinh",
+        "asset": "chibi_girl"
+      },
+      {
+        "id": "disc",
+        "name": "Đĩa ném thể thao",
+        "asset": "discus"
+      },
+      {
+        "id": "javelin",
+        "name": "Lao tập luyện",
+        "asset": "javelin_training"
+      }
+    ],
+    "scenes": [
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 0,
+        "end_time": 7.5,
+        "characters_present": [
+          "runner",
+          "torch",
+          "athlete",
+          "javelin"
+        ],
+        "poses": {
+          "runner": [
+            {
+              "time": 0,
+              "x": 40,
+              "y": 810,
+              "height": 240,
+              "outfit": "greek_tunic",
+              "hand_r_x": 20,
+              "hand_r_y": -40
+            },
+            {
+              "time": 7.5,
+              "x": 300,
+              "y": 810,
+              "height": 240,
+              "outfit": "greek_tunic",
+              "hand_r_x": 20,
+              "hand_r_y": -40
+            }
+          ],
+          "torch": [
+            {
+              "time": 0,
+              "height": 130,
+              "x": -0.0,
+              "y": 15.600000000000001,
+              "rotation": 0
+            },
+            {
+              "time": 7.5,
+              "height": 130,
+              "x": -0.0,
+              "y": 15.600000000000001,
+              "rotation": 0
+            }
+          ],
+          "athlete": [
+            {
+              "time": 0,
+              "x": 470,
+              "y": 810,
+              "height": 240,
+              "outfit": "greek_tunic"
+            },
+            {
+              "time": 7.5,
+              "x": 470,
+              "y": 810,
+              "height": 240,
+              "outfit": "greek_tunic"
+            }
+          ],
+          "javelin": [
+            {
+              "time": 0,
+              "x": 540,
+              "y": 810,
+              "height": 200
+            },
+            {
+              "time": 7.5,
+              "x": 540,
+              "y": 810,
+              "height": 200
+            }
+          ]
+        },
+        "actions": [],
+        "background": {
+          "preset": "greek_stadium"
+        },
+        "index": 0
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 7.5,
+        "end_time": 15.0,
+        "characters_present": [
+          "runner",
+          "torch",
+          "athlete",
+          "disc"
+        ],
+        "poses": {
+          "runner": [
+            {
+              "time": 7.5,
+              "x": 80,
+              "y": 810,
+              "height": 240,
+              "outfit": "greek_tunic",
+              "expression": "happy",
+              "hand_r_x": 20,
+              "hand_r_y": -40
+            },
+            {
+              "time": 15.0,
+              "x": 80,
+              "y": 810,
+              "height": 240,
+              "outfit": "greek_tunic",
+              "expression": "happy",
+              "hand_r_x": 20,
+              "hand_r_y": -40
+            }
+          ],
+          "torch": [
+            {
+              "time": 7.5,
+              "height": 130,
+              "x": -0.0,
+              "y": 15.600000000000001,
+              "rotation": 0
+            },
+            {
+              "time": 15.0,
+              "height": 130,
+              "x": -0.0,
+              "y": 15.600000000000001,
+              "rotation": 0
+            }
+          ],
+          "athlete": [
+            {
+              "time": 7.5,
+              "x": 250,
+              "y": 810,
+              "height": 240,
+              "outfit": "greek_tunic"
+            },
+            {
+              "time": 9.5,
+              "x": 250,
+              "y": 810,
+              "height": 240,
+              "outfit": "greek_tunic",
+              "rotation": -12,
+              "hand_r_x": 26,
+              "hand_r_y": -30
+            },
+            {
+              "time": 10.2,
+              "x": 250,
+              "y": 810,
+              "height": 240,
+              "outfit": "greek_tunic",
+              "rotation": 8,
+              "hand_r_x": 26,
+              "hand_r_y": -58
+            },
+            {
+              "time": 15.0,
+              "x": 250,
+              "y": 810,
+              "height": 240,
+              "outfit": "greek_tunic",
+              "expression": "happy",
+              "hand_r_x": 26,
+              "hand_r_y": -58
+            }
+          ],
+          "disc": [
+            {
+              "time": 7.5,
+              "x": 310,
+              "y": 752,
+              "height": 70
+            },
+            {
+              "time": 10.2,
+              "x": 318,
+              "y": 668,
+              "height": 70
+            },
+            {
+              "time": 11.4,
+              "x": 420,
+              "y": 560,
+              "height": 70,
+              "rotation": 300
+            },
+            {
+              "time": 12.6,
+              "x": 520,
+              "y": 812,
+              "height": 70,
+              "rotation": 600,
+              "ease": "ease_in"
+            },
+            {
+              "time": 15.0,
+              "x": 520,
+              "y": 812,
+              "height": 70,
+              "rotation": 600
+            }
+          ]
+        },
+        "actions": [],
+        "background": {
+          "preset": "greek_stadium"
+        },
+        "index": 1
+      }
+    ],
+    "cues": [
+      {
+        "start": 0.5,
+        "end": 7.0,
+        "character_id": "runner",
+        "text": "Ngọn đuốc Olympic thắp sáng tinh thần hòa bình và thi đấu thể thao cao thượng tại Olympia!",
+        "expression": "happy"
+      },
+      {
+        "start": 8.0,
+        "end": 14.5,
+        "character_id": "athlete",
+        "text": "Các vận động viên sải bước tranh tài trong tiếng reo hò rộn rã khắp khán đài đá cổ!",
+        "expression": "happy"
+      }
+    ]
   }
 ]

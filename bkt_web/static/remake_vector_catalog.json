@@ -26,7 +26,8 @@
     "modular_scenes",
     "body_world",
     "recycling",
-    "safety"
+    "safety",
+    "ancient"
   ],
   "rig_style": {
     "name": "hand-drawn-whole-pose-cel",
@@ -138,7 +139,12 @@
     "bone_marrow_factory",
     "brain_hq",
     "training_camp",
-    "recycling_yard"
+    "recycling_yard",
+    "stone_age_cave",
+    "nile_bank",
+    "desert_dunes",
+    "roman_town",
+    "greek_stadium"
   ],
   "background_specs": {
     "garden": {
@@ -661,6 +667,76 @@
         "storm",
         "hot"
       ]
+    },
+    "stone_age_cave": {
+      "label": "Hang động thời đồ đá",
+      "theme": "highland",
+      "ground_y": 810,
+      "weather": [
+        "clear",
+        "rain",
+        "snow",
+        "wind",
+        "fog",
+        "storm",
+        "hot"
+      ]
+    },
+    "nile_bank": {
+      "label": "Bờ sông Nile",
+      "theme": "water",
+      "ground_y": 810,
+      "weather": [
+        "clear",
+        "rain",
+        "snow",
+        "wind",
+        "fog",
+        "storm",
+        "hot"
+      ]
+    },
+    "desert_dunes": {
+      "label": "Cồn cát sa mạc Con đường tơ lụa",
+      "theme": "farm",
+      "ground_y": 810,
+      "weather": [
+        "clear",
+        "rain",
+        "snow",
+        "wind",
+        "fog",
+        "storm",
+        "hot"
+      ]
+    },
+    "roman_town": {
+      "label": "Thị trấn và đường La Mã",
+      "theme": "urban",
+      "ground_y": 810,
+      "weather": [
+        "clear",
+        "rain",
+        "snow",
+        "wind",
+        "fog",
+        "storm",
+        "hot"
+      ]
+    },
+    "greek_stadium": {
+      "label": "Sân vận động Olympia Hy Lạp",
+      "theme": "urban",
+      "ground_y": 810,
+      "weather": [
+        "clear",
+        "rain",
+        "snow",
+        "wind",
+        "fog",
+        "storm",
+        "hot"
+      ]
     }
   },
   "weather": [
@@ -1082,6 +1158,10 @@
     "count": [
       1,
       5
+    ],
+    "lit": [
+      0,
+      1
     ]
   },
   "pose_defaults": {
@@ -1154,7 +1234,8 @@
     "cavity": 0,
     "sparkle": 0,
     "cooked": 1.0,
-    "outfit": "none"
+    "outfit": "none",
+    "lit": 0
   },
   "style_colors": [
     "body",
@@ -26194,6 +26275,614 @@
           -25
         ]
       }
+    },
+    "olive": {
+      "label": "Trái ô liu",
+      "group": "fruit",
+      "pack": "ancient",
+      "face": true,
+      "face_scale": 0.5,
+      "topics": [
+        "ancient",
+        "food"
+      ],
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -36
+        ],
+        "top": [
+          0,
+          -76
+        ],
+        "bottom": [
+          0,
+          2
+        ],
+        "face": [
+          0,
+          -42
+        ],
+        "mouth": [
+          0,
+          -34
+        ],
+        "eye_l": [
+          -8,
+          -46
+        ],
+        "eye_r": [
+          8,
+          -46
+        ],
+        "grip_l": [
+          -26,
+          -36
+        ],
+        "grip_r": [
+          26,
+          -36
+        ],
+        "hand_l": [
+          -26,
+          -36
+        ],
+        "hand_r": [
+          26,
+          -36
+        ],
+        "foot_l": [
+          -11,
+          -4
+        ],
+        "foot_r": [
+          11,
+          -4
+        ],
+        "hip_l": [
+          -11,
+          -4
+        ],
+        "hip_r": [
+          11,
+          -4
+        ]
+      }
+    },
+    "olive_tree": {
+      "label": "Cây ô liu",
+      "group": "plant",
+      "pack": "farm_trees",
+      "topics": [
+        "ancient",
+        "farm"
+      ],
+      "spec": {
+        "fruit": "olive",
+        "trunk": "forked",
+        "canopy": "spread",
+        "leaf": "small",
+        "edge": "small",
+        "canopyScale": 0.95,
+        "leafColor": "#5c7850",
+        "flower": "petal5",
+        "blossom": {
+          "color": "#ffffff",
+          "center": "#e2ca42"
+        },
+        "fruitScale": 0.1,
+        "stalk": 4,
+        "onTrunk": false,
+        "bark": "#7a7060",
+        "slots": [
+          [
+            -22,
+            -54
+          ],
+          [
+            20,
+            -52
+          ],
+          [
+            -6,
+            -60
+          ],
+          [
+            30,
+            -58
+          ],
+          [
+            -32,
+            -62
+          ],
+          [
+            8,
+            -48
+          ]
+        ]
+      },
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "trunk_top": [
+          0,
+          -45
+        ],
+        "canopy_center": [
+          0,
+          -58
+        ],
+        "fruit_1": [
+          -22,
+          -54
+        ],
+        "fruit_2": [
+          20,
+          -52
+        ],
+        "fruit_3": [
+          -6,
+          -60
+        ],
+        "fruit_4": [
+          30,
+          -58
+        ],
+        "fruit_5": [
+          -32,
+          -62
+        ],
+        "fruit_6": [
+          8,
+          -48
+        ],
+        "fruit_7": [
+          8,
+          -48
+        ],
+        "fruit_8": [
+          8,
+          -48
+        ]
+      }
+    },
+    "mammoth": {
+      "label": "Voi ma mút",
+      "group": "animal",
+      "pack": "ancient",
+      "topics": [
+        "ancient",
+        "nature"
+      ],
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "hip": [
+          -32,
+          -45
+        ],
+        "waist": [
+          0,
+          -50
+        ],
+        "chest": [
+          28,
+          -55
+        ],
+        "head": [
+          44,
+          -68
+        ],
+        "mouth": [
+          40,
+          -48
+        ],
+        "eye": [
+          34,
+          -70
+        ],
+        "ear": [
+          16,
+          -72
+        ],
+        "tusk_tip": [
+          82,
+          -16
+        ],
+        "trunk_tip": [
+          58,
+          -22
+        ],
+        "foot_fl": [
+          32,
+          0
+        ],
+        "foot_fr": [
+          22,
+          0
+        ],
+        "foot_bl": [
+          -18,
+          0
+        ],
+        "foot_br": [
+          -28,
+          0
+        ],
+        "tail": [
+          -52,
+          -26
+        ]
+      }
+    },
+    "camel": {
+      "label": "Lạc đà hai bướu",
+      "group": "animal",
+      "pack": "ancient",
+      "topics": [
+        "ancient",
+        "nature"
+      ],
+      "anchors": {
+        "seat_1": [
+          0,
+          -68
+        ],
+        "root": [
+          0,
+          0
+        ],
+        "hip": [
+          -18,
+          -48
+        ],
+        "waist": [
+          0,
+          -48
+        ],
+        "chest": [
+          20,
+          -48
+        ],
+        "head": [
+          40,
+          -84
+        ],
+        "mouth": [
+          45,
+          -80
+        ],
+        "eye": [
+          38,
+          -86
+        ],
+        "ear": [
+          32,
+          -92
+        ],
+        "tail": [
+          -42,
+          -16
+        ],
+        "foot_fl": [
+          30,
+          0
+        ],
+        "foot_fr": [
+          22,
+          0
+        ],
+        "foot_bl": [
+          -16,
+          0
+        ],
+        "foot_br": [
+          -24,
+          0
+        ]
+      }
+    },
+    "stone_block": {
+      "label": "Khối đá xây kim tự tháp",
+      "group": "prop",
+      "pack": "ancient",
+      "topics": [
+        "ancient",
+        "inventions"
+      ],
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "top": [
+          0,
+          -36
+        ],
+        "grip": [
+          0,
+          -18
+        ],
+        "grip_l": [
+          -28,
+          -18
+        ],
+        "grip_r": [
+          28,
+          -18
+        ],
+        "hitch": [
+          30,
+          -18
+        ],
+        "center": [
+          0,
+          -18
+        ]
+      }
+    },
+    "sledge": {
+      "label": "Xe trượt kéo đá",
+      "group": "vehicle",
+      "pack": "ancient",
+      "topics": [
+        "ancient",
+        "inventions"
+      ],
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "seat_1": [
+          0,
+          -14
+        ],
+        "hitch": [
+          45,
+          -10
+        ],
+        "top": [
+          0,
+          -14
+        ]
+      }
+    },
+    "papyrus_roll": {
+      "label": "Cuộn giấy cói Ai Cập",
+      "group": "prop",
+      "pack": "ancient",
+      "topics": [
+        "ancient",
+        "inventions"
+      ],
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "grip": [
+          0,
+          -18
+        ],
+        "grip_l": [
+          -28,
+          -18
+        ],
+        "grip_r": [
+          28,
+          -18
+        ],
+        "surface": [
+          0,
+          -18
+        ],
+        "top": [
+          0,
+          -36
+        ]
+      }
+    },
+    "campfire": {
+      "label": "Lửa trại tiền sử",
+      "group": "prop",
+      "pack": "ancient",
+      "topics": [
+        "ancient",
+        "nature"
+      ],
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "flame": [
+          0,
+          -28
+        ],
+        "tip": [
+          0,
+          -52
+        ],
+        "center": [
+          0,
+          -10
+        ]
+      }
+    },
+    "cave_wall": {
+      "label": "Vách đá hang động",
+      "group": "prop",
+      "pack": "ancient",
+      "topics": [
+        "ancient",
+        "nature"
+      ],
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "surface": [
+          0,
+          -42
+        ],
+        "top": [
+          0,
+          -85
+        ]
+      }
+    },
+    "laurel_torch": {
+      "label": "Đuốc nguyệt quế",
+      "group": "tool",
+      "pack": "ancient",
+      "topics": [
+        "ancient",
+        "festivals"
+      ],
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "grip": [
+          0,
+          -12
+        ],
+        "tip": [
+          0,
+          -42
+        ],
+        "flame": [
+          0,
+          -42
+        ]
+      }
+    },
+    "discus": {
+      "label": "Đĩa ném thể thao",
+      "group": "tool",
+      "pack": "ancient",
+      "topics": [
+        "ancient",
+        "festivals"
+      ],
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "grip": [
+          0,
+          -16
+        ],
+        "tip": [
+          0,
+          -16
+        ],
+        "center": [
+          0,
+          -16
+        ]
+      }
+    },
+    "javelin_training": {
+      "label": "Lao tập luyện",
+      "group": "tool",
+      "pack": "ancient",
+      "topics": [
+        "ancient",
+        "festivals"
+      ],
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "grip": [
+          0,
+          -45
+        ],
+        "tip": [
+          0,
+          -90
+        ],
+        "tail": [
+          0,
+          0
+        ]
+      }
+    },
+    "paving_stone": {
+      "label": "Đá lát đường La Mã",
+      "group": "prop",
+      "pack": "ancient",
+      "topics": [
+        "ancient",
+        "inventions"
+      ],
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "grip": [
+          0,
+          -11
+        ],
+        "grip_l": [
+          -18,
+          -11
+        ],
+        "grip_r": [
+          18,
+          -11
+        ],
+        "surface": [
+          0,
+          -11
+        ],
+        "hitch": [
+          18,
+          -11
+        ]
+      }
+    },
+    "chalkboard_wax_tablet": {
+      "label": "Bảng sáp La Mã",
+      "group": "tool",
+      "pack": "ancient",
+      "topics": [
+        "ancient",
+        "school"
+      ],
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "grip": [
+          0,
+          -15
+        ],
+        "surface": [
+          0,
+          -15
+        ],
+        "tip": [
+          12,
+          -15
+        ]
+      }
     }
   },
   "actions": {
@@ -29662,7 +30351,8 @@
         "vulture",
         "warthog",
         "white_goat",
-        "wild_rabbit"
+        "wild_rabbit",
+        "mammoth"
       ],
       "targets": [],
       "actor_anchor": "root",
@@ -30689,7 +31379,9 @@
         "steam_train",
         "tractor",
         "tram",
-        "turtle_ship"
+        "turtle_ship",
+        "camel",
+        "sledge"
       ],
       "motion": false,
       "channel": null,
@@ -30764,7 +31456,8 @@
         "covered_wagon",
         "garbage_truck",
         "horse_cart",
-        "tractor"
+        "tractor",
+        "sledge"
       ],
       "motion": false,
       "channel": null,
@@ -30831,7 +31524,10 @@
         "radio",
         "megaphone",
         "fire_blanket",
-        "traffic_cone"
+        "traffic_cone",
+        "stone_block",
+        "papyrus_roll",
+        "paving_stone"
       ],
       "motion": false,
       "channel": null,
@@ -31184,7 +31880,8 @@
       ],
       "targets": [
         "map_blank",
-        "pictogram_card"
+        "pictogram_card",
+        "cave_wall"
       ],
       "motion": false,
       "channel": null

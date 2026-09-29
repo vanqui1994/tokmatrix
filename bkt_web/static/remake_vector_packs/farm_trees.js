@@ -25,6 +25,7 @@
     dragon_fruit: [[154, 200, 90], [224, 90, 138], [224, 48, 106]],
     starfruit: [[140, 200, 78], [216, 216, 74], [240, 200, 58]],
     jackfruit: [[127, 168, 74], [168, 176, 74], [200, 176, 74]],
+    olive: [[115, 145, 60], [140, 160, 65], [65, 80, 40]],
   };
 
   function ripenColor(fruitId, g) {
@@ -162,6 +163,12 @@
       leafColor: '#468e3c', flower: 'panicle', blossom: { color: '#e27ab4', center: '#b04a8a' },
       fruitScale: 0.14, stalk: 7, onTrunk: false,
       slots: [[-26, -54], [22, -52], [-8, -58], [36, -62], [-36, -64], [8, -50]]
+    },
+    olive_tree: {
+      fruit: 'olive', trunk: 'forked', canopy: 'spread', leaf: 'small', edge: 'small', canopyScale: 0.95,
+      leafColor: '#5c7850', flower: 'petal5', blossom: { color: '#ffffff', center: '#e2ca42' },
+      fruitScale: 0.1, stalk: 4, onTrunk: false, bark: '#7a7060',
+      slots: [[-22, -54], [20, -52], [-6, -60], [30, -58], [-32, -62], [8, -48]]
     },
   };
 

@@ -3289,6 +3289,104 @@
       "c289fbefc0dd910b",
       "c289fbefc0dd910b",
       "c289fbefc0dd910b"
+    ],
+    "olive": [
+      "754372effaea2b86",
+      "96ba4defce7d8697",
+      "f8b2beef6bc0c81b",
+      "f1c5d4ef8b61da60",
+      "37c816ef287a2066"
+    ],
+    "olive_tree": [
+      "373e68eff5d35a79",
+      "373e68eff5d35a79",
+      "373e68eff5d35a79",
+      "373e68eff5d35a79",
+      "373e68eff5d35a79"
+    ],
+    "mammoth": [
+      "bdc8d3ef61ac8706",
+      "a812caef8f7d0cd1",
+      "f118eeef8d9cbcc7",
+      "91f92aef4a4205d2",
+      "77d017ef32b58ab4"
+    ],
+    "camel": [
+      "7da93def20927d21",
+      "372c06efb32508a7",
+      "6c7115efbe7a5464",
+      "13126def62030f4d",
+      "a963d7efb137490c"
+    ],
+    "stone_block": [
+      "9cd1c9ef26833ad1",
+      "9cd1c9ef26833ad1",
+      "9cd1c9ef26833ad1",
+      "9cd1c9ef26833ad1",
+      "9cd1c9ef26833ad1"
+    ],
+    "sledge": [
+      "81830bef84f65636",
+      "81830bef84f65636",
+      "81830bef84f65636",
+      "81830bef84f65636",
+      "81830bef84f65636"
+    ],
+    "papyrus_roll": [
+      "8a37aaefa9450fec",
+      "8a37aaefa9450fec",
+      "8a37aaefa9450fec",
+      "8a37aaefa9450fec",
+      "8a37aaefa9450fec"
+    ],
+    "campfire": [
+      "368cdeefc1cf6598",
+      "368cdeefc1cf6598",
+      "368cdeefc1cf6598",
+      "368cdeefc1cf6598",
+      "368cdeefc1cf6598"
+    ],
+    "cave_wall": [
+      "16fa52ef760fc441",
+      "16fa52ef760fc441",
+      "16fa52ef760fc441",
+      "16fa52ef760fc441",
+      "16fa52ef760fc441"
+    ],
+    "laurel_torch": [
+      "40b5e8eff69d5a68",
+      "fd2d12ef289e4077",
+      "b94d0aef7c69345c",
+      "dcd2fbefc0607465",
+      "0b4c55ef670cdf51"
+    ],
+    "discus": [
+      "ef3731ef5582cc0d",
+      "ef3731ef5582cc0d",
+      "ef3731ef5582cc0d",
+      "ef3731ef5582cc0d",
+      "ef3731ef5582cc0d"
+    ],
+    "javelin_training": [
+      "cc9968ef0cb684c6",
+      "cc9968ef0cb684c6",
+      "cc9968ef0cb684c6",
+      "cc9968ef0cb684c6",
+      "cc9968ef0cb684c6"
+    ],
+    "paving_stone": [
+      "6c40f4ef70af2dda",
+      "6c40f4ef70af2dda",
+      "6c40f4ef70af2dda",
+      "6c40f4ef70af2dda",
+      "6c40f4ef70af2dda"
+    ],
+    "chalkboard_wax_tablet": [
+      "c0635cefa9fbee2d",
+      "c0635cefa9fbee2d",
+      "c0635cefa9fbee2d",
+      "c0635cefa9fbee2d",
+      "c0635cefa9fbee2d"
     ]
   },
   "backgrounds": {
@@ -4889,6 +4987,176 @@
         "c3e01befbe3a4653",
         "8bc694ef0a669646"
       ]
+    },
+    "stone_age_cave": {
+      "day": [
+        "642318ef5f06e03d",
+        "642318ef5f06e03d"
+      ],
+      "night": [
+        "dfa5b2ef83549654",
+        "dfa5b2ef83549654"
+      ],
+      "rain": [
+        "5ee50eef9be91559",
+        "de8f0eef251b45b0"
+      ],
+      "snow": [
+        "7a0054efe5e91f93",
+        "bd9971ef670652c4"
+      ],
+      "wind": [
+        "d631d0ef9beaa78e",
+        "e911abefa9775cf4"
+      ],
+      "fog": [
+        "e08971ef447943e2",
+        "bef48cef0d8cf43c"
+      ],
+      "storm": [
+        "b8a431ef61a34768",
+        "d3a997ef7a11dc9f"
+      ],
+      "hot": [
+        "66757def3363b6c7",
+        "449008ef9a289130"
+      ]
+    },
+    "nile_bank": {
+      "day": [
+        "edef7eef95e34c9b",
+        "fe2b38ef75b91aa6"
+      ],
+      "night": [
+        "3f8172ef32f579d3",
+        "feb03bef854ba441"
+      ],
+      "rain": [
+        "88bb8cef8a045752",
+        "d3a14aef2e14e085"
+      ],
+      "snow": [
+        "746431efb339eb1a",
+        "ef2a34ef73783ca9"
+      ],
+      "wind": [
+        "21a72eef984462ce",
+        "e7abdfef773ccead"
+      ],
+      "fog": [
+        "e45eb2efb1cc91f7",
+        "305221ef0aded743"
+      ],
+      "storm": [
+        "344d66ef453dae09",
+        "a7641cef8a8e5104"
+      ],
+      "hot": [
+        "cea7eaef3fa69ea5",
+        "dee0b4ef947cd190"
+      ]
+    },
+    "desert_dunes": {
+      "day": [
+        "86f99eefc6ee5f6c",
+        "86f99eefc6ee5f6c"
+      ],
+      "night": [
+        "94fd67ef716b4ce8",
+        "94fd67ef716b4ce8"
+      ],
+      "rain": [
+        "7679c9efa1acab40",
+        "a5c7d5efea98ac21"
+      ],
+      "snow": [
+        "b64fd0ef3e6222cb",
+        "83afb4ef48205654"
+      ],
+      "wind": [
+        "2c2df4efb6fc2ad5",
+        "3424c1ef650e4410"
+      ],
+      "fog": [
+        "196865ef7cae03ad",
+        "c96227efd44132c2"
+      ],
+      "storm": [
+        "5c46fcef0aa90115",
+        "dae009ef3fd2fbbb"
+      ],
+      "hot": [
+        "99f186ef25539e72",
+        "7364abef71487977"
+      ]
+    },
+    "roman_town": {
+      "day": [
+        "bc1552eff0139637",
+        "bc1552eff0139637"
+      ],
+      "night": [
+        "258785ef7a9d5f27",
+        "258785ef7a9d5f27"
+      ],
+      "rain": [
+        "74ef98ef78c41cae",
+        "c31803ef0f50f03d"
+      ],
+      "snow": [
+        "91503cefda90f27c",
+        "3329d8efc7d557cb"
+      ],
+      "wind": [
+        "359626ef018142ab",
+        "87b19aef36ff905b"
+      ],
+      "fog": [
+        "857d9fefd1ed2f5c",
+        "decf92ef3252af6b"
+      ],
+      "storm": [
+        "8cc85eef94d58c7f",
+        "e5b0caef73eb329d"
+      ],
+      "hot": [
+        "f369f8ef8dd970d8",
+        "4ba5f6efc612caba"
+      ]
+    },
+    "greek_stadium": {
+      "day": [
+        "db97d1ef33489e9b",
+        "db97d1ef33489e9b"
+      ],
+      "night": [
+        "f58c35efa5d2ac4c",
+        "f58c35efa5d2ac4c"
+      ],
+      "rain": [
+        "23df77ef520b5f64",
+        "7fe0b1ef2b3a7a26"
+      ],
+      "snow": [
+        "14a57eeffdb87ff9",
+        "4fbfbbefb445b168"
+      ],
+      "wind": [
+        "8e651deff228778a",
+        "6c8b77ef1de47dc2"
+      ],
+      "fog": [
+        "421a54efb6e1be80",
+        "07e62aef16fca658"
+      ],
+      "storm": [
+        "c1ae9bef52513e71",
+        "52faa1ef2fa98362"
+      ],
+      "hot": [
+        "5b73f6ef7c481d26",
+        "98dc5bef7b3a0a73"
+      ]
     }
   },
   "stories": {
@@ -5157,6 +5425,41 @@
       "d3c266effc92a357",
       "a42c61efe23782c4",
       "8687acefff1d601e"
+    ],
+    "build_pyramid": [
+      "e678deef34740cd9",
+      "b1616aef8dbc1722",
+      "8cf693ef2450051b",
+      "0eb7f6efb44166f0",
+      "f73a22efd27d5b75"
+    ],
+    "first_fire": [
+      "2f969bef4f9769db",
+      "0c932aef49b2e338",
+      "34ef6eef0abb547f",
+      "32d3ffef34fa6a8a",
+      "053bfeef9e72dca1"
+    ],
+    "roman_road": [
+      "21214defec63a4e8",
+      "a48810ef29a95d8e",
+      "556011eff3b7eda5",
+      "ebcd5cef7108d035",
+      "556011eff3b7eda5"
+    ],
+    "silk_road_caravan": [
+      "6c16f5efa8650035",
+      "4ca72def16f08597",
+      "a5b5c3ef432744f3",
+      "7e8198ef46f5152f",
+      "6cf1b0ef0fb02f5d"
+    ],
+    "first_olympics": [
+      "30b03defa2d376b9",
+      "ef32a0ef2b0c11a0",
+      "3f169cef0d073881",
+      "bfd92eeff1a3163e",
+      "164ea9ef4e1dea08"
     ]
   }
 }

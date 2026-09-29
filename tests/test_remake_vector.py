@@ -2717,3 +2717,207 @@ for(let t=1.4;t<=4.9;t+=0.25){const f=V.sample(story,cat,t),o=f.states.box;
   rows.push(Math.max(...d));}
 console.log(JSON.stringify(rows));""", {"story": story, "cat": catalog()})
         self.assertLess(max(out), 10)
+
+
+class PhaseMTest(unittest.TestCase):
+    """Plan §22 & Giai đoạn M: Lịch sử cổ đại (ancient) - rigs, backgrounds, contacts, và stories."""
+    _node = PackContractTest._node
+
+    def test_every_ancient_pack_rig_draws_and_is_in_catalog(self):
+        from bkt_web.remake_vector import catalog
+        cat = catalog()
+        ancient_rigs = [
+            "mammoth", "camel", "stone_block", "sledge", "papyrus_roll",
+            "campfire", "cave_wall", "laurel_torch", "discus", "javelin_training",
+            "paving_stone", "chalkboard_wax_tablet", "olive"
+        ]
+        for rig in ancient_rigs:
+            with self.subTest(rig=rig):
+                self.assertIn(rig, cat["assets"])
+                self.assertEqual(cat["assets"][rig].get("pack"), "ancient")
+                topics = cat["assets"][rig].get("topics", [])
+                self.assertGreaterEqual(len(topics), 2, f"{rig} cần >= 2 topics")
+        self.assertIn("olive_tree", cat["assets"])
+        self.assertEqual(cat["assets"]["olive_tree"].get("pack"), "farm_trees")
+
+        # Thử vẽ mọi rig cổ đại bằng mock context, không được throw
+        out = self._node(r"""
+globalThis.Path2D=class{constructor(){}addPath(){}};
+const {cat, rigs}=JSON.parse(fs.readFileSync(0,'utf8'));
+const ctx=new Proxy({},{get:(o,k)=>k in o?o[k]:(k==='createLinearGradient'||k==='createRadialGradient')?()=>({addColorStop(){}}):()=>{},set:(o,k,v)=>(o[k]=v,true)});
+const errors=[];
+for(const id of rigs){
+  try {
+    V.kit.RIG_DRAWERS[id](ctx, {...cat.pose_defaults, asset: id, style: {}, id, lit: 0.5, walk: 1, stride: 0.5}, 1, cat);
+  } catch(e) {
+    errors.push(id + ': ' + e.message);
+  }
+}
+console.log(JSON.stringify(errors));""", {"cat": cat, "rigs": ancient_rigs + ["olive_tree"]})
+        self.assertEqual(out, [])
+
+    def test_build_pyramid_contacts_and_monotonic_growth(self):
+        from bkt_web.remake_vector import catalog, build_pyramid_examples
+        cat = catalog()
+        story = build_pyramid_examples()[0]
+        out = self._node(r"""
+const {story,cat}=JSON.parse(fs.readFileSync(0,'utf8'));
+const rows=[];
+// 1. Kiểm tra haul và sledge seat_1 ↔ stone bottom ở cảnh 1
+for(let t=0.6; t<=6.4; t+=0.25){
+  const f=V.sample(story,cat,t);
+  const a=f.actions.find(act=>act.type==='haul');
+  const r=a._rope;
+  const onRope=p=>{
+    const [x1,y1,x2,y2]=r;
+    const k=Math.max(0,Math.min(1,((p.x-x1)*(x2-x1)+(p.y-y1)*(y2-y1))/((x2-x1)**2+(y2-y1)**2)));
+    return Math.hypot(p.x-(x1+k*(x2-x1)),p.y-(y1+k*(y2-y1)));
+  };
+  const d=[];
+  for(const id of ['worker_1','worker_2']){
+    for(const h of ['hand_l','hand_r']){
+      d.push(onRope(V.worldAnchor(cat,f.states[id],h)));
+    }
+  }
+  const sSeat=V.worldAnchor(cat,f.states.sledge_1,'seat_1');
+  const stoneB=f.states.stone.y;
+  rows.push({t, maxD: Math.max(...d), stoneGap: Math.abs(stoneB - sSeat.y), growth: f.states.pyramid_1.growth});
+}
+// 2. Lấy growth xuyên suốt 15s để kiểm tra tính đơn điệu
+const growths=[];
+for(let t=0; t<=15.0; t+=1.0){
+  const f=V.sample(story,cat,t);
+  growths.push(f.states.pyramid_1.growth);
+}
+console.log(JSON.stringify({rows, growths}));""", {"story": story, "cat": cat})
+
+        for row in out["rows"]:
+            self.assertLess(row["maxD"], 12, f"Tay kéo lệch khỏi dây haul ở t={row['t']}")
+            self.assertLess(row["stoneGap"], 6, f"Khối đá lệch khỏi yên sledge ở t={row['t']}")
+
+        # growth tăng đơn điệu
+        growths = out["growths"]
+        for i in range(len(growths) - 1):
+            self.assertLessEqual(growths[i], growths[i+1] + 1e-4)
+        self.assertGreater(growths[-1], growths[0])
+
+    def test_silk_road_caravan_keeps_rider_on_camel_seat(self):
+        from bkt_web.remake_vector import catalog, silk_road_caravan_examples
+        cat = catalog()
+        story = silk_road_caravan_examples()[0]
+        out = self._node(r"""
+const {story,cat}=JSON.parse(fs.readFileSync(0,'utf8'));
+const gaps=[];
+for(let t=0.5; t<=15.5; t+=0.5){
+  const f=V.sample(story,cat,t);
+  const hip=V.worldAnchor(cat,f.states.rider,'hip');
+  const seat=V.worldAnchor(cat,f.states.camel_1,'seat_1');
+  gaps.push({t, d: Math.hypot(hip.x - seat.x, hip.y - seat.y)});
+}
+console.log(JSON.stringify(gaps));""", {"story": story, "cat": cat})
+        for item in out:
+            self.assertLess(item["d"], 6, f"Hông người cưỡi lệch khỏi seat_1 lạc đà ở t={item['t']}")
+
+    def test_first_fire_campfire_lit_is_deterministic(self):
+        from bkt_web.remake_vector import catalog, first_fire_examples
+        cat = catalog()
+        story = first_fire_examples()[0]
+        out = self._node(r"""
+const {story,cat}=JSON.parse(fs.readFileSync(0,'utf8'));
+const litValues=[];
+for(const t of [0.0, 1.0, 3.5, 5.5, 6.5]){
+  const f=V.sample(story,cat,t);
+  litValues.push({t, lit: f.states.fire.lit});
+}
+// Kiểm tra tua lại cho cùng trạng thái và pixel
+const f1=V.sample(story,cat,3.5);
+const f2=V.sample(story,cat,3.5);
+const sameLit = (f1.states.fire.lit === f2.states.fire.lit);
+console.log(JSON.stringify({litValues, sameLit}));""", {"story": story, "cat": cat})
+
+        lits = out["litValues"]
+        self.assertAlmostEqual(lits[0]["lit"], 0.0, delta=0.01)
+        self.assertGreater(lits[2]["lit"], 0.0)
+        self.assertAlmostEqual(lits[-1]["lit"], 1.0, delta=0.01)
+        self.assertTrue(out["sameLit"])
+
+    def test_mammoth_run_away_feet_stay_above_ground(self):
+        from bkt_web.remake_vector import catalog, first_fire_examples
+        cat = catalog()
+        story = first_fire_examples()[0]
+        out = self._node(r"""
+const {story,cat}=JSON.parse(fs.readFileSync(0,'utf8'));
+const rows=[];
+for(let t=7.0; t<=14.0; t+=0.25){
+  const f=V.sample(story,cat,t);
+  const m=f.states.mammoth_1;
+  const root=V.worldAnchor(cat,m,'root');
+  rows.push({t, my: m.y, rootY: root.y, running: m.running_away || false});
+}
+console.log(JSON.stringify(rows));""", {"story": story, "cat": cat})
+        for item in out:
+            self.assertLessEqual(item["my"], 810.05, f"Mammoth chìm quá ground_y ở t={item['t']}")
+            self.assertLessEqual(item["rootY"], 810.05, f"Chân root mammoth lún dưới ground_y ở t={item['t']}")
+        self.assertTrue(any(item["running"] for item in out))
+
+    def test_new_backgrounds_have_zero_text_and_are_deterministic(self):
+        from bkt_web.remake_vector import catalog
+        cat = catalog()
+        new_bgs = ["stone_age_cave", "nile_bank", "desert_dunes", "roman_town", "greek_stadium"]
+        for bg in new_bgs:
+            with self.subTest(bg=bg):
+                self.assertIn(bg, cat["backgrounds"])
+                self.assertIn(bg, cat["background_specs"])
+                self.assertEqual(cat["background_specs"][bg]["ground_y"], 810)
+
+        out = self._node(r"""
+globalThis.Path2D=class{constructor(){}addPath(){}};
+const {cat, bgs}=JSON.parse(fs.readFileSync(0,'utf8'));
+let textCalls = 0;
+const ctx = new Proxy({}, {
+  get:(o,k)=>{
+    if (k === 'fillText' || k === 'strokeText') {
+      textCalls++;
+      return ()=>{};
+    }
+    if (k === 'createLinearGradient' || k === 'createRadialGradient') return ()=>({addColorStop(){}});
+    return ()=>{};
+  },
+  set:()=>true
+});
+for(const bg of bgs){
+  for(const time of ['day', 'night']){
+    for(const weather of ['clear', 'rain', 'snow', 'wind', 'fog', 'storm', 'hot']){
+      V.BACKGROUNDS[bg].draw(ctx, {preset: bg, time, weather}, 1.5, V.kit);
+    }
+  }
+}
+console.log(JSON.stringify({textCalls}));""", {"cat": cat, "bgs": new_bgs})
+        self.assertEqual(out["textCalls"], 0, "Hình nền không được gọi fillText/strokeText")
+
+
+
+class PhaseMReviewTest(unittest.TestCase):
+    """Story Giai đoạn M phải có hành động thật: khiêng đá bằng tay, đuốc trong tay, đĩa bay và rơi xuống đất."""
+    _node = PackContractTest._node
+
+    def test_roman_road_carries_the_stone_by_its_ends(self):
+        from bkt_web.remake_vector import catalog, roman_road_examples
+        out = self._node(r"""
+const {story,cat}=JSON.parse(fs.readFileSync(0,'utf8'));const d=[];
+for(let t=1.5;t<=5.9;t+=0.5){const f=V.sample(story,cat,t),S=f.states;
+  const L=V.worldAnchor(cat,S.stone,'grip_l'),R=V.worldAnchor(cat,S.stone,'grip_r');
+  for(const [id,e] of [['builder',L],['soldier',R]])for(const h of ['hand_l','hand_r']){const p=V.worldAnchor(cat,S[id],h);d.push(Math.hypot(p.x-e.x,p.y-e.y));}}
+console.log(JSON.stringify(d));""", {"story": roman_road_examples()[0], "cat": catalog()})
+        self.assertLess(max(out), 10)
+
+    def test_olympic_torch_is_in_hand_and_the_discus_lands(self):
+        from bkt_web.remake_vector import catalog, first_olympics_examples
+        out = self._node(r"""
+const {story,cat}=JSON.parse(fs.readFileSync(0,'utf8'));
+const f=V.sample(story,cat,3),g=V.worldAnchor(cat,f.states.torch,'grip'),h=V.worldAnchor(cat,f.states.runner,'hand_r');
+const d0=V.sample(story,cat,8).states.disc,d1=V.sample(story,cat,14).states.disc;
+console.log(JSON.stringify([Math.hypot(g.x-h.x,g.y-h.y),d1.x-d0.x,d1.y]));""", {"story": first_olympics_examples()[0], "cat": catalog()})
+        self.assertLess(out[0], 3)
+        self.assertGreater(out[1], 150)
+        self.assertAlmostEqual(out[2], 812, delta=1)

@@ -207,7 +207,7 @@ def _asset_states(asset_id: str, group: str) -> list[str]:
             "cucumber", "bitter_melon", "luffa", "bottle_gourd", "winter_melon",
             "passion_fruit", "chayote", "long_bean", "kiwi",
             "pear", "peach", "plum", "cherry", "persimmon", "blueberry",
-            "raspberry", "apricot", "pomegranate",
+            "raspberry", "apricot", "pomegranate", "olive",
             "kohlrabi", "potato", "sweet_potato", "cassava", "taro",
             "radish", "beet", "onion", "garlic", "ginger",
             "cauliflower", "broccoli", "okra", "chili", "mushroom",
@@ -221,7 +221,7 @@ def _asset_states(asset_id: str, group: str) -> list[str]:
             "cucumber", "bitter_melon", "luffa", "bottle_gourd", "winter_melon",
             "passion_fruit", "chayote", "long_bean", "kiwi",
             "pear", "peach", "plum", "cherry", "persimmon", "blueberry",
-            "raspberry", "apricot", "pomegranate",
+            "raspberry", "apricot", "pomegranate", "olive",
             "kohlrabi", "potato", "sweet_potato", "cassava", "taro",
             "radish", "beet", "onion", "garlic", "ginger",
             "cauliflower", "broccoli", "okra", "chili", "mushroom",
@@ -234,11 +234,11 @@ def _asset_states(asset_id: str, group: str) -> list[str]:
         if asset_id in {"rice_plant", "corn_plant"}:
             states.add("bend")
         if asset_id in {
-            "rice_plant", "corn_plant", "sunflower", "cabbage", "carrot", "grass_tuft", "rose", "lotus", "tulip", "daisy", "marigold", "hibiscus", "orchid", "peach_blossom", "apricot_blossom", "lily", "mango_tree", "orange_tree", "lime_tree", "apple_tree", "coconut_palm", "durian_tree", "jackfruit_tree", "lychee_tree", "rambutan_tree", "guava_tree", "avocado_tree", "dragon_fruit_cactus", "pineapple_plant", "strawberry_plant", "mangosteen_tree", "starfruit_tree", "cucumber_vine", "bitter_melon_vine", "luffa_vine", "bottle_gourd_vine", "winter_melon_vine", "passion_fruit_vine", "chayote_vine", "long_bean_vine", "grape_vine", "kiwi_vine", "persimmon_tree", "peach_tree", "pear_tree", "cherry_tree",
+            "rice_plant", "corn_plant", "sunflower", "cabbage", "carrot", "grass_tuft", "rose", "lotus", "tulip", "daisy", "marigold", "hibiscus", "orchid", "peach_blossom", "apricot_blossom", "lily", "mango_tree", "orange_tree", "lime_tree", "apple_tree", "coconut_palm", "durian_tree", "jackfruit_tree", "lychee_tree", "rambutan_tree", "guava_tree", "avocado_tree", "dragon_fruit_cactus", "pineapple_plant", "strawberry_plant", "mangosteen_tree", "starfruit_tree", "cucumber_vine", "bitter_melon_vine", "luffa_vine", "bottle_gourd_vine", "winter_melon_vine", "passion_fruit_vine", "chayote_vine", "long_bean_vine", "grape_vine", "kiwi_vine", "persimmon_tree", "peach_tree", "pear_tree", "cherry_tree", "olive_tree",
             "kohlrabi_plant", "potato_plant", "sweet_potato_plant", "cassava_plant", "taro_plant", "radish_plant", "beet_plant", "onion_plant", "garlic_plant", "ginger_plant", "cauliflower_plant", "broccoli_plant", "lettuce", "napa_cabbage", "water_spinach", "mustard_greens", "spring_onion", "giant_radish",
         }:
             states.add("nutrients")
-        if asset_id in {"mango_tree", "orange_tree", "lime_tree", "apple_tree", "coconut_palm", "durian_tree", "jackfruit_tree", "lychee_tree", "rambutan_tree", "guava_tree", "avocado_tree", "dragon_fruit_cactus", "pineapple_plant", "strawberry_plant", "mangosteen_tree", "starfruit_tree", "cucumber_vine", "bitter_melon_vine", "luffa_vine", "bottle_gourd_vine", "winter_melon_vine", "passion_fruit_vine", "chayote_vine", "long_bean_vine", "grape_vine", "kiwi_vine", "persimmon_tree", "peach_tree", "pear_tree", "cherry_tree"}:
+        if asset_id in {"mango_tree", "orange_tree", "lime_tree", "apple_tree", "coconut_palm", "durian_tree", "jackfruit_tree", "lychee_tree", "rambutan_tree", "guava_tree", "avocado_tree", "dragon_fruit_cactus", "pineapple_plant", "strawberry_plant", "mangosteen_tree", "starfruit_tree", "cucumber_vine", "bitter_melon_vine", "luffa_vine", "bottle_gourd_vine", "winter_melon_vine", "passion_fruit_vine", "chayote_vine", "long_bean_vine", "grape_vine", "kiwi_vine", "persimmon_tree", "peach_tree", "pear_tree", "cherry_tree", "olive_tree"}:
             states.add("fruits")
         if asset_id in {"tomato_plant", "peanut_plant"}:
             states.update(("bend", "nutrients"))
