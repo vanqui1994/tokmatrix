@@ -28,6 +28,22 @@ export function variantFallbackChain(channel, engineType) {
 }
 
 /**
+ * Variant khai báo ảnh AI (assetProfile.type IMAGE_AI) trên engine mặc định không có ảnh (survival/mr-incredible:
+ * thẻ trên có ảnh mỗi cấp như template Sinh Tồn cũ) → cảnh chưa ghi asset_type được xếp hàng ảnh Antigravity.
+ * Chỉ nâng lên IMAGE_AI, không bao giờ đổi kiểu của variant khác; kênh legacy giữ nguyên.
+ */
+export function withVariantAssetType(scenes, channel, engineType) {
+  let type = null;
+  try {
+    type = channelCreative(channel, engineType)?.variant?.assetProfile?.type || null;
+  } catch {
+    type = null;
+  }
+  if (type !== "IMAGE_AI") return scenes;
+  return scenes.map((scene) => (scene.asset_type ? scene : { ...scene, asset_type: "IMAGE_AI" }));
+}
+
+/**
  * Variant "stock-first" (assetProfile.stockVideo, mục 9.3 docs/MATRIX_VARIANT_SYSTEM_V2.md): cảnh IMAGE_AI thử clip stock
  * trước khi xếp hàng ảnh AI. Kênh legacy/variant khác: false.
  */
@@ -108,7 +124,7 @@ export async function prepareSceneAssets({
   if (!/^[a-zA-Z0-9][a-zA-Z0-9_-]{0,127}$/.test(jobId || "")) throw new Error("jobId must be a safe path component");
   const scenes = sceneList(manifest);
   if (!Array.isArray(scenes) || scenes.length === 0) throw new Error("storyboard manifest must contain at least one scene");
-  const visuals = directSceneVisuals({ scenes, channel, engineType });
+  const visuals = directSceneVisuals({ scenes: withVariantAssetType(scenes, channel, engineType), channel, engineType });
   const needsRenderer = visuals.some((scene) => !["IMAGE_AI", "EXISTING_ASSET"].includes(scene.asset_type));
   if (needsRenderer && typeof artifactRenderer !== "function") {
     throw new Error("non-image scenes require an explicit artifactRenderer; no AI-image fallback is allowed");

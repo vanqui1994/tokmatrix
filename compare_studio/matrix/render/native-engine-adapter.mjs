@@ -154,7 +154,7 @@ function imageDestination(engineType, index, source) {
     throw new Error(`unsupported native visual extension: ${extension}`);
   }
   const extended = extendedReady(engineType);
-  if (extended) return extended.imageName(index, extension);
+  if (extended?.imageName) return extended.imageName(index, extension);
   const base = engineType === "newspaper" ? `act-${index}` : engineType === "vox" ? `beat_${index}` : `scene-${index}`;
   return `assets/images/${base}${extension}`;
 }
@@ -247,7 +247,8 @@ async function copyMediaForScenes({ scenes, engineType, projectDir, videoDir }) 
     await fs.copyFile(narrationSource, voDest);
     copied.push(voDest);
     videoSources.push(null);
-    if (!usesSceneImages(engineType)) {
+    // Engine không dùng ảnh (survival…) vẫn nhận ảnh khi variant của kênh khai báo IMAGE_AI (survival/mr-incredible).
+    if (!usesSceneImages(engineType) && scene.asset_type !== "IMAGE_AI") {
       visualSources.push(null);
       continue;
     }

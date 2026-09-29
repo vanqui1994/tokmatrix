@@ -7,13 +7,14 @@
 // DNA, assign-skins và getVariantsForCountry KHÔNG BAO GIỜ gán nó; chỉ kênh ghi rõ `creative.variant_id` mới dùng.
 // Đường legacy survival và 8 variant còn lại vẫn dùng reactor SVG gốc.
 //
-// Composition 1 (meme_classic): lời đọc trên cùng, mặt lớn giữa màn, nhãn cấp + mức độ dưới mặt.
-// Composition 2 (face_card): mặt bên trái cạnh thẻ cấp độ, dải 9 pha meme (pha hiện tại sáng), 3 thanh chỉ số,
-// lời đọc dưới cùng.
+// Composition 1 (legacy): bố cục template Sinh Tồn cũ (videos/survival-without-organs): eyebrow + tiêu đề + thanh tiến độ
+// "LEVEL n/L"; thẻ quét trên (4 góc) với ảnh AI của cảnh, tên cấp, trạng thái, ô mức độ; thẻ dưới là mặt Mr. Incredible
+// với nhãn "REACTION: UNCANNY METER"; lời đọc dưới cùng. Ảnh AI 1/cảnh (IMAGE_ASSET) như bản cũ (tier-N.jpg).
+// Composition 2 (face_card): mặt bên trái cạnh thẻ cấp độ, ảnh cảnh rộng ở giữa, lời đọc dưới cùng.
 import fs from "node:fs/promises";
 import path from "node:path";
 import { getSurvivalConfig } from "../../../../tools/survival-languages.mjs";
-import { NO_IMAGE_COST, TEXT_ASSET } from "../common.mjs";
+import { IMAGE_ASSET, IMAGE_COST } from "../common.mjs";
 import { defineVariant } from "../kit/define.mjs";
 import { regionStyle } from "../kit/frames.mjs";
 import { escapeHtml, fitText } from "../kit/primitives.mjs";
@@ -83,18 +84,19 @@ function fitIn(cls, text, { size, min = 14, tag = "span", id = "", style = "" })
 const pips = (severity) => Array.from({ length: 10 }, (_, p) => `<i style="background:${p < severity ? sevColor(p + 1) : "rgba(255,255,255,.12)"}"></i>`).join("");
 
 const LAYOUT = {
-  meme_classic: {
-    caption: { x: 60, y: 262, w: 960, h: 236 },
-    face: { x: 150, y: 520, w: 780, h: 780 },
-    tag: { x: 60, y: 1340, w: 960, h: 120 },
-    label: { x: 60, y: 1470, w: 960, h: 150 },
-    meter: { x: 150, y: 1650, w: 780, h: 150 },
+  legacy: {
+    scan: { x: 60, y: 300, w: 960, h: 700 },
+    image: { x: 110, y: 340, w: 860, h: 400 },
+    label: { x: 100, y: 758, w: 880, h: 84 },
+    status: { x: 100, y: 846, w: 880, h: 46 },
+    limit: { x: 150, y: 906, w: 780, h: 72 },
+    faceCard: { x: 60, y: 1030, w: 960, h: 640 },
+    caption: { x: 70, y: 1696, w: 940, h: 190 },
   },
   face_card: {
     face: { x: 40, y: 290, w: 520, h: 520 },
     card: { x: 584, y: 290, w: 456, h: 520 },
-    strip: { x: 40, y: 850, w: 1000, h: 132 },
-    metrics: { x: 60, y: 1020, w: 960, h: 390 },
+    image: { x: 40, y: 850, w: 1000, h: 560 },
     caption: { x: 60, y: 1450, w: 960, h: 360 },
   },
 };
@@ -142,7 +144,37 @@ const CSS = `
 .mi-m-val{grid-column:2;grid-row:1/3;align-self:center;text-align:right;font-size:44px;color:#fff;white-space:nowrap}
 .mi-m-track{grid-column:1;grid-row:2;position:relative;overflow:hidden;border-radius:8px;background:rgba(255,255,255,.12)}
 .mi-m-fill{position:absolute;inset:0;display:block;transform-origin:0 50%}
-.t-subtitle .v-line{text-transform:none}`;
+.t-subtitle .v-line{text-transform:none}
+.lg-head{position:absolute;left:0;top:0;width:1080px;height:290px;z-index:6}
+.lg-eyebrow{position:absolute;left:50%;top:86px;transform:translateX(-50%);height:44px;max-width:900px;box-sizing:border-box;padding:0 26px;display:flex;align-items:center;gap:12px;border-radius:999px;background:rgba(0,40,40,.55);border:2px solid rgba(64,224,208,.35);white-space:nowrap}
+.lg-eyebrow:before{content:"";width:10px;height:10px;border-radius:50%;background:#40e0d0;box-shadow:0 0 10px #40e0d0}
+.lg-eb{position:relative;height:28px;max-width:820px;display:flex;align-items:center}
+.lg-eb-t{margin:0;letter-spacing:4px;color:#40e0d0;white-space:nowrap;font-family:var(--mono-font,monospace)}
+.lg-title{position:absolute;left:60px;top:140px;width:960px;height:84px;display:flex;align-items:center;justify-content:center}
+.lg-title-t{margin:0;width:100%;text-align:center;text-transform:uppercase;line-height:1.05;color:#dfe9f2;text-shadow:0 0 24px rgba(120,200,255,.35)}
+.lg-bar{position:absolute;left:60px;top:236px;width:810px;height:8px;border-radius:4px;background:rgba(255,255,255,.1);overflow:hidden}
+.lg-bar i{position:absolute;left:0;top:0;bottom:0;border-radius:4px;background:linear-gradient(90deg,#40e0d0,#e0245e)}
+.lg-lvl{position:absolute;right:60px;top:222px;height:36px;width:150px;display:flex;align-items:center;justify-content:flex-end}
+.lg-lvl-t{margin:0;letter-spacing:2px;color:#40e0d0;white-space:nowrap;font-family:var(--mono-font,monospace)}
+.lg-scan{position:absolute;z-index:1;box-sizing:border-box;border:2px solid rgba(64,224,208,.28);border-radius:30px;background:rgba(10,20,26,.72)}
+.lg-scan b{position:absolute;width:24px;height:24px;border-color:#dfe9f2;border-style:solid}
+.lg-scan .c1{left:18px;top:18px;border-width:3px 0 0 3px}.lg-scan .c2{right:18px;top:18px;border-width:3px 3px 0 0}
+.lg-scan .c3{left:18px;bottom:18px;border-width:0 0 3px 3px}.lg-scan .c4{right:18px;bottom:18px;border-width:0 3px 3px 0}
+.lg-label{position:absolute;z-index:5;display:flex;align-items:center;justify-content:center}
+.lg-label-t{margin:0;width:100%;text-align:center;text-transform:uppercase;line-height:1.05;color:#fff}
+.lg-status{position:absolute;z-index:5;display:flex;align-items:center;justify-content:center}
+.lg-status-t{margin:0;width:100%;text-align:center;text-transform:uppercase;letter-spacing:1px;color:#9aa8b4}
+.lg-limit{position:absolute;z-index:5;box-sizing:border-box;border:3px solid;border-radius:18px;background:#07090c;display:flex;align-items:center;justify-content:center;gap:18px;padding:0 26px}
+.lg-limit-k{letter-spacing:3px;color:#b8c2cc;font-size:24px;white-space:nowrap;font-family:var(--mono-font,monospace)}
+.lg-limit-v{position:relative;height:48px;flex:1;min-width:0;display:flex;align-items:center}
+.lg-limit-v-t{margin:0;letter-spacing:2px;white-space:nowrap;font-family:var(--mono-font,monospace)}
+.lg-face{position:absolute;z-index:2;box-sizing:border-box;border:2px solid rgba(255,255,255,.1);border-radius:30px;overflow:hidden;background:#000}
+.lg-face .mi-shake{position:absolute;inset:0}
+.lg-badge{position:absolute;left:26px;top:24px;z-index:3;height:42px;padding:0 20px;display:flex;align-items:center;border-radius:10px;background:#000;border:2px solid rgba(255,255,255,.2)}
+.lg-badge-t{margin:0;letter-spacing:2px;color:#f4f4f4;white-space:nowrap;font-family:var(--mono-font,monospace)}
+.lg-lvw{font-weight:800}
+.fc-face{position:absolute;z-index:5;border-radius:22px;overflow:hidden;background:#000;box-shadow:0 0 0 2px rgba(255,255,255,.08),0 30px 70px rgba(0,0,0,.75)}
+.fc-face .mi-shake{position:absolute;inset:0}`;
 
 /** Đầu trang xuyên suốt: eyebrow (viên thuốc đen) + tiêu đề in hoa viền đen kiểu meme. */
 function header(ctx, data) {
@@ -169,20 +201,29 @@ function statusRow(item, idx, color) {
   return `<div class="mi-mrow">${fitIn("mi-status", item.status, { size: 30, min: 14, id: `mi-status-${idx}`, style: `background:${color};color:${inkOn(color)}` })}<div class="mi-sev"><b style="color:${color}">${item.severity}</b><small>/10</small></div></div>`;
 }
 
-function classicParts(scene, i, ctx, data) {
-  const L = LAYOUT.meme_classic;
+function legacyParts(scene, i, ctx, data) {
+  const L = LAYOUT.legacy;
   const idx = scene.index;
   const item = data.items[i];
   const color = sevColor(item.severity);
   const words = levelWords(ctx.lang);
+  const progress = item.levelTotal ? Math.max(0.02, Math.min(1, (item.levelNo || 0) / item.levelTotal)) : (item.role === "outro" ? 1 : 0.02);
   const html = `<div class="mi-bd" style="background:${backdrop(item.severity)}"></div>
-${fitIn("mi-tag", tagOf(item, words), { size: 104, min: 36, id: `mi-tag-${idx}`, style: `${regionStyle(L.tag)};color:${color}` })}
-${fitIn("mi-label", item.label, { size: 54, min: 22, tag: "h2", style: regionStyle(L.label) })}
-<div class="mi-meter" style="${regionStyle(L.meter)}">${fitIn("mi-mname", words.meter, { size: 24, min: 12 })}${statusRow(item, idx, color)}<div class="mi-pips">${pips(item.severity)}</div></div>`;
+<div class="lg-head">
+  <div class="lg-eyebrow">${fitIn("lg-eb", data.eyebrow, { size: 22, min: 12 })}</div>
+  ${fitIn("lg-title", ctx.title, { size: 64, min: 26, tag: "h1" })}
+  <div class="lg-bar"><i style="width:${(progress * 100).toFixed(1)}%"></i></div>
+  ${fitIn("lg-lvl", tagOf(item, words), { size: 26, min: 12, style: `justify-content:flex-end` })}
+</div>
+<div class="lg-scan" style="${regionStyle(L.scan)}"><b class="c1"></b><b class="c2"></b><b class="c3"></b><b class="c4"></b></div>
+${fitIn("lg-label", item.label, { size: 72, min: 26, tag: "h2", id: `lg-label-${idx}`, style: regionStyle(L.label) })}
+${fitIn("lg-status", item.status, { size: 30, min: 14, style: regionStyle(L.status) })}
+<div class="lg-limit" id="lg-limit-${idx}" style="${regionStyle(L.limit)};border-color:${color};box-shadow:0 0 22px ${color}55"><span class="lg-limit-k">${escapeHtml(words.meter.split(":")[0])}</span>${fitIn("lg-limit-v", `${item.severity}/10 · ${item.status}`, { size: 34, min: 14, style: `color:${color}` })}</div>
+<div class="lg-face" style="${regionStyle(L.faceCard)}"><div class="mi-shake" id="mi-shake-${idx}"><img class="mi-face" src="${faceSrc(facePhase(item.severity))}" alt=""></div><div class="lg-badge">${fitIn("lg-badge-in", words.meter, { size: 24, min: 12 })}</div></div>`;
   const at = scene.visualStart;
   const tweens = [
-    { method: "fromTo", target: `#mi-tag-${idx}`, from: { scale: 1.35 }, vars: { scale: 1, duration: 0.3, ease: "back.out(2)" }, at: t3(at + 0.05) },
-    { method: "fromTo", target: `#mi-status-${idx}`, from: { scale: 0.2 }, vars: { scale: 1, duration: 0.3, ease: "back.out(2)" }, at: t3(at + 0.3) },
+    { method: "fromTo", target: `#lg-label-${idx}`, from: { scale: 0.85 }, vars: { scale: 1, duration: 0.3, ease: "back.out(2)" }, at: t3(at + 0.05) },
+    { method: "fromTo", target: `#lg-limit-${idx}`, from: { scale: 0.6 }, vars: { scale: 1, duration: 0.3, ease: "back.out(2)" }, at: t3(at + 0.3) },
     ...shakeTweens(scene, item.severity),
   ];
   return { html, tweens };
@@ -194,10 +235,6 @@ function cardParts(scene, i, ctx, data) {
   const item = data.items[i];
   const color = sevColor(item.severity);
   const words = levelWords(ctx.lang);
-  const phase = facePhase(item.severity);
-  const thumbs = Array.from({ length: FACE_PHASES }, (_, k) => `<div class="mi-thumb${k + 1 === phase ? " on" : ""}"><img src="${faceSrc(k + 1)}" alt=""></div>`).join("");
-  const prev = i ? data.items[i - 1].metrics : item.metrics.map(() => 100);
-  const metrics = item.metrics.map((value, m) => `<div class="mi-m">${fitIn("mi-m-name", data.metricLabels[m], { size: 30, min: 14 })}<div class="mi-m-val">${value}%</div><div class="mi-m-track"><i class="mi-m-fill" id="mi-fill-${idx}-${m}" style="background:${sevColor(Math.max(1, 11 - Math.ceil(value / 10)))}"></i></div></div>`).join("");
   const html = `<div class="mi-bd" style="background:${backdrop(item.severity)}"></div>
 <div class="mi-card" id="mi-card-${idx}" style="${regionStyle(L.card)};border-color:${color}">
 ${fitIn("mi-tag", tagOf(item, words), { size: 58, min: 22, id: `mi-tag-${idx}`, style: `color:${color}` })}
@@ -205,16 +242,11 @@ ${fitIn("mi-label", item.label, { size: 42, min: 18, tag: "h2" })}
 ${statusRow(item, idx, color)}
 <div class="mi-pips">${pips(item.severity)}</div>
 </div>
-<div class="mi-strip" style="${regionStyle(L.strip)};--mi-sev:${color}">${thumbs}</div>
-<div class="mi-metrics" style="${regionStyle(L.metrics)}">${metrics}</div>`;
+<div class="fc-face" style="${regionStyle(L.face)}"><div class="mi-shake" id="mi-shake-${idx}"><img class="mi-face" src="${faceSrc(facePhase(item.severity))}" alt=""></div></div>`;
   const at = scene.visualStart;
   const tweens = [
     { method: "fromTo", target: `#mi-card-${idx}`, from: { x: 40 }, vars: { x: 0, duration: 0.35, ease: "power3.out" }, at: t3(at + 0.05) },
     { method: "fromTo", target: `#mi-status-${idx}`, from: { scale: 0.2 }, vars: { scale: 1, duration: 0.3, ease: "back.out(2)" }, at: t3(at + 0.35) },
-    ...item.metrics.map((value, m) => ({
-      method: "fromTo", target: `#mi-fill-${idx}-${m}`, from: { scaleX: Math.max(0.005, prev[m] / 100) },
-      vars: { scaleX: Math.max(0.005, value / 100), duration: t3(Math.min(0.9, scene.visualDuration * 0.3)), ease: "power2.inOut" }, at: t3(at + 0.25),
-    })),
     ...shakeTweens(scene, item.severity),
   ];
   return { html, tweens };
@@ -224,14 +256,15 @@ function design(compId) {
   const L = LAYOUT[compId];
   return (ctx) => {
     const data = resolveSurvival(ctx);
-    const parts = compId === "meme_classic" ? classicParts : cardParts;
+    const legacy = compId === "legacy";
     return {
       header: null,
-      visual: { frame: "plain", region: L.face },
-      panel: (scene, i) => `<div class="mi-shake" id="mi-shake-${scene.index}"><img class="mi-face" src="${faceSrc(facePhase(data.items[i].severity))}" alt=""></div>`,
-      text: { style: "subtitle", region: L.caption, size: compId === "meme_classic" ? 50 : 48, align: "center", enter: "pop" },
-      sceneExtra: (scene, i, sctx) => parts(scene, i, sctx, data),
-      overlay: (octx) => ({ ...header(octx, data), css: "" }),
+      visual: { frame: "plain", region: L.image },
+      text: {
+        style: "subtitle", region: L.caption, size: legacy ? 52 : 48, align: "center", enter: "pop",
+      },
+      sceneExtra: (scene, i, sctx) => (legacy ? legacyParts : cardParts)(scene, i, sctx, data),
+      overlay: legacy ? undefined : (octx) => ({ ...header(octx, data), css: "" }),
       css: CSS,
     };
   };
@@ -248,26 +281,26 @@ const UI = {
 
 const mrIncredible = defineVariant({
   engine: "survival",
-  asset: TEXT_ASSET,
-  cost: NO_IMAGE_COST,
+  asset: IMAGE_ASSET,
+  cost: IMAGE_COST,
   sample: survivalSample,
   id: "survival/mr-incredible",
   name_vi: "Mr. Incredible hoá uncanny (meme, opt-in)",
   prepareAssets,
   topicPacks: { survival_body_limits: 0.5, survival_extreme_sports: 0.25, survival_deep_ocean: 0.25 },
   layoutFamily: "uncanny_meme",
-  axes: { composition: "poster", textPlacement: "top", background: "gradient", transition: "cut", imageMotion: "push_in", typography: "heavy" },
+  axes: { composition: "card_stack", textPlacement: "bottom", background: "flat_color", transition: "fade_black", imageMotion: "push_in", typography: "grotesk" },
   audio: { gender: "any", fx: ["none"] },
   ui: UI,
   compositions: {
-    meme_classic: {
-      axes: { composition: "poster", textPlacement: "top" },
-      describe: "Meme gốc: lời đọc trên cùng, mặt Mr. Incredible (pha 1–9 theo mức độ) lớn giữa màn, nhãn cấp to màu mức độ + nhãn cấp + trạng thái + vạch mức độ dưới mặt; nền tối dần, mặt rung khi mức độ ≥ 7",
-      design: design("meme_classic"),
+    legacy: {
+      axes: { composition: "card_stack", textPlacement: "bottom" },
+      describe: "Bố cục Sinh Tồn cũ: eyebrow + tiêu đề + thanh tiến độ LEVEL n/L; thẻ quét 4 góc với ảnh AI của cấp, tên cấp, trạng thái, ô mức độ; thẻ dưới là mặt Mr. Incredible (pha 1–9 theo mức độ, rung khi ≥ 7) với nhãn REACTION: UNCANNY METER; lời đọc dưới cùng",
+      design: design("legacy"),
     },
     face_card: {
-      axes: { composition: "split_vertical", textPlacement: "bottom" },
-      describe: "Anh em: mặt bên trái cạnh thẻ cấp độ (nhãn cấp, trạng thái, N/10), dải 9 pha meme với pha hiện tại sáng, 3 thanh chỉ số, lời đọc dưới cùng",
+      axes: { composition: "split_vertical", textPlacement: "bottom", background: "darkness" },
+      describe: "Anh em: mặt Mr. Incredible bên trái cạnh thẻ cấp độ (nhãn cấp, trạng thái, N/10), ảnh AI của cấp rộng ở giữa, lời đọc dưới cùng",
       design: design("face_card"),
     },
   },

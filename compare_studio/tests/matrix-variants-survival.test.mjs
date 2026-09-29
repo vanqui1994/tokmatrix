@@ -46,15 +46,16 @@ async function build(variant, composition, lang, { extras } = {}) {
   });
 }
 
-test("survival registers 9 active TEXT variants (7 base + original look + opt-in meme) with 2 hand-built compositions each and ≥ 4/6 differing axes", () => {
+test("survival registers 9 active variants (7 base + original look TEXT, mr-incredible IMAGE_AI like the old Studio template) with 2 hand-built compositions each and ≥ 4/6 differing axes", () => {
   assert.deepEqual(validateRegistry().errors, []);
   assert.equal(variants().length, 8);
   const list = listVariants("survival");
   assert.equal(list.length, 9);
   for (const variant of list) {
     assert.equal(variant.status, "active");
-    assert.equal(variant.assetProfile.type, "TEXT");
-    assert.equal(variant.costProfile.aiImagesPerScene, 0);
+    const images = variant.id === "survival/mr-incredible";
+    assert.equal(variant.assetProfile.type, images ? "IMAGE_AI" : "TEXT", variant.id);
+    assert.equal(variant.costProfile.aiImagesPerScene, images ? 1 : 0, variant.id);
     assert.equal(Object.keys(variant.visualProfile.compositions).length, 2);
     assert.ok(Object.keys(variant.contentProfile.topicPacks).every((id) => id.startsWith("survival_")));
     assert.ok(variant.audioProfile.fx.every((fx) => ["none", "creepy", "whisper", "radio"].includes(fx)));
@@ -142,7 +143,7 @@ test("survival/mr-incredible: the face phase follows severity 1→9 and darkens;
       assert.equal(a.html, b.html, `${where} is not deterministic`);
       assert.deepEqual(lintVariantHtml(a.html), [], where);
       assert.ok(!/https?:\/\/[^"']*phase-/u.test(a.html), `${where} must not hot-link faces`);
-      assert.ok(!/assets\/images\//u.test(a.html), `${where} uses no AI images`);
+      assert.ok(/assets\/images\/|scene-\d/u.test(a.html), `${where} shows the scene's AI image`);
       const { extras } = variant.sample(lang);
       extras.levels.forEach((level, i) => {
         assert.ok(a.html.includes(`src="assets/kit/mrincredible/phase-${facePhase(level.severity)}.png"`), `${where} face ${i + 1}`);
@@ -162,4 +163,15 @@ test("survival/mr-incredible: the face phase follows severity 1→9 and darkens;
   } finally {
     fs.rmSync(dir, { recursive: true, force: true });
   }
+});
+
+test("an IMAGE_AI variant on a text engine queues AI images; legacy channels and other variants keep their asset type", async () => {
+  const { withVariantAssetType } = await import("../matrix/creative/asset-manager.mjs");
+  const scenes = [{ scene_index: 1 }, { scene_index: 2, asset_type: "TEXT" }];
+  const dna = defaultDna(getVariant(MRI), "legacy");
+  const mri = { channel_id: "x", creative: { variant_id: MRI, dna } };
+  assert.deepEqual(withVariantAssetType(scenes, mri, "survival").map((s) => s.asset_type), ["IMAGE_AI", "TEXT"]);
+  assert.equal(withVariantAssetType(scenes, { channel_id: "legacy" }, "survival"), scenes);
+  const original = { channel_id: "y", creative: { variant_id: "survival/original", dna: defaultDna(getVariant("survival/original"), "scanner") } };
+  assert.equal(withVariantAssetType(scenes, original, "survival"), scenes);
 });
