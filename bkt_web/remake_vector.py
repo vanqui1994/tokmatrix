@@ -3719,6 +3719,298 @@ def then_and_now_examples():
     return [story]
 
 
+def bremen_musicians_examples():
+    """Mẫu kỹ thuật Phase P: Các nhạc sĩ thành Bremen - lừa, chó, mèo, gà trống đứng chồng lên nhau."""
+    cat = catalog()
+
+    def actor(cid, asset, **extra):
+        lbl = cat["assets"][asset].get("label") or cat["assets"][asset].get("spec", {}).get("label") or asset
+        return {"id": cid, "name": lbl, "asset": asset, **extra}
+
+    def pose(t, x, y, h, **extra):
+        return {"time": t, "x": x, "y": y, "height": h, **extra}
+
+    def scene(start, end, poses, actions=(), bg="black_forest_village", **extra):
+        return {
+            "renderer": RENDERER,
+            "kind": "scene",
+            "start_time": start,
+            "end_time": end,
+            "characters_present": list(poses),
+            "poses": poses,
+            "actions": list(actions),
+            "background": {"preset": bg, **extra},
+        }
+
+    def action(kind, start, end, target=None, actor_id=None, **extra):
+        return {"type": kind, "start": start, "end": end, **({"target": target} if target else {}), **({"actor": actor_id} if actor_id else {}), **extra}
+
+    # Cảnh 1: Bốn con vật đứng chồng lên nhau cất tiếng hát trong đêm
+    sc1 = scene(0, 6.5, {
+        "donkey": [pose(0, 180, 810, 240), pose(6.5, 180, 810, 240)],
+        "dog": [pose(0, 0, 0, 160), pose(6.5, 0, 0, 160)],
+        "cat": [pose(0, 0, 0, 110), pose(6.5, 0, 0, 110)],
+        "rooster": [pose(0, 0, 0, 95), pose(6.5, 0, 0, 95)],
+        "robber": [pose(0, 400, 810, 300, expression="worried", flip=True), pose(6.5, 400, 810, 300, expression="worried", flip=True)],
+    }, actions=[
+        action("emote", 0.5, 6.0, actor_id="donkey", emote="music"),
+        action("emote", 1.0, 6.0, actor_id="dog", emote="music"),
+        action("emote", 1.5, 6.0, actor_id="cat", emote="music"),
+        action("emote", 2.0, 6.0, actor_id="rooster", emote="music"),
+    ], bg="black_forest_village", time="night")
+
+    # Cảnh 2: Tên trộm hoảng hốt bỏ chạy, các con vật reo mừng chiến thắng
+    sc2 = scene(6.5, 14.0, {
+        "donkey": [pose(6.5, 180, 810, 240), pose(14.0, 180, 810, 240)],
+        "dog": [pose(6.5, 0, 0, 160), pose(14.0, 0, 0, 160)],
+        "cat": [pose(6.5, 0, 0, 110), pose(14.0, 0, 0, 110)],
+        "rooster": [pose(6.5, 0, 0, 95), pose(14.0, 0, 0, 95)],
+        "robber": [pose(6.5, 400, 810, 300, expression="worried"), pose(14.0, 560, 810, 300, expression="worried")],
+    }, actions=[
+        action("run_away", 6.8, 13.0, actor_id="robber"),
+        action("celebrate", 7.5, 13.5, actor_id="donkey"),
+        action("celebrate", 7.5, 13.5, actor_id="rooster"),
+    ], bg="black_forest_village", time="night")
+
+    story = {
+        "id": "bremen_musicians",
+        "name": "26 · Truyện ngụ ngôn Grimm: Các nhạc sĩ thành Bremen đánh đuổi toán trộm",
+        "renderer": RENDERER,
+        "fidelity": "technical-demo",
+        "note": "Mẫu kỹ thuật Phase P: Bốn con vật (lừa, chó, mèo, gà trống) đứng chồng trên lưng nhau bằng attach_to, đồng thanh ca hát làm toán cướp hoảng sợ bỏ chạy.",
+        "duration": 14.0,
+        "characters": [
+            actor("donkey", "donkey"),
+            actor("dog", "dog", attach_to={"id": "donkey", "anchor": "back"}),
+            actor("cat", "cat", attach_to={"id": "dog", "anchor": "back"}),
+            actor("rooster", "rooster", attach_to={"id": "cat", "anchor": "back"}),
+            actor("robber", "farmer"),
+        ],
+        "scenes": [sc1, sc2],
+        "cues": [
+            {"start": 0.5, "end": 6.0, "character_id": "donkey", "text": "Bốn con vật đứng chồng lên nhau, cùng cất tiếng hát vang dội xua đuổi bóng đêm!", "expression": "happy"},
+            {"start": 7.0, "end": 13.5, "character_id": "donkey", "text": "Tên trộm hoảng sợ tháo chạy thục mạng, các nghệ sĩ Bremen cùng nhau reo mừng chiến thắng!", "expression": "happy"},
+        ],
+    }
+    for index, item in enumerate(story["scenes"]):
+        item["index"] = index
+    auto_frame(story)
+    validate_story(story)
+    return [story]
+
+
+def st_martin_lanterns_examples():
+    """Mẫu kỹ thuật Phase P: Lễ hội rước đèn lồng Thánh Martin buổi tối."""
+    cat = catalog()
+
+    def actor(cid, asset, **extra):
+        lbl = cat["assets"][asset].get("label") or cat["assets"][asset].get("spec", {}).get("label") or asset
+        return {"id": cid, "name": lbl, "asset": asset, **extra}
+
+    def pose(t, x, y, h, **extra):
+        return {"time": t, "x": x, "y": y, "height": h, **extra}
+
+    def scene(start, end, poses, actions=(), bg="black_forest_village", **extra):
+        return {
+            "renderer": RENDERER,
+            "kind": "scene",
+            "start_time": start,
+            "end_time": end,
+            "characters_present": list(poses),
+            "poses": poses,
+            "actions": list(actions),
+            "background": {"preset": bg, **extra},
+        }
+
+    def action(kind, start, end, target=None, actor_id=None, **extra):
+        return {"type": kind, "start": start, "end": end, **({"target": target} if target else {}), **({"actor": actor_id} if actor_id else {}), **extra}
+
+    p_lan = held_pose("lantern_star", 150, 0)
+
+    # Cảnh 1: Đoàn chibi cầm đèn ngôi sao rước đèn bước đi trong đêm
+    sc1 = scene(0, 6.5, {
+        "child_1": [pose(0, -40, 810, 240), pose(6.5, 110, 810, 240)],
+        "lantern_1": [pose(0, p_lan["x"], p_lan["y"], 150, rotation=p_lan["rotation"], lit=1.0), pose(6.5, p_lan["x"], p_lan["y"], 150, rotation=p_lan["rotation"], lit=1.0)],
+        "child_2": [pose(0, 80, 810, 240), pose(6.5, 230, 810, 240)],
+        "lantern_2": [pose(0, p_lan["x"], p_lan["y"], 150, rotation=p_lan["rotation"], lit=1.0), pose(6.5, p_lan["x"], p_lan["y"], 150, rotation=p_lan["rotation"], lit=1.0)],
+        "child_3": [pose(0, 200, 810, 220), pose(6.5, 350, 810, 220)],
+        "lantern_3": [pose(0, p_lan["x"], p_lan["y"], 150, rotation=p_lan["rotation"], lit=1.0), pose(6.5, p_lan["x"], p_lan["y"], 150, rotation=p_lan["rotation"], lit=1.0)],
+    }, bg="black_forest_village", time="night")
+
+    # Cảnh 2: Các bạn nhỏ hân hoan hát mừng dưới ánh đèn lung linh
+    sc2 = scene(6.5, 14.0, {
+        "child_1": [pose(6.5, 110, 810, 240), pose(14.0, 260, 810, 240, expression="happy")],
+        "lantern_1": [pose(6.5, p_lan["x"], p_lan["y"], 150, rotation=p_lan["rotation"], lit=1.0), pose(14.0, p_lan["x"], p_lan["y"], 150, rotation=p_lan["rotation"], lit=1.0)],
+        "child_2": [pose(6.5, 230, 810, 240), pose(14.0, 380, 810, 240, expression="happy")],
+        "lantern_2": [pose(6.5, p_lan["x"], p_lan["y"], 150, rotation=p_lan["rotation"], lit=1.0), pose(14.0, p_lan["x"], p_lan["y"], 150, rotation=p_lan["rotation"], lit=1.0)],
+        "child_3": [pose(6.5, 350, 810, 220), pose(14.0, 500, 810, 220, expression="happy")],
+        "lantern_3": [pose(6.5, p_lan["x"], p_lan["y"], 150, rotation=p_lan["rotation"], lit=1.0), pose(14.0, p_lan["x"], p_lan["y"], 150, rotation=p_lan["rotation"], lit=1.0)],
+    }, actions=[
+        action("emote", 7.0, 13.0, actor_id="child_1", emote="heart"),
+        action("emote", 7.5, 13.5, actor_id="child_2", emote="music"),
+    ], bg="black_forest_village", time="night")
+
+    story = {
+        "id": "st_martin_lanterns",
+        "name": "27 · Văn hoá truyền thống: Lễ hội rước đèn lồng Sankt Martin ban đêm",
+        "renderer": RENDERER,
+        "fidelity": "technical-demo",
+        "note": "Mẫu kỹ thuật Phase P: Các em nhỏ cầm đèn lồng ngôi sao rực sáng trong đêm, sải bước diễu hành và cất vang bài ca truyền thống.",
+        "duration": 14.0,
+        "characters": [
+            actor("child_1", "chibi_boy"),
+            actor("lantern_1", "lantern_star", attach_to={"id": "child_1", "anchor": "hand_r"}),
+            actor("child_2", "chibi_girl"),
+            actor("lantern_2", "lantern_star", attach_to={"id": "child_2", "anchor": "hand_r"}),
+            actor("child_3", "chibi_kid"),
+            actor("lantern_3", "lantern_star", attach_to={"id": "child_3", "anchor": "hand_r"}),
+        ],
+        "scenes": [sc1, sc2],
+        "cues": [
+            {"start": 0.5, "end": 6.0, "character_id": "child_1", "text": "Đêm hội rước đèn Thánh Martin, các em nhỏ cầm trên tay những chiếc lồng đèn ngôi sao lấp lánh!", "expression": "happy"},
+            {"start": 7.0, "end": 13.5, "character_id": "child_2", "text": "Ánh sáng ấm áp soi rọi phố phường, các bạn nhỏ tươi cười ca vang những khúc ca rước đèn rộn rã!", "expression": "happy"},
+        ],
+    }
+    for index, item in enumerate(story["scenes"]):
+        item["index"] = index
+    auto_frame(story)
+    validate_story(story)
+    return [story]
+
+
+def hedgehog_winter_examples():
+    """Mẫu kỹ thuật Phase P: Chú nhím chuẩn bị tổ lá và cuộn tròn ngủ đông khi tuyết rơi."""
+    cat = catalog()
+
+    def actor(cid, asset, **extra):
+        lbl = cat["assets"][asset].get("label") or cat["assets"][asset].get("spec", {}).get("label") or asset
+        return {"id": cid, "name": lbl, "asset": asset, **extra}
+
+    def pose(t, x, y, h, **extra):
+        return {"time": t, "x": x, "y": y, "height": h, **extra}
+
+    def scene(start, end, poses, actions=(), bg="black_forest_village", **extra):
+        return {
+            "renderer": RENDERER,
+            "kind": "scene",
+            "start_time": start,
+            "end_time": end,
+            "characters_present": list(poses),
+            "poses": poses,
+            "actions": list(actions),
+            "background": {"preset": bg, **extra},
+        }
+
+    def action(kind, start, end, target=None, actor_id=None, **extra):
+        return {"type": kind, "start": start, "end": end, **({"target": target} if target else {}), **({"actor": actor_id} if actor_id else {}), **extra}
+
+    # Cảnh 1: Mùa thu chú nhím kiếm ăn và gom lá khô
+    sc1 = scene(0, 6.0, {
+        "hedgehog": [pose(0, 160, 810, 180, curl=0.0), pose(6.0, 280, 810, 180, curl=0.0)],
+    }, bg="black_forest_village", season="autumn")
+
+    # Cảnh 2: Tuyết rơi trắng xóa, nhím cuộn tròn ngủ say trong giấc ngủ đông
+    sc2 = scene(6.0, 14.0, {
+        "hedgehog": [
+            pose(6.0, 280, 810, 180, curl=0.0),
+            pose(9.5, 280, 810, 180, curl=1.0, sleepy=1),
+            pose(14.0, 280, 810, 180, curl=1.0, sleepy=1),
+        ],
+    }, actions=[
+        action("emote", 10.0, 14.0, actor_id="hedgehog", emote="zzz"),
+    ], bg="black_forest_village", weather="snow")
+
+    story = {
+        "id": "hedgehog_winter",
+        "name": "28 · Thiên nhiên nước Đức: Chú nhím cuộn tròn ngủ đông giữa rừng tuyết",
+        "renderer": RENDERER,
+        "fidelity": "technical-demo",
+        "note": "Mẫu kỹ thuật Phase P: Chú nhím đi gom lá mùa thu rồi cuộn tròn thành khối gai ngủ đông an toàn khi trời đổ tuyết rơi.",
+        "duration": 14.0,
+        "characters": [
+            actor("hedgehog", "hedgehog"),
+        ],
+        "scenes": [sc1, sc2],
+        "cues": [
+            {"start": 0.5, "end": 5.5, "character_id": "hedgehog", "text": "Mùa thu sang, chú nhím nhỏ chăm chỉ gom lá khô chuẩn bị chiếc tổ ấm áp trước khi đông về.", "expression": "neutral"},
+            {"start": 6.5, "end": 13.5, "character_id": "hedgehog", "text": "Tuyết trắng bắt đầu rơi ngập tràn cánh rừng, nhím ta cuộn tròn ngủ say một giấc ngủ đông êm đềm.", "expression": "neutral"},
+        ],
+    }
+    for index, item in enumerate(story["scenes"]):
+        item["index"] = index
+    auto_frame(story)
+    validate_story(story)
+    return [story]
+
+
+def first_school_day_examples():
+    """Mẫu kỹ thuật Phase P: Ngày đầu tiên đi học với chiếc túi quà Schultüte truyền thống."""
+    cat = catalog()
+
+    def actor(cid, asset, **extra):
+        lbl = cat["assets"][asset].get("label") or cat["assets"][asset].get("spec", {}).get("label") or asset
+        return {"id": cid, "name": lbl, "asset": asset, **extra}
+
+    def pose(t, x, y, h, **extra):
+        return {"time": t, "x": x, "y": y, "height": h, **extra}
+
+    def scene(start, end, poses, actions=(), bg="black_forest_village", **extra):
+        return {
+            "renderer": RENDERER,
+            "kind": "scene",
+            "start_time": start,
+            "end_time": end,
+            "characters_present": list(poses),
+            "poses": poses,
+            "actions": list(actions),
+            "background": {"preset": bg, **extra},
+        }
+
+    def action(kind, start, end, target=None, actor_id=None, **extra):
+        return {"type": kind, "start": start, "end": end, **({"target": target} if target else {}), **({"actor": actor_id} if actor_id else {}), **extra}
+
+    p_cone = held_pose("schultuete", 130, 15)
+
+    # Cảnh 1: Em nhỏ ôm túi quà Schultüte vui vẻ rảo bước tới trường
+    sc1 = scene(0, 6.0, {
+        "school": [pose(0, 440, 810, 380, growth=1.0), pose(6.0, 440, 810, 380, growth=1.0)],
+        "pupil": [pose(0, -20, 810, 240), pose(6.0, 170, 810, 240)],
+        "cone": [pose(0, p_cone["x"], p_cone["y"], 130, rotation=p_cone["rotation"]), pose(6.0, p_cone["x"], p_cone["y"], 130, rotation=p_cone["rotation"])],
+    }, bg="black_forest_village")
+
+    # Cảnh 2: Đến gần cổng trường, em bé mỉm cười hạnh phúc chuẩn bị bước vào lớp
+    sc2 = scene(6.0, 14.0, {
+        "school": [pose(6.0, 440, 810, 380, growth=1.0), pose(14.0, 440, 810, 380, growth=1.0)],
+        "pupil": [pose(6.0, 170, 810, 240), pose(14.0, 330, 810, 240, expression="happy")],
+        "cone": [pose(6.0, p_cone["x"], p_cone["y"], 130, rotation=p_cone["rotation"]), pose(14.0, p_cone["x"], p_cone["y"], 130, rotation=p_cone["rotation"])],
+    }, actions=[
+        action("emote", 8.0, 13.5, actor_id="pupil", emote="heart"),
+    ], bg="black_forest_village")
+
+    story = {
+        "id": "first_school_day",
+        "name": "29 · Đời sống văn hoá: Ngày đầu tiên cắp sách tới trường cùng túi quà Schultüte",
+        "renderer": RENDERER,
+        "fidelity": "technical-demo",
+        "note": "Mẫu kỹ thuật Phase P: Học sinh tiểu học Đức ôm chiếc nón quà Schultüte rực rỡ sắc màu, tự tin sải bước tới trường trong ngày khai trường.",
+        "duration": 14.0,
+        "characters": [
+            actor("school", "school_building"),
+            actor("pupil", "chibi_girl"),
+            actor("cone", "schultuete", attach_to={"id": "pupil", "anchor": "hand_r"}),
+        ],
+        "scenes": [sc1, sc2],
+        "cues": [
+            {"start": 0.5, "end": 5.5, "character_id": "pupil", "text": "Ngày đầu tiên cắp sách tới trường, em bé tự hào ôm chiếc túi Schultüte đầy ắp đồ dùng học tập!", "expression": "happy"},
+            {"start": 6.5, "end": 13.5, "character_id": "pupil", "text": "Bước chân rộn rã tiến về ngôi trường thân yêu, lòng ngập tràn niềm vui và sự háo hức khám phá!", "expression": "happy"},
+        ],
+    }
+    for index, item in enumerate(story["scenes"]):
+        item["index"] = index
+    auto_frame(story)
+    validate_story(story)
+    return [story]
+
 
 def auto_frame(story: dict, max_zoom: float = 2.0) -> dict:
     """Đặt camera tĩnh cho mỗi cảnh chưa có camera để nhóm nhân vật nhỏ (tế bào, vi khuẩn) chiếm ~85% bề ngang.
@@ -3747,7 +4039,7 @@ def auto_frame(story: dict, max_zoom: float = 2.0) -> dict:
     return story
 
 def sample_stories():
-    """Every sample the library ships: farm stories, articulated hands, IK, fishing, sea monsters, orchard harvest, trellis, highland, vegetable cutaway, safe spraying, giant radish, handwashing, doctor visit, tooth care, nutrition, Phase I body world, Phase K recycling, Phase L safety, Phase M ancient history, and Phase O inventions stories."""
+    """Every sample the library ships: farm stories, articulated hands, IK, fishing, sea monsters, orchard harvest, trellis, highland, vegetable cutaway, safe spraying, giant radish, handwashing, doctor visit, tooth care, nutrition, Phase I body world, Phase K recycling, Phase L safety, Phase M ancient history, Phase O inventions, and Phase P German culture stories."""
     return (
         examples() + agriculture_examples() + farm_life_examples() + farm_animals_examples() +
         articulation_examples() + ik_examples() + fishing_examples() + monster_examples() +
@@ -3760,7 +4052,8 @@ def sample_stories():
         crossing_street_examples() + disaster_safety_examples() +
         build_pyramid_examples() + first_fire_examples() + roman_road_examples() +
         silk_road_caravan_examples() + first_olympics_examples() +
-        first_flight_examples() + printing_press_examples() + first_car_examples() + then_and_now_examples()
+        first_flight_examples() + printing_press_examples() + first_car_examples() + then_and_now_examples() +
+        bremen_musicians_examples() + st_martin_lanterns_examples() + hedgehog_winter_examples() + first_school_day_examples()
     )
 
 

@@ -28,7 +28,8 @@
     "recycling",
     "safety",
     "ancient",
-    "inventions"
+    "inventions",
+    "de_culture"
   ],
   "rig_style": {
     "name": "hand-drawn-whole-pose-cel",
@@ -147,7 +148,11 @@
     "roman_town",
     "greek_stadium",
     "workshop_1900",
-    "old_town_1900"
+    "old_town_1900",
+    "black_forest_village",
+    "christmas_market",
+    "allotment_garden",
+    "alpine_meadow"
   ],
   "background_specs": {
     "garden": {
@@ -768,6 +773,62 @@
         "storm",
         "hot"
       ]
+    },
+    "black_forest_village": {
+      "label": "Làng Rừng Đen",
+      "theme": "home",
+      "ground_y": 810,
+      "weather": [
+        "clear",
+        "rain",
+        "snow",
+        "wind",
+        "fog",
+        "storm",
+        "hot"
+      ]
+    },
+    "christmas_market": {
+      "label": "Chợ Giáng sinh",
+      "theme": "market",
+      "ground_y": 810,
+      "weather": [
+        "clear",
+        "rain",
+        "snow",
+        "wind",
+        "fog",
+        "storm",
+        "hot"
+      ]
+    },
+    "allotment_garden": {
+      "label": "Vườn thuê Schrebergarten",
+      "theme": "garden",
+      "ground_y": 810,
+      "weather": [
+        "clear",
+        "rain",
+        "snow",
+        "wind",
+        "fog",
+        "storm",
+        "hot"
+      ]
+    },
+    "alpine_meadow": {
+      "label": "Đồng cỏ Alpine",
+      "theme": "highland",
+      "ground_y": 810,
+      "weather": [
+        "clear",
+        "rain",
+        "snow",
+        "wind",
+        "fog",
+        "storm",
+        "hot"
+      ]
     }
   },
   "weather": [
@@ -1197,6 +1258,10 @@
     "playing": [
       0,
       1
+    ],
+    "curl": [
+      0,
+      1
     ]
   },
   "pose_defaults": {
@@ -1271,7 +1336,8 @@
     "cooked": 1.0,
     "outfit": "none",
     "lit": 0,
-    "playing": 0
+    "playing": 0,
+    "curl": 0
   },
   "style_colors": [
     "body",
@@ -27358,6 +27424,609 @@
           -18
         ]
       }
+    },
+    "schultuete": {
+      "label": "Túi quà nhập học (Schultüte)",
+      "group": "tool",
+      "face": false,
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "tip": [
+          0,
+          0
+        ],
+        "grip": [
+          0,
+          -42
+        ],
+        "ribbon": [
+          0,
+          -62
+        ],
+        "top": [
+          0,
+          -84
+        ]
+      },
+      "topics": [
+        "festivals",
+        "school",
+        "de_culture"
+      ],
+      "pack": "de_culture"
+    },
+    "advent_wreath": {
+      "label": "Vòng lá thông Mùa Vọng (Adventskranz)",
+      "group": "prop",
+      "face": false,
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "grip": [
+          0,
+          -18
+        ],
+        "center": [
+          0,
+          -18
+        ],
+        "candle_1": [
+          -24,
+          -36
+        ],
+        "candle_2": [
+          -8,
+          -42
+        ],
+        "candle_3": [
+          8,
+          -42
+        ],
+        "candle_4": [
+          24,
+          -36
+        ],
+        "top": [
+          0,
+          -48
+        ]
+      },
+      "topics": [
+        "festivals",
+        "winter",
+        "de_culture"
+      ],
+      "pack": "de_culture"
+    },
+    "christmas_tree_decor": {
+      "label": "Cây thông Noel trang trí",
+      "group": "prop",
+      "face": false,
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "bottom": [
+          0,
+          0
+        ],
+        "trunk": [
+          0,
+          -6
+        ],
+        "branch_l": [
+          -26,
+          -38
+        ],
+        "branch_r": [
+          26,
+          -38
+        ],
+        "star": [
+          0,
+          -96
+        ],
+        "top": [
+          0,
+          -96
+        ],
+        "grip": [
+          0,
+          -40
+        ]
+      },
+      "rest_pose": {
+        "growth": 1,
+        "lit": 1
+      },
+      "topics": [
+        "festivals",
+        "winter",
+        "trees",
+        "de_culture"
+      ],
+      "pack": "de_culture"
+    },
+    "gingerbread_house": {
+      "label": "Nhà bánh gừng (Lebkuchenhaus)",
+      "group": "prop",
+      "face": false,
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "door": [
+          0,
+          -14
+        ],
+        "window": [
+          -16,
+          -36
+        ],
+        "roof_top": [
+          0,
+          -82
+        ],
+        "chimney": [
+          18,
+          -88
+        ],
+        "grip_l": [
+          -26,
+          -20
+        ],
+        "grip_r": [
+          26,
+          -20
+        ]
+      },
+      "rest_pose": {
+        "growth": 1
+      },
+      "topics": [
+        "festivals",
+        "foods",
+        "fairy_tale",
+        "de_culture"
+      ],
+      "pack": "de_culture"
+    },
+    "market_stall": {
+      "label": "Quầy chợ Giáng sinh (Marktstand)",
+      "group": "furniture",
+      "face": false,
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "counter": [
+          0,
+          -32
+        ],
+        "shelf": [
+          0,
+          -46
+        ],
+        "lamp_l": [
+          -28,
+          -60
+        ],
+        "lamp_r": [
+          28,
+          -60
+        ],
+        "roof": [
+          0,
+          -82
+        ],
+        "roof_top": [
+          0,
+          -82
+        ],
+        "grip_l": [
+          -36,
+          -32
+        ],
+        "grip_r": [
+          36,
+          -32
+        ]
+      },
+      "rest_pose": {
+        "growth": 1
+      },
+      "topics": [
+        "market",
+        "festivals",
+        "de_culture"
+      ],
+      "pack": "de_culture"
+    },
+    "cuckoo_clock": {
+      "label": "Đồng hồ cúc cu (Kuckucksuhr)",
+      "group": "furniture",
+      "face": false,
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "pendulum": [
+          0,
+          -14
+        ],
+        "weight_l": [
+          -10,
+          -6
+        ],
+        "weight_r": [
+          10,
+          -8
+        ],
+        "dial": [
+          0,
+          -48
+        ],
+        "grip": [
+          0,
+          -48
+        ],
+        "door": [
+          0,
+          -70
+        ],
+        "top": [
+          0,
+          -84
+        ]
+      },
+      "rest_pose": {
+        "open": 0
+      },
+      "topics": [
+        "crafts",
+        "home",
+        "de_culture"
+      ],
+      "pack": "de_culture"
+    },
+    "fox": {
+      "label": "Cáo đỏ (Red Fox)",
+      "group": "animal",
+      "face": false,
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "back": [
+          -6,
+          -42
+        ],
+        "surface": [
+          -6,
+          -42
+        ],
+        "head": [
+          28,
+          -50
+        ],
+        "face": [
+          32,
+          -50
+        ],
+        "mouth": [
+          46,
+          -44
+        ],
+        "nose": [
+          50,
+          -46
+        ],
+        "ear_l": [
+          24,
+          -68
+        ],
+        "ear_r": [
+          34,
+          -68
+        ],
+        "tail": [
+          -38,
+          -26
+        ],
+        "top": [
+          28,
+          -68
+        ]
+      },
+      "topics": [
+        "animals",
+        "forest",
+        "de_culture"
+      ],
+      "pack": "de_culture"
+    },
+    "owl": {
+      "label": "Cú mèo (Owl)",
+      "group": "animal",
+      "face": false,
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "head": [
+          0,
+          -56
+        ],
+        "face": [
+          0,
+          -56
+        ],
+        "beak": [
+          0,
+          -48
+        ],
+        "mouth": [
+          0,
+          -48
+        ],
+        "eye_l": [
+          -9,
+          -56
+        ],
+        "eye_r": [
+          9,
+          -56
+        ],
+        "wing_l": [
+          -24,
+          -36
+        ],
+        "wing_r": [
+          24,
+          -36
+        ],
+        "top": [
+          0,
+          -78
+        ],
+        "back": [
+          0,
+          -40
+        ]
+      },
+      "topics": [
+        "animals",
+        "birds",
+        "forest",
+        "de_culture"
+      ],
+      "pack": "de_culture"
+    },
+    "deer": {
+      "label": "Hươu rừng (Red Deer)",
+      "group": "animal",
+      "face": false,
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "back": [
+          -8,
+          -62
+        ],
+        "surface": [
+          -8,
+          -62
+        ],
+        "head": [
+          36,
+          -92
+        ],
+        "face": [
+          40,
+          -92
+        ],
+        "mouth": [
+          54,
+          -84
+        ],
+        "nose": [
+          58,
+          -86
+        ],
+        "antler_l": [
+          30,
+          -126
+        ],
+        "antler_r": [
+          44,
+          -126
+        ],
+        "tail": [
+          -42,
+          -58
+        ],
+        "top": [
+          36,
+          -130
+        ]
+      },
+      "topics": [
+        "animals",
+        "wildlife",
+        "forest",
+        "de_culture"
+      ],
+      "pack": "de_culture"
+    },
+    "wolf": {
+      "label": "Chó sói xám (Grey Wolf)",
+      "group": "animal",
+      "face": false,
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "back": [
+          -6,
+          -52
+        ],
+        "surface": [
+          -6,
+          -52
+        ],
+        "head": [
+          34,
+          -68
+        ],
+        "face": [
+          38,
+          -68
+        ],
+        "mouth": [
+          52,
+          -58
+        ],
+        "nose": [
+          56,
+          -60
+        ],
+        "ear": [
+          28,
+          -82
+        ],
+        "tail": [
+          -44,
+          -30
+        ],
+        "top": [
+          30,
+          -84
+        ]
+      },
+      "topics": [
+        "animals",
+        "wildlife",
+        "forest",
+        "de_culture"
+      ],
+      "pack": "de_culture"
+    },
+    "stork": {
+      "label": "Cò trắng (White Stork)",
+      "group": "animal",
+      "face": false,
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "back": [
+          -6,
+          -52
+        ],
+        "head": [
+          24,
+          -88
+        ],
+        "face": [
+          26,
+          -88
+        ],
+        "beak": [
+          52,
+          -86
+        ],
+        "mouth": [
+          42,
+          -86
+        ],
+        "wing_l": [
+          -18,
+          -48
+        ],
+        "wing_r": [
+          10,
+          -48
+        ],
+        "top": [
+          24,
+          -94
+        ]
+      },
+      "topics": [
+        "animals",
+        "birds",
+        "de_culture"
+      ],
+      "pack": "de_culture"
+    },
+    "wild_boar": {
+      "label": "Heo rừng (Wild Boar)",
+      "group": "animal",
+      "face": false,
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "back": [
+          -6,
+          -46
+        ],
+        "surface": [
+          -6,
+          -46
+        ],
+        "head": [
+          30,
+          -46
+        ],
+        "face": [
+          34,
+          -46
+        ],
+        "mouth": [
+          48,
+          -36
+        ],
+        "snout": [
+          52,
+          -38
+        ],
+        "tusk": [
+          46,
+          -38
+        ],
+        "tail": [
+          -40,
+          -32
+        ],
+        "top": [
+          10,
+          -64
+        ]
+      },
+      "topics": [
+        "animals",
+        "wildlife",
+        "forest",
+        "de_culture"
+      ],
+      "pack": "de_culture"
     }
   },
   "actions": {
@@ -30125,7 +30794,13 @@
         "white_goat",
         "wild_rabbit",
         "winter_melon",
-        "winter_melon_vine"
+        "winter_melon_vine",
+        "fox",
+        "owl",
+        "deer",
+        "wolf",
+        "stork",
+        "wild_boar"
       ],
       "targets": [],
       "actor_anchor": "top",
@@ -30827,7 +31502,11 @@
         "warthog",
         "white_goat",
         "wild_rabbit",
-        "mammoth"
+        "mammoth",
+        "fox",
+        "wolf",
+        "deer",
+        "wild_boar"
       ],
       "targets": [],
       "actor_anchor": "root",
@@ -31901,7 +32580,9 @@
         "standing_stones",
         "stone_hut",
         "temple_classic",
-        "windmill"
+        "windmill",
+        "gingerbread_house",
+        "market_stall"
       ],
       "motion": false,
       "channel": "growth"

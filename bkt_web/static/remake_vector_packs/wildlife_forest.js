@@ -376,12 +376,14 @@
     const skinCol = '#f2ceb3';
     const spineCol = '#4e3b2b';
     const tipCol = '#dfccba';
+    const curl = clamp(s.curl || 0);
 
     ctx.save();
-    // 4 chân ngắn xíu
+    // 4 chân ngắn xíu (thu vào trong gai khi cuộn tròn)
     for (const [lx, off] of [[-14, 0], [12, Math.PI], [-6, Math.PI], [18, 0]]) {
-      const sw = -Math.sin(stride + off) * walk * 4;
-      limb(ctx, [[lx, -8], [lx + sw, 0]], skinCol, 4);
+      const sw = -Math.sin(stride + off) * walk * 4 * (1 - curl);
+      const lift = curl * 6;
+      limb(ctx, [[lx, -8 + lift], [lx + sw, lift]], skinCol, 4);
     }
 
     // Thân tròn phủ kín gai nhọn
@@ -404,20 +406,46 @@
       ellipse(ctx, tx, ty, 1.2, 1.2, tipCol, null);
     }
 
-    // Mặt nhọn dễ thương nhô ra phía trước
+    if (curl > 0.2) {
+      // Gai phủ thêm phía trước khi cuộn tròn ngủ
+      for (let i = 0; i < 6; i++) {
+        const u = i / 5;
+        const ang = -0.2 - u * 0.8;
+        const gx = 10 + Math.cos(ang) * 16, gy = -14 - Math.sin(ang) * 16;
+        path(ctx, `M ${gx - 2} ${gy} L ${gx + 5} ${gy - 4} L ${gx + 2} ${gy} Z`, spineCol, null);
+      }
+    }
+
+    // Cuộn tròn ngủ đông: quả cầu gai phủ dần lên thân (curl = 0 không vẽ gì thêm).
+    if (curl > 0) {
+      ctx.save(); ctx.globalAlpha *= clamp(curl * 1.4);
+      ellipse(ctx, 0, -18, 21, 18, volume(ctx, -3, -22, 21, 18, spineCol), INK, 1.6);
+      for (let i = 0; i < 22; i++) {
+        const ang = (i / 22) * Math.PI * 2, gx = Math.cos(ang) * 20, gy = -18 + Math.sin(ang) * 17;
+        const tx = Math.cos(ang) * 26, ty = -18 + Math.sin(ang) * 22;
+        if (ty > -1) continue;
+        path(ctx, `M ${gx - 2} ${gy} L ${tx} ${ty} L ${gx + 2} ${gy} Z`, spineCol, null);
+        ellipse(ctx, tx, ty, 1.2, 1.2, tipCol, null);
+      }
+      ctx.restore();
+    }
+
+    // Mặt nhọn dễ thương nhô ra phía trước (rụt lại khi cuộn tròn)
     ctx.save();
-    const hx = 18, hy = -14;
+    const hx = 18 - curl * 16, hy = -14 + curl * 4;
     path(ctx, `M ${hx - 4} ${hy - 8} Q ${hx + 12} ${hy - 2} ${hx + 14} ${hy} Q ${hx + 10} ${hy + 4} ${hx - 4} ${hy + 4} Z`, skinCol, INK, 1.2);
 
     // Mũi hạt tiêu đen bóng
     ellipse(ctx, hx + 14, hy, 2, 1.8, '#1f1614', null);
     // Ria mép
-    const twitch = Math.sin(t * 8) * 0.8;
-    line(ctx, [[hx + 10, hy - 1], [hx + 18, hy - 4 + twitch]], '#555555', 0.8);
-    line(ctx, [[hx + 10, hy + 1], [hx + 18, hy + 4 - twitch]], '#555555', 0.8);
+    if (curl < 0.6) {
+      const twitch = Math.sin(t * 8) * 0.8;
+      line(ctx, [[hx + 10, hy - 1], [hx + 18, hy - 4 + twitch]], '#555555', 0.8);
+      line(ctx, [[hx + 10, hy + 1], [hx + 18, hy + 4 - twitch]], '#555555', 0.8);
+    }
 
-    // Mắt tròn xoe
-    drawEye(ctx, hx + 4, hy - 3, 2.8, s.blink || 0, 1, '#1b1410');
+    // Mắt tròn xoe (nhắm tít khi ngủ cuộn tròn)
+    drawEye(ctx, hx + 4, hy - 3, 2.8, Math.max(s.blink || 0, curl), 1, '#1b1410');
 
     // Tai tròn nhỏ
     ellipse(ctx, hx - 2, hy - 6, 3, 3.5, skinCol, INK, 0.8);

@@ -3107,3 +3107,255 @@ console.log(JSON.stringify({sameState, playing: f1.states.p.playing}));""", {"ca
         self.assertTrue(out["sameState"], "Phonograph playing state không tất định khi sample lại cùng thời điểm")
         self.assertEqual(out["playing"], 1.0)
 
+
+class PhasePTest(unittest.TestCase):
+    """Plan §25 & Giai đoạn P: Gói văn hoá Đức (de_culture) - rigs, backgrounds, contacts, stories."""
+    _node = PackContractTest._node
+
+    def test_every_de_culture_pack_rig_draws_and_is_in_catalog(self):
+        from bkt_web.remake_vector import catalog
+        cat = catalog()
+        de_rigs = [
+            "schultuete", "advent_wreath", "christmas_tree_decor",
+            "gingerbread_house", "market_stall", "cuckoo_clock",
+            "fox", "owl", "deer", "wolf", "stork", "wild_boar"
+        ]
+        for rig in de_rigs:
+            with self.subTest(rig=rig):
+                self.assertIn(rig, cat["assets"])
+                self.assertEqual(cat["assets"][rig].get("pack"), "de_culture")
+                topics = cat["assets"][rig].get("topics", [])
+                self.assertGreaterEqual(len(topics), 2, f"{rig} cần >= 2 topics")
+                anchors = cat["assets"][rig].get("anchors", {})
+                self.assertIsInstance(anchors, dict)
+                self.assertGreater(len(anchors), 0)
+
+        # Kiểm tra hình nền mới
+        bgs = ["black_forest_village", "christmas_market", "allotment_garden", "alpine_meadow"]
+        for bg in bgs:
+            self.assertIn(bg, cat["backgrounds"])
+            self.assertIn(bg, cat["background_specs"])
+            self.assertEqual(cat["background_specs"][bg].get("ground_y"), 810)
+
+        # Thử vẽ mọi rig mới bằng mock context, không được throw
+        out = self._node(r"""
+globalThis.Path2D=class{constructor(){}addPath(){}};
+const {cat, rigs}=JSON.parse(fs.readFileSync(0,'utf8'));
+const ctx=new Proxy({},{get:(o,k)=>k in o?o[k]:(k==='createLinearGradient'||k==='createRadialGradient')?()=>({addColorStop(){}}):()=>{},set:(o,k,v)=>(o[k]=v,true)});
+const errors=[];
+for(const id of rigs){
+  try {
+    V.kit.RIG_DRAWERS[id](ctx, {...cat.pose_defaults, asset: id, style: {}, id, lit: 2, open: 0.5, curl: 0.5, growth: 1}, 1, cat);
+  } catch(e) {
+    errors.push(id + ': ' + e.message);
+  }
+}
+console.log(JSON.stringify(errors));""", {"cat": cat, "rigs": de_rigs})
+        self.assertEqual(out, [])
+
+        # Kiểm tra hình nền không có text và vẽ được với mọi thời tiết/đêm
+        bg_out = self._node(r"""
+globalThis.Path2D=class{constructor(){}addPath(){}};
+const {cat, bgs}=JSON.parse(fs.readFileSync(0,'utf8'));
+let textCalls = 0;
+const ctx=new Proxy({},{
+  get:(o,k)=>{
+    if(k==='fillText'||k==='strokeText'){ textCalls++; return ()=>{}; }
+    if(k==='createLinearGradient'||k==='createRadialGradient') return ()=>({addColorStop(){}});
+    return ()=>{};
+  },
+  set:(o,k,v)=>(o[k]=v,true)
+});
+const errors=[];
+for(const bg of bgs){
+  const spec = cat.background_specs[bg];
+  for(const night of [false, true]){
+    for(const weather of ['clear','rain','snow','wind','fog','storm','hot']){
+      try {
+        V.BACKGROUNDS[bg].draw(ctx, {night, weather, theme: spec.theme, ground_y: spec.ground_y}, 1.5);
+      } catch(e) {
+        errors.push(bg + ' ' + weather + (night?' night':'') + ': ' + e.message);
+      }
+    }
+  }
+}
+console.log(JSON.stringify({errors, textCalls}));""", {"cat": cat, "bgs": bgs})
+        self.assertEqual(bg_out["errors"], [])
+        self.assertEqual(bg_out["textCalls"], 0, "Hình nền không được vẽ text")
+
+    def test_bremen_musicians_stacking_gap_under_6px(self):
+        from bkt_web.remake_vector import catalog, bremen_musicians_examples
+        cat = catalog()
+        story = bremen_musicians_examples()[0]
+        out = self._node(r"""
+const {story, cat} = JSON.parse(fs.readFileSync(0, 'utf8'));
+const rows = [];
+for (let t = 0.5; t <= 13.5; t += 0.5) {
+  const f = V.sample(story, cat, t);
+  const donkeyBack = V.worldAnchor(cat, f.states.donkey, 'back');
+  const dogRoot = V.worldAnchor(cat, f.states.dog, 'root');
+  const dogBack = V.worldAnchor(cat, f.states.dog, 'back');
+  const catRoot = V.worldAnchor(cat, f.states.cat, 'root');
+  const catBack = V.worldAnchor(cat, f.states.cat, 'back');
+  const roosterRoot = V.worldAnchor(cat, f.states.rooster, 'root');
+  rows.push({
+    t,
+    d_dog_donkey: Math.hypot(dogRoot.x - donkeyBack.x, dogRoot.y - donkeyBack.y),
+    d_cat_dog: Math.hypot(catRoot.x - dogBack.x, catRoot.y - dogBack.y),
+    d_rooster_cat: Math.hypot(roosterRoot.x - catBack.x, roosterRoot.y - catBack.y),
+  });
+}
+console.log(JSON.stringify(rows));""", {"story": story, "cat": cat})
+        for item in out:
+            t = item["t"]
+            self.assertLess(item["d_dog_donkey"], 6.0, f"Chân chó lệch khỏi lưng lừa ở t={t}")
+            self.assertLess(item["d_cat_dog"], 6.0, f"Chân mèo lệch khỏi lưng chó ở t={t}")
+            self.assertLess(item["d_rooster_cat"], 6.0, f"Chân gà lệch khỏi lưng mèo ở t={t}")
+
+    def test_st_martin_lanterns_in_hand_and_night(self):
+        from bkt_web.remake_vector import catalog, st_martin_lanterns_examples
+        cat = catalog()
+        story = st_martin_lanterns_examples()[0]
+        for sc in story["scenes"]:
+            self.assertEqual(sc.get("background", {}).get("time"), "night", "Cảnh rước đèn phải là ban đêm (time: night)")
+        out = self._node(r"""
+const {story, cat} = JSON.parse(fs.readFileSync(0, 'utf8'));
+const rows = [];
+for (let t = 0.5; t <= 13.5; t += 0.5) {
+  const f = V.sample(story, cat, t);
+  const check = (childId, itemId) => {
+    const h = V.worldAnchor(cat, f.states[childId], 'hand_r');
+    const g = V.worldAnchor(cat, f.states[itemId], 'grip');
+    return Math.hypot(h.x - g.x, h.y - g.y);
+  };
+  rows.push({
+    t,
+    d1: check('child_1', 'lantern_1'),
+    d2: check('child_2', 'lantern_2'),
+    d3: check('child_3', 'lantern_3'),
+  });
+}
+console.log(JSON.stringify(rows));""", {"story": story, "cat": cat})
+        for item in out:
+            t = item["t"]
+            self.assertLess(item["d1"], 3.0, f"Đèn 1 lệch khỏi tay ở t={t}")
+            self.assertLess(item["d2"], 3.0, f"Đèn 2 lệch khỏi tay ở t={t}")
+            self.assertLess(item["d3"], 3.0, f"Đèn 3 lệch khỏi tay ở t={t}")
+
+    def test_first_school_day_cone_in_hand_and_walks_forward(self):
+        from bkt_web.remake_vector import catalog, first_school_day_examples
+        cat = catalog()
+        story = first_school_day_examples()[0]
+        out = self._node(r"""
+const {story, cat} = JSON.parse(fs.readFileSync(0, 'utf8'));
+const rows = [];
+for (let t = 0.5; t <= 13.5; t += 0.5) {
+  const f = V.sample(story, cat, t);
+  const h = V.worldAnchor(cat, f.states.pupil, 'hand_r');
+  const g = V.worldAnchor(cat, f.states.cone, 'grip');
+  rows.push({
+    t,
+    d: Math.hypot(h.x - g.x, h.y - g.y),
+    pupil_x: f.states.pupil.x
+  });
+}
+console.log(JSON.stringify(rows));""", {"story": story, "cat": cat})
+        for item in out:
+            self.assertLess(item["d"], 3.0, f"Schultuete lệch khỏi tay ở t={item['t']}")
+        # Người đi từ trái sang phải: x tăng
+        self.assertGreater(out[-1]["pupil_x"], out[0]["pupil_x"], "Người chưa đi từ trái sang phải (x phải tăng)")
+
+    def test_hedgehog_winter_curls_and_weather_snow(self):
+        from bkt_web.remake_vector import catalog, hedgehog_winter_examples
+        cat = catalog()
+        story = hedgehog_winter_examples()[0]
+        sc2 = story["scenes"][1]
+        self.assertEqual(sc2.get("background", {}).get("weather"), "snow", "Cảnh 2 phải có weather: snow")
+        out = self._node(r"""
+const {story, cat} = JSON.parse(fs.readFileSync(0, 'utf8'));
+const fEnd = V.sample(story, cat, 13.5);
+console.log(JSON.stringify({curl: fEnd.states.hedgehog.curl, sleepy: fEnd.states.hedgehog.sleepy}));
+""", {"story": story, "cat": cat})
+        self.assertGreaterEqual(out.get("curl", 0), 0.8, f"Nhím chưa cuộn tròn ở cuối: curl={out.get('curl')}")
+
+    def test_rendered_actor_bounding_box_sizes(self):
+        """MỚI - Quy tắc 15: Kiểm tra kích thước pixel thực tế khi render trên canvas.
+        Đồ cầm tay >= 60 px, thú nhỏ/chim >= 80 px, thú lớn >= 180 px."""
+        from playwright.sync_api import sync_playwright
+        from bkt_web.remake_vector import catalog, engine_sources
+
+        cat = catalog()
+        engine_js = "\n;\n".join(src.read_text(encoding="utf-8") for src in engine_sources())
+
+        actors_to_test = [
+            # handheld props >= 60 px
+            {"asset": "schultuete", "height": 130, "min_size": 60, "kind": "prop"},
+            {"asset": "lantern_star", "height": 150, "min_size": 60, "kind": "prop"},
+            # small animals >= 80 px
+            {"asset": "hedgehog", "height": 180, "min_size": 80, "kind": "small_animal"},
+            {"asset": "cat", "height": 110, "min_size": 80, "kind": "small_animal"},
+            {"asset": "rooster", "height": 95, "min_size": 80, "kind": "small_animal"},
+            # large animals >= 180 px
+            {"asset": "donkey", "height": 240, "min_size": 180, "kind": "large_animal"},
+            {"asset": "dog", "height": 160, "min_size": 120, "kind": "medium_animal"},
+            # new wild animals
+            {"asset": "fox", "height": 160, "min_size": 120, "kind": "medium_animal"},
+            {"asset": "deer", "height": 240, "min_size": 180, "kind": "large_animal"},
+            {"asset": "wolf", "height": 200, "min_size": 160, "kind": "large_animal"},
+            {"asset": "wild_boar", "height": 200, "min_size": 160, "kind": "large_animal"},
+            {"asset": "stork", "height": 220, "min_size": 140, "kind": "bird"},
+            {"asset": "owl", "height": 120, "min_size": 80, "kind": "small_animal"},
+        ]
+
+        with sync_playwright() as p:
+            browser = p.chromium.launch(args=["--disable-gpu", "--disable-gpu-rasterization", "--force-color-profile=srgb"])
+            page = browser.new_page()
+            page.set_content(f"""
+            <html><body>
+            <canvas id="stage" width="576" height="1024"></canvas>
+            <script>{engine_js}</script>
+            <script>
+              window.cat = {json.dumps(cat)};
+              window.measureActor = function(asset, height) {{
+                const canvas = document.getElementById('stage');
+                const ctx = canvas.getContext('2d');
+                ctx.clearRect(0, 0, 576, 1024);
+                ctx.save();
+                ctx.translate(288, 512);
+                const k = height / 100;
+                ctx.scale(k, k);
+                const drawer = RemakeVector.kit.RIG_DRAWERS[asset];
+                if (!drawer) throw new Error('No drawer for ' + asset);
+                const s = {{ ...cat.pose_defaults, asset, height, id: 'test', style: {{}} }};
+                drawer(ctx, s, 1.0, cat);
+                ctx.restore();
+                const img = ctx.getImageData(0, 0, 576, 1024).data;
+                let minX = 576, maxX = -1, minY = 1024, maxY = -1;
+                for (let y = 0; y < 1024; y++) {{
+                  for (let x = 0; x < 576; x++) {{
+                    const a = img[(y * 576 + x) * 4 + 3];
+                    if (a > 10) {{
+                      if (x < minX) minX = x;
+                      if (x > maxX) maxX = x;
+                      if (y < minY) minY = y;
+                      if (y > maxY) maxY = y;
+                    }}
+                  }}
+                }}
+                if (maxX < 0) return {{ w: 0, h: 0, maxDim: 0 }};
+                const w = maxX - minX + 1, h = maxY - minY + 1;
+                return {{ w, h, maxDim: Math.max(w, h) }};
+              }};
+            </script>
+            </body></html>
+            """)
+            for item in actors_to_test:
+                res = page.evaluate("args => measureActor(args[0], args[1])", [item["asset"], item["height"]])
+                with self.subTest(asset=item["asset"]):
+                    self.assertGreaterEqual(
+                        res["maxDim"], item["min_size"],
+                        f"{item['asset']} (cao {item['height']}) có kích thước pixel thực tế {res['w']}x{res['h']} (max={res['maxDim']}px) < ngưỡng {item['min_size']}px"
+                    )
+            browser.close()
+
+

@@ -3478,6 +3478,90 @@
       "063422ef639cf647",
       "063422ef639cf647",
       "063422ef639cf647"
+    ],
+    "schultuete": [
+      "140415efb217baa5",
+      "140415efb217baa5",
+      "140415efb217baa5",
+      "140415efb217baa5",
+      "140415efb217baa5"
+    ],
+    "advent_wreath": [
+      "df0cdcef48f12e49",
+      "df0cdcef48f12e49",
+      "df0cdcef48f12e49",
+      "df0cdcef48f12e49",
+      "df0cdcef48f12e49"
+    ],
+    "christmas_tree_decor": [
+      "3c9602ef4bbac85e",
+      "19f95def584821ee",
+      "2f686def8cecc5cf",
+      "41c03bef2a8747bc",
+      "43d199ef1ff5f63b"
+    ],
+    "gingerbread_house": [
+      "c0a5e5efa1d18b38",
+      "c0a5e5efa1d18b38",
+      "c0a5e5efa1d18b38",
+      "c0a5e5efa1d18b38",
+      "c0a5e5efa1d18b38"
+    ],
+    "market_stall": [
+      "07ecfcef70fd4ca6",
+      "07ecfcef70fd4ca6",
+      "07ecfcef70fd4ca6",
+      "07ecfcef70fd4ca6",
+      "07ecfcef70fd4ca6"
+    ],
+    "cuckoo_clock": [
+      "988b94ef3760436c",
+      "7444b0ef1a12164e",
+      "e429d3efd17ed2a5",
+      "db9326efa70fbd8c",
+      "e26ad8eff855b319"
+    ],
+    "fox": [
+      "8cef77ef096d2cc6",
+      "72a771ef850da40b",
+      "bbe60cef6af11e56",
+      "bd1819ef3be51676",
+      "e6e042ef7cc33790"
+    ],
+    "owl": [
+      "4a1a7fef4bf55ef4",
+      "4a1a7fef4bf55ef4",
+      "4a1a7fef4bf55ef4",
+      "4a1a7fef4bf55ef4",
+      "4a1a7fef4bf55ef4"
+    ],
+    "deer": [
+      "33e516ef11f300b5",
+      "33e516ef11f300b5",
+      "33e516ef11f300b5",
+      "33e516ef11f300b5",
+      "33e516ef11f300b5"
+    ],
+    "wolf": [
+      "c474fdef37f7728f",
+      "ea5e8defed28e83d",
+      "50bcc0ef68f32455",
+      "0fc998efe8696592",
+      "af84dfefa9ac70cd"
+    ],
+    "stork": [
+      "f9b433effa823afe",
+      "f9b433effa823afe",
+      "f9b433effa823afe",
+      "f9b433effa823afe",
+      "f9b433effa823afe"
+    ],
+    "wild_boar": [
+      "703274efbe0d0c4f",
+      "703274efbe0d0c4f",
+      "703274efbe0d0c4f",
+      "703274efbe0d0c4f",
+      "703274efbe0d0c4f"
     ]
   },
   "backgrounds": {
@@ -5316,6 +5400,142 @@
         "bc3ed0ef9196a4f2",
         "ff8dadefbc445afa"
       ]
+    },
+    "black_forest_village": {
+      "day": [
+        "5428c7ef948d8818",
+        "5428c7ef948d8818"
+      ],
+      "night": [
+        "2817d1ef727784d2",
+        "2817d1ef727784d2"
+      ],
+      "rain": [
+        "2e9c4defda3c30f0",
+        "3587c4ef21de24d2"
+      ],
+      "snow": [
+        "323fa1ef84572981",
+        "11ae37ef9ea6d303"
+      ],
+      "wind": [
+        "34fcc6efd46f9990",
+        "5cc20bef9c537f1e"
+      ],
+      "fog": [
+        "aa32cdef7423c8d2",
+        "63bcffeff49149e1"
+      ],
+      "storm": [
+        "7adf99ef558c0281",
+        "c05eb0effeb2fb84"
+      ],
+      "hot": [
+        "d5c559ef76a651b9",
+        "bd50f6ef2d0119a1"
+      ]
+    },
+    "christmas_market": {
+      "day": [
+        "d14338effaa1a421",
+        "6688c0ef1ec89e76"
+      ],
+      "night": [
+        "7cb7aeefef71485a",
+        "9b3ceaef208b571f"
+      ],
+      "rain": [
+        "515413ef3a7997bb",
+        "3cab3bef205c555a"
+      ],
+      "snow": [
+        "f49852ef6cffce4b",
+        "8ea099efdff77acf"
+      ],
+      "wind": [
+        "a2e6bbef35177898",
+        "6d1f0fef85d0b687"
+      ],
+      "fog": [
+        "c1be39ef70169b4e",
+        "42ce9fefa4b17dac"
+      ],
+      "storm": [
+        "b60bdfef0de88d19",
+        "61a0bcef14eb077c"
+      ],
+      "hot": [
+        "bde284ef5d51e0a9",
+        "d018efef0992e545"
+      ]
+    },
+    "allotment_garden": {
+      "day": [
+        "5e7321efed2d1261",
+        "5e7321efed2d1261"
+      ],
+      "night": [
+        "3b0d08ef7bf57cfa",
+        "3b0d08ef7bf57cfa"
+      ],
+      "rain": [
+        "a86c94efe897766e",
+        "672a56ef2a85345f"
+      ],
+      "snow": [
+        "1f1007ef6ea9f3f3",
+        "8693c6efac8b6013"
+      ],
+      "wind": [
+        "922f25efa8985871",
+        "b6eeeeef27dff3c7"
+      ],
+      "fog": [
+        "10e956ef3f0ad485",
+        "bdb6f3ef72efc307"
+      ],
+      "storm": [
+        "f5b032ef26603312",
+        "b1079aefd87a9260"
+      ],
+      "hot": [
+        "be4f24ef07a71ffb",
+        "30ab8def666b0774"
+      ]
+    },
+    "alpine_meadow": {
+      "day": [
+        "234287efe4d12a62",
+        "234287efe4d12a62"
+      ],
+      "night": [
+        "af4a26efc61f9b8d",
+        "af4a26efc61f9b8d"
+      ],
+      "rain": [
+        "8c439bef0a506924",
+        "08a655efaaf1428e"
+      ],
+      "snow": [
+        "3f3f5bef334313ea",
+        "dce3daefa91a3cec"
+      ],
+      "wind": [
+        "7966e4effab4e296",
+        "6b0977ef2f960914"
+      ],
+      "fog": [
+        "f8a5d5ef748734a7",
+        "2e196fef67f8a879"
+      ],
+      "storm": [
+        "7f9b6eef76da55c3",
+        "e70c76ef809dda26"
+      ],
+      "hot": [
+        "f59903efbaa8eba8",
+        "8a6116ef6aa8a7b5"
+      ]
     }
   },
   "stories": {
@@ -5647,6 +5867,34 @@
       "98c255ef2ddd9574",
       "c876a9ef9038cdb5",
       "868a10ef0a127f32"
+    ],
+    "bremen_musicians": [
+      "f8a7bdefd0209298",
+      "a514d7efea0cfc16",
+      "5213edefa0908c90",
+      "7b5ee4efdde7977f",
+      "857ae4ef3e971021"
+    ],
+    "st_martin_lanterns": [
+      "42cc27ef66ee1287",
+      "f2523eef7f81034c",
+      "bca2cfef937b49a0",
+      "88d623eff2d20f69",
+      "ab673aefe1506181"
+    ],
+    "hedgehog_winter": [
+      "ded9a3effeb5d297",
+      "1ffb63efb2a05871",
+      "4c9f0cef38e3bcea",
+      "fb15d1ef957b2466",
+      "fe8e42ef387358f1"
+    ],
+    "first_school_day": [
+      "246dceef3e896d17",
+      "9f0635ef8ea4baa4",
+      "bd978defb049cd16",
+      "758c82ef5c505608",
+      "43197fef2549a4b0"
     ]
   }
 }

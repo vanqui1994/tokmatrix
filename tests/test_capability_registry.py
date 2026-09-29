@@ -562,6 +562,11 @@ class CapabilityRegistryTest(unittest.TestCase):
             "eyeglasses_early": {"wet"}, "toothbrush_early": {"wet"}, "paper_sheet_stack": {"wet"},
             "coin_stack": {"wet"}, "workbench_clutter": {"wet"}, "smartphone": {"wet"},
             "led_bulb": {"wet"},
+            # Phase P German Culture Rigs
+            "schultuete": {"wet"}, "advent_wreath": {"wet"}, "christmas_tree_decor": {"wet"},
+            "gingerbread_house": {"wet"}, "market_stall": {"wet"}, "cuckoo_clock": {"wet"},
+            "fox": {"wet"}, "owl": {"wet"}, "deer": {"wet"}, "wolf": {"wet"},
+            "stork": {"wet"}, "wild_boar": {"wet"},
         }
         self.assertEqual(set(document["assets"]), set(expected))
         for asset_id, states in expected.items():

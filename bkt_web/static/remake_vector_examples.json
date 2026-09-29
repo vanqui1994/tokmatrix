@@ -12907,5 +12907,954 @@
         "expression": "happy"
       }
     ]
+  },
+  {
+    "id": "bremen_musicians",
+    "name": "26 · Truyện ngụ ngôn Grimm: Các nhạc sĩ thành Bremen đánh đuổi toán trộm",
+    "renderer": "native-vector-v1",
+    "fidelity": "technical-demo",
+    "note": "Mẫu kỹ thuật Phase P: Bốn con vật (lừa, chó, mèo, gà trống) đứng chồng trên lưng nhau bằng attach_to, đồng thanh ca hát làm toán cướp hoảng sợ bỏ chạy.",
+    "duration": 14.0,
+    "characters": [
+      {
+        "id": "donkey",
+        "name": "Con lừa (Donkey)",
+        "asset": "donkey"
+      },
+      {
+        "id": "dog",
+        "name": "Con chó",
+        "asset": "dog",
+        "attach_to": {
+          "id": "donkey",
+          "anchor": "back"
+        }
+      },
+      {
+        "id": "cat",
+        "name": "Con mèo",
+        "asset": "cat",
+        "attach_to": {
+          "id": "dog",
+          "anchor": "back"
+        }
+      },
+      {
+        "id": "rooster",
+        "name": "Gà trống",
+        "asset": "rooster",
+        "attach_to": {
+          "id": "cat",
+          "anchor": "back"
+        }
+      },
+      {
+        "id": "robber",
+        "name": "Nông dân",
+        "asset": "farmer"
+      }
+    ],
+    "scenes": [
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 0,
+        "end_time": 6.5,
+        "characters_present": [
+          "donkey",
+          "dog",
+          "cat",
+          "rooster",
+          "robber"
+        ],
+        "poses": {
+          "donkey": [
+            {
+              "time": 0,
+              "x": 180,
+              "y": 810,
+              "height": 240
+            },
+            {
+              "time": 6.5,
+              "x": 180,
+              "y": 810,
+              "height": 240
+            }
+          ],
+          "dog": [
+            {
+              "time": 0,
+              "x": 0,
+              "y": 0,
+              "height": 160
+            },
+            {
+              "time": 6.5,
+              "x": 0,
+              "y": 0,
+              "height": 160
+            }
+          ],
+          "cat": [
+            {
+              "time": 0,
+              "x": 0,
+              "y": 0,
+              "height": 110
+            },
+            {
+              "time": 6.5,
+              "x": 0,
+              "y": 0,
+              "height": 110
+            }
+          ],
+          "rooster": [
+            {
+              "time": 0,
+              "x": 0,
+              "y": 0,
+              "height": 95
+            },
+            {
+              "time": 6.5,
+              "x": 0,
+              "y": 0,
+              "height": 95
+            }
+          ],
+          "robber": [
+            {
+              "time": 0,
+              "x": 400,
+              "y": 810,
+              "height": 300,
+              "expression": "worried",
+              "flip": true
+            },
+            {
+              "time": 6.5,
+              "x": 400,
+              "y": 810,
+              "height": 300,
+              "expression": "worried",
+              "flip": true
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "emote",
+            "start": 0.5,
+            "end": 6.0,
+            "actor": "donkey",
+            "emote": "music"
+          },
+          {
+            "type": "emote",
+            "start": 1.0,
+            "end": 6.0,
+            "actor": "dog",
+            "emote": "music"
+          },
+          {
+            "type": "emote",
+            "start": 1.5,
+            "end": 6.0,
+            "actor": "cat",
+            "emote": "music"
+          },
+          {
+            "type": "emote",
+            "start": 2.0,
+            "end": 6.0,
+            "actor": "rooster",
+            "emote": "music"
+          }
+        ],
+        "background": {
+          "preset": "black_forest_village",
+          "time": "night"
+        },
+        "index": 0,
+        "camera": [
+          {
+            "time": 0,
+            "x": 303.5,
+            "y": 542.01,
+            "zoom": 1.07
+          }
+        ]
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 6.5,
+        "end_time": 14.0,
+        "characters_present": [
+          "donkey",
+          "dog",
+          "cat",
+          "rooster",
+          "robber"
+        ],
+        "poses": {
+          "donkey": [
+            {
+              "time": 6.5,
+              "x": 180,
+              "y": 810,
+              "height": 240
+            },
+            {
+              "time": 14.0,
+              "x": 180,
+              "y": 810,
+              "height": 240
+            }
+          ],
+          "dog": [
+            {
+              "time": 6.5,
+              "x": 0,
+              "y": 0,
+              "height": 160
+            },
+            {
+              "time": 14.0,
+              "x": 0,
+              "y": 0,
+              "height": 160
+            }
+          ],
+          "cat": [
+            {
+              "time": 6.5,
+              "x": 0,
+              "y": 0,
+              "height": 110
+            },
+            {
+              "time": 14.0,
+              "x": 0,
+              "y": 0,
+              "height": 110
+            }
+          ],
+          "rooster": [
+            {
+              "time": 6.5,
+              "x": 0,
+              "y": 0,
+              "height": 95
+            },
+            {
+              "time": 14.0,
+              "x": 0,
+              "y": 0,
+              "height": 95
+            }
+          ],
+          "robber": [
+            {
+              "time": 6.5,
+              "x": 400,
+              "y": 810,
+              "height": 300,
+              "expression": "worried"
+            },
+            {
+              "time": 14.0,
+              "x": 560,
+              "y": 810,
+              "height": 300,
+              "expression": "worried"
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "run_away",
+            "start": 6.8,
+            "end": 13.0,
+            "actor": "robber"
+          },
+          {
+            "type": "celebrate",
+            "start": 7.5,
+            "end": 13.5,
+            "actor": "donkey"
+          },
+          {
+            "type": "celebrate",
+            "start": 7.5,
+            "end": 13.5,
+            "actor": "rooster"
+          }
+        ],
+        "background": {
+          "preset": "black_forest_village",
+          "time": "night"
+        },
+        "index": 1
+      }
+    ],
+    "cues": [
+      {
+        "start": 0.5,
+        "end": 6.0,
+        "character_id": "donkey",
+        "text": "Bốn con vật đứng chồng lên nhau, cùng cất tiếng hát vang dội xua đuổi bóng đêm!",
+        "expression": "happy"
+      },
+      {
+        "start": 7.0,
+        "end": 13.5,
+        "character_id": "donkey",
+        "text": "Tên trộm hoảng sợ tháo chạy thục mạng, các nghệ sĩ Bremen cùng nhau reo mừng chiến thắng!",
+        "expression": "happy"
+      }
+    ]
+  },
+  {
+    "id": "st_martin_lanterns",
+    "name": "27 · Văn hoá truyền thống: Lễ hội rước đèn lồng Sankt Martin ban đêm",
+    "renderer": "native-vector-v1",
+    "fidelity": "technical-demo",
+    "note": "Mẫu kỹ thuật Phase P: Các em nhỏ cầm đèn lồng ngôi sao rực sáng trong đêm, sải bước diễu hành và cất vang bài ca truyền thống.",
+    "duration": 14.0,
+    "characters": [
+      {
+        "id": "child_1",
+        "name": "Bé trai học sinh",
+        "asset": "chibi_boy"
+      },
+      {
+        "id": "lantern_1",
+        "name": "Đèn lồng ngôi sao",
+        "asset": "lantern_star",
+        "attach_to": {
+          "id": "child_1",
+          "anchor": "hand_r"
+        }
+      },
+      {
+        "id": "child_2",
+        "name": "Bé gái học sinh",
+        "asset": "chibi_girl"
+      },
+      {
+        "id": "lantern_2",
+        "name": "Đèn lồng ngôi sao",
+        "asset": "lantern_star",
+        "attach_to": {
+          "id": "child_2",
+          "anchor": "hand_r"
+        }
+      },
+      {
+        "id": "child_3",
+        "name": "Bé mầm non",
+        "asset": "chibi_kid"
+      },
+      {
+        "id": "lantern_3",
+        "name": "Đèn lồng ngôi sao",
+        "asset": "lantern_star",
+        "attach_to": {
+          "id": "child_3",
+          "anchor": "hand_r"
+        }
+      }
+    ],
+    "scenes": [
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 0,
+        "end_time": 6.5,
+        "characters_present": [
+          "child_1",
+          "lantern_1",
+          "child_2",
+          "lantern_2",
+          "child_3",
+          "lantern_3"
+        ],
+        "poses": {
+          "child_1": [
+            {
+              "time": 0,
+              "x": -40,
+              "y": 810,
+              "height": 240
+            },
+            {
+              "time": 6.5,
+              "x": 110,
+              "y": 810,
+              "height": 240
+            }
+          ],
+          "lantern_1": [
+            {
+              "time": 0,
+              "x": -0.0,
+              "y": 9.0,
+              "height": 150,
+              "rotation": 0,
+              "lit": 1.0
+            },
+            {
+              "time": 6.5,
+              "x": -0.0,
+              "y": 9.0,
+              "height": 150,
+              "rotation": 0,
+              "lit": 1.0
+            }
+          ],
+          "child_2": [
+            {
+              "time": 0,
+              "x": 80,
+              "y": 810,
+              "height": 240
+            },
+            {
+              "time": 6.5,
+              "x": 230,
+              "y": 810,
+              "height": 240
+            }
+          ],
+          "lantern_2": [
+            {
+              "time": 0,
+              "x": -0.0,
+              "y": 9.0,
+              "height": 150,
+              "rotation": 0,
+              "lit": 1.0
+            },
+            {
+              "time": 6.5,
+              "x": -0.0,
+              "y": 9.0,
+              "height": 150,
+              "rotation": 0,
+              "lit": 1.0
+            }
+          ],
+          "child_3": [
+            {
+              "time": 0,
+              "x": 200,
+              "y": 810,
+              "height": 220
+            },
+            {
+              "time": 6.5,
+              "x": 350,
+              "y": 810,
+              "height": 220
+            }
+          ],
+          "lantern_3": [
+            {
+              "time": 0,
+              "x": -0.0,
+              "y": 9.0,
+              "height": 150,
+              "rotation": 0,
+              "lit": 1.0
+            },
+            {
+              "time": 6.5,
+              "x": -0.0,
+              "y": 9.0,
+              "height": 150,
+              "rotation": 0,
+              "lit": 1.0
+            }
+          ]
+        },
+        "actions": [],
+        "background": {
+          "preset": "black_forest_village",
+          "time": "night"
+        },
+        "index": 0
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 6.5,
+        "end_time": 14.0,
+        "characters_present": [
+          "child_1",
+          "lantern_1",
+          "child_2",
+          "lantern_2",
+          "child_3",
+          "lantern_3"
+        ],
+        "poses": {
+          "child_1": [
+            {
+              "time": 6.5,
+              "x": 110,
+              "y": 810,
+              "height": 240
+            },
+            {
+              "time": 14.0,
+              "x": 260,
+              "y": 810,
+              "height": 240,
+              "expression": "happy"
+            }
+          ],
+          "lantern_1": [
+            {
+              "time": 6.5,
+              "x": -0.0,
+              "y": 9.0,
+              "height": 150,
+              "rotation": 0,
+              "lit": 1.0
+            },
+            {
+              "time": 14.0,
+              "x": -0.0,
+              "y": 9.0,
+              "height": 150,
+              "rotation": 0,
+              "lit": 1.0
+            }
+          ],
+          "child_2": [
+            {
+              "time": 6.5,
+              "x": 230,
+              "y": 810,
+              "height": 240
+            },
+            {
+              "time": 14.0,
+              "x": 380,
+              "y": 810,
+              "height": 240,
+              "expression": "happy"
+            }
+          ],
+          "lantern_2": [
+            {
+              "time": 6.5,
+              "x": -0.0,
+              "y": 9.0,
+              "height": 150,
+              "rotation": 0,
+              "lit": 1.0
+            },
+            {
+              "time": 14.0,
+              "x": -0.0,
+              "y": 9.0,
+              "height": 150,
+              "rotation": 0,
+              "lit": 1.0
+            }
+          ],
+          "child_3": [
+            {
+              "time": 6.5,
+              "x": 350,
+              "y": 810,
+              "height": 220
+            },
+            {
+              "time": 14.0,
+              "x": 500,
+              "y": 810,
+              "height": 220,
+              "expression": "happy"
+            }
+          ],
+          "lantern_3": [
+            {
+              "time": 6.5,
+              "x": -0.0,
+              "y": 9.0,
+              "height": 150,
+              "rotation": 0,
+              "lit": 1.0
+            },
+            {
+              "time": 14.0,
+              "x": -0.0,
+              "y": 9.0,
+              "height": 150,
+              "rotation": 0,
+              "lit": 1.0
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "emote",
+            "start": 7.0,
+            "end": 13.0,
+            "actor": "child_1",
+            "emote": "heart"
+          },
+          {
+            "type": "emote",
+            "start": 7.5,
+            "end": 13.5,
+            "actor": "child_2",
+            "emote": "music"
+          }
+        ],
+        "background": {
+          "preset": "black_forest_village",
+          "time": "night"
+        },
+        "index": 1
+      }
+    ],
+    "cues": [
+      {
+        "start": 0.5,
+        "end": 6.0,
+        "character_id": "child_1",
+        "text": "Đêm hội rước đèn Thánh Martin, các em nhỏ cầm trên tay những chiếc lồng đèn ngôi sao lấp lánh!",
+        "expression": "happy"
+      },
+      {
+        "start": 7.0,
+        "end": 13.5,
+        "character_id": "child_2",
+        "text": "Ánh sáng ấm áp soi rọi phố phường, các bạn nhỏ tươi cười ca vang những khúc ca rước đèn rộn rã!",
+        "expression": "happy"
+      }
+    ]
+  },
+  {
+    "id": "hedgehog_winter",
+    "name": "28 · Thiên nhiên nước Đức: Chú nhím cuộn tròn ngủ đông giữa rừng tuyết",
+    "renderer": "native-vector-v1",
+    "fidelity": "technical-demo",
+    "note": "Mẫu kỹ thuật Phase P: Chú nhím đi gom lá mùa thu rồi cuộn tròn thành khối gai ngủ đông an toàn khi trời đổ tuyết rơi.",
+    "duration": 14.0,
+    "characters": [
+      {
+        "id": "hedgehog",
+        "name": "Nhím gai (Hedgehog)",
+        "asset": "hedgehog"
+      }
+    ],
+    "scenes": [
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 0,
+        "end_time": 6.0,
+        "characters_present": [
+          "hedgehog"
+        ],
+        "poses": {
+          "hedgehog": [
+            {
+              "time": 0,
+              "x": 160,
+              "y": 810,
+              "height": 180,
+              "curl": 0.0
+            },
+            {
+              "time": 6.0,
+              "x": 280,
+              "y": 810,
+              "height": 180,
+              "curl": 0.0
+            }
+          ]
+        },
+        "actions": [],
+        "background": {
+          "preset": "black_forest_village",
+          "season": "autumn"
+        },
+        "index": 0,
+        "camera": [
+          {
+            "time": 0,
+            "x": 220.0,
+            "y": 646.78,
+            "zoom": 1.757
+          }
+        ]
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 6.0,
+        "end_time": 14.0,
+        "characters_present": [
+          "hedgehog"
+        ],
+        "poses": {
+          "hedgehog": [
+            {
+              "time": 6.0,
+              "x": 280,
+              "y": 810,
+              "height": 180,
+              "curl": 0.0
+            },
+            {
+              "time": 9.5,
+              "x": 280,
+              "y": 810,
+              "height": 180,
+              "curl": 1.0,
+              "sleepy": 1
+            },
+            {
+              "time": 14.0,
+              "x": 280,
+              "y": 810,
+              "height": 180,
+              "curl": 1.0,
+              "sleepy": 1
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "emote",
+            "start": 10.0,
+            "end": 14.0,
+            "actor": "hedgehog",
+            "emote": "zzz"
+          }
+        ],
+        "background": {
+          "preset": "black_forest_village",
+          "weather": "snow"
+        },
+        "index": 1,
+        "camera": [
+          {
+            "time": 6.0,
+            "x": 280.0,
+            "y": 666.64,
+            "zoom": 2.0
+          }
+        ]
+      }
+    ],
+    "cues": [
+      {
+        "start": 0.5,
+        "end": 5.5,
+        "character_id": "hedgehog",
+        "text": "Mùa thu sang, chú nhím nhỏ chăm chỉ gom lá khô chuẩn bị chiếc tổ ấm áp trước khi đông về.",
+        "expression": "neutral"
+      },
+      {
+        "start": 6.5,
+        "end": 13.5,
+        "character_id": "hedgehog",
+        "text": "Tuyết trắng bắt đầu rơi ngập tràn cánh rừng, nhím ta cuộn tròn ngủ say một giấc ngủ đông êm đềm.",
+        "expression": "neutral"
+      }
+    ]
+  },
+  {
+    "id": "first_school_day",
+    "name": "29 · Đời sống văn hoá: Ngày đầu tiên cắp sách tới trường cùng túi quà Schultüte",
+    "renderer": "native-vector-v1",
+    "fidelity": "technical-demo",
+    "note": "Mẫu kỹ thuật Phase P: Học sinh tiểu học Đức ôm chiếc nón quà Schultüte rực rỡ sắc màu, tự tin sải bước tới trường trong ngày khai trường.",
+    "duration": 14.0,
+    "characters": [
+      {
+        "id": "school",
+        "name": "Toà nhà trường học",
+        "asset": "school_building"
+      },
+      {
+        "id": "pupil",
+        "name": "Bé gái học sinh",
+        "asset": "chibi_girl"
+      },
+      {
+        "id": "cone",
+        "name": "Túi quà nhập học (Schultüte)",
+        "asset": "schultuete",
+        "attach_to": {
+          "id": "pupil",
+          "anchor": "hand_r"
+        }
+      }
+    ],
+    "scenes": [
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 0,
+        "end_time": 6.0,
+        "characters_present": [
+          "school",
+          "pupil",
+          "cone"
+        ],
+        "poses": {
+          "school": [
+            {
+              "time": 0,
+              "x": 440,
+              "y": 810,
+              "height": 380,
+              "growth": 1.0
+            },
+            {
+              "time": 6.0,
+              "x": 440,
+              "y": 810,
+              "height": 380,
+              "growth": 1.0
+            }
+          ],
+          "pupil": [
+            {
+              "time": 0,
+              "x": -20,
+              "y": 810,
+              "height": 240
+            },
+            {
+              "time": 6.0,
+              "x": 170,
+              "y": 810,
+              "height": 240
+            }
+          ],
+          "cone": [
+            {
+              "time": 0,
+              "x": -14.131519862597633,
+              "y": 52.73955011538313,
+              "height": 130,
+              "rotation": 15
+            },
+            {
+              "time": 6.0,
+              "x": -14.131519862597633,
+              "y": 52.73955011538313,
+              "height": 130,
+              "rotation": 15
+            }
+          ]
+        },
+        "actions": [],
+        "background": {
+          "preset": "black_forest_village"
+        },
+        "index": 0
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 6.0,
+        "end_time": 14.0,
+        "characters_present": [
+          "school",
+          "pupil",
+          "cone"
+        ],
+        "poses": {
+          "school": [
+            {
+              "time": 6.0,
+              "x": 440,
+              "y": 810,
+              "height": 380,
+              "growth": 1.0
+            },
+            {
+              "time": 14.0,
+              "x": 440,
+              "y": 810,
+              "height": 380,
+              "growth": 1.0
+            }
+          ],
+          "pupil": [
+            {
+              "time": 6.0,
+              "x": 170,
+              "y": 810,
+              "height": 240
+            },
+            {
+              "time": 14.0,
+              "x": 330,
+              "y": 810,
+              "height": 240,
+              "expression": "happy"
+            }
+          ],
+          "cone": [
+            {
+              "time": 6.0,
+              "x": -14.131519862597633,
+              "y": 52.73955011538313,
+              "height": 130,
+              "rotation": 15
+            },
+            {
+              "time": 14.0,
+              "x": -14.131519862597633,
+              "y": 52.73955011538313,
+              "height": 130,
+              "rotation": 15
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "emote",
+            "start": 8.0,
+            "end": 13.5,
+            "actor": "pupil",
+            "emote": "heart"
+          }
+        ],
+        "background": {
+          "preset": "black_forest_village"
+        },
+        "index": 1
+      }
+    ],
+    "cues": [
+      {
+        "start": 0.5,
+        "end": 5.5,
+        "character_id": "pupil",
+        "text": "Ngày đầu tiên cắp sách tới trường, em bé tự hào ôm chiếc túi Schultüte đầy ắp đồ dùng học tập!",
+        "expression": "happy"
+      },
+      {
+        "start": 6.5,
+        "end": 13.5,
+        "character_id": "pupil",
+        "text": "Bước chân rộn rã tiến về ngôi trường thân yêu, lòng ngập tràn niềm vui và sự háo hức khám phá!",
+        "expression": "happy"
+      }
+    ]
   }
 ]
