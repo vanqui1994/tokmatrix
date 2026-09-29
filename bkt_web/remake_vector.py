@@ -250,6 +250,8 @@ def validate_vector_scenes(characters, scenes):
             raise ValueError(f"{cid}: material không có trong thư viện")
         if "outfit" in c and c["outfit"] != "none" and c["outfit"] not in cat.get("outfits", {}):
             raise ValueError(f"{cid}: outfit không có trong thư viện")
+        if "outfit" in c and c["outfit"] != "none" and cat["assets"][c["asset"]].get("group") != "chibi":
+            raise ValueError(f"{cid}: outfit chỉ mặc được cho rig chibi (rig {c['asset']} sẽ bỏ qua nó)")
         if not isinstance(c.get("style", {}), dict):
             raise ValueError(f"{cid}: style phải là object")
         for key, color in c.get("style", {}).items():
@@ -352,6 +354,8 @@ def validate_vector_scenes(characters, scenes):
                         continue
                     elif field == "highlight" and (value is None or isinstance(value, str)):
                         continue
+                    elif field == "outfit" and value != "none" and cat["assets"][cast[cid]["asset"]].get("group") != "chibi":
+                        raise ValueError(f"{cid}: outfit chỉ mặc được cho rig chibi (rig {cast[cid]['asset']} sẽ bỏ qua nó)")
                     elif field == "outfit" and (value == "none" or value in cat.get("outfits", {})):
                         continue
                     elif field == "light" and value in ("red", "yellow", "green", "off"):
@@ -4327,6 +4331,369 @@ def tanabata_wish_examples():
     return [story]
 
 
+def tiger_and_persimmon_examples():
+    """Mẫu kỹ thuật Phase R: Cổ tích Hổ và quả hồng (bản nhẹ nhàng, phi bạo lực)."""
+    cat = catalog()
+
+    def actor(cid, asset, **extra):
+        lbl = cat["assets"][asset].get("label") or cat["assets"][asset].get("spec", {}).get("label") or asset
+        return {"id": cid, "name": lbl, "asset": asset, **extra}
+
+    def pose(t, x, y, h, **extra):
+        return {"time": t, "x": x, "y": y, "height": h, **extra}
+
+    def scene(start, end, poses, actions=(), bg="hanok_village", **extra):
+        return {
+            "renderer": RENDERER,
+            "kind": "scene",
+            "start_time": start,
+            "end_time": end,
+            "characters_present": list(poses),
+            "poses": poses,
+            "actions": list(actions),
+            "background": {"preset": bg, **extra},
+        }
+
+    def action(kind, start, end, target=None, actor_id=None, **extra):
+        return {"type": kind, "start": start, "end": end, **({"target": target} if target else {}), **({"actor": actor_id} if actor_id else {}), **extra}
+
+    p_persimmon = held_pose("persimmon", 60, 0, anchor="grip")
+
+    # Cảnh 1: Hổ lén tới nghe em bé khóc nhè, giật mình sợ hãi khi nghe mẹ bảo cho quả hồng
+    sc1 = scene(0, 6.0, {
+        "tree": [
+            pose(0, 100, 810, 460),
+            pose(6.0, 100, 810, 460),
+        ],
+        "kid": [
+            pose(0, 220, 810, 220, expression="sad"),
+            pose(3.0, 220, 810, 220, expression="sad"),
+            pose(6.0, 220, 810, 220, expression="happy"),
+        ],
+        "tiger": [
+            pose(0, 480, 810, 200, flip=True),
+            pose(3.0, 380, 810, 200, flip=True),
+            pose(6.0, 380, 810, 200, flip=True),
+        ],
+    }, actions=[
+        action("emote", 3.5, 5.5, actor_id="tiger", emote="!"),
+    ], bg="hanok_village")
+
+    # Cảnh 2: Hổ hốt hoảng quay đầu bỏ chạy thật xa (> 180 px), em bé vui vẻ thưởng thức quả hồng
+    sc2 = scene(6.0, 12.0, {
+        "kid": [
+            pose(6.0, 220, 810, 220, expression="happy"),
+            pose(12.0, 220, 810, 220, expression="happy"),
+        ],
+        "persimmon": [
+            pose(6.0, p_persimmon["x"], p_persimmon["y"], 60, rotation=p_persimmon["rotation"]),
+            pose(12.0, p_persimmon["x"], p_persimmon["y"], 60, rotation=p_persimmon["rotation"]),
+        ],
+        "tiger": [
+            pose(6.0, 360, 810, 200, flip=False, expression="worried"),
+            pose(12.0, 560, 810, 200, flip=False, expression="worried"),
+        ],
+    }, actions=[
+        action("run_away", 6.5, 11.5, actor_id="tiger"),
+        action("emote", 7.0, 11.5, actor_id="kid", emote="music"),
+    ], bg="hanok_village")
+
+    story = {
+        "id": "tiger_and_persimmon",
+        "name": "33 · Cổ tích Hàn Quốc: Hổ và quả hồng",
+        "renderer": RENDERER,
+        "fidelity": "technical-demo",
+        "note": "Mẫu kỹ thuật Phase R: Chú hổ ngỡ ngàng tưởng quả hồng đáng sợ hơn mình, giật mình sợ hãi rồi vội vã bỏ chạy xa.",
+        "duration": 12.0,
+        "characters": [
+            actor("tree", "persimmon_tree"),
+            actor("kid", "chibi_kid"),
+            actor("persimmon", "persimmon", attach_to={"id": "kid", "anchor": "hand_r"}),
+            actor("tiger", "cartoon_tiger"),
+        ],
+        "scenes": [sc1, sc2],
+        "cues": [
+            {"start": 0.5, "end": 5.5, "character_id": "kid", "text": "Hổ nghe thấy tiếng em bé nín khóc khi nghe mẹ bảo cho quả hồng, ngỡ quả hồng là quái vật đáng sợ!", "expression": "worried"},
+            {"start": 6.5, "end": 11.5, "character_id": "kid", "text": "Chú hổ vội vã co giò bỏ chạy thật xa, em bé vui vẻ thưởng thức quả hồng ngọt ngào!", "expression": "happy"},
+        ],
+    }
+    for index, item in enumerate(story["scenes"]):
+        item["index"] = index
+    auto_frame(story)
+    validate_story(story)
+    return [story]
+
+
+def kimchi_day_examples():
+    """Mẫu kỹ thuật Phase R: Gia đình cùng nhau muối Kimchi (Gimjang)."""
+    cat = catalog()
+
+    def actor(cid, asset, **extra):
+        lbl = cat["assets"][asset].get("label") or cat["assets"][asset].get("spec", {}).get("label") or asset
+        return {"id": cid, "name": lbl, "asset": asset, **extra}
+
+    def pose(t, x, y, h, **extra):
+        return {"time": t, "x": x, "y": y, "height": h, **extra}
+
+    def scene(start, end, poses, actions=(), bg="hanok_village", **extra):
+        return {
+            "renderer": RENDERER,
+            "kind": "scene",
+            "start_time": start,
+            "end_time": end,
+            "characters_present": list(poses),
+            "poses": poses,
+            "actions": list(actions),
+            "background": {"preset": bg, **extra},
+        }
+
+    def action(kind, start, end, target=None, actor_id=None, **extra):
+        return {"type": kind, "start": start, "end": end, **({"target": target} if target else {}), **({"actor": actor_id} if actor_id else {}), **extra}
+
+    # Cảnh 1: Hai mẹ con cùng nhau khiêng chiếc vại onggi lớn ra sân
+    sc1 = scene(0, 6.0, {
+        "mom": [
+            pose(0, 180, 810, 260, outfit="hanbok"),
+            pose(6.0, 300, 810, 260, outfit="hanbok"),
+        ],
+        "kid": [
+            pose(0, 340, 810, 220, outfit="hanbok"),
+            pose(6.0, 460, 810, 220, outfit="hanbok"),
+        ],
+        "jar": [
+            pose(0, 260, 810, 110),
+            pose(6.0, 380, 810, 110),
+        ],
+    }, actions=[
+        action("carry_together", 0.5, 5.5, actor_id="mom", helper="kid", target="jar"),
+    ], bg="hanok_village")
+
+    # Cảnh 2: Vại onggi đặt bên cạnh bàn soban, mẹ và bé vui tươi làm kimchi
+    sc2 = scene(6.0, 12.0, {
+        "mom": [
+            pose(6.0, 180, 810, 260, outfit="hanbok", expression="happy"),
+            pose(12.0, 180, 810, 260, outfit="hanbok", expression="happy"),
+        ],
+        "table": [
+            pose(6.0, 280, 810, 110),
+            pose(12.0, 280, 810, 110),
+        ],
+        "kimchi": [
+            pose(6.0, 280, 770, 70),
+            pose(12.0, 280, 770, 70),
+        ],
+        "jar": [
+            pose(6.0, 450, 810, 110),
+            pose(12.0, 450, 810, 110),
+        ],
+        "kid": [
+            pose(6.0, 380, 810, 220, outfit="hanbok", flip=True, expression="happy"),
+            pose(12.0, 380, 810, 220, outfit="hanbok", flip=True, expression="happy"),
+        ],
+    }, actions=[
+        action("emote", 7.0, 11.5, actor_id="mom", emote="heart"),
+    ], bg="hanok_village")
+
+    story = {
+        "id": "kimchi_day",
+        "name": "34 · Đời sống Hàn Quốc: Ngày muối Kimchi (Gimjang)",
+        "renderer": RENDERER,
+        "fidelity": "technical-demo",
+        "note": "Mẫu kỹ thuật Phase R: Hai mẹ con khiêng vại onggi chuẩn bị ngày hội muối kimchi truyền thống trong sân nhà Hanok.",
+        "duration": 12.0,
+        "characters": [
+            actor("mom", "chibi_teacher"),
+            actor("kid", "chibi_girl"),
+            actor("jar", "onggi_jar"),
+            actor("table", "low_dining_table_kr"),
+            actor("kimchi", "kimchi"),
+        ],
+        "scenes": [sc1, sc2],
+        "cues": [
+            {"start": 0.5, "end": 5.5, "character_id": "mom", "text": "Mùa đông về, cả gia đình cùng nhau khiêng vại sành onggi chuẩn bị ngày hội muối Kimchi!", "expression": "happy"},
+            {"start": 6.5, "end": 11.5, "character_id": "kid", "text": "Từng bẹ cải thảo ướp đậm gia vị cay nồng được xếp gọn gàng vào vại, ấm áp tình thân gia đình!", "expression": "happy"},
+        ],
+    }
+    for index, item in enumerate(story["scenes"]):
+        item["index"] = index
+    auto_frame(story)
+    validate_story(story)
+    return [story]
+
+
+def seollal_morning_examples():
+    """Mẫu kỹ thuật Phase R: Sáng mùng một Tết Seollal - Cúi lạy chúc Tết (Sebae)."""
+    cat = catalog()
+
+    def actor(cid, asset, **extra):
+        lbl = cat["assets"][asset].get("label") or cat["assets"][asset].get("spec", {}).get("label") or asset
+        return {"id": cid, "name": lbl, "asset": asset, **extra}
+
+    def pose(t, x, y, h, **extra):
+        return {"time": t, "x": x, "y": y, "height": h, **extra}
+
+    def scene(start, end, poses, actions=(), bg="hanok_village", **extra):
+        return {
+            "renderer": RENDERER,
+            "kind": "scene",
+            "start_time": start,
+            "end_time": end,
+            "characters_present": list(poses),
+            "poses": poses,
+            "actions": list(actions),
+            "background": {"preset": bg, **extra},
+        }
+
+    def action(kind, start, end, target=None, actor_id=None, **extra):
+        return {"type": kind, "start": start, "end": end, **({"target": target} if target else {}), **({"actor": actor_id} if actor_id else {}), **extra}
+
+    p_pouch = held_pose("bokjumeoni", 68, 0, anchor="grip")
+
+    # Cảnh 1: Bé mặc Hanbok quỳ trên đệm Sebae thực hiện động tác bow chúc Tết ông bà
+    sc1 = scene(0, 6.0, {
+        "grandpa": [
+            pose(0, 160, 810, 240, outfit="hanbok", expression="happy"),
+            pose(6.0, 160, 810, 240, outfit="hanbok", expression="happy"),
+        ],
+        "cushion": [
+            pose(0, 360, 810, 104),
+            pose(6.0, 360, 810, 104),
+        ],
+        "kid": [
+            pose(0, 360, 810, 220, outfit="hanbok", flip=True),
+            pose(6.0, 360, 810, 220, outfit="hanbok", flip=True),
+        ],
+        "pouch": [
+            pose(0, p_pouch["x"], p_pouch["y"], 68, rotation=p_pouch["rotation"]),
+            pose(6.0, p_pouch["x"], p_pouch["y"], 68, rotation=p_pouch["rotation"]),
+        ],
+    }, actions=[
+        action("bow", 1.0, 4.5, actor_id="kid"),
+    ], bg="kr_school")
+
+    # Cảnh 2: Sau khi nhận túi phúc, bé hào hứng ra sân làng Hanok thả diều bay cao dần
+    sc2 = scene(6.0, 12.0, {
+        "kid": [
+            pose(6.0, 180, 810, 220, outfit="hanbok", expression="happy"),
+            pose(12.0, 260, 810, 220, outfit="hanbok", expression="happy"),
+        ],
+        "kite": [
+            pose(6.0, 260, 720, 220),
+            pose(12.0, 420, 420, 220),
+        ],
+    }, bg="hanok_village", weather="clear")
+
+    story = {
+        "id": "seollal_morning",
+        "name": "35 · Văn hoá Tết Hàn Quốc: Sáng mùng một Tết Seollal",
+        "renderer": RENDERER,
+        "fidelity": "technical-demo",
+        "note": "Mẫu kỹ thuật Phase R: Nghi thức Sebae đầu xuân, nhận túi phúc Bokjumeoni và thả diều cầu may mắn đầu năm.",
+        "duration": 12.0,
+        "characters": [
+            actor("grandpa", "chibi_grandpa"),
+            actor("cushion", "sebae_cushion"),
+            actor("kid", "chibi_boy"),
+            actor("pouch", "bokjumeoni", attach_to={"id": "kid", "anchor": "hand_r"}),
+            actor("kite", "kite"),
+        ],
+        "scenes": [sc1, sc2],
+        "cues": [
+            {"start": 0.5, "end": 5.5, "character_id": "kid", "text": "Sáng mùng một Tết Seollal, em bé mặc Hanbok cúi đầu lạy chúc Tết ông bà trường thọ an khang!", "expression": "happy"},
+            {"start": 6.5, "end": 11.5, "character_id": "kid", "text": "Cầm trên tay chiếc túi phúc Bokjumeoni đỏ thắm, bé vui tươi chạy ra sân thả cánh diều no gió bay vút lên trời xanh!", "expression": "happy"},
+        ],
+    }
+    for index, item in enumerate(story["scenes"]):
+        item["index"] = index
+    auto_frame(story)
+    validate_story(story)
+    return [story]
+
+
+def rain_gauge_examples():
+    """Mẫu kỹ thuật Phase R: Khoa học Joseon - Dụng cụ đo mưa Cheugugi."""
+    cat = catalog()
+
+    def actor(cid, asset, **extra):
+        lbl = cat["assets"][asset].get("label") or cat["assets"][asset].get("spec", {}).get("label") or asset
+        return {"id": cid, "name": lbl, "asset": asset, **extra}
+
+    def pose(t, x, y, h, **extra):
+        return {"time": t, "x": x, "y": y, "height": h, **extra}
+
+    def scene(start, end, poses, actions=(), bg="joseon_palace_generic", **extra):
+        return {
+            "renderer": RENDERER,
+            "kind": "scene",
+            "start_time": start,
+            "end_time": end,
+            "characters_present": list(poses),
+            "poses": poses,
+            "actions": list(actions),
+            "background": {"preset": bg, **extra},
+        }
+
+    def action(kind, start, end, target=None, actor_id=None, **extra):
+        return {"type": kind, "start": start, "end": end, **({"target": target} if target else {}), **({"actor": actor_id} if actor_id else {}), **extra}
+
+    # Cảnh 1: Trời đổ mưa, mực nước trong ống đo mưa Cheugugi tăng đơn điệu
+    sc1 = scene(0, 5.0, {
+        "scholar": [
+            pose(0, 180, 810, 240, outfit="joseon_scholar", expression="neutral"),
+            pose(5.0, 180, 810, 240, outfit="joseon_scholar", expression="happy"),
+        ],
+        "gauge": [
+            pose(0, 360, 810, 240, fill=0.15),
+            pose(2.5, 360, 810, 240, fill=0.45),
+            pose(5.0, 360, 810, 240, fill=0.75),
+        ],
+    }, actions=[
+        action("emote", 2.0, 4.5, actor_id="scholar", emote="idea"),
+    ], bg="joseon_palace_generic", weather="rain")
+
+    # Cảnh 2: Mưa tiếp tục rơi, mực nước đo đạt mức đầy, nhà thiên văn ghi chép vào cuộn giấy
+    sc2 = scene(5.0, 10.0, {
+        "scholar": [
+            pose(5.0, 180, 810, 240, outfit="joseon_scholar", expression="happy"),
+            pose(10.0, 220, 810, 240, outfit="joseon_scholar", expression="happy"),
+        ],
+        "gauge": [
+            pose(5.0, 360, 810, 240, fill=0.75),
+            pose(10.0, 360, 810, 240, fill=0.95),
+        ],
+        "scroll": [
+            pose(5.0, 440, 810, 90),
+            pose(10.0, 440, 810, 90),
+        ],
+    }, actions=[
+        action("emote", 6.5, 9.5, actor_id="scholar", emote="music"),
+    ], bg="joseon_palace_generic", weather="rain")
+
+    story = {
+        "id": "rain_gauge",
+        "name": "36 · Khoa học thời Joseon: Đo mưa với dụng cụ Cheugugi",
+        "renderer": RENDERER,
+        "fidelity": "technical-demo",
+        "note": "Mẫu kỹ thuật Phase R: Nhà thiên văn học đo lượng nước mưa chuẩn xác bằng dụng cụ Cheugugi đặt trước sân cung điện Joseon.",
+        "duration": 10.0,
+        "characters": [
+            actor("scholar", "chibi_boy"),
+            actor("gauge", "rain_gauge"),
+            actor("scroll", "hangul_brush_scroll"),
+        ],
+        "scenes": [sc1, sc2],
+        "cues": [
+            {"start": 0.5, "end": 4.5, "character_id": "scholar", "text": "Trời đổ cơn mưa rào, dụng cụ đo mưa Cheugugi bằng đồng bắt đầu hứng từng giọt nước mưa quý giá!", "expression": "happy"},
+            {"start": 5.5, "end": 9.5, "character_id": "scholar", "text": "Mực nước dâng lên rõ rệt trên vạch thước đo, giúp ghi nhận chính xác lượng mưa cho mùa màng bội thu!", "expression": "happy"},
+        ],
+    }
+    for index, item in enumerate(story["scenes"]):
+        item["index"] = index
+    auto_frame(story)
+    validate_story(story)
+    return [story]
+
+
 def auto_frame(story: dict, max_zoom: float = 2.0) -> dict:
     """Đặt camera tĩnh cho mỗi cảnh chưa có camera để nhóm nhân vật nhỏ (tế bào, vi khuẩn) chiếm ~85% bề ngang.
 
@@ -4354,7 +4721,7 @@ def auto_frame(story: dict, max_zoom: float = 2.0) -> dict:
     return story
 
 def sample_stories():
-    """Every sample the library ships: farm stories, articulated hands, IK, fishing, sea monsters, orchard harvest, trellis, highland, vegetable cutaway, safe spraying, giant radish, handwashing, doctor visit, tooth care, nutrition, Phase I body world, Phase K recycling, Phase L safety, Phase M ancient history, Phase O inventions, Phase P German culture, and Phase Q Japanese culture stories."""
+    """Every sample the library ships: farm stories, articulated hands, IK, fishing, sea monsters, orchard harvest, trellis, highland, vegetable cutaway, safe spraying, giant radish, handwashing, doctor visit, tooth care, nutrition, Phase I body world, Phase K recycling, Phase L safety, Phase M ancient history, Phase O inventions, Phase P German culture, Phase Q Japanese culture, and Phase R Korean culture stories."""
     return (
         examples() + agriculture_examples() + farm_life_examples() + farm_animals_examples() +
         articulation_examples() + ik_examples() + fishing_examples() + monster_examples() +
@@ -4369,7 +4736,8 @@ def sample_stories():
         silk_road_caravan_examples() + first_olympics_examples() +
         first_flight_examples() + printing_press_examples() + first_car_examples() + then_and_now_examples() +
         bremen_musicians_examples() + st_martin_lanterns_examples() + hedgehog_winter_examples() + first_school_day_examples() +
-        momotaro_examples() + bento_morning_examples() + school_cleaning_examples() + tanabata_wish_examples()
+        momotaro_examples() + bento_morning_examples() + school_cleaning_examples() + tanabata_wish_examples() +
+        tiger_and_persimmon_examples() + kimchi_day_examples() + seollal_morning_examples() + rain_gauge_examples()
     )
 
 

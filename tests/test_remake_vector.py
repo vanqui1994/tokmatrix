@@ -3642,4 +3642,285 @@ console.log(JSON.stringify({
             browser.close()
 
 
+class PhaseRTest(unittest.TestCase):
+    """Plan §27 & Giai đoạn R: Văn hoá Hàn Quốc (kr_culture) - rigs, backgrounds, contacts, và stories."""
+    _node = PackContractTest._node
+
+    def test_every_kr_culture_rig_draws_and_is_in_catalog(self):
+        from bkt_web.remake_vector import catalog
+        cat = catalog()
+        kr_rigs = [
+            "hangul_brush_scroll", "yut_sticks", "jegi", "gourd",
+            "low_dining_table_kr", "sebae_cushion", "bokjumeoni",
+            "swallow", "magpie"
+        ]
+        for rig in kr_rigs:
+            with self.subTest(rig=rig):
+                self.assertIn(rig, cat["assets"], f"{rig} phải có trong catalog")
+                self.assertEqual(cat["assets"][rig].get("pack"), "kr_culture")
+                anchors = cat["assets"][rig].get("anchors", {})
+                self.assertIn("root", anchors, f"{rig} thiếu anchor root")
+                self.assertIn("top", anchors, f"{rig} thiếu anchor top")
+
+        out = self._node(r"""
+globalThis.Path2D=class{constructor(){}addPath(){}};
+const {cat, rigs} = JSON.parse(fs.readFileSync(0, 'utf8'));
+const ctx = new Proxy({}, {
+  get: (o, k) => k in o ? o[k] : (k === 'createLinearGradient' || k === 'createRadialGradient') ? () => ({ addColorStop() {} }) : () => {},
+  set: (o, k, v) => (o[k] = v, true)
+});
+const errors = [];
+for (const rig of rigs) {
+  const drawer = RemakeVector.kit.RIG_DRAWERS[rig];
+  if (!drawer) {
+    errors.push(`Thiếu drawer cho rig ${rig}`);
+    continue;
+  }
+  const s = { ...cat.pose_defaults, asset: rig, height: 100, x: 288, y: 512, rotation: 0, flip: false, style: {} };
+  try {
+    drawer(ctx, s, 1.0, cat);
+  } catch (e) {
+    errors.push(`Lỗi khi vẽ ${rig}: ${e.message}`);
+  }
+}
+console.log(JSON.stringify(errors));""", {"cat": cat, "rigs": kr_rigs})
+        self.assertEqual(out, [], f"Các rig bị lỗi vẽ: {out}")
+
+    def test_kr_culture_backgrounds_render_all_weathers_without_text(self):
+        from bkt_web.remake_vector import catalog
+        cat = catalog()
+        bgs = ["hanok_village", "joseon_palace_generic", "kr_market", "kr_school", "apartment_street"]
+        for bg in bgs:
+            self.assertIn(bg, cat["backgrounds"])
+            self.assertIn(bg, cat["background_specs"])
+            self.assertEqual(cat["background_specs"][bg]["ground_y"], 810)
+
+        bg_out = self._node(r"""
+globalThis.Path2D=class{constructor(){}addPath(){}};
+const {cat, bgs}=JSON.parse(fs.readFileSync(0,'utf8'));
+let textCalls = 0;
+const ctx=new Proxy({},{
+  get:(o,k)=>{
+    if(k==='fillText'||k==='strokeText'){ textCalls++; return ()=>{}; }
+    if(k==='createLinearGradient'||k==='createRadialGradient') return ()=>({addColorStop(){}});
+    return ()=>{};
+  },
+  set:(o,k,v)=>(o[k]=v,true)
+});
+const errors=[];
+for(const bg of bgs){
+  const spec = cat.background_specs[bg];
+  for(const night of [false, true]){
+    for(const weather of ['clear','rain','snow','wind','fog','storm','hot']){
+      try {
+        V.BACKGROUNDS[bg].draw(ctx, {night, weather, theme: spec.theme, ground_y: spec.ground_y, dirty: 0.5}, 1.5);
+      } catch(e) {
+        errors.push(bg + ' ' + weather + (night?' night':'') + ': ' + e.message);
+      }
+    }
+  }
+}
+console.log(JSON.stringify({errors, textCalls}));""", {"cat": cat, "bgs": bgs})
+        self.assertEqual(bg_out["errors"], [])
+        self.assertEqual(bg_out["textCalls"], 0, "Hình nền không được vẽ text")
+
+    def test_tiger_and_persimmon_travel_distance_and_peaceful_ending(self):
+        from bkt_web.remake_vector import catalog, tiger_and_persimmon_examples
+        cat = catalog()
+        story = tiger_and_persimmon_examples()[0]
+        # Cảnh 1 có emote !
+        sc1 = story["scenes"][0]
+        emotes = [a["emote"] for a in sc1.get("actions", []) if a["type"] == "emote"]
+        self.assertIn("!", emotes, "Hổ phải emote '!' khi giật mình sợ hãi")
+
+        # Cảnh 2 hổ bỏ chạy xa >= 150 px
+        sc2 = story["scenes"][1]
+        keys = sc2["poses"]["tiger"]
+        dx = abs(keys[-1]["x"] - keys[0]["x"])
+        self.assertGreaterEqual(dx, 150.0, f"Hổ chạy {dx}px < 150px")
+
+        # Không có hành động bạo lực (slash, charge, strike*)
+        for sc in story["scenes"]:
+            for a in sc.get("actions", []):
+                atype = a["type"]
+                self.assertNotIn(atype, ["slash", "charge", "strike", "strike_infected"], f"Không được có hành động bạo lực: {atype}")
+
+    def test_kimchi_day_carry_together_hands_to_handles(self):
+        from bkt_web.remake_vector import catalog, kimchi_day_examples
+        cat = catalog()
+        story = kimchi_day_examples()[0]
+        out = self._node(r"""
+const {story, cat} = JSON.parse(fs.readFileSync(0, 'utf8'));
+const rows = [];
+for (let t = 1.5; t <= 5.0; t += 0.5) {
+  const f = V.sample(story, cat, t);
+  const jarL = V.worldAnchor(cat, f.states.jar, 'grip_l');
+  const jarR = V.worldAnchor(cat, f.states.jar, 'grip_r');
+  const momHand = V.worldAnchor(cat, f.states.mom, 'hand_r');
+  const kidHand = V.worldAnchor(cat, f.states.kid, 'hand_l');
+  rows.push({
+    t,
+    d_mom: Math.hypot(momHand.x - jarL.x, momHand.y - jarL.y),
+    d_kid: Math.hypot(kidHand.x - jarR.x, kidHand.y - jarR.y)
+  });
+}
+console.log(JSON.stringify(rows));""", {"story": story, "cat": cat})
+        for item in out:
+            self.assertLess(item["d_mom"], 10.0, f"Tay mẹ lệch khỏi quai vại tại t={item['t']} ({item['d_mom']}px)")
+            self.assertLess(item["d_kid"], 10.0, f"Tay bé lệch khỏi quai vại tại t={item['t']} ({item['d_kid']}px)")
+
+    def test_seollal_morning_bow_lowers_head_and_holds_and_kite_rises(self):
+        from bkt_web.remake_vector import catalog, seollal_morning_examples
+        cat = catalog()
+        story = seollal_morning_examples()[0]
+        out = self._node(r"""
+const {story, cat} = JSON.parse(fs.readFileSync(0, 'utf8'));
+const rows = [];
+for (let t = 0.5; t <= 5.5; t += 0.5) {
+  const f = V.sample(story, cat, t);
+  const head = V.worldAnchor(cat, f.states.kid, 'head_top');
+  const hand = V.worldAnchor(cat, f.states.kid, 'hand_r');
+  const pouch = V.worldAnchor(cat, f.states.pouch, 'grip');
+  rows.push({
+    t,
+    head_y: head.y,
+    d_pouch: Math.hypot(hand.x - pouch.x, hand.y - pouch.y)
+  });
+}
+console.log(JSON.stringify(rows));""", {"story": story, "cat": cat})
+        standing_head_y = out[0]["head_y"]
+        bowing_head_y = out[-1]["head_y"]
+        head_drop = bowing_head_y - standing_head_y
+        self.assertGreaterEqual(head_drop, 20.0, f"Động tác bow phải hạ thấp đầu >= 20px (thực tế: {head_drop}px)")
+
+        # Kiểm tra giữ tư thế tới hết cảnh
+        for item in out[8:]:  # t >= 4.5
+            self.assertGreaterEqual(item["head_y"] - standing_head_y, 20.0, f"Bow phải giữ tới hết tại t={item['t']}")
+            self.assertLess(item["d_pouch"], 3.0, f"Túi phúc lệch khỏi tay tại t={item['t']} ({item['d_pouch']}px)")
+
+        # Cảnh 2 thả diều lên cao dần (y diều giảm đơn điệu)
+        sc2 = story["scenes"][1]
+        keys = sc2["poses"]["kite"]
+        y_start = keys[0]["y"]
+        y_end = keys[-1]["y"]
+        self.assertLess(y_end, y_start - 100.0, f"Diều phải bay lên cao: y_start={y_start}, y_end={y_end}")
+
+    def test_rain_gauge_fill_increases_monotonically_in_rain(self):
+        from bkt_web.remake_vector import catalog, rain_gauge_examples
+        cat = catalog()
+        story = rain_gauge_examples()[0]
+        for sc in story["scenes"]:
+            self.assertEqual(sc.get("background", {}).get("weather"), "rain", "Cảnh đo mưa phải có weather: rain")
+
+        out = self._node(r"""
+const {story, cat} = JSON.parse(fs.readFileSync(0, 'utf8'));
+const rows = [];
+for (let t = 0.5; t <= 9.5; t += 0.5) {
+  const f = V.sample(story, cat, t);
+  rows.push({ t, fill: f.states.gauge.fill });
+}
+console.log(JSON.stringify(rows));""", {"story": story, "cat": cat})
+        prev_fill = -0.01
+        for item in out:
+            self.assertGreaterEqual(item["fill"], prev_fill - 1e-4, f"Mực nước không tăng đơn điệu tại t={item['t']}")
+            prev_fill = item["fill"]
+        self.assertGreaterEqual(out[-1]["fill"], 0.8, "Mực nước cuối phải đạt đầy ống đo")
+
+    def test_all_emotes_in_stories_belong_to_emote_symbols(self):
+        from bkt_web.remake_vector import (
+            EMOTE_SYMBOLS,
+            tiger_and_persimmon_examples,
+            kimchi_day_examples,
+            seollal_morning_examples,
+            rain_gauge_examples
+        )
+        stories = [
+            tiger_and_persimmon_examples()[0],
+            kimchi_day_examples()[0],
+            seollal_morning_examples()[0],
+            rain_gauge_examples()[0]
+        ]
+        for story in stories:
+            for sc in story["scenes"]:
+                for a in sc.get("actions", []):
+                    if a.get("type") == "emote":
+                        emote_val = a.get("emote")
+                        self.assertIn(emote_val, EMOTE_SYMBOLS, f"{story['id']}: emote '{emote_val}' không nằm trong EMOTE_SYMBOLS")
+
+    def test_real_canvas_pixel_bounding_box_sizes(self):
+        from bkt_web.remake_vector import catalog, engine_sources
+        from playwright.sync_api import sync_playwright
+        cat = catalog()
+        engine_js = "\n;\n".join(src.read_text(encoding="utf-8") for src in engine_sources())
+
+        actors_to_test = [
+            # handheld props >= 60 px
+            {"asset": "hangul_brush_scroll", "height": 100, "min_size": 60, "kind": "prop"},
+            {"asset": "yut_sticks", "height": 100, "min_size": 60, "kind": "prop"},
+            {"asset": "jegi", "height": 100, "min_size": 60, "kind": "prop"},
+            {"asset": "gourd", "height": 100, "min_size": 60, "kind": "prop"},
+            {"asset": "bokjumeoni", "height": 100, "min_size": 60, "kind": "prop"},
+            # small beasts / birds >= 80 px
+            {"asset": "swallow", "height": 120, "min_size": 80, "kind": "bird"},
+            {"asset": "magpie", "height": 120, "min_size": 80, "kind": "bird"},
+            # furniture / cushions >= 100 px
+            {"asset": "low_dining_table_kr", "height": 100, "min_size": 100, "kind": "furniture"},
+            {"asset": "sebae_cushion", "height": 100, "min_size": 100, "kind": "furniture"},
+            # large animals >= 180 px
+            {"asset": "cartoon_tiger", "height": 200, "min_size": 180, "kind": "large_animal"},
+        ]
+
+        with sync_playwright() as p:
+            browser = p.chromium.launch(args=["--disable-gpu", "--disable-gpu-rasterization", "--force-color-profile=srgb"])
+            page = browser.new_page()
+            page.set_content(f"""
+            <html><body>
+            <canvas id="stage" width="576" height="1024"></canvas>
+            <script>{engine_js}</script>
+            <script>
+              window.cat = {json.dumps(cat)};
+              window.measureActor = function(asset, height) {{
+                const canvas = document.getElementById('stage');
+                const ctx = canvas.getContext('2d');
+                ctx.clearRect(0, 0, 576, 1024);
+                ctx.save();
+                ctx.translate(288, 512);
+                const k = height / 100;
+                ctx.scale(k, k);
+                const drawer = RemakeVector.kit.RIG_DRAWERS[asset];
+                if (!drawer) throw new Error('No drawer for ' + asset);
+                const s = {{ ...cat.pose_defaults, asset, height, id: 'test', style: {{}} }};
+                drawer(ctx, s, 1.0, cat);
+                ctx.restore();
+                const img = ctx.getImageData(0, 0, 576, 1024).data;
+                let minX = 576, maxX = -1, minY = 1024, maxY = -1;
+                for (let y = 0; y < 1024; y++) {{
+                  for (let x = 0; x < 576; x++) {{
+                    const a = img[(y * 576 + x) * 4 + 3];
+                    if (a > 10) {{
+                      if (x < minX) minX = x;
+                      if (x > maxX) maxX = x;
+                      if (y < minY) minY = y;
+                      if (y > maxY) maxY = y;
+                    }}
+                  }}
+                }}
+                if (maxX < 0) return {{ w: 0, h: 0, maxDim: 0 }};
+                const w = maxX - minX + 1, h = maxY - minY + 1;
+                return {{ w, h, maxDim: Math.max(w, h) }};
+              }};
+            </script>
+            </body></html>
+            """)
+            for item in actors_to_test:
+                res = page.evaluate("args => measureActor(args[0], args[1])", [item["asset"], item["height"]])
+                with self.subTest(asset=item["asset"]):
+                    self.assertGreaterEqual(
+                        res["maxDim"], item["min_size"],
+                        f"{item['asset']} (cao {item['height']}) có kích thước pixel thực tế {res['w']}x{res['h']} (max={res['maxDim']}px) < ngưỡng {item['min_size']}px"
+                    )
+            browser.close()
+
+
+
 

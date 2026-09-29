@@ -572,6 +572,10 @@ class CapabilityRegistryTest(unittest.TestCase):
             "paper_lantern_jp": {"wet"}, "school_bag_randoseru": {"wet"}, "train_ticket_gate": {"wet"},
             "pheasant": {"wet"}, "crab": {"wet"}, "tanuki": {"wet"}, "crane": {"wet"},
             "koi": {"hooked", "mouth", "wet"}, "snow_monkey": {"wet"},
+            # Phase R Korean Culture Rigs
+            "hangul_brush_scroll": {"wet"}, "yut_sticks": {"wet"}, "jegi": {"wet"},
+            "gourd": {"wet"}, "low_dining_table_kr": {"wet"}, "sebae_cushion": {"wet"},
+            "bokjumeoni": {"wet"}, "swallow": {"wet"}, "magpie": {"wet"},
         }
         self.assertEqual(set(document["assets"]), set(expected))
         for asset_id, states in expected.items():

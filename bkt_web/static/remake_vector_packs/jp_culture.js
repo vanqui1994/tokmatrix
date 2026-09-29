@@ -673,6 +673,7 @@
   // -------------------------------------------------------------
   function drawCrane(ctx, s, t) {
     ctx.save();
+    ctx.scale(0.8, 0.8);  // hình gốc cao ~125 đơn vị: thu về trong khung 100 (anchor catalog đã nhân 0.8)
     const walk = s.walk ?? 0, stride = s.stride ?? 0;
     const legCol = '#334155';
 

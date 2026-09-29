@@ -14736,5 +14736,875 @@
         "expression": "happy"
       }
     ]
+  },
+  {
+    "id": "tiger_and_persimmon",
+    "name": "33 · Cổ tích Hàn Quốc: Hổ và quả hồng",
+    "renderer": "native-vector-v1",
+    "fidelity": "technical-demo",
+    "note": "Mẫu kỹ thuật Phase R: Chú hổ ngỡ ngàng tưởng quả hồng đáng sợ hơn mình, giật mình sợ hãi rồi vội vã bỏ chạy xa.",
+    "duration": 12.0,
+    "characters": [
+      {
+        "id": "tree",
+        "name": "Cây hồng",
+        "asset": "persimmon_tree"
+      },
+      {
+        "id": "kid",
+        "name": "Bé mầm non",
+        "asset": "chibi_kid"
+      },
+      {
+        "id": "persimmon",
+        "name": "Hồng",
+        "asset": "persimmon",
+        "attach_to": {
+          "id": "kid",
+          "anchor": "hand_r"
+        }
+      },
+      {
+        "id": "tiger",
+        "name": "Hổ vằn hoạt hình (Cartoon Tiger)",
+        "asset": "cartoon_tiger"
+      }
+    ],
+    "scenes": [
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 0,
+        "end_time": 6.0,
+        "characters_present": [
+          "tree",
+          "kid",
+          "tiger"
+        ],
+        "poses": {
+          "tree": [
+            {
+              "time": 0,
+              "x": 100,
+              "y": 810,
+              "height": 460
+            },
+            {
+              "time": 6.0,
+              "x": 100,
+              "y": 810,
+              "height": 460
+            }
+          ],
+          "kid": [
+            {
+              "time": 0,
+              "x": 220,
+              "y": 810,
+              "height": 220,
+              "expression": "sad"
+            },
+            {
+              "time": 3.0,
+              "x": 220,
+              "y": 810,
+              "height": 220,
+              "expression": "sad"
+            },
+            {
+              "time": 6.0,
+              "x": 220,
+              "y": 810,
+              "height": 220,
+              "expression": "happy"
+            }
+          ],
+          "tiger": [
+            {
+              "time": 0,
+              "x": 480,
+              "y": 810,
+              "height": 200,
+              "flip": true
+            },
+            {
+              "time": 3.0,
+              "x": 380,
+              "y": 810,
+              "height": 200,
+              "flip": true
+            },
+            {
+              "time": 6.0,
+              "x": 380,
+              "y": 810,
+              "height": 200,
+              "flip": true
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "emote",
+            "start": 3.5,
+            "end": 5.5,
+            "actor": "tiger",
+            "emote": "!"
+          }
+        ],
+        "background": {
+          "preset": "hanok_village"
+        },
+        "index": 0
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 6.0,
+        "end_time": 12.0,
+        "characters_present": [
+          "kid",
+          "persimmon",
+          "tiger"
+        ],
+        "poses": {
+          "kid": [
+            {
+              "time": 6.0,
+              "x": 220,
+              "y": 810,
+              "height": 220,
+              "expression": "happy"
+            },
+            {
+              "time": 12.0,
+              "x": 220,
+              "y": 810,
+              "height": 220,
+              "expression": "happy"
+            }
+          ],
+          "persimmon": [
+            {
+              "time": 6.0,
+              "x": -0.0,
+              "y": 45.0,
+              "height": 60,
+              "rotation": 0
+            },
+            {
+              "time": 12.0,
+              "x": -0.0,
+              "y": 45.0,
+              "height": 60,
+              "rotation": 0
+            }
+          ],
+          "tiger": [
+            {
+              "time": 6.0,
+              "x": 360,
+              "y": 810,
+              "height": 200,
+              "flip": false,
+              "expression": "worried"
+            },
+            {
+              "time": 12.0,
+              "x": 560,
+              "y": 810,
+              "height": 200,
+              "flip": false,
+              "expression": "worried"
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "run_away",
+            "start": 6.5,
+            "end": 11.5,
+            "actor": "tiger"
+          },
+          {
+            "type": "emote",
+            "start": 7.0,
+            "end": 11.5,
+            "actor": "kid",
+            "emote": "music"
+          }
+        ],
+        "background": {
+          "preset": "hanok_village"
+        },
+        "index": 1
+      }
+    ],
+    "cues": [
+      {
+        "start": 0.5,
+        "end": 5.5,
+        "character_id": "kid",
+        "text": "Hổ nghe thấy tiếng em bé nín khóc khi nghe mẹ bảo cho quả hồng, ngỡ quả hồng là quái vật đáng sợ!",
+        "expression": "worried"
+      },
+      {
+        "start": 6.5,
+        "end": 11.5,
+        "character_id": "kid",
+        "text": "Chú hổ vội vã co giò bỏ chạy thật xa, em bé vui vẻ thưởng thức quả hồng ngọt ngào!",
+        "expression": "happy"
+      }
+    ]
+  },
+  {
+    "id": "kimchi_day",
+    "name": "34 · Đời sống Hàn Quốc: Ngày muối Kimchi (Gimjang)",
+    "renderer": "native-vector-v1",
+    "fidelity": "technical-demo",
+    "note": "Mẫu kỹ thuật Phase R: Hai mẹ con khiêng vại onggi chuẩn bị ngày hội muối kimchi truyền thống trong sân nhà Hanok.",
+    "duration": 12.0,
+    "characters": [
+      {
+        "id": "mom",
+        "name": "Cô giáo",
+        "asset": "chibi_teacher"
+      },
+      {
+        "id": "kid",
+        "name": "Bé gái học sinh",
+        "asset": "chibi_girl"
+      },
+      {
+        "id": "jar",
+        "name": "Chum vại Onggi",
+        "asset": "onggi_jar"
+      },
+      {
+        "id": "table",
+        "name": "Bàn ăn thấp Soban",
+        "asset": "low_dining_table_kr"
+      },
+      {
+        "id": "kimchi",
+        "name": "Đĩa Kimchi cay",
+        "asset": "kimchi"
+      }
+    ],
+    "scenes": [
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 0,
+        "end_time": 6.0,
+        "characters_present": [
+          "mom",
+          "kid",
+          "jar"
+        ],
+        "poses": {
+          "mom": [
+            {
+              "time": 0,
+              "x": 180,
+              "y": 810,
+              "height": 260,
+              "outfit": "hanbok"
+            },
+            {
+              "time": 6.0,
+              "x": 300,
+              "y": 810,
+              "height": 260,
+              "outfit": "hanbok"
+            }
+          ],
+          "kid": [
+            {
+              "time": 0,
+              "x": 340,
+              "y": 810,
+              "height": 220,
+              "outfit": "hanbok"
+            },
+            {
+              "time": 6.0,
+              "x": 460,
+              "y": 810,
+              "height": 220,
+              "outfit": "hanbok"
+            }
+          ],
+          "jar": [
+            {
+              "time": 0,
+              "x": 260,
+              "y": 810,
+              "height": 110
+            },
+            {
+              "time": 6.0,
+              "x": 380,
+              "y": 810,
+              "height": 110
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "carry_together",
+            "start": 0.5,
+            "end": 5.5,
+            "target": "jar",
+            "actor": "mom",
+            "helper": "kid"
+          }
+        ],
+        "background": {
+          "preset": "hanok_village"
+        },
+        "index": 0
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 6.0,
+        "end_time": 12.0,
+        "characters_present": [
+          "mom",
+          "table",
+          "kimchi",
+          "jar",
+          "kid"
+        ],
+        "poses": {
+          "mom": [
+            {
+              "time": 6.0,
+              "x": 180,
+              "y": 810,
+              "height": 260,
+              "outfit": "hanbok",
+              "expression": "happy"
+            },
+            {
+              "time": 12.0,
+              "x": 180,
+              "y": 810,
+              "height": 260,
+              "outfit": "hanbok",
+              "expression": "happy"
+            }
+          ],
+          "table": [
+            {
+              "time": 6.0,
+              "x": 280,
+              "y": 810,
+              "height": 110
+            },
+            {
+              "time": 12.0,
+              "x": 280,
+              "y": 810,
+              "height": 110
+            }
+          ],
+          "kimchi": [
+            {
+              "time": 6.0,
+              "x": 280,
+              "y": 770,
+              "height": 70
+            },
+            {
+              "time": 12.0,
+              "x": 280,
+              "y": 770,
+              "height": 70
+            }
+          ],
+          "jar": [
+            {
+              "time": 6.0,
+              "x": 450,
+              "y": 810,
+              "height": 110
+            },
+            {
+              "time": 12.0,
+              "x": 450,
+              "y": 810,
+              "height": 110
+            }
+          ],
+          "kid": [
+            {
+              "time": 6.0,
+              "x": 380,
+              "y": 810,
+              "height": 220,
+              "outfit": "hanbok",
+              "flip": true,
+              "expression": "happy"
+            },
+            {
+              "time": 12.0,
+              "x": 380,
+              "y": 810,
+              "height": 220,
+              "outfit": "hanbok",
+              "flip": true,
+              "expression": "happy"
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "emote",
+            "start": 7.0,
+            "end": 11.5,
+            "actor": "mom",
+            "emote": "heart"
+          }
+        ],
+        "background": {
+          "preset": "hanok_village"
+        },
+        "index": 1,
+        "camera": [
+          {
+            "time": 6.0,
+            "x": 281.25,
+            "y": 557.35,
+            "zoom": 1.135
+          }
+        ]
+      }
+    ],
+    "cues": [
+      {
+        "start": 0.5,
+        "end": 5.5,
+        "character_id": "mom",
+        "text": "Mùa đông về, cả gia đình cùng nhau khiêng vại sành onggi chuẩn bị ngày hội muối Kimchi!",
+        "expression": "happy"
+      },
+      {
+        "start": 6.5,
+        "end": 11.5,
+        "character_id": "kid",
+        "text": "Từng bẹ cải thảo ướp đậm gia vị cay nồng được xếp gọn gàng vào vại, ấm áp tình thân gia đình!",
+        "expression": "happy"
+      }
+    ]
+  },
+  {
+    "id": "seollal_morning",
+    "name": "35 · Văn hoá Tết Hàn Quốc: Sáng mùng một Tết Seollal",
+    "renderer": "native-vector-v1",
+    "fidelity": "technical-demo",
+    "note": "Mẫu kỹ thuật Phase R: Nghi thức Sebae đầu xuân, nhận túi phúc Bokjumeoni và thả diều cầu may mắn đầu năm.",
+    "duration": 12.0,
+    "characters": [
+      {
+        "id": "grandpa",
+        "name": "Ông cụ",
+        "asset": "chibi_grandpa"
+      },
+      {
+        "id": "cushion",
+        "name": "Đệm ngồi quỳ lạy Sebae",
+        "asset": "sebae_cushion"
+      },
+      {
+        "id": "kid",
+        "name": "Bé trai học sinh",
+        "asset": "chibi_boy"
+      },
+      {
+        "id": "pouch",
+        "name": "Túi phúc ngũ sắc Bokjumeoni",
+        "asset": "bokjumeoni",
+        "attach_to": {
+          "id": "kid",
+          "anchor": "hand_r"
+        }
+      },
+      {
+        "id": "kite",
+        "name": "Cánh diều",
+        "asset": "kite"
+      }
+    ],
+    "scenes": [
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 0,
+        "end_time": 6.0,
+        "characters_present": [
+          "grandpa",
+          "cushion",
+          "kid",
+          "pouch"
+        ],
+        "poses": {
+          "grandpa": [
+            {
+              "time": 0,
+              "x": 160,
+              "y": 810,
+              "height": 240,
+              "outfit": "hanbok",
+              "expression": "happy"
+            },
+            {
+              "time": 6.0,
+              "x": 160,
+              "y": 810,
+              "height": 240,
+              "outfit": "hanbok",
+              "expression": "happy"
+            }
+          ],
+          "cushion": [
+            {
+              "time": 0,
+              "x": 360,
+              "y": 810,
+              "height": 104
+            },
+            {
+              "time": 6.0,
+              "x": 360,
+              "y": 810,
+              "height": 104
+            }
+          ],
+          "kid": [
+            {
+              "time": 0,
+              "x": 360,
+              "y": 810,
+              "height": 220,
+              "outfit": "hanbok",
+              "flip": true
+            },
+            {
+              "time": 6.0,
+              "x": 360,
+              "y": 810,
+              "height": 220,
+              "outfit": "hanbok",
+              "flip": true
+            }
+          ],
+          "pouch": [
+            {
+              "time": 0,
+              "x": -0.0,
+              "y": 32.64,
+              "height": 68,
+              "rotation": 0
+            },
+            {
+              "time": 6.0,
+              "x": -0.0,
+              "y": 32.64,
+              "height": 68,
+              "rotation": 0
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "bow",
+            "start": 1.0,
+            "end": 4.5,
+            "actor": "kid"
+          }
+        ],
+        "background": {
+          "preset": "kr_school"
+        },
+        "index": 0,
+        "camera": [
+          {
+            "time": 0,
+            "x": 255.5,
+            "y": 574.42,
+            "zoom": 1.217
+          }
+        ]
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 6.0,
+        "end_time": 12.0,
+        "characters_present": [
+          "kid",
+          "kite"
+        ],
+        "poses": {
+          "kid": [
+            {
+              "time": 6.0,
+              "x": 180,
+              "y": 810,
+              "height": 220,
+              "outfit": "hanbok",
+              "expression": "happy"
+            },
+            {
+              "time": 12.0,
+              "x": 260,
+              "y": 810,
+              "height": 220,
+              "outfit": "hanbok",
+              "expression": "happy"
+            }
+          ],
+          "kite": [
+            {
+              "time": 6.0,
+              "x": 260,
+              "y": 720,
+              "height": 220
+            },
+            {
+              "time": 12.0,
+              "x": 420,
+              "y": 420,
+              "height": 220
+            }
+          ]
+        },
+        "actions": [],
+        "background": {
+          "preset": "hanok_village",
+          "weather": "clear"
+        },
+        "index": 1
+      }
+    ],
+    "cues": [
+      {
+        "start": 0.5,
+        "end": 5.5,
+        "character_id": "kid",
+        "text": "Sáng mùng một Tết Seollal, em bé mặc Hanbok cúi đầu lạy chúc Tết ông bà trường thọ an khang!",
+        "expression": "happy"
+      },
+      {
+        "start": 6.5,
+        "end": 11.5,
+        "character_id": "kid",
+        "text": "Cầm trên tay chiếc túi phúc Bokjumeoni đỏ thắm, bé vui tươi chạy ra sân thả cánh diều no gió bay vút lên trời xanh!",
+        "expression": "happy"
+      }
+    ]
+  },
+  {
+    "id": "rain_gauge",
+    "name": "36 · Khoa học thời Joseon: Đo mưa với dụng cụ Cheugugi",
+    "renderer": "native-vector-v1",
+    "fidelity": "technical-demo",
+    "note": "Mẫu kỹ thuật Phase R: Nhà thiên văn học đo lượng nước mưa chuẩn xác bằng dụng cụ Cheugugi đặt trước sân cung điện Joseon.",
+    "duration": 10.0,
+    "characters": [
+      {
+        "id": "scholar",
+        "name": "Bé trai học sinh",
+        "asset": "chibi_boy"
+      },
+      {
+        "id": "gauge",
+        "name": "Dụng cụ đo mưa",
+        "asset": "rain_gauge"
+      },
+      {
+        "id": "scroll",
+        "name": "Cuộn giấy cọ nét Huấn Dân Chính Âm",
+        "asset": "hangul_brush_scroll"
+      }
+    ],
+    "scenes": [
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 0,
+        "end_time": 5.0,
+        "characters_present": [
+          "scholar",
+          "gauge"
+        ],
+        "poses": {
+          "scholar": [
+            {
+              "time": 0,
+              "x": 180,
+              "y": 810,
+              "height": 240,
+              "outfit": "joseon_scholar",
+              "expression": "neutral"
+            },
+            {
+              "time": 5.0,
+              "x": 180,
+              "y": 810,
+              "height": 240,
+              "outfit": "joseon_scholar",
+              "expression": "happy"
+            }
+          ],
+          "gauge": [
+            {
+              "time": 0,
+              "x": 360,
+              "y": 810,
+              "height": 240,
+              "fill": 0.15
+            },
+            {
+              "time": 2.5,
+              "x": 360,
+              "y": 810,
+              "height": 240,
+              "fill": 0.45
+            },
+            {
+              "time": 5.0,
+              "x": 360,
+              "y": 810,
+              "height": 240,
+              "fill": 0.75
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "emote",
+            "start": 2.0,
+            "end": 4.5,
+            "actor": "scholar",
+            "emote": "idea"
+          }
+        ],
+        "background": {
+          "preset": "joseon_palace_generic",
+          "weather": "rain"
+        },
+        "index": 0,
+        "camera": [
+          {
+            "time": 0,
+            "x": 270.0,
+            "y": 580.79,
+            "zoom": 1.251
+          }
+        ]
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 5.0,
+        "end_time": 10.0,
+        "characters_present": [
+          "scholar",
+          "gauge",
+          "scroll"
+        ],
+        "poses": {
+          "scholar": [
+            {
+              "time": 5.0,
+              "x": 180,
+              "y": 810,
+              "height": 240,
+              "outfit": "joseon_scholar",
+              "expression": "happy"
+            },
+            {
+              "time": 10.0,
+              "x": 220,
+              "y": 810,
+              "height": 240,
+              "outfit": "joseon_scholar",
+              "expression": "happy"
+            }
+          ],
+          "gauge": [
+            {
+              "time": 5.0,
+              "x": 360,
+              "y": 810,
+              "height": 240,
+              "fill": 0.75
+            },
+            {
+              "time": 10.0,
+              "x": 360,
+              "y": 810,
+              "height": 240,
+              "fill": 0.95
+            }
+          ],
+          "scroll": [
+            {
+              "time": 5.0,
+              "x": 440,
+              "y": 810,
+              "height": 90
+            },
+            {
+              "time": 10.0,
+              "x": 440,
+              "y": 810,
+              "height": 90
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "emote",
+            "start": 6.5,
+            "end": 9.5,
+            "actor": "scholar",
+            "emote": "music"
+          }
+        ],
+        "background": {
+          "preset": "joseon_palace_generic",
+          "weather": "rain"
+        },
+        "index": 1,
+        "camera": [
+          {
+            "time": 5.0,
+            "x": 276.25,
+            "y": 573.56,
+            "zoom": 1.213
+          }
+        ]
+      }
+    ],
+    "cues": [
+      {
+        "start": 0.5,
+        "end": 4.5,
+        "character_id": "scholar",
+        "text": "Trời đổ cơn mưa rào, dụng cụ đo mưa Cheugugi bằng đồng bắt đầu hứng từng giọt nước mưa quý giá!",
+        "expression": "happy"
+      },
+      {
+        "start": 5.5,
+        "end": 9.5,
+        "character_id": "scholar",
+        "text": "Mực nước dâng lên rõ rệt trên vạch thước đo, giúp ghi nhận chính xác lượng mưa cho mùa màng bội thu!",
+        "expression": "happy"
+      }
+    ]
   }
 ]

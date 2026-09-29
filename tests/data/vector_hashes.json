@@ -3627,11 +3627,11 @@
       "9f2a18ef2a254e2b"
     ],
     "crane": [
-      "66c56def44e17655",
-      "66c56def44e17655",
-      "66c56def44e17655",
-      "66c56def44e17655",
-      "66c56def44e17655"
+      "4ba51def990fb7ca",
+      "4ba51def990fb7ca",
+      "4ba51def990fb7ca",
+      "4ba51def990fb7ca",
+      "4ba51def990fb7ca"
     ],
     "koi": [
       "34d2e0eff84f9363",
@@ -3646,6 +3646,69 @@
       "6686deef43abf68f",
       "6686deef43abf68f",
       "6686deef43abf68f"
+    ],
+    "hangul_brush_scroll": [
+      "9548c4ef340a0535",
+      "9548c4ef340a0535",
+      "9548c4ef340a0535",
+      "9548c4ef340a0535",
+      "9548c4ef340a0535"
+    ],
+    "yut_sticks": [
+      "ab1c9fefeca6dafb",
+      "ab1c9fefeca6dafb",
+      "ab1c9fefeca6dafb",
+      "ab1c9fefeca6dafb",
+      "ab1c9fefeca6dafb"
+    ],
+    "jegi": [
+      "b10a18ef179de449",
+      "f92777ef3b7426cc",
+      "644ed6efe570656d",
+      "c07a0eef6ef40cac",
+      "93126aef7233484b"
+    ],
+    "gourd": [
+      "cfa21cef76e46b93",
+      "cfa21cef76e46b93",
+      "cfa21cef76e46b93",
+      "cfa21cef76e46b93",
+      "cfa21cef76e46b93"
+    ],
+    "low_dining_table_kr": [
+      "d305d8efa2ae3fa3",
+      "d305d8efa2ae3fa3",
+      "d305d8efa2ae3fa3",
+      "d305d8efa2ae3fa3",
+      "d305d8efa2ae3fa3"
+    ],
+    "sebae_cushion": [
+      "ca313def5372502e",
+      "ca313def5372502e",
+      "ca313def5372502e",
+      "ca313def5372502e",
+      "ca313def5372502e"
+    ],
+    "bokjumeoni": [
+      "900d26ef67a5c38d",
+      "900d26ef67a5c38d",
+      "900d26ef67a5c38d",
+      "900d26ef67a5c38d",
+      "900d26ef67a5c38d"
+    ],
+    "swallow": [
+      "bd801fef61c1acbf",
+      "bd801fef61c1acbf",
+      "bd801fef61c1acbf",
+      "bd801fef61c1acbf",
+      "bd801fef61c1acbf"
+    ],
+    "magpie": [
+      "01c8aaef3d102307",
+      "01c8aaef3d102307",
+      "01c8aaef3d102307",
+      "01c8aaef3d102307",
+      "01c8aaef3d102307"
     ]
   },
   "backgrounds": {
@@ -5790,6 +5853,176 @@
         "dbb7b6efceb97a90",
         "27656aef8bf65fd7"
       ]
+    },
+    "hanok_village": {
+      "day": [
+        "a60cd3ef41ea579a",
+        "a60cd3ef41ea579a"
+      ],
+      "night": [
+        "af9342efac46d86d",
+        "af9342efac46d86d"
+      ],
+      "rain": [
+        "2d626aef8bedba9c",
+        "76ca81ef61c535b0"
+      ],
+      "snow": [
+        "246bc9ef4e746119",
+        "8cafc7ef5b3ffd7e"
+      ],
+      "wind": [
+        "722533ef898e59be",
+        "46e398ef03c80ecb"
+      ],
+      "fog": [
+        "d6773aef3770b864",
+        "a21109ef62ec6aea"
+      ],
+      "storm": [
+        "6e642cef1157e67b",
+        "b533c4efdc27f2cc"
+      ],
+      "hot": [
+        "c86b5eefc94ad183",
+        "a32ce4ef201dde52"
+      ]
+    },
+    "joseon_palace_generic": {
+      "day": [
+        "6d0bc0ef8d92918b",
+        "6d0bc0ef8d92918b"
+      ],
+      "night": [
+        "92e0ddefac93c439",
+        "92e0ddefac93c439"
+      ],
+      "rain": [
+        "d10018ef951c606f",
+        "e15a40ef3f687a3b"
+      ],
+      "snow": [
+        "0b25c6ef309074e5",
+        "c380f1efa28e9e0b"
+      ],
+      "wind": [
+        "32b3f9ef98216185",
+        "387649ef779c2c13"
+      ],
+      "fog": [
+        "bcec5aefbe3a0b33",
+        "4f31faeff83370c7"
+      ],
+      "storm": [
+        "ceb712ef4301a895",
+        "884a58ef9e174d99"
+      ],
+      "hot": [
+        "c6694cefd6b88f1f",
+        "a10efeefd48e58d8"
+      ]
+    },
+    "kr_market": {
+      "day": [
+        "e67463ef2051c81b",
+        "e67463ef2051c81b"
+      ],
+      "night": [
+        "703ee1ef4461cf51",
+        "703ee1ef4461cf51"
+      ],
+      "rain": [
+        "09cc5cefa132d5f5",
+        "cec084ef301be7a7"
+      ],
+      "snow": [
+        "97c3faeffdab9b3a",
+        "09f24eefe41f7965"
+      ],
+      "wind": [
+        "2fcc88ef0c851864",
+        "f4a73cef0a141eeb"
+      ],
+      "fog": [
+        "acaac6efb7f20e74",
+        "649906ef45c1256e"
+      ],
+      "storm": [
+        "4d9e21efb0bafe36",
+        "1b6f91ef80382663"
+      ],
+      "hot": [
+        "cb5f0fef355eced6",
+        "9bb9a6ef4472ac51"
+      ]
+    },
+    "kr_school": {
+      "day": [
+        "70eaeaef835ed3c6",
+        "70eaeaef835ed3c6"
+      ],
+      "night": [
+        "2989dcef6bcb6f10",
+        "2989dcef6bcb6f10"
+      ],
+      "rain": [
+        "6d0522efb6730d9e",
+        "7222daef0efd5364"
+      ],
+      "snow": [
+        "2bd133ef7c9113fd",
+        "70c495ef79df8115"
+      ],
+      "wind": [
+        "fc0688efc5e1a939",
+        "a70651ef9d6659f0"
+      ],
+      "fog": [
+        "a67271efb6e06649",
+        "b5c420ef584e5a6a"
+      ],
+      "storm": [
+        "15d869efe4a28367",
+        "8adb3aefdc89b6c8"
+      ],
+      "hot": [
+        "f7ed71efff0e15ca",
+        "48682bef1a73fc8f"
+      ]
+    },
+    "apartment_street": {
+      "day": [
+        "dda381efe19fde79",
+        "dda381efe19fde79"
+      ],
+      "night": [
+        "db2d92ef1f3266cc",
+        "db2d92ef1f3266cc"
+      ],
+      "rain": [
+        "9506ddef7643ad6e",
+        "e4ee5eef06399476"
+      ],
+      "snow": [
+        "c231b9ef02d7c686",
+        "438842efa02e7552"
+      ],
+      "wind": [
+        "f26714ef8627fb49",
+        "b8ca4cef42066c06"
+      ],
+      "fog": [
+        "afde3aefbc715aeb",
+        "0b44fcef4b3f8079"
+      ],
+      "storm": [
+        "3e0ca3ef430daa24",
+        "f7d96cefb8e2980c"
+      ],
+      "hot": [
+        "115302ef7acb8e98",
+        "96ee33ef23e259c1"
+      ]
     }
   },
   "stories": {
@@ -6177,6 +6410,34 @@
       "aa8686efae7f2b7f",
       "6abfdeef35bc232e",
       "8c94c5ef39fca65f"
+    ],
+    "tiger_and_persimmon": [
+      "de4643ef85c6a280",
+      "de3f94ef9b3f21db",
+      "ad4ab5ef78d23411",
+      "c2fc32ef858e6b95",
+      "4f1aa2ef76265421"
+    ],
+    "kimchi_day": [
+      "7d57dcefa03e90ef",
+      "36c81cefe1fb7ad8",
+      "721755efddbae1f3",
+      "e264d6ef816592b3",
+      "23ff8cef0d828358"
+    ],
+    "seollal_morning": [
+      "592066efc9a0976a",
+      "7cf633ef19e254b9",
+      "ad7d80ef2ba6eea9",
+      "a10378efd1058cae",
+      "92f03eef680d4442"
+    ],
+    "rain_gauge": [
+      "dce2d3efd74b0a9d",
+      "e70da3efceaac24a",
+      "de5efdef988ab175",
+      "ccbadbefb7288592",
+      "ceb2d7ef8b78b9c0"
     ]
   }
 }
