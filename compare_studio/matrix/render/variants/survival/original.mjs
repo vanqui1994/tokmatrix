@@ -7,7 +7,7 @@
 // Composition 2: lời đọc ngay dưới đầu trang, thẻ phản ứng lên trên, thẻ scanner xuống dưới.
 import { getSurvivalConfig } from "../../../../tools/survival-languages.mjs";
 import { reactorFace } from "../../engines/survival.mjs";
-import { NO_IMAGE_COST, TEXT_ASSET } from "../common.mjs";
+import { IMAGE_ASSET, IMAGE_COST } from "../common.mjs";
 import { defineVariant } from "../kit/define.mjs";
 import { regionStyle } from "../kit/frames.mjs";
 import { escapeHtml, fitText } from "../kit/primitives.mjs";
@@ -82,6 +82,10 @@ const CSS = `
 .so-label{position:relative;height:220px;margin-top:18px;flex:none;display:flex;align-items:center}
 .so-label-t{margin:0;width:100%;line-height:1.12;font-weight:700;text-transform:uppercase;color:#FFFFFF;text-shadow:0 2px 10px rgba(0,0,0,.5)}
 .so-metrics{margin-top:18px;display:flex;flex-direction:column;gap:22px}
+.so-img{position:relative;height:250px;margin-top:14px;flex:none;border-radius:18px;overflow:hidden;background:#000;border:1px solid rgba(0,240,255,.25)}
+.so-img img{display:block;width:100%;height:100%;object-fit:cover}
+.so-label.so-sm{height:100px;margin-top:14px}
+.so-metrics.so-sm{margin-top:14px;gap:8px}.so-metrics.so-sm .so-metric{height:56px}.so-metrics.so-sm .so-mrow{height:30px}.so-metrics.so-sm .so-mname{height:30px}.so-metrics.so-sm .so-mval{font-size:26px}.so-metrics.so-sm .so-track{height:18px}
 .so-metric{height:94px;display:flex;flex-direction:column;justify-content:space-between}
 .so-mrow{height:40px;display:flex;align-items:center;justify-content:space-between;gap:20px}
 .so-mname{position:relative;height:40px;flex:1;min-width:0;display:flex;align-items:center}
@@ -134,8 +138,9 @@ ${fitIn("so-tier so-mono", tag, { size: 26, min: 14, style: `color:${color}` })}
 <div class="so-card" id="so-card-${idx}" style="${regionStyle(S)};border-color:${color}66">
 <i class="so-corner so-c-tl"></i><i class="so-corner so-c-tr"></i><i class="so-corner so-c-bl"></i><i class="so-corner so-c-br"></i>
 <div class="so-head">${fitIn("so-chip so-mono", tag, { size: 30, min: 16, style: `background:${color};color:${inkOn(color)}` })}${fitIn("so-status so-mono", item.status, { size: 30, min: 16, id: `so-status-${idx}`, style: `border-color:${color};color:${color};box-shadow:0 0 26px ${color}55` })}</div>
-${fitIn("so-label", item.label, { size: 68, min: 26, tag: "h2" })}
-<div class="so-metrics">${metrics}</div>
+${scene.imgSrc ? `<div class="so-img"><img src="${escapeHtml(scene.imgSrc)}" alt=""></div>` : ""}
+${fitIn(`so-label${scene.imgSrc ? " so-sm" : ""}`, item.label, { size: scene.imgSrc ? 52 : 68, min: 22, tag: "h2" })}
+<div class="so-metrics${scene.imgSrc ? " so-sm" : ""}">${metrics}</div>
 </div>
 <div class="so-meme" style="${regionStyle(M)}">
 <div class="so-sev">${fitIn("so-sevname so-mono", ctx.ui.severity, { size: 26 })}<div class="so-sevval" style="color:${color}">${item.severity}<small>/10</small></div><div class="so-pips">${pips}</div></div>
@@ -188,8 +193,8 @@ const UI = {
 
 const original = defineVariant({
   engine: "survival",
-  asset: TEXT_ASSET,
-  cost: NO_IMAGE_COST,
+  asset: IMAGE_ASSET,
+  cost: IMAGE_COST,
   sample: survivalSample,
   id: "survival/original",
   name_vi: "Sinh tồn (giao diện gốc)",

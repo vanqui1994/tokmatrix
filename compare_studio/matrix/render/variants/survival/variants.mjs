@@ -2,7 +2,7 @@
 // variant có reactor SVG GỐC (reactor.mjs, một nhân vật cho mỗi (variant, nước)) và đồng hồ đo riêng dựng từ extras
 // (eyebrow, metric_labels, levels[label/status/severity/metrics]). Trục gốc khác nhau ở background/transition/
 // imageMotion/typography (≥ 4/6). Theo V2 mục 20: deep-sea dùng THƯỚC ĐỘ SÂU DỌC + áp kế, không ô cửa tròn (của wildlife).
-import { NO_IMAGE_COST, TEXT_ASSET } from "../common.mjs";
+import { IMAGE_ASSET, IMAGE_COST } from "../common.mjs";
 import { defineVariant } from "../kit/define.mjs";
 import { regionStyle } from "../kit/frames.mjs";
 import { escapeHtml, fitText } from "../kit/primitives.mjs";
@@ -10,7 +10,7 @@ import { upper } from "../kit/textdata.mjs";
 import { CARD_CSS, METRIC_CSS, STAGE_CSS, levelCard, merge, metricBars, reactorStage, t3, tagText } from "./skit.mjs";
 import { survivalSample } from "./sample.mjs";
 
-const base = { engine: "survival", asset: TEXT_ASSET, cost: NO_IMAGE_COST, sample: survivalSample };
+const base = { engine: "survival", asset: IMAGE_ASSET, cost: IMAGE_COST, sample: survivalSample };
 const accent = (ctx, key = "--accent-terra") => ctx.creative.theme.palette[key];
 const BASE_CSS = `${CARD_CSS}${METRIC_CSS}${STAGE_CSS}.f-bleed{background:transparent!important}`;
 
@@ -106,7 +106,7 @@ const endurance = defineVariant({
             return { html, css: ".en-lane{position:absolute;left:40px;top:630px;width:1000px;height:130px}.en-lane-track{position:absolute;left:0;right:0;top:52px;height:34px;background:#c2410c;border-top:4px solid #fff;border-bottom:4px solid #fff}.en-lane-mark{position:absolute;top:40px;width:6px;height:58px;margin-left:-3px;background:#fff}.en-runner{position:absolute;left:0;top:20px;width:64px;height:64px;margin-left:-32px;border-radius:50%;background:#111;border:8px solid #fde047;box-sizing:border-box}", tweens: stepTweens("#en-runner", c.scenes, (k) => x(k), { prop: "x", initial: x(0) }) };
           },
           vars: { "--frame-edge": "#c2410c" },
-          css: `${BASE_CSS}.en-card2{color:var(--fg);padding:10px 0}.en-card2 .sv-tag{color:#c2410c}.en-card2 .sv-eyebrow{color:var(--fg-dim)}.en-mx2 .sv-m-t,.en-mx2 .sv-m-val{color:var(--fg)}`,
+          css: `${BASE_CSS}.en-card2{color:var(--fg);padding:10px 0}.en-card2 .sv-tag{color:#7c2d12}.en-card2 .sv-eyebrow{color:var(--fg-dim)}.en-mx2 .sv-m-t,.en-mx2 .sv-m-val{color:var(--fg)}`,
         };
       },
     },

@@ -46,16 +46,16 @@ async function build(variant, composition, lang, { extras } = {}) {
   });
 }
 
-test("survival registers 9 active variants (7 base + original look TEXT, mr-incredible IMAGE_AI like the old Studio template) with 2 hand-built compositions each and ≥ 4/6 differing axes", () => {
+test("survival registers 9 active variants (all IMAGE_AI: AI image per level + reacting face) with 2 hand-built compositions each and ≥ 4/6 differing axes", () => {
   assert.deepEqual(validateRegistry().errors, []);
   assert.equal(variants().length, 8);
   const list = listVariants("survival");
   assert.equal(list.length, 9);
   for (const variant of list) {
     assert.equal(variant.status, "active");
-    const images = variant.id === "survival/mr-incredible";
-    assert.equal(variant.assetProfile.type, images ? "IMAGE_AI" : "TEXT", variant.id);
-    assert.equal(variant.costProfile.aiImagesPerScene, images ? 1 : 0, variant.id);
+    // Owner 29/09: mọi variant Sinh Tồn có ảnh AI mỗi cấp + reactor phản ứng (engine legacy vẫn TEXT).
+    assert.equal(variant.assetProfile.type, "IMAGE_AI", variant.id);
+    assert.equal(variant.costProfile.aiImagesPerScene, 1, variant.id);
     assert.equal(Object.keys(variant.visualProfile.compositions).length, 2);
     assert.ok(Object.keys(variant.contentProfile.topicPacks).every((id) => id.startsWith("survival_")));
     assert.ok(variant.audioProfile.fx.every((fx) => ["none", "creepy", "whisper", "radio"].includes(fx)));
@@ -96,7 +96,9 @@ test("every survival variant × composition × country builds lint-clean, determ
         const b = await build(variant, composition, lang);
         assert.equal(a.html, b.html, `${where} is not deterministic`);
         assert.deepEqual(lintVariantHtml(a.html), [], where);
-        assert.ok(!/mrincredible|assets\/images\//u.test(a.html), `${where} must not use meme faces or AI images`);
+        assert.ok(!/mrincredible/u.test(a.html), `${where} must not use meme faces`);
+        assert.ok(/class="rx-scene"|class="so-img"/u.test(a.html), `${where} shows the scene's AI image`);
+        assert.ok(/class="rx-svg|<svg/u.test(a.html), `${where} keeps the reacting face`);
         const { extras } = variant.sample(lang);
         for (const label of extras.metric_labels) assert.ok(a.html.includes(escapeHtml(label)), `${where} metric label ${label}`);
         extras.levels.forEach((level, i) => {
@@ -172,6 +174,6 @@ test("an IMAGE_AI variant on a text engine queues AI images; legacy channels and
   const mri = { channel_id: "x", creative: { variant_id: MRI, dna } };
   assert.deepEqual(withVariantAssetType(scenes, mri, "survival").map((s) => s.asset_type), ["IMAGE_AI", "TEXT"]);
   assert.equal(withVariantAssetType(scenes, { channel_id: "legacy" }, "survival"), scenes);
-  const original = { channel_id: "y", creative: { variant_id: "survival/original", dna: defaultDna(getVariant("survival/original"), "scanner") } };
-  assert.equal(withVariantAssetType(scenes, original, "survival"), scenes);
+  const tierlist = { channel_id: "y", creative: { variant_id: "compare/boxing-ring", dna: defaultDna(getVariant("compare/boxing-ring"), Object.keys(getVariant("compare/boxing-ring").visualProfile.compositions)[0]) } };
+  assert.equal(withVariantAssetType(scenes, tierlist, "compare"), scenes, "SVG variants keep their asset type");
 });

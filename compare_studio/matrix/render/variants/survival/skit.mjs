@@ -100,7 +100,13 @@ export function reactorStage(ctx, look) {
   return {
     identity,
     data,
-    panel: (scene, i) => `<div class="rx-bg" style="${look.stage || ""}"></div><div class="rx-w" id="rx-w-${scene.index}">${reactorSvg({ identity, severity: data.items[i].severity, look, id: `rx-${scene.index}` })}</div>`,
+    // Có ảnh AI của cảnh (assetProfile IMAGE_AI): ảnh phủ kín khung, reactor phản ứng trong ô tròn giữa đáy khung
+    // (giữa đáy để khung tròn/vòm không cắt mất). Không có ảnh (preview cũ, dữ liệu thiếu): sân khấu reactor như trước.
+    panel: (scene, i) => {
+      const face = `<div class="rx-w" id="rx-w-${scene.index}">${reactorSvg({ identity, severity: data.items[i].severity, look, id: `rx-${scene.index}` })}</div>`;
+      if (!scene.imgSrc) return `<div class="rx-bg" style="${look.stage || ""}"></div>${face}`;
+      return `<img class="rx-scene" src="${escapeHtml(scene.imgSrc)}" alt=""><div class="rx-pip"><div class="rx-bg" style="${look.stage || ""}"></div>${face}</div>`;
+    },
     tweens: (scene, i) => {
       const expr = data.items[i].expr;
       const target = `#rx-w-${scene.index}`;
@@ -116,7 +122,7 @@ export function reactorStage(ctx, look) {
   };
 }
 
-export const STAGE_CSS = ".rx-bg{position:absolute;inset:0}.rx-w{position:absolute;left:4%;right:4%;top:6%;bottom:0}.rx-svg{display:block}";
+export const STAGE_CSS = ".rx-bg{position:absolute;inset:0}.rx-w{position:absolute;left:4%;right:4%;top:6%;bottom:0}.rx-svg{display:block}.rx-scene{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}.rx-pip{position:absolute;left:50%;bottom:4%;width:44%;aspect-ratio:1/1;max-height:52%;transform:translateX(-50%);border-radius:50%;overflow:hidden;border:6px solid #fff;box-shadow:0 10px 30px rgba(0,0,0,.55);isolation:isolate}.rx-pip .rx-w{left:6%;right:6%;top:10%;bottom:0}";
 
 export function merge(...parts) {
   return { html: parts.map((p) => p.html || "").join(""), tweens: parts.flatMap((p) => p.tweens || []) };
