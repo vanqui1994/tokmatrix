@@ -25,9 +25,11 @@ from pydantic import BaseModel
 try:
     from bkt_web.db_utils import connect_db
     from bkt_web import cf_image_fallback
+    from bkt_web import muse_image
 except ImportError:  # chạy trực tiếp trong thư mục bkt_web
     from db_utils import connect_db
     import cf_image_fallback
+    import muse_image
 
 image_router = APIRouter(prefix="/api/ai-images", tags=["ai_images"])
 
@@ -51,6 +53,11 @@ RETRY_BACKOFF_SECONDS = 45
 # Worker nội bộ (Pollinations) KHÔNG được đụng vào các task này.
 EXTERNAL_ENGINES = ("antigravity", "antigravity_queue")
 _EXTERNAL_ENGINES_SQL = ",".join("?" * len(EXTERNAL_ENGINES))
+# Engine có worker riêng trong server (muse_image.py điều khiển muse.ai qua Chrome CDP): Pollinations và bridge
+# Antigravity đều không đụng vào.
+SELF_HOSTED_ENGINES = ("muse",)
+_NOT_INTERNAL = EXTERNAL_ENGINES + SELF_HOSTED_ENGINES
+_NOT_INTERNAL_SQL = ",".join("?" * len(_NOT_INTERNAL))
 
 # Các bộ máy sinh ảnh sẵn dùng (Pollinations — miễn phí, không cần API key).
 AVAILABLE_MODELS = [
@@ -356,9 +363,9 @@ def run_image_queue_worker() -> None:
                     FROM image_queue
                     WHERE status='pending'
                       AND (next_retry_at IS NULL OR next_retry_at <= ?)
-                      AND COALESCE(engine, '') NOT IN ({_EXTERNAL_ENGINES_SQL})
+                      AND COALESCE(engine, '') NOT IN ({_NOT_INTERNAL_SQL})
                     ORDER BY created_ts ASC LIMIT 1""",
-                (now, *EXTERNAL_ENGINES),
+                (now, *_NOT_INTERNAL),
             ).fetchone()
             if row:
                 task = row
@@ -434,6 +441,7 @@ def start_image_queue_worker() -> None:
         QUEUE_THREAD.start()
     _start_bridge_worker()
     cf_image_fallback.start()
+    muse_image.start()
 
 
 def stop_image_queue_worker() -> None:
@@ -442,6 +450,7 @@ def stop_image_queue_worker() -> None:
         QUEUE_THREAD.join(timeout=5)
     _stop_bridge_worker()
     cf_image_fallback.stop()
+    muse_image.stop()
 
 
 # -------------------------------------------------- Bridge Auto Worker
@@ -970,6 +979,12 @@ def antigravity_accounts():
 def cf_fallback_status():
     """Trạng thái dự phòng Cloudflare Worker (bật/tắt, token, Antigravity còn bị chặn quota tới khi nào)."""
     return cf_image_fallback.status()
+
+
+@image_router.get("/muse/status")
+def muse_status():
+    """Engine muse (muse.ai qua Chrome CDP): Chrome có chạy, worker, ảnh xong/lỗi, lỗi gần nhất."""
+    return muse_image.status()
 
 
 @image_router.get("/imagerouter/status")

@@ -1857,6 +1857,8 @@ def task_image_source(model: Any) -> str:
         return "cf_worker"
     if model.startswith("imagerouter:"):
         return "imagerouter"
+    if model == "muse":
+        return "muse"
     return "antigravity"
 
 

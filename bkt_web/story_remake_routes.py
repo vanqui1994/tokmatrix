@@ -32,6 +32,7 @@ class RunRequest(BaseModel):
     limit: int = Field(5, ge=1, le=50)
     jobs: int = Field(1, ge=1, le=3)
     lang: str = "auto"
+    images: str = Field("imagerouter", pattern="^(imagerouter|muse)$")
 
 
 def _runner() -> Dict[str, Any]:
@@ -93,8 +94,9 @@ def run(req: RunRequest):
         cmd += ["--limit", str(req.limit), "--jobs", str(req.jobs)]
     cmd += ["--lang", req.lang]
     log = open(LOG, "w")
-    proc = subprocess.Popen(cmd, cwd=str(REPO), stdout=log, stderr=subprocess.STDOUT, start_new_session=True)
-    RUNNER.write_text(json.dumps({"pid": proc.pid, "url": req.url, "limit": req.limit, "jobs": req.jobs, "started": int(time.time())}))
+    env = {**os.environ, "STORY_REMAKE_IMAGES": req.images}
+    proc = subprocess.Popen(cmd, cwd=str(REPO), stdout=log, stderr=subprocess.STDOUT, start_new_session=True, env=env)
+    RUNNER.write_text(json.dumps({"pid": proc.pid, "url": req.url, "limit": req.limit, "jobs": req.jobs, "images": req.images, "started": int(time.time())}))
     return {"started": True, "pid": proc.pid}
 
 

@@ -250,6 +250,8 @@ def draw(vid, work, items):
     todo = [it for it in items if not (d / f"{it['key']}.png").exists()]
     if not todo:
         return
+    if os.environ.get("STORY_REMAKE_IMAGES") == "muse":
+        return draw_muse(vid, work, todo)
     if ON_VPS:
         p = subprocess.run([str(REPO / "venv" / "bin" / "python"), "-c", VPS_IMAGES], input=json.dumps(todo), capture_output=True, text=True, timeout=1800, cwd=str(REPO))
     else:
@@ -266,6 +268,38 @@ def draw(vid, work, items):
     missing = [it["key"] for it in items if not (d / f"{it['key']}.png").exists()]
     if missing:
         raise RuntimeError(f"images missing: {missing} {p.stderr[-300:]}")
+
+
+def draw_muse(vid, work, todo):
+    """Nguồn ảnh Muse (muse.ai, engine `muse` của hàng đợi — worker trong server vẽ tuần tự ~30 s/ảnh)."""
+    if not ON_VPS:
+        raise RuntimeError("STORY_REMAKE_IMAGES=muse chỉ chạy trên VPS (Chrome Muse ở đó)")
+    sys.path.insert(0, str(REPO / "bkt_web"))
+    import image_routes
+    ids = {}
+    for it in todo:
+        r = image_routes.enqueue_image(image_routes.EnqueueRequest(prompt=it["prompt"], negative_prompt="cartoon, illustration, text, letters, watermark",
+                                                                   aspect_ratio="9:16", engine="muse", notes=f"story-remake {vid} {it['key']}"))
+        ids[it["key"]] = r["task_ids"][0]
+    src = json.loads((work / "sources.json").read_text()) if (work / "sources.json").exists() else {}
+    deadline = time.time() + 60 * max(20, len(todo))
+    while ids and time.time() < deadline:
+        time.sleep(10)
+        conn = image_routes._db()
+        try:
+            rows = {r[0]: r for r in conn.execute(f"select id,status,image_filename from image_queue where id in ({','.join('?' * len(ids))})", list(ids.values()))}
+        finally:
+            conn.close()
+        for key, tid in list(ids.items()):
+            r = rows.get(tid)
+            if r and r[1] == "completed":
+                from PIL import Image
+                Image.open(image_routes.GENERATED_DIR / r[2]).convert("RGB").save(work / "img" / f"{key}.png"); src[key] = "muse"; ids.pop(key)
+            elif r and r[1] == "failed":
+                raise RuntimeError(f"Muse không vẽ được {key}")
+    (work / "sources.json").write_text(json.dumps(src, indent=1))
+    if ids:
+        raise RuntimeError(f"Muse quá giờ: {list(ids)}")
 
 
 # ---------------------------------------------------------------- 5. dựng
