@@ -1,4 +1,5 @@
-// Variant THAM CHIẾU của Phase 0 (status "reference", không gán cho account): chứng minh kiến trúc end-to-end —
+// Variant đầu tiên của Phase 0 (trước là "reference", trục chép của mystery/case-file); từ 29/09 là layout active riêng:
+// ảnh tang vật lớn / dải ảnh dọc trên nền tối có quầng sáng, chuyển cảnh cắt, ảnh rung tay. Chứng minh kiến trúc end-to-end —
 // registry → DNA → theme nước → kit runtime local → timeline paused → HyperFrames. Engine mystery (1 ảnh AI/cảnh).
 // Hai composition khác cấu trúc: ảnh lớn + chữ dưới / dải ảnh dọc trái + ghi chú phải.
 import { imageMotionTweens, transitionTweens } from "../kit/profiles.mjs";
@@ -96,22 +97,23 @@ const SAMPLE_LINES = {
   en: ["In 1959 nine hikers vanished in the Ural Mountains.", "Their tent was slashed open from the inside.", "Footprints led barefoot into the freezing dark.", "Nobody has explained what drove them out."],
   de: ["Im Winter 1959 verschwanden neun Wanderer im Uralgebirge.", "Ihr Zelt war von innen aufgeschlitzt.", "Donaufahrtsschifffahrtsgesellschaftskapitäne hätten es nicht geglaubt.", "Bis heute gibt es keine Erklärung."],
   ja: ["一九五九年、九人の登山者がウラル山脈で消えた。", "テントは内側から切り裂かれていた。", "足跡は裸足のまま闇へと続いていた。", "何が彼らを外へ追いやったのか、今も謎だ。"],
+  vi: ["Năm 1959, chín người leo núi biến mất ở dãy Ural.", "Lều của họ bị rạch toạc từ bên trong.", "Dấu chân trần dẫn thẳng vào bóng tối giá lạnh.", "Đến nay vẫn chưa ai giải thích được điều gì đã khiến họ bỏ chạy."],
   ko: ["1959년, 아홉 명의 등산객이 우랄 산맥에서 사라졌다.", "텐트는 안쪽에서 찢겨 있었다.", "발자국은 맨발로 어둠 속으로 이어졌다.", "무엇이 그들을 밖으로 내몰았는지 아직 모른다."],
 };
-const SAMPLE_TITLES = { en: "The Dyatlov Pass Mystery", de: "Das Rätsel am Djatlow-Pass", ja: "ディアトロフ峠の謎", ko: "댜틀로프 고개의 미스터리" };
+const SAMPLE_TITLES = { en: "The Dyatlov Pass Mystery", de: "Das Rätsel am Djatlow-Pass", ja: "ディアトロフ峠の謎", ko: "댜틀로프 고개의 미스터리", vi: "Bí ẩn đèo Dyatlov" };
 
 export default {
   id: "mystery/reference-dossier",
   version: 1,
   engine: "mystery",
-  name_vi: "Hồ sơ tham chiếu (Phase 0)",
-  status: "reference",
+  name_vi: "Hồ sơ tang vật",
+  status: "active",
   contentProfile: { topicPacks: { unexplained_evidence: 1 } },
   visualProfile: {
     layoutFamily: "dossier",
     fingerprintAxes: {
-      composition: "folder_card", textPlacement: "bottom", background: "wood_paper",
-      transition: "folder_flip", imageMotion: "ken_burns_slow", typography: "typewriter",
+      composition: "hero_image", textPlacement: "bottom", background: "gradient",
+      transition: "cut", imageMotion: "handheld", typography: "typewriter",
     },
     compositions: {
       hero_evidence: { axes: { composition: "hero_image", textPlacement: "bottom" }, describe: "Ảnh tang vật lớn phía trên, khung dày lệch nhẹ; lời đọc trong hộp tối phía dưới" },
@@ -130,7 +132,7 @@ export default {
   audioProfile: { gender: "any", fx: ["none"] },
   assetProfile: { type: "IMAGE_AI", perScene: 1, aspect: "9:16", scope: "SCENE", fallback: ["reuse_account_cache", "fail"] },
   costProfile: { aiImagesPerScene: 1, stockClipsPerScene: 0, reusableAssetRatio: 0 },
-  compatibility: { countries: ["en", "de", "ja", "ko"], niches: null },
+  compatibility: { countries: ["en", "de", "ja", "ko", "vi"], niches: null },
   renderer: { buildHtml, compositionId: (slug) => slug },
   sample(lang) {
     const code = SAMPLE_LINES[lang] ? lang : "en";

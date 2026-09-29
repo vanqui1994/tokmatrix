@@ -22,7 +22,7 @@ import { costJson, variantsJson, voicesJson } from "../tools/list-variants.mjs";
 import { buildPreview } from "../tools/preview-variants.mjs";
 import { createMysteryFixture } from "./variant-fixtures.mjs";
 
-const REF = "mystery/reference-dossier";
+const REF = "mystery/phase0-reference";
 
 function withEnv(vars, fn) {
   const saved = Object.fromEntries(Object.keys(vars).map((key) => [key, process.env[key]]));
@@ -85,7 +85,7 @@ test("the 4/6 axis rule is enforced in code between base variants of one engine"
   const twin = { ...base, id: "mystery/twin", visualProfile: { ...base.visualProfile, fingerprintAxes: { ...base.visualProfile.fingerprintAxes, typography: "serif", background: "paper" } } };
   assert.equal(compareVariantAxes(base, twin).differing, 2);
   const { errors } = validateVariantSet([base, twin]);
-  assert.ok(errors.some((e) => e.includes("mystery/reference-dossier ↔ mystery/twin") && e.includes("2/6")), errors.join("\n"));
+  assert.ok(errors.some((e) => e.includes("mystery/phase0-reference ↔ mystery/twin") && e.includes("2/6")), errors.join("\n"));
 
   const distinct = { ...twin, id: "mystery/distinct", visualProfile: { ...twin.visualProfile, fingerprintAxes: {
     composition: "radar", textPlacement: "top", background: "tv_static", transition: "cut", imageMotion: "scan_light", typography: "mono",
@@ -143,7 +143,7 @@ test("creative context merges layers in one place: country owns palette/script, 
   assert.notDeepEqual(de.theme.palette, countryTheme("de", 0).palette, "tone shifts the country palette");
   assert.equal(de.axes.composition, "split_vertical");
   assert.equal(de.axes.typography, "serif");
-  assert.equal(de.observability.renderer_version, `variant:mystery/reference-dossier@1+kit@${KIT_VERSION}`);
+  assert.equal(de.observability.renderer_version, `variant:mystery/phase0-reference@1+kit@${KIT_VERSION}`);
   const again = resolveCreativeContext({ variant, dna, lang: "de", channelId: "c1", slug: "s1" });
   assert.equal(again.seeds.video, de.seeds.video);
   assert.equal(again.treatmentCss, de.treatmentCss);
@@ -289,7 +289,7 @@ test("channel JSON schema requires variant_id and dna together", () => {
   const src = path.resolve("config");
   fs.cpSync(src, dir, { recursive: true });
   const file = path.join(dir, "channels", "ancient_mythology_01.yaml");
-  fs.writeFileSync(file, fs.readFileSync(file, "utf8").replace("  visual_style_id:", "  variant_id: mystery/reference-dossier\n  visual_style_id:"));
+  fs.writeFileSync(file, fs.readFileSync(file, "utf8").replace("  visual_style_id:", "  variant_id: mystery/phase0-reference\n  visual_style_id:"));
   const result = validateConfigs({ configDir: dir });
   assert.ok(result.errors.some((e) => e.includes("ancient_mythology_01.yaml") && e.includes("dna")), result.errors.join("\n"));
 });
