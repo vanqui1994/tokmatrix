@@ -567,6 +567,11 @@ class CapabilityRegistryTest(unittest.TestCase):
             "gingerbread_house": {"wet"}, "market_stall": {"wet"}, "cuckoo_clock": {"wet"},
             "fox": {"wet"}, "owl": {"wet"}, "deer": {"wet"}, "wolf": {"wet"},
             "stork": {"wet"}, "wild_boar": {"wet"},
+            # Phase Q Japanese Culture Rigs
+            "koinobori": {"wet"}, "tanabata_bamboo": {"wet"}, "bamboo": {"growth", "roots", "wet"},
+            "paper_lantern_jp": {"wet"}, "school_bag_randoseru": {"wet"}, "train_ticket_gate": {"wet"},
+            "pheasant": {"wet"}, "crab": {"wet"}, "tanuki": {"wet"}, "crane": {"wet"},
+            "koi": {"hooked", "mouth", "wet"}, "snow_monkey": {"wet"},
         }
         self.assertEqual(set(document["assets"]), set(expected))
         for asset_id, states in expected.items():

@@ -7100,7 +7100,7 @@
             "start": 11.5,
             "end": 15.0,
             "actor": "tooth",
-            "emote": "star"
+            "emote": "heart"
           }
         ],
         "background": {
@@ -13853,6 +13853,886 @@
         "end": 13.5,
         "character_id": "pupil",
         "text": "Bước chân rộn rã tiến về ngôi trường thân yêu, lòng ngập tràn niềm vui và sự háo hức khám phá!",
+        "expression": "happy"
+      }
+    ]
+  },
+  {
+    "id": "momotaro",
+    "name": "30 · Cổ tích Nhật Bản: Cậu bé quả đào Momotarō và những người bạn",
+    "renderer": "native-vector-v1",
+    "fidelity": "technical-demo",
+    "note": "Mẫu kỹ thuật Phase Q: Momotarō cùng các bạn đồng hành rảo bước và dùng bánh dango thuyết phục quỷ, kết thúc hoà giải ấm áp không bạo lực.",
+    "duration": 15.0,
+    "characters": [
+      {
+        "id": "momotaro",
+        "name": "Bé trai học sinh",
+        "asset": "chibi_boy"
+      },
+      {
+        "id": "dango",
+        "name": "Xiên bánh Dango 3 màu",
+        "asset": "dango",
+        "attach_to": {
+          "id": "momotaro",
+          "anchor": "hand_r"
+        }
+      },
+      {
+        "id": "dog",
+        "name": "Con chó",
+        "asset": "dog"
+      },
+      {
+        "id": "monkey",
+        "name": "Khỉ con đuôi dài (Cartoon Monkey)",
+        "asset": "cartoon_monkey"
+      },
+      {
+        "id": "pheasant",
+        "name": "Chim trĩ xanh Kiji",
+        "asset": "pheasant"
+      },
+      {
+        "id": "oni",
+        "name": "Nông dân",
+        "asset": "farmer"
+      }
+    ],
+    "scenes": [
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 0,
+        "end_time": 7.0,
+        "characters_present": [
+          "momotaro",
+          "dango",
+          "dog",
+          "monkey",
+          "pheasant"
+        ],
+        "poses": {
+          "momotaro": [
+            {
+              "time": 0,
+              "x": 90,
+              "y": 810,
+              "height": 240,
+              "outfit": "yukata"
+            },
+            {
+              "time": 7.0,
+              "x": 280,
+              "y": 810,
+              "height": 240,
+              "outfit": "yukata"
+            }
+          ],
+          "dango": [
+            {
+              "time": 0,
+              "x": -0.0,
+              "y": 14.399999999999999,
+              "height": 60,
+              "rotation": 0
+            },
+            {
+              "time": 7.0,
+              "x": -0.0,
+              "y": 14.399999999999999,
+              "height": 60,
+              "rotation": 0
+            }
+          ],
+          "dog": [
+            {
+              "time": 0,
+              "x": -40,
+              "y": 810,
+              "height": 160
+            },
+            {
+              "time": 7.0,
+              "x": 140,
+              "y": 810,
+              "height": 160
+            }
+          ],
+          "monkey": [
+            {
+              "time": 0,
+              "x": -140,
+              "y": 810,
+              "height": 150
+            },
+            {
+              "time": 7.0,
+              "x": 40,
+              "y": 810,
+              "height": 150
+            }
+          ],
+          "pheasant": [
+            {
+              "time": 0,
+              "x": -230,
+              "y": 810,
+              "height": 120
+            },
+            {
+              "time": 7.0,
+              "x": -50,
+              "y": 810,
+              "height": 120
+            }
+          ]
+        },
+        "actions": [],
+        "background": {
+          "preset": "shrine_generic"
+        },
+        "index": 0
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 7.0,
+        "end_time": 15.0,
+        "characters_present": [
+          "momotaro",
+          "dango",
+          "dog",
+          "monkey",
+          "pheasant",
+          "oni"
+        ],
+        "poses": {
+          "momotaro": [
+            {
+              "time": 7.0,
+              "x": 180,
+              "y": 810,
+              "height": 240,
+              "outfit": "yukata",
+              "expression": "happy"
+            },
+            {
+              "time": 15.0,
+              "x": 180,
+              "y": 810,
+              "height": 240,
+              "outfit": "yukata",
+              "expression": "happy"
+            }
+          ],
+          "dango": [
+            {
+              "time": 7.0,
+              "x": -0.0,
+              "y": 14.399999999999999,
+              "height": 60,
+              "rotation": 0
+            },
+            {
+              "time": 15.0,
+              "x": -0.0,
+              "y": 14.399999999999999,
+              "height": 60,
+              "rotation": 0
+            }
+          ],
+          "dog": [
+            {
+              "time": 7.0,
+              "x": 110,
+              "y": 810,
+              "height": 160
+            },
+            {
+              "time": 15.0,
+              "x": 110,
+              "y": 810,
+              "height": 160
+            }
+          ],
+          "monkey": [
+            {
+              "time": 7.0,
+              "x": 30,
+              "y": 810,
+              "height": 150
+            },
+            {
+              "time": 15.0,
+              "x": 30,
+              "y": 810,
+              "height": 150
+            }
+          ],
+          "pheasant": [
+            {
+              "time": 7.0,
+              "x": -40,
+              "y": 810,
+              "height": 120
+            },
+            {
+              "time": 15.0,
+              "x": -40,
+              "y": 810,
+              "height": 120
+            }
+          ],
+          "oni": [
+            {
+              "time": 7.0,
+              "x": 380,
+              "y": 810,
+              "height": 260
+            },
+            {
+              "time": 10.0,
+              "x": 380,
+              "y": 810,
+              "height": 260,
+              "expression": "happy"
+            },
+            {
+              "time": 15.0,
+              "x": 380,
+              "y": 810,
+              "height": 260,
+              "expression": "happy"
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "emote",
+            "start": 10.0,
+            "end": 14.5,
+            "actor": "oni",
+            "emote": "heart"
+          },
+          {
+            "type": "emote",
+            "start": 11.0,
+            "end": 14.5,
+            "actor": "momotaro",
+            "emote": "heart"
+          }
+        ],
+        "background": {
+          "preset": "edo_town"
+        },
+        "index": 1
+      }
+    ],
+    "cues": [
+      {
+        "start": 0.5,
+        "end": 6.5,
+        "character_id": "momotaro",
+        "text": "Momotarō cùng chú chó trung thành, khỉ thông minh và gà lôi dũng cảm cùng nhau lên đường!",
+        "expression": "happy"
+      },
+      {
+        "start": 7.5,
+        "end": 14.5,
+        "character_id": "momotaro",
+        "text": "Momotarō chia sẻ chiếc bánh dango ngọt ngào, quỷ cảm động cúi đầu xin lỗi và trở thành bạn tốt!",
+        "expression": "happy"
+      }
+    ]
+  },
+  {
+    "id": "bento_morning",
+    "name": "31 · Đời sống Nhật Bản: Chuẩn bị hộp cơm bento và cắp sách đến trường",
+    "renderer": "native-vector-v1",
+    "fidelity": "technical-demo",
+    "note": "Mẫu kỹ thuật Phase Q: Bé gái mặc đồng phục trường Nhật xếp cơm nắm onigiri vào hộp bento, đeo cặp sách Randoseru sải bước tới trường.",
+    "duration": 15.0,
+    "characters": [
+      {
+        "id": "pupil",
+        "name": "Bé gái học sinh",
+        "asset": "chibi_girl"
+      },
+      {
+        "id": "bag",
+        "name": "Cặp sách Randoseru",
+        "asset": "school_bag_randoseru",
+        "attach_to": {
+          "id": "pupil",
+          "anchor": "back"
+        }
+      },
+      {
+        "id": "rice",
+        "name": "Cơm nắm tam giác rong biển",
+        "asset": "onigiri",
+        "attach_to": {
+          "id": "pupil",
+          "anchor": "hand_r"
+        }
+      },
+      {
+        "id": "bento",
+        "name": "Hộp cơm bento",
+        "asset": "bento_box"
+      }
+    ],
+    "scenes": [
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 0,
+        "end_time": 7.0,
+        "characters_present": [
+          "pupil",
+          "bag",
+          "rice",
+          "bento"
+        ],
+        "poses": {
+          "pupil": [
+            {
+              "time": 0,
+              "x": 200,
+              "y": 810,
+              "height": 240,
+              "outfit": "school_uniform_jp"
+            },
+            {
+              "time": 7.0,
+              "x": 200,
+              "y": 810,
+              "height": 240,
+              "outfit": "school_uniform_jp"
+            }
+          ],
+          "bag": [
+            {
+              "time": 0,
+              "x": -0.0,
+              "y": 39.199999999999996,
+              "height": 140,
+              "rotation": 0,
+              "z": -1
+            },
+            {
+              "time": 7.0,
+              "x": -0.0,
+              "y": 39.199999999999996,
+              "height": 140,
+              "rotation": 0,
+              "z": -1
+            }
+          ],
+          "rice": [
+            {
+              "time": 0,
+              "x": -0.0,
+              "y": 9.680000000000001,
+              "height": 55,
+              "rotation": 0
+            },
+            {
+              "time": 7.0,
+              "x": -0.0,
+              "y": 9.680000000000001,
+              "height": 55,
+              "rotation": 0
+            }
+          ],
+          "bento": [
+            {
+              "time": 0,
+              "x": 310,
+              "y": 810,
+              "height": 80
+            },
+            {
+              "time": 7.0,
+              "x": 310,
+              "y": 810,
+              "height": 80
+            }
+          ]
+        },
+        "actions": [],
+        "background": {
+          "preset": "edo_town"
+        },
+        "index": 0,
+        "camera": [
+          {
+            "time": 0,
+            "x": 219.0,
+            "y": 662.98,
+            "zoom": 1.95
+          }
+        ]
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 7.0,
+        "end_time": 15.0,
+        "characters_present": [
+          "pupil",
+          "bag"
+        ],
+        "poses": {
+          "pupil": [
+            {
+              "time": 7.0,
+              "x": 80,
+              "y": 810,
+              "height": 240,
+              "outfit": "school_uniform_jp"
+            },
+            {
+              "time": 15.0,
+              "x": 300,
+              "y": 810,
+              "height": 240,
+              "outfit": "school_uniform_jp",
+              "expression": "happy"
+            }
+          ],
+          "bag": [
+            {
+              "time": 7.0,
+              "x": -0.0,
+              "y": 39.199999999999996,
+              "height": 140,
+              "rotation": 0,
+              "z": -1
+            },
+            {
+              "time": 15.0,
+              "x": -0.0,
+              "y": 39.199999999999996,
+              "height": 140,
+              "rotation": 0,
+              "z": -1
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "emote",
+            "start": 10.0,
+            "end": 14.5,
+            "actor": "pupil",
+            "emote": "heart"
+          }
+        ],
+        "background": {
+          "preset": "edo_town"
+        },
+        "index": 1,
+        "camera": [
+          {
+            "time": 7.0,
+            "x": 253.49,
+            "y": 557.64,
+            "zoom": 1.136
+          }
+        ]
+      }
+    ],
+    "cues": [
+      {
+        "start": 0.5,
+        "end": 6.5,
+        "character_id": "pupil",
+        "text": "Buổi sáng tinh khôi, bé cẩn thận xếp cơm nắm onigiri thơm ngon vào hộp bento đầy sắc màu!",
+        "expression": "happy"
+      },
+      {
+        "start": 7.5,
+        "end": 14.5,
+        "character_id": "pupil",
+        "text": "Khoác lên lưng chiếc cặp Randoseru đỏ thắm, bé vui tươi rảo bước tới trường đón ngày học mới!",
+        "expression": "happy"
+      }
+    ]
+  },
+  {
+    "id": "school_cleaning",
+    "name": "32 · Học đường Nhật Bản: Giờ dọn dẹp vệ sinh trường lớp O-soji",
+    "renderer": "native-vector-v1",
+    "fidelity": "technical-demo",
+    "note": "Mẫu kỹ thuật Phase Q: Học sinh cầm chổi quét dọn lớp học trong giờ O-soji, sàn phòng học sạch dần đều và bóng loáng.",
+    "duration": 15.0,
+    "characters": [
+      {
+        "id": "pupil",
+        "name": "Bé trai học sinh",
+        "asset": "chibi_boy"
+      },
+      {
+        "id": "broom",
+        "name": "Chổi quét",
+        "asset": "broom",
+        "attach_to": {
+          "id": "pupil",
+          "anchor": "hand_r"
+        }
+      }
+    ],
+    "scenes": [
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 0,
+        "end_time": 8.0,
+        "characters_present": [
+          "pupil",
+          "broom"
+        ],
+        "poses": {
+          "pupil": [
+            {
+              "time": 0,
+              "x": 240,
+              "y": 810,
+              "height": 240,
+              "outfit": "school_uniform_jp",
+              "dirty": 1.0
+            },
+            {
+              "time": 2.0,
+              "x": 260,
+              "y": 810,
+              "height": 240,
+              "outfit": "school_uniform_jp",
+              "dirty": 0.75
+            },
+            {
+              "time": 4.0,
+              "x": 280,
+              "y": 810,
+              "height": 240,
+              "outfit": "school_uniform_jp",
+              "dirty": 0.5
+            },
+            {
+              "time": 6.0,
+              "x": 300,
+              "y": 810,
+              "height": 240,
+              "outfit": "school_uniform_jp",
+              "dirty": 0.25
+            },
+            {
+              "time": 8.0,
+              "x": 320,
+              "y": 810,
+              "height": 240,
+              "outfit": "school_uniform_jp",
+              "dirty": 0.0
+            }
+          ],
+          "broom": [
+            {
+              "time": 0,
+              "x": 8.336740993563176,
+              "y": 22.905007631656517,
+              "height": 150,
+              "rotation": -20
+            },
+            {
+              "time": 8.0,
+              "x": 8.336740993563176,
+              "y": 22.905007631656517,
+              "height": 150,
+              "rotation": -20
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "sweep",
+            "start": 0.5,
+            "end": 7.5,
+            "actor": "pupil"
+          }
+        ],
+        "background": {
+          "preset": "jp_school",
+          "dirty": 1.0
+        },
+        "index": 0,
+        "camera": [
+          {
+            "time": 0,
+            "x": 280.0,
+            "y": 638.67,
+            "zoom": 1.674
+          }
+        ]
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 8.0,
+        "end_time": 15.0,
+        "characters_present": [
+          "pupil",
+          "broom"
+        ],
+        "poses": {
+          "pupil": [
+            {
+              "time": 8.0,
+              "x": 320,
+              "y": 810,
+              "height": 240,
+              "outfit": "school_uniform_jp",
+              "dirty": 0.0,
+              "expression": "happy"
+            },
+            {
+              "time": 15.0,
+              "x": 320,
+              "y": 810,
+              "height": 240,
+              "outfit": "school_uniform_jp",
+              "dirty": 0.0,
+              "expression": "happy",
+              "celebrate": 1.0
+            }
+          ],
+          "broom": [
+            {
+              "time": 8.0,
+              "x": 8.336740993563176,
+              "y": 22.905007631656517,
+              "height": 150,
+              "rotation": -20
+            },
+            {
+              "time": 15.0,
+              "x": 8.336740993563176,
+              "y": 22.905007631656517,
+              "height": 150,
+              "rotation": -20
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "emote",
+            "start": 9.0,
+            "end": 14.5,
+            "actor": "pupil",
+            "emote": "idea"
+          }
+        ],
+        "background": {
+          "preset": "jp_school",
+          "dirty": 0.0
+        },
+        "index": 1,
+        "camera": [
+          {
+            "time": 8.0,
+            "x": 320.0,
+            "y": 666.64,
+            "zoom": 2.0
+          }
+        ]
+      }
+    ],
+    "cues": [
+      {
+        "start": 0.5,
+        "end": 7.5,
+        "character_id": "pupil",
+        "text": "Chuông điểm ba giờ chiều, các bạn nhỏ cùng nhau cầm chổi quét dọn từng góc lớp học!",
+        "expression": "happy"
+      },
+      {
+        "start": 8.5,
+        "end": 14.5,
+        "character_id": "pupil",
+        "text": "Sàn gỗ lớp học giờ đây đã sạch bóng tinh tươm, bạn nào cũng vui vẻ tự hào!",
+        "expression": "happy"
+      }
+    ]
+  },
+  {
+    "id": "tanabata_wish",
+    "name": "33 · Lễ hội Tanabata: Gửi gắm điều ước lên cành tre ngắm trời sao",
+    "renderer": "native-vector-v1",
+    "fidelity": "technical-demo",
+    "note": "Mẫu kỹ thuật Phase Q: Bé gái mặc áo yukata treo dải giấy tanzaku lên cành tre Tanabata ngắm dải Ngân hà trong đêm thanh bình.",
+    "duration": 14.0,
+    "characters": [
+      {
+        "id": "tree",
+        "name": "Cành tre Tanabata",
+        "asset": "tanabata_bamboo"
+      },
+      {
+        "id": "pupil",
+        "name": "Bé gái học sinh",
+        "asset": "chibi_girl"
+      }
+    ],
+    "scenes": [
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 0,
+        "end_time": 7.0,
+        "characters_present": [
+          "tree",
+          "pupil"
+        ],
+        "poses": {
+          "tree": [
+            {
+              "time": 0,
+              "x": 340,
+              "y": 810,
+              "height": 240
+            },
+            {
+              "time": 7.0,
+              "x": 340,
+              "y": 810,
+              "height": 240
+            }
+          ],
+          "pupil": [
+            {
+              "time": 0,
+              "x": 160,
+              "y": 810,
+              "height": 240,
+              "outfit": "yukata"
+            },
+            {
+              "time": 4.0,
+              "x": 200,
+              "y": 810,
+              "height": 240,
+              "outfit": "yukata",
+              "hand_r_x": 23.33,
+              "hand_r_y": -95
+            },
+            {
+              "time": 7.0,
+              "x": 200,
+              "y": 810,
+              "height": 240,
+              "outfit": "yukata",
+              "hand_r_x": 23.33,
+              "hand_r_y": -95
+            }
+          ]
+        },
+        "actions": [],
+        "background": {
+          "preset": "shrine_generic",
+          "time": "night"
+        },
+        "index": 0,
+        "camera": [
+          {
+            "time": 0,
+            "x": 250.0,
+            "y": 580.79,
+            "zoom": 1.251
+          }
+        ]
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 7.0,
+        "end_time": 14.0,
+        "characters_present": [
+          "tree",
+          "pupil"
+        ],
+        "poses": {
+          "tree": [
+            {
+              "time": 7.0,
+              "x": 340,
+              "y": 810,
+              "height": 240
+            },
+            {
+              "time": 14.0,
+              "x": 340,
+              "y": 810,
+              "height": 240
+            }
+          ],
+          "pupil": [
+            {
+              "time": 7.0,
+              "x": 200,
+              "y": 810,
+              "height": 240,
+              "outfit": "yukata",
+              "expression": "happy"
+            },
+            {
+              "time": 14.0,
+              "x": 200,
+              "y": 810,
+              "height": 240,
+              "outfit": "yukata",
+              "expression": "happy"
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "emote",
+            "start": 8.0,
+            "end": 13.5,
+            "actor": "pupil",
+            "emote": "music"
+          }
+        ],
+        "background": {
+          "preset": "shrine_generic",
+          "time": "night"
+        },
+        "index": 1,
+        "camera": [
+          {
+            "time": 7.0,
+            "x": 270.0,
+            "y": 603.94,
+            "zoom": 1.391
+          }
+        ]
+      }
+    ],
+    "cues": [
+      {
+        "start": 0.5,
+        "end": 6.5,
+        "character_id": "pupil",
+        "text": "Trong đêm lễ hội Tanabata thanh bình, em bé nâng niu dải giấy ước nguyện buộc lên cành tre xanh mát!",
+        "expression": "happy"
+      },
+      {
+        "start": 7.5,
+        "end": 13.5,
+        "character_id": "pupil",
+        "text": "Ngước nhìn ngàn vì sao lấp lánh trên dải Ngân hà, em nguyện cầu những ước mơ ngọt ngào sẽ thành sự thật!",
         "expression": "happy"
       }
     ]

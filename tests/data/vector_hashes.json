@@ -3562,6 +3562,90 @@
       "703274efbe0d0c4f",
       "703274efbe0d0c4f",
       "703274efbe0d0c4f"
+    ],
+    "koinobori": [
+      "3d341eefed840a98",
+      "82d378eff0890d14",
+      "5e52f3efbd721fbb",
+      "28ec39ef22a7dd2e",
+      "c7f8feefb92ae7d4"
+    ],
+    "tanabata_bamboo": [
+      "a14a00effe73de79",
+      "f74eb7ef1a5b2d27",
+      "fc718cef8ca4c555",
+      "d5e9daef89e13cb5",
+      "e308dcefdf0621ed"
+    ],
+    "bamboo": [
+      "06ea7eefcbf547a9",
+      "06ea7eefcbf547a9",
+      "06ea7eefcbf547a9",
+      "06ea7eefcbf547a9",
+      "06ea7eefcbf547a9"
+    ],
+    "paper_lantern_jp": [
+      "90d6bcefea6f8139",
+      "90d6bcefea6f8139",
+      "90d6bcefea6f8139",
+      "90d6bcefea6f8139",
+      "90d6bcefea6f8139"
+    ],
+    "school_bag_randoseru": [
+      "28af88efb8c21d02",
+      "28af88efb8c21d02",
+      "28af88efb8c21d02",
+      "28af88efb8c21d02",
+      "28af88efb8c21d02"
+    ],
+    "train_ticket_gate": [
+      "279ce3ef69ee2357",
+      "279ce3ef69ee2357",
+      "279ce3ef69ee2357",
+      "279ce3ef69ee2357",
+      "279ce3ef69ee2357"
+    ],
+    "pheasant": [
+      "b8b8abefab558680",
+      "b8b8abefab558680",
+      "b8b8abefab558680",
+      "b8b8abefab558680",
+      "b8b8abefab558680"
+    ],
+    "crab": [
+      "63fb00efec9f41ce",
+      "63fb00efec9f41ce",
+      "63fb00efec9f41ce",
+      "63fb00efec9f41ce",
+      "63fb00efec9f41ce"
+    ],
+    "tanuki": [
+      "9f2a18ef2a254e2b",
+      "9f2a18ef2a254e2b",
+      "9f2a18ef2a254e2b",
+      "9f2a18ef2a254e2b",
+      "9f2a18ef2a254e2b"
+    ],
+    "crane": [
+      "66c56def44e17655",
+      "66c56def44e17655",
+      "66c56def44e17655",
+      "66c56def44e17655",
+      "66c56def44e17655"
+    ],
+    "koi": [
+      "34d2e0eff84f9363",
+      "49b3cfef5c0e1b54",
+      "927ea7ef29a84f39",
+      "c12f9aefbaaa4573",
+      "87c791ef17d585c8"
+    ],
+    "snow_monkey": [
+      "6686deef43abf68f",
+      "6686deef43abf68f",
+      "6686deef43abf68f",
+      "6686deef43abf68f",
+      "6686deef43abf68f"
     ]
   },
   "backgrounds": {
@@ -5536,6 +5620,176 @@
         "f59903efbaa8eba8",
         "8a6116ef6aa8a7b5"
       ]
+    },
+    "edo_town": {
+      "day": [
+        "464bb1efd91b5468",
+        "464bb1efd91b5468"
+      ],
+      "night": [
+        "b388a2efe883adc2",
+        "b388a2efe883adc2"
+      ],
+      "rain": [
+        "481ab7ef224f91e9",
+        "2d17e5ef09f49185"
+      ],
+      "snow": [
+        "953c70eff93ea2dd",
+        "2397c9ef8653d1b8"
+      ],
+      "wind": [
+        "46eedfefa7cfb4dd",
+        "e766b8efbe4300c9"
+      ],
+      "fog": [
+        "9834eaeff055f6eb",
+        "021412ef7e07de8c"
+      ],
+      "storm": [
+        "2225e0efd5a953ca",
+        "10533eef203e7f68"
+      ],
+      "hot": [
+        "1f865deff238a67c",
+        "07895defa72f89fc"
+      ]
+    },
+    "jp_school": {
+      "day": [
+        "5672ceef795edc9b",
+        "5672ceef795edc9b"
+      ],
+      "night": [
+        "5ba160ef55c0a132",
+        "5ba160ef55c0a132"
+      ],
+      "rain": [
+        "028549ef0a5ea862",
+        "d9108aefd6eb79da"
+      ],
+      "snow": [
+        "2e7cadefbe01fdf6",
+        "57cb91ef1b5cdfdb"
+      ],
+      "wind": [
+        "709e29ef1112f075",
+        "29ec16ef2e814166"
+      ],
+      "fog": [
+        "638083ef2f22f820",
+        "2bf5f9ef4aeeee25"
+      ],
+      "storm": [
+        "20dc66ef01f971db",
+        "715f60ef936fd0f2"
+      ],
+      "hot": [
+        "f7896defed3390da",
+        "3a9415eff62580da"
+      ]
+    },
+    "train_platform": {
+      "day": [
+        "5abe1def2fb26b5a",
+        "5abe1def2fb26b5a"
+      ],
+      "night": [
+        "aa251cef8f050d5e",
+        "aa251cef8f050d5e"
+      ],
+      "rain": [
+        "043976ef654d0a45",
+        "8607a3ef33f9b880"
+      ],
+      "snow": [
+        "ad7f04ef0a526ce5",
+        "3d893bef432df7d3"
+      ],
+      "wind": [
+        "f16306efcf19ea50",
+        "70bd38eff9289185"
+      ],
+      "fog": [
+        "90d9f1ef0d7c6a62",
+        "f53ef2ef9331d521"
+      ],
+      "storm": [
+        "cad0b1ef41c58d26",
+        "de17aeef7422c1ef"
+      ],
+      "hot": [
+        "93125fefa905b5f4",
+        "0a3d27efa81dd94a"
+      ]
+    },
+    "shrine_generic": {
+      "day": [
+        "63e193ef1285ab2f",
+        "63e193ef1285ab2f"
+      ],
+      "night": [
+        "3c84bcef4a3a94ea",
+        "3c84bcef4a3a94ea"
+      ],
+      "rain": [
+        "56f07def75740302",
+        "a88bc4ef07a518c8"
+      ],
+      "snow": [
+        "8830c2ef2660e7ce",
+        "7faf58eff28a5581"
+      ],
+      "wind": [
+        "c9c576ef57fe140c",
+        "716406ef261f95a9"
+      ],
+      "fog": [
+        "0ea21aefc4540de3",
+        "a4563cef3af9b09c"
+      ],
+      "storm": [
+        "caca83ef2b0b368a",
+        "4f0a35efde413be4"
+      ],
+      "hot": [
+        "3def82efbe65bde9",
+        "cf36d9ef2d88b09d"
+      ]
+    },
+    "onsen_snow": {
+      "day": [
+        "5adf8def427bf597",
+        "4214e7ef26cbe6e7"
+      ],
+      "night": [
+        "45f131efb4d8bea9",
+        "73c703ef65dc6509"
+      ],
+      "rain": [
+        "5598dcef57d46d1a",
+        "31cb09ef64085f45"
+      ],
+      "snow": [
+        "3c60eaef43d0a31b",
+        "8b6072efb3a6e6f0"
+      ],
+      "wind": [
+        "205acaefec3c90d8",
+        "b12344ef115789cc"
+      ],
+      "fog": [
+        "317afdef58fffb39",
+        "20dfbeef78ec9f59"
+      ],
+      "storm": [
+        "f7edb6ef3250d4bd",
+        "62f003ef26910047"
+      ],
+      "hot": [
+        "dbb7b6efceb97a90",
+        "27656aef8bf65fd7"
+      ]
     }
   },
   "stories": {
@@ -5718,7 +5972,7 @@
       "d46ffdef7b49fddc",
       "429031efc0a730d4",
       "9744f7ef750a3414",
-      "23634fef7e3a9067",
+      "db8b11efc0c332c9",
       "c80553ef0c3ba2df"
     ],
     "nutrition_fitness": [
@@ -5895,6 +6149,34 @@
       "bd978defb049cd16",
       "758c82ef5c505608",
       "43197fef2549a4b0"
+    ],
+    "momotaro": [
+      "7d6bf8efe7137ca2",
+      "31f7aaefc76e75b4",
+      "41a553ef1e960e48",
+      "e8feffefe2913433",
+      "d90ce1ef8d12e479"
+    ],
+    "bento_morning": [
+      "dcdc5cefcd585e54",
+      "458922ef0419fe54",
+      "7dc1baef0232aa43",
+      "c92194ef8f49fab3",
+      "028f24ef2a1f2b48"
+    ],
+    "school_cleaning": [
+      "388576ef2bdaa12a",
+      "199478efb22170df",
+      "2fb418efc045fc98",
+      "5b8755ef45e57bd9",
+      "7f12daef326f91e8"
+    ],
+    "tanabata_wish": [
+      "133305efafcbf519",
+      "d7ef43efd74e56ba",
+      "aa8686efae7f2b7f",
+      "6abfdeef35bc232e",
+      "8c94c5ef39fca65f"
     ]
   }
 }

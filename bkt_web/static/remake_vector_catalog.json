@@ -29,7 +29,8 @@
     "safety",
     "ancient",
     "inventions",
-    "de_culture"
+    "de_culture",
+    "jp_culture"
   ],
   "rig_style": {
     "name": "hand-drawn-whole-pose-cel",
@@ -152,7 +153,12 @@
     "black_forest_village",
     "christmas_market",
     "allotment_garden",
-    "alpine_meadow"
+    "alpine_meadow",
+    "edo_town",
+    "jp_school",
+    "train_platform",
+    "shrine_generic",
+    "onsen_snow"
   ],
   "background_specs": {
     "garden": {
@@ -829,6 +835,76 @@
         "storm",
         "hot"
       ]
+    },
+    "edo_town": {
+      "label": "Phố cổ Edo",
+      "theme": "home",
+      "ground_y": 810,
+      "weather": [
+        "clear",
+        "rain",
+        "snow",
+        "wind",
+        "fog",
+        "storm",
+        "hot"
+      ]
+    },
+    "jp_school": {
+      "label": "Lớp học trường Nhật",
+      "theme": "school",
+      "ground_y": 810,
+      "weather": [
+        "clear",
+        "rain",
+        "snow",
+        "wind",
+        "fog",
+        "storm",
+        "hot"
+      ]
+    },
+    "train_platform": {
+      "label": "Sân ga tàu điện",
+      "theme": "station",
+      "ground_y": 810,
+      "weather": [
+        "clear",
+        "rain",
+        "snow",
+        "wind",
+        "fog",
+        "storm",
+        "hot"
+      ]
+    },
+    "shrine_generic": {
+      "label": "Khuôn viên đền Nhật",
+      "theme": "garden",
+      "ground_y": 810,
+      "weather": [
+        "clear",
+        "rain",
+        "snow",
+        "wind",
+        "fog",
+        "storm",
+        "hot"
+      ]
+    },
+    "onsen_snow": {
+      "label": "Suối nước nóng tuyết Onsen",
+      "theme": "water",
+      "ground_y": 810,
+      "weather": [
+        "clear",
+        "rain",
+        "snow",
+        "wind",
+        "fog",
+        "storm",
+        "hot"
+      ]
     }
   },
   "weather": [
@@ -1262,6 +1338,10 @@
     "curl": [
       0,
       1
+    ],
+    "dirty": [
+      0,
+      1
     ]
   },
   "pose_defaults": {
@@ -1273,8 +1353,8 @@
     "bend": 0,
     "roots": 0,
     "cut": 0,
-    "slice": 0.0,
-    "fill": 0.0,
+    "slice": 0,
+    "fill": 0,
     "cutaway": 0,
     "nutrients": 0,
     "wet": 0,
@@ -1315,7 +1395,7 @@
     "flip": false,
     "ease": "linear",
     "fruits": 8,
-    "open": 0.0,
+    "open": 0,
     "flies": 0,
     "toxic": 0,
     "shiver": 0,
@@ -1333,11 +1413,12 @@
     "pale": 0,
     "cavity": 0,
     "sparkle": 0,
-    "cooked": 1.0,
+    "cooked": 1,
     "outfit": "none",
     "lit": 0,
     "playing": 0,
-    "curl": 0
+    "curl": 0,
+    "dirty": 0
   },
   "style_colors": [
     "body",
@@ -16980,28 +17061,28 @@
       "pack": "medical",
       "anchors": {
         "root": [
-          0.0,
-          0.0
+          0,
+          0
         ],
         "grip": [
-          0.0,
-          -22.0
+          0,
+          -22
         ],
         "chest_piece": [
-          0.0,
-          0.0
+          0,
+          0
         ],
         "earpieces": [
-          0.0,
-          -88.0
+          0,
+          -88
         ],
         "top": [
-          0.0,
-          -99.0
+          0,
+          -99
         ],
         "surface": [
-          0.0,
-          -11.0
+          0,
+          -11
         ]
       }
     },
@@ -17012,23 +17093,23 @@
       "pack": "medical",
       "anchors": {
         "root": [
-          0.0,
-          0.0
+          0,
+          0
         ],
         "grip": [
-          0.0,
+          0,
           -64.75
         ],
         "tip": [
-          0.0,
-          0.0
+          0,
+          0
         ],
         "top": [
-          0.0,
+          0,
           -92.5
         ],
         "surface": [
-          0.0,
+          0,
           -3.7
         ]
       }
@@ -17040,28 +17121,28 @@
       "pack": "medical",
       "anchors": {
         "root": [
-          0.0,
-          0.0
+          0,
+          0
         ],
         "grip": [
-          0.0,
-          -50.0
+          0,
+          -50
         ],
         "needle": [
-          0.0,
-          0.0
+          0,
+          0
         ],
         "plunger": [
-          0.0,
-          -100.0
+          0,
+          -100
         ],
         "top": [
-          0.0,
-          -100.0
+          0,
+          -100
         ],
         "surface": [
-          0.0,
-          -4.0
+          0,
+          -4
         ]
       }
     },
@@ -17072,20 +17153,20 @@
       "pack": "medical",
       "anchors": {
         "root": [
-          0.0,
-          0.0
+          0,
+          0
         ],
         "grip": [
-          0.0,
+          0,
           -40.25
         ],
         "top": [
-          0.0,
+          0,
           -80.5
         ],
         "surface": [
-          0.0,
-          0.0
+          0,
+          0
         ]
       }
     },
@@ -17096,20 +17177,20 @@
       "pack": "medical",
       "anchors": {
         "root": [
-          0.0,
-          0.0
+          0,
+          0
         ],
         "grip": [
-          0.0,
+          0,
           -46.8
         ],
         "top": [
-          0.0,
+          0,
           -93.6
         ],
         "surface": [
-          0.0,
-          0.0
+          0,
+          0
         ]
       }
     },
@@ -17120,20 +17201,20 @@
       "pack": "medical",
       "anchors": {
         "root": [
-          0.0,
-          0.0
+          0,
+          0
         ],
         "grip": [
-          0.0,
+          0,
           -46.2
         ],
         "top": [
-          0.0,
+          0,
           -92.4
         ],
         "surface": [
-          0.0,
-          0.0
+          0,
+          0
         ]
       }
     },
@@ -17144,24 +17225,24 @@
       "pack": "medical",
       "anchors": {
         "root": [
-          0.0,
-          0.0
+          0,
+          0
         ],
         "grip": [
-          0.0,
+          0,
           -43.5
         ],
         "tip": [
-          0.0,
-          0.0
+          0,
+          0
         ],
         "top": [
-          0.0,
+          0,
           -92.8
         ],
         "surface": [
-          0.0,
-          0.0
+          0,
+          0
         ]
       }
     },
@@ -17172,20 +17253,20 @@
       "pack": "medical",
       "anchors": {
         "root": [
-          0.0,
-          0.0
+          0,
+          0
         ],
         "grip": [
-          0.0,
+          0,
           -8.55
         ],
         "top": [
-          0.0,
+          0,
           -17.1
         ],
         "surface": [
-          0.0,
-          0.0
+          0,
+          0
         ]
       }
     },
@@ -17196,20 +17277,20 @@
       "pack": "medical",
       "anchors": {
         "root": [
-          0.0,
-          0.0
+          0,
+          0
         ],
         "grip": [
-          0.0,
+          0,
           -25.2
         ],
         "top": [
-          0.0,
+          0,
           -50.4
         ],
         "surface": [
-          0.0,
-          0.0
+          0,
+          0
         ]
       }
     },
@@ -17220,20 +17301,20 @@
       "pack": "medical",
       "anchors": {
         "root": [
-          0.0,
-          0.0
+          0,
+          0
         ],
         "grip": [
-          0.0,
-          0.0
+          0,
+          0
         ],
         "top": [
-          0.0,
+          0,
           -32.4
         ],
         "surface": [
-          0.0,
-          0.0
+          0,
+          0
         ]
       },
       "layer": "over_face"
@@ -17245,20 +17326,20 @@
       "pack": "medical",
       "anchors": {
         "root": [
-          0.0,
-          0.0
+          0,
+          0
         ],
         "grip": [
-          0.0,
+          0,
           -16.75
         ],
         "top": [
-          0.0,
+          0,
           -33.5
         ],
         "surface": [
-          0.0,
-          0.0
+          0,
+          0
         ]
       }
     },
@@ -17269,24 +17350,24 @@
       "pack": "medical",
       "anchors": {
         "root": [
-          0.0,
-          0.0
+          0,
+          0
         ],
         "grip": [
-          0.0,
+          0,
           -38.4
         ],
         "pump": [
-          0.0,
+          0,
           -91.2
         ],
         "top": [
-          0.0,
-          -96.0
+          0,
+          -96
         ],
         "surface": [
-          0.0,
-          0.0
+          0,
+          0
         ]
       }
     },
@@ -17297,20 +17378,20 @@
       "pack": "medical",
       "anchors": {
         "root": [
-          0.0,
-          0.0
+          0,
+          0
         ],
         "grip": [
-          0.0,
+          0,
           -46.5
         ],
         "top": [
-          0.0,
-          -93.0
+          0,
+          -93
         ],
         "surface": [
-          0.0,
-          0.0
+          0,
+          0
         ]
       }
     },
@@ -17321,24 +17402,24 @@
       "pack": "medical",
       "anchors": {
         "root": [
-          0.0,
-          0.0
+          0,
+          0
         ],
         "grip": [
-          0.0,
-          -49.0
+          0,
+          -49
         ],
         "bristles": [
-          0.0,
-          0.0
+          0,
+          0
         ],
         "top": [
-          0.0,
+          0,
           -93.1
         ],
         "surface": [
-          0.0,
-          0.0
+          0,
+          0
         ]
       }
     },
@@ -17349,24 +17430,24 @@
       "pack": "medical",
       "anchors": {
         "root": [
-          0.0,
-          0.0
+          0,
+          0
         ],
         "grip": [
-          0.0,
+          0,
           -43.5
         ],
         "cap": [
-          0.0,
-          0.0
+          0,
+          0
         ],
         "top": [
-          0.0,
+          0,
           -92.8
         ],
         "surface": [
-          0.0,
-          0.0
+          0,
+          0
         ]
       }
     },
@@ -17377,20 +17458,20 @@
       "pack": "medical",
       "anchors": {
         "root": [
-          0.0,
-          0.0
+          0,
+          0
         ],
         "grip": [
-          0.0,
+          0,
           -46.2
         ],
         "top": [
-          0.0,
+          0,
           -92.4
         ],
         "surface": [
-          0.0,
-          0.0
+          0,
+          0
         ]
       }
     },
@@ -17401,20 +17482,20 @@
       "pack": "medical",
       "anchors": {
         "root": [
-          0.0,
-          0.0
+          0,
+          0
         ],
         "grip": [
-          0.0,
+          0,
           -57.6
         ],
         "top": [
-          0.0,
+          0,
           -76.8
         ],
         "surface": [
-          0.0,
-          0.0
+          0,
+          0
         ]
       }
     },
@@ -17425,20 +17506,20 @@
       "pack": "medical",
       "anchors": {
         "root": [
-          0.0,
-          0.0
+          0,
+          0
         ],
         "grip": [
-          0.0,
+          0,
           -32.5
         ],
         "top": [
-          0.0,
-          -65.0
+          0,
+          -65
         ],
         "surface": [
-          0.0,
-          0.0
+          0,
+          0
         ]
       }
     },
@@ -17481,11 +17562,11 @@
       "pack": "medical",
       "anchors": {
         "root": [
-          0.0,
-          0.0
+          0,
+          0
         ],
         "seat": [
-          0.0,
+          0,
           -50.4
         ],
         "backrest": [
@@ -17497,12 +17578,12 @@
           -86.4
         ],
         "top": [
-          0.0,
+          0,
           -93.6
         ],
         "surface": [
-          0.0,
-          0.0
+          0,
+          0
         ]
       }
     },
@@ -17513,24 +17594,24 @@
       "pack": "medical",
       "anchors": {
         "root": [
-          0.0,
-          0.0
+          0,
+          0
         ],
         "grip": [
-          0.0,
-          -48.0
+          0,
+          -48
         ],
         "armpit": [
-          0.0,
-          -87.0
+          0,
+          -87
         ],
         "top": [
-          0.0,
-          -90.0
+          0,
+          -90
         ],
         "surface": [
-          0.0,
-          0.0
+          0,
+          0
         ]
       }
     },
@@ -17541,20 +17622,20 @@
       "pack": "medical",
       "anchors": {
         "root": [
-          0.0,
-          0.0
+          0,
+          0
         ],
         "display": [
-          0.0,
+          0,
           -4.2
         ],
         "top": [
-          0.0,
+          0,
           -10.5
         ],
         "surface": [
-          0.0,
-          0.0
+          0,
+          0
         ]
       }
     },
@@ -17589,28 +17670,28 @@
       "pack": "medical",
       "anchors": {
         "root": [
-          0.0,
-          0.0
+          0,
+          0
         ],
         "food_rice": [
-          -21.0,
-          -7.0
+          -21,
+          -7
         ],
         "food_fish": [
-          0.0,
-          -7.0
+          0,
+          -7
         ],
         "food_veg": [
-          21.0,
-          -7.0
+          21,
+          -7
         ],
         "top": [
-          0.0,
-          -14.0
+          0,
+          -14
         ],
         "surface": [
-          0.0,
-          0.0
+          0,
+          0
         ]
       }
     },
@@ -17621,23 +17702,23 @@
       "pack": "medical",
       "anchors": {
         "root": [
-          0.0,
-          0.0
+          0,
+          0
         ],
         "face": [
-          0.0,
+          0,
           -51.8
         ],
         "mouth": [
-          0.0,
+          0,
           -40.7
         ],
         "top": [
-          0.0,
+          0,
           -103.6
         ],
         "surface": [
-          0.0,
+          0,
           -3.7
         ]
       }
@@ -17649,23 +17730,23 @@
       "pack": "medical",
       "anchors": {
         "root": [
-          0.0,
-          0.0
+          0,
+          0
         ],
         "face": [
-          0.0,
+          0,
           -49.6
         ],
         "mouth": [
-          0.0,
+          0,
           -37.2
         ],
         "top": [
-          0.0,
+          0,
           -99.2
         ],
         "surface": [
-          0.0,
+          0,
           -3.1
         ]
       }
@@ -17677,23 +17758,23 @@
       "pack": "medical",
       "anchors": {
         "root": [
-          0.0,
-          0.0
+          0,
+          0
         ],
         "face": [
-          0.0,
-          -40.0
+          0,
+          -40
         ],
         "mouth": [
-          0.0,
-          -30.0
+          0,
+          -30
         ],
         "top": [
-          0.0,
-          -80.0
+          0,
+          -80
         ],
         "surface": [
-          0.0,
+          0,
           -2.5
         ]
       }
@@ -17705,23 +17786,23 @@
       "pack": "medical",
       "anchors": {
         "root": [
-          0.0,
-          0.0
+          0,
+          0
         ],
         "face": [
-          0.0,
+          0,
           -51.3
         ],
         "mouth": [
-          0.0,
+          0,
           -39.9
         ],
         "top": [
-          0.0,
+          0,
           -96.9
         ],
         "surface": [
-          0.0,
+          0,
           -5.7
         ]
       }
@@ -28027,6 +28108,451 @@
         "de_culture"
       ],
       "pack": "de_culture"
+    },
+    "koinobori": {
+      "label": "Cờ cá chép Koinobori",
+      "group": "prop",
+      "face": false,
+      "pack": "jp_culture",
+      "topics": [
+        "culture",
+        "festival",
+        "japan"
+      ],
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "base": [
+          0,
+          0
+        ],
+        "top": [
+          0,
+          -260
+        ],
+        "magoi": [
+          20,
+          -210
+        ],
+        "higoi": [
+          20,
+          -155
+        ],
+        "koidomo": [
+          20,
+          -110
+        ]
+      }
+    },
+    "tanabata_bamboo": {
+      "label": "Cành tre Tanabata",
+      "group": "prop",
+      "face": false,
+      "pack": "jp_culture",
+      "topics": [
+        "culture",
+        "festival",
+        "japan",
+        "plant"
+      ],
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "base": [
+          0,
+          0
+        ],
+        "branch_1": [
+          -35,
+          -95
+        ],
+        "branch_2": [
+          48,
+          -170
+        ],
+        "branch_3": [
+          25,
+          -210
+        ],
+        "tip": [
+          12,
+          -240
+        ]
+      }
+    },
+    "bamboo": {
+      "label": "Bụi tre trúc",
+      "group": "plant",
+      "face": false,
+      "pack": "jp_culture",
+      "topics": [
+        "plant",
+        "nature",
+        "japan"
+      ],
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "base": [
+          0,
+          0
+        ],
+        "hollow": [
+          0,
+          -70
+        ],
+        "stalk": [
+          0,
+          -120
+        ],
+        "tip": [
+          0,
+          -250
+        ]
+      }
+    },
+    "paper_lantern_jp": {
+      "label": "Đèn lồng giấy Chōchin",
+      "group": "prop",
+      "face": false,
+      "pack": "jp_culture",
+      "topics": [
+        "culture",
+        "festival",
+        "light",
+        "japan"
+      ],
+      "anchors": {
+        "grip": [
+          0,
+          -72
+        ],
+        "handle": [
+          0,
+          -72
+        ],
+        "top": [
+          0,
+          -58
+        ],
+        "center": [
+          0,
+          -34
+        ],
+        "bottom": [
+          0,
+          0
+        ]
+      }
+    },
+    "school_bag_randoseru": {
+      "label": "Cặp sách Randoseru",
+      "group": "tool",
+      "face": false,
+      "pack": "jp_culture",
+      "topics": [
+        "education",
+        "school",
+        "prop",
+        "japan"
+      ],
+      "anchors": {
+        "back": [
+          0,
+          -28
+        ],
+        "grip": [
+          0,
+          -52
+        ],
+        "handle": [
+          0,
+          -52
+        ],
+        "top": [
+          0,
+          -52
+        ],
+        "bottom": [
+          0,
+          0
+        ]
+      }
+    },
+    "train_ticket_gate": {
+      "label": "Cổng soát vé tự động",
+      "group": "prop",
+      "face": false,
+      "pack": "jp_culture",
+      "topics": [
+        "transport",
+        "station",
+        "japan"
+      ],
+      "anchors": {
+        "card_touch": [
+          14,
+          -86
+        ],
+        "top": [
+          0,
+          -90
+        ],
+        "base": [
+          0,
+          0
+        ],
+        "entry": [
+          -20,
+          -45
+        ]
+      }
+    },
+    "pheasant": {
+      "label": "Chim trĩ xanh Kiji",
+      "group": "animal",
+      "face": false,
+      "pack": "jp_culture",
+      "topics": [
+        "bird",
+        "animal",
+        "wildlife",
+        "japan"
+      ],
+      "anchors": {
+        "beak": [
+          38,
+          -70
+        ],
+        "head": [
+          24,
+          -70
+        ],
+        "mouth": [
+          36,
+          -70
+        ],
+        "back": [
+          0,
+          -45
+        ],
+        "feet": [
+          0,
+          0
+        ],
+        "root": [
+          0,
+          0
+        ]
+      }
+    },
+    "crab": {
+      "label": "Cua Sawagani",
+      "group": "animal",
+      "face": false,
+      "pack": "jp_culture",
+      "topics": [
+        "marine",
+        "animal",
+        "wildlife",
+        "japan"
+      ],
+      "anchors": {
+        "claw_l": [
+          -42,
+          -45
+        ],
+        "claw_r": [
+          42,
+          -45
+        ],
+        "mouth": [
+          0,
+          -22
+        ],
+        "top": [
+          0,
+          -50
+        ],
+        "root": [
+          0,
+          0
+        ]
+      }
+    },
+    "tanuki": {
+      "label": "Gấu mèo Tanuki dân gian",
+      "group": "animal",
+      "face": false,
+      "pack": "jp_culture",
+      "topics": [
+        "animal",
+        "wildlife",
+        "folklore",
+        "japan"
+      ],
+      "anchors": {
+        "head": [
+          0,
+          -115
+        ],
+        "mouth": [
+          0,
+          -107
+        ],
+        "hand_l": [
+          -36,
+          -72
+        ],
+        "hand_r": [
+          36,
+          -72
+        ],
+        "belly": [
+          0,
+          -62
+        ],
+        "leaf": [
+          0,
+          -140
+        ],
+        "tail": [
+          -45,
+          -35
+        ],
+        "root": [
+          0,
+          0
+        ]
+      }
+    },
+    "crane": {
+      "label": "Sếu đầu đỏ Tancho",
+      "group": "animal",
+      "face": false,
+      "pack": "jp_culture",
+      "topics": [
+        "bird",
+        "animal",
+        "wildlife",
+        "japan"
+      ],
+      "anchors": {
+        "beak": [
+          48,
+          -198
+        ],
+        "head": [
+          24,
+          -198
+        ],
+        "mouth": [
+          40,
+          -198
+        ],
+        "back": [
+          -10,
+          -120
+        ],
+        "chest": [
+          18,
+          -125
+        ],
+        "feet": [
+          0,
+          0
+        ],
+        "root": [
+          0,
+          0
+        ]
+      }
+    },
+    "koi": {
+      "label": "Cá chép Nishikigoi",
+      "group": "fish",
+      "face": false,
+      "pack": "jp_culture",
+      "topics": [
+        "fish",
+        "marine",
+        "animal",
+        "japan"
+      ],
+      "anchors": {
+        "mouth": [
+          42,
+          -48
+        ],
+        "head": [
+          30,
+          -50
+        ],
+        "tail": [
+          -55,
+          -48
+        ],
+        "dorsal": [
+          0,
+          -68
+        ],
+        "root": [
+          0,
+          -48
+        ]
+      }
+    },
+    "snow_monkey": {
+      "label": "Khỉ tuyết Nhật Bản",
+      "group": "animal",
+      "face": false,
+      "pack": "jp_culture",
+      "topics": [
+        "animal",
+        "wildlife",
+        "nature",
+        "japan"
+      ],
+      "anchors": {
+        "head": [
+          0,
+          -95
+        ],
+        "mouth": [
+          0,
+          -85
+        ],
+        "hand_l": [
+          -28,
+          -52
+        ],
+        "hand_r": [
+          28,
+          -52
+        ],
+        "chest": [
+          0,
+          -65
+        ],
+        "foot_l": [
+          -18,
+          0
+        ],
+        "foot_r": [
+          18,
+          0
+        ],
+        "root": [
+          0,
+          0
+        ]
+      }
     }
   },
   "actions": {
@@ -32727,7 +33253,10 @@
     "sweep": {
       "label": "Lông mao quét bụi và vi khuẩn",
       "actors": [
-        "cilia_sweeper"
+        "cilia_sweeper",
+        "chibi_boy",
+        "chibi_girl",
+        "chibi_kid"
       ],
       "actor_anchor": "grip",
       "targets": [

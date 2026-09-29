@@ -32,6 +32,8 @@ def catalog():
 
 GROUND_WARN_GROUPS = {"human", "chibi", "animal"}
 # Hành động y tế nhắm đầu dụng cụ đang cầm (action.tool, attach_to vào tay actor) vào đích: anchor của dụng cụ.
+# Biểu tượng mà farm_fun.js vẽ được trong bong bóng emote; giá trị lạ vẽ ra bong bóng trống.
+EMOTE_SYMBOLS = {"heart", "?", "question", "!", "exclamation", "zzz", "sleep", "angry", "music", "idea", "sweat"}
 TOOL_ACTIONS = {"brush_teeth": "bristles", "take_temperature": "tip", "listen": "chest_piece", "vaccinate": "needle"}
 
 
@@ -422,6 +424,8 @@ def validate_vector_scenes(characters, scenes):
                     raise ValueError(f"{kind}.tool phải là nhân vật gắn (attach_to) vào chính actor")
                 if TOOL_ACTIONS[kind] not in cat["assets"][tool["asset"]]["anchors"]:
                     raise ValueError(f"{kind}.tool thiếu anchor {TOOL_ACTIONS[kind]}")
+            if kind == "emote" and action.get("emote", "heart") not in EMOTE_SYMBOLS:
+                raise ValueError(f"emote không có hình: {action.get('emote')} (dùng một trong {sorted(EMOTE_SYMBOLS)})")
             if kind == "wash_hands" and "step" in action:
                 _number(action["step"], 1, 6, "wash_hands.step")
             if kind == "exercise" and "exercise_type" in action:
@@ -451,6 +455,8 @@ def validate_vector_scenes(characters, scenes):
             for role, allowed in (("actor", spec["actors"]), ("target", spec["targets"])):
                 cid = action.get(role)
                 if allowed:
+                    if role == "target" and cid is None and kind == "sweep":
+                        continue
                     if cid not in present or cast[cid]["asset"] not in allowed:
                         raise ValueError(f"{kind}: {role} không xuất hiện hoặc không đúng loại rig")
                     requested = action.get(f"{role}_anchor")
@@ -2170,7 +2176,7 @@ def tooth_examples():
         "dentist": [pose(11.0, 210, 810, 360, expression="happy"), pose(16.0, 210, 810, 360, expression="happy")],
         "tooth": [pose(11.0, 350, 810, 180, cavity=0.0, sparkle=1.0, blush=0.5, expression="happy"), pose(16.0, 350, 810, 180, cavity=0.0, sparkle=1.0, blush=0.5, expression="happy")],
     }, actions=[
-        action("emote", 11.5, 15.0, actor_id="tooth", emote="star"),
+        action("emote", 11.5, 15.0, actor_id="tooth", emote="heart"),
     ], bg="dentist_room")
 
     story = {
@@ -4012,6 +4018,315 @@ def first_school_day_examples():
     return [story]
 
 
+def momotaro_examples():
+    """Mẫu kỹ thuật Phase Q: Cổ tích Nhật Bản - Momotarō cùng khỉ, chó, gà lôi kết bạn với quỷ bằng bánh dango."""
+    cat = catalog()
+
+    def actor(cid, asset, **extra):
+        lbl = cat["assets"][asset].get("label") or cat["assets"][asset].get("spec", {}).get("label") or asset
+        return {"id": cid, "name": lbl, "asset": asset, **extra}
+
+    def pose(t, x, y, h, **extra):
+        return {"time": t, "x": x, "y": y, "height": h, **extra}
+
+    def scene(start, end, poses, actions=(), bg="shrine_generic", **extra):
+        return {
+            "renderer": RENDERER,
+            "kind": "scene",
+            "start_time": start,
+            "end_time": end,
+            "characters_present": list(poses),
+            "poses": poses,
+            "actions": list(actions),
+            "background": {"preset": bg, **extra},
+        }
+
+    def action(kind, start, end, target=None, actor_id=None, **extra):
+        return {"type": kind, "start": start, "end": end, **({"target": target} if target else {}), **({"actor": actor_id} if actor_id else {}), **extra}
+
+    p_dango = held_pose("dango", 60, 0)
+
+    # Cảnh 1: Đoàn hành trình Momotarō cùng chó, khỉ, chim trĩ tiến bước (đi xa >= 150 px)
+    sc1 = scene(0, 7.0, {
+        "momotaro": [pose(0, 90, 810, 240, outfit="yukata"), pose(7.0, 280, 810, 240, outfit="yukata")],
+        "dango": [pose(0, p_dango["x"], p_dango["y"], 60, rotation=p_dango["rotation"]), pose(7.0, p_dango["x"], p_dango["y"], 60, rotation=p_dango["rotation"])],
+        "dog": [pose(0, -40, 810, 160), pose(7.0, 140, 810, 160)],
+        "monkey": [pose(0, -140, 810, 150), pose(7.0, 40, 810, 150)],
+        "pheasant": [pose(0, -230, 810, 120), pose(7.0, -50, 810, 120)],
+    }, bg="shrine_generic")
+
+    # Cảnh 2: Đến đảo Quỷ, Momotarō mời quỷ ăn bánh dango ngon lành, hoà giải êm đẹp không giao tranh
+    sc2 = scene(7.0, 15.0, {
+        "momotaro": [pose(7.0, 180, 810, 240, outfit="yukata", expression="happy"), pose(15.0, 180, 810, 240, outfit="yukata", expression="happy")],
+        "dango": [pose(7.0, p_dango["x"], p_dango["y"], 60, rotation=p_dango["rotation"]), pose(15.0, p_dango["x"], p_dango["y"], 60, rotation=p_dango["rotation"])],
+        "dog": [pose(7.0, 110, 810, 160), pose(15.0, 110, 810, 160)],
+        "monkey": [pose(7.0, 30, 810, 150), pose(15.0, 30, 810, 150)],
+        "pheasant": [pose(7.0, -40, 810, 120), pose(15.0, -40, 810, 120)],
+        "oni": [pose(7.0, 380, 810, 260), pose(10.0, 380, 810, 260, expression="happy"), pose(15.0, 380, 810, 260, expression="happy")],
+    }, actions=[
+        action("emote", 10.0, 14.5, actor_id="oni", emote="heart"),
+        action("emote", 11.0, 14.5, actor_id="momotaro", emote="heart"),
+    ], bg="edo_town")
+
+    story = {
+        "id": "momotaro",
+        "name": "30 · Cổ tích Nhật Bản: Cậu bé quả đào Momotarō và những người bạn",
+        "renderer": RENDERER,
+        "fidelity": "technical-demo",
+        "note": "Mẫu kỹ thuật Phase Q: Momotarō cùng các bạn đồng hành rảo bước và dùng bánh dango thuyết phục quỷ, kết thúc hoà giải ấm áp không bạo lực.",
+        "duration": 15.0,
+        "characters": [
+            actor("momotaro", "chibi_boy"),
+            actor("dango", "dango", attach_to={"id": "momotaro", "anchor": "hand_r"}),
+            actor("dog", "dog"),
+            actor("monkey", "cartoon_monkey"),
+            actor("pheasant", "pheasant"),
+            actor("oni", "farmer"),
+        ],
+        "scenes": [sc1, sc2],
+        "cues": [
+            {"start": 0.5, "end": 6.5, "character_id": "momotaro", "text": "Momotarō cùng chú chó trung thành, khỉ thông minh và gà lôi dũng cảm cùng nhau lên đường!", "expression": "happy"},
+            {"start": 7.5, "end": 14.5, "character_id": "momotaro", "text": "Momotarō chia sẻ chiếc bánh dango ngọt ngào, quỷ cảm động cúi đầu xin lỗi và trở thành bạn tốt!", "expression": "happy"},
+        ],
+    }
+    for index, item in enumerate(story["scenes"]):
+        item["index"] = index
+    auto_frame(story)
+    validate_story(story)
+    return [story]
+
+
+def bento_morning_examples():
+    """Mẫu kỹ thuật Phase Q: Đời sống học sinh Nhật Bản - Chuẩn bị hộp cơm bento và đeo cặp Randoseru tới trường."""
+    cat = catalog()
+
+    def actor(cid, asset, **extra):
+        lbl = cat["assets"][asset].get("label") or cat["assets"][asset].get("spec", {}).get("label") or asset
+        return {"id": cid, "name": lbl, "asset": asset, **extra}
+
+    def pose(t, x, y, h, **extra):
+        return {"time": t, "x": x, "y": y, "height": h, **extra}
+
+    def scene(start, end, poses, actions=(), bg="edo_town", **extra):
+        return {
+            "renderer": RENDERER,
+            "kind": "scene",
+            "start_time": start,
+            "end_time": end,
+            "characters_present": list(poses),
+            "poses": poses,
+            "actions": list(actions),
+            "background": {"preset": bg, **extra},
+        }
+
+    def action(kind, start, end, target=None, actor_id=None, **extra):
+        return {"type": kind, "start": start, "end": end, **({"target": target} if target else {}), **({"actor": actor_id} if actor_id else {}), **extra}
+
+    p_bag = held_pose("school_bag_randoseru", 140, 0, anchor="back")
+    p_rice = held_pose("onigiri", 55, 0, anchor="grip")
+
+    # Cảnh 1: Em nhỏ mặc đồng phục xếp cơm nắm onigiri vào hộp bento
+    sc1 = scene(0, 7.0, {
+        "pupil": [pose(0, 200, 810, 240, outfit="school_uniform_jp"), pose(7.0, 200, 810, 240, outfit="school_uniform_jp")],
+        "bag": [pose(0, p_bag["x"], p_bag["y"], 140, rotation=p_bag["rotation"], z=-1), pose(7.0, p_bag["x"], p_bag["y"], 140, rotation=p_bag["rotation"], z=-1)],
+        "rice": [pose(0, p_rice["x"], p_rice["y"], 55, rotation=p_rice["rotation"]), pose(7.0, p_rice["x"], p_rice["y"], 55, rotation=p_rice["rotation"])],
+        "bento": [pose(0, 310, 810, 80), pose(7.0, 310, 810, 80)],
+    }, bg="edo_town")
+
+    # Cảnh 2: Em đeo cặp Randoseru đỏ tự tin sải bước tới trường (đi >= 150 px)
+    sc2 = scene(7.0, 15.0, {
+        "pupil": [pose(7.0, 80, 810, 240, outfit="school_uniform_jp"), pose(15.0, 300, 810, 240, outfit="school_uniform_jp", expression="happy")],
+        "bag": [pose(7.0, p_bag["x"], p_bag["y"], 140, rotation=p_bag["rotation"], z=-1), pose(15.0, p_bag["x"], p_bag["y"], 140, rotation=p_bag["rotation"], z=-1)],
+    }, actions=[
+        action("emote", 10.0, 14.5, actor_id="pupil", emote="heart"),
+    ], bg="edo_town")
+
+    story = {
+        "id": "bento_morning",
+        "name": "31 · Đời sống Nhật Bản: Chuẩn bị hộp cơm bento và cắp sách đến trường",
+        "renderer": RENDERER,
+        "fidelity": "technical-demo",
+        "note": "Mẫu kỹ thuật Phase Q: Bé gái mặc đồng phục trường Nhật xếp cơm nắm onigiri vào hộp bento, đeo cặp sách Randoseru sải bước tới trường.",
+        "duration": 15.0,
+        "characters": [
+            actor("pupil", "chibi_girl"),
+            actor("bag", "school_bag_randoseru", attach_to={"id": "pupil", "anchor": "back"}),
+            actor("rice", "onigiri", attach_to={"id": "pupil", "anchor": "hand_r"}),
+            actor("bento", "bento_box"),
+        ],
+        "scenes": [sc1, sc2],
+        "cues": [
+            {"start": 0.5, "end": 6.5, "character_id": "pupil", "text": "Buổi sáng tinh khôi, bé cẩn thận xếp cơm nắm onigiri thơm ngon vào hộp bento đầy sắc màu!", "expression": "happy"},
+            {"start": 7.5, "end": 14.5, "character_id": "pupil", "text": "Khoác lên lưng chiếc cặp Randoseru đỏ thắm, bé vui tươi rảo bước tới trường đón ngày học mới!", "expression": "happy"},
+        ],
+    }
+    for index, item in enumerate(story["scenes"]):
+        item["index"] = index
+    auto_frame(story)
+    validate_story(story)
+    return [story]
+
+
+def school_cleaning_examples():
+    """Mẫu kỹ thuật Phase Q: Giờ dọn dẹp vệ sinh O-soji - Học sinh cầm chổi quét lớp, sàn sạch dần."""
+    cat = catalog()
+
+    def actor(cid, asset, **extra):
+        lbl = cat["assets"][asset].get("label") or cat["assets"][asset].get("spec", {}).get("label") or asset
+        return {"id": cid, "name": lbl, "asset": asset, **extra}
+
+    def pose(t, x, y, h, **extra):
+        return {"time": t, "x": x, "y": y, "height": h, **extra}
+
+    def scene(start, end, poses, actions=(), bg="jp_school", **extra):
+        return {
+            "renderer": RENDERER,
+            "kind": "scene",
+            "start_time": start,
+            "end_time": end,
+            "characters_present": list(poses),
+            "poses": poses,
+            "actions": list(actions),
+            "background": {"preset": bg, **extra},
+        }
+
+    def action(kind, start, end, target=None, actor_id=None, **extra):
+        return {"type": kind, "start": start, "end": end, **({"target": target} if target else {}), **({"actor": actor_id} if actor_id else {}), **extra}
+
+    p_broom = held_pose("broom", 150, -20, anchor="grip")
+
+    # Cảnh 1: Giờ O-soji bắt đầu, học sinh cầm chổi quét lớp (sweep), sàn nhà giảm độ bẩn từ 1.0 về 0.0 đơn điệu
+    sc1 = scene(0, 8.0, {
+        "pupil": [
+            pose(0, 240, 810, 240, outfit="school_uniform_jp", dirty=1.0),
+            pose(2.0, 260, 810, 240, outfit="school_uniform_jp", dirty=0.75),
+            pose(4.0, 280, 810, 240, outfit="school_uniform_jp", dirty=0.50),
+            pose(6.0, 300, 810, 240, outfit="school_uniform_jp", dirty=0.25),
+            pose(8.0, 320, 810, 240, outfit="school_uniform_jp", dirty=0.0),
+        ],
+        "broom": [
+            pose(0, p_broom["x"], p_broom["y"], 150, rotation=p_broom["rotation"]),
+            pose(8.0, p_broom["x"], p_broom["y"], 150, rotation=p_broom["rotation"]),
+        ],
+    }, actions=[
+        action("sweep", 0.5, 7.5, actor_id="pupil"),
+    ], bg="jp_school", dirty=1.0)
+
+    # Cảnh 2: Lớp học sạch bóng loáng, em nhỏ tươi cười ăn mừng
+    sc2 = scene(8.0, 15.0, {
+        "pupil": [
+            pose(8.0, 320, 810, 240, outfit="school_uniform_jp", dirty=0.0, expression="happy"),
+            pose(15.0, 320, 810, 240, outfit="school_uniform_jp", dirty=0.0, expression="happy", celebrate=1.0),
+        ],
+        "broom": [
+            pose(8.0, p_broom["x"], p_broom["y"], 150, rotation=p_broom["rotation"]),
+            pose(15.0, p_broom["x"], p_broom["y"], 150, rotation=p_broom["rotation"]),
+        ],
+    }, actions=[
+        action("emote", 9.0, 14.5, actor_id="pupil", emote="idea"),
+    ], bg="jp_school", dirty=0.0)
+
+    story = {
+        "id": "school_cleaning",
+        "name": "32 · Học đường Nhật Bản: Giờ dọn dẹp vệ sinh trường lớp O-soji",
+        "renderer": RENDERER,
+        "fidelity": "technical-demo",
+        "note": "Mẫu kỹ thuật Phase Q: Học sinh cầm chổi quét dọn lớp học trong giờ O-soji, sàn phòng học sạch dần đều và bóng loáng.",
+        "duration": 15.0,
+        "characters": [
+            actor("pupil", "chibi_boy"),
+            actor("broom", "broom", attach_to={"id": "pupil", "anchor": "hand_r"}),
+        ],
+        "scenes": [sc1, sc2],
+        "cues": [
+            {"start": 0.5, "end": 7.5, "character_id": "pupil", "text": "Chuông điểm ba giờ chiều, các bạn nhỏ cùng nhau cầm chổi quét dọn từng góc lớp học!", "expression": "happy"},
+            {"start": 8.5, "end": 14.5, "character_id": "pupil", "text": "Sàn gỗ lớp học giờ đây đã sạch bóng tinh tươm, bạn nào cũng vui vẻ tự hào!", "expression": "happy"},
+        ],
+    }
+    for index, item in enumerate(story["scenes"]):
+        item["index"] = index
+    auto_frame(story)
+    validate_story(story)
+    return [story]
+
+
+def tanabata_wish_examples():
+    """Mẫu kỹ thuật Phase Q: Lễ hội Tanabata - Gửi gắm điều ước lên cành tre dưới trời đêm ngàn sao."""
+    cat = catalog()
+
+    def actor(cid, asset, **extra):
+        lbl = cat["assets"][asset].get("label") or cat["assets"][asset].get("spec", {}).get("label") or asset
+        return {"id": cid, "name": lbl, "asset": asset, **extra}
+
+    def pose(t, x, y, h, **extra):
+        return {"time": t, "x": x, "y": y, "height": h, **extra}
+
+    def scene(start, end, poses, actions=(), bg="shrine_generic", **extra):
+        return {
+            "renderer": RENDERER,
+            "kind": "scene",
+            "start_time": start,
+            "end_time": end,
+            "characters_present": list(poses),
+            "poses": poses,
+            "actions": list(actions),
+            "background": {"preset": bg, **extra},
+        }
+
+    def action(kind, start, end, target=None, actor_id=None, **extra):
+        return {"type": kind, "start": start, "end": end, **({"target": target} if target else {}), **({"actor": actor_id} if actor_id else {}), **extra}
+
+    # Cảnh 1: Đêm sao Tanabata, em bé mặc yukata giơ tay chạm cành tre treo dải giấy ước (tiếp xúc < 12 px)
+    sc1 = scene(0, 7.0, {
+        "tree": [
+            pose(0, 340, 810, 240),
+            pose(7.0, 340, 810, 240),
+        ],
+        "pupil": [
+            pose(0, 160, 810, 240, outfit="yukata"),
+            pose(4.0, 200, 810, 240, outfit="yukata", hand_r_x=23.33, hand_r_y=-95),
+            pose(7.0, 200, 810, 240, outfit="yukata", hand_r_x=23.33, hand_r_y=-95),
+        ],
+    }, bg="shrine_generic", time="night")
+
+    # Cảnh 2: Điều ước đã được treo, em bé nhìn lên bầu trời đêm lung linh gửi lời nguyện ước
+    sc2 = scene(7.0, 14.0, {
+        "tree": [
+            pose(7.0, 340, 810, 240),
+            pose(14.0, 340, 810, 240),
+        ],
+        "pupil": [
+            pose(7.0, 200, 810, 240, outfit="yukata", expression="happy"),
+            pose(14.0, 200, 810, 240, outfit="yukata", expression="happy"),
+        ],
+    }, actions=[
+        action("emote", 8.0, 13.5, actor_id="pupil", emote="music"),
+    ], bg="shrine_generic", time="night")
+
+    story = {
+        "id": "tanabata_wish",
+        "name": "33 · Lễ hội Tanabata: Gửi gắm điều ước lên cành tre ngắm trời sao",
+        "renderer": RENDERER,
+        "fidelity": "technical-demo",
+        "note": "Mẫu kỹ thuật Phase Q: Bé gái mặc áo yukata treo dải giấy tanzaku lên cành tre Tanabata ngắm dải Ngân hà trong đêm thanh bình.",
+        "duration": 14.0,
+        "characters": [
+            actor("tree", "tanabata_bamboo"),
+            actor("pupil", "chibi_girl"),
+        ],
+        "scenes": [sc1, sc2],
+        "cues": [
+            {"start": 0.5, "end": 6.5, "character_id": "pupil", "text": "Trong đêm lễ hội Tanabata thanh bình, em bé nâng niu dải giấy ước nguyện buộc lên cành tre xanh mát!", "expression": "happy"},
+            {"start": 7.5, "end": 13.5, "character_id": "pupil", "text": "Ngước nhìn ngàn vì sao lấp lánh trên dải Ngân hà, em nguyện cầu những ước mơ ngọt ngào sẽ thành sự thật!", "expression": "happy"},
+        ],
+    }
+    for index, item in enumerate(story["scenes"]):
+        item["index"] = index
+    auto_frame(story)
+    validate_story(story)
+    return [story]
+
+
 def auto_frame(story: dict, max_zoom: float = 2.0) -> dict:
     """Đặt camera tĩnh cho mỗi cảnh chưa có camera để nhóm nhân vật nhỏ (tế bào, vi khuẩn) chiếm ~85% bề ngang.
 
@@ -4039,7 +4354,7 @@ def auto_frame(story: dict, max_zoom: float = 2.0) -> dict:
     return story
 
 def sample_stories():
-    """Every sample the library ships: farm stories, articulated hands, IK, fishing, sea monsters, orchard harvest, trellis, highland, vegetable cutaway, safe spraying, giant radish, handwashing, doctor visit, tooth care, nutrition, Phase I body world, Phase K recycling, Phase L safety, Phase M ancient history, Phase O inventions, and Phase P German culture stories."""
+    """Every sample the library ships: farm stories, articulated hands, IK, fishing, sea monsters, orchard harvest, trellis, highland, vegetable cutaway, safe spraying, giant radish, handwashing, doctor visit, tooth care, nutrition, Phase I body world, Phase K recycling, Phase L safety, Phase M ancient history, Phase O inventions, Phase P German culture, and Phase Q Japanese culture stories."""
     return (
         examples() + agriculture_examples() + farm_life_examples() + farm_animals_examples() +
         articulation_examples() + ik_examples() + fishing_examples() + monster_examples() +
@@ -4053,7 +4368,8 @@ def sample_stories():
         build_pyramid_examples() + first_fire_examples() + roman_road_examples() +
         silk_road_caravan_examples() + first_olympics_examples() +
         first_flight_examples() + printing_press_examples() + first_car_examples() + then_and_now_examples() +
-        bremen_musicians_examples() + st_martin_lanterns_examples() + hedgehog_winter_examples() + first_school_day_examples()
+        bremen_musicians_examples() + st_martin_lanterns_examples() + hedgehog_winter_examples() + first_school_day_examples() +
+        momotaro_examples() + bento_morning_examples() + school_cleaning_examples() + tanabata_wish_examples()
     )
 
 
