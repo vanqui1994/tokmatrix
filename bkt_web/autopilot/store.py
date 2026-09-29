@@ -175,6 +175,7 @@ DEFAULT_CONFIG = {
     "generated_images_keep_days": "1",
     "purge_posted_after_days": "3",
     "npx_keep_versions": "2",
+    "profile_blob_keep_hours": "24",
 }
 # = RENDERABLE_ENGINES của native-engine-adapter.mjs
 ENGINE_IDS = ("mystery", "newspaper", "vox", "folklore", "kinetic", "science",
@@ -203,6 +204,7 @@ _INT_RANGES = {
     "generated_images_keep_days": (0, 365),
     "purge_posted_after_days": (0, 365),
     "npx_keep_versions": (0, 10),
+    "profile_blob_keep_hours": (0, 720),
     "topic_subject_gap_days": (0, 30),
 }
 TOPIC_SOURCES = ("curated", "file", "matrix")

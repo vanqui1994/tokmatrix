@@ -1150,6 +1150,32 @@ class CleanupTest(AutopilotTestCase):
 # ---------------------------------------------------------------------------
 
 class HousekeepingTest(AutopilotTestCase):
+    def test_profile_blobs_old_files_only_and_skip_open_profiles(self):
+        import tempfile, os, time
+        from bkt_web.autopilot import housekeeping
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            now = time.time()
+            def mk(rel, age_h):
+                f = root / rel
+                f.parent.mkdir(parents=True, exist_ok=True)
+                f.write_bytes(b"x" * 100)
+                os.utime(f, (now - age_h * 3600, now - age_h * 3600))
+                return f
+            old = mk("channel_1/Default/blob_storage/u/1", 48)
+            fresh = mk("channel_1/Default/blob_storage/u/2", 1)
+            idb = mk("channel_1/Default/IndexedDB/https_www.tiktok.com_0.indexeddb.blob/1/00/a", 48)
+            leveldb = mk("channel_1/Default/IndexedDB/https_www.tiktok.com_0.indexeddb.leveldb/000003.log", 48)
+            cookies = mk("channel_1/Default/Cookies", 48)
+            busy = mk("channel_2/Default/blob_storage/u/1", 48)
+            out = housekeeping.clean_profile_blobs(24, now, root=root, in_use={"channel_2"})
+            self.assertEqual(out["files"], 2)
+            self.assertFalse(old.exists())
+            self.assertFalse(idb.exists())
+            for kept in (fresh, leveldb, cookies, busy):
+                self.assertTrue(kept.exists(), kept)
+            self.assertEqual(housekeeping.clean_profile_blobs(0, now, root=root, in_use=set())["files"], 0)
+
     def setUp(self):
         super().setUp()
         root = Path(self.tmp.name)
