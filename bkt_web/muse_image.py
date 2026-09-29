@@ -27,6 +27,8 @@ ASPECT_WORDS = {"9:16": "vertical 9:16 portrait", "16:9": "horizontal 16:9 lands
 
 _thread: Optional[threading.Thread] = None
 _stop = threading.Event()
+# Muse là MỘT cuộc chat: ảnh (worker này) và video (muse_film) dùng chung khoá để không gửi chồng prompt.
+MUSE_LOCK = threading.Lock()
 _state: Dict[str, Any] = {"last_ok": None, "last_error": None, "done": 0, "failed": 0, "busy": None}
 
 _IMG_COUNT = "()=>[...document.querySelectorAll('img')].filter(i=>i.naturalWidth>200 && i.src.startsWith('blob:')).length"
@@ -79,7 +81,8 @@ async def _generate(prompt: str) -> Dict[str, Any]:
 def generate(prompt: str, negative: str = "", aspect: str = "9:16") -> Dict[str, Any]:
     """Vẽ một ảnh qua Muse, trả {"png": bytes, "size": (w,h), "seconds"}. Ảnh webp đổi sang PNG."""
     from PIL import Image
-    got = asyncio.run(_generate(build_prompt(prompt, negative, aspect)))
+    with MUSE_LOCK:
+        got = asyncio.run(_generate(build_prompt(prompt, negative, aspect)))
     with Image.open(io.BytesIO(got["raw"])) as im:
         out = io.BytesIO()
         im.convert("RGB").save(out, "PNG")

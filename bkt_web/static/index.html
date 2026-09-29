@@ -162,6 +162,11 @@
               <span class="nav-text">Tải Video (No-Logo)</span>
               <span class="tab-badge badge-neutral" id="badge-dl-count">0</span>
             </button>
+            <button type="button" class="nav-tab" data-tab="muse_film" onclick="switchTab('muse_film')">
+              <span class="nav-icon">🎬</span>
+              <span class="nav-text">Phim AI (Muse)</span>
+              <span class="tab-badge badge-neutral" id="badge-film-status">--</span>
+            </button>
             <button type="button" class="nav-tab" data-tab="story_remake" onclick="switchTab('story_remake')">
               <span class="nav-icon">🎞️</span>
               <span class="nav-text">Story Remake (YouTube)</span>
@@ -595,6 +600,31 @@
             <span><i style="border-color:#2f7a5a"></i>Xong</span>
           </div>
           <aside class="fv-drawer" id="fv-drawer" aria-live="polite"></aside>
+        </div>
+      </div>
+    </div>
+
+    <div class="tab-pane" id="pane-muse_film" style="display: none;">
+      <div class="studio-grid-2col">
+        <div class="panel-card">
+          <div class="card-header"><h3>🎬 Tạo phim AI nhiều cảnh bằng Muse</h3></div>
+          <p style="font-size:13px;color:var(--color-ink-dim);margin:0 0 10px">Nhập ý tưởng / câu chuyện — AI viết kịch bản N cảnh với nhân vật cố định, Muse quay mỗi cảnh một clip ~5 giây, rồi ghép thành một phim. Hoặc nhập <b>mỗi dòng một cảnh</b> để tự đạo diễn. Muse quay lần lượt (~1 phút/cảnh).</p>
+          <label style="font-size:12px;font-weight:700">Tên phim (tuỳ chọn)</label>
+          <input id="film-title" class="form-control" style="width:100%;margin:4px 0 10px">
+          <label style="font-size:12px;font-weight:700">Ý tưởng / câu chuyện, hoặc mỗi dòng một cảnh</label>
+          <textarea id="film-idea" class="form-control" rows="7" style="width:100%;margin:4px 0 10px" placeholder="Một phi công trẻ lái F-16 cờ Nhật bay qua bão, gặp sự cố và hạ cánh khẩn cấp trên tàu sân bay…"></textarea>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+            <label style="font-size:12px">Số cảnh <input id="film-scenes" type="number" min="2" max="30" value="6" class="form-control" style="width:80px"></label>
+            <label style="font-size:12px">Phong cách <select id="film-style" class="form-control"><option value="cinematic">Điện ảnh (ảnh thật)</option><option value="anime">Anime</option><option value="3d">Hoạt hình 3D</option><option value="documentary">Phim tài liệu</option></select></label>
+            <label style="font-size:12px">Khung <select id="film-aspect" class="form-control"><option value="9:16">Dọc 9:16</option><option value="16:9">Ngang 16:9</option><option value="1:1">Vuông 1:1</option></select></label>
+            <label style="font-size:12px"><input id="film-audio" type="checkbox" checked> Giữ tiếng của clip</label>
+          </div>
+          <div style="margin-top:12px"><button class="btn btn-primary" onclick="filmCreate()">🎬 Tạo phim</button></div>
+          <div id="film-player" style="margin-top:12px"></div>
+        </div>
+        <div class="panel-card">
+          <div class="card-header"><h3>Phim của bạn</h3></div>
+          <div id="film-list"></div>
         </div>
       </div>
     </div>
@@ -5378,9 +5408,10 @@
     </div>
   </div>
 
-  <script src="/static/app.js?v=6.19"></script>
+  <script src="/static/app.js?v=6.20"></script>
   <script src="/static/tiktok_api.js?v=2"></script>
   <script src="/static/story_remake.js?v=2"></script>
+  <script src="/static/muse_film.js?v=1"></script>
   <script src="/static/flow_view.js?v=6"></script>
 </body>
 </html>

@@ -442,6 +442,11 @@ def start_image_queue_worker() -> None:
     _start_bridge_worker()
     cf_image_fallback.start()
     muse_image.start()
+    try:
+        from bkt_web import muse_film
+    except ImportError:
+        import muse_film
+    muse_film.start()
 
 
 def stop_image_queue_worker() -> None:

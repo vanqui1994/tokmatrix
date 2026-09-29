@@ -54,6 +54,7 @@ try:
     from bkt_web.chocode_routes import router as tiktok_api_router, sync_channel as tiktok_api_sync_channel
     from bkt_web.flow_routes import router as flow_router
     from bkt_web.story_remake_routes import router as story_remake_router
+    from bkt_web.muse_film_routes import router as muse_film_router
     from bkt_web import chocode_routes
     from bkt_web import chocode_tiktok
     from bkt_web.autopilot import init_autopilot_db, start_autopilot, stop_autopilot
@@ -80,6 +81,7 @@ except ImportError:
     from chocode_routes import router as tiktok_api_router, sync_channel as tiktok_api_sync_channel
     from flow_routes import router as flow_router
     from story_remake_routes import router as story_remake_router
+    from muse_film_routes import router as muse_film_router
     import chocode_routes
     import chocode_tiktok
     from autopilot import init_autopilot_db, start_autopilot, stop_autopilot
@@ -143,6 +145,7 @@ app.include_router(autopilot_router)
 app.include_router(tiktok_api_router)
 app.include_router(flow_router)
 app.include_router(story_remake_router)
+app.include_router(muse_film_router)
 # Token phiên được giữ lại qua các lần khởi động lại server.
 #
 # Trước đây token sinh mới mỗi lần import, nên sau mỗi lần restart thì mọi tab
