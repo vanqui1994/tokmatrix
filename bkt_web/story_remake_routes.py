@@ -32,7 +32,7 @@ class RunRequest(BaseModel):
     limit: int = Field(5, ge=1, le=50)
     jobs: int = Field(1, ge=1, le=3)
     lang: str = "auto"
-    images: str = Field("imagerouter", pattern="^(imagerouter|muse)$")
+    images: str = Field("muse", pattern="^(imagerouter|muse)$")
 
 
 def _runner() -> Dict[str, Any]:
@@ -94,7 +94,7 @@ def resume_interrupted() -> None:
     """Gọi lúc server khởi động: lượt chạy chưa xong (active, tiến trình đã chết theo web app) → chạy lại, tool tự bỏ qua video đã xong."""
     info = _runner()
     if info.get("active") and not info.get("running") and info.get("url"):
-        _launch(info["url"], info.get("limit", 5), info.get("jobs", 1), info.get("lang", "auto"), info.get("images", "imagerouter"), resumed=True)
+        _launch(info["url"], info.get("limit", 5), info.get("jobs", 1), info.get("lang", "auto"), info.get("images", "muse"), resumed=True)
 
 
 @router.get("/status")

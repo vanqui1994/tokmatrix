@@ -67,7 +67,7 @@ async function storyRun() {
     limit: Number(document.getElementById('story-limit').value) || 5,
     jobs: Number(document.getElementById('story-jobs').value) || 1,
     lang: document.getElementById('story-lang').value || 'auto',
-    images: document.getElementById('story-images').value || 'imagerouter',
+    images: document.getElementById('story-images').value || 'muse',
   };
   try {
     await storyJson('/api/story-remake/run', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });

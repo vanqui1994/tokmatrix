@@ -250,8 +250,12 @@ def draw(vid, work, items):
     todo = [it for it in items if not (d / f"{it['key']}.png").exists()]
     if not todo:
         return
-    if os.environ.get("STORY_REMAKE_IMAGES") == "muse":
-        return draw_muse(vid, work, todo)
+    # Owner 30/09: Muse là nguồn ưu tiên; cảnh Muse lỗi/đứng yên → ImageRouter (Cloudflare dự phòng) vẽ bù.
+    if os.environ.get("STORY_REMAKE_IMAGES", "muse") == "muse" and ON_VPS and muse_ready():
+        todo = draw_muse(vid, work, todo)
+        if not todo:
+            return
+        log(vid, f"Muse bỏ {len(todo)} cảnh → ImageRouter")
     if ON_VPS:
         p = subprocess.run([str(REPO / "venv" / "bin" / "python"), "-c", VPS_IMAGES], input=json.dumps(todo), capture_output=True, text=True, timeout=1800, cwd=str(REPO))
     else:
@@ -270,10 +274,21 @@ def draw(vid, work, items):
         raise RuntimeError(f"images missing: {missing} {p.stderr[-300:]}")
 
 
+MUSE_STALL = int(os.environ.get("STORY_REMAKE_MUSE_STALL", "240"))
+
+
+def muse_ready():
+    """Chrome Muse (CDP 127.0.0.1:9333) đang chạy — không thì vẽ thẳng bằng ImageRouter."""
+    try:
+        urllib.request.urlopen("http://127.0.0.1:9333/json/version", timeout=3).read()
+        return True
+    except Exception:
+        return False
+
+
 def draw_muse(vid, work, todo):
-    """Nguồn ảnh Muse (muse.ai, engine `muse` của hàng đợi — worker trong server vẽ tuần tự ~30 s/ảnh)."""
-    if not ON_VPS:
-        raise RuntimeError("STORY_REMAKE_IMAGES=muse chỉ chạy trên VPS (Chrome Muse ở đó)")
+    """Vẽ qua Muse (engine `muse` của hàng đợi, worker trong server, tuần tự ~30 s/ảnh). Trả các cảnh Muse không vẽ được
+    (lỗi, hoặc không có ảnh mới trong MUSE_STALL giây) để draw() vẽ bù bằng ImageRouter; task Muse còn treo bị huỷ."""
     sys.path.insert(0, str(REPO / "bkt_web"))
     import image_routes
     ids = {}
@@ -282,8 +297,9 @@ def draw_muse(vid, work, todo):
                                                                    aspect_ratio="9:16", engine="muse", notes=f"story-remake {vid} {it['key']}"))
         ids[it["key"]] = r["task_ids"][0]
     src = json.loads((work / "sources.json").read_text()) if (work / "sources.json").exists() else {}
-    deadline = time.time() + 60 * max(20, len(todo))
-    while ids and time.time() < deadline:
+    left = []
+    last_progress = time.time()
+    while ids and time.time() - last_progress < MUSE_STALL:
         time.sleep(10)
         conn = image_routes._db()
         try:
@@ -295,11 +311,19 @@ def draw_muse(vid, work, todo):
             if r and r[1] == "completed":
                 from PIL import Image
                 Image.open(image_routes.GENERATED_DIR / r[2]).convert("RGB").save(work / "img" / f"{key}.png"); src[key] = "muse"; ids.pop(key)
+                last_progress = time.time()
             elif r and r[1] == "failed":
-                raise RuntimeError(f"Muse không vẽ được {key}")
+                left.append(key); ids.pop(key)
+    if ids:  # Muse đứng yên: huỷ task còn chờ để worker không vẽ thừa
+        conn = image_routes._db()
+        try:
+            conn.execute(f"update image_queue set status='failed', error_message='story-remake: chuyển ImageRouter' where status='pending' and id in ({','.join('?' * len(ids))})", list(ids.values()))
+            conn.commit()
+        finally:
+            conn.close()
+        left += list(ids)
     (work / "sources.json").write_text(json.dumps(src, indent=1))
-    if ids:
-        raise RuntimeError(f"Muse quá giờ: {list(ids)}")
+    return [it for it in todo if it["key"] in left]
 
 
 # ---------------------------------------------------------------- 5. dựng

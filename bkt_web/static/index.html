@@ -639,7 +639,7 @@
           <div style="display:flex;gap:10px;flex-wrap:wrap">
             <label style="font-size:12px">Số video tối đa <input id="story-limit" type="number" min="1" max="50" value="5" class="form-control" style="width:80px"></label>
             <label style="font-size:12px">Chạy song song <select id="story-jobs" class="form-control"><option>1</option><option>2</option><option>3</option></select></label>
-            <label style="font-size:12px">Nguồn ảnh <select id="story-images" class="form-control"><option value="imagerouter">ImageRouter (nhanh)</option><option value="muse">Muse (đẹp, chậm ~30s/ảnh)</option></select></label>
+            <label style="font-size:12px">Nguồn ảnh <select id="story-images" class="form-control"><option value="muse">Muse (ưu tiên — ImageRouter vẽ bù cảnh lỗi)</option><option value="imagerouter">Chỉ ImageRouter (nhanh)</option></select></label>
             <label style="font-size:12px">Ngôn ngữ <select id="story-lang" class="form-control"><option value="auto">Tự nhận</option><option value="de">de</option><option value="en">en</option><option value="vi">vi</option><option value="ja">ja</option><option value="ko">ko</option><option value="fr">fr</option></select></label>
           </div>
           <div style="display:flex;gap:10px;margin-top:12px">
@@ -5410,7 +5410,7 @@
 
   <script src="/static/app.js?v=6.20"></script>
   <script src="/static/tiktok_api.js?v=2"></script>
-  <script src="/static/story_remake.js?v=2"></script>
+  <script src="/static/story_remake.js?v=3"></script>
   <script src="/static/muse_film.js?v=1"></script>
   <script src="/static/flow_view.js?v=6"></script>
 </body>
