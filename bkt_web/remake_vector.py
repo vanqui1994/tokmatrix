@@ -6158,6 +6158,455 @@ def simple_machines_examples():
     return [story]
 
 
+def turtle_rescue_examples():
+    """Phase U Ocean story: Thợ lặn giải cứu rùa biển khỏi túi nilon và phân loại rác vào thùng."""
+    def actor(cid, asset, **extra):
+        return {"id": cid, "asset": asset, **extra}
+
+    def pose(time, x, y, height, **extra):
+        return {"time": time, "x": x, "y": y, "height": height, **extra}
+
+    def scene(start, end, poses, actions=(), bg="coral_reef", **extra):
+        return {
+            "renderer": RENDERER,
+            "kind": "scene",
+            "start_time": start,
+            "end_time": end,
+            "characters_present": list(poses),
+            "poses": poses,
+            "actions": list(actions),
+            "background": {"preset": bg, **extra},
+        }
+
+    def action(kind, start, end, target=None, actor_id=None, **extra):
+        return {"type": kind, "start": start, "end": end, **({"target": target} if target else {}), **({"actor": actor_id} if actor_id else {}), **extra}
+
+    sc1 = scene(0, 4.0, {
+        "diver": [pose(0, 420, 720, 220, outfit="diver", swim=1), pose(4.0, 310, 720, 220, outfit="diver", swim=1)],
+        "sea_turtle": [pose(0, 180, 700, 140, swim=0.2), pose(4.0, 180, 700, 140, swim=0.2)],
+        "plastic_bag": [pose(0, 185, 695, 100), pose(4.0, 185, 695, 100)],
+        "bin": [pose(0, 470, 810, 120), pose(4.0, 470, 810, 120)],
+    }, actions=[
+        action("emote", 0.8, 2.5, actor_id="diver", emote="exclamation"),
+    ], bg="coral_reef", weather="clear")
+
+    sc2 = scene(4.0, 8.0, {
+        "diver": [pose(4.0, 310, 720, 220, outfit="diver", swim=1), pose(8.0, 410, 750, 220, outfit="diver", swim=1)],
+        "sea_turtle": [pose(4.0, 180, 700, 140, swim=0.5), pose(8.0, 260, 660, 140, swim=1.0)],
+        "plastic_bag": [pose(4.0, 185, 695, 100), pose(8.0, 410, 750, 100)],
+        "bin": [pose(4.0, 470, 810, 120), pose(8.0, 470, 810, 120)],
+    }, actions=[
+        action("emote", 4.5, 6.5, actor_id="sea_turtle", emote="heart"),
+        action("sort", 7.0, 8.0, actor_id="plastic_bag", target="bin"),
+    ], bg="coral_reef", weather="clear")
+
+    sc3 = scene(8.0, 12.0, {
+        "diver": [pose(8.0, 410, 750, 220, outfit="diver", expression="happy"), pose(12.0, 410, 750, 220, outfit="diver", expression="happy")],
+        "sea_turtle": [pose(8.0, 260, 660, 140, swim=1.0), pose(12.0, 440, 430, 140, swim=1.0, rotation=-18)],  # bơi về phía trước (rig quay mặt sang phải), chếch lên
+        "bin": [pose(8.0, 470, 810, 120), pose(12.0, 470, 810, 120)],
+    }, actions=[
+        action("emote", 9.0, 11.5, actor_id="diver", emote="heart"),
+    ], bg="coral_reef", weather="clear")
+
+    story = {
+        "id": "turtle_rescue",
+        "name": "51 · Đại dương xanh: Giải cứu rùa biển và thu gom rác nhựa",
+        "renderer": RENDERER,
+        "fidelity": "technical-demo",
+        "note": "Mẫu kỹ thuật Phase U: Thợ lặn chibi gỡ túi nilon cứu rùa biển, rùa bơi tự do và rác được phân loại đúng cách.",
+        "duration": 12.0,
+        "characters": [
+            actor("diver", "chibi_teacher"),
+            actor("sea_turtle", "sea_turtle"),
+            actor("plastic_bag", "plastic_bag"),
+            actor("bin", "bin_plastic"),
+        ],
+        "scenes": [sc1, sc2, sc3],
+        "cues": [
+            {"start": 0.5, "end": 3.8, "character_id": "diver", "text": "Kìa, một chú rùa biển đang bị vướng túi nilon rác trôi dạt!", "expression": "neutral"},
+            {"start": 4.5, "end": 7.8, "character_id": "diver", "text": "Thợ lặn nhẹ nhàng gỡ bỏ túi nilon và bỏ gọn vào thùng rác chuyên dụng.", "expression": "happy"},
+            {"start": 8.5, "end": 11.5, "character_id": "diver", "text": "Rùa biển tung tăng bơi lượn tự do giữa đại dương trong lành!", "expression": "happy"},
+        ],
+    }
+    for index, item in enumerate(story["scenes"]):
+        item["index"] = index
+    validate_story(story)
+    return [story]
+
+
+def coral_reef_examples():
+    """Phase U Ocean story: Vòng đời rạn san hô, hiện tượng tẩy trắng khi nước nóng và phục hồi khi nước mát."""
+    def actor(cid, asset, **extra):
+        return {"id": cid, "asset": asset, **extra}
+
+    def pose(time, x, y, height, **extra):
+        return {"time": time, "x": x, "y": y, "height": height, **extra}
+
+    def scene(start, end, poses, actions=(), bg="coral_reef", **extra):
+        return {
+            "renderer": RENDERER,
+            "kind": "scene",
+            "start_time": start,
+            "end_time": end,
+            "characters_present": list(poses),
+            "poses": poses,
+            "actions": list(actions),
+            "background": {"preset": bg, **extra},
+        }
+
+    def action(kind, start, end, target=None, actor_id=None, **extra):
+        return {"type": kind, "start": start, "end": end, **({"target": target} if target else {}), **({"actor": actor_id} if actor_id else {}), **extra}
+
+    sc1 = scene(0, 4.0, {
+        "coral": [pose(0, 288, 810, 240, bleached=0.0), pose(4.0, 288, 810, 240, bleached=0.0)],
+        "turtle": [pose(0, 480, 680, 140, swim=1), pose(4.0, 320, 680, 140, swim=1)],
+        "fish": [pose(0, 100, 730, 70), pose(4.0, 220, 730, 70)],
+    }, bg="coral_reef", weather="clear")
+
+    sc2 = scene(4.0, 8.0, {
+        "coral": [pose(4.0, 288, 810, 240, bleached=0.0), pose(8.0, 288, 810, 240, bleached=0.8)],
+        "turtle": [pose(4.0, 320, 680, 140, swim=0.5), pose(8.0, 200, 680, 140, swim=0.5)],
+        "fish": [pose(4.0, 220, 730, 70), pose(8.0, 120, 730, 70)],
+    }, actions=[
+        action("emote", 5.5, 7.5, actor_id="turtle", emote="sweat"),
+    ], bg="coral_reef", weather="hot")
+
+    sc3 = scene(8.0, 12.0, {
+        "coral": [pose(8.0, 288, 810, 240, bleached=0.8), pose(12.0, 288, 810, 240, bleached=0.3)],
+        "turtle": [pose(8.0, 200, 680, 140, swim=1.0), pose(12.0, 80, 680, 140, swim=1.0)],
+        "fish": [pose(8.0, 120, 730, 70), pose(12.0, 260, 730, 70)],
+    }, actions=[
+        action("emote", 9.5, 11.5, actor_id="fish", emote="music"),
+    ], bg="coral_reef", weather="clear")
+
+    story = {
+        "id": "coral_reef",
+        "name": "52 · Đại dương bí ẩn: Rạn san hô rực rỡ và chu trình phục hồi tự nhiên",
+        "renderer": RENDERER,
+        "fidelity": "technical-demo",
+        "note": "Mẫu kỹ thuật Phase U: Hiện tượng tẩy trắng san hô do nhiệt độ ấm lên và sự hồi sinh khi dòng nước mát trở lại.",
+        "duration": 12.0,
+        "characters": [
+            actor("coral", "coral"),
+            actor("turtle", "sea_turtle"),
+            actor("fish", "fish"),
+        ],
+        "scenes": [sc1, sc2, sc3],
+        "cues": [
+            {"start": 0.5, "end": 3.8, "character_id": "turtle", "text": "Dưới làn nước xanh ngắt, rạn san hô khoe sắc rực rỡ đón đàn cá bơi lội.", "expression": "happy"},
+            {"start": 4.5, "end": 7.8, "character_id": "turtle", "text": "Khi nhiệt độ nước biển tăng cao, san hô tạm thời bị tẩy trắng nhợt nhạt.", "expression": "worried"},
+            {"start": 8.5, "end": 11.5, "character_id": "turtle", "text": "Dòng hải lưu mát lành ùa về giúp vi tảo quay lại, san hô dần hồi phục sức sống!", "expression": "happy"},
+        ],
+    }
+    for index, item in enumerate(story["scenes"]):
+        item["index"] = index
+    validate_story(story)
+    return [story]
+
+
+def moai_mystery_examples():
+    """Phase U Mystery story: Bí ẩn tượng Moai đảo Phục Sinh và thực nghiệm khảo cổ học."""
+    def actor(cid, asset, **extra):
+        return {"id": cid, "asset": asset, **extra}
+
+    def pose(time, x, y, height, **extra):
+        return {"time": time, "x": x, "y": y, "height": height, **extra}
+
+    def scene(start, end, poses, actions=(), bg="easter_island_generic", **extra):
+        return {
+            "renderer": RENDERER,
+            "kind": "scene",
+            "start_time": start,
+            "end_time": end,
+            "characters_present": list(poses),
+            "poses": poses,
+            "actions": list(actions),
+            "background": {"preset": bg, **extra},
+        }
+
+    def action(kind, start, end, target=None, actor_id=None, **extra):
+        return {"type": kind, "start": start, "end": end, **({"target": target} if target else {}), **({"actor": actor_id} if actor_id else {}), **extra}
+
+    G = held_pose("magnifier", 160, -20, anchor="grip")
+    # Cảnh 1: nhà khảo cổ giơ kính lúp ngang mặt tượng quan sát; hai bạn đứng bên kia tượng.
+    sc1 = scene(0, 5.0, {
+        "moai": [pose(0, 320, 810, 240), pose(5.0, 320, 810, 240)],
+        "arch": [
+            pose(0, 40, 830, 230, outfit="paleontologist"),
+            pose(1.6, 185, 830, 230, outfit="paleontologist"),
+            pose(2.2, 185, 830, 230, outfit="paleontologist", hand_r_x=30, hand_r_y=-52),
+            pose(5.0, 185, 830, 230, outfit="paleontologist", hand_r_x=30, hand_r_y=-52),
+        ],
+        "glass": [
+            {"time": 0, "height": 160, **G},
+            {"time": 5.0, "height": 160, **G},
+        ],
+        "helper1": [pose(0, 450, 830, 220, outfit="scientist", flip=True), pose(5.0, 450, 830, 220, outfit="scientist", flip=True)],
+        "helper2": [pose(0, 545, 830, 220, outfit="scientist", flip=True), pose(5.0, 545, 830, 220, outfit="scientist", flip=True)],
+    }, actions=[
+        action("emote", 2.4, 4.6, actor_id="arch", emote="idea"),
+    ], bg="easter_island_generic", weather="clear")
+
+    # Cảnh 2: giả thuyết "tượng đi": ba người đứng cách nhau ~110 px cùng kéo dây; hook haul tự dời
+    # tượng và người kéo thêm `distance` px (vị trí pose đứng yên, không cộng thêm tay).
+    sc2 = scene(5.0, 12.0, {
+        "moai": [pose(5.0, 470, 810, 240), pose(12.0, 470, 810, 240)],
+        "arch": [pose(5.0, 345, 830, 230, outfit="paleontologist"), pose(12.0, 345, 830, 230, outfit="paleontologist")],
+        "helper1": [pose(5.0, 235, 830, 220, outfit="scientist"), pose(12.0, 235, 830, 220, outfit="scientist")],
+        "helper2": [pose(5.0, 125, 830, 220, outfit="scientist"), pose(12.0, 125, 830, 220, outfit="scientist")],
+    }, actions=[
+        action("haul", 5.5, 11.0, actor_id="arch", target="moai", helpers=["helper1", "helper2"], distance=90, hold=True),
+        action("emote", 10.5, 11.9, actor_id="arch", emote="heart"),
+    ], bg="easter_island_generic", weather="clear")
+
+    story = {
+        "id": "moai_mystery",
+        "name": "53 · Bí ẩn lịch sử: Giả thuyết di chuyển tượng đá Moai khổng lồ",
+        "renderer": RENDERER,
+        "fidelity": "technical-demo",
+        "note": "Mẫu kỹ thuật Phase U: Khảo sát thực nghiệm giả thuyết các nhà khoa học đang nghiên cứu về cách di chuyển tượng đá Moai.",
+        "duration": 12.0,
+        "characters": [
+            actor("moai", "moai_generic"),
+            actor("arch", "chibi_teacher"),
+            actor("glass", "magnifier", attach_to={"id": "arch", "anchor": "hand_r"}),
+            actor("helper1", "chibi_girl"),
+            actor("helper2", "chibi_boy"),
+        ],
+        "scenes": [sc1, sc2],
+        "cues": [
+            {"start": 0.5, "end": 4.5, "character_id": "arch", "text": "Các nhà khoa học đưa ra giả thuyết rằng tượng Moai khổng lồ có thể được di chuyển bằng cách dùng dây kéo nghiêng lắc lư.", "expression": "neutral"},
+            {"start": 5.5, "end": 11.5, "character_id": "arch", "text": "Hiện nay các nhà khảo cổ học vẫn đang nghiên cứu thêm các dấu tích lòng đường để kiểm chứng giả thuyết này.", "expression": "happy"},
+        ],
+    }
+    for index, item in enumerate(story["scenes"]):
+        item["index"] = index
+    validate_story(story)
+    return [story]
+
+
+def tortoise_and_hare_examples():
+    """Phase U Fable story: Truyện ngụ ngôn Rùa và Thỏ — sự kiên trì bền bỉ chiến thắng."""
+    def actor(cid, asset, **extra):
+        return {"id": cid, "asset": asset, **extra}
+
+    def pose(time, x, y, height, **extra):
+        return {"time": time, "x": x, "y": y, "height": height, **extra}
+
+    def scene(start, end, poses, actions=(), bg="alpine_meadow", **extra):
+        return {
+            "renderer": RENDERER,
+            "kind": "scene",
+            "start_time": start,
+            "end_time": end,
+            "characters_present": list(poses),
+            "poses": poses,
+            "actions": list(actions),
+            "background": {"preset": bg, **extra},
+        }
+
+    def action(kind, start, end, target=None, actor_id=None, **extra):
+        return {"type": kind, "start": start, "end": end, **({"target": target} if target else {}), **({"actor": actor_id} if actor_id else {}), **extra}
+
+    sc1 = scene(0, 4.0, {
+        "hare": [pose(0, 60, 810, 130, walk=1, z=2), pose(4.0, 420, 810, 130, walk=1, z=2)],
+        "tortoise": [pose(0, 40, 810, 140, walk=1, z=3), pose(4.0, 190, 810, 140, walk=1, z=3)],
+        "tree": [pose(0, 340, 810, 280, z=0), pose(4.0, 340, 810, 280, z=0)],
+    }, bg="alpine_meadow", weather="clear")
+
+    sc2 = scene(4.0, 8.0, {
+        "hare": [pose(4.0, 420, 810, 130, walk=0, z=2), pose(8.0, 420, 810, 130, walk=0, z=2)],
+        "tortoise": [pose(4.0, 190, 810, 140, walk=1, z=3), pose(8.0, 340, 810, 140, walk=1, z=3)],
+        "tree": [pose(4.0, 340, 810, 280, z=0), pose(8.0, 340, 810, 280, z=0)],
+    }, actions=[
+        action("emote", 4.5, 7.5, actor_id="hare", emote="zzz"),
+    ], bg="alpine_meadow", weather="clear")
+
+    sc3 = scene(8.0, 12.0, {
+        # Rùa vượt qua lúc thỏ còn ngủ và về tới 480 trước; thỏ tỉnh dậy chạy theo nhưng dừng phía sau (290).
+        "hare": [pose(8.0, 420, 810, 130, walk=0, z=2), pose(9.6, 420, 810, 130, walk=0, z=2), pose(10.4, 290, 810, 130, walk=1, z=2), pose(12.0, 290, 810, 130, walk=0, z=2)],
+        "tortoise": [pose(8.0, 340, 810, 140, walk=1, z=3), pose(10.2, 500, 810, 130, walk=1, z=3), pose(12.0, 500, 810, 130, walk=0, z=3)],
+        "tree": [pose(8.0, 340, 810, 280, z=0), pose(12.0, 340, 810, 280, z=0)],
+    }, actions=[
+        action("emote", 9.8, 11.8, actor_id="tortoise", emote="heart"),
+        action("emote", 10.0, 11.8, actor_id="hare", emote="heart"),
+    ], bg="alpine_meadow", weather="clear")
+
+    story = {
+        "id": "tortoise_and_hare",
+        "name": "54 · Ngụ ngôn Aesop: Cuộc thi chạy giữa Rùa và Thỏ",
+        "renderer": RENDERER,
+        "fidelity": "technical-demo",
+        "note": "Mẫu kỹ thuật Phase U: Thỏ chạy nhanh rồi ngủ quên dưới gốc cây, rùa bước chậm đều và cán đích trước.",
+        "duration": 12.0,
+        "characters": [
+            actor("hare", "rabbit"),
+            actor("tortoise", "tortoise"),
+            actor("tree", "persimmon_tree"),
+        ],
+        "scenes": [sc1, sc2, sc3],
+        "cues": [
+            {"start": 0.5, "end": 3.8, "character_id": "hare", "text": "Thỏ phóng vun vút dẫn đầu rồi tự tin dừng lại chợp mắt dưới gốc cây râm mát.", "expression": "happy"},
+            {"start": 4.5, "end": 7.8, "character_id": "tortoise", "text": "Rùa ta không nản lòng, cứ từng bước chậm rãi kiên trì tiến thẳng về phía trước.", "expression": "neutral"},
+            {"start": 8.5, "end": 11.5, "character_id": "tortoise", "text": "Rùa đã cán đích trước trong sự ngỡ ngàng của Thỏ, hai bạn vui vẻ bắt tay chúc mừng nhau!", "expression": "happy"},
+        ],
+    }
+    for index, item in enumerate(story["scenes"]):
+        item["index"] = index
+    validate_story(story)
+    return [story]
+
+
+def ant_and_grasshopper_examples():
+    """Phase U Fable story: Truyện ngụ ngôn Kiến và Châu chấu — chia sẻ ấm áp mùa đông."""
+    def actor(cid, asset, **extra):
+        return {"id": cid, "asset": asset, **extra}
+
+    def pose(time, x, y, height, **extra):
+        return {"time": time, "x": x, "y": y, "height": height, **extra}
+
+    def scene(start, end, poses, actions=(), bg="water_cycle_valley", **extra):
+        return {
+            "renderer": RENDERER,
+            "kind": "scene",
+            "start_time": start,
+            "end_time": end,
+            "characters_present": list(poses),
+            "poses": poses,
+            "actions": list(actions),
+            "background": {"preset": bg, **extra},
+        }
+
+    def action(kind, start, end, target=None, actor_id=None, **extra):
+        return {"type": kind, "start": start, "end": end, **({"target": target} if target else {}), **({"actor": actor_id} if actor_id else {}), **extra}
+
+    F = held_pose("bread_loaf", 110, 0, anchor="root")
+    # Cảnh 1: kiến cõng ổ bánh trên lưng (gắn vào anchor surface, vẽ trên kiến) đi ≥ 150 px; châu chấu kéo đàn.
+    sc1 = scene(0, 5.0, {
+        "ant": [pose(0, 60, 830, 130), pose(5.0, 260, 830, 130)],
+        "food": [
+            {"time": 0, "height": 110, "z": 1, **F},
+            {"time": 5.0, "height": 110, "z": 1, **F},
+        ],
+        "grasshopper": [pose(0, 430, 830, 150, fiddle=1.0), pose(5.0, 430, 830, 150, fiddle=1.0)],
+    }, bg="alpine_meadow", weather="clear", season="summer")
+
+    # Cảnh 2: mùa đông, châu chấu run rẩy (shiver) đi trong tuyết tới nhà nấm của kiến.
+    sc2 = scene(5.0, 9.0, {
+        "shelter": [pose(5.0, 440, 830, 260, growth=1.0), pose(9.0, 440, 830, 260, growth=1.0)],
+        "ant": [pose(5.0, 330, 840, 130, z=2), pose(9.0, 330, 840, 130, z=2)],
+        "grasshopper": [pose(5.0, 20, 830, 150, fiddle=0, shiver=0.8), pose(9.0, 200, 830, 150, fiddle=0, shiver=0.8)],
+    }, actions=[
+        action("emote", 6.0, 8.5, actor_id="grasshopper", emote="sweat"),
+    ], bg="alpine_meadow", weather="snow", season="winter")
+
+    # Cảnh 3: kiến mời vào nhà; châu chấu hết run (shiver 0), cùng kéo đàn vui vẻ.
+    sc3 = scene(9.0, 12.0, {
+        "shelter": [pose(9.0, 440, 830, 260, growth=1.0), pose(12.0, 440, 830, 260, growth=1.0)],
+        "ant": [pose(9.0, 330, 840, 130, z=2), pose(12.0, 330, 840, 130, z=2)],
+        "grasshopper": [pose(9.0, 200, 830, 150, fiddle=0, shiver=0.8), pose(10.5, 250, 840, 150, fiddle=0, shiver=0.0), pose(12.0, 250, 840, 150, fiddle=1.0, shiver=0.0)],
+    }, actions=[
+        action("emote", 10.0, 11.8, actor_id="grasshopper", emote="music"),
+        action("emote", 9.4, 11.8, actor_id="ant", emote="heart"),
+    ], bg="alpine_meadow", weather="snow", season="winter")
+
+    story = {
+        "id": "ant_and_grasshopper",
+        "name": "55 · Ngụ ngôn Aesop: Kiến chăm chỉ và Châu chấu yêu âm nhạc",
+        "renderer": RENDERER,
+        "fidelity": "technical-demo",
+        "note": "Mẫu kỹ thuật Phase U: Kiến cần mẫn tích trữ thức ăn mùa hè, mùa đông ấm áp mở cửa chia sẻ cùng bạn châu chấu.",
+        "duration": 12.0,
+        "characters": [
+            actor("ant", "ant"),
+            actor("food", "bread_loaf", attach_to={"id": "ant", "anchor": "surface"}),
+            actor("grasshopper", "grasshopper"),
+            actor("shelter", "mushroom"),
+        ],
+        "scenes": [sc1, sc2, sc3],
+        "cues": [
+            {"start": 0.5, "end": 4.5, "character_id": "ant", "text": "Suốt mùa hè chan hòa nắng ấm, Kiến chăm chỉ khuân thức ăn dự trữ trong khi Châu chấu say mê kéo vĩ cầm.", "expression": "happy"},
+            {"start": 5.5, "end": 8.5, "character_id": "grasshopper", "text": "Mùa đông lạnh giá ùa về, Châu chấu run rẩy tìm đến căn nhà ấm cúng của Kiến.", "expression": "worried"},
+            {"start": 9.2, "end": 11.8, "character_id": "ant", "text": "Kiến niềm nở mời bạn vào tổ chia sẻ món bánh nóng hổi, cùng hòa khúc nhạc vui rộn rã!", "expression": "happy"},
+        ],
+    }
+    for index, item in enumerate(story["scenes"]):
+        item["index"] = index
+    validate_story(story)
+    return [story]
+
+
+def fox_and_grapes_examples():
+    """Phase U Fable story: Truyện ngụ ngôn Cáo và chùm nho."""
+    def actor(cid, asset, **extra):
+        return {"id": cid, "asset": asset, **extra}
+
+    def pose(time, x, y, height, **extra):
+        return {"time": time, "x": x, "y": y, "height": height, **extra}
+
+    def scene(start, end, poses, actions=(), bg="garden", **extra):
+        return {
+            "renderer": RENDERER,
+            "kind": "scene",
+            "start_time": start,
+            "end_time": end,
+            "characters_present": list(poses),
+            "poses": poses,
+            "actions": list(actions),
+            "background": {"preset": bg, **extra},
+        }
+
+    def action(kind, start, end, target=None, actor_id=None, **extra):
+        return {"type": kind, "start": start, "end": end, **({"target": target} if target else {}), **({"actor": actor_id} if actor_id else {}), **extra}
+
+    sc1 = scene(0, 4.0, {
+        "vine": [pose(0, 360, 810, 280), pose(4.0, 360, 810, 280)],
+        "fox": [pose(0, 100, 810, 150), pose(4.0, 260, 810, 150)],
+    }, bg="garden", weather="clear")
+
+    sc2 = scene(4.0, 7.0, {
+        "vine": [pose(4.0, 360, 810, 280), pose(7.0, 360, 810, 280)],
+        "fox": [
+            pose(4.0, 260, 810, 150, jump=0),
+            pose(5.0, 260, 740, 150, jump=1),
+            pose(6.0, 260, 810, 150, jump=0),
+            pose(7.0, 260, 740, 150, jump=1),
+        ],
+    }, actions=[
+        action("hop", 4.0, 7.0, actor_id="fox"),
+    ], bg="garden", weather="clear")
+
+    sc3 = scene(7.0, 10.0, {
+        "vine": [pose(7.0, 360, 810, 280), pose(10.0, 360, 810, 280)],
+        "fox": [pose(7.0, 260, 810, 150, flip=True, jump=0), pose(10.0, 80, 810, 150, flip=True, jump=0)],
+    }, actions=[
+        action("emote", 7.5, 9.5, actor_id="fox", emote="sweat"),
+    ], bg="garden", weather="clear")
+
+    story = {
+        "id": "fox_and_grapes",
+        "name": "56 · Ngụ ngôn Aesop: Con cáo và chùm nho chín mọng",
+        "renderer": RENDERER,
+        "fidelity": "technical-demo",
+        "note": "Mẫu kỹ thuật Phase U: Chú cáo nhảy với những chùm nho trên giàn cao không tới, đành tặc lưỡi bỏ đi.",
+        "duration": 10.0,
+        "characters": [
+            actor("fox", "fox"),
+            actor("vine", "grape_vine"),
+        ],
+        "scenes": [sc1, sc2, sc3],
+        "cues": [
+            {"start": 0.5, "end": 3.5, "character_id": "fox", "text": "Cáo ta dạo bước trong vườn thì bắt gặp giàn nho chín mọng lủng lẳng trên cao.", "expression": "happy"},
+            {"start": 4.2, "end": 6.8, "character_id": "fox", "text": "Cáo lấy đà nhảy vút lên nhiều lần nhưng chùm nho vẫn nằm ngoài tầm với!", "expression": "neutral"},
+            {"start": 7.5, "end": 9.8, "character_id": "fox", "text": "Cáo đành quay bước bỏ đi và tự nhủ rằng chắc nho vẫn còn xanh lắm!", "expression": "neutral"},
+        ],
+    }
+    for index, item in enumerate(story["scenes"]):
+        item["index"] = index
+    validate_story(story)
+    return [story]
+
+
 def auto_frame(story: dict, max_zoom: float = 2.0) -> dict:
     """Đặt camera tĩnh cho mỗi cảnh chưa có camera để nhóm nhân vật nhỏ (tế bào, vi khuẩn) chiếm ~85% bề ngang.
 
@@ -6185,7 +6634,7 @@ def auto_frame(story: dict, max_zoom: float = 2.0) -> dict:
     return story
 
 def sample_stories():
-    """Every sample the library ships: farm stories, articulated hands, IK, fishing, sea monsters, orchard harvest, trellis, highland, vegetable cutaway, safe spraying, giant radish, handwashing, doctor visit, tooth care, nutrition, Phase I body world, Phase K recycling, Phase L safety, Phase M ancient history, Phase O inventions, Phase P German culture, Phase Q Japanese culture, Phase R Korean culture, Phase N medieval stories, Phase S US culture stories, and Phase T nature and space stories."""
+    """Every sample the library ships: farm stories, articulated hands, IK, fishing, sea monsters, orchard harvest, trellis, highland, vegetable cutaway, safe spraying, giant radish, handwashing, doctor visit, tooth care, nutrition, Phase I body world, Phase K recycling, Phase L safety, Phase M ancient history, Phase O inventions, Phase P German culture, Phase Q Japanese culture, Phase R Korean culture, Phase N medieval stories, Phase S US culture stories, Phase T nature and space stories, and Phase U ocean, mysteries and fables stories."""
     return (
         examples() + agriculture_examples() + farm_life_examples() + farm_animals_examples() +
         articulation_examples() + ik_examples() + fishing_examples() + monster_examples() +
@@ -6204,7 +6653,9 @@ def sample_stories():
         tiger_and_persimmon_examples() + kimchi_day_examples() + seollal_morning_examples() + rain_gauge_examples() +
         castle_life_examples() + blacksmith_examples() + viking_voyage_examples() + village_fair_examples() +
         apollo_11_examples() + thanksgiving_harvest_examples() + gold_rush_examples() + johnny_appleseed_examples() +
-        water_cycle_examples() + moon_phases_examples() + volcano_examples() + dino_dig_examples() + solar_system_tour_examples() + simple_machines_examples()
+        water_cycle_examples() + moon_phases_examples() + volcano_examples() + dino_dig_examples() + solar_system_tour_examples() + simple_machines_examples() +
+        turtle_rescue_examples() + coral_reef_examples() + moai_mystery_examples() +
+        tortoise_and_hare_examples() + ant_and_grasshopper_examples() + fox_and_grapes_examples()
     )
 
 

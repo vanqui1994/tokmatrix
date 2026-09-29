@@ -5088,3 +5088,483 @@ console.log(JSON.stringify({ evapEqual: h1_evap === h2_evap, condEqual: h1_cond 
             browser.close()
 
 
+class PhaseUTest(unittest.TestCase):
+    """Plan §30 & Giai đoạn U: Đại dương, bí ẩn và ngụ ngôn (ocean, mysteries, fables) - rigs, backgrounds, contacts, và stories."""
+    _node = PackContractTest._node
+
+    def test_every_ocean_mysteries_fables_pack_rig_draws_and_is_in_catalog(self):
+        from bkt_web.remake_vector import catalog
+        cat = catalog()
+        phase_u_rigs = [
+            # Ocean pack (9 rigs)
+            "sea_turtle", "jellyfish", "octopus", "whale", "seal", "coral", "seaweed", "anglerfish", "plastic_bag",
+            # Mysteries pack (3 new rigs)
+            "sunken_ship", "atlantis_ruins", "excavation_grid",
+            # Fables pack (3 rigs)
+            "grasshopper", "tortoise", "city_mouse"
+        ]
+        for rig in phase_u_rigs:
+            with self.subTest(rig=rig):
+                self.assertIn(rig, cat["assets"], f"{rig} phải có trong catalog")
+                pack = cat["assets"][rig].get("pack")
+                self.assertIn(pack, ("ocean", "mysteries", "fables"), f"{rig} pack phải thuộc ocean, mysteries hoặc fables, nhận {pack}")
+                anchors = cat["assets"][rig].get("anchors", {})
+                self.assertIn("root", anchors, f"{rig} thiếu anchor root")
+                self.assertIn("top", anchors, f"{rig} thiếu anchor top")
+                # Rule 5: anchors không được vượt quá khung y < -100
+                for aname, apos in anchors.items():
+                    self.assertGreaterEqual(apos[1], -100.0, f"{rig}.{aname} y={apos[1]} vượt quá khung trên y < -100")
+
+        out = self._node(r"""
+globalThis.Path2D=class{constructor(){}addPath(){}};
+const {cat, rigs} = JSON.parse(fs.readFileSync(0, 'utf8'));
+const ctx = new Proxy({}, {
+  get: (o, k) => k in o ? o[k] : (k === 'createLinearGradient' || k === 'createRadialGradient') ? () => ({ addColorStop() {} }) : () => {},
+  set: (o, k, v) => (o[k] = v, true)
+});
+const errors = [];
+for (const rig of rigs) {
+  const drawer = RemakeVector.kit.RIG_DRAWERS[rig];
+  if (!drawer) {
+    errors.push(`Thiếu drawer cho rig ${rig}`);
+    continue;
+  }
+  const s = { ...cat.pose_defaults, asset: rig, height: 100, x: 288, y: 512, rotation: 0, flip: false, style: {} };
+  try {
+    drawer(ctx, s, 1.0, cat);
+  } catch (e) {
+    errors.push(`Lỗi khi vẽ ${rig}: ${e.message}`);
+  }
+}
+console.log(JSON.stringify(errors));""", {"cat": cat, "rigs": phase_u_rigs})
+        self.assertEqual(out, [], f"Các rig bị lỗi vẽ: {out}")
+
+    def test_ocean_mysteries_backgrounds_render_all_weathers_without_text(self):
+        from bkt_web.remake_vector import catalog
+        cat = catalog()
+        bgs = [
+            "coral_reef", "beach_cleanup", "deep_sea",
+            "easter_island_generic", "stone_circle_field", "ruins_underwater"
+        ]
+        for bg in bgs:
+            self.assertIn(bg, cat["backgrounds"])
+            self.assertIn(bg, cat["background_specs"])
+            self.assertEqual(cat["background_specs"][bg]["ground_y"], 810)
+
+        bg_out = self._node(r"""
+globalThis.Path2D=class{constructor(){}addPath(){}};
+const {cat, bgs}=JSON.parse(fs.readFileSync(0,'utf8'));
+let textCalls = 0;
+const ctx=new Proxy({},{
+  get:(o,k)=>{
+    if(k==='fillText'||k==='strokeText'){ textCalls++; return ()=>{}; }
+    if(k==='createLinearGradient'||k==='createRadialGradient') return ()=>({addColorStop(){}});
+    return ()=>{};
+  },
+  set:(o,k,v)=>(o[k]=v,true)
+});
+const errors=[];
+for(const bg of bgs){
+  const spec = cat.background_specs[bg];
+  for(const night of [false, true]){
+    for(const weather of ['clear','rain','snow','wind','fog','storm','hot']){
+      try {
+        RemakeVector.kit.BACKGROUNDS[bg].draw(ctx, {night, weather, theme: spec.theme, ground_y: spec.ground_y, dirty: 0.5}, 1.5);
+      } catch(e) {
+        errors.push(bg + ' ' + weather + (night?' night':'') + ': ' + e.message);
+      }
+    }
+  }
+}
+console.log(JSON.stringify({errors, textCalls}));""", {"cat": cat, "bgs": bgs})
+        self.assertEqual(bg_out["errors"], [])
+        self.assertEqual(bg_out["textCalls"], 0, "Hình nền không được vẽ text")
+
+    def test_coral_bleached_saturation_and_story_progression(self):
+        from bkt_web.remake_vector import catalog, engine_sources, coral_reef_examples
+        from playwright.sync_api import sync_playwright
+        cat = catalog()
+        engine_js = "\n;\n".join(src.read_text(encoding="utf-8") for src in engine_sources())
+
+        with sync_playwright() as p:
+            browser = p.chromium.launch(args=["--disable-gpu", "--disable-gpu-rasterization", "--force-color-profile=srgb"])
+            page = browser.new_page()
+            page.set_content(f"""
+            <html><body>
+            <canvas id="stage" width="576" height="1024"></canvas>
+            <script>{engine_js}</script>
+            <script>
+              window.cat = {json.dumps(cat)};
+              window.testCoral = function() {{
+                const canvas = document.getElementById('stage');
+                const ctx = canvas.getContext('2d');
+                const drawer = RemakeVector.kit.RIG_DRAWERS['coral'];
+                const results = {{}};
+                for (const bleached of [0.0, 1.0]) {{
+                  ctx.clearRect(0, 0, 576, 1024);
+                  ctx.save();
+                  ctx.translate(288, 512);
+                  const s = {{ ...cat.pose_defaults, asset: 'coral', height: 100, bleached, style: {{}} }};
+                  drawer(ctx, s, 1.0, cat);
+                  ctx.restore();
+                  const img = ctx.getImageData(288 - 50, 512 - 100, 100, 100).data;
+                  let satSum = 0, count = 0;
+                  for (let y = 0; y < 100; y++) {{
+                    for (let x = 0; x < 100; x++) {{
+                      const a = img[(y * 100 + x) * 4 + 3];
+                      if (a > 30) {{
+                        const r = img[(y * 100 + x) * 4] / 255;
+                        const g = img[(y * 100 + x) * 4 + 1] / 255;
+                        const b = img[(y * 100 + x) * 4 + 2] / 255;
+                        const max = Math.max(r, g, b);
+                        const min = Math.min(r, g, b);
+                        const sat = max > 0.01 ? (max - min) / max : 0;
+                        satSum += sat;
+                        count++;
+                      }}
+                    }}
+                  }}
+                  results[bleached] = count > 0 ? satSum / count : 0;
+                }}
+                return results;
+              }};
+            </script>
+            </body></html>
+            """)
+            res = page.evaluate("testCoral()")
+            browser.close()
+            self.assertGreater(res["0"], 0.40, f"San hô tươi màu phải có độ bão hòa cao (nhận {res['0']})")
+            self.assertLess(res["1"], 0.25, f"San hô bị tẩy trắng phải nhạt màu (nhận {res['1']})")
+            self.assertGreater(res["0"], res["1"] * 2.0, "San hô bleached=0 phải nhiều màu hơn bleached=1 ít nhất 2 lần")
+
+        story = coral_reef_examples()[0]
+        sc2 = story["scenes"][1]
+        bleached_sc2 = [k.get("bleached", 0.0) for k in sc2["poses"]["coral"]]
+        self.assertEqual(bleached_sc2[0], 0.0)
+        self.assertEqual(bleached_sc2[-1], 0.8)
+        for i in range(len(bleached_sc2) - 1):
+            self.assertLessEqual(bleached_sc2[i], bleached_sc2[i + 1])
+
+        sc3 = story["scenes"][2]
+        bleached_sc3 = [k.get("bleached", 0.0) for k in sc3["poses"]["coral"]]
+        self.assertEqual(bleached_sc3[0], 0.8)
+        self.assertEqual(bleached_sc3[-1], 0.3)
+        for i in range(len(bleached_sc3) - 1):
+            self.assertGreaterEqual(bleached_sc3[i], bleached_sc3[i + 1])
+
+    def test_turtle_rescue_story(self):
+        from bkt_web.remake_vector import turtle_rescue_examples
+        story = turtle_rescue_examples()[0]
+        sc1 = story["scenes"][0]
+        sc2 = story["scenes"][1]
+        dist1 = abs(sc1["poses"]["sea_turtle"][0]["x"] - sc1["poses"]["plastic_bag"][0]["x"])
+        dist2 = abs(sc2["poses"]["sea_turtle"][-1]["x"] - sc2["poses"]["plastic_bag"][-1]["x"])
+        self.assertGreater(dist2 - dist1, 60.0, f"Túi nilon phải tách xa rùa biển > 60px (tăng {dist2 - dist1}px)")
+
+        sort_actions = [a for a in sc2.get("actions", []) if a.get("type") == "sort"]
+        self.assertTrue(len(sort_actions) > 0, "Cảnh 2 phải có action sort thu gom rác")
+        self.assertEqual(sort_actions[0].get("actor"), "plastic_bag")
+        self.assertEqual(sort_actions[0].get("target"), "bin")
+
+        start_x = sc1["poses"]["sea_turtle"][0]["x"]
+        end_x = story["scenes"][2]["poses"]["sea_turtle"][-1]["x"]
+        total_dx = abs(start_x - end_x)
+        self.assertGreaterEqual(total_dx, 150.0, f"Rùa biển phải bơi đi >= 150px (đạt {total_dx}px)")
+
+        all_emotes = [a.get("emote") for sc in story["scenes"] for a in sc.get("actions", []) if a.get("type") == "emote"]
+        self.assertIn("heart", all_emotes, "Story phải có biểu cảm emote heart")
+
+    def test_moai_mystery_story(self):
+        from bkt_web.remake_vector import catalog, moai_mystery_examples
+        cat = catalog()
+        story = moai_mystery_examples()[0]
+
+        out = self._node(r"""
+const {story, cat} = JSON.parse(fs.readFileSync(0, 'utf8'));
+const f = V.sample(story, cat, 2.0);
+const hand = V.worldAnchor(cat, f.states.arch, 'hand_r');
+const grip = V.worldAnchor(cat, f.states.glass, 'grip');
+const d = Math.hypot(hand.x - grip.x, hand.y - grip.y);
+console.log(JSON.stringify({ d }));
+""", {"story": story, "cat": cat})
+        self.assertLess(out["d"], 3.0, f"Kính lúp không nằm đúng trong tay (lệch {out['d']}px >= 3px)")
+
+        sc2 = story["scenes"][1]
+        # haul tự dời tượng và người kéo (pose đứng yên) → đo vị trí THẬT do engine lấy mẫu.
+        moved = self._node(r"""
+const {story, cat} = JSON.parse(fs.readFileSync(0, 'utf8'));
+const a = V.sample(story, cat, 5.2).states.moai.x, b = V.sample(story, cat, 11.9).states.moai.x;
+const people = ['arch', 'helper1', 'helper2'].map(id => V.sample(story, cat, 8.0).states[id].x).sort((p, q) => p - q);
+console.log(JSON.stringify({ dx: Math.abs(b - a), gap: Math.min(people[1] - people[0], people[2] - people[1]) }));
+""", {"story": story, "cat": cat})
+        self.assertGreaterEqual(moved["dx"], 80.0, f"Tượng Moai khi haul phải dịch chuyển >= 80px (đạt {moved['dx']}px)")
+        self.assertGreaterEqual(moved["gap"], 90.0, "Ba người kéo không được đứng chồng lên nhau")
+        haul_actions = [a for a in sc2.get("actions", []) if a.get("type") == "haul"]
+        self.assertTrue(len(haul_actions) > 0, "Cảnh 2 phải có action haul kéo tượng")
+
+        all_text = " ".join([c.get("text", "") for c in story.get("cues", [])]).lower()
+        self.assertTrue(
+            "giả thuyết" in all_text or "đang nghiên cứu" in all_text,
+            "Lời thoại phải chứa từ khóa 'giả thuyết' hoặc 'đang nghiên cứu' theo chuẩn khoa học"
+        )
+
+    def test_tortoise_and_hare_story(self):
+        from bkt_web.remake_vector import tortoise_and_hare_examples
+        story = tortoise_and_hare_examples()[0]
+
+        sc1 = story["scenes"][0]
+        hare_sc1 = sc1["poses"]["hare"]
+        dx_hare1 = abs(hare_sc1[-1]["x"] - hare_sc1[0]["x"])
+        self.assertGreaterEqual(dx_hare1, 300.0, f"Thỏ ở cảnh 1 phải chạy >= 300px (đạt {dx_hare1}px)")
+
+        sc2 = story["scenes"][1]
+        hare_sc2 = sc2["poses"]["hare"]
+        dx_hare2 = abs(hare_sc2[-1]["x"] - hare_sc2[0]["x"])
+        self.assertEqual(dx_hare2, 0.0, "Thỏ phải đứng yên dưới cây ở cảnh 2")
+        zzz_emotes = [a for a in sc2.get("actions", []) if a.get("type") == "emote" and a.get("emote") == "zzz"]
+        self.assertTrue(len(zzz_emotes) > 0, "Thỏ phải có emote zzz khi chợp mắt ở cảnh 2")
+
+        for idx, sc in enumerate(story["scenes"]):
+            tort_poses = sc["poses"]["tortoise"]
+            dx_tort = abs(tort_poses[-1]["x"] - tort_poses[0]["x"])
+            self.assertGreaterEqual(dx_tort, 150.0, f"Rùa ở cảnh {idx+1} phải di chuyển >= 150px (đạt {dx_tort}px)")
+
+        sc3 = story["scenes"][2]
+        tort_final_x = sc3["poses"]["tortoise"][-1]["x"]
+        hare_final_x = sc3["poses"]["hare"][-1]["x"]
+        self.assertGreater(tort_final_x, hare_final_x, f"Rùa phải cán đích trước thỏ (rùa x={tort_final_x} > thỏ x={hare_final_x})")
+
+    def test_ant_and_grasshopper_story(self):
+        from bkt_web.remake_vector import catalog, ant_and_grasshopper_examples
+        cat = catalog()
+        story = ant_and_grasshopper_examples()[0]
+
+        out = self._node(r"""
+const {story, cat} = JSON.parse(fs.readFileSync(0, 'utf8'));
+const f = V.sample(story, cat, 2.0);
+const back = V.worldAnchor(cat, f.states.ant, 'surface');
+const base = V.worldAnchor(cat, f.states.food, 'root');
+const d = Math.hypot(back.x - base.x, back.y - base.y);
+console.log(JSON.stringify({ d }));
+""", {"story": story, "cat": cat})
+        # Kiến cõng ổ bánh trên lưng: đáy bánh (root) nằm trên anchor surface của kiến.
+        self.assertLess(out["d"], 3.0, f"Ổ bánh không nằm trên lưng kiến (lệch {out['d']}px >= 3px)")
+
+        sc1 = story["scenes"][0]
+        ant_sc1 = sc1["poses"]["ant"]
+        dx_ant = abs(ant_sc1[-1]["x"] - ant_sc1[0]["x"])
+        self.assertGreaterEqual(dx_ant, 150.0, f"Kiến phải di chuyển >= 150px ở cảnh 1 (đạt {dx_ant}px)")
+
+        sc2 = story["scenes"][1]
+        sc3 = story["scenes"][2]
+        self.assertGreater(sc2["poses"]["grasshopper"][0].get("shiver", 0), 0.0, "Châu chấu phải bị lạnh run (shiver > 0) ở cảnh 2")
+        self.assertEqual(sc3["poses"]["grasshopper"][-1].get("shiver", 0), 0.0, "Châu chấu phải hết run (shiver = 0) khi vào tổ ấm ở cuối cảnh 3")
+
+    def test_fox_and_grapes_story(self):
+        from bkt_web.remake_vector import fox_and_grapes_examples
+        story = fox_and_grapes_examples()[0]
+
+        sc1 = story["scenes"][0]
+        fox_sc1 = sc1["poses"]["fox"]
+        dx_fox1 = abs(fox_sc1[-1]["x"] - fox_sc1[0]["x"])
+        self.assertGreaterEqual(dx_fox1, 150.0, f"Cáo phải bước lại gần giàn nho >= 150px (đạt {dx_fox1}px)")
+
+        sc2 = story["scenes"][1]
+        hop_actions = [a for a in sc2.get("actions", []) if a.get("type") == "hop"]
+        self.assertTrue(len(hop_actions) > 0, "Cảnh 2 phải có action hop")
+
+        sc3 = story["scenes"][2]
+        fox_sc3 = sc3["poses"]["fox"]
+        dx_fox3 = abs(fox_sc3[-1]["x"] - fox_sc3[0]["x"])
+        self.assertGreaterEqual(dx_fox3, 150.0, f"Cáo phải bước đi xa giàn nho >= 150px (đạt {dx_fox3}px)")
+
+    def test_no_opacity_zero_leakage_and_character_presence(self):
+        from bkt_web.remake_vector import (
+            turtle_rescue_examples, coral_reef_examples, moai_mystery_examples,
+            tortoise_and_hare_examples, ant_and_grasshopper_examples, fox_and_grapes_examples
+        )
+        stories = [
+            turtle_rescue_examples()[0],
+            coral_reef_examples()[0],
+            moai_mystery_examples()[0],
+            tortoise_and_hare_examples()[0],
+            ant_and_grasshopper_examples()[0],
+            fox_and_grapes_examples()[0]
+        ]
+        for story in stories:
+            for sc in story["scenes"]:
+                for cid in sc.get("characters_present", []):
+                    self.assertIn(cid, sc["poses"], f"{story['id']}: character {cid} trong characters_present thiếu poses")
+                    for p in sc["poses"][cid]:
+                        self.assertNotEqual(p.get("opacity"), 0, f"{story['id']}: pose của {cid} không được mang opacity: 0 kéo dài")
+
+    def test_emotes_outfits_no_auto_frame_compliance(self):
+        from bkt_web.remake_vector import (
+            EMOTE_SYMBOLS,
+            catalog,
+            turtle_rescue_examples,
+            coral_reef_examples,
+            moai_mystery_examples,
+            tortoise_and_hare_examples,
+            ant_and_grasshopper_examples,
+            fox_and_grapes_examples
+        )
+        cat = catalog()
+        stories = [
+            turtle_rescue_examples()[0],
+            coral_reef_examples()[0],
+            moai_mystery_examples()[0],
+            tortoise_and_hare_examples()[0],
+            ant_and_grasshopper_examples()[0],
+            fox_and_grapes_examples()[0]
+        ]
+        for story in stories:
+            for sc in story["scenes"]:
+                self.assertNotIn("camera", sc, f"{story['id']}: không được gọi auto_frame")
+                for a in sc.get("actions", []):
+                    if a.get("type") == "emote":
+                        emote_val = a.get("emote")
+                        self.assertIn(emote_val, EMOTE_SYMBOLS, f"{story['id']}: emote '{emote_val}' không nằm trong EMOTE_SYMBOLS")
+            for char in story["characters"]:
+                self.assertNotEqual(char["asset"], "chibi_farmer", f"{story['id']}: bối cảnh không dùng chibi_farmer")
+                outfit = char.get("outfit")
+                if outfit and outfit != "none":
+                    asset_group = cat["assets"][char["asset"]].get("group")
+                    self.assertEqual(asset_group, "chibi", f"Outfit '{outfit}' chỉ được mặc cho rig chibi, không phải {char['asset']}")
+
+    def test_no_rig_draws_at_y_less_than_minus_100(self):
+        from bkt_web.remake_vector import catalog, engine_sources
+        from playwright.sync_api import sync_playwright
+        cat = catalog()
+        engine_js = "\n;\n".join(src.read_text(encoding="utf-8") for src in engine_sources())
+        rigs = [
+            "sea_turtle", "jellyfish", "octopus", "whale", "seal", "coral", "seaweed", "anglerfish", "plastic_bag",
+            "sunken_ship", "atlantis_ruins", "excavation_grid",
+            "grasshopper", "tortoise", "city_mouse"
+        ]
+
+        with sync_playwright() as p:
+            browser = p.chromium.launch(args=["--disable-gpu", "--disable-gpu-rasterization", "--force-color-profile=srgb"])
+            page = browser.new_page()
+            page.set_content(f"""
+            <html><body>
+            <canvas id="stage" width="576" height="1024"></canvas>
+            <script>{engine_js}</script>
+            <script>
+              window.cat = {json.dumps(cat)};
+              window.checkMinY = function() {{
+                const canvas = document.getElementById('stage');
+                const ctx = canvas.getContext('2d');
+                const results = {{}};
+                for (const rig of {json.dumps(rigs)}) {{
+                  ctx.clearRect(0, 0, 576, 1024);
+                  ctx.save();
+                  ctx.translate(288, 512);
+                  const drawer = RemakeVector.kit.RIG_DRAWERS[rig];
+                  const s = {{ ...cat.pose_defaults, asset: rig, height: 100, spout: 1.0, lit: 1.0, fiddle: 1.0, bleached: 1.0, style: {{}} }};
+                  drawer(ctx, s, 1.0, cat);
+                  ctx.restore();
+                  const img = ctx.getImageData(0, 0, 576, 1024).data;
+                  let minY = 1024;
+                  for (let y = 0; y < 1024; y++) {{
+                    for (let x = 0; x < 576; x++) {{
+                      const a = img[(y * 576 + x) * 4 + 3];
+                      if (a > 10) {{
+                        if (y < minY) minY = y;
+                      }}
+                    }}
+                  }}
+                  results[rig] = minY - 512;
+                }}
+                return results;
+              }};
+            </script>
+            </body></html>
+            """)
+            res = page.evaluate("checkMinY()")
+            browser.close()
+            for rig, rel_y in res.items():
+                with self.subTest(rig=rig):
+                    self.assertGreaterEqual(rel_y, -100, f"{rig} vẽ vượt quá khung trên với y={rel_y} < -100")
+
+    def test_real_canvas_pixel_bounding_box_sizes(self):
+        from bkt_web.remake_vector import catalog, engine_sources
+        from playwright.sync_api import sync_playwright
+        cat = catalog()
+        engine_js = "\n;\n".join(src.read_text(encoding="utf-8") for src in engine_sources())
+        actors_to_test = [
+            # Handheld props >= 60 px
+            {"asset": "plastic_bag", "height": 100, "min_size": 60},
+            {"asset": "magnifier", "height": 70, "min_size": 60},
+            # Small animals >= 80 px
+            {"asset": "ant", "height": 130, "min_size": 80},
+            {"asset": "grasshopper", "height": 130, "min_size": 80},
+            {"asset": "city_mouse", "height": 120, "min_size": 80},
+            {"asset": "rabbit", "height": 130, "min_size": 80},
+            # Marine / medium animals >= 120 px
+            {"asset": "sea_turtle", "height": 140, "min_size": 120},
+            {"asset": "tortoise", "height": 140, "min_size": 120},
+            {"asset": "seal", "height": 140, "min_size": 120},
+            {"asset": "octopus", "height": 140, "min_size": 120},
+            {"asset": "jellyfish", "height": 150, "min_size": 120},
+            {"asset": "anglerfish", "height": 150, "min_size": 120},
+            # Whale >= 300 px
+            {"asset": "whale", "height": 320, "min_size": 300},
+            # Large monuments/ruins >= 200 px
+            {"asset": "moai_generic", "height": 220, "min_size": 200},
+            {"asset": "sunken_ship", "height": 220, "min_size": 200},
+            {"asset": "atlantis_ruins", "height": 260, "min_size": 200},
+        ]
+
+        with sync_playwright() as p:
+            browser = p.chromium.launch(args=["--disable-gpu", "--disable-gpu-rasterization", "--force-color-profile=srgb"])
+            page = browser.new_page()
+            page.set_content(f"""
+            <html><body>
+            <canvas id="stage" width="576" height="1024"></canvas>
+            <script>{engine_js}</script>
+            <script>
+              window.cat = {json.dumps(cat)};
+              window.measureActor = function(asset, height, variant) {{
+                const canvas = document.getElementById('stage');
+                const ctx = canvas.getContext('2d');
+                ctx.clearRect(0, 0, 576, 1024);
+                ctx.save();
+                ctx.translate(288, 512);
+                const k = height / 100;
+                ctx.scale(k, k);
+                const drawer = RemakeVector.kit.RIG_DRAWERS[asset];
+                if (!drawer) throw new Error('No drawer for ' + asset);
+                const s = {{ ...cat.pose_defaults, asset, height, variant, id: 'test', style: {{}} }};
+                drawer(ctx, s, 1.0, cat);
+                ctx.restore();
+                const img = ctx.getImageData(0, 0, 576, 1024).data;
+                let minX = 576, maxX = -1, minY = 1024, maxY = -1;
+                for (let y = 0; y < 1024; y++) {{
+                  for (let x = 0; x < 576; x++) {{
+                    const a = img[(y * 576 + x) * 4 + 3];
+                    if (a > 10) {{
+                      if (x < minX) minX = x;
+                      if (x > maxX) maxX = x;
+                      if (y < minY) minY = y;
+                      if (y > maxY) maxY = y;
+                    }}
+                  }}
+                }}
+                if (maxX < 0) return {{ w: 0, h: 0, maxDim: 0 }};
+                const w = maxX - minX + 1, h = maxY - minY + 1;
+                return {{ w, h, maxDim: Math.max(w, h) }};
+              }};
+            </script>
+            </body></html>
+            """)
+            for item in actors_to_test:
+                res = page.evaluate("args => measureActor(args[0], args[1], args[2])", [item["asset"], item["height"], item.get("variant")])
+                with self.subTest(asset=item["asset"], variant=item.get("variant")):
+                    self.assertGreaterEqual(
+                        res["maxDim"], item["min_size"],
+                        f"{item['asset']} (cao {item['height']}) có kích thước pixel thực tế {res['w']}x{res['h']} (max={res['maxDim']}px) < ngưỡng {item['min_size']}px"
+                    )
+            browser.close()
+
+

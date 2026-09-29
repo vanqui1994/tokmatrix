@@ -20023,5 +20023,1678 @@
         "expression": "happy"
       }
     ]
+  },
+  {
+    "id": "turtle_rescue",
+    "name": "51 · Đại dương xanh: Giải cứu rùa biển và thu gom rác nhựa",
+    "renderer": "native-vector-v1",
+    "fidelity": "technical-demo",
+    "note": "Mẫu kỹ thuật Phase U: Thợ lặn chibi gỡ túi nilon cứu rùa biển, rùa bơi tự do và rác được phân loại đúng cách.",
+    "duration": 12.0,
+    "characters": [
+      {
+        "id": "diver",
+        "asset": "chibi_teacher"
+      },
+      {
+        "id": "sea_turtle",
+        "asset": "sea_turtle"
+      },
+      {
+        "id": "plastic_bag",
+        "asset": "plastic_bag"
+      },
+      {
+        "id": "bin",
+        "asset": "bin_plastic"
+      }
+    ],
+    "scenes": [
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 0,
+        "end_time": 4.0,
+        "characters_present": [
+          "diver",
+          "sea_turtle",
+          "plastic_bag",
+          "bin"
+        ],
+        "poses": {
+          "diver": [
+            {
+              "time": 0,
+              "x": 420,
+              "y": 720,
+              "height": 220,
+              "outfit": "diver",
+              "swim": 1
+            },
+            {
+              "time": 4.0,
+              "x": 310,
+              "y": 720,
+              "height": 220,
+              "outfit": "diver",
+              "swim": 1
+            }
+          ],
+          "sea_turtle": [
+            {
+              "time": 0,
+              "x": 180,
+              "y": 700,
+              "height": 140,
+              "swim": 0.2
+            },
+            {
+              "time": 4.0,
+              "x": 180,
+              "y": 700,
+              "height": 140,
+              "swim": 0.2
+            }
+          ],
+          "plastic_bag": [
+            {
+              "time": 0,
+              "x": 185,
+              "y": 695,
+              "height": 100
+            },
+            {
+              "time": 4.0,
+              "x": 185,
+              "y": 695,
+              "height": 100
+            }
+          ],
+          "bin": [
+            {
+              "time": 0,
+              "x": 470,
+              "y": 810,
+              "height": 120
+            },
+            {
+              "time": 4.0,
+              "x": 470,
+              "y": 810,
+              "height": 120
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "emote",
+            "start": 0.8,
+            "end": 2.5,
+            "actor": "diver",
+            "emote": "exclamation"
+          }
+        ],
+        "background": {
+          "preset": "coral_reef",
+          "weather": "clear"
+        },
+        "index": 0
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 4.0,
+        "end_time": 8.0,
+        "characters_present": [
+          "diver",
+          "sea_turtle",
+          "plastic_bag",
+          "bin"
+        ],
+        "poses": {
+          "diver": [
+            {
+              "time": 4.0,
+              "x": 310,
+              "y": 720,
+              "height": 220,
+              "outfit": "diver",
+              "swim": 1
+            },
+            {
+              "time": 8.0,
+              "x": 410,
+              "y": 750,
+              "height": 220,
+              "outfit": "diver",
+              "swim": 1
+            }
+          ],
+          "sea_turtle": [
+            {
+              "time": 4.0,
+              "x": 180,
+              "y": 700,
+              "height": 140,
+              "swim": 0.5
+            },
+            {
+              "time": 8.0,
+              "x": 260,
+              "y": 660,
+              "height": 140,
+              "swim": 1.0
+            }
+          ],
+          "plastic_bag": [
+            {
+              "time": 4.0,
+              "x": 185,
+              "y": 695,
+              "height": 100
+            },
+            {
+              "time": 8.0,
+              "x": 410,
+              "y": 750,
+              "height": 100
+            }
+          ],
+          "bin": [
+            {
+              "time": 4.0,
+              "x": 470,
+              "y": 810,
+              "height": 120
+            },
+            {
+              "time": 8.0,
+              "x": 470,
+              "y": 810,
+              "height": 120
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "emote",
+            "start": 4.5,
+            "end": 6.5,
+            "actor": "sea_turtle",
+            "emote": "heart"
+          },
+          {
+            "type": "sort",
+            "start": 7.0,
+            "end": 8.0,
+            "target": "bin",
+            "actor": "plastic_bag"
+          }
+        ],
+        "background": {
+          "preset": "coral_reef",
+          "weather": "clear"
+        },
+        "index": 1
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 8.0,
+        "end_time": 12.0,
+        "characters_present": [
+          "diver",
+          "sea_turtle",
+          "bin"
+        ],
+        "poses": {
+          "diver": [
+            {
+              "time": 8.0,
+              "x": 410,
+              "y": 750,
+              "height": 220,
+              "outfit": "diver",
+              "expression": "happy"
+            },
+            {
+              "time": 12.0,
+              "x": 410,
+              "y": 750,
+              "height": 220,
+              "outfit": "diver",
+              "expression": "happy"
+            }
+          ],
+          "sea_turtle": [
+            {
+              "time": 8.0,
+              "x": 260,
+              "y": 660,
+              "height": 140,
+              "swim": 1.0
+            },
+            {
+              "time": 12.0,
+              "x": 440,
+              "y": 430,
+              "height": 140,
+              "swim": 1.0,
+              "rotation": -18
+            }
+          ],
+          "bin": [
+            {
+              "time": 8.0,
+              "x": 470,
+              "y": 810,
+              "height": 120
+            },
+            {
+              "time": 12.0,
+              "x": 470,
+              "y": 810,
+              "height": 120
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "emote",
+            "start": 9.0,
+            "end": 11.5,
+            "actor": "diver",
+            "emote": "heart"
+          }
+        ],
+        "background": {
+          "preset": "coral_reef",
+          "weather": "clear"
+        },
+        "index": 2
+      }
+    ],
+    "cues": [
+      {
+        "start": 0.5,
+        "end": 3.8,
+        "character_id": "diver",
+        "text": "Kìa, một chú rùa biển đang bị vướng túi nilon rác trôi dạt!",
+        "expression": "neutral"
+      },
+      {
+        "start": 4.5,
+        "end": 7.8,
+        "character_id": "diver",
+        "text": "Thợ lặn nhẹ nhàng gỡ bỏ túi nilon và bỏ gọn vào thùng rác chuyên dụng.",
+        "expression": "happy"
+      },
+      {
+        "start": 8.5,
+        "end": 11.5,
+        "character_id": "diver",
+        "text": "Rùa biển tung tăng bơi lượn tự do giữa đại dương trong lành!",
+        "expression": "happy"
+      }
+    ]
+  },
+  {
+    "id": "coral_reef",
+    "name": "52 · Đại dương bí ẩn: Rạn san hô rực rỡ và chu trình phục hồi tự nhiên",
+    "renderer": "native-vector-v1",
+    "fidelity": "technical-demo",
+    "note": "Mẫu kỹ thuật Phase U: Hiện tượng tẩy trắng san hô do nhiệt độ ấm lên và sự hồi sinh khi dòng nước mát trở lại.",
+    "duration": 12.0,
+    "characters": [
+      {
+        "id": "coral",
+        "asset": "coral"
+      },
+      {
+        "id": "turtle",
+        "asset": "sea_turtle"
+      },
+      {
+        "id": "fish",
+        "asset": "fish"
+      }
+    ],
+    "scenes": [
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 0,
+        "end_time": 4.0,
+        "characters_present": [
+          "coral",
+          "turtle",
+          "fish"
+        ],
+        "poses": {
+          "coral": [
+            {
+              "time": 0,
+              "x": 288,
+              "y": 810,
+              "height": 240,
+              "bleached": 0.0
+            },
+            {
+              "time": 4.0,
+              "x": 288,
+              "y": 810,
+              "height": 240,
+              "bleached": 0.0
+            }
+          ],
+          "turtle": [
+            {
+              "time": 0,
+              "x": 480,
+              "y": 680,
+              "height": 140,
+              "swim": 1
+            },
+            {
+              "time": 4.0,
+              "x": 320,
+              "y": 680,
+              "height": 140,
+              "swim": 1
+            }
+          ],
+          "fish": [
+            {
+              "time": 0,
+              "x": 100,
+              "y": 730,
+              "height": 70
+            },
+            {
+              "time": 4.0,
+              "x": 220,
+              "y": 730,
+              "height": 70
+            }
+          ]
+        },
+        "actions": [],
+        "background": {
+          "preset": "coral_reef",
+          "weather": "clear"
+        },
+        "index": 0
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 4.0,
+        "end_time": 8.0,
+        "characters_present": [
+          "coral",
+          "turtle",
+          "fish"
+        ],
+        "poses": {
+          "coral": [
+            {
+              "time": 4.0,
+              "x": 288,
+              "y": 810,
+              "height": 240,
+              "bleached": 0.0
+            },
+            {
+              "time": 8.0,
+              "x": 288,
+              "y": 810,
+              "height": 240,
+              "bleached": 0.8
+            }
+          ],
+          "turtle": [
+            {
+              "time": 4.0,
+              "x": 320,
+              "y": 680,
+              "height": 140,
+              "swim": 0.5
+            },
+            {
+              "time": 8.0,
+              "x": 200,
+              "y": 680,
+              "height": 140,
+              "swim": 0.5
+            }
+          ],
+          "fish": [
+            {
+              "time": 4.0,
+              "x": 220,
+              "y": 730,
+              "height": 70
+            },
+            {
+              "time": 8.0,
+              "x": 120,
+              "y": 730,
+              "height": 70
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "emote",
+            "start": 5.5,
+            "end": 7.5,
+            "actor": "turtle",
+            "emote": "sweat"
+          }
+        ],
+        "background": {
+          "preset": "coral_reef",
+          "weather": "hot"
+        },
+        "index": 1
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 8.0,
+        "end_time": 12.0,
+        "characters_present": [
+          "coral",
+          "turtle",
+          "fish"
+        ],
+        "poses": {
+          "coral": [
+            {
+              "time": 8.0,
+              "x": 288,
+              "y": 810,
+              "height": 240,
+              "bleached": 0.8
+            },
+            {
+              "time": 12.0,
+              "x": 288,
+              "y": 810,
+              "height": 240,
+              "bleached": 0.3
+            }
+          ],
+          "turtle": [
+            {
+              "time": 8.0,
+              "x": 200,
+              "y": 680,
+              "height": 140,
+              "swim": 1.0
+            },
+            {
+              "time": 12.0,
+              "x": 80,
+              "y": 680,
+              "height": 140,
+              "swim": 1.0
+            }
+          ],
+          "fish": [
+            {
+              "time": 8.0,
+              "x": 120,
+              "y": 730,
+              "height": 70
+            },
+            {
+              "time": 12.0,
+              "x": 260,
+              "y": 730,
+              "height": 70
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "emote",
+            "start": 9.5,
+            "end": 11.5,
+            "actor": "fish",
+            "emote": "music"
+          }
+        ],
+        "background": {
+          "preset": "coral_reef",
+          "weather": "clear"
+        },
+        "index": 2
+      }
+    ],
+    "cues": [
+      {
+        "start": 0.5,
+        "end": 3.8,
+        "character_id": "turtle",
+        "text": "Dưới làn nước xanh ngắt, rạn san hô khoe sắc rực rỡ đón đàn cá bơi lội.",
+        "expression": "happy"
+      },
+      {
+        "start": 4.5,
+        "end": 7.8,
+        "character_id": "turtle",
+        "text": "Khi nhiệt độ nước biển tăng cao, san hô tạm thời bị tẩy trắng nhợt nhạt.",
+        "expression": "worried"
+      },
+      {
+        "start": 8.5,
+        "end": 11.5,
+        "character_id": "turtle",
+        "text": "Dòng hải lưu mát lành ùa về giúp vi tảo quay lại, san hô dần hồi phục sức sống!",
+        "expression": "happy"
+      }
+    ]
+  },
+  {
+    "id": "moai_mystery",
+    "name": "53 · Bí ẩn lịch sử: Giả thuyết di chuyển tượng đá Moai khổng lồ",
+    "renderer": "native-vector-v1",
+    "fidelity": "technical-demo",
+    "note": "Mẫu kỹ thuật Phase U: Khảo sát thực nghiệm giả thuyết các nhà khoa học đang nghiên cứu về cách di chuyển tượng đá Moai.",
+    "duration": 12.0,
+    "characters": [
+      {
+        "id": "moai",
+        "asset": "moai_generic"
+      },
+      {
+        "id": "arch",
+        "asset": "chibi_teacher"
+      },
+      {
+        "id": "glass",
+        "asset": "magnifier",
+        "attach_to": {
+          "id": "arch",
+          "anchor": "hand_r"
+        }
+      },
+      {
+        "id": "helper1",
+        "asset": "chibi_girl"
+      },
+      {
+        "id": "helper2",
+        "asset": "chibi_boy"
+      }
+    ],
+    "scenes": [
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 0,
+        "end_time": 5.0,
+        "characters_present": [
+          "moai",
+          "arch",
+          "glass",
+          "helper1",
+          "helper2"
+        ],
+        "poses": {
+          "moai": [
+            {
+              "time": 0,
+              "x": 320,
+              "y": 810,
+              "height": 240
+            },
+            {
+              "time": 5.0,
+              "x": 320,
+              "y": 810,
+              "height": 240
+            }
+          ],
+          "arch": [
+            {
+              "time": 0,
+              "x": 40,
+              "y": 830,
+              "height": 230,
+              "outfit": "paleontologist"
+            },
+            {
+              "time": 1.6,
+              "x": 185,
+              "y": 830,
+              "height": 230,
+              "outfit": "paleontologist"
+            },
+            {
+              "time": 2.2,
+              "x": 185,
+              "y": 830,
+              "height": 230,
+              "outfit": "paleontologist",
+              "hand_r_x": 30,
+              "hand_r_y": -52
+            },
+            {
+              "time": 5.0,
+              "x": 185,
+              "y": 830,
+              "height": 230,
+              "outfit": "paleontologist",
+              "hand_r_x": 30,
+              "hand_r_y": -52
+            }
+          ],
+          "glass": [
+            {
+              "time": 0,
+              "height": 160,
+              "x": 4.9250900638896296,
+              "y": 13.531573739317082,
+              "rotation": -20
+            },
+            {
+              "time": 5.0,
+              "height": 160,
+              "x": 4.9250900638896296,
+              "y": 13.531573739317082,
+              "rotation": -20
+            }
+          ],
+          "helper1": [
+            {
+              "time": 0,
+              "x": 450,
+              "y": 830,
+              "height": 220,
+              "outfit": "scientist",
+              "flip": true
+            },
+            {
+              "time": 5.0,
+              "x": 450,
+              "y": 830,
+              "height": 220,
+              "outfit": "scientist",
+              "flip": true
+            }
+          ],
+          "helper2": [
+            {
+              "time": 0,
+              "x": 545,
+              "y": 830,
+              "height": 220,
+              "outfit": "scientist",
+              "flip": true
+            },
+            {
+              "time": 5.0,
+              "x": 545,
+              "y": 830,
+              "height": 220,
+              "outfit": "scientist",
+              "flip": true
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "emote",
+            "start": 2.4,
+            "end": 4.6,
+            "actor": "arch",
+            "emote": "idea"
+          }
+        ],
+        "background": {
+          "preset": "easter_island_generic",
+          "weather": "clear"
+        },
+        "index": 0
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 5.0,
+        "end_time": 12.0,
+        "characters_present": [
+          "moai",
+          "arch",
+          "helper1",
+          "helper2"
+        ],
+        "poses": {
+          "moai": [
+            {
+              "time": 5.0,
+              "x": 470,
+              "y": 810,
+              "height": 240
+            },
+            {
+              "time": 12.0,
+              "x": 470,
+              "y": 810,
+              "height": 240
+            }
+          ],
+          "arch": [
+            {
+              "time": 5.0,
+              "x": 345,
+              "y": 830,
+              "height": 230,
+              "outfit": "paleontologist"
+            },
+            {
+              "time": 12.0,
+              "x": 345,
+              "y": 830,
+              "height": 230,
+              "outfit": "paleontologist"
+            }
+          ],
+          "helper1": [
+            {
+              "time": 5.0,
+              "x": 235,
+              "y": 830,
+              "height": 220,
+              "outfit": "scientist"
+            },
+            {
+              "time": 12.0,
+              "x": 235,
+              "y": 830,
+              "height": 220,
+              "outfit": "scientist"
+            }
+          ],
+          "helper2": [
+            {
+              "time": 5.0,
+              "x": 125,
+              "y": 830,
+              "height": 220,
+              "outfit": "scientist"
+            },
+            {
+              "time": 12.0,
+              "x": 125,
+              "y": 830,
+              "height": 220,
+              "outfit": "scientist"
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "haul",
+            "start": 5.5,
+            "end": 11.0,
+            "target": "moai",
+            "actor": "arch",
+            "helpers": [
+              "helper1",
+              "helper2"
+            ],
+            "distance": 90,
+            "hold": true
+          },
+          {
+            "type": "emote",
+            "start": 10.5,
+            "end": 11.9,
+            "actor": "arch",
+            "emote": "heart"
+          }
+        ],
+        "background": {
+          "preset": "easter_island_generic",
+          "weather": "clear"
+        },
+        "index": 1
+      }
+    ],
+    "cues": [
+      {
+        "start": 0.5,
+        "end": 4.5,
+        "character_id": "arch",
+        "text": "Các nhà khoa học đưa ra giả thuyết rằng tượng Moai khổng lồ có thể được di chuyển bằng cách dùng dây kéo nghiêng lắc lư.",
+        "expression": "neutral"
+      },
+      {
+        "start": 5.5,
+        "end": 11.5,
+        "character_id": "arch",
+        "text": "Hiện nay các nhà khảo cổ học vẫn đang nghiên cứu thêm các dấu tích lòng đường để kiểm chứng giả thuyết này.",
+        "expression": "happy"
+      }
+    ]
+  },
+  {
+    "id": "tortoise_and_hare",
+    "name": "54 · Ngụ ngôn Aesop: Cuộc thi chạy giữa Rùa và Thỏ",
+    "renderer": "native-vector-v1",
+    "fidelity": "technical-demo",
+    "note": "Mẫu kỹ thuật Phase U: Thỏ chạy nhanh rồi ngủ quên dưới gốc cây, rùa bước chậm đều và cán đích trước.",
+    "duration": 12.0,
+    "characters": [
+      {
+        "id": "hare",
+        "asset": "rabbit"
+      },
+      {
+        "id": "tortoise",
+        "asset": "tortoise"
+      },
+      {
+        "id": "tree",
+        "asset": "persimmon_tree"
+      }
+    ],
+    "scenes": [
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 0,
+        "end_time": 4.0,
+        "characters_present": [
+          "hare",
+          "tortoise",
+          "tree"
+        ],
+        "poses": {
+          "hare": [
+            {
+              "time": 0,
+              "x": 60,
+              "y": 810,
+              "height": 130,
+              "walk": 1,
+              "z": 2
+            },
+            {
+              "time": 4.0,
+              "x": 420,
+              "y": 810,
+              "height": 130,
+              "walk": 1,
+              "z": 2
+            }
+          ],
+          "tortoise": [
+            {
+              "time": 0,
+              "x": 40,
+              "y": 810,
+              "height": 140,
+              "walk": 1,
+              "z": 3
+            },
+            {
+              "time": 4.0,
+              "x": 190,
+              "y": 810,
+              "height": 140,
+              "walk": 1,
+              "z": 3
+            }
+          ],
+          "tree": [
+            {
+              "time": 0,
+              "x": 340,
+              "y": 810,
+              "height": 280,
+              "z": 0
+            },
+            {
+              "time": 4.0,
+              "x": 340,
+              "y": 810,
+              "height": 280,
+              "z": 0
+            }
+          ]
+        },
+        "actions": [],
+        "background": {
+          "preset": "alpine_meadow",
+          "weather": "clear"
+        },
+        "index": 0
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 4.0,
+        "end_time": 8.0,
+        "characters_present": [
+          "hare",
+          "tortoise",
+          "tree"
+        ],
+        "poses": {
+          "hare": [
+            {
+              "time": 4.0,
+              "x": 420,
+              "y": 810,
+              "height": 130,
+              "walk": 0,
+              "z": 2
+            },
+            {
+              "time": 8.0,
+              "x": 420,
+              "y": 810,
+              "height": 130,
+              "walk": 0,
+              "z": 2
+            }
+          ],
+          "tortoise": [
+            {
+              "time": 4.0,
+              "x": 190,
+              "y": 810,
+              "height": 140,
+              "walk": 1,
+              "z": 3
+            },
+            {
+              "time": 8.0,
+              "x": 340,
+              "y": 810,
+              "height": 140,
+              "walk": 1,
+              "z": 3
+            }
+          ],
+          "tree": [
+            {
+              "time": 4.0,
+              "x": 340,
+              "y": 810,
+              "height": 280,
+              "z": 0
+            },
+            {
+              "time": 8.0,
+              "x": 340,
+              "y": 810,
+              "height": 280,
+              "z": 0
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "emote",
+            "start": 4.5,
+            "end": 7.5,
+            "actor": "hare",
+            "emote": "zzz"
+          }
+        ],
+        "background": {
+          "preset": "alpine_meadow",
+          "weather": "clear"
+        },
+        "index": 1
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 8.0,
+        "end_time": 12.0,
+        "characters_present": [
+          "hare",
+          "tortoise",
+          "tree"
+        ],
+        "poses": {
+          "hare": [
+            {
+              "time": 8.0,
+              "x": 420,
+              "y": 810,
+              "height": 130,
+              "walk": 0,
+              "z": 2
+            },
+            {
+              "time": 9.6,
+              "x": 420,
+              "y": 810,
+              "height": 130,
+              "walk": 0,
+              "z": 2
+            },
+            {
+              "time": 10.4,
+              "x": 290,
+              "y": 810,
+              "height": 130,
+              "walk": 1,
+              "z": 2
+            },
+            {
+              "time": 12.0,
+              "x": 290,
+              "y": 810,
+              "height": 130,
+              "walk": 0,
+              "z": 2
+            }
+          ],
+          "tortoise": [
+            {
+              "time": 8.0,
+              "x": 340,
+              "y": 810,
+              "height": 140,
+              "walk": 1,
+              "z": 3
+            },
+            {
+              "time": 10.2,
+              "x": 500,
+              "y": 810,
+              "height": 130,
+              "walk": 1,
+              "z": 3
+            },
+            {
+              "time": 12.0,
+              "x": 500,
+              "y": 810,
+              "height": 130,
+              "walk": 0,
+              "z": 3
+            }
+          ],
+          "tree": [
+            {
+              "time": 8.0,
+              "x": 340,
+              "y": 810,
+              "height": 280,
+              "z": 0
+            },
+            {
+              "time": 12.0,
+              "x": 340,
+              "y": 810,
+              "height": 280,
+              "z": 0
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "emote",
+            "start": 9.8,
+            "end": 11.8,
+            "actor": "tortoise",
+            "emote": "heart"
+          },
+          {
+            "type": "emote",
+            "start": 10.0,
+            "end": 11.8,
+            "actor": "hare",
+            "emote": "heart"
+          }
+        ],
+        "background": {
+          "preset": "alpine_meadow",
+          "weather": "clear"
+        },
+        "index": 2
+      }
+    ],
+    "cues": [
+      {
+        "start": 0.5,
+        "end": 3.8,
+        "character_id": "hare",
+        "text": "Thỏ phóng vun vút dẫn đầu rồi tự tin dừng lại chợp mắt dưới gốc cây râm mát.",
+        "expression": "happy"
+      },
+      {
+        "start": 4.5,
+        "end": 7.8,
+        "character_id": "tortoise",
+        "text": "Rùa ta không nản lòng, cứ từng bước chậm rãi kiên trì tiến thẳng về phía trước.",
+        "expression": "neutral"
+      },
+      {
+        "start": 8.5,
+        "end": 11.5,
+        "character_id": "tortoise",
+        "text": "Rùa đã cán đích trước trong sự ngỡ ngàng của Thỏ, hai bạn vui vẻ bắt tay chúc mừng nhau!",
+        "expression": "happy"
+      }
+    ]
+  },
+  {
+    "id": "ant_and_grasshopper",
+    "name": "55 · Ngụ ngôn Aesop: Kiến chăm chỉ và Châu chấu yêu âm nhạc",
+    "renderer": "native-vector-v1",
+    "fidelity": "technical-demo",
+    "note": "Mẫu kỹ thuật Phase U: Kiến cần mẫn tích trữ thức ăn mùa hè, mùa đông ấm áp mở cửa chia sẻ cùng bạn châu chấu.",
+    "duration": 12.0,
+    "characters": [
+      {
+        "id": "ant",
+        "asset": "ant"
+      },
+      {
+        "id": "food",
+        "asset": "bread_loaf",
+        "attach_to": {
+          "id": "ant",
+          "anchor": "surface"
+        }
+      },
+      {
+        "id": "grasshopper",
+        "asset": "grasshopper"
+      },
+      {
+        "id": "shelter",
+        "asset": "mushroom"
+      }
+    ],
+    "scenes": [
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 0,
+        "end_time": 5.0,
+        "characters_present": [
+          "ant",
+          "food",
+          "grasshopper"
+        ],
+        "poses": {
+          "ant": [
+            {
+              "time": 0,
+              "x": 60,
+              "y": 830,
+              "height": 130
+            },
+            {
+              "time": 5.0,
+              "x": 260,
+              "y": 830,
+              "height": 130
+            }
+          ],
+          "food": [
+            {
+              "time": 0,
+              "height": 110,
+              "z": 1,
+              "x": -0.0,
+              "y": -0.0,
+              "rotation": 0
+            },
+            {
+              "time": 5.0,
+              "height": 110,
+              "z": 1,
+              "x": -0.0,
+              "y": -0.0,
+              "rotation": 0
+            }
+          ],
+          "grasshopper": [
+            {
+              "time": 0,
+              "x": 430,
+              "y": 830,
+              "height": 150,
+              "fiddle": 1.0
+            },
+            {
+              "time": 5.0,
+              "x": 430,
+              "y": 830,
+              "height": 150,
+              "fiddle": 1.0
+            }
+          ]
+        },
+        "actions": [],
+        "background": {
+          "preset": "alpine_meadow",
+          "weather": "clear",
+          "season": "summer"
+        },
+        "index": 0
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 5.0,
+        "end_time": 9.0,
+        "characters_present": [
+          "shelter",
+          "ant",
+          "grasshopper"
+        ],
+        "poses": {
+          "shelter": [
+            {
+              "time": 5.0,
+              "x": 440,
+              "y": 830,
+              "height": 260,
+              "growth": 1.0
+            },
+            {
+              "time": 9.0,
+              "x": 440,
+              "y": 830,
+              "height": 260,
+              "growth": 1.0
+            }
+          ],
+          "ant": [
+            {
+              "time": 5.0,
+              "x": 330,
+              "y": 840,
+              "height": 130,
+              "z": 2
+            },
+            {
+              "time": 9.0,
+              "x": 330,
+              "y": 840,
+              "height": 130,
+              "z": 2
+            }
+          ],
+          "grasshopper": [
+            {
+              "time": 5.0,
+              "x": 20,
+              "y": 830,
+              "height": 150,
+              "fiddle": 0,
+              "shiver": 0.8
+            },
+            {
+              "time": 9.0,
+              "x": 200,
+              "y": 830,
+              "height": 150,
+              "fiddle": 0,
+              "shiver": 0.8
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "emote",
+            "start": 6.0,
+            "end": 8.5,
+            "actor": "grasshopper",
+            "emote": "sweat"
+          }
+        ],
+        "background": {
+          "preset": "alpine_meadow",
+          "weather": "snow",
+          "season": "winter"
+        },
+        "index": 1
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 9.0,
+        "end_time": 12.0,
+        "characters_present": [
+          "shelter",
+          "ant",
+          "grasshopper"
+        ],
+        "poses": {
+          "shelter": [
+            {
+              "time": 9.0,
+              "x": 440,
+              "y": 830,
+              "height": 260,
+              "growth": 1.0
+            },
+            {
+              "time": 12.0,
+              "x": 440,
+              "y": 830,
+              "height": 260,
+              "growth": 1.0
+            }
+          ],
+          "ant": [
+            {
+              "time": 9.0,
+              "x": 330,
+              "y": 840,
+              "height": 130,
+              "z": 2
+            },
+            {
+              "time": 12.0,
+              "x": 330,
+              "y": 840,
+              "height": 130,
+              "z": 2
+            }
+          ],
+          "grasshopper": [
+            {
+              "time": 9.0,
+              "x": 200,
+              "y": 830,
+              "height": 150,
+              "fiddle": 0,
+              "shiver": 0.8
+            },
+            {
+              "time": 10.5,
+              "x": 250,
+              "y": 840,
+              "height": 150,
+              "fiddle": 0,
+              "shiver": 0.0
+            },
+            {
+              "time": 12.0,
+              "x": 250,
+              "y": 840,
+              "height": 150,
+              "fiddle": 1.0,
+              "shiver": 0.0
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "emote",
+            "start": 10.0,
+            "end": 11.8,
+            "actor": "grasshopper",
+            "emote": "music"
+          },
+          {
+            "type": "emote",
+            "start": 9.4,
+            "end": 11.8,
+            "actor": "ant",
+            "emote": "heart"
+          }
+        ],
+        "background": {
+          "preset": "alpine_meadow",
+          "weather": "snow",
+          "season": "winter"
+        },
+        "index": 2
+      }
+    ],
+    "cues": [
+      {
+        "start": 0.5,
+        "end": 4.5,
+        "character_id": "ant",
+        "text": "Suốt mùa hè chan hòa nắng ấm, Kiến chăm chỉ khuân thức ăn dự trữ trong khi Châu chấu say mê kéo vĩ cầm.",
+        "expression": "happy"
+      },
+      {
+        "start": 5.5,
+        "end": 8.5,
+        "character_id": "grasshopper",
+        "text": "Mùa đông lạnh giá ùa về, Châu chấu run rẩy tìm đến căn nhà ấm cúng của Kiến.",
+        "expression": "worried"
+      },
+      {
+        "start": 9.2,
+        "end": 11.8,
+        "character_id": "ant",
+        "text": "Kiến niềm nở mời bạn vào tổ chia sẻ món bánh nóng hổi, cùng hòa khúc nhạc vui rộn rã!",
+        "expression": "happy"
+      }
+    ]
+  },
+  {
+    "id": "fox_and_grapes",
+    "name": "56 · Ngụ ngôn Aesop: Con cáo và chùm nho chín mọng",
+    "renderer": "native-vector-v1",
+    "fidelity": "technical-demo",
+    "note": "Mẫu kỹ thuật Phase U: Chú cáo nhảy với những chùm nho trên giàn cao không tới, đành tặc lưỡi bỏ đi.",
+    "duration": 10.0,
+    "characters": [
+      {
+        "id": "fox",
+        "asset": "fox"
+      },
+      {
+        "id": "vine",
+        "asset": "grape_vine"
+      }
+    ],
+    "scenes": [
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 0,
+        "end_time": 4.0,
+        "characters_present": [
+          "vine",
+          "fox"
+        ],
+        "poses": {
+          "vine": [
+            {
+              "time": 0,
+              "x": 360,
+              "y": 810,
+              "height": 280
+            },
+            {
+              "time": 4.0,
+              "x": 360,
+              "y": 810,
+              "height": 280
+            }
+          ],
+          "fox": [
+            {
+              "time": 0,
+              "x": 100,
+              "y": 810,
+              "height": 150
+            },
+            {
+              "time": 4.0,
+              "x": 260,
+              "y": 810,
+              "height": 150
+            }
+          ]
+        },
+        "actions": [],
+        "background": {
+          "preset": "garden",
+          "weather": "clear"
+        },
+        "index": 0
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 4.0,
+        "end_time": 7.0,
+        "characters_present": [
+          "vine",
+          "fox"
+        ],
+        "poses": {
+          "vine": [
+            {
+              "time": 4.0,
+              "x": 360,
+              "y": 810,
+              "height": 280
+            },
+            {
+              "time": 7.0,
+              "x": 360,
+              "y": 810,
+              "height": 280
+            }
+          ],
+          "fox": [
+            {
+              "time": 4.0,
+              "x": 260,
+              "y": 810,
+              "height": 150,
+              "jump": 0
+            },
+            {
+              "time": 5.0,
+              "x": 260,
+              "y": 740,
+              "height": 150,
+              "jump": 1
+            },
+            {
+              "time": 6.0,
+              "x": 260,
+              "y": 810,
+              "height": 150,
+              "jump": 0
+            },
+            {
+              "time": 7.0,
+              "x": 260,
+              "y": 740,
+              "height": 150,
+              "jump": 1
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "hop",
+            "start": 4.0,
+            "end": 7.0,
+            "actor": "fox"
+          }
+        ],
+        "background": {
+          "preset": "garden",
+          "weather": "clear"
+        },
+        "index": 1
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 7.0,
+        "end_time": 10.0,
+        "characters_present": [
+          "vine",
+          "fox"
+        ],
+        "poses": {
+          "vine": [
+            {
+              "time": 7.0,
+              "x": 360,
+              "y": 810,
+              "height": 280
+            },
+            {
+              "time": 10.0,
+              "x": 360,
+              "y": 810,
+              "height": 280
+            }
+          ],
+          "fox": [
+            {
+              "time": 7.0,
+              "x": 260,
+              "y": 810,
+              "height": 150,
+              "flip": true,
+              "jump": 0
+            },
+            {
+              "time": 10.0,
+              "x": 80,
+              "y": 810,
+              "height": 150,
+              "flip": true,
+              "jump": 0
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "emote",
+            "start": 7.5,
+            "end": 9.5,
+            "actor": "fox",
+            "emote": "sweat"
+          }
+        ],
+        "background": {
+          "preset": "garden",
+          "weather": "clear"
+        },
+        "index": 2
+      }
+    ],
+    "cues": [
+      {
+        "start": 0.5,
+        "end": 3.5,
+        "character_id": "fox",
+        "text": "Cáo ta dạo bước trong vườn thì bắt gặp giàn nho chín mọng lủng lẳng trên cao.",
+        "expression": "happy"
+      },
+      {
+        "start": 4.2,
+        "end": 6.8,
+        "character_id": "fox",
+        "text": "Cáo lấy đà nhảy vút lên nhiều lần nhưng chùm nho vẫn nằm ngoài tầm với!",
+        "expression": "neutral"
+      },
+      {
+        "start": 7.5,
+        "end": 9.8,
+        "character_id": "fox",
+        "text": "Cáo đành quay bước bỏ đi và tự nhủ rằng chắc nho vẫn còn xanh lắm!",
+        "expression": "neutral"
+      }
+    ]
   }
 ]

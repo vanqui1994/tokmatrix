@@ -3982,6 +3982,111 @@
       "ba790defb5669ac7",
       "ba790defb5669ac7",
       "ba790defb5669ac7"
+    ],
+    "sea_turtle": [
+      "155bf1efcb6a3e4c",
+      "155bf1efcb6a3e4c",
+      "155bf1efcb6a3e4c",
+      "155bf1efcb6a3e4c",
+      "155bf1efcb6a3e4c"
+    ],
+    "jellyfish": [
+      "722cc1ef90b899d9",
+      "731c0aef97dbb800",
+      "f53694ef25cb337a",
+      "3ad81fefd434e936",
+      "6dadd4efee9f570f"
+    ],
+    "octopus": [
+      "150068ef9b960fc0",
+      "f214fcefc05dbe6c",
+      "eb5f2cef9ce01076",
+      "ef4d18efbcf87fd5",
+      "2c55e1ef17a4604a"
+    ],
+    "whale": [
+      "904966ef61f85aef",
+      "904966ef61f85aef",
+      "904966ef61f85aef",
+      "904966ef61f85aef",
+      "904966ef61f85aef"
+    ],
+    "seal": [
+      "0dad7aefd03d613a",
+      "045eedef91030a1d",
+      "ae7431ef6ee6a0a3",
+      "3c81d4efaad0793d",
+      "d57f13ef372fc602"
+    ],
+    "coral": [
+      "13b450efd88d0b14",
+      "13b450efd88d0b14",
+      "13b450efd88d0b14",
+      "13b450efd88d0b14",
+      "13b450efd88d0b14"
+    ],
+    "seaweed": [
+      "230513ef5355a13c",
+      "575427efc2700871",
+      "89d27aefe23d1cc2",
+      "e5fc62efd5112bf5",
+      "14272cef22a96a34"
+    ],
+    "anglerfish": [
+      "c2c285ef30b50dbe",
+      "c2c285ef30b50dbe",
+      "c2c285ef30b50dbe",
+      "c2c285ef30b50dbe",
+      "c2c285ef30b50dbe"
+    ],
+    "plastic_bag": [
+      "a29447ef0e5ce604",
+      "8c1248eff627b740",
+      "78e7caefad753706",
+      "746015efa3ac5035",
+      "32cfcaef884d397d"
+    ],
+    "sunken_ship": [
+      "abd43aef8a5351a7",
+      "5d41a2ef10a744d1",
+      "a33adfef0ad4302c",
+      "08d478ef44ae1300",
+      "dd4e37efc063db01"
+    ],
+    "atlantis_ruins": [
+      "877d54efaabe63f9",
+      "877d54efaabe63f9",
+      "877d54efaabe63f9",
+      "877d54efaabe63f9",
+      "877d54efaabe63f9"
+    ],
+    "excavation_grid": [
+      "de4091ef311715ab",
+      "de4091ef311715ab",
+      "de4091ef311715ab",
+      "de4091ef311715ab",
+      "de4091ef311715ab"
+    ],
+    "grasshopper": [
+      "8309dcef081a0643",
+      "8309dcef081a0643",
+      "8309dcef081a0643",
+      "8309dcef081a0643",
+      "8309dcef081a0643"
+    ],
+    "tortoise": [
+      "57f97bef247c6b9f",
+      "57f97bef247c6b9f",
+      "57f97bef247c6b9f",
+      "57f97bef247c6b9f",
+      "57f97bef247c6b9f"
+    ],
+    "city_mouse": [
+      "95f1d1ef83ea050a",
+      "95f1d1ef83ea050a",
+      "95f1d1ef83ea050a",
+      "95f1d1ef83ea050a",
+      "1de5f4ef758d9bf2"
     ]
   },
   "backgrounds": {
@@ -6772,6 +6877,210 @@
         "bc78eeef65ce18aa",
         "d8d986efdc0f8abf"
       ]
+    },
+    "coral_reef": {
+      "day": [
+        "747c4def57019bfd",
+        "f3be8aef5c33e0df"
+      ],
+      "night": [
+        "72dd45efe7731fd0",
+        "a9b8feefae789c47"
+      ],
+      "rain": [
+        "87a5d6ef30e100a9",
+        "a5000eefd475bb1d"
+      ],
+      "snow": [
+        "110c2aef44e22ac1",
+        "459d1befeb5cff68"
+      ],
+      "wind": [
+        "e0fdf2efd490e8cd",
+        "2419d9ef55320f87"
+      ],
+      "fog": [
+        "41cab4ef59ea999d",
+        "71c490ef5959ee8a"
+      ],
+      "storm": [
+        "0f618fef3a2b94f1",
+        "507e15ef6a45b7eb"
+      ],
+      "hot": [
+        "844081ef0bfd5043",
+        "fa614aef4693cb86"
+      ]
+    },
+    "beach_cleanup": {
+      "day": [
+        "c6218bef377a7d21",
+        "aa498cef2b9b9073"
+      ],
+      "night": [
+        "266ae9efde9b90e3",
+        "5edde1ef15094a7d"
+      ],
+      "rain": [
+        "76b9e9ef74056b86",
+        "d144feefee618e99"
+      ],
+      "snow": [
+        "ccc98eef57a0ef7c",
+        "ad7444ef5c96bd74"
+      ],
+      "wind": [
+        "2dc0ecefb76f727a",
+        "c8bdf7ef93761ef4"
+      ],
+      "fog": [
+        "2e8550efb079477c",
+        "10cfa1ef3c787dc2"
+      ],
+      "storm": [
+        "eef67aef091d4878",
+        "5aab5def788f5bba"
+      ],
+      "hot": [
+        "d361e7ef54a75023",
+        "8a4aa2ef96b5b5e9"
+      ]
+    },
+    "deep_sea": {
+      "day": [
+        "b91a6def8404ee5b",
+        "f10de8ef4f832b04"
+      ],
+      "night": [
+        "b91a6def8404ee5b",
+        "f10de8ef4f832b04"
+      ],
+      "rain": [
+        "e9da81ef945c3bfd",
+        "9ac8c2ef928e962f"
+      ],
+      "snow": [
+        "2bfe2beffa6960a6",
+        "5b2624ef21d4a3b7"
+      ],
+      "wind": [
+        "2f9308ef1fb17f0a",
+        "874068eff0740910"
+      ],
+      "fog": [
+        "8a84ecef482eab0b",
+        "f93bcbef9664ce6b"
+      ],
+      "storm": [
+        "783d4eeffffeb81c",
+        "add0c8efc4ce6ee2"
+      ],
+      "hot": [
+        "673660ef11c28673",
+        "fb237eef2d38cd09"
+      ]
+    },
+    "easter_island_generic": {
+      "day": [
+        "59cc41efaf88f8e8",
+        "1520cbef875680d1"
+      ],
+      "night": [
+        "5b6094eff6e28bd1",
+        "a5d148efcc53aa9b"
+      ],
+      "rain": [
+        "e567c9efbe7f2b0f",
+        "b544a7efdcc179c0"
+      ],
+      "snow": [
+        "e86000efe4ed3597",
+        "e29e71eff6336587"
+      ],
+      "wind": [
+        "74e2f0efe594ca95",
+        "c83007efdd66db32"
+      ],
+      "fog": [
+        "692179ef0ef06bcf",
+        "1d5bd6ef028d0b10"
+      ],
+      "storm": [
+        "92324bef4c024d8e",
+        "f914a4ef5a05cdb6"
+      ],
+      "hot": [
+        "e5a6e2ef4961dd70",
+        "fea4feef2dbea918"
+      ]
+    },
+    "stone_circle_field": {
+      "day": [
+        "c4ea7cefd249a951",
+        "c4ea7cefd249a951"
+      ],
+      "night": [
+        "64219aef892abf31",
+        "64219aef892abf31"
+      ],
+      "rain": [
+        "89e8e9efbe8dc201",
+        "87ed0feff04b9a25"
+      ],
+      "snow": [
+        "72b98aefa8e2ec8b",
+        "c70e3fefa4d433cf"
+      ],
+      "wind": [
+        "92723aef30146878",
+        "96d1adef54b5d177"
+      ],
+      "fog": [
+        "6845f3ef7ad96ec6",
+        "01f33bef1baf4e9a"
+      ],
+      "storm": [
+        "56cc86ef38e811aa",
+        "2c3192ef0da9af7b"
+      ],
+      "hot": [
+        "08c7a4efa12fbb1a",
+        "24025cefff8bb69a"
+      ]
+    },
+    "ruins_underwater": {
+      "day": [
+        "ff64fcef33f5407f",
+        "ff64fcef33f5407f"
+      ],
+      "night": [
+        "3bbf60ef5f8855d5",
+        "3bbf60ef5f8855d5"
+      ],
+      "rain": [
+        "026015efb2f3ba0e",
+        "95f52aef6a6723ca"
+      ],
+      "snow": [
+        "94b61def70dba4bc",
+        "b7dbdeef4e8ebe1e"
+      ],
+      "wind": [
+        "ca30acefa0a6bf00",
+        "c429e2efe18a65be"
+      ],
+      "fog": [
+        "406804ef0bdf22f5",
+        "17d35cefb66e03ea"
+      ],
+      "storm": [
+        "e77b6eef9ab6e74a",
+        "c99199ef71530f2c"
+      ],
+      "hot": [
+        "f9ea76ef983d0372",
+        "c71e19efe9912103"
+      ]
     }
   },
   "stories": {
@@ -7285,6 +7594,48 @@
       "aac864ef67b7a46c",
       "395e84ef6cb40390",
       "32d61aef5420f8ca"
+    ],
+    "turtle_rescue": [
+      "abbdecefd9871552",
+      "af9ef9ef9b3517c0",
+      "c0aec6ef7a0395a2",
+      "0b30e7efde47a0f6",
+      "7453d9ef39cad3ed"
+    ],
+    "coral_reef": [
+      "a84f94efb67c684c",
+      "4cbbb7efd745172f",
+      "c09c40ef4131dc0b",
+      "aee2d3ef137ca0a7",
+      "66b6d2ef97d2e54d"
+    ],
+    "moai_mystery": [
+      "018db7ef554dbc1b",
+      "cd219cef68a14f5d",
+      "2030ffef1671deea",
+      "e48e55ef8bc36e91",
+      "aaa8c7ef69935f3c"
+    ],
+    "tortoise_and_hare": [
+      "9be034efaa142db5",
+      "d2e082ef7d7c9536",
+      "6f9730efb959df3a",
+      "993780ef776a5d40",
+      "68d2d6efad38bcb2"
+    ],
+    "ant_and_grasshopper": [
+      "a04b74efbac157a9",
+      "54bb98ef0b2d0865",
+      "5ed28cef9604c4f7",
+      "0c4ce6ef6e6b0ebf",
+      "d376b3efd722ff24"
+    ],
+    "fox_and_grapes": [
+      "d68b6eef415c7a75",
+      "ca52cbefc10281d2",
+      "a9995fef838bf9ff",
+      "f600fdefea95a6a1",
+      "f14ae3ef20fdde86"
     ]
   }
 }

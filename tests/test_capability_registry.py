@@ -591,6 +591,11 @@ class CapabilityRegistryTest(unittest.TestCase):
             "cloud": {"wet"}, "raindrop_chibi": {"wet"}, "rainbow": {"wet"},
             "volcano": {"wet"}, "earth_cutaway": {"wet"}, "fossil": {"wet"},
             "lever": {"wet"}, "pulley": {"wet"}, "ramp": {"wet"}, "wheel_axle": {"wet"},
+            # Phase U Ocean, Mysteries & Fables Rigs
+            "sea_turtle": {"wet"}, "jellyfish": {"wet"}, "octopus": {"wet"}, "whale": {"wet"},
+            "seal": {"wet"}, "coral": {"wet"}, "seaweed": {"wet"}, "anglerfish": {"wet"}, "plastic_bag": {"wet"},
+            "sunken_ship": {"wet"}, "atlantis_ruins": {"wet"}, "excavation_grid": {"wet"},
+            "grasshopper": {"wet"}, "tortoise": {"wet"}, "city_mouse": {"wet"},
         }
         self.assertEqual(set(document["assets"]), set(expected))
         for asset_id, states in expected.items():
