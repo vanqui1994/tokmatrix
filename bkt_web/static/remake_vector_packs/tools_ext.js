@@ -192,7 +192,7 @@
   // -------------------------------------------------------------
   // 2. 16 ACTION HOOKS DÙNG CHUNG CỦA GIAI ĐOẠN J
   // -------------------------------------------------------------
-  const OPEN_VEHICLES = new Set(['bicycle', 'motorcar_1886', 'horse_cart', 'covered_wagon', 'tractor', 'hot_air_balloon', 'sailing_ship', 'longship', 'turtle_ship', 'camel', 'sledge']);
+  const OPEN_VEHICLES = new Set(['bicycle', 'motorcar_1886', 'horse_cart', 'covered_wagon', 'tractor', 'hot_air_balloon', 'sailing_ship', 'longship', 'turtle_ship', 'camel', 'sledge', 'draisine_1817', 'biplane_1903']);
   const ACTION_HOOKS = {
     // 1. DRIVE: Xe chạy, bánh lăn theo s.vx
     drive(a, states, t, p, u, amount, cat, active) {

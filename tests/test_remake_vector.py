@@ -2921,3 +2921,189 @@ console.log(JSON.stringify([Math.hypot(g.x-h.x,g.y-h.y),d1.x-d0.x,d1.y]));""", {
         self.assertLess(out[0], 3)
         self.assertGreater(out[1], 150)
         self.assertAlmostEqual(out[2], 812, delta=1)
+
+
+class PhaseOTest(unittest.TestCase):
+    """Plan §24 & Giai đoạn O: Lịch sử phát minh và đời sống xưa (inventions) - rigs, backgrounds, contacts, stories."""
+    _node = PackContractTest._node
+
+    def test_every_inventions_pack_rig_draws_and_is_in_catalog(self):
+        from bkt_web.remake_vector import catalog
+        cat = catalog()
+        inventions_rigs = [
+            "draisine_1817", "phonograph", "early_telephone", "movable_type_tray",
+            "water_clock", "rain_gauge", "eyeglasses_early", "toothbrush_early",
+            "paper_sheet_stack", "coin_stack", "workbench_clutter", "smartphone", "led_bulb"
+        ]
+        for rig in inventions_rigs:
+            with self.subTest(rig=rig):
+                self.assertIn(rig, cat["assets"])
+                self.assertEqual(cat["assets"][rig].get("pack"), "inventions")
+                topics = cat["assets"][rig].get("topics", [])
+                self.assertGreaterEqual(len(topics), 2, f"{rig} cần >= 2 topics")
+                anchors = cat["assets"][rig].get("anchors", {})
+                self.assertIsInstance(anchors, dict)
+                self.assertGreater(len(anchors), 0)
+
+        # Kiểm tra hình nền mới
+        for bg in ("workshop_1900", "old_town_1900"):
+            self.assertIn(bg, cat["backgrounds"])
+            self.assertIn(bg, cat["background_specs"])
+            self.assertEqual(cat["background_specs"][bg].get("ground_y"), 810)
+
+        # Thử vẽ mọi rig phát minh bằng mock context, không được throw
+        out = self._node(r"""
+globalThis.Path2D=class{constructor(){}addPath(){}};
+const {cat, rigs}=JSON.parse(fs.readFileSync(0,'utf8'));
+const ctx=new Proxy({},{get:(o,k)=>k in o?o[k]:(k==='createLinearGradient'||k==='createRadialGradient')?()=>({addColorStop(){}}):()=>{},set:(o,k,v)=>(o[k]=v,true)});
+const errors=[];
+for(const id of rigs){
+  try {
+    V.kit.RIG_DRAWERS[id](ctx, {...cat.pose_defaults, asset: id, style: {}, id, lit: 0.5, walk: 1, stride: 0.5, playing: 0.5, growth: 0.5}, 1, cat);
+  } catch(e) {
+    errors.push(id + ': ' + e.message);
+  }
+}
+console.log(JSON.stringify(errors));""", {"cat": cat, "rigs": inventions_rigs})
+        self.assertEqual(out, [])
+
+        # Kiểm tra hình nền không có text và vẽ được với mọi thời tiết/đêm
+        bg_out = self._node(r"""
+globalThis.Path2D=class{constructor(){}addPath(){}};
+const {cat, bgs}=JSON.parse(fs.readFileSync(0,'utf8'));
+let textCalls = 0;
+const ctx=new Proxy({},{
+  get:(o,k)=>{
+    if(k==='fillText'||k==='strokeText'){ textCalls++; return ()=>{}; }
+    if(k==='createLinearGradient'||k==='createRadialGradient') return ()=>({addColorStop(){}});
+    return ()=>{};
+  },
+  set:(o,k,v)=>(o[k]=v,true)
+});
+const errors=[];
+for(const bg of bgs){
+  const spec = cat.background_specs[bg];
+  for(const night of [false, true]){
+    for(const weather of ['clear','rain','snow','wind','fog','storm','hot']){
+      try {
+        V.BACKGROUNDS[bg].draw(ctx, {night, weather, theme: spec.theme, ground_y: spec.ground_y}, 1.5);
+      } catch(e) {
+        errors.push(bg + ' ' + weather + (night?' night':'') + ': ' + e.message);
+      }
+    }
+  }
+}
+console.log(JSON.stringify({errors, textCalls}));""", {"cat": cat, "bgs": ["workshop_1900", "old_town_1900"]})
+        self.assertEqual(bg_out["errors"], [])
+        self.assertEqual(bg_out["textCalls"], 0, "Hình nền không được vẽ text")
+
+    def test_first_flight_pilot_rides_seat_and_plane_takes_off(self):
+        from bkt_web.remake_vector import catalog, first_flight_examples
+        cat = catalog()
+        story = first_flight_examples()[0]
+        out = self._node(r"""
+const {story, cat} = JSON.parse(fs.readFileSync(0, 'utf8'));
+const gaps = [];
+for (let t = 0.5; t <= 13.5; t += 0.5) {
+  const f = V.sample(story, cat, t);
+  const hip = V.worldAnchor(cat, f.states.pilot, 'hip');
+  const seat = V.worldAnchor(cat, f.states.plane, 'seat_1');
+  gaps.push({t, d: Math.hypot(hip.x - seat.x, hip.y - seat.y), plane_y: f.states.plane.y});
+}
+console.log(JSON.stringify(gaps));""", {"story": story, "cat": cat})
+        for item in out:
+            self.assertLess(item["d"], 6.0, f"Hông phi công lệch khỏi seat_1 ở t={item['t']}")
+        # Cuối story máy bay cất cánh cao hơn mặt đất >= 150 px
+        end_lift = 810 - out[-1]["plane_y"]
+        self.assertGreaterEqual(end_lift, 150.0, f"Máy bay chưa cất cánh đủ cao: {end_lift} px")
+
+    def test_printing_press_lever_contact_and_monotonic_paper_growth(self):
+        from bkt_web.remake_vector import catalog, printing_press_examples
+        cat = catalog()
+        story = printing_press_examples()[0]
+        out = self._node(r"""
+const {story, cat} = JSON.parse(fs.readFileSync(0, 'utf8'));
+const rows = [];
+for (let t = 6.6; t <= 13.4; t += 0.25) {
+  const f = V.sample(story, cat, t);
+  const hand = V.worldAnchor(cat, f.states.printer, 'hand_r');
+  const lever = V.worldAnchor(cat, f.states.press, 'press');
+  rows.push({t, d: Math.hypot(hand.x - lever.x, hand.y - lever.y), growth: f.states.paper.growth});
+}
+console.log(JSON.stringify(rows));""", {"story": story, "cat": cat})
+        for item in out:
+            self.assertLess(item["d"], 12.0, f"Tay thợ in lệch khỏi cần ép ở t={item['t']}")
+        growths = [item["growth"] for item in out]
+        for i in range(len(growths) - 1):
+            self.assertLessEqual(growths[i], growths[i+1] + 1e-4, f"Độ dày xấp giấy không tăng đơn điệu ở bước {i}")
+        self.assertGreater(growths[-1], growths[0])
+
+    def test_first_car_wheels_touch_ground_and_driver_on_seat(self):
+        from bkt_web.remake_vector import catalog, first_car_examples
+        cat = catalog()
+        story = first_car_examples()[0]
+        out = self._node(r"""
+const {story, cat} = JSON.parse(fs.readFileSync(0, 'utf8'));
+const rows = [];
+for (let t = 0.5; t <= 13.5; t += 0.5) {
+  const f = V.sample(story, cat, t);
+  const hip = V.worldAnchor(cat, f.states.inventor, 'hip');
+  const seat = V.worldAnchor(cat, f.states.car, 'seat_1');
+  rows.push({t, d: Math.hypot(hip.x - seat.x, hip.y - seat.y), car_y: f.states.car.y});
+}
+console.log(JSON.stringify(rows));""", {"story": story, "cat": cat})
+        for item in out:
+            self.assertLess(item["d"], 6.0, f"Người lái lệch khỏi ghế ở t={item['t']}")
+            self.assertAlmostEqual(item["car_y"], 810.0, delta=1.0, msg=f"Bánh xe không chạm ground_y ở t={item['t']}")
+
+    def test_then_and_now_items_in_hand(self):
+        from bkt_web.remake_vector import catalog, then_and_now_examples
+        cat = catalog()
+        story = then_and_now_examples()[0]
+        out = self._node(r"""
+const {story, cat} = JSON.parse(fs.readFileSync(0, 'utf8'));
+const checkHand = (f, charId, itemId) => {
+  const h = V.worldAnchor(cat, f.states[charId], 'hand_r');
+  const g = V.worldAnchor(cat, f.states[itemId], 'grip');
+  return Math.hypot(h.x - g.x, h.y - g.y);
+};
+const f1 = V.sample(story, cat, 3.5);
+const d1 = checkHand(f1, 'user_1', 'item_1');
+const d2 = checkHand(f1, 'user_2', 'item_2');
+const d3 = checkHand(f1, 'user_3', 'item_3');
+const f2 = V.sample(story, cat, 11.0);
+const d4 = checkHand(f2, 'user_1', 'item_4');
+const d5 = checkHand(f2, 'user_2', 'item_5');
+const d6 = checkHand(f2, 'user_3', 'item_6');
+console.log(JSON.stringify([d1, d2, d3, d4, d5, d6]));""", {"story": story, "cat": cat})
+        for idx, dist in enumerate(out):
+            self.assertLess(dist, 3.0, f"Đồ vật thứ {idx+1} không nằm trong tay (grip ↔ hand = {dist:.2f}px >= 3px)")
+
+    def test_phonograph_playing_is_deterministic(self):
+        from bkt_web.remake_vector import catalog
+        cat = catalog()
+        out = self._node(r"""
+const {cat} = JSON.parse(fs.readFileSync(0, 'utf8'));
+const story = {
+  id: 'phono_det_test',
+  renderer: 'native-vector-v1',
+  duration: 5.0,
+  characters: [{id: 'p', name: 'Phono', asset: 'phonograph'}],
+  scenes: [{
+    renderer: 'native-vector-v1',
+    start_time: 0,
+    end_time: 5.0,
+    characters_present: ['p'],
+    poses: {'p': [{time: 0, x: 288, y: 810, height: 120, playing: 1.0}, {time: 5.0, x: 288, y: 810, height: 120, playing: 1.0}]},
+    actions: [],
+    background: {preset: 'workshop_1900'}
+  }],
+  cues: []
+};
+const f1 = V.sample(story, cat, 2.5);
+const f2 = V.sample(story, cat, 2.5);
+const sameState = JSON.stringify(f1.states) === JSON.stringify(f2.states);
+console.log(JSON.stringify({sameState, playing: f1.states.p.playing}));""", {"cat": cat})
+        self.assertTrue(out["sameState"], "Phonograph playing state không tất định khi sample lại cùng thời điểm")
+        self.assertEqual(out["playing"], 1.0)
+

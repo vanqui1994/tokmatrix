@@ -143,7 +143,7 @@
       width: 90, height: 60,
       color: '#1c1917',
       wheels: [[-24, 22, 21], [28, 14, 13]],
-      seats: [[-4, -42]],
+      seats: [[-9, -6]],
       topics: ['inventions', 'de_culture']
     },
     steam_train: {

@@ -397,6 +397,7 @@ def validate_vector_scenes(characters, scenes):
                 else {"exercise_type"} if kind == "exercise"
                 else {"food_id"} if kind == "eat"
                 else {"locale"} if kind == "wait_signal"
+                else {"paper"} if kind == "pull_lever"
                 else set()
             )
             if set(action) - ({"type", "actor", "target", "start", "end", "amount", "stroke", "actor_anchor", "target_anchor", "hold"} | extra_fields):
@@ -3431,6 +3432,294 @@ def first_olympics_examples():
 
 
 
+def first_flight_examples():
+    """Mẫu kỹ thuật Phase O: Chuyến bay lịch sử của anh em nhà Wright năm 1903."""
+    cat = catalog()
+
+    def actor(cid, asset, **extra):
+        lbl = cat["assets"][asset].get("label") or cat["assets"][asset].get("spec", {}).get("label") or asset
+        return {"id": cid, "name": lbl, "asset": asset, **extra}
+
+    def pose(t, x, y, h, **extra):
+        return {"time": t, "x": x, "y": y, "height": h, **extra}
+
+    def scene(start, end, poses, actions=(), bg="highland_farm", **extra):
+        return {
+            "renderer": RENDERER,
+            "kind": "scene",
+            "start_time": start,
+            "end_time": end,
+            "characters_present": list(poses),
+            "poses": poses,
+            "actions": list(actions),
+            "background": {"preset": bg, **extra},
+        }
+
+    def action(kind, start, end, target=None, actor_id=None, **extra):
+        return {"type": kind, "start": start, "end": end, **({"target": target} if target else {}), **({"actor": actor_id} if actor_id else {}), **extra}
+
+    # Cảnh 1: Máy bay chạy đà trên mặt đất tại y = 810
+    sc1 = scene(0, 6.0, {
+        "plane": [pose(0, 100, 810, 300), pose(6.0, 320, 810, 300)],
+        "pilot": [pose(0, 100, 810, 150, outfit="aviator_1903"), pose(6.0, 320, 810, 150, outfit="aviator_1903")],
+    }, actions=[
+        action("drive", 0, 6.0, actor_id="plane"),
+        action("ride", 0, 6.0, actor_id="pilot", target="plane"),
+    ], bg="highland_farm")
+
+    # Cảnh 2: Máy bay cất cánh bay lên không trung, y giảm từ 810 lên 580 (cao hơn mặt đất 230 px >= 150 px)
+    sc2 = scene(6.0, 14.0, {
+        "plane": [pose(6.0, 120, 810, 300), pose(14.0, 440, 580, 300)],
+        "pilot": [pose(6.0, 120, 810, 150, outfit="aviator_1903", expression="happy"), pose(14.0, 440, 580, 150, outfit="aviator_1903", expression="happy")],
+    }, actions=[
+        action("drive", 6.0, 14.0, actor_id="plane"),
+        action("ride", 6.0, 14.0, actor_id="pilot", target="plane"),
+    ], bg="highland_farm")
+
+    story = {
+        "id": "first_flight",
+        "name": "22 · Lịch sử phát minh: Chuyến bay có động cơ đầu tiên của nhân loại năm 1903",
+        "renderer": RENDERER,
+        "fidelity": "technical-demo",
+        "note": "Mẫu kỹ thuật Phase O: Máy bay cánh kép 1903 chạy đà rồi cất cánh bay lên khỏi mặt đất, phi công ngồi vững trên ghế bằng động tác ride.",
+        "duration": 14.0,
+        "characters": [
+            actor("plane", "biplane_1903"),
+            actor("pilot", "chibi_boy"),
+        ],
+        "scenes": [sc1, sc2],
+        "cues": [
+            {"start": 0.5, "end": 5.5, "character_id": "pilot", "text": "Động cơ nổ đều, máy bay cánh kép tăng tốc chạy đà trên đồi cát lộng gió!", "expression": "neutral"},
+            {"start": 6.5, "end": 13.5, "character_id": "pilot", "text": "Thần kỳ thay, chiếc máy bay đã rời mặt đất và lướt đi kiêu hãnh trên bầu trời bao la!", "expression": "happy"},
+        ],
+    }
+    for index, item in enumerate(story["scenes"]):
+        item["index"] = index
+    auto_frame(story)
+    validate_story(story)
+    return [story]
+
+
+def printing_press_examples():
+    """Mẫu kỹ thuật Phase O: Máy in chữ rời Gutenberg và nghề in ấn cổ điển."""
+    cat = catalog()
+
+    def actor(cid, asset, **extra):
+        lbl = cat["assets"][asset].get("label") or cat["assets"][asset].get("spec", {}).get("label") or asset
+        return {"id": cid, "name": lbl, "asset": asset, **extra}
+
+    def pose(t, x, y, h, **extra):
+        return {"time": t, "x": x, "y": y, "height": h, **extra}
+
+    def scene(start, end, poses, actions=(), bg="workshop_1900", **extra):
+        return {
+            "renderer": RENDERER,
+            "kind": "scene",
+            "start_time": start,
+            "end_time": end,
+            "characters_present": list(poses),
+            "poses": poses,
+            "actions": list(actions),
+            "background": {"preset": bg, **extra},
+        }
+
+    def action(kind, start, end, target=None, actor_id=None, **extra):
+        return {"type": kind, "start": start, "end": end, **({"target": target} if target else {}), **({"actor": actor_id} if actor_id else {}), **extra}
+
+    # Cảnh 1: Thợ in cầm khay chữ rời xếp vào bàn in
+    p_tray = held_pose("movable_type_tray", 55, 0)
+    sc1 = scene(0, 6.0, {
+        "press": [pose(0, 360, 810, 320), pose(6.0, 360, 810, 320)],
+        "printer": [pose(0, 200, 810, 240, outfit="printer_1450"), pose(6.0, 250, 810, 240, outfit="printer_1450")],
+        "tray": [pose(0, p_tray["x"], p_tray["y"], 55, rotation=p_tray["rotation"]), pose(6.0, p_tray["x"], p_tray["y"], 55, rotation=p_tray["rotation"])],
+        "paper": [pose(0, 480, 810, 240, growth=0.15), pose(6.0, 480, 810, 240, growth=0.15)],
+    }, bg="workshop_1900")
+
+    # Cảnh 2: Thợ in kéo cần máy in (pull_lever), xấp giấy in xong tăng độ dày (growth tăng đơn điệu)
+    sc2 = scene(6.0, 14.0, {
+        "press": [pose(6.0, 360, 810, 320), pose(14.0, 360, 810, 320)],
+        "printer": [pose(6.0, 250, 810, 240, outfit="printer_1450", expression="happy"), pose(14.0, 250, 810, 240, outfit="printer_1450", expression="happy")],
+        "paper": [pose(6.0, 480, 810, 240, growth=0.15), pose(14.0, 480, 810, 240, growth=1.0)],
+    }, actions=[
+        action("pull_lever", 6.5, 13.5, actor_id="printer", target="press", target_anchor="press", paper="paper"),
+    ], bg="workshop_1900")
+
+    story = {
+        "id": "printing_press",
+        "name": "23 · Lịch sử phát minh: Máy in chữ rời Gutenberg mở ra kỷ nguyên tri thức",
+        "renderer": RENDERER,
+        "fidelity": "technical-demo",
+        "note": "Mẫu kỹ thuật Phase O: Thợ in kéo cần ép máy in Gutenberg bằng động tác pull_lever, xấp giấy thủ công in ra tăng trưởng liên tục đơn điệu.",
+        "duration": 14.0,
+        "characters": [
+            actor("press", "printing_press"),
+            actor("printer", "chibi_boy"),
+            actor("tray", "movable_type_tray", attach_to={"id": "printer", "anchor": "hand_r"}),
+            actor("paper", "paper_sheet_stack"),
+        ],
+        "scenes": [sc1, sc2],
+        "cues": [
+            {"start": 0.5, "end": 5.5, "character_id": "printer", "text": "Từng con chữ chì được sắp xếp ngay ngắn trên khay gỗ theo trật tự chính xác!", "expression": "neutral"},
+            {"start": 6.5, "end": 13.5, "character_id": "printer", "text": "Kéo cần ép mạnh mẽ, những trang sách đầu tiên ra đời mang tri thức đến với nhân loại!", "expression": "happy"},
+        ],
+    }
+    for index, item in enumerate(story["scenes"]):
+        item["index"] = index
+    auto_frame(story)
+    validate_story(story)
+    return [story]
+
+
+def first_car_examples():
+    """Mẫu kỹ thuật Phase O: Chuyến đi ô tô đầu tiên trên đường phố cổ năm 1886."""
+    cat = catalog()
+
+    def actor(cid, asset, **extra):
+        lbl = cat["assets"][asset].get("label") or cat["assets"][asset].get("spec", {}).get("label") or asset
+        return {"id": cid, "name": lbl, "asset": asset, **extra}
+
+    def pose(t, x, y, h, **extra):
+        return {"time": t, "x": x, "y": y, "height": h, **extra}
+
+    def scene(start, end, poses, actions=(), bg="old_town_1900", **extra):
+        return {
+            "renderer": RENDERER,
+            "kind": "scene",
+            "start_time": start,
+            "end_time": end,
+            "characters_present": list(poses),
+            "poses": poses,
+            "actions": list(actions),
+            "background": {"preset": bg, **extra},
+        }
+
+    def action(kind, start, end, target=None, actor_id=None, **extra):
+        return {"type": kind, "start": start, "end": end, **({"target": target} if target else {}), **({"actor": actor_id} if actor_id else {}), **extra}
+
+    # Xe motorcar_1886 chạy dọc phố cổ từ x = 80 đến 460 tại ground_y = 810
+    sc1 = scene(0, 7.0, {
+        "car": [pose(0, 80, 810, 240), pose(7.0, 260, 810, 240)],
+        "inventor": [pose(0, 80, 810, 150, outfit="inventor_1900"), pose(7.0, 260, 810, 150, outfit="inventor_1900")],
+    }, actions=[
+        action("drive", 0, 7.0, actor_id="car"),
+        action("ride", 0, 7.0, actor_id="inventor", target="car"),
+    ], bg="old_town_1900")
+
+    sc2 = scene(7.0, 14.0, {
+        "car": [pose(7.0, 260, 810, 240), pose(14.0, 460, 810, 240)],
+        "inventor": [pose(7.0, 260, 810, 150, outfit="inventor_1900", expression="happy"), pose(14.0, 460, 810, 150, outfit="inventor_1900", expression="happy")],
+    }, actions=[
+        action("drive", 7.0, 14.0, actor_id="car"),
+        action("ride", 7.0, 14.0, actor_id="inventor", target="car"),
+    ], bg="old_town_1900")
+
+    story = {
+        "id": "first_car",
+        "name": "24 · Lịch sử phát minh: Chiếc xe ô tô ba bánh đầu tiên lăn bánh năm 1886",
+        "renderer": RENDERER,
+        "fidelity": "technical-demo",
+        "note": "Mẫu kỹ thuật Phase O: Chiếc xe ô tô ba bánh Benz 1886 chạy dọc qua đường phố cổ lát đá, bánh xe tiếp xúc chuẩn xác mặt đất và người lái ngồi đúng ghế.",
+        "duration": 14.0,
+        "characters": [
+            actor("car", "motorcar_1886"),
+            actor("inventor", "chibi_boy"),
+        ],
+        "scenes": [sc1, sc2],
+        "cues": [
+            {"start": 0.5, "end": 6.5, "character_id": "inventor", "text": "Động cơ đốt trong bốn thì khởi động, chiếc xe ba bánh từ từ lăn bánh trên đường phố!", "expression": "neutral"},
+            {"start": 7.5, "end": 13.5, "character_id": "inventor", "text": "Tiếng máy reo giòn giã, kỷ nguyên xe cơ giới hiện đại chính thức mở ra!", "expression": "happy"},
+        ],
+    }
+    for index, item in enumerate(story["scenes"]):
+        item["index"] = index
+    auto_frame(story)
+    validate_story(story)
+    return [story]
+
+
+def then_and_now_examples():
+    """Mẫu kỹ thuật Phase O: So sánh tiến hóa vật dụng xưa và nay."""
+    cat = catalog()
+
+    def actor(cid, asset, **extra):
+        lbl = cat["assets"][asset].get("label") or cat["assets"][asset].get("spec", {}).get("label") or asset
+        return {"id": cid, "name": lbl, "asset": asset, **extra}
+
+    def pose(t, x, y, h, **extra):
+        return {"time": t, "x": x, "y": y, "height": h, **extra}
+
+    def scene(start, end, poses, actions=(), bg="workshop_1900", **extra):
+        return {
+            "renderer": RENDERER,
+            "kind": "scene",
+            "start_time": start,
+            "end_time": end,
+            "characters_present": list(poses),
+            "poses": poses,
+            "actions": list(actions),
+            "background": {"preset": bg, **extra},
+        }
+
+    # Cảnh 1 (Xưa): workshop_1900
+    p_tb_old = held_pose("toothbrush_early", 120, 0)
+    p_bulb_old = held_pose("early_bulb", 120, 0)
+    p_phone_old = held_pose("early_telephone", 120, 0)
+
+    sc1 = scene(0, 7.5, {
+        "user_1": [pose(0, 140, 810, 240, outfit="inventor_1900"), pose(7.5, 140, 810, 240, outfit="inventor_1900")],
+        "item_1": [pose(0, p_tb_old["x"], p_tb_old["y"], 120, rotation=p_tb_old["rotation"]), pose(7.5, p_tb_old["x"], p_tb_old["y"], 120, rotation=p_tb_old["rotation"])],
+        "user_2": [pose(0, 288, 810, 240, outfit="printer_1450"), pose(7.5, 288, 810, 240, outfit="printer_1450")],
+        "item_2": [pose(0, p_bulb_old["x"], p_bulb_old["y"], 120, rotation=p_bulb_old["rotation"]), pose(7.5, p_bulb_old["x"], p_bulb_old["y"], 120, rotation=p_bulb_old["rotation"])],
+        "user_3": [pose(0, 436, 810, 240, outfit="scientist"), pose(7.5, 436, 810, 240, outfit="scientist")],
+        "item_3": [pose(0, p_phone_old["x"], p_phone_old["y"], 120, rotation=p_phone_old["rotation"]), pose(7.5, p_phone_old["x"], p_phone_old["y"], 120, rotation=p_phone_old["rotation"])],
+    }, bg="workshop_1900")
+
+    # Cảnh 2 (Nay): interior (hiện đại)
+    p_tb_new = held_pose("toothbrush", 120, 0)
+    p_bulb_new = held_pose("led_bulb", 120, 0)
+    p_phone_new = held_pose("smartphone", 120, 0)
+
+    sc2 = scene(7.5, 15.0, {
+        "user_1": [pose(7.5, 140, 810, 240, outfit="none", expression="happy"), pose(15.0, 140, 810, 240, outfit="none", expression="happy")],
+        "item_4": [pose(7.5, p_tb_new["x"], p_tb_new["y"], 120, rotation=p_tb_new["rotation"]), pose(15.0, p_tb_new["x"], p_tb_new["y"], 120, rotation=p_tb_new["rotation"])],
+        "user_2": [pose(7.5, 288, 810, 240, outfit="none", expression="happy"), pose(15.0, 288, 810, 240, outfit="none", expression="happy")],
+        "item_5": [pose(7.5, p_bulb_new["x"], p_bulb_new["y"], 120, rotation=p_bulb_new["rotation"]), pose(15.0, p_bulb_new["x"], p_bulb_new["y"], 120, rotation=p_bulb_new["rotation"])],
+        "user_3": [pose(7.5, 436, 810, 240, outfit="none", expression="happy"), pose(15.0, 436, 810, 240, outfit="none", expression="happy")],
+        "item_6": [pose(7.5, p_phone_new["x"], p_phone_new["y"], 120, rotation=p_phone_new["rotation"]), pose(15.0, p_phone_new["x"], p_phone_new["y"], 120, rotation=p_phone_new["rotation"])],
+    }, bg="interior")
+
+    story = {
+        "id": "then_and_now",
+        "name": "25 · Lịch sử phát minh: Đời sống xưa và nay qua tiến trình cải tiến vật dụng",
+        "renderer": RENDERER,
+        "fidelity": "technical-demo",
+        "note": "Mẫu kỹ thuật Phase O: So sánh ba cặp vật dụng xưa và nay (bàn chải, bóng đèn, điện thoại), mỗi đạo cụ nằm chuẩn xác trong lòng bàn tay nhân vật.",
+        "duration": 15.0,
+        "characters": [
+            actor("user_1", "chibi_boy"),
+            actor("item_1", "toothbrush_early", attach_to={"id": "user_1", "anchor": "hand_r"}),
+            actor("user_2", "chibi_girl"),
+            actor("item_2", "early_bulb", attach_to={"id": "user_2", "anchor": "hand_r"}),
+            actor("user_3", "chibi_kid"),
+            actor("item_3", "early_telephone", attach_to={"id": "user_3", "anchor": "hand_r"}),
+            actor("item_4", "toothbrush", attach_to={"id": "user_1", "anchor": "hand_r"}),
+            actor("item_5", "led_bulb", attach_to={"id": "user_2", "anchor": "hand_r"}),
+            actor("item_6", "smartphone", attach_to={"id": "user_3", "anchor": "hand_r"}),
+        ],
+        "scenes": [sc1, sc2],
+        "cues": [
+            {"start": 0.5, "end": 7.0, "character_id": "user_1", "text": "Thời xưa, con người dùng bàn chải lông tự nhiên, bóng đèn dây tóc vonfram và điện thoại quay số cồng kềnh!", "expression": "neutral"},
+            {"start": 8.0, "end": 14.5, "character_id": "user_2", "text": "Ngày nay, công nghệ phát triển mang đến bàn chải hiện đại, đèn LED tiết kiệm điện và điện thoại thông minh kết nối toàn cầu!", "expression": "happy"},
+        ],
+    }
+    for index, item in enumerate(story["scenes"]):
+        item["index"] = index
+    auto_frame(story)
+    validate_story(story)
+    return [story]
+
+
+
 def auto_frame(story: dict, max_zoom: float = 2.0) -> dict:
     """Đặt camera tĩnh cho mỗi cảnh chưa có camera để nhóm nhân vật nhỏ (tế bào, vi khuẩn) chiếm ~85% bề ngang.
 
@@ -3458,7 +3747,7 @@ def auto_frame(story: dict, max_zoom: float = 2.0) -> dict:
     return story
 
 def sample_stories():
-    """Every sample the library ships: farm stories, articulated hands, IK, fishing, sea monsters, orchard harvest, trellis, highland, vegetable cutaway, safe spraying, giant radish, handwashing, doctor visit, tooth care, nutrition, Phase I body world, Phase K recycling, Phase L safety, and Phase M ancient history stories."""
+    """Every sample the library ships: farm stories, articulated hands, IK, fishing, sea monsters, orchard harvest, trellis, highland, vegetable cutaway, safe spraying, giant radish, handwashing, doctor visit, tooth care, nutrition, Phase I body world, Phase K recycling, Phase L safety, Phase M ancient history, and Phase O inventions stories."""
     return (
         examples() + agriculture_examples() + farm_life_examples() + farm_animals_examples() +
         articulation_examples() + ik_examples() + fishing_examples() + monster_examples() +
@@ -3470,7 +3759,8 @@ def sample_stories():
         recycling_sort_examples() + bottle_journey_examples() +
         crossing_street_examples() + disaster_safety_examples() +
         build_pyramid_examples() + first_fire_examples() + roman_road_examples() +
-        silk_road_caravan_examples() + first_olympics_examples()
+        silk_road_caravan_examples() + first_olympics_examples() +
+        first_flight_examples() + printing_press_examples() + first_car_examples() + then_and_now_examples()
     )
 
 
@@ -3507,7 +3797,7 @@ def showreel():
                     action["blend_in"] = min(action["blend_in"] * ratio, action["end"] - action["start"])
                 if "helpers" in action and isinstance(action["helpers"], list):
                     action["helpers"] = [prefix + hid for hid in action["helpers"]]
-                for role in ("actor", "target", "tool", "helper"):
+                for role in ("actor", "target", "tool", "helper", "paper"):
                     if role in action:
                         action[role] = prefix + action[role]
             scenes.append(scene)

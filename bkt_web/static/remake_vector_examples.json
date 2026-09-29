@@ -12013,5 +12013,899 @@
         "expression": "happy"
       }
     ]
+  },
+  {
+    "id": "first_flight",
+    "name": "22 · Lịch sử phát minh: Chuyến bay có động cơ đầu tiên của nhân loại năm 1903",
+    "renderer": "native-vector-v1",
+    "fidelity": "technical-demo",
+    "note": "Mẫu kỹ thuật Phase O: Máy bay cánh kép 1903 chạy đà rồi cất cánh bay lên khỏi mặt đất, phi công ngồi vững trên ghế bằng động tác ride.",
+    "duration": 14.0,
+    "characters": [
+      {
+        "id": "plane",
+        "name": "Máy bay cánh kép 1903",
+        "asset": "biplane_1903"
+      },
+      {
+        "id": "pilot",
+        "name": "Bé trai học sinh",
+        "asset": "chibi_boy"
+      }
+    ],
+    "scenes": [
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 0,
+        "end_time": 6.0,
+        "characters_present": [
+          "plane",
+          "pilot"
+        ],
+        "poses": {
+          "plane": [
+            {
+              "time": 0,
+              "x": 100,
+              "y": 810,
+              "height": 300
+            },
+            {
+              "time": 6.0,
+              "x": 320,
+              "y": 810,
+              "height": 300
+            }
+          ],
+          "pilot": [
+            {
+              "time": 0,
+              "x": 100,
+              "y": 810,
+              "height": 150,
+              "outfit": "aviator_1903"
+            },
+            {
+              "time": 6.0,
+              "x": 320,
+              "y": 810,
+              "height": 150,
+              "outfit": "aviator_1903"
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "drive",
+            "start": 0,
+            "end": 6.0,
+            "actor": "plane"
+          },
+          {
+            "type": "ride",
+            "start": 0,
+            "end": 6.0,
+            "target": "plane",
+            "actor": "pilot"
+          }
+        ],
+        "background": {
+          "preset": "highland_farm"
+        },
+        "index": 0
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 6.0,
+        "end_time": 14.0,
+        "characters_present": [
+          "plane",
+          "pilot"
+        ],
+        "poses": {
+          "plane": [
+            {
+              "time": 6.0,
+              "x": 120,
+              "y": 810,
+              "height": 300
+            },
+            {
+              "time": 14.0,
+              "x": 440,
+              "y": 580,
+              "height": 300
+            }
+          ],
+          "pilot": [
+            {
+              "time": 6.0,
+              "x": 120,
+              "y": 810,
+              "height": 150,
+              "outfit": "aviator_1903",
+              "expression": "happy"
+            },
+            {
+              "time": 14.0,
+              "x": 440,
+              "y": 580,
+              "height": 150,
+              "outfit": "aviator_1903",
+              "expression": "happy"
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "drive",
+            "start": 6.0,
+            "end": 14.0,
+            "actor": "plane"
+          },
+          {
+            "type": "ride",
+            "start": 6.0,
+            "end": 14.0,
+            "target": "plane",
+            "actor": "pilot"
+          }
+        ],
+        "background": {
+          "preset": "highland_farm"
+        },
+        "index": 1
+      }
+    ],
+    "cues": [
+      {
+        "start": 0.5,
+        "end": 5.5,
+        "character_id": "pilot",
+        "text": "Động cơ nổ đều, máy bay cánh kép tăng tốc chạy đà trên đồi cát lộng gió!",
+        "expression": "neutral"
+      },
+      {
+        "start": 6.5,
+        "end": 13.5,
+        "character_id": "pilot",
+        "text": "Thần kỳ thay, chiếc máy bay đã rời mặt đất và lướt đi kiêu hãnh trên bầu trời bao la!",
+        "expression": "happy"
+      }
+    ]
+  },
+  {
+    "id": "printing_press",
+    "name": "23 · Lịch sử phát minh: Máy in chữ rời Gutenberg mở ra kỷ nguyên tri thức",
+    "renderer": "native-vector-v1",
+    "fidelity": "technical-demo",
+    "note": "Mẫu kỹ thuật Phase O: Thợ in kéo cần ép máy in Gutenberg bằng động tác pull_lever, xấp giấy thủ công in ra tăng trưởng liên tục đơn điệu.",
+    "duration": 14.0,
+    "characters": [
+      {
+        "id": "press",
+        "name": "Máy in chữ rời Gutenberg",
+        "asset": "printing_press"
+      },
+      {
+        "id": "printer",
+        "name": "Bé trai học sinh",
+        "asset": "chibi_boy"
+      },
+      {
+        "id": "tray",
+        "name": "Khay chữ rời Gutenberg",
+        "asset": "movable_type_tray",
+        "attach_to": {
+          "id": "printer",
+          "anchor": "hand_r"
+        }
+      },
+      {
+        "id": "paper",
+        "name": "Xấp giấy thủ công",
+        "asset": "paper_sheet_stack"
+      }
+    ],
+    "scenes": [
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 0,
+        "end_time": 6.0,
+        "characters_present": [
+          "press",
+          "printer",
+          "tray",
+          "paper"
+        ],
+        "poses": {
+          "press": [
+            {
+              "time": 0,
+              "x": 360,
+              "y": 810,
+              "height": 320
+            },
+            {
+              "time": 6.0,
+              "x": 360,
+              "y": 810,
+              "height": 320
+            }
+          ],
+          "printer": [
+            {
+              "time": 0,
+              "x": 200,
+              "y": 810,
+              "height": 240,
+              "outfit": "printer_1450"
+            },
+            {
+              "time": 6.0,
+              "x": 250,
+              "y": 810,
+              "height": 240,
+              "outfit": "printer_1450"
+            }
+          ],
+          "tray": [
+            {
+              "time": 0,
+              "x": -0.0,
+              "y": 5.5,
+              "height": 55,
+              "rotation": 0
+            },
+            {
+              "time": 6.0,
+              "x": -0.0,
+              "y": 5.5,
+              "height": 55,
+              "rotation": 0
+            }
+          ],
+          "paper": [
+            {
+              "time": 0,
+              "x": 480,
+              "y": 810,
+              "height": 240,
+              "growth": 0.15
+            },
+            {
+              "time": 6.0,
+              "x": 480,
+              "y": 810,
+              "height": 240,
+              "growth": 0.15
+            }
+          ]
+        },
+        "actions": [],
+        "background": {
+          "preset": "workshop_1900"
+        },
+        "index": 0
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 6.0,
+        "end_time": 14.0,
+        "characters_present": [
+          "press",
+          "printer",
+          "paper"
+        ],
+        "poses": {
+          "press": [
+            {
+              "time": 6.0,
+              "x": 360,
+              "y": 810,
+              "height": 320
+            },
+            {
+              "time": 14.0,
+              "x": 360,
+              "y": 810,
+              "height": 320
+            }
+          ],
+          "printer": [
+            {
+              "time": 6.0,
+              "x": 250,
+              "y": 810,
+              "height": 240,
+              "outfit": "printer_1450",
+              "expression": "happy"
+            },
+            {
+              "time": 14.0,
+              "x": 250,
+              "y": 810,
+              "height": 240,
+              "outfit": "printer_1450",
+              "expression": "happy"
+            }
+          ],
+          "paper": [
+            {
+              "time": 6.0,
+              "x": 480,
+              "y": 810,
+              "height": 240,
+              "growth": 0.15
+            },
+            {
+              "time": 14.0,
+              "x": 480,
+              "y": 810,
+              "height": 240,
+              "growth": 1.0
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "pull_lever",
+            "start": 6.5,
+            "end": 13.5,
+            "target": "press",
+            "actor": "printer",
+            "target_anchor": "press",
+            "paper": "paper"
+          }
+        ],
+        "background": {
+          "preset": "workshop_1900"
+        },
+        "index": 1,
+        "camera": [
+          {
+            "time": 6.0,
+            "x": 316.7,
+            "y": 551.85,
+            "zoom": 1.111
+          }
+        ]
+      }
+    ],
+    "cues": [
+      {
+        "start": 0.5,
+        "end": 5.5,
+        "character_id": "printer",
+        "text": "Từng con chữ chì được sắp xếp ngay ngắn trên khay gỗ theo trật tự chính xác!",
+        "expression": "neutral"
+      },
+      {
+        "start": 6.5,
+        "end": 13.5,
+        "character_id": "printer",
+        "text": "Kéo cần ép mạnh mẽ, những trang sách đầu tiên ra đời mang tri thức đến với nhân loại!",
+        "expression": "happy"
+      }
+    ]
+  },
+  {
+    "id": "first_car",
+    "name": "24 · Lịch sử phát minh: Chiếc xe ô tô ba bánh đầu tiên lăn bánh năm 1886",
+    "renderer": "native-vector-v1",
+    "fidelity": "technical-demo",
+    "note": "Mẫu kỹ thuật Phase O: Chiếc xe ô tô ba bánh Benz 1886 chạy dọc qua đường phố cổ lát đá, bánh xe tiếp xúc chuẩn xác mặt đất và người lái ngồi đúng ghế.",
+    "duration": 14.0,
+    "characters": [
+      {
+        "id": "car",
+        "name": "Xe ô tô ba bánh 1886 (Benz)",
+        "asset": "motorcar_1886"
+      },
+      {
+        "id": "inventor",
+        "name": "Bé trai học sinh",
+        "asset": "chibi_boy"
+      }
+    ],
+    "scenes": [
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 0,
+        "end_time": 7.0,
+        "characters_present": [
+          "car",
+          "inventor"
+        ],
+        "poses": {
+          "car": [
+            {
+              "time": 0,
+              "x": 80,
+              "y": 810,
+              "height": 240
+            },
+            {
+              "time": 7.0,
+              "x": 260,
+              "y": 810,
+              "height": 240
+            }
+          ],
+          "inventor": [
+            {
+              "time": 0,
+              "x": 80,
+              "y": 810,
+              "height": 150,
+              "outfit": "inventor_1900"
+            },
+            {
+              "time": 7.0,
+              "x": 260,
+              "y": 810,
+              "height": 150,
+              "outfit": "inventor_1900"
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "drive",
+            "start": 0,
+            "end": 7.0,
+            "actor": "car"
+          },
+          {
+            "type": "ride",
+            "start": 0,
+            "end": 7.0,
+            "target": "car",
+            "actor": "inventor"
+          }
+        ],
+        "background": {
+          "preset": "old_town_1900"
+        },
+        "index": 0,
+        "camera": [
+          {
+            "time": 0,
+            "x": 230.23,
+            "y": 580.79,
+            "zoom": 1.251
+          }
+        ]
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 7.0,
+        "end_time": 14.0,
+        "characters_present": [
+          "car",
+          "inventor"
+        ],
+        "poses": {
+          "car": [
+            {
+              "time": 7.0,
+              "x": 260,
+              "y": 810,
+              "height": 240
+            },
+            {
+              "time": 14.0,
+              "x": 460,
+              "y": 810,
+              "height": 240
+            }
+          ],
+          "inventor": [
+            {
+              "time": 7.0,
+              "x": 260,
+              "y": 810,
+              "height": 150,
+              "outfit": "inventor_1900",
+              "expression": "happy"
+            },
+            {
+              "time": 14.0,
+              "x": 460,
+              "y": 810,
+              "height": 150,
+              "outfit": "inventor_1900",
+              "expression": "happy"
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "drive",
+            "start": 7.0,
+            "end": 14.0,
+            "actor": "car"
+          },
+          {
+            "type": "ride",
+            "start": 7.0,
+            "end": 14.0,
+            "target": "car",
+            "actor": "inventor"
+          }
+        ],
+        "background": {
+          "preset": "old_town_1900"
+        },
+        "index": 1,
+        "camera": [
+          {
+            "time": 7.0,
+            "x": 334.14,
+            "y": 569.21,
+            "zoom": 1.191
+          }
+        ]
+      }
+    ],
+    "cues": [
+      {
+        "start": 0.5,
+        "end": 6.5,
+        "character_id": "inventor",
+        "text": "Động cơ đốt trong bốn thì khởi động, chiếc xe ba bánh từ từ lăn bánh trên đường phố!",
+        "expression": "neutral"
+      },
+      {
+        "start": 7.5,
+        "end": 13.5,
+        "character_id": "inventor",
+        "text": "Tiếng máy reo giòn giã, kỷ nguyên xe cơ giới hiện đại chính thức mở ra!",
+        "expression": "happy"
+      }
+    ]
+  },
+  {
+    "id": "then_and_now",
+    "name": "25 · Lịch sử phát minh: Đời sống xưa và nay qua tiến trình cải tiến vật dụng",
+    "renderer": "native-vector-v1",
+    "fidelity": "technical-demo",
+    "note": "Mẫu kỹ thuật Phase O: So sánh ba cặp vật dụng xưa và nay (bàn chải, bóng đèn, điện thoại), mỗi đạo cụ nằm chuẩn xác trong lòng bàn tay nhân vật.",
+    "duration": 15.0,
+    "characters": [
+      {
+        "id": "user_1",
+        "name": "Bé trai học sinh",
+        "asset": "chibi_boy"
+      },
+      {
+        "id": "item_1",
+        "name": "Bàn chải răng thời xưa",
+        "asset": "toothbrush_early",
+        "attach_to": {
+          "id": "user_1",
+          "anchor": "hand_r"
+        }
+      },
+      {
+        "id": "user_2",
+        "name": "Bé gái học sinh",
+        "asset": "chibi_girl"
+      },
+      {
+        "id": "item_2",
+        "name": "Bóng đèn Edison đầu tiên",
+        "asset": "early_bulb",
+        "attach_to": {
+          "id": "user_2",
+          "anchor": "hand_r"
+        }
+      },
+      {
+        "id": "user_3",
+        "name": "Bé mầm non",
+        "asset": "chibi_kid"
+      },
+      {
+        "id": "item_3",
+        "name": "Điện thoại để bàn đời đầu",
+        "asset": "early_telephone",
+        "attach_to": {
+          "id": "user_3",
+          "anchor": "hand_r"
+        }
+      },
+      {
+        "id": "item_4",
+        "name": "Bàn chải đánh răng",
+        "asset": "toothbrush",
+        "attach_to": {
+          "id": "user_1",
+          "anchor": "hand_r"
+        }
+      },
+      {
+        "id": "item_5",
+        "name": "Bóng đèn LED tròn",
+        "asset": "led_bulb",
+        "attach_to": {
+          "id": "user_2",
+          "anchor": "hand_r"
+        }
+      },
+      {
+        "id": "item_6",
+        "name": "Điện thoại thông minh",
+        "asset": "smartphone",
+        "attach_to": {
+          "id": "user_3",
+          "anchor": "hand_r"
+        }
+      }
+    ],
+    "scenes": [
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 0,
+        "end_time": 7.5,
+        "characters_present": [
+          "user_1",
+          "item_1",
+          "user_2",
+          "item_2",
+          "user_3",
+          "item_3"
+        ],
+        "poses": {
+          "user_1": [
+            {
+              "time": 0,
+              "x": 140,
+              "y": 810,
+              "height": 240,
+              "outfit": "inventor_1900"
+            },
+            {
+              "time": 7.5,
+              "x": 140,
+              "y": 810,
+              "height": 240,
+              "outfit": "inventor_1900"
+            }
+          ],
+          "item_1": [
+            {
+              "time": 0,
+              "x": -0.0,
+              "y": 21.599999999999998,
+              "height": 120,
+              "rotation": 0
+            },
+            {
+              "time": 7.5,
+              "x": -0.0,
+              "y": 21.599999999999998,
+              "height": 120,
+              "rotation": 0
+            }
+          ],
+          "user_2": [
+            {
+              "time": 0,
+              "x": 288,
+              "y": 810,
+              "height": 240,
+              "outfit": "printer_1450"
+            },
+            {
+              "time": 7.5,
+              "x": 288,
+              "y": 810,
+              "height": 240,
+              "outfit": "printer_1450"
+            }
+          ],
+          "item_2": [
+            {
+              "time": 0,
+              "x": -0.0,
+              "y": 11.4,
+              "height": 120,
+              "rotation": 0
+            },
+            {
+              "time": 7.5,
+              "x": -0.0,
+              "y": 11.4,
+              "height": 120,
+              "rotation": 0
+            }
+          ],
+          "user_3": [
+            {
+              "time": 0,
+              "x": 436,
+              "y": 810,
+              "height": 240,
+              "outfit": "scientist"
+            },
+            {
+              "time": 7.5,
+              "x": 436,
+              "y": 810,
+              "height": 240,
+              "outfit": "scientist"
+            }
+          ],
+          "item_3": [
+            {
+              "time": 0,
+              "x": -18.0,
+              "y": 31.2,
+              "height": 120,
+              "rotation": 0
+            },
+            {
+              "time": 7.5,
+              "x": -18.0,
+              "y": 31.2,
+              "height": 120,
+              "rotation": 0
+            }
+          ]
+        },
+        "actions": [],
+        "background": {
+          "preset": "workshop_1900"
+        },
+        "index": 0
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 7.5,
+        "end_time": 15.0,
+        "characters_present": [
+          "user_1",
+          "item_4",
+          "user_2",
+          "item_5",
+          "user_3",
+          "item_6"
+        ],
+        "poses": {
+          "user_1": [
+            {
+              "time": 7.5,
+              "x": 140,
+              "y": 810,
+              "height": 240,
+              "outfit": "none",
+              "expression": "happy"
+            },
+            {
+              "time": 15.0,
+              "x": 140,
+              "y": 810,
+              "height": 240,
+              "outfit": "none",
+              "expression": "happy"
+            }
+          ],
+          "item_4": [
+            {
+              "time": 7.5,
+              "x": -0.0,
+              "y": 58.8,
+              "height": 120,
+              "rotation": 0
+            },
+            {
+              "time": 15.0,
+              "x": -0.0,
+              "y": 58.8,
+              "height": 120,
+              "rotation": 0
+            }
+          ],
+          "user_2": [
+            {
+              "time": 7.5,
+              "x": 288,
+              "y": 810,
+              "height": 240,
+              "outfit": "none",
+              "expression": "happy"
+            },
+            {
+              "time": 15.0,
+              "x": 288,
+              "y": 810,
+              "height": 240,
+              "outfit": "none",
+              "expression": "happy"
+            }
+          ],
+          "item_5": [
+            {
+              "time": 7.5,
+              "x": -0.0,
+              "y": 12.0,
+              "height": 120,
+              "rotation": 0
+            },
+            {
+              "time": 15.0,
+              "x": -0.0,
+              "y": 12.0,
+              "height": 120,
+              "rotation": 0
+            }
+          ],
+          "user_3": [
+            {
+              "time": 7.5,
+              "x": 436,
+              "y": 810,
+              "height": 240,
+              "outfit": "none",
+              "expression": "happy"
+            },
+            {
+              "time": 15.0,
+              "x": 436,
+              "y": 810,
+              "height": 240,
+              "outfit": "none",
+              "expression": "happy"
+            }
+          ],
+          "item_6": [
+            {
+              "time": 7.5,
+              "x": -0.0,
+              "y": 21.599999999999998,
+              "height": 120,
+              "rotation": 0
+            },
+            {
+              "time": 15.0,
+              "x": -0.0,
+              "y": 21.599999999999998,
+              "height": 120,
+              "rotation": 0
+            }
+          ]
+        },
+        "actions": [],
+        "background": {
+          "preset": "interior"
+        },
+        "index": 1
+      }
+    ],
+    "cues": [
+      {
+        "start": 0.5,
+        "end": 7.0,
+        "character_id": "user_1",
+        "text": "Thời xưa, con người dùng bàn chải lông tự nhiên, bóng đèn dây tóc vonfram và điện thoại quay số cồng kềnh!",
+        "expression": "neutral"
+      },
+      {
+        "start": 8.0,
+        "end": 14.5,
+        "character_id": "user_2",
+        "text": "Ngày nay, công nghệ phát triển mang đến bàn chải hiện đại, đèn LED tiết kiệm điện và điện thoại thông minh kết nối toàn cầu!",
+        "expression": "happy"
+      }
+    ]
   }
 ]

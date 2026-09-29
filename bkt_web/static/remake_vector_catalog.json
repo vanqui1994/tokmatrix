@@ -27,7 +27,8 @@
     "body_world",
     "recycling",
     "safety",
-    "ancient"
+    "ancient",
+    "inventions"
   ],
   "rig_style": {
     "name": "hand-drawn-whole-pose-cel",
@@ -144,7 +145,9 @@
     "nile_bank",
     "desert_dunes",
     "roman_town",
-    "greek_stadium"
+    "greek_stadium",
+    "workshop_1900",
+    "old_town_1900"
   ],
   "background_specs": {
     "garden": {
@@ -737,6 +740,34 @@
         "storm",
         "hot"
       ]
+    },
+    "workshop_1900": {
+      "label": "Xưởng phát minh năm 1900",
+      "theme": "home",
+      "ground_y": 810,
+      "weather": [
+        "clear",
+        "rain",
+        "snow",
+        "wind",
+        "fog",
+        "storm",
+        "hot"
+      ]
+    },
+    "old_town_1900": {
+      "label": "Phố cổ năm 1900",
+      "theme": "street",
+      "ground_y": 810,
+      "weather": [
+        "clear",
+        "rain",
+        "snow",
+        "wind",
+        "fog",
+        "storm",
+        "hot"
+      ]
     }
   },
   "weather": [
@@ -1162,6 +1193,10 @@
     "lit": [
       0,
       1
+    ],
+    "playing": [
+      0,
+      1
     ]
   },
   "pose_defaults": {
@@ -1235,7 +1270,8 @@
     "sparkle": 0,
     "cooked": 1.0,
     "outfit": "none",
-    "lit": 0
+    "lit": 0,
+    "playing": 0
   },
   "style_colors": [
     "body",
@@ -18597,8 +18633,8 @@
           -67
         ],
         "seat_1": [
-          -4,
-          -85
+          -9,
+          -49
         ],
         "wheel_1": [
           -24,
@@ -23332,6 +23368,10 @@
         "press": [
           0,
           -67.5
+        ],
+        "lever": [
+          0,
+          -67.5
         ]
       },
       "spec": {
@@ -26881,6 +26921,441 @@
         "tip": [
           12,
           -15
+        ]
+      }
+    },
+    "draisine_1817": {
+      "label": "Xe đạp gỗ không bàn đạp 1817",
+      "group": "vehicle",
+      "pack": "inventions",
+      "topics": [
+        "inventions",
+        "de_culture"
+      ],
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "seat_1": [
+          0,
+          -32
+        ],
+        "seat": [
+          0,
+          -32
+        ],
+        "handlebar": [
+          22,
+          -44
+        ],
+        "grip": [
+          22,
+          -44
+        ],
+        "wheel_front": [
+          32,
+          -18
+        ],
+        "wheel_rear": [
+          -32,
+          -18
+        ],
+        "hitch": [
+          38,
+          -18
+        ]
+      }
+    },
+    "phonograph": {
+      "label": "Máy hát loa kèn",
+      "group": "prop",
+      "pack": "inventions",
+      "topics": [
+        "inventions",
+        "us_culture"
+      ],
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "horn": [
+          22,
+          -56
+        ],
+        "needle": [
+          -5,
+          -28
+        ],
+        "top": [
+          26,
+          -66
+        ],
+        "grip": [
+          0,
+          -14
+        ],
+        "center": [
+          0,
+          -25
+        ]
+      }
+    },
+    "early_telephone": {
+      "label": "Điện thoại để bàn đời đầu",
+      "group": "prop",
+      "pack": "inventions",
+      "topics": [
+        "inventions",
+        "us_culture"
+      ],
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "grip": [
+          15,
+          -26
+        ],
+        "earpiece": [
+          15,
+          -38
+        ],
+        "mouthpiece": [
+          -2,
+          -36
+        ],
+        "base": [
+          0,
+          -4
+        ],
+        "top": [
+          0,
+          -42
+        ]
+      }
+    },
+    "movable_type_tray": {
+      "label": "Khay chữ rời Gutenberg",
+      "group": "prop",
+      "pack": "inventions",
+      "topics": [
+        "inventions",
+        "de_culture"
+      ],
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "top": [
+          0,
+          -20
+        ],
+        "grip": [
+          0,
+          -10
+        ],
+        "grip_l": [
+          -24,
+          -10
+        ],
+        "grip_r": [
+          24,
+          -10
+        ],
+        "center": [
+          0,
+          -10
+        ]
+      }
+    },
+    "water_clock": {
+      "label": "Đồng hồ nước",
+      "group": "prop",
+      "pack": "inventions",
+      "topics": [
+        "inventions",
+        "kr_culture"
+      ],
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "top": [
+          0,
+          -62
+        ],
+        "float": [
+          0,
+          -46
+        ],
+        "spout": [
+          14,
+          -38
+        ],
+        "grip": [
+          0,
+          -26
+        ],
+        "surface": [
+          0,
+          -26
+        ]
+      }
+    },
+    "rain_gauge": {
+      "label": "Dụng cụ đo mưa",
+      "group": "prop",
+      "pack": "inventions",
+      "topics": [
+        "inventions",
+        "kr_culture"
+      ],
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "top": [
+          0,
+          -50
+        ],
+        "rim": [
+          0,
+          -48
+        ],
+        "base": [
+          0,
+          -10
+        ],
+        "grip": [
+          0,
+          -24
+        ]
+      }
+    },
+    "eyeglasses_early": {
+      "label": "Kính mắt gọng tròn xưa",
+      "group": "tool",
+      "pack": "inventions",
+      "topics": [
+        "inventions",
+        "school"
+      ],
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "grip": [
+          0,
+          -8
+        ],
+        "lens_l": [
+          -9,
+          -8
+        ],
+        "lens_r": [
+          9,
+          -8
+        ],
+        "bridge": [
+          0,
+          -8
+        ],
+        "top": [
+          0,
+          -15
+        ]
+      }
+    },
+    "toothbrush_early": {
+      "label": "Bàn chải răng thời xưa",
+      "group": "tool",
+      "pack": "inventions",
+      "topics": [
+        "inventions",
+        "body"
+      ],
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "grip": [
+          0,
+          -18
+        ],
+        "bristles": [
+          0,
+          -48
+        ],
+        "tip": [
+          0,
+          -52
+        ],
+        "top": [
+          0,
+          -52
+        ]
+      }
+    },
+    "paper_sheet_stack": {
+      "label": "Xấp giấy thủ công",
+      "group": "prop",
+      "pack": "inventions",
+      "topics": [
+        "inventions",
+        "ancient"
+      ],
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "top": [
+          0,
+          -18
+        ],
+        "surface": [
+          0,
+          -18
+        ],
+        "grip": [
+          0,
+          -9
+        ],
+        "grip_l": [
+          -16,
+          -9
+        ],
+        "grip_r": [
+          16,
+          -9
+        ]
+      }
+    },
+    "coin_stack": {
+      "label": "Chồng tiền xu",
+      "group": "prop",
+      "pack": "inventions",
+      "topics": [
+        "inventions",
+        "festivals"
+      ],
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "top": [
+          0,
+          -22
+        ],
+        "center": [
+          0,
+          -11
+        ],
+        "grip": [
+          0,
+          -11
+        ]
+      }
+    },
+    "workbench_clutter": {
+      "label": "Bàn thợ phát minh",
+      "group": "furniture",
+      "pack": "inventions",
+      "topics": [
+        "inventions",
+        "jobs"
+      ],
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "top": [
+          0,
+          -50
+        ],
+        "surface": [
+          0,
+          -50
+        ],
+        "under": [
+          0,
+          -22
+        ],
+        "seat_1": [
+          0,
+          -50
+        ],
+        "grip": [
+          0,
+          -25
+        ]
+      }
+    },
+    "smartphone": {
+      "label": "Điện thoại thông minh",
+      "group": "tool",
+      "pack": "inventions",
+      "topics": [
+        "inventions",
+        "school"
+      ],
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "grip": [
+          0,
+          -18
+        ],
+        "screen": [
+          0,
+          -18
+        ],
+        "top": [
+          0,
+          -36
+        ]
+      }
+    },
+    "led_bulb": {
+      "label": "Bóng đèn LED tròn",
+      "group": "tool",
+      "pack": "inventions",
+      "topics": [
+        "inventions",
+        "jobs"
+      ],
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "grip": [
+          0,
+          -10
+        ],
+        "bulb": [
+          0,
+          -26
+        ],
+        "top": [
+          0,
+          -36
+        ],
+        "surface": [
+          0,
+          -18
         ]
       }
     }
@@ -31330,7 +31805,8 @@
         "steam_train",
         "tractor",
         "tram",
-        "turtle_ship"
+        "turtle_ship",
+        "draisine_1817"
       ],
       "targets": [],
       "motion": true,
@@ -31381,7 +31857,8 @@
         "tram",
         "turtle_ship",
         "camel",
-        "sledge"
+        "sledge",
+        "draisine_1817"
       ],
       "motion": false,
       "channel": null,
@@ -31527,7 +32004,10 @@
         "traffic_cone",
         "stone_block",
         "papyrus_roll",
-        "paving_stone"
+        "paving_stone",
+        "movable_type_tray",
+        "paper_sheet_stack",
+        "workbench_clutter"
       ],
       "motion": false,
       "channel": null,
@@ -32355,6 +32835,32 @@
       ],
       "motion": true,
       "channel": "walk"
+    },
+    "pull_lever": {
+      "description": "Kéo cần gạt máy in hoặc thiết bị cơ khí",
+      "actor_anchor": "hand_r",
+      "target_anchor": "press",
+      "actors": [
+        "chibi_boy",
+        "chibi_chef",
+        "chibi_dentist",
+        "chibi_doctor",
+        "chibi_farmer",
+        "chibi_girl",
+        "chibi_grandma",
+        "chibi_grandpa",
+        "chibi_kid",
+        "chibi_nurse",
+        "chibi_patient",
+        "chibi_pharmacist",
+        "chibi_teacher"
+      ],
+      "targets": [
+        "printing_press"
+      ],
+      "motion": false,
+      "channel": null,
+      "hold": true
     }
   },
   "locales": [

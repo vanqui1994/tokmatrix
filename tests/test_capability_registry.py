@@ -556,6 +556,12 @@ class CapabilityRegistryTest(unittest.TestCase):
             "stone_block": {"wet"}, "sledge": {"wet"}, "papyrus_roll": {"wet"}, "campfire": {"wet"},
             "cave_wall": {"wet"}, "laurel_torch": {"wet"}, "discus": {"wet"}, "javelin_training": {"wet"},
             "paving_stone": {"wet"}, "chalkboard_wax_tablet": {"wet"},
+            # Phase O Inventions & Early Life Rigs
+            "draisine_1817": {"wet"}, "phonograph": {"wet"}, "early_telephone": {"wet"},
+            "movable_type_tray": {"wet"}, "water_clock": {"wet"}, "rain_gauge": {"wet"},
+            "eyeglasses_early": {"wet"}, "toothbrush_early": {"wet"}, "paper_sheet_stack": {"wet"},
+            "coin_stack": {"wet"}, "workbench_clutter": {"wet"}, "smartphone": {"wet"},
+            "led_bulb": {"wet"},
         }
         self.assertEqual(set(document["assets"]), set(expected))
         for asset_id, states in expected.items():

@@ -3387,6 +3387,97 @@
       "c0635cefa9fbee2d",
       "c0635cefa9fbee2d",
       "c0635cefa9fbee2d"
+    ],
+    "draisine_1817": [
+      "c43c07ef624d8f73",
+      "7db723effa05efce",
+      "b874adef0e5b2cef",
+      "7f03e5ef011b5ee6",
+      "75fc31ef4a34fa13"
+    ],
+    "phonograph": [
+      "b15093ef6ed91987",
+      "b15093ef6ed91987",
+      "b15093ef6ed91987",
+      "b15093ef6ed91987",
+      "b15093ef6ed91987"
+    ],
+    "early_telephone": [
+      "23a3a7efdf888139",
+      "23a3a7efdf888139",
+      "23a3a7efdf888139",
+      "23a3a7efdf888139",
+      "23a3a7efdf888139"
+    ],
+    "movable_type_tray": [
+      "07ab4fefc96ead23",
+      "07ab4fefc96ead23",
+      "07ab4fefc96ead23",
+      "07ab4fefc96ead23",
+      "07ab4fefc96ead23"
+    ],
+    "water_clock": [
+      "ec8a96ef05a31617",
+      "8cc9a2efa60c6eaf",
+      "7dd26aef333b23c0",
+      "44264fef9c8b3432",
+      "ec8a96ef05a31617"
+    ],
+    "rain_gauge": [
+      "7ad3b6ef9069adfe",
+      "7ad3b6ef9069adfe",
+      "7ad3b6ef9069adfe",
+      "7ad3b6ef9069adfe",
+      "7ad3b6ef9069adfe"
+    ],
+    "eyeglasses_early": [
+      "ddd7e3efb7e2355b",
+      "ddd7e3efb7e2355b",
+      "ddd7e3efb7e2355b",
+      "ddd7e3efb7e2355b",
+      "ddd7e3efb7e2355b"
+    ],
+    "toothbrush_early": [
+      "dbc13aef48b46b99",
+      "dbc13aef48b46b99",
+      "dbc13aef48b46b99",
+      "dbc13aef48b46b99",
+      "dbc13aef48b46b99"
+    ],
+    "paper_sheet_stack": [
+      "59d455efa05955a2",
+      "59d455efa05955a2",
+      "59d455efa05955a2",
+      "59d455efa05955a2",
+      "59d455efa05955a2"
+    ],
+    "coin_stack": [
+      "0cf3caefe6a1379b",
+      "0cf3caefe6a1379b",
+      "0cf3caefe6a1379b",
+      "0cf3caefe6a1379b",
+      "0cf3caefe6a1379b"
+    ],
+    "workbench_clutter": [
+      "3af0faef66f95fcd",
+      "3af0faef66f95fcd",
+      "3af0faef66f95fcd",
+      "3af0faef66f95fcd",
+      "3af0faef66f95fcd"
+    ],
+    "smartphone": [
+      "5cd929ef891885c1",
+      "5cd929ef891885c1",
+      "5cd929ef891885c1",
+      "5cd929ef891885c1",
+      "5cd929ef891885c1"
+    ],
+    "led_bulb": [
+      "063422ef639cf647",
+      "063422ef639cf647",
+      "063422ef639cf647",
+      "063422ef639cf647",
+      "063422ef639cf647"
     ]
   },
   "backgrounds": {
@@ -5157,6 +5248,74 @@
         "5b73f6ef7c481d26",
         "98dc5bef7b3a0a73"
       ]
+    },
+    "workshop_1900": {
+      "day": [
+        "0320cdefe213e698",
+        "0320cdefe213e698"
+      ],
+      "night": [
+        "d2c62eef14f24c0a",
+        "d2c62eef14f24c0a"
+      ],
+      "rain": [
+        "1edeb4effcd87d1c",
+        "b58d2fef78123c5a"
+      ],
+      "snow": [
+        "6bb743eff145a393",
+        "d3ff1defd56c4b69"
+      ],
+      "wind": [
+        "92c141ef43e48de6",
+        "f2e9d4ef404fc481"
+      ],
+      "fog": [
+        "cc72d4ef98850c98",
+        "f9f623ef4361a29e"
+      ],
+      "storm": [
+        "2588f7ef1298fd90",
+        "e30a6cefca3f1afd"
+      ],
+      "hot": [
+        "8bcd0aef2ffae2c8",
+        "22420aef6f2349c8"
+      ]
+    },
+    "old_town_1900": {
+      "day": [
+        "9893b4ef046aaf6d",
+        "9893b4ef046aaf6d"
+      ],
+      "night": [
+        "d59f97ef3ce780f6",
+        "d59f97ef3ce780f6"
+      ],
+      "rain": [
+        "3062b7efb43fbfca",
+        "012463ef6b588587"
+      ],
+      "snow": [
+        "fc2020efb8a0c91f",
+        "c66416ef66522418"
+      ],
+      "wind": [
+        "70be6def0803b830",
+        "02a82aef886e09dc"
+      ],
+      "fog": [
+        "6c8b91ef2509ebe4",
+        "675670ef43184db5"
+      ],
+      "storm": [
+        "f064e0ef0ff27eec",
+        "2238e5efeeaa6b5f"
+      ],
+      "hot": [
+        "bc3ed0ef9196a4f2",
+        "ff8dadefbc445afa"
+      ]
     }
   },
   "stories": {
@@ -5460,6 +5619,34 @@
       "3f169cef0d073881",
       "bfd92eeff1a3163e",
       "164ea9ef4e1dea08"
+    ],
+    "first_flight": [
+      "1354f2ef98869403",
+      "045ad4ef3738b125",
+      "fd7a2cef3fce4b65",
+      "6c0a8aef41baaed3",
+      "6f73ecef7fc3d7fc"
+    ],
+    "printing_press": [
+      "2d04f8ef7d9be204",
+      "21918cef569ec989",
+      "3f60ddef29515168",
+      "71d2abef9f9a4992",
+      "d42148ef9d7648ed"
+    ],
+    "first_car": [
+      "aabcd9efb481569a",
+      "fe0411ef15ff0f03",
+      "ab1bacef79d02777",
+      "a734cbefca9d413e",
+      "d1d0caefe5735a90"
+    ],
+    "then_and_now": [
+      "fa48e6efecd5ea09",
+      "45a5ebef26337810",
+      "98c255ef2ddd9574",
+      "c876a9ef9038cdb5",
+      "868a10ef0a127f32"
     ]
   }
 }
