@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/static/style.css?v=4.7">
+  <link rel="stylesheet" href="/static/style.css?v=4.11">
   <link rel="stylesheet" href="/static/light-theme.css?v=3.1">
   <link rel="stylesheet" href="/static/cms-theme.css?v=2.8">
   <link rel="stylesheet" href="/static/flow_view.css?v=2">
@@ -142,15 +142,20 @@
               <span class="nav-text">Xưởng Tạo Ảnh AI</span>
               <span class="tab-badge badge-pink" id="side-badge-ai-images">DUAL AI</span>
             </button>
+            <button type="button" class="nav-tab" data-tab="remake_2d" onclick="switchTab('remake_2d')">
+              <span class="nav-icon">✨</span>
+              <span class="nav-text">Canvas Remake</span>
+              <span class="tab-badge badge-success" id="side-badge-remake-2d">HOT PIPELINE</span>
+            </button>
+            <button type="button" class="nav-tab" data-tab="story_remake" onclick="switchTab('story_remake')">
+              <span class="nav-icon">🎞️</span>
+              <span class="nav-text">Story Remake (YouTube)</span>
+              <span class="tab-badge badge-neutral" id="badge-story-status">--</span>
+            </button>
             <button type="button" class="nav-tab" data-tab="bridge" onclick="switchTab('bridge')">
               <span class="nav-icon">🔗</span>
               <span class="nav-text">Antigravity Bridge</span>
               <span class="tab-badge badge-purple" id="side-badge-bridge">0</span>
-            </button>
-            <button type="button" class="nav-tab" data-tab="remake_2d" onclick="switchTab('remake_2d')">
-              <span class="nav-icon">✨</span>
-              <span class="nav-text">Remake Hoạt Hình 2D</span>
-              <span class="tab-badge badge-success" id="side-badge-remake-2d">HOT PIPELINE</span>
             </button>
             <button type="button" class="nav-tab" data-tab="gpu" onclick="switchTab('gpu')">
               <span class="nav-icon">🎞️</span>
@@ -166,11 +171,6 @@
               <span class="nav-icon">🎬</span>
               <span class="nav-text">Phim AI (Muse)</span>
               <span class="tab-badge badge-neutral" id="badge-film-status">--</span>
-            </button>
-            <button type="button" class="nav-tab" data-tab="story_remake" onclick="switchTab('story_remake')">
-              <span class="nav-icon">🎞️</span>
-              <span class="nav-text">Story Remake (YouTube)</span>
-              <span class="tab-badge badge-neutral" id="badge-story-status">--</span>
             </button>
             <button type="button" class="nav-tab" data-tab="tiktok_api" onclick="switchTab('tiktok_api')">
               <span class="nav-icon">📡</span>
@@ -629,34 +629,6 @@
       </div>
     </div>
 
-    <div class="tab-pane" id="pane-story_remake" style="display: none;">
-      <div class="studio-grid-2col">
-        <div class="panel-card">
-          <div class="card-header"><h3>🎞️ Remake video kể chuyện từ kênh YouTube</h3></div>
-          <p style="font-size:13px;color:var(--color-ink-dim);margin:0 0 10px">Giữ nguyên giọng đọc + nhạc gốc, vẽ lại phần hình bằng ảnh phim AI (ImageRouter, Cloudflare dự phòng) với nhân vật cố định, phụ đề và chuyển động kiểu điện ảnh. Tự bỏ qua video không phải dạng kể chuyện.</p>
-          <label style="font-size:12px;font-weight:700">Link kênh hoặc video YouTube</label>
-          <input id="story-url" class="form-control" placeholder="https://www.youtube.com/@kenh" style="width:100%;margin:4px 0 10px">
-          <div style="display:flex;gap:10px;flex-wrap:wrap">
-            <label style="font-size:12px">Số video tối đa <input id="story-limit" type="number" min="1" max="50" value="5" class="form-control" style="width:80px"></label>
-            <label style="font-size:12px">Chạy song song <select id="story-jobs" class="form-control"><option>1</option><option>2</option><option>3</option></select></label>
-            <label style="font-size:12px">Nguồn ảnh <select id="story-images" class="form-control"><option value="muse">Muse (ưu tiên — ImageRouter vẽ bù cảnh lỗi)</option><option value="imagerouter">Chỉ ImageRouter (nhanh)</option></select></label>
-            <label style="font-size:12px">Ngôn ngữ <select id="story-lang" class="form-control"><option value="auto">Tự nhận</option><option value="de">de</option><option value="en">en</option><option value="vi">vi</option><option value="ja">ja</option><option value="ko">ko</option><option value="fr">fr</option></select></label>
-          </div>
-          <div style="display:flex;gap:10px;margin-top:12px">
-            <button id="story-run-btn" class="btn btn-primary" onclick="storyRun()">▶ Bắt đầu remake</button>
-            <button id="story-stop-btn" class="btn btn-secondary" onclick="storyStop()" style="display:none">■ Dừng</button>
-          </div>
-          <div id="story-runner" style="font-size:12px;color:var(--color-ink-dim);margin-top:10px"></div>
-          <pre id="story-log" style="font-size:11px;max-height:260px;overflow:auto;background:var(--color-surface);border:1px solid var(--color-line);border-radius:8px;padding:8px;margin-top:10px;white-space:pre-wrap"></pre>
-          <div id="story-player" style="margin-top:10px"></div>
-        </div>
-        <div class="panel-card">
-          <div class="card-header"><h3>Video <span id="story-count" style="font-size:12px;font-weight:400"></span></h3></div>
-          <div id="story-list"></div>
-        </div>
-      </div>
-    </div>
-
     <div class="tab-pane" id="pane-tiktok_api" style="display: none;">
       <div class="studio-grid-2col">
         <div class="panel-card">
@@ -719,6 +691,68 @@
         </div>
         <div id="tkapi-mock-warning" style="display: none; margin: 12px 16px 0; padding: 10px 12px; border-radius: 8px; border: 1px solid #f59e0b; color: #b45309; background: rgba(245, 158, 11, 0.08); font-size: 13px;"></div>
         <pre id="tkapi-result" class="mono" style="margin: 0; padding: 16px; max-height: 560px; overflow: auto; white-space: pre-wrap; word-break: break-word; font-size: 12px;"></pre>
+      </div>
+    </div>
+
+    <div class="tab-pane muse-pane" id="pane-muse" style="display: none;">
+      <div class="muse-layout">
+        <section class="muse-card" aria-labelledby="muse-create-title">
+          <header class="muse-card-header">
+            <div class="muse-heading-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M15 10l4.5-2.5v9L15 14"/><rect x="3" y="6" width="12" height="12" rx="3"/><path d="m7 2 1.2 4M12 2l1.2 4"/></svg></div>
+            <div class="muse-heading-copy"><span class="muse-eyebrow">AI MOVIE STUDIO</span><h2 id="muse-create-title">Biến ý tưởng thành một bộ phim</h2><p>Muse giữ nhân vật nhất quán xuyên suốt mọi cảnh.</p></div>
+            <span class="muse-beta">BETA</span>
+          </header>
+          <div class="muse-card-body">
+            <div class="muse-workflow" aria-label="Quy trình tạo phim"><span><b>1</b> Viết ý tưởng</span><i></i><span><b>2</b> Muse dựng cảnh</span><i></i><span><b>3</b> Xuất phim</span></div>
+
+            <form id="muse-form" onsubmit="submitMuseMovie(event)">
+              <div class="muse-field">
+                <label for="muse-title">Tên phim <span>(tùy chọn)</span></label>
+                <input id="muse-title" class="muse-control" maxlength="120" autocomplete="off" placeholder="Ví dụ: Chuyến bay cuối ngày">
+              </div>
+              <div class="muse-field">
+                <div class="muse-label-row"><label for="muse-story">Kịch bản hoặc ý tưởng</label><span>Mỗi dòng có thể là một cảnh</span></div>
+                <textarea id="muse-story" class="muse-control muse-story" required placeholder="Một phi công trẻ lái F-16 cỡ Nhật bay qua bão, gặp sự cố và hạ cánh khẩn cấp trên tàu sân bay..."></textarea>
+              </div>
+
+              <div class="muse-options">
+                <div class="muse-field muse-scenes-field">
+                  <label for="muse-scenes">Số cảnh</label>
+                  <input id="muse-scenes" class="muse-control" type="number" min="1" max="20" value="6" inputmode="numeric">
+                </div>
+                <div class="muse-field muse-style-field">
+                  <label for="muse-style">Phong cách</label>
+                  <select id="muse-style" class="muse-control">
+                    <option value="cinematic">Điện ảnh (ảnh thật)</option>
+                    <option value="anime">Anime</option>
+                    <option value="documentary">Phim tài liệu</option>
+                    <option value="animation">Hoạt hình 3D</option>
+                  </select>
+                </div>
+                <div class="muse-field muse-ratio-field">
+                  <label for="muse-ratio">Khung</label>
+                  <select id="muse-ratio" class="muse-control">
+                    <option value="9:16">Dọc 9:16</option>
+                    <option value="16:9">Ngang 16:9</option>
+                    <option value="1:1">Vuông 1:1</option>
+                  </select>
+                </div>
+                <label class="muse-check" for="muse-keep-audio">
+                  <input id="muse-keep-audio" type="checkbox" checked><span class="muse-switch" aria-hidden="true"></span><span>Âm thanh clip</span>
+                </label>
+              </div>
+
+              <div class="muse-submit-row"><span><strong>Khoảng 6 phút</strong><small>6 cảnh · mỗi cảnh ~5 giây</small></span><button id="muse-submit" class="muse-primary-button" type="submit"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 3v18M3 12h18"/><path d="m17 5 2 2M5 17l2 2"/></svg><span>Tạo phim với Muse</span></button></div>
+            </form>
+          </div>
+        </section>
+
+        <section class="muse-card muse-library-card" aria-labelledby="muse-library-title">
+          <header class="muse-card-header muse-library-header"><div class="muse-heading-copy"><span class="muse-eyebrow">THƯ VIỆN</span><h2 id="muse-library-title">Phim của bạn</h2><p>Theo dõi và quản lý các phim đã tạo.</p></div><span class="muse-count">0 phim</span></header>
+          <div id="muse-movie-list" class="muse-movie-list" aria-live="polite">
+            <div class="muse-empty-state"><span><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M15 10l4.5-2.5v9L15 14"/><rect x="3" y="6" width="12" height="12" rx="3"/></svg></span><strong>Chưa có phim Muse</strong><p>Phim được tạo thành công sẽ xuất hiện ở đây để bạn xem và tải xuống.</p></div>
+          </div>
+        </section>
       </div>
     </div>
 
@@ -2403,6 +2437,14 @@
             </div>
           </div>
 
+          <div class="rm-workflow-steps" aria-label="Quy trình remake">
+            <span class="rm-workflow-step is-current"><i>1</i> Nguồn</span>
+            <span class="rm-workflow-line"></span>
+            <span class="rm-workflow-step"><i>2</i> Dựng</span>
+            <span class="rm-workflow-line"></span>
+            <span class="rm-workflow-step"><i>3</i> Xuất bản</span>
+          </div>
+
           <!-- Vùng tải video -->
           <div id="rm-dropzone" class="rm-dropzone">
             <div class="rm-drop-icon">⬆️</div>
@@ -2415,6 +2457,7 @@
             <div class="rm-upload-progress" id="rm-upload-progress"><div id="rm-upload-fill"></div></div>
           </div>
 
+          <div class="rm-form-grid">
           <div class="rm-field">
             <label class="ai-section-label" for="rm-video-select"><span>📼</span> Video nguồn:</label>
             <select class="ai-inline-input" id="rm-video-select">
@@ -2426,25 +2469,24 @@
             <label class="ai-section-label" for="rm-project-slug"><span>🏷️</span> Mã project:</label>
             <input class="ai-inline-input" id="rm-project-slug" maxlength="80" placeholder="video-01">
           </div>
+          </div>
 
           <button type="button" id="rm-start-btn" class="btn-ai-primary-gradient" onclick="startRemakeBuild()">
             <span id="rm-start-icon" class="btn-glow-icon">🚀</span>
             <span id="rm-start-text">Bắt Đầu Dựng Bản Remake</span>
           </button>
 
-          <div style="display:flex; gap:8px; margin-top:8px;">
+          <div class="rm-action-secondary">
             <button type="button" class="ai-mini-btn primary" id="rm-auto-remake-btn"
                     onclick="document.getElementById('rm-auto-file-input').click()"
-                    title="Upload video và tự động chạy toàn bộ pipeline remake ngay lập tức"
-                    style="flex:1;">
+                    title="Upload video và tự động chạy toàn bộ pipeline remake ngay lập tức">
               ⚡ Upload & Auto Remake
             </button>
             <input id="rm-auto-file-input" type="file" accept="video/mp4,video/quicktime,video/webm,.mp4,.mov,.webm" hidden>
           </div>
 
           <p class="rm-hint">
-            Quy trình: kiểm chứng nguồn → Story Bible → phân vai → Character Rig → lồng tiếng → Canvas player → <strong>xuất video MP4</strong>.
-            <br>Nút <strong>⚡ Auto Remake</strong> gộp upload + remake trong một bước.
+            <strong>Auto Remake</strong> gộp tải video và dựng tự động. Bạn có thể kiểm tra storyboard trước khi xuất bản.
           </p>
 
           <!-- Nguyên tắc fidelity -->
@@ -2518,6 +2560,83 @@
               <div class="rm-log-line">Chọn video nguồn để bắt đầu. Hệ thống không tự sáng tác nhân vật hoặc nội dung.</div>
             </div>
           </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tab-pane" id="pane-story_remake" style="display: none;">
+      <div class="story-remake-page">
+        <header class="story-remake-heading">
+          <div class="story-remake-heading-copy">
+            <span class="story-remake-eyebrow">YOUTUBE STORY STUDIO</span>
+            <h2>Remake video kể chuyện</h2>
+            <p>Giữ nguyên giọng đọc và nhạc gốc. Tạo lại phần hình theo từng cảnh với nhân vật nhất quán, phụ đề và chuyển động điện ảnh.</p>
+          </div>
+          <div class="story-remake-heading-mark" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m10 9 5 3-5 3z"/></svg>
+          </div>
+        </header>
+
+        <div class="story-remake-layout">
+          <section class="story-card story-setup-card" aria-labelledby="story-setup-title">
+            <div class="story-card-heading">
+              <div><span class="story-card-kicker">01 · NGUỒN & CẤU HÌNH</span><h3 id="story-setup-title">Bắt đầu từ YouTube</h3></div>
+              <span class="story-card-icon" aria-hidden="true">↗</span>
+            </div>
+
+            <div class="story-field story-url-field">
+              <label for="story-url">Link kênh hoặc video</label>
+              <input id="story-url" class="form-control" type="url" inputmode="url" placeholder="https://www.youtube.com/@tenkenh" autocomplete="url">
+              <span class="story-field-help">Dán link kênh để xử lý nhiều video, hoặc link video riêng lẻ.</span>
+            </div>
+
+            <div class="story-options-grid">
+              <div class="story-field">
+                <label for="story-limit">Số video tối đa</label>
+                <input id="story-limit" type="number" min="1" max="50" value="5" class="form-control">
+              </div>
+              <div class="story-field">
+                <label for="story-jobs">Số video chạy cùng lúc</label>
+                <select id="story-jobs" class="form-control"><option value="1">1 video</option><option value="2">2 video</option><option value="3">3 video</option></select>
+              </div>
+              <div class="story-field">
+                <label for="story-images">Nguồn tạo hình</label>
+                <select id="story-images" class="form-control"><option value="muse">Muse, dự phòng ImageRouter</option><option value="imagerouter">ImageRouter</option></select>
+              </div>
+              <div class="story-field">
+                <label for="story-lang">Ngôn ngữ lời kể</label>
+                <select id="story-lang" class="form-control"><option value="auto">Tự nhận diện</option><option value="de">Deutsch</option><option value="en">English</option><option value="vi">Tiếng Việt</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="fr">Français</option></select>
+              </div>
+            </div>
+
+            <div class="story-actions">
+              <button id="story-run-btn" class="story-start-button" type="button" onclick="storyRun()">
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.8c0-.8.9-1.3 1.6-.9l9.1 5.2a1 1 0 0 1 0 1.8l-9.1 5.2c-.7.4-1.6-.1-1.6-.9z"/></svg>
+                Bắt đầu remake
+              </button>
+              <button id="story-stop-btn" class="story-stop-button" type="button" onclick="storyStop()" style="display:none">
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="2"/></svg>
+                Dừng lượt chạy
+              </button>
+            </div>
+            <div id="story-runner" class="story-runner-status" aria-live="polite">Chưa chạy lượt nào</div>
+
+            <details class="story-log-details">
+              <summary>Nhật ký xử lý <span>Chi tiết các bước gần nhất</span></summary>
+              <pre id="story-log" aria-live="polite">Chưa có nhật ký.</pre>
+            </details>
+          </section>
+
+          <section class="story-card story-library-card" aria-labelledby="story-library-title">
+            <div class="story-card-heading">
+              <div><span class="story-card-kicker">02 · THƯ VIỆN</span><h3 id="story-library-title">Video remake</h3></div>
+              <span id="story-count" class="story-count-pill">Đang tải…</span>
+            </div>
+            <div id="story-list" class="story-list" aria-live="polite">
+              <div class="story-empty-state"><span class="story-empty-icon" aria-hidden="true">▶</span><strong>Đang tải thư viện</strong><p>Danh sách video remake sẽ xuất hiện tại đây.</p></div>
+            </div>
+            <div id="story-player" class="story-player" hidden></div>
+          </section>
         </div>
       </div>
     </div>
@@ -5408,9 +5527,9 @@
     </div>
   </div>
 
-  <script src="/static/app.js?v=6.20"></script>
+  <script src="/static/app.js?v=6.22"></script>
   <script src="/static/tiktok_api.js?v=2"></script>
-  <script src="/static/story_remake.js?v=3"></script>
+  <script src="/static/story_remake.js?v=5"></script>
   <script src="/static/muse_film.js?v=1"></script>
   <script src="/static/flow_view.js?v=6"></script>
 </body>

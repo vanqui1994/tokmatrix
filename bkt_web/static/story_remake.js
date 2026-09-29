@@ -27,36 +27,49 @@ const STORY_STEP = { 'vo.mp3': 'chép lời', 'words.json': 'chia cảnh', 'plan
 
 async function storyRefresh() {
   let data;
-  try { data = await storyJson('/api/story-remake/status'); } catch (e) { return; }
+  try {
+    data = await storyJson('/api/story-remake/status');
+  } catch (e) {
+    const list = document.getElementById('story-list');
+    const count = document.getElementById('story-count');
+    if (count) count.textContent = 'Chưa kết nối';
+    if (list) list.innerHTML = `<div class="story-empty-state is-error"><span class="story-empty-icon" aria-hidden="true">!</span><strong>Không tải được thư viện</strong><p>${escapeHtml(e.message || 'Hãy tải lại trang để thử lại.')}</p></div>`;
+    return;
+  }
   const r = data.runner || {};
   const badge = document.getElementById('badge-story-status');
   if (badge) badge.textContent = r.running ? 'chạy' : '--';
-  document.getElementById('story-run-btn').disabled = !!r.running;
-  document.getElementById('story-stop-btn').style.display = r.running ? '' : 'none';
-  document.getElementById('story-runner').textContent = r.running
+  const runButton = document.getElementById('story-run-btn');
+  const stopButton = document.getElementById('story-stop-btn');
+  const runnerStatus = document.getElementById('story-runner');
+  if (runButton) runButton.disabled = !!r.running;
+  if (stopButton) stopButton.style.display = r.running ? '' : 'none';
+  if (runnerStatus) runnerStatus.textContent = r.running
     ? `Đang chạy: ${r.url} (tối đa ${r.limit} video, ${r.jobs} luồng)`
     : (r.url ? `Lượt gần nhất: ${r.url}` : 'Chưa chạy lượt nào');
-  document.getElementById('story-log').textContent = data.log || '';
+  const log = document.getElementById('story-log');
+  if (log) log.textContent = data.log || 'Chưa có nhật ký.';
   const vids = data.videos || [];
   const done = vids.filter((v) => v.status === 'done').length;
-  document.getElementById('story-count').textContent = `${done} video xong / ${vids.length}`;
+  const count = document.getElementById('story-count');
+  if (count) count.textContent = `${done} / ${vids.length} xong`;
   document.getElementById('story-list').innerHTML = vids.map((v) => {
     const [label, cls] = STORY_STATUS[v.status] || [v.status, 'badge-neutral'];
     const step = v.status === 'running' && v.step ? ` · ${STORY_STEP[v.step] || v.step}` : '';
-    const thumb = v.has_thumb ? `<img src="/api/story-remake/thumb/${encodeURIComponent(v.id)}" style="width:72px;height:128px;object-fit:cover;border-radius:6px">` : '<div style="width:72px;height:128px;background:var(--color-line);border-radius:6px"></div>';
+    const thumb = v.has_thumb ? `<img src="/api/story-remake/thumb/${encodeURIComponent(v.id)}" alt="Khung hình xem trước của ${escapeHtml(v.title || v.id)}">` : '<div class="story-video-placeholder" aria-hidden="true">▶</div>';
     const meta = [v.scenes ? `${v.scenes} cảnh` : '', v.seconds ? `${Math.round(v.seconds / 60)} phút` : ''].filter(Boolean).join(' · ');
-    return `<div class="panel-card" style="display:flex;gap:12px;align-items:flex-start;padding:10px;margin-bottom:8px">
-      ${thumb}
-      <div style="flex:1;min-width:0">
-        <div style="font-weight:700;overflow-wrap:anywhere">${escapeHtml(v.title || v.id)}</div>
-        <div style="font-size:12px;color:var(--color-ink-dim);margin:4px 0"><span class="tab-badge ${cls}">${label}</span>${escapeHtml(step)} ${escapeHtml(meta)}</div>
-        ${v.reason ? `<div style="font-size:12px;color:var(--color-ink-dim)">${escapeHtml(v.reason)}</div>` : ''}
-        ${v.error ? `<div style="font-size:12px;color:#c0392b;white-space:pre-wrap;max-height:60px;overflow:auto">${escapeHtml(v.error.slice(0, 400))}</div>` : ''}
-        ${v.has_mp4 ? `<div style="margin-top:6px;display:flex;gap:8px;flex-wrap:wrap">
-          <button class="btn btn-secondary" onclick="storyPlay('${encodeURIComponent(v.id)}')">▶ Xem</button>
-          <a class="btn btn-secondary" href="/api/story-remake/video/${encodeURIComponent(v.id)}" download="${escapeHtml(v.id)}.mp4">⬇ Tải MP4</a></div>` : ''}
-      </div></div>`;
-  }).join('') || '<div style="color:var(--color-ink-dim)">Chưa có video nào.</div>';
+    return `<article class="story-video-card">
+      <div class="story-video-thumb">${thumb}<span class="story-status-pill ${cls}">${label}</span></div>
+      <div class="story-video-content">
+        <div class="story-video-title">${escapeHtml(v.title || v.id)}</div>
+        <div class="story-video-meta">${escapeHtml(meta || 'YouTube story')}${escapeHtml(step)}</div>
+        ${v.reason ? `<div class="story-video-note">${escapeHtml(v.reason)}</div>` : ''}
+        ${v.error ? `<div class="story-video-error">${escapeHtml(v.error.slice(0, 400))}</div>` : ''}
+        ${v.has_mp4 ? `<div class="story-video-actions">
+          <button class="story-video-action is-primary" type="button" onclick="storyPlay('${encodeURIComponent(v.id)}')">Xem video</button>
+          <a class="story-video-action" href="/api/story-remake/video/${encodeURIComponent(v.id)}" download="${escapeHtml(v.id)}.mp4">Tải MP4</a></div>` : ''}
+      </div></article>`;
+  }).join('') || `<div class="story-empty-state"><span class="story-empty-icon" aria-hidden="true">▶</span><strong>Chưa có video remake</strong><p>Dán link kênh hoặc video YouTube ở khung bên trái, rồi bắt đầu lượt chạy đầu tiên.</p><button type="button" onclick="document.getElementById('story-url').focus()">Nhập link YouTube</button></div>`;
 }
 
 async function storyRun() {
@@ -83,6 +96,8 @@ async function storyStop() {
 
 function storyPlay(id) {
   const box = document.getElementById('story-player');
-  box.innerHTML = `<video src="/api/story-remake/video/${id}" controls autoplay style="width:100%;max-height:70vh;border-radius:8px;background:#000"></video>`;
+  if (!box) return;
+  box.hidden = false;
+  box.innerHTML = `<video src="/api/story-remake/video/${id}" controls autoplay playsinline aria-label="Video Story Remake" ></video>`;
   box.scrollIntoView({ behavior: 'smooth' });
 }
