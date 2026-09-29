@@ -4,7 +4,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import compareEngine from "../matrix/render/engines/compare.mjs";
-import { listVariants, validateRegistry } from "../matrix/render/variants/index.mjs";
+import { getVariant, listVariants, validateRegistry } from "../matrix/render/variants/index.mjs";
 import { compareVariantAxes } from "../matrix/render/variants/schema.mjs";
 import { defaultDna } from "../matrix/render/variants/dna.mjs";
 import { lintVariantHtml } from "../matrix/render/variants/kit/lint.mjs";
@@ -26,14 +26,14 @@ function scenesFor(lines) {
   });
 }
 
-async function build(variant, composition, lang, { extras, sample = variant.sample(lang) } = {}) {
+async function build(variant, composition, lang, { extras, sample = variant.sample(lang), subjectImages = null } = {}) {
   const slug = `t-${variant.id.replace("/", "-")}-${composition}-${lang}`;
   const scenes = scenesFor(sample.lines);
   const totalDuration = Math.ceil(scenes.at(-1).start + scenes.at(-1).duration + 1.2);
   const creative = resolveCreativeContext({ variant, dna: defaultDna(variant, composition), lang, channelId: `ch_${lang}`, slug });
   return variant.renderer.buildHtml({
     slug, title: sample.title, lang, channel: { channel_id: `ch_${lang}` }, manifest: {}, totalDuration,
-    extras: extras === undefined ? sample.extras : extras, sfxCues: [], bgmSegments: [], cinemaAudioHtml: "", common: { lang }, scenes, creative,
+    extras: extras === undefined ? sample.extras : extras, sfxCues: [], bgmSegments: [], cinemaAudioHtml: "", common: { lang }, scenes, creative, subjectImages,
   });
 }
 
@@ -51,15 +51,16 @@ function stressSample() {
   return { title: "Donaudampfschiff gegen Rindfleischetikett", lines, extras: { subject_a: { name: names[0].slice(0, 28), tag: "Sehr lange Bezeichnung" }, subject_b: { name: "Rindfleischetikett", tag: "Gesetzestext" }, rounds } };
 }
 
-test("compare registers 8 active IMAGE_AI variants (7 base + original look) with 2 compositions each and ≥ 4/6 differing axes", () => {
+test("compare registers 8 active SVG variants with A/B subject images (7 base + original look) with 2 compositions each and ≥ 4/6 differing axes", () => {
   assert.deepEqual(validateRegistry().errors, []);
   const list = variants();
   assert.deepEqual(list.map((v) => v.id).sort(), [...IDS].sort());
   for (const variant of list) {
     assert.equal(variant.status, "active");
-    // Owner 29/09: mọi layout So Sánh có ảnh AI của cảnh (kit design.image) bên cạnh panel dữ liệu.
-    assert.equal(variant.assetProfile.type, "IMAGE_AI");
-    assert.equal(variant.costProfile.aiImagesPerScene, 1);
+    // Owner 29/09: 2 ảnh Antigravity mỗi video (đối tượng A, B) trong ô xanh/đỏ, không ảnh mỗi cảnh.
+    assert.equal(variant.assetProfile.type, "SVG");
+    assert.equal(variant.assetProfile.subjectImages, true);
+    assert.equal(variant.costProfile.aiImagesPerScene, 0);
     assert.equal(Object.keys(variant.visualProfile.compositions).length, 2);
     assert.ok(Object.keys(variant.contentProfile.topicPacks).every((id) => id.startsWith("compare_")));
     assert.ok(variant.audioProfile.fx.every((fx) => ["none", "creepy", "whisper", "radio"].includes(fx)));
@@ -86,7 +87,7 @@ test("every compare variant × composition × country builds lint-clean, determi
         const b = await build(variant, composition, lang);
         assert.equal(a.html, b.html, `${where} is not deterministic`);
         assert.deepEqual(lintVariantHtml(a.html), [], where);
-        assert.ok(/id="v-sframe-\d+"/u.test(a.html), `${where} shows the scene's AI image`);
+        assert.ok(!/id="v-sframe-\d+"/u.test(a.html), `${where} has no per-scene image`);
         assert.doesNotMatch(a.html, /Math\.random|Date\.now/u);
         const extras = variant.sample(lang).extras;
         for (const subject of [extras.subject_a, extras.subject_b]) assert.ok(a.html.includes(escapeHtml(subject.name)), `${where} subject ${subject.name}`);
@@ -112,6 +113,24 @@ test("many rounds with very long names, missing extras (fallback) and malformed 
       assert.deepEqual(lintVariantHtml(fallback.html), [], `${where} fallback`);
       const broken = await build(variant, composition, "en", { extras: { subject_a: { name: "" }, rounds: [null, { winner: "?" }] } });
       assert.deepEqual(lintVariantHtml(broken.html), [], `${where} malformed extras`);
+    }
+  }
+});
+
+test("compare subject images: two Antigravity items per video from the A/B names, shown in every layout", async () => {
+  const { subjectImageItems } = await import("../matrix/creative/asset-manager.mjs");
+  const variant = getVariant("compare/boxing-ring");
+  const channel = { channel_id: "c", creative: { variant_id: variant.id, dna: defaultDna(variant, Object.keys(variant.visualProfile.compositions)[0]) } };
+  const manifest = { topic: { title: "Lion vs Tiger" }, script: { engine_extras: { data: { subject_a: { name: "Löwe" }, subject_b: { name: "Tiger" } } } } };
+  const items = subjectImageItems(manifest, channel, "compare");
+  assert.deepEqual(items.map((it) => [it.side, it.dest]), [["a", "subjects/a.png"], ["b", "subjects/b.png"]]);
+  assert.match(items[0].prompt, /^Löwe,/u);
+  assert.deepEqual(subjectImageItems({ topic: { title: "Lion vs Tiger" } }, channel, "compare").map((it) => it.prompt.split(",")[0]), ["Lion", "Tiger"]);
+  assert.deepEqual(subjectImageItems(manifest, { channel_id: "legacy" }, "compare"), []);
+  for (const v of variants()) {
+    for (const composition of Object.keys(v.visualProfile.compositions)) {
+      const a = await build(v, composition, "en", { subjectImages: { a: "assets/images/subject-a.png", b: "assets/images/subject-b.png" } });
+      assert.ok(a.html.includes("assets/images/subject-a.png") && a.html.includes("assets/images/subject-b.png"), `${v.id}#${composition} shows both subject images`);
     }
   }
 });

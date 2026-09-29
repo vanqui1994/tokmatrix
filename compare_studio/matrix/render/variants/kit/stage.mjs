@@ -15,6 +15,7 @@
 //   underlay?: (ctx) → { html, css, tweens }         // phần tử xuyên suốt nằm DƯỚI cảnh (lưới, bản đồ nền…) — trong clip nền
 //   image?:  { region, frame? }                      // ảnh AI của cảnh đặt riêng khi khung visual là panel dữ liệu
 //                                                   // (compare…); chỉ vẽ khi cảnh có imgSrc, không có → HTML như cũ
+//   perScene?: { html, css }                          // HTML tĩnh chép vào MỌI cảnh, trên panel (ảnh A/B của compare)
 //   css?:    string
 //   fontFamilies?: ["JetBrains Mono", …]            // họ font offline thêm ngoài font thân của DNA (kit/fonts.mjs)
 // }
@@ -245,12 +246,12 @@ export function buildStage(ctx, design, { ui, cfg = {} }) {
       if (end < totalDuration) tweens.push({ method: "set", target: `#v-scene-${idx}`, vars: { display: "none" }, at: end });
       return `
 <div id="v-scene-${idx}" class="v-scene v-scene-free" data-stock-scene="${idx}">
-  <div class="v-inner" id="v-inner-${idx}">${visual}${sceneImage}${text}${tag}${extra?.html || ""}</div>
+  <div class="v-inner" id="v-inner-${idx}">${visual}${sceneImage}${text}${tag}${extra?.html || ""}${design.perScene?.html || ""}</div>
 </div>`;
     }
     return `
 <div id="v-scene-${idx}" class="clip v-scene" data-start="${scene.visualStart}" data-duration="${scene.visualDuration}" data-track-index="3">
-  <div class="v-inner" id="v-inner-${idx}">${visual}${sceneImage}${text}${tag}${extra?.html || ""}</div>
+  <div class="v-inner" id="v-inner-${idx}">${visual}${sceneImage}${text}${tag}${extra?.html || ""}${design.perScene?.html || ""}</div>
 </div>`;
   }).join("");
   if (overlay?.tweens) tweens.push(...overlay.tweens);
@@ -287,6 +288,7 @@ ${under.css}
 ${over.css}
 ${overlay?.css || ""}
 ${underlay?.css || ""}
+${design.perScene?.css || ""}
 ${design.css || ""}${stockScenes ? `\n${STOCK_CSS}` : ""}`;
 
   const observability = { ...creative.observability, layout: layoutRegions(design) };

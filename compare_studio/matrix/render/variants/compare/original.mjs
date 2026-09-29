@@ -22,9 +22,8 @@ const LAYOUT = {
     vs: { x: 480, y: 402 }, badgeY: 244,
     plateA: { x: 70, y: 690, w: 360, h: 120 }, plateB: { x: 650, y: 690, w: 360, h: 120 },
     score: { x: 440, y: 690, w: 200, h: 120 }, versus: { x: 70, y: 700, w: 940, h: 100 },
-    caption: { x: 90, y: 850, w: 900, h: 300 },
-    image: { x: 70, y: 1180, w: 600, h: 560 },
-    mascot: { left: 640, top: 1330, scale: 0.72 },
+    caption: { x: 90, y: 850, w: 900, h: 380 },
+    mascot: { left: 330, top: 1280, scale: 1 },
     glowTop: { x: 230, y: 150, s: 620 }, glowBottom: { x: 220, y: 1085, s: 640 },
   },
   columns: {
@@ -33,9 +32,8 @@ const LAYOUT = {
     vs: { x: 480, y: 402 }, badgeY: 244,
     plateA: { x: 90, y: 810, w: 410, h: 130 }, plateB: { x: 580, y: 810, w: 410, h: 130 },
     score: { x: 340, y: 986, w: 400, h: 120 }, versus: { x: 70, y: 1000, w: 940, h: 100 },
-    caption: { x: 90, y: 1120, w: 900, h: 300 },
-    image: { x: 70, y: 1440, w: 600, h: 420 },
-    mascot: { left: 640, top: 1460, scale: 0.6 },
+    caption: { x: 90, y: 1120, w: 900, h: 320 },
+    mascot: { left: 330, top: 1392, scale: 0.8 },
     glowTop: { x: 230, y: 150, s: 620 }, glowBottom: { x: 220, y: 1240, s: 640 },
   },
 };
@@ -50,6 +48,7 @@ function css(ctx, L) {
 .oc-card{position:absolute;box-sizing:border-box;border-radius:32px;background:var(--panel);border:3px solid var(--panel-edge-dim);padding:20px;transform-origin:50% 50%;display:flex;flex-direction:column;align-items:center}
 .oc-emb-panel{position:relative;width:404px;height:226px;border-radius:22px;background:linear-gradient(180deg,rgba(255,255,255,.08) 0%,rgba(0,0,0,.18) 100%);display:flex;align-items:center;justify-content:center}
 .oc-emb{width:196px;height:196px;display:block}
+.oc-photo{position:absolute;inset:8px;border-radius:16px;overflow:hidden;border:4px solid var(--gold)}.oc-photo img{display:block;width:100%;height:100%;object-fit:cover}
 .oc-name{position:relative;margin-top:10px;width:404px;height:70px;display:flex;align-items:center;justify-content:center}
 .oc-name-t{margin:0;font-weight:700;line-height:1.05;text-transform:uppercase;color:var(--fg-on-panel);text-align:center}
 .oc-tag{position:relative;margin-top:4px;width:404px;height:36px;display:flex;align-items:center;justify-content:center}
@@ -139,7 +138,7 @@ function underlay(ctx, model, L) {
     rest: { scale: 1, borderColor: edgeDim, backgroundColor: panel },
     both: { scale: 1, borderColor: edge, backgroundColor: panel },
   };
-  const card = (side, subj, r) => `<div class="oc-card ${side}" id="oc-card-${side}" style="${box(r)}"><div class="oc-emb-panel">${emblemSvg(emblemFill(palette[side === "a" ? "--accent-sage" : "--accent-terra"]), subj.mono)}</div>${fitBox("oc-name", subj.name, { size: 46, min: 18 })}${fitBox("oc-tag", subj.tag, { size: 22, min: 12 })}</div>`;
+  const card = (side, subj, r) => `<div class="oc-card ${side}" id="oc-card-${side}" style="${box(r)}"><div class="oc-emb-panel">${subj.img ? `<div class="oc-photo"><img src="${esc(subj.img)}" alt=""></div>` : emblemSvg(emblemFill(palette[side === "a" ? "--accent-sage" : "--accent-terra"]), subj.mono)}</div>${fitBox("oc-name", subj.name, { size: 46, min: 18 })}${fitBox("oc-tag", subj.tag, { size: 22, min: 12 })}</div>`;
   const scoreLabel = model.scored
     ? fitBox("oc-slabel", upper(ctx.ui.score, ctx.lang), { r: { x: L.score.x, y: L.score.y, w: L.score.w, h: 30 }, size: 20, min: 12 })
     : "";
@@ -241,7 +240,6 @@ function design(compId) {
       text: { style: "ink", region: L.caption, size: compId === "columns" ? 56 : 60, align: "center", enter: "fade_up", rich: (scene) => captionHtml(scene.line, model.a.name, model.b.name) },
       sceneExtra: (scene, i, sctx) => sceneParts(scene, i, sctx, model, L, compId),
       underlay: (uctx) => underlay(uctx, model, L),
-      image: { region: L.image }, // ảnh AI của cảnh bên trái, linh vật thu nhỏ bên phải (owner 29/09)
       overlay: (octx) => mascotOverlay(octx, model, L),
       fontFamilies: ["JetBrains Mono"],
       css: css(ctx, L),

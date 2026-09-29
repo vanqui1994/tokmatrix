@@ -27,6 +27,28 @@ export function variantFallbackChain(channel, engineType) {
   }
 }
 
+/** Hai ảnh đối tượng A/B cho variant có assetProfile.subjectImages; [] với kênh/variant khác. */
+export function subjectImageItems(manifest, channel, engineType) {
+  let wants = false;
+  try {
+    wants = channelCreative(channel, engineType)?.variant?.assetProfile?.subjectImages === true;
+  } catch {
+    wants = false;
+  }
+  if (!wants) return [];
+  const extras = manifest?.script?.engine_extras?.data || {};
+  const split = String(manifest?.topic?.title || manifest?.script?.title || "").split(/\s+(?:vs\.?|versus|gegen|contre|대|対|đấu với|với)\s+/iu);
+  const names = [extras.subject_a?.name || split[0], extras.subject_b?.name || split[1]].map((name) => String(name || "").trim());
+  if (!names[0] || !names[1]) throw new Error("compare subject images need the names of subject A and B (engine_extras or an \"A vs B\" title)");
+  return ["a", "b"].map((side, i) => ({
+    side,
+    key: `subject-${side}-image`,
+    prompt: `${names[i]}, single subject, centered portrait, clean studio background, sharp detail, photographic, no text, no letters`,
+    aspect: "1:1",
+    dest: `subjects/${side}.png`,
+  }));
+}
+
 /**
  * Variant khai báo ảnh AI (assetProfile.type IMAGE_AI) trên engine mặc định không có ảnh (survival/mr-incredible:
  * thẻ trên có ảnh mỗi cấp như template Sinh Tồn cũ) → cảnh chưa ghi asset_type được xếp hàng ảnh Antigravity.
@@ -181,6 +203,10 @@ export async function prepareSceneAssets({
     aspect: "9:16",
     dest: `scenes/scene_${String(scene.scene_index).padStart(2, "0")}/image.png`,
   }));
+  // Ảnh đối tượng A/B (compare, assetProfile.subjectImages): 2 ảnh mỗi video thay cho ảnh mỗi cảnh, như icons
+  // left/right của template So Sánh cũ. Tên lấy từ engine_extras (chạy ngay sau kịch bản), thiếu thì tách tiêu đề "A vs B".
+  const subjectItems = subjectImageItems(manifest, channel, engineType);
+  imageItems.push(...subjectItems);
   const imageStatus = imageItems.length
     ? await imageGenerator({ dir: projectDir, slug: jobId, items: imageItems, timeoutMin, label: `Matrix ${jobId}`, log })
     : { ready: [], pending: [] };
@@ -287,6 +313,9 @@ export async function prepareSceneAssets({
     updatedScenes.push(scene);
   }
 
+  for (const item of subjectItems) {
+    if (!readyImageKeys.has(item.key)) pending.push({ subject: item.side, asset_type: "IMAGE_AI", key: item.key, file_path: item.dest });
+  }
   const updatedManifest = structuredClone(manifest);
   if (Array.isArray(updatedManifest.storyboard?.scenes)) updatedManifest.storyboard.scenes = updatedScenes;
   else updatedManifest.scenes = updatedScenes;
@@ -296,6 +325,7 @@ export async function prepareSceneAssets({
     scene_count: updatedScenes.length,
     pending_count: pending.length,
     fallbacks,
+    ...(subjectItems.length ? { subject_images: Object.fromEntries(subjectItems.map((item) => [item.side, item.dest])) } : {}),
   };
   return {
     manifest: updatedManifest,

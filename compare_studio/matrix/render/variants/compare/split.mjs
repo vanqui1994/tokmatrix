@@ -1,7 +1,7 @@
 // compare/split-screen — màn hình chia đôi toàn khung: nửa của A và nửa của B, đường chia DỊCH theo tỉ số (bên dẫn
 // điểm chiếm nhiều màn hơn). Composition 1 chia dọc (trái/phải), composition 2 chia ngang (trên/dưới) + cột lời đọc.
 import { defineVariant } from "../kit/define.mjs";
-import { compareBase, compareModel, compareUi, esc, fitBox, span, to, val, winnerLabel } from "./common.mjs";
+import { compareBase, compareModel, compareUi, esc, fitBox, span, to, val, winnerLabel, subjectPair } from "./common.mjs";
 import { compareSample } from "./sample.mjs";
 
 const COL_A = "color-mix(in srgb,var(--accent-sage-ink) 78%,#000)";
@@ -116,7 +116,7 @@ const splitScreen = defineVariant({
       design: (ctx) => {
         const model = compareModel(ctx, ctx.ui);
         return {
-          image: { region: { x: 90, y: 1620, w: 900, h: 250 } }, // ảnh AI của cảnh (owner 29/09: mọi layout So Sánh có hình)
+          perScene: subjectPair(model, { x: 150, y: 1390, w: 190, h: 190 }, { x: 740, y: 1390, w: 190, h: 190 }, { shape: "round" }), // ảnh đối tượng A/B
           header: { style: "centered", region: { x: 60, y: 110, w: 960, h: 210 }, size: 64 },
           visual: { frame: "bleed", region: { x: 0, y: 0, w: 1080, h: 1920 } },
           panel: (scene, i) => {
@@ -143,7 +143,7 @@ const splitScreen = defineVariant({
       design: (ctx) => {
         const model = compareModel(ctx, ctx.ui);
         return {
-          image: { region: { x: 90, y: 1620, w: 900, h: 250 } }, // ảnh AI của cảnh (owner 29/09: mọi layout So Sánh có hình)
+          perScene: subjectPair(model, { x: 780, y: 300, w: 240, h: 240 }, { x: 780, y: 1340, w: 240, h: 240 }, { shape: "round" }), // ảnh đối tượng A/B
           header: { style: "label_title", region: { x: 60, y: 110, w: 960, h: 200 }, size: 58 },
           visual: { frame: "bleed", region: { x: 0, y: 0, w: 1080, h: 1920 } },
           panel: (scene, i) => {

@@ -1,7 +1,7 @@
 // compare/courtroom — phiên toà: A và B là hai bên đương sự, mỗi hiệp là một "tội danh" (count) có vật chứng
 // (giá trị A/B); bồi thẩm đoàn 12 người đổi màu theo tỉ số; phán quyết cuối. Composition 2: phiếu phán quyết có ô tick.
 import { defineVariant } from "../kit/define.mjs";
-import { box, compareBase, compareModel, compareUi, fitBox, pop, to, val } from "./common.mjs";
+import { box, compareBase, compareModel, compareUi, fitBox, pop, to, val, subjectPair } from "./common.mjs";
 import { compareSample } from "./sample.mjs";
 
 const INK_A = "var(--accent-sage-ink)";
@@ -139,7 +139,6 @@ const courtroom = defineVariant({
       design: (ctx) => {
         const model = compareModel(ctx, ctx.ui);
         return {
-          image: { region: { x: 40, y: 1400, w: 1000, h: 460 } }, // ảnh AI của cảnh (owner 29/09: mọi layout So Sánh có hình)
           header: { style: "plaque", region: { x: 140, y: 100, w: 800, h: 190 }, size: 54 },
           visual: { frame: "plain", region: { x: 40, y: 580, w: 560, h: 380 } },
           panel: (scene, i) => exhibit(model.scenes[i], model),
@@ -151,6 +150,7 @@ const courtroom = defineVariant({
             return { html: tally + gavel, tweens: gavel ? [pop(`#ct-gavel-${scene.index}`, scene.visualStart + 0.3, { from: 1.8, ease: "power4.out" })] : [] };
           },
           overlay: (octx) => benchOverlay(model, octx.scenes, ctx.ui),
+          underlay: () => subjectPair(model, { x: 40, y: 1460, w: 490, h: 400 }, { x: 550, y: 1460, w: 490, h: 400 }, { shape: "square" }), // ảnh đối tượng A/B
           vars: { "--frame-edge": "#d8b56a" },
           css: CSS,
         };
@@ -162,7 +162,6 @@ const courtroom = defineVariant({
       design: (ctx) => {
         const model = compareModel(ctx, ctx.ui);
         return {
-          image: { region: { x: 60, y: 1580, w: 960, h: 290 } }, // ảnh AI của cảnh (owner 29/09: mọi layout So Sánh có hình)
           header: { style: "masthead", region: { x: 60, y: 100, w: 960, h: 230 }, size: 64 },
           sceneExtra: (scene, i) => {
             const s = model.scenes[i];
@@ -171,6 +170,7 @@ const courtroom = defineVariant({
           },
           text: { style: "typed_sheet", region: { x: 60, y: 1400, w: 960, h: 260 }, size: 44, enter: "type" },
           overlay: (octx) => formOverlay(model, octx.scenes, ctx.ui, { x: 60, y: 360, w: 960, h: 920 }),
+          perScene: subjectPair(model, { x: 60, y: 1590, w: 460, h: 280 }, { x: 560, y: 1590, w: 460, h: 280 }, { shape: "square" }), // ảnh đối tượng A/B
           css: CSS + FORM_CSS,
         };
       },

@@ -98,10 +98,20 @@ export async function buildPreview({ variant, composition, lang, dna, dnaTag, ou
     return scene;
   });
   const totalDuration = Math.ceil(start + 0.9);
+  // Ảnh đối tượng A/B (compare): ô vuông giữ chỗ màu xanh / đỏ có chữ A, B.
+  let subjectImages = null;
+  if (variant.assetProfile?.subjectImages) {
+    subjectImages = {};
+    for (const [side, hue] of [["a", 150], ["b", 0]]) {
+      const src = `assets/images/subject-${side}.svg`;
+      fs.writeFileSync(path.join(dir, src), `<svg xmlns="http://www.w3.org/2000/svg" width="800" height="800" viewBox="0 0 800 800"><rect width="800" height="800" fill="hsl(${hue},45%,34%)"/><circle cx="400" cy="340" r="190" fill="rgba(255,255,255,.18)"/><text x="400" y="420" font-size="260" text-anchor="middle" fill="rgba(255,255,255,.7)" font-family="sans-serif">${side.toUpperCase()}</text></svg>`);
+      subjectImages[side] = src;
+    }
+  }
   const creative = resolveCreativeContext({ variant, dna, lang, channelId: channelId || `preview_${lang}`, slug });
   const built = await variant.renderer.buildHtml({
     slug, title: sample.title, lang, channel: { channel_id: `preview_${lang}` }, manifest: {}, totalDuration, extras: sample.extras || null,
-    sfxCues: [], bgmSegments: [], cinemaAudioHtml: "", common: { lang }, scenes, creative,
+    sfxCues: [], bgmSegments: [], cinemaAudioHtml: "", common: { lang }, scenes, creative, subjectImages,
   });
   const problems = lintVariantHtml(built.html);
   if (problems.length) throw new Error(`${slug}: ${problems.join("; ")}`);

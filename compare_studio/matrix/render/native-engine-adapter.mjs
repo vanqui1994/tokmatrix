@@ -334,6 +334,7 @@ async function createEngineHtml({ engineType, slug, title, lang, scenes, channel
       : extended.extras.fallback(scenes, { title, language: lang });
     const built = await variant.renderer.buildHtml({
       slug, title, lang, channel, manifest, totalDuration, extras, sfxCues, bgmSegments, cinemaAudioHtml, common, scenes: timed, creative,
+      subjectImages: media.subjectImages || null,
     });
     const problems = lintVariantHtml(built.html);
     if (problems.length) throw new Error(`variant ${variant.id} produced forbidden HTML: ${problems.join("; ")}`);
@@ -546,6 +547,19 @@ export async function buildNativeVideoProject({ job, manifest = job?.manifest, p
   const staticAssets = variant
     ? [...await prepareKitAssets({ targetDir, compareDir: COMPARE_DIR }), ...((await variant.prepareAssets?.({ targetDir, compareDir: COMPARE_DIR })) || [])]
     : (await extendedReady(engineType)?.prepareAssets?.({ targetDir, compareDir: COMPARE_DIR })) || [];
+  // Ảnh đối tượng A/B (variant assetProfile.subjectImages, compare): asset-manager xếp 2 ảnh Antigravity mỗi video.
+  if (variant?.assetProfile?.subjectImages) {
+    const subjects = manifest.asset_pipeline?.subject_images || {};
+    media.subjectImages = {};
+    for (const side of ["a", "b"]) {
+      if (!subjects[side]) throw new Error(`${variant.id}: subject image ${side} is missing from the asset pipeline`);
+      const source = await requiredFile(sourcePath(sourceDir, subjects[side]));
+      const src = `assets/images/subject-${side}${path.extname(source).toLowerCase() || ".png"}`;
+      await copyPreparedImage(source, path.join(targetDir, src));
+      media.copied.push(path.join(targetDir, src));
+      media.subjectImages[side] = src;
+    }
+  }
   const composed = await createEngineHtml({ engineType, slug, title, lang, scenes, channel, manifest, media, totalDuration, variant, dna: chosen?.dna });
   // Variant tự co chữ bằng kit/fit (data-fit); bản sửa bố cục legacy chỉ dành cho template legacy.
   if (!variant) composed.html = applyMatrixLayoutFixes(composed.html, engineType);

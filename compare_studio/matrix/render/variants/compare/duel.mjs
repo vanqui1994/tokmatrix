@@ -2,7 +2,7 @@
 // theo điểm 0–10 của từng tiêu chí, mỗi hiệp một hàng — khác cột thanh dọc của tierlist. Composition 2: bảng điểm LED
 // sân vận động (chấm LED đối xứng, số lớn).
 import { defineVariant } from "../kit/define.mjs";
-import { compareBase, compareModel, compareUi, fitBox, pop, val } from "./common.mjs";
+import { compareBase, compareModel, compareUi, fitBox, pop, val, subjectPair } from "./common.mjs";
 import { compareSample } from "./sample.mjs";
 
 const CSS = `
@@ -118,7 +118,6 @@ const tierDuel = defineVariant({
       design: (ctx) => {
         const model = compareModel(ctx, ctx.ui);
         return {
-          image: { region: { x: 60, y: 900, w: 960, h: 460 } }, // ảnh AI của cảnh (owner 29/09: mọi layout So Sánh có hình)
           header: { style: "label_title", region: { x: 60, y: 110, w: 960, h: 190 }, size: 56 },
           text: { style: "panel", region: { x: 60, y: 320, w: 960, h: 240 }, size: 46, enter: "clip" },
           sceneExtra: (scene, i) => {
@@ -131,6 +130,7 @@ const tierDuel = defineVariant({
             };
           },
           overlay: (octx) => butterflyOverlay(model, octx.scenes, { x: 40, y: 590, w: 1000, h: 900 }),
+          underlay: () => subjectPair(model, { x: 60, y: 1680, w: 440, h: 195 }, { x: 580, y: 1680, w: 440, h: 195 }, { shape: "square" }), // ảnh đối tượng A/B
           css: CSS,
         };
       },
@@ -141,7 +141,6 @@ const tierDuel = defineVariant({
       design: (ctx) => {
         const model = compareModel(ctx, ctx.ui);
         return {
-          image: { region: { x: 60, y: 1550, w: 960, h: 320 } }, // ảnh AI của cảnh (owner 29/09: mọi layout So Sánh có hình)
           header: { style: "centered", region: { x: 60, y: 100, w: 960, h: 190 }, size: 56 },
           visual: { frame: "bleed", region: { x: 40, y: 320, w: 1000, h: 1010 } },
           panel: (scene, i) => {
@@ -151,6 +150,7 @@ ${fitBox("cd-dig a", String(s.totalA), { size: 180, min: 40 })}<i class="cd-dash
 ${fitBox("cd-now", `${s.kicker} · ${s.criterion}`, { size: 30, min: 11 })}</div>`;
           },
           overlay: (octx) => ledRows(model, octx.scenes, { x: 40, y: 740, w: 1000, h: 560 }),
+          underlay: () => subjectPair(model, { x: 60, y: 1680, w: 440, h: 200 }, { x: 580, y: 1680, w: 440, h: 200 }, { shape: "square" }), // ảnh đối tượng A/B
           text: { style: "ticker", region: { x: 40, y: 1370, w: 1000, h: 270 }, size: 44, enter: "slide" },
           css: CSS + LED_CSS,
         };

@@ -5,7 +5,7 @@
 // tất định của engine (mọi cảnh NONE, không điểm).
 import compareEngine, { sceneRoles } from "../../engines/compare.mjs";
 import { shortText } from "../../engines/common.mjs";
-import { IMAGE_ASSET, IMAGE_COST } from "../common.mjs";
+import { NO_IMAGE_COST, SVG_ASSET } from "../common.mjs";
 import { escapeHtml, fitText } from "../kit/primitives.mjs";
 import { upper } from "../kit/textdata.mjs";
 
@@ -27,7 +27,8 @@ export function compareUi(own) {
   return Object.fromEntries(Object.keys(WORDS).map((lang) => [lang, { ...WORDS[lang], ...(own[lang] || own.en) }]));
 }
 
-export const compareBase = { engine: "compare", asset: IMAGE_ASSET, cost: IMAGE_COST, countries: ["en", "de", "ja", "ko", "vi"] };
+// subjectImages: 2 ảnh Antigravity mỗi video (A, B) đặt vào ô xanh/đỏ của mỗi layout (owner 29/09), không ảnh mỗi cảnh.
+export const compareBase = { engine: "compare", asset: { ...SVG_ASSET, subjectImages: true }, cost: NO_IMAGE_COST, countries: ["en", "de", "ja", "ko", "vi"] };
 
 const clean = (value) => String(value ?? "").replace(/[\u0000-\u001f\u007f]+/gu, " ").replace(/\s+/gu, " ").trim();
 
@@ -109,7 +110,7 @@ export function compareModel(ctx, ui) {
   const finalWinner = verdict?.role === "verdict" && ["A", "B", "TIE"].includes(verdict.winner) ? verdict.winner
     : totalA > totalB ? "A" : totalB > totalA ? "B" : "TIE";
   return {
-    a: { ...a, mono: monogram(a.name) }, b: { ...b, mono: monogram(b.name) },
+    a: { ...a, mono: monogram(a.name), img: ctx.subjectImages?.a || null }, b: { ...b, mono: monogram(b.name), img: ctx.subjectImages?.b || null },
     scenes: out, roundTotal, scored: out.some((s) => s.winner !== "NONE"),
     final: { a: totalA, b: totalB, winner: finalWinner },
   };
@@ -154,3 +155,27 @@ export function winnerLabel(s, ui, model) {
 
 /** Giá trị hiển thị: rỗng (cảnh bối cảnh) → gạch ngang. */
 export const val = (text) => (text ? text : "—");
+
+/**
+ * Ảnh đối tượng (A/B) trong ô màu của bên đó; chưa có ảnh (preview cũ) → chữ viết tắt như trước.
+ * `shape` round | square; kích thước do CSS của layout (lớp `cls`).
+ */
+export function subjectPhoto(subj, { cls = "", shape = "round", fallback = "" } = {}) {
+  if (!subj.img) return fallback;
+  return `<div class="cs-photo ${shape} ${cls}"><img src="${esc(subj.img)}" alt=""></div>`;
+}
+export const PHOTO_CSS = ".cs-photo{position:relative;overflow:hidden;background:#111;box-sizing:border-box}.cs-photo.round{border-radius:50%}.cs-photo.square{border-radius:14px}.cs-photo img{display:block;width:100%;height:100%;object-fit:cover}";
+
+/**
+ * Hai ảnh đối tượng A (viền xanh) / B (viền đỏ) cố định suốt video, lớp underlay của kit (dưới các cảnh, không chung khối
+ * với chữ của overlay) — owner 29/09. Không có ảnh (preview/kênh cũ) → null (không có underlay).
+ */
+export function subjectPair(model, ra, rb, { shape = "square" } = {}) {
+  if (!model.a.img || !model.b.img) return null;
+  const photo = (subj, r, side) => `<div class="cs-pair ${side} ${shape}" style="${box(r)}"><img src="${esc(subj.img)}" alt=""></div>`;
+  return {
+    html: `${photo(model.a, ra, "a")}${photo(model.b, rb, "b")}`,
+    css: ".cs-pair{position:absolute;overflow:hidden;box-sizing:border-box;border:8px solid;background:#111;box-shadow:0 14px 34px rgba(0,0,0,.45)}.cs-pair.a{border-color:#2f8f6a}.cs-pair.b{border-color:#c0392b}.cs-pair.square{border-radius:18px}.cs-pair.round{border-radius:50%}.cs-pair img{display:block;width:100%;height:100%;object-fit:cover}",
+    tweens: [],
+  };
+}
