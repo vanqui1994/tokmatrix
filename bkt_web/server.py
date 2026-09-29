@@ -112,9 +112,22 @@ GENERATED_IMAGES_DIR = STATIC_DIR / "generated_images"
 for _dir in [STORAGE_DIR, DOWNLOADS_DIR, RENDERED_DIR, OVERLAYS_DIR, AUDIO_DIR, GENERATED_IMAGES_DIR]:
     _dir.mkdir(parents=True, exist_ok=True)
 
+def _resume_story_remake():
+    """Lượt Story Remake bị ngắt vì web app khởi động lại (cùng cgroup systemd) → chạy tiếp."""
+    try:
+        try:
+            from bkt_web import story_remake_routes as _srr
+        except ImportError:
+            import story_remake_routes as _srr
+        _srr.resume_interrupted()
+    except Exception as exc:  # noqa: BLE001 — không được chặn server khởi động
+        print(f"[story-remake] resume failed: {exc}")
+
+
 @asynccontextmanager
 async def app_lifespan(_app: FastAPI):
     app_startup()
+    _resume_story_remake()
     try:
         yield
     finally:
@@ -147,17 +160,6 @@ app.include_router(flow_router)
 app.include_router(story_remake_router)
 app.include_router(muse_film_router)
 
-
-@app.on_event("startup")
-def _resume_story_remake():
-    try:
-        from bkt_web import story_remake_routes as _srr
-    except ImportError:
-        import story_remake_routes as _srr
-    try:
-        _srr.resume_interrupted()
-    except Exception as exc:  # noqa: BLE001 — không được chặn server khởi động
-        print(f"[story-remake] resume failed: {exc}")
 # Token phiên được giữ lại qua các lần khởi động lại server.
 #
 # Trước đây token sinh mới mỗi lần import, nên sau mỗi lần restart thì mọi tab
