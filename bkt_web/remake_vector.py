@@ -34,7 +34,7 @@ GROUND_WARN_GROUPS = {"human", "chibi", "animal"}
 # Hành động y tế nhắm đầu dụng cụ đang cầm (action.tool, attach_to vào tay actor) vào đích: anchor của dụng cụ.
 # Biểu tượng mà farm_fun.js vẽ được trong bong bóng emote; giá trị lạ vẽ ra bong bóng trống.
 EMOTE_SYMBOLS = {"heart", "?", "question", "!", "exclamation", "zzz", "sleep", "angry", "music", "idea", "sweat"}
-TOOL_ACTIONS = {"brush_teeth": "bristles", "take_temperature": "tip", "listen": "chest_piece", "vaccinate": "needle"}
+TOOL_ACTIONS = {"brush_teeth": "bristles", "take_temperature": "tip", "listen": "chest_piece", "vaccinate": "needle", "hammer_anvil": "head"}
 
 
 def held_pose(asset: str, height: float, rotation: float = 0.0, anchor: str = "grip") -> dict:
@@ -232,9 +232,9 @@ def _validate_tree_interactions(cat, cast, scene, poses, start, end):
 
 def validate_vector_scenes(characters, scenes):
     cat = _catalog()
-    # 300: showreel() ghép mọi story mẫu (nhân vật đổi tên theo namespace) thành một story duy nhất.
-    if not 1 <= len(characters) <= 300:
-        raise ValueError("Thư viện hỗ trợ 1–300 nhân vật mỗi storyboard")
+    # 400: showreel() ghép mọi story mẫu (nhân vật đổi tên theo namespace) thành một story duy nhất.
+    if not 1 <= len(characters) <= 400:
+        raise ValueError("Thư viện hỗ trợ 1–400 nhân vật mỗi storyboard")
     cast = {}
     for c in characters:
         cid = c.get("id")
@@ -278,8 +278,8 @@ def validate_vector_scenes(characters, scenes):
                 raise ValueError("layer trong attach_to không hợp lệ")
             seen.add(parent["id"])
             current = parent
-    if len(scenes) > 300:
-        raise ValueError("Tối đa 300 cảnh")
+    if len(scenes) > 400:
+        raise ValueError("Tối đa 400 cảnh")
     previous_end = 0.0
     for scene in scenes:
         if abs(scene["start_time"] - previous_end) > 0.000001:
@@ -4694,6 +4694,456 @@ def rain_gauge_examples():
     return [story]
 
 
+def castle_life_examples():
+    """Mẫu kỹ thuật Phase N: Một ngày trong lâu đài - Cầu treo hạ xuống và rèn luyện phòng thủ."""
+    cat = catalog()
+
+    def actor(cid, asset, **extra):
+        lbl = cat["assets"][asset].get("label") or cat["assets"][asset].get("spec", {}).get("label") or asset
+        return {"id": cid, "name": lbl, "asset": asset, **extra}
+
+    def pose(t, x, y, h, **extra):
+        return {"time": t, "x": x, "y": y, "height": h, **extra}
+
+    def scene(start, end, poses, actions=(), bg="castle_yard", **extra):
+        return {
+            "renderer": RENDERER,
+            "kind": "scene",
+            "start_time": start,
+            "end_time": end,
+            "characters_present": list(poses),
+            "poses": poses,
+            "actions": list(actions),
+            "background": {"preset": bg, **extra},
+        }
+
+    def action(kind, start, end, target=None, actor_id=None, **extra):
+        return {"type": kind, "start": start, "end": end, **({"target": target} if target else {}), **({"actor": actor_id} if actor_id else {}), **extra}
+
+    p_shield = held_pose("wooden_shield", 210, 0, anchor="grip")
+    p_sword = held_pose("toy_sword", 160, -20, anchor="grip")
+
+    # Cảnh 1: Cầu treo lâu đài hạ xuống (open: 0 -> 1), xe ngựa chở hàng vào sân thành (đi >= 150px)
+    sc1 = scene(0, 6.0, {
+        "castle": [
+            pose(0, 420, 810, 190, open=0.03),
+            pose(2.5, 420, 810, 190, open=1.0),
+            pose(6.0, 420, 810, 190, open=1.0),
+        ],
+        "cart": [
+            pose(0, -40, 900, 170),
+            pose(2.5, -40, 900, 170),
+            pose(6.0, 180, 900, 170),
+        ],
+        "horse": [
+            pose(0, 60, 900, 170),
+            pose(2.5, 60, 900, 170),
+            pose(6.0, 280, 900, 170),
+        ],
+        "villager": [
+            pose(0, -40, 900, 180, outfit="medieval_villager", expression="happy"),
+            pose(6.0, 180, 900, 180, outfit="medieval_villager", expression="happy"),
+        ],
+    }, actions=[
+        action("ride", 0, 6.0, actor_id="villager", target="cart", seat="seat_1"),
+        action("emote", 3.5, 5.5, actor_id="villager", emote="music"),
+    ], bg="castle_yard", weather="clear")
+
+    # Cảnh 2: Hiệp sĩ nhỏ mặc knight tập đỡ khiên gỗ cùng bạn cầm kiếm gỗ đồ chơi an toàn
+    sc2 = scene(6.0, 12.0, {
+        "banner": [
+            pose(6.0, 540, 760, 220),
+            pose(12.0, 540, 760, 220),
+        ],
+        "knight_trainee": [
+            pose(6.0, 60, 810, 230, outfit="knight", expression="happy"),
+            pose(8.0, 220, 810, 230, outfit="knight", expression="happy"),
+            pose(9.0, 220, 810, 230, outfit="knight", expression="happy", hand_l_x=30, hand_l_y=-40),
+            pose(10.0, 220, 810, 230, outfit="knight", expression="happy", hand_l_x=26, hand_l_y=-30),
+            pose(11.0, 220, 810, 230, outfit="knight", expression="happy", hand_l_x=30, hand_l_y=-40),
+            pose(12.0, 220, 810, 230, outfit="knight", expression="happy", hand_l_x=30, hand_l_y=-40),
+        ],
+        "shield": [
+            pose(6.0, p_shield["x"], p_shield["y"], 210, rotation=p_shield["rotation"]),
+            pose(12.0, p_shield["x"], p_shield["y"], 210, rotation=p_shield["rotation"]),
+        ],
+        "partner": [
+            pose(6.0, 520, 810, 230, outfit="medieval_villager", expression="happy", flip=True),
+            pose(8.0, 370, 810, 230, outfit="medieval_villager", expression="happy", flip=True),
+            pose(9.0, 370, 810, 230, outfit="medieval_villager", expression="happy", flip=True, hand_r_x=20, hand_r_y=-62),
+            pose(10.0, 370, 810, 230, outfit="medieval_villager", expression="happy", flip=True, hand_r_x=30, hand_r_y=-34),
+            pose(11.0, 370, 810, 230, outfit="medieval_villager", expression="happy", flip=True, hand_r_x=20, hand_r_y=-62),
+            pose(12.0, 370, 810, 230, outfit="medieval_villager", expression="happy", flip=True, hand_r_x=30, hand_r_y=-34),
+        ],
+        "sword": [
+            pose(6.0, p_sword["x"], p_sword["y"], 160, rotation=p_sword["rotation"]),
+            pose(12.0, p_sword["x"], p_sword["y"], 160, rotation=p_sword["rotation"]),
+        ],
+    }, actions=[
+        action("emote", 7.0, 9.5, actor_id="knight_trainee", emote="music"),
+        action("emote", 8.0, 11.0, actor_id="partner", emote="heart"),
+    ], bg="castle_yard", weather="clear")
+
+    story = {
+        "id": "castle_life",
+        "name": "37 · Đời sống lâu đài: Cầu treo hạ xuống và rèn luyện hiệp sĩ",
+        "renderer": RENDERER,
+        "fidelity": "technical-demo",
+        "note": "Mẫu kỹ thuật Phase N: Cầu treo lâu đài hạ xuống đón xe ngựa chở hàng, hiệp sĩ nhỏ tập phòng thủ an toàn với khiên gỗ.",
+        "duration": 12.0,
+        "characters": [
+            actor("castle", "castle"),
+            actor("cart", "horse_cart"),
+            actor("horse", "horse"),
+            actor("villager", "chibi_farmer"),
+            actor("banner", "banner_plain"),
+            actor("knight_trainee", "chibi_boy"),
+            actor("shield", "wooden_shield", attach_to={"id": "knight_trainee", "anchor": "hand_l"}),
+            actor("partner", "chibi_kid"),
+            actor("sword", "toy_sword", attach_to={"id": "partner", "anchor": "hand_r"}),
+        ],
+        "scenes": [sc1, sc2],
+        "cues": [
+            {"start": 0.5, "end": 5.5, "character_id": "villager", "text": "Cầu treo lâu đài hạ xuống bắc qua hào nước, bác nông dân thong thả đánh xe ngựa chở nông sản vào sân thành!", "expression": "happy"},
+            {"start": 6.5, "end": 11.5, "character_id": "knight_trainee", "text": "Dưới bóng cờ đuôi nheo phấp phới, hiệp sĩ nhỏ vui vẻ luyện tập kỹ năng phòng vệ vững chắc cùng bạn!", "expression": "happy"},
+        ],
+    }
+    for index, item in enumerate(story["scenes"]):
+        item["index"] = index
+    validate_story(story)
+    return [story]
+
+
+def blacksmith_examples():
+    """Mẫu kỹ thuật Phase N: Nghề thợ rèn trung cổ - Nung sắt, rèn đe và đóng móng ngựa."""
+    cat = catalog()
+
+    def actor(cid, asset, **extra):
+        lbl = cat["assets"][asset].get("label") or cat["assets"][asset].get("spec", {}).get("label") or asset
+        return {"id": cid, "name": lbl, "asset": asset, **extra}
+
+    def pose(t, x, y, h, **extra):
+        return {"time": t, "x": x, "y": y, "height": h, **extra}
+
+    def scene(start, end, poses, actions=(), bg="medieval_village", **extra):
+        return {
+            "renderer": RENDERER,
+            "kind": "scene",
+            "start_time": start,
+            "end_time": end,
+            "characters_present": list(poses),
+            "poses": poses,
+            "actions": list(actions),
+            "background": {"preset": bg, **extra},
+        }
+
+    def action(kind, start, end, target=None, actor_id=None, **extra):
+        return {"type": kind, "start": start, "end": end, **({"target": target} if target else {}), **({"actor": actor_id} if actor_id else {}), **extra}
+
+    p_hammer = held_pose("hammer", 190, 0, anchor="grip")
+    p_horseshoe = held_pose("horseshoe", 130, 0, anchor="grip")
+
+    # Cảnh 1: Lò rèn nung đỏ móng ngựa, forge.lit tăng đơn điệu 0.2 -> 0.6 -> 1.0
+    sc1 = scene(0, 5.0, {
+        "smith": [
+            pose(0, 480, 810, 230, outfit="medieval_villager", expression="neutral", flip=True),
+            pose(3.0, 300, 810, 230, outfit="medieval_villager", expression="happy", flip=True),
+            pose(5.0, 300, 810, 230, outfit="medieval_villager", expression="happy", flip=True),
+        ],
+        "forge": [
+            pose(0, 130, 810, 210, lit=0.2),
+            pose(2.5, 130, 810, 210, lit=0.6),
+            pose(5.0, 130, 810, 210, lit=1.0),
+        ],
+        "anvil": [
+            pose(0, 440, 810, 150),
+            pose(5.0, 440, 810, 150),
+        ],
+    }, actions=[
+        action("emote", 1.5, 4.0, actor_id="smith", emote="idea"),
+    ], bg="medieval_village", weather="clear")
+
+    # Cảnh 2: Thợ rèn giơ búa gõ xuống đe (hammer_anvil), đầu búa chạm anvil.surface < 12px
+    sc2 = scene(5.0, 10.0, {
+        "smith": [
+            pose(5.0, 300, 810, 230, outfit="medieval_villager", expression="happy"),
+            pose(10.0, 300, 810, 230, outfit="medieval_villager", expression="happy"),
+        ],
+        "hammer": [
+            pose(5.0, p_hammer["x"], p_hammer["y"], 190, rotation=p_hammer["rotation"]),
+            pose(10.0, p_hammer["x"], p_hammer["y"], 190, rotation=p_hammer["rotation"]),
+        ],
+        "forge": [
+            pose(5.0, 110, 810, 210, lit=1.0),
+            pose(10.0, 110, 810, 210, lit=1.0),
+        ],
+        "anvil": [
+            pose(5.0, 440, 810, 150),
+            pose(10.0, 440, 810, 150),
+        ],
+    }, actions=[
+        action("hammer_anvil", 5.5, 9.5, actor_id="smith", target="anvil", tool="hammer"),
+    ], bg="medieval_village", weather="clear")
+
+    # Cảnh 3: Thợ rèn cầm móng ngựa trong tay (grip ↔ hand < 3px) tiến lại gắn cho chú ngựa
+    sc3 = scene(10.0, 15.0, {
+        "smith": [
+            pose(10.0, 60, 810, 230, outfit="medieval_villager", expression="happy"),
+            pose(13.0, 250, 810, 230, outfit="medieval_villager", expression="happy"),
+            pose(15.0, 250, 810, 230, outfit="medieval_villager", expression="happy"),
+        ],
+        "horseshoe": [
+            pose(10.0, p_horseshoe["x"], p_horseshoe["y"], 130, rotation=p_horseshoe["rotation"]),
+            pose(15.0, p_horseshoe["x"], p_horseshoe["y"], 130, rotation=p_horseshoe["rotation"]),
+        ],
+        "horse": [
+            pose(10.0, 430, 810, 200),
+            pose(15.0, 430, 810, 200),
+        ],
+    }, actions=[
+        action("emote", 11.5, 14.5, actor_id="smith", emote="heart"),
+        action("emote", 12.0, 14.5, actor_id="horse", emote="heart"),
+    ], bg="medieval_village", weather="clear")
+
+    story = {
+        "id": "blacksmith",
+        "name": "38 · Nghề rèn trung cổ: Đúc móng ngựa bên bếp lửa",
+        "renderer": RENDERER,
+        "fidelity": "technical-demo",
+        "note": "Mẫu kỹ thuật Phase N: Thợ rèn nung móng ngựa trong lò lửa, gõ đe định hình nhịp nhàng và đem móng đóng cho chú ngựa.",
+        "duration": 15.0,
+        "characters": [
+            actor("smith", "chibi_farmer"),
+            actor("forge", "forge"),
+            actor("anvil", "anvil"),
+            actor("hammer", "hammer", attach_to={"id": "smith", "anchor": "hand_r"}),
+            actor("horseshoe", "horseshoe", attach_to={"id": "smith", "anchor": "hand_r"}),
+            actor("horse", "horse"),
+        ],
+        "scenes": [sc1, sc2, sc3],
+        "cues": [
+            {"start": 0.5, "end": 4.5, "character_id": "smith", "text": "Bếp lò rèn bùng lên ngọn lửa hồng rực rỡ, nung thanh sắt nóng đỏ để sẵn sàng uốn nắn!", "expression": "happy"},
+            {"start": 5.5, "end": 9.5, "character_id": "smith", "text": "Từng nhát búa đanh thép giáng xuống mặt đe, định hình nên chiếc móng ngựa cong tròn chuẩn xác!", "expression": "happy"},
+            {"start": 10.5, "end": 14.5, "character_id": "smith", "text": "Cầm chiếc móng vừa rèn xong, bác thợ rèn ân cần tiến lại trang bị cho chú ngựa trung thành!", "expression": "happy"},
+        ],
+    }
+    for index, item in enumerate(story["scenes"]):
+        item["index"] = index
+    validate_story(story)
+    return [story]
+
+
+def viking_voyage_examples():
+    """Mẫu kỹ thuật Phase N: Chuyến hải trình Viking - Định vị mặt trời và cập bến hữu nghị."""
+    cat = catalog()
+
+    def actor(cid, asset, **extra):
+        lbl = cat["assets"][asset].get("label") or cat["assets"][asset].get("spec", {}).get("label") or asset
+        return {"id": cid, "name": lbl, "asset": asset, **extra}
+
+    def pose(t, x, y, h, **extra):
+        return {"time": t, "x": x, "y": y, "height": h, **extra}
+
+    def scene(start, end, poses, actions=(), bg="viking_fjord", **extra):
+        return {
+            "renderer": RENDERER,
+            "kind": "scene",
+            "start_time": start,
+            "end_time": end,
+            "characters_present": list(poses),
+            "poses": poses,
+            "actions": list(actions),
+            "background": {"preset": bg, **extra},
+        }
+
+    def action(kind, start, end, target=None, actor_id=None, **extra):
+        return {"type": kind, "start": start, "end": end, **({"target": target} if target else {}), **({"actor": actor_id} if actor_id else {}), **extra}
+
+    p_compass = held_pose("star_compass_viking", 130, 0, anchor="grip")
+
+    # Cảnh 1: Thuyền Longship rẽ sóng đi >= 150px (140 -> 360), thuỷ thủ chèo thuyền và hoa tiêu định vị
+    sc1 = scene(0, 6.0, {
+        "ship": [
+            pose(0, 110, 880, 260),
+            pose(6.0, 430, 880, 260),
+        ],
+        "rower": [
+            pose(0, 110, 880, 170, outfit="viking", expression="happy"),
+            pose(6.0, 430, 880, 170, outfit="viking", expression="happy"),
+        ],
+        "navigator": [
+            pose(0, 110, 880, 170, outfit="viking", expression="happy"),
+            pose(6.0, 430, 880, 170, outfit="viking", expression="happy"),
+        ],
+        "compass": [
+            pose(0, p_compass["x"], p_compass["y"], 130, rotation=p_compass["rotation"]),
+            pose(6.0, p_compass["x"], p_compass["y"], 130, rotation=p_compass["rotation"]),
+        ],
+    }, actions=[
+        action("ride", 0, 6.0, actor_id="rower", target="ship", seat="seat_1"),
+        action("row", 0.5, 5.5, actor_id="rower", target="ship"),
+        action("ride", 0, 6.0, actor_id="navigator", target="ship", seat="seat_3"),
+        action("emote", 2.0, 4.5, actor_id="navigator", emote="idea"),
+    ], bg="viking_fjord", weather="clear", open_water=True)
+
+    # Cảnh 2: Thuyền cập bến bên nhà dài Viking, hai người bạn gặp gỡ và chào hỏi ấm áp (emote heart)
+    sc2 = scene(6.0, 12.0, {
+        "longhouse": [
+            pose(6.0, 420, 790, 150),
+            pose(12.0, 420, 790, 150),
+        ],
+        "navigator": [
+            pose(6.0, 40, 830, 220, outfit="viking", expression="happy"),
+            pose(9.0, 220, 830, 220, outfit="viking", expression="happy"),
+            pose(12.0, 220, 830, 220, outfit="viking", expression="happy"),
+        ],
+        "compass": [
+            pose(6.0, p_compass["x"], p_compass["y"], 130, rotation=p_compass["rotation"]),
+            pose(12.0, p_compass["x"], p_compass["y"], 130, rotation=p_compass["rotation"]),
+        ],
+        "villager": [
+            pose(6.0, 400, 850, 220, outfit="medieval_villager", expression="happy", flip=True),
+            pose(12.0, 400, 850, 220, outfit="medieval_villager", expression="happy", flip=True),
+        ],
+    }, actions=[
+        action("emote", 8.0, 11.5, actor_id="navigator", emote="heart"),
+        action("emote", 8.5, 11.5, actor_id="villager", emote="music"),
+    ], bg="viking_fjord", weather="clear")
+
+    story = {
+        "id": "viking_voyage",
+        "name": "39 · Hải trình Viking: Rẽ sóng vịnh hẹp và cập bến hữu nghị",
+        "renderer": RENDERER,
+        "fidelity": "technical-demo",
+        "note": "Mẫu kỹ thuật Phase N: Thuyền rồng Longship vượt vịnh hẹp với đĩa định hướng mặt trời, cập bến ngôi nhà dài mái cỏ chào đón bạn bè.",
+        "duration": 12.0,
+        "characters": [
+            actor("ship", "longship"),
+            actor("rower", "chibi_boy"),
+            actor("navigator", "chibi_kid"),
+            actor("compass", "star_compass_viking", attach_to={"id": "navigator", "anchor": "hand_r"}),
+            actor("longhouse", "viking_longhouse"),
+            actor("villager", "chibi_girl"),
+        ],
+        "scenes": [sc1, sc2],
+        "cues": [
+            {"start": 0.5, "end": 5.5, "character_id": "rower", "text": "Thuyền rồng Longship lướt êm qua vùng vịnh hẹp, hoa tiêu ngắm đĩa mặt trời định hướng hải trình an toàn!", "expression": "happy"},
+            {"start": 6.5, "end": 11.5, "character_id": "navigator", "text": "Cập bến ngôi làng thanh bình bên ngôi nhà dài mái cỏ, những người bạn mới trao nhau nụ cười thân ái!", "expression": "happy"},
+        ],
+    }
+    for index, item in enumerate(story["scenes"]):
+        item["index"] = index
+    validate_story(story)
+    return [story]
+
+
+def village_fair_examples():
+    """Mẫu kỹ thuật Phase N: Chợ phiên làng quê - Giếng nước đá, xa quay sợi và gian hàng truyền thống."""
+    cat = catalog()
+
+    def actor(cid, asset, **extra):
+        lbl = cat["assets"][asset].get("label") or cat["assets"][asset].get("spec", {}).get("label") or asset
+        return {"id": cid, "name": lbl, "asset": asset, **extra}
+
+    def pose(t, x, y, h, **extra):
+        return {"time": t, "x": x, "y": y, "height": h, **extra}
+
+    def scene(start, end, poses, actions=(), bg="medieval_village", **extra):
+        return {
+            "renderer": RENDERER,
+            "kind": "scene",
+            "start_time": start,
+            "end_time": end,
+            "characters_present": list(poses),
+            "poses": poses,
+            "actions": list(actions),
+            "background": {"preset": bg, **extra},
+        }
+
+    def action(kind, start, end, target=None, actor_id=None, **extra):
+        return {"type": kind, "start": start, "end": end, **({"target": target} if target else {}), **({"actor": actor_id} if actor_id else {}), **extra}
+
+    p_lantern = held_pose("lantern_star", 150, 0, anchor="grip")
+
+    # Cảnh 1: Kéo gầu nước mát lành từ giếng đá (lift: 0 -> 1), bà lão quay xa dệt sợi len
+    sc1 = scene(0, 5.0, {
+        "well": [
+            pose(0, 110, 810, 200, lift=0.1),
+            pose(2.5, 110, 810, 200, lift=0.55),
+            pose(5.0, 110, 810, 200, lift=1.0),
+        ],
+        "wheel": [
+            pose(0, 330, 830, 170, spin=0),
+            pose(2.5, 330, 830, 170, spin=360),
+            pose(5.0, 330, 830, 170, spin=720),
+        ],
+        "basket": [
+            pose(0, 230, 850, 120),
+            pose(5.0, 230, 850, 120),
+        ],
+        "artisan": [
+            pose(0, 470, 830, 220, outfit="medieval_villager", expression="happy", flip=True),
+            pose(1.25, 470, 830, 220, outfit="medieval_villager", expression="happy", flip=True, hand_r_x=34, hand_r_y=-40),
+            pose(2.5, 470, 830, 220, outfit="medieval_villager", expression="happy", flip=True, hand_r_x=40, hand_r_y=-22),
+            pose(3.75, 470, 830, 220, outfit="medieval_villager", expression="happy", flip=True, hand_r_x=34, hand_r_y=-40),
+            pose(5.0, 470, 830, 220, outfit="medieval_villager", expression="happy", flip=True, hand_r_x=40, hand_r_y=-22),
+        ],
+    }, actions=[
+        action("emote", 1.5, 4.0, actor_id="artisan", emote="music"),
+    ], bg="medieval_village", weather="clear")
+
+    # Cảnh 2: Gian hàng chợ phiên bày bánh mì thơm ngon, em bé rước đèn lồng ngôi sao
+    sc2 = scene(5.0, 10.0, {
+        "stall": [
+            pose(5.0, 420, 810, 210),
+            pose(10.0, 420, 810, 210),
+        ],
+        "bread": [
+            pose(5.0, 380, 725, 40),
+            pose(10.0, 380, 725, 40),
+        ],
+        "kid": [
+            pose(5.0, 40, 810, 210, outfit="medieval_villager", expression="happy"),
+            pose(8.0, 250, 810, 210, outfit="medieval_villager", expression="happy"),
+            pose(10.0, 250, 810, 210, outfit="medieval_villager", expression="happy"),
+        ],
+        "lantern": [
+            pose(5.0, p_lantern["x"], p_lantern["y"], 150, rotation=p_lantern["rotation"]),
+            pose(10.0, p_lantern["x"], p_lantern["y"], 150, rotation=p_lantern["rotation"]),
+        ],
+    }, actions=[
+        action("emote", 6.5, 9.5, actor_id="kid", emote="heart"),
+    ], bg="medieval_village", weather="clear")
+
+    story = {
+        "id": "village_fair",
+        "name": "40 · Chợ phiên làng quê: Kéo nước giếng đá và xa quay sợi",
+        "renderer": RENDERER,
+        "fidelity": "technical-demo",
+        "note": "Mẫu kỹ thuật Phase N: Hoạt cảnh chợ phiên thanh bình với giếng nước đá tời gầu, xa quay sợi dệt len và gian hàng bánh mì.",
+        "duration": 10.0,
+        "characters": [
+            actor("well", "well"),
+            actor("wheel", "spinning_wheel"),
+            actor("basket", "wool_basket"),
+            actor("artisan", "chibi_grandma"),
+            actor("stall", "market_stall"),
+            actor("bread", "bread_loaf"),
+            actor("kid", "chibi_kid"),
+            actor("lantern", "lantern_star", attach_to={"id": "kid", "anchor": "hand_r"}),
+        ],
+        "scenes": [sc1, sc2],
+        "cues": [
+            {"start": 0.5, "end": 4.5, "character_id": "artisan", "text": "Chiếc gầu gỗ kéo từng dòng nước giếng trong vắt mát lành, cạnh bên bà lão vui vẻ quay sợi dệt áo ấm!", "expression": "happy"},
+            {"start": 5.5, "end": 9.5, "character_id": "kid", "text": "Gian hàng chợ phiên thơm lừng mùi bánh mì nóng hổi, em bé hào hứng rước chiếc đèn ngôi sao đón ngày hội!", "expression": "happy"},
+        ],
+    }
+    for index, item in enumerate(story["scenes"]):
+        item["index"] = index
+    validate_story(story)
+    return [story]
+
+
 def auto_frame(story: dict, max_zoom: float = 2.0) -> dict:
     """Đặt camera tĩnh cho mỗi cảnh chưa có camera để nhóm nhân vật nhỏ (tế bào, vi khuẩn) chiếm ~85% bề ngang.
 
@@ -4721,7 +5171,7 @@ def auto_frame(story: dict, max_zoom: float = 2.0) -> dict:
     return story
 
 def sample_stories():
-    """Every sample the library ships: farm stories, articulated hands, IK, fishing, sea monsters, orchard harvest, trellis, highland, vegetable cutaway, safe spraying, giant radish, handwashing, doctor visit, tooth care, nutrition, Phase I body world, Phase K recycling, Phase L safety, Phase M ancient history, Phase O inventions, Phase P German culture, Phase Q Japanese culture, and Phase R Korean culture stories."""
+    """Every sample the library ships: farm stories, articulated hands, IK, fishing, sea monsters, orchard harvest, trellis, highland, vegetable cutaway, safe spraying, giant radish, handwashing, doctor visit, tooth care, nutrition, Phase I body world, Phase K recycling, Phase L safety, Phase M ancient history, Phase O inventions, Phase P German culture, Phase Q Japanese culture, Phase R Korean culture, and Phase N medieval stories."""
     return (
         examples() + agriculture_examples() + farm_life_examples() + farm_animals_examples() +
         articulation_examples() + ik_examples() + fishing_examples() + monster_examples() +
@@ -4737,7 +5187,8 @@ def sample_stories():
         first_flight_examples() + printing_press_examples() + first_car_examples() + then_and_now_examples() +
         bremen_musicians_examples() + st_martin_lanterns_examples() + hedgehog_winter_examples() + first_school_day_examples() +
         momotaro_examples() + bento_morning_examples() + school_cleaning_examples() + tanabata_wish_examples() +
-        tiger_and_persimmon_examples() + kimchi_day_examples() + seollal_morning_examples() + rain_gauge_examples()
+        tiger_and_persimmon_examples() + kimchi_day_examples() + seollal_morning_examples() + rain_gauge_examples() +
+        castle_life_examples() + blacksmith_examples() + viking_voyage_examples() + village_fair_examples()
     )
 
 

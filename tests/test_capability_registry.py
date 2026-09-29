@@ -576,6 +576,10 @@ class CapabilityRegistryTest(unittest.TestCase):
             "hangul_brush_scroll": {"wet"}, "yut_sticks": {"wet"}, "jegi": {"wet"},
             "gourd": {"wet"}, "low_dining_table_kr": {"wet"}, "sebae_cushion": {"wet"},
             "bokjumeoni": {"wet"}, "swallow": {"wet"}, "magpie": {"wet"},
+            # Phase N Medieval Rigs
+            "well": {"wet"}, "anvil": {"wet"}, "forge": {"wet"},
+            "horseshoe": {"wet"}, "spinning_wheel": {"wet"}, "wool_basket": {"wet"},
+            "banner_plain": {"wet"}, "star_compass_viking": {"wet"}, "viking_longhouse": {"wet"},
         }
         self.assertEqual(set(document["assets"]), set(expected))
         for asset_id, states in expected.items():

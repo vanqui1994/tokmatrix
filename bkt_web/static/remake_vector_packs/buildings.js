@@ -270,7 +270,16 @@
       path(ctx, `M ${-gw} 0 L ${-gw} ${-gh + gw} A ${gw} ${gw} 0 0 1 ${gw} ${-gh + gw} L ${gw} 0 Z`, '#3f2a1a', INK, 1.4);
       for (let x = -gw + 5; x < gw; x += 6) line(ctx, [[x, -2], [x, -gh + gw * 0.4]], '#57534e', 1.2);
       const open = clamp(s.open || 0);
-      if (open > 0.02) { const len = gh * 0.9 * open; drawPoly(ctx, [[-gw, 0], [gw, 0], [gw * 1.05, len * 0.25], [-gw * 1.05, len * 0.25]], '#92400e', INK, 1.2); }
+      if (open > 0.02) {
+        // Cầu treo xoay quanh bản lề ở chân cổng: phần còn dựng che cổng thấp dần, mặt cầu hạ ra phía trước dài dần.
+        const standing = gh * 0.92 * (1 - open), deck = gh * 0.5 * open;
+        if (standing > 1) {
+          drawPoly(ctx, [[-gw * 1.05, 0], [gw * 1.05, 0], [gw * 1.05, -standing], [-gw * 1.05, -standing]], '#92400e', INK, 1.4);
+          for (let y = -8; y > -standing; y -= 8) line(ctx, [[-gw * 1.05, y], [gw * 1.05, y]], '#78350f', 0.9);
+        }
+        drawPoly(ctx, [[-gw, 0], [gw, 0], [gw * 1.12, deck], [-gw * 1.12, deck]], '#b45309', INK, 1.2);
+        for (const side of [-1, 1]) line(ctx, [[side * gw, -gh * 0.95], [side * gw * 1.05, standing > 1 ? -standing : deck]], '#334155', 1.3);
+      }
       if (growth > 0.45) for (const side of [-1, 1]) {
         const cx = side * (half - tw / 2), top = -curH;
         drawPoly(ctx, [[cx - tw / 2, 0], [cx + tw / 2, 0], [cx + tw / 2, top], [cx - tw / 2, top]], stone, INK, 1.8);

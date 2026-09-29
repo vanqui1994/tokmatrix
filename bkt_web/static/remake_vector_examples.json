@@ -15606,5 +15606,1360 @@
         "expression": "happy"
       }
     ]
+  },
+  {
+    "id": "castle_life",
+    "name": "37 · Đời sống lâu đài: Cầu treo hạ xuống và rèn luyện hiệp sĩ",
+    "renderer": "native-vector-v1",
+    "fidelity": "technical-demo",
+    "note": "Mẫu kỹ thuật Phase N: Cầu treo lâu đài hạ xuống đón xe ngựa chở hàng, hiệp sĩ nhỏ tập phòng thủ an toàn với khiên gỗ.",
+    "duration": 12.0,
+    "characters": [
+      {
+        "id": "castle",
+        "name": "Lâu đài trung cổ",
+        "asset": "castle"
+      },
+      {
+        "id": "cart",
+        "name": "Xe ngựa kéo",
+        "asset": "horse_cart"
+      },
+      {
+        "id": "horse",
+        "name": "Con ngựa",
+        "asset": "horse"
+      },
+      {
+        "id": "villager",
+        "name": "Em bé nông dân",
+        "asset": "chibi_farmer"
+      },
+      {
+        "id": "banner",
+        "name": "Cờ đuôi nheo trung cổ",
+        "asset": "banner_plain"
+      },
+      {
+        "id": "knight_trainee",
+        "name": "Bé trai học sinh",
+        "asset": "chibi_boy"
+      },
+      {
+        "id": "shield",
+        "name": "Khiên gỗ tròn",
+        "asset": "wooden_shield",
+        "attach_to": {
+          "id": "knight_trainee",
+          "anchor": "hand_l"
+        }
+      },
+      {
+        "id": "partner",
+        "name": "Bé mầm non",
+        "asset": "chibi_kid"
+      },
+      {
+        "id": "sword",
+        "name": "Thanh kiếm gỗ tập",
+        "asset": "toy_sword",
+        "attach_to": {
+          "id": "partner",
+          "anchor": "hand_r"
+        }
+      }
+    ],
+    "scenes": [
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 0,
+        "end_time": 6.0,
+        "characters_present": [
+          "castle",
+          "cart",
+          "horse",
+          "villager"
+        ],
+        "poses": {
+          "castle": [
+            {
+              "time": 0,
+              "x": 420,
+              "y": 810,
+              "height": 190,
+              "open": 0.03
+            },
+            {
+              "time": 2.5,
+              "x": 420,
+              "y": 810,
+              "height": 190,
+              "open": 1.0
+            },
+            {
+              "time": 6.0,
+              "x": 420,
+              "y": 810,
+              "height": 190,
+              "open": 1.0
+            }
+          ],
+          "cart": [
+            {
+              "time": 0,
+              "x": -40,
+              "y": 900,
+              "height": 170
+            },
+            {
+              "time": 2.5,
+              "x": -40,
+              "y": 900,
+              "height": 170
+            },
+            {
+              "time": 6.0,
+              "x": 180,
+              "y": 900,
+              "height": 170
+            }
+          ],
+          "horse": [
+            {
+              "time": 0,
+              "x": 60,
+              "y": 900,
+              "height": 170
+            },
+            {
+              "time": 2.5,
+              "x": 60,
+              "y": 900,
+              "height": 170
+            },
+            {
+              "time": 6.0,
+              "x": 280,
+              "y": 900,
+              "height": 170
+            }
+          ],
+          "villager": [
+            {
+              "time": 0,
+              "x": -40,
+              "y": 900,
+              "height": 180,
+              "outfit": "medieval_villager",
+              "expression": "happy"
+            },
+            {
+              "time": 6.0,
+              "x": 180,
+              "y": 900,
+              "height": 180,
+              "outfit": "medieval_villager",
+              "expression": "happy"
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "ride",
+            "start": 0,
+            "end": 6.0,
+            "target": "cart",
+            "actor": "villager",
+            "seat": "seat_1"
+          },
+          {
+            "type": "emote",
+            "start": 3.5,
+            "end": 5.5,
+            "actor": "villager",
+            "emote": "music"
+          }
+        ],
+        "background": {
+          "preset": "castle_yard",
+          "weather": "clear"
+        },
+        "index": 0
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 6.0,
+        "end_time": 12.0,
+        "characters_present": [
+          "banner",
+          "knight_trainee",
+          "shield",
+          "partner",
+          "sword"
+        ],
+        "poses": {
+          "banner": [
+            {
+              "time": 6.0,
+              "x": 540,
+              "y": 760,
+              "height": 220
+            },
+            {
+              "time": 12.0,
+              "x": 540,
+              "y": 760,
+              "height": 220
+            }
+          ],
+          "knight_trainee": [
+            {
+              "time": 6.0,
+              "x": 60,
+              "y": 810,
+              "height": 230,
+              "outfit": "knight",
+              "expression": "happy"
+            },
+            {
+              "time": 8.0,
+              "x": 220,
+              "y": 810,
+              "height": 230,
+              "outfit": "knight",
+              "expression": "happy"
+            },
+            {
+              "time": 9.0,
+              "x": 220,
+              "y": 810,
+              "height": 230,
+              "outfit": "knight",
+              "expression": "happy",
+              "hand_l_x": 30,
+              "hand_l_y": -40
+            },
+            {
+              "time": 10.0,
+              "x": 220,
+              "y": 810,
+              "height": 230,
+              "outfit": "knight",
+              "expression": "happy",
+              "hand_l_x": 26,
+              "hand_l_y": -30
+            },
+            {
+              "time": 11.0,
+              "x": 220,
+              "y": 810,
+              "height": 230,
+              "outfit": "knight",
+              "expression": "happy",
+              "hand_l_x": 30,
+              "hand_l_y": -40
+            },
+            {
+              "time": 12.0,
+              "x": 220,
+              "y": 810,
+              "height": 230,
+              "outfit": "knight",
+              "expression": "happy",
+              "hand_l_x": 30,
+              "hand_l_y": -40
+            }
+          ],
+          "shield": [
+            {
+              "time": 6.0,
+              "x": -0.0,
+              "y": 17.85,
+              "height": 210,
+              "rotation": 0
+            },
+            {
+              "time": 12.0,
+              "x": -0.0,
+              "y": 17.85,
+              "height": 210,
+              "rotation": 0
+            }
+          ],
+          "partner": [
+            {
+              "time": 6.0,
+              "x": 520,
+              "y": 810,
+              "height": 230,
+              "outfit": "medieval_villager",
+              "expression": "happy",
+              "flip": true
+            },
+            {
+              "time": 8.0,
+              "x": 370,
+              "y": 810,
+              "height": 230,
+              "outfit": "medieval_villager",
+              "expression": "happy",
+              "flip": true
+            },
+            {
+              "time": 9.0,
+              "x": 370,
+              "y": 810,
+              "height": 230,
+              "outfit": "medieval_villager",
+              "expression": "happy",
+              "flip": true,
+              "hand_r_x": 20,
+              "hand_r_y": -62
+            },
+            {
+              "time": 10.0,
+              "x": 370,
+              "y": 810,
+              "height": 230,
+              "outfit": "medieval_villager",
+              "expression": "happy",
+              "flip": true,
+              "hand_r_x": 30,
+              "hand_r_y": -34
+            },
+            {
+              "time": 11.0,
+              "x": 370,
+              "y": 810,
+              "height": 230,
+              "outfit": "medieval_villager",
+              "expression": "happy",
+              "flip": true,
+              "hand_r_x": 20,
+              "hand_r_y": -62
+            },
+            {
+              "time": 12.0,
+              "x": 370,
+              "y": 810,
+              "height": 230,
+              "outfit": "medieval_villager",
+              "expression": "happy",
+              "flip": true,
+              "hand_r_x": 30,
+              "hand_r_y": -34
+            }
+          ],
+          "sword": [
+            {
+              "time": 6.0,
+              "x": 6.156362579862037,
+              "y": 16.914467174146353,
+              "height": 160,
+              "rotation": -20
+            },
+            {
+              "time": 12.0,
+              "x": 6.156362579862037,
+              "y": 16.914467174146353,
+              "height": 160,
+              "rotation": -20
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "emote",
+            "start": 7.0,
+            "end": 9.5,
+            "actor": "knight_trainee",
+            "emote": "music"
+          },
+          {
+            "type": "emote",
+            "start": 8.0,
+            "end": 11.0,
+            "actor": "partner",
+            "emote": "heart"
+          }
+        ],
+        "background": {
+          "preset": "castle_yard",
+          "weather": "clear"
+        },
+        "index": 1
+      }
+    ],
+    "cues": [
+      {
+        "start": 0.5,
+        "end": 5.5,
+        "character_id": "villager",
+        "text": "Cầu treo lâu đài hạ xuống bắc qua hào nước, bác nông dân thong thả đánh xe ngựa chở nông sản vào sân thành!",
+        "expression": "happy"
+      },
+      {
+        "start": 6.5,
+        "end": 11.5,
+        "character_id": "knight_trainee",
+        "text": "Dưới bóng cờ đuôi nheo phấp phới, hiệp sĩ nhỏ vui vẻ luyện tập kỹ năng phòng vệ vững chắc cùng bạn!",
+        "expression": "happy"
+      }
+    ]
+  },
+  {
+    "id": "blacksmith",
+    "name": "38 · Nghề rèn trung cổ: Đúc móng ngựa bên bếp lửa",
+    "renderer": "native-vector-v1",
+    "fidelity": "technical-demo",
+    "note": "Mẫu kỹ thuật Phase N: Thợ rèn nung móng ngựa trong lò lửa, gõ đe định hình nhịp nhàng và đem móng đóng cho chú ngựa.",
+    "duration": 15.0,
+    "characters": [
+      {
+        "id": "smith",
+        "name": "Em bé nông dân",
+        "asset": "chibi_farmer"
+      },
+      {
+        "id": "forge",
+        "name": "Lò rèn truyền thống",
+        "asset": "forge"
+      },
+      {
+        "id": "anvil",
+        "name": "Đe thợ rèn",
+        "asset": "anvil"
+      },
+      {
+        "id": "hammer",
+        "name": "Búa thợ",
+        "asset": "hammer",
+        "attach_to": {
+          "id": "smith",
+          "anchor": "hand_r"
+        }
+      },
+      {
+        "id": "horseshoe",
+        "name": "Móng ngựa sắt",
+        "asset": "horseshoe",
+        "attach_to": {
+          "id": "smith",
+          "anchor": "hand_r"
+        }
+      },
+      {
+        "id": "horse",
+        "name": "Con ngựa",
+        "asset": "horse"
+      }
+    ],
+    "scenes": [
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 0,
+        "end_time": 5.0,
+        "characters_present": [
+          "smith",
+          "forge",
+          "anvil"
+        ],
+        "poses": {
+          "smith": [
+            {
+              "time": 0,
+              "x": 480,
+              "y": 810,
+              "height": 230,
+              "outfit": "medieval_villager",
+              "expression": "neutral",
+              "flip": true
+            },
+            {
+              "time": 3.0,
+              "x": 300,
+              "y": 810,
+              "height": 230,
+              "outfit": "medieval_villager",
+              "expression": "happy",
+              "flip": true
+            },
+            {
+              "time": 5.0,
+              "x": 300,
+              "y": 810,
+              "height": 230,
+              "outfit": "medieval_villager",
+              "expression": "happy",
+              "flip": true
+            }
+          ],
+          "forge": [
+            {
+              "time": 0,
+              "x": 130,
+              "y": 810,
+              "height": 210,
+              "lit": 0.2
+            },
+            {
+              "time": 2.5,
+              "x": 130,
+              "y": 810,
+              "height": 210,
+              "lit": 0.6
+            },
+            {
+              "time": 5.0,
+              "x": 130,
+              "y": 810,
+              "height": 210,
+              "lit": 1.0
+            }
+          ],
+          "anvil": [
+            {
+              "time": 0,
+              "x": 440,
+              "y": 810,
+              "height": 150
+            },
+            {
+              "time": 5.0,
+              "x": 440,
+              "y": 810,
+              "height": 150
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "emote",
+            "start": 1.5,
+            "end": 4.0,
+            "actor": "smith",
+            "emote": "idea"
+          }
+        ],
+        "background": {
+          "preset": "medieval_village",
+          "weather": "clear"
+        },
+        "index": 0
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 5.0,
+        "end_time": 10.0,
+        "characters_present": [
+          "smith",
+          "hammer",
+          "forge",
+          "anvil"
+        ],
+        "poses": {
+          "smith": [
+            {
+              "time": 5.0,
+              "x": 300,
+              "y": 810,
+              "height": 230,
+              "outfit": "medieval_villager",
+              "expression": "happy"
+            },
+            {
+              "time": 10.0,
+              "x": 300,
+              "y": 810,
+              "height": 230,
+              "outfit": "medieval_villager",
+              "expression": "happy"
+            }
+          ],
+          "hammer": [
+            {
+              "time": 5.0,
+              "x": -0.0,
+              "y": 15.2,
+              "height": 190,
+              "rotation": 0
+            },
+            {
+              "time": 10.0,
+              "x": -0.0,
+              "y": 15.2,
+              "height": 190,
+              "rotation": 0
+            }
+          ],
+          "forge": [
+            {
+              "time": 5.0,
+              "x": 110,
+              "y": 810,
+              "height": 210,
+              "lit": 1.0
+            },
+            {
+              "time": 10.0,
+              "x": 110,
+              "y": 810,
+              "height": 210,
+              "lit": 1.0
+            }
+          ],
+          "anvil": [
+            {
+              "time": 5.0,
+              "x": 440,
+              "y": 810,
+              "height": 150
+            },
+            {
+              "time": 10.0,
+              "x": 440,
+              "y": 810,
+              "height": 150
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "hammer_anvil",
+            "start": 5.5,
+            "end": 9.5,
+            "target": "anvil",
+            "actor": "smith",
+            "tool": "hammer"
+          }
+        ],
+        "background": {
+          "preset": "medieval_village",
+          "weather": "clear"
+        },
+        "index": 1
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 10.0,
+        "end_time": 15.0,
+        "characters_present": [
+          "smith",
+          "horseshoe",
+          "horse"
+        ],
+        "poses": {
+          "smith": [
+            {
+              "time": 10.0,
+              "x": 60,
+              "y": 810,
+              "height": 230,
+              "outfit": "medieval_villager",
+              "expression": "happy"
+            },
+            {
+              "time": 13.0,
+              "x": 250,
+              "y": 810,
+              "height": 230,
+              "outfit": "medieval_villager",
+              "expression": "happy"
+            },
+            {
+              "time": 15.0,
+              "x": 250,
+              "y": 810,
+              "height": 230,
+              "outfit": "medieval_villager",
+              "expression": "happy"
+            }
+          ],
+          "horseshoe": [
+            {
+              "time": 10.0,
+              "x": -0.0,
+              "y": 32.5,
+              "height": 130,
+              "rotation": 0
+            },
+            {
+              "time": 15.0,
+              "x": -0.0,
+              "y": 32.5,
+              "height": 130,
+              "rotation": 0
+            }
+          ],
+          "horse": [
+            {
+              "time": 10.0,
+              "x": 430,
+              "y": 810,
+              "height": 200
+            },
+            {
+              "time": 15.0,
+              "x": 430,
+              "y": 810,
+              "height": 200
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "emote",
+            "start": 11.5,
+            "end": 14.5,
+            "actor": "smith",
+            "emote": "heart"
+          },
+          {
+            "type": "emote",
+            "start": 12.0,
+            "end": 14.5,
+            "actor": "horse",
+            "emote": "heart"
+          }
+        ],
+        "background": {
+          "preset": "medieval_village",
+          "weather": "clear"
+        },
+        "index": 2
+      }
+    ],
+    "cues": [
+      {
+        "start": 0.5,
+        "end": 4.5,
+        "character_id": "smith",
+        "text": "Bếp lò rèn bùng lên ngọn lửa hồng rực rỡ, nung thanh sắt nóng đỏ để sẵn sàng uốn nắn!",
+        "expression": "happy"
+      },
+      {
+        "start": 5.5,
+        "end": 9.5,
+        "character_id": "smith",
+        "text": "Từng nhát búa đanh thép giáng xuống mặt đe, định hình nên chiếc móng ngựa cong tròn chuẩn xác!",
+        "expression": "happy"
+      },
+      {
+        "start": 10.5,
+        "end": 14.5,
+        "character_id": "smith",
+        "text": "Cầm chiếc móng vừa rèn xong, bác thợ rèn ân cần tiến lại trang bị cho chú ngựa trung thành!",
+        "expression": "happy"
+      }
+    ]
+  },
+  {
+    "id": "viking_voyage",
+    "name": "39 · Hải trình Viking: Rẽ sóng vịnh hẹp và cập bến hữu nghị",
+    "renderer": "native-vector-v1",
+    "fidelity": "technical-demo",
+    "note": "Mẫu kỹ thuật Phase N: Thuyền rồng Longship vượt vịnh hẹp với đĩa định hướng mặt trời, cập bến ngôi nhà dài mái cỏ chào đón bạn bè.",
+    "duration": 12.0,
+    "characters": [
+      {
+        "id": "ship",
+        "name": "Thuyền rồng Viking",
+        "asset": "longship"
+      },
+      {
+        "id": "rower",
+        "name": "Bé trai học sinh",
+        "asset": "chibi_boy"
+      },
+      {
+        "id": "navigator",
+        "name": "Bé mầm non",
+        "asset": "chibi_kid"
+      },
+      {
+        "id": "compass",
+        "name": "Đĩa định hướng mặt trời Viking",
+        "asset": "star_compass_viking",
+        "attach_to": {
+          "id": "navigator",
+          "anchor": "hand_r"
+        }
+      },
+      {
+        "id": "longhouse",
+        "name": "Nhà dài Viking",
+        "asset": "viking_longhouse"
+      },
+      {
+        "id": "villager",
+        "name": "Bé gái học sinh",
+        "asset": "chibi_girl"
+      }
+    ],
+    "scenes": [
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 0,
+        "end_time": 6.0,
+        "characters_present": [
+          "ship",
+          "rower",
+          "navigator",
+          "compass"
+        ],
+        "poses": {
+          "ship": [
+            {
+              "time": 0,
+              "x": 110,
+              "y": 880,
+              "height": 260
+            },
+            {
+              "time": 6.0,
+              "x": 430,
+              "y": 880,
+              "height": 260
+            }
+          ],
+          "rower": [
+            {
+              "time": 0,
+              "x": 110,
+              "y": 880,
+              "height": 170,
+              "outfit": "viking",
+              "expression": "happy"
+            },
+            {
+              "time": 6.0,
+              "x": 430,
+              "y": 880,
+              "height": 170,
+              "outfit": "viking",
+              "expression": "happy"
+            }
+          ],
+          "navigator": [
+            {
+              "time": 0,
+              "x": 110,
+              "y": 880,
+              "height": 170,
+              "outfit": "viking",
+              "expression": "happy"
+            },
+            {
+              "time": 6.0,
+              "x": 430,
+              "y": 880,
+              "height": 170,
+              "outfit": "viking",
+              "expression": "happy"
+            }
+          ],
+          "compass": [
+            {
+              "time": 0,
+              "x": -0.0,
+              "y": 10.4,
+              "height": 130,
+              "rotation": 0
+            },
+            {
+              "time": 6.0,
+              "x": -0.0,
+              "y": 10.4,
+              "height": 130,
+              "rotation": 0
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "ride",
+            "start": 0,
+            "end": 6.0,
+            "target": "ship",
+            "actor": "rower",
+            "seat": "seat_1"
+          },
+          {
+            "type": "row",
+            "start": 0.5,
+            "end": 5.5,
+            "target": "ship",
+            "actor": "rower"
+          },
+          {
+            "type": "ride",
+            "start": 0,
+            "end": 6.0,
+            "target": "ship",
+            "actor": "navigator",
+            "seat": "seat_3"
+          },
+          {
+            "type": "emote",
+            "start": 2.0,
+            "end": 4.5,
+            "actor": "navigator",
+            "emote": "idea"
+          }
+        ],
+        "background": {
+          "preset": "viking_fjord",
+          "weather": "clear",
+          "open_water": true
+        },
+        "index": 0
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 6.0,
+        "end_time": 12.0,
+        "characters_present": [
+          "longhouse",
+          "navigator",
+          "compass",
+          "villager"
+        ],
+        "poses": {
+          "longhouse": [
+            {
+              "time": 6.0,
+              "x": 420,
+              "y": 790,
+              "height": 150
+            },
+            {
+              "time": 12.0,
+              "x": 420,
+              "y": 790,
+              "height": 150
+            }
+          ],
+          "navigator": [
+            {
+              "time": 6.0,
+              "x": 40,
+              "y": 830,
+              "height": 220,
+              "outfit": "viking",
+              "expression": "happy"
+            },
+            {
+              "time": 9.0,
+              "x": 220,
+              "y": 830,
+              "height": 220,
+              "outfit": "viking",
+              "expression": "happy"
+            },
+            {
+              "time": 12.0,
+              "x": 220,
+              "y": 830,
+              "height": 220,
+              "outfit": "viking",
+              "expression": "happy"
+            }
+          ],
+          "compass": [
+            {
+              "time": 6.0,
+              "x": -0.0,
+              "y": 10.4,
+              "height": 130,
+              "rotation": 0
+            },
+            {
+              "time": 12.0,
+              "x": -0.0,
+              "y": 10.4,
+              "height": 130,
+              "rotation": 0
+            }
+          ],
+          "villager": [
+            {
+              "time": 6.0,
+              "x": 400,
+              "y": 850,
+              "height": 220,
+              "outfit": "medieval_villager",
+              "expression": "happy",
+              "flip": true
+            },
+            {
+              "time": 12.0,
+              "x": 400,
+              "y": 850,
+              "height": 220,
+              "outfit": "medieval_villager",
+              "expression": "happy",
+              "flip": true
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "emote",
+            "start": 8.0,
+            "end": 11.5,
+            "actor": "navigator",
+            "emote": "heart"
+          },
+          {
+            "type": "emote",
+            "start": 8.5,
+            "end": 11.5,
+            "actor": "villager",
+            "emote": "music"
+          }
+        ],
+        "background": {
+          "preset": "viking_fjord",
+          "weather": "clear"
+        },
+        "index": 1
+      }
+    ],
+    "cues": [
+      {
+        "start": 0.5,
+        "end": 5.5,
+        "character_id": "rower",
+        "text": "Thuyền rồng Longship lướt êm qua vùng vịnh hẹp, hoa tiêu ngắm đĩa mặt trời định hướng hải trình an toàn!",
+        "expression": "happy"
+      },
+      {
+        "start": 6.5,
+        "end": 11.5,
+        "character_id": "navigator",
+        "text": "Cập bến ngôi làng thanh bình bên ngôi nhà dài mái cỏ, những người bạn mới trao nhau nụ cười thân ái!",
+        "expression": "happy"
+      }
+    ]
+  },
+  {
+    "id": "village_fair",
+    "name": "40 · Chợ phiên làng quê: Kéo nước giếng đá và xa quay sợi",
+    "renderer": "native-vector-v1",
+    "fidelity": "technical-demo",
+    "note": "Mẫu kỹ thuật Phase N: Hoạt cảnh chợ phiên thanh bình với giếng nước đá tời gầu, xa quay sợi dệt len và gian hàng bánh mì.",
+    "duration": 10.0,
+    "characters": [
+      {
+        "id": "well",
+        "name": "Giếng nước đá trung cổ",
+        "asset": "well"
+      },
+      {
+        "id": "wheel",
+        "name": "Xa quay sợi gỗ",
+        "asset": "spinning_wheel"
+      },
+      {
+        "id": "basket",
+        "name": "Giỏ mây đựng len",
+        "asset": "wool_basket"
+      },
+      {
+        "id": "artisan",
+        "name": "Bà cụ",
+        "asset": "chibi_grandma"
+      },
+      {
+        "id": "stall",
+        "name": "Quầy chợ Giáng sinh (Marktstand)",
+        "asset": "market_stall"
+      },
+      {
+        "id": "bread",
+        "name": "Ổ bánh mì",
+        "asset": "bread_loaf"
+      },
+      {
+        "id": "kid",
+        "name": "Bé mầm non",
+        "asset": "chibi_kid"
+      },
+      {
+        "id": "lantern",
+        "name": "Đèn lồng ngôi sao",
+        "asset": "lantern_star",
+        "attach_to": {
+          "id": "kid",
+          "anchor": "hand_r"
+        }
+      }
+    ],
+    "scenes": [
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 0,
+        "end_time": 5.0,
+        "characters_present": [
+          "well",
+          "wheel",
+          "basket",
+          "artisan"
+        ],
+        "poses": {
+          "well": [
+            {
+              "time": 0,
+              "x": 110,
+              "y": 810,
+              "height": 200,
+              "lift": 0.1
+            },
+            {
+              "time": 2.5,
+              "x": 110,
+              "y": 810,
+              "height": 200,
+              "lift": 0.55
+            },
+            {
+              "time": 5.0,
+              "x": 110,
+              "y": 810,
+              "height": 200,
+              "lift": 1.0
+            }
+          ],
+          "wheel": [
+            {
+              "time": 0,
+              "x": 330,
+              "y": 830,
+              "height": 170,
+              "spin": 0
+            },
+            {
+              "time": 2.5,
+              "x": 330,
+              "y": 830,
+              "height": 170,
+              "spin": 360
+            },
+            {
+              "time": 5.0,
+              "x": 330,
+              "y": 830,
+              "height": 170,
+              "spin": 720
+            }
+          ],
+          "basket": [
+            {
+              "time": 0,
+              "x": 230,
+              "y": 850,
+              "height": 120
+            },
+            {
+              "time": 5.0,
+              "x": 230,
+              "y": 850,
+              "height": 120
+            }
+          ],
+          "artisan": [
+            {
+              "time": 0,
+              "x": 470,
+              "y": 830,
+              "height": 220,
+              "outfit": "medieval_villager",
+              "expression": "happy",
+              "flip": true
+            },
+            {
+              "time": 1.25,
+              "x": 470,
+              "y": 830,
+              "height": 220,
+              "outfit": "medieval_villager",
+              "expression": "happy",
+              "flip": true,
+              "hand_r_x": 34,
+              "hand_r_y": -40
+            },
+            {
+              "time": 2.5,
+              "x": 470,
+              "y": 830,
+              "height": 220,
+              "outfit": "medieval_villager",
+              "expression": "happy",
+              "flip": true,
+              "hand_r_x": 40,
+              "hand_r_y": -22
+            },
+            {
+              "time": 3.75,
+              "x": 470,
+              "y": 830,
+              "height": 220,
+              "outfit": "medieval_villager",
+              "expression": "happy",
+              "flip": true,
+              "hand_r_x": 34,
+              "hand_r_y": -40
+            },
+            {
+              "time": 5.0,
+              "x": 470,
+              "y": 830,
+              "height": 220,
+              "outfit": "medieval_villager",
+              "expression": "happy",
+              "flip": true,
+              "hand_r_x": 40,
+              "hand_r_y": -22
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "emote",
+            "start": 1.5,
+            "end": 4.0,
+            "actor": "artisan",
+            "emote": "music"
+          }
+        ],
+        "background": {
+          "preset": "medieval_village",
+          "weather": "clear"
+        },
+        "index": 0
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 5.0,
+        "end_time": 10.0,
+        "characters_present": [
+          "stall",
+          "bread",
+          "kid",
+          "lantern"
+        ],
+        "poses": {
+          "stall": [
+            {
+              "time": 5.0,
+              "x": 420,
+              "y": 810,
+              "height": 210
+            },
+            {
+              "time": 10.0,
+              "x": 420,
+              "y": 810,
+              "height": 210
+            }
+          ],
+          "bread": [
+            {
+              "time": 5.0,
+              "x": 380,
+              "y": 725,
+              "height": 40
+            },
+            {
+              "time": 10.0,
+              "x": 380,
+              "y": 725,
+              "height": 40
+            }
+          ],
+          "kid": [
+            {
+              "time": 5.0,
+              "x": 40,
+              "y": 810,
+              "height": 210,
+              "outfit": "medieval_villager",
+              "expression": "happy"
+            },
+            {
+              "time": 8.0,
+              "x": 250,
+              "y": 810,
+              "height": 210,
+              "outfit": "medieval_villager",
+              "expression": "happy"
+            },
+            {
+              "time": 10.0,
+              "x": 250,
+              "y": 810,
+              "height": 210,
+              "outfit": "medieval_villager",
+              "expression": "happy"
+            }
+          ],
+          "lantern": [
+            {
+              "time": 5.0,
+              "x": -0.0,
+              "y": 9.0,
+              "height": 150,
+              "rotation": 0
+            },
+            {
+              "time": 10.0,
+              "x": -0.0,
+              "y": 9.0,
+              "height": 150,
+              "rotation": 0
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "emote",
+            "start": 6.5,
+            "end": 9.5,
+            "actor": "kid",
+            "emote": "heart"
+          }
+        ],
+        "background": {
+          "preset": "medieval_village",
+          "weather": "clear"
+        },
+        "index": 1
+      }
+    ],
+    "cues": [
+      {
+        "start": 0.5,
+        "end": 4.5,
+        "character_id": "artisan",
+        "text": "Chiếc gầu gỗ kéo từng dòng nước giếng trong vắt mát lành, cạnh bên bà lão vui vẻ quay sợi dệt áo ấm!",
+        "expression": "happy"
+      },
+      {
+        "start": 5.5,
+        "end": 9.5,
+        "character_id": "kid",
+        "text": "Gian hàng chợ phiên thơm lừng mùi bánh mì nóng hổi, em bé hào hứng rước chiếc đèn ngôi sao đón ngày hội!",
+        "expression": "happy"
+      }
+    ]
   }
 ]

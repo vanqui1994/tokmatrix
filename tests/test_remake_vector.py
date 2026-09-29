@@ -3922,5 +3922,299 @@ console.log(JSON.stringify(rows));""", {"story": story, "cat": cat})
             browser.close()
 
 
+class PhaseNTest(unittest.TestCase):
+    """Plan §23 & Giai đoạn N: Trung cổ, hiệp sĩ, Viking (medieval) - rigs, backgrounds, contacts, và stories."""
+    _node = PackContractTest._node
 
+    def test_every_medieval_pack_rig_draws_and_is_in_catalog(self):
+        from bkt_web.remake_vector import catalog
+        cat = catalog()
+        medieval_rigs = [
+            "well", "anvil", "forge", "horseshoe",
+            "spinning_wheel", "wool_basket", "banner_plain",
+            "star_compass_viking", "viking_longhouse"
+        ]
+        for rig in medieval_rigs:
+            with self.subTest(rig=rig):
+                self.assertIn(rig, cat["assets"], f"{rig} phải có trong catalog")
+                self.assertEqual(cat["assets"][rig].get("pack"), "medieval")
+                anchors = cat["assets"][rig].get("anchors", {})
+                self.assertIn("root", anchors, f"{rig} thiếu anchor root")
+                self.assertIn("top", anchors, f"{rig} thiếu anchor top")
+                # Rule 5: anchors không được vượt quá khung y < -100
+                for aname, apos in anchors.items():
+                    self.assertGreaterEqual(apos[1], -100.0, f"{rig}.{aname} y={apos[1]} vượt quá khung trên y < -100")
 
+        out = self._node(r"""
+globalThis.Path2D=class{constructor(){}addPath(){}};
+const {cat, rigs} = JSON.parse(fs.readFileSync(0, 'utf8'));
+const ctx = new Proxy({}, {
+  get: (o, k) => k in o ? o[k] : (k === 'createLinearGradient' || k === 'createRadialGradient') ? () => ({ addColorStop() {} }) : () => {},
+  set: (o, k, v) => (o[k] = v, true)
+});
+const errors = [];
+for (const rig of rigs) {
+  const drawer = RemakeVector.kit.RIG_DRAWERS[rig];
+  if (!drawer) {
+    errors.push(`Thiếu drawer cho rig ${rig}`);
+    continue;
+  }
+  const s = { ...cat.pose_defaults, asset: rig, height: 100, x: 288, y: 512, rotation: 0, flip: false, style: {} };
+  try {
+    drawer(ctx, s, 1.0, cat);
+  } catch (e) {
+    errors.push(`Lỗi khi vẽ ${rig}: ${e.message}`);
+  }
+}
+console.log(JSON.stringify(errors));""", {"cat": cat, "rigs": medieval_rigs})
+        self.assertEqual(out, [], f"Các rig bị lỗi vẽ: {out}")
+
+    def test_medieval_backgrounds_render_all_weathers_without_text(self):
+        from bkt_web.remake_vector import catalog
+        cat = catalog()
+        bgs = ["castle_yard", "medieval_village", "viking_fjord"]
+        for bg in bgs:
+            self.assertIn(bg, cat["backgrounds"])
+            self.assertIn(bg, cat["background_specs"])
+            self.assertEqual(cat["background_specs"][bg]["ground_y"], 810)
+
+        bg_out = self._node(r"""
+globalThis.Path2D=class{constructor(){}addPath(){}};
+const {cat, bgs}=JSON.parse(fs.readFileSync(0,'utf8'));
+let textCalls = 0;
+const ctx=new Proxy({},{
+  get:(o,k)=>{
+    if(k==='fillText'||k==='strokeText'){ textCalls++; return ()=>{}; }
+    if(k==='createLinearGradient'||k==='createRadialGradient') return ()=>({addColorStop(){}});
+    return ()=>{};
+  },
+  set:(o,k,v)=>(o[k]=v,true)
+});
+const errors=[];
+for(const bg of bgs){
+  const spec = cat.background_specs[bg];
+  for(const night of [false, true]){
+    for(const weather of ['clear','rain','snow','wind','fog','storm','hot']){
+      try {
+        V.BACKGROUNDS[bg].draw(ctx, {night, weather, theme: spec.theme, ground_y: spec.ground_y, dirty: 0.5}, 1.5);
+      } catch(e) {
+        errors.push(bg + ' ' + weather + (night?' night':'') + ': ' + e.message);
+      }
+    }
+  }
+}
+console.log(JSON.stringify({errors, textCalls}));""", {"cat": cat, "bgs": bgs})
+        self.assertEqual(bg_out["errors"], [])
+        self.assertEqual(bg_out["textCalls"], 0, "Hình nền không được vẽ text")
+
+    def test_castle_life_drawbridge_opens_and_travel_distance(self):
+        from bkt_web.remake_vector import catalog, castle_life_examples
+        cat = catalog()
+        story = castle_life_examples()[0]
+        # castle.open tăng 0 -> 1
+        sc1 = story["scenes"][0]
+        castle_keys = sc1["poses"]["castle"]
+        self.assertLessEqual(castle_keys[0].get("open", 0.0), 0.05)  # 0.03: cầu còn dựng đứng che cổng
+        self.assertEqual(castle_keys[-1].get("open", 0.0), 1.0)
+
+        # xe/ngựa đi >= 150 px vào sân
+        cart_keys = sc1["poses"]["cart"]
+        dx_cart = abs(cart_keys[-1]["x"] - cart_keys[0]["x"])
+        self.assertGreaterEqual(dx_cart, 150.0, f"Xe ngựa đi {dx_cart}px < 150px")
+
+        horse_keys = sc1["poses"]["horse"]
+        dx_horse = abs(horse_keys[-1]["x"] - horse_keys[0]["x"])
+        self.assertGreaterEqual(dx_horse, 150.0, f"Ngựa đi {dx_horse}px < 150px")
+
+        # không có action slash / charge / strike*
+        for sc in story["scenes"]:
+            for a in sc.get("actions", []):
+                atype = a["type"]
+                self.assertNotIn(atype, ["slash", "charge", "strike", "strike_infected"], f"Không được có hành động bạo lực: {atype}")
+
+    def test_blacksmith_hammer_strikes_anvil_surface_and_forge_lit(self):
+        from bkt_web.remake_vector import catalog, blacksmith_examples
+        cat = catalog()
+        story = blacksmith_examples()[0]
+
+        # 1. forge.lit tăng đơn điệu ở Scene 1
+        sc1 = story["scenes"][0]
+        forge_keys = sc1["poses"]["forge"]
+        lits = [k.get("lit", 0) for k in forge_keys]
+        for i in range(len(lits) - 1):
+            self.assertLessEqual(lits[i], lits[i+1], "forge.lit phải tăng đơn điệu")
+        self.assertGreaterEqual(lits[-1], 0.9, "forge.lit cuối phải đạt >= 0.9")
+
+        # 2. Đầu búa ↔ anvil.surface < 12 px ở các nhịp gõ (hammer_anvil)
+        out = self._node(r"""
+const {story, cat} = JSON.parse(fs.readFileSync(0, 'utf8'));
+const rows = [];
+for (let t = 5.5; t <= 9.5; t += 0.05) {
+  const f = V.sample(story, cat, t);
+  const hammerHead = V.worldAnchor(cat, f.states.hammer, 'head');
+  const anvilSurf = V.worldAnchor(cat, f.states.anvil, 'surface');
+  const d = Math.hypot(hammerHead.x - anvilSurf.x, hammerHead.y - anvilSurf.y);
+  rows.push({ t: Math.round(t * 100) / 100, d });
+}
+console.log(JSON.stringify(rows));""", {"story": story, "cat": cat})
+
+        min_dists = [r["d"] for r in out]
+        min_d = min(min_dists)
+        self.assertLess(min_d, 12.0, f"Đầu búa không chạm mặt đe < 12px (min={min_d:.2f}px)")
+
+        # 3. horseshoe trong tay (grip ↔ hand < 3 px) khi mang tới ngựa ở Scene 3
+        out_carry = self._node(r"""
+const {story, cat} = JSON.parse(fs.readFileSync(0, 'utf8'));
+const rows = [];
+for (let t = 10.5; t <= 14.5; t += 0.5) {
+  const f = V.sample(story, cat, t);
+  const hand = V.worldAnchor(cat, f.states.smith, 'hand_r');
+  const grip = V.worldAnchor(cat, f.states.horseshoe, 'grip');
+  rows.push({ t, d: Math.hypot(hand.x - grip.x, hand.y - grip.y) });
+}
+console.log(JSON.stringify(rows));""", {"story": story, "cat": cat})
+        for item in out_carry:
+            self.assertLess(item["d"], 3.0, f"Móng ngựa lệch khỏi tay tại t={item['t']} ({item['d']}px >= 3px)")
+
+    def test_viking_voyage_longship_travel_and_star_compass(self):
+        from bkt_web.remake_vector import catalog, viking_voyage_examples
+        cat = catalog()
+        story = viking_voyage_examples()[0]
+
+        # 1. longship đi >= 150 px
+        sc1 = story["scenes"][0]
+        ship_keys = sc1["poses"]["ship"]
+        dx_ship = abs(ship_keys[-1]["x"] - ship_keys[0]["x"])
+        self.assertGreaterEqual(dx_ship, 150.0, f"Thuyền rồng đi {dx_ship}px < 150px")
+
+        # 2. người chèo ngồi đúng ghế (ride trên seat_1)
+        ride_actions = [a for a in sc1.get("actions", []) if a["type"] == "ride" and a.get("actor") == "rower"]
+        self.assertTrue(len(ride_actions) > 0, "Thuỷ thủ chèo phải có action ride")
+        self.assertEqual(ride_actions[0].get("seat"), "seat_1")
+
+        # 3. star_compass_viking trong tay (grip ↔ hand < 3 px)
+        out_compass = self._node(r"""
+const {story, cat} = JSON.parse(fs.readFileSync(0, 'utf8'));
+const rows = [];
+for (let t = 1.0; t <= 11.0; t += 2.0) {
+  const f = V.sample(story, cat, t);
+  const hand = V.worldAnchor(cat, f.states.navigator, 'hand_r');
+  const grip = V.worldAnchor(cat, f.states.compass, 'grip');
+  rows.push({ t, d: Math.hypot(hand.x - grip.x, hand.y - grip.y) });
+}
+console.log(JSON.stringify(rows));""", {"story": story, "cat": cat})
+        for item in out_compass:
+            self.assertLess(item["d"], 3.0, f"La bàn lệch khỏi tay tại t={item['t']} ({item['d']}px >= 3px)")
+
+        # 4. cảnh cuối có emote heart
+        sc2 = story["scenes"][1]
+        heart_emotes = [a for a in sc2.get("actions", []) if a.get("type") == "emote" and a.get("emote") == "heart"]
+        self.assertTrue(len(heart_emotes) > 0, "Cảnh cuối phải có emote heart biểu hiện hoà bình hữu nghị")
+
+    def test_all_emotes_and_outfits_valid(self):
+        from bkt_web.remake_vector import (
+            EMOTE_SYMBOLS,
+            catalog,
+            castle_life_examples,
+            blacksmith_examples,
+            viking_voyage_examples,
+            village_fair_examples
+        )
+        cat = catalog()
+        stories = [
+            castle_life_examples()[0],
+            blacksmith_examples()[0],
+            viking_voyage_examples()[0],
+            village_fair_examples()[0]
+        ]
+        for story in stories:
+            for sc in story["scenes"]:
+                for a in sc.get("actions", []):
+                    if a.get("type") == "emote":
+                        emote_val = a.get("emote")
+                        self.assertIn(emote_val, EMOTE_SYMBOLS, f"{story['id']}: emote '{emote_val}' không nằm trong EMOTE_SYMBOLS")
+            for char in story["characters"]:
+                outfit = char.get("outfit")
+                if outfit and outfit != "none":
+                    asset_group = cat["assets"][char["asset"]].get("group")
+                    self.assertEqual(asset_group, "chibi", f"Outfit '{outfit}' chỉ được dùng cho rig chibi, không phải {char['asset']}")
+            for sc in story["scenes"]:
+                for cid, keys in sc.get("poses", {}).items():
+                    for k in keys:
+                        outfit = k.get("outfit")
+                        if outfit and outfit != "none":
+                            cdef = next(c for c in story["characters"] if c["id"] == cid)
+                            asset_group = cat["assets"][cdef["asset"]].get("group")
+                            self.assertEqual(asset_group, "chibi", f"Outfit '{outfit}' trong pose chỉ được dùng cho rig chibi, không phải {cdef['asset']}")
+
+    def test_real_canvas_pixel_bounding_box_sizes(self):
+        """Đo bounding box pixel thật của mỗi đạo cụ/thú/xe chính ở ĐÚNG chiều cao story dùng (không tự đặt)."""
+        from bkt_web.remake_vector import catalog, engine_sources
+        from bkt_web.remake_vector import castle_life_examples, blacksmith_examples, viking_voyage_examples, village_fair_examples
+        from playwright.sync_api import sync_playwright
+        cat = catalog()
+        engine_js = "\n;\n".join(src.read_text(encoding="utf-8") for src in engine_sources())
+        used = {}
+        for story in castle_life_examples() + blacksmith_examples() + viking_voyage_examples() + village_fair_examples():
+            assets = {c["id"]: c["asset"] for c in story["characters"]}
+            for sc in story["scenes"]:
+                for cid, keys in sc["poses"].items():
+                    for k in keys:
+                        used[assets[cid]] = min(used.get(assets[cid], 10 ** 6), k["height"])
+        thresholds = {
+            "horseshoe": 60, "star_compass_viking": 60, "wooden_shield": 60, "toy_sword": 60, "hammer": 60, "lantern_star": 60,
+            "anvil": 100, "well": 100, "forge": 100, "spinning_wheel": 100, "wool_basket": 60, "viking_longhouse": 100,
+            "horse": 180, "longship": 250, "horse_cart": 150,
+        }
+        actors_to_test = [{"asset": a, "height": used[a], "min_size": m} for a, m in thresholds.items()]
+
+        with sync_playwright() as p:
+            browser = p.chromium.launch(args=["--disable-gpu", "--disable-gpu-rasterization", "--force-color-profile=srgb"])
+            page = browser.new_page()
+            page.set_content(f"""
+            <html><body>
+            <canvas id="stage" width="576" height="1024"></canvas>
+            <script>{engine_js}</script>
+            <script>
+              window.cat = {json.dumps(cat)};
+              window.measureActor = function(asset, height) {{
+                const canvas = document.getElementById('stage');
+                const ctx = canvas.getContext('2d');
+                ctx.clearRect(0, 0, 576, 1024);
+                ctx.save();
+                ctx.translate(288, 512);
+                const k = height / 100;
+                ctx.scale(k, k);
+                const drawer = RemakeVector.kit.RIG_DRAWERS[asset];
+                if (!drawer) throw new Error('No drawer for ' + asset);
+                const s = {{ ...cat.pose_defaults, asset, height, id: 'test', style: {{}} }};
+                drawer(ctx, s, 1.0, cat);
+                ctx.restore();
+                const img = ctx.getImageData(0, 0, 576, 1024).data;
+                let minX = 576, maxX = -1, minY = 1024, maxY = -1;
+                for (let y = 0; y < 1024; y++) {{
+                  for (let x = 0; x < 576; x++) {{
+                    const a = img[(y * 576 + x) * 4 + 3];
+                    if (a > 10) {{
+                      if (x < minX) minX = x;
+                      if (x > maxX) maxX = x;
+                      if (y < minY) minY = y;
+                      if (y > maxY) maxY = y;
+                    }}
+                  }}
+                }}
+                if (maxX < 0) return {{ w: 0, h: 0, maxDim: 0 }};
+                const w = maxX - minX + 1, h = maxY - minY + 1;
+                return {{ w, h, maxDim: Math.max(w, h) }};
+              }};
+            </script>
+            </body></html>
+            """)
+            for item in actors_to_test:
+                res = page.evaluate("args => measureActor(args[0], args[1])", [item["asset"], item["height"]])
+                with self.subTest(asset=item["asset"]):
+                    self.assertGreaterEqual(
+                        res["maxDim"], item["min_size"],
+                        f"{item['asset']} (cao {item['height']}) có kích thước pixel thực tế {res['w']}x{res['h']} (max={res['maxDim']}px) < ngưỡng {item['min_size']}px"
+                    )
+            browser.close()

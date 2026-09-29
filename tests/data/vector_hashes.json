@@ -3709,6 +3709,69 @@
       "01c8aaef3d102307",
       "01c8aaef3d102307",
       "01c8aaef3d102307"
+    ],
+    "well": [
+      "8e33fcef60a86ba7",
+      "8e33fcef60a86ba7",
+      "8e33fcef60a86ba7",
+      "8e33fcef60a86ba7",
+      "8e33fcef60a86ba7"
+    ],
+    "anvil": [
+      "63cae1ef1426195a",
+      "63cae1ef1426195a",
+      "63cae1ef1426195a",
+      "63cae1ef1426195a",
+      "63cae1ef1426195a"
+    ],
+    "forge": [
+      "efb2d5ef97b3910e",
+      "ab1882ef2514acd9",
+      "7e406eeff3d31967",
+      "233decef88530ea2",
+      "0fb504ef5db5eea4"
+    ],
+    "horseshoe": [
+      "398288ef7ed839ad",
+      "398288ef7ed839ad",
+      "398288ef7ed839ad",
+      "398288ef7ed839ad",
+      "398288ef7ed839ad"
+    ],
+    "spinning_wheel": [
+      "55aba6efc5aa290a",
+      "55aba6efc5aa290a",
+      "55aba6efc5aa290a",
+      "55aba6efc5aa290a",
+      "55aba6efc5aa290a"
+    ],
+    "wool_basket": [
+      "5d113eefe06c0c39",
+      "5d113eefe06c0c39",
+      "5d113eefe06c0c39",
+      "5d113eefe06c0c39",
+      "5d113eefe06c0c39"
+    ],
+    "banner_plain": [
+      "01cf8eef9b3f7d54",
+      "231782ef5a432496",
+      "7964aeefe3ba30b6",
+      "b16778ef6a1564d1",
+      "37b53eef2526b48a"
+    ],
+    "star_compass_viking": [
+      "4eeb48ef678267df",
+      "4eeb48ef678267df",
+      "4eeb48ef678267df",
+      "4eeb48ef678267df",
+      "4eeb48ef678267df"
+    ],
+    "viking_longhouse": [
+      "e5406bef4ea5d287",
+      "e5406bef4ea5d287",
+      "e5406bef4ea5d287",
+      "e5406bef4ea5d287",
+      "e5406bef4ea5d287"
     ]
   },
   "backgrounds": {
@@ -6023,6 +6086,108 @@
         "115302ef7acb8e98",
         "96ee33ef23e259c1"
       ]
+    },
+    "castle_yard": {
+      "day": [
+        "6b86a5efae73e5af",
+        "6b86a5efae73e5af"
+      ],
+      "night": [
+        "3afd94efaa092782",
+        "3afd94efaa092782"
+      ],
+      "rain": [
+        "2af6c2efe37228e5",
+        "9a21b4efd2d60f55"
+      ],
+      "snow": [
+        "417f29ef3fcf260b",
+        "8ce878ef9672b73d"
+      ],
+      "wind": [
+        "8ae1cfef98d354eb",
+        "17f4e5ef2f800eb9"
+      ],
+      "fog": [
+        "aa7dedefd2d3e03f",
+        "0e3f2cef9baf0ab2"
+      ],
+      "storm": [
+        "2d5060ef64463be8",
+        "cc6e56ef9b25e018"
+      ],
+      "hot": [
+        "4a190aef6dc3902c",
+        "d00edfefede9a7ac"
+      ]
+    },
+    "medieval_village": {
+      "day": [
+        "e926f2ef49d54e6f",
+        "9700a5eff01f253e"
+      ],
+      "night": [
+        "71f82def9e747e1c",
+        "d60a2aef66b12d5d"
+      ],
+      "rain": [
+        "0e9151ef88c01f3e",
+        "125428ef849aa545"
+      ],
+      "snow": [
+        "7c63a4ef12eea222",
+        "56f2f6ef1f32aa58"
+      ],
+      "wind": [
+        "99e78beff5e1b320",
+        "dfa320ef35b27bac"
+      ],
+      "fog": [
+        "9d6c2cef8aa8e1f1",
+        "f0a6a2ef2966362c"
+      ],
+      "storm": [
+        "ba363eef938a4c36",
+        "2584f7ef41946fcc"
+      ],
+      "hot": [
+        "ecccb9efa0fb2a5f",
+        "13bb3eefddcdbb9f"
+      ]
+    },
+    "viking_fjord": {
+      "day": [
+        "afd8a5ef83a6315a",
+        "faebc3efa092cad1"
+      ],
+      "night": [
+        "998200ef40785f0c",
+        "26bed0efaf5eb859"
+      ],
+      "rain": [
+        "127a6defc8e7bff8",
+        "90bffbef3111c2cb"
+      ],
+      "snow": [
+        "fc5600ef97ae4a19",
+        "f3eeb5ef2408beeb"
+      ],
+      "wind": [
+        "61ebdeef582052ff",
+        "de2a8def1fa48575"
+      ],
+      "fog": [
+        "822d1fefdc8bd2c2",
+        "bccebeef704b4431"
+      ],
+      "storm": [
+        "1c7319efcc548208",
+        "df707bef223f3862"
+      ],
+      "hot": [
+        "4968cfef601bdeaf",
+        "8309b7ef49fbb3c4"
+      ]
     }
   },
   "stories": {
@@ -6438,6 +6603,34 @@
       "de5efdef988ab175",
       "ccbadbefb7288592",
       "ceb2d7ef8b78b9c0"
+    ],
+    "castle_life": [
+      "a5867aef771452d8",
+      "a3402def0465a8ea",
+      "b99cacef2c4e1a28",
+      "6edccbefe1a02058",
+      "72dcf4ef67fd1c52"
+    ],
+    "blacksmith": [
+      "221b77ef77744a21",
+      "ebd1bcefb4bc7c2d",
+      "2eb41fef1a84b460",
+      "f069c4ef2fb7b5ce",
+      "103aebefa31418c5"
+    ],
+    "viking_voyage": [
+      "6730c6ef8b675390",
+      "0e7a27ef976208d4",
+      "ccfdfcef4320eef9",
+      "6679cdef1306fea2",
+      "7725ddef0a31a9f4"
+    ],
+    "village_fair": [
+      "59e08defdd012912",
+      "444189efb5329798",
+      "500537efc3c1a128",
+      "c3c270efb5cb08ae",
+      "1b7353ef4847868f"
     ]
   }
 }
