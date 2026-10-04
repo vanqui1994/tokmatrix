@@ -211,8 +211,20 @@ def assemble(p: Dict[str, Any]) -> Path:
 
 
 # ------------------------------------------------------------------ luồng nền
+def _stopped(pid: str) -> bool:
+    try:
+        return load(pid).get("status") == "stopped"
+    except Exception:  # noqa: BLE001
+        return False
+
+
 def process(pid: str) -> None:
     p = load(pid)
+
+    def save(p):  # nút Dừng ghi "stopped" lên đĩa trong lúc một clip đang chạy — không được ghi đè
+        if _stopped(pid):
+            p["status"] = "stopped"
+        globals()["save"](p)
     try:
         p["status"] = "planning"; save(p)
         plan(p)
@@ -221,10 +233,9 @@ def process(pid: str) -> None:
         for s in p["scenes"]:
             if s["status"] == "done":
                 continue
-            p2 = load(pid)
-            if p2.get("status") == "stopped":
+            if _stopped(pid):
                 return
-            while s["tries"] < 2 and s["status"] != "done":
+            while s["tries"] < 2 and s["status"] != "done" and p["status"] != "stopped":
                 s["status"] = "running"; save(p)
                 try:
                     got = make_clip(s["prompt"])
@@ -234,6 +245,8 @@ def process(pid: str) -> None:
                     s["tries"] += 1
                     s.update(status="error" if s["tries"] >= 2 else "pending", error=str(e)[:300])
                 save(p)
+            if p["status"] == "stopped":
+                return
         p["status"] = "assembling"; save(p)
         assemble(p)
         bad = [s["i"] for s in p["scenes"] if s["status"] != "done"]
@@ -248,7 +261,11 @@ def _loop() -> None:
         todo = [p for p in list_projects()[::-1] if p.get("status") in ("queued", "planning", "rendering", "assembling")]
         if todo:
             with _lock:
-                process(todo[0]["id"])
+                try:
+                    process(todo[0]["id"])
+                except Exception as e:  # noqa: BLE001 — project.json hỏng không được giết luồng nền
+                    print(f"[muse-film] {todo[0].get('id')}: {e}")
+                    time.sleep(30)
             continue
         _wake.wait(30)
         _wake.clear()

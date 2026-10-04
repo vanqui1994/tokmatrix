@@ -208,6 +208,8 @@ def direct(vid, work, words, lang):
         k = int(s.get("start", 0))
         if k > last and k < len(sents):
             s["t"] = 0.0 if not scenes else sents[k]["start"]; scenes.append(s); last = k
+    if not scenes:
+        raise RuntimeError("đạo diễn không trả cảnh hợp lệ")  # không lưu plan.json rỗng (chạy lại sẽ lỗi mãi)
     plan["scenes"], plan["director"] = scenes, src
     f.write_text(json.dumps(plan, ensure_ascii=False, indent=1))
     return plan
@@ -397,8 +399,8 @@ FPS = 24
 
 
 def _ass_time(t):
-    t = max(0.0, t)
-    return f"{int(t // 3600)}:{int(t % 3600 // 60):02d}:{t % 60:05.2f}"
+    cs = int(round(max(0.0, t) * 100))  # làm tròn trước: 59.999 → 1:00.00, không phải "0:00:60.00"
+    return f"{cs // 360000}:{cs // 6000 % 60:02d}:{cs // 100 % 60:02d}.{cs % 100:02d}"
 
 
 def _captions_ass(words, total, path):
@@ -422,9 +424,9 @@ def _captions_ass(words, total, path):
     Path(path).write_text(head + "\n".join(lines) + "\n", encoding="utf-8")
 
 
-def _scene_filter(i, s, d, last):
-    """zoompan + màu + vignette + dip cho cảnh i (d giây), toạ độ ảnh vào đã phóng 2× (2160×3840)."""
-    n = max(1, round(d * FPS))
+def _scene_filter(i, s, d, last, n=None):
+    """zoompan + màu + vignette + dip cho cảnh i (d giây, n khung), toạ độ ảnh vào đã phóng 2× (2160×3840)."""
+    n = n or max(1, round(d * FPS))
     p = f"(on/{max(1, n - 1)})"
     ease = f"((1-cos(PI*{p}))/2)"
     tense = bool(s.get("tense"))
@@ -457,9 +459,11 @@ def render_ffmpeg(vid, work, words, plan, jobs=None):
     starts = [round(s["t"], 2) for s in sc]
     starts[0] = 0.0  # cảnh đầu phủ từ 0 như bản HyperFrames (không có khoảng đen trước lời đầu)
     tasks = []
+    # Biên khung tính dồn (round(t*FPS)) để tổng khung = round(total*FPS): làm tròn riêng từng cảnh lệch hình/tiếng dần.
+    bounds = [round(t * FPS) for t in starts] + [round(total * FPS)]
     for i, s in enumerate(sc):
-        e = starts[i + 1] if i + 1 < len(sc) else total
-        vf, n = _scene_filter(i, s, e - starts[i], i + 1 == len(sc))
+        n = max(1, bounds[i + 1] - bounds[i])
+        vf, n = _scene_filter(i, s, n / FPS, i + 1 == len(sc), n)
         tasks.append((i, vf, n))
 
     def one_scene(t):
@@ -516,14 +520,44 @@ def remake(item, lang="auto"):
     return state
 
 
-def main():
-    vpn = None
+EXIT = ROOT / "runner_exit.json"
+
+
+def _record_exit(code, signaled=False):
+    """Ghi cách tiến trình kết thúc để web app không tự chạy lại một lượt đã lỗi/đã xong (vòng lặp resume)."""
     try:
-        vpn = open_tunnel(os.environ.get("STORY_REMAKE_COUNTRY", "Germany")) if any(a.startswith("http") for a in sys.argv[2:]) else None
+        ROOT.mkdir(parents=True, exist_ok=True)
+        EXIT.write_text(json.dumps({"pid": os.getpid(), "code": code, "signal": signaled, "at": int(time.time())}))
+    except OSError:
+        pass
+
+
+def main():
+    import signal
+    vpn = {"m": None}
+
+    def _close():
+        if vpn["m"]:
+            vpn["m"].stop_wireguard_proxy("story_remake"); vpn["m"] = None
+
+    def _term(signum, _frame):
+        # SIGTERM (nút Dừng / systemd): đóng tunnel rồi thoát ngay — SystemExit thì `with ThreadPoolExecutor` vẫn chạy hết video chờ
+        try:
+            _close()
+        finally:
+            _record_exit(128 + signum, True); os._exit(128 + signum)
+    signal.signal(signal.SIGTERM, _term)
+    code = 1
+    try:
+        vpn["m"] = open_tunnel(os.environ.get("STORY_REMAKE_COUNTRY", "Germany")) if any(a.startswith("http") for a in sys.argv[2:]) else None
         _main()
+        code = 0
+    except SystemExit as e:
+        code = e.code if isinstance(e.code, int) else 1
+        raise
     finally:
-        if vpn:
-            vpn.stop_wireguard_proxy("story_remake")
+        _close()
+        _record_exit(code)
 
 
 def _main():
@@ -543,6 +577,7 @@ def _main():
         for r in ex.map(lambda it: remake(it, a.lang), items):
             results.append(r); done += r.get("status") == "done"
             if done >= a.limit:
+                ex.shutdown(wait=True, cancel_futures=True)  # không thì `with` vẫn làm hết mọi video còn chờ (tới limit×6)
                 break
     (ROOT / "last_run.json").write_text(json.dumps(results, ensure_ascii=False, indent=1))
     print(json.dumps({"done": sum(r.get("status") == "done" for r in results), "skipped": sum(r.get("status") == "skipped" for r in results), "error": sum(r.get("status") == "error" for r in results)}))
