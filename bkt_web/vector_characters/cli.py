@@ -18,11 +18,7 @@ from bkt_web.remake_vector import STATIC_DIR
 from bkt_web.vector_characters.extract import extract_library, round_float
 from bkt_web.vector_characters.dedupe import dedupe_clips
 from bkt_web.vector_characters.compose import compose_story
-from bkt_web.vector_characters.sheet import (
-    render_all_sheets,
-    render_hat_comparison,
-    render_neutral_stories_review,
-)
+
 
 CHARACTERS_FILE = STATIC_DIR / "remake_vector_characters.json"
 CLIPS_FILE = STATIC_DIR / "remake_vector_clips.json"
@@ -119,6 +115,11 @@ def cmd_compose(args):
 
 def cmd_sheet(args):
     """Render character sheets and review images."""
+    from bkt_web.vector_characters.sheet import (
+        render_all_sheets,
+        render_hat_comparison,
+        render_neutral_stories_review,
+    )
     out_dir = Path(args.out) if args.out else Path("/tmp/char_sheets")
     out_dir.mkdir(parents=True, exist_ok=True)
 

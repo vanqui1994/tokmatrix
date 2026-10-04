@@ -7,15 +7,12 @@ from .compose import compose_story
 from .dedupe import dedupe_clips
 from .extract import extract_library
 from .naming import get_character_info, resolve_character_id
-from .sheet import render_all_sheets, render_hat_comparison, render_neutral_stories_review
+# sheet.py cần Playwright: chỉ nạp khi chạy lệnh `sheet` (from bkt_web.vector_characters.sheet import …).
 
 __all__ = [
     "extract_library",
     "dedupe_clips",
     "compose_story",
-    "render_all_sheets",
-    "render_hat_comparison",
-    "render_neutral_stories_review",
     "get_character_info",
     "resolve_character_id",
 ]
