@@ -1,6 +1,7 @@
 """Dọn file nặng sau thời gian lưu: backup (có xác minh) rồi mới xoá, giữ metadata."""
 from __future__ import annotations
 
+import json
 import re
 import shutil
 import subprocess
@@ -94,6 +95,43 @@ def backup_to_vps(local_path: Path, slug: str, vps_host: str, vps_dir: str,
     return True
 
 
+def backup_to_rclone(local_path: Path, slug: str, remote: str,
+                     should_halt: ShouldHalt = _never) -> bool:
+    """rclone copyto lên remote (vd Google Drive "gdrive:TokMatrix/archive") rồi đối chiếu kích thước. True chỉ khi khớp."""
+    target = f"{remote.rstrip('/')}/{slug}/{local_path.name}"
+    try:
+        copied = proc.run(["rclone", "copyto", str(local_path), target, "--retries", "3", "--low-level-retries", "10"],
+                          timeout=BACKUP_TIMEOUT_SECONDS, should_halt=should_halt)
+        if copied.returncode != 0:
+            store.log_event(f"⚠️ rclone {slug}/{local_path.name} lỗi: {(copied.stderr or '').strip()[-300:]}", "warn")
+            return False
+        listed = proc.run(["rclone", "lsjson", target], timeout=120, should_halt=should_halt)
+    except (subprocess.TimeoutExpired, FileNotFoundError) as exc:
+        store.log_event(f"⚠️ Backup Drive {slug}/{local_path.name} lỗi: {exc}", "warn")
+        return False
+    try:
+        entries = json.loads(listed.stdout or "[]") if listed.returncode == 0 else []
+    except ValueError:
+        entries = []
+    remote_size = entries[0].get("Size") if len(entries) == 1 else None
+    if remote_size != local_path.stat().st_size:
+        store.log_event(f"⚠️ Backup Drive {slug}/{local_path.name}: kích thước trên remote ({remote_size}) không khớp", "warn")
+        return False
+    return True
+
+
+def archive_target() -> Optional[Callable[[Path, str, ShouldHalt], bool]]:
+    """Nơi lưu MP4 trước khi xoá: rclone remote (archive_rclone_remote) ưu tiên, rồi VPS rsync (archive_vps_host)."""
+    remote = store.get_config("archive_rclone_remote", "").strip()
+    if remote:
+        return lambda path, slug, halt=_never: backup_to_rclone(path, slug, remote, halt)
+    vps_host = store.get_config("archive_vps_host", "").strip()
+    if vps_host:
+        vps_dir = store.get_config("archive_vps_dir", "/data/video-archive")
+        return lambda path, slug, halt=_never: backup_to_vps(path, slug, vps_host, vps_dir, halt)
+    return None
+
+
 # ---------------------------------------------------------------------------
 # Upload tasks
 # ---------------------------------------------------------------------------
@@ -136,11 +174,10 @@ def cleanup_posted_videos(should_halt: ShouldHalt = _never) -> Dict[str, Any]:
     """Video đã đăng thành công quá cleanup_after_days: backup VPS → xoá MP4 + projects/<job_id>."""
     if not store.get_bool("cleanup_enabled"):
         return {"skipped": True, "reason": "cleanup_enabled=false"}
-    vps_host = store.get_config("archive_vps_host", "")
-    vps_dir = store.get_config("archive_vps_dir", "/data/video-archive")
-    if not vps_host and not store.get_bool("cleanup_without_backup"):
+    backup = archive_target()
+    if backup is None and not store.get_bool("cleanup_without_backup"):
         return {"skipped": True,
-                "reason": "chưa cấu hình archive_vps_host (bật cleanup_without_backup nếu chấp nhận xoá không backup)"}
+                "reason": "chưa cấu hình archive_rclone_remote / archive_vps_host (bật cleanup_without_backup nếu chấp nhận xoá không backup)"}
 
     cutoff = int(time.time()) - store.get_int("cleanup_after_days") * 86400
     conn = store.channels_db()
@@ -169,7 +206,7 @@ def cleanup_posted_videos(should_halt: ShouldHalt = _never) -> Dict[str, Any]:
             kept += 1
             continue
         mp4s = render_files(slug)
-        if vps_host and not all(backup_to_vps(mp4, slug, vps_host, vps_dir, should_halt) for mp4 in mp4s):
+        if backup and not all(backup(mp4, slug, should_halt) for mp4 in mp4s):
             store.log_event(f"⚠️ Backup thất bại cho {slug}, giữ file local", "warn")
             failed += 1
             continue
@@ -182,7 +219,7 @@ def cleanup_posted_videos(should_halt: ShouldHalt = _never) -> Dict[str, Any]:
         _mark_archived(task_ids)
         archived += 1
         if mp4s or project:
-            store.log_event(f"🧹 Đã dọn {slug}: {'backup VPS + ' if vps_host else ''}xoá {len(mp4s)} MP4"
+            store.log_event(f"🧹 Đã dọn {slug}: {'backup + ' if backup else ''}xoá {len(mp4s)} MP4"
                             f"{' + project' if project else ''}")
     return {"archived": archived, "failed": failed, "kept": kept, "total_checked": len(by_slug)}
 

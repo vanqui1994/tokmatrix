@@ -133,6 +133,8 @@ DEFAULT_CONFIG = {
     "cleanup_without_backup": "false",
     "cleanup_failed_after_days": "7",
     "min_free_disk_gb": "10",
+    # rclone remote lưu MP4 trước khi dọn (vd "gdrive:TokMatrix/archive"); ưu tiên hơn archive_vps_host.
+    "archive_rclone_remote": "",
     "archive_vps_host": "",
     "archive_vps_dir": "/data/video-archive",
     "auto_render": "true",
@@ -243,6 +245,8 @@ def validate_config(key: str, value: str) -> str:
             raise ValueError(f"timezone không hợp lệ: {value}") from None
     if key == "topic_source" and value not in TOPIC_SOURCES:
         raise ValueError(f"topic_source phải là một trong {', '.join(TOPIC_SOURCES)}")
+    if key == "archive_rclone_remote" and value and (":" not in value or value.startswith(("-", ":")) or any(c in value for c in "\n\r\0")):
+        raise ValueError("archive_rclone_remote phải có dạng <remote>:<thư mục>, vd gdrive:TokMatrix/archive")
     if key == "archive_vps_dir" and value and not value.startswith("/"):
         raise ValueError("archive_vps_dir phải là đường dẫn tuyệt đối")
     if key == "dup_check_mode" and value not in ("off", "report", "block"):

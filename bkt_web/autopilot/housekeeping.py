@@ -9,6 +9,7 @@ Chạy trong cycle Autopilot, tối đa mỗi `housekeeping_interval_minutes` m�
   hệt (cùng kích thước + md5) trong compare_studio/videos/*/assets. Ảnh chưa có ở video nào thì giữ.
 - purge_posted_after_days (3): video đã đăng SUCCESS quá ngần này ngày, không còn task nào khác cần:
   xoá MP4, assets, projects/<job_id>; GIỮ meta.json/index.html/images.json và vân tay (so trùng vẫn so được).
+  Có archive_rclone_remote (Google Drive…) hoặc archive_vps_host thì MP4 được chép lên đó và đối chiếu kích thước trước.
 - npx_keep_versions (2): cache npx của HyperFrames — giữ N phiên bản mới nhất, bản code ghim cứng
   (hyperframes@X.Y.Z trong compare_studio/matrix/render, tools) và mọi bản/thư mục đang chạy.
 - profile_blob_keep_hours (24): bản sao video TikTok Chrome giữ lại sau upload (Default/blob_storage,
@@ -146,6 +147,11 @@ def purge_posted_media(after_days: int, now: float, should_halt: Callable[[], bo
             vf.get_or_compute(fp_conn, slug)  # giữ vân tay trước khi xoá MP4 (so trùng về sau)
         except Exception as exc:
             store.log_event(f"⚠️ Chưa dọn {slug}: không lấy được vân tay ({exc})", "warn")
+            continue
+        # Có nơi lưu (Drive qua rclone hoặc VPS) thì chép MP4 lên đó trước; lỗi → giữ nguyên video, thử lại lượt sau.
+        backup = cleanup.archive_target()
+        if backup and not all(backup(mp4, slug, should_halt) for mp4 in cleanup.render_files(slug)):
+            store.log_event(f"⚠️ Chưa dọn {slug}: backup MP4 thất bại", "warn")
             continue
         for child in list(video_dir.iterdir()):
             if child.name not in KEEP_IN_VIDEO:

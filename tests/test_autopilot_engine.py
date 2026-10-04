@@ -1150,6 +1150,37 @@ class CleanupTest(AutopilotTestCase):
 # ---------------------------------------------------------------------------
 
 class HousekeepingTest(AutopilotTestCase):
+    def test_rclone_backup_verifies_size_and_is_preferred_over_vps(self):
+        import tempfile, types
+        from unittest import mock
+        from bkt_web.autopilot import cleanup, store as st
+        with tempfile.TemporaryDirectory() as tmp:
+            mp4 = Path(tmp) / "v.mp4"
+            mp4.write_bytes(b"x" * 1234)
+            calls = []
+            def fake_run(args, **kw):
+                calls.append(args)
+                if args[1] == "lsjson":
+                    return types.SimpleNamespace(returncode=0, stdout='[{"Size": %d}]' % size, stderr="")
+                return types.SimpleNamespace(returncode=0, stdout="", stderr="")
+            size = 1234
+            with mock.patch.object(cleanup.proc, "run", fake_run):
+                self.assertTrue(cleanup.backup_to_rclone(mp4, "slug-1", "gdrive:TokMatrix/archive"))
+            self.assertEqual(calls[0][:4], ["rclone", "copyto", str(mp4), "gdrive:TokMatrix/archive/slug-1/v.mp4"])
+            size = 99  # kích thước trên Drive lệch → không được coi là đã backup
+            with mock.patch.object(cleanup.proc, "run", fake_run):
+                self.assertFalse(cleanup.backup_to_rclone(mp4, "slug-1", "gdrive:TokMatrix/archive"))
+        st.set_config("archive_vps_host", "vps2")
+        self.assertIsNotNone(cleanup.archive_target())
+        st.set_config("archive_rclone_remote", "gdrive:TokMatrix/archive")
+        with mock.patch.object(cleanup, "backup_to_rclone", return_value=True) as rc, mock.patch.object(cleanup, "backup_to_vps") as vps:
+            self.assertTrue(cleanup.archive_target()(Path("/x.mp4"), "s"))
+            rc.assert_called_once()
+            vps.assert_not_called()
+        for bad in ("gdrive", "-flag:x", ":local"):
+            with self.assertRaises(ValueError):
+                st.validate_config("archive_rclone_remote", bad)
+
     def test_profile_blobs_old_files_only_and_skip_open_profiles(self):
         import tempfile, os, time
         from bkt_web.autopilot import housekeeping
