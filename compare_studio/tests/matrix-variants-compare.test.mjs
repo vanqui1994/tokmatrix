@@ -127,6 +127,7 @@ test("compare subject images: two Antigravity items per video from the A/B names
   assert.match(items[0].prompt, /^Löwe,/u);
   assert.deepEqual(subjectImageItems({ topic: { title: "Lion vs Tiger" } }, channel, "compare").map((it) => it.prompt.split(",")[0]), ["Lion", "Tiger"]);
   assert.deepEqual(subjectImageItems(manifest, { channel_id: "legacy" }, "compare"), []);
+  assert.deepEqual(subjectImageItems({ topic: { title: "Ocean mysteries" } }, channel, "compare"), [], "no A/B names → emblem, not an error");
   for (const v of variants()) {
     for (const composition of Object.keys(v.visualProfile.compositions)) {
       const a = await build(v, composition, "en", { subjectImages: { a: "assets/images/subject-a.png", b: "assets/images/subject-b.png" } });

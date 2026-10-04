@@ -28,18 +28,21 @@ export function variantFallbackChain(channel, engineType) {
 }
 
 /** Hai ảnh đối tượng A/B cho variant có assetProfile.subjectImages; [] với kênh/variant khác. */
-export function subjectImageItems(manifest, channel, engineType) {
-  let wants = false;
+function subjectImagesWanted(channel, engineType) {
   try {
-    wants = channelCreative(channel, engineType)?.variant?.assetProfile?.subjectImages === true;
+    return channelCreative(channel, engineType)?.variant?.assetProfile?.subjectImages === true;
   } catch {
-    wants = false;
+    return false;
   }
-  if (!wants) return [];
+}
+
+export function subjectImageItems(manifest, channel, engineType) {
+  if (!subjectImagesWanted(channel, engineType)) return [];
   const extras = manifest?.script?.engine_extras?.data || {};
   const split = String(manifest?.topic?.title || manifest?.script?.title || "").split(/\s+(?:vs\.?|versus|gegen|contre|대|対|đấu với|với)\s+/iu);
   const names = [extras.subject_a?.name || split[0], extras.subject_b?.name || split[1]].map((name) => String(name || "").trim());
-  if (!names[0] || !names[1]) throw new Error("compare subject images need the names of subject A and B (engine_extras or an \"A vs B\" title)");
+  // Không có tên A/B (không engine_extras, tiêu đề không phải "A vs B"): không xếp ảnh, layout dùng huy hiệu chữ viết tắt.
+  if (!names[0] || !names[1]) return [];
   return ["a", "b"].map((side, i) => ({
     side,
     key: `subject-${side}-image`,
@@ -206,6 +209,7 @@ export async function prepareSceneAssets({
   // Ảnh đối tượng A/B (compare, assetProfile.subjectImages): 2 ảnh mỗi video thay cho ảnh mỗi cảnh, như icons
   // left/right của template So Sánh cũ. Tên lấy từ engine_extras (chạy ngay sau kịch bản), thiếu thì tách tiêu đề "A vs B".
   const subjectItems = subjectImageItems(manifest, channel, engineType);
+  const wantsSubjects = subjectImagesWanted(channel, engineType);
   imageItems.push(...subjectItems);
   const imageStatus = imageItems.length
     ? await imageGenerator({ dir: projectDir, slug: jobId, items: imageItems, timeoutMin, label: `Matrix ${jobId}`, log })
@@ -338,7 +342,8 @@ export async function prepareSceneAssets({
     pending_count: pending.length,
     fallbacks,
     // Chỉ cặp đủ A và B mới có ảnh; thiếu một bên (đã fallback svg) thì cả hai bên dùng huy hiệu.
-    ...(subjectItems.length ? { subject_images: subjectImages.a && subjectImages.b ? subjectImages : {} } : {}),
+    ...(subjectItems.length ? { subject_images: subjectImages.a && subjectImages.b ? subjectImages : {} }
+      : wantsSubjects ? { subject_images: {} } : {}),
   };
   return {
     manifest: updatedManifest,
