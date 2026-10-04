@@ -313,8 +313,20 @@ export async function prepareSceneAssets({
     updatedScenes.push(scene);
   }
 
+  const subjectImages = {};
   for (const item of subjectItems) {
-    if (!readyImageKeys.has(item.key)) pending.push({ subject: item.side, asset_type: "IMAGE_AI", key: item.key, file_path: item.dest });
+    if (readyImageKeys.has(item.key)) {
+      subjectImages[item.side] = item.dest;
+    } else if (exhaustedKeys.has(item.key) && fallbackChain) {
+      // Ảnh đối tượng hết lượt thử: hàng đợi không tự xin lại nữa, chờ tiếp = job hoãn mãi. Bước "svg" của chuỗi
+      // = layout giữ huy hiệu/monogram không ảnh; chuỗi chỉ có "fail" thì dừng bằng lỗi.
+      const step = fallbackChain.find((name) => name === "svg" || name === "fail");
+      if (step !== "svg") throw new Error(`subject image ${item.key} failed every attempt; fallback chain ${fallbackChain.join(" > ")} ended in fail`);
+      fallbacks.push({ subject: item.side, from: "IMAGE_AI", to: "svg" });
+      log(`  ↪ subject ${item.side}: AI image unavailable, layout keeps its emblem without photos`);
+    } else {
+      pending.push({ subject: item.side, asset_type: "IMAGE_AI", key: item.key, file_path: path.join(projectDir, item.dest) });
+    }
   }
   const updatedManifest = structuredClone(manifest);
   if (Array.isArray(updatedManifest.storyboard?.scenes)) updatedManifest.storyboard.scenes = updatedScenes;
@@ -325,7 +337,8 @@ export async function prepareSceneAssets({
     scene_count: updatedScenes.length,
     pending_count: pending.length,
     fallbacks,
-    ...(subjectItems.length ? { subject_images: Object.fromEntries(subjectItems.map((item) => [item.side, item.dest])) } : {}),
+    // Chỉ cặp đủ A và B mới có ảnh; thiếu một bên (đã fallback svg) thì cả hai bên dùng huy hiệu.
+    ...(subjectItems.length ? { subject_images: subjectImages.a && subjectImages.b ? subjectImages : {} } : {}),
   };
   return {
     manifest: updatedManifest,

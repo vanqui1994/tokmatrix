@@ -134,3 +134,29 @@ test("compare subject images: two Antigravity items per video from the A/B names
     }
   }
 });
+
+test("compare subject images: exhausted Antigravity attempts fall back to the emblem instead of deferring forever", async () => {
+  const { prepareSceneAssets } = await import("../matrix/creative/asset-manager.mjs");
+  const os = await import("node:os");
+  const fsm = await import("node:fs");
+  const pathm = await import("node:path");
+  const { resolveChannelsForTopic } = await import("../matrix/planner/template-selector.mjs");
+  const variant = getVariant("compare/boxing-ring");
+  const base = resolveChannelsForTopic("extreme_wildlife", 1)[0];
+  const channel = { ...base, creative: { ...base.creative, preferred_engines: ["compare"], variant_id: variant.id, dna: defaultDna(variant) } };
+  const run = (exhausted) => prepareSceneAssets({
+    jobId: "job-subject-01",
+    projectDir: fsm.mkdtempSync(pathm.join(os.tmpdir(), "subject-")),
+    channel,
+    engineType: "compare",
+    manifest: { topic: { title: "Lion vs Tiger" }, scenes: [{ scene_index: 1, asset_type: "EXISTING_ASSET", asset_path: import.meta.filename, visual_intent: "Lion and tiger side by side" }] },
+    imageGenerator: async ({ items }) => ({ ready: [], pending: items.map((i) => i.key), exhausted: exhausted ? items.map((i) => i.key) : [] }),
+    recordArtifact: async (args) => ({ ...args, status: "READY" }),
+  });
+  const waiting = await run(false);
+  assert.equal(waiting.pending.length, 2);
+  const done = await run(true);
+  assert.deepEqual(done.pending, []);
+  assert.deepEqual(done.manifest.asset_pipeline.subject_images, {});
+  assert.deepEqual(done.manifest.asset_pipeline.fallbacks.map((f) => [f.subject, f.to]), [["a", "svg"], ["b", "svg"]]);
+});

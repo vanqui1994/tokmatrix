@@ -549,10 +549,11 @@ export async function buildNativeVideoProject({ job, manifest = job?.manifest, p
     : (await extendedReady(engineType)?.prepareAssets?.({ targetDir, compareDir: COMPARE_DIR })) || [];
   // Ảnh đối tượng A/B (variant assetProfile.subjectImages, compare): asset-manager xếp 2 ảnh Antigravity mỗi video.
   if (variant?.assetProfile?.subjectImages) {
-    const subjects = manifest.asset_pipeline?.subject_images || {};
-    media.subjectImages = {};
-    for (const side of ["a", "b"]) {
-      if (!subjects[side]) throw new Error(`${variant.id}: subject image ${side} is missing from the asset pipeline`);
+    const subjects = manifest.asset_pipeline?.subject_images;
+    if (!subjects) throw new Error(`${variant.id}: subject images are missing from the asset pipeline`);
+    // {} = ảnh đối tượng đã hết lượt thử và chuỗi fallback chọn "svg": layout dùng huy hiệu không ảnh.
+    media.subjectImages = subjects.a && subjects.b ? {} : null;
+    for (const side of media.subjectImages ? ["a", "b"] : []) {
       const source = await requiredFile(sourcePath(sourceDir, subjects[side]));
       const src = `assets/images/subject-${side}${path.extname(source).toLowerCase() || ".png"}`;
       await copyPreparedImage(source, path.join(targetDir, src));
