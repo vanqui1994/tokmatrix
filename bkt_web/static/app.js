@@ -1057,50 +1057,6 @@ const WORKSTATION_TABS = {
   settings: { icon: '⚙️', title: 'Cài Đặt Hệ Thống & API Keys', pane: 'settings' }
 };
 
-function toggleMuseMovie(button) {
-  const item = button.closest('.muse-movie-item');
-  if (!item) return;
-  const expanded = button.getAttribute('aria-expanded') !== 'false';
-  button.setAttribute('aria-expanded', String(!expanded));
-  item.classList.toggle('collapsed', expanded);
-}
-
-function submitMuseMovie(event) {
-  event.preventDefault();
-  const story = document.getElementById('muse-story');
-  if (!story || !story.value.trim()) {
-    story?.focus();
-    if (typeof showToast === 'function') showToast('Vui lòng nhập ý tưởng hoặc danh sách cảnh.');
-    return;
-  }
-  if (typeof showToast === 'function') showToast('Layout Muse đã sẵn sàng; API tạo phim chưa được kết nối.');
-}
-
-function previewMuseMovie(button) {
-  const item = button?.closest('.muse-movie-item');
-  const videoUrl = item?.dataset.videoUrl;
-  if (!videoUrl) {
-    if (typeof showToast === 'function') showToast('Phim này chưa có tệp video để xem.');
-    return;
-  }
-  window.open(videoUrl, '_blank', 'noopener');
-}
-
-function downloadMuseMovie(button) {
-  const item = button?.closest('.muse-movie-item');
-  const videoUrl = item?.dataset.videoUrl;
-  if (!videoUrl) {
-    if (typeof showToast === 'function') showToast('Phim này chưa có tệp để tải xuống.');
-    return;
-  }
-  const link = document.createElement('a');
-  link.href = videoUrl;
-  link.download = item?.dataset.filename || 'muse-movie.mp4';
-  document.body.appendChild(link);
-  link.click();
-  link.remove();
-}
-
 function switchTab(tabName) {
   if (!tabName) tabName = 'bkt';
   if (typeof stopBridgePolling === 'function') stopBridgePolling();
