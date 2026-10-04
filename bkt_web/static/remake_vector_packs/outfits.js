@@ -9,7 +9,7 @@
 
   if (typeof RemakeVector === 'undefined') throw new Error('outfits pack: RemakeVector core engine chưa được nạp.');
 
-  const { path, line, ellipse, taper, mitten, tone, INK } = RemakeVector.kit;
+  const { path, line, ellipse, taper, mitten, tone, INK, drawPoly } = RemakeVector.kit;
 
   // Hình thân áo chuẩn của chibi (giống thân gốc), dài thêm `len` xuống dưới và loe `flare`.
   function torso(ctx, v, fill, len = 0, flare = 0, w = 14) {
@@ -119,6 +119,10 @@
     orange_life_vest: { kind: 'shirt', color: '#f97316', sleeve: 'none', details: [['stripe_h', '#1e293b'], ['reflect', '#e5e7eb']] },
     sport_shirt: { kind: 'shirt', color: '#22c55e', sleeve: 'short', details: [['stripe_h', '#f8fafc']] },
     swimsuit: { kind: 'shirt', color: '#0ea5e9', sleeve: 'none', details: [['stripes_v', '#38bdf8']] },
+    survivor_jacket: { kind: 'shirt', color: '#ea580c', sleeve: 'long', details: [['vest', '#c2410c'], ['zip', '#f8fafc'], ['collar', '#15803d']] },
+    survivor_hoodie: { kind: 'shirt', color: '#2563eb', sleeve: 'long', details: [['pocket', '#1d4ed8'], ['zip', '#93c5fd']] },
+    survivor_hoodie_purple: { kind: 'shirt', color: '#9333ea', sleeve: 'long', details: [['pocket', '#7c3aed'], ['zip', '#c084fc']] },
+    torn_top: { kind: 'shirt', color: '#64748b', sleeve: 'short', details: [['stripes_v', '#475569'], ['hem_zigzag', '#334155']] },
     regular_top: null,     // giữ áo của nhân vật (vd. chỉ đội mũ phòng thiên tai)
   };
 
@@ -168,6 +172,7 @@
     swim_trunks: { kind: 'shorts', color: '#0ea5e9', short: true },
     shorts: { kind: 'shorts', color: '#1f2937' },
     swim_bottom: { kind: 'shorts', color: '#0ea5e9', short: true },
+    torn_pants: { kind: 'shorts', color: '#475569', zigzag: true },
     regular_pants: null,   // giữ quần của nhân vật
     regular_bottom: null,
   };
@@ -256,6 +261,7 @@
     mail_bag: { front(ctx, v) { line(ctx, [[12, v.torsoTopY], [-10, v.torsoBotY - 4]], '#78350f', 2.4); path(ctx, `M -19 ${v.torsoBotY - 8} L -7 ${v.torsoBotY - 8} L -7 ${v.torsoBotY + 4} L -19 ${v.torsoBotY + 4} Z`, '#a16207', INK, 1.2); line(ctx, [[-19, v.torsoBotY - 4], [-7, v.torsoBotY - 4]], '#78350f', 1.2); } },
     dino_tail: { behind(ctx, v) { path(ctx, `M -8 ${v.torsoBotY - 2} Q -26 ${v.torsoBotY + 4} -34 ${v.torsoBotY + 14} Q -22 ${v.torsoBotY + 12} -6 ${v.torsoBotY + 6} Z`, '#22c55e', INK, 1.4); for (const k of [0.3, 0.55, 0.8]) path(ctx, `M ${-8 - 26 * k} ${v.torsoBotY + 2 + 10 * k} l -2 -5 l 4 1 Z`, '#facc15', null); } },
     ring_float: { front(ctx, v) { ellipse(ctx, 0, v.torsoBotY + 1, 20, 7, '#ef4444', INK, 1.6); for (const x of [-14, 0, 14]) ellipse(ctx, x, v.torsoBotY + 1 + (x ? 0 : 5), 3.5, 2.6, '#ffffff', null); ellipse(ctx, 0, v.torsoBotY - 1, 13, 3, 'rgba(0,0,0,0.12)', null); } },
+    red_backpack: { behind(ctx, v) { drawPoly(ctx, [[-14, v.torsoTopY - 2], [14, v.torsoTopY - 2], [16, v.torsoBotY], [-16, v.torsoBotY]], '#dc2626', INK, 1.4); line(ctx, [[-10, v.torsoTopY + 8], [10, v.torsoTopY + 8]], '#b91c1c', 2); } },
   };
   const FACE_ACCS = {
     goggles: { coversEyes: true, overlay(ctx, v) { const y = v.headY - 1; line(ctx, [[-20, y - 1], [20, y - 1]], '#334155', 2); for (const x of [-9, 9]) { ellipse(ctx, x, y, 7, 6, 'rgba(125, 211, 252, 0.45)', '#0f172a', 1.8); line(ctx, [[x - 3, y - 3], [x + 1, y - 4]], '#ffffff', 1.2); } } },

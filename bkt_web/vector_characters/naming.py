@@ -795,6 +795,72 @@ CHARACTER_METADATA: Dict[str, Dict[str, Any]] = {
         "props": [], "markets": ["de", "us", "kr", "jp"], "locale": "neutral",
         "topics": ["recycling", "safety"], "voice_role": "none", "archived": False,
     },
+    # ---- Apocalypse / Survival Recurring Cast (Phase V) ----
+    "mika": {
+        "label": {"de": "Mika", "en": "Mika", "ko": "미카", "ja": "ミカ"},
+        "rig": "chibi_girl", "outfit": "survivor_jacket", "role": "leader", "height": 230,
+        "props": ["walkie_talkie"], "markets": ["de", "us", "kr", "jp"], "locale": "neutral",
+        "topics": ["apocalypse", "survival"], "voice_role": "child", "archived": False,
+    },
+    "leo": {
+        "label": {"de": "Leo", "en": "Leo", "ko": "레오", "ja": "レオ"},
+        "rig": "chibi_boy", "outfit": "survivor_hoodie", "role": "scout", "height": 230,
+        "props": ["flashlight"], "markets": ["de", "us", "kr", "jp"], "locale": "neutral",
+        "topics": ["apocalypse", "survival"], "voice_role": "child", "archived": False,
+    },
+    "dr_hana": {
+        "label": {"de": "Dr. Hana", "en": "Dr. Hana", "ko": "하나 박사", "ja": "ハナ博士"},
+        "rig": "chibi_teacher", "outfit": "scientist", "role": "scientist", "height": 250,
+        "props": ["cure_sprayer"], "markets": ["de", "us", "kr", "jp"], "locale": "neutral",
+        "topics": ["apocalypse", "survival", "science"], "voice_role": "adult", "archived": False,
+    },
+    "grandpa_otto": {
+        "label": {"de": "Opa Otto", "en": "Grandpa Otto", "ko": "오토 할아버지", "ja": "オットーおじいさん"},
+        "rig": "chibi_grandpa", "outfit": "construction", "role": "handyman", "height": 240,
+        "props": ["hammer"], "markets": ["de", "us", "kr", "jp"], "locale": "neutral",
+        "topics": ["apocalypse", "survival"], "voice_role": "elder", "archived": False,
+    },
+    "pip": {
+        "label": {"de": "Pip", "en": "Pip", "ko": "핍", "ja": "ピップ"},
+        "rig": "chibi_kid", "outfit": "raincoat", "role": "youngest", "height": 210,
+        "props": ["hand_crank_radio"], "markets": ["de", "us", "kr", "jp"], "locale": "neutral",
+        "topics": ["apocalypse", "survival"], "voice_role": "child", "archived": False,
+    },
+    "nora": {
+        "label": {"de": "Nora", "en": "Nora", "ko": "노라", "ja": "ノラ"},
+        "rig": "chibi_girl", "outfit": "survivor_hoodie_purple", "role": "survivor", "height": 230,
+        "props": [], "markets": ["de", "us", "kr", "jp"], "locale": "neutral",
+        "topics": ["apocalypse", "survival"], "voice_role": "child", "archived": False,
+    },
+    "biscuit": {
+        "label": {"de": "Biscuit", "en": "Biscuit", "ko": "비스킷", "ja": "ビスケット"},
+        "rig": "dog", "outfit": None, "role": "companion", "height": 120,
+        "props": [], "markets": ["de", "us", "kr", "jp"], "locale": "neutral",
+        "topics": ["survival", "animal"], "voice_role": "none", "archived": False,
+    },
+    "zombie_walker_a": {
+        "label": {"de": "Wandernder Zombie A", "en": "Zombie Walker A", "ko": "좀비 워커 A", "ja": "ゾンビ・ウォーカーA"},
+        "rig": "chibi_boy", "outfit": "torn", "role": "crowd", "height": 230,
+        "props": [], "markets": ["de", "us", "kr", "jp"], "locale": "neutral",
+        "topics": ["apocalypse", "zombie"], "voice_role": "none", "archived": False,
+    },
+    "zombie_walker_b": {
+        "label": {"de": "Wandernder Zombie B", "en": "Zombie Walker B", "ko": "좀비 워커 B", "ja": "ゾンビ・ウォーカーB"},
+        "rig": "chibi_girl", "outfit": "torn", "role": "crowd", "height": 230,
+        "props": [], "markets": ["de", "us", "kr", "jp"], "locale": "neutral",
+        "topics": ["apocalypse", "zombie"], "voice_role": "none", "archived": False,
+    },
+    "zombie_walker_c": {
+        "label": {"de": "Wandernder Zombie C", "en": "Zombie Walker C", "ko": "좀비 워커 C", "ja": "ゾンビ・ウォーカーC"},
+        "rig": "chibi_kid", "outfit": "torn", "role": "crowd", "height": 210,
+        "props": [], "markets": ["de", "us", "kr", "jp"], "locale": "neutral",
+        "topics": ["apocalypse", "zombie"], "voice_role": "none", "archived": False,
+    },
+}
+
+RECURRING_CAST_IDS = {
+    "mika", "leo", "dr_hana", "grandpa_otto", "pip", "nora", "biscuit",
+    "zombie_walker_a", "zombie_walker_b", "zombie_walker_c"
 }
 
 
@@ -807,7 +873,10 @@ def resolve_character_id(
     style: Optional[Dict[str, Any]] = None,
 ) -> str:
     """Map a character occurrence to a canonical character ID in the library."""
+    if actor_id in RECURRING_CAST_IDS:
+        return actor_id
     # 1. Exact rig + outfit matching
+
     if rig == "chibi_boy" and outfit:
         cid = f"{outfit}_boy" if f"{outfit}_boy" in CHARACTER_METADATA else f"chibi_boy_{outfit}"
         if cid in CHARACTER_METADATA:

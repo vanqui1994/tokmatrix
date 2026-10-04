@@ -5568,3 +5568,442 @@ console.log(JSON.stringify({ d }));
             browser.close()
 
 
+class PhaseVTest(unittest.TestCase):
+    """Plan §6 & Giai đoạn V: Tận thế, sinh tồn, zombie, thành phố cũ kỹ (wasteland, zombies, survival_kit)."""
+    _node = PackContractTest._node
+
+    def test_phase_v_rigs_and_backgrounds_catalog_and_draw(self):
+        from bkt_web.remake_vector import catalog
+        cat = catalog()
+        wasteland_rigs = [
+            "barricade_boards", "rain_barrel_filter", "solar_panel_small", "tent", "sleeping_bag",
+            "vine_wall", "street_lamp_old", "shopping_cart", "canned_food_stack", "water_filter_bottle",
+            "signal_mirror", "walkie_talkie"
+        ]
+        survival_kit_rigs = [
+            "water_pot_boiling", "cloth_filter", "firewood_bundle", "fishing_rod_simple", "snare_free",
+            "seed_tray", "hand_crank_radio", "sos_stones", "cure_sprayer"
+        ]
+        all_rigs = wasteland_rigs + survival_kit_rigs
+        self.assertEqual(len(all_rigs), 21)
+
+        for rig in all_rigs:
+            with self.subTest(rig=rig):
+                self.assertIn(rig, cat["assets"], f"{rig} phải có trong catalog")
+                pack = cat["assets"][rig].get("pack")
+                self.assertIn(pack, ("wasteland", "survival_kit"), f"{rig} pack phải là wasteland hoặc survival_kit, nhận {pack}")
+                anchors = cat["assets"][rig].get("anchors", {})
+                self.assertIn("root", anchors, f"{rig} thiếu anchor root")
+                self.assertIn("top", anchors, f"{rig} thiếu anchor top")
+                for aname, apos in anchors.items():
+                    self.assertGreaterEqual(apos[1], -100.0, f"{rig}.{aname} y={apos[1]} vượt quá khung trên y < -100")
+
+        # 6 backgrounds
+        bgs = ["abandoned_street", "overgrown_plaza", "rooftop_garden", "subway_tunnel", "flooded_downtown", "safe_camp"]
+        for bg in bgs:
+            self.assertIn(bg, cat["backgrounds"])
+            self.assertIn(bg, cat["background_specs"])
+            self.assertEqual(cat["background_specs"][bg].get("ground_y"), 810)
+        self.assertTrue(cat["background_specs"]["flooded_downtown"].get("open_water"))
+
+        # Render all rigs in node mock context
+        out = self._node(r"""
+globalThis.Path2D=class{constructor(){}addPath(){}};
+const {cat, rigs} = JSON.parse(fs.readFileSync(0, 'utf8'));
+const ctx = new Proxy({}, {
+  get: (o, k) => k in o ? o[k] : (k === 'createLinearGradient' || k === 'createRadialGradient') ? () => ({ addColorStop() {} }) : () => {},
+  set: (o, k, v) => (o[k] = v, true)
+});
+const errors = [];
+for (const rig of rigs) {
+  const drawer = RemakeVector.kit.RIG_DRAWERS[rig];
+  if (!drawer) {
+    errors.push(`Thiếu drawer cho rig ${rig}`);
+    continue;
+  }
+  const s = { ...cat.pose_defaults, asset: rig, height: 100, x: 288, y: 512, rotation: 0, flip: false, style: {} };
+  try {
+    drawer(ctx, s, 1.0, cat);
+  } catch (e) {
+    errors.push(`Lỗi khi vẽ ${rig}: ${e.message}`);
+  }
+}
+console.log(JSON.stringify(errors));""", {"cat": cat, "rigs": all_rigs})
+        self.assertEqual(out, [], f"Các rig bị lỗi vẽ: {out}")
+
+        # Render all 6 backgrounds with day/night and all weather, assert zero fillText/strokeText
+        bg_out = self._node(r"""
+globalThis.Path2D=class{constructor(){}addPath(){}};
+const {cat, bgs} = JSON.parse(fs.readFileSync(0, 'utf8'));
+let textCalls = 0;
+const ctx = new Proxy({}, {
+  get: (o, k) => {
+    if (k === 'fillText' || k === 'strokeText') { textCalls++; return () => {}; }
+    if (k === 'createLinearGradient' || k === 'createRadialGradient') return () => ({ addColorStop() {} });
+    return () => {};
+  },
+  set: (o, k, v) => (o[k] = v, true)
+});
+const errors = [];
+for (const bg of bgs) {
+  const spec = cat.background_specs[bg];
+  for (const night of [false, true]) {
+    for (const weather of ['clear', 'rain', 'snow', 'wind', 'fog', 'storm', 'hot']) {
+      try {
+        RemakeVector.BACKGROUNDS[bg].draw(ctx, { night, weather, theme: spec.theme, ground_y: spec.ground_y }, 1.5);
+      } catch (e) {
+        errors.push(bg + ' ' + weather + (night ? ' night' : '') + ': ' + e.message);
+      }
+    }
+  }
+}
+console.log(JSON.stringify({errors, textCalls}));""", {"cat": cat, "bgs": bgs})
+        self.assertEqual(bg_out["errors"], [])
+        self.assertEqual(bg_out["textCalls"], 0, "Hình nền không được vẽ text")
+
+    def test_default_decay_zombie_cured_preserve_exact_pixels(self):
+        from bkt_web.remake_vector import catalog, engine_sources
+        from playwright.sync_api import sync_playwright
+        cat = catalog()
+        engine_js = "\n;\n".join(src.read_text(encoding="utf-8") for src in engine_sources())
+        test_cases = [
+            ("school_building", "decay"),
+            ("fire_station", "decay"),
+            ("car", "decay"),
+            ("city_bus", "decay"),
+            ("school_bus", "decay"),
+            ("chibi_boy", "zombie"),
+            ("chibi_girl", "zombie"),
+        ]
+        with sync_playwright() as p:
+            browser = p.chromium.launch(args=["--disable-gpu", "--disable-gpu-rasterization", "--force-color-profile=srgb"])
+            page = browser.new_page()
+            page.set_content(f"""
+            <html><body>
+            <canvas id="stage" width="576" height="1024"></canvas>
+            <script>{engine_js}</script>
+            <script>
+              window.cat = {json.dumps(cat)};
+              function hash(d) {{
+                let h = 0;
+                for (let i = 0; i < d.length; i++) h = ((h << 5) - h + d[i]) | 0;
+                return h;
+              }}
+              window.comparePixelRenders = function(asset, prop) {{
+                const canvas = document.getElementById('stage');
+                const ctx = canvas.getContext('2d');
+                ctx.clearRect(0, 0, 576, 1024);
+                ctx.save();
+                ctx.translate(288, 512);
+                const s1 = Object.assign({{}}, window.cat.pose_defaults, {{ asset, height: 200, id: 't1', style: {{}} }});
+                delete s1[prop];
+                RemakeVector.kit.RIG_DRAWERS[asset](ctx, s1, 1.0, window.cat);
+                ctx.restore();
+                const d1 = ctx.getImageData(0, 0, 576, 1024).data;
+                const h1 = hash(d1);
+
+                ctx.clearRect(0, 0, 576, 1024);
+                ctx.save();
+                ctx.translate(288, 512);
+                const s2 = Object.assign({{}}, window.cat.pose_defaults, {{ asset, height: 200, id: 't2', style: {{}} }});
+                s2[prop] = 0;
+                RemakeVector.kit.RIG_DRAWERS[asset](ctx, s2, 1.0, window.cat);
+                ctx.restore();
+                const d2 = ctx.getImageData(0, 0, 576, 1024).data;
+                const h2 = hash(d2);
+                return {{ h1, h2, match: h1 === h2 }};
+              }};
+            </script>
+            </body></html>
+            """)
+            for asset, prop in test_cases:
+                res = page.evaluate("([a, p]) => comparePixelRenders(a, p)", [asset, prop])
+                with self.subTest(asset=asset, prop=prop):
+                    self.assertTrue(res["match"], f"{asset} với {prop}=0 khác pixel so với mặc định")
+            browser.close()
+
+    def test_zombie_zero_red_pixels(self):
+        from bkt_web.remake_vector import catalog, engine_sources
+        from playwright.sync_api import sync_playwright
+        cat = catalog()
+        engine_js = "\n;\n".join(src.read_text(encoding="utf-8") for src in engine_sources())
+        test_chibis = ["chibi_boy", "chibi_girl", "chibi_kid", "chibi_grandpa", "chibi_teacher"]
+        with sync_playwright() as p:
+            browser = p.chromium.launch(args=["--disable-gpu", "--disable-gpu-rasterization", "--force-color-profile=srgb"])
+            page = browser.new_page()
+            page.set_content(f"""
+            <html><body>
+            <canvas id="stage" width="576" height="1024"></canvas>
+            <script>{engine_js}</script>
+            <script>
+              window.cat = {json.dumps(cat)};
+              window.checkZombieRed = function(asset) {{
+                const canvas = document.getElementById('stage');
+                const ctx = canvas.getContext('2d');
+                ctx.clearRect(0, 0, 576, 1024);
+                ctx.save();
+                ctx.translate(288, 512);
+                const s = Object.assign({{}}, window.cat.pose_defaults, {{ asset, height: 220, zombie: 1.0, expression: 'dazed', id: 'test', style: {{}} }});
+                RemakeVector.kit.RIG_DRAWERS[asset](ctx, s, 1.0, window.cat);
+                ctx.restore();
+                const img = ctx.getImageData(0, 0, 576, 1024).data;
+                let total = 0, redCount = 0;
+                for (let i = 0; i < img.length; i += 4) {{
+                  if (img[i + 3] > 20) {{
+                    total++;
+                    if (img[i] > 150 && img[i+1] < 80 && img[i+2] < 80) redCount++;
+                  }}
+                }}
+                return {{ total, redCount, pct: (redCount / Math.max(1, total)) * 100 }};
+              }};
+            </script>
+            </body></html>
+            """)
+            for asset in test_chibis:
+                res = page.evaluate("a => checkZombieRed(a)", asset)
+                with self.subTest(asset=asset):
+                    self.assertLess(res["pct"], 0.5, f"Zombie {asset} có {res['pct']:.2f}% pixel đỏ >= 0.5%")
+            browser.close()
+
+    def test_shamble_and_chase_slow_speed_and_distance(self):
+        from bkt_web.remake_vector import (
+            catalog, last_city_morning_examples, water_first_examples, quiet_street_examples,
+            barricade_night_examples, flooded_escape_examples, the_cure_examples
+        )
+        cat = catalog()
+        stories = [
+            last_city_morning_examples()[0],
+            water_first_examples()[0],
+            quiet_street_examples()[0],
+            barricade_night_examples()[0],
+            flooded_escape_examples()[0],
+            the_cure_examples()[0],
+        ]
+        res = self._node(r"""
+const {cat, stories} = JSON.parse(fs.readFileSync(0, 'utf8'));
+const reports = [];
+for (const story of stories) {
+  let minGap = 999999;
+  let maxZombieSpeed = 0;
+  let prevZombiePos = {};
+  for (let t = 0.5; t <= story.duration - 0.5; t += 0.25) {
+    const f = RemakeVector.sample(story, cat, t);
+    const zombies = [];
+    const humans = [];
+    for (const [aid, st] of Object.entries(f.states)) {
+      if (st.opacity <= 0) continue;
+      const rig = cat.assets[st.asset] || {};
+      const isHumanRig = rig.group === 'chibi' || rig.group === 'people';
+      if (!isHumanRig) continue;
+      const isZomb = (st.zombie > 0) || aid.includes('zombie');
+      if (isZomb) {
+        zombies.push({aid, x: st.x, y: st.y});
+        if (prevZombiePos[aid] !== undefined) {
+          const spd = Math.abs(st.x - prevZombiePos[aid]) / 0.25;
+          if (spd > maxZombieSpeed) maxZombieSpeed = spd;
+        }
+        prevZombiePos[aid] = st.x;
+      } else {
+        humans.push({aid, x: st.x, y: st.y});
+      }
+    }
+    for (const z of zombies) {
+      for (const h of humans) {
+        const gap = Math.abs(z.x - h.x);
+        if (gap < minGap) minGap = gap;
+      }
+    }
+  }
+  reports.push({id: story.id, minGap, maxZombieSpeed});
+}
+console.log(JSON.stringify(reports));""", {"cat": cat, "stories": stories})
+
+        for r in res:
+            with self.subTest(story=r["id"]):
+                if r["minGap"] < 9999:
+                    self.assertGreaterEqual(r["minGap"], 80.0, f"{r['id']}: khoảng cách zombie-người={r['minGap']}px < 80px")
+                self.assertLessEqual(r["maxZombieSpeed"], 40.0 + 1e-3, f"{r['id']}: tốc độ zombie={r['maxZombieSpeed']}px/s > 40px/s")
+
+    def test_validator_rejects_weapons_and_zombie_attack(self):
+        from bkt_web.remake_vector import validate_story, last_city_morning_examples
+        import copy
+        base_story = last_city_morning_examples()[0]
+
+        # 1. Vũ khí cấm
+        for weapon in ["gun", "rifle", "pistol", "sword", "real_sword", "chainsaw", "saw"]:
+            bad_story = copy.deepcopy(base_story)
+            bad_story["characters"].append({"id": "wpn", "asset": weapon})
+            with self.subTest(weapon=weapon):
+                with self.assertRaises(ValueError):
+                    validate_story(bad_story)
+
+        # 2. Axe chỉ hợp lệ khi target là firewood_bundle
+        bad_axe_story = copy.deepcopy(base_story)
+        bad_axe_story["characters"].append({"id": "my_axe", "asset": "axe"})
+        bad_axe_story["characters"].append({"id": "other_tg", "asset": "tent"})
+        bad_axe_story["scenes"][0]["actions"].append({
+            "type": "chop", "start": 1.0, "end": 3.0, "actor": "mika", "tool": "my_axe", "target": "other_tg"
+        })
+        bad_axe_story["scenes"][0]["poses"]["my_axe"] = [
+            {"time": 0, "x": 100, "y": 810, "height": 60}, {"time": 5, "x": 100, "y": 810, "height": 60}
+        ]
+        bad_axe_story["scenes"][0]["poses"]["other_tg"] = [
+            {"time": 0, "x": 120, "y": 810, "height": 100}, {"time": 5, "x": 120, "y": 810, "height": 100}
+        ]
+        bad_axe_story["scenes"][0]["characters_present"].extend(["my_axe", "other_tg"])
+        with self.assertRaises(ValueError):
+            validate_story(bad_axe_story)
+
+        # 3. Zombie tấn công người (trừ chase_slow) bị từ chối
+        bad_zombie_story = copy.deepcopy(base_story)
+        bad_zombie_story["characters"].append({"id": "zombie_attacker", "asset": "chibi_boy"})
+        bad_zombie_story["scenes"][0]["poses"]["zombie_attacker"] = [
+            {"time": 0, "x": 100, "y": 810, "height": 220, "zombie": 1.0},
+            {"time": 5, "x": 100, "y": 810, "height": 220, "zombie": 1.0}
+        ]
+        bad_zombie_story["scenes"][0]["characters_present"].append("zombie_attacker")
+        bad_zombie_story["scenes"][0]["actions"].append({
+            "type": "shamble", "start": 1.0, "end": 3.0, "actor": "zombie_attacker", "target": "mika"
+        })
+        with self.assertRaises(ValueError):
+            validate_story(bad_zombie_story)
+
+    def test_the_cure_story_cured_monotonic_and_happy(self):
+        from bkt_web.remake_vector import the_cure_examples
+        story = the_cure_examples()[0]
+        nora_poses = []
+        for sc in story["scenes"]:
+            for p in sc.get("poses", {}).get("nora", []):
+                nora_poses.append(p)
+        self.assertTrue(len(nora_poses) >= 2)
+        cured_vals = [p.get("cured", 0.0) for p in nora_poses]
+        for i in range(len(cured_vals) - 1):
+            self.assertGreaterEqual(cured_vals[i+1], cured_vals[i], "cured của Nora không tăng đơn điệu")
+        self.assertAlmostEqual(cured_vals[-1], 1.0, places=2, msg="Nora cuối story phải cured = 1.0")
+        self.assertEqual(nora_poses[-1].get("expression"), "happy", "Biểu cảm cuối của Nora phải là happy")
+
+    def test_water_first_story_clarity_monotonic_and_boil(self):
+        from bkt_web.remake_vector import water_first_examples
+        story = water_first_examples()[0]
+        barrel_poses = []
+        for sc in story["scenes"]:
+            for p in sc.get("poses", {}).get("barrel", []):
+                barrel_poses.append(p)
+        clarity_vals = [p.get("clarity", 0.0) for p in barrel_poses]
+        for i in range(len(clarity_vals) - 1):
+            self.assertGreaterEqual(clarity_vals[i+1], clarity_vals[i], "clarity của nước không tăng đơn điệu")
+
+        pot_poses = []
+        for p in story["scenes"][1].get("poses", {}).get("pot", []):
+            pot_poses.append(p)
+        max_boil = max(p.get("boil", 0.0) for p in pot_poses)
+        self.assertAlmostEqual(max_boil, 1.0, places=2, msg="Nước phải được đun sôi boil=1 trước cảnh uống")
+
+    def test_general_rules_emotes_outfits_no_conical_no_vietnamese_cues(self):
+        import re
+        from bkt_web.remake_vector import (
+            catalog, EMOTE_SYMBOLS, last_city_morning_examples, water_first_examples, quiet_street_examples,
+            barricade_night_examples, flooded_escape_examples, the_cure_examples
+        )
+        cat = catalog()
+        stories = [
+            last_city_morning_examples()[0],
+            water_first_examples()[0],
+            quiet_street_examples()[0],
+            barricade_night_examples()[0],
+            flooded_escape_examples()[0],
+            the_cure_examples()[0],
+        ]
+        vn_pattern = re.compile(r"[àáảãạăằắẳẵặâầấẩẫậèéẻẽẹêềếểễệìíỉĩịòóỏõọôồốổỗộơờớởỡợùúủũụưừứửữựỳýỷỹỵđ]", re.IGNORECASE)
+        for story in stories:
+            for cue in story.get("cues", []):
+                text = cue.get("text", "")
+                self.assertFalse(vn_pattern.search(text), f"{story['id']}: Cues chứa tiếng Việt: {text}")
+            for char in story["characters"]:
+                self.assertNotEqual(char.get("asset"), "chibi_farmer", f"{story['id']} không được dùng chibi_farmer")
+                if char.get("style", {}).get("hat") == "conical":
+                    self.fail(f"{story['id']} không được dùng hat conical")
+            for sc in story["scenes"]:
+                for act in sc.get("actions", []):
+                    if act.get("type") == "emote":
+                        self.assertIn(act.get("emote"), EMOTE_SYMBOLS, f"{story['id']}: emote không hợp lệ")
+                for cid, p_list in sc.get("poses", {}).items():
+                    char_def = next((c for c in story["characters"] if c["id"] == cid), {})
+                    asset = char_def.get("asset", "")
+                    group = cat["assets"].get(asset, {}).get("group", "")
+                    for p in p_list:
+                        if "outfit" in p and p["outfit"] != "none":
+                            self.assertEqual(group, "chibi", f"{cid} ({asset}) có outfit nhưng không phải chibi")
+
+    def test_character_library_roundtrip_and_crowd_roles(self):
+        from bkt_web.vector_characters.compose import compose_story
+        from bkt_web.remake_vector import STATIC_DIR, validate_story
+        chars = json.loads((STATIC_DIR / "remake_vector_characters.json").read_text(encoding="utf-8"))
+        clips = json.loads((STATIC_DIR / "remake_vector_clips.json").read_text(encoding="utf-8"))
+        refs = json.loads((STATIC_DIR / "remake_vector_story_refs.json").read_text(encoding="utf-8"))
+
+        phase_v_story_ids = ["last_city_morning", "water_first", "quiet_street", "barricade_night", "flooded_escape", "the_cure"]
+        for sid in phase_v_story_ids:
+            with self.subTest(story=sid):
+                self.assertIn(sid, refs, f"{sid} phải có trong story_refs")
+                composed = compose_story(refs[sid], chars, clips)
+                validate_story(composed)
+
+        for walker_id in ["zombie_walker_a", "zombie_walker_b", "zombie_walker_c"]:
+            self.assertIn(walker_id, chars)
+            meta = chars[walker_id]
+            self.assertEqual(meta.get("role"), "crowd")
+            markets = meta.get("markets", [])
+            for m in ["de", "us", "kr", "jp"]:
+                self.assertIn(m, markets, f"{walker_id} thiếu market {m}")
+
+    def test_recurring_cast_integrity_and_clips(self):
+        from bkt_web.vector_characters.cast import get_cast_data, get_all_cast_clips
+        from bkt_web.remake_vector import catalog
+        cat = catalog()
+        cast_db = get_cast_data()
+        self.assertEqual(len(cast_db), 10)
+        palettes = set()
+        for cid, info in cast_db.items():
+            pal_str = "-".join(info.get("palette", []))
+            self.assertNotIn(pal_str, palettes, f"Palette trùng lặp cho {cid}")
+            palettes.add(pal_str)
+
+        states_to_test = []
+        for cid, info in cast_db.items():
+            for sname, sconf in info.get("states", {}).items():
+                states_to_test.append({
+                    "cid": cid, "state": sname, "rig": info["rig"], "outfit": sconf.get("outfit"),
+                    "zombie": sconf.get("zombie", 0), "cured": sconf.get("cured", 0)
+                })
+
+        errs = self._node(r"""
+globalThis.Path2D=class{constructor(){}addPath(){}};
+const {cat, states} = JSON.parse(fs.readFileSync(0, 'utf8'));
+const ctx = new Proxy({}, {
+  get: (o, k) => k in o ? o[k] : (k === 'createLinearGradient' || k === 'createRadialGradient') ? () => ({ addColorStop() {} }) : () => {},
+  set: (o, k, v) => (o[k] = v, true)
+});
+const errors = [];
+for (const item of states) {
+  const drawer = RemakeVector.kit.RIG_DRAWERS[item.rig];
+  if (!drawer) continue;
+  const s = { ...cat.pose_defaults, asset: item.rig, height: 200, outfit: item.outfit, zombie: item.zombie, cured: item.cured, style: {}, id: 'test' };
+  try {
+    drawer(ctx, s, 1.0, cat);
+  } catch (e) {
+    errors.push(item.cid + ' ' + item.state + ': ' + e.message);
+  }
+}
+console.log(JSON.stringify(errors));""", {"cat": cat, "states": states_to_test})
+        self.assertEqual(errs, [])
+
+        all_clips = get_all_cast_clips()
+        for cid, clips in all_clips.items():
+            for cname, cdata in clips.items():
+                kfs = cdata.get("keyframes", [])
+                for kf in kfs:
+                    dy = kf.get("dy", 0)
+                    self.assertLessEqual(abs(dy), 12.0, f"Clip {cid}/{cname} dy={dy} lệch mặt đất > 12px")
+
+

@@ -596,6 +596,14 @@ class CapabilityRegistryTest(unittest.TestCase):
             "seal": {"wet"}, "coral": {"wet"}, "seaweed": {"wet"}, "anglerfish": {"wet"}, "plastic_bag": {"wet"},
             "sunken_ship": {"wet"}, "atlantis_ruins": {"wet"}, "excavation_grid": {"wet"},
             "grasshopper": {"wet"}, "tortoise": {"wet"}, "city_mouse": {"wet"},
+            # Phase V Apocalypse, Wasteland & Survival Rigs
+            "shopping_cart": {"wet"}, "barricade_boards": {"wet"}, "vine_wall": {"wet"},
+            "street_lamp_old": {"wet"}, "canned_food_stack": {"wet"}, "water_pot_boiling": {"wet"},
+            "sleeping_bag": {"wet"}, "tent": {"wet"}, "snare_free": {"wet"},
+            "rain_barrel_filter": {"wet"}, "solar_panel_small": {"wet"}, "seed_tray": {"wet"},
+            "water_filter_bottle": {"wet"}, "hand_crank_radio": {"wet"}, "walkie_talkie": {"wet"},
+            "cure_sprayer": {"wet"}, "signal_mirror": {"wet"}, "sos_stones": {"wet"},
+            "firewood_bundle": {"wet"}, "cloth_filter": {"wet"}, "fishing_rod_simple": {"wet"},
         }
         self.assertEqual(set(document["assets"]), set(expected))
         for asset_id, states in expected.items():

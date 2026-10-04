@@ -1007,6 +1007,432 @@
       }
     ]
   },
+  "barricade_night": {
+    "characters": [
+      {
+        "asset": "chibi_grandpa",
+        "id": "grandpa_otto",
+        "name": "Grandpa Otto",
+        "outfit": "construction",
+        "role": "handyman",
+        "style": {
+          "hair": "#94a3b8",
+          "skin": "#f0cca8"
+        }
+      },
+      {
+        "asset": "hammer",
+        "attach_to": {
+          "anchor": "hand_r",
+          "id": "grandpa_otto"
+        },
+        "id": "grandpa_otto_hammer"
+      },
+      {
+        "asset": "chibi_girl",
+        "id": "mika",
+        "name": "Mika",
+        "outfit": "survivor_jacket",
+        "role": "leader",
+        "style": {
+          "hair": "#78350f",
+          "skin": "#ffdfc4"
+        }
+      },
+      {
+        "asset": "walkie_talkie",
+        "attach_to": {
+          "anchor": "hand_r",
+          "id": "mika"
+        },
+        "id": "mika_walkie_talkie"
+      },
+      {
+        "asset": "dog",
+        "id": "biscuit",
+        "name": "Biscuit",
+        "role": "companion",
+        "style": {
+          "accent": "#f97316",
+          "body": "#d97706"
+        }
+      },
+      {
+        "asset": "chibi_kid",
+        "id": "zombie_walker_c",
+        "name": "Zombie Walker C",
+        "outfit": "torn",
+        "role": "crowd",
+        "style": {
+          "hair": "#475569",
+          "skin": "#e0ac69"
+        }
+      },
+      {
+        "asset": "barricade_boards",
+        "id": "gate",
+        "name": "Barricade"
+      },
+      {
+        "asset": "campfire",
+        "id": "fire",
+        "name": "Campfire"
+      }
+    ],
+    "cues": [
+      {
+        "character_id": "grandpa_otto",
+        "end": 4.5,
+        "expression": "neutral",
+        "start": 0.5,
+        "text": "Night falls on the safe camp. Grandpa Otto boards up the gate with sturdy planks."
+      },
+      {
+        "character_id": "biscuit",
+        "end": 9.5,
+        "expression": "worried",
+        "start": 5.5,
+        "text": "Biscuit hears rustling outside the fence and barks a warning, but the gate holds fast."
+      },
+      {
+        "character_id": "mika",
+        "end": 14.5,
+        "expression": "happy",
+        "start": 10.5,
+        "text": "The walker finds no way in and drifts away. Keep the fire small and take turns on watch."
+      }
+    ],
+    "duration": 15.0,
+    "fidelity": "technical-demo",
+    "id": "barricade_night",
+    "name": "63 · Safe Camp Night: Reinforcing the Gate",
+    "renderer": "native-vector-v1",
+    "scenes": [
+      {
+        "actions": [
+          {
+            "actor": "grandpa_otto",
+            "end": 4.8,
+            "start": 0.3,
+            "target": "gate",
+            "type": "barricade"
+          }
+        ],
+        "actors": [
+          {
+            "at": {
+              "t": 0.0,
+              "x": 120,
+              "y": 840
+            },
+            "character": "barricade_boards",
+            "clip": "barricade_boards/barricade_night_s0_gate",
+            "id": "gate"
+          },
+          {
+            "at": {
+              "t": 0.0,
+              "x": 205.0,
+              "y": 830.0
+            },
+            "character": "grandpa_otto",
+            "clip": "grandpa_otto/barricade_night_s0_grandpa_otto",
+            "id": "grandpa_otto"
+          },
+          {
+            "at": {
+              "held": {
+                "asset": "hammer",
+                "height": 180,
+                "rotation": 20
+              },
+              "t": 0.0,
+              "x": -4.925,
+              "y": 13.532
+            },
+            "character": "hammer",
+            "clip": "hammer/barricade_night_s0_grandpa_otto_hammer",
+            "id": "grandpa_otto_hammer"
+          },
+          {
+            "at": {
+              "t": 0.0,
+              "x": 650.0,
+              "y": 830.0
+            },
+            "character": "mika",
+            "clip": "mika/barricade_night_s0_mika",
+            "id": "mika"
+          },
+          {
+            "at": {
+              "t": 0.0,
+              "x": 462,
+              "y": 850
+            },
+            "character": "campfire",
+            "clip": "campfire/barricade_night_s0_fire",
+            "id": "fire"
+          },
+          {
+            "at": {
+              "t": 0.0,
+              "x": 530.0,
+              "y": 840.0
+            },
+            "character": "biscuit",
+            "clip": "biscuit/barricade_night_s0_biscuit",
+            "id": "biscuit"
+          }
+        ],
+        "background": {
+          "preset": "safe_camp",
+          "time": "night",
+          "weather": "clear"
+        },
+        "characters_present": [
+          "gate",
+          "grandpa_otto",
+          "grandpa_otto_hammer",
+          "mika",
+          "fire",
+          "biscuit"
+        ],
+        "end_time": 5.0,
+        "kind": "scene",
+        "renderer": "native-vector-v1",
+        "start_time": 0.0
+      },
+      {
+        "actions": [
+          {
+            "actor": "zombie_walker_c",
+            "direction": "right",
+            "distance": 140,
+            "end": 9.0,
+            "start": 5.0,
+            "type": "shamble"
+          },
+          {
+            "actor": "biscuit",
+            "emote": "exclamation",
+            "end": 9.5,
+            "start": 6.5,
+            "type": "emote"
+          }
+        ],
+        "actors": [
+          {
+            "at": {
+              "t": 5.0,
+              "x": 120,
+              "y": 840
+            },
+            "character": "barricade_boards",
+            "clip": "barricade_boards/barricade_night_s1_gate",
+            "id": "gate"
+          },
+          {
+            "at": {
+              "t": 5.0,
+              "x": 205.0,
+              "y": 830.0
+            },
+            "character": "grandpa_otto",
+            "clip": "grandpa_otto/barricade_night_s1_grandpa_otto",
+            "id": "grandpa_otto"
+          },
+          {
+            "at": {
+              "held": {
+                "asset": "hammer",
+                "height": 180,
+                "rotation": 20
+              },
+              "t": 5.0,
+              "x": -4.925,
+              "y": 13.532
+            },
+            "character": "hammer",
+            "clip": "hammer/barricade_night_s0_grandpa_otto_hammer",
+            "id": "grandpa_otto_hammer"
+          },
+          {
+            "at": {
+              "t": 5.0,
+              "x": 355.0,
+              "y": 830.0
+            },
+            "character": "mika",
+            "clip": "mika/barricade_night_s1_mika",
+            "id": "mika"
+          },
+          {
+            "at": {
+              "t": 5.0,
+              "x": 462,
+              "y": 850
+            },
+            "character": "campfire",
+            "clip": "campfire/barricade_night_s0_fire",
+            "id": "fire"
+          },
+          {
+            "at": {
+              "t": 5.0,
+              "x": 530.0,
+              "y": 840.0
+            },
+            "character": "biscuit",
+            "clip": "biscuit/barricade_night_s1_biscuit",
+            "id": "biscuit"
+          },
+          {
+            "at": {
+              "t": 5.0,
+              "x": -110.0,
+              "y": 830.0
+            },
+            "character": "zombie_walker_c",
+            "clip": "zombie_walker_c/barricade_night_s1_zombie_walker_c",
+            "id": "zombie_walker_c"
+          }
+        ],
+        "background": {
+          "preset": "safe_camp",
+          "time": "night",
+          "weather": "clear"
+        },
+        "characters_present": [
+          "gate",
+          "grandpa_otto",
+          "grandpa_otto_hammer",
+          "mika",
+          "fire",
+          "biscuit",
+          "zombie_walker_c"
+        ],
+        "end_time": 10.0,
+        "kind": "scene",
+        "renderer": "native-vector-v1",
+        "start_time": 5.0
+      },
+      {
+        "actions": [
+          {
+            "actor": "zombie_walker_c",
+            "direction": "left",
+            "distance": 175,
+            "end": 15.0,
+            "start": 10.0,
+            "type": "shamble"
+          },
+          {
+            "actor": "mika",
+            "emote": "heart",
+            "end": 14.5,
+            "start": 11.5,
+            "type": "emote"
+          }
+        ],
+        "actors": [
+          {
+            "at": {
+              "t": 10.0,
+              "x": 120,
+              "y": 840
+            },
+            "character": "barricade_boards",
+            "clip": "barricade_boards/barricade_night_s1_gate",
+            "id": "gate"
+          },
+          {
+            "at": {
+              "t": 10.0,
+              "x": 205.0,
+              "y": 830.0
+            },
+            "character": "grandpa_otto",
+            "clip": "grandpa_otto/barricade_night_s2_grandpa_otto",
+            "id": "grandpa_otto"
+          },
+          {
+            "at": {
+              "held": {
+                "asset": "hammer",
+                "height": 180,
+                "rotation": 20
+              },
+              "t": 10.0,
+              "x": -4.925,
+              "y": 13.532
+            },
+            "character": "hammer",
+            "clip": "hammer/barricade_night_s0_grandpa_otto_hammer",
+            "id": "grandpa_otto_hammer"
+          },
+          {
+            "at": {
+              "t": 10.0,
+              "x": 355.0,
+              "y": 830.0
+            },
+            "character": "mika",
+            "clip": "mika/barricade_night_s2_mika",
+            "id": "mika"
+          },
+          {
+            "at": {
+              "t": 10.0,
+              "x": 462,
+              "y": 850
+            },
+            "character": "campfire",
+            "clip": "campfire/barricade_night_s0_fire",
+            "id": "fire"
+          },
+          {
+            "at": {
+              "t": 10.0,
+              "x": 530.0,
+              "y": 840.0
+            },
+            "character": "biscuit",
+            "clip": "biscuit/barricade_night_s0_biscuit",
+            "id": "biscuit"
+          },
+          {
+            "at": {
+              "t": 10.0,
+              "x": 30.0,
+              "y": 830.0
+            },
+            "character": "zombie_walker_c",
+            "clip": "zombie_walker_c/barricade_night_s2_zombie_walker_c",
+            "id": "zombie_walker_c"
+          }
+        ],
+        "background": {
+          "preset": "safe_camp",
+          "time": "night",
+          "weather": "clear"
+        },
+        "characters_present": [
+          "gate",
+          "grandpa_otto",
+          "grandpa_otto_hammer",
+          "mika",
+          "fire",
+          "biscuit",
+          "zombie_walker_c"
+        ],
+        "end_time": 15.0,
+        "kind": "scene",
+        "renderer": "native-vector-v1",
+        "start_time": 10.0
+      }
+    ]
+  },
   "bento_morning": {
     "characters": [
       {
@@ -7083,6 +7509,306 @@
       }
     ]
   },
+  "flooded_escape": {
+    "characters": [
+      {
+        "asset": "chibi_boy",
+        "id": "leo",
+        "name": "Leo",
+        "outfit": "survivor_hoodie",
+        "role": "scout",
+        "style": {
+          "hair": "#1e293b",
+          "skin": "#f7d0b5"
+        }
+      },
+      {
+        "asset": "chibi_girl",
+        "id": "mika",
+        "name": "Mika",
+        "outfit": "survivor_jacket",
+        "role": "leader",
+        "style": {
+          "hair": "#78350f",
+          "skin": "#ffdfc4"
+        }
+      },
+      {
+        "asset": "signal_mirror",
+        "attach_to": {
+          "anchor": "hand_r",
+          "id": "mika"
+        },
+        "id": "mika_signal_mirror",
+        "name": "Signal mirror"
+      },
+      {
+        "asset": "boat",
+        "id": "skiff",
+        "name": "Skiff"
+      }
+    ],
+    "cues": [
+      {
+        "character_id": "leo",
+        "end": 4.5,
+        "expression": "neutral",
+        "start": 0.5,
+        "text": "Floodwater has covered the lower streets. Leo rows the skiff slowly and keeps to the middle."
+      },
+      {
+        "character_id": "mika",
+        "end": 9.5,
+        "expression": "happy",
+        "start": 5.5,
+        "text": "Mika angles a signal mirror at the sky. A flash of sunlight can be seen many kilometres away."
+      },
+      {
+        "character_id": "leo",
+        "end": 14.5,
+        "expression": "happy",
+        "start": 10.5,
+        "text": "Rescuers answer the signal! Clear signals and teamwork bring everyone home."
+      }
+    ],
+    "duration": 15.0,
+    "fidelity": "technical-demo",
+    "id": "flooded_escape",
+    "name": "64 · Flooded Escape: Rowing to Safety",
+    "renderer": "native-vector-v1",
+    "scenes": [
+      {
+        "actions": [
+          {
+            "actor": "leo",
+            "end": 4.8,
+            "start": 0.3,
+            "target": "skiff",
+            "type": "row"
+          }
+        ],
+        "actors": [
+          {
+            "at": {
+              "t": 0.0,
+              "x": 40,
+              "y": 840
+            },
+            "character": "boat",
+            "clip": "boat/flooded_escape_s0_skiff",
+            "id": "skiff"
+          },
+          {
+            "at": {
+              "t": 0.0,
+              "x": -40.0,
+              "y": 750.8
+            },
+            "character": "leo",
+            "clip": "leo/flooded_escape_s0_leo",
+            "id": "leo"
+          },
+          {
+            "at": {
+              "t": 0.0,
+              "x": 115.0,
+              "y": 750.8
+            },
+            "character": "mika",
+            "clip": "mika/flooded_escape_s0_mika",
+            "id": "mika"
+          },
+          {
+            "at": {
+              "held": {
+                "asset": "signal_mirror",
+                "height": 160,
+                "rotation": -20
+              },
+              "t": 0.0,
+              "x": 5.472,
+              "y": 15.035
+            },
+            "character": "signal_mirror",
+            "clip": "signal_mirror/flooded_escape_s0_mika_signal_mirror",
+            "id": "mika_signal_mirror"
+          }
+        ],
+        "background": {
+          "preset": "flooded_downtown",
+          "weather": "clear"
+        },
+        "characters_present": [
+          "skiff",
+          "leo",
+          "mika",
+          "mika_signal_mirror"
+        ],
+        "end_time": 5.0,
+        "kind": "scene",
+        "renderer": "native-vector-v1",
+        "start_time": 0.0
+      },
+      {
+        "actions": [
+          {
+            "actor": "mika",
+            "end": 9.5,
+            "start": 6.0,
+            "target": "mika_signal_mirror",
+            "type": "signal"
+          },
+          {
+            "actor": "mika",
+            "emote": "exclamation",
+            "end": 8.5,
+            "start": 6.2,
+            "type": "emote"
+          }
+        ],
+        "actors": [
+          {
+            "at": {
+              "t": 5.0,
+              "x": 250,
+              "y": 840
+            },
+            "character": "boat",
+            "clip": "boat/flooded_escape_s1_skiff",
+            "id": "skiff"
+          },
+          {
+            "at": {
+              "t": 5.0,
+              "x": 170.0,
+              "y": 750.8
+            },
+            "character": "leo",
+            "clip": "leo/flooded_escape_s1_leo",
+            "id": "leo"
+          },
+          {
+            "at": {
+              "t": 5.0,
+              "x": 325.0,
+              "y": 750.8
+            },
+            "character": "mika",
+            "clip": "mika/flooded_escape_s1_mika",
+            "id": "mika"
+          },
+          {
+            "at": {
+              "held": {
+                "asset": "signal_mirror",
+                "height": 160,
+                "rotation": -20
+              },
+              "t": 5.0,
+              "x": 5.472,
+              "y": 15.035
+            },
+            "character": "signal_mirror",
+            "clip": "signal_mirror/flooded_escape_s1_mika_signal_mirror",
+            "id": "mika_signal_mirror"
+          }
+        ],
+        "background": {
+          "preset": "flooded_downtown",
+          "weather": "clear"
+        },
+        "characters_present": [
+          "skiff",
+          "leo",
+          "mika",
+          "mika_signal_mirror"
+        ],
+        "end_time": 10.0,
+        "kind": "scene",
+        "renderer": "native-vector-v1",
+        "start_time": 5.0
+      },
+      {
+        "actions": [
+          {
+            "actor": "leo",
+            "end": 14.8,
+            "start": 10.2,
+            "target": "skiff",
+            "type": "row"
+          },
+          {
+            "actor": "mika",
+            "emote": "heart",
+            "end": 14.5,
+            "start": 11.0,
+            "type": "emote"
+          }
+        ],
+        "actors": [
+          {
+            "at": {
+              "t": 10.0,
+              "x": 250,
+              "y": 840
+            },
+            "character": "boat",
+            "clip": "boat/flooded_escape_s2_skiff",
+            "id": "skiff"
+          },
+          {
+            "at": {
+              "t": 10.0,
+              "x": 170.0,
+              "y": 750.8
+            },
+            "character": "leo",
+            "clip": "leo/flooded_escape_s2_leo",
+            "id": "leo"
+          },
+          {
+            "at": {
+              "t": 10.0,
+              "x": 325.0,
+              "y": 750.8
+            },
+            "character": "mika",
+            "clip": "mika/flooded_escape_s2_mika",
+            "id": "mika"
+          },
+          {
+            "at": {
+              "held": {
+                "asset": "signal_mirror",
+                "height": 160,
+                "rotation": -20
+              },
+              "t": 10.0,
+              "x": 5.472,
+              "y": 15.035
+            },
+            "character": "signal_mirror",
+            "clip": "signal_mirror/flooded_escape_s0_mika_signal_mirror",
+            "id": "mika_signal_mirror"
+          }
+        ],
+        "background": {
+          "preset": "flooded_downtown",
+          "weather": "clear"
+        },
+        "characters_present": [
+          "skiff",
+          "leo",
+          "mika",
+          "mika_signal_mirror"
+        ],
+        "end_time": 15.0,
+        "kind": "scene",
+        "renderer": "native-vector-v1",
+        "start_time": 10.0
+      }
+    ]
+  },
   "fox_and_grapes": {
     "characters": [
       {
@@ -9286,6 +10012,440 @@
       }
     ]
   },
+  "last_city_morning": {
+    "characters": [
+      {
+        "asset": "chibi_kid",
+        "id": "pip",
+        "name": "Pip",
+        "outfit": "raincoat",
+        "role": "youngest",
+        "style": {
+          "hair": "#9a3412",
+          "skin": "#fce0cc"
+        }
+      },
+      {
+        "asset": "hand_crank_radio",
+        "attach_to": {
+          "anchor": "hand_l",
+          "id": "pip"
+        },
+        "id": "pip_hand_crank_radio"
+      },
+      {
+        "asset": "dog",
+        "id": "biscuit",
+        "name": "Biscuit",
+        "role": "companion",
+        "style": {
+          "accent": "#f97316",
+          "body": "#d97706"
+        }
+      },
+      {
+        "asset": "chibi_girl",
+        "id": "mika",
+        "name": "Mika",
+        "outfit": "survivor_jacket",
+        "role": "leader",
+        "style": {
+          "hair": "#78350f",
+          "skin": "#ffdfc4"
+        }
+      },
+      {
+        "asset": "walkie_talkie",
+        "attach_to": {
+          "anchor": "hand_r",
+          "id": "mika"
+        },
+        "id": "mika_walkie_talkie"
+      },
+      {
+        "asset": "chibi_boy",
+        "id": "leo",
+        "name": "Leo",
+        "outfit": "survivor_hoodie",
+        "role": "scout",
+        "style": {
+          "hair": "#1e293b",
+          "skin": "#f7d0b5"
+        }
+      },
+      {
+        "asset": "flashlight",
+        "attach_to": {
+          "anchor": "hand_r",
+          "id": "leo"
+        },
+        "id": "leo_flashlight"
+      },
+      {
+        "asset": "seed_tray",
+        "id": "tray",
+        "name": "Seed tray"
+      }
+    ],
+    "cues": [
+      {
+        "character_id": "pip",
+        "end": 4.5,
+        "expression": "happy",
+        "start": 0.5,
+        "text": "The morning sun rises over the rooftop garden as Pip turns the hand-crank radio to check for signals."
+      },
+      {
+        "character_id": "mika",
+        "end": 9.5,
+        "expression": "happy",
+        "start": 5.5,
+        "text": "A faint broadcast crackles through the walkie-talkie: the safe camp is in the southern sector!"
+      },
+      {
+        "character_id": "leo",
+        "end": 14.5,
+        "expression": "happy",
+        "start": 10.5,
+        "text": "Rule of three: three days without water, three weeks without food. Water first, then we move together."
+      }
+    ],
+    "duration": 15.0,
+    "fidelity": "technical-demo",
+    "id": "last_city_morning",
+    "name": "60 · Last City Morning: Sunrise on the Rooftop Garden",
+    "renderer": "native-vector-v1",
+    "scenes": [
+      {
+        "actions": [],
+        "actors": [
+          {
+            "at": {
+              "t": 0.0,
+              "x": 110.0,
+              "y": 820.0
+            },
+            "character": "pip",
+            "clip": "pip/last_city_morning_s0_pip",
+            "id": "pip"
+          },
+          {
+            "at": {
+              "held": {
+                "asset": "hand_crank_radio",
+                "height": 130,
+                "rotation": 0
+              },
+              "t": 0.0,
+              "x": 23.4,
+              "y": 26.0
+            },
+            "character": "hand_crank_radio",
+            "clip": "hand_crank_radio/last_city_morning_s0_pip_hand_crank_radio",
+            "id": "pip_hand_crank_radio"
+          },
+          {
+            "at": {
+              "t": 0.0,
+              "x": 255.0,
+              "y": 830.0
+            },
+            "character": "biscuit",
+            "clip": "biscuit/last_city_morning_s0_biscuit",
+            "id": "biscuit"
+          },
+          {
+            "at": {
+              "t": 0.0,
+              "x": 490,
+              "y": 840
+            },
+            "character": "seed_tray",
+            "clip": "seed_tray/last_city_morning_s0_tray",
+            "id": "tray"
+          },
+          {
+            "at": {
+              "t": 0.0,
+              "x": 660.0,
+              "y": 820.0
+            },
+            "character": "mika",
+            "clip": "mika/last_city_morning_s0_mika",
+            "id": "mika"
+          },
+          {
+            "at": {
+              "held": {
+                "asset": "walkie_talkie",
+                "height": 110,
+                "rotation": 0
+              },
+              "t": 0.0,
+              "x": -0.0,
+              "y": 24.2
+            },
+            "character": "walkie_talkie",
+            "clip": "walkie_talkie/last_city_morning_s0_mika_walkie_talkie",
+            "id": "mika_walkie_talkie"
+          }
+        ],
+        "background": {
+          "preset": "rooftop_garden",
+          "weather": "clear"
+        },
+        "characters_present": [
+          "pip",
+          "pip_hand_crank_radio",
+          "biscuit",
+          "tray",
+          "mika",
+          "mika_walkie_talkie"
+        ],
+        "end_time": 5.0,
+        "kind": "scene",
+        "renderer": "native-vector-v1",
+        "start_time": 0.0
+      },
+      {
+        "actions": [
+          {
+            "actor": "pip",
+            "emote": "exclamation",
+            "end": 8.5,
+            "start": 6.0,
+            "type": "emote"
+          },
+          {
+            "actor": "biscuit",
+            "emote": "heart",
+            "end": 9.5,
+            "start": 6.5,
+            "type": "emote"
+          }
+        ],
+        "actors": [
+          {
+            "at": {
+              "t": 5.0,
+              "x": 110.0,
+              "y": 820.0
+            },
+            "character": "pip",
+            "clip": "pip/last_city_morning_s1_pip",
+            "id": "pip"
+          },
+          {
+            "at": {
+              "held": {
+                "asset": "hand_crank_radio",
+                "height": 130,
+                "rotation": 0
+              },
+              "t": 5.0,
+              "x": 23.4,
+              "y": 26.0
+            },
+            "character": "hand_crank_radio",
+            "clip": "hand_crank_radio/last_city_morning_s1_pip_hand_crank_radio",
+            "id": "pip_hand_crank_radio"
+          },
+          {
+            "at": {
+              "t": 5.0,
+              "x": 255.0,
+              "y": 830.0
+            },
+            "character": "biscuit",
+            "clip": "biscuit/last_city_morning_s1_biscuit",
+            "id": "biscuit"
+          },
+          {
+            "at": {
+              "t": 5.0,
+              "x": 395.0,
+              "y": 820.0
+            },
+            "character": "mika",
+            "clip": "mika/last_city_morning_s1_mika",
+            "id": "mika"
+          },
+          {
+            "at": {
+              "held": {
+                "asset": "walkie_talkie",
+                "height": 110,
+                "rotation": 0
+              },
+              "t": 5.0,
+              "x": -0.0,
+              "y": 24.2
+            },
+            "character": "walkie_talkie",
+            "clip": "walkie_talkie/last_city_morning_s0_mika_walkie_talkie",
+            "id": "mika_walkie_talkie"
+          },
+          {
+            "at": {
+              "t": 5.0,
+              "x": 680.0,
+              "y": 820.0
+            },
+            "character": "leo",
+            "clip": "leo/last_city_morning_s1_leo",
+            "id": "leo"
+          },
+          {
+            "at": {
+              "held": {
+                "asset": "flashlight",
+                "height": 200,
+                "rotation": 15
+              },
+              "t": 5.0,
+              "x": -3.882,
+              "y": 14.489
+            },
+            "character": "flashlight",
+            "clip": "flashlight/last_city_morning_s1_leo_flashlight",
+            "id": "leo_flashlight"
+          }
+        ],
+        "background": {
+          "preset": "rooftop_garden",
+          "weather": "clear"
+        },
+        "characters_present": [
+          "pip",
+          "pip_hand_crank_radio",
+          "biscuit",
+          "mika",
+          "mika_walkie_talkie",
+          "leo",
+          "leo_flashlight"
+        ],
+        "end_time": 10.0,
+        "kind": "scene",
+        "renderer": "native-vector-v1",
+        "start_time": 5.0
+      },
+      {
+        "actions": [
+          {
+            "actor": "mika",
+            "emote": "heart",
+            "end": 13.0,
+            "start": 10.5,
+            "type": "emote"
+          }
+        ],
+        "actors": [
+          {
+            "at": {
+              "t": 10.0,
+              "x": 110.0,
+              "y": 820.0
+            },
+            "character": "pip",
+            "clip": "pip/last_city_morning_s2_pip",
+            "id": "pip"
+          },
+          {
+            "at": {
+              "held": {
+                "asset": "hand_crank_radio",
+                "height": 130,
+                "rotation": 0
+              },
+              "t": 10.0,
+              "x": 23.4,
+              "y": 26.0
+            },
+            "character": "hand_crank_radio",
+            "clip": "hand_crank_radio/last_city_morning_s2_pip_hand_crank_radio",
+            "id": "pip_hand_crank_radio"
+          },
+          {
+            "at": {
+              "t": 10.0,
+              "x": 255.0,
+              "y": 830.0
+            },
+            "character": "biscuit",
+            "clip": "biscuit/last_city_morning_s2_biscuit",
+            "id": "biscuit"
+          },
+          {
+            "at": {
+              "t": 10.0,
+              "x": 395.0,
+              "y": 820.0
+            },
+            "character": "mika",
+            "clip": "mika/last_city_morning_s2_mika",
+            "id": "mika"
+          },
+          {
+            "at": {
+              "held": {
+                "asset": "walkie_talkie",
+                "height": 110,
+                "rotation": 0
+              },
+              "t": 10.0,
+              "x": -0.0,
+              "y": 24.2
+            },
+            "character": "walkie_talkie",
+            "clip": "walkie_talkie/last_city_morning_s0_mika_walkie_talkie",
+            "id": "mika_walkie_talkie"
+          },
+          {
+            "at": {
+              "t": 10.0,
+              "x": 530.0,
+              "y": 820.0
+            },
+            "character": "leo",
+            "clip": "leo/last_city_morning_s2_leo",
+            "id": "leo"
+          },
+          {
+            "at": {
+              "held": {
+                "asset": "flashlight",
+                "height": 200,
+                "rotation": 15
+              },
+              "t": 10.0,
+              "x": -3.882,
+              "y": 14.489
+            },
+            "character": "flashlight",
+            "clip": "flashlight/last_city_morning_s1_leo_flashlight",
+            "id": "leo_flashlight"
+          }
+        ],
+        "background": {
+          "preset": "rooftop_garden",
+          "weather": "clear"
+        },
+        "characters_present": [
+          "pip",
+          "pip_hand_crank_radio",
+          "biscuit",
+          "mika",
+          "mika_walkie_talkie",
+          "leo",
+          "leo_flashlight"
+        ],
+        "end_time": 15.0,
+        "kind": "scene",
+        "renderer": "native-vector-v1",
+        "start_time": 10.0
+      }
+    ]
+  },
   "moai_mystery": {
     "characters": [
       {
@@ -10919,6 +12079,444 @@
         "kind": "scene",
         "renderer": "native-vector-v1",
         "start_time": 6.0
+      }
+    ]
+  },
+  "quiet_street": {
+    "characters": [
+      {
+        "asset": "chibi_girl",
+        "id": "mika",
+        "name": "Mika",
+        "outfit": "survivor_jacket",
+        "role": "leader",
+        "style": {
+          "hair": "#78350f",
+          "skin": "#ffdfc4"
+        }
+      },
+      {
+        "asset": "walkie_talkie",
+        "attach_to": {
+          "anchor": "hand_r",
+          "id": "mika"
+        },
+        "id": "mika_walkie_talkie"
+      },
+      {
+        "asset": "chibi_boy",
+        "id": "leo",
+        "name": "Leo",
+        "outfit": "survivor_hoodie",
+        "role": "scout",
+        "style": {
+          "hair": "#1e293b",
+          "skin": "#f7d0b5"
+        }
+      },
+      {
+        "asset": "flashlight",
+        "attach_to": {
+          "anchor": "hand_r",
+          "id": "leo"
+        },
+        "id": "leo_flashlight"
+      },
+      {
+        "asset": "chibi_boy",
+        "id": "zombie_walker_a",
+        "name": "Zombie Walker A",
+        "outfit": "torn",
+        "role": "crowd",
+        "style": {
+          "hair": "#334155",
+          "skin": "#f1c9a5"
+        }
+      },
+      {
+        "asset": "chibi_girl",
+        "id": "zombie_walker_b",
+        "name": "Zombie Walker B",
+        "outfit": "torn",
+        "role": "crowd",
+        "style": {
+          "hair": "#1e293b",
+          "skin": "#c68642"
+        }
+      },
+      {
+        "asset": "city_bus",
+        "id": "bus",
+        "name": "Old bus"
+      },
+      {
+        "asset": "can",
+        "id": "can",
+        "name": "Empty can"
+      }
+    ],
+    "cues": [
+      {
+        "character_id": "mika",
+        "end": 4.5,
+        "expression": "neutral",
+        "start": 0.5,
+        "text": "Two dazed walkers drift down the empty street. Mika and Leo crouch low behind an old bus."
+      },
+      {
+        "character_id": "leo",
+        "end": 9.5,
+        "expression": "happy",
+        "start": 5.5,
+        "text": "Leo tosses an empty can far down the street. The clatter draws both walkers away."
+      },
+      {
+        "character_id": "mika",
+        "end": 14.5,
+        "expression": "happy",
+        "start": 10.5,
+        "text": "Stay quiet, stay together, always keep a way out. The team slips past safely."
+      }
+    ],
+    "duration": 15.0,
+    "fidelity": "technical-demo",
+    "id": "quiet_street",
+    "name": "62 · Quiet Street: Teamwork and Distraction",
+    "renderer": "native-vector-v1",
+    "scenes": [
+      {
+        "actions": [
+          {
+            "actor": "zombie_walker_a",
+            "direction": "left",
+            "distance": 175,
+            "end": 5.0,
+            "start": 0.0,
+            "type": "shamble"
+          },
+          {
+            "actor": "zombie_walker_b",
+            "direction": "left",
+            "distance": 150,
+            "end": 5.0,
+            "start": 0.0,
+            "type": "shamble"
+          }
+        ],
+        "actors": [
+          {
+            "at": {
+              "t": 0.0,
+              "x": 230,
+              "y": 840
+            },
+            "character": "city_bus",
+            "clip": "city_bus/quiet_street_s0_bus",
+            "id": "bus"
+          },
+          {
+            "at": {
+              "t": 0.0,
+              "x": -60.0,
+              "y": 830.0
+            },
+            "character": "mika",
+            "clip": "mika/quiet_street_s0_mika",
+            "id": "mika"
+          },
+          {
+            "at": {
+              "t": 0.0,
+              "x": -180.0,
+              "y": 830.0
+            },
+            "character": "leo",
+            "clip": "leo/quiet_street_s0_leo",
+            "id": "leo"
+          },
+          {
+            "at": {
+              "held": {
+                "asset": "flashlight",
+                "height": 200,
+                "rotation": 15
+              },
+              "t": 0.0,
+              "x": -3.882,
+              "y": 14.489
+            },
+            "character": "flashlight",
+            "clip": "flashlight/last_city_morning_s1_leo_flashlight",
+            "id": "leo_flashlight"
+          },
+          {
+            "at": {
+              "t": 0.0,
+              "x": 680.0,
+              "y": 830.0
+            },
+            "character": "zombie_walker_a",
+            "clip": "zombie_walker_a/quiet_street_s0_zombie_walker_a",
+            "id": "zombie_walker_a"
+          },
+          {
+            "at": {
+              "t": 0.0,
+              "x": 760.0,
+              "y": 830.0
+            },
+            "character": "zombie_walker_b",
+            "clip": "zombie_walker_b/quiet_street_s0_zombie_walker_b",
+            "id": "zombie_walker_b"
+          }
+        ],
+        "background": {
+          "preset": "abandoned_street",
+          "weather": "fog"
+        },
+        "characters_present": [
+          "bus",
+          "mika",
+          "leo",
+          "leo_flashlight",
+          "zombie_walker_a",
+          "zombie_walker_b"
+        ],
+        "end_time": 5.0,
+        "kind": "scene",
+        "renderer": "native-vector-v1",
+        "start_time": 0.0
+      },
+      {
+        "actions": [
+          {
+            "actor": "leo",
+            "end": 8.0,
+            "start": 7.2,
+            "target": "can",
+            "type": "distract"
+          },
+          {
+            "actor": "zombie_walker_a",
+            "direction": "right",
+            "distance": 70,
+            "end": 10.0,
+            "start": 8.0,
+            "type": "shamble"
+          },
+          {
+            "actor": "zombie_walker_b",
+            "direction": "right",
+            "distance": 70,
+            "end": 10.0,
+            "start": 8.0,
+            "type": "shamble"
+          }
+        ],
+        "actors": [
+          {
+            "at": {
+              "t": 5.0,
+              "x": 230,
+              "y": 840
+            },
+            "character": "city_bus",
+            "clip": "city_bus/quiet_street_s0_bus",
+            "id": "bus"
+          },
+          {
+            "at": {
+              "t": 5.0,
+              "x": 150.0,
+              "y": 845.0
+            },
+            "character": "mika",
+            "clip": "mika/quiet_street_s1_mika",
+            "id": "mika"
+          },
+          {
+            "at": {
+              "t": 5.0,
+              "x": 300.0,
+              "y": 845.0
+            },
+            "character": "leo",
+            "clip": "leo/quiet_street_s1_leo",
+            "id": "leo"
+          },
+          {
+            "at": {
+              "held": {
+                "asset": "flashlight",
+                "height": 200,
+                "rotation": 15
+              },
+              "t": 5.0,
+              "x": -3.882,
+              "y": 14.489
+            },
+            "character": "flashlight",
+            "clip": "flashlight/last_city_morning_s1_leo_flashlight",
+            "id": "leo_flashlight"
+          },
+          {
+            "at": {
+              "t": 5.0,
+              "x": 330,
+              "y": 700
+            },
+            "character": "can",
+            "clip": "can/quiet_street_s1_can",
+            "id": "can"
+          },
+          {
+            "at": {
+              "t": 5.0,
+              "x": 505.0,
+              "y": 830.0
+            },
+            "character": "zombie_walker_a",
+            "clip": "zombie_walker_a/quiet_street_s1_zombie_walker_a",
+            "id": "zombie_walker_a"
+          },
+          {
+            "at": {
+              "t": 5.0,
+              "x": 610.0,
+              "y": 830.0
+            },
+            "character": "zombie_walker_b",
+            "clip": "zombie_walker_b/quiet_street_s1_zombie_walker_b",
+            "id": "zombie_walker_b"
+          }
+        ],
+        "background": {
+          "preset": "abandoned_street",
+          "weather": "fog"
+        },
+        "characters_present": [
+          "bus",
+          "mika",
+          "leo",
+          "leo_flashlight",
+          "can",
+          "zombie_walker_a",
+          "zombie_walker_b"
+        ],
+        "end_time": 10.0,
+        "kind": "scene",
+        "renderer": "native-vector-v1",
+        "start_time": 5.0
+      },
+      {
+        "actions": [
+          {
+            "actor": "zombie_walker_a",
+            "direction": "right",
+            "distance": 150,
+            "end": 15.0,
+            "start": 10.0,
+            "type": "shamble"
+          },
+          {
+            "actor": "zombie_walker_b",
+            "direction": "right",
+            "distance": 150,
+            "end": 15.0,
+            "start": 10.0,
+            "type": "shamble"
+          },
+          {
+            "actor": "leo",
+            "emote": "heart",
+            "end": 14.5,
+            "start": 12.0,
+            "type": "emote"
+          }
+        ],
+        "actors": [
+          {
+            "at": {
+              "t": 10.0,
+              "x": 230,
+              "y": 840
+            },
+            "character": "city_bus",
+            "clip": "city_bus/quiet_street_s0_bus",
+            "id": "bus"
+          },
+          {
+            "at": {
+              "t": 10.0,
+              "x": 150.0,
+              "y": 845.0
+            },
+            "character": "mika",
+            "clip": "mika/quiet_street_s2_mika",
+            "id": "mika"
+          },
+          {
+            "at": {
+              "t": 10.0,
+              "x": 300.0,
+              "y": 845.0
+            },
+            "character": "leo",
+            "clip": "leo/quiet_street_s2_leo",
+            "id": "leo"
+          },
+          {
+            "at": {
+              "held": {
+                "asset": "flashlight",
+                "height": 200,
+                "rotation": 15
+              },
+              "t": 10.0,
+              "x": -3.882,
+              "y": 14.489
+            },
+            "character": "flashlight",
+            "clip": "flashlight/last_city_morning_s1_leo_flashlight",
+            "id": "leo_flashlight"
+          },
+          {
+            "at": {
+              "t": 10.0,
+              "x": 575.0,
+              "y": 830.0
+            },
+            "character": "zombie_walker_a",
+            "clip": "zombie_walker_a/quiet_street_s2_zombie_walker_a",
+            "id": "zombie_walker_a"
+          },
+          {
+            "at": {
+              "t": 10.0,
+              "x": 680.0,
+              "y": 830.0
+            },
+            "character": "zombie_walker_b",
+            "clip": "zombie_walker_b/quiet_street_s2_zombie_walker_b",
+            "id": "zombie_walker_b"
+          }
+        ],
+        "background": {
+          "preset": "abandoned_street",
+          "weather": "fog"
+        },
+        "characters_present": [
+          "bus",
+          "mika",
+          "leo",
+          "leo_flashlight",
+          "zombie_walker_a",
+          "zombie_walker_b"
+        ],
+        "end_time": 15.0,
+        "kind": "scene",
+        "renderer": "native-vector-v1",
+        "start_time": 10.0
       }
     ]
   },
@@ -14027,6 +15625,379 @@
       }
     ]
   },
+  "the_cure": {
+    "characters": [
+      {
+        "asset": "chibi_teacher",
+        "id": "dr_hana",
+        "name": "Dr. Hana",
+        "outfit": "scientist",
+        "role": "scientist",
+        "style": {
+          "hair": "#0f172a",
+          "skin": "#ffdfc4"
+        }
+      },
+      {
+        "asset": "cure_sprayer",
+        "attach_to": {
+          "anchor": "hand_r",
+          "id": "dr_hana"
+        },
+        "id": "dr_hana_cure_sprayer"
+      },
+      {
+        "asset": "chibi_girl",
+        "id": "nora",
+        "name": "Nora",
+        "outfit": "torn",
+        "role": "survivor",
+        "style": {
+          "hair": "#b45309",
+          "skin": "#ffdfc4"
+        }
+      },
+      {
+        "asset": "chibi_boy",
+        "id": "zombie_walker_a",
+        "name": "Zombie Walker A",
+        "outfit": "torn",
+        "role": "crowd",
+        "style": {
+          "hair": "#334155",
+          "skin": "#f1c9a5"
+        }
+      },
+      {
+        "asset": "chibi_girl",
+        "id": "zombie_walker_b",
+        "name": "Zombie Walker B",
+        "outfit": "torn",
+        "role": "crowd",
+        "style": {
+          "hair": "#1e293b",
+          "skin": "#c68642"
+        }
+      }
+    ],
+    "cues": [
+      {
+        "character_id": "dr_hana",
+        "end": 4.5,
+        "expression": "neutral",
+        "start": 0.5,
+        "text": "Deep in the subway tunnel, Dr. Hana is ready with her new cure."
+      },
+      {
+        "character_id": "dr_hana",
+        "end": 9.5,
+        "expression": "happy",
+        "start": 5.5,
+        "text": "A gentle sparkling mist, one person at a time. The strange illness fades away."
+      },
+      {
+        "character_id": "nora",
+        "end": 14.5,
+        "expression": "happy",
+        "start": 10.5,
+        "text": "Nora is herself again, and so are her friends. Science and kindness win!"
+      }
+    ],
+    "duration": 15.0,
+    "fidelity": "technical-demo",
+    "id": "the_cure",
+    "name": "65 · The Cure: Science, Kindness and Hope",
+    "renderer": "native-vector-v1",
+    "scenes": [
+      {
+        "actions": [
+          {
+            "actor": "nora",
+            "direction": "left",
+            "distance": 50,
+            "end": 5.0,
+            "start": 0.0,
+            "type": "shamble"
+          },
+          {
+            "actor": "zombie_walker_a",
+            "direction": "left",
+            "distance": 50,
+            "end": 5.0,
+            "start": 0.0,
+            "type": "shamble"
+          },
+          {
+            "actor": "zombie_walker_b",
+            "direction": "left",
+            "distance": 50,
+            "end": 5.0,
+            "start": 0.0,
+            "type": "shamble"
+          }
+        ],
+        "actors": [
+          {
+            "at": {
+              "t": 0.0,
+              "x": -80.0,
+              "y": 830.0
+            },
+            "character": "dr_hana",
+            "clip": "dr_hana/the_cure_s0_dr_hana",
+            "id": "dr_hana"
+          },
+          {
+            "at": {
+              "held": {
+                "asset": "cure_sprayer",
+                "height": 120,
+                "rotation": 0
+              },
+              "t": 0.0,
+              "x": 14.4,
+              "y": 26.4
+            },
+            "character": "cure_sprayer",
+            "clip": "cure_sprayer/the_cure_s0_dr_hana_cure_sprayer",
+            "id": "dr_hana_cure_sprayer"
+          },
+          {
+            "at": {
+              "t": 0.0,
+              "x": 300.0,
+              "y": 830.0
+            },
+            "character": "nora",
+            "clip": "nora/the_cure_s0_nora",
+            "id": "nora"
+          },
+          {
+            "at": {
+              "t": 0.0,
+              "x": 435.0,
+              "y": 830.0
+            },
+            "character": "zombie_walker_a",
+            "clip": "zombie_walker_a/the_cure_s0_zombie_walker_a",
+            "id": "zombie_walker_a"
+          },
+          {
+            "at": {
+              "t": 0.0,
+              "x": 570.0,
+              "y": 830.0
+            },
+            "character": "zombie_walker_b",
+            "clip": "zombie_walker_b/the_cure_s0_zombie_walker_b",
+            "id": "zombie_walker_b"
+          }
+        ],
+        "background": {
+          "preset": "subway_tunnel",
+          "weather": "clear"
+        },
+        "characters_present": [
+          "dr_hana",
+          "dr_hana_cure_sprayer",
+          "nora",
+          "zombie_walker_a",
+          "zombie_walker_b"
+        ],
+        "end_time": 5.0,
+        "kind": "scene",
+        "renderer": "native-vector-v1",
+        "start_time": 0.0
+      },
+      {
+        "actions": [
+          {
+            "actor": "dr_hana",
+            "end": 7.0,
+            "start": 5.6,
+            "target": "nora",
+            "type": "cure_spray"
+          },
+          {
+            "actor": "dr_hana",
+            "end": 8.5,
+            "start": 7.0,
+            "target": "zombie_walker_a",
+            "type": "cure_spray"
+          },
+          {
+            "actor": "dr_hana",
+            "end": 10.0,
+            "start": 8.5,
+            "target": "zombie_walker_b",
+            "type": "cure_spray"
+          }
+        ],
+        "actors": [
+          {
+            "at": {
+              "t": 5.0,
+              "x": 90.0,
+              "y": 830.0
+            },
+            "character": "dr_hana",
+            "clip": "dr_hana/the_cure_s1_dr_hana",
+            "id": "dr_hana"
+          },
+          {
+            "at": {
+              "held": {
+                "asset": "cure_sprayer",
+                "height": 120,
+                "rotation": 0
+              },
+              "t": 5.0,
+              "x": 14.4,
+              "y": 26.4
+            },
+            "character": "cure_sprayer",
+            "clip": "cure_sprayer/the_cure_s0_dr_hana_cure_sprayer",
+            "id": "dr_hana_cure_sprayer"
+          },
+          {
+            "at": {
+              "t": 5.0,
+              "x": 250.0,
+              "y": 830.0
+            },
+            "character": "nora",
+            "clip": "nora/the_cure_s1_nora",
+            "id": "nora"
+          },
+          {
+            "at": {
+              "t": 5.0,
+              "x": 385.0,
+              "y": 830.0
+            },
+            "character": "zombie_walker_a",
+            "clip": "zombie_walker_a/the_cure_s1_zombie_walker_a",
+            "id": "zombie_walker_a"
+          },
+          {
+            "at": {
+              "t": 5.0,
+              "x": 520.0,
+              "y": 830.0
+            },
+            "character": "zombie_walker_b",
+            "clip": "zombie_walker_b/the_cure_s1_zombie_walker_b",
+            "id": "zombie_walker_b"
+          }
+        ],
+        "background": {
+          "preset": "subway_tunnel",
+          "weather": "clear"
+        },
+        "characters_present": [
+          "dr_hana",
+          "dr_hana_cure_sprayer",
+          "nora",
+          "zombie_walker_a",
+          "zombie_walker_b"
+        ],
+        "end_time": 10.0,
+        "kind": "scene",
+        "renderer": "native-vector-v1",
+        "start_time": 5.0
+      },
+      {
+        "actions": [
+          {
+            "actor": "nora",
+            "emote": "heart",
+            "end": 14.5,
+            "start": 11.0,
+            "type": "emote"
+          },
+          {
+            "actor": "dr_hana",
+            "emote": "heart",
+            "end": 14.5,
+            "start": 11.5,
+            "type": "emote"
+          }
+        ],
+        "actors": [
+          {
+            "at": {
+              "t": 10.0,
+              "x": 90.0,
+              "y": 830.0
+            },
+            "character": "dr_hana",
+            "clip": "dr_hana/the_cure_s2_dr_hana",
+            "id": "dr_hana"
+          },
+          {
+            "at": {
+              "held": {
+                "asset": "cure_sprayer",
+                "height": 120,
+                "rotation": 0
+              },
+              "t": 10.0,
+              "x": 14.4,
+              "y": 26.4
+            },
+            "character": "cure_sprayer",
+            "clip": "cure_sprayer/the_cure_s0_dr_hana_cure_sprayer",
+            "id": "dr_hana_cure_sprayer"
+          },
+          {
+            "at": {
+              "t": 10.0,
+              "x": 250.0,
+              "y": 830.0
+            },
+            "character": "nora",
+            "clip": "nora/the_cure_s2_nora",
+            "id": "nora"
+          },
+          {
+            "at": {
+              "t": 10.0,
+              "x": 385.0,
+              "y": 830.0
+            },
+            "character": "zombie_walker_a",
+            "clip": "zombie_walker_a/the_cure_s2_zombie_walker_a",
+            "id": "zombie_walker_a"
+          },
+          {
+            "at": {
+              "t": 10.0,
+              "x": 520.0,
+              "y": 830.0
+            },
+            "character": "zombie_walker_b",
+            "clip": "zombie_walker_b/the_cure_s2_zombie_walker_b",
+            "id": "zombie_walker_b"
+          }
+        ],
+        "background": {
+          "preset": "subway_tunnel",
+          "weather": "clear"
+        },
+        "characters_present": [
+          "dr_hana",
+          "dr_hana_cure_sprayer",
+          "nora",
+          "zombie_walker_a",
+          "zombie_walker_b"
+        ],
+        "end_time": 15.0,
+        "kind": "scene",
+        "renderer": "native-vector-v1",
+        "start_time": 10.0
+      }
+    ]
+  },
   "then_and_now": {
     "characters": [
       {
@@ -16953,6 +18924,339 @@
           "sun",
           "drop",
           "rainbow"
+        ],
+        "end_time": 15.0,
+        "kind": "scene",
+        "renderer": "native-vector-v1",
+        "start_time": 10.0
+      }
+    ]
+  },
+  "water_first": {
+    "characters": [
+      {
+        "asset": "chibi_girl",
+        "id": "mika",
+        "name": "Mika",
+        "outfit": "survivor_jacket",
+        "role": "leader",
+        "style": {
+          "hair": "#78350f",
+          "skin": "#ffdfc4"
+        }
+      },
+      {
+        "asset": "walkie_talkie",
+        "attach_to": {
+          "anchor": "hand_r",
+          "id": "mika"
+        },
+        "id": "mika_walkie_talkie"
+      },
+      {
+        "asset": "chibi_boy",
+        "id": "leo",
+        "name": "Leo",
+        "outfit": "survivor_hoodie",
+        "role": "scout",
+        "style": {
+          "hair": "#1e293b",
+          "skin": "#f7d0b5"
+        }
+      },
+      {
+        "asset": "flashlight",
+        "attach_to": {
+          "anchor": "hand_r",
+          "id": "leo"
+        },
+        "id": "leo_flashlight"
+      },
+      {
+        "asset": "chibi_kid",
+        "id": "pip",
+        "name": "Pip",
+        "outfit": "raincoat",
+        "role": "youngest",
+        "style": {
+          "hair": "#9a3412",
+          "skin": "#fce0cc"
+        }
+      },
+      {
+        "asset": "rain_barrel_filter",
+        "id": "barrel",
+        "name": "Rain barrel"
+      },
+      {
+        "asset": "cloth_filter",
+        "id": "filter",
+        "name": "Cloth filter"
+      },
+      {
+        "asset": "water_pot_boiling",
+        "id": "pot",
+        "name": "Water pot"
+      },
+      {
+        "asset": "campfire",
+        "id": "fire",
+        "name": "Campfire"
+      },
+      {
+        "asset": "water_filter_bottle",
+        "attach_to": {
+          "anchor": "hand_r",
+          "id": "mika"
+        },
+        "id": "bottle",
+        "name": "Filter bottle"
+      }
+    ],
+    "cues": [
+      {
+        "character_id": "mika",
+        "end": 4.5,
+        "expression": "neutral",
+        "start": 0.5,
+        "text": "Rainwater can carry germs and dirt. First, strain it through several layers of clean cloth."
+      },
+      {
+        "character_id": "leo",
+        "end": 9.5,
+        "expression": "happy",
+        "start": 5.5,
+        "text": "Then boil it for at least one full minute. Boiling kills the germs a cloth cannot catch."
+      },
+      {
+        "character_id": "pip",
+        "end": 14.5,
+        "expression": "happy",
+        "start": 10.5,
+        "text": "Now it is safe to drink. We fill the filter bottles before the journey!"
+      }
+    ],
+    "duration": 15.0,
+    "fidelity": "technical-demo",
+    "id": "water_first",
+    "name": "61 · Clean Water First: Filtering Rainwater and Boiling",
+    "renderer": "native-vector-v1",
+    "scenes": [
+      {
+        "actions": [],
+        "actors": [
+          {
+            "at": {
+              "t": 0.0,
+              "x": 110,
+              "y": 830
+            },
+            "character": "rain_barrel_filter",
+            "clip": "rain_barrel_filter/water_first_s0_barrel",
+            "id": "barrel"
+          },
+          {
+            "at": {
+              "t": 0.0,
+              "x": 300,
+              "y": 840
+            },
+            "character": "cloth_filter",
+            "clip": "cloth_filter/water_first_s0_filter",
+            "id": "filter"
+          },
+          {
+            "at": {
+              "t": 0.0,
+              "x": 650.0,
+              "y": 830.0
+            },
+            "character": "mika",
+            "clip": "mika/water_first_s0_mika",
+            "id": "mika"
+          }
+        ],
+        "background": {
+          "preset": "abandoned_street",
+          "weather": "rain"
+        },
+        "characters_present": [
+          "barrel",
+          "filter",
+          "mika"
+        ],
+        "end_time": 5.0,
+        "kind": "scene",
+        "renderer": "native-vector-v1",
+        "start_time": 0.0
+      },
+      {
+        "actions": [
+          {
+            "actor": "filter",
+            "end": 9.5,
+            "start": 5.5,
+            "target": "pot",
+            "type": "purify_water"
+          }
+        ],
+        "actors": [
+          {
+            "at": {
+              "t": 5.0,
+              "x": 90,
+              "y": 830
+            },
+            "character": "rain_barrel_filter",
+            "clip": "rain_barrel_filter/water_first_s1_barrel",
+            "id": "barrel"
+          },
+          {
+            "at": {
+              "t": 5.0,
+              "x": 215,
+              "y": 840
+            },
+            "character": "cloth_filter",
+            "clip": "cloth_filter/water_first_s1_filter",
+            "id": "filter"
+          },
+          {
+            "at": {
+              "t": 5.0,
+              "x": 340,
+              "y": 840
+            },
+            "character": "water_pot_boiling",
+            "clip": "water_pot_boiling/water_first_s1_pot",
+            "id": "pot"
+          },
+          {
+            "at": {
+              "t": 5.0,
+              "x": 340,
+              "y": 848
+            },
+            "character": "campfire",
+            "clip": "campfire/water_first_s1_fire",
+            "id": "fire"
+          },
+          {
+            "at": {
+              "t": 5.0,
+              "x": 660.0,
+              "y": 830.0
+            },
+            "character": "leo",
+            "clip": "leo/water_first_s1_leo",
+            "id": "leo"
+          },
+          {
+            "at": {
+              "held": {
+                "asset": "flashlight",
+                "height": 200,
+                "rotation": 15
+              },
+              "t": 5.0,
+              "x": -3.882,
+              "y": 14.489
+            },
+            "character": "flashlight",
+            "clip": "flashlight/last_city_morning_s1_leo_flashlight",
+            "id": "leo_flashlight"
+          }
+        ],
+        "background": {
+          "preset": "abandoned_street",
+          "weather": "clear"
+        },
+        "characters_present": [
+          "barrel",
+          "filter",
+          "pot",
+          "fire",
+          "leo",
+          "leo_flashlight"
+        ],
+        "end_time": 10.0,
+        "kind": "scene",
+        "renderer": "native-vector-v1",
+        "start_time": 5.0
+      },
+      {
+        "actions": [
+          {
+            "actor": "mika",
+            "emote": "heart",
+            "end": 14.8,
+            "start": 12.5,
+            "type": "emote"
+          },
+          {
+            "actor": "pip",
+            "emote": "heart",
+            "end": 14.8,
+            "start": 13.2,
+            "type": "emote"
+          }
+        ],
+        "actors": [
+          {
+            "at": {
+              "t": 10.0,
+              "x": 100,
+              "y": 830
+            },
+            "character": "rain_barrel_filter",
+            "clip": "rain_barrel_filter/water_first_s2_barrel",
+            "id": "barrel"
+          },
+          {
+            "at": {
+              "t": 10.0,
+              "x": 270.0,
+              "y": 830.0
+            },
+            "character": "mika",
+            "clip": "mika/water_first_s2_mika",
+            "id": "mika"
+          },
+          {
+            "at": {
+              "t": 10.0,
+              "x": 680.0,
+              "y": 830.0
+            },
+            "character": "pip",
+            "clip": "pip/water_first_s2_pip",
+            "id": "pip"
+          },
+          {
+            "at": {
+              "held": {
+                "asset": "water_filter_bottle",
+                "height": 150,
+                "rotation": 0
+              },
+              "t": 10.0,
+              "x": -0.0,
+              "y": 33.0
+            },
+            "character": "water_filter_bottle",
+            "clip": "water_filter_bottle/water_first_s2_bottle",
+            "id": "bottle"
+          }
+        ],
+        "background": {
+          "preset": "abandoned_street",
+          "weather": "clear"
+        },
+        "characters_present": [
+          "barrel",
+          "mika",
+          "pip",
+          "bottle"
         ],
         "end_time": 15.0,
         "kind": "scene",

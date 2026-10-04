@@ -1906,6 +1906,106 @@
     "space": "relative",
     "travel_px": 179.513
   },
+  "barricade_boards/barricade_night_s0_gate": {
+    "actions": [],
+    "character": "barricade_boards",
+    "duration": 5.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "dx": 0,
+        "dy": 0,
+        "growth": 0.0,
+        "height": 200,
+        "t": 0.0
+      },
+      {
+        "dx": 0,
+        "dy": 0,
+        "growth": 1.0,
+        "height": 200,
+        "t": 5.0
+      }
+    ],
+    "kind": "idle",
+    "loopable": false,
+    "needs": {
+      "background_theme": [
+        "safe_camp"
+      ],
+      "partners": [],
+      "props": []
+    },
+    "source": {
+      "scene": 0,
+      "story": "barricade_night",
+      "t0": 0.0,
+      "t1": 5.0
+    },
+    "sources": [
+      {
+        "scene": 0,
+        "story": "barricade_night",
+        "t0": 0.0,
+        "t1": 5.0
+      }
+    ],
+    "space": "relative",
+    "travel_px": 0.0
+  },
+  "barricade_boards/barricade_night_s1_gate": {
+    "actions": [],
+    "character": "barricade_boards",
+    "duration": 5.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "dx": 0,
+        "dy": 0,
+        "growth": 1.0,
+        "height": 200,
+        "t": 0.0
+      },
+      {
+        "dx": 0,
+        "dy": 0,
+        "growth": 1.0,
+        "height": 200,
+        "t": 5.0
+      }
+    ],
+    "kind": "idle",
+    "loopable": false,
+    "needs": {
+      "background_theme": [
+        "safe_camp"
+      ],
+      "partners": [],
+      "props": []
+    },
+    "source": {
+      "scene": 1,
+      "story": "barricade_night",
+      "t0": 5.0,
+      "t1": 10.0
+    },
+    "sources": [
+      {
+        "scene": 1,
+        "story": "barricade_night",
+        "t0": 5.0,
+        "t1": 10.0
+      },
+      {
+        "scene": 2,
+        "story": "barricade_night",
+        "t0": 10.0,
+        "t1": 15.0
+      }
+    ],
+    "space": "relative",
+    "travel_px": 0.0
+  },
   "basket/farm-life__neutral_s3_basket": {
     "actions": [],
     "character": "basket",
@@ -2951,6 +3051,459 @@
     "space": "relative",
     "travel_px": 394.081
   },
+  "biscuit/alert": {
+    "actions": [
+      {
+        "actor": "biscuit",
+        "emote": "exclamation",
+        "end": 2.5,
+        "start": 0.5,
+        "type": "emote"
+      }
+    ],
+    "character": "biscuit",
+    "duration": 3.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "alert",
+        "height": 120,
+        "t": 0.0
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "alert",
+        "height": 120,
+        "t": 3.0
+      }
+    ],
+    "kind": "gesture",
+    "loopable": false,
+    "sources": [
+      {
+        "scene": 0,
+        "story": "last_city_morning"
+      }
+    ],
+    "space": "relative",
+    "travel_px": 0.0
+  },
+  "biscuit/barricade_night_s0_biscuit": {
+    "actions": [],
+    "character": "biscuit",
+    "duration": 5.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "cured": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 100.0,
+        "opacity": 1.0,
+        "t": 0.0,
+        "zombie": 0.0
+      },
+      {
+        "cured": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 100.0,
+        "opacity": 1.0,
+        "t": 5.0,
+        "zombie": 0.0
+      }
+    ],
+    "kind": "idle",
+    "loopable": false,
+    "needs": {
+      "background_theme": [
+        "safe_camp"
+      ],
+      "partners": [],
+      "props": []
+    },
+    "source": {
+      "scene": 0,
+      "story": "barricade_night",
+      "t0": 0.0,
+      "t1": 5.0
+    },
+    "sources": [
+      {
+        "scene": 0,
+        "story": "barricade_night",
+        "t0": 0.0,
+        "t1": 5.0
+      },
+      {
+        "scene": 2,
+        "story": "barricade_night",
+        "t0": 10.0,
+        "t1": 15.0
+      }
+    ],
+    "space": "relative",
+    "travel_px": 0.0
+  },
+  "biscuit/barricade_night_s1_biscuit": {
+    "actions": [
+      {
+        "actor": "biscuit",
+        "emote": "exclamation",
+        "end": 4.5,
+        "start": 1.5,
+        "type": "emote"
+      }
+    ],
+    "character": "biscuit",
+    "duration": 5.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "cured": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 100.0,
+        "opacity": 1.0,
+        "t": 0.0,
+        "zombie": 0.0
+      },
+      {
+        "cured": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 100.0,
+        "opacity": 1.0,
+        "t": 5.0,
+        "zombie": 0.0
+      }
+    ],
+    "kind": "emote",
+    "loopable": false,
+    "needs": {
+      "background_theme": [
+        "safe_camp"
+      ],
+      "partners": [],
+      "props": []
+    },
+    "source": {
+      "scene": 1,
+      "story": "barricade_night",
+      "t0": 5.0,
+      "t1": 10.0
+    },
+    "sources": [
+      {
+        "scene": 1,
+        "story": "barricade_night",
+        "t0": 5.0,
+        "t1": 10.0
+      }
+    ],
+    "space": "relative",
+    "travel_px": 0.0
+  },
+  "biscuit/emote_heart": {
+    "actions": [
+      {
+        "actor": "biscuit",
+        "emote": "heart",
+        "end": 1.8,
+        "start": 0.2,
+        "type": "emote"
+      }
+    ],
+    "character": "biscuit",
+    "duration": 2.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "height": 120,
+        "t": 0.0,
+        "wag": 0.9
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "height": 120,
+        "t": 2.0,
+        "wag": 0.9
+      }
+    ],
+    "kind": "gesture",
+    "loopable": false,
+    "sources": [
+      {
+        "scene": 0,
+        "story": "last_city_morning"
+      }
+    ],
+    "space": "relative",
+    "travel_px": 0.0
+  },
+  "biscuit/idle": {
+    "actions": [],
+    "character": "biscuit",
+    "duration": 3.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "height": 120,
+        "t": 0.0,
+        "wag": 0.2
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "height": 120,
+        "t": 1.5,
+        "wag": 0.8
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "height": 120,
+        "t": 3.0,
+        "wag": 0.2
+      }
+    ],
+    "kind": "idle",
+    "loopable": true,
+    "sources": [
+      {
+        "scene": 0,
+        "story": "last_city_morning"
+      }
+    ],
+    "space": "relative",
+    "travel_px": 0.0
+  },
+  "biscuit/last_city_morning_s0_biscuit": {
+    "actions": [],
+    "character": "biscuit",
+    "duration": 5.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "cured": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 105.0,
+        "opacity": 1.0,
+        "t": 0.0,
+        "zombie": 0.0
+      },
+      {
+        "cured": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 105.0,
+        "opacity": 1.0,
+        "t": 5.0,
+        "zombie": 0.0
+      }
+    ],
+    "kind": "idle",
+    "loopable": false,
+    "needs": {
+      "background_theme": [
+        "rooftop_garden"
+      ],
+      "partners": [],
+      "props": []
+    },
+    "source": {
+      "scene": 0,
+      "story": "last_city_morning",
+      "t0": 0.0,
+      "t1": 5.0
+    },
+    "sources": [
+      {
+        "scene": 0,
+        "story": "last_city_morning",
+        "t0": 0.0,
+        "t1": 5.0
+      }
+    ],
+    "space": "relative",
+    "travel_px": 0.0
+  },
+  "biscuit/last_city_morning_s1_biscuit": {
+    "actions": [
+      {
+        "actor": "biscuit",
+        "emote": "heart",
+        "end": 4.5,
+        "start": 1.5,
+        "type": "emote"
+      }
+    ],
+    "character": "biscuit",
+    "duration": 5.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "cured": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 105.0,
+        "opacity": 1.0,
+        "t": 0.0,
+        "zombie": 0.0
+      },
+      {
+        "cured": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 105.0,
+        "opacity": 1.0,
+        "t": 5.0,
+        "zombie": 0.0
+      }
+    ],
+    "kind": "emote",
+    "loopable": false,
+    "needs": {
+      "background_theme": [
+        "rooftop_garden"
+      ],
+      "partners": [],
+      "props": []
+    },
+    "source": {
+      "scene": 1,
+      "story": "last_city_morning",
+      "t0": 5.0,
+      "t1": 10.0
+    },
+    "sources": [
+      {
+        "scene": 1,
+        "story": "last_city_morning",
+        "t0": 5.0,
+        "t1": 10.0
+      }
+    ],
+    "space": "relative",
+    "travel_px": 0.0
+  },
+  "biscuit/last_city_morning_s2_biscuit": {
+    "actions": [],
+    "character": "biscuit",
+    "duration": 5.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "cured": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 105.0,
+        "opacity": 1.0,
+        "t": 0.0,
+        "zombie": 0.0
+      },
+      {
+        "cured": 0.0,
+        "dx": 215.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 105.0,
+        "opacity": 1.0,
+        "t": 5.0,
+        "zombie": 0.0
+      }
+    ],
+    "kind": "locomotion",
+    "loopable": false,
+    "needs": {
+      "background_theme": [
+        "rooftop_garden"
+      ],
+      "partners": [],
+      "props": []
+    },
+    "source": {
+      "scene": 2,
+      "story": "last_city_morning",
+      "t0": 10.0,
+      "t1": 15.0
+    },
+    "sources": [
+      {
+        "scene": 2,
+        "story": "last_city_morning",
+        "t0": 10.0,
+        "t1": 15.0
+      }
+    ],
+    "space": "relative",
+    "travel_px": 215.0
+  },
+  "biscuit/walk": {
+    "actions": [],
+    "character": "biscuit",
+    "duration": 3.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "curious",
+        "height": 120,
+        "stride": 0.0,
+        "t": 0.0
+      },
+      {
+        "dx": 60.0,
+        "dy": 0.0,
+        "expression": "curious",
+        "height": 120,
+        "stride": 9.0,
+        "t": 1.5
+      },
+      {
+        "dx": 120.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "height": 120,
+        "stride": 18.0,
+        "t": 3.0
+      }
+    ],
+    "kind": "locomotion",
+    "loopable": false,
+    "sources": [
+      {
+        "scene": 0,
+        "story": "last_city_morning"
+      }
+    ],
+    "space": "relative",
+    "travel_px": 120.0
+  },
   "boat/fishing_s0_boat": {
     "actions": [],
     "character": "boat",
@@ -3070,6 +3623,147 @@
     ],
     "space": "relative",
     "travel_px": 0.0
+  },
+  "boat/flooded_escape_s0_skiff": {
+    "actions": [],
+    "character": "boat",
+    "duration": 5.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "dx": 0,
+        "dy": 0,
+        "height": 230,
+        "t": 0.0
+      },
+      {
+        "dx": 210,
+        "dy": 0,
+        "height": 230,
+        "t": 5.0
+      }
+    ],
+    "kind": "locomotion",
+    "loopable": false,
+    "needs": {
+      "background_theme": [
+        "flooded_downtown"
+      ],
+      "partners": [],
+      "props": []
+    },
+    "source": {
+      "scene": 0,
+      "story": "flooded_escape",
+      "t0": 0.0,
+      "t1": 5.0
+    },
+    "sources": [
+      {
+        "scene": 0,
+        "story": "flooded_escape",
+        "t0": 0.0,
+        "t1": 5.0
+      }
+    ],
+    "space": "relative",
+    "travel_px": 210.0
+  },
+  "boat/flooded_escape_s1_skiff": {
+    "actions": [],
+    "character": "boat",
+    "duration": 5.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "dx": 0,
+        "dy": 0,
+        "height": 230,
+        "t": 0.0
+      },
+      {
+        "dx": 0,
+        "dy": 0,
+        "height": 230,
+        "t": 1.0
+      },
+      {
+        "dx": 0,
+        "dy": 0,
+        "height": 230,
+        "t": 5.0
+      }
+    ],
+    "kind": "idle",
+    "loopable": false,
+    "needs": {
+      "background_theme": [
+        "flooded_downtown"
+      ],
+      "partners": [],
+      "props": []
+    },
+    "source": {
+      "scene": 1,
+      "story": "flooded_escape",
+      "t0": 5.0,
+      "t1": 10.0
+    },
+    "sources": [
+      {
+        "scene": 1,
+        "story": "flooded_escape",
+        "t0": 5.0,
+        "t1": 10.0
+      }
+    ],
+    "space": "relative",
+    "travel_px": 0.0
+  },
+  "boat/flooded_escape_s2_skiff": {
+    "actions": [],
+    "character": "boat",
+    "duration": 5.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "dx": 0,
+        "dy": 0,
+        "height": 230,
+        "t": 0.0
+      },
+      {
+        "dx": 220,
+        "dy": 0,
+        "height": 230,
+        "t": 5.0
+      }
+    ],
+    "kind": "locomotion",
+    "loopable": false,
+    "needs": {
+      "background_theme": [
+        "flooded_downtown"
+      ],
+      "partners": [],
+      "props": []
+    },
+    "source": {
+      "scene": 2,
+      "story": "flooded_escape",
+      "t0": 10.0,
+      "t1": 15.0
+    },
+    "sources": [
+      {
+        "scene": 2,
+        "story": "flooded_escape",
+        "t0": 10.0,
+        "t1": 15.0
+      }
+    ],
+    "space": "relative",
+    "travel_px": 220.0
   },
   "boat/sea-monsters_s0_boat": {
     "actions": [],
@@ -4387,6 +5081,65 @@
     "space": "relative",
     "travel_px": 140.0
   },
+  "campfire/barricade_night_s0_fire": {
+    "actions": [],
+    "character": "campfire",
+    "duration": 5.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "dx": 0,
+        "dy": 0,
+        "height": 160,
+        "lit": 1.0,
+        "t": 0.0
+      },
+      {
+        "dx": 0,
+        "dy": 0,
+        "height": 160,
+        "lit": 1.0,
+        "t": 5.0
+      }
+    ],
+    "kind": "idle",
+    "loopable": false,
+    "needs": {
+      "background_theme": [
+        "safe_camp"
+      ],
+      "partners": [],
+      "props": []
+    },
+    "source": {
+      "scene": 0,
+      "story": "barricade_night",
+      "t0": 0.0,
+      "t1": 5.0
+    },
+    "sources": [
+      {
+        "scene": 0,
+        "story": "barricade_night",
+        "t0": 0.0,
+        "t1": 5.0
+      },
+      {
+        "scene": 1,
+        "story": "barricade_night",
+        "t0": 5.0,
+        "t1": 10.0
+      },
+      {
+        "scene": 2,
+        "story": "barricade_night",
+        "t0": 10.0,
+        "t1": 15.0
+      }
+    ],
+    "space": "relative",
+    "travel_px": 0.0
+  },
   "campfire/first_fire_s0_fire": {
     "actions": [],
     "character": "campfire",
@@ -4494,6 +5247,124 @@
     ],
     "space": "relative",
     "travel_px": 0.0
+  },
+  "campfire/water_first_s1_fire": {
+    "actions": [],
+    "character": "campfire",
+    "duration": 5.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "dx": 0,
+        "dy": 0,
+        "height": 150,
+        "lit": 1.0,
+        "t": 0.0
+      },
+      {
+        "dx": 0,
+        "dy": 0,
+        "height": 150,
+        "lit": 1.0,
+        "t": 5.0
+      }
+    ],
+    "kind": "idle",
+    "loopable": false,
+    "needs": {
+      "background_theme": [
+        "abandoned_street"
+      ],
+      "partners": [],
+      "props": []
+    },
+    "source": {
+      "scene": 1,
+      "story": "water_first",
+      "t0": 5.0,
+      "t1": 10.0
+    },
+    "sources": [
+      {
+        "scene": 1,
+        "story": "water_first",
+        "t0": 5.0,
+        "t1": 10.0
+      }
+    ],
+    "space": "relative",
+    "travel_px": 0.0
+  },
+  "can/quiet_street_s1_can": {
+    "actions": [],
+    "character": "can",
+    "duration": 5.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "dx": 0,
+        "dy": 0,
+        "height": 110,
+        "opacity": 0.0,
+        "t": 0.0
+      },
+      {
+        "dx": 0,
+        "dy": 0,
+        "height": 110,
+        "opacity": 1.0,
+        "t": 0.6
+      },
+      {
+        "dx": 140,
+        "dy": -230,
+        "height": 110,
+        "opacity": 1.0,
+        "rotation": 300,
+        "t": 1.4
+      },
+      {
+        "dx": 230,
+        "dy": 145,
+        "height": 110,
+        "opacity": 1.0,
+        "rotation": 600,
+        "t": 2.2
+      },
+      {
+        "dx": 230,
+        "dy": 145,
+        "height": 110,
+        "opacity": 1.0,
+        "rotation": 600,
+        "t": 5.0
+      }
+    ],
+    "kind": "locomotion",
+    "loopable": false,
+    "needs": {
+      "background_theme": [
+        "abandoned_street"
+      ],
+      "partners": [],
+      "props": []
+    },
+    "source": {
+      "scene": 1,
+      "story": "quiet_street",
+      "t0": 5.0,
+      "t1": 10.0
+    },
+    "sources": [
+      {
+        "scene": 1,
+        "story": "quiet_street",
+        "t0": 5.0,
+        "t1": 10.0
+      }
+    ],
+    "space": "relative",
+    "travel_px": 271.892
   },
   "carrot/farm-life__neutral_s3_carrot": {
     "actions": [],
@@ -10452,6 +11323,165 @@
     "space": "relative",
     "travel_px": 0.0
   },
+  "city_bus/quiet_street_s0_bus": {
+    "actions": [],
+    "character": "city_bus",
+    "duration": 5.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "decay": 0.6,
+        "dx": 0,
+        "dy": 0,
+        "height": 160,
+        "t": 0.0
+      },
+      {
+        "decay": 0.6,
+        "dx": 0,
+        "dy": 0,
+        "height": 160,
+        "t": 5.0
+      }
+    ],
+    "kind": "idle",
+    "loopable": false,
+    "needs": {
+      "background_theme": [
+        "abandoned_street"
+      ],
+      "partners": [],
+      "props": []
+    },
+    "source": {
+      "scene": 0,
+      "story": "quiet_street",
+      "t0": 0.0,
+      "t1": 5.0
+    },
+    "sources": [
+      {
+        "scene": 0,
+        "story": "quiet_street",
+        "t0": 0.0,
+        "t1": 5.0
+      },
+      {
+        "scene": 1,
+        "story": "quiet_street",
+        "t0": 5.0,
+        "t1": 10.0
+      },
+      {
+        "scene": 2,
+        "story": "quiet_street",
+        "t0": 10.0,
+        "t1": 15.0
+      }
+    ],
+    "space": "relative",
+    "travel_px": 0.0
+  },
+  "cloth_filter/water_first_s0_filter": {
+    "actions": [],
+    "character": "cloth_filter",
+    "duration": 5.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "dx": 0,
+        "dy": 0,
+        "height": 150,
+        "t": 0.0
+      },
+      {
+        "dx": 0,
+        "dy": 0,
+        "height": 150,
+        "t": 5.0
+      }
+    ],
+    "kind": "idle",
+    "loopable": false,
+    "needs": {
+      "background_theme": [
+        "abandoned_street"
+      ],
+      "partners": [],
+      "props": []
+    },
+    "source": {
+      "scene": 0,
+      "story": "water_first",
+      "t0": 0.0,
+      "t1": 5.0
+    },
+    "sources": [
+      {
+        "scene": 0,
+        "story": "water_first",
+        "t0": 0.0,
+        "t1": 5.0
+      }
+    ],
+    "space": "relative",
+    "travel_px": 0.0
+  },
+  "cloth_filter/water_first_s1_filter": {
+    "actions": [
+      {
+        "actor": "filter",
+        "end": 4.5,
+        "start": 0.5,
+        "target": "pot",
+        "type": "purify_water"
+      }
+    ],
+    "character": "cloth_filter",
+    "duration": 5.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "dx": 0,
+        "dy": 0,
+        "height": 150,
+        "t": 0.0
+      },
+      {
+        "dx": 0,
+        "dy": 0,
+        "height": 150,
+        "t": 5.0
+      }
+    ],
+    "kind": "idle",
+    "loopable": false,
+    "needs": {
+      "background_theme": [
+        "abandoned_street"
+      ],
+      "partners": [
+        "pot"
+      ],
+      "props": []
+    },
+    "source": {
+      "scene": 1,
+      "story": "water_first",
+      "t0": 5.0,
+      "t1": 10.0
+    },
+    "sources": [
+      {
+        "scene": 1,
+        "story": "water_first",
+        "t0": 5.0,
+        "t1": 10.0
+      }
+    ],
+    "space": "relative",
+    "travel_px": 0.0
+  },
   "cloud_set/water_cycle_s0_cloud": {
     "actions": [],
     "character": "cloud_set",
@@ -11304,6 +12334,67 @@
     "space": "relative",
     "travel_px": 0.0
   },
+  "cure_sprayer/the_cure_s0_dr_hana_cure_sprayer": {
+    "actions": [],
+    "character": "cure_sprayer",
+    "duration": 5.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "height": 120,
+        "opacity": 1.0,
+        "rotation": 0,
+        "t": 0.0
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "height": 120,
+        "opacity": 1.0,
+        "rotation": 0,
+        "t": 5.0
+      }
+    ],
+    "kind": "hold",
+    "loopable": false,
+    "needs": {
+      "background_theme": [
+        "subway_tunnel"
+      ],
+      "partners": [],
+      "props": []
+    },
+    "source": {
+      "scene": 0,
+      "story": "the_cure",
+      "t0": 0.0,
+      "t1": 5.0
+    },
+    "sources": [
+      {
+        "scene": 0,
+        "story": "the_cure",
+        "t0": 0.0,
+        "t1": 5.0
+      },
+      {
+        "scene": 1,
+        "story": "the_cure",
+        "t0": 5.0,
+        "t1": 10.0
+      },
+      {
+        "scene": 2,
+        "story": "the_cure",
+        "t0": 10.0,
+        "t1": 15.0
+      }
+    ],
+    "space": "anchored",
+    "travel_px": 0.0
+  },
   "daisy/farm-animals_s1_daisy": {
     "actions": [],
     "character": "daisy",
@@ -11966,6 +13057,795 @@
         "story": "bremen_musicians",
         "t0": 6.5,
         "t1": 14.0
+      }
+    ],
+    "space": "relative",
+    "travel_px": 0.0
+  },
+  "dr_hana/crouch_hide": {
+    "actions": [],
+    "character": "dr_hana",
+    "duration": 3.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "worried",
+        "height": 250,
+        "lean": 0.1,
+        "t": 0.0
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "worried",
+        "height": 250,
+        "lean": 0.35,
+        "t": 0.8
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "worried",
+        "height": 250,
+        "lean": 0.35,
+        "t": 3.0
+      }
+    ],
+    "kind": "gesture",
+    "loopable": true,
+    "sources": [
+      {
+        "scene": 0,
+        "story": "the_cure"
+      }
+    ],
+    "space": "relative",
+    "travel_px": 0.0
+  },
+  "dr_hana/cure_spray": {
+    "actions": [],
+    "character": "dr_hana",
+    "duration": 4.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "serious",
+        "hand_r_x": 18,
+        "hand_r_y": -24,
+        "height": 250,
+        "t": 0.0
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "focused",
+        "hand_r_x": 30,
+        "hand_r_y": -34,
+        "height": 250,
+        "t": 1.0
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "focused",
+        "hand_r_x": 30,
+        "hand_r_y": -34,
+        "height": 250,
+        "t": 3.0
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "hand_r_x": 18,
+        "hand_r_y": -24,
+        "height": 250,
+        "t": 4.0
+      }
+    ],
+    "kind": "interact",
+    "loopable": false,
+    "sources": [
+      {
+        "scene": 0,
+        "story": "the_cure"
+      }
+    ],
+    "space": "relative",
+    "travel_px": 0.0
+  },
+  "dr_hana/emote_exclamation": {
+    "actions": [
+      {
+        "actor": "dr_hana",
+        "emote": "exclamation",
+        "end": 1.8,
+        "start": 0.2,
+        "type": "emote"
+      }
+    ],
+    "character": "dr_hana",
+    "duration": 2.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "surprised",
+        "height": 250,
+        "t": 0.0
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "surprised",
+        "height": 250,
+        "t": 2.0
+      }
+    ],
+    "kind": "gesture",
+    "loopable": false,
+    "sources": [
+      {
+        "scene": 0,
+        "story": "the_cure"
+      }
+    ],
+    "space": "relative",
+    "travel_px": 0.0
+  },
+  "dr_hana/emote_heart": {
+    "actions": [
+      {
+        "actor": "dr_hana",
+        "emote": "heart",
+        "end": 1.8,
+        "start": 0.2,
+        "type": "emote"
+      }
+    ],
+    "character": "dr_hana",
+    "duration": 2.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "height": 250,
+        "t": 0.0
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "height": 250,
+        "t": 2.0
+      }
+    ],
+    "kind": "gesture",
+    "loopable": false,
+    "sources": [
+      {
+        "scene": 0,
+        "story": "the_cure"
+      }
+    ],
+    "space": "relative",
+    "travel_px": 0.0
+  },
+  "dr_hana/idle": {
+    "actions": [],
+    "character": "dr_hana",
+    "duration": 3.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 250,
+        "lean": 0.0,
+        "t": 0.0
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 250,
+        "lean": 0.02,
+        "t": 1.5
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 250,
+        "lean": 0.0,
+        "t": 3.0
+      }
+    ],
+    "kind": "idle",
+    "loopable": true,
+    "sources": [
+      {
+        "scene": 0,
+        "story": "the_cure"
+      }
+    ],
+    "space": "relative",
+    "travel_px": 0.0
+  },
+  "dr_hana/inspect": {
+    "actions": [],
+    "character": "dr_hana",
+    "duration": 3.5,
+    "facing": "right",
+    "keyframes": [
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "thinking",
+        "height": 250,
+        "lean": 0.0,
+        "t": 0.0
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "focused",
+        "hand_r_y": -32,
+        "height": 250,
+        "lean": 0.22,
+        "t": 1.0
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "thinking",
+        "hand_r_y": -32,
+        "height": 250,
+        "lean": 0.22,
+        "t": 2.5
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "height": 250,
+        "lean": 0.0,
+        "t": 3.5
+      }
+    ],
+    "kind": "gesture",
+    "loopable": false,
+    "sources": [
+      {
+        "scene": 0,
+        "story": "the_cure"
+      }
+    ],
+    "space": "relative",
+    "travel_px": 0.0
+  },
+  "dr_hana/look_around": {
+    "actions": [],
+    "character": "dr_hana",
+    "duration": 3.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "curious",
+        "height": 250,
+        "look_x": 0.0,
+        "t": 0.0
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "curious",
+        "height": 250,
+        "look_x": -0.8,
+        "t": 1.0
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "curious",
+        "height": 250,
+        "look_x": 0.8,
+        "t": 2.0
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 250,
+        "look_x": 0.0,
+        "t": 3.0
+      }
+    ],
+    "kind": "gesture",
+    "loopable": false,
+    "sources": [
+      {
+        "scene": 0,
+        "story": "the_cure"
+      }
+    ],
+    "space": "relative",
+    "travel_px": 0.0
+  },
+  "dr_hana/run_short": {
+    "actions": [],
+    "character": "dr_hana",
+    "duration": 2.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "focused",
+        "height": 250,
+        "lean": 0.15,
+        "stride": 0.0,
+        "t": 0.0,
+        "walk": 0.9
+      },
+      {
+        "dx": 70.0,
+        "dy": 0.0,
+        "expression": "focused",
+        "height": 250,
+        "lean": 0.18,
+        "stride": 8.0,
+        "t": 1.0,
+        "walk": 0.9
+      },
+      {
+        "dx": 140.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 250,
+        "lean": 0.0,
+        "stride": 16.0,
+        "t": 2.0,
+        "walk": 0.0
+      }
+    ],
+    "kind": "locomotion",
+    "loopable": false,
+    "sources": [
+      {
+        "scene": 0,
+        "story": "the_cure"
+      }
+    ],
+    "space": "relative",
+    "travel_px": 140.0
+  },
+  "dr_hana/talk": {
+    "actions": [],
+    "character": "dr_hana",
+    "duration": 3.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 250,
+        "mouth_talk": 0.0,
+        "t": 0.0
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "height": 250,
+        "mouth_talk": 0.8,
+        "t": 0.7
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 250,
+        "mouth_talk": 0.2,
+        "t": 1.5
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "height": 250,
+        "mouth_talk": 0.9,
+        "t": 2.3
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 250,
+        "mouth_talk": 0.0,
+        "t": 3.0
+      }
+    ],
+    "kind": "gesture",
+    "loopable": true,
+    "sources": [
+      {
+        "scene": 0,
+        "story": "the_cure"
+      }
+    ],
+    "space": "relative",
+    "travel_px": 0.0
+  },
+  "dr_hana/the_cure_s0_dr_hana": {
+    "actions": [],
+    "character": "dr_hana",
+    "duration": 5.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "cured": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 250.0,
+        "opacity": 1.0,
+        "outfit": "scientist",
+        "t": 0.0,
+        "zombie": 0.0
+      },
+      {
+        "cured": 0.0,
+        "dx": 170.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 250.0,
+        "opacity": 1.0,
+        "outfit": "scientist",
+        "t": 3.0,
+        "zombie": 0.0
+      },
+      {
+        "cured": 0.0,
+        "dx": 170.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 250.0,
+        "opacity": 1.0,
+        "outfit": "scientist",
+        "t": 5.0,
+        "zombie": 0.0
+      }
+    ],
+    "kind": "locomotion",
+    "loopable": false,
+    "needs": {
+      "background_theme": [
+        "subway_tunnel"
+      ],
+      "partners": [],
+      "props": []
+    },
+    "source": {
+      "scene": 0,
+      "story": "the_cure",
+      "t0": 0.0,
+      "t1": 5.0
+    },
+    "sources": [
+      {
+        "scene": 0,
+        "story": "the_cure",
+        "t0": 0.0,
+        "t1": 5.0
+      }
+    ],
+    "space": "relative",
+    "travel_px": 170.0
+  },
+  "dr_hana/the_cure_s1_dr_hana": {
+    "actions": [
+      {
+        "actor": "dr_hana",
+        "end": 2.0,
+        "start": 0.6,
+        "target": "nora",
+        "type": "cure_spray"
+      },
+      {
+        "actor": "dr_hana",
+        "end": 3.5,
+        "start": 2.0,
+        "target": "zombie_walker_a",
+        "type": "cure_spray"
+      },
+      {
+        "actor": "dr_hana",
+        "end": 5.0,
+        "start": 3.5,
+        "target": "zombie_walker_b",
+        "type": "cure_spray"
+      }
+    ],
+    "character": "dr_hana",
+    "duration": 5.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "cured": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 250.0,
+        "opacity": 1.0,
+        "outfit": "scientist",
+        "t": 0.0,
+        "zombie": 0.0
+      },
+      {
+        "cured": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "height": 250.0,
+        "opacity": 1.0,
+        "outfit": "scientist",
+        "t": 5.0,
+        "zombie": 0.0
+      }
+    ],
+    "kind": "idle",
+    "loopable": false,
+    "needs": {
+      "background_theme": [
+        "subway_tunnel"
+      ],
+      "partners": [
+        "nora",
+        "zombie_walker_a",
+        "zombie_walker_b"
+      ],
+      "props": []
+    },
+    "source": {
+      "scene": 1,
+      "story": "the_cure",
+      "t0": 5.0,
+      "t1": 10.0
+    },
+    "sources": [
+      {
+        "scene": 1,
+        "story": "the_cure",
+        "t0": 5.0,
+        "t1": 10.0
+      }
+    ],
+    "space": "relative",
+    "travel_px": 0.0
+  },
+  "dr_hana/the_cure_s2_dr_hana": {
+    "actions": [
+      {
+        "actor": "dr_hana",
+        "emote": "heart",
+        "end": 4.5,
+        "start": 1.5,
+        "type": "emote"
+      }
+    ],
+    "character": "dr_hana",
+    "duration": 5.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "cured": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "height": 250.0,
+        "opacity": 1.0,
+        "outfit": "scientist",
+        "t": 0.0,
+        "zombie": 0.0
+      },
+      {
+        "cured": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "height": 250.0,
+        "opacity": 1.0,
+        "outfit": "scientist",
+        "t": 5.0,
+        "zombie": 0.0
+      }
+    ],
+    "kind": "emote",
+    "loopable": false,
+    "needs": {
+      "background_theme": [
+        "subway_tunnel"
+      ],
+      "partners": [],
+      "props": []
+    },
+    "source": {
+      "scene": 2,
+      "story": "the_cure",
+      "t0": 10.0,
+      "t1": 15.0
+    },
+    "sources": [
+      {
+        "scene": 2,
+        "story": "the_cure",
+        "t0": 10.0,
+        "t1": 15.0
+      }
+    ],
+    "space": "relative",
+    "travel_px": 0.0
+  },
+  "dr_hana/walk_in": {
+    "actions": [],
+    "character": "dr_hana",
+    "duration": 3.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 250,
+        "stride": 0.0,
+        "t": 0.0,
+        "walk": 0.6
+      },
+      {
+        "dx": 60.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 250,
+        "stride": 9.0,
+        "t": 1.5,
+        "walk": 0.6
+      },
+      {
+        "dx": 120.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 250,
+        "stride": 18.0,
+        "t": 3.0,
+        "walk": 0.0
+      }
+    ],
+    "kind": "locomotion",
+    "loopable": false,
+    "sources": [
+      {
+        "scene": 0,
+        "story": "the_cure"
+      }
+    ],
+    "space": "relative",
+    "travel_px": 120.0
+  },
+  "dr_hana/walk_out": {
+    "actions": [],
+    "character": "dr_hana",
+    "duration": 3.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 250,
+        "stride": 0.0,
+        "t": 0.0,
+        "walk": 0.6
+      },
+      {
+        "dx": 60.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 250,
+        "stride": 9.0,
+        "t": 1.5,
+        "walk": 0.6
+      },
+      {
+        "dx": 120.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 250,
+        "stride": 18.0,
+        "t": 3.0,
+        "walk": 0.0
+      }
+    ],
+    "kind": "locomotion",
+    "loopable": false,
+    "sources": [
+      {
+        "scene": 0,
+        "story": "the_cure"
+      }
+    ],
+    "space": "relative",
+    "travel_px": 120.0
+  },
+  "dr_hana/wave": {
+    "actions": [],
+    "character": "dr_hana",
+    "duration": 2.5,
+    "facing": "right",
+    "keyframes": [
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "hand_r_x": 16,
+        "hand_r_y": -22,
+        "height": 250,
+        "t": 0.0
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "hand_r_x": 22,
+        "hand_r_y": -46,
+        "height": 250,
+        "t": 0.6
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "hand_r_x": 14,
+        "hand_r_y": -46,
+        "height": 250,
+        "t": 1.2
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "hand_r_x": 22,
+        "hand_r_y": -46,
+        "height": 250,
+        "t": 1.8
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "hand_r_x": 16,
+        "hand_r_y": -22,
+        "height": 250,
+        "t": 2.5
+      }
+    ],
+    "kind": "gesture",
+    "loopable": false,
+    "sources": [
+      {
+        "scene": 0,
+        "story": "the_cure"
       }
     ],
     "space": "relative",
@@ -15340,6 +17220,85 @@
     "space": "anchored",
     "travel_px": 0.0
   },
+  "flashlight/last_city_morning_s1_leo_flashlight": {
+    "actions": [],
+    "character": "flashlight",
+    "duration": 5.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "height": 200,
+        "opacity": 1.0,
+        "rotation": 15,
+        "t": 0.0
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "height": 200,
+        "opacity": 1.0,
+        "rotation": 15,
+        "t": 5.0
+      }
+    ],
+    "kind": "hold",
+    "loopable": false,
+    "needs": {
+      "background_theme": [
+        "rooftop_garden"
+      ],
+      "partners": [],
+      "props": []
+    },
+    "source": {
+      "scene": 1,
+      "story": "last_city_morning",
+      "t0": 5.0,
+      "t1": 10.0
+    },
+    "sources": [
+      {
+        "scene": 1,
+        "story": "last_city_morning",
+        "t0": 5.0,
+        "t1": 10.0
+      },
+      {
+        "scene": 2,
+        "story": "last_city_morning",
+        "t0": 10.0,
+        "t1": 15.0
+      },
+      {
+        "scene": 0,
+        "story": "quiet_street",
+        "t0": 0.0,
+        "t1": 5.0
+      },
+      {
+        "scene": 1,
+        "story": "quiet_street",
+        "t0": 5.0,
+        "t1": 10.0
+      },
+      {
+        "scene": 2,
+        "story": "quiet_street",
+        "t0": 10.0,
+        "t1": 15.0
+      },
+      {
+        "scene": 1,
+        "story": "water_first",
+        "t0": 5.0,
+        "t1": 10.0
+      }
+    ],
+    "space": "anchored",
+    "travel_px": 0.0
+  },
   "foot/peanut_s0_foot": {
     "actions": [
       {
@@ -16729,6 +18688,775 @@
     "space": "relative",
     "travel_px": 0.0
   },
+  "grandpa_otto/barricade": {
+    "actions": [],
+    "character": "grandpa_otto",
+    "duration": 4.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "serious",
+        "hand_r_x": 18,
+        "hand_r_y": -24,
+        "height": 240,
+        "t": 0.0
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "focused",
+        "hand_r_x": 26,
+        "hand_r_y": -40,
+        "height": 240,
+        "t": 1.0
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "focused",
+        "hand_r_x": 22,
+        "hand_r_y": -26,
+        "height": 240,
+        "t": 2.0
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "focused",
+        "hand_r_x": 26,
+        "hand_r_y": -40,
+        "height": 240,
+        "t": 3.0
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "proud",
+        "hand_r_x": 18,
+        "hand_r_y": -24,
+        "height": 240,
+        "t": 4.0
+      }
+    ],
+    "kind": "interact",
+    "loopable": false,
+    "sources": [
+      {
+        "scene": 0,
+        "story": "barricade_night"
+      }
+    ],
+    "space": "relative",
+    "travel_px": 0.0
+  },
+  "grandpa_otto/barricade_night_s0_grandpa_otto": {
+    "actions": [
+      {
+        "actor": "grandpa_otto",
+        "end": 4.8,
+        "start": 0.3,
+        "target": "gate",
+        "type": "barricade"
+      }
+    ],
+    "character": "grandpa_otto",
+    "duration": 5.0,
+    "facing": "left",
+    "keyframes": [
+      {
+        "cured": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "flip": true,
+        "height": 240.0,
+        "opacity": 1.0,
+        "outfit": "construction",
+        "t": 0.0,
+        "zombie": 0.0
+      },
+      {
+        "cured": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "flip": true,
+        "height": 240.0,
+        "opacity": 1.0,
+        "outfit": "construction",
+        "t": 5.0,
+        "zombie": 0.0
+      }
+    ],
+    "kind": "idle",
+    "loopable": false,
+    "needs": {
+      "background_theme": [
+        "safe_camp"
+      ],
+      "partners": [
+        "gate"
+      ],
+      "props": []
+    },
+    "source": {
+      "scene": 0,
+      "story": "barricade_night",
+      "t0": 0.0,
+      "t1": 5.0
+    },
+    "sources": [
+      {
+        "scene": 0,
+        "story": "barricade_night",
+        "t0": 0.0,
+        "t1": 5.0
+      }
+    ],
+    "space": "relative",
+    "travel_px": 0.0
+  },
+  "grandpa_otto/barricade_night_s1_grandpa_otto": {
+    "actions": [],
+    "character": "grandpa_otto",
+    "duration": 5.0,
+    "facing": "left",
+    "keyframes": [
+      {
+        "cured": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "flip": true,
+        "height": 240.0,
+        "opacity": 1.0,
+        "outfit": "construction",
+        "t": 0.0,
+        "zombie": 0.0
+      },
+      {
+        "cured": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "worried",
+        "flip": true,
+        "height": 240.0,
+        "opacity": 1.0,
+        "outfit": "construction",
+        "t": 5.0,
+        "zombie": 0.0
+      }
+    ],
+    "kind": "idle",
+    "loopable": false,
+    "needs": {
+      "background_theme": [
+        "safe_camp"
+      ],
+      "partners": [],
+      "props": []
+    },
+    "source": {
+      "scene": 1,
+      "story": "barricade_night",
+      "t0": 5.0,
+      "t1": 10.0
+    },
+    "sources": [
+      {
+        "scene": 1,
+        "story": "barricade_night",
+        "t0": 5.0,
+        "t1": 10.0
+      }
+    ],
+    "space": "relative",
+    "travel_px": 0.0
+  },
+  "grandpa_otto/barricade_night_s2_grandpa_otto": {
+    "actions": [],
+    "character": "grandpa_otto",
+    "duration": 5.0,
+    "facing": "left",
+    "keyframes": [
+      {
+        "cured": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "flip": true,
+        "height": 240.0,
+        "opacity": 1.0,
+        "outfit": "construction",
+        "t": 0.0,
+        "zombie": 0.0
+      },
+      {
+        "cured": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "flip": true,
+        "height": 240.0,
+        "opacity": 1.0,
+        "outfit": "construction",
+        "t": 5.0,
+        "zombie": 0.0
+      }
+    ],
+    "kind": "idle",
+    "loopable": false,
+    "needs": {
+      "background_theme": [
+        "safe_camp"
+      ],
+      "partners": [],
+      "props": []
+    },
+    "source": {
+      "scene": 2,
+      "story": "barricade_night",
+      "t0": 10.0,
+      "t1": 15.0
+    },
+    "sources": [
+      {
+        "scene": 2,
+        "story": "barricade_night",
+        "t0": 10.0,
+        "t1": 15.0
+      }
+    ],
+    "space": "relative",
+    "travel_px": 0.0
+  },
+  "grandpa_otto/crouch_hide": {
+    "actions": [],
+    "character": "grandpa_otto",
+    "duration": 3.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "worried",
+        "height": 240,
+        "lean": 0.1,
+        "t": 0.0
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "worried",
+        "height": 240,
+        "lean": 0.35,
+        "t": 0.8
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "worried",
+        "height": 240,
+        "lean": 0.35,
+        "t": 3.0
+      }
+    ],
+    "kind": "gesture",
+    "loopable": true,
+    "sources": [
+      {
+        "scene": 0,
+        "story": "barricade_night"
+      }
+    ],
+    "space": "relative",
+    "travel_px": 0.0
+  },
+  "grandpa_otto/emote_exclamation": {
+    "actions": [
+      {
+        "actor": "grandpa_otto",
+        "emote": "exclamation",
+        "end": 1.8,
+        "start": 0.2,
+        "type": "emote"
+      }
+    ],
+    "character": "grandpa_otto",
+    "duration": 2.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "surprised",
+        "height": 240,
+        "t": 0.0
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "surprised",
+        "height": 240,
+        "t": 2.0
+      }
+    ],
+    "kind": "gesture",
+    "loopable": false,
+    "sources": [
+      {
+        "scene": 0,
+        "story": "barricade_night"
+      }
+    ],
+    "space": "relative",
+    "travel_px": 0.0
+  },
+  "grandpa_otto/emote_heart": {
+    "actions": [
+      {
+        "actor": "grandpa_otto",
+        "emote": "heart",
+        "end": 1.8,
+        "start": 0.2,
+        "type": "emote"
+      }
+    ],
+    "character": "grandpa_otto",
+    "duration": 2.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "height": 240,
+        "t": 0.0
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "height": 240,
+        "t": 2.0
+      }
+    ],
+    "kind": "gesture",
+    "loopable": false,
+    "sources": [
+      {
+        "scene": 0,
+        "story": "barricade_night"
+      }
+    ],
+    "space": "relative",
+    "travel_px": 0.0
+  },
+  "grandpa_otto/idle": {
+    "actions": [],
+    "character": "grandpa_otto",
+    "duration": 3.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 240,
+        "lean": 0.0,
+        "t": 0.0
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 240,
+        "lean": 0.02,
+        "t": 1.5
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 240,
+        "lean": 0.0,
+        "t": 3.0
+      }
+    ],
+    "kind": "idle",
+    "loopable": true,
+    "sources": [
+      {
+        "scene": 0,
+        "story": "barricade_night"
+      }
+    ],
+    "space": "relative",
+    "travel_px": 0.0
+  },
+  "grandpa_otto/look_around": {
+    "actions": [],
+    "character": "grandpa_otto",
+    "duration": 3.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "curious",
+        "height": 240,
+        "look_x": 0.0,
+        "t": 0.0
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "curious",
+        "height": 240,
+        "look_x": -0.8,
+        "t": 1.0
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "curious",
+        "height": 240,
+        "look_x": 0.8,
+        "t": 2.0
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 240,
+        "look_x": 0.0,
+        "t": 3.0
+      }
+    ],
+    "kind": "gesture",
+    "loopable": false,
+    "sources": [
+      {
+        "scene": 0,
+        "story": "barricade_night"
+      }
+    ],
+    "space": "relative",
+    "travel_px": 0.0
+  },
+  "grandpa_otto/repair": {
+    "actions": [],
+    "character": "grandpa_otto",
+    "duration": 3.5,
+    "facing": "right",
+    "keyframes": [
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "serious",
+        "height": 240,
+        "lean": 0.1,
+        "t": 0.0
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "focused",
+        "hand_r_y": -26,
+        "height": 240,
+        "lean": 0.28,
+        "t": 1.2
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "focused",
+        "hand_r_y": -36,
+        "height": 240,
+        "lean": 0.28,
+        "t": 2.5
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "warm",
+        "height": 240,
+        "lean": 0.0,
+        "t": 3.5
+      }
+    ],
+    "kind": "interact",
+    "loopable": false,
+    "sources": [
+      {
+        "scene": 0,
+        "story": "barricade_night"
+      }
+    ],
+    "space": "relative",
+    "travel_px": 0.0
+  },
+  "grandpa_otto/run_short": {
+    "actions": [],
+    "character": "grandpa_otto",
+    "duration": 2.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "focused",
+        "height": 240,
+        "lean": 0.15,
+        "stride": 0.0,
+        "t": 0.0,
+        "walk": 0.9
+      },
+      {
+        "dx": 70.0,
+        "dy": 0.0,
+        "expression": "focused",
+        "height": 240,
+        "lean": 0.18,
+        "stride": 8.0,
+        "t": 1.0,
+        "walk": 0.9
+      },
+      {
+        "dx": 140.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 240,
+        "lean": 0.0,
+        "stride": 16.0,
+        "t": 2.0,
+        "walk": 0.0
+      }
+    ],
+    "kind": "locomotion",
+    "loopable": false,
+    "sources": [
+      {
+        "scene": 0,
+        "story": "barricade_night"
+      }
+    ],
+    "space": "relative",
+    "travel_px": 140.0
+  },
+  "grandpa_otto/talk": {
+    "actions": [],
+    "character": "grandpa_otto",
+    "duration": 3.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 240,
+        "mouth_talk": 0.0,
+        "t": 0.0
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "height": 240,
+        "mouth_talk": 0.8,
+        "t": 0.7
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 240,
+        "mouth_talk": 0.2,
+        "t": 1.5
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "height": 240,
+        "mouth_talk": 0.9,
+        "t": 2.3
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 240,
+        "mouth_talk": 0.0,
+        "t": 3.0
+      }
+    ],
+    "kind": "gesture",
+    "loopable": true,
+    "sources": [
+      {
+        "scene": 0,
+        "story": "barricade_night"
+      }
+    ],
+    "space": "relative",
+    "travel_px": 0.0
+  },
+  "grandpa_otto/walk_in": {
+    "actions": [],
+    "character": "grandpa_otto",
+    "duration": 3.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 240,
+        "stride": 0.0,
+        "t": 0.0,
+        "walk": 0.6
+      },
+      {
+        "dx": 60.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 240,
+        "stride": 9.0,
+        "t": 1.5,
+        "walk": 0.6
+      },
+      {
+        "dx": 120.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 240,
+        "stride": 18.0,
+        "t": 3.0,
+        "walk": 0.0
+      }
+    ],
+    "kind": "locomotion",
+    "loopable": false,
+    "sources": [
+      {
+        "scene": 0,
+        "story": "barricade_night"
+      }
+    ],
+    "space": "relative",
+    "travel_px": 120.0
+  },
+  "grandpa_otto/walk_out": {
+    "actions": [],
+    "character": "grandpa_otto",
+    "duration": 3.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 240,
+        "stride": 0.0,
+        "t": 0.0,
+        "walk": 0.6
+      },
+      {
+        "dx": 60.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 240,
+        "stride": 9.0,
+        "t": 1.5,
+        "walk": 0.6
+      },
+      {
+        "dx": 120.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 240,
+        "stride": 18.0,
+        "t": 3.0,
+        "walk": 0.0
+      }
+    ],
+    "kind": "locomotion",
+    "loopable": false,
+    "sources": [
+      {
+        "scene": 0,
+        "story": "barricade_night"
+      }
+    ],
+    "space": "relative",
+    "travel_px": 120.0
+  },
+  "grandpa_otto/wave": {
+    "actions": [],
+    "character": "grandpa_otto",
+    "duration": 2.5,
+    "facing": "right",
+    "keyframes": [
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "hand_r_x": 16,
+        "hand_r_y": -22,
+        "height": 240,
+        "t": 0.0
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "hand_r_x": 22,
+        "hand_r_y": -46,
+        "height": 240,
+        "t": 0.6
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "hand_r_x": 14,
+        "hand_r_y": -46,
+        "height": 240,
+        "t": 1.2
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "hand_r_x": 22,
+        "hand_r_y": -46,
+        "height": 240,
+        "t": 1.8
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "hand_r_x": 16,
+        "hand_r_y": -22,
+        "height": 240,
+        "t": 2.5
+      }
+    ],
+    "kind": "gesture",
+    "loopable": false,
+    "sources": [
+      {
+        "scene": 0,
+        "story": "barricade_night"
+      }
+    ],
+    "space": "relative",
+    "travel_px": 0.0
+  },
   "grape_vine/fox_and_grapes_s0_vine": {
     "actions": [],
     "character": "grape_vine",
@@ -17136,6 +19864,67 @@
       }
     ],
     "space": "relative",
+    "travel_px": 0.0
+  },
+  "hammer/barricade_night_s0_grandpa_otto_hammer": {
+    "actions": [],
+    "character": "hammer",
+    "duration": 5.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "height": 180,
+        "opacity": 1.0,
+        "rotation": 20,
+        "t": 0.0
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "height": 180,
+        "opacity": 1.0,
+        "rotation": 20,
+        "t": 5.0
+      }
+    ],
+    "kind": "hold",
+    "loopable": false,
+    "needs": {
+      "background_theme": [
+        "safe_camp"
+      ],
+      "partners": [],
+      "props": []
+    },
+    "source": {
+      "scene": 0,
+      "story": "barricade_night",
+      "t0": 0.0,
+      "t1": 5.0
+    },
+    "sources": [
+      {
+        "scene": 0,
+        "story": "barricade_night",
+        "t0": 0.0,
+        "t1": 5.0
+      },
+      {
+        "scene": 1,
+        "story": "barricade_night",
+        "t0": 5.0,
+        "t1": 10.0
+      },
+      {
+        "scene": 2,
+        "story": "barricade_night",
+        "t0": 10.0,
+        "t1": 15.0
+      }
+    ],
+    "space": "anchored",
     "travel_px": 0.0
   },
   "hammer/blacksmith_s1_hammer": {
@@ -18007,6 +20796,251 @@
     ],
     "space": "relative",
     "travel_px": 101.98
+  },
+  "hand_crank_radio/last_city_morning_s0_pip_hand_crank_radio": {
+    "actions": [],
+    "character": "hand_crank_radio",
+    "duration": 5.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "crank": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "height": 130,
+        "opacity": 1.0,
+        "powered": 1,
+        "rotation": 0,
+        "t": 0.0
+      },
+      {
+        "crank": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "height": 130,
+        "opacity": 1.0,
+        "powered": 1,
+        "rotation": 0,
+        "t": 0.5
+      },
+      {
+        "crank": 0.5,
+        "dx": 0.0,
+        "dy": 0.0,
+        "height": 130,
+        "opacity": 1.0,
+        "powered": 1,
+        "rotation": 0,
+        "t": 1.0
+      },
+      {
+        "crank": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "height": 130,
+        "opacity": 1.0,
+        "powered": 1,
+        "rotation": 0,
+        "t": 1.5
+      },
+      {
+        "crank": 0.5,
+        "dx": 0.0,
+        "dy": 0.0,
+        "height": 130,
+        "opacity": 1.0,
+        "powered": 1,
+        "rotation": 0,
+        "t": 2.0
+      },
+      {
+        "crank": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "height": 130,
+        "opacity": 1.0,
+        "powered": 1,
+        "rotation": 0,
+        "t": 2.5
+      },
+      {
+        "crank": 0.5,
+        "dx": 0.0,
+        "dy": 0.0,
+        "height": 130,
+        "opacity": 1.0,
+        "powered": 1,
+        "rotation": 0,
+        "t": 3.0
+      },
+      {
+        "crank": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "height": 130,
+        "opacity": 1.0,
+        "powered": 1,
+        "rotation": 0,
+        "t": 3.5
+      },
+      {
+        "crank": 0.5,
+        "dx": 0.0,
+        "dy": 0.0,
+        "height": 130,
+        "opacity": 1.0,
+        "powered": 1,
+        "rotation": 0,
+        "t": 4.0
+      },
+      {
+        "crank": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "height": 130,
+        "opacity": 1.0,
+        "powered": 1,
+        "rotation": 0,
+        "t": 4.5
+      },
+      {
+        "crank": 0.5,
+        "dx": 0.0,
+        "dy": 0.0,
+        "height": 130,
+        "opacity": 1.0,
+        "powered": 1,
+        "rotation": 0,
+        "t": 5.0
+      }
+    ],
+    "kind": "hold",
+    "loopable": false,
+    "needs": {
+      "background_theme": [
+        "rooftop_garden"
+      ],
+      "partners": [],
+      "props": []
+    },
+    "source": {
+      "scene": 0,
+      "story": "last_city_morning",
+      "t0": 0.0,
+      "t1": 5.0
+    },
+    "sources": [
+      {
+        "scene": 0,
+        "story": "last_city_morning",
+        "t0": 0.0,
+        "t1": 5.0
+      }
+    ],
+    "space": "anchored",
+    "travel_px": 0.0
+  },
+  "hand_crank_radio/last_city_morning_s1_pip_hand_crank_radio": {
+    "actions": [],
+    "character": "hand_crank_radio",
+    "duration": 5.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "crank": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "height": 130,
+        "opacity": 1.0,
+        "powered": 1,
+        "rotation": 0,
+        "t": 0.0
+      },
+      {
+        "crank": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "height": 130,
+        "opacity": 1.0,
+        "powered": 1,
+        "rotation": 0,
+        "t": 5.0
+      }
+    ],
+    "kind": "hold",
+    "loopable": false,
+    "needs": {
+      "background_theme": [
+        "rooftop_garden"
+      ],
+      "partners": [],
+      "props": []
+    },
+    "source": {
+      "scene": 1,
+      "story": "last_city_morning",
+      "t0": 5.0,
+      "t1": 10.0
+    },
+    "sources": [
+      {
+        "scene": 1,
+        "story": "last_city_morning",
+        "t0": 5.0,
+        "t1": 10.0
+      }
+    ],
+    "space": "anchored",
+    "travel_px": 0.0
+  },
+  "hand_crank_radio/last_city_morning_s2_pip_hand_crank_radio": {
+    "actions": [],
+    "character": "hand_crank_radio",
+    "duration": 5.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "height": 130,
+        "opacity": 1.0,
+        "rotation": 0,
+        "t": 0.0
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "height": 130,
+        "opacity": 1.0,
+        "rotation": 0,
+        "t": 5.0
+      }
+    ],
+    "kind": "hold",
+    "loopable": false,
+    "needs": {
+      "background_theme": [
+        "rooftop_garden"
+      ],
+      "partners": [],
+      "props": []
+    },
+    "source": {
+      "scene": 2,
+      "story": "last_city_morning",
+      "t0": 10.0,
+      "t1": 15.0
+    },
+    "sources": [
+      {
+        "scene": 2,
+        "story": "last_city_morning",
+        "t0": 10.0,
+        "t1": 15.0
+      }
+    ],
+    "space": "anchored",
+    "travel_px": 0.0
   },
   "hand_right/farm-life__neutral_s3_hand": {
     "actions": [
@@ -20238,6 +23272,1175 @@
     "space": "anchored",
     "travel_px": 0.0
   },
+  "leo/crouch_hide": {
+    "actions": [],
+    "character": "leo",
+    "duration": 3.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "worried",
+        "height": 230,
+        "lean": 0.1,
+        "t": 0.0
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "worried",
+        "height": 230,
+        "lean": 0.35,
+        "t": 0.8
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "worried",
+        "height": 230,
+        "lean": 0.35,
+        "t": 3.0
+      }
+    ],
+    "kind": "gesture",
+    "loopable": true,
+    "sources": [
+      {
+        "scene": 0,
+        "story": "last_city_morning"
+      }
+    ],
+    "space": "relative",
+    "travel_px": 0.0
+  },
+  "leo/emote_exclamation": {
+    "actions": [
+      {
+        "actor": "leo",
+        "emote": "exclamation",
+        "end": 1.8,
+        "start": 0.2,
+        "type": "emote"
+      }
+    ],
+    "character": "leo",
+    "duration": 2.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "surprised",
+        "height": 230,
+        "t": 0.0
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "surprised",
+        "height": 230,
+        "t": 2.0
+      }
+    ],
+    "kind": "gesture",
+    "loopable": false,
+    "sources": [
+      {
+        "scene": 0,
+        "story": "last_city_morning"
+      }
+    ],
+    "space": "relative",
+    "travel_px": 0.0
+  },
+  "leo/emote_heart": {
+    "actions": [
+      {
+        "actor": "leo",
+        "emote": "heart",
+        "end": 1.8,
+        "start": 0.2,
+        "type": "emote"
+      }
+    ],
+    "character": "leo",
+    "duration": 2.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "height": 230,
+        "t": 0.0
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "height": 230,
+        "t": 2.0
+      }
+    ],
+    "kind": "gesture",
+    "loopable": false,
+    "sources": [
+      {
+        "scene": 0,
+        "story": "last_city_morning"
+      }
+    ],
+    "space": "relative",
+    "travel_px": 0.0
+  },
+  "leo/flashlight_sweep": {
+    "actions": [],
+    "character": "leo",
+    "duration": 4.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "focused",
+        "hand_r_x": 20,
+        "hand_r_y": -28,
+        "height": 230,
+        "t": 0.0
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "focused",
+        "hand_r_x": 28,
+        "hand_r_y": -34,
+        "height": 230,
+        "t": 1.0
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "surprised",
+        "hand_r_x": 12,
+        "hand_r_y": -24,
+        "height": 230,
+        "t": 2.0
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "focused",
+        "hand_r_x": 26,
+        "hand_r_y": -32,
+        "height": 230,
+        "t": 3.0
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "smile",
+        "hand_r_x": 18,
+        "hand_r_y": -24,
+        "height": 230,
+        "t": 4.0
+      }
+    ],
+    "kind": "interact",
+    "loopable": false,
+    "sources": [
+      {
+        "scene": 0,
+        "story": "last_city_morning"
+      }
+    ],
+    "space": "relative",
+    "travel_px": 0.0
+  },
+  "leo/flooded_escape_s0_leo": {
+    "actions": [
+      {
+        "actor": "leo",
+        "end": 4.8,
+        "start": 0.3,
+        "target": "skiff",
+        "type": "row"
+      }
+    ],
+    "character": "leo",
+    "duration": 5.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "cured": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 165.0,
+        "opacity": 1.0,
+        "outfit": "survivor_hoodie",
+        "t": 0.0,
+        "z": -1,
+        "zombie": 0.0
+      },
+      {
+        "cured": 0.0,
+        "dx": 210.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 165.0,
+        "opacity": 1.0,
+        "outfit": "survivor_hoodie",
+        "t": 5.0,
+        "z": -1,
+        "zombie": 0.0
+      }
+    ],
+    "kind": "locomotion",
+    "loopable": false,
+    "needs": {
+      "background_theme": [
+        "flooded_downtown"
+      ],
+      "partners": [
+        "skiff"
+      ],
+      "props": []
+    },
+    "source": {
+      "scene": 0,
+      "story": "flooded_escape",
+      "t0": 0.0,
+      "t1": 5.0
+    },
+    "sources": [
+      {
+        "scene": 0,
+        "story": "flooded_escape",
+        "t0": 0.0,
+        "t1": 5.0
+      }
+    ],
+    "space": "relative",
+    "travel_px": 210.0
+  },
+  "leo/flooded_escape_s1_leo": {
+    "actions": [],
+    "character": "leo",
+    "duration": 5.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "cured": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 165.0,
+        "opacity": 1.0,
+        "outfit": "survivor_hoodie",
+        "t": 0.0,
+        "z": -1,
+        "zombie": 0.0
+      },
+      {
+        "cured": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 165.0,
+        "opacity": 1.0,
+        "outfit": "survivor_hoodie",
+        "t": 1.0,
+        "z": -1,
+        "zombie": 0.0
+      },
+      {
+        "cured": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 165.0,
+        "opacity": 1.0,
+        "outfit": "survivor_hoodie",
+        "t": 5.0,
+        "z": -1,
+        "zombie": 0.0
+      }
+    ],
+    "kind": "idle",
+    "loopable": false,
+    "needs": {
+      "background_theme": [
+        "flooded_downtown"
+      ],
+      "partners": [],
+      "props": []
+    },
+    "source": {
+      "scene": 1,
+      "story": "flooded_escape",
+      "t0": 5.0,
+      "t1": 10.0
+    },
+    "sources": [
+      {
+        "scene": 1,
+        "story": "flooded_escape",
+        "t0": 5.0,
+        "t1": 10.0
+      }
+    ],
+    "space": "relative",
+    "travel_px": 0.0
+  },
+  "leo/flooded_escape_s2_leo": {
+    "actions": [
+      {
+        "actor": "leo",
+        "end": 4.8,
+        "start": 0.2,
+        "target": "skiff",
+        "type": "row"
+      }
+    ],
+    "character": "leo",
+    "duration": 5.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "cured": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 165.0,
+        "opacity": 1.0,
+        "outfit": "survivor_hoodie",
+        "t": 0.0,
+        "z": -1,
+        "zombie": 0.0
+      },
+      {
+        "cured": 0.0,
+        "dx": 220.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "height": 165.0,
+        "opacity": 1.0,
+        "outfit": "survivor_hoodie",
+        "t": 5.0,
+        "z": -1,
+        "zombie": 0.0
+      }
+    ],
+    "kind": "locomotion",
+    "loopable": false,
+    "needs": {
+      "background_theme": [
+        "flooded_downtown"
+      ],
+      "partners": [
+        "skiff"
+      ],
+      "props": []
+    },
+    "source": {
+      "scene": 2,
+      "story": "flooded_escape",
+      "t0": 10.0,
+      "t1": 15.0
+    },
+    "sources": [
+      {
+        "scene": 2,
+        "story": "flooded_escape",
+        "t0": 10.0,
+        "t1": 15.0
+      }
+    ],
+    "space": "relative",
+    "travel_px": 220.0
+  },
+  "leo/idle": {
+    "actions": [],
+    "character": "leo",
+    "duration": 3.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 230,
+        "lean": 0.0,
+        "t": 0.0
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 230,
+        "lean": 0.02,
+        "t": 1.5
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 230,
+        "lean": 0.0,
+        "t": 3.0
+      }
+    ],
+    "kind": "idle",
+    "loopable": true,
+    "sources": [
+      {
+        "scene": 0,
+        "story": "last_city_morning"
+      }
+    ],
+    "space": "relative",
+    "travel_px": 0.0
+  },
+  "leo/last_city_morning_s1_leo": {
+    "actions": [],
+    "character": "leo",
+    "duration": 5.0,
+    "facing": "left",
+    "keyframes": [
+      {
+        "cured": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 230.0,
+        "opacity": 1.0,
+        "outfit": "survivor_hoodie",
+        "t": 0.0,
+        "zombie": 0.0
+      },
+      {
+        "cured": 0.0,
+        "dx": -150.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 230.0,
+        "opacity": 1.0,
+        "outfit": "survivor_hoodie",
+        "t": 3.5,
+        "zombie": 0.0
+      },
+      {
+        "cured": 0.0,
+        "dx": -150.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 230.0,
+        "opacity": 1.0,
+        "outfit": "survivor_hoodie",
+        "t": 5.0,
+        "zombie": 0.0
+      }
+    ],
+    "kind": "locomotion",
+    "loopable": false,
+    "needs": {
+      "background_theme": [
+        "rooftop_garden"
+      ],
+      "partners": [],
+      "props": []
+    },
+    "source": {
+      "scene": 1,
+      "story": "last_city_morning",
+      "t0": 5.0,
+      "t1": 10.0
+    },
+    "sources": [
+      {
+        "scene": 1,
+        "story": "last_city_morning",
+        "t0": 5.0,
+        "t1": 10.0
+      }
+    ],
+    "space": "relative",
+    "travel_px": 150.0
+  },
+  "leo/last_city_morning_s2_leo": {
+    "actions": [],
+    "character": "leo",
+    "duration": 5.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "cured": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 230.0,
+        "opacity": 1.0,
+        "outfit": "survivor_hoodie",
+        "t": 0.0,
+        "zombie": 0.0
+      },
+      {
+        "cured": 0.0,
+        "dx": 230.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "height": 230.0,
+        "opacity": 1.0,
+        "outfit": "survivor_hoodie",
+        "t": 5.0,
+        "zombie": 0.0
+      }
+    ],
+    "kind": "locomotion",
+    "loopable": false,
+    "needs": {
+      "background_theme": [
+        "rooftop_garden"
+      ],
+      "partners": [],
+      "props": []
+    },
+    "source": {
+      "scene": 2,
+      "story": "last_city_morning",
+      "t0": 10.0,
+      "t1": 15.0
+    },
+    "sources": [
+      {
+        "scene": 2,
+        "story": "last_city_morning",
+        "t0": 10.0,
+        "t1": 15.0
+      }
+    ],
+    "space": "relative",
+    "travel_px": 230.0
+  },
+  "leo/look_around": {
+    "actions": [],
+    "character": "leo",
+    "duration": 3.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "curious",
+        "height": 230,
+        "look_x": 0.0,
+        "t": 0.0
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "curious",
+        "height": 230,
+        "look_x": -0.8,
+        "t": 1.0
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "curious",
+        "height": 230,
+        "look_x": 0.8,
+        "t": 2.0
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 230,
+        "look_x": 0.0,
+        "t": 3.0
+      }
+    ],
+    "kind": "gesture",
+    "loopable": false,
+    "sources": [
+      {
+        "scene": 0,
+        "story": "last_city_morning"
+      }
+    ],
+    "space": "relative",
+    "travel_px": 0.0
+  },
+  "leo/quiet_street_s0_leo": {
+    "actions": [],
+    "character": "leo",
+    "duration": 5.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "cured": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 230.0,
+        "opacity": 1.0,
+        "outfit": "survivor_hoodie",
+        "t": 0.0,
+        "z": -1,
+        "zombie": 0.0
+      },
+      {
+        "cured": 0.0,
+        "dx": 480.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 230.0,
+        "opacity": 1.0,
+        "outfit": "survivor_hoodie",
+        "t": 2.8,
+        "z": -1,
+        "zombie": 0.0
+      },
+      {
+        "cured": 0.0,
+        "dx": 480.0,
+        "dy": 15.0,
+        "expression": "worried",
+        "height": 230.0,
+        "opacity": 1.0,
+        "outfit": "survivor_hoodie",
+        "t": 5.0,
+        "z": -1,
+        "zombie": 0.0
+      }
+    ],
+    "kind": "locomotion",
+    "loopable": false,
+    "needs": {
+      "background_theme": [
+        "abandoned_street"
+      ],
+      "partners": [],
+      "props": []
+    },
+    "source": {
+      "scene": 0,
+      "story": "quiet_street",
+      "t0": 0.0,
+      "t1": 5.0
+    },
+    "sources": [
+      {
+        "scene": 0,
+        "story": "quiet_street",
+        "t0": 0.0,
+        "t1": 5.0
+      }
+    ],
+    "space": "relative",
+    "travel_px": 480.234
+  },
+  "leo/quiet_street_s1_leo": {
+    "actions": [
+      {
+        "actor": "leo",
+        "end": 3.0,
+        "start": 2.2,
+        "target": "can",
+        "type": "distract"
+      }
+    ],
+    "character": "leo",
+    "duration": 5.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "cured": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 230.0,
+        "opacity": 1.0,
+        "outfit": "survivor_hoodie",
+        "t": 0.0,
+        "z": -1,
+        "zombie": 0.0
+      },
+      {
+        "cured": 0.0,
+        "dx": 0.0,
+        "dy": -15.0,
+        "expression": "neutral",
+        "hand_r_x": 20,
+        "hand_r_y": -70,
+        "height": 230.0,
+        "opacity": 1.0,
+        "outfit": "survivor_hoodie",
+        "t": 0.6,
+        "z": -1,
+        "zombie": 0.0
+      },
+      {
+        "cured": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 230.0,
+        "opacity": 1.0,
+        "outfit": "survivor_hoodie",
+        "t": 1.2,
+        "z": -1,
+        "zombie": 0.0
+      },
+      {
+        "cured": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "height": 230.0,
+        "opacity": 1.0,
+        "outfit": "survivor_hoodie",
+        "t": 5.0,
+        "z": -1,
+        "zombie": 0.0
+      }
+    ],
+    "kind": "idle",
+    "loopable": false,
+    "needs": {
+      "background_theme": [
+        "abandoned_street"
+      ],
+      "partners": [
+        "can"
+      ],
+      "props": []
+    },
+    "source": {
+      "scene": 1,
+      "story": "quiet_street",
+      "t0": 5.0,
+      "t1": 10.0
+    },
+    "sources": [
+      {
+        "scene": 1,
+        "story": "quiet_street",
+        "t0": 5.0,
+        "t1": 10.0
+      }
+    ],
+    "space": "relative",
+    "travel_px": 0.0
+  },
+  "leo/quiet_street_s2_leo": {
+    "actions": [
+      {
+        "actor": "leo",
+        "emote": "heart",
+        "end": 4.5,
+        "start": 2.0,
+        "type": "emote"
+      }
+    ],
+    "character": "leo",
+    "duration": 5.0,
+    "facing": "left",
+    "keyframes": [
+      {
+        "cured": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 230.0,
+        "opacity": 1.0,
+        "outfit": "survivor_hoodie",
+        "t": 0.0,
+        "z": -1,
+        "zombie": 0.0
+      },
+      {
+        "cured": 0.0,
+        "dx": 0.0,
+        "dy": -15.0,
+        "expression": "neutral",
+        "height": 230.0,
+        "opacity": 1.0,
+        "outfit": "survivor_hoodie",
+        "t": 0.8,
+        "z": -1,
+        "zombie": 0.0
+      },
+      {
+        "cured": 0.0,
+        "dx": -280.0,
+        "dy": -15.0,
+        "expression": "happy",
+        "height": 230.0,
+        "opacity": 1.0,
+        "outfit": "survivor_hoodie",
+        "t": 5.0,
+        "z": -1,
+        "zombie": 0.0
+      }
+    ],
+    "kind": "emote",
+    "loopable": false,
+    "needs": {
+      "background_theme": [
+        "abandoned_street"
+      ],
+      "partners": [],
+      "props": []
+    },
+    "source": {
+      "scene": 2,
+      "story": "quiet_street",
+      "t0": 10.0,
+      "t1": 15.0
+    },
+    "sources": [
+      {
+        "scene": 2,
+        "story": "quiet_street",
+        "t0": 10.0,
+        "t1": 15.0
+      }
+    ],
+    "space": "relative",
+    "travel_px": 280.401
+  },
+  "leo/run_short": {
+    "actions": [],
+    "character": "leo",
+    "duration": 2.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "focused",
+        "height": 230,
+        "lean": 0.15,
+        "stride": 0.0,
+        "t": 0.0,
+        "walk": 0.9
+      },
+      {
+        "dx": 70.0,
+        "dy": 0.0,
+        "expression": "focused",
+        "height": 230,
+        "lean": 0.18,
+        "stride": 8.0,
+        "t": 1.0,
+        "walk": 0.9
+      },
+      {
+        "dx": 140.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 230,
+        "lean": 0.0,
+        "stride": 16.0,
+        "t": 2.0,
+        "walk": 0.0
+      }
+    ],
+    "kind": "locomotion",
+    "loopable": false,
+    "sources": [
+      {
+        "scene": 0,
+        "story": "last_city_morning"
+      }
+    ],
+    "space": "relative",
+    "travel_px": 140.0
+  },
+  "leo/talk": {
+    "actions": [],
+    "character": "leo",
+    "duration": 3.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 230,
+        "mouth_talk": 0.0,
+        "t": 0.0
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "height": 230,
+        "mouth_talk": 0.8,
+        "t": 0.7
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 230,
+        "mouth_talk": 0.2,
+        "t": 1.5
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "height": 230,
+        "mouth_talk": 0.9,
+        "t": 2.3
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 230,
+        "mouth_talk": 0.0,
+        "t": 3.0
+      }
+    ],
+    "kind": "gesture",
+    "loopable": true,
+    "sources": [
+      {
+        "scene": 0,
+        "story": "last_city_morning"
+      }
+    ],
+    "space": "relative",
+    "travel_px": 0.0
+  },
+  "leo/walk_in": {
+    "actions": [],
+    "character": "leo",
+    "duration": 3.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 230,
+        "stride": 0.0,
+        "t": 0.0,
+        "walk": 0.6
+      },
+      {
+        "dx": 60.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 230,
+        "stride": 9.0,
+        "t": 1.5,
+        "walk": 0.6
+      },
+      {
+        "dx": 120.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 230,
+        "stride": 18.0,
+        "t": 3.0,
+        "walk": 0.0
+      }
+    ],
+    "kind": "locomotion",
+    "loopable": false,
+    "sources": [
+      {
+        "scene": 0,
+        "story": "last_city_morning"
+      }
+    ],
+    "space": "relative",
+    "travel_px": 120.0
+  },
+  "leo/walk_out": {
+    "actions": [],
+    "character": "leo",
+    "duration": 3.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 230,
+        "stride": 0.0,
+        "t": 0.0,
+        "walk": 0.6
+      },
+      {
+        "dx": 60.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 230,
+        "stride": 9.0,
+        "t": 1.5,
+        "walk": 0.6
+      },
+      {
+        "dx": 120.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 230,
+        "stride": 18.0,
+        "t": 3.0,
+        "walk": 0.0
+      }
+    ],
+    "kind": "locomotion",
+    "loopable": false,
+    "sources": [
+      {
+        "scene": 0,
+        "story": "last_city_morning"
+      }
+    ],
+    "space": "relative",
+    "travel_px": 120.0
+  },
+  "leo/water_first_s1_leo": {
+    "actions": [],
+    "character": "leo",
+    "duration": 5.0,
+    "facing": "left",
+    "keyframes": [
+      {
+        "cured": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 230.0,
+        "opacity": 1.0,
+        "outfit": "survivor_hoodie",
+        "t": 0.0,
+        "zombie": 0.0
+      },
+      {
+        "cured": 0.0,
+        "dx": -170.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "hand_r_x": -22,
+        "hand_r_y": -26,
+        "height": 230.0,
+        "opacity": 1.0,
+        "outfit": "survivor_hoodie",
+        "t": 2.5,
+        "zombie": 0.0
+      },
+      {
+        "cured": 0.0,
+        "dx": -170.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "hand_r_x": -22,
+        "hand_r_y": -26,
+        "height": 230.0,
+        "opacity": 1.0,
+        "outfit": "survivor_hoodie",
+        "t": 5.0,
+        "zombie": 0.0
+      }
+    ],
+    "kind": "locomotion",
+    "loopable": false,
+    "needs": {
+      "background_theme": [
+        "abandoned_street"
+      ],
+      "partners": [],
+      "props": []
+    },
+    "source": {
+      "scene": 1,
+      "story": "water_first",
+      "t0": 5.0,
+      "t1": 10.0
+    },
+    "sources": [
+      {
+        "scene": 1,
+        "story": "water_first",
+        "t0": 5.0,
+        "t1": 10.0
+      }
+    ],
+    "space": "relative",
+    "travel_px": 170.0
+  },
+  "leo/wave": {
+    "actions": [],
+    "character": "leo",
+    "duration": 2.5,
+    "facing": "right",
+    "keyframes": [
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "hand_r_x": 16,
+        "hand_r_y": -22,
+        "height": 230,
+        "t": 0.0
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "hand_r_x": 22,
+        "hand_r_y": -46,
+        "height": 230,
+        "t": 0.6
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "hand_r_x": 14,
+        "hand_r_y": -46,
+        "height": 230,
+        "t": 1.2
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "hand_r_x": 22,
+        "hand_r_y": -46,
+        "height": 230,
+        "t": 1.8
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "hand_r_x": 16,
+        "hand_r_y": -22,
+        "height": 230,
+        "t": 2.5
+      }
+    ],
+    "kind": "gesture",
+    "loopable": false,
+    "sources": [
+      {
+        "scene": 0,
+        "story": "last_city_morning"
+      }
+    ],
+    "space": "relative",
+    "travel_px": 0.0
+  },
   "lever/simple_machines_s0_lever": {
     "actions": [],
     "character": "lever",
@@ -21250,6 +25453,1456 @@
     "space": "relative",
     "travel_px": 0.0
   },
+  "mika/barricade_night_s0_mika": {
+    "actions": [],
+    "character": "mika",
+    "duration": 5.0,
+    "facing": "left",
+    "keyframes": [
+      {
+        "cured": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 230.0,
+        "opacity": 1.0,
+        "outfit": "survivor_jacket",
+        "t": 0.0,
+        "zombie": 0.0
+      },
+      {
+        "cured": 0.0,
+        "dx": -295.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 230.0,
+        "opacity": 1.0,
+        "outfit": "survivor_jacket",
+        "t": 3.0,
+        "zombie": 0.0
+      },
+      {
+        "cured": 0.0,
+        "dx": -295.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 230.0,
+        "opacity": 1.0,
+        "outfit": "survivor_jacket",
+        "t": 5.0,
+        "zombie": 0.0
+      }
+    ],
+    "kind": "locomotion",
+    "loopable": false,
+    "needs": {
+      "background_theme": [
+        "safe_camp"
+      ],
+      "partners": [],
+      "props": []
+    },
+    "source": {
+      "scene": 0,
+      "story": "barricade_night",
+      "t0": 0.0,
+      "t1": 5.0
+    },
+    "sources": [
+      {
+        "scene": 0,
+        "story": "barricade_night",
+        "t0": 0.0,
+        "t1": 5.0
+      }
+    ],
+    "space": "relative",
+    "travel_px": 295.0
+  },
+  "mika/barricade_night_s1_mika": {
+    "actions": [],
+    "character": "mika",
+    "duration": 5.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "cured": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 230.0,
+        "opacity": 1.0,
+        "outfit": "survivor_jacket",
+        "t": 0.0,
+        "zombie": 0.0
+      },
+      {
+        "cured": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "worried",
+        "height": 230.0,
+        "opacity": 1.0,
+        "outfit": "survivor_jacket",
+        "t": 5.0,
+        "zombie": 0.0
+      }
+    ],
+    "kind": "idle",
+    "loopable": false,
+    "needs": {
+      "background_theme": [
+        "safe_camp"
+      ],
+      "partners": [],
+      "props": []
+    },
+    "source": {
+      "scene": 1,
+      "story": "barricade_night",
+      "t0": 5.0,
+      "t1": 10.0
+    },
+    "sources": [
+      {
+        "scene": 1,
+        "story": "barricade_night",
+        "t0": 5.0,
+        "t1": 10.0
+      }
+    ],
+    "space": "relative",
+    "travel_px": 0.0
+  },
+  "mika/barricade_night_s2_mika": {
+    "actions": [
+      {
+        "actor": "mika",
+        "emote": "heart",
+        "end": 4.5,
+        "start": 1.5,
+        "type": "emote"
+      }
+    ],
+    "character": "mika",
+    "duration": 5.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "cured": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 230.0,
+        "opacity": 1.0,
+        "outfit": "survivor_jacket",
+        "t": 0.0,
+        "zombie": 0.0
+      },
+      {
+        "cured": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "height": 230.0,
+        "opacity": 1.0,
+        "outfit": "survivor_jacket",
+        "t": 5.0,
+        "zombie": 0.0
+      }
+    ],
+    "kind": "emote",
+    "loopable": false,
+    "needs": {
+      "background_theme": [
+        "safe_camp"
+      ],
+      "partners": [],
+      "props": []
+    },
+    "source": {
+      "scene": 2,
+      "story": "barricade_night",
+      "t0": 10.0,
+      "t1": 15.0
+    },
+    "sources": [
+      {
+        "scene": 2,
+        "story": "barricade_night",
+        "t0": 10.0,
+        "t1": 15.0
+      }
+    ],
+    "space": "relative",
+    "travel_px": 0.0
+  },
+  "mika/crouch_hide": {
+    "actions": [],
+    "character": "mika",
+    "duration": 3.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "worried",
+        "height": 230,
+        "lean": 0.1,
+        "t": 0.0
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "worried",
+        "height": 230,
+        "lean": 0.35,
+        "t": 0.8
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "worried",
+        "height": 230,
+        "lean": 0.35,
+        "t": 3.0
+      }
+    ],
+    "kind": "gesture",
+    "loopable": true,
+    "sources": [
+      {
+        "scene": 0,
+        "story": "last_city_morning"
+      }
+    ],
+    "space": "relative",
+    "travel_px": 0.0
+  },
+  "mika/emote_exclamation": {
+    "actions": [
+      {
+        "actor": "mika",
+        "emote": "exclamation",
+        "end": 1.8,
+        "start": 0.2,
+        "type": "emote"
+      }
+    ],
+    "character": "mika",
+    "duration": 2.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "surprised",
+        "height": 230,
+        "t": 0.0
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "surprised",
+        "height": 230,
+        "t": 2.0
+      }
+    ],
+    "kind": "gesture",
+    "loopable": false,
+    "sources": [
+      {
+        "scene": 0,
+        "story": "last_city_morning"
+      }
+    ],
+    "space": "relative",
+    "travel_px": 0.0
+  },
+  "mika/emote_heart": {
+    "actions": [
+      {
+        "actor": "mika",
+        "emote": "heart",
+        "end": 1.8,
+        "start": 0.2,
+        "type": "emote"
+      }
+    ],
+    "character": "mika",
+    "duration": 2.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "height": 230,
+        "t": 0.0
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "height": 230,
+        "t": 2.0
+      }
+    ],
+    "kind": "gesture",
+    "loopable": false,
+    "sources": [
+      {
+        "scene": 0,
+        "story": "last_city_morning"
+      }
+    ],
+    "space": "relative",
+    "travel_px": 0.0
+  },
+  "mika/flooded_escape_s0_mika": {
+    "actions": [],
+    "character": "mika",
+    "duration": 5.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "cured": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 165.0,
+        "opacity": 1.0,
+        "outfit": "survivor_jacket",
+        "t": 0.0,
+        "z": -1,
+        "zombie": 0.0
+      },
+      {
+        "cured": 0.0,
+        "dx": 210.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 165.0,
+        "opacity": 1.0,
+        "outfit": "survivor_jacket",
+        "t": 5.0,
+        "z": -1,
+        "zombie": 0.0
+      }
+    ],
+    "kind": "locomotion",
+    "loopable": false,
+    "needs": {
+      "background_theme": [
+        "flooded_downtown"
+      ],
+      "partners": [],
+      "props": []
+    },
+    "source": {
+      "scene": 0,
+      "story": "flooded_escape",
+      "t0": 0.0,
+      "t1": 5.0
+    },
+    "sources": [
+      {
+        "scene": 0,
+        "story": "flooded_escape",
+        "t0": 0.0,
+        "t1": 5.0
+      }
+    ],
+    "space": "relative",
+    "travel_px": 210.0
+  },
+  "mika/flooded_escape_s1_mika": {
+    "actions": [
+      {
+        "actor": "mika",
+        "end": 4.5,
+        "start": 1.0,
+        "target": "mika_signal_mirror",
+        "type": "signal"
+      },
+      {
+        "actor": "mika",
+        "emote": "exclamation",
+        "end": 3.5,
+        "start": 1.2,
+        "type": "emote"
+      }
+    ],
+    "character": "mika",
+    "duration": 5.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "cured": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 165.0,
+        "opacity": 1.0,
+        "outfit": "survivor_jacket",
+        "t": 0.0,
+        "z": -1,
+        "zombie": 0.0
+      },
+      {
+        "cured": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "hand_r_x": 18,
+        "hand_r_y": -64,
+        "height": 165.0,
+        "opacity": 1.0,
+        "outfit": "survivor_jacket",
+        "t": 1.0,
+        "z": -1,
+        "zombie": 0.0
+      },
+      {
+        "cured": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "hand_r_x": 18,
+        "hand_r_y": -64,
+        "height": 165.0,
+        "opacity": 1.0,
+        "outfit": "survivor_jacket",
+        "t": 5.0,
+        "z": -1,
+        "zombie": 0.0
+      }
+    ],
+    "kind": "emote",
+    "loopable": false,
+    "needs": {
+      "background_theme": [
+        "flooded_downtown"
+      ],
+      "partners": [
+        "mika_signal_mirror"
+      ],
+      "props": []
+    },
+    "source": {
+      "scene": 1,
+      "story": "flooded_escape",
+      "t0": 5.0,
+      "t1": 10.0
+    },
+    "sources": [
+      {
+        "scene": 1,
+        "story": "flooded_escape",
+        "t0": 5.0,
+        "t1": 10.0
+      }
+    ],
+    "space": "relative",
+    "travel_px": 0.0
+  },
+  "mika/flooded_escape_s2_mika": {
+    "actions": [
+      {
+        "actor": "mika",
+        "emote": "heart",
+        "end": 4.5,
+        "start": 1.0,
+        "type": "emote"
+      }
+    ],
+    "character": "mika",
+    "duration": 5.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "cured": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 165.0,
+        "opacity": 1.0,
+        "outfit": "survivor_jacket",
+        "t": 0.0,
+        "z": -1,
+        "zombie": 0.0
+      },
+      {
+        "cured": 0.0,
+        "dx": 220.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "height": 165.0,
+        "opacity": 1.0,
+        "outfit": "survivor_jacket",
+        "t": 5.0,
+        "z": -1,
+        "zombie": 0.0
+      }
+    ],
+    "kind": "emote",
+    "loopable": false,
+    "needs": {
+      "background_theme": [
+        "flooded_downtown"
+      ],
+      "partners": [],
+      "props": []
+    },
+    "source": {
+      "scene": 2,
+      "story": "flooded_escape",
+      "t0": 10.0,
+      "t1": 15.0
+    },
+    "sources": [
+      {
+        "scene": 2,
+        "story": "flooded_escape",
+        "t0": 10.0,
+        "t1": 15.0
+      }
+    ],
+    "space": "relative",
+    "travel_px": 220.0
+  },
+  "mika/idle": {
+    "actions": [],
+    "character": "mika",
+    "duration": 3.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 230,
+        "lean": 0.0,
+        "t": 0.0
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 230,
+        "lean": 0.02,
+        "t": 1.5
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 230,
+        "lean": 0.0,
+        "t": 3.0
+      }
+    ],
+    "kind": "idle",
+    "loopable": true,
+    "sources": [
+      {
+        "scene": 0,
+        "story": "last_city_morning"
+      }
+    ],
+    "space": "relative",
+    "travel_px": 0.0
+  },
+  "mika/last_city_morning_s0_mika": {
+    "actions": [],
+    "character": "mika",
+    "duration": 5.0,
+    "facing": "left",
+    "keyframes": [
+      {
+        "cured": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 230.0,
+        "opacity": 1.0,
+        "outfit": "survivor_jacket",
+        "t": 0.0,
+        "zombie": 0.0
+      },
+      {
+        "cured": 0.0,
+        "dx": -265.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 230.0,
+        "opacity": 1.0,
+        "outfit": "survivor_jacket",
+        "t": 3.5,
+        "zombie": 0.0
+      },
+      {
+        "cured": 0.0,
+        "dx": -265.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 230.0,
+        "opacity": 1.0,
+        "outfit": "survivor_jacket",
+        "t": 5.0,
+        "zombie": 0.0
+      }
+    ],
+    "kind": "locomotion",
+    "loopable": false,
+    "needs": {
+      "background_theme": [
+        "rooftop_garden"
+      ],
+      "partners": [],
+      "props": []
+    },
+    "source": {
+      "scene": 0,
+      "story": "last_city_morning",
+      "t0": 0.0,
+      "t1": 5.0
+    },
+    "sources": [
+      {
+        "scene": 0,
+        "story": "last_city_morning",
+        "t0": 0.0,
+        "t1": 5.0
+      }
+    ],
+    "space": "relative",
+    "travel_px": 265.0
+  },
+  "mika/last_city_morning_s1_mika": {
+    "actions": [],
+    "character": "mika",
+    "duration": 5.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "cured": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 230.0,
+        "opacity": 1.0,
+        "outfit": "survivor_jacket",
+        "t": 0.0,
+        "zombie": 0.0
+      },
+      {
+        "cured": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "hand_r_x": 14,
+        "hand_r_y": -62,
+        "height": 230.0,
+        "opacity": 1.0,
+        "outfit": "survivor_jacket",
+        "t": 1.0,
+        "zombie": 0.0
+      },
+      {
+        "cured": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "hand_r_x": 14,
+        "hand_r_y": -62,
+        "height": 230.0,
+        "opacity": 1.0,
+        "outfit": "survivor_jacket",
+        "t": 5.0,
+        "zombie": 0.0
+      }
+    ],
+    "kind": "idle",
+    "loopable": false,
+    "needs": {
+      "background_theme": [
+        "rooftop_garden"
+      ],
+      "partners": [],
+      "props": []
+    },
+    "source": {
+      "scene": 1,
+      "story": "last_city_morning",
+      "t0": 5.0,
+      "t1": 10.0
+    },
+    "sources": [
+      {
+        "scene": 1,
+        "story": "last_city_morning",
+        "t0": 5.0,
+        "t1": 10.0
+      }
+    ],
+    "space": "relative",
+    "travel_px": 0.0
+  },
+  "mika/last_city_morning_s2_mika": {
+    "actions": [
+      {
+        "actor": "mika",
+        "emote": "heart",
+        "end": 3.0,
+        "start": 0.5,
+        "type": "emote"
+      }
+    ],
+    "character": "mika",
+    "duration": 5.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "cured": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 230.0,
+        "opacity": 1.0,
+        "outfit": "survivor_jacket",
+        "t": 0.0,
+        "zombie": 0.0
+      },
+      {
+        "cured": 0.0,
+        "dx": 225.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "height": 230.0,
+        "opacity": 1.0,
+        "outfit": "survivor_jacket",
+        "t": 5.0,
+        "zombie": 0.0
+      }
+    ],
+    "kind": "emote",
+    "loopable": false,
+    "needs": {
+      "background_theme": [
+        "rooftop_garden"
+      ],
+      "partners": [],
+      "props": []
+    },
+    "source": {
+      "scene": 2,
+      "story": "last_city_morning",
+      "t0": 10.0,
+      "t1": 15.0
+    },
+    "sources": [
+      {
+        "scene": 2,
+        "story": "last_city_morning",
+        "t0": 10.0,
+        "t1": 15.0
+      }
+    ],
+    "space": "relative",
+    "travel_px": 225.0
+  },
+  "mika/look_around": {
+    "actions": [],
+    "character": "mika",
+    "duration": 3.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "curious",
+        "height": 230,
+        "look_x": 0.0,
+        "t": 0.0
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "curious",
+        "height": 230,
+        "look_x": -0.8,
+        "t": 1.0
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "curious",
+        "height": 230,
+        "look_x": 0.8,
+        "t": 2.0
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 230,
+        "look_x": 0.0,
+        "t": 3.0
+      }
+    ],
+    "kind": "gesture",
+    "loopable": false,
+    "sources": [
+      {
+        "scene": 0,
+        "story": "last_city_morning"
+      }
+    ],
+    "space": "relative",
+    "travel_px": 0.0
+  },
+  "mika/quiet_street_s0_mika": {
+    "actions": [],
+    "character": "mika",
+    "duration": 5.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "cured": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 230.0,
+        "opacity": 1.0,
+        "outfit": "survivor_jacket",
+        "t": 0.0,
+        "z": -1,
+        "zombie": 0.0
+      },
+      {
+        "cured": 0.0,
+        "dx": 210.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 230.0,
+        "opacity": 1.0,
+        "outfit": "survivor_jacket",
+        "t": 2.5,
+        "z": -1,
+        "zombie": 0.0
+      },
+      {
+        "cured": 0.0,
+        "dx": 210.0,
+        "dy": 15.0,
+        "expression": "worried",
+        "height": 230.0,
+        "opacity": 1.0,
+        "outfit": "survivor_jacket",
+        "t": 5.0,
+        "z": -1,
+        "zombie": 0.0
+      }
+    ],
+    "kind": "locomotion",
+    "loopable": false,
+    "needs": {
+      "background_theme": [
+        "abandoned_street"
+      ],
+      "partners": [],
+      "props": []
+    },
+    "source": {
+      "scene": 0,
+      "story": "quiet_street",
+      "t0": 0.0,
+      "t1": 5.0
+    },
+    "sources": [
+      {
+        "scene": 0,
+        "story": "quiet_street",
+        "t0": 0.0,
+        "t1": 5.0
+      }
+    ],
+    "space": "relative",
+    "travel_px": 210.535
+  },
+  "mika/quiet_street_s1_mika": {
+    "actions": [],
+    "character": "mika",
+    "duration": 5.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "cured": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "worried",
+        "height": 230.0,
+        "opacity": 1.0,
+        "outfit": "survivor_jacket",
+        "t": 0.0,
+        "z": -1,
+        "zombie": 0.0
+      },
+      {
+        "cured": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 230.0,
+        "opacity": 1.0,
+        "outfit": "survivor_jacket",
+        "t": 5.0,
+        "z": -1,
+        "zombie": 0.0
+      }
+    ],
+    "kind": "idle",
+    "loopable": false,
+    "needs": {
+      "background_theme": [
+        "abandoned_street"
+      ],
+      "partners": [],
+      "props": []
+    },
+    "source": {
+      "scene": 1,
+      "story": "quiet_street",
+      "t0": 5.0,
+      "t1": 10.0
+    },
+    "sources": [
+      {
+        "scene": 1,
+        "story": "quiet_street",
+        "t0": 5.0,
+        "t1": 10.0
+      }
+    ],
+    "space": "relative",
+    "travel_px": 0.0
+  },
+  "mika/quiet_street_s2_mika": {
+    "actions": [],
+    "character": "mika",
+    "duration": 5.0,
+    "facing": "left",
+    "keyframes": [
+      {
+        "cured": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 230.0,
+        "opacity": 1.0,
+        "outfit": "survivor_jacket",
+        "t": 0.0,
+        "z": -1,
+        "zombie": 0.0
+      },
+      {
+        "cured": 0.0,
+        "dx": 0.0,
+        "dy": -15.0,
+        "expression": "neutral",
+        "height": 230.0,
+        "opacity": 1.0,
+        "outfit": "survivor_jacket",
+        "t": 0.8,
+        "z": -1,
+        "zombie": 0.0
+      },
+      {
+        "cured": 0.0,
+        "dx": -270.0,
+        "dy": -15.0,
+        "expression": "happy",
+        "height": 230.0,
+        "opacity": 1.0,
+        "outfit": "survivor_jacket",
+        "t": 5.0,
+        "z": -1,
+        "zombie": 0.0
+      }
+    ],
+    "kind": "locomotion",
+    "loopable": false,
+    "needs": {
+      "background_theme": [
+        "abandoned_street"
+      ],
+      "partners": [],
+      "props": []
+    },
+    "source": {
+      "scene": 2,
+      "story": "quiet_street",
+      "t0": 10.0,
+      "t1": 15.0
+    },
+    "sources": [
+      {
+        "scene": 2,
+        "story": "quiet_street",
+        "t0": 10.0,
+        "t1": 15.0
+      }
+    ],
+    "space": "relative",
+    "travel_px": 270.416
+  },
+  "mika/radio_call": {
+    "actions": [],
+    "character": "mika",
+    "duration": 3.5,
+    "facing": "right",
+    "keyframes": [
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "focused",
+        "hand_r_x": 16,
+        "hand_r_y": -22,
+        "height": 230,
+        "t": 0.0
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "focused",
+        "hand_r_x": 10,
+        "hand_r_y": -38,
+        "height": 230,
+        "t": 0.8
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "confident",
+        "hand_r_x": 10,
+        "hand_r_y": -38,
+        "height": 230,
+        "t": 2.7
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "hand_r_x": 16,
+        "hand_r_y": -22,
+        "height": 230,
+        "t": 3.5
+      }
+    ],
+    "kind": "interact",
+    "loopable": false,
+    "sources": [
+      {
+        "scene": 0,
+        "story": "last_city_morning"
+      }
+    ],
+    "space": "relative",
+    "travel_px": 0.0
+  },
+  "mika/run_short": {
+    "actions": [],
+    "character": "mika",
+    "duration": 2.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "focused",
+        "height": 230,
+        "lean": 0.15,
+        "stride": 0.0,
+        "t": 0.0,
+        "walk": 0.9
+      },
+      {
+        "dx": 70.0,
+        "dy": 0.0,
+        "expression": "focused",
+        "height": 230,
+        "lean": 0.18,
+        "stride": 8.0,
+        "t": 1.0,
+        "walk": 0.9
+      },
+      {
+        "dx": 140.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 230,
+        "lean": 0.0,
+        "stride": 16.0,
+        "t": 2.0,
+        "walk": 0.0
+      }
+    ],
+    "kind": "locomotion",
+    "loopable": false,
+    "sources": [
+      {
+        "scene": 0,
+        "story": "last_city_morning"
+      }
+    ],
+    "space": "relative",
+    "travel_px": 140.0
+  },
+  "mika/talk": {
+    "actions": [],
+    "character": "mika",
+    "duration": 3.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 230,
+        "mouth_talk": 0.0,
+        "t": 0.0
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "height": 230,
+        "mouth_talk": 0.8,
+        "t": 0.7
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 230,
+        "mouth_talk": 0.2,
+        "t": 1.5
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "height": 230,
+        "mouth_talk": 0.9,
+        "t": 2.3
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 230,
+        "mouth_talk": 0.0,
+        "t": 3.0
+      }
+    ],
+    "kind": "gesture",
+    "loopable": true,
+    "sources": [
+      {
+        "scene": 0,
+        "story": "last_city_morning"
+      }
+    ],
+    "space": "relative",
+    "travel_px": 0.0
+  },
+  "mika/walk_in": {
+    "actions": [],
+    "character": "mika",
+    "duration": 3.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 230,
+        "stride": 0.0,
+        "t": 0.0,
+        "walk": 0.6
+      },
+      {
+        "dx": 60.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 230,
+        "stride": 9.0,
+        "t": 1.5,
+        "walk": 0.6
+      },
+      {
+        "dx": 120.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 230,
+        "stride": 18.0,
+        "t": 3.0,
+        "walk": 0.0
+      }
+    ],
+    "kind": "locomotion",
+    "loopable": false,
+    "sources": [
+      {
+        "scene": 0,
+        "story": "last_city_morning"
+      }
+    ],
+    "space": "relative",
+    "travel_px": 120.0
+  },
+  "mika/walk_out": {
+    "actions": [],
+    "character": "mika",
+    "duration": 3.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 230,
+        "stride": 0.0,
+        "t": 0.0,
+        "walk": 0.6
+      },
+      {
+        "dx": 60.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 230,
+        "stride": 9.0,
+        "t": 1.5,
+        "walk": 0.6
+      },
+      {
+        "dx": 120.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 230,
+        "stride": 18.0,
+        "t": 3.0,
+        "walk": 0.0
+      }
+    ],
+    "kind": "locomotion",
+    "loopable": false,
+    "sources": [
+      {
+        "scene": 0,
+        "story": "last_city_morning"
+      }
+    ],
+    "space": "relative",
+    "travel_px": 120.0
+  },
+  "mika/water_first_s0_mika": {
+    "actions": [],
+    "character": "mika",
+    "duration": 5.0,
+    "facing": "left",
+    "keyframes": [
+      {
+        "cured": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 230.0,
+        "opacity": 1.0,
+        "outfit": "raincoat",
+        "t": 0.0,
+        "zombie": 0.0
+      },
+      {
+        "cured": 0.0,
+        "dx": -190.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "hand_r_x": -24,
+        "hand_r_y": -30,
+        "height": 230.0,
+        "opacity": 1.0,
+        "outfit": "raincoat",
+        "t": 3.5,
+        "zombie": 0.0
+      },
+      {
+        "cured": 0.0,
+        "dx": -190.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "hand_r_x": -24,
+        "hand_r_y": -30,
+        "height": 230.0,
+        "opacity": 1.0,
+        "outfit": "raincoat",
+        "t": 5.0,
+        "zombie": 0.0
+      }
+    ],
+    "kind": "locomotion",
+    "loopable": false,
+    "needs": {
+      "background_theme": [
+        "abandoned_street"
+      ],
+      "partners": [],
+      "props": []
+    },
+    "source": {
+      "scene": 0,
+      "story": "water_first",
+      "t0": 0.0,
+      "t1": 5.0
+    },
+    "sources": [
+      {
+        "scene": 0,
+        "story": "water_first",
+        "t0": 0.0,
+        "t1": 5.0
+      }
+    ],
+    "space": "relative",
+    "travel_px": 190.0
+  },
+  "mika/water_first_s2_mika": {
+    "actions": [
+      {
+        "actor": "mika",
+        "emote": "heart",
+        "end": 4.8,
+        "start": 2.5,
+        "type": "emote"
+      }
+    ],
+    "character": "mika",
+    "duration": 5.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "cured": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 230.0,
+        "opacity": 1.0,
+        "outfit": "survivor_jacket",
+        "t": 0.0,
+        "zombie": 0.0
+      },
+      {
+        "cured": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "height": 230.0,
+        "opacity": 1.0,
+        "outfit": "survivor_jacket",
+        "t": 5.0,
+        "zombie": 0.0
+      }
+    ],
+    "kind": "emote",
+    "loopable": false,
+    "needs": {
+      "background_theme": [
+        "abandoned_street"
+      ],
+      "partners": [],
+      "props": []
+    },
+    "source": {
+      "scene": 2,
+      "story": "water_first",
+      "t0": 10.0,
+      "t1": 15.0
+    },
+    "sources": [
+      {
+        "scene": 2,
+        "story": "water_first",
+        "t0": 10.0,
+        "t1": 15.0
+      }
+    ],
+    "space": "relative",
+    "travel_px": 0.0
+  },
+  "mika/wave": {
+    "actions": [],
+    "character": "mika",
+    "duration": 2.5,
+    "facing": "right",
+    "keyframes": [
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "hand_r_x": 16,
+        "hand_r_y": -22,
+        "height": 230,
+        "t": 0.0
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "hand_r_x": 22,
+        "hand_r_y": -46,
+        "height": 230,
+        "t": 0.6
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "hand_r_x": 14,
+        "hand_r_y": -46,
+        "height": 230,
+        "t": 1.2
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "hand_r_x": 22,
+        "hand_r_y": -46,
+        "height": 230,
+        "t": 1.8
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "hand_r_x": 16,
+        "hand_r_y": -22,
+        "height": 230,
+        "t": 2.5
+      }
+    ],
+    "kind": "gesture",
+    "loopable": false,
+    "sources": [
+      {
+        "scene": 0,
+        "story": "last_city_morning"
+      }
+    ],
+    "space": "relative",
+    "travel_px": 0.0
+  },
   "moai_generic/moai_mystery_s0_moai": {
     "actions": [],
     "character": "moai_generic",
@@ -22041,6 +27694,705 @@
         "story": "virus_invasion",
         "t0": 5.0,
         "t1": 10.0
+      }
+    ],
+    "space": "relative",
+    "travel_px": 0.0
+  },
+  "nora/crouch_hide": {
+    "actions": [],
+    "character": "nora",
+    "duration": 3.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "worried",
+        "height": 230,
+        "lean": 0.1,
+        "t": 0.0
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "worried",
+        "height": 230,
+        "lean": 0.35,
+        "t": 0.8
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "worried",
+        "height": 230,
+        "lean": 0.35,
+        "t": 3.0
+      }
+    ],
+    "kind": "gesture",
+    "loopable": true,
+    "sources": [
+      {
+        "scene": 0,
+        "story": "the_cure"
+      }
+    ],
+    "space": "relative",
+    "travel_px": 0.0
+  },
+  "nora/emote_exclamation": {
+    "actions": [
+      {
+        "actor": "nora",
+        "emote": "exclamation",
+        "end": 1.8,
+        "start": 0.2,
+        "type": "emote"
+      }
+    ],
+    "character": "nora",
+    "duration": 2.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "surprised",
+        "height": 230,
+        "t": 0.0
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "surprised",
+        "height": 230,
+        "t": 2.0
+      }
+    ],
+    "kind": "gesture",
+    "loopable": false,
+    "sources": [
+      {
+        "scene": 0,
+        "story": "the_cure"
+      }
+    ],
+    "space": "relative",
+    "travel_px": 0.0
+  },
+  "nora/emote_heart": {
+    "actions": [
+      {
+        "actor": "nora",
+        "emote": "heart",
+        "end": 1.8,
+        "start": 0.2,
+        "type": "emote"
+      }
+    ],
+    "character": "nora",
+    "duration": 2.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "height": 230,
+        "t": 0.0
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "height": 230,
+        "t": 2.0
+      }
+    ],
+    "kind": "gesture",
+    "loopable": false,
+    "sources": [
+      {
+        "scene": 0,
+        "story": "the_cure"
+      }
+    ],
+    "space": "relative",
+    "travel_px": 0.0
+  },
+  "nora/idle": {
+    "actions": [],
+    "character": "nora",
+    "duration": 3.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 230,
+        "lean": 0.0,
+        "t": 0.0
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 230,
+        "lean": 0.02,
+        "t": 1.5
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 230,
+        "lean": 0.0,
+        "t": 3.0
+      }
+    ],
+    "kind": "idle",
+    "loopable": true,
+    "sources": [
+      {
+        "scene": 0,
+        "story": "the_cure"
+      }
+    ],
+    "space": "relative",
+    "travel_px": 0.0
+  },
+  "nora/look_around": {
+    "actions": [],
+    "character": "nora",
+    "duration": 3.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "curious",
+        "height": 230,
+        "look_x": 0.0,
+        "t": 0.0
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "curious",
+        "height": 230,
+        "look_x": -0.8,
+        "t": 1.0
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "curious",
+        "height": 230,
+        "look_x": 0.8,
+        "t": 2.0
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 230,
+        "look_x": 0.0,
+        "t": 3.0
+      }
+    ],
+    "kind": "gesture",
+    "loopable": false,
+    "sources": [
+      {
+        "scene": 0,
+        "story": "the_cure"
+      }
+    ],
+    "space": "relative",
+    "travel_px": 0.0
+  },
+  "nora/run_short": {
+    "actions": [],
+    "character": "nora",
+    "duration": 2.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "focused",
+        "height": 230,
+        "lean": 0.15,
+        "stride": 0.0,
+        "t": 0.0,
+        "walk": 0.9
+      },
+      {
+        "dx": 70.0,
+        "dy": 0.0,
+        "expression": "focused",
+        "height": 230,
+        "lean": 0.18,
+        "stride": 8.0,
+        "t": 1.0,
+        "walk": 0.9
+      },
+      {
+        "dx": 140.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 230,
+        "lean": 0.0,
+        "stride": 16.0,
+        "t": 2.0,
+        "walk": 0.0
+      }
+    ],
+    "kind": "locomotion",
+    "loopable": false,
+    "sources": [
+      {
+        "scene": 0,
+        "story": "the_cure"
+      }
+    ],
+    "space": "relative",
+    "travel_px": 140.0
+  },
+  "nora/talk": {
+    "actions": [],
+    "character": "nora",
+    "duration": 3.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 230,
+        "mouth_talk": 0.0,
+        "t": 0.0
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "height": 230,
+        "mouth_talk": 0.8,
+        "t": 0.7
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 230,
+        "mouth_talk": 0.2,
+        "t": 1.5
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "height": 230,
+        "mouth_talk": 0.9,
+        "t": 2.3
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 230,
+        "mouth_talk": 0.0,
+        "t": 3.0
+      }
+    ],
+    "kind": "gesture",
+    "loopable": true,
+    "sources": [
+      {
+        "scene": 0,
+        "story": "the_cure"
+      }
+    ],
+    "space": "relative",
+    "travel_px": 0.0
+  },
+  "nora/the_cure_s0_nora": {
+    "actions": [
+      {
+        "actor": "nora",
+        "direction": "left",
+        "distance": 50,
+        "end": 5.0,
+        "start": 0.0,
+        "type": "shamble"
+      }
+    ],
+    "character": "nora",
+    "duration": 5.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "cured": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "dazed",
+        "height": 215.0,
+        "opacity": 1.0,
+        "outfit": "torn",
+        "t": 0.0,
+        "zombie": 1.0
+      },
+      {
+        "cured": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "dazed",
+        "height": 215.0,
+        "opacity": 1.0,
+        "outfit": "torn",
+        "t": 5.0,
+        "zombie": 1.0
+      }
+    ],
+    "kind": "idle",
+    "loopable": false,
+    "needs": {
+      "background_theme": [
+        "subway_tunnel"
+      ],
+      "partners": [],
+      "props": []
+    },
+    "source": {
+      "scene": 0,
+      "story": "the_cure",
+      "t0": 0.0,
+      "t1": 5.0
+    },
+    "sources": [
+      {
+        "scene": 0,
+        "story": "the_cure",
+        "t0": 0.0,
+        "t1": 5.0
+      }
+    ],
+    "space": "relative",
+    "travel_px": 0.0
+  },
+  "nora/the_cure_s1_nora": {
+    "actions": [],
+    "character": "nora",
+    "duration": 5.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "cured": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "dazed",
+        "height": 215.0,
+        "opacity": 1.0,
+        "outfit": "torn",
+        "t": 0.0,
+        "zombie": 1.0
+      },
+      {
+        "cured": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "dazed",
+        "height": 215.0,
+        "opacity": 1.0,
+        "outfit": "torn",
+        "t": 0.6,
+        "zombie": 1.0
+      },
+      {
+        "cured": 0.6,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "dazed",
+        "height": 215.0,
+        "opacity": 1.0,
+        "outfit": "torn",
+        "t": 1.8,
+        "zombie": 1.0
+      },
+      {
+        "cured": 1.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "height": 215.0,
+        "opacity": 1.0,
+        "outfit": "survivor_hoodie_purple",
+        "t": 2.0,
+        "zombie": 0.0
+      },
+      {
+        "cured": 1.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "height": 215.0,
+        "opacity": 1.0,
+        "outfit": "survivor_hoodie_purple",
+        "t": 5.0,
+        "zombie": 0.0
+      }
+    ],
+    "kind": "idle",
+    "loopable": false,
+    "needs": {
+      "background_theme": [
+        "subway_tunnel"
+      ],
+      "partners": [],
+      "props": []
+    },
+    "source": {
+      "scene": 1,
+      "story": "the_cure",
+      "t0": 5.0,
+      "t1": 10.0
+    },
+    "sources": [
+      {
+        "scene": 1,
+        "story": "the_cure",
+        "t0": 5.0,
+        "t1": 10.0
+      }
+    ],
+    "space": "relative",
+    "travel_px": 0.0
+  },
+  "nora/the_cure_s2_nora": {
+    "actions": [
+      {
+        "actor": "nora",
+        "emote": "heart",
+        "end": 4.5,
+        "start": 1.0,
+        "type": "emote"
+      }
+    ],
+    "character": "nora",
+    "duration": 5.0,
+    "facing": "left",
+    "keyframes": [
+      {
+        "cured": 1.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "height": 215.0,
+        "opacity": 1.0,
+        "outfit": "survivor_hoodie_purple",
+        "t": 0.0,
+        "zombie": 0.0
+      },
+      {
+        "cured": 1.0,
+        "dx": -20.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "height": 215.0,
+        "opacity": 1.0,
+        "outfit": "survivor_hoodie_purple",
+        "t": 2.0,
+        "zombie": 0.0
+      },
+      {
+        "cured": 1.0,
+        "dx": -20.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "height": 215.0,
+        "opacity": 1.0,
+        "outfit": "survivor_hoodie_purple",
+        "t": 5.0,
+        "zombie": 0.0
+      }
+    ],
+    "kind": "emote",
+    "loopable": false,
+    "needs": {
+      "background_theme": [
+        "subway_tunnel"
+      ],
+      "partners": [],
+      "props": []
+    },
+    "source": {
+      "scene": 2,
+      "story": "the_cure",
+      "t0": 10.0,
+      "t1": 15.0
+    },
+    "sources": [
+      {
+        "scene": 2,
+        "story": "the_cure",
+        "t0": 10.0,
+        "t1": 15.0
+      }
+    ],
+    "space": "relative",
+    "travel_px": 20.0
+  },
+  "nora/walk_in": {
+    "actions": [],
+    "character": "nora",
+    "duration": 3.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 230,
+        "stride": 0.0,
+        "t": 0.0,
+        "walk": 0.6
+      },
+      {
+        "dx": 60.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 230,
+        "stride": 9.0,
+        "t": 1.5,
+        "walk": 0.6
+      },
+      {
+        "dx": 120.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 230,
+        "stride": 18.0,
+        "t": 3.0,
+        "walk": 0.0
+      }
+    ],
+    "kind": "locomotion",
+    "loopable": false,
+    "sources": [
+      {
+        "scene": 0,
+        "story": "the_cure"
+      }
+    ],
+    "space": "relative",
+    "travel_px": 120.0
+  },
+  "nora/walk_out": {
+    "actions": [],
+    "character": "nora",
+    "duration": 3.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 230,
+        "stride": 0.0,
+        "t": 0.0,
+        "walk": 0.6
+      },
+      {
+        "dx": 60.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 230,
+        "stride": 9.0,
+        "t": 1.5,
+        "walk": 0.6
+      },
+      {
+        "dx": 120.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 230,
+        "stride": 18.0,
+        "t": 3.0,
+        "walk": 0.0
+      }
+    ],
+    "kind": "locomotion",
+    "loopable": false,
+    "sources": [
+      {
+        "scene": 0,
+        "story": "the_cure"
+      }
+    ],
+    "space": "relative",
+    "travel_px": 120.0
+  },
+  "nora/wave": {
+    "actions": [],
+    "character": "nora",
+    "duration": 2.5,
+    "facing": "right",
+    "keyframes": [
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "hand_r_x": 16,
+        "hand_r_y": -22,
+        "height": 230,
+        "t": 0.0
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "hand_r_x": 22,
+        "hand_r_y": -46,
+        "height": 230,
+        "t": 0.6
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "hand_r_x": 14,
+        "hand_r_y": -46,
+        "height": 230,
+        "t": 1.2
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "hand_r_x": 22,
+        "hand_r_y": -46,
+        "height": 230,
+        "t": 1.8
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "hand_r_x": 16,
+        "hand_r_y": -22,
+        "height": 230,
+        "t": 2.5
+      }
+    ],
+    "kind": "gesture",
+    "loopable": false,
+    "sources": [
+      {
+        "scene": 0,
+        "story": "the_cure"
       }
     ],
     "space": "relative",
@@ -23584,6 +29936,1025 @@
     ],
     "space": "relative",
     "travel_px": 320.0
+  },
+  "pip/crank_radio": {
+    "actions": [],
+    "character": "pip",
+    "duration": 4.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "curious",
+        "hand_r_x": 14,
+        "hand_r_y": -22,
+        "height": 210,
+        "t": 0.0
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "smile",
+        "hand_r_x": 22,
+        "hand_r_y": -30,
+        "height": 210,
+        "t": 1.0
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "hand_r_x": 18,
+        "hand_r_y": -20,
+        "height": 210,
+        "t": 2.0
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "smile",
+        "hand_r_x": 22,
+        "hand_r_y": -30,
+        "height": 210,
+        "t": 3.0
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "hand_r_x": 14,
+        "hand_r_y": -22,
+        "height": 210,
+        "t": 4.0
+      }
+    ],
+    "kind": "interact",
+    "loopable": false,
+    "sources": [
+      {
+        "scene": 0,
+        "story": "last_city_morning"
+      }
+    ],
+    "space": "relative",
+    "travel_px": 0.0
+  },
+  "pip/crouch_hide": {
+    "actions": [],
+    "character": "pip",
+    "duration": 3.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "worried",
+        "height": 210,
+        "lean": 0.1,
+        "t": 0.0
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "worried",
+        "height": 210,
+        "lean": 0.35,
+        "t": 0.8
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "worried",
+        "height": 210,
+        "lean": 0.35,
+        "t": 3.0
+      }
+    ],
+    "kind": "gesture",
+    "loopable": true,
+    "sources": [
+      {
+        "scene": 0,
+        "story": "last_city_morning"
+      }
+    ],
+    "space": "relative",
+    "travel_px": 0.0
+  },
+  "pip/emote_exclamation": {
+    "actions": [
+      {
+        "actor": "pip",
+        "emote": "exclamation",
+        "end": 1.8,
+        "start": 0.2,
+        "type": "emote"
+      }
+    ],
+    "character": "pip",
+    "duration": 2.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "surprised",
+        "height": 210,
+        "t": 0.0
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "surprised",
+        "height": 210,
+        "t": 2.0
+      }
+    ],
+    "kind": "gesture",
+    "loopable": false,
+    "sources": [
+      {
+        "scene": 0,
+        "story": "last_city_morning"
+      }
+    ],
+    "space": "relative",
+    "travel_px": 0.0
+  },
+  "pip/emote_heart": {
+    "actions": [
+      {
+        "actor": "pip",
+        "emote": "heart",
+        "end": 1.8,
+        "start": 0.2,
+        "type": "emote"
+      }
+    ],
+    "character": "pip",
+    "duration": 2.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "height": 210,
+        "t": 0.0
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "height": 210,
+        "t": 2.0
+      }
+    ],
+    "kind": "gesture",
+    "loopable": false,
+    "sources": [
+      {
+        "scene": 0,
+        "story": "last_city_morning"
+      }
+    ],
+    "space": "relative",
+    "travel_px": 0.0
+  },
+  "pip/idle": {
+    "actions": [],
+    "character": "pip",
+    "duration": 3.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 210,
+        "lean": 0.0,
+        "t": 0.0
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 210,
+        "lean": 0.02,
+        "t": 1.5
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 210,
+        "lean": 0.0,
+        "t": 3.0
+      }
+    ],
+    "kind": "idle",
+    "loopable": true,
+    "sources": [
+      {
+        "scene": 0,
+        "story": "last_city_morning"
+      }
+    ],
+    "space": "relative",
+    "travel_px": 0.0
+  },
+  "pip/last_city_morning_s0_pip": {
+    "actions": [],
+    "character": "pip",
+    "duration": 5.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "cured": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 210.0,
+        "opacity": 1.0,
+        "outfit": "raincoat",
+        "t": 0.0,
+        "zombie": 0.0
+      },
+      {
+        "cured": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "hand_r_x": 4,
+        "hand_r_y": -30,
+        "height": 210.0,
+        "opacity": 1.0,
+        "outfit": "raincoat",
+        "t": 0.5,
+        "zombie": 0.0
+      },
+      {
+        "cured": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "hand_r_x": 12,
+        "hand_r_y": -40,
+        "height": 210.0,
+        "opacity": 1.0,
+        "outfit": "raincoat",
+        "t": 0.75,
+        "zombie": 0.0
+      },
+      {
+        "cured": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "hand_r_x": 4,
+        "hand_r_y": -30,
+        "height": 210.0,
+        "opacity": 1.0,
+        "outfit": "raincoat",
+        "t": 1.0,
+        "zombie": 0.0
+      },
+      {
+        "cured": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "hand_r_x": 12,
+        "hand_r_y": -40,
+        "height": 210.0,
+        "opacity": 1.0,
+        "outfit": "raincoat",
+        "t": 1.25,
+        "zombie": 0.0
+      },
+      {
+        "cured": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "hand_r_x": 4,
+        "hand_r_y": -30,
+        "height": 210.0,
+        "opacity": 1.0,
+        "outfit": "raincoat",
+        "t": 1.5,
+        "zombie": 0.0
+      },
+      {
+        "cured": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "hand_r_x": 12,
+        "hand_r_y": -40,
+        "height": 210.0,
+        "opacity": 1.0,
+        "outfit": "raincoat",
+        "t": 1.75,
+        "zombie": 0.0
+      },
+      {
+        "cured": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "hand_r_x": 4,
+        "hand_r_y": -30,
+        "height": 210.0,
+        "opacity": 1.0,
+        "outfit": "raincoat",
+        "t": 2.0,
+        "zombie": 0.0
+      },
+      {
+        "cured": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "hand_r_x": 12,
+        "hand_r_y": -40,
+        "height": 210.0,
+        "opacity": 1.0,
+        "outfit": "raincoat",
+        "t": 2.25,
+        "zombie": 0.0
+      },
+      {
+        "cured": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "hand_r_x": 4,
+        "hand_r_y": -30,
+        "height": 210.0,
+        "opacity": 1.0,
+        "outfit": "raincoat",
+        "t": 2.5,
+        "zombie": 0.0
+      },
+      {
+        "cured": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "hand_r_x": 12,
+        "hand_r_y": -40,
+        "height": 210.0,
+        "opacity": 1.0,
+        "outfit": "raincoat",
+        "t": 2.75,
+        "zombie": 0.0
+      },
+      {
+        "cured": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "hand_r_x": 4,
+        "hand_r_y": -30,
+        "height": 210.0,
+        "opacity": 1.0,
+        "outfit": "raincoat",
+        "t": 3.0,
+        "zombie": 0.0
+      },
+      {
+        "cured": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "hand_r_x": 12,
+        "hand_r_y": -40,
+        "height": 210.0,
+        "opacity": 1.0,
+        "outfit": "raincoat",
+        "t": 3.25,
+        "zombie": 0.0
+      },
+      {
+        "cured": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "hand_r_x": 4,
+        "hand_r_y": -30,
+        "height": 210.0,
+        "opacity": 1.0,
+        "outfit": "raincoat",
+        "t": 3.5,
+        "zombie": 0.0
+      },
+      {
+        "cured": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "hand_r_x": 12,
+        "hand_r_y": -40,
+        "height": 210.0,
+        "opacity": 1.0,
+        "outfit": "raincoat",
+        "t": 3.75,
+        "zombie": 0.0
+      },
+      {
+        "cured": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "hand_r_x": 4,
+        "hand_r_y": -30,
+        "height": 210.0,
+        "opacity": 1.0,
+        "outfit": "raincoat",
+        "t": 4.0,
+        "zombie": 0.0
+      },
+      {
+        "cured": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "hand_r_x": 12,
+        "hand_r_y": -40,
+        "height": 210.0,
+        "opacity": 1.0,
+        "outfit": "raincoat",
+        "t": 4.25,
+        "zombie": 0.0
+      },
+      {
+        "cured": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "hand_r_x": 4,
+        "hand_r_y": -30,
+        "height": 210.0,
+        "opacity": 1.0,
+        "outfit": "raincoat",
+        "t": 4.5,
+        "zombie": 0.0
+      },
+      {
+        "cured": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "hand_r_x": 12,
+        "hand_r_y": -40,
+        "height": 210.0,
+        "opacity": 1.0,
+        "outfit": "raincoat",
+        "t": 4.75,
+        "zombie": 0.0
+      },
+      {
+        "cured": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "hand_r_x": 4,
+        "hand_r_y": -30,
+        "height": 210.0,
+        "opacity": 1.0,
+        "outfit": "raincoat",
+        "t": 5.0,
+        "zombie": 0.0
+      }
+    ],
+    "kind": "idle",
+    "loopable": false,
+    "needs": {
+      "background_theme": [
+        "rooftop_garden"
+      ],
+      "partners": [],
+      "props": []
+    },
+    "source": {
+      "scene": 0,
+      "story": "last_city_morning",
+      "t0": 0.0,
+      "t1": 5.0
+    },
+    "sources": [
+      {
+        "scene": 0,
+        "story": "last_city_morning",
+        "t0": 0.0,
+        "t1": 5.0
+      }
+    ],
+    "space": "relative",
+    "travel_px": 0.0
+  },
+  "pip/last_city_morning_s1_pip": {
+    "actions": [
+      {
+        "actor": "pip",
+        "emote": "exclamation",
+        "end": 3.5,
+        "start": 1.0,
+        "type": "emote"
+      }
+    ],
+    "character": "pip",
+    "duration": 5.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "cured": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "surprised",
+        "height": 210.0,
+        "opacity": 1.0,
+        "outfit": "raincoat",
+        "t": 0.0,
+        "zombie": 0.0
+      },
+      {
+        "cured": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "height": 210.0,
+        "opacity": 1.0,
+        "outfit": "raincoat",
+        "t": 5.0,
+        "zombie": 0.0
+      }
+    ],
+    "kind": "emote",
+    "loopable": false,
+    "needs": {
+      "background_theme": [
+        "rooftop_garden"
+      ],
+      "partners": [],
+      "props": []
+    },
+    "source": {
+      "scene": 1,
+      "story": "last_city_morning",
+      "t0": 5.0,
+      "t1": 10.0
+    },
+    "sources": [
+      {
+        "scene": 1,
+        "story": "last_city_morning",
+        "t0": 5.0,
+        "t1": 10.0
+      }
+    ],
+    "space": "relative",
+    "travel_px": 0.0
+  },
+  "pip/last_city_morning_s2_pip": {
+    "actions": [],
+    "character": "pip",
+    "duration": 5.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "cured": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 210.0,
+        "opacity": 1.0,
+        "outfit": "raincoat",
+        "t": 0.0,
+        "zombie": 0.0
+      },
+      {
+        "cured": 0.0,
+        "dx": 220.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "height": 210.0,
+        "opacity": 1.0,
+        "outfit": "raincoat",
+        "t": 5.0,
+        "zombie": 0.0
+      }
+    ],
+    "kind": "locomotion",
+    "loopable": false,
+    "needs": {
+      "background_theme": [
+        "rooftop_garden"
+      ],
+      "partners": [],
+      "props": []
+    },
+    "source": {
+      "scene": 2,
+      "story": "last_city_morning",
+      "t0": 10.0,
+      "t1": 15.0
+    },
+    "sources": [
+      {
+        "scene": 2,
+        "story": "last_city_morning",
+        "t0": 10.0,
+        "t1": 15.0
+      }
+    ],
+    "space": "relative",
+    "travel_px": 220.0
+  },
+  "pip/look_around": {
+    "actions": [],
+    "character": "pip",
+    "duration": 3.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "curious",
+        "height": 210,
+        "look_x": 0.0,
+        "t": 0.0
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "curious",
+        "height": 210,
+        "look_x": -0.8,
+        "t": 1.0
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "curious",
+        "height": 210,
+        "look_x": 0.8,
+        "t": 2.0
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 210,
+        "look_x": 0.0,
+        "t": 3.0
+      }
+    ],
+    "kind": "gesture",
+    "loopable": false,
+    "sources": [
+      {
+        "scene": 0,
+        "story": "last_city_morning"
+      }
+    ],
+    "space": "relative",
+    "travel_px": 0.0
+  },
+  "pip/run_short": {
+    "actions": [],
+    "character": "pip",
+    "duration": 2.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "focused",
+        "height": 210,
+        "lean": 0.15,
+        "stride": 0.0,
+        "t": 0.0,
+        "walk": 0.9
+      },
+      {
+        "dx": 70.0,
+        "dy": 0.0,
+        "expression": "focused",
+        "height": 210,
+        "lean": 0.18,
+        "stride": 8.0,
+        "t": 1.0,
+        "walk": 0.9
+      },
+      {
+        "dx": 140.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 210,
+        "lean": 0.0,
+        "stride": 16.0,
+        "t": 2.0,
+        "walk": 0.0
+      }
+    ],
+    "kind": "locomotion",
+    "loopable": false,
+    "sources": [
+      {
+        "scene": 0,
+        "story": "last_city_morning"
+      }
+    ],
+    "space": "relative",
+    "travel_px": 140.0
+  },
+  "pip/talk": {
+    "actions": [],
+    "character": "pip",
+    "duration": 3.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 210,
+        "mouth_talk": 0.0,
+        "t": 0.0
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "height": 210,
+        "mouth_talk": 0.8,
+        "t": 0.7
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 210,
+        "mouth_talk": 0.2,
+        "t": 1.5
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "height": 210,
+        "mouth_talk": 0.9,
+        "t": 2.3
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 210,
+        "mouth_talk": 0.0,
+        "t": 3.0
+      }
+    ],
+    "kind": "gesture",
+    "loopable": true,
+    "sources": [
+      {
+        "scene": 0,
+        "story": "last_city_morning"
+      }
+    ],
+    "space": "relative",
+    "travel_px": 0.0
+  },
+  "pip/walk_in": {
+    "actions": [],
+    "character": "pip",
+    "duration": 3.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 210,
+        "stride": 0.0,
+        "t": 0.0,
+        "walk": 0.6
+      },
+      {
+        "dx": 60.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 210,
+        "stride": 9.0,
+        "t": 1.5,
+        "walk": 0.6
+      },
+      {
+        "dx": 120.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 210,
+        "stride": 18.0,
+        "t": 3.0,
+        "walk": 0.0
+      }
+    ],
+    "kind": "locomotion",
+    "loopable": false,
+    "sources": [
+      {
+        "scene": 0,
+        "story": "last_city_morning"
+      }
+    ],
+    "space": "relative",
+    "travel_px": 120.0
+  },
+  "pip/walk_out": {
+    "actions": [],
+    "character": "pip",
+    "duration": 3.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 210,
+        "stride": 0.0,
+        "t": 0.0,
+        "walk": 0.6
+      },
+      {
+        "dx": 60.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 210,
+        "stride": 9.0,
+        "t": 1.5,
+        "walk": 0.6
+      },
+      {
+        "dx": 120.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 210,
+        "stride": 18.0,
+        "t": 3.0,
+        "walk": 0.0
+      }
+    ],
+    "kind": "locomotion",
+    "loopable": false,
+    "sources": [
+      {
+        "scene": 0,
+        "story": "last_city_morning"
+      }
+    ],
+    "space": "relative",
+    "travel_px": 120.0
+  },
+  "pip/water_first_s2_pip": {
+    "actions": [
+      {
+        "actor": "pip",
+        "emote": "heart",
+        "end": 4.8,
+        "start": 3.2,
+        "type": "emote"
+      }
+    ],
+    "character": "pip",
+    "duration": 5.0,
+    "facing": "left",
+    "keyframes": [
+      {
+        "cured": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "neutral",
+        "height": 210.0,
+        "opacity": 1.0,
+        "outfit": "raincoat",
+        "t": 0.0,
+        "zombie": 0.0
+      },
+      {
+        "cured": 0.0,
+        "dx": -230.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "height": 210.0,
+        "opacity": 1.0,
+        "outfit": "raincoat",
+        "t": 3.0,
+        "zombie": 0.0
+      },
+      {
+        "cured": 0.0,
+        "dx": -230.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "height": 210.0,
+        "opacity": 1.0,
+        "outfit": "raincoat",
+        "t": 5.0,
+        "zombie": 0.0
+      }
+    ],
+    "kind": "emote",
+    "loopable": false,
+    "needs": {
+      "background_theme": [
+        "abandoned_street"
+      ],
+      "partners": [],
+      "props": []
+    },
+    "source": {
+      "scene": 2,
+      "story": "water_first",
+      "t0": 10.0,
+      "t1": 15.0
+    },
+    "sources": [
+      {
+        "scene": 2,
+        "story": "water_first",
+        "t0": 10.0,
+        "t1": 15.0
+      }
+    ],
+    "space": "relative",
+    "travel_px": 230.0
+  },
+  "pip/wave": {
+    "actions": [],
+    "character": "pip",
+    "duration": 2.5,
+    "facing": "right",
+    "keyframes": [
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "hand_r_x": 16,
+        "hand_r_y": -22,
+        "height": 210,
+        "t": 0.0
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "hand_r_x": 22,
+        "hand_r_y": -46,
+        "height": 210,
+        "t": 0.6
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "hand_r_x": 14,
+        "hand_r_y": -46,
+        "height": 210,
+        "t": 1.2
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "hand_r_x": 22,
+        "hand_r_y": -46,
+        "height": 210,
+        "t": 1.8
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "hand_r_x": 16,
+        "hand_r_y": -22,
+        "height": 210,
+        "t": 2.5
+      }
+    ],
+    "kind": "gesture",
+    "loopable": false,
+    "sources": [
+      {
+        "scene": 0,
+        "story": "last_city_morning"
+      }
+    ],
+    "space": "relative",
+    "travel_px": 0.0
   },
   "planet/solar_system_tour_s0_p1": {
     "actions": [],
@@ -25561,6 +32932,154 @@
       {
         "scene": 2,
         "story": "disaster_safety",
+        "t0": 10.0,
+        "t1": 15.0
+      }
+    ],
+    "space": "relative",
+    "travel_px": 0.0
+  },
+  "rain_barrel_filter/water_first_s0_barrel": {
+    "actions": [],
+    "character": "rain_barrel_filter",
+    "duration": 5.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "clarity": 0.0,
+        "dx": 0,
+        "dy": 0,
+        "height": 220,
+        "t": 0.0
+      },
+      {
+        "clarity": 0.2,
+        "dx": 0,
+        "dy": 0,
+        "height": 220,
+        "t": 5.0
+      }
+    ],
+    "kind": "idle",
+    "loopable": false,
+    "needs": {
+      "background_theme": [
+        "abandoned_street"
+      ],
+      "partners": [],
+      "props": []
+    },
+    "source": {
+      "scene": 0,
+      "story": "water_first",
+      "t0": 0.0,
+      "t1": 5.0
+    },
+    "sources": [
+      {
+        "scene": 0,
+        "story": "water_first",
+        "t0": 0.0,
+        "t1": 5.0
+      }
+    ],
+    "space": "relative",
+    "travel_px": 0.0
+  },
+  "rain_barrel_filter/water_first_s1_barrel": {
+    "actions": [],
+    "character": "rain_barrel_filter",
+    "duration": 5.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "clarity": 0.3,
+        "dx": 0,
+        "dy": 0,
+        "height": 220,
+        "t": 0.0
+      },
+      {
+        "clarity": 0.6,
+        "dx": 0,
+        "dy": 0,
+        "height": 220,
+        "t": 5.0
+      }
+    ],
+    "kind": "idle",
+    "loopable": false,
+    "needs": {
+      "background_theme": [
+        "abandoned_street"
+      ],
+      "partners": [],
+      "props": []
+    },
+    "source": {
+      "scene": 1,
+      "story": "water_first",
+      "t0": 5.0,
+      "t1": 10.0
+    },
+    "sources": [
+      {
+        "scene": 1,
+        "story": "water_first",
+        "t0": 5.0,
+        "t1": 10.0
+      }
+    ],
+    "space": "relative",
+    "travel_px": 0.0
+  },
+  "rain_barrel_filter/water_first_s2_barrel": {
+    "actions": [],
+    "character": "rain_barrel_filter",
+    "duration": 5.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "clarity": 0.6,
+        "dx": 0,
+        "dy": 0,
+        "height": 220,
+        "t": 0.0
+      },
+      {
+        "clarity": 1.0,
+        "dx": 0,
+        "dy": 0,
+        "height": 220,
+        "t": 2.0
+      },
+      {
+        "clarity": 1.0,
+        "dx": 0,
+        "dy": 0,
+        "height": 220,
+        "t": 5.0
+      }
+    ],
+    "kind": "idle",
+    "loopable": false,
+    "needs": {
+      "background_theme": [
+        "abandoned_street"
+      ],
+      "partners": [],
+      "props": []
+    },
+    "source": {
+      "scene": 2,
+      "story": "water_first",
+      "t0": 10.0,
+      "t1": 15.0
+    },
+    "sources": [
+      {
+        "scene": 2,
+        "story": "water_first",
         "t0": 10.0,
         "t1": 15.0
       }
@@ -27992,6 +35511,51 @@
     "space": "relative",
     "travel_px": 210.0
   },
+  "seed_tray/last_city_morning_s0_tray": {
+    "actions": [],
+    "character": "seed_tray",
+    "duration": 5.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "dx": 0,
+        "dy": 0,
+        "height": 160,
+        "t": 0.0
+      },
+      {
+        "dx": 0,
+        "dy": 0,
+        "height": 160,
+        "t": 5.0
+      }
+    ],
+    "kind": "idle",
+    "loopable": false,
+    "needs": {
+      "background_theme": [
+        "rooftop_garden"
+      ],
+      "partners": [],
+      "props": []
+    },
+    "source": {
+      "scene": 0,
+      "story": "last_city_morning",
+      "t0": 0.0,
+      "t1": 5.0
+    },
+    "sources": [
+      {
+        "scene": 0,
+        "story": "last_city_morning",
+        "t0": 0.0,
+        "t1": 5.0
+      }
+    ],
+    "space": "relative",
+    "travel_px": 0.0
+  },
   "seismometer/apollo_11_s1_seismometer": {
     "actions": [],
     "character": "seismometer",
@@ -28254,6 +35818,110 @@
       }
     ],
     "space": "relative",
+    "travel_px": 0.0
+  },
+  "signal_mirror/flooded_escape_s0_mika_signal_mirror": {
+    "actions": [],
+    "character": "signal_mirror",
+    "duration": 5.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "height": 160,
+        "opacity": 0.0,
+        "rotation": -20,
+        "t": 0.0
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "height": 160,
+        "opacity": 0.0,
+        "rotation": -20,
+        "t": 5.0
+      }
+    ],
+    "kind": "hold",
+    "loopable": false,
+    "needs": {
+      "background_theme": [
+        "flooded_downtown"
+      ],
+      "partners": [],
+      "props": []
+    },
+    "source": {
+      "scene": 0,
+      "story": "flooded_escape",
+      "t0": 0.0,
+      "t1": 5.0
+    },
+    "sources": [
+      {
+        "scene": 0,
+        "story": "flooded_escape",
+        "t0": 0.0,
+        "t1": 5.0
+      },
+      {
+        "scene": 2,
+        "story": "flooded_escape",
+        "t0": 10.0,
+        "t1": 15.0
+      }
+    ],
+    "space": "anchored",
+    "travel_px": 0.0
+  },
+  "signal_mirror/flooded_escape_s1_mika_signal_mirror": {
+    "actions": [],
+    "character": "signal_mirror",
+    "duration": 5.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "height": 160,
+        "opacity": 1.0,
+        "rotation": -20,
+        "t": 0.0
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "height": 160,
+        "opacity": 1.0,
+        "rotation": -20,
+        "t": 5.0
+      }
+    ],
+    "kind": "hold",
+    "loopable": false,
+    "needs": {
+      "background_theme": [
+        "flooded_downtown"
+      ],
+      "partners": [],
+      "props": []
+    },
+    "source": {
+      "scene": 1,
+      "story": "flooded_escape",
+      "t0": 5.0,
+      "t1": 10.0
+    },
+    "sources": [
+      {
+        "scene": 1,
+        "story": "flooded_escape",
+        "t0": 5.0,
+        "t1": 10.0
+      }
+    ],
+    "space": "anchored",
     "travel_px": 0.0
   },
   "skin_patch/scrape_battle_s0_patch": {
@@ -31432,6 +39100,67 @@
     "space": "relative",
     "travel_px": 0.0
   },
+  "walkie_talkie/last_city_morning_s0_mika_walkie_talkie": {
+    "actions": [],
+    "character": "walkie_talkie",
+    "duration": 5.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "height": 110,
+        "opacity": 1.0,
+        "rotation": 0,
+        "t": 0.0
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "height": 110,
+        "opacity": 1.0,
+        "rotation": 0,
+        "t": 5.0
+      }
+    ],
+    "kind": "hold",
+    "loopable": false,
+    "needs": {
+      "background_theme": [
+        "rooftop_garden"
+      ],
+      "partners": [],
+      "props": []
+    },
+    "source": {
+      "scene": 0,
+      "story": "last_city_morning",
+      "t0": 0.0,
+      "t1": 5.0
+    },
+    "sources": [
+      {
+        "scene": 0,
+        "story": "last_city_morning",
+        "t0": 0.0,
+        "t1": 5.0
+      },
+      {
+        "scene": 1,
+        "story": "last_city_morning",
+        "t0": 5.0,
+        "t1": 10.0
+      },
+      {
+        "scene": 2,
+        "story": "last_city_morning",
+        "t0": 10.0,
+        "t1": 15.0
+      }
+    ],
+    "space": "anchored",
+    "travel_px": 0.0
+  },
   "warning_sign/safe_spraying_s0_sign": {
     "actions": [],
     "character": "warning_sign",
@@ -31472,6 +39201,116 @@
         "story": "safe_spraying",
         "t0": 0,
         "t1": 5.0
+      }
+    ],
+    "space": "relative",
+    "travel_px": 0.0
+  },
+  "water_filter_bottle/water_first_s2_bottle": {
+    "actions": [],
+    "character": "water_filter_bottle",
+    "duration": 5.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "height": 150,
+        "opacity": 1.0,
+        "rotation": 0,
+        "t": 0.0
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "height": 150,
+        "opacity": 1.0,
+        "rotation": 0,
+        "t": 5.0
+      }
+    ],
+    "kind": "hold",
+    "loopable": false,
+    "needs": {
+      "background_theme": [
+        "abandoned_street"
+      ],
+      "partners": [],
+      "props": []
+    },
+    "source": {
+      "scene": 2,
+      "story": "water_first",
+      "t0": 10.0,
+      "t1": 15.0
+    },
+    "sources": [
+      {
+        "scene": 2,
+        "story": "water_first",
+        "t0": 10.0,
+        "t1": 15.0
+      }
+    ],
+    "space": "anchored",
+    "travel_px": 0.0
+  },
+  "water_pot_boiling/water_first_s1_pot": {
+    "actions": [],
+    "character": "water_pot_boiling",
+    "duration": 5.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "boil": 0.0,
+        "dx": 0,
+        "dy": 0,
+        "height": 170,
+        "t": 0.0
+      },
+      {
+        "boil": 0.4,
+        "dx": 0,
+        "dy": 0,
+        "height": 170,
+        "t": 2.0
+      },
+      {
+        "boil": 1.0,
+        "dx": 0,
+        "dy": 0,
+        "height": 170,
+        "t": 4.0
+      },
+      {
+        "boil": 1.0,
+        "dx": 0,
+        "dy": 0,
+        "height": 170,
+        "t": 5.0
+      }
+    ],
+    "kind": "idle",
+    "loopable": false,
+    "needs": {
+      "background_theme": [
+        "abandoned_street"
+      ],
+      "partners": [],
+      "props": []
+    },
+    "source": {
+      "scene": 1,
+      "story": "water_first",
+      "t0": 5.0,
+      "t1": 10.0
+    },
+    "sources": [
+      {
+        "scene": 1,
+        "story": "water_first",
+        "t0": 5.0,
+        "t1": 10.0
       }
     ],
     "space": "relative",
@@ -31990,6 +39829,1371 @@
         "story": "tanabata_wish",
         "t0": 7.0,
         "t1": 14.0
+      }
+    ],
+    "space": "relative",
+    "travel_px": 0.0
+  },
+  "zombie_walker_a/idle": {
+    "actions": [],
+    "character": "zombie_walker_a",
+    "duration": 3.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "dazed",
+        "height": 230,
+        "lean": 0.0,
+        "t": 0.0,
+        "zombie": 1.0
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "dazed",
+        "height": 230,
+        "lean": 0.08,
+        "t": 1.5,
+        "zombie": 1.0
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "dazed",
+        "height": 230,
+        "lean": 0.0,
+        "t": 3.0,
+        "zombie": 1.0
+      }
+    ],
+    "kind": "idle",
+    "loopable": true,
+    "sources": [
+      {
+        "scene": 0,
+        "story": "quiet_street"
+      }
+    ],
+    "space": "relative",
+    "travel_px": 0.0
+  },
+  "zombie_walker_a/quiet_street_s0_zombie_walker_a": {
+    "actions": [
+      {
+        "actor": "zombie_walker_a",
+        "direction": "left",
+        "distance": 175,
+        "end": 5.0,
+        "start": 0.0,
+        "type": "shamble"
+      }
+    ],
+    "character": "zombie_walker_a",
+    "duration": 5.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "cured": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "dazed",
+        "height": 230.0,
+        "opacity": 1.0,
+        "outfit": "torn",
+        "t": 0.0,
+        "zombie": 1.0
+      },
+      {
+        "cured": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "dazed",
+        "height": 230.0,
+        "opacity": 1.0,
+        "outfit": "torn",
+        "t": 5.0,
+        "zombie": 1.0
+      }
+    ],
+    "kind": "idle",
+    "loopable": false,
+    "needs": {
+      "background_theme": [
+        "abandoned_street"
+      ],
+      "partners": [],
+      "props": []
+    },
+    "source": {
+      "scene": 0,
+      "story": "quiet_street",
+      "t0": 0.0,
+      "t1": 5.0
+    },
+    "sources": [
+      {
+        "scene": 0,
+        "story": "quiet_street",
+        "t0": 0.0,
+        "t1": 5.0
+      }
+    ],
+    "space": "relative",
+    "travel_px": 0.0
+  },
+  "zombie_walker_a/quiet_street_s1_zombie_walker_a": {
+    "actions": [
+      {
+        "actor": "zombie_walker_a",
+        "direction": "right",
+        "distance": 70,
+        "end": 5.0,
+        "start": 3.0,
+        "type": "shamble"
+      }
+    ],
+    "character": "zombie_walker_a",
+    "duration": 5.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "cured": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "dazed",
+        "height": 230.0,
+        "opacity": 1.0,
+        "outfit": "torn",
+        "t": 0.0,
+        "zombie": 1.0
+      },
+      {
+        "cured": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "dazed",
+        "height": 230.0,
+        "opacity": 1.0,
+        "outfit": "torn",
+        "t": 5.0,
+        "zombie": 1.0
+      }
+    ],
+    "kind": "idle",
+    "loopable": false,
+    "needs": {
+      "background_theme": [
+        "abandoned_street"
+      ],
+      "partners": [],
+      "props": []
+    },
+    "source": {
+      "scene": 1,
+      "story": "quiet_street",
+      "t0": 5.0,
+      "t1": 10.0
+    },
+    "sources": [
+      {
+        "scene": 1,
+        "story": "quiet_street",
+        "t0": 5.0,
+        "t1": 10.0
+      }
+    ],
+    "space": "relative",
+    "travel_px": 0.0
+  },
+  "zombie_walker_a/quiet_street_s2_zombie_walker_a": {
+    "actions": [
+      {
+        "actor": "zombie_walker_a",
+        "direction": "right",
+        "distance": 150,
+        "end": 5.0,
+        "start": 0.0,
+        "type": "shamble"
+      }
+    ],
+    "character": "zombie_walker_a",
+    "duration": 5.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "cured": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "dazed",
+        "height": 230.0,
+        "opacity": 1.0,
+        "outfit": "torn",
+        "t": 0.0,
+        "zombie": 1.0
+      },
+      {
+        "cured": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "dazed",
+        "height": 230.0,
+        "opacity": 1.0,
+        "outfit": "torn",
+        "t": 5.0,
+        "zombie": 1.0
+      }
+    ],
+    "kind": "idle",
+    "loopable": false,
+    "needs": {
+      "background_theme": [
+        "abandoned_street"
+      ],
+      "partners": [],
+      "props": []
+    },
+    "source": {
+      "scene": 2,
+      "story": "quiet_street",
+      "t0": 10.0,
+      "t1": 15.0
+    },
+    "sources": [
+      {
+        "scene": 2,
+        "story": "quiet_street",
+        "t0": 10.0,
+        "t1": 15.0
+      }
+    ],
+    "space": "relative",
+    "travel_px": 0.0
+  },
+  "zombie_walker_a/shamble": {
+    "actions": [
+      {
+        "actor": "zombie_walker_a",
+        "distance": 80,
+        "end": 4.0,
+        "start": 0.0,
+        "type": "shamble"
+      }
+    ],
+    "character": "zombie_walker_a",
+    "duration": 4.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "dazed",
+        "height": 230,
+        "stride": 0.0,
+        "t": 0.0,
+        "walk": 0.5,
+        "zombie": 1.0
+      },
+      {
+        "dx": 40.0,
+        "dy": 0.0,
+        "expression": "dazed",
+        "height": 230,
+        "stride": 12.0,
+        "t": 2.0,
+        "walk": 0.5,
+        "zombie": 1.0
+      },
+      {
+        "dx": 80.0,
+        "dy": 0.0,
+        "expression": "dazed",
+        "height": 230,
+        "stride": 24.0,
+        "t": 4.0,
+        "walk": 0.0,
+        "zombie": 1.0
+      }
+    ],
+    "kind": "locomotion",
+    "loopable": false,
+    "sources": [
+      {
+        "scene": 0,
+        "story": "quiet_street"
+      }
+    ],
+    "space": "relative",
+    "travel_px": 80.0
+  },
+  "zombie_walker_a/the_cure_s0_zombie_walker_a": {
+    "actions": [
+      {
+        "actor": "zombie_walker_a",
+        "direction": "left",
+        "distance": 50,
+        "end": 5.0,
+        "start": 0.0,
+        "type": "shamble"
+      }
+    ],
+    "character": "zombie_walker_a",
+    "duration": 5.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "cured": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "dazed",
+        "height": 215.0,
+        "opacity": 1.0,
+        "outfit": "torn",
+        "t": 0.0,
+        "zombie": 1.0
+      },
+      {
+        "cured": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "dazed",
+        "height": 215.0,
+        "opacity": 1.0,
+        "outfit": "torn",
+        "t": 5.0,
+        "zombie": 1.0
+      }
+    ],
+    "kind": "idle",
+    "loopable": false,
+    "needs": {
+      "background_theme": [
+        "subway_tunnel"
+      ],
+      "partners": [],
+      "props": []
+    },
+    "source": {
+      "scene": 0,
+      "story": "the_cure",
+      "t0": 0.0,
+      "t1": 5.0
+    },
+    "sources": [
+      {
+        "scene": 0,
+        "story": "the_cure",
+        "t0": 0.0,
+        "t1": 5.0
+      }
+    ],
+    "space": "relative",
+    "travel_px": 0.0
+  },
+  "zombie_walker_a/the_cure_s1_zombie_walker_a": {
+    "actions": [],
+    "character": "zombie_walker_a",
+    "duration": 5.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "cured": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "dazed",
+        "height": 215.0,
+        "opacity": 1.0,
+        "outfit": "torn",
+        "t": 0.0,
+        "zombie": 1.0
+      },
+      {
+        "cured": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "dazed",
+        "height": 215.0,
+        "opacity": 1.0,
+        "outfit": "torn",
+        "t": 2.0,
+        "zombie": 1.0
+      },
+      {
+        "cured": 1.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "height": 215.0,
+        "opacity": 1.0,
+        "outfit": "winter_coat",
+        "t": 3.5,
+        "zombie": 0.0
+      },
+      {
+        "cured": 1.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "height": 215.0,
+        "opacity": 1.0,
+        "outfit": "winter_coat",
+        "t": 5.0,
+        "zombie": 0.0
+      }
+    ],
+    "kind": "idle",
+    "loopable": false,
+    "needs": {
+      "background_theme": [
+        "subway_tunnel"
+      ],
+      "partners": [],
+      "props": []
+    },
+    "source": {
+      "scene": 1,
+      "story": "the_cure",
+      "t0": 5.0,
+      "t1": 10.0
+    },
+    "sources": [
+      {
+        "scene": 1,
+        "story": "the_cure",
+        "t0": 5.0,
+        "t1": 10.0
+      }
+    ],
+    "space": "relative",
+    "travel_px": 0.0
+  },
+  "zombie_walker_a/the_cure_s2_zombie_walker_a": {
+    "actions": [],
+    "character": "zombie_walker_a",
+    "duration": 5.0,
+    "facing": "left",
+    "keyframes": [
+      {
+        "cured": 1.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "height": 215.0,
+        "opacity": 1.0,
+        "outfit": "winter_coat",
+        "t": 0.0,
+        "zombie": 0.0
+      },
+      {
+        "cured": 1.0,
+        "dx": -15.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "height": 215.0,
+        "opacity": 1.0,
+        "outfit": "winter_coat",
+        "t": 2.5,
+        "zombie": 0.0
+      },
+      {
+        "cured": 1.0,
+        "dx": -15.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "height": 215.0,
+        "opacity": 1.0,
+        "outfit": "winter_coat",
+        "t": 5.0,
+        "zombie": 0.0
+      }
+    ],
+    "kind": "idle",
+    "loopable": false,
+    "needs": {
+      "background_theme": [
+        "subway_tunnel"
+      ],
+      "partners": [],
+      "props": []
+    },
+    "source": {
+      "scene": 2,
+      "story": "the_cure",
+      "t0": 10.0,
+      "t1": 15.0
+    },
+    "sources": [
+      {
+        "scene": 2,
+        "story": "the_cure",
+        "t0": 10.0,
+        "t1": 15.0
+      }
+    ],
+    "space": "relative",
+    "travel_px": 15.0
+  },
+  "zombie_walker_a/turn_to_sound": {
+    "actions": [],
+    "character": "zombie_walker_a",
+    "duration": 3.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "dazed",
+        "height": 230,
+        "look_x": 0.0,
+        "t": 0.0,
+        "zombie": 1.0
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "surprised",
+        "flip": true,
+        "height": 230,
+        "look_x": -0.8,
+        "t": 1.2,
+        "zombie": 1.0
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "dazed",
+        "flip": true,
+        "height": 230,
+        "look_x": -0.8,
+        "t": 3.0,
+        "zombie": 1.0
+      }
+    ],
+    "kind": "gesture",
+    "loopable": false,
+    "sources": [
+      {
+        "scene": 0,
+        "story": "quiet_street"
+      }
+    ],
+    "space": "relative",
+    "travel_px": 0.0
+  },
+  "zombie_walker_b/idle": {
+    "actions": [],
+    "character": "zombie_walker_b",
+    "duration": 3.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "dazed",
+        "height": 230,
+        "lean": 0.0,
+        "t": 0.0,
+        "zombie": 1.0
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "dazed",
+        "height": 230,
+        "lean": 0.08,
+        "t": 1.5,
+        "zombie": 1.0
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "dazed",
+        "height": 230,
+        "lean": 0.0,
+        "t": 3.0,
+        "zombie": 1.0
+      }
+    ],
+    "kind": "idle",
+    "loopable": true,
+    "sources": [
+      {
+        "scene": 0,
+        "story": "quiet_street"
+      }
+    ],
+    "space": "relative",
+    "travel_px": 0.0
+  },
+  "zombie_walker_b/quiet_street_s0_zombie_walker_b": {
+    "actions": [
+      {
+        "actor": "zombie_walker_b",
+        "direction": "left",
+        "distance": 150,
+        "end": 5.0,
+        "start": 0.0,
+        "type": "shamble"
+      }
+    ],
+    "character": "zombie_walker_b",
+    "duration": 5.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "cured": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "dazed",
+        "height": 230.0,
+        "opacity": 1.0,
+        "outfit": "torn",
+        "t": 0.0,
+        "zombie": 1.0
+      },
+      {
+        "cured": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "dazed",
+        "height": 230.0,
+        "opacity": 1.0,
+        "outfit": "torn",
+        "t": 5.0,
+        "zombie": 1.0
+      }
+    ],
+    "kind": "idle",
+    "loopable": false,
+    "needs": {
+      "background_theme": [
+        "abandoned_street"
+      ],
+      "partners": [],
+      "props": []
+    },
+    "source": {
+      "scene": 0,
+      "story": "quiet_street",
+      "t0": 0.0,
+      "t1": 5.0
+    },
+    "sources": [
+      {
+        "scene": 0,
+        "story": "quiet_street",
+        "t0": 0.0,
+        "t1": 5.0
+      }
+    ],
+    "space": "relative",
+    "travel_px": 0.0
+  },
+  "zombie_walker_b/quiet_street_s1_zombie_walker_b": {
+    "actions": [
+      {
+        "actor": "zombie_walker_b",
+        "direction": "right",
+        "distance": 70,
+        "end": 5.0,
+        "start": 3.0,
+        "type": "shamble"
+      }
+    ],
+    "character": "zombie_walker_b",
+    "duration": 5.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "cured": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "dazed",
+        "height": 230.0,
+        "opacity": 1.0,
+        "outfit": "torn",
+        "t": 0.0,
+        "zombie": 1.0
+      },
+      {
+        "cured": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "dazed",
+        "height": 230.0,
+        "opacity": 1.0,
+        "outfit": "torn",
+        "t": 5.0,
+        "zombie": 1.0
+      }
+    ],
+    "kind": "idle",
+    "loopable": false,
+    "needs": {
+      "background_theme": [
+        "abandoned_street"
+      ],
+      "partners": [],
+      "props": []
+    },
+    "source": {
+      "scene": 1,
+      "story": "quiet_street",
+      "t0": 5.0,
+      "t1": 10.0
+    },
+    "sources": [
+      {
+        "scene": 1,
+        "story": "quiet_street",
+        "t0": 5.0,
+        "t1": 10.0
+      }
+    ],
+    "space": "relative",
+    "travel_px": 0.0
+  },
+  "zombie_walker_b/quiet_street_s2_zombie_walker_b": {
+    "actions": [
+      {
+        "actor": "zombie_walker_b",
+        "direction": "right",
+        "distance": 150,
+        "end": 5.0,
+        "start": 0.0,
+        "type": "shamble"
+      }
+    ],
+    "character": "zombie_walker_b",
+    "duration": 5.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "cured": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "dazed",
+        "height": 230.0,
+        "opacity": 1.0,
+        "outfit": "torn",
+        "t": 0.0,
+        "zombie": 1.0
+      },
+      {
+        "cured": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "dazed",
+        "height": 230.0,
+        "opacity": 1.0,
+        "outfit": "torn",
+        "t": 5.0,
+        "zombie": 1.0
+      }
+    ],
+    "kind": "idle",
+    "loopable": false,
+    "needs": {
+      "background_theme": [
+        "abandoned_street"
+      ],
+      "partners": [],
+      "props": []
+    },
+    "source": {
+      "scene": 2,
+      "story": "quiet_street",
+      "t0": 10.0,
+      "t1": 15.0
+    },
+    "sources": [
+      {
+        "scene": 2,
+        "story": "quiet_street",
+        "t0": 10.0,
+        "t1": 15.0
+      }
+    ],
+    "space": "relative",
+    "travel_px": 0.0
+  },
+  "zombie_walker_b/shamble": {
+    "actions": [
+      {
+        "actor": "zombie_walker_b",
+        "distance": 80,
+        "end": 4.0,
+        "start": 0.0,
+        "type": "shamble"
+      }
+    ],
+    "character": "zombie_walker_b",
+    "duration": 4.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "dazed",
+        "height": 230,
+        "stride": 0.0,
+        "t": 0.0,
+        "walk": 0.5,
+        "zombie": 1.0
+      },
+      {
+        "dx": 40.0,
+        "dy": 0.0,
+        "expression": "dazed",
+        "height": 230,
+        "stride": 12.0,
+        "t": 2.0,
+        "walk": 0.5,
+        "zombie": 1.0
+      },
+      {
+        "dx": 80.0,
+        "dy": 0.0,
+        "expression": "dazed",
+        "height": 230,
+        "stride": 24.0,
+        "t": 4.0,
+        "walk": 0.0,
+        "zombie": 1.0
+      }
+    ],
+    "kind": "locomotion",
+    "loopable": false,
+    "sources": [
+      {
+        "scene": 0,
+        "story": "quiet_street"
+      }
+    ],
+    "space": "relative",
+    "travel_px": 80.0
+  },
+  "zombie_walker_b/the_cure_s0_zombie_walker_b": {
+    "actions": [
+      {
+        "actor": "zombie_walker_b",
+        "direction": "left",
+        "distance": 50,
+        "end": 5.0,
+        "start": 0.0,
+        "type": "shamble"
+      }
+    ],
+    "character": "zombie_walker_b",
+    "duration": 5.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "cured": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "dazed",
+        "height": 215.0,
+        "opacity": 1.0,
+        "outfit": "torn",
+        "t": 0.0,
+        "zombie": 1.0
+      },
+      {
+        "cured": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "dazed",
+        "height": 215.0,
+        "opacity": 1.0,
+        "outfit": "torn",
+        "t": 5.0,
+        "zombie": 1.0
+      }
+    ],
+    "kind": "idle",
+    "loopable": false,
+    "needs": {
+      "background_theme": [
+        "subway_tunnel"
+      ],
+      "partners": [],
+      "props": []
+    },
+    "source": {
+      "scene": 0,
+      "story": "the_cure",
+      "t0": 0.0,
+      "t1": 5.0
+    },
+    "sources": [
+      {
+        "scene": 0,
+        "story": "the_cure",
+        "t0": 0.0,
+        "t1": 5.0
+      }
+    ],
+    "space": "relative",
+    "travel_px": 0.0
+  },
+  "zombie_walker_b/the_cure_s1_zombie_walker_b": {
+    "actions": [],
+    "character": "zombie_walker_b",
+    "duration": 5.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "cured": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "dazed",
+        "height": 215.0,
+        "opacity": 1.0,
+        "outfit": "torn",
+        "t": 0.0,
+        "zombie": 1.0
+      },
+      {
+        "cured": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "dazed",
+        "height": 215.0,
+        "opacity": 1.0,
+        "outfit": "torn",
+        "t": 3.5,
+        "zombie": 1.0
+      },
+      {
+        "cured": 1.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "height": 215.0,
+        "opacity": 1.0,
+        "outfit": "hi_vis_vest",
+        "t": 5.0,
+        "zombie": 0.0
+      }
+    ],
+    "kind": "idle",
+    "loopable": false,
+    "needs": {
+      "background_theme": [
+        "subway_tunnel"
+      ],
+      "partners": [],
+      "props": []
+    },
+    "source": {
+      "scene": 1,
+      "story": "the_cure",
+      "t0": 5.0,
+      "t1": 10.0
+    },
+    "sources": [
+      {
+        "scene": 1,
+        "story": "the_cure",
+        "t0": 5.0,
+        "t1": 10.0
+      }
+    ],
+    "space": "relative",
+    "travel_px": 0.0
+  },
+  "zombie_walker_b/the_cure_s2_zombie_walker_b": {
+    "actions": [],
+    "character": "zombie_walker_b",
+    "duration": 5.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "cured": 1.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "height": 215.0,
+        "opacity": 1.0,
+        "outfit": "hi_vis_vest",
+        "t": 0.0,
+        "zombie": 0.0
+      },
+      {
+        "cured": 1.0,
+        "dx": -10.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "height": 215.0,
+        "opacity": 1.0,
+        "outfit": "hi_vis_vest",
+        "t": 3.0,
+        "zombie": 0.0
+      },
+      {
+        "cured": 1.0,
+        "dx": -10.0,
+        "dy": 0.0,
+        "expression": "happy",
+        "height": 215.0,
+        "opacity": 1.0,
+        "outfit": "hi_vis_vest",
+        "t": 5.0,
+        "zombie": 0.0
+      }
+    ],
+    "kind": "idle",
+    "loopable": false,
+    "needs": {
+      "background_theme": [
+        "subway_tunnel"
+      ],
+      "partners": [],
+      "props": []
+    },
+    "source": {
+      "scene": 2,
+      "story": "the_cure",
+      "t0": 10.0,
+      "t1": 15.0
+    },
+    "sources": [
+      {
+        "scene": 2,
+        "story": "the_cure",
+        "t0": 10.0,
+        "t1": 15.0
+      }
+    ],
+    "space": "relative",
+    "travel_px": 10.0
+  },
+  "zombie_walker_b/turn_to_sound": {
+    "actions": [],
+    "character": "zombie_walker_b",
+    "duration": 3.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "dazed",
+        "height": 230,
+        "look_x": 0.0,
+        "t": 0.0,
+        "zombie": 1.0
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "surprised",
+        "flip": true,
+        "height": 230,
+        "look_x": -0.8,
+        "t": 1.2,
+        "zombie": 1.0
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "dazed",
+        "flip": true,
+        "height": 230,
+        "look_x": -0.8,
+        "t": 3.0,
+        "zombie": 1.0
+      }
+    ],
+    "kind": "gesture",
+    "loopable": false,
+    "sources": [
+      {
+        "scene": 0,
+        "story": "quiet_street"
+      }
+    ],
+    "space": "relative",
+    "travel_px": 0.0
+  },
+  "zombie_walker_c/barricade_night_s1_zombie_walker_c": {
+    "actions": [
+      {
+        "actor": "zombie_walker_c",
+        "direction": "right",
+        "distance": 140,
+        "end": 4.0,
+        "start": 0.0,
+        "type": "shamble"
+      }
+    ],
+    "character": "zombie_walker_c",
+    "duration": 5.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "cured": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "dazed",
+        "height": 210.0,
+        "opacity": 1.0,
+        "outfit": "torn",
+        "t": 0.0,
+        "z": -2,
+        "zombie": 1.0
+      },
+      {
+        "cured": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "dazed",
+        "height": 210.0,
+        "opacity": 1.0,
+        "outfit": "torn",
+        "t": 5.0,
+        "z": -2,
+        "zombie": 1.0
+      }
+    ],
+    "kind": "idle",
+    "loopable": false,
+    "needs": {
+      "background_theme": [
+        "safe_camp"
+      ],
+      "partners": [],
+      "props": []
+    },
+    "source": {
+      "scene": 1,
+      "story": "barricade_night",
+      "t0": 5.0,
+      "t1": 10.0
+    },
+    "sources": [
+      {
+        "scene": 1,
+        "story": "barricade_night",
+        "t0": 5.0,
+        "t1": 10.0
+      }
+    ],
+    "space": "relative",
+    "travel_px": 0.0
+  },
+  "zombie_walker_c/barricade_night_s2_zombie_walker_c": {
+    "actions": [
+      {
+        "actor": "zombie_walker_c",
+        "direction": "left",
+        "distance": 175,
+        "end": 5.0,
+        "start": 0.0,
+        "type": "shamble"
+      }
+    ],
+    "character": "zombie_walker_c",
+    "duration": 5.0,
+    "facing": "left",
+    "keyframes": [
+      {
+        "cured": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "dazed",
+        "flip": true,
+        "height": 210.0,
+        "opacity": 1.0,
+        "outfit": "torn",
+        "t": 0.0,
+        "z": -2,
+        "zombie": 1.0
+      },
+      {
+        "cured": 0.0,
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "dazed",
+        "flip": true,
+        "height": 210.0,
+        "opacity": 1.0,
+        "outfit": "torn",
+        "t": 5.0,
+        "z": -2,
+        "zombie": 1.0
+      }
+    ],
+    "kind": "idle",
+    "loopable": false,
+    "needs": {
+      "background_theme": [
+        "safe_camp"
+      ],
+      "partners": [],
+      "props": []
+    },
+    "source": {
+      "scene": 2,
+      "story": "barricade_night",
+      "t0": 10.0,
+      "t1": 15.0
+    },
+    "sources": [
+      {
+        "scene": 2,
+        "story": "barricade_night",
+        "t0": 10.0,
+        "t1": 15.0
+      }
+    ],
+    "space": "relative",
+    "travel_px": 0.0
+  },
+  "zombie_walker_c/idle": {
+    "actions": [],
+    "character": "zombie_walker_c",
+    "duration": 3.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "dazed",
+        "height": 210,
+        "lean": 0.0,
+        "t": 0.0,
+        "zombie": 1.0
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "dazed",
+        "height": 210,
+        "lean": 0.08,
+        "t": 1.5,
+        "zombie": 1.0
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "dazed",
+        "height": 210,
+        "lean": 0.0,
+        "t": 3.0,
+        "zombie": 1.0
+      }
+    ],
+    "kind": "idle",
+    "loopable": true,
+    "sources": [
+      {
+        "scene": 0,
+        "story": "quiet_street"
+      }
+    ],
+    "space": "relative",
+    "travel_px": 0.0
+  },
+  "zombie_walker_c/shamble": {
+    "actions": [
+      {
+        "actor": "zombie_walker_c",
+        "distance": 80,
+        "end": 4.0,
+        "start": 0.0,
+        "type": "shamble"
+      }
+    ],
+    "character": "zombie_walker_c",
+    "duration": 4.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "dazed",
+        "height": 210,
+        "stride": 0.0,
+        "t": 0.0,
+        "walk": 0.5,
+        "zombie": 1.0
+      },
+      {
+        "dx": 40.0,
+        "dy": 0.0,
+        "expression": "dazed",
+        "height": 210,
+        "stride": 12.0,
+        "t": 2.0,
+        "walk": 0.5,
+        "zombie": 1.0
+      },
+      {
+        "dx": 80.0,
+        "dy": 0.0,
+        "expression": "dazed",
+        "height": 210,
+        "stride": 24.0,
+        "t": 4.0,
+        "walk": 0.0,
+        "zombie": 1.0
+      }
+    ],
+    "kind": "locomotion",
+    "loopable": false,
+    "sources": [
+      {
+        "scene": 0,
+        "story": "quiet_street"
+      }
+    ],
+    "space": "relative",
+    "travel_px": 80.0
+  },
+  "zombie_walker_c/turn_to_sound": {
+    "actions": [],
+    "character": "zombie_walker_c",
+    "duration": 3.0,
+    "facing": "right",
+    "keyframes": [
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "dazed",
+        "height": 210,
+        "look_x": 0.0,
+        "t": 0.0,
+        "zombie": 1.0
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "surprised",
+        "flip": true,
+        "height": 210,
+        "look_x": -0.8,
+        "t": 1.2,
+        "zombie": 1.0
+      },
+      {
+        "dx": 0.0,
+        "dy": 0.0,
+        "expression": "dazed",
+        "flip": true,
+        "height": 210,
+        "look_x": -0.8,
+        "t": 3.0,
+        "zombie": 1.0
+      }
+    ],
+    "kind": "gesture",
+    "loopable": false,
+    "sources": [
+      {
+        "scene": 0,
+        "story": "quiet_street"
       }
     ],
     "space": "relative",

@@ -1,0 +1,858 @@
+{
+  "mika": {
+    "id": "mika",
+    "label": {
+      "de": "Mika",
+      "en": "Mika",
+      "ja": "ミカ",
+      "ko": "미카"
+    },
+    "role": "leader",
+    "rig": "chibi_girl",
+    "base_outfit": "survivor_jacket",
+    "style": {
+      "skin": "#ffdfc4",
+      "hair": "#78350f"
+    },
+    "height": 230,
+    "palette": [
+      "#ea580c",
+      "#15803d",
+      "#f8fafc"
+    ],
+    "signature_props": [
+      {
+        "asset": "walkie_talkie",
+        "hand": "hand_r",
+        "height": 110,
+        "rotation": 0,
+        "anchor": "grip"
+      }
+    ],
+    "states": {
+      "normal": {
+        "outfit": "survivor_jacket",
+        "zombie": 0.0,
+        "cured": 0.0
+      },
+      "rain": {
+        "outfit": "raincoat",
+        "zombie": 0.0,
+        "cured": 0.0
+      },
+      "cold": {
+        "outfit": "winter_coat",
+        "zombie": 0.0,
+        "cured": 0.0
+      },
+      "night": {
+        "outfit": "survivor_jacket",
+        "zombie": 0.0,
+        "cured": 0.0
+      },
+      "zombie": {
+        "outfit": "torn",
+        "zombie": 1.0,
+        "cured": 0.0,
+        "expression": "dazed"
+      },
+      "cured": {
+        "outfit": "survivor_jacket",
+        "zombie": 0.0,
+        "cured": 1.0,
+        "expression": "happy"
+      }
+    },
+    "personality": "calm, tactical planner",
+    "voice_role": "child",
+    "expressions": [
+      "neutral",
+      "confident",
+      "focused",
+      "happy",
+      "worried"
+    ],
+    "clips": [
+      "mika/idle",
+      "mika/walk_in",
+      "mika/walk_out",
+      "mika/look_around",
+      "mika/crouch_hide",
+      "mika/run_short",
+      "mika/wave",
+      "mika/talk",
+      "mika/emote_heart",
+      "mika/emote_exclamation",
+      "mika/radio_call"
+    ],
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ]
+  },
+  "leo": {
+    "id": "leo",
+    "label": {
+      "de": "Leo",
+      "en": "Leo",
+      "ja": "レオ",
+      "ko": "레오"
+    },
+    "role": "scout",
+    "rig": "chibi_boy",
+    "base_outfit": "survivor_hoodie",
+    "style": {
+      "skin": "#f7d0b5",
+      "hair": "#1e293b"
+    },
+    "height": 230,
+    "palette": [
+      "#2563eb",
+      "#dc2626",
+      "#1d4ed8"
+    ],
+    "signature_props": [
+      {
+        "asset": "flashlight",
+        "hand": "hand_r",
+        "height": 200,
+        "rotation": 15,
+        "anchor": "grip"
+      }
+    ],
+    "states": {
+      "normal": {
+        "outfit": "survivor_hoodie",
+        "zombie": 0.0,
+        "cured": 0.0
+      },
+      "rain": {
+        "outfit": "raincoat",
+        "zombie": 0.0,
+        "cured": 0.0
+      },
+      "cold": {
+        "outfit": "winter_coat",
+        "zombie": 0.0,
+        "cured": 0.0
+      },
+      "night": {
+        "outfit": "survivor_hoodie",
+        "zombie": 0.0,
+        "cured": 0.0
+      },
+      "zombie": {
+        "outfit": "torn",
+        "zombie": 1.0,
+        "cured": 0.0,
+        "expression": "dazed"
+      },
+      "cured": {
+        "outfit": "survivor_hoodie",
+        "zombie": 0.0,
+        "cured": 1.0,
+        "expression": "happy"
+      }
+    },
+    "personality": "fast, adventurous, playful",
+    "voice_role": "child",
+    "expressions": [
+      "smile",
+      "surprised",
+      "focused",
+      "wink",
+      "happy"
+    ],
+    "clips": [
+      "leo/idle",
+      "leo/walk_in",
+      "leo/walk_out",
+      "leo/look_around",
+      "leo/crouch_hide",
+      "leo/run_short",
+      "leo/wave",
+      "leo/talk",
+      "leo/emote_heart",
+      "leo/emote_exclamation",
+      "leo/flashlight_sweep"
+    ],
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ]
+  },
+  "dr_hana": {
+    "id": "dr_hana",
+    "label": {
+      "de": "Dr. Hana",
+      "en": "Dr. Hana",
+      "ja": "ハナ博士",
+      "ko": "하나 박사"
+    },
+    "role": "scientist",
+    "rig": "chibi_teacher",
+    "base_outfit": "scientist",
+    "style": {
+      "skin": "#ffdfc4",
+      "hair": "#0f172a"
+    },
+    "height": 250,
+    "palette": [
+      "#0d9488",
+      "#f8fafc",
+      "#0284c7"
+    ],
+    "signature_props": [
+      {
+        "asset": "cure_sprayer",
+        "hand": "hand_r",
+        "height": 120,
+        "rotation": 0,
+        "anchor": "grip"
+      }
+    ],
+    "states": {
+      "normal": {
+        "outfit": "scientist",
+        "zombie": 0.0,
+        "cured": 0.0
+      },
+      "rain": {
+        "outfit": "raincoat",
+        "zombie": 0.0,
+        "cured": 0.0
+      },
+      "cold": {
+        "outfit": "winter_coat",
+        "zombie": 0.0,
+        "cured": 0.0
+      },
+      "night": {
+        "outfit": "scientist",
+        "zombie": 0.0,
+        "cured": 0.0
+      },
+      "zombie": {
+        "outfit": "torn",
+        "zombie": 1.0,
+        "cured": 0.0,
+        "expression": "dazed"
+      },
+      "cured": {
+        "outfit": "scientist",
+        "zombie": 0.0,
+        "cured": 1.0,
+        "expression": "happy"
+      }
+    },
+    "personality": "curious, patient, analytical",
+    "voice_role": "adult",
+    "expressions": [
+      "thinking",
+      "serious",
+      "happy",
+      "focused"
+    ],
+    "clips": [
+      "dr_hana/idle",
+      "dr_hana/walk_in",
+      "dr_hana/walk_out",
+      "dr_hana/look_around",
+      "dr_hana/crouch_hide",
+      "dr_hana/run_short",
+      "dr_hana/wave",
+      "dr_hana/talk",
+      "dr_hana/emote_heart",
+      "dr_hana/emote_exclamation",
+      "dr_hana/cure_spray",
+      "dr_hana/inspect"
+    ],
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ]
+  },
+  "grandpa_otto": {
+    "id": "grandpa_otto",
+    "label": {
+      "de": "Opa Otto",
+      "en": "Grandpa Otto",
+      "ja": "オットーおじいさん",
+      "ko": "오토 할아버지"
+    },
+    "role": "handyman",
+    "rig": "chibi_grandpa",
+    "base_outfit": "construction",
+    "style": {
+      "skin": "#f0cca8",
+      "hair": "#94a3b8"
+    },
+    "height": 240,
+    "palette": [
+      "#ca8a04",
+      "#78350f",
+      "#334155"
+    ],
+    "signature_props": [
+      {
+        "asset": "hammer",
+        "hand": "hand_r",
+        "height": 180,
+        "rotation": 20,
+        "anchor": "grip"
+      }
+    ],
+    "states": {
+      "normal": {
+        "outfit": "construction",
+        "zombie": 0.0,
+        "cured": 0.0
+      },
+      "rain": {
+        "outfit": "raincoat",
+        "zombie": 0.0,
+        "cured": 0.0
+      },
+      "cold": {
+        "outfit": "winter_coat",
+        "zombie": 0.0,
+        "cured": 0.0
+      },
+      "night": {
+        "outfit": "construction",
+        "zombie": 0.0,
+        "cured": 0.0
+      },
+      "zombie": {
+        "outfit": "torn",
+        "zombie": 1.0,
+        "cured": 0.0,
+        "expression": "dazed"
+      },
+      "cured": {
+        "outfit": "construction",
+        "zombie": 0.0,
+        "cured": 1.0,
+        "expression": "happy"
+      }
+    },
+    "personality": "handy, wise, storyteller",
+    "voice_role": "elder",
+    "expressions": [
+      "warm",
+      "laugh",
+      "serious",
+      "proud"
+    ],
+    "clips": [
+      "grandpa_otto/idle",
+      "grandpa_otto/walk_in",
+      "grandpa_otto/walk_out",
+      "grandpa_otto/look_around",
+      "grandpa_otto/crouch_hide",
+      "grandpa_otto/run_short",
+      "grandpa_otto/wave",
+      "grandpa_otto/talk",
+      "grandpa_otto/emote_heart",
+      "grandpa_otto/emote_exclamation",
+      "grandpa_otto/barricade",
+      "grandpa_otto/repair"
+    ],
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ]
+  },
+  "pip": {
+    "id": "pip",
+    "label": {
+      "de": "Pip",
+      "en": "Pip",
+      "ja": "ピップ",
+      "ko": "핍"
+    },
+    "role": "youngest",
+    "rig": "chibi_kid",
+    "base_outfit": "raincoat",
+    "style": {
+      "skin": "#fce0cc",
+      "hair": "#9a3412"
+    },
+    "height": 210,
+    "palette": [
+      "#eab308",
+      "#0284c7",
+      "#ffffff"
+    ],
+    "signature_props": [
+      {
+        "asset": "hand_crank_radio",
+        "hand": "hand_l",
+        "height": 130,
+        "rotation": 0,
+        "anchor": "grip"
+      }
+    ],
+    "states": {
+      "normal": {
+        "outfit": "raincoat",
+        "zombie": 0.0,
+        "cured": 0.0
+      },
+      "rain": {
+        "outfit": "raincoat",
+        "zombie": 0.0,
+        "cured": 0.0
+      },
+      "cold": {
+        "outfit": "winter_coat",
+        "zombie": 0.0,
+        "cured": 0.0
+      },
+      "night": {
+        "outfit": "raincoat",
+        "zombie": 0.0,
+        "cured": 0.0
+      },
+      "zombie": {
+        "outfit": "torn",
+        "zombie": 1.0,
+        "cured": 0.0,
+        "expression": "dazed"
+      },
+      "cured": {
+        "outfit": "raincoat",
+        "zombie": 0.0,
+        "cured": 1.0,
+        "expression": "happy"
+      }
+    },
+    "personality": "innocent, brave, cheerful",
+    "voice_role": "child",
+    "expressions": [
+      "happy",
+      "gasp",
+      "curious",
+      "smile"
+    ],
+    "clips": [
+      "pip/idle",
+      "pip/walk_in",
+      "pip/walk_out",
+      "pip/look_around",
+      "pip/crouch_hide",
+      "pip/run_short",
+      "pip/wave",
+      "pip/talk",
+      "pip/emote_heart",
+      "pip/emote_exclamation",
+      "pip/crank_radio"
+    ],
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ]
+  },
+  "nora": {
+    "id": "nora",
+    "label": {
+      "de": "Nora",
+      "en": "Nora",
+      "ja": "ノラ",
+      "ko": "노라"
+    },
+    "role": "survivor",
+    "rig": "chibi_girl",
+    "base_outfit": "survivor_hoodie_purple",
+    "style": {
+      "skin": "#ffdfc4",
+      "hair": "#b45309"
+    },
+    "height": 230,
+    "palette": [
+      "#9333ea",
+      "#7c3aed",
+      "#c084fc"
+    ],
+    "signature_props": [],
+    "states": {
+      "normal": {
+        "outfit": "survivor_hoodie_purple",
+        "zombie": 0.0,
+        "cured": 0.0
+      },
+      "rain": {
+        "outfit": "raincoat",
+        "zombie": 0.0,
+        "cured": 0.0
+      },
+      "cold": {
+        "outfit": "winter_coat",
+        "zombie": 0.0,
+        "cured": 0.0
+      },
+      "night": {
+        "outfit": "survivor_hoodie_purple",
+        "zombie": 0.0,
+        "cured": 0.0
+      },
+      "zombie": {
+        "outfit": "torn",
+        "zombie": 1.0,
+        "cured": 0.0,
+        "expression": "dazed"
+      },
+      "cured": {
+        "outfit": "survivor_hoodie_purple",
+        "zombie": 0.0,
+        "cured": 1.0,
+        "expression": "happy"
+      }
+    },
+    "personality": "relieved, grateful, observant",
+    "voice_role": "child",
+    "expressions": [
+      "dazed",
+      "surprised",
+      "happy",
+      "warm"
+    ],
+    "clips": [
+      "nora/idle",
+      "nora/walk_in",
+      "nora/walk_out",
+      "nora/look_around",
+      "nora/crouch_hide",
+      "nora/run_short",
+      "nora/wave",
+      "nora/talk",
+      "nora/emote_heart",
+      "nora/emote_exclamation"
+    ],
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ]
+  },
+  "biscuit": {
+    "id": "biscuit",
+    "label": {
+      "de": "Biscuit",
+      "en": "Biscuit",
+      "ja": "ビスケット",
+      "ko": "비스킷"
+    },
+    "role": "companion",
+    "rig": "dog",
+    "base_outfit": null,
+    "style": {
+      "body": "#d97706",
+      "accent": "#f97316"
+    },
+    "height": 120,
+    "palette": [
+      "#d97706",
+      "#f97316"
+    ],
+    "signature_props": [],
+    "states": {
+      "normal": {
+        "outfit": null,
+        "zombie": 0.0,
+        "cured": 0.0
+      },
+      "rain": {
+        "outfit": null,
+        "zombie": 0.0,
+        "cured": 0.0
+      },
+      "cold": {
+        "outfit": null,
+        "zombie": 0.0,
+        "cured": 0.0
+      },
+      "night": {
+        "outfit": null,
+        "zombie": 0.0,
+        "cured": 0.0
+      },
+      "zombie": {
+        "outfit": null,
+        "zombie": 1.0,
+        "cured": 0.0,
+        "expression": "alert"
+      },
+      "cured": {
+        "outfit": null,
+        "zombie": 0.0,
+        "cured": 1.0,
+        "expression": "happy"
+      }
+    },
+    "personality": "loyal, vigilant, protective",
+    "voice_role": "none",
+    "expressions": [
+      "happy",
+      "curious",
+      "alert"
+    ],
+    "clips": [
+      "biscuit/idle",
+      "biscuit/walk",
+      "biscuit/alert",
+      "biscuit/emote_heart"
+    ],
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ]
+  },
+  "zombie_walker_a": {
+    "id": "zombie_walker_a",
+    "label": {
+      "de": "Wandernder Zombie A",
+      "en": "Zombie Walker A",
+      "ja": "ゾンビ・ウォーカーA",
+      "ko": "좀비 워커 A"
+    },
+    "role": "crowd",
+    "rig": "chibi_boy",
+    "base_outfit": "torn",
+    "style": {
+      "skin": "#f1c9a5",
+      "hair": "#334155"
+    },
+    "height": 230,
+    "palette": [
+      "#64748b",
+      "#475569"
+    ],
+    "signature_props": [],
+    "states": {
+      "normal": {
+        "outfit": "torn",
+        "zombie": 1.0,
+        "cured": 0.0,
+        "expression": "dazed"
+      },
+      "rain": {
+        "outfit": "torn",
+        "zombie": 1.0,
+        "cured": 0.0,
+        "expression": "dazed"
+      },
+      "cold": {
+        "outfit": "torn",
+        "zombie": 1.0,
+        "cured": 0.0,
+        "expression": "dazed"
+      },
+      "night": {
+        "outfit": "torn",
+        "zombie": 1.0,
+        "cured": 0.0,
+        "expression": "dazed"
+      },
+      "zombie": {
+        "outfit": "torn",
+        "zombie": 1.0,
+        "cured": 0.0,
+        "expression": "dazed"
+      },
+      "cured": {
+        "outfit": "winter_coat",
+        "zombie": 0.0,
+        "cured": 1.0,
+        "expression": "happy"
+      }
+    },
+    "personality": "wandering, hungry for cure",
+    "voice_role": "none",
+    "expressions": [
+      "dazed",
+      "surprised",
+      "happy"
+    ],
+    "clips": [
+      "zombie_walker_a/shamble",
+      "zombie_walker_a/turn_to_sound",
+      "zombie_walker_a/idle"
+    ],
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ]
+  },
+  "zombie_walker_b": {
+    "id": "zombie_walker_b",
+    "label": {
+      "de": "Wandernder Zombie B",
+      "en": "Zombie Walker B",
+      "ja": "ゾンビ・ウォーカーB",
+      "ko": "좀비 워커 B"
+    },
+    "role": "crowd",
+    "rig": "chibi_girl",
+    "base_outfit": "torn",
+    "style": {
+      "skin": "#c68642",
+      "hair": "#1e293b"
+    },
+    "height": 230,
+    "palette": [
+      "#475569",
+      "#334155"
+    ],
+    "signature_props": [],
+    "states": {
+      "normal": {
+        "outfit": "torn",
+        "zombie": 1.0,
+        "cured": 0.0,
+        "expression": "dazed"
+      },
+      "rain": {
+        "outfit": "torn",
+        "zombie": 1.0,
+        "cured": 0.0,
+        "expression": "dazed"
+      },
+      "cold": {
+        "outfit": "torn",
+        "zombie": 1.0,
+        "cured": 0.0,
+        "expression": "dazed"
+      },
+      "night": {
+        "outfit": "torn",
+        "zombie": 1.0,
+        "cured": 0.0,
+        "expression": "dazed"
+      },
+      "zombie": {
+        "outfit": "torn",
+        "zombie": 1.0,
+        "cured": 0.0,
+        "expression": "dazed"
+      },
+      "cured": {
+        "outfit": "hi_vis_vest",
+        "zombie": 0.0,
+        "cured": 1.0,
+        "expression": "happy"
+      }
+    },
+    "personality": "wandering slowly",
+    "voice_role": "none",
+    "expressions": [
+      "dazed",
+      "surprised",
+      "happy"
+    ],
+    "clips": [
+      "zombie_walker_b/shamble",
+      "zombie_walker_b/turn_to_sound",
+      "zombie_walker_b/idle"
+    ],
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ]
+  },
+  "zombie_walker_c": {
+    "id": "zombie_walker_c",
+    "label": {
+      "de": "Wandernder Zombie C",
+      "en": "Zombie Walker C",
+      "ja": "ゾンビ・ウォーカーC",
+      "ko": "좀비 워커 C"
+    },
+    "role": "crowd",
+    "rig": "chibi_kid",
+    "base_outfit": "torn",
+    "style": {
+      "skin": "#e0ac69",
+      "hair": "#475569"
+    },
+    "height": 210,
+    "palette": [
+      "#334155",
+      "#1e293b"
+    ],
+    "signature_props": [],
+    "states": {
+      "normal": {
+        "outfit": "torn",
+        "zombie": 1.0,
+        "cured": 0.0,
+        "expression": "dazed"
+      },
+      "rain": {
+        "outfit": "torn",
+        "zombie": 1.0,
+        "cured": 0.0,
+        "expression": "dazed"
+      },
+      "cold": {
+        "outfit": "torn",
+        "zombie": 1.0,
+        "cured": 0.0,
+        "expression": "dazed"
+      },
+      "night": {
+        "outfit": "torn",
+        "zombie": 1.0,
+        "cured": 0.0,
+        "expression": "dazed"
+      },
+      "zombie": {
+        "outfit": "torn",
+        "zombie": 1.0,
+        "cured": 0.0,
+        "expression": "dazed"
+      },
+      "cured": {
+        "outfit": "torn",
+        "zombie": 0.0,
+        "cured": 1.0,
+        "expression": "happy"
+      }
+    },
+    "personality": "wandering quietly",
+    "voice_role": "none",
+    "expressions": [
+      "dazed",
+      "surprised",
+      "happy"
+    ],
+    "clips": [
+      "zombie_walker_c/shamble",
+      "zombie_walker_c/turn_to_sound",
+      "zombie_walker_c/idle"
+    ],
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ]
+  }
+}

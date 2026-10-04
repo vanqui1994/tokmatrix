@@ -201,7 +201,11 @@
   }
 
   function drawChibi(ctx, s, t, spec, cat) {
-    const skin = (s.style && s.style.skin) || spec.skin || '#ffe0bd';
+    const zWeight = (s.zombie || 0) * (1 - (s.cured || 0));
+    let skin = (s.style && s.style.skin) || spec.skin || '#ffe0bd';
+    if (zWeight > 0 && RemakeVector.kit.mixColor) {
+      skin = RemakeVector.kit.mixColor(skin, '#8fa396', zWeight * 0.85);
+    }
     const hairCol = (s.style && s.style.hair) || spec.hairColor || '#2e1c12';
     const shirtCol = (s.style && s.style.shirt) || spec.shirtColor || '#ffffff';
     const pantsCol = (s.style && s.style.pants) || spec.pantsColor || '#243b5a';
@@ -271,13 +275,16 @@
         line(ctx, [[sx, torsoTopY + 2], [sx, torsoBotY - 1]], '#38bdf8', 1.2);
       }
     } else if (spec.accessory === 'red_scarf') {
-      // Khăn quàng đỏ học sinh
-      path(ctx, `M 0 ${torsoTopY + 2} L -7 ${torsoTopY + 12} L -2 ${torsoTopY + 17} L 3 ${torsoTopY + 12} Z`, '#e11d48', INK, 1.0);
+      // Khăn quàng đỏ học sinh (đổi xám khi zombie để không có màu đỏ)
+      const scarfCol = (zWeight > 0.5) ? '#64748b' : '#e11d48';
+      path(ctx, `M 0 ${torsoTopY + 2} L -7 ${torsoTopY + 12} L -2 ${torsoTopY + 17} L 3 ${torsoTopY + 12} Z`, scarfCol, INK, 1.0);
     } else if (spec.accessory === 'bow_tie') {
-      // Nơ đỏ bé gái
-      ellipse(ctx, -4, torsoTopY + 5, 3.5, 2.5, '#e11d48', INK, 1.0, -0.2);
-      ellipse(ctx, 4, torsoTopY + 5, 3.5, 2.5, '#e11d48', INK, 1.0, 0.2);
-      ellipse(ctx, 0, torsoTopY + 5, 1.8, 1.8, '#be123c', null);
+      // Nơ đỏ bé gái (đổi xám khi zombie)
+      const bowCol = (zWeight > 0.5) ? '#64748b' : '#e11d48';
+      const bowCen = (zWeight > 0.5) ? '#475569' : '#be123c';
+      ellipse(ctx, -4, torsoTopY + 5, 3.5, 2.5, bowCol, INK, 1.0, -0.2);
+      ellipse(ctx, 4, torsoTopY + 5, 3.5, 2.5, bowCol, INK, 1.0, 0.2);
+      ellipse(ctx, 0, torsoTopY + 5, 1.8, 1.8, bowCen, null);
     } else if (spec.accessory === 'bear_pocket') {
       // Túi gấu nhỏ bé mầm non
       ellipse(ctx, 5, torsoBotY - 8, 4.5, 4.0, '#f97316', INK, 1.0);
@@ -340,9 +347,10 @@
       const hairSwing = Math.sin(t * 5 + wind * 2) * 4;
       ellipse(ctx, -24, headY + 4 + hairSwing, 7.5, 12, hairCol, INK, 1.4, -0.3);
       ellipse(ctx, 24, headY + 4 - hairSwing, 7.5, 12, hairCol, INK, 1.4, 0.3);
-      // Nơ cột tóc
-      ellipse(ctx, -20, headY - 4, 2.5, 2.5, '#e11d48', null);
-      ellipse(ctx, 20, headY - 4, 2.5, 2.5, '#e11d48', null);
+      // Nơ cột tóc (xám khi zombie)
+      const twintailBowCol = (zWeight > 0.5) ? '#64748b' : '#e11d48';
+      ellipse(ctx, -20, headY - 4, 2.5, 2.5, twintailBowCol, null);
+      ellipse(ctx, 20, headY - 4, 2.5, 2.5, twintailBowCol, null);
     } else if (spec.hairStyle === 'neat_bun' || spec.hairStyle === 'grey_bun') {
       // Búi tóc tròn trên cao / sau gáy
       ellipse(ctx, 0, headY - 19, 9, 8.5, hairCol, INK, 1.4);
@@ -370,6 +378,11 @@
       ellipse(ctx, 19, headY - 8, 4.5, 9, hairCol, INK, 1.2);
     } else {
       path(ctx, `M -19 ${headY - 4} Q -20 ${headY - 21} 0 ${headY - 21} Q 20 ${headY - 21} 19 ${headY - 4} Q 10 ${headY - 12} 0 ${headY - 12} Q -10 ${headY - 12} -19 ${headY - 4} Z`, hairCol, INK, 1.4);
+    }
+    if (zWeight > 0) {
+      for (const [tx, ty] of [[-18, headY - 14], [18, headY - 14], [-8, headY - 24], [8, headY - 24]]) {
+        path(ctx, `M ${tx} ${ty} L ${tx + 4} ${ty - 6} L ${tx + 7} ${ty} Z`, hairCol, INK, 1.0);
+      }
     }
     ctx.restore();
 
@@ -415,6 +428,17 @@
       line(ctx, [[-2.5, eyeY], [2.5, eyeY]], '#94a3b8', 1.4);
       line(ctx, [[-15.5, eyeY], [-19, eyeY - 2]], '#94a3b8', 1.2);
       line(ctx, [[15.5, eyeY], [19, eyeY - 2]], '#94a3b8', 1.2);
+    }
+
+    if ((s.cured || 0) >= 0.7) {
+      ctx.save();
+      for (let i = 0; i < 5; i++) {
+        const sx = Math.sin(t * 5 + i * 1.6) * 22;
+        const sy = headY - 14 + Math.cos(t * 4 + i * 1.3) * 16;
+        const r = 2.0 + Math.sin(t * 8 + i) * 1.0;
+        ellipse(ctx, sx, sy, r, r, i % 2 === 0 ? '#38bdf8' : '#facc15', null);
+      }
+      ctx.restore();
     }
 
     ctx.restore();

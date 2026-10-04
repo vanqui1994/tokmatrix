@@ -495,6 +495,10 @@
       ellipse(ctx, 42, 12, 6, 2, '#475569', null);
     }
 
+    if (s.decay && s.decay > 0 && kit.decayOverlay && (id === 'car' || id === 'city_bus' || id === 'school_bus')) {
+      kit.decayOverlay(ctx, [-spec.width * 0.5, -spec.height, spec.width, spec.height], s.decay, s.asset);
+    }
+
     ctx.restore();
   }
 

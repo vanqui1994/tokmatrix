@@ -51,6 +51,21 @@ def cmd_extract(args):
                     canonical_clips.append(c)
         char_meta["clips"] = sorted(canonical_clips)
 
+    # Incorporate recurring cast clips (Plan §4.3)
+    try:
+        from bkt_web.vector_characters.cast import get_all_cast_clips
+        cast_clips = get_all_cast_clips()
+        for cid, c_clips in cast_clips.items():
+            c_keys = []
+            for cname, cdata in c_clips.items():
+                ckey = f"{cid}/{cname}"
+                clips[ckey] = cdata
+                c_keys.append(ckey)
+            if cid in chars:
+                chars[cid]["clips"] = sorted(set(chars[cid].get("clips", []) + c_keys))
+    except Exception as e:
+        print(f"Warning: could not load recurring cast clips: {e}")
+
     # Deterministic float rounding & sorting
     chars_clean = round_float(chars, 3)
     clips_clean = round_float(clips, 3)

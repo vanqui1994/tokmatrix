@@ -4087,6 +4087,153 @@
       "95f1d1ef83ea050a",
       "95f1d1ef83ea050a",
       "1de5f4ef758d9bf2"
+    ],
+    "barricade_boards": [
+      "bcfcdeef969bdbd4",
+      "bcfcdeef969bdbd4",
+      "bcfcdeef969bdbd4",
+      "bcfcdeef969bdbd4",
+      "bcfcdeef969bdbd4"
+    ],
+    "rain_barrel_filter": [
+      "318d6beffa721875",
+      "318d6beffa721875",
+      "318d6beffa721875",
+      "318d6beffa721875",
+      "318d6beffa721875"
+    ],
+    "solar_panel_small": [
+      "062d0cefd5fad7a8",
+      "062d0cefd5fad7a8",
+      "062d0cefd5fad7a8",
+      "062d0cefd5fad7a8",
+      "062d0cefd5fad7a8"
+    ],
+    "tent": [
+      "aa0072effde97e26",
+      "aa0072effde97e26",
+      "aa0072effde97e26",
+      "aa0072effde97e26",
+      "aa0072effde97e26"
+    ],
+    "sleeping_bag": [
+      "4c0d7befd003f78a",
+      "4c0d7befd003f78a",
+      "4c0d7befd003f78a",
+      "4c0d7befd003f78a",
+      "4c0d7befd003f78a"
+    ],
+    "vine_wall": [
+      "e17fa4efaa6a4109",
+      "e17fa4efaa6a4109",
+      "e17fa4efaa6a4109",
+      "e17fa4efaa6a4109",
+      "e17fa4efaa6a4109"
+    ],
+    "street_lamp_old": [
+      "f1f233ef7c03065a",
+      "f1f233ef7c03065a",
+      "f1f233ef7c03065a",
+      "f1f233ef7c03065a",
+      "f1f233ef7c03065a"
+    ],
+    "shopping_cart": [
+      "df4d15ef8b968d26",
+      "df4d15ef8b968d26",
+      "df4d15ef8b968d26",
+      "df4d15ef8b968d26",
+      "df4d15ef8b968d26"
+    ],
+    "canned_food_stack": [
+      "bfa0c0ef924e4133",
+      "bfa0c0ef924e4133",
+      "bfa0c0ef924e4133",
+      "bfa0c0ef924e4133",
+      "bfa0c0ef924e4133"
+    ],
+    "water_filter_bottle": [
+      "9cfa7def14dacd98",
+      "9cfa7def14dacd98",
+      "9cfa7def14dacd98",
+      "9cfa7def14dacd98",
+      "9cfa7def14dacd98"
+    ],
+    "signal_mirror": [
+      "af7458ef615d999c",
+      "af7458ef615d999c",
+      "af7458ef615d999c",
+      "af7458ef615d999c",
+      "af7458ef615d999c"
+    ],
+    "walkie_talkie": [
+      "3e49e3ef2f34edb0",
+      "3e49e3ef2f34edb0",
+      "3e49e3ef2f34edb0",
+      "3e49e3ef2f34edb0",
+      "3e49e3ef2f34edb0"
+    ],
+    "water_pot_boiling": [
+      "4fa969ef47248523",
+      "4fa969ef47248523",
+      "4fa969ef47248523",
+      "4fa969ef47248523",
+      "4fa969ef47248523"
+    ],
+    "cloth_filter": [
+      "eb916fef51a49a9b",
+      "adcfa9effc7d3e7e",
+      "adcfa9effc7d3e7e",
+      "adcfa9effc7d3e7e",
+      "adcfa9effc7d3e7e"
+    ],
+    "firewood_bundle": [
+      "6ddd8bef413bf3e4",
+      "6ddd8bef413bf3e4",
+      "6ddd8bef413bf3e4",
+      "6ddd8bef413bf3e4",
+      "6ddd8bef413bf3e4"
+    ],
+    "fishing_rod_simple": [
+      "183bd6ef2ce9f760",
+      "5e8650ef5b1b9551",
+      "8f7888ef78b555c5",
+      "af7a09efbc68a052",
+      "c57b94ef631aaf58"
+    ],
+    "snare_free": [
+      "910b19eff484a95c",
+      "910b19eff484a95c",
+      "910b19eff484a95c",
+      "910b19eff484a95c",
+      "910b19eff484a95c"
+    ],
+    "seed_tray": [
+      "0d30d2ef652cb604",
+      "0d30d2ef652cb604",
+      "0d30d2ef652cb604",
+      "0d30d2ef652cb604",
+      "0d30d2ef652cb604"
+    ],
+    "hand_crank_radio": [
+      "779952eff87e0967",
+      "779952eff87e0967",
+      "779952eff87e0967",
+      "779952eff87e0967",
+      "779952eff87e0967"
+    ],
+    "sos_stones": [
+      "027f6defa9d2aed4",
+      "027f6defa9d2aed4",
+      "027f6defa9d2aed4",
+      "027f6defa9d2aed4",
+      "027f6defa9d2aed4"
+    ],
+    "cure_sprayer": [
+      "d052abeff0f875cc",
+      "d052abeff0f875cc",
+      "d052abeff0f875cc",
+      "d052abeff0f875cc",
+      "d052abeff0f875cc"
     ]
   },
   "backgrounds": {
@@ -7081,6 +7228,210 @@
         "f9ea76ef983d0372",
         "c71e19efe9912103"
       ]
+    },
+    "abandoned_street": {
+      "day": [
+        "fb5a76ef1133aa30",
+        "fb5a76ef1133aa30"
+      ],
+      "night": [
+        "a37ae9ef127f762c",
+        "a37ae9ef127f762c"
+      ],
+      "rain": [
+        "fe8965ef30d2d105",
+        "9ebc3bef29f3ba6a"
+      ],
+      "snow": [
+        "ea5a2cef213ff323",
+        "e9c371efcc5da4ef"
+      ],
+      "wind": [
+        "0eaac5efebb3c6df",
+        "b0a4efeffcea0279"
+      ],
+      "fog": [
+        "4eab57ef68ed32cd",
+        "984fc3ef20d2367e"
+      ],
+      "storm": [
+        "906896ef44273fd0",
+        "d49df5ef70c6ddfb"
+      ],
+      "hot": [
+        "9f1ce8ef3d67631e",
+        "df9c00efb02d88d2"
+      ]
+    },
+    "overgrown_plaza": {
+      "day": [
+        "127761efb72bd33b",
+        "127761efb72bd33b"
+      ],
+      "night": [
+        "89521cef0ac5e933",
+        "89521cef0ac5e933"
+      ],
+      "rain": [
+        "41f8dfef58c662c4",
+        "edce8fef16ed1a1e"
+      ],
+      "snow": [
+        "6a8f15ef16978448",
+        "41a19cef315f3ee5"
+      ],
+      "wind": [
+        "268d22ef6383f28c",
+        "b8aedaef67ce4b44"
+      ],
+      "fog": [
+        "57e4faef7632c634",
+        "82b4c3efbf8492d4"
+      ],
+      "storm": [
+        "92252eef0ce8971e",
+        "09c1c3efbe407abc"
+      ],
+      "hot": [
+        "2aed0cefa6605869",
+        "a092f8ef908f2786"
+      ]
+    },
+    "rooftop_garden": {
+      "day": [
+        "06aa99ef55d040b0",
+        "06aa99ef55d040b0"
+      ],
+      "night": [
+        "188328ef9ef9be85",
+        "188328ef9ef9be85"
+      ],
+      "rain": [
+        "8a4028ef014beea1",
+        "f0c5b6ef07b4a79e"
+      ],
+      "snow": [
+        "0c3c12ef8fac0525",
+        "6b4e88efcb9e176b"
+      ],
+      "wind": [
+        "b04311ef2da5827c",
+        "648bdaef921c631b"
+      ],
+      "fog": [
+        "c3b74eefc01e5aee",
+        "63c1ccef32530323"
+      ],
+      "storm": [
+        "1b9c96ef7b5b4bdb",
+        "2eb018ef715fa272"
+      ],
+      "hot": [
+        "72f5c8efbf14f779",
+        "a37866ef605c85b5"
+      ]
+    },
+    "subway_tunnel": {
+      "day": [
+        "4c8a37ef78c82a00",
+        "4c8a37ef78c82a00"
+      ],
+      "night": [
+        "4c8a37ef78c82a00",
+        "4c8a37ef78c82a00"
+      ],
+      "rain": [
+        "e2a795ef55ce64ef",
+        "d09f90ef7563c3db"
+      ],
+      "snow": [
+        "a9dffdeffcb9d860",
+        "5d6155ef2622f095"
+      ],
+      "wind": [
+        "64a038ef0e8e0d10",
+        "32685aeff800bc83"
+      ],
+      "fog": [
+        "a36ac4ef9b000761",
+        "60d809eff94b152f"
+      ],
+      "storm": [
+        "f504f3efac99d6b2",
+        "8c9534ef31760540"
+      ],
+      "hot": [
+        "af7a5deffeb41071",
+        "c0d022efd1331421"
+      ]
+    },
+    "flooded_downtown": {
+      "day": [
+        "1e615aef79c27879",
+        "3a880fef06ca2e54"
+      ],
+      "night": [
+        "25ac28efcb216e54",
+        "ebcbe9ef4d7606e0"
+      ],
+      "rain": [
+        "510b60efd18a1167",
+        "f4023def8f0b39fd"
+      ],
+      "snow": [
+        "0ae433efca5dac4b",
+        "f372b3ef75a42099"
+      ],
+      "wind": [
+        "87deabef2c45515c",
+        "e3ff77ef154a8fad"
+      ],
+      "fog": [
+        "24b28fefa40a125d",
+        "fe10e4ef1d011160"
+      ],
+      "storm": [
+        "148098effb8c3044",
+        "d73ef1ef84337d9f"
+      ],
+      "hot": [
+        "369127ef002f9af6",
+        "68f936ef0d6ebd3c"
+      ]
+    },
+    "safe_camp": {
+      "day": [
+        "1d9ed2ef75ef541f",
+        "1d9ed2ef75ef541f"
+      ],
+      "night": [
+        "0c99efef88608eb8",
+        "0c99efef88608eb8"
+      ],
+      "rain": [
+        "0dee7cef9b91ee10",
+        "2962a8ef9e110342"
+      ],
+      "snow": [
+        "e598e2efbf4a9be9",
+        "0bf02fefc64eaf14"
+      ],
+      "wind": [
+        "60be83ef12ffbda5",
+        "3785fdeff2e3bc12"
+      ],
+      "fog": [
+        "f4e4c3efead01731",
+        "f2e426ef8343eb19"
+      ],
+      "storm": [
+        "033735efe344e905",
+        "df805eef0d9bd899"
+      ],
+      "hot": [
+        "892364ef2b18ecfd",
+        "2a5794ef64a198bf"
+      ]
     }
   },
   "stories": {
@@ -7636,6 +7987,48 @@
       "a9995fef838bf9ff",
       "f600fdefea95a6a1",
       "f14ae3ef20fdde86"
+    ],
+    "last_city_morning": [
+      "6b1452ef3f50b54d",
+      "3e06a1efd673421b",
+      "240bb7ef11c832d0",
+      "46f064ef3051bcc6",
+      "2d6823ef8b9346ac"
+    ],
+    "water_first": [
+      "39f35aefccd2b8b9",
+      "0e7e0aefce0fa9b9",
+      "4361aaef106d34f5",
+      "7869e5ef2455d904",
+      "7772a0effc4c317b"
+    ],
+    "quiet_street": [
+      "b9b332efcdb8fde7",
+      "8793abeffa57019d",
+      "d2b915ef79b539b6",
+      "681d7eef5d895a10",
+      "3cb8adef7663f8e8"
+    ],
+    "barricade_night": [
+      "c2086aef846d122f",
+      "1e20d2ef63bdd152",
+      "4209b0efbed39a58",
+      "42a53def01370a87",
+      "3e3d6eefb9bd0348"
+    ],
+    "flooded_escape": [
+      "bdbfa7ef6ed032ce",
+      "3bb5caef1cd325b6",
+      "74c031ef90766b82",
+      "1e8635efb6300277",
+      "70dad1ef8625a658"
+    ],
+    "the_cure": [
+      "ab5609ef6d47c3ca",
+      "b27990eff7b10d17",
+      "96673eef9d0eb7b7",
+      "202070ef0b87019f",
+      "cf7fd6ef6c43cc5f"
     ]
   }
 }

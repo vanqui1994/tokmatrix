@@ -679,13 +679,14 @@ globalThis.RemakeVector = (() => {
     const e = s.expression, speaking = s.mouth > .01;
     const blink = (t + (hash(s.id) % 97) / 23) % 3.8 > 3.66;
     const lx = clamp(s.look_x || 0, -1, 1) * 2.6, ly = clamp(s.look_y || 0, -1, 1) * 2.6;
+    const isZombie = (s.zombie || 0) > 0.05 && (s.cured || 0) < 0.8;
     // Má hồng trước mắt để viền mắt đè lên.
     ctx.save();
-    const blushAlpha = Math.min(1.0, 0.42 + (s.blush || 0) * 0.45 + (s.fever || 0) * 0.35);
+    const blushAlpha = isZombie ? 0 : Math.min(1.0, 0.42 + (s.blush || 0) * 0.45 + (s.fever || 0) * 0.35);
     ctx.globalAlpha *= blushAlpha;
-    const blushCol = e === 'sick' || s.sick ? '#68b878' : e === 'cold' ? '#8cb8ea' : e === 'hot' || s.fever ? '#ff3b30' : '#ff7f86';
+    const blushCol = isZombie ? '#7f9e8d' : e === 'sick' || s.sick ? '#68b878' : e === 'cold' ? '#8cb8ea' : e === 'hot' || s.fever ? '#ff3b30' : '#ff7f86';
     for (const side of [-1, 1]) ellipse(ctx, side * 18, 9, 6.5, 3.8, blushCol, null);
-    if (s.fever > 0) ellipse(ctx, 0, -10, 14, 6, 'rgba(255, 60, 50, 0.25)', null);
+    if (s.fever > 0 && !isZombie) ellipse(ctx, 0, -10, 14, 6, 'rgba(255, 60, 50, 0.25)', null);
     ctx.restore();
     if (s.tears > 0) {
       for (const side of [-1, 1]) ellipse(ctx, side * 15, 6, 2.2, 3.8, '#58b2e8', null);
@@ -700,6 +701,15 @@ globalThis.RemakeVector = (() => {
         for (let ring = 2.2; ring <= 6.2; ring += 2.0) {
           path(ctx, `M ${ex - ring} 0 A ${ring} ${ring} 0 1 0 ${ex + ring} 0 A ${ring} ${ring} 0 1 0 ${ex - ring} 0`, null, INK, 1.4);
         }
+      } else if (e === 'dazed' || (isZombie && (e === 'neutral' || !e))) {
+        const ry = 8.5, rx = 8.0;
+        ellipse(ctx, ex, 0, rx, ry, '#eef2f0', INK, 1.6);
+        const ir = 3.6;
+        ellipse(ctx, ex + lx * 0.4, 0.5 + ly * 0.4, ir, ir, '#4a5550', null);
+        ellipse(ctx, ex + lx * 0.4, 0.8 + ly * 0.4, ir * 0.45, ir * 0.45, '#1e2422', null);
+        ellipse(ctx, ex + lx * 0.4 - 1, -1.2 + ly * 0.4, 1.2, 1.2, '#ffffff', null);
+        path(ctx, `M ${ex - 9} -9 L ${ex + 9} -9 L ${ex + 9} -1.5 L ${ex - 9} -1.5 Z`, '#9eaba2', null);
+        line(ctx, [[ex - 8.5, -1.5], [ex + 8.5, -1.5]], INK, 1.4);
       } else if (e === 'happy' && !speaking) {
         path(ctx, `M ${ex - 8} 3 Q ${ex} -8 ${ex + 8} 3`, null, INK, 2.6);
       } else {
@@ -720,7 +730,7 @@ globalThis.RemakeVector = (() => {
       const brow = {
         neutral: [-15, -15, .35], happy: [-17, -17, .5], worried: [-13, -18, -.2], sad: [-13, -17, -.15],
         angry: [-17, -11, .1], surprised: [-21, -21, .6], smug: side < 0 ? [-14, -14, .2] : [-19, -17, .45], sleep: [-12, -12, .2],
-        sick: [-13, -18, -.25], cold: [-14, -16, -.15], hot: [-16, -18, .4], dizzy: [-18, -13, .1]
+        sick: [-13, -18, -.25], cold: [-14, -16, -.15], hot: [-16, -18, .4], dizzy: [-18, -13, .1], dazed: [-14, -14, .1]
       }[e] || [-15, -15, .35];
       const inner = [ex - side * 7, brow[1]], outer = [ex + side * 8, brow[0]], mid = [ex, Math.min(brow[0], brow[1]) - brow[2] * 5];
       path(ctx, `M ${inner[0]} ${inner[1]} Q ${mid[0]} ${mid[1]} ${outer[0]} ${outer[1]}`, null, INK, 2.8);
@@ -734,6 +744,8 @@ globalThis.RemakeVector = (() => {
         path(ctx, `M ${-w} 14 L ${w} 14 L ${w} ${16 + h * .12} L ${-w} ${16 + h * .12} Z`, '#fffdf6', null);
         ctx.restore();
       }
+    } else if (e === 'dazed' || (isZombie && !speaking)) {
+      path(ctx, 'M -5 18 Q 0 16 5 18 Q 4 21 0 21 Q -4 21 -5 18 Z', '#4a4542', INK, 1.2);
     } else if (e === 'happy') {
       path(ctx, 'M -9 13 Q 0 14 9 13 Q 8 25 0 25 Q -8 25 -9 13 Z', '#6b2a2e', INK, 1.5);
       ctx.save(); ctx.clip(new Path2D('M -9 13 Q 0 14 9 13 Q 8 25 0 25 Q -8 25 -9 13 Z')); ellipse(ctx, 0, 25, 6, 4.5, '#ee7d82', null); ctx.restore();
@@ -1356,8 +1368,11 @@ globalThis.RemakeVector = (() => {
     path(ctx, 'M 8 -101 L 50 -101 L 46 -82 Q 28 -78 9 -83 Z', cylinder(ctx, 8, 50, s.style.shirt || '#34506b'), INK, 2);
   }
   function drawPerson(ctx, s, t) {
-    const fisher = s.asset === 'fisherman', woman = s.asset === 'farmer_woman', hatted = fisher || woman, skin = s.style.skin || '#f1d3aa';
-    const shirt = s.style.shirt || (fisher ? '#3f8a8c' : woman ? '#b8546e' : '#3986b5'), pants = s.style.accent || (fisher ? '#3d4a57' : woman ? '#27262e' : '#2e3a36');
+    const fisher = s.asset === 'fisherman', woman = s.asset === 'farmer_woman', hatted = fisher || woman;
+    const zWeight = (s.zombie || 0) * (1 - (s.cured || 0));
+    let skin = s.style.skin || '#f1d3aa';
+    if (zWeight > 0) skin = mixColor(skin, '#8fa396', zWeight * 0.85);
+    const shirt = s.style.shirt || (fisher ? '#3f8a8c' : woman ? (zWeight > 0.5 ? '#526359' : '#b8546e') : '#3986b5'), pants = s.style.accent || (fisher ? '#3d4a57' : woman ? '#27262e' : '#2e3a36');
     const skel = farmerSkeleton(s), pose = celId(s), walk = s.walk || 0, stride = s.stride || 0;
     const lean = pose.includes('pull') || pose.includes('reach') ? -4 : pose.includes('recoil') ? 4 : 0;
     const [hx, hy] = headOffset(s, t), bob = walk * -Math.abs(Math.sin(stride)) * 2.2;
@@ -1396,7 +1411,7 @@ globalThis.RemakeVector = (() => {
       path(ctx, 'M -21 -92 Q -26 -70 -20 -58 Q -8 -54 1 -56 Q 12 -54 22 -58 Q 28 -70 23 -92 Z', hair, INK, 1.6);
       // Bím tóc vắt qua vai trái.
       for (let i = 0; i < 4; i++) ellipse(ctx, -19 - i * .6, -58 + i * 6, 4.2 - i * .4, 3.8, hair, INK, 1.1);
-      ellipse(ctx, -21.5, -34, 2.6, 2, '#d9534f', INK, .8);
+      ellipse(ctx, -21.5, -34, 2.6, 2, (zWeight > 0.5 ? '#475569' : '#d9534f'), INK, .8);
     }
     for (const side of [-1, 1]) ellipse(ctx, 1 + side * 19, -84, 4.2, 5.6, tone(skin, -.06), INK, 1.4);
     ellipse(ctx, 1, -86, 19, 20.5, volume(ctx, 1, -86, 19, 20.5, skin, .25, -.18), INK, 1.9);
@@ -1446,6 +1461,16 @@ globalThis.RemakeVector = (() => {
       else limb(ctx, [shoulder, cuff], shirt, 9.5);
       const a = Math.atan2(hand[1] - elbow[1], hand[0] - elbow[0]) + (s[`wrist_${side}`] || 0) * Math.PI / 180;
       mitten(ctx, hand[0], hand[1], 4.2, skin, a + (side === 'l' ? Math.PI / 2 : -Math.PI / 2) * .4);
+    }
+    if ((s.cured || 0) >= 0.7) {
+      ctx.save();
+      for (let i = 0; i < 5; i++) {
+        const sx = hx + Math.sin(t * 5 + i * 1.6) * 26;
+        const sy = hy - 90 + Math.cos(t * 4 + i * 1.3) * 18;
+        const r = 2.0 + Math.sin(t * 8 + i) * 1.0;
+        ellipse(ctx, sx, sy, r, r, i % 2 === 0 ? '#38bdf8' : '#facc15', null);
+      }
+      ctx.restore();
     }
     celHatch(ctx, s, [-30, -108, 60, 108], '#4a3829', 11);
   }
@@ -3785,6 +3810,16 @@ globalThis.RemakeVector = (() => {
     }
   };
 
+  function drawPoly(ctx, pts, fill, stroke, width = 1) {
+    if (!pts || pts.length < 2) return;
+    ctx.beginPath();
+    ctx.moveTo(pts[0][0], pts[0][1]);
+    for (let i = 1; i < pts.length; i++) ctx.lineTo(pts[i][0], pts[i][1]);
+    ctx.closePath();
+    if (fill) { ctx.fillStyle = fill; ctx.fill(); }
+    if (stroke) { ctx.strokeStyle = stroke; ctx.lineWidth = width; ctx.stroke(); }
+  }
+
   const kit = {
     INK,
     TAU,  // các gói lấy TAU từ kit; thiếu thì mọi arc/góc thành NaN và hình âm thầm biến mất
@@ -3799,6 +3834,7 @@ globalThis.RemakeVector = (() => {
     ellipse,
     path,
     line,
+    drawPoly,
     withCut,
     mixColor,
     hash,

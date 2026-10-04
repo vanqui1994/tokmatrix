@@ -534,6 +534,40 @@
     ],
     "voice_role": "none"
   },
+  "barricade_boards": {
+    "archived": false,
+    "clips": [
+      "barricade_boards/barricade_night_s0_gate",
+      "barricade_boards/barricade_night_s1_gate"
+    ],
+    "expressions": [],
+    "height": 200,
+    "id": "barricade_boards",
+    "label": {
+      "de": "Barricade Boards",
+      "en": "Barricade Boards",
+      "ja": "Barricade Boards",
+      "ko": "Barricade Boards"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "barricade_boards",
+    "role": "prop_actor",
+    "source_stories": [
+      "barricade_night"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
   "basket": {
     "archived": false,
     "clips": [
@@ -883,12 +917,60 @@
     ],
     "voice_role": "none"
   },
+  "biscuit": {
+    "archived": false,
+    "clips": [
+      "biscuit/alert",
+      "biscuit/barricade_night_s0_biscuit",
+      "biscuit/barricade_night_s1_biscuit",
+      "biscuit/emote_heart",
+      "biscuit/idle",
+      "biscuit/last_city_morning_s0_biscuit",
+      "biscuit/last_city_morning_s1_biscuit",
+      "biscuit/last_city_morning_s2_biscuit",
+      "biscuit/walk"
+    ],
+    "expressions": [
+      "neutral"
+    ],
+    "height": 105.0,
+    "id": "biscuit",
+    "label": {
+      "de": "Biscuit",
+      "en": "Biscuit",
+      "ja": "ビスケット",
+      "ko": "비스킷"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "dog",
+    "role": "companion",
+    "source_stories": [
+      "last_city_morning",
+      "barricade_night"
+    ],
+    "topics": [
+      "survival",
+      "animal"
+    ],
+    "voice_role": "none"
+  },
   "boat": {
     "archived": false,
     "clips": [
       "boat/fishing_s0_boat",
       "boat/fishing_s1_boat",
       "boat/fishing_s2_boat",
+      "boat/flooded_escape_s0_skiff",
+      "boat/flooded_escape_s1_skiff",
+      "boat/flooded_escape_s2_skiff",
       "boat/sea-monsters_s0_boat",
       "boat/sea-monsters_s1_boat"
     ],
@@ -914,7 +996,8 @@
     "role": "prop_actor",
     "source_stories": [
       "fishing",
-      "sea-monsters"
+      "sea-monsters",
+      "flooded_escape"
     ],
     "topics": [
       "other"
@@ -1203,8 +1286,10 @@
   "campfire": {
     "archived": false,
     "clips": [
+      "campfire/barricade_night_s0_fire",
       "campfire/first_fire_s0_fire",
-      "campfire/first_fire_s1_fire"
+      "campfire/first_fire_s1_fire",
+      "campfire/water_first_s1_fire"
     ],
     "expressions": [],
     "height": 110,
@@ -1227,7 +1312,42 @@
     "rig": "campfire",
     "role": "prop_actor",
     "source_stories": [
-      "first_fire"
+      "first_fire",
+      "water_first",
+      "barricade_night"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "can": {
+    "archived": false,
+    "clips": [
+      "can/quiet_street_s1_can"
+    ],
+    "expressions": [],
+    "height": 110,
+    "id": "can",
+    "label": {
+      "de": "Can",
+      "en": "Can",
+      "ja": "Can",
+      "ko": "Can"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "can",
+    "role": "prop_actor",
+    "source_stories": [
+      "quiet_street"
     ],
     "topics": [
       "other"
@@ -2135,6 +2255,73 @@
     ],
     "voice_role": "child"
   },
+  "city_bus": {
+    "archived": false,
+    "clips": [
+      "city_bus/quiet_street_s0_bus"
+    ],
+    "expressions": [],
+    "height": 160,
+    "id": "city_bus",
+    "label": {
+      "de": "City Bus",
+      "en": "City Bus",
+      "ja": "City Bus",
+      "ko": "City Bus"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "city_bus",
+    "role": "prop_actor",
+    "source_stories": [
+      "quiet_street"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "cloth_filter": {
+    "archived": false,
+    "clips": [
+      "cloth_filter/water_first_s0_filter",
+      "cloth_filter/water_first_s1_filter"
+    ],
+    "expressions": [],
+    "height": 150,
+    "id": "cloth_filter",
+    "label": {
+      "de": "Cloth Filter",
+      "en": "Cloth Filter",
+      "ja": "Cloth Filter",
+      "ko": "Cloth Filter"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "cloth_filter",
+    "role": "prop_actor",
+    "source_stories": [
+      "water_first"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
   "cloud_set": {
     "archived": false,
     "clips": [
@@ -2660,6 +2847,60 @@
       "de_culture"
     ],
     "voice_role": "none"
+  },
+  "dr_hana": {
+    "archived": false,
+    "clips": [
+      "dr_hana/crouch_hide",
+      "dr_hana/cure_spray",
+      "dr_hana/emote_exclamation",
+      "dr_hana/emote_heart",
+      "dr_hana/idle",
+      "dr_hana/inspect",
+      "dr_hana/look_around",
+      "dr_hana/run_short",
+      "dr_hana/talk",
+      "dr_hana/the_cure_s0_dr_hana",
+      "dr_hana/the_cure_s1_dr_hana",
+      "dr_hana/the_cure_s2_dr_hana",
+      "dr_hana/walk_in",
+      "dr_hana/walk_out",
+      "dr_hana/wave"
+    ],
+    "expressions": [
+      "neutral",
+      "happy"
+    ],
+    "height": 250.0,
+    "id": "dr_hana",
+    "label": {
+      "de": "Dr. Hana",
+      "en": "Dr. Hana",
+      "ja": "ハナ博士",
+      "ko": "하나 박사"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": "scientist",
+    "props": [
+      "cure_sprayer"
+    ],
+    "rig": "chibi_teacher",
+    "role": "scientist",
+    "source_stories": [
+      "the_cure"
+    ],
+    "topics": [
+      "apocalypse",
+      "survival",
+      "science"
+    ],
+    "voice_role": "adult"
   },
   "duck": {
     "archived": false,
@@ -3497,6 +3738,60 @@
       "health"
     ],
     "voice_role": "child"
+  },
+  "grandpa_otto": {
+    "archived": false,
+    "clips": [
+      "grandpa_otto/barricade",
+      "grandpa_otto/barricade_night_s0_grandpa_otto",
+      "grandpa_otto/barricade_night_s1_grandpa_otto",
+      "grandpa_otto/barricade_night_s2_grandpa_otto",
+      "grandpa_otto/crouch_hide",
+      "grandpa_otto/emote_exclamation",
+      "grandpa_otto/emote_heart",
+      "grandpa_otto/idle",
+      "grandpa_otto/look_around",
+      "grandpa_otto/repair",
+      "grandpa_otto/run_short",
+      "grandpa_otto/talk",
+      "grandpa_otto/walk_in",
+      "grandpa_otto/walk_out",
+      "grandpa_otto/wave"
+    ],
+    "expressions": [
+      "neutral",
+      "worried",
+      "happy"
+    ],
+    "height": 240.0,
+    "id": "grandpa_otto",
+    "label": {
+      "de": "Opa Otto",
+      "en": "Grandpa Otto",
+      "ja": "オットーおじいさん",
+      "ko": "오토 할아버지"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": "construction",
+    "props": [
+      "hammer"
+    ],
+    "rig": "chibi_grandpa",
+    "role": "handyman",
+    "source_stories": [
+      "barricade_night"
+    ],
+    "topics": [
+      "apocalypse",
+      "survival"
+    ],
+    "voice_role": "elder"
   },
   "grape_vine": {
     "archived": false,
@@ -4497,6 +4792,68 @@
     ],
     "voice_role": "none"
   },
+  "leo": {
+    "archived": false,
+    "clips": [
+      "leo/crouch_hide",
+      "leo/emote_exclamation",
+      "leo/emote_heart",
+      "leo/flashlight_sweep",
+      "leo/flooded_escape_s0_leo",
+      "leo/flooded_escape_s1_leo",
+      "leo/flooded_escape_s2_leo",
+      "leo/idle",
+      "leo/last_city_morning_s1_leo",
+      "leo/last_city_morning_s2_leo",
+      "leo/look_around",
+      "leo/quiet_street_s0_leo",
+      "leo/quiet_street_s1_leo",
+      "leo/quiet_street_s2_leo",
+      "leo/run_short",
+      "leo/talk",
+      "leo/walk_in",
+      "leo/walk_out",
+      "leo/water_first_s1_leo",
+      "leo/wave"
+    ],
+    "expressions": [
+      "neutral",
+      "happy",
+      "worried"
+    ],
+    "height": 230.0,
+    "id": "leo",
+    "label": {
+      "de": "Leo",
+      "en": "Leo",
+      "ja": "レオ",
+      "ko": "레오"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": "survivor_hoodie",
+    "props": [
+      "flashlight"
+    ],
+    "rig": "chibi_boy",
+    "role": "scout",
+    "source_stories": [
+      "last_city_morning",
+      "water_first",
+      "quiet_street",
+      "flooded_escape"
+    ],
+    "topics": [
+      "apocalypse",
+      "survival"
+    ],
+    "voice_role": "child"
+  },
   "lever": {
     "archived": false,
     "clips": [
@@ -4939,6 +5296,74 @@
     ],
     "voice_role": "adult"
   },
+  "mika": {
+    "archived": false,
+    "clips": [
+      "mika/barricade_night_s0_mika",
+      "mika/barricade_night_s1_mika",
+      "mika/barricade_night_s2_mika",
+      "mika/crouch_hide",
+      "mika/emote_exclamation",
+      "mika/emote_heart",
+      "mika/flooded_escape_s0_mika",
+      "mika/flooded_escape_s1_mika",
+      "mika/flooded_escape_s2_mika",
+      "mika/idle",
+      "mika/last_city_morning_s0_mika",
+      "mika/last_city_morning_s1_mika",
+      "mika/last_city_morning_s2_mika",
+      "mika/look_around",
+      "mika/quiet_street_s0_mika",
+      "mika/quiet_street_s1_mika",
+      "mika/quiet_street_s2_mika",
+      "mika/radio_call",
+      "mika/run_short",
+      "mika/talk",
+      "mika/walk_in",
+      "mika/walk_out",
+      "mika/water_first_s0_mika",
+      "mika/water_first_s2_mika",
+      "mika/wave"
+    ],
+    "expressions": [
+      "neutral",
+      "happy",
+      "worried"
+    ],
+    "height": 230.0,
+    "id": "mika",
+    "label": {
+      "de": "Mika",
+      "en": "Mika",
+      "ja": "ミカ",
+      "ko": "미카"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": "survivor_jacket",
+    "props": [
+      "walkie_talkie"
+    ],
+    "rig": "chibi_girl",
+    "role": "leader",
+    "source_stories": [
+      "last_city_morning",
+      "water_first",
+      "quiet_street",
+      "barricade_night",
+      "flooded_escape"
+    ],
+    "topics": [
+      "apocalypse",
+      "survival"
+    ],
+    "voice_role": "child"
+  },
   "moai_generic": {
     "archived": false,
     "clips": [
@@ -5246,6 +5671,55 @@
       "other"
     ],
     "voice_role": "none"
+  },
+  "nora": {
+    "archived": false,
+    "clips": [
+      "nora/crouch_hide",
+      "nora/emote_exclamation",
+      "nora/emote_heart",
+      "nora/idle",
+      "nora/look_around",
+      "nora/run_short",
+      "nora/talk",
+      "nora/the_cure_s0_nora",
+      "nora/the_cure_s1_nora",
+      "nora/the_cure_s2_nora",
+      "nora/walk_in",
+      "nora/walk_out",
+      "nora/wave"
+    ],
+    "expressions": [
+      "dazed",
+      "happy"
+    ],
+    "height": 215.0,
+    "id": "nora",
+    "label": {
+      "de": "Nora",
+      "en": "Nora",
+      "ja": "ノラ",
+      "ko": "노라"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": "survivor_hoodie_purple",
+    "props": [],
+    "rig": "chibi_girl",
+    "role": "survivor",
+    "source_stories": [
+      "the_cure"
+    ],
+    "topics": [
+      "apocalypse",
+      "survival"
+    ],
+    "voice_role": "child"
   },
   "nose_chibi": {
     "archived": false,
@@ -5831,6 +6305,61 @@
     ],
     "voice_role": "none"
   },
+  "pip": {
+    "archived": false,
+    "clips": [
+      "pip/crank_radio",
+      "pip/crouch_hide",
+      "pip/emote_exclamation",
+      "pip/emote_heart",
+      "pip/idle",
+      "pip/last_city_morning_s0_pip",
+      "pip/last_city_morning_s1_pip",
+      "pip/last_city_morning_s2_pip",
+      "pip/look_around",
+      "pip/run_short",
+      "pip/talk",
+      "pip/walk_in",
+      "pip/walk_out",
+      "pip/water_first_s2_pip",
+      "pip/wave"
+    ],
+    "expressions": [
+      "neutral",
+      "happy",
+      "surprised"
+    ],
+    "height": 210.0,
+    "id": "pip",
+    "label": {
+      "de": "Pip",
+      "en": "Pip",
+      "ja": "ピップ",
+      "ko": "핍"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": "raincoat",
+    "props": [
+      "hand_crank_radio"
+    ],
+    "rig": "chibi_kid",
+    "role": "youngest",
+    "source_stories": [
+      "last_city_morning",
+      "water_first"
+    ],
+    "topics": [
+      "apocalypse",
+      "survival"
+    ],
+    "voice_role": "child"
+  },
   "planet": {
     "archived": false,
     "clips": [
@@ -6325,6 +6854,41 @@
     "role": "prop_actor",
     "source_stories": [
       "disaster_safety"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "rain_barrel_filter": {
+    "archived": false,
+    "clips": [
+      "rain_barrel_filter/water_first_s0_barrel",
+      "rain_barrel_filter/water_first_s1_barrel",
+      "rain_barrel_filter/water_first_s2_barrel"
+    ],
+    "expressions": [],
+    "height": 220,
+    "id": "rain_barrel_filter",
+    "label": {
+      "de": "Rain Barrel Filter",
+      "en": "Rain Barrel Filter",
+      "ja": "Rain Barrel Filter",
+      "ko": "Rain Barrel Filter"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "rain_barrel_filter",
+    "role": "prop_actor",
+    "source_stories": [
+      "water_first"
     ],
     "topics": [
       "other"
@@ -7066,6 +7630,39 @@
     "source_stories": [
       "farm-sow-grow",
       "johnny_appleseed"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "seed_tray": {
+    "archived": false,
+    "clips": [
+      "seed_tray/last_city_morning_s0_tray"
+    ],
+    "expressions": [],
+    "height": 160,
+    "id": "seed_tray",
+    "label": {
+      "de": "Seed Tray",
+      "en": "Seed Tray",
+      "ja": "Seed Tray",
+      "ko": "Seed Tray"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "seed_tray",
+    "role": "prop_actor",
+    "source_stories": [
+      "last_city_morning"
     ],
     "topics": [
       "other"
@@ -8149,6 +8746,39 @@
     ],
     "voice_role": "none"
   },
+  "water_pot_boiling": {
+    "archived": false,
+    "clips": [
+      "water_pot_boiling/water_first_s1_pot"
+    ],
+    "expressions": [],
+    "height": 170,
+    "id": "water_pot_boiling",
+    "label": {
+      "de": "Water Pot Boiling",
+      "en": "Water Pot Boiling",
+      "ja": "Water Pot Boiling",
+      "ko": "Water Pot Boiling"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "water_pot_boiling",
+    "role": "prop_actor",
+    "source_stories": [
+      "water_first"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
   "watering_can": {
     "archived": false,
     "clips": [
@@ -8321,5 +8951,137 @@
       "jp_culture"
     ],
     "voice_role": "child"
+  },
+  "zombie_walker_a": {
+    "archived": false,
+    "clips": [
+      "zombie_walker_a/idle",
+      "zombie_walker_a/quiet_street_s0_zombie_walker_a",
+      "zombie_walker_a/quiet_street_s1_zombie_walker_a",
+      "zombie_walker_a/quiet_street_s2_zombie_walker_a",
+      "zombie_walker_a/shamble",
+      "zombie_walker_a/the_cure_s0_zombie_walker_a",
+      "zombie_walker_a/the_cure_s1_zombie_walker_a",
+      "zombie_walker_a/the_cure_s2_zombie_walker_a",
+      "zombie_walker_a/turn_to_sound"
+    ],
+    "expressions": [
+      "dazed",
+      "happy"
+    ],
+    "height": 230.0,
+    "id": "zombie_walker_a",
+    "label": {
+      "de": "Wandernder Zombie A",
+      "en": "Zombie Walker A",
+      "ja": "ゾンビ・ウォーカーA",
+      "ko": "좀비 워커 A"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": "torn",
+    "props": [],
+    "rig": "chibi_boy",
+    "role": "crowd",
+    "source_stories": [
+      "quiet_street",
+      "the_cure"
+    ],
+    "topics": [
+      "apocalypse",
+      "zombie"
+    ],
+    "voice_role": "none"
+  },
+  "zombie_walker_b": {
+    "archived": false,
+    "clips": [
+      "zombie_walker_b/idle",
+      "zombie_walker_b/quiet_street_s0_zombie_walker_b",
+      "zombie_walker_b/quiet_street_s1_zombie_walker_b",
+      "zombie_walker_b/quiet_street_s2_zombie_walker_b",
+      "zombie_walker_b/shamble",
+      "zombie_walker_b/the_cure_s0_zombie_walker_b",
+      "zombie_walker_b/the_cure_s1_zombie_walker_b",
+      "zombie_walker_b/the_cure_s2_zombie_walker_b",
+      "zombie_walker_b/turn_to_sound"
+    ],
+    "expressions": [
+      "dazed",
+      "happy"
+    ],
+    "height": 230.0,
+    "id": "zombie_walker_b",
+    "label": {
+      "de": "Wandernder Zombie B",
+      "en": "Zombie Walker B",
+      "ja": "ゾンビ・ウォーカーB",
+      "ko": "좀비 워커 B"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": "torn",
+    "props": [],
+    "rig": "chibi_girl",
+    "role": "crowd",
+    "source_stories": [
+      "quiet_street",
+      "the_cure"
+    ],
+    "topics": [
+      "apocalypse",
+      "zombie"
+    ],
+    "voice_role": "none"
+  },
+  "zombie_walker_c": {
+    "archived": false,
+    "clips": [
+      "zombie_walker_c/barricade_night_s1_zombie_walker_c",
+      "zombie_walker_c/barricade_night_s2_zombie_walker_c",
+      "zombie_walker_c/idle",
+      "zombie_walker_c/shamble",
+      "zombie_walker_c/turn_to_sound"
+    ],
+    "expressions": [
+      "dazed"
+    ],
+    "height": 210.0,
+    "id": "zombie_walker_c",
+    "label": {
+      "de": "Wandernder Zombie C",
+      "en": "Zombie Walker C",
+      "ja": "ゾンビ・ウォーカーC",
+      "ko": "좀비 워커 C"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": "torn",
+    "props": [],
+    "rig": "chibi_kid",
+    "role": "crowd",
+    "source_stories": [
+      "barricade_night"
+    ],
+    "topics": [
+      "apocalypse",
+      "zombie"
+    ],
+    "voice_role": "none"
   }
 }

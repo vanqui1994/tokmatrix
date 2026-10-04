@@ -232,9 +232,9 @@ def _validate_tree_interactions(cat, cast, scene, poses, start, end):
 
 def validate_vector_scenes(characters, scenes):
     cat = _catalog()
-    # 400: showreel() ghép mọi story mẫu (nhân vật đổi tên theo namespace) thành một story duy nhất.
-    if not 1 <= len(characters) <= 400:
-        raise ValueError("Thư viện hỗ trợ 1–400 nhân vật mỗi storyboard")
+    # 600: showreel() ghép mọi story mẫu (nhân vật đổi tên theo namespace) thành một story duy nhất.
+    if not 1 <= len(characters) <= 600:
+        raise ValueError("Thư viện hỗ trợ 1–600 nhân vật mỗi storyboard")
     cast = {}
     for c in characters:
         cid = c.get("id")
@@ -242,6 +242,9 @@ def validate_vector_scenes(characters, scenes):
             raise ValueError("ID nhân vật không hợp lệ hoặc bị trùng")
         if c.get("asset") not in cat["assets"]:
             raise ValueError(f"{cid}: asset không có trong thư viện")
+        if c.get("asset") in ("gun", "rifle", "pistol", "sword", "real_sword", "saw", "chainsaw", "combat_knife"):
+            raise ValueError(f"Vũ khí bị từ chối trong thư viện: {c.get('asset')}")
+
         if "face" in c and not isinstance(c["face"], bool):
             raise ValueError(f"{cid}: face phải là boolean")
         if "layer" in c and c["layer"] not in ("default", "over_face", "under"):
@@ -410,6 +413,8 @@ def validate_vector_scenes(characters, scenes):
                 else {"food_id"} if kind == "eat"
                 else {"locale"} if kind == "wait_signal"
                 else {"paper"} if kind == "pull_lever"
+                else {"distance", "direction"} if kind == "shamble"
+                else {"min_dist", "speed", "distance"} if kind == "chase_slow"
                 else set()
             )
             if set(action) - ({"type", "actor", "target", "start", "end", "amount", "stroke", "actor_anchor", "target_anchor", "hold"} | extra_fields):
@@ -476,6 +481,29 @@ def validate_vector_scenes(characters, scenes):
                     raise ValueError(f"{kind}: không sử dụng {role}")
             if action.get("actor") == action.get("target"):
                 raise ValueError("Actor và target phải khác nhau")
+
+            # Phase V validation rules:
+            tool_cid = action.get("tool")
+            actor_cid = action.get("actor")
+            target_cid = action.get("target")
+            if (tool_cid and cast.get(tool_cid, {}).get("asset") == "axe") or (actor_cid and cast.get(actor_cid, {}).get("asset") == "axe") or (kind in ("chop", "cut") and (tool_cid == "axe" or actor_cid == "axe")):
+                if not target_cid or cast.get(target_cid, {}).get("asset") != "firewood_bundle":
+                    raise ValueError("Rìu (axe) chỉ hợp lệ khi mục tiêu là firewood_bundle")
+
+            if actor_cid and target_cid and kind != "chase_slow":
+                actor_keys = scene.get("poses", {}).get(actor_cid, [])
+                is_zombie_actor = (
+                    "zombie" in actor_cid.lower() or
+                    any(k.get("zombie", 0) > 0 for k in actor_keys)
+                )
+                target_asset = cast.get(target_cid, {}).get("asset", "")
+                is_human_target = (
+                    cat["assets"].get(target_asset, {}).get("group") in ("chibi", "human", "people") or
+                    target_asset in ("farmer_man", "farmer_woman", "farmer", "fisherman")
+                )
+                if is_zombie_actor and is_human_target:
+                    raise ValueError(f"Validator từ chối action {kind} có actor zombie và target là người (trừ chase_slow)")
+
             channels = []
             if spec["motion"]:
                 if cast[action["actor"]].get("attach_to"):
@@ -6611,6 +6639,37 @@ def fox_and_grapes_examples():
     return [story]
 
 
+# Story Giai đoạn V (tận thế, sinh tồn) nằm ở bkt_web/remake_vector_apocalypse.py (dàn nhân vật tái sử dụng);
+# nạp muộn vì module đó import held_pose/validate_story từ đây.
+def _apocalypse():
+    from bkt_web import remake_vector_apocalypse
+    return remake_vector_apocalypse
+
+
+def last_city_morning_examples():
+    return _apocalypse().last_city_morning_examples()
+
+
+def water_first_examples():
+    return _apocalypse().water_first_examples()
+
+
+def quiet_street_examples():
+    return _apocalypse().quiet_street_examples()
+
+
+def barricade_night_examples():
+    return _apocalypse().barricade_night_examples()
+
+
+def flooded_escape_examples():
+    return _apocalypse().flooded_escape_examples()
+
+
+def the_cure_examples():
+    return _apocalypse().the_cure_examples()
+
+
 def auto_frame(story: dict, max_zoom: float = 2.0) -> dict:
     """Đặt camera tĩnh cho mỗi cảnh chưa có camera để nhóm nhân vật nhỏ (tế bào, vi khuẩn) chiếm ~85% bề ngang.
 
@@ -6637,8 +6696,9 @@ def auto_frame(story: dict, max_zoom: float = 2.0) -> dict:
         scene["camera"] = [{"time": scene["start_time"], "x": round(cx, 2), "y": round(cy, 2), "zoom": round(zoom, 3)}]
     return story
 
+
 def sample_stories():
-    """Every sample the library ships: farm stories, articulated hands, IK, fishing, sea monsters, orchard harvest, trellis, highland, vegetable cutaway, safe spraying, giant radish, handwashing, doctor visit, tooth care, nutrition, Phase I body world, Phase K recycling, Phase L safety, Phase M ancient history, Phase O inventions, Phase P German culture, Phase Q Japanese culture, Phase R Korean culture, Phase N medieval stories, Phase S US culture stories, Phase T nature and space stories, and Phase U ocean, mysteries and fables stories."""
+    """Every sample the library ships: farm stories, articulated hands, IK, fishing, sea monsters, orchard harvest, trellis, highland, vegetable cutaway, safe spraying, giant radish, handwashing, doctor visit, tooth care, nutrition, Phase I body world, Phase K recycling, Phase L safety, Phase M ancient history, Phase O inventions, Phase P German culture, Phase Q Japanese culture, Phase R Korean culture, Phase N medieval stories, Phase S US culture stories, Phase T nature and space stories, Phase U ocean, mysteries and fables stories, and Phase V apocalypse & survival stories."""
     return (
         examples() + agriculture_examples() + farm_life_examples() + farm_animals_examples() +
         articulation_examples() + ik_examples() + fishing_examples() + monster_examples() +
@@ -6659,8 +6719,11 @@ def sample_stories():
         apollo_11_examples() + thanksgiving_harvest_examples() + gold_rush_examples() + johnny_appleseed_examples() +
         water_cycle_examples() + moon_phases_examples() + volcano_examples() + dino_dig_examples() + solar_system_tour_examples() + simple_machines_examples() +
         turtle_rescue_examples() + coral_reef_examples() + moai_mystery_examples() +
-        tortoise_and_hare_examples() + ant_and_grasshopper_examples() + fox_and_grapes_examples()
+        tortoise_and_hare_examples() + ant_and_grasshopper_examples() + fox_and_grapes_examples() +
+        last_city_morning_examples() + water_first_examples() + quiet_street_examples() +
+        barricade_night_examples() + flooded_escape_examples() + the_cure_examples()
     )
+
 
 
 def showreel():

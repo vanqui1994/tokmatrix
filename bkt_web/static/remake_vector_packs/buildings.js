@@ -411,6 +411,10 @@
       drawPoly(ctx, [[20, wallTop - 5], [30, wallTop - 5], [30, -curH + 8], [20, -curH + 8]], '#b91c1c', INK, 1.4);
     }
 
+    if (s.decay && s.decay > 0 && kit.decayOverlay && (id === 'school_building' || id === 'fire_station')) {
+      kit.decayOverlay(ctx, [-w * 0.5, -curH, w, curH], s.decay, s.asset);
+    }
+
     ctx.restore();
   }
 
