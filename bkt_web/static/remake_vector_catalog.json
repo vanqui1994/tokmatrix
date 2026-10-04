@@ -206,7 +206,8 @@
         "fog",
         "storm",
         "hot"
-      ]
+      ],
+      "locale": "neutral"
     },
     "orchard": {
       "label": "Cành cây / vườn quả",
@@ -220,7 +221,8 @@
         "fog",
         "storm",
         "hot"
-      ]
+      ],
+      "locale": "neutral"
     },
     "balcony": {
       "label": "Ban công",
@@ -234,7 +236,8 @@
         "fog",
         "storm",
         "hot"
-      ]
+      ],
+      "locale": "neutral"
     },
     "pepper_patch": {
       "label": "Vườn ớt",
@@ -248,7 +251,8 @@
         "fog",
         "storm",
         "hot"
-      ]
+      ],
+      "locale": "neutral"
     },
     "soil_cutaway": {
       "label": "Mặt cắt đất",
@@ -262,7 +266,8 @@
         "fog",
         "storm",
         "hot"
-      ]
+      ],
+      "locale": "neutral"
     },
     "pond": {
       "label": "Ao",
@@ -276,7 +281,8 @@
         "fog",
         "storm",
         "hot"
-      ]
+      ],
+      "locale": "neutral"
     },
     "river": {
       "label": "Sông",
@@ -290,7 +296,8 @@
         "fog",
         "storm",
         "hot"
-      ]
+      ],
+      "locale": "neutral"
     },
     "sea": {
       "label": "Biển",
@@ -304,7 +311,8 @@
         "fog",
         "storm",
         "hot"
-      ]
+      ],
+      "locale": "neutral"
     },
     "underwater": {
       "label": "Dưới nước",
@@ -312,7 +320,8 @@
       "ground_y": 760,
       "weather": [
         "clear"
-      ]
+      ],
+      "locale": "neutral"
     },
     "rice_paddy": {
       "label": "Ruộng lúa",
@@ -326,7 +335,8 @@
         "fog",
         "storm",
         "hot"
-      ]
+      ],
+      "locale": "neutral"
     },
     "terraced_field": {
       "label": "Ruộng bậc thang",
@@ -340,7 +350,8 @@
         "fog",
         "storm",
         "hot"
-      ]
+      ],
+      "locale": "neutral"
     },
     "fruit_orchard": {
       "label": "Vườn cây ăn quả",
@@ -354,7 +365,8 @@
         "fog",
         "storm",
         "hot"
-      ]
+      ],
+      "locale": "neutral"
     },
     "trellis_garden": {
       "label": "Vườn giàn leo đồng quê (Trellis Garden)",
@@ -368,7 +380,8 @@
         "fog",
         "storm",
         "hot"
-      ]
+      ],
+      "locale": "neutral"
     },
     "greenhouse": {
       "label": "Nhà kính nông nghiệp hiện đại (Greenhouse)",
@@ -382,7 +395,8 @@
         "fog",
         "storm",
         "hot"
-      ]
+      ],
+      "locale": "neutral"
     },
     "highland_farm": {
       "label": "Nông trại cao nguyên Đà Lạt (Highland Farm)",
@@ -394,7 +408,8 @@
         "rain",
         "wind",
         "hot"
-      ]
+      ],
+      "locale": "neutral"
     },
     "snowy_orchard": {
       "label": "Vườn cây xứ lạnh tuyết phủ (Snowy Orchard)",
@@ -405,7 +420,8 @@
         "snow",
         "wind",
         "fog"
-      ]
+      ],
+      "locale": "neutral"
     },
     "vegetable_rows": {
       "label": "Luống rau",
@@ -419,7 +435,8 @@
         "fog",
         "storm",
         "hot"
-      ]
+      ],
+      "locale": "neutral"
     },
     "farm_warehouse": {
       "label": "Nhà kho trang trại",
@@ -433,7 +450,8 @@
         "fog",
         "storm",
         "hot"
-      ]
+      ],
+      "locale": "neutral"
     },
     "kitchen": {
       "label": "Gian bếp gia đình",
@@ -447,17 +465,21 @@
         "fog",
         "storm",
         "hot"
-      ]
+      ],
+      "locale": "neutral"
     },
     "farmyard_barn": {
       "label": "Sân chuồng nông trại",
       "theme": "farm",
-      "ground_y": 810
+      "ground_y": 810,
+      "locale": "neutral"
     },
     "village_market": {
       "label": "Chợ quê truyền thống",
       "theme": "market",
-      "ground_y": 810
+      "ground_y": 810,
+      "locale": "vi",
+      "archived": true
     },
     "living_room": {
       "label": "Phòng khách",
@@ -471,7 +493,8 @@
         "fog",
         "storm",
         "hot"
-      ]
+      ],
+      "locale": "neutral"
     },
     "bathroom_sink": {
       "label": "Phòng tắm & bồn rửa tay",
@@ -485,7 +508,8 @@
         "fog",
         "storm",
         "hot"
-      ]
+      ],
+      "locale": "neutral"
     },
     "classroom": {
       "label": "Lớp học",
@@ -499,7 +523,8 @@
         "fog",
         "storm",
         "hot"
-      ]
+      ],
+      "locale": "neutral"
     },
     "school_yard": {
       "label": "Sân trường",
@@ -513,7 +538,8 @@
         "fog",
         "storm",
         "hot"
-      ]
+      ],
+      "locale": "neutral"
     },
     "playground": {
       "label": "Sân chơi thiếu nhi",
@@ -527,7 +553,8 @@
         "fog",
         "storm",
         "hot"
-      ]
+      ],
+      "locale": "neutral"
     },
     "clinic_room": {
       "label": "Phòng khám bệnh",
@@ -541,7 +568,8 @@
         "fog",
         "storm",
         "hot"
-      ]
+      ],
+      "locale": "neutral"
     },
     "hospital_ward": {
       "label": "Phòng bệnh nội trú",
@@ -555,7 +583,8 @@
         "fog",
         "storm",
         "hot"
-      ]
+      ],
+      "locale": "neutral"
     },
     "pharmacy": {
       "label": "Nhà thuốc",
@@ -569,7 +598,8 @@
         "fog",
         "storm",
         "hot"
-      ]
+      ],
+      "locale": "neutral"
     },
     "dentist_room": {
       "label": "Phòng khám nha khoa",
@@ -583,7 +613,8 @@
         "fog",
         "storm",
         "hot"
-      ]
+      ],
+      "locale": "neutral"
     },
     "science_lab": {
       "label": "Phòng thí nghiệm",
@@ -597,7 +628,8 @@
         "fog",
         "storm",
         "hot"
-      ]
+      ],
+      "locale": "neutral"
     },
     "body_inside": {
       "label": "Bên trong cơ thể",
@@ -611,7 +643,8 @@
         "fog",
         "storm",
         "hot"
-      ]
+      ],
+      "locale": "neutral"
     },
     "street": {
       "label": "Đường phố lắp ghép",
@@ -625,7 +658,8 @@
         "fog",
         "storm",
         "hot"
-      ]
+      ],
+      "locale": "neutral"
     },
     "interior": {
       "label": "Phòng trong nhà",
@@ -639,67 +673,80 @@
         "fog",
         "storm",
         "hot"
-      ]
+      ],
+      "locale": "neutral"
     },
     "blood_vessel": {
       "label": "Đường huyết mạch cơ thể",
       "theme": "body",
-      "ground_y": 810
+      "ground_y": 810,
+      "locale": "neutral"
     },
     "lung_alveoli": {
       "label": "Phế nang phổi hô hấp",
       "theme": "body",
-      "ground_y": 810
+      "ground_y": 810,
+      "locale": "neutral"
     },
     "stomach_inside": {
       "label": "Lòng dạ dày tiêu hoá",
       "theme": "body",
-      "ground_y": 810
+      "ground_y": 810,
+      "locale": "neutral"
     },
     "intestine_town": {
       "label": "Làng lông nhung đường ruột",
       "theme": "body",
-      "ground_y": 810
+      "ground_y": 810,
+      "locale": "neutral"
     },
     "skin_surface": {
       "label": "Mặt biểu bì da",
       "theme": "body",
-      "ground_y": 810
+      "ground_y": 810,
+      "locale": "neutral"
     },
     "wound_site": {
       "label": "Vị trí vết xước phục hồi",
       "theme": "body",
-      "ground_y": 810
+      "ground_y": 810,
+      "locale": "neutral"
     },
     "mouth_cave": {
       "label": "Vòm miệng và cung răng",
       "theme": "body",
-      "ground_y": 810
+      "ground_y": 810,
+      "locale": "neutral"
     },
     "nose_cave": {
       "label": "Khoang mũi và rừng lông mao",
       "theme": "body",
-      "ground_y": 810
+      "ground_y": 810,
+      "locale": "neutral"
     },
     "lymph_node_base": {
       "label": "Căn cứ hạch bạch huyết",
       "theme": "body",
-      "ground_y": 810
+      "ground_y": 810,
+      "locale": "neutral"
     },
     "bone_marrow_factory": {
       "label": "Nhà máy tuỷ xương sinh tế bào",
       "theme": "body",
-      "ground_y": 810
+      "ground_y": 810,
+      "locale": "neutral"
     },
     "brain_hq": {
       "label": "Trung tâm chỉ huy nơ-ron não bộ",
       "theme": "body",
-      "ground_y": 810
+      "ground_y": 810,
+      "locale": "neutral"
     },
     "training_camp": {
       "label": "Doanh trại huấn luyện miễn dịch",
       "theme": "body",
-      "ground_y": 810
+      "ground_y": 810,
+      "locale": "neutral"
     },
     "recycling_yard": {
       "label": "Bãi phân loại tái chế",
@@ -713,7 +760,8 @@
         "fog",
         "storm",
         "hot"
-      ]
+      ],
+      "locale": "neutral"
     },
     "stone_age_cave": {
       "label": "Hang động thời đồ đá",
@@ -727,7 +775,8 @@
         "fog",
         "storm",
         "hot"
-      ]
+      ],
+      "locale": "neutral"
     },
     "nile_bank": {
       "label": "Bờ sông Nile",
@@ -741,7 +790,8 @@
         "fog",
         "storm",
         "hot"
-      ]
+      ],
+      "locale": "neutral"
     },
     "desert_dunes": {
       "label": "Cồn cát sa mạc Con đường tơ lụa",
@@ -755,7 +805,8 @@
         "fog",
         "storm",
         "hot"
-      ]
+      ],
+      "locale": "neutral"
     },
     "roman_town": {
       "label": "Thị trấn và đường La Mã",
@@ -769,7 +820,8 @@
         "fog",
         "storm",
         "hot"
-      ]
+      ],
+      "locale": "neutral"
     },
     "greek_stadium": {
       "label": "Sân vận động Olympia Hy Lạp",
@@ -783,7 +835,8 @@
         "fog",
         "storm",
         "hot"
-      ]
+      ],
+      "locale": "neutral"
     },
     "workshop_1900": {
       "label": "Xưởng phát minh năm 1900",
@@ -797,7 +850,8 @@
         "fog",
         "storm",
         "hot"
-      ]
+      ],
+      "locale": "neutral"
     },
     "old_town_1900": {
       "label": "Phố cổ năm 1900",
@@ -811,7 +865,8 @@
         "fog",
         "storm",
         "hot"
-      ]
+      ],
+      "locale": "neutral"
     },
     "black_forest_village": {
       "label": "Làng Rừng Đen",
@@ -825,7 +880,8 @@
         "fog",
         "storm",
         "hot"
-      ]
+      ],
+      "locale": "de"
     },
     "christmas_market": {
       "label": "Chợ Giáng sinh",
@@ -839,7 +895,8 @@
         "fog",
         "storm",
         "hot"
-      ]
+      ],
+      "locale": "de"
     },
     "allotment_garden": {
       "label": "Vườn thuê Schrebergarten",
@@ -853,7 +910,8 @@
         "fog",
         "storm",
         "hot"
-      ]
+      ],
+      "locale": "de"
     },
     "alpine_meadow": {
       "label": "Đồng cỏ Alpine",
@@ -867,7 +925,8 @@
         "fog",
         "storm",
         "hot"
-      ]
+      ],
+      "locale": "de"
     },
     "edo_town": {
       "label": "Phố cổ Edo",
@@ -881,7 +940,8 @@
         "fog",
         "storm",
         "hot"
-      ]
+      ],
+      "locale": "jp"
     },
     "jp_school": {
       "label": "Lớp học trường Nhật",
@@ -895,7 +955,8 @@
         "fog",
         "storm",
         "hot"
-      ]
+      ],
+      "locale": "jp"
     },
     "train_platform": {
       "label": "Sân ga tàu điện",
@@ -909,7 +970,8 @@
         "fog",
         "storm",
         "hot"
-      ]
+      ],
+      "locale": "jp"
     },
     "shrine_generic": {
       "label": "Khuôn viên đền Nhật",
@@ -923,7 +985,8 @@
         "fog",
         "storm",
         "hot"
-      ]
+      ],
+      "locale": "jp"
     },
     "onsen_snow": {
       "label": "Suối nước nóng tuyết Onsen",
@@ -937,47 +1000,56 @@
         "fog",
         "storm",
         "hot"
-      ]
+      ],
+      "locale": "jp"
     },
     "hanok_village": {
       "label": "Làng Hanok truyền thống",
       "theme": "home",
-      "ground_y": 810
+      "ground_y": 810,
+      "locale": "kr"
     },
     "joseon_palace_generic": {
       "label": "Cung điện Joseon chung chung",
       "theme": "garden",
-      "ground_y": 810
+      "ground_y": 810,
+      "locale": "kr"
     },
     "kr_market": {
       "label": "Chợ truyền thống Hàn Quốc",
       "theme": "market",
-      "ground_y": 810
+      "ground_y": 810,
+      "locale": "kr"
     },
     "kr_school": {
       "label": "Lớp học kiểu Hàn Quốc",
       "theme": "school",
-      "ground_y": 810
+      "ground_y": 810,
+      "locale": "kr"
     },
     "apartment_street": {
       "label": "Phố chung cư hiện đại Hàn Quốc",
       "theme": "street",
-      "ground_y": 810
+      "ground_y": 810,
+      "locale": "kr"
     },
     "castle_yard": {
       "label": "Sân trong lâu đài trung cổ",
       "theme": "home",
-      "ground_y": 810
+      "ground_y": 810,
+      "locale": "neutral"
     },
     "medieval_village": {
       "label": "Làng trung cổ châu Âu",
       "theme": "home",
-      "ground_y": 810
+      "ground_y": 810,
+      "locale": "neutral"
     },
     "viking_fjord": {
       "label": "Vịnh hẹp Viking Fjord",
       "theme": "water",
-      "ground_y": 810
+      "ground_y": 810,
+      "locale": "neutral"
     },
     "space_orbit": {
       "label": "Quỹ đạo không gian nhìn về Trái Đất",
@@ -995,7 +1067,8 @@
       "topics": [
         "space",
         "nature"
-      ]
+      ],
+      "locale": "neutral"
     },
     "mars_surface": {
       "label": "Bề mặt Sao Hoả đỏ",
@@ -1013,7 +1086,8 @@
       "topics": [
         "space",
         "nature"
-      ]
+      ],
+      "locale": "neutral"
     },
     "water_cycle_valley": {
       "label": "Thung lũng vòng tuần hoàn nước",
@@ -1031,7 +1105,8 @@
       "topics": [
         "nature",
         "daily_life"
-      ]
+      ],
+      "locale": "neutral"
     },
     "volcano_island": {
       "label": "Đảo núi lửa nhiệt đới",
@@ -1049,7 +1124,8 @@
       "topics": [
         "nature",
         "disaster"
-      ]
+      ],
+      "locale": "neutral"
     },
     "dig_site": {
       "label": "Hố khai quật khảo cổ và cổ sinh",
@@ -1067,37 +1143,44 @@
       "topics": [
         "nature",
         "ancient"
-      ]
+      ],
+      "locale": "neutral"
     },
     "suburb_backyard": {
       "label": "Sân sau khu ngoại ô Mỹ",
       "theme": "home",
-      "ground_y": 810
+      "ground_y": 810,
+      "locale": "us"
     },
     "national_park": {
       "label": "Vườn quốc gia hẻm núi và thác nước",
       "theme": "nature",
-      "ground_y": 810
+      "ground_y": 810,
+      "locale": "us"
     },
     "wild_west_town": {
       "label": "Thị trấn miền Tây hoang dã",
       "theme": "home",
-      "ground_y": 810
+      "ground_y": 810,
+      "locale": "us"
     },
     "launch_pad": {
       "label": "Bệ phóng tên lửa bờ biển",
       "theme": "space",
-      "ground_y": 810
+      "ground_y": 810,
+      "locale": "us"
     },
     "pumpkin_patch": {
       "label": "Cánh đồng bí ngô mùa thu",
       "theme": "farm",
-      "ground_y": 810
+      "ground_y": 810,
+      "locale": "us"
     },
     "moon_surface": {
       "label": "Bề mặt Mặt Trăng với hố thiên thạch",
       "theme": "space",
-      "ground_y": 810
+      "ground_y": 810,
+      "locale": "us"
     },
     "coral_reef": {
       "label": "Rạn san hô dưới nước",
@@ -1115,7 +1198,8 @@
       "topics": [
         "ocean",
         "nature"
-      ]
+      ],
+      "locale": "neutral"
     },
     "beach_cleanup": {
       "label": "Bãi biển dọn rác",
@@ -1133,7 +1217,8 @@
       "topics": [
         "ocean",
         "environment"
-      ]
+      ],
+      "locale": "neutral"
     },
     "deep_sea": {
       "label": "Đáy đại dương sâu",
@@ -1151,7 +1236,8 @@
       "topics": [
         "ocean",
         "nature"
-      ]
+      ],
+      "locale": "neutral"
     },
     "easter_island_generic": {
       "label": "Đồi cỏ đảo Phục Sinh chung chung",
@@ -1169,7 +1255,8 @@
       "topics": [
         "history",
         "mystery"
-      ]
+      ],
+      "locale": "neutral"
     },
     "stone_circle_field": {
       "label": "Cánh đồng cự thạch Stonehenge",
@@ -1187,7 +1274,8 @@
       "topics": [
         "history",
         "mystery"
-      ]
+      ],
+      "locale": "neutral"
     },
     "ruins_underwater": {
       "label": "Tàn tích Atlantis dưới đáy biển",
@@ -1205,7 +1293,8 @@
       "topics": [
         "history",
         "ocean"
-      ]
+      ],
+      "locale": "neutral"
     }
   },
   "weather": [

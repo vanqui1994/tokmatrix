@@ -259,6 +259,10 @@ def validate_vector_scenes(characters, scenes):
                 if color not in cat.get("locales", []):
                     raise ValueError(f"{cid}: locale style không hợp lệ")
                 continue
+            if key == "hat":
+                if color not in ("conical", "straw", "cap", "none"):
+                    raise ValueError(f"{cid}: hat style không hợp lệ")
+                continue
             if key not in cat["style_colors"] or not isinstance(color, str) or not re.fullmatch(r"#[0-9a-fA-F]{6}", color):
                 raise ValueError(f"{cid}: màu style không hợp lệ")
         cast[cid] = c

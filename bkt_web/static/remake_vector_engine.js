@@ -1401,7 +1401,9 @@ globalThis.RemakeVector = (() => {
     for (const side of [-1, 1]) ellipse(ctx, 1 + side * 19, -84, 4.2, 5.6, tone(skin, -.06), INK, 1.4);
     ellipse(ctx, 1, -86, 19, 20.5, volume(ctx, 1, -86, 19, 20.5, skin, .25, -.18), INK, 1.9);
     path(ctx, 'M 1.5 -80.5 Q 4.5 -78 1.5 -76', null, tone(skin, -.38), 1.3);
-    if (hatted) {
+    const defaultHat = (fisher || woman) ? 'conical' : 'none';
+    const hatType = (s.style && s.style.hat !== undefined) ? s.style.hat : (s.hat !== undefined ? s.hat : defaultHat);
+    if (hatType === 'conical') {
       path(ctx, woman ? 'M -18 -86 Q -14 -102 1 -102 Q 16 -102 20 -86 Q 12 -95 6 -91 Q -2 -97 -8 -90 Q -13 -92 -18 -86 Z' : 'M -17 -90 Q -12 -102 1 -102 Q 14 -102 19 -90 Q 8 -95 1 -94 Q -8 -95 -17 -90 Z', '#2a211c', null);
       ctx.save(); ctx.globalAlpha *= .25; ellipse(ctx, 1, -95, 20, 5, '#2a211c', null); ctx.restore();
       const hat = 'M -40 -94 Q -18 -108 1 -127 Q 20 -108 42 -94 Q 1 -86 -40 -94 Z';
@@ -1411,11 +1413,28 @@ globalThis.RemakeVector = (() => {
       for (const y of [-114, -104]) path(ctx, `M ${-40 + (y + 127) * 1.2} ${y} Q 1 ${y + 4} ${42 - (y + 127) * 1.2} ${y}`, null, '#b99a52', .9);
       ctx.restore();
       path(ctx, 'M -40 -94 Q 1 -86 42 -94', null, '#9a7a3a', 2.2);
+    } else if (hatType === 'straw') {
+      path(ctx, woman ? 'M -18 -86 Q -14 -102 1 -102 Q 16 -102 20 -86 Q 12 -95 6 -91 Q -2 -97 -8 -90 Q -13 -92 -18 -86 Z' : 'M -17 -90 Q -12 -102 1 -102 Q 14 -102 19 -90 Q 8 -95 1 -94 Q -8 -95 -17 -90 Z', '#2a211c', null);
+      ellipse(ctx, 1, -96, 34, 7, '#e8cc80', INK, 1.8);
+      path(ctx, 'M -15 -96 L -14 -116 Q 1 -119 16 -116 L 17 -96 Z', cylinder(ctx, -15, 17, '#e8cc80'), INK, 1.8);
+      path(ctx, 'M -15.5 -101 Q 1 -99 17.5 -101 L 17.5 -96 Q 1 -94 -15.5 -96 Z', '#b83b3b', null);
+      path(ctx, 'M -28 -95 Q 1 -92 30 -95', null, '#b99a52', 1.2);
+    } else if (hatType === 'cap') {
+      path(ctx, woman ? 'M -18 -86 Q -14 -102 1 -102 Q 16 -102 20 -86 Q 12 -95 6 -91 Q -2 -97 -8 -90 Q -13 -92 -18 -86 Z' : 'M -17 -90 Q -12 -102 1 -102 Q 14 -102 19 -90 Q 8 -95 1 -94 Q -8 -95 -17 -90 Z', '#2a211c', null);
+      const capColor = s.style.cap || (fisher ? '#2a4858' : woman ? '#7c2d37' : '#234a6f');
+      path(ctx, 'M -19 -92 Q -20 -113 1 -113 Q 21 -113 20 -92 Z', volume(ctx, 1, -102, 21, 14, capColor, .2, -.2), INK, 1.8);
+      path(ctx, 'M -16 -91 Q 6 -89 27 -93 Q 18 -97 -5 -96 Z', tone(capColor, -0.25), INK, 1.6);
+      ellipse(ctx, 1, -113, 2.4, 2, tone(capColor, 0.25), INK, 1);
     } else {
-      const hair = 'M -19 -86 Q -22 -104 -2 -108 Q 20 -109 21 -90 Q 19 -86 17 -88 Q 12 -98 3 -97 Q -3 -102 -9 -95 Q -12 -89 -19 -86 Z';
-      path(ctx, hair, volume(ctx, 0, -100, 20, 10, '#2c231d', .2, -.2), INK, 1.6);
-      path(ctx, 'M -2 -107 Q 4 -113 9 -110', null, INK, 2);
-      ctx.save(); ctx.globalAlpha *= .35; path(ctx, 'M -10 -103 Q 2 -107 12 -102', null, '#8a7a6c', 1.6); ctx.restore();
+      if (woman) {
+        path(ctx, 'M -18 -86 Q -14 -102 1 -102 Q 16 -102 20 -86 Q 12 -95 6 -91 Q -2 -97 -8 -90 Q -13 -92 -18 -86 Z', volume(ctx, 1, -96, 20, 10, '#2a201b', .15, -.2), INK, 1.6);
+        path(ctx, 'M -8 -94 Q 1 -97 9 -93', null, '#57483e', 1.2);
+      } else {
+        const hair = 'M -19 -86 Q -22 -104 -2 -108 Q 20 -109 21 -90 Q 19 -86 17 -88 Q 12 -98 3 -97 Q -3 -102 -9 -95 Q -12 -89 -19 -86 Z';
+        path(ctx, hair, volume(ctx, 0, -100, 20, 10, '#2c231d', .2, -.2), INK, 1.6);
+        path(ctx, 'M -2 -107 Q 4 -113 9 -110', null, INK, 2);
+        ctx.save(); ctx.globalAlpha *= .35; path(ctx, 'M -10 -103 Q 2 -107 12 -102', null, '#8a7a6c', 1.6); ctx.restore();
+      }
     }
     ctx.restore();
     // Tay: da liền từ vai qua khuỷu tới bàn tay, tay áo ngắn phủ bắp tay.

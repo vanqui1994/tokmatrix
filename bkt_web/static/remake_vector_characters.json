@@ -1,0 +1,8325 @@
+{
+  "ant": {
+    "archived": false,
+    "clips": [
+      "ant/ant_and_grasshopper_s0_ant",
+      "ant/ant_and_grasshopper_s1_ant",
+      "ant/ant_and_grasshopper_s2_ant",
+      "ant/farm-animals_s3_ant"
+    ],
+    "expressions": [],
+    "height": 45,
+    "id": "ant",
+    "label": {
+      "de": "Ameise",
+      "en": "Ant",
+      "ja": "アリ",
+      "ko": "개미"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [
+      "bread_loaf"
+    ],
+    "rig": "ant",
+    "role": "animal",
+    "source_stories": [
+      "farm-animals",
+      "ant_and_grasshopper"
+    ],
+    "topics": [
+      "animal",
+      "fables"
+    ],
+    "voice_role": "none"
+  },
+  "anvil": {
+    "archived": false,
+    "clips": [
+      "anvil/blacksmith_s0_anvil",
+      "anvil/blacksmith_s1_anvil"
+    ],
+    "expressions": [],
+    "height": 150,
+    "id": "anvil",
+    "label": {
+      "de": "Anvil",
+      "en": "Anvil",
+      "ja": "Anvil",
+      "ko": "Anvil"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "anvil",
+    "role": "prop_actor",
+    "source_stories": [
+      "blacksmith"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "apple_actor": {
+    "archived": false,
+    "clips": [
+      "apple_actor/apple_s0_bare",
+      "apple_actor/apple_s1_bare",
+      "apple_actor/apple_s1_protected",
+      "apple_actor/apple_s2_bare",
+      "apple_actor/apple_s2_protected",
+      "apple_actor/johnny_appleseed_s1_picked_apple"
+    ],
+    "expressions": [
+      "sad",
+      "worried",
+      "happy"
+    ],
+    "height": 170,
+    "id": "apple_actor",
+    "label": {
+      "de": "Apfel",
+      "en": "Apple Character",
+      "ja": "りんごちゃん",
+      "ko": "사과 친구"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "apple",
+    "role": "prop_actor",
+    "source_stories": [
+      "apple",
+      "johnny_appleseed"
+    ],
+    "topics": [
+      "farm"
+    ],
+    "voice_role": "child"
+  },
+  "apple_pie": {
+    "archived": false,
+    "clips": [
+      "apple_pie/thanksgiving_harvest_s1_pie"
+    ],
+    "expressions": [],
+    "height": 130,
+    "id": "apple_pie",
+    "label": {
+      "de": "Apple Pie",
+      "en": "Apple Pie",
+      "ja": "Apple Pie",
+      "ko": "Apple Pie"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "apple_pie",
+    "role": "prop_actor",
+    "source_stories": [
+      "thanksgiving_harvest"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "apple_tree": {
+    "archived": false,
+    "clips": [
+      "apple_tree/johnny_appleseed_s0_apple_tree",
+      "apple_tree/johnny_appleseed_s1_apple_tree"
+    ],
+    "expressions": [],
+    "height": 300,
+    "id": "apple_tree",
+    "label": {
+      "de": "Apple Tree",
+      "en": "Apple Tree",
+      "ja": "Apple Tree",
+      "ko": "Apple Tree"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "apple_tree",
+    "role": "prop_actor",
+    "source_stories": [
+      "johnny_appleseed"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "aqueduct": {
+    "archived": false,
+    "clips": [
+      "aqueduct/roman_road_s1_aqueduct_bg"
+    ],
+    "expressions": [],
+    "height": 260,
+    "id": "aqueduct",
+    "label": {
+      "de": "Aqueduct",
+      "en": "Aqueduct",
+      "ja": "Aqueduct",
+      "ko": "Aqueduct"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "aqueduct",
+    "role": "prop_actor",
+    "source_stories": [
+      "roman_road"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "astronaut_boy": {
+    "archived": false,
+    "clips": [
+      "astronaut_boy/apollo_11_s0_astronaut",
+      "astronaut_boy/apollo_11_s1_astronaut"
+    ],
+    "expressions": [],
+    "height": 200,
+    "id": "astronaut_boy",
+    "label": {
+      "de": "Kleiner Astronaut",
+      "en": "Kid Astronaut",
+      "ja": "ちびっこ宇宙飛行士",
+      "ko": "어린이 우주비행사"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": "astronaut",
+    "props": [
+      "moon_footprint",
+      "seismometer"
+    ],
+    "rig": "chibi_boy",
+    "role": "hero",
+    "source_stories": [
+      "apollo_11"
+    ],
+    "topics": [
+      "space",
+      "science",
+      "us_culture"
+    ],
+    "voice_role": "child"
+  },
+  "b_cell_archer": {
+    "archived": false,
+    "clips": [
+      "b_cell_archer/scrape_battle_s1_archer",
+      "b_cell_archer/vaccine_training_s0_archer",
+      "b_cell_archer/vaccine_training_s1_archer",
+      "b_cell_archer/vaccine_training_s2_archer"
+    ],
+    "expressions": [],
+    "height": 140,
+    "id": "b_cell_archer",
+    "label": {
+      "de": "B-Zellen-Bogenschütze",
+      "en": "B Cell Archer",
+      "ja": "B細胞アーチャー",
+      "ko": "B세포 궁수"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "b_cell_archer",
+    "role": "hero",
+    "source_stories": [
+      "scrape_battle",
+      "vaccine_training"
+    ],
+    "topics": [
+      "body",
+      "health",
+      "science"
+    ],
+    "voice_role": "child"
+  },
+  "bacteria_chain": {
+    "archived": false,
+    "clips": [
+      "bacteria_chain/scrape_battle_s0_germ",
+      "bacteria_chain/scrape_battle_s1_germ"
+    ],
+    "expressions": [],
+    "height": 20,
+    "id": "bacteria_chain",
+    "label": {
+      "de": "Bacteria Chain",
+      "en": "Bacteria Chain",
+      "ja": "Bacteria Chain",
+      "ko": "Bacteria Chain"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "bacteria_chain",
+    "role": "prop_actor",
+    "source_stories": [
+      "scrape_battle"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "bacteria_cluster": {
+    "archived": false,
+    "clips": [
+      "bacteria_cluster/scrape_battle_s1_cluster"
+    ],
+    "expressions": [],
+    "height": 130,
+    "id": "bacteria_cluster",
+    "label": {
+      "de": "Bacteria Cluster",
+      "en": "Bacteria Cluster",
+      "ja": "Bacteria Cluster",
+      "ko": "Bacteria Cluster"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "bacteria_cluster",
+    "role": "prop_actor",
+    "source_stories": [
+      "scrape_battle"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "bacteria_rod": {
+    "archived": false,
+    "clips": [
+      "bacteria_rod/gut_team_s1_bad",
+      "bacteria_rod/handwashing_s0_bac1",
+      "bacteria_rod/handwashing_s1_bac1"
+    ],
+    "expressions": [],
+    "height": 10,
+    "id": "bacteria_rod",
+    "label": {
+      "de": "Stäbchenbakterium",
+      "en": "Bacteria Rod",
+      "ja": "桿菌",
+      "ko": "간균"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "bacteria_rod",
+    "role": "prop_actor",
+    "source_stories": [
+      "handwashing",
+      "gut_team"
+    ],
+    "topics": [
+      "body",
+      "health"
+    ],
+    "voice_role": "none"
+  },
+  "bag": {
+    "archived": false,
+    "clips": [
+      "bag/apple_s0_bag",
+      "bag/apple_s1_bag",
+      "bag/apple_s2_bag"
+    ],
+    "expressions": [
+      "happy"
+    ],
+    "height": 190,
+    "id": "bag",
+    "label": {
+      "de": "Bag",
+      "en": "Bag",
+      "ja": "Bag",
+      "ko": "Bag"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "bag",
+    "role": "prop_actor",
+    "source_stories": [
+      "apple"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "banana_peel": {
+    "archived": false,
+    "clips": [
+      "banana_peel/recycling_sort_s1_peel"
+    ],
+    "expressions": [],
+    "height": 60,
+    "id": "banana_peel",
+    "label": {
+      "de": "Banana Peel",
+      "en": "Banana Peel",
+      "ja": "Banana Peel",
+      "ko": "Banana Peel"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "banana_peel",
+    "role": "prop_actor",
+    "source_stories": [
+      "recycling_sort"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "banner_plain": {
+    "archived": false,
+    "clips": [
+      "banner_plain/castle_life_s1_banner"
+    ],
+    "expressions": [],
+    "height": 220,
+    "id": "banner_plain",
+    "label": {
+      "de": "Banner Plain",
+      "en": "Banner Plain",
+      "ja": "Banner Plain",
+      "ko": "Banner Plain"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "banner_plain",
+    "role": "prop_actor",
+    "source_stories": [
+      "castle_life"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "barrel": {
+    "archived": false,
+    "clips": [
+      "barrel/simple_machines_s1_barrel"
+    ],
+    "expressions": [],
+    "height": 80,
+    "id": "barrel",
+    "label": {
+      "de": "Barrel",
+      "en": "Barrel",
+      "ja": "Barrel",
+      "ko": "Barrel"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "barrel",
+    "role": "prop_actor",
+    "source_stories": [
+      "simple_machines"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "basket": {
+    "archived": false,
+    "clips": [
+      "basket/farm-life__neutral_s3_basket",
+      "basket/highland_temperate_s0_basket",
+      "basket/highland_temperate_s1_basket",
+      "basket/orchard_harvest_s0_basket",
+      "basket/orchard_harvest_s1_basket",
+      "basket/orchard_harvest_s2_basket",
+      "basket/trellis_cucumber_s1_basket"
+    ],
+    "expressions": [],
+    "height": 240,
+    "id": "basket",
+    "label": {
+      "de": "Basket",
+      "en": "Basket",
+      "ja": "Basket",
+      "ko": "Basket"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "basket",
+    "role": "prop_actor",
+    "source_stories": [
+      "farm-life",
+      "orchard_harvest",
+      "trellis_cucumber",
+      "highland_temperate",
+      "farm-life__neutral"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "battery": {
+    "archived": false,
+    "clips": [
+      "battery/recycling_sort_s2_batt"
+    ],
+    "expressions": [],
+    "height": 80,
+    "id": "battery",
+    "label": {
+      "de": "Battery",
+      "en": "Battery",
+      "ja": "Battery",
+      "ko": "Battery"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "battery",
+    "role": "prop_actor",
+    "source_stories": [
+      "recycling_sort"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "bee": {
+    "archived": false,
+    "clips": [
+      "bee/farm-animals_s1_bee",
+      "bee/farm-life__neutral_s2_bee"
+    ],
+    "expressions": [],
+    "height": 100,
+    "id": "bee",
+    "label": {
+      "de": "Biene",
+      "en": "Bee",
+      "ja": "ミツバチ",
+      "ko": "꿀벌"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "bee",
+    "role": "animal",
+    "source_stories": [
+      "farm-life",
+      "farm-animals",
+      "farm-life__neutral"
+    ],
+    "topics": [
+      "animal",
+      "nature",
+      "farm"
+    ],
+    "voice_role": "none"
+  },
+  "bento_box": {
+    "archived": false,
+    "clips": [
+      "bento_box/bento_morning_s0_bento"
+    ],
+    "expressions": [],
+    "height": 80,
+    "id": "bento_box",
+    "label": {
+      "de": "Bento Box",
+      "en": "Bento Box",
+      "ja": "Bento Box",
+      "ko": "Bento Box"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "bento_box",
+    "role": "prop_actor",
+    "source_stories": [
+      "bento_morning"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "bin_bio": {
+    "archived": false,
+    "clips": [
+      "bin_bio/recycling_sort_s1_bin_b"
+    ],
+    "expressions": [],
+    "height": 230,
+    "id": "bin_bio",
+    "label": {
+      "de": "Bin Bio",
+      "en": "Bin Bio",
+      "ja": "Bin Bio",
+      "ko": "Bin Bio"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "bin_bio",
+    "role": "prop_actor",
+    "source_stories": [
+      "recycling_sort"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "bin_glass": {
+    "archived": false,
+    "clips": [
+      "bin_glass/recycling_sort_s1_bin_g"
+    ],
+    "expressions": [],
+    "height": 230,
+    "id": "bin_glass",
+    "label": {
+      "de": "Bin Glass",
+      "en": "Bin Glass",
+      "ja": "Bin Glass",
+      "ko": "Bin Glass"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "bin_glass",
+    "role": "prop_actor",
+    "source_stories": [
+      "recycling_sort"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "bin_paper": {
+    "archived": false,
+    "clips": [
+      "bin_paper/recycling_sort_s0_bin_pap"
+    ],
+    "expressions": [],
+    "height": 230,
+    "id": "bin_paper",
+    "label": {
+      "de": "Bin Paper",
+      "en": "Bin Paper",
+      "ja": "Bin Paper",
+      "ko": "Bin Paper"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "bin_paper",
+    "role": "prop_actor",
+    "source_stories": [
+      "recycling_sort"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "bin_plastic": {
+    "archived": false,
+    "clips": [
+      "bin_plastic/recycling_sort_s0_bin_p",
+      "bin_plastic/turtle_rescue_s0_bin",
+      "bin_plastic/turtle_rescue_s1_bin"
+    ],
+    "expressions": [],
+    "height": 230,
+    "id": "bin_plastic",
+    "label": {
+      "de": "Bin Plastic",
+      "en": "Bin Plastic",
+      "ja": "Bin Plastic",
+      "ko": "Bin Plastic"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "bin_plastic",
+    "role": "prop_actor",
+    "source_stories": [
+      "recycling_sort",
+      "turtle_rescue"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "bin_residual": {
+    "archived": false,
+    "clips": [
+      "bin_residual/recycling_sort_s2_bin_res"
+    ],
+    "expressions": [],
+    "height": 230,
+    "id": "bin_residual",
+    "label": {
+      "de": "Bin Residual",
+      "en": "Bin Residual",
+      "ja": "Bin Residual",
+      "ko": "Bin Residual"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "bin_residual",
+    "role": "prop_actor",
+    "source_stories": [
+      "recycling_sort"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "biplane_1903": {
+    "archived": false,
+    "clips": [
+      "biplane_1903/first_flight_s0_plane",
+      "biplane_1903/first_flight_s1_plane"
+    ],
+    "expressions": [],
+    "height": 300,
+    "id": "biplane_1903",
+    "label": {
+      "de": "Biplane 1903",
+      "en": "Biplane 1903",
+      "ja": "Biplane 1903",
+      "ko": "Biplane 1903"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "biplane_1903",
+    "role": "prop_actor",
+    "source_stories": [
+      "first_flight"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "boat": {
+    "archived": false,
+    "clips": [
+      "boat/fishing_s0_boat",
+      "boat/fishing_s1_boat",
+      "boat/fishing_s2_boat",
+      "boat/sea-monsters_s0_boat",
+      "boat/sea-monsters_s1_boat"
+    ],
+    "expressions": [],
+    "height": 235,
+    "id": "boat",
+    "label": {
+      "de": "Boat",
+      "en": "Boat",
+      "ja": "Boat",
+      "ko": "Boat"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "boat",
+    "role": "prop_actor",
+    "source_stories": [
+      "fishing",
+      "sea-monsters"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "body_xray": {
+    "archived": false,
+    "clips": [
+      "body_xray/body_tour_s0_xray",
+      "body_xray/body_tour_s1_xray",
+      "body_xray/body_tour_s2_xray",
+      "body_xray/body_tour_s3_xray"
+    ],
+    "expressions": [],
+    "height": 360,
+    "id": "body_xray",
+    "label": {
+      "de": "Body Xray",
+      "en": "Body Xray",
+      "ja": "Body Xray",
+      "ko": "Body Xray"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "body_xray",
+    "role": "prop_actor",
+    "source_stories": [
+      "body_tour"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "brain_chibi": {
+    "archived": false,
+    "clips": [
+      "brain_chibi/body_tour_s3_brain",
+      "brain_chibi/virus_invasion_s2_brain"
+    ],
+    "expressions": [],
+    "height": 180,
+    "id": "brain_chibi",
+    "label": {
+      "de": "Gehirn",
+      "en": "Brain Chibi",
+      "ja": "脳ちゃん",
+      "ko": "뇌 친구"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "brain_chibi",
+    "role": "prop_actor",
+    "source_stories": [
+      "virus_invasion"
+    ],
+    "topics": [
+      "body",
+      "health"
+    ],
+    "voice_role": "child"
+  },
+  "bread_loaf": {
+    "archived": false,
+    "clips": [
+      "bread_loaf/ant_and_grasshopper_s0_food",
+      "bread_loaf/village_fair_s1_bread"
+    ],
+    "expressions": [],
+    "height": 40,
+    "id": "bread_loaf",
+    "label": {
+      "de": "Bread Loaf",
+      "en": "Bread Loaf",
+      "ja": "Bread Loaf",
+      "ko": "Bread Loaf"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "bread_loaf",
+    "role": "prop_actor",
+    "source_stories": [
+      "village_fair"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "bucket": {
+    "archived": false,
+    "clips": [
+      "bucket/farm-harvest_s0_bucket",
+      "bucket/farm-papaya-latex_s0_bucket",
+      "bucket/simple_machines_s1_bucket"
+    ],
+    "expressions": [],
+    "height": 250,
+    "id": "bucket",
+    "label": {
+      "de": "Bucket",
+      "en": "Bucket",
+      "ja": "Bucket",
+      "ko": "Bucket"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "bucket",
+    "role": "prop_actor",
+    "source_stories": [
+      "farm-harvest",
+      "farm-papaya-latex",
+      "simple_machines"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "buffalo": {
+    "archived": true,
+    "clips": [
+      "buffalo/farm-life_s1_buffalo"
+    ],
+    "expressions": [],
+    "height": 250,
+    "id": "buffalo",
+    "label": {
+      "de": "Wasserbüffel",
+      "en": "Water Buffalo",
+      "ja": "水牛",
+      "ko": "물소"
+    },
+    "locale": "vi",
+    "markets": [],
+    "outfit": null,
+    "props": [],
+    "rig": "buffalo",
+    "role": "animal",
+    "source_stories": [
+      "farm-life"
+    ],
+    "topics": [
+      "farm",
+      "animal"
+    ],
+    "voice_role": "none"
+  },
+  "butterfly": {
+    "archived": false,
+    "clips": [
+      "butterfly/farm-animals_s1_butterfly"
+    ],
+    "expressions": [],
+    "height": 110,
+    "id": "butterfly",
+    "label": {
+      "de": "Schmetterling",
+      "en": "Butterfly",
+      "ja": "チョウ",
+      "ko": "나비"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "butterfly",
+    "role": "animal",
+    "source_stories": [
+      "farm-animals"
+    ],
+    "topics": [
+      "animal",
+      "nature"
+    ],
+    "voice_role": "none"
+  },
+  "cabbage": {
+    "archived": false,
+    "clips": [
+      "cabbage/farm-life__neutral_s2_cabbage",
+      "cabbage/safe_spraying_s1_cabbage",
+      "cabbage/safe_spraying_s2_cabbage"
+    ],
+    "expressions": [],
+    "height": 230,
+    "id": "cabbage",
+    "label": {
+      "de": "Cabbage",
+      "en": "Cabbage",
+      "ja": "Cabbage",
+      "ko": "Cabbage"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "cabbage",
+    "role": "prop_actor",
+    "source_stories": [
+      "farm-life",
+      "safe_spraying",
+      "farm-life__neutral"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "camel": {
+    "archived": false,
+    "clips": [
+      "camel/silk_road_caravan_s0_camel_1",
+      "camel/silk_road_caravan_s0_camel_2",
+      "camel/silk_road_caravan_s1_camel_1",
+      "camel/silk_road_caravan_s1_camel_2"
+    ],
+    "expressions": [],
+    "height": 270,
+    "id": "camel",
+    "label": {
+      "de": "Kamel",
+      "en": "Camel",
+      "ja": "ラクダ",
+      "ko": "낙타"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "camel",
+    "role": "animal",
+    "source_stories": [
+      "silk_road_caravan"
+    ],
+    "topics": [
+      "history",
+      "ancient"
+    ],
+    "voice_role": "none"
+  },
+  "campfire": {
+    "archived": false,
+    "clips": [
+      "campfire/first_fire_s0_fire",
+      "campfire/first_fire_s1_fire"
+    ],
+    "expressions": [],
+    "height": 110,
+    "id": "campfire",
+    "label": {
+      "de": "Campfire",
+      "en": "Campfire",
+      "ja": "Campfire",
+      "ko": "Campfire"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "campfire",
+    "role": "prop_actor",
+    "source_stories": [
+      "first_fire"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "carrot": {
+    "archived": false,
+    "clips": [
+      "carrot/farm-life__neutral_s3_carrot"
+    ],
+    "expressions": [],
+    "height": 260,
+    "id": "carrot",
+    "label": {
+      "de": "Carrot",
+      "en": "Carrot",
+      "ja": "Carrot",
+      "ko": "Carrot"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "carrot",
+    "role": "prop_actor",
+    "source_stories": [
+      "farm-life",
+      "farm-life__neutral"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "cartoon_monkey": {
+    "archived": false,
+    "clips": [
+      "cartoon_monkey/momotaro_s0_monkey",
+      "cartoon_monkey/momotaro_s1_monkey"
+    ],
+    "expressions": [],
+    "height": 150,
+    "id": "cartoon_monkey",
+    "label": {
+      "de": "Cartoon Monkey",
+      "en": "Cartoon Monkey",
+      "ja": "Cartoon Monkey",
+      "ko": "Cartoon Monkey"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "cartoon_monkey",
+    "role": "prop_actor",
+    "source_stories": [
+      "momotaro"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "cartoon_tiger": {
+    "archived": false,
+    "clips": [
+      "cartoon_tiger/tiger_and_persimmon_s0_tiger",
+      "cartoon_tiger/tiger_and_persimmon_s1_tiger"
+    ],
+    "expressions": [
+      "worried"
+    ],
+    "height": 200,
+    "id": "cartoon_tiger",
+    "label": {
+      "de": "Freundlicher Tiger",
+      "en": "Cartoon Tiger",
+      "ja": "トラのキャラクター",
+      "ko": "호돌이 호랑이"
+    },
+    "locale": "kr",
+    "markets": [
+      "kr"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "cartoon_tiger",
+    "role": "animal",
+    "source_stories": [
+      "tiger_and_persimmon"
+    ],
+    "topics": [
+      "kr_culture",
+      "folklore"
+    ],
+    "voice_role": "none"
+  },
+  "castle": {
+    "archived": false,
+    "clips": [
+      "castle/castle_life_s0_castle"
+    ],
+    "expressions": [],
+    "height": 190,
+    "id": "castle",
+    "label": {
+      "de": "Castle",
+      "en": "Castle",
+      "ja": "Castle",
+      "ko": "Castle"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "castle",
+    "role": "prop_actor",
+    "source_stories": [
+      "castle_life"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "cat": {
+    "archived": false,
+    "clips": [
+      "cat/bremen_musicians_s0_cat",
+      "cat/bremen_musicians_s1_cat",
+      "cat/giant_radish__neutral_s1_cat",
+      "cat/giant_radish__neutral_s2_cat"
+    ],
+    "expressions": [
+      "happy"
+    ],
+    "height": 110,
+    "id": "cat",
+    "label": {
+      "de": "Katze",
+      "en": "Cat",
+      "ja": "猫",
+      "ko": "고양이"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "cat",
+    "role": "animal",
+    "source_stories": [
+      "giant_radish",
+      "giant_radish__neutral"
+    ],
+    "topics": [
+      "animal",
+      "fables",
+      "de_culture"
+    ],
+    "voice_role": "none"
+  },
+  "cave_wall": {
+    "archived": false,
+    "clips": [
+      "cave_wall/first_fire_s1_wall"
+    ],
+    "expressions": [],
+    "height": 300,
+    "id": "cave_wall",
+    "label": {
+      "de": "Cave Wall",
+      "en": "Cave Wall",
+      "ja": "Cave Wall",
+      "ko": "Cave Wall"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "cave_wall",
+    "role": "prop_actor",
+    "source_stories": [
+      "first_fire"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "cavity_germ": {
+    "archived": false,
+    "clips": [
+      "cavity_germ/cavity_battle_s0_germ"
+    ],
+    "expressions": [],
+    "height": 120,
+    "id": "cavity_germ",
+    "label": {
+      "de": "Cavity Germ",
+      "en": "Cavity Germ",
+      "ja": "Cavity Germ",
+      "ko": "Cavity Germ"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "cavity_germ",
+    "role": "prop_actor",
+    "source_stories": [
+      "cavity_battle"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "chem_cabinet": {
+    "archived": false,
+    "clips": [
+      "chem_cabinet/safe_spraying_s0_cabinet"
+    ],
+    "expressions": [],
+    "height": 320,
+    "id": "chem_cabinet",
+    "label": {
+      "de": "Chem Cabinet",
+      "en": "Chem Cabinet",
+      "ja": "Chem Cabinet",
+      "ko": "Chem Cabinet"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "chem_cabinet",
+    "role": "prop_actor",
+    "source_stories": [
+      "safe_spraying"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "chibi_boy_generic": {
+    "archived": false,
+    "clips": [
+      "chibi_boy_generic/first_flight_s0_pilot",
+      "chibi_boy_generic/first_flight_s1_pilot",
+      "chibi_boy_generic/moai_mystery_s0_helper2",
+      "chibi_boy_generic/moai_mystery_s1_helper2",
+      "chibi_boy_generic/momotaro_s0_momotaro",
+      "chibi_boy_generic/momotaro_s1_momotaro",
+      "chibi_boy_generic/moon_phases_s0_child",
+      "chibi_boy_generic/moon_phases_s1_child",
+      "chibi_boy_generic/rain_gauge_s0_scholar",
+      "chibi_boy_generic/rain_gauge_s1_scholar",
+      "chibi_boy_generic/silk_road_caravan_s0_rider",
+      "chibi_boy_generic/silk_road_caravan_s1_rider",
+      "chibi_boy_generic/st_martin_lanterns_s0_child_1",
+      "chibi_boy_generic/st_martin_lanterns_s1_child_1"
+    ],
+    "expressions": [
+      "happy",
+      "neutral",
+      "surprised"
+    ],
+    "height": 200,
+    "id": "chibi_boy_generic",
+    "label": {
+      "de": "Junge",
+      "en": "Boy",
+      "ja": "男の子",
+      "ko": "소년"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "chibi_boy",
+    "role": "hero",
+    "source_stories": [
+      "silk_road_caravan",
+      "first_flight",
+      "st_martin_lanterns",
+      "momotaro",
+      "rain_gauge",
+      "moon_phases",
+      "moai_mystery"
+    ],
+    "topics": [
+      "safety",
+      "school"
+    ],
+    "voice_role": "child"
+  },
+  "chibi_dentist": {
+    "archived": false,
+    "clips": [
+      "chibi_dentist/tooth_care_s0_dentist",
+      "chibi_dentist/tooth_care_s1_dentist",
+      "chibi_dentist/tooth_care_s2_dentist"
+    ],
+    "expressions": [
+      "neutral",
+      "happy"
+    ],
+    "height": 360,
+    "id": "chibi_dentist",
+    "label": {
+      "de": "Zahnarzt",
+      "en": "Kid Dentist",
+      "ja": "ちびっこ歯医者さん",
+      "ko": "어린이 치과의사"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [
+      "toothbrush",
+      "rinse_basin"
+    ],
+    "rig": "chibi_dentist",
+    "role": "hero",
+    "source_stories": [
+      "tooth_care"
+    ],
+    "topics": [
+      "health"
+    ],
+    "voice_role": "adult"
+  },
+  "chibi_doctor": {
+    "archived": false,
+    "clips": [
+      "chibi_doctor/doctor_visit_s0_doctor",
+      "chibi_doctor/doctor_visit_s1_doctor",
+      "chibi_doctor/doctor_visit_s2_doctor"
+    ],
+    "expressions": [
+      "neutral",
+      "happy"
+    ],
+    "height": 360,
+    "id": "chibi_doctor",
+    "label": {
+      "de": "Kinderarzt",
+      "en": "Kid Doctor",
+      "ja": "ちびっこお医者さん",
+      "ko": "어린이 의사"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [
+      "thermometer",
+      "stethoscope",
+      "syringe"
+    ],
+    "rig": "chibi_doctor",
+    "role": "hero",
+    "source_stories": [
+      "doctor_visit"
+    ],
+    "topics": [
+      "health",
+      "science"
+    ],
+    "voice_role": "adult"
+  },
+  "chibi_farmer_neutral": {
+    "archived": false,
+    "clips": [
+      "chibi_farmer_neutral/johnny_appleseed_s0_johnny",
+      "chibi_farmer_neutral/johnny_appleseed_s1_johnny",
+      "chibi_farmer_neutral/thanksgiving_harvest_s0_farmer",
+      "chibi_farmer_neutral/thanksgiving_harvest_s1_farmer"
+    ],
+    "expressions": [
+      "happy",
+      "neutral"
+    ],
+    "height": 230,
+    "id": "chibi_farmer_neutral",
+    "label": {
+      "de": "Kleiner Jungbauer",
+      "en": "Kid Farmer",
+      "ja": "ちびっこ農家",
+      "ko": "어린이 농부"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": "farmer_overalls",
+    "props": [
+      "basket",
+      "watering_can"
+    ],
+    "rig": "chibi_teacher",
+    "role": "hero",
+    "source_stories": [
+      "thanksgiving_harvest",
+      "johnny_appleseed"
+    ],
+    "topics": [
+      "farm",
+      "nature"
+    ],
+    "voice_role": "child"
+  },
+  "chibi_farmer_vn": {
+    "archived": true,
+    "clips": [
+      "chibi_farmer_vn/blacksmith_s0_smith",
+      "chibi_farmer_vn/blacksmith_s1_smith",
+      "chibi_farmer_vn/blacksmith_s2_smith",
+      "chibi_farmer_vn/castle_life_s0_villager"
+    ],
+    "expressions": [
+      "happy",
+      "neutral"
+    ],
+    "height": 180,
+    "id": "chibi_farmer_vn",
+    "label": {
+      "de": "Vietnamesischer Jungbauer (Kiebitzhut)",
+      "en": "Vietnamese Kid Farmer (Conical Hat)",
+      "ja": "ベトナムのちびっこ農家（ノンラー）",
+      "ko": "베트남 어린이 농부 (논라)"
+    },
+    "locale": "vi",
+    "markets": [],
+    "outfit": null,
+    "props": [],
+    "rig": "chibi_farmer",
+    "role": "hero",
+    "source_stories": [
+      "castle_life",
+      "blacksmith"
+    ],
+    "topics": [
+      "farm"
+    ],
+    "voice_role": "child"
+  },
+  "chibi_girl_generic": {
+    "archived": false,
+    "clips": [
+      "chibi_girl_generic/build_pyramid_s0_worker_2",
+      "chibi_girl_generic/build_pyramid_s1_worker_2",
+      "chibi_girl_generic/first_olympics_s0_athlete",
+      "chibi_girl_generic/first_olympics_s1_athlete",
+      "chibi_girl_generic/first_school_day_s0_pupil",
+      "chibi_girl_generic/first_school_day_s1_pupil",
+      "chibi_girl_generic/nutrition_fitness_s0_kid",
+      "chibi_girl_generic/nutrition_fitness_s1_kid",
+      "chibi_girl_generic/nutrition_fitness_s2_kid",
+      "chibi_girl_generic/st_martin_lanterns_s0_child_2",
+      "chibi_girl_generic/st_martin_lanterns_s1_child_2",
+      "chibi_girl_generic/then_and_now_s0_user_2",
+      "chibi_girl_generic/then_and_now_s1_user_2",
+      "chibi_girl_generic/viking_voyage_s1_villager"
+    ],
+    "expressions": [
+      "happy"
+    ],
+    "height": 320,
+    "id": "chibi_girl_generic",
+    "label": {
+      "de": "Mädchen",
+      "en": "Girl",
+      "ja": "女の子",
+      "ko": "소녀"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "chibi_girl",
+    "role": "hero",
+    "source_stories": [
+      "nutrition_fitness",
+      "build_pyramid",
+      "first_olympics",
+      "then_and_now",
+      "st_martin_lanterns",
+      "first_school_day",
+      "viking_voyage"
+    ],
+    "topics": [
+      "safety",
+      "school"
+    ],
+    "voice_role": "child"
+  },
+  "chibi_grandma": {
+    "archived": false,
+    "clips": [
+      "chibi_grandma/village_fair_s0_artisan"
+    ],
+    "expressions": [
+      "happy"
+    ],
+    "height": 220,
+    "id": "chibi_grandma",
+    "label": {
+      "de": "Oma",
+      "en": "Grandma",
+      "ja": "おばあさん",
+      "ko": "할머니"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "chibi_grandma",
+    "role": "sidekick",
+    "source_stories": [
+      "village_fair"
+    ],
+    "topics": [
+      "health",
+      "farm"
+    ],
+    "voice_role": "elder"
+  },
+  "chibi_grandpa": {
+    "archived": false,
+    "clips": [
+      "chibi_grandpa/seollal_morning_s0_grandpa"
+    ],
+    "expressions": [
+      "happy"
+    ],
+    "height": 240,
+    "id": "chibi_grandpa",
+    "label": {
+      "de": "Opa",
+      "en": "Grandpa",
+      "ja": "おじいさん",
+      "ko": "할아버지"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "chibi_grandpa",
+    "role": "sidekick",
+    "source_stories": [
+      "seollal_morning"
+    ],
+    "topics": [
+      "health",
+      "farm"
+    ],
+    "voice_role": "elder"
+  },
+  "chibi_kid_generic": {
+    "archived": false,
+    "clips": [
+      "chibi_kid_generic/build_pyramid_s0_mason",
+      "chibi_kid_generic/build_pyramid_s1_mason",
+      "chibi_kid_generic/castle_life_s1_partner",
+      "chibi_kid_generic/crossing_street_s0_kid",
+      "chibi_kid_generic/crossing_street_s1_kid",
+      "chibi_kid_generic/crossing_street_s2_kid",
+      "chibi_kid_generic/disaster_safety_s0_kid",
+      "chibi_kid_generic/disaster_safety_s1_kid",
+      "chibi_kid_generic/disaster_safety_s2_kid",
+      "chibi_kid_generic/giant_radish__neutral_s1_kid",
+      "chibi_kid_generic/giant_radish__neutral_s2_kid",
+      "chibi_kid_generic/handwashing_s0_kid",
+      "chibi_kid_generic/handwashing_s1_kid",
+      "chibi_kid_generic/handwashing_s2_kid",
+      "chibi_kid_generic/johnny_appleseed_s1_kid",
+      "chibi_kid_generic/recycling_sort_s0_kid",
+      "chibi_kid_generic/recycling_sort_s1_kid",
+      "chibi_kid_generic/recycling_sort_s2_kid",
+      "chibi_kid_generic/roman_road_s0_soldier",
+      "chibi_kid_generic/roman_road_s1_soldier",
+      "chibi_kid_generic/simple_machines_s0_kid",
+      "chibi_kid_generic/simple_machines_s1_kid",
+      "chibi_kid_generic/st_martin_lanterns_s0_child_3",
+      "chibi_kid_generic/st_martin_lanterns_s1_child_3",
+      "chibi_kid_generic/thanksgiving_harvest_s0_kid",
+      "chibi_kid_generic/thanksgiving_harvest_s1_kid",
+      "chibi_kid_generic/then_and_now_s0_user_3",
+      "chibi_kid_generic/then_and_now_s1_user_3",
+      "chibi_kid_generic/tiger_and_persimmon_s0_kid",
+      "chibi_kid_generic/tiger_and_persimmon_s1_kid",
+      "chibi_kid_generic/viking_voyage_s0_navigator",
+      "chibi_kid_generic/viking_voyage_s1_navigator",
+      "chibi_kid_generic/village_fair_s1_kid"
+    ],
+    "expressions": [
+      "happy",
+      "worried",
+      "neutral",
+      "surprised",
+      "sad"
+    ],
+    "height": 210,
+    "id": "chibi_kid_generic",
+    "label": {
+      "de": "Kind",
+      "en": "Kid",
+      "ja": "子ども",
+      "ko": "어린이"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [
+      "soap"
+    ],
+    "rig": "chibi_kid",
+    "role": "hero",
+    "source_stories": [
+      "giant_radish",
+      "handwashing",
+      "recycling_sort",
+      "crossing_street",
+      "disaster_safety",
+      "build_pyramid",
+      "roman_road",
+      "then_and_now",
+      "st_martin_lanterns",
+      "tiger_and_persimmon",
+      "castle_life",
+      "viking_voyage",
+      "village_fair",
+      "thanksgiving_harvest",
+      "johnny_appleseed",
+      "simple_machines",
+      "giant_radish__neutral"
+    ],
+    "topics": [
+      "health",
+      "safety",
+      "school"
+    ],
+    "voice_role": "child"
+  },
+  "chibi_patient": {
+    "archived": false,
+    "clips": [
+      "chibi_patient/doctor_visit_s0_patient",
+      "chibi_patient/doctor_visit_s1_patient",
+      "chibi_patient/doctor_visit_s2_patient"
+    ],
+    "expressions": [
+      "sick",
+      "surprised",
+      "happy",
+      "neutral"
+    ],
+    "height": 310,
+    "id": "chibi_patient",
+    "label": {
+      "de": "Kleiner Patient",
+      "en": "Kid Patient",
+      "ja": "ちびっこ患者さん",
+      "ko": "어린이 환자"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [
+      "towel"
+    ],
+    "rig": "chibi_patient",
+    "role": "hero",
+    "source_stories": [
+      "doctor_visit"
+    ],
+    "topics": [
+      "health"
+    ],
+    "voice_role": "child"
+  },
+  "chibi_teacher": {
+    "archived": false,
+    "clips": [
+      "chibi_teacher/kimchi_day_s0_mom",
+      "chibi_teacher/kimchi_day_s1_mom",
+      "chibi_teacher/moai_mystery_s0_arch",
+      "chibi_teacher/moai_mystery_s1_arch",
+      "chibi_teacher/turtle_rescue_s0_diver",
+      "chibi_teacher/turtle_rescue_s1_diver",
+      "chibi_teacher/turtle_rescue_s2_diver"
+    ],
+    "expressions": [
+      "happy"
+    ],
+    "height": 260,
+    "id": "chibi_teacher",
+    "label": {
+      "de": "Chibi Teacher",
+      "en": "Chibi Teacher",
+      "ja": "Chibi Teacher",
+      "ko": "Chibi Teacher"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": "hanbok",
+    "props": [],
+    "rig": "chibi_teacher",
+    "role": "prop_actor",
+    "source_stories": [
+      "kimchi_day",
+      "turtle_rescue",
+      "moai_mystery"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "chick": {
+    "archived": false,
+    "clips": [
+      "chick/farm-animals_s3_chick"
+    ],
+    "expressions": [],
+    "height": 100,
+    "id": "chick",
+    "label": {
+      "de": "Chick",
+      "en": "Chick",
+      "ja": "Chick",
+      "ko": "Chick"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "chick",
+    "role": "prop_actor",
+    "source_stories": [
+      "farm-animals"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "chicken": {
+    "archived": false,
+    "clips": [
+      "chicken/farm-life__neutral_s1_chicken"
+    ],
+    "expressions": [],
+    "height": 170,
+    "id": "chicken",
+    "label": {
+      "de": "Huhn",
+      "en": "Chicken",
+      "ja": "にわとり",
+      "ko": "암탉"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "chicken",
+    "role": "animal",
+    "source_stories": [
+      "farm-life",
+      "farm-life__neutral"
+    ],
+    "topics": [
+      "animal",
+      "farm"
+    ],
+    "voice_role": "none"
+  },
+  "cilia_sweeper": {
+    "archived": false,
+    "clips": [
+      "cilia_sweeper/cavity_battle_s1_cilia"
+    ],
+    "expressions": [],
+    "height": 140,
+    "id": "cilia_sweeper",
+    "label": {
+      "de": "Flimmerhärchen-Feger",
+      "en": "Cilia Sweeper",
+      "ja": "線毛スイーパー",
+      "ko": "섬모 청소원"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "cilia_sweeper",
+    "role": "sidekick",
+    "source_stories": [
+      "cavity_battle"
+    ],
+    "topics": [
+      "body",
+      "health",
+      "science"
+    ],
+    "voice_role": "child"
+  },
+  "cloud_set": {
+    "archived": false,
+    "clips": [
+      "cloud_set/water_cycle_s0_cloud",
+      "cloud_set/water_cycle_s1_cloud"
+    ],
+    "expressions": [],
+    "height": 190,
+    "id": "cloud_set",
+    "label": {
+      "de": "Wolke",
+      "en": "Cloud",
+      "ja": "雲",
+      "ko": "구름"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "cloud",
+    "role": "set",
+    "source_stories": [
+      "water_cycle"
+    ],
+    "topics": [
+      "nature",
+      "science"
+    ],
+    "voice_role": "none"
+  },
+  "coral_reef_set": {
+    "archived": false,
+    "clips": [
+      "coral_reef_set/coral_reef_s0_coral",
+      "coral_reef_set/coral_reef_s1_coral",
+      "coral_reef_set/coral_reef_s2_coral"
+    ],
+    "expressions": [],
+    "height": 240,
+    "id": "coral_reef_set",
+    "label": {
+      "de": "Korallenriff",
+      "en": "Coral Reef",
+      "ja": "サンゴ礁",
+      "ko": "산호초"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "coral",
+    "role": "set",
+    "source_stories": [
+      "coral_reef"
+    ],
+    "topics": [
+      "ocean",
+      "nature"
+    ],
+    "voice_role": "none"
+  },
+  "corn": {
+    "archived": false,
+    "clips": [
+      "corn/farm-life__neutral_s3_corn"
+    ],
+    "expressions": [
+      "surprised"
+    ],
+    "height": 150,
+    "id": "corn",
+    "label": {
+      "de": "Corn",
+      "en": "Corn",
+      "ja": "Corn",
+      "ko": "Corn"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "corn",
+    "role": "prop_actor",
+    "source_stories": [
+      "farm-life",
+      "farm-life__neutral"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "covered_wagon": {
+    "archived": false,
+    "clips": [
+      "covered_wagon/gold_rush_s1_wagon"
+    ],
+    "expressions": [],
+    "height": 200,
+    "id": "covered_wagon",
+    "label": {
+      "de": "Covered Wagon",
+      "en": "Covered Wagon",
+      "ja": "Covered Wagon",
+      "ko": "Covered Wagon"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "covered_wagon",
+    "role": "prop_actor",
+    "source_stories": [
+      "gold_rush"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "cow": {
+    "archived": false,
+    "clips": [
+      "cow/farm-animals_s0_cow",
+      "cow/farm-life__neutral_s1_buffalo"
+    ],
+    "expressions": [],
+    "height": 260,
+    "id": "cow",
+    "label": {
+      "de": "Milchkuh",
+      "en": "Cow",
+      "ja": "乳牛",
+      "ko": "젖소"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "cow",
+    "role": "animal",
+    "source_stories": [
+      "farm-animals",
+      "farm-life__neutral"
+    ],
+    "topics": [
+      "farm",
+      "animal"
+    ],
+    "voice_role": "none"
+  },
+  "cowboy_boy": {
+    "archived": false,
+    "clips": [
+      "cowboy_boy/gold_rush_s0_cowboy",
+      "cowboy_boy/gold_rush_s1_cowboy"
+    ],
+    "expressions": [
+      "neutral",
+      "happy"
+    ],
+    "height": 190,
+    "id": "cowboy_boy",
+    "label": {
+      "de": "Kleiner Cowboy",
+      "en": "Kid Cowboy",
+      "ja": "ちびっこカウボーイ",
+      "ko": "어린이 카우보이"
+    },
+    "locale": "us",
+    "markets": [
+      "us"
+    ],
+    "outfit": "cowboy",
+    "props": [
+      "gold_pan"
+    ],
+    "rig": "chibi_boy",
+    "role": "hero",
+    "source_stories": [
+      "gold_rush"
+    ],
+    "topics": [
+      "us_culture",
+      "history"
+    ],
+    "voice_role": "child"
+  },
+  "crate": {
+    "archived": false,
+    "clips": [
+      "crate/farm-animals_s2_crate"
+    ],
+    "expressions": [],
+    "height": 170,
+    "id": "crate",
+    "label": {
+      "de": "Crate",
+      "en": "Crate",
+      "ja": "Crate",
+      "ko": "Crate"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "crate",
+    "role": "prop_actor",
+    "source_stories": [
+      "farm-animals"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "crosswalk": {
+    "archived": false,
+    "clips": [
+      "crosswalk/crossing_street_s0_zebra"
+    ],
+    "expressions": [],
+    "height": 42,
+    "id": "crosswalk",
+    "label": {
+      "de": "Crosswalk",
+      "en": "Crosswalk",
+      "ja": "Crosswalk",
+      "ko": "Crosswalk"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "crosswalk",
+    "role": "prop_actor",
+    "source_stories": [
+      "crossing_street"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "cucumber": {
+    "archived": false,
+    "clips": [
+      "cucumber/trellis_cucumber_s1_cucumber_picked"
+    ],
+    "expressions": [],
+    "height": 117.0,
+    "id": "cucumber",
+    "label": {
+      "de": "Cucumber",
+      "en": "Cucumber",
+      "ja": "Cucumber",
+      "ko": "Cucumber"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "cucumber",
+    "role": "prop_actor",
+    "source_stories": [
+      "trellis_cucumber"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "cucumber_vine": {
+    "archived": false,
+    "clips": [
+      "cucumber_vine/trellis_cucumber_s0_cucumber_vine",
+      "cucumber_vine/trellis_cucumber_s1_cucumber_vine"
+    ],
+    "expressions": [],
+    "height": 450,
+    "id": "cucumber_vine",
+    "label": {
+      "de": "Cucumber Vine",
+      "en": "Cucumber Vine",
+      "ja": "Cucumber Vine",
+      "ko": "Cucumber Vine"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "cucumber_vine",
+    "role": "prop_actor",
+    "source_stories": [
+      "trellis_cucumber"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "daisy": {
+    "archived": false,
+    "clips": [
+      "daisy/farm-animals_s1_daisy"
+    ],
+    "expressions": [],
+    "height": 260,
+    "id": "daisy",
+    "label": {
+      "de": "Daisy",
+      "en": "Daisy",
+      "ja": "Daisy",
+      "ko": "Daisy"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "daisy",
+    "role": "prop_actor",
+    "source_stories": [
+      "farm-animals"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "desk": {
+    "archived": false,
+    "clips": [
+      "desk/disaster_safety_s1_table"
+    ],
+    "expressions": [],
+    "height": 360,
+    "id": "desk",
+    "label": {
+      "de": "Desk",
+      "en": "Desk",
+      "ja": "Desk",
+      "ko": "Desk"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "desk",
+    "role": "prop_actor",
+    "source_stories": [
+      "disaster_safety"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "discus": {
+    "archived": false,
+    "clips": [
+      "discus/first_olympics_s1_disc"
+    ],
+    "expressions": [],
+    "height": 70,
+    "id": "discus",
+    "label": {
+      "de": "Discus",
+      "en": "Discus",
+      "ja": "Discus",
+      "ko": "Discus"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "discus",
+    "role": "prop_actor",
+    "source_stories": [
+      "first_olympics"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "dog": {
+    "archived": false,
+    "clips": [
+      "dog/bremen_musicians_s0_dog",
+      "dog/bremen_musicians_s1_dog",
+      "dog/giant_radish__neutral_s1_dog",
+      "dog/giant_radish__neutral_s2_dog",
+      "dog/momotaro_s0_dog",
+      "dog/momotaro_s1_dog"
+    ],
+    "expressions": [
+      "happy"
+    ],
+    "height": 130,
+    "id": "dog",
+    "label": {
+      "de": "Hund",
+      "en": "Dog",
+      "ja": "犬",
+      "ko": "강아지"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "dog",
+    "role": "animal",
+    "source_stories": [
+      "giant_radish",
+      "momotaro",
+      "giant_radish__neutral"
+    ],
+    "topics": [
+      "animal",
+      "fables",
+      "de_culture",
+      "jp_culture"
+    ],
+    "voice_role": "none"
+  },
+  "donkey": {
+    "archived": false,
+    "clips": [
+      "donkey/bremen_musicians_s0_donkey",
+      "donkey/bremen_musicians_s1_donkey"
+    ],
+    "expressions": [],
+    "height": 240,
+    "id": "donkey",
+    "label": {
+      "de": "Esel",
+      "en": "Donkey",
+      "ja": "ロバ",
+      "ko": "당나귀"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "donkey",
+    "role": "animal",
+    "source_stories": [
+      "bremen_musicians"
+    ],
+    "topics": [
+      "animal",
+      "fables",
+      "de_culture"
+    ],
+    "voice_role": "none"
+  },
+  "duck": {
+    "archived": false,
+    "clips": [
+      "duck/farm-animals_s3_duck"
+    ],
+    "expressions": [],
+    "height": 160,
+    "id": "duck",
+    "label": {
+      "de": "Ente",
+      "en": "Duck",
+      "ja": "アヒル",
+      "ko": "오리"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "duck",
+    "role": "animal",
+    "source_stories": [
+      "farm-animals"
+    ],
+    "topics": [
+      "animal",
+      "farm"
+    ],
+    "voice_role": "none"
+  },
+  "durian": {
+    "archived": false,
+    "clips": [
+      "durian/orchard_harvest_s2_durian_dropped"
+    ],
+    "expressions": [],
+    "height": 102.0,
+    "id": "durian",
+    "label": {
+      "de": "Durian",
+      "en": "Durian",
+      "ja": "Durian",
+      "ko": "Durian"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "durian",
+    "role": "prop_actor",
+    "source_stories": [
+      "orchard_harvest"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "durian_tree": {
+    "archived": false,
+    "clips": [
+      "durian_tree/orchard_harvest_s2_durian_tree"
+    ],
+    "expressions": [],
+    "height": 600,
+    "id": "durian_tree",
+    "label": {
+      "de": "Durian Tree",
+      "en": "Durian Tree",
+      "ja": "Durian Tree",
+      "ko": "Durian Tree"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "durian_tree",
+    "role": "prop_actor",
+    "source_stories": [
+      "orchard_harvest"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "earthworm": {
+    "archived": false,
+    "clips": [
+      "earthworm/farm-life__neutral_s1_worm"
+    ],
+    "expressions": [],
+    "height": 80,
+    "id": "earthworm",
+    "label": {
+      "de": "Regenwurm",
+      "en": "Earthworm",
+      "ja": "ミミズ",
+      "ko": "지렁이"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "earthworm",
+    "role": "animal",
+    "source_stories": [
+      "farm-life",
+      "farm-life__neutral"
+    ],
+    "topics": [
+      "animal",
+      "nature",
+      "farm"
+    ],
+    "voice_role": "none"
+  },
+  "eggplant": {
+    "archived": false,
+    "clips": [
+      "eggplant/farm-life__neutral_s3_eggplant"
+    ],
+    "expressions": [
+      "happy"
+    ],
+    "height": 150,
+    "id": "eggplant",
+    "label": {
+      "de": "Eggplant",
+      "en": "Eggplant",
+      "ja": "Eggplant",
+      "ko": "Eggplant"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "eggplant",
+    "role": "prop_actor",
+    "source_stories": [
+      "farm-life",
+      "farm-life__neutral"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "egypt_worker_boy": {
+    "archived": false,
+    "clips": [
+      "egypt_worker_boy/build_pyramid_s0_worker_1",
+      "egypt_worker_boy/build_pyramid_s1_worker_1"
+    ],
+    "expressions": [
+      "happy"
+    ],
+    "height": 240,
+    "id": "egypt_worker_boy",
+    "label": {
+      "de": "Kleiner ägyptischer Baumeister",
+      "en": "Kid Egyptian Builder",
+      "ja": "エジプトの建設の子ども",
+      "ko": "이집트 건축 어린이"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": "egypt_worker",
+    "props": [
+      "papyrus_roll"
+    ],
+    "rig": "chibi_boy",
+    "role": "hero",
+    "source_stories": [
+      "build_pyramid"
+    ],
+    "topics": [
+      "history",
+      "ancient"
+    ],
+    "voice_role": "child"
+  },
+  "emergency_backpack": {
+    "archived": false,
+    "clips": [
+      "emergency_backpack/disaster_safety_s1_bag"
+    ],
+    "expressions": [],
+    "height": 50,
+    "id": "emergency_backpack",
+    "label": {
+      "de": "Emergency Backpack",
+      "en": "Emergency Backpack",
+      "ja": "Emergency Backpack",
+      "ko": "Emergency Backpack"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "emergency_backpack",
+    "role": "prop_actor",
+    "source_stories": [
+      "disaster_safety"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "farmer_straw": {
+    "archived": false,
+    "clips": [
+      "farmer_straw/bremen_musicians_s0_robber",
+      "farmer_straw/bremen_musicians_s1_robber",
+      "farmer_straw/farm-harvest_s0_farmer",
+      "farmer_straw/giant_radish__neutral_s0_grandpa",
+      "farmer_straw/giant_radish__neutral_s1_grandpa",
+      "farmer_straw/giant_radish__neutral_s2_grandpa",
+      "farmer_straw/highland_temperate_s0_farmer",
+      "farmer_straw/highland_temperate_s1_farmer",
+      "farmer_straw/momotaro_s1_oni",
+      "farmer_straw/orchard_harvest_s0_farmer",
+      "farmer_straw/orchard_harvest_s1_farmer",
+      "farmer_straw/orchard_harvest_s2_farmer",
+      "farmer_straw/safe_spraying_s0_farmer",
+      "farmer_straw/safe_spraying_s1_farmer",
+      "farmer_straw/trellis_cucumber_s0_farmer",
+      "farmer_straw/trellis_cucumber_s1_farmer",
+      "farmer_straw/watermelon_s1_farmer"
+    ],
+    "expressions": [
+      "happy",
+      "worried"
+    ],
+    "height": 460,
+    "id": "farmer_straw",
+    "label": {
+      "de": "Bauer (Strohhut)",
+      "en": "Farmer (Straw Hat)",
+      "ja": "農夫（麦わら帽子）",
+      "ko": "농부 (밀짚모자)"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [
+      "watering_can",
+      "shovel"
+    ],
+    "rig": "farmer",
+    "role": "hero",
+    "source_stories": [
+      "watermelon",
+      "farm-harvest",
+      "orchard_harvest",
+      "trellis_cucumber",
+      "highland_temperate",
+      "safe_spraying",
+      "giant_radish",
+      "bremen_musicians",
+      "momotaro",
+      "giant_radish__neutral"
+    ],
+    "style": {
+      "hat": "straw"
+    },
+    "topics": [
+      "farm",
+      "nature"
+    ],
+    "voice_role": "adult"
+  },
+  "farmer_woman_conical": {
+    "archived": true,
+    "clips": [
+      "farmer_woman_conical/farm-animals_s2_woman",
+      "farmer_woman_conical/farm-life_s0_woman",
+      "farmer_woman_conical/giant_radish_s1_grandma",
+      "farmer_woman_conical/giant_radish_s2_grandma",
+      "farmer_woman_conical/safe_spraying_s1_bystander",
+      "farmer_woman_conical/safe_spraying_s2_bystander"
+    ],
+    "expressions": [
+      "happy",
+      "worried"
+    ],
+    "height": 330,
+    "id": "farmer_woman_conical",
+    "label": {
+      "de": "Vietnamesische Bäuerin (Kiebitzhut)",
+      "en": "Vietnamese Farmer Woman (Conical Hat)",
+      "ja": "ベトナムの農婦（ノンラー）",
+      "ko": "베트남 여성 농부 (논라)"
+    },
+    "locale": "vi",
+    "markets": [],
+    "outfit": null,
+    "props": [
+      "sickle",
+      "basket"
+    ],
+    "rig": "farmer_woman",
+    "role": "hero",
+    "source_stories": [
+      "farm-life",
+      "farm-animals",
+      "safe_spraying",
+      "giant_radish"
+    ],
+    "style": {
+      "hat": "conical"
+    },
+    "topics": [
+      "farm"
+    ],
+    "voice_role": "adult"
+  },
+  "farmer_woman_straw": {
+    "archived": false,
+    "clips": [
+      "farmer_woman_straw/farm-life__neutral_s0_woman",
+      "farmer_woman_straw/giant_radish__neutral_s1_grandma",
+      "farmer_woman_straw/giant_radish__neutral_s2_grandma"
+    ],
+    "expressions": [
+      "happy"
+    ],
+    "height": 330,
+    "id": "farmer_woman_straw",
+    "label": {
+      "de": "Bäuerin (Strohhut)",
+      "en": "Farmer Woman (Straw Hat)",
+      "ja": "農婦（麦わら帽子）",
+      "ko": "여성 농부 (밀짚모자)"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [
+      "watering_can",
+      "basket"
+    ],
+    "rig": "farmer_woman",
+    "role": "hero",
+    "source_stories": [
+      "farm-life__neutral",
+      "giant_radish__neutral"
+    ],
+    "style": {
+      "hat": "straw"
+    },
+    "topics": [
+      "farm",
+      "nature"
+    ],
+    "voice_role": "adult"
+  },
+  "fire_blanket": {
+    "archived": false,
+    "clips": [
+      "fire_blanket/disaster_safety_s0_blanket"
+    ],
+    "expressions": [],
+    "height": 48,
+    "id": "fire_blanket",
+    "label": {
+      "de": "Fire Blanket",
+      "en": "Fire Blanket",
+      "ja": "Fire Blanket",
+      "ko": "Fire Blanket"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "fire_blanket",
+    "role": "prop_actor",
+    "source_stories": [
+      "disaster_safety"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "fish": {
+    "archived": false,
+    "clips": [
+      "fish/coral_reef_s0_fish",
+      "fish/coral_reef_s1_fish",
+      "fish/coral_reef_s2_fish",
+      "fish/fishing_s0_fish",
+      "fish/fishing_s1_fish",
+      "fish/fishing_s2_fish"
+    ],
+    "expressions": [
+      "surprised",
+      "happy"
+    ],
+    "height": 92,
+    "id": "fish",
+    "label": {
+      "de": "Fish",
+      "en": "Fish",
+      "ja": "Fish",
+      "ko": "Fish"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "fish",
+    "role": "prop_actor",
+    "source_stories": [
+      "fishing",
+      "coral_reef"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "fisherman_conical": {
+    "archived": true,
+    "clips": [
+      "fisherman_conical/fishing_s0_fisherman",
+      "fisherman_conical/fishing_s1_fisherman",
+      "fisherman_conical/fishing_s2_fisherman",
+      "fisherman_conical/sea-monsters_s0_fisherman",
+      "fisherman_conical/sea-monsters_s1_fisherman",
+      "fisherman_conical/sea-monsters_s2_fisherman"
+    ],
+    "expressions": [
+      "happy",
+      "surprised",
+      "worried"
+    ],
+    "height": 340,
+    "id": "fisherman_conical",
+    "label": {
+      "de": "Vietnamesischer Fischer (Kiebitzhut)",
+      "en": "Vietnamese Fisherman (Conical Hat)",
+      "ja": "ベトナムの漁師（ノンラー）",
+      "ko": "베트남 어부 (논라)"
+    },
+    "locale": "vi",
+    "markets": [],
+    "outfit": null,
+    "props": [
+      "fishing_rod"
+    ],
+    "rig": "fisherman",
+    "role": "hero",
+    "source_stories": [
+      "fishing",
+      "sea-monsters"
+    ],
+    "style": {
+      "hat": "conical"
+    },
+    "topics": [
+      "farm",
+      "ocean"
+    ],
+    "voice_role": "adult"
+  },
+  "foot": {
+    "archived": false,
+    "clips": [
+      "foot/peanut_s0_foot"
+    ],
+    "expressions": [],
+    "height": 230,
+    "id": "foot",
+    "label": {
+      "de": "Foot",
+      "en": "Foot",
+      "ja": "Foot",
+      "ko": "Foot"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "foot",
+    "role": "prop_actor",
+    "source_stories": [
+      "peanut"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "forge": {
+    "archived": false,
+    "clips": [
+      "forge/blacksmith_s0_forge",
+      "forge/blacksmith_s1_forge"
+    ],
+    "expressions": [],
+    "height": 210,
+    "id": "forge",
+    "label": {
+      "de": "Forge",
+      "en": "Forge",
+      "ja": "Forge",
+      "ko": "Forge"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "forge",
+    "role": "prop_actor",
+    "source_stories": [
+      "blacksmith"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "fossil": {
+    "archived": false,
+    "clips": [
+      "fossil/dino_dig_s0_fossil",
+      "fossil/dino_dig_s1_fossil"
+    ],
+    "expressions": [],
+    "height": 120,
+    "id": "fossil",
+    "label": {
+      "de": "Fossil",
+      "en": "Fossil",
+      "ja": "Fossil",
+      "ko": "Fossil"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "fossil",
+    "role": "prop_actor",
+    "source_stories": [
+      "dino_dig"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "fox": {
+    "archived": false,
+    "clips": [
+      "fox/fox_and_grapes_s0_fox",
+      "fox/fox_and_grapes_s1_fox",
+      "fox/fox_and_grapes_s2_fox"
+    ],
+    "expressions": [],
+    "height": 150,
+    "id": "fox",
+    "label": {
+      "de": "Fuchs",
+      "en": "Fox",
+      "ja": "キツネ",
+      "ko": "여우"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "fox",
+    "role": "animal",
+    "source_stories": [
+      "fox_and_grapes"
+    ],
+    "topics": [
+      "animal",
+      "fables",
+      "nature"
+    ],
+    "voice_role": "none"
+  },
+  "fungus_spore": {
+    "archived": false,
+    "clips": [
+      "fungus_spore/vaccine_training_s1_spore"
+    ],
+    "expressions": [],
+    "height": 120,
+    "id": "fungus_spore",
+    "label": {
+      "de": "Fungus Spore",
+      "en": "Fungus Spore",
+      "ja": "Fungus Spore",
+      "ko": "Fungus Spore"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "fungus_spore",
+    "role": "prop_actor",
+    "source_stories": [
+      "vaccine_training"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "garbage_truck_set": {
+    "archived": false,
+    "clips": [
+      "garbage_truck_set/bottle_journey_s0_truck",
+      "garbage_truck_set/bottle_journey_s1_truck"
+    ],
+    "expressions": [],
+    "height": 180,
+    "id": "garbage_truck_set",
+    "label": {
+      "de": "Müllwagen",
+      "en": "Garbage Truck",
+      "ja": "ゴミ収集車",
+      "ko": "청소차"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "garbage_truck",
+    "role": "set",
+    "source_stories": [
+      "bottle_journey"
+    ],
+    "topics": [
+      "recycling",
+      "safety"
+    ],
+    "voice_role": "none"
+  },
+  "giant_radish": {
+    "archived": false,
+    "clips": [
+      "giant_radish/giant_radish__neutral_s0_radish",
+      "giant_radish/giant_radish__neutral_s1_radish",
+      "giant_radish/giant_radish__neutral_s2_radish"
+    ],
+    "expressions": [
+      "happy"
+    ],
+    "height": 240,
+    "id": "giant_radish",
+    "label": {
+      "de": "Giant Radish",
+      "en": "Giant Radish",
+      "ja": "Giant Radish",
+      "ko": "Giant Radish"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "giant_radish",
+    "role": "prop_actor",
+    "source_stories": [
+      "giant_radish",
+      "giant_radish__neutral"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "goat": {
+    "archived": false,
+    "clips": [
+      "goat/farm-animals_s0_goat"
+    ],
+    "expressions": [],
+    "height": 190,
+    "id": "goat",
+    "label": {
+      "de": "Ziege",
+      "en": "Goat",
+      "ja": "ヤギ",
+      "ko": "염소"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "goat",
+    "role": "animal",
+    "source_stories": [
+      "farm-animals"
+    ],
+    "topics": [
+      "animal",
+      "farm"
+    ],
+    "voice_role": "none"
+  },
+  "good_bacteria": {
+    "archived": false,
+    "clips": [
+      "good_bacteria/gut_team_s0_good1",
+      "good_bacteria/gut_team_s0_good2",
+      "good_bacteria/gut_team_s1_good1",
+      "good_bacteria/gut_team_s2_good1",
+      "good_bacteria/gut_team_s2_good2"
+    ],
+    "expressions": [],
+    "height": 140,
+    "id": "good_bacteria",
+    "label": {
+      "de": "Nützliches Bakterium",
+      "en": "Good Bacteria",
+      "ja": "善玉菌",
+      "ko": "유익균"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "good_bacteria",
+    "role": "prop_actor",
+    "source_stories": [
+      "gut_team"
+    ],
+    "topics": [
+      "body",
+      "health"
+    ],
+    "voice_role": "child"
+  },
+  "grape_vine": {
+    "archived": false,
+    "clips": [
+      "grape_vine/fox_and_grapes_s0_vine",
+      "grape_vine/fox_and_grapes_s1_vine"
+    ],
+    "expressions": [],
+    "height": 280,
+    "id": "grape_vine",
+    "label": {
+      "de": "Grape Vine",
+      "en": "Grape Vine",
+      "ja": "Grape Vine",
+      "ko": "Grape Vine"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "grape_vine",
+    "role": "prop_actor",
+    "source_stories": [
+      "fox_and_grapes"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "grass_tuft": {
+    "archived": false,
+    "clips": [
+      "grass_tuft/farm-animals_s0_grass"
+    ],
+    "expressions": [],
+    "height": 140,
+    "id": "grass_tuft",
+    "label": {
+      "de": "Grass Tuft",
+      "en": "Grass Tuft",
+      "ja": "Grass Tuft",
+      "ko": "Grass Tuft"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "grass_tuft",
+    "role": "prop_actor",
+    "source_stories": [
+      "farm-animals"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "grasshopper": {
+    "archived": false,
+    "clips": [
+      "grasshopper/ant_and_grasshopper_s0_grasshopper",
+      "grasshopper/ant_and_grasshopper_s1_grasshopper",
+      "grasshopper/ant_and_grasshopper_s2_grasshopper"
+    ],
+    "expressions": [],
+    "height": 150,
+    "id": "grasshopper",
+    "label": {
+      "de": "Grille / Heuschrecke",
+      "en": "Grasshopper",
+      "ja": "キリギリス",
+      "ko": "베짱이"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "grasshopper",
+    "role": "animal",
+    "source_stories": [
+      "ant_and_grasshopper"
+    ],
+    "topics": [
+      "animal",
+      "fables"
+    ],
+    "voice_role": "none"
+  },
+  "greek_boy": {
+    "archived": false,
+    "clips": [
+      "greek_boy/first_olympics_s0_runner",
+      "greek_boy/first_olympics_s1_runner"
+    ],
+    "expressions": [
+      "happy"
+    ],
+    "height": 240,
+    "id": "greek_boy",
+    "label": {
+      "de": "Griechischer Athlet",
+      "en": "Greek Athlete",
+      "ja": "古代ギリシャの少年選手",
+      "ko": "그리스 선수 소년"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": "greek_tunic",
+    "props": [
+      "laurel_torch",
+      "discus"
+    ],
+    "rig": "chibi_boy",
+    "role": "hero",
+    "source_stories": [
+      "first_olympics"
+    ],
+    "topics": [
+      "history",
+      "ancient"
+    ],
+    "voice_role": "child"
+  },
+  "hanbok_boy": {
+    "archived": false,
+    "clips": [
+      "hanbok_boy/seollal_morning_s0_kid",
+      "hanbok_boy/seollal_morning_s1_kid"
+    ],
+    "expressions": [
+      "happy"
+    ],
+    "height": 220,
+    "id": "hanbok_boy",
+    "label": {
+      "de": "Junge im Hanbok",
+      "en": "Boy in Hanbok",
+      "ja": "韓服の男の子",
+      "ko": "한복 입은 소년"
+    },
+    "locale": "kr",
+    "markets": [
+      "kr"
+    ],
+    "outfit": "hanbok",
+    "props": [
+      "kite",
+      "yut_sticks"
+    ],
+    "rig": "chibi_boy",
+    "role": "hero",
+    "source_stories": [
+      "seollal_morning"
+    ],
+    "topics": [
+      "kr_culture"
+    ],
+    "voice_role": "child"
+  },
+  "hanbok_girl": {
+    "archived": false,
+    "clips": [
+      "hanbok_girl/kimchi_day_s0_kid",
+      "hanbok_girl/kimchi_day_s1_kid"
+    ],
+    "expressions": [
+      "happy"
+    ],
+    "height": 220,
+    "id": "hanbok_girl",
+    "label": {
+      "de": "Mädchen im Hanbok",
+      "en": "Girl in Hanbok",
+      "ja": "韓服の女の子",
+      "ko": "한복 입은 소녀"
+    },
+    "locale": "kr",
+    "markets": [
+      "kr"
+    ],
+    "outfit": "hanbok",
+    "props": [
+      "bokjumeoni"
+    ],
+    "rig": "chibi_girl",
+    "role": "hero",
+    "source_stories": [
+      "kimchi_day"
+    ],
+    "topics": [
+      "kr_culture"
+    ],
+    "voice_role": "child"
+  },
+  "hand": {
+    "archived": false,
+    "clips": [
+      "hand/farm-sow-grow_s0_hand",
+      "hand/peanut_s2_hand",
+      "hand/safe_spraying_s2_hand",
+      "hand/tomato_s0_hand",
+      "hand/tomato_s1_hand",
+      "hand/vegetable_cutaway_s0_hand",
+      "hand/vegetable_cutaway_s1_hand"
+    ],
+    "expressions": [],
+    "height": 170,
+    "id": "hand",
+    "label": {
+      "de": "Hand",
+      "en": "Hand",
+      "ja": "Hand",
+      "ko": "Hand"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "hand",
+    "role": "prop_actor",
+    "source_stories": [
+      "peanut",
+      "tomato",
+      "farm-sow-grow",
+      "vegetable_cutaway",
+      "safe_spraying"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "hand_right": {
+    "archived": false,
+    "clips": [
+      "hand_right/farm-life__neutral_s3_hand"
+    ],
+    "expressions": [],
+    "height": 190,
+    "id": "hand_right",
+    "label": {
+      "de": "Hand Right",
+      "en": "Hand Right",
+      "ja": "Hand Right",
+      "ko": "Hand Right"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "hand_right",
+    "role": "prop_actor",
+    "source_stories": [
+      "farm-life",
+      "farm-life__neutral"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "hangul_brush_scroll": {
+    "archived": false,
+    "clips": [
+      "hangul_brush_scroll/rain_gauge_s1_scroll"
+    ],
+    "expressions": [],
+    "height": 90,
+    "id": "hangul_brush_scroll",
+    "label": {
+      "de": "Hangul Brush Scroll",
+      "en": "Hangul Brush Scroll",
+      "ja": "Hangul Brush Scroll",
+      "ko": "Hangul Brush Scroll"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "hangul_brush_scroll",
+    "role": "prop_actor",
+    "source_stories": [
+      "rain_gauge"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "harvest_basket": {
+    "archived": false,
+    "clips": [
+      "harvest_basket/thanksgiving_harvest_s0_basket"
+    ],
+    "expressions": [],
+    "height": 220,
+    "id": "harvest_basket",
+    "label": {
+      "de": "Harvest Basket",
+      "en": "Harvest Basket",
+      "ja": "Harvest Basket",
+      "ko": "Harvest Basket"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "harvest_basket",
+    "role": "prop_actor",
+    "source_stories": [
+      "thanksgiving_harvest"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "hedgehog": {
+    "archived": false,
+    "clips": [
+      "hedgehog/hedgehog_winter_s0_hedgehog",
+      "hedgehog/hedgehog_winter_s1_hedgehog"
+    ],
+    "expressions": [],
+    "height": 180,
+    "id": "hedgehog",
+    "label": {
+      "de": "Igel",
+      "en": "Hedgehog",
+      "ja": "ハリネズミ",
+      "ko": "고슴도치"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "hedgehog",
+    "role": "animal",
+    "source_stories": [
+      "hedgehog_winter"
+    ],
+    "topics": [
+      "animal",
+      "nature",
+      "de_culture"
+    ],
+    "voice_role": "none"
+  },
+  "helper_t_captain": {
+    "archived": false,
+    "clips": [
+      "helper_t_captain/vaccine_training_s2_captain"
+    ],
+    "expressions": [],
+    "height": 150,
+    "id": "helper_t_captain",
+    "label": {
+      "de": "Helfer-T-Zelle Hauptmann",
+      "en": "Helper T Cell Captain",
+      "ja": "ヘルパーT細胞キャプテン",
+      "ko": "도움T세포 대장"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "helper_t_captain",
+    "role": "hero",
+    "source_stories": [
+      "vaccine_training"
+    ],
+    "topics": [
+      "body",
+      "health",
+      "science"
+    ],
+    "voice_role": "child"
+  },
+  "hook": {
+    "archived": false,
+    "clips": [
+      "hook/fishing_s0_hook",
+      "hook/fishing_s1_hook"
+    ],
+    "expressions": [],
+    "height": 58,
+    "id": "hook",
+    "label": {
+      "de": "Hook",
+      "en": "Hook",
+      "ja": "Hook",
+      "ko": "Hook"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "hook",
+    "role": "prop_actor",
+    "source_stories": [
+      "fishing"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "horse": {
+    "archived": false,
+    "clips": [
+      "horse/blacksmith_s2_horse",
+      "horse/castle_life_s0_horse",
+      "horse/gold_rush_s1_horse"
+    ],
+    "expressions": [],
+    "height": 170,
+    "id": "horse",
+    "label": {
+      "de": "Pferd",
+      "en": "Horse",
+      "ja": "馬",
+      "ko": "말"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "horse",
+    "role": "animal",
+    "source_stories": [
+      "castle_life",
+      "blacksmith",
+      "gold_rush"
+    ],
+    "topics": [
+      "animal",
+      "history",
+      "medieval",
+      "us_culture"
+    ],
+    "voice_role": "none"
+  },
+  "horse_cart": {
+    "archived": false,
+    "clips": [
+      "horse_cart/castle_life_s0_cart"
+    ],
+    "expressions": [],
+    "height": 170,
+    "id": "horse_cart",
+    "label": {
+      "de": "Horse Cart",
+      "en": "Horse Cart",
+      "ja": "Horse Cart",
+      "ko": "Horse Cart"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "horse_cart",
+    "role": "prop_actor",
+    "source_stories": [
+      "castle_life"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "infected_cell": {
+    "archived": false,
+    "clips": [
+      "infected_cell/virus_invasion_s0_cell",
+      "infected_cell/virus_invasion_s1_cell"
+    ],
+    "expressions": [],
+    "height": 150,
+    "id": "infected_cell",
+    "label": {
+      "de": "Infected Cell",
+      "en": "Infected Cell",
+      "ja": "Infected Cell",
+      "ko": "Infected Cell"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "infected_cell",
+    "role": "prop_actor",
+    "source_stories": [
+      "virus_invasion"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "insect": {
+    "archived": false,
+    "clips": [
+      "insect/pepper_s0_bug",
+      "insect/pepper_s1_bug"
+    ],
+    "expressions": [
+      "smug",
+      "sleep"
+    ],
+    "height": 90,
+    "id": "insect",
+    "label": {
+      "de": "Insect",
+      "en": "Insect",
+      "ja": "Insect",
+      "ko": "Insect"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "insect",
+    "role": "prop_actor",
+    "source_stories": [
+      "pepper"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "intestine_chibi": {
+    "archived": false,
+    "clips": [
+      "intestine_chibi/gut_team_s2_intestine"
+    ],
+    "expressions": [],
+    "height": 160,
+    "id": "intestine_chibi",
+    "label": {
+      "de": "Intestine Chibi",
+      "en": "Intestine Chibi",
+      "ja": "Intestine Chibi",
+      "ko": "Intestine Chibi"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "intestine_chibi",
+    "role": "prop_actor",
+    "source_stories": [
+      "gut_team"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "inventor_boy": {
+    "archived": false,
+    "clips": [
+      "inventor_boy/first_car_s0_inventor",
+      "inventor_boy/first_car_s1_inventor",
+      "inventor_boy/then_and_now_s0_user_1",
+      "inventor_boy/then_and_now_s1_user_1"
+    ],
+    "expressions": [
+      "happy"
+    ],
+    "height": 150,
+    "id": "inventor_boy",
+    "label": {
+      "de": "Kleiner Erfinder",
+      "en": "Kid Inventor",
+      "ja": "ちびっこ発明家",
+      "ko": "어린이 발명가"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": "inventor_1900",
+    "props": [
+      "hammer",
+      "early_bulb"
+    ],
+    "rig": "chibi_boy",
+    "role": "hero",
+    "source_stories": [
+      "first_car",
+      "then_and_now"
+    ],
+    "topics": [
+      "inventions",
+      "history",
+      "science"
+    ],
+    "voice_role": "child"
+  },
+  "javelin_training": {
+    "archived": false,
+    "clips": [
+      "javelin_training/first_olympics_s0_javelin"
+    ],
+    "expressions": [],
+    "height": 200,
+    "id": "javelin_training",
+    "label": {
+      "de": "Javelin Training",
+      "en": "Javelin Training",
+      "ja": "Javelin Training",
+      "ko": "Javelin Training"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "javelin_training",
+    "role": "prop_actor",
+    "source_stories": [
+      "first_olympics"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "jp_schoolboy": {
+    "archived": false,
+    "clips": [
+      "jp_schoolboy/school_cleaning_s0_pupil",
+      "jp_schoolboy/school_cleaning_s1_pupil"
+    ],
+    "expressions": [
+      "happy"
+    ],
+    "height": 240,
+    "id": "jp_schoolboy",
+    "label": {
+      "de": "Japanischer Schüler",
+      "en": "Japanese Schoolboy",
+      "ja": "日本の小学生男子",
+      "ko": "일본 남학생"
+    },
+    "locale": "jp",
+    "markets": [
+      "jp"
+    ],
+    "outfit": "school_uniform_jp",
+    "props": [
+      "school_bag_randoseru",
+      "broom"
+    ],
+    "rig": "chibi_boy",
+    "role": "hero",
+    "source_stories": [
+      "school_cleaning"
+    ],
+    "topics": [
+      "jp_culture",
+      "school"
+    ],
+    "voice_role": "child"
+  },
+  "jp_schoolgirl": {
+    "archived": false,
+    "clips": [
+      "jp_schoolgirl/bento_morning_s0_pupil",
+      "jp_schoolgirl/bento_morning_s1_pupil"
+    ],
+    "expressions": [
+      "happy"
+    ],
+    "height": 240,
+    "id": "jp_schoolgirl",
+    "label": {
+      "de": "Japanische Schülerin",
+      "en": "Japanese Schoolgirl",
+      "ja": "日本の小学生女子",
+      "ko": "일본 여학생"
+    },
+    "locale": "jp",
+    "markets": [
+      "jp"
+    ],
+    "outfit": "school_uniform_jp",
+    "props": [
+      "school_bag_randoseru",
+      "broom"
+    ],
+    "rig": "chibi_girl",
+    "role": "hero",
+    "source_stories": [
+      "bento_morning"
+    ],
+    "topics": [
+      "jp_culture",
+      "school"
+    ],
+    "voice_role": "child"
+  },
+  "killer_t_knight": {
+    "archived": false,
+    "clips": [
+      "killer_t_knight/virus_invasion_s1_knight"
+    ],
+    "expressions": [],
+    "height": 150,
+    "id": "killer_t_knight",
+    "label": {
+      "de": "Killer-T-Zelle Ritter",
+      "en": "Killer T Cell Knight",
+      "ja": "キラーT細胞ナイト",
+      "ko": "세포독성T세포 기사"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "killer_t_knight",
+    "role": "hero",
+    "source_stories": [
+      "virus_invasion"
+    ],
+    "topics": [
+      "body",
+      "health",
+      "science"
+    ],
+    "voice_role": "child"
+  },
+  "kimchi": {
+    "archived": false,
+    "clips": [
+      "kimchi/kimchi_day_s1_kimchi"
+    ],
+    "expressions": [],
+    "height": 70,
+    "id": "kimchi",
+    "label": {
+      "de": "Kimchi",
+      "en": "Kimchi",
+      "ja": "Kimchi",
+      "ko": "Kimchi"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "kimchi",
+    "role": "prop_actor",
+    "source_stories": [
+      "kimchi_day"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "kite": {
+    "archived": false,
+    "clips": [
+      "kite/seollal_morning_s1_kite"
+    ],
+    "expressions": [],
+    "height": 220,
+    "id": "kite",
+    "label": {
+      "de": "Kite",
+      "en": "Kite",
+      "ja": "Kite",
+      "ko": "Kite"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "kite",
+    "role": "prop_actor",
+    "source_stories": [
+      "seollal_morning"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "knife": {
+    "archived": false,
+    "clips": [
+      "knife/farm-papaya-latex_s0_knife",
+      "knife/watermelon_s0_blade"
+    ],
+    "expressions": [],
+    "height": 125,
+    "id": "knife",
+    "label": {
+      "de": "Knife",
+      "en": "Knife",
+      "ja": "Knife",
+      "ko": "Knife"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "knife",
+    "role": "prop_actor",
+    "source_stories": [
+      "watermelon",
+      "farm-papaya-latex"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "knight_boy": {
+    "archived": false,
+    "clips": [
+      "knight_boy/castle_life_s1_knight_trainee"
+    ],
+    "expressions": [
+      "happy"
+    ],
+    "height": 230,
+    "id": "knight_boy",
+    "label": {
+      "de": "Kleiner Ritter",
+      "en": "Kid Knight",
+      "ja": "ちびっこ騎士",
+      "ko": "어린이 기사"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": "knight",
+    "props": [
+      "toy_sword",
+      "wooden_shield"
+    ],
+    "rig": "chibi_boy",
+    "role": "hero",
+    "source_stories": [
+      "castle_life"
+    ],
+    "topics": [
+      "history",
+      "medieval"
+    ],
+    "voice_role": "child"
+  },
+  "kohlrabi_plant": {
+    "archived": false,
+    "clips": [
+      "kohlrabi_plant/vegetable_cutaway_s0_kohlrabi_plant",
+      "kohlrabi_plant/vegetable_cutaway_s1_kohlrabi_plant"
+    ],
+    "expressions": [],
+    "height": 360,
+    "id": "kohlrabi_plant",
+    "label": {
+      "de": "Kohlrabi Plant",
+      "en": "Kohlrabi Plant",
+      "ja": "Kohlrabi Plant",
+      "ko": "Kohlrabi Plant"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "kohlrabi_plant",
+    "role": "prop_actor",
+    "source_stories": [
+      "vegetable_cutaway"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "lever": {
+    "archived": false,
+    "clips": [
+      "lever/simple_machines_s0_lever"
+    ],
+    "expressions": [],
+    "height": 180,
+    "id": "lever",
+    "label": {
+      "de": "Lever",
+      "en": "Lever",
+      "ja": "Lever",
+      "ko": "Lever"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "lever",
+    "role": "prop_actor",
+    "source_stories": [
+      "simple_machines"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "longship": {
+    "archived": false,
+    "clips": [
+      "longship/viking_voyage_s0_ship"
+    ],
+    "expressions": [],
+    "height": 260,
+    "id": "longship",
+    "label": {
+      "de": "Longship",
+      "en": "Longship",
+      "ja": "Longship",
+      "ko": "Longship"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "longship",
+    "role": "prop_actor",
+    "source_stories": [
+      "viking_voyage"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "lotus": {
+    "archived": false,
+    "clips": [
+      "lotus/farm-animals_s1_lotus"
+    ],
+    "expressions": [],
+    "height": 280,
+    "id": "lotus",
+    "label": {
+      "de": "Lotus",
+      "en": "Lotus",
+      "ja": "Lotus",
+      "ko": "Lotus"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "lotus",
+    "role": "prop_actor",
+    "source_stories": [
+      "farm-animals"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "low_dining_table_kr": {
+    "archived": false,
+    "clips": [
+      "low_dining_table_kr/kimchi_day_s1_table"
+    ],
+    "expressions": [],
+    "height": 110,
+    "id": "low_dining_table_kr",
+    "label": {
+      "de": "Low Dining Table Kr",
+      "en": "Low Dining Table Kr",
+      "ja": "Low Dining Table Kr",
+      "ko": "Low Dining Table Kr"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "low_dining_table_kr",
+    "role": "prop_actor",
+    "source_stories": [
+      "kimchi_day"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "lunar_lander": {
+    "archived": false,
+    "clips": [
+      "lunar_lander/apollo_11_s1_lander"
+    ],
+    "expressions": [],
+    "height": 300,
+    "id": "lunar_lander",
+    "label": {
+      "de": "Lunar Lander",
+      "en": "Lunar Lander",
+      "ja": "Lunar Lander",
+      "ko": "Lunar Lander"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "lunar_lander",
+    "role": "prop_actor",
+    "source_stories": [
+      "apollo_11"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "lunch_tray": {
+    "archived": false,
+    "clips": [
+      "lunch_tray/nutrition_fitness_s0_tray"
+    ],
+    "expressions": [],
+    "height": 60,
+    "id": "lunch_tray",
+    "label": {
+      "de": "Lunch Tray",
+      "en": "Lunch Tray",
+      "ja": "Lunch Tray",
+      "ko": "Lunch Tray"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "lunch_tray",
+    "role": "prop_actor",
+    "source_stories": [
+      "nutrition_fitness"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "macrophage_chef": {
+    "archived": false,
+    "clips": [
+      "macrophage_chef/scrape_battle_s1_macro",
+      "macrophage_chef/scrape_battle_s2_macro"
+    ],
+    "expressions": [],
+    "height": 170,
+    "id": "macrophage_chef",
+    "label": {
+      "de": "Makrophagen-Chef",
+      "en": "Macrophage Chef",
+      "ja": "マクロファージシェフ",
+      "ko": "대식세포 요리사"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "macrophage_chef",
+    "role": "hero",
+    "source_stories": [
+      "scrape_battle"
+    ],
+    "topics": [
+      "body",
+      "health",
+      "science"
+    ],
+    "voice_role": "adult"
+  },
+  "mammoth": {
+    "archived": false,
+    "clips": [
+      "mammoth/first_fire_s0_mammoth_1",
+      "mammoth/first_fire_s1_mammoth_1"
+    ],
+    "expressions": [],
+    "height": 200,
+    "id": "mammoth",
+    "label": {
+      "de": "Mammut",
+      "en": "Mammoth",
+      "ja": "マンモス",
+      "ko": "매머드"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "mammoth",
+    "role": "animal",
+    "source_stories": [
+      "first_fire"
+    ],
+    "topics": [
+      "history",
+      "ancient"
+    ],
+    "voice_role": "none"
+  },
+  "mango": {
+    "archived": false,
+    "clips": [
+      "mango/farm-animals_s2_mango",
+      "mango/orchard_harvest_s0_mango_picked"
+    ],
+    "expressions": [],
+    "height": 100,
+    "id": "mango",
+    "label": {
+      "de": "Mango",
+      "en": "Mango",
+      "ja": "Mango",
+      "ko": "Mango"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "mango",
+    "role": "prop_actor",
+    "source_stories": [
+      "farm-animals",
+      "orchard_harvest"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "mango_tree": {
+    "archived": false,
+    "clips": [
+      "mango_tree/orchard_harvest_s0_mango_tree"
+    ],
+    "expressions": [],
+    "height": 560,
+    "id": "mango_tree",
+    "label": {
+      "de": "Mango Tree",
+      "en": "Mango Tree",
+      "ja": "Mango Tree",
+      "ko": "Mango Tree"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "mango_tree",
+    "role": "prop_actor",
+    "source_stories": [
+      "orchard_harvest"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "market_stall": {
+    "archived": false,
+    "clips": [
+      "market_stall/village_fair_s1_stall"
+    ],
+    "expressions": [],
+    "height": 210,
+    "id": "market_stall",
+    "label": {
+      "de": "Market Stall",
+      "en": "Market Stall",
+      "ja": "Market Stall",
+      "ko": "Market Stall"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "market_stall",
+    "role": "prop_actor",
+    "source_stories": [
+      "village_fair"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "mast_cell_alarm": {
+    "archived": false,
+    "clips": [
+      "mast_cell_alarm/allergy_story_s0_mast",
+      "mast_cell_alarm/allergy_story_s1_mast"
+    ],
+    "expressions": [],
+    "height": 140,
+    "id": "mast_cell_alarm",
+    "label": {
+      "de": "Mastzellen-Signalgeber",
+      "en": "Mast Cell Alarm",
+      "ja": "肥満細胞アラーム",
+      "ko": "비만세포 경보원"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "mast_cell_alarm",
+    "role": "sidekick",
+    "source_stories": [
+      "allergy_story"
+    ],
+    "topics": [
+      "body",
+      "health",
+      "science"
+    ],
+    "voice_role": "child"
+  },
+  "memory_cell_librarian": {
+    "archived": false,
+    "clips": [
+      "memory_cell_librarian/vaccine_training_s0_librarian",
+      "memory_cell_librarian/vaccine_training_s1_librarian"
+    ],
+    "expressions": [],
+    "height": 150,
+    "id": "memory_cell_librarian",
+    "label": {
+      "de": "Gedächtniszellen-Bibliothekar",
+      "en": "Memory Cell Librarian",
+      "ja": "記憶細胞司書",
+      "ko": "기억세포 사서"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "memory_cell_librarian",
+    "role": "sidekick",
+    "source_stories": [
+      "vaccine_training"
+    ],
+    "topics": [
+      "body",
+      "health",
+      "science"
+    ],
+    "voice_role": "adult"
+  },
+  "moai_generic": {
+    "archived": false,
+    "clips": [
+      "moai_generic/moai_mystery_s0_moai",
+      "moai_generic/moai_mystery_s1_moai"
+    ],
+    "expressions": [],
+    "height": 240,
+    "id": "moai_generic",
+    "label": {
+      "de": "Moai Generic",
+      "en": "Moai Generic",
+      "ja": "Moai Generic",
+      "ko": "Moai Generic"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "moai_generic",
+    "role": "prop_actor",
+    "source_stories": [
+      "moai_mystery"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "moon": {
+    "archived": false,
+    "clips": [
+      "moon/moon_phases_s0_moon",
+      "moon/moon_phases_s1_moon"
+    ],
+    "expressions": [],
+    "height": 180,
+    "id": "moon",
+    "label": {
+      "de": "Moon",
+      "en": "Moon",
+      "ja": "Moon",
+      "ko": "Moon"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "moon",
+    "role": "prop_actor",
+    "source_stories": [
+      "moon_phases"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "moon_footprint": {
+    "archived": false,
+    "clips": [
+      "moon_footprint/apollo_11_s1_footprint"
+    ],
+    "expressions": [],
+    "height": 34,
+    "id": "moon_footprint",
+    "label": {
+      "de": "Moon Footprint",
+      "en": "Moon Footprint",
+      "ja": "Moon Footprint",
+      "ko": "Moon Footprint"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "moon_footprint",
+    "role": "prop_actor",
+    "source_stories": [
+      "apollo_11"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "motorcar_1886": {
+    "archived": false,
+    "clips": [
+      "motorcar_1886/first_car_s0_car",
+      "motorcar_1886/first_car_s1_car"
+    ],
+    "expressions": [],
+    "height": 240,
+    "id": "motorcar_1886",
+    "label": {
+      "de": "Motorcar 1886",
+      "en": "Motorcar 1886",
+      "ja": "Motorcar 1886",
+      "ko": "Motorcar 1886"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "motorcar_1886",
+    "role": "prop_actor",
+    "source_stories": [
+      "first_car"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "mouse": {
+    "archived": false,
+    "clips": [
+      "mouse/giant_radish__neutral_s1_mouse",
+      "mouse/giant_radish__neutral_s2_mouse"
+    ],
+    "expressions": [
+      "happy"
+    ],
+    "height": 70,
+    "id": "mouse",
+    "label": {
+      "de": "Maus",
+      "en": "Mouse",
+      "ja": "ネズミ",
+      "ko": "생쥐"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "mouse",
+    "role": "animal",
+    "source_stories": [
+      "giant_radish",
+      "giant_radish__neutral"
+    ],
+    "topics": [
+      "animal",
+      "fables"
+    ],
+    "voice_role": "none"
+  },
+  "mushroom": {
+    "archived": false,
+    "clips": [
+      "mushroom/ant_and_grasshopper_s1_shelter",
+      "mushroom/ant_and_grasshopper_s2_shelter"
+    ],
+    "expressions": [],
+    "height": 260,
+    "id": "mushroom",
+    "label": {
+      "de": "Mushroom",
+      "en": "Mushroom",
+      "ja": "Mushroom",
+      "ko": "Mushroom"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "mushroom",
+    "role": "prop_actor",
+    "source_stories": [
+      "ant_and_grasshopper"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "neutrophil_scout": {
+    "archived": false,
+    "clips": [
+      "neutrophil_scout/scrape_battle_s0_neutro"
+    ],
+    "expressions": [],
+    "height": 140,
+    "id": "neutrophil_scout",
+    "label": {
+      "de": "Neutrophil-Späher",
+      "en": "Neutrophil Scout",
+      "ja": "好中球スカウト",
+      "ko": "호중구 정찰병"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "neutrophil_scout",
+    "role": "hero",
+    "source_stories": [
+      "scrape_battle"
+    ],
+    "topics": [
+      "body",
+      "health",
+      "science"
+    ],
+    "voice_role": "child"
+  },
+  "newspaper_bundle": {
+    "archived": false,
+    "clips": [
+      "newspaper_bundle/recycling_sort_s0_news"
+    ],
+    "expressions": [],
+    "height": 72,
+    "id": "newspaper_bundle",
+    "label": {
+      "de": "Newspaper Bundle",
+      "en": "Newspaper Bundle",
+      "ja": "Newspaper Bundle",
+      "ko": "Newspaper Bundle"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "newspaper_bundle",
+    "role": "prop_actor",
+    "source_stories": [
+      "recycling_sort"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "nk_ninja": {
+    "archived": false,
+    "clips": [
+      "nk_ninja/virus_invasion_s1_ninja"
+    ],
+    "expressions": [],
+    "height": 140,
+    "id": "nk_ninja",
+    "label": {
+      "de": "Nk Ninja",
+      "en": "Nk Ninja",
+      "ja": "Nk Ninja",
+      "ko": "Nk Ninja"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "nk_ninja",
+    "role": "prop_actor",
+    "source_stories": [
+      "virus_invasion"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "nose_chibi": {
+    "archived": false,
+    "clips": [
+      "nose_chibi/allergy_story_s2_nose"
+    ],
+    "expressions": [],
+    "height": 160,
+    "id": "nose_chibi",
+    "label": {
+      "de": "Nose Chibi",
+      "en": "Nose Chibi",
+      "ja": "Nose Chibi",
+      "ko": "Nose Chibi"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "nose_chibi",
+    "role": "prop_actor",
+    "source_stories": [
+      "allergy_story"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "onggi_jar": {
+    "archived": false,
+    "clips": [
+      "onggi_jar/kimchi_day_s0_jar",
+      "onggi_jar/kimchi_day_s1_jar"
+    ],
+    "expressions": [],
+    "height": 110,
+    "id": "onggi_jar",
+    "label": {
+      "de": "Onggi Jar",
+      "en": "Onggi Jar",
+      "ja": "Onggi Jar",
+      "ko": "Onggi Jar"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "onggi_jar",
+    "role": "prop_actor",
+    "source_stories": [
+      "kimchi_day"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "orange": {
+    "archived": false,
+    "clips": [
+      "orange/farm-animals_s2_orange",
+      "orange/orchard_harvest_s1_orange_picked"
+    ],
+    "expressions": [
+      "surprised"
+    ],
+    "height": 115,
+    "id": "orange",
+    "label": {
+      "de": "Orange",
+      "en": "Orange",
+      "ja": "Orange",
+      "ko": "Orange"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "orange",
+    "role": "prop_actor",
+    "source_stories": [
+      "farm-animals",
+      "orchard_harvest"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "orange_tree": {
+    "archived": false,
+    "clips": [
+      "orange_tree/orchard_harvest_s1_orange_tree"
+    ],
+    "expressions": [],
+    "height": 470,
+    "id": "orange_tree",
+    "label": {
+      "de": "Orange Tree",
+      "en": "Orange Tree",
+      "ja": "Orange Tree",
+      "ko": "Orange Tree"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "orange_tree",
+    "role": "prop_actor",
+    "source_stories": [
+      "orchard_harvest"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "paleontologist_boy": {
+    "archived": false,
+    "clips": [
+      "paleontologist_boy/dino_dig_s0_paleo",
+      "paleontologist_boy/dino_dig_s1_paleo"
+    ],
+    "expressions": [
+      "neutral",
+      "happy"
+    ],
+    "height": 230,
+    "id": "paleontologist_boy",
+    "label": {
+      "de": "Kleiner Paläontologe",
+      "en": "Kid Paleontologist",
+      "ja": "ちびっこ古生物学者",
+      "ko": "어린이 고생물학자"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": "paleontologist",
+    "props": [
+      "shovel",
+      "paint_brush"
+    ],
+    "rig": "chibi_boy",
+    "role": "hero",
+    "source_stories": [
+      "dino_dig"
+    ],
+    "topics": [
+      "history",
+      "science"
+    ],
+    "voice_role": "child"
+  },
+  "papaya_tree": {
+    "archived": false,
+    "clips": [
+      "papaya_tree/farm-papaya-latex_s0_tree"
+    ],
+    "expressions": [],
+    "height": 590,
+    "id": "papaya_tree",
+    "label": {
+      "de": "Papaya Tree",
+      "en": "Papaya Tree",
+      "ja": "Papaya Tree",
+      "ko": "Papaya Tree"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "papaya_tree",
+    "role": "prop_actor",
+    "source_stories": [
+      "farm-papaya-latex"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "paper_sheet_stack": {
+    "archived": false,
+    "clips": [
+      "paper_sheet_stack/printing_press_s0_paper",
+      "paper_sheet_stack/printing_press_s1_paper"
+    ],
+    "expressions": [],
+    "height": 240,
+    "id": "paper_sheet_stack",
+    "label": {
+      "de": "Paper Sheet Stack",
+      "en": "Paper Sheet Stack",
+      "ja": "Paper Sheet Stack",
+      "ko": "Paper Sheet Stack"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "paper_sheet_stack",
+    "role": "prop_actor",
+    "source_stories": [
+      "printing_press"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "papyrus_roll": {
+    "archived": false,
+    "clips": [
+      "papyrus_roll/build_pyramid_s0_scroll"
+    ],
+    "expressions": [],
+    "height": 45,
+    "id": "papyrus_roll",
+    "label": {
+      "de": "Papyrus Roll",
+      "en": "Papyrus Roll",
+      "ja": "Papyrus Roll",
+      "ko": "Papyrus Roll"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "papyrus_roll",
+    "role": "prop_actor",
+    "source_stories": [
+      "build_pyramid"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "paving_stone": {
+    "archived": false,
+    "clips": [
+      "paving_stone/roman_road_s0_stone",
+      "paving_stone/roman_road_s1_stone"
+    ],
+    "expressions": [],
+    "height": 120,
+    "id": "paving_stone",
+    "label": {
+      "de": "Paving Stone",
+      "en": "Paving Stone",
+      "ja": "Paving Stone",
+      "ko": "Paving Stone"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "paving_stone",
+    "role": "prop_actor",
+    "source_stories": [
+      "roman_road"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "peanut_plant": {
+    "archived": false,
+    "clips": [
+      "peanut_plant/peanut_s0_plant",
+      "peanut_plant/peanut_s1_plant",
+      "peanut_plant/peanut_s2_plant"
+    ],
+    "expressions": [],
+    "height": 340,
+    "id": "peanut_plant",
+    "label": {
+      "de": "Peanut Plant",
+      "en": "Peanut Plant",
+      "ja": "Peanut Plant",
+      "ko": "Peanut Plant"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "peanut_plant",
+    "role": "prop_actor",
+    "source_stories": [
+      "peanut"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "pear_tree": {
+    "archived": false,
+    "clips": [
+      "pear_tree/highland_temperate_s1_pear_tree"
+    ],
+    "expressions": [],
+    "height": 520,
+    "id": "pear_tree",
+    "label": {
+      "de": "Pear Tree",
+      "en": "Pear Tree",
+      "ja": "Pear Tree",
+      "ko": "Pear Tree"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "pear_tree",
+    "role": "prop_actor",
+    "source_stories": [
+      "highland_temperate"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "pepper": {
+    "archived": false,
+    "clips": [
+      "pepper/pepper_s0_pepper",
+      "pepper/pepper_s1_pepper"
+    ],
+    "expressions": [],
+    "height": 570,
+    "id": "pepper",
+    "label": {
+      "de": "Pepper",
+      "en": "Pepper",
+      "ja": "Pepper",
+      "ko": "Pepper"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "pepper",
+    "role": "prop_actor",
+    "source_stories": [
+      "pepper"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "persimmon": {
+    "archived": false,
+    "clips": [
+      "persimmon/highland_temperate_s0_persimmon_picked",
+      "persimmon/tiger_and_persimmon_s1_persimmon"
+    ],
+    "expressions": [],
+    "height": 72.8,
+    "id": "persimmon",
+    "label": {
+      "de": "Persimmon",
+      "en": "Persimmon",
+      "ja": "Persimmon",
+      "ko": "Persimmon"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "persimmon",
+    "role": "prop_actor",
+    "source_stories": [
+      "highland_temperate"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "persimmon_tree": {
+    "archived": false,
+    "clips": [
+      "persimmon_tree/highland_temperate_s0_persimmon_tree",
+      "persimmon_tree/tiger_and_persimmon_s0_tree",
+      "persimmon_tree/tortoise_and_hare_s0_tree"
+    ],
+    "expressions": [],
+    "height": 520,
+    "id": "persimmon_tree",
+    "label": {
+      "de": "Persimmon Tree",
+      "en": "Persimmon Tree",
+      "ja": "Persimmon Tree",
+      "ko": "Persimmon Tree"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "persimmon_tree",
+    "role": "prop_actor",
+    "source_stories": [
+      "highland_temperate",
+      "tiger_and_persimmon",
+      "tortoise_and_hare"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "pesticide_bottle": {
+    "archived": false,
+    "clips": [
+      "pesticide_bottle/safe_spraying_s0_bottle"
+    ],
+    "expressions": [],
+    "height": 80,
+    "id": "pesticide_bottle",
+    "label": {
+      "de": "Pesticide Bottle",
+      "en": "Pesticide Bottle",
+      "ja": "Pesticide Bottle",
+      "ko": "Pesticide Bottle"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "pesticide_bottle",
+    "role": "prop_actor",
+    "source_stories": [
+      "safe_spraying"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "pheasant": {
+    "archived": false,
+    "clips": [
+      "pheasant/momotaro_s0_pheasant",
+      "pheasant/momotaro_s1_pheasant"
+    ],
+    "expressions": [],
+    "height": 120,
+    "id": "pheasant",
+    "label": {
+      "de": "Fasan",
+      "en": "Pheasant",
+      "ja": "キジ",
+      "ko": "꿩"
+    },
+    "locale": "jp",
+    "markets": [
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "pheasant",
+    "role": "animal",
+    "source_stories": [
+      "momotaro"
+    ],
+    "topics": [
+      "jp_culture",
+      "animal"
+    ],
+    "voice_role": "none"
+  },
+  "pig": {
+    "archived": false,
+    "clips": [
+      "pig/farm-animals_s3_pig"
+    ],
+    "expressions": [],
+    "height": 200,
+    "id": "pig",
+    "label": {
+      "de": "Schwein",
+      "en": "Pig",
+      "ja": "豚",
+      "ko": "돼지"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "pig",
+    "role": "animal",
+    "source_stories": [
+      "farm-animals"
+    ],
+    "topics": [
+      "animal",
+      "farm"
+    ],
+    "voice_role": "none"
+  },
+  "planet": {
+    "archived": false,
+    "clips": [
+      "planet/solar_system_tour_s0_p1",
+      "planet/solar_system_tour_s0_p2",
+      "planet/solar_system_tour_s0_p3",
+      "planet/solar_system_tour_s0_p4",
+      "planet/solar_system_tour_s1_p5",
+      "planet/solar_system_tour_s1_p6",
+      "planet/solar_system_tour_s1_p7",
+      "planet/solar_system_tour_s1_p8"
+    ],
+    "expressions": [],
+    "height": 90,
+    "id": "planet",
+    "label": {
+      "de": "Planet",
+      "en": "Planet",
+      "ja": "Planet",
+      "ko": "Planet"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "planet",
+    "role": "prop_actor",
+    "source_stories": [
+      "solar_system_tour"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "plaque_goo": {
+    "archived": false,
+    "clips": [
+      "plaque_goo/cavity_battle_s1_goo"
+    ],
+    "expressions": [],
+    "height": 100,
+    "id": "plaque_goo",
+    "label": {
+      "de": "Plaque Goo",
+      "en": "Plaque Goo",
+      "ja": "Plaque Goo",
+      "ko": "Plaque Goo"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "plaque_goo",
+    "role": "prop_actor",
+    "source_stories": [
+      "cavity_battle"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "plastic_bag": {
+    "archived": false,
+    "clips": [
+      "plastic_bag/turtle_rescue_s0_plastic_bag",
+      "plastic_bag/turtle_rescue_s1_plastic_bag"
+    ],
+    "expressions": [],
+    "height": 100,
+    "id": "plastic_bag",
+    "label": {
+      "de": "Plastic Bag",
+      "en": "Plastic Bag",
+      "ja": "Plastic Bag",
+      "ko": "Plastic Bag"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "plastic_bag",
+    "role": "prop_actor",
+    "source_stories": [
+      "turtle_rescue"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "plastic_bottle": {
+    "archived": false,
+    "clips": [
+      "plastic_bottle/bottle_journey_s0_bottle",
+      "plastic_bottle/bottle_journey_s1_bottle",
+      "plastic_bottle/bottle_journey_s2_bottle",
+      "plastic_bottle/recycling_sort_s0_bottle"
+    ],
+    "expressions": [],
+    "height": 100,
+    "id": "plastic_bottle",
+    "label": {
+      "de": "Plastic Bottle",
+      "en": "Plastic Bottle",
+      "ja": "Plastic Bottle",
+      "ko": "Plastic Bottle"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "plastic_bottle",
+    "role": "prop_actor",
+    "source_stories": [
+      "recycling_sort",
+      "bottle_journey"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "platelet_builder": {
+    "archived": false,
+    "clips": [
+      "platelet_builder/scrape_battle_s2_platelet"
+    ],
+    "expressions": [],
+    "height": 100,
+    "id": "platelet_builder",
+    "label": {
+      "de": "Blutplättchen-Baumeister",
+      "en": "Platelet Builder",
+      "ja": "血小板ビルダー",
+      "ko": "혈소판 건축가"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "platelet_builder",
+    "role": "sidekick",
+    "source_stories": [
+      "scrape_battle"
+    ],
+    "topics": [
+      "body",
+      "health",
+      "science"
+    ],
+    "voice_role": "child"
+  },
+  "pollen_puff": {
+    "archived": false,
+    "clips": [
+      "pollen_puff/allergy_story_s0_pollen",
+      "pollen_puff/allergy_story_s1_pollen",
+      "pollen_puff/allergy_story_s2_pollen"
+    ],
+    "expressions": [],
+    "height": 60,
+    "id": "pollen_puff",
+    "label": {
+      "de": "Pollen Puff",
+      "en": "Pollen Puff",
+      "ja": "Pollen Puff",
+      "ko": "Pollen Puff"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "pollen_puff",
+    "role": "prop_actor",
+    "source_stories": [
+      "allergy_story"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "pot": {
+    "archived": false,
+    "clips": [
+      "pot/farm-sow-grow_s0_pot",
+      "pot/tomato_s0_pot",
+      "pot/tomato_s1_pot",
+      "pot/tomato_s3_pot"
+    ],
+    "expressions": [],
+    "height": 190,
+    "id": "pot",
+    "label": {
+      "de": "Pot",
+      "en": "Pot",
+      "ja": "Pot",
+      "ko": "Pot"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "pot",
+    "role": "prop_actor",
+    "source_stories": [
+      "tomato",
+      "farm-sow-grow"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "printer_boy": {
+    "archived": false,
+    "clips": [
+      "printer_boy/printing_press_s0_printer",
+      "printer_boy/printing_press_s1_printer"
+    ],
+    "expressions": [
+      "happy"
+    ],
+    "height": 240,
+    "id": "printer_boy",
+    "label": {
+      "de": "Kleiner Drucker",
+      "en": "Kid Printer",
+      "ja": "ちびっこ印刷工",
+      "ko": "어린이 인쇄공"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": "printer_1450",
+    "props": [
+      "movable_type_tray"
+    ],
+    "rig": "chibi_boy",
+    "role": "hero",
+    "source_stories": [
+      "printing_press"
+    ],
+    "topics": [
+      "inventions",
+      "history"
+    ],
+    "voice_role": "child"
+  },
+  "printing_press": {
+    "archived": false,
+    "clips": [
+      "printing_press/printing_press_s0_press",
+      "printing_press/printing_press_s1_press"
+    ],
+    "expressions": [],
+    "height": 320,
+    "id": "printing_press",
+    "label": {
+      "de": "Printing Press",
+      "en": "Printing Press",
+      "ja": "Printing Press",
+      "ko": "Printing Press"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "printing_press",
+    "role": "prop_actor",
+    "source_stories": [
+      "printing_press"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "pulley": {
+    "archived": false,
+    "clips": [
+      "pulley/simple_machines_s1_pulley"
+    ],
+    "expressions": [],
+    "height": 200,
+    "id": "pulley",
+    "label": {
+      "de": "Pulley",
+      "en": "Pulley",
+      "ja": "Pulley",
+      "ko": "Pulley"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "pulley",
+    "role": "prop_actor",
+    "source_stories": [
+      "simple_machines"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "pumpkin_actor": {
+    "archived": false,
+    "clips": [
+      "pumpkin_actor/farm-life__neutral_s3_pumpkin",
+      "pumpkin_actor/thanksgiving_harvest_s0_pumpkin"
+    ],
+    "expressions": [
+      "happy"
+    ],
+    "height": 190,
+    "id": "pumpkin_actor",
+    "label": {
+      "de": "Kürbis",
+      "en": "Pumpkin Character",
+      "ja": "カボチャちゃん",
+      "ko": "호박 친구"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "pumpkin",
+    "role": "prop_actor",
+    "source_stories": [
+      "farm-life",
+      "thanksgiving_harvest",
+      "farm-life__neutral"
+    ],
+    "topics": [
+      "farm"
+    ],
+    "voice_role": "child"
+  },
+  "pyramid": {
+    "archived": false,
+    "clips": [
+      "pyramid/build_pyramid_s0_pyramid_1",
+      "pyramid/build_pyramid_s1_pyramid_1"
+    ],
+    "expressions": [],
+    "height": 240,
+    "id": "pyramid",
+    "label": {
+      "de": "Pyramid",
+      "en": "Pyramid",
+      "ja": "Pyramid",
+      "ko": "Pyramid"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "pyramid",
+    "role": "prop_actor",
+    "source_stories": [
+      "build_pyramid"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "rabbit": {
+    "archived": false,
+    "clips": [
+      "rabbit/farm-animals_s0_rabbit",
+      "rabbit/tortoise_and_hare_s0_hare",
+      "rabbit/tortoise_and_hare_s1_hare",
+      "rabbit/tortoise_and_hare_s2_hare"
+    ],
+    "expressions": [],
+    "height": 130,
+    "id": "rabbit",
+    "label": {
+      "de": "Hase",
+      "en": "Hare / Rabbit",
+      "ja": "ウサギ",
+      "ko": "토끼"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "rabbit",
+    "role": "animal",
+    "source_stories": [
+      "farm-animals",
+      "tortoise_and_hare"
+    ],
+    "topics": [
+      "animal",
+      "fables"
+    ],
+    "voice_role": "none"
+  },
+  "radio": {
+    "archived": false,
+    "clips": [
+      "radio/disaster_safety_s1_radio_rig"
+    ],
+    "expressions": [],
+    "height": 45,
+    "id": "radio",
+    "label": {
+      "de": "Radio",
+      "en": "Radio",
+      "ja": "Radio",
+      "ko": "Radio"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "radio",
+    "role": "prop_actor",
+    "source_stories": [
+      "disaster_safety"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "rain_gauge": {
+    "archived": false,
+    "clips": [
+      "rain_gauge/rain_gauge_s0_gauge",
+      "rain_gauge/rain_gauge_s1_gauge"
+    ],
+    "expressions": [],
+    "height": 240,
+    "id": "rain_gauge",
+    "label": {
+      "de": "Rain Gauge",
+      "en": "Rain Gauge",
+      "ja": "Rain Gauge",
+      "ko": "Rain Gauge"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "rain_gauge",
+    "role": "prop_actor",
+    "source_stories": [
+      "rain_gauge"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "rainbow_set": {
+    "archived": false,
+    "clips": [
+      "rainbow_set/water_cycle_s2_rainbow"
+    ],
+    "expressions": [],
+    "height": 260,
+    "id": "rainbow_set",
+    "label": {
+      "de": "Regenbogen",
+      "en": "Rainbow",
+      "ja": "虹",
+      "ko": "무지개"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "rainbow",
+    "role": "set",
+    "source_stories": [
+      "water_cycle"
+    ],
+    "topics": [
+      "nature",
+      "science"
+    ],
+    "voice_role": "none"
+  },
+  "raindrop_chibi": {
+    "archived": false,
+    "clips": [
+      "raindrop_chibi/water_cycle_s0_drop",
+      "raindrop_chibi/water_cycle_s1_drop",
+      "raindrop_chibi/water_cycle_s2_drop"
+    ],
+    "expressions": [
+      "happy",
+      "surprised"
+    ],
+    "height": 140,
+    "id": "raindrop_chibi",
+    "label": {
+      "de": "Wassertropfen",
+      "en": "Raindrop Chibi",
+      "ja": "あめつぶちゃん",
+      "ko": "빗방울 친구"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "raindrop_chibi",
+    "role": "prop_actor",
+    "source_stories": [
+      "water_cycle"
+    ],
+    "topics": [
+      "nature",
+      "science"
+    ],
+    "voice_role": "child"
+  },
+  "ramp": {
+    "archived": false,
+    "clips": [
+      "ramp/simple_machines_s1_ramp"
+    ],
+    "expressions": [],
+    "height": 180,
+    "id": "ramp",
+    "label": {
+      "de": "Ramp",
+      "en": "Ramp",
+      "ja": "Ramp",
+      "ko": "Ramp"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "ramp",
+    "role": "prop_actor",
+    "source_stories": [
+      "simple_machines"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "recycling_plant_set": {
+    "archived": false,
+    "clips": [
+      "recycling_plant_set/bottle_journey_s1_plant",
+      "recycling_plant_set/bottle_journey_s2_plant"
+    ],
+    "expressions": [],
+    "height": 260,
+    "id": "recycling_plant_set",
+    "label": {
+      "de": "Recyclinganlage",
+      "en": "Recycling Plant",
+      "ja": "リサイクル工場",
+      "ko": "재활용 센터"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "recycling_plant",
+    "role": "set",
+    "source_stories": [
+      "bottle_journey"
+    ],
+    "topics": [
+      "recycling",
+      "science"
+    ],
+    "voice_role": "none"
+  },
+  "rescue_buoy": {
+    "archived": false,
+    "clips": [
+      "rescue_buoy/disaster_safety_s2_buoy"
+    ],
+    "expressions": [],
+    "height": 55,
+    "id": "rescue_buoy",
+    "label": {
+      "de": "Rescue Buoy",
+      "en": "Rescue Buoy",
+      "ja": "Rescue Buoy",
+      "ko": "Rescue Buoy"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "rescue_buoy",
+    "role": "prop_actor",
+    "source_stories": [
+      "disaster_safety"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "rice_plant": {
+    "archived": false,
+    "clips": [
+      "rice_plant/farm-life__neutral_s0_rice1",
+      "rice_plant/farm-life__neutral_s0_rice3"
+    ],
+    "expressions": [],
+    "height": 300,
+    "id": "rice_plant",
+    "label": {
+      "de": "Rice Plant",
+      "en": "Rice Plant",
+      "ja": "Rice Plant",
+      "ko": "Rice Plant"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "rice_plant",
+    "role": "prop_actor",
+    "source_stories": [
+      "farm-life",
+      "farm-life__neutral"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "rinse_basin": {
+    "archived": false,
+    "clips": [
+      "rinse_basin/safe_spraying_s2_basin"
+    ],
+    "expressions": [],
+    "height": 200,
+    "id": "rinse_basin",
+    "label": {
+      "de": "Rinse Basin",
+      "en": "Rinse Basin",
+      "ja": "Rinse Basin",
+      "ko": "Rinse Basin"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "rinse_basin",
+    "role": "prop_actor",
+    "source_stories": [
+      "safe_spraying"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "roast_turkey": {
+    "archived": false,
+    "clips": [
+      "roast_turkey/thanksgiving_harvest_s1_turkey"
+    ],
+    "expressions": [],
+    "height": 150,
+    "id": "roast_turkey",
+    "label": {
+      "de": "Roast Turkey",
+      "en": "Roast Turkey",
+      "ja": "Roast Turkey",
+      "ko": "Roast Turkey"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "roast_turkey",
+    "role": "prop_actor",
+    "source_stories": [
+      "thanksgiving_harvest"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "rocket": {
+    "archived": false,
+    "clips": [
+      "rocket/apollo_11_s0_rocket",
+      "rocket/solar_system_tour_s0_ship"
+    ],
+    "expressions": [],
+    "height": 380,
+    "id": "rocket",
+    "label": {
+      "de": "Rocket",
+      "en": "Rocket",
+      "ja": "Rocket",
+      "ko": "Rocket"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "rocket",
+    "role": "prop_actor",
+    "source_stories": [
+      "apollo_11",
+      "solar_system_tour"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "roman_boy": {
+    "archived": false,
+    "clips": [
+      "roman_boy/roman_road_s0_builder",
+      "roman_boy/roman_road_s1_builder"
+    ],
+    "expressions": [
+      "happy"
+    ],
+    "height": 240,
+    "id": "roman_boy",
+    "label": {
+      "de": "Römischer Junge",
+      "en": "Roman Boy",
+      "ja": "古代ローマの少年",
+      "ko": "로마 소년"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": "roman_citizen",
+    "props": [
+      "chalkboard_wax_tablet"
+    ],
+    "rig": "chibi_boy",
+    "role": "hero",
+    "source_stories": [
+      "roman_road"
+    ],
+    "topics": [
+      "history",
+      "ancient"
+    ],
+    "voice_role": "child"
+  },
+  "rose": {
+    "archived": false,
+    "clips": [
+      "rose/farm-animals_s1_rose"
+    ],
+    "expressions": [],
+    "height": 290,
+    "id": "rose",
+    "label": {
+      "de": "Rose",
+      "en": "Rose",
+      "ja": "Rose",
+      "ko": "Rose"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "rose",
+    "role": "prop_actor",
+    "source_stories": [
+      "farm-animals"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "sandbag": {
+    "archived": false,
+    "clips": [
+      "sandbag/disaster_safety_s2_sand"
+    ],
+    "expressions": [],
+    "height": 25,
+    "id": "sandbag",
+    "label": {
+      "de": "Sandbag",
+      "en": "Sandbag",
+      "ja": "Sandbag",
+      "ko": "Sandbag"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "sandbag",
+    "role": "prop_actor",
+    "source_stories": [
+      "disaster_safety"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "scarecrow": {
+    "archived": false,
+    "clips": [
+      "scarecrow/farm-life__neutral_s1_scarecrow"
+    ],
+    "expressions": [],
+    "height": 280,
+    "id": "scarecrow",
+    "label": {
+      "de": "Scarecrow",
+      "en": "Scarecrow",
+      "ja": "Scarecrow",
+      "ko": "Scarecrow"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "scarecrow",
+    "role": "prop_actor",
+    "source_stories": [
+      "farm-life",
+      "farm-life__neutral"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "school_building": {
+    "archived": false,
+    "clips": [
+      "school_building/first_school_day_s0_school",
+      "school_building/first_school_day_s1_school"
+    ],
+    "expressions": [],
+    "height": 380,
+    "id": "school_building",
+    "label": {
+      "de": "School Building",
+      "en": "School Building",
+      "ja": "School Building",
+      "ko": "School Building"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "school_building",
+    "role": "prop_actor",
+    "source_stories": [
+      "first_school_day"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "scientist_girl": {
+    "archived": false,
+    "clips": [
+      "scientist_girl/moai_mystery_s0_helper1",
+      "scientist_girl/moai_mystery_s1_helper1",
+      "scientist_girl/volcano_s0_scientist",
+      "scientist_girl/volcano_s1_scientist"
+    ],
+    "expressions": [
+      "neutral",
+      "happy",
+      "surprised"
+    ],
+    "height": 230,
+    "id": "scientist_girl",
+    "label": {
+      "de": "Kleine Forscherin",
+      "en": "Girl Scientist",
+      "ja": "女の子科学者",
+      "ko": "소녀 과학자"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": "scientist",
+    "props": [
+      "telescope",
+      "magnifier"
+    ],
+    "rig": "chibi_girl",
+    "role": "hero",
+    "source_stories": [
+      "volcano",
+      "moai_mystery"
+    ],
+    "topics": [
+      "science",
+      "space",
+      "nature"
+    ],
+    "voice_role": "child"
+  },
+  "sea_monster_s": {
+    "archived": false,
+    "clips": [
+      "sea_monster_s/sea-monsters_s0_s_monster",
+      "sea_monster_s/sea-monsters_s1_s_monster",
+      "sea_monster_s/sea-monsters_s2_s_monster"
+    ],
+    "expressions": [],
+    "height": 290,
+    "id": "sea_monster_s",
+    "label": {
+      "de": "Sea Monster S",
+      "en": "Sea Monster S",
+      "ja": "Sea Monster S",
+      "ko": "Sea Monster S"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "sea_monster_s",
+    "role": "prop_actor",
+    "source_stories": [
+      "sea-monsters"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "sea_monster_ss": {
+    "archived": false,
+    "clips": [
+      "sea_monster_ss/sea-monsters_s0_ss_monster",
+      "sea_monster_ss/sea-monsters_s1_ss_monster",
+      "sea_monster_ss/sea-monsters_s2_ss_monster"
+    ],
+    "expressions": [],
+    "height": 350,
+    "id": "sea_monster_ss",
+    "label": {
+      "de": "Sea Monster Ss",
+      "en": "Sea Monster Ss",
+      "ja": "Sea Monster Ss",
+      "ko": "Sea Monster Ss"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "sea_monster_ss",
+    "role": "prop_actor",
+    "source_stories": [
+      "sea-monsters"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "sea_turtle": {
+    "archived": false,
+    "clips": [
+      "sea_turtle/coral_reef_s0_turtle",
+      "sea_turtle/coral_reef_s1_turtle",
+      "sea_turtle/coral_reef_s2_turtle",
+      "sea_turtle/turtle_rescue_s0_sea_turtle",
+      "sea_turtle/turtle_rescue_s1_sea_turtle",
+      "sea_turtle/turtle_rescue_s2_sea_turtle"
+    ],
+    "expressions": [],
+    "height": 140,
+    "id": "sea_turtle",
+    "label": {
+      "de": "Meeresschildkröte",
+      "en": "Sea Turtle",
+      "ja": "ウミガメ",
+      "ko": "바다거북"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "sea_turtle",
+    "role": "animal",
+    "source_stories": [
+      "turtle_rescue",
+      "coral_reef"
+    ],
+    "topics": [
+      "ocean",
+      "animal"
+    ],
+    "voice_role": "none"
+  },
+  "sebae_cushion": {
+    "archived": false,
+    "clips": [
+      "sebae_cushion/seollal_morning_s0_cushion"
+    ],
+    "expressions": [],
+    "height": 104,
+    "id": "sebae_cushion",
+    "label": {
+      "de": "Sebae Cushion",
+      "en": "Sebae Cushion",
+      "ja": "Sebae Cushion",
+      "ko": "Sebae Cushion"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "sebae_cushion",
+    "role": "prop_actor",
+    "source_stories": [
+      "seollal_morning"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "seed": {
+    "archived": false,
+    "clips": [
+      "seed/farm-sow-grow_s0_seed",
+      "seed/johnny_appleseed_s0_seed"
+    ],
+    "expressions": [],
+    "height": 72,
+    "id": "seed",
+    "label": {
+      "de": "Seed",
+      "en": "Seed",
+      "ja": "Seed",
+      "ko": "Seed"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "seed",
+    "role": "prop_actor",
+    "source_stories": [
+      "farm-sow-grow",
+      "johnny_appleseed"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "seismometer": {
+    "archived": false,
+    "clips": [
+      "seismometer/apollo_11_s1_seismometer"
+    ],
+    "expressions": [],
+    "height": 110,
+    "id": "seismometer",
+    "label": {
+      "de": "Seismometer",
+      "en": "Seismometer",
+      "ja": "Seismometer",
+      "ko": "Seismometer"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "seismometer",
+    "role": "prop_actor",
+    "source_stories": [
+      "apollo_11"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "shovel": {
+    "archived": false,
+    "clips": [
+      "shovel/dino_dig_s0_shovel",
+      "shovel/dino_dig_s1_shovel",
+      "shovel/farm-animals_s3_shovel"
+    ],
+    "expressions": [],
+    "height": 180,
+    "id": "shovel",
+    "label": {
+      "de": "Shovel",
+      "en": "Shovel",
+      "ja": "Shovel",
+      "ko": "Shovel"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "shovel",
+    "role": "prop_actor",
+    "source_stories": [
+      "farm-animals"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "sickle": {
+    "archived": false,
+    "clips": [
+      "sickle/farm-life__neutral_s0_sickle"
+    ],
+    "expressions": [],
+    "height": 140,
+    "id": "sickle",
+    "label": {
+      "de": "Sickle",
+      "en": "Sickle",
+      "ja": "Sickle",
+      "ko": "Sickle"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "sickle",
+    "role": "prop_actor",
+    "source_stories": [
+      "farm-life",
+      "farm-life__neutral"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "skin_patch": {
+    "archived": false,
+    "clips": [
+      "skin_patch/scrape_battle_s0_patch",
+      "skin_patch/scrape_battle_s2_patch"
+    ],
+    "expressions": [],
+    "height": 180,
+    "id": "skin_patch",
+    "label": {
+      "de": "Skin Patch",
+      "en": "Skin Patch",
+      "ja": "Skin Patch",
+      "ko": "Skin Patch"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "skin_patch",
+    "role": "prop_actor",
+    "source_stories": [
+      "scrape_battle"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "sledge": {
+    "archived": false,
+    "clips": [
+      "sledge/build_pyramid_s0_sledge_1",
+      "sledge/build_pyramid_s1_sledge_1"
+    ],
+    "expressions": [],
+    "height": 40,
+    "id": "sledge",
+    "label": {
+      "de": "Sledge",
+      "en": "Sledge",
+      "ja": "Sledge",
+      "ko": "Sledge"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "sledge",
+    "role": "prop_actor",
+    "source_stories": [
+      "build_pyramid"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "smoke_detector": {
+    "archived": false,
+    "clips": [
+      "smoke_detector/disaster_safety_s0_detector"
+    ],
+    "expressions": [],
+    "height": 32,
+    "id": "smoke_detector",
+    "label": {
+      "de": "Smoke Detector",
+      "en": "Smoke Detector",
+      "ja": "Smoke Detector",
+      "ko": "Smoke Detector"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "smoke_detector",
+    "role": "prop_actor",
+    "source_stories": [
+      "disaster_safety"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "soap": {
+    "archived": false,
+    "clips": [
+      "soap/handwashing_s0_soap",
+      "soap/handwashing_s1_soap"
+    ],
+    "expressions": [],
+    "height": 34,
+    "id": "soap",
+    "label": {
+      "de": "Soap",
+      "en": "Soap",
+      "ja": "Soap",
+      "ko": "Soap"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "soap",
+    "role": "prop_actor",
+    "source_stories": [
+      "handwashing"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "soil_bed": {
+    "archived": false,
+    "clips": [
+      "soil_bed/farm-animals_s3_soil_bed"
+    ],
+    "expressions": [],
+    "height": 160,
+    "id": "soil_bed",
+    "label": {
+      "de": "Soil Bed",
+      "en": "Soil Bed",
+      "ja": "Soil Bed",
+      "ko": "Soil Bed"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "soil_bed",
+    "role": "prop_actor",
+    "source_stories": [
+      "farm-animals"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "spinning_wheel": {
+    "archived": false,
+    "clips": [
+      "spinning_wheel/village_fair_s0_wheel"
+    ],
+    "expressions": [],
+    "height": 170,
+    "id": "spinning_wheel",
+    "label": {
+      "de": "Spinning Wheel",
+      "en": "Spinning Wheel",
+      "ja": "Spinning Wheel",
+      "ko": "Spinning Wheel"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "spinning_wheel",
+    "role": "prop_actor",
+    "source_stories": [
+      "village_fair"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "sprayer": {
+    "archived": false,
+    "clips": [
+      "sprayer/pepper_s0_sprayer",
+      "sprayer/pepper_s1_sprayer"
+    ],
+    "expressions": [
+      "angry"
+    ],
+    "height": 160,
+    "id": "sprayer",
+    "label": {
+      "de": "Sprayer",
+      "en": "Sprayer",
+      "ja": "Sprayer",
+      "ko": "Sprayer"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "sprayer",
+    "role": "prop_actor",
+    "source_stories": [
+      "pepper"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "stone_age_kid": {
+    "archived": false,
+    "clips": [
+      "stone_age_kid/first_fire_s0_kid",
+      "stone_age_kid/first_fire_s1_kid"
+    ],
+    "expressions": [
+      "happy"
+    ],
+    "height": 240,
+    "id": "stone_age_kid",
+    "label": {
+      "de": "Steinzeit-Kind",
+      "en": "Stone Age Kid",
+      "ja": "石器時代の子ども",
+      "ko": "석기시대 어린이"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": "stone_age",
+    "props": [
+      "laurel_torch"
+    ],
+    "rig": "chibi_kid",
+    "role": "hero",
+    "source_stories": [
+      "first_fire"
+    ],
+    "topics": [
+      "history",
+      "ancient"
+    ],
+    "voice_role": "child"
+  },
+  "stone_block": {
+    "archived": false,
+    "clips": [
+      "stone_block/simple_machines_s0_stone"
+    ],
+    "expressions": [],
+    "height": 90,
+    "id": "stone_block",
+    "label": {
+      "de": "Stone Block",
+      "en": "Stone Block",
+      "ja": "Stone Block",
+      "ko": "Stone Block"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "stone_block",
+    "role": "prop_actor",
+    "source_stories": [
+      "simple_machines"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "strawberry": {
+    "archived": false,
+    "clips": [
+      "strawberry/farm-animals_s2_strawberry"
+    ],
+    "expressions": [
+      "happy"
+    ],
+    "height": 115,
+    "id": "strawberry",
+    "label": {
+      "de": "Strawberry",
+      "en": "Strawberry",
+      "ja": "Strawberry",
+      "ko": "Strawberry"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "strawberry",
+    "role": "prop_actor",
+    "source_stories": [
+      "farm-animals"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "strawberry_plant": {
+    "archived": false,
+    "clips": [
+      "strawberry_plant/highland_temperate_s0_strawberry_plant"
+    ],
+    "expressions": [],
+    "height": 120,
+    "id": "strawberry_plant",
+    "label": {
+      "de": "Strawberry Plant",
+      "en": "Strawberry Plant",
+      "ja": "Strawberry Plant",
+      "ko": "Strawberry Plant"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "strawberry_plant",
+    "role": "prop_actor",
+    "source_stories": [
+      "highland_temperate"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "sun": {
+    "archived": false,
+    "clips": [
+      "sun/water_cycle_s0_sun"
+    ],
+    "expressions": [],
+    "height": 150,
+    "id": "sun",
+    "label": {
+      "de": "Sun",
+      "en": "Sun",
+      "ja": "Sun",
+      "ko": "Sun"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "sun",
+    "role": "prop_actor",
+    "source_stories": [
+      "water_cycle"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "sunflower_actor": {
+    "archived": false,
+    "clips": [
+      "sunflower_actor/farm-life__neutral_s2_sunflower"
+    ],
+    "expressions": [],
+    "height": 380,
+    "id": "sunflower_actor",
+    "label": {
+      "de": "Sonnenblume",
+      "en": "Sunflower Character",
+      "ja": "ひまわりちゃん",
+      "ko": "해바라기 친구"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "sunflower",
+    "role": "prop_actor",
+    "source_stories": [
+      "farm-life",
+      "farm-life__neutral"
+    ],
+    "topics": [
+      "farm",
+      "nature"
+    ],
+    "voice_role": "none"
+  },
+  "sweet_potato_plant": {
+    "archived": false,
+    "clips": [
+      "sweet_potato_plant/vegetable_cutaway_s0_sweet_potato_plant",
+      "sweet_potato_plant/vegetable_cutaway_s1_sweet_potato_plant"
+    ],
+    "expressions": [],
+    "height": 380,
+    "id": "sweet_potato_plant",
+    "label": {
+      "de": "Sweet Potato Plant",
+      "en": "Sweet Potato Plant",
+      "ja": "Sweet Potato Plant",
+      "ko": "Sweet Potato Plant"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "sweet_potato_plant",
+    "role": "prop_actor",
+    "source_stories": [
+      "vegetable_cutaway"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "table": {
+    "archived": false,
+    "clips": [
+      "table/thanksgiving_harvest_s1_table"
+    ],
+    "expressions": [],
+    "height": 230,
+    "id": "table",
+    "label": {
+      "de": "Table",
+      "en": "Table",
+      "ja": "Table",
+      "ko": "Table"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "table",
+    "role": "prop_actor",
+    "source_stories": [
+      "thanksgiving_harvest"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "tanabata_bamboo": {
+    "archived": false,
+    "clips": [
+      "tanabata_bamboo/tanabata_wish_s0_tree"
+    ],
+    "expressions": [],
+    "height": 240,
+    "id": "tanabata_bamboo",
+    "label": {
+      "de": "Tanabata Bamboo",
+      "en": "Tanabata Bamboo",
+      "ja": "Tanabata Bamboo",
+      "ko": "Tanabata Bamboo"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "tanabata_bamboo",
+    "role": "prop_actor",
+    "source_stories": [
+      "tanabata_wish"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "tomato_plant": {
+    "archived": false,
+    "clips": [
+      "tomato_plant/farm-harvest_s0_plant",
+      "tomato_plant/farm-sow-grow_s0_plant",
+      "tomato_plant/farm-sow-grow_s1_plant",
+      "tomato_plant/tomato_s0_plant",
+      "tomato_plant/tomato_s1_plant",
+      "tomato_plant/tomato_s3_plant"
+    ],
+    "expressions": [
+      "sad",
+      "happy"
+    ],
+    "height": 450,
+    "id": "tomato_plant",
+    "label": {
+      "de": "Tomato Plant",
+      "en": "Tomato Plant",
+      "ja": "Tomato Plant",
+      "ko": "Tomato Plant"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "tomato_plant",
+    "role": "prop_actor",
+    "source_stories": [
+      "tomato",
+      "farm-sow-grow",
+      "farm-harvest"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "tooth_chibi": {
+    "archived": false,
+    "clips": [
+      "tooth_chibi/cavity_battle_s0_tooth",
+      "tooth_chibi/cavity_battle_s1_tooth",
+      "tooth_chibi/cavity_battle_s2_tooth",
+      "tooth_chibi/tooth_care_s0_tooth",
+      "tooth_chibi/tooth_care_s1_tooth",
+      "tooth_chibi/tooth_care_s2_tooth"
+    ],
+    "expressions": [
+      "sad",
+      "happy"
+    ],
+    "height": 180,
+    "id": "tooth_chibi",
+    "label": {
+      "de": "Gesunder Zahn",
+      "en": "Healthy Tooth",
+      "ja": "健康な歯",
+      "ko": "건강한 치아"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "tooth_chibi",
+    "role": "prop_actor",
+    "source_stories": [
+      "tooth_care",
+      "cavity_battle"
+    ],
+    "topics": [
+      "body",
+      "health"
+    ],
+    "voice_role": "child"
+  },
+  "tortoise": {
+    "archived": false,
+    "clips": [
+      "tortoise/tortoise_and_hare_s0_tortoise",
+      "tortoise/tortoise_and_hare_s2_tortoise"
+    ],
+    "expressions": [],
+    "height": 130,
+    "id": "tortoise",
+    "label": {
+      "de": "Schildkröte",
+      "en": "Tortoise",
+      "ja": "カメ",
+      "ko": "거북이"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "tortoise",
+    "role": "animal",
+    "source_stories": [
+      "tortoise_and_hare"
+    ],
+    "topics": [
+      "animal",
+      "fables"
+    ],
+    "voice_role": "none"
+  },
+  "towel": {
+    "archived": false,
+    "clips": [
+      "towel/handwashing_s2_towel"
+    ],
+    "expressions": [],
+    "height": 90,
+    "id": "towel",
+    "label": {
+      "de": "Towel",
+      "en": "Towel",
+      "ja": "Towel",
+      "ko": "Towel"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "towel",
+    "role": "prop_actor",
+    "source_stories": [
+      "handwashing"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "traffic_cone": {
+    "archived": false,
+    "clips": [
+      "traffic_cone/crossing_street_s0_cone"
+    ],
+    "expressions": [],
+    "height": 48,
+    "id": "traffic_cone",
+    "label": {
+      "de": "Traffic Cone",
+      "en": "Traffic Cone",
+      "ja": "Traffic Cone",
+      "ko": "Traffic Cone"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "traffic_cone",
+    "role": "prop_actor",
+    "source_stories": [
+      "crossing_street"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "traffic_light": {
+    "archived": false,
+    "clips": [
+      "traffic_light/crossing_street_s0_light",
+      "traffic_light/crossing_street_s1_light"
+    ],
+    "expressions": [],
+    "height": 135,
+    "id": "traffic_light",
+    "label": {
+      "de": "Traffic Light",
+      "en": "Traffic Light",
+      "ja": "Traffic Light",
+      "ko": "Traffic Light"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "traffic_light",
+    "role": "prop_actor",
+    "source_stories": [
+      "crossing_street"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "trex": {
+    "archived": false,
+    "clips": [
+      "trex/dino_dig_s1_trex"
+    ],
+    "expressions": [],
+    "height": 180,
+    "id": "trex",
+    "label": {
+      "de": "Trex",
+      "en": "Trex",
+      "ja": "Trex",
+      "ko": "Trex"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "trex",
+    "role": "prop_actor",
+    "source_stories": [
+      "dino_dig"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "viking_boy": {
+    "archived": false,
+    "clips": [
+      "viking_boy/viking_voyage_s0_rower"
+    ],
+    "expressions": [
+      "happy"
+    ],
+    "height": 170,
+    "id": "viking_boy",
+    "label": {
+      "de": "Kleiner Wikinger",
+      "en": "Kid Viking",
+      "ja": "ちびっこバイキング",
+      "ko": "어린이 바이킹"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": "viking",
+    "props": [
+      "star_compass_viking"
+    ],
+    "rig": "chibi_boy",
+    "role": "hero",
+    "source_stories": [
+      "viking_voyage"
+    ],
+    "topics": [
+      "history",
+      "medieval"
+    ],
+    "voice_role": "child"
+  },
+  "viking_longhouse": {
+    "archived": false,
+    "clips": [
+      "viking_longhouse/viking_voyage_s1_longhouse"
+    ],
+    "expressions": [],
+    "height": 150,
+    "id": "viking_longhouse",
+    "label": {
+      "de": "Viking Longhouse",
+      "en": "Viking Longhouse",
+      "ja": "Viking Longhouse",
+      "ko": "Viking Longhouse"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "viking_longhouse",
+    "role": "prop_actor",
+    "source_stories": [
+      "viking_voyage"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "virus_spike": {
+    "archived": false,
+    "clips": [
+      "virus_spike/handwashing_s0_bac2",
+      "virus_spike/handwashing_s1_bac2",
+      "virus_spike/virus_invasion_s0_virus"
+    ],
+    "expressions": [],
+    "height": 10,
+    "id": "virus_spike",
+    "label": {
+      "de": "Spike-Virus",
+      "en": "Virus Spike",
+      "ja": "ウイルス",
+      "ko": "바이러스"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "virus_spike",
+    "role": "prop_actor",
+    "source_stories": [
+      "handwashing",
+      "virus_invasion"
+    ],
+    "topics": [
+      "body",
+      "health"
+    ],
+    "voice_role": "none"
+  },
+  "volcano_set": {
+    "archived": false,
+    "clips": [
+      "volcano_set/volcano_s0_volcano",
+      "volcano_set/volcano_s1_volcano"
+    ],
+    "expressions": [],
+    "height": 280,
+    "id": "volcano_set",
+    "label": {
+      "de": "Vulkan",
+      "en": "Volcano",
+      "ja": "火山",
+      "ko": "화산"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "volcano",
+    "role": "set",
+    "source_stories": [
+      "volcano"
+    ],
+    "topics": [
+      "nature",
+      "science"
+    ],
+    "voice_role": "none"
+  },
+  "warning_sign": {
+    "archived": false,
+    "clips": [
+      "warning_sign/safe_spraying_s0_sign"
+    ],
+    "expressions": [],
+    "height": 240,
+    "id": "warning_sign",
+    "label": {
+      "de": "Warning Sign",
+      "en": "Warning Sign",
+      "ja": "Warning Sign",
+      "ko": "Warning Sign"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "warning_sign",
+    "role": "prop_actor",
+    "source_stories": [
+      "safe_spraying"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "watering_can": {
+    "archived": false,
+    "clips": [
+      "watering_can/farm-life__neutral_s2_can"
+    ],
+    "expressions": [],
+    "height": 190,
+    "id": "watering_can",
+    "label": {
+      "de": "Watering Can",
+      "en": "Watering Can",
+      "ja": "Watering Can",
+      "ko": "Watering Can"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "watering_can",
+    "role": "prop_actor",
+    "source_stories": [
+      "farm-life",
+      "farm-life__neutral"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "watermelon_actor": {
+    "archived": false,
+    "clips": [
+      "watermelon_actor/watermelon_s0_left",
+      "watermelon_actor/watermelon_s0_right",
+      "watermelon_actor/watermelon_s1_held"
+    ],
+    "expressions": [
+      "worried",
+      "surprised"
+    ],
+    "height": 170,
+    "id": "watermelon_actor",
+    "label": {
+      "de": "Wassermelone",
+      "en": "Watermelon Character",
+      "ja": "すいかちゃん",
+      "ko": "수박 친구"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "watermelon",
+    "role": "prop_actor",
+    "source_stories": [
+      "watermelon"
+    ],
+    "topics": [
+      "farm"
+    ],
+    "voice_role": "child"
+  },
+  "well": {
+    "archived": false,
+    "clips": [
+      "well/village_fair_s0_well"
+    ],
+    "expressions": [],
+    "height": 200,
+    "id": "well",
+    "label": {
+      "de": "Well",
+      "en": "Well",
+      "ja": "Well",
+      "ko": "Well"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "well",
+    "role": "prop_actor",
+    "source_stories": [
+      "village_fair"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "wool_basket": {
+    "archived": false,
+    "clips": [
+      "wool_basket/village_fair_s0_basket"
+    ],
+    "expressions": [],
+    "height": 120,
+    "id": "wool_basket",
+    "label": {
+      "de": "Wool Basket",
+      "en": "Wool Basket",
+      "ja": "Wool Basket",
+      "ko": "Wool Basket"
+    },
+    "locale": "neutral",
+    "markets": [
+      "de",
+      "us",
+      "kr",
+      "jp"
+    ],
+    "outfit": null,
+    "props": [],
+    "rig": "wool_basket",
+    "role": "prop_actor",
+    "source_stories": [
+      "village_fair"
+    ],
+    "topics": [
+      "other"
+    ],
+    "voice_role": "none"
+  },
+  "yukata_girl": {
+    "archived": false,
+    "clips": [
+      "yukata_girl/tanabata_wish_s0_pupil",
+      "yukata_girl/tanabata_wish_s1_pupil"
+    ],
+    "expressions": [
+      "happy"
+    ],
+    "height": 240,
+    "id": "yukata_girl",
+    "label": {
+      "de": "Mädchen im Yukata",
+      "en": "Girl in Yukata",
+      "ja": "浴衣の女の子",
+      "ko": "유카타 입은 소녀"
+    },
+    "locale": "jp",
+    "markets": [
+      "jp"
+    ],
+    "outfit": "yukata",
+    "props": [
+      "paper_lantern_jp"
+    ],
+    "rig": "chibi_girl",
+    "role": "hero",
+    "source_stories": [
+      "tanabata_wish"
+    ],
+    "topics": [
+      "jp_culture"
+    ],
+    "voice_role": "child"
+  }
+}
