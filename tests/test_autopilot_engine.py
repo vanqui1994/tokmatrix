@@ -1176,6 +1176,23 @@ class HousekeepingTest(AutopilotTestCase):
                 self.assertTrue(kept.exists(), kept)
             self.assertEqual(housekeeping.clean_profile_blobs(0, now, root=root, in_use=set())["files"], 0)
 
+    def test_profile_in_use_parsing_handles_spaces_and_lock(self):
+        import tempfile, os, time
+        from bkt_web.autopilot import housekeeping
+        args = ["chrome", "--user-data-dir=/Users/x/SSMATool Tiktok/bkt_web/profiles/My Channel", "--foo",
+                "--user-data-dir", "/opt/t/profiles/channel_9/"]
+        self.assertEqual(housekeeping._user_data_profiles(args), {"My Channel", "channel_9"})
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            now = time.time()
+            f = root / "ch" / "Default" / "blob_storage" / "1"
+            f.parent.mkdir(parents=True)
+            f.write_bytes(b"x")
+            os.utime(f, (now - 48 * 3600,) * 2)
+            os.symlink("host-123", root / "ch" / "SingletonLock")
+            self.assertEqual(housekeeping.clean_profile_blobs(24, now, root=root, in_use=set())["files"], 0)
+            self.assertTrue(f.exists())
+
     def setUp(self):
         super().setUp()
         root = Path(self.tmp.name)

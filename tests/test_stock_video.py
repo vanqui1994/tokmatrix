@@ -56,6 +56,10 @@ class StockVideoTest(unittest.TestCase):
         self.assertEqual(stock_video.conflicts(self.conn, self.cand("pixabay", "78"), fp_b, account=2), [])
         with self.assertRaises(ValueError):
             stock_video.assign(self.conn, self.cand("pexels", "1"), fp_a, account=2)
+        # assign kiểm tra lại trong transaction: cùng footage từ provider khác cũng bị từ chối (đua song song).
+        with self.assertRaises(ValueError):
+            stock_video.assign(self.conn, self.cand("pixabay", "77"), fp_a2, account=2)
+        self.assertIsNone(self.conn.execute("SELECT 1 FROM clips WHERE provider_clip_id='77'").fetchone())
 
     def test_fetch_is_off_by_default_and_skips_taken_or_short_clips(self):
         with mock.patch.dict(os.environ, {"TOKMATRIX_STOCK_VIDEO": "0"}):

@@ -228,11 +228,27 @@ def _profiles_in_use() -> Set[str]:
         if not pid.name.isdigit():
             continue
         try:
-            cmd = (pid / "cmdline").read_bytes().replace(b"\0", b" ").decode("utf-8", "ignore")
+            args = (pid / "cmdline").read_bytes().decode("utf-8", "ignore").split("\0")
         except OSError:
             continue
-        used.update(m.group(1) for m in re.finditer(r"--user-data-dir=\S*/profiles/([^/\s]+)", cmd))
+        used.update(_user_data_profiles(args))
     return used
+
+
+def _user_data_profiles(args) -> Set[str]:
+    """Tên profile từ argv (giữ nguyên khoảng trắng trong đường dẫn; cả dạng `--user-data-dir <dir>`)."""
+    found: Set[str] = set()
+    for i, arg in enumerate(args):
+        if arg.startswith("--user-data-dir="):
+            value = arg.split("=", 1)[1]
+        elif arg == "--user-data-dir" and i + 1 < len(args):
+            value = args[i + 1]
+        else:
+            continue
+        path = Path(value.strip('"').rstrip("/"))
+        if path.parent.name == "profiles" and path.name:
+            found.add(path.name)
+    return found
 
 
 def clean_profile_blobs(keep_hours: int, now: float, root: Optional[Path] = None, in_use: Optional[Set[str]] = None) -> Dict[str, int]:
@@ -245,6 +261,9 @@ def clean_profile_blobs(keep_hours: int, now: float, root: Optional[Path] = None
     files = freed = 0
     for profile in root.iterdir():
         if not profile.is_dir() or profile.name in in_use:
+            continue
+        # Chrome đang mở profile giữ SingletonLock (symlink) — an toàn cả khi không có /proc (macOS).
+        if (profile / "SingletonLock").is_symlink() or (profile / "SingletonLock").exists():
             continue
         default = profile / "Default"
         targets = [default / "blob_storage", *(default / "IndexedDB").glob("*.indexeddb.blob")]

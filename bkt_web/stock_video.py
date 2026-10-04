@@ -224,12 +224,26 @@ def assign(conn: sqlite3.Connection, candidate: Dict[str, Any], fp: Dict[str, An
            segment: Optional[List[float]] = None) -> None:
     """Ghi clip cho acc (gọi sau khi conflicts rỗng). Cùng acc dùng lại clip thì chỉ thêm đoạn đã dùng."""
     key = (candidate["provider"], str(candidate["provider_clip_id"]))
-    row = conn.execute("SELECT owner_account, used_segments FROM clips WHERE provider=? AND provider_clip_id=?", key).fetchone()
-    if row and row["owner_account"] != int(account):
-        raise ValueError(f"clip {key} already belongs to account {row['owner_account']}")
-    segments = json.loads(row["used_segments"]) if row else []
-    if segment:
-        segments.append([round(float(segment[0]), 3), round(float(segment[1]), 3)])
+    # Kiểm tra lại và ghi trong cùng một transaction ghi: hai acc chạy song song không cùng nhận một clip/footage.
+    if conn.in_transaction:
+        conn.commit()
+    conn.execute("BEGIN IMMEDIATE")
+    try:
+        row = conn.execute("SELECT owner_account, used_segments FROM clips WHERE provider=? AND provider_clip_id=?", key).fetchone()
+        if row and row["owner_account"] != int(account):
+            raise ValueError(f"clip {key} already belongs to account {row['owner_account']}")
+        clash = conflicts(conn, candidate, fp, account)
+        if clash:
+            raise ValueError(f"clip {key} conflicts with account {clash[0]['owner_account']} ({clash[0]['reason']})")
+        segments = json.loads(row["used_segments"]) if row else []
+        if segment:
+            seg = [round(float(segment[0]), 3), round(float(segment[1]), 3)]
+            if any(a < seg[1] - 1e-6 and b > seg[0] + 1e-6 for a, b in segments):
+                raise ValueError(f"segment {seg} of clip {key} is already used")
+            segments.append(seg)
+    except Exception:
+        conn.rollback()
+        raise
     conn.execute(
         "INSERT INTO clips(provider, provider_clip_id, canonical_url, content_sha256, frame_hashes, duration, license, author,"
         " owner_account, used_segments, created_at) VALUES (?,?,?,?,?,?,?,?,?,?,?)"
@@ -316,9 +330,12 @@ def fetch_for_scene(query, account: int, dest: Path, *, min_duration: float = 5.
                     segment = free_segment(fp["duration"] or candidate["duration"], used, wanted)
                     if segment is None:
                         continue
+                    try:
+                        assign(conn, candidate, fp, account, segment)
+                    except ValueError:
+                        continue  # acc khác vừa nhận clip này (chạy song song)
                     Path(dest).parent.mkdir(parents=True, exist_ok=True)
                     shutil.move(str(path), str(dest))
-                assign(conn, candidate, fp, account, segment)
                 return {**{k: v for k, v in candidate.items() if k != "download_url"}, "sha256": fp["sha256"], "path": str(dest),
                         "segment": segment, "clip_duration": fp["duration"] or candidate["duration"], "account": int(account),
                         "query": text}
