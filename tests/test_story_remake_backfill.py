@@ -42,3 +42,54 @@ class BackfillTest(unittest.TestCase):
             tool._main()
         self.assertEqual(self.made, ["v4", "v5"])  # bỏ qua v0–v2 (xong) và v3 (lỗi 3 lần), làm 2 video cũ hơn
         self.assertEqual([r["id"] for r in json.loads((self.tmp / "last_run.json").read_text())], ["v4", "v5"])
+
+
+class TranslateModeTest(unittest.TestCase):
+    """Chế độ dịch: lời gốc (de) → lời Nhật đọc bằng TTS, đạo diễn vẽ người Nhật, phụ đề không cách chữ, font CJK."""
+
+    def setUp(self):
+        self.tmp = Path(tempfile.mkdtemp())
+        patch.object(tool, "ROOT", self.tmp).start()
+
+    def tearDown(self):
+        patch.stopall()
+
+    def test_cjk_join_and_caption_font(self):
+        self.assertEqual(tool._join_words(["海は", "塩の", "塊。"]), "海は塩の塊。")
+        self.assertEqual(tool._join_words(["Das", "Meer"]), "Das Meer")
+        self.assertEqual(tool._join_words(["바다는", "소금"]), "바다는 소금")
+        out = self.tmp / "c.ass"
+        tool._captions_ass([[0, .2, "海は"], [.2, .4, "塩の"]], 1.0, out, "ja")
+        text = out.read_text()
+        self.assertIn("Style: Cap,Noto Sans CJK JP,", text)
+        self.assertIn(",海は塩の", text)
+        tool._captions_ass([[0, .2, "Das"]], 1.0, out)
+        self.assertIn("Style: Cap,DejaVu Serif,", out.read_text())
+
+    def test_translate_voice_localizes_and_speaks_each_line(self):
+        work = self.tmp / "v1"; work.mkdir()
+        words = [[0, .5, "Meine"], [.5, 1, "Mutter"], [1, 1.5, "log."], [2, 2.5, "Ich"], [2.5, 3, "ging."]]
+        (work / "orig_words.json").write_text(json.dumps({"lang": "de", "words": words}))
+        asked, spoken = [], []
+        patch.object(tool, "ask_gemini", lambda p: asked.append(p) or json.dumps({"lines": ["0: 母は 嘘を ついた。", "私は家を出た。"]})).start()
+        patch.object(tool, "_account_voice", lambda lang: ("ja-JP-NanamiNeural", 1.0)).start()
+
+        def fake_tts(text, voice, speed, out, lang):
+            spoken.append((text, voice, lang))
+            import subprocess
+            subprocess.run(["ffmpeg", "-loglevel", "error", "-y", "-f", "lavfi", "-i", "sine=d=0.5", str(out)], check=True)
+        patch.object(tool, "_tts_line", fake_tts).start()
+        tool.translate_voice("v1", work, "ja", "de")
+        self.assertIn("Japanese", asked[0]); self.assertIn("German", asked[0]); self.assertIn("name", asked[0])
+        self.assertEqual([t for t, *_ in spoken], ["母は嘘をついた。", "私は家を出た。"])  # bỏ số thứ tự + dấu cách giữa chữ Nhật
+        self.assertTrue((work / "vo.mp3").stat().st_size > 0)
+        self.assertEqual(json.loads((work / "translation.json").read_text())["to"], "ja")
+        tool.translate_voice("v1", work, "ja", "de")  # chạy lại: không gọi lại Gemini/TTS
+        self.assertEqual(len(asked), 1)
+
+    def test_director_gets_the_locale_look(self):
+        work = self.tmp / "v2"; work.mkdir()
+        got = []
+        patch.object(tool, "ask_gemini", lambda p: got.append(p) or json.dumps({"cast": [], "scenes": [{"start": 0}]})).start()
+        tool.direct("v2", work, [[0, 1, "母は"], [1, 2, "嘘。"]], "ja", tool.LOCALE_LOOK["ja"])
+        self.assertIn("present-day Japan", got[0])

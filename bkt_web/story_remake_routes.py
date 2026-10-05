@@ -99,7 +99,8 @@ def watch_tick(now: float | None = None) -> str | None:
         if not due:
             return None
         ch = min(due, key=lambda c: c.get("last_run", 0))
-        _launch(ch["url"], ch.get("limit", 3), 1, ch.get("lang", "auto"), ch.get("images", "imagerouter"), account_id=ch.get("account_id"))
+        _launch(ch["url"], ch.get("limit", 3), 1, ch.get("lang", "auto"), ch.get("images", "imagerouter"), account_id=ch.get("account_id"),
+                translate_to=ch.get("translate_to") or "")
         ch["last_run"] = int(now)
         _watch_save(data)
         return ch["url"]
@@ -248,7 +249,7 @@ def _videos(running: bool = True) -> List[Dict[str, Any]]:
 
 
 def _launch(url: str, limit: int, jobs: int, lang: str, images: str, resumed: bool = False, resumes: int = 0,
-            account_id: Optional[int] = None) -> int:
+            account_id: Optional[int] = None, translate_to: str = "") -> int:
     ROOT.mkdir(parents=True, exist_ok=True)
     mode = "channel" if ("/@" in url or "/channel/" in url or "/c/" in url or "list=" in url) else "video"
     cmd = [sys.executable, str(TOOL), mode, url] + (["--limit", str(limit), "--jobs", str(jobs)] if mode == "channel" else []) + ["--lang", lang]
@@ -258,10 +259,12 @@ def _launch(url: str, limit: int, jobs: int, lang: str, images: str, resumed: bo
     # Chủ kênh 06/10: Muse chỉ dùng cho Kuaishou remake (muse_remake), Antigravity cho Matrix → Story Remake luôn vẽ bằng
     # ImageRouter (Cloudflare dự phòng); giá trị `muse` cũ (runner.json/watch.json/client cũ) cũng chạy ImageRouter.
     images = "imagerouter"
-    env = {**os.environ, "STORY_REMAKE_IMAGES": images, "STORY_REMAKE_ACCOUNT": str(account_id or "")}
+    env = {**os.environ, "STORY_REMAKE_IMAGES": images, "STORY_REMAKE_ACCOUNT": str(account_id or ""),
+           "STORY_REMAKE_TRANSLATE": translate_to or ""}
     proc = subprocess.Popen(cmd, cwd=str(REPO), stdout=log, stderr=subprocess.STDOUT, start_new_session=True, env=env)
     RUNNER.write_text(json.dumps({"pid": proc.pid, "url": url, "limit": limit, "jobs": jobs, "lang": lang, "images": images,
-                                  "started": int(time.time()), "active": True, "resumes": resumes, "account_id": account_id}))
+                                  "started": int(time.time()), "active": True, "resumes": resumes, "account_id": account_id,
+                                  "translate_to": translate_to}))
     return proc.pid
 
 
@@ -277,7 +280,7 @@ def resume_interrupted() -> None:
             RUNNER.write_text(json.dumps(info))
             return
         _launch(info["url"], info.get("limit", 5), info.get("jobs", 1), info.get("lang", "auto"), info.get("images", "imagerouter"), resumed=True, resumes=n,
-                account_id=info.get("account_id"))
+                account_id=info.get("account_id"), translate_to=info.get("translate_to") or "")
 
 
 @router.get("/status")
@@ -413,6 +416,7 @@ class SourceRow(BaseModel):
     account_id: int
     url: str = Field("", max_length=300)
     per_day: int = Field(3, ge=1, le=20)
+    translate: bool = False  # YouTube: dịch lời kể sang ngôn ngữ tài khoản + vẽ nhân vật theo nước tài khoản
 
 
 class SourceRows(BaseModel):
@@ -454,6 +458,7 @@ def sources_by_account():
                     "kind": "youtube" if y else ("kuaishou" if k else ""),
                     "url": (y or {}).get("url") or (k or {}).get("profile_url") or "",
                     "per_day": (y or {}).get("limit") or (k or {}).get("per_day") or 3,
+                    "translate": bool((y or {}).get("translate_to")),
                     "enabled": bool((y or {}).get("enabled", True) if y else (k or {}).get("enabled", 1)),
                     "last_run": (y or {}).get("last_run") or 0, "counts": (k or {}).get("counts") or {}})
     return {"accounts": out}
@@ -478,11 +483,13 @@ def _set_source(row: SourceRow, data: Dict[str, Any]) -> str:
         data["channels"].remove(old_y)
         old_y = None
     if kind == "youtube":
+        translate_to = _account_language(acc)["language"] if row.translate else ""
         if old_y:
             old_y["limit"] = row.per_day
+            old_y["translate_to"] = translate_to
         else:
             data["channels"].append({"url": url, "limit": row.per_day, "lang": "auto", "images": "imagerouter", "enabled": True,
-                                     "account_id": acc, "added": int(time.time()), "last_run": 0})
+                                     "account_id": acc, "added": int(time.time()), "last_run": 0, "translate_to": translate_to})
     elif kind == "kuaishou":
         if old_k:
             muse_remake.update_source(old_k["id"], per_day=min(row.per_day, 10))

@@ -90,7 +90,7 @@ def list_channel(url, limit):
 
 def fetch(item, work):
     vo = work / "vo.mp3"
-    if vo.exists():
+    if vo.exists() or (work / "orig_vo.mp3").exists():
         return
     src = item["url"]
     if os.path.exists(src):
@@ -105,13 +105,13 @@ def fetch(item, work):
 
 
 # ---------------------------------------------------------------- 2. lời
-def transcribe(work, lang):
-    f = work / "words.json"
+def transcribe(work, lang, audio="vo.mp3", cache="words.json"):
+    f = work / cache
     if f.exists():
         return json.loads(f.read_text())
     from faster_whisper import WhisperModel
     m = WhisperModel("small", compute_type="int8")
-    segs, info = m.transcribe(str(work / "vo.mp3"), language=None if lang == "auto" else lang, word_timestamps=True)
+    segs, info = m.transcribe(str(work / audio), language=None if lang == "auto" else lang, word_timestamps=True)
     words = [[round(float(w.start), 2), round(float(w.end), 2), w.word.strip()] for s in segs for w in s.words]
     f.write_text(json.dumps({"lang": info.language, "words": words}, ensure_ascii=False))
     return json.loads(f.read_text())
@@ -124,15 +124,111 @@ def is_story(words, duration):
     return len(words) / duration >= 1.6 and (words[-1][1] - words[0][0]) / duration >= 0.7
 
 
+CJK = re.compile(r"[\u3040-\u30ff\u3400-\u9fff\uac00-\ud7af\uff00-\uffef]")
+
+
+def cjk_join(a, b):
+    """Ghép hai đoạn chữ: tiếng Nhật/Trung không có dấu cách giữa các từ (ghép bằng " " thành "海は 塩の …")."""
+    if not a:
+        return b
+    if CJK.search(a[-1:]) or CJK.search(b[:1]):
+        return a + b if not re.match(r"[\uac00-\ud7af]", a[-1:] + b[:1]) else a + " " + b  # tiếng Hàn vẫn có dấu cách
+    return a + " " + b
+
+
+def _join_words(ws):
+    out = ""
+    for w in ws:
+        out = cjk_join(out, w)
+    return out
+
+
 def sentences(words):
     out, cur = [], []
     for w in words:
         cur.append(w)
         if re.search(r"[.!?…。！？]$", w[2]) or len(cur) >= 28:
-            out.append({"start": cur[0][0], "text": " ".join(x[2] for x in cur)}); cur = []
+            out.append({"start": cur[0][0], "text": _join_words(x[2] for x in cur)}); cur = []
     if cur:
-        out.append({"start": cur[0][0], "text": " ".join(x[2] for x in cur)})
+        out.append({"start": cur[0][0], "text": _join_words(x[2] for x in cur)})
     return out
+
+
+# ---------------------------------------------------------------- 2b. dịch (chế độ STORY_REMAKE_TRANSLATE=<lang>)
+# Kênh nguồn một nước → tài khoản nước khác: lời kể dịch sang ngôn ngữ tài khoản, đọc lại bằng giọng tài khoản, nhân vật và
+# bối cảnh vẽ theo nước đó. Kênh nguồn dịch phải là kênh riêng, không cấp video cho tài khoản nước gốc (mỗi video một nước).
+LANG_NAME = {"ja": "Japanese", "ko": "Korean", "de": "German", "en": "English"}
+LOCALE_LOOK = {"ja": "All characters are Japanese (Japanese ethnicity and Japanese names) and every setting is in present-day Japan "
+                     "(Japanese homes, streets, schools, offices, clothing).",
+               "ko": "All characters are Korean (Korean ethnicity and Korean names) and every setting is in present-day South Korea.",
+               "de": "All characters are German and every setting is in present-day Germany.",
+               "en": "All characters are American and every setting is in the present-day United States."}
+TRANSLATE = """Translate this narrated short story from {src} into natural, spoken {dst} for a TikTok voice-over.
+Localize it fully for {dst} viewers: give every person a common {dst} name instead of the original name and move places,
+schools, food, money and customs to their {dst} equivalents, while keeping the plot, the order and the emotion exactly.
+Keep one output line per input line (same count, same order). Return JSON {{"lines": ["...", ...]}}.
+Lines:
+{lines}"""
+
+
+def _account_voice(lang):
+    acc = os.environ.get("STORY_REMAKE_ACCOUNT")
+    try:
+        sys.path.insert(0, str(REPO))
+        from bkt_web import muse_remake
+        v = muse_remake.account_voice(int(acc)) if acc else None
+        if v and v["language"] == lang:
+            return v["voice"], v["speed"]
+        return muse_remake.DEFAULT_VOICE[lang], 1.0
+    except Exception:
+        return {"ja": "ja-JP-NanamiNeural", "ko": "ko-KR-SunHiNeural", "de": "de-DE-KatjaNeural", "en": "en-US-AriaNeural"}[lang], 1.0
+
+
+def _tts_line(text, voice, speed, out, lang):
+    payload = json.dumps({"text": text, "voice": voice, "out": str(out), "speed": speed, "lang": lang})
+    r = subprocess.run(["node", str(REPO / "compare_studio" / "tools" / "tts-line.mjs")], input=payload, capture_output=True,
+                       text=True, timeout=180, cwd=str(REPO / "compare_studio"))
+    res = json.loads(((r.stdout or "").strip().splitlines() or ["{}"])[-1] or "{}")
+    if not res.get("ok") or not out.is_file():
+        raise RuntimeError(f"TTS lỗi ({voice}): {res.get('error') or (r.stderr or '')[-200:]}")
+
+
+def translate_voice(vid, work, target, src_lang):
+    """orig_words.json (lời gốc) → lời dịch → vo.mp3 giọng `target` (một câu một đoạn, nghỉ 0,25 s)."""
+    vo = work / "vo.mp3"
+    if vo.exists():
+        return
+    orig = json.loads((work / "orig_words.json").read_text())["words"]
+    sents = [x["text"] for x in sentences(orig)]
+    tf = work / "translation.json"
+    if tf.exists():
+        lines = json.loads(tf.read_text())["lines"]
+    else:
+        raw = ask_gemini(TRANSLATE.format(src=LANG_NAME.get(src_lang, src_lang), dst=LANG_NAME[target],
+                                          lines="\n".join(f"{i}: {t}" for i, t in enumerate(sents))))
+        lines = [re.sub(r"^\d+:\s*", "", str(x)).strip() for x in json.loads(raw).get("lines", [])]
+        lines = [x for x in lines if x]
+        if len(lines) < max(1, len(sents) // 2):
+            raise RuntimeError(f"bản dịch thiếu câu ({len(lines)}/{len(sents)})")
+        if target in ("ja", "zh"):
+            lines = [re.sub(r"(?<=[\u3040-\u30ff\u3400-\u9fff])\s+(?=[\u3040-\u30ff\u3400-\u9fff])", "", x) for x in lines]
+        tf.write_text(json.dumps({"from": src_lang, "to": target, "lines": lines}, ensure_ascii=False, indent=1))
+    voice, speed = _account_voice(target)
+    parts = work / "tts"; parts.mkdir(exist_ok=True)
+    gap = parts / "gap.mp3"
+    if not gap.exists():
+        subprocess.run(["ffmpeg", "-loglevel", "error", "-y", "-f", "lavfi", "-i", "anullsrc=r=24000:cl=mono", "-t", "0.25",
+                        "-c:a", "libmp3lame", "-q:a", "4", str(gap)], check=True)
+    lst = []
+    for i, text in enumerate(lines):
+        f = parts / f"l{i:03d}.mp3"
+        if not f.exists():
+            _tts_line(text, voice, speed, f, target)
+        lst += [f"file '{f}'", f"file '{gap}'"]
+    (parts / "list.txt").write_text("\n".join(lst) + "\n")
+    subprocess.run(["ffmpeg", "-loglevel", "error", "-y", "-f", "concat", "-safe", "0", "-i", str(parts / "list.txt"),
+                    "-ar", "44100", "-ac", "2", "-c:a", "libmp3lame", "-q:a", "2", str(vo)], check=True)
+    log(vid, f"dịch {src_lang}→{target}: {len(lines)} câu, giọng {voice}")
 
 
 # ---------------------------------------------------------------- 3. đạo diễn
@@ -195,7 +291,7 @@ def ask_antigravity(prompt, timeout_min=40):
     raise RuntimeError(f"antigravity {tid} timeout")
 
 
-def direct(vid, work, words, lang):
+def direct(vid, work, words, lang, look=""):
     f = work / "plan.json"
     if f.exists():
         return json.loads(f.read_text())
@@ -203,6 +299,8 @@ def direct(vid, work, words, lang):
     dur = words[-1][1]
     n_min, n_max = max(8, int(dur / 9)), max(12, int(dur / 6))
     prompt = DIRECTOR.format(n_min=n_min, n_max=n_max, lang=lang, sents="\n".join(f"{i}: {s['text']}" for i, s in enumerate(sents)))
+    if look:
+        prompt += "\nCast and settings: " + look
     try:
         raw = ask_gemini(prompt); src = "gemini"
     except Exception as e:
@@ -408,18 +506,22 @@ def _ass_time(t):
     return f"{cs // 360000}:{cs // 6000 % 60:02d}:{cs // 100 % 60:02d}.{cs % 100:02d}"
 
 
-def _captions_ass(words, total, path):
+CAPTION_FONT = {"ja": "Noto Sans CJK JP", "ko": "Noto Sans CJK KR", "zh": "Noto Sans CJK SC"}  # DejaVu Serif không có chữ CJK
+
+
+def _captions_ass(words, total, path, lang=""):
     G = []
+    cjk = lang in CAPTION_FONT
     for a_, e_, w in words:
-        if G and a_ - G[-1][0] < 0.28 and len(G[-1][2]) < 18:
-            G[-1][2] += " " + w
+        if G and a_ - G[-1][0] < 0.28 and len(G[-1][2]) < (12 if cjk else 18):
+            G[-1][2] = cjk_join(G[-1][2], w)
         else:
             G.append([a_, e_, w])
     head = ("[Script Info]\nScriptType: v4.00+\nPlayResX: 1080\nPlayResY: 1920\nWrapStyle: 0\n\n[V4+ Styles]\n"
             "Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, "
             "StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding\n"
             # #f7f1e3 → &H00E3F1F7; viền + bóng đen như text-shadow cũ; căn giữa, đáy khối chữ ở y≈1560 (top cũ 1480)
-            "Style: Cap,DejaVu Serif,66,&H00E3F1F7,&H00E3F1F7,&H00000000,&H96000000,0,1,0,0,100,100,1,0,1,3,4,2,80,80,360,1\n\n"
+            f"Style: Cap,{CAPTION_FONT.get(lang, 'DejaVu Serif')},66,&H00E3F1F7,&H00E3F1F7,&H00000000,&H96000000,0,1,0,0,100,100,1,0,1,3,4,2,80,80,360,1\n\n"
             "[Events]\nFormat: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text\n")
     lines = []
     for k, (a_, e_, w) in enumerate(G):
@@ -483,7 +585,11 @@ def render_ffmpeg(vid, work, words, plan, jobs=None):
     with ThreadPoolExecutor(workers) as ex:
         clips = list(ex.map(one_scene, tasks))
     (out / "list.txt").write_text("".join(f"file '{c.name}'\n" for c in clips))
-    _captions_ass(words, total, out / "caps.ass")
+    try:
+        cap_lang = json.loads((work / "words.json").read_text()).get("lang", "")
+    except Exception:
+        cap_lang = ""
+    _captions_ass(words, total, out / "caps.ass", cap_lang)
     mp4 = out / "story.mp4"
     # 2 dải đen 190 px + phụ đề ASS, giọng gốc; cắt đúng tổng thời lượng
     vf = ("drawbox=x=0:y=0:w=iw:h=190:color=black:t=fill,drawbox=x=0:y=ih-190:w=iw:h=190:color=black:t=fill,"
@@ -507,12 +613,25 @@ def remake(item, lang="auto"):
     t0 = time.time()
     try:
         fetch(item, work); log(vid, "tải xong")
+        target = os.environ.get("STORY_REMAKE_TRANSLATE", "")
+        if target:
+            state["translate_to"] = target
+            if (work / "vo.mp3").exists() and not (work / "orig_vo.mp3").exists():
+                shutil.move(str(work / "vo.mp3"), str(work / "orig_vo.mp3"))
+            odur = float(sh(["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", str(work / "orig_vo.mp3")]).strip())
+            otr = transcribe(work, "auto", audio="orig_vo.mp3", cache="orig_words.json")
+            if not is_story(otr["words"], odur):
+                state.update(status="skipped", reason=f"không phải story ({len(otr['words'])} từ / {odur:.0f}s)"); state_f.write_text(json.dumps(state, ensure_ascii=False, indent=1)); log(vid, state["reason"]); return state
+            if otr["lang"] == target:
+                raise RuntimeError(f"nguồn đã là tiếng {target}, không cần dịch")
+            translate_voice(vid, work, target, otr["lang"])
+            lang = target
         dur = float(sh(["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", str(work / "vo.mp3")]).strip())
         tr = transcribe(work, lang); words = tr["words"]
         if not is_story(words, dur):
             state.update(status="skipped", reason=f"không phải story ({len(words)} từ / {dur:.0f}s)"); state_f.write_text(json.dumps(state, ensure_ascii=False, indent=1)); log(vid, state["reason"]); return state
         log(vid, f"{len(words)} từ, ngôn ngữ {tr['lang']}")
-        plan = direct(vid, work, words, tr["lang"]); log(vid, f"{len(plan['scenes'])} cảnh ({plan['director']})")
+        plan = direct(vid, work, words, tr["lang"], LOCALE_LOOK.get(target, "") if target else ""); log(vid, f"{len(plan['scenes'])} cảnh ({plan['director']})")
         draw(vid, work, image_prompts(plan)); log(vid, "ảnh xong")
         if os.environ.get("STORY_REMAKE_RENDERER", "ffmpeg") == "hyperframes":
             mp4 = check_and_render(vid, build(work, words, plan))
