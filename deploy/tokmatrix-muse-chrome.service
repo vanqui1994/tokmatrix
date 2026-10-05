@@ -7,7 +7,7 @@ Requires=tokmatrix-xvfb.service
 User=tokmatrix
 Group=tokmatrix
 Environment=DISPLAY=:1
-ExecStart=/usr/bin/google-chrome --user-data-dir=/opt/tokmatrix/bkt_web/storage/muse_chrome_profile --remote-debugging-address=127.0.0.1 --remote-debugging-port=9333 --no-first-run --no-default-browser-check --window-size=1400,1000 --window-position=200,40 https://muse.ai/
+ExecStart=/usr/bin/google-chrome --user-data-dir=/opt/tokmatrix/bkt_web/storage/muse_chrome_profile --remote-debugging-address=127.0.0.1 --remote-debugging-port=9333 --no-first-run --no-default-browser-check --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-renderer-backgrounding --window-size=1400,1000 --window-position=200,40 https://muse.ai/
 Restart=on-failure
 RestartSec=10
 

@@ -53,6 +53,18 @@ def build_prompt(prompt: str, negative: str, aspect: str) -> str:
             f"Image: {prompt}")
 
 
+async def keep_awake(page) -> None:
+    """Muse chỉ chạy khi tab đang được focus: tab nền/cửa sổ bị che thì Chrome hoãn timer và
+    rendering, ảnh/clip đứng chờ mãi. Đưa tab lên trước và giả lập focus qua CDP."""
+    try:
+        await page.bring_to_front()
+        cdp = await page.context.new_cdp_session(page)
+        await cdp.send("Emulation.setFocusEmulationEnabled", {"enabled": True})
+        await cdp.send("Page.setWebLifecycleState", {"state": "active"})
+    except Exception as e:  # noqa: BLE001 — không chặn việc tạo ảnh vì bước phụ này
+        print(f"[muse] keep_awake: {e}", flush=True)
+
+
 async def _generate(prompt: str) -> Dict[str, Any]:
     from playwright.async_api import async_playwright
     async with async_playwright() as p:
@@ -64,6 +76,7 @@ async def _generate(prompt: str) -> Dict[str, Any]:
         box = page.locator("textarea[placeholder='Message']")
         if await box.count() == 0:
             raise RuntimeError("Muse chưa đăng nhập (không thấy ô Message) — đăng nhập lại qua noVNC")
+        await keep_awake(page)
         before = await page.evaluate(_IMG_COUNT)
         await box.fill(prompt)
         await box.press("Enter")

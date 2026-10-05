@@ -158,6 +158,7 @@ async def _clip(prompt: str) -> Dict[str, Any]:
         box = page.locator("textarea[placeholder='Message']")
         if await box.count() == 0:
             raise RuntimeError("Muse chưa đăng nhập — đăng nhập lại qua noVNC")
+        await muse_image.keep_awake(page)
         before = await page.evaluate(_VIDEOS)
         await box.fill(prompt)
         await box.press("Enter")
