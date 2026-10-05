@@ -23,3 +23,21 @@ class DetectPlatformTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class KuaishouProfileUrlTest(unittest.TestCase):
+    def test_profile_forms(self):
+        from unittest import mock
+        self.assertEqual(m.kuaishou_profile_url("https://www.kuaishou.com/profile/3xev268u3f9fnr2?source=x"),
+                         "https://www.kuaishou.com/profile/3xev268u3f9fnr2")
+        self.assertEqual(m.kuaishou_profile_url("https://c.kuaishou.com/fw/user/3xxh4audnnrua2e?fid=1"),
+                         "https://www.kuaishou.com/profile/3xxh4audnnrua2e")
+        resp = mock.Mock(headers={"location": "https://c.kuaishou.com/fw/user/3xxh4audnnrua2e?fid=3610149014&cc=share_copylink"})
+        with mock.patch("requests.get", return_value=resp):
+            self.assertEqual(m.kuaishou_profile_url("https://v.kuaishou.com/n3NISsa9"),
+                             "https://www.kuaishou.com/profile/3xxh4audnnrua2e")
+        resp.headers = {"location": "https://c.kuaishou.com/fw/photo/3xabc123?fid=1"}
+        with mock.patch("requests.get", return_value=resp):
+            self.assertIsNone(m.kuaishou_profile_url("https://v.kuaishou.com/videoLnk"))
+        self.assertIsNone(m.kuaishou_profile_url("https://www.kuaishou.com/short-video/3xw46q8w2ttwq3m"))
+        self.assertIsNone(m.kuaishou_profile_url("https://www.tiktok.com/@a"))

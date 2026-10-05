@@ -113,11 +113,12 @@ def videos(source_id: Optional[int] = None, limit: int = 200) -> List[Dict[str, 
 
 
 def add_source(profile_url: str, channel_id: int, per_day: int = 2) -> Dict[str, Any]:
-    if not multi_downloader.is_kuaishou_profile(profile_url):
-        raise ValueError("Cần link profile Kuaishou dạng https://www.kuaishou.com/profile/…")
+    url = multi_downloader.kuaishou_profile_url(profile_url)
+    if not url:
+        raise ValueError("Cần link profile Kuaishou: https://www.kuaishou.com/profile/… hoặc link chia sẻ profile "
+                         "v.kuaishou.com/… (link chia sẻ một video không dùng được)")
     if channel_id not in _account_names():
         raise ValueError("Không có tài khoản TikTok này")
-    url = profile_url.split("?")[0].rstrip("/")
     with _conn() as c:
         try:
             c.execute("INSERT INTO sources(profile_url, channel_id, per_day, created) VALUES (?,?,?,?)",
@@ -149,6 +150,20 @@ def _account_names() -> Dict[int, str]:
         return {r[0]: (r[1] or f"#{r[0]}") for r in c.execute("SELECT id, username FROM channels")}
 
 
+_CFG_CACHE: Dict[str, Any] = {"at": 0.0, "configs": {}}
+
+
+def _matrix_configs() -> Dict[str, Any]:
+    """Cấu hình kênh Matrix (237 file YAML, ~0,6 s): đọc một lần, giữ 5 phút."""
+    if time.time() - _CFG_CACHE["at"] > 300:
+        try:
+            from bkt_web.autopilot import channels as ach
+        except ImportError:
+            from autopilot import channels as ach
+        _CFG_CACHE.update(at=time.time(), configs=ach.load_matrix_channel_configs())
+    return _CFG_CACHE["configs"]
+
+
 def account_voice(channel_id: int) -> Dict[str, Any]:
     """Ngôn ngữ + giọng của tài khoản: kênh Matrix được gán (voice_id, voice_speed) → không có thì theo quốc gia."""
     try:
@@ -160,7 +175,7 @@ def account_voice(channel_id: int) -> Dict[str, Any]:
     language = language if language in LANG_NAMES else "en"
     voice, speed, niche = DEFAULT_VOICE[language], 1.0, mapping.get("niche_id") or ""
     if mapping.get("matrix_channel_id"):
-        cfg = (ach.load_matrix_channel_configs().get(mapping["matrix_channel_id"]) or {}).get("config") or {}
+        cfg = (_matrix_configs().get(mapping["matrix_channel_id"]) or {}).get("config") or {}
         audio = cfg.get("audio") or {}
         voice, speed = audio.get("voice_id") or voice, float(audio.get("voice_speed") or 1.0)
     return {"language": language, "voice": voice, "speed": speed, "niche": niche}

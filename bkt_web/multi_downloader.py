@@ -206,6 +206,27 @@ def is_kuaishou_profile(url: str) -> bool:
     return detect_platform(url) == "kuaishou" and "/profile/" in urllib.parse.urlparse(url).path
 
 
+def kuaishou_profile_url(url: str) -> Optional[str]:
+    """Link profile Kuaishou ở mọi dạng → https://www.kuaishou.com/profile/<id>; None nếu không phải profile.
+
+    Nhận: www.kuaishou.com/profile/<id>, link chia sẻ của app v.kuaishou.com/<mã> (302 → c.kuaishou.com/fw/user/<id>),
+    và chính link fw/user. Link chia sẻ một video (fw/photo, short-video) không phải profile."""
+    import requests
+    url = (url or "").strip()
+    if detect_platform(url) != "kuaishou":
+        return None
+    host = (urllib.parse.urlparse(url).hostname or "").lower()
+    if host == "v.kuaishou.com":
+        try:
+            r = requests.get(url, allow_redirects=False, timeout=20,
+                             headers={"User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X)"})
+            url = r.headers.get("location") or url
+        except requests.RequestException:
+            return None
+    m = __import__("re").search(r"/(?:profile|fw/user)/([0-9A-Za-z_-]{3,40})", urllib.parse.urlparse(url).path)
+    return f"https://www.kuaishou.com/profile/{m.group(1)}" if m else None
+
+
 async def _ks_capture(url: str, want: int, target: str = "") -> Dict[str, Any]:
     """Mở link trong Chrome Kuaishou, để trang tự gọi /rest/v/* (có chữ ký), cuộn tới khi đủ `want` video."""
     import asyncio
