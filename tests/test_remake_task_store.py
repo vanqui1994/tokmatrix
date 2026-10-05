@@ -88,6 +88,50 @@ class RemakeQueueIntegrationTest(unittest.TestCase):
             self.assertEqual(duplicate["project_name"], first["project_name"])
             self.assertEqual(first["project_name"], f"remake-{first['source_sha256'][:12]}")
 
+    def _enqueue_twice(self, root, first_status, registry):
+        from bkt_web import remake_routes
+        from bkt_web.remake_task_store import RemakeTaskStore
+
+        source_one = root / "one.mp4"
+        source_two = root / "two.mp4"
+        source_one.write_bytes(b"same-video")
+        source_two.write_bytes(b"same-video")
+        store = RemakeTaskStore(root / "tasks.db")
+        registry_path = root / "projects.json"
+        with patch.object(remake_routes, "REMAKE_TASK_STORE", store), \
+                patch.object(remake_routes, "PROJECTS_REGISTRY", registry_path):
+            first, _ = remake_routes._enqueue_remake(source_one, None, initial_log="one")
+            first.update(status=first_status, progress=100, result={"id": first["project_name"]})
+            store.put(first)
+            registry_path.write_text(json.dumps(registry(first)), encoding="utf-8")
+            second, created = remake_routes._enqueue_remake(source_two, None, initial_log="two")
+        return first, second, created
+
+    def test_reupload_reruns_when_the_project_was_deleted(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            first, second, created = self._enqueue_twice(Path(tmp), "completed", lambda _t: [])
+            self.assertTrue(created)
+            self.assertEqual(second["id"], first["id"])
+            self.assertEqual(second["status"], "pending")
+            self.assertEqual(second["progress"], 0)
+            self.assertIsNone(second["result"])
+            self.assertTrue(second["video_path"].endswith("two.mp4"))
+
+    def test_reupload_reruns_a_task_that_ran_out_of_retries(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            _, second, created = self._enqueue_twice(
+                Path(tmp), "error", lambda t: [{"id": t["project_name"]}])
+            self.assertTrue(created)
+            self.assertEqual(second["status"], "pending")
+            self.assertEqual(second["attempt_count"], 0)
+
+    def test_reupload_reuses_a_project_that_still_exists(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            _, second, created = self._enqueue_twice(
+                Path(tmp), "completed", lambda t: [{"id": t["project_name"]}])
+            self.assertFalse(created)
+            self.assertEqual(second["status"], "completed")
+
     def test_retry_reuses_completed_tts_cache_instead_of_calling_provider_again(self):
         from bkt_web import remake_pipeline as pipeline_module
         from bkt_web.remake_pipeline import RemakePipeline

@@ -277,16 +277,33 @@ def check_geometric_fidelity(
     options = settings or GeometricSettings()
     _require(isinstance(options, GeometricSettings), "settings không hợp lệ")
 
-    events = lifecycle_events(model)
-    solver = solver_for_scene(model)
-    checker = _Checker(model, options)
-    times = _sample_times(model, options, events)
-
     components = {
         component.component_id: component
         for entity in model.entities
         for component in entity.components
     }
+    if not components:
+        return GeometricReport(
+            scene_id=model.scene_id,
+            settings=options,
+            sampled_seconds=(),
+            findings=(),
+            metrics={
+                "worst_contact_gap_px": 0.0,
+                "worst_ground_slip_px_per_second": 0.0,
+                "worst_intersection_ratio": 0.0,
+                "worst_attachment_jump_px": 0.0,
+                "worst_joint_excess_degrees": 0.0,
+                "components_with_bounds": 0.0,
+                "components_without_bounds": 0.0,
+            },
+            unchecked=(),
+        )
+
+    events = lifecycle_events(model)
+    solver = solver_for_scene(model)
+    checker = _Checker(model, options)
+    times = _sample_times(model, options, events)
     boxes: dict[str, tuple[float, float, float, float]] = {}
     for component_id, component in sorted(components.items()):
         box = _bounds(component)

@@ -1487,6 +1487,24 @@ class RemakePipeline:
                 return result
 
             source_hash = str(self.metadata.get("sha256") or "")
+            # Kịch bản đã xác minh không lưu `duration`; validate_story bắt buộc
+            # có. Lấy mốc kết thúc scene cuối (giữ nguyên thời gian scene nguồn;
+            # ffprobe lệch vài µs sẽ làm hỏng SCENE_COVERAGE_END), chỉ dùng độ dài
+            # video nguồn khi không có scene. Chỉ sửa trên bản sao.
+            source_duration = self.metadata.get("duration")
+
+            def _with_duration(story: Dict[str, Any]) -> Dict[str, Any]:
+                if story.get("duration") is not None:
+                    return story
+                ends = [s.get("end_time") for s in story.get("scenes") or [] if isinstance(s.get("end_time"), (int, float))]
+                duration = max(ends) if ends else source_duration
+                if duration is None:
+                    return story
+                return {**story, "duration": float(duration)}
+
+            storyboard = _with_duration(storyboard)
+            if reference_storyboard is not None:
+                reference_storyboard = _with_duration(reference_storyboard)
             v2 = migrate_v1_to_v2(storyboard, source_sha256=source_hash if len(source_hash) == 64 else None)
             reference_v2 = migrate_v1_to_v2(
                 reference_storyboard if reference_storyboard is not None else storyboard,

@@ -187,7 +187,10 @@ def background_remake_worker(task_id: str, video_path: str | None = None, projec
         pipeline = RemakePipeline(str(video_path), project_name, log_callback=log_cb)
         result = pipeline.run_all()
 
-        task_info["status"] = result.get("status", "completed")
+        # result["status"] là trạng thái project (rendered_v2, completed, …);
+        # task chỉ có 3 trạng thái kết thúc mà UI biết dừng poll.
+        raw_status = result.get("status") or "completed"
+        task_info["status"] = raw_status if raw_status in ("needs_review", "waiting_antigravity") else "completed"
         task_info["result"] = result
         if task_info["status"] == "completed":
             log_cb("Đã dựng xong bản xem trước; cần đối chiếu hình với nguồn", 100)
@@ -248,9 +251,25 @@ def _enqueue_remake(target: Path, project_name: str | None, *, initial_log: str)
         project_name=stable_project,
         initial_log=initial_log,
     )
+    if not created and _should_rerun(task):
+        # Tải lại đúng video đó sau khi lần trước lỗi hết lượt thử hoặc project
+        # đã bị xoá: trước đây API trả nguyên task cũ, UI báo "hoàn tất" ngay
+        # mà không có project nào, tức là không remake được nữa.
+        task = REMAKE_TASK_STORE.requeue(task["id"], video_path=str(target), log=initial_log)
+        created = True
     REMAKE_TASKS[task["id"]] = task
     REMAKE_QUEUE_WAKE.set()
     return task, created
+
+
+def _should_rerun(task: Dict[str, Any]) -> bool:
+    status = task.get("status")
+    if status in ("pending", "processing"):
+        return False
+    if status == "error":
+        return True
+    project_ids = {p.get("id") for p in _load_projects()}
+    return task.get("project_name") not in project_ids
 
 
 @remake_router.post("/start")

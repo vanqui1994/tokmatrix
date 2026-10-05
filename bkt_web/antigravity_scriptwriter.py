@@ -100,6 +100,11 @@ VIDEO_TYPE_INSTRUCTIONS = {
         "Output là MỘT object JSON khớp chính xác JSON schema ở cuối yêu cầu: đủ mọi trường required,\n"
         "đúng số phần tử, không thêm chữ, không bọc ```; viết bằng đúng ngôn ngữ yêu cầu."
     ),
+    "vector_rig": (
+        "Task của bộ học vector (vector_learner): KHÔNG phải kịch bản video. Viết code JavaScript vẽ một rig hoạt hình\n"
+        "theo đúng phần Yêu cầu cụ thể. Nếu yêu cầu có đường dẫn ảnh tham chiếu, mở ảnh đó bằng công cụ đọc file và vẽ\n"
+        "theo nó (đơn giản hoá). Output là MỘT object JSON đúng các trường yêu cầu, trường code là chuỗi JavaScript."
+    ),
 }
 
 

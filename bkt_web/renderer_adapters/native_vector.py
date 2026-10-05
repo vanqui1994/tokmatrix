@@ -178,7 +178,8 @@ class NativeVectorAdapter(RendererAdapter):
             from remake_vector import engine_sources
         # Không quay về engine lõi khi gói lỗi: video sẽ thiếu rig mà vẫn báo hoàn thành.
         engine = "\n;\n".join(src.read_text(encoding="utf-8") for src in engine_sources())
-        catalog = json.loads(CATALOG_PATH.read_text(encoding="utf-8"))
+        from bkt_web.remake_vector import catalog as load_catalog  # gồm rig học được (vector_learned)
+        catalog = load_catalog()
         story = target.plan["story"]
         return (
             "<!doctype html><html lang=\"vi\"><head><meta charset=\"utf-8\">"

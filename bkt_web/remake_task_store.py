@@ -203,6 +203,33 @@ class RemakeTaskStore:
         self.put(task)
         return task
 
+    def requeue(self, task_id: str, *, video_path: str, log: str) -> dict[str, Any]:
+        """Chạy lại task của cùng nguồn (giữ id và project_name).
+
+        Dùng khi người dùng tải lại đúng video đó nhưng lần trước đã lỗi hết
+        lượt thử hoặc project đã bị xoá khỏi registry.
+        """
+        task = self.get(task_id)
+        if task is None:
+            raise KeyError(task_id)
+        logs = list(task.get("logs") or [])
+        logs.append(log)
+        task.update(
+            status="pending", progress=0, attempt_count=0, next_retry_at=0,
+            error=None, result=None, current_step="Đang xếp hàng...", logs=logs,
+        )
+        now = time.time()
+        with self._lock, closing(self._connect()) as conn:
+            conn.execute(
+                "UPDATE remake_tasks SET video_path=?, updated_ts=? WHERE id=?",
+                (video_path, now, task_id),
+            )
+            conn.commit()
+        task["video_path"] = video_path
+        task["video"] = Path(video_path).name
+        self.put(task)
+        return self.get(task_id)  # type: ignore[return-value]
+
     def retry(self, task_id: str) -> dict[str, Any]:
         task = self.get(task_id)
         if task is None:

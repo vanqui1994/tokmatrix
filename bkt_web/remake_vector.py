@@ -39,7 +39,12 @@ def frame_size(story_or_frame) -> tuple[int, int]:
 
 @lru_cache(maxsize=1)
 def _catalog():
-    return json.loads((STATIC_DIR / "remake_vector_catalog.json").read_text(encoding="utf-8"))
+    cat = json.loads((STATIC_DIR / "remake_vector_catalog.json").read_text(encoding="utf-8"))
+    try:  # rig học được (vector_learner) nằm ngoài static để deploy không ghi đè
+        from bkt_web import vector_learned
+    except ImportError:
+        import vector_learned
+    return vector_learned.patch_catalog(cat)
 
 
 def catalog():
@@ -103,7 +108,12 @@ def engine_sources() -> list[Path]:
     missing = [str(path) for path in sources if not path.is_file()]
     if missing:
         raise FileNotFoundError(f"Thiếu file engine vector: {', '.join(missing)}")
-    return sources
+    try:
+        from bkt_web import vector_learned
+    except ImportError:
+        import vector_learned
+    learned = vector_learned.js_path()
+    return sources + ([learned] if learned else [])
 
 
 def _number(value, low, high, label):

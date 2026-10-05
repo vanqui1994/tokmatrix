@@ -36,6 +36,7 @@ VALID_VIDEO_TYPES = {
     "compare", "folklore", "mystery", "survival", "vox", "newspaper",
     "kinetic", "chalk", "tierlist", "wildlife", "science",
     "matrix",  # angle/kịch bản của AI Matrix: prompt + JSON schema nằm sẵn trong task
+    "vector_rig",  # code vẽ rig vector mới cho vector_learner (prompt tự chứa quy ước + ảnh tham chiếu Muse)
 }
 
 ENGINE = "antigravity"

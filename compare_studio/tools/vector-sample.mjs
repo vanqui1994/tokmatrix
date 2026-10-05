@@ -3,6 +3,8 @@
 // vector → TTS → dựng → render → Video QA) nhưng KHÔNG ghi DB Matrix và không đăng gì.
 //
 //   node tools/vector-sample.mjs --channel deep_space_01 --topic "What would a night on Mars feel like?" [--out <dir>] [--no-render]
+//   … --lines-file lines.txt [--llm-storyboard]   kịch bản viết sẵn ("câu | ý hình" mỗi dòng); --llm-storyboard để LLM
+//   dựng storyboard (đối tượng, hành động, bối cảnh) cho kịch bản đó thay cho storyboard dự phòng tất định.
 //
 // Kênh dùng giọng, nhạc nền, ngôn ngữ của chính nó; engine bị ép là `vector` (kênh không cần khai engine này).
 import crypto from "node:crypto";
@@ -27,6 +29,7 @@ function args(argv) {
     else if (argv[i] === "--out") out.out = argv[++i];
     else if (argv[i] === "--no-render") out.render = false;
     else if (argv[i] === "--lines-file") out.linesFile = argv[++i];
+    else if (argv[i] === "--llm-storyboard") out.llmStoryboard = true;
   }
   if (!out.channel || !out.topic) throw new Error("usage: --channel <id> --topic <title> [--out dir] [--no-render]");
   return out;
@@ -37,7 +40,7 @@ function channelContext(channel) {
   return { ...channel, ...dna, channel: dna, resolved_config: channel?.resolved_config };
 }
 
-export async function vectorSample({ channelId, topic, outDir, render = true, linesFile, log = console.log }) {
+export async function vectorSample({ channelId, topic, outDir, render = true, linesFile, llmStoryboard = false, log = console.log }) {
   const resolved = resolvePilotChannelConfigs({}).find((item) => item.channel_id === channelId);
   if (!resolved) throw new Error(`unknown channel ${channelId}`);
   const channel = channelContext(resolved);
@@ -53,6 +56,10 @@ export async function vectorSample({ channelId, topic, outDir, render = true, li
       scenes: lines.map((raw, i) => { const [line, visual] = raw.split("|").map((x) => x.trim()); return { scene_index: i + 1, line, visual_intent: visual || line, asset_type: "CANVAS" }; }),
       engine_extras: { engine: "vector", source: "fallback", data: { fallback: true } },
     };
+    if (llmStoryboard) {
+      const { engine_extras: _fallback, ...bare } = script;
+      script = await attachEngineExtras({ engineType: "vector", topic: { title: topic }, channel, language, script: bare });
+    }
   } else {
     [angle] = await generateAngleSet(topic, { count: 1, language });
     outline = buildBlueprintOutline({ blueprint, angle, targetDurationSeconds: 45, pacingBeats: 12 });
@@ -92,7 +99,7 @@ if (import.meta.url === pathToFileURL(process.argv[1]).href) {
   const opts = args(process.argv.slice(2));
   const outDir = path.resolve(opts.out || path.join(COMPARE_DIR, ".runtime", "vector-samples", opts.channel));
   await fs.mkdir(outDir, { recursive: true });
-  vectorSample({ channelId: opts.channel, topic: opts.topic, outDir, render: opts.render, linesFile: opts.linesFile })
+  vectorSample({ channelId: opts.channel, topic: opts.topic, outDir, render: opts.render, linesFile: opts.linesFile, llmStoryboard: opts.llmStoryboard })
     .then((result) => { if (result.qa && !result.qa.passed) process.exitCode = 1; })
     .catch((error) => { console.error(error); process.exitCode = 1; });
 }

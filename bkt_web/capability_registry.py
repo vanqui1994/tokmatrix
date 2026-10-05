@@ -244,6 +244,9 @@ def _asset_states(asset_id: str, group: str) -> list[str]:
             states.update(("bend", "nutrients"))
             branch_count = 10 if asset_id == "peanut_plant" else 7
             states.update(f"branch_{index}" for index in range(1, branch_count + 1))
+        if asset_id == "peanut_bush":
+            # peanut_field: bụi bị ép dẹt theo `bend` (cùng plantPoint của core).
+            states.add("bend")
     if asset_id in {"hand", "hand_right"}:
         states.update(("hand_pose", "index", "middle", "pinky", "ring", "thumb", "wrist"))
     if asset_id in {"farmer", "fisherman", "farmer_woman"}:
@@ -267,6 +270,8 @@ def _asset_states(asset_id: str, group: str) -> list[str]:
         states.add("flies")
     if asset_id == "chem_cabinet":
         states.add("open")
+    if asset_id == "soil_inset":
+        states.add("growth")  # tia lạc đâm sâu rồi phình củ
     if asset_id == "soil_bed":
         states.add("cut")
     if asset_id == "egg":

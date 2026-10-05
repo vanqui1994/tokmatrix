@@ -363,38 +363,74 @@
     "label": "Cây Lạc & Bác Nông Dân",
     "characters": [
       {
+        "id": "cay_lac",
+        "name": "Bụi lạc",
+        "role": "prop",
+        "avatar": "🌿",
+        "asset": "peanut_bush",
+        "face": false
+      },
+      {
         "id": "dot_lac",
         "name": "Đọt Ngọn Lạc",
         "role": "young_1",
         "avatar": "🥜",
-        "asset": "peanut_plant",
-        "face": true
+        "asset": "face_tuft",
+        "face": true,
+        "attach_to": {
+          "id": "cay_lac",
+          "anchor": "shoot"
+        }
       },
       {
         "id": "canh_goc",
         "name": "Cành Gốc & Hoa",
         "role": "young_1",
         "avatar": "🌸",
-        "asset": "peanut_plant",
-        "face": true
+        "asset": "face_lashes",
+        "face": true,
+        "attach_to": {
+          "id": "cay_lac",
+          "anchor": "branch"
+        }
       },
       {
         "id": "nong_dan",
         "name": "Bác Nông Dân",
         "role": "adult",
         "avatar": "👨‍🌾",
-        "asset": "farmer",
-        "face": true
+        "asset": "foot",
+        "face": false
+      },
+      {
+        "id": "tay_nong_dan",
+        "name": "Tay bác nông dân",
+        "role": "prop",
+        "avatar": "✋",
+        "asset": "hand",
+        "face": false,
+        "style": {
+          "shirt": "#ecc9a0"
+        }
+      },
+      {
+        "id": "mat_cat",
+        "name": "Mặt cắt đất",
+        "role": "prop",
+        "avatar": "🟤",
+        "asset": "soil_inset",
+        "face": false
       }
     ],
     "scenes": [
       {
         "id": "scene_0",
         "start_time": 0,
-        "end_time": 20.57,
+        "end_time": 11.55,
         "renderer": "native-vector-v1",
         "label": "Cảnh 1: Đọt lạc & Cành gốc trò chuyện",
         "characters_present": [
+          "cay_lac",
           "dot_lac",
           "canh_goc"
         ],
@@ -404,87 +440,111 @@
           "time": "day"
         },
         "poses": {
+          "cay_lac": [
+            {
+              "time": 0,
+              "x": 288,
+              "y": 805,
+              "height": 360,
+              "growth": 0.85
+            }
+          ],
           "dot_lac": [
             {
               "time": 0,
-              "x": 180,
-              "y": 700,
-              "height": 280,
-              "growth": 0.4,
-              "expression": "neutral"
+              "x": 0,
+              "y": 40,
+              "height": 95,
+              "expression": "neutral",
+              "z": 3
             },
             {
               "time": 1.55,
-              "x": 180,
-              "y": 700,
-              "height": 280,
-              "growth": 0.5,
-              "expression": "happy"
+              "x": 0,
+              "y": 40,
+              "height": 95,
+              "expression": "happy",
+              "z": 3
             },
             {
-              "time": 10,
-              "x": 180,
-              "y": 700,
-              "height": 300,
-              "growth": 0.6,
-              "expression": "worried"
+              "time": 4.05,
+              "x": 0,
+              "y": 40,
+              "height": 95,
+              "expression": "smug",
+              "z": 3
             },
             {
-              "time": 20.57,
-              "x": 180,
-              "y": 700,
-              "height": 300,
-              "growth": 0.6,
-              "expression": "worried"
+              "time": 9.55,
+              "x": 0,
+              "y": 40,
+              "height": 95,
+              "expression": "worried",
+              "z": 3
             }
           ],
           "canh_goc": [
             {
               "time": 0,
-              "x": 400,
-              "y": 700,
-              "height": 320,
-              "growth": 0.7,
-              "expression": "neutral"
+              "x": 0,
+              "y": 22,
+              "height": 80,
+              "expression": "neutral",
+              "z": 3
             },
             {
               "time": 2.55,
-              "x": 400,
-              "y": 700,
-              "height": 320,
-              "growth": 0.7,
-              "expression": "surprised"
+              "x": 0,
+              "y": 22,
+              "height": 80,
+              "expression": "surprised",
+              "z": 3
+            },
+            {
+              "time": 5.55,
+              "x": 0,
+              "y": 22,
+              "height": 80,
+              "expression": "angry",
+              "z": 3
             },
             {
               "time": 7.55,
-              "x": 400,
-              "y": 700,
-              "height": 330,
-              "growth": 0.7,
-              "expression": "angry"
-            },
-            {
-              "time": 20.57,
-              "x": 400,
-              "y": 700,
-              "height": 330,
-              "growth": 0.7,
-              "expression": "angry"
+              "x": 0,
+              "y": 22,
+              "height": 80,
+              "expression": "happy",
+              "z": 3
             }
           ]
         },
-        "camera": [],
+        "camera": [
+          {
+            "time": 0,
+            "x": 288,
+            "y": 660,
+            "zoom": 1.6
+          },
+          {
+            "time": 1.5,
+            "x": 288,
+            "y": 640,
+            "zoom": 1.15,
+            "ease": "smooth"
+          }
+        ],
         "actions": []
       },
       {
         "id": "scene_1",
-        "start_time": 20.57,
-        "end_time": 44.118,
+        "start_time": 11.55,
+        "end_time": 18.83,
         "renderer": "native-vector-v1",
-        "label": "Cảnh 2: Bác Nông Dân ép cành",
+        "label": "Cảnh 2: Cận cảnh, Cành gốc khóc",
         "characters_present": [
-          "canh_goc",
-          "nong_dan"
+          "cay_lac",
+          "dot_lac",
+          "canh_goc"
         ],
         "background": {
           "preset": "garden",
@@ -492,80 +552,308 @@
           "time": "day"
         },
         "poses": {
-          "nong_dan": [
+          "cay_lac": [
             {
-              "time": 20.57,
+              "time": 11.55,
               "x": 288,
-              "y": 500,
-              "height": 400,
-              "expression": "neutral",
-              "arm": 0
+              "y": 805,
+              "height": 360,
+              "growth": 0.85
+            }
+          ],
+          "dot_lac": [
+            {
+              "time": 11.55,
+              "x": 0,
+              "y": 40,
+              "height": 95,
+              "expression": "worried",
+              "z": 3
             },
             {
-              "time": 26.57,
-              "x": 288,
-              "y": 500,
-              "height": 400,
-              "expression": "happy",
-              "arm": 0.5
-            },
-            {
-              "time": 35,
-              "x": 288,
-              "y": 520,
-              "height": 400,
-              "expression": "happy",
-              "arm": 0.8
-            },
-            {
-              "time": 44.118,
-              "x": 288,
-              "y": 520,
-              "height": 400,
-              "expression": "happy",
-              "arm": 0.3
+              "time": 14.55,
+              "x": 0,
+              "y": 40,
+              "height": 95,
+              "expression": "surprised",
+              "z": 3
             }
           ],
           "canh_goc": [
             {
-              "time": 20.57,
-              "x": 400,
-              "y": 700,
-              "height": 330,
-              "growth": 0.7,
-              "expression": "angry"
+              "time": 11.55,
+              "x": 0,
+              "y": 22,
+              "height": 80,
+              "expression": "angry",
+              "z": 3
+            },
+            {
+              "time": 16.55,
+              "x": 0,
+              "y": 22,
+              "height": 80,
+              "expression": "sad",
+              "z": 3
+            },
+            {
+              "time": 17.4,
+              "x": 0,
+              "y": 22,
+              "height": 80,
+              "expression": "sad",
+              "tears": 1,
+              "z": 3
+            }
+          ]
+        },
+        "camera": [
+          {
+            "time": 11.55,
+            "x": 288,
+            "y": 640,
+            "zoom": 1.15
+          },
+          {
+            "time": 12.6,
+            "x": 288,
+            "y": 700,
+            "zoom": 1.8,
+            "ease": "smooth"
+          }
+        ],
+        "actions": []
+      },
+      {
+        "id": "scene_2",
+        "start_time": 18.83,
+        "end_time": 36.83,
+        "renderer": "native-vector-v1",
+        "label": "Cảnh 3: Bàn chân ép cành sát đất + mặt cắt tia lạc",
+        "characters_present": [
+          "cay_lac",
+          "dot_lac",
+          "canh_goc",
+          "nong_dan",
+          "mat_cat"
+        ],
+        "background": {
+          "preset": "garden",
+          "weather": "clear",
+          "time": "day"
+        },
+        "poses": {
+          "cay_lac": [
+            {
+              "time": 18.83,
+              "x": 288,
+              "y": 805,
+              "height": 360,
+              "growth": 0.85
+            }
+          ],
+          "dot_lac": [
+            {
+              "time": 18.83,
+              "x": 0,
+              "y": 40,
+              "height": 95,
+              "expression": "surprised",
+              "z": 3
+            },
+            {
+              "time": 20.2,
+              "x": 0,
+              "y": 40,
+              "height": 95,
+              "expression": "dizzy",
+              "z": 3
+            }
+          ],
+          "canh_goc": [
+            {
+              "time": 18.83,
+              "x": 0,
+              "y": 22,
+              "height": 80,
+              "expression": "worried",
+              "z": 3
             },
             {
               "time": 24.57,
-              "x": 400,
-              "y": 720,
-              "height": 300,
-              "growth": 0.7,
-              "expression": "worried",
-              "bend": 0.3
+              "x": 0,
+              "y": 22,
+              "height": 80,
+              "expression": "angry",
+              "z": 3
+            },
+            {
+              "time": 26.57,
+              "x": 0,
+              "y": 22,
+              "height": 80,
+              "expression": "surprised",
+              "z": 3
             },
             {
               "time": 30.57,
-              "x": 400,
-              "y": 750,
-              "height": 260,
-              "growth": 0.8,
-              "expression": "surprised",
-              "bend": 0.6
+              "x": 0,
+              "y": 22,
+              "height": 80,
+              "expression": "worried",
+              "z": 3
+            }
+          ],
+          "nong_dan": [
+            {
+              "time": 18.83,
+              "x": 420,
+              "y": 250,
+              "height": 240,
+              "z": 4
             },
             {
-              "time": 44.118,
-              "x": 400,
-              "y": 750,
-              "height": 260,
-              "growth": 0.9,
-              "expression": "happy",
-              "bend": 0.5
+              "time": 20.15,
+              "x": 420,
+              "y": 250,
+              "height": 240,
+              "z": 4
+            },
+            {
+              "time": 20.2,
+              "x": 300,
+              "y": 680,
+              "height": 240,
+              "z": 4
+            }
+          ],
+          "mat_cat": [
+            {
+              "time": 18.83,
+              "x": 288,
+              "y": 690,
+              "height": 360,
+              "growth": 0,
+              "opacity": 0,
+              "z": 6
+            },
+            {
+              "time": 28.4,
+              "x": 288,
+              "y": 690,
+              "height": 360,
+              "growth": 0,
+              "opacity": 0,
+              "z": 6
+            },
+            {
+              "time": 28.8,
+              "x": 288,
+              "y": 690,
+              "height": 360,
+              "growth": 0.05,
+              "opacity": 1,
+              "z": 6
+            },
+            {
+              "time": 36.6,
+              "x": 288,
+              "y": 690,
+              "height": 360,
+              "growth": 1,
+              "opacity": 1,
+              "z": 6
             }
           ]
         },
         "camera": [],
-        "actions": []
+        "actions": [
+          {
+            "type": "press",
+            "start": 18.9,
+            "end": 20.2,
+            "target": "cay_lac",
+            "actor": "nong_dan",
+            "amount": 0.8,
+            "hold": true
+          }
+        ]
+      },
+      {
+        "id": "scene_3",
+        "start_time": 36.83,
+        "end_time": 38.37,
+        "renderer": "native-vector-v1",
+        "kind": "title",
+        "label": "Thẻ chuyển: 2000 năm sau",
+        "text": "2000 năm sau",
+        "characters_present": [],
+        "poses": {}
+      },
+      {
+        "id": "scene_4",
+        "start_time": 38.37,
+        "end_time": 44.118,
+        "renderer": "native-vector-v1",
+        "label": "Cảnh 5: Bàn tay nhổ bụi, chùm củ lạc",
+        "characters_present": [
+          "cay_lac",
+          "canh_goc",
+          "tay_nong_dan"
+        ],
+        "background": {
+          "preset": "garden",
+          "weather": "clear",
+          "time": "day"
+        },
+        "poses": {
+          "cay_lac": [
+            {
+              "time": 38.37,
+              "x": 270,
+              "y": 815,
+              "height": 330,
+              "growth": 1
+            }
+          ],
+          "canh_goc": [
+            {
+              "time": 38.37,
+              "x": 0,
+              "y": 22,
+              "height": 80,
+              "expression": "neutral",
+              "z": 3
+            },
+            {
+              "time": 40.2,
+              "x": 0,
+              "y": 22,
+              "height": 80,
+              "expression": "happy",
+              "z": 3
+            }
+          ],
+          "tay_nong_dan": [
+            {
+              "time": 38.37,
+              "x": 470,
+              "y": 560,
+              "height": 170,
+              "z": 4
+            }
+          ]
+        },
+        "camera": [],
+        "actions": [
+          {
+            "type": "uproot",
+            "start": 38.6,
+            "end": 40.4,
+            "target": "cay_lac",
+            "actor": "tay_nong_dan"
+          }
+        ]
       }
     ],
     "cues": [
@@ -732,7 +1020,8 @@
         "voice_role": "adult",
         "character_id": "nong_dan",
         "speaker_verified": true,
-        "translation_verified": true
+        "translation_verified": true,
+        "offscreen": true
       },
       {
         "start": 22.57,
@@ -777,7 +1066,8 @@
         "voice_role": "adult",
         "character_id": "nong_dan",
         "speaker_verified": true,
-        "translation_verified": true
+        "translation_verified": true,
+        "offscreen": true
       },
       {
         "start": 28.57,
@@ -792,7 +1082,8 @@
         "voice_role": "adult",
         "character_id": "nong_dan",
         "speaker_verified": true,
-        "translation_verified": true
+        "translation_verified": true,
+        "offscreen": true
       },
       {
         "start": 30.57,
@@ -807,7 +1098,8 @@
         "voice_role": "adult",
         "character_id": "nong_dan",
         "speaker_verified": true,
-        "translation_verified": true
+        "translation_verified": true,
+        "offscreen": true
       },
       {
         "start": 32.57,
@@ -822,7 +1114,8 @@
         "voice_role": "adult",
         "character_id": "nong_dan",
         "speaker_verified": true,
-        "translation_verified": true
+        "translation_verified": true,
+        "offscreen": true
       },
       {
         "start": 34.57,
@@ -837,10 +1130,11 @@
         "voice_role": "adult",
         "character_id": "nong_dan",
         "speaker_verified": true,
-        "translation_verified": true
+        "translation_verified": true,
+        "offscreen": true
       },
       {
-        "start": 37.0,
+        "start": 39.3,
         "end": 43.8,
         "speaker": "nong_dan",
         "name": "Bác Nông Dân",
@@ -852,11 +1146,14 @@
         "voice_role": "adult",
         "character_id": "nong_dan",
         "speaker_verified": true,
-        "translation_verified": true
+        "translation_verified": true,
+        "offscreen": true,
+        "start_source": "faster-whisper on source audio"
       }
     ],
     "reviewed_by": "user",
-    "renderer": "native-vector-v1"
+    "renderer": "native-vector-v1",
+    "rebuilt_note": "peanut_field: bụi lạc lá tròn 2 mặt, chân ép + bong bóng mặt cắt, thẻ 2000 năm sau, tay trần nhổ cây"
   },
   "73b3ba3c017d7a7cda6fa92f21781044b5da6eb5eb821a105914466647d0bbaf": {
     "theme": "apple_orchard",

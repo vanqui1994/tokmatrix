@@ -36,6 +36,8 @@ def load() -> dict:
     data = json.loads(NICHES_PATH.read_text(encoding="utf-8"))
     for frag in sorted(FRAGMENTS_DIR.glob("*.json")) if FRAGMENTS_DIR.exists() else []:
         merge(data, json.loads(frag.read_text(encoding="utf-8")))
+    from bkt_web import vector_learned  # subject học được (vector_learner), ngoài repo
+    merge(data, vector_learned.niche_fragment())
     return data
 
 

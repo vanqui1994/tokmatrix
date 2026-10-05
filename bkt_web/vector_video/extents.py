@@ -19,7 +19,8 @@ PROBE = {"x": 288, "y": 700, "height": 200}
 
 @lru_cache(maxsize=1)
 def load_extents() -> dict:
-    return json.loads(EXTENTS_PATH.read_text(encoding="utf-8"))["assets"]
+    from bkt_web import vector_learned  # rig học được tự đo khung bao lúc học
+    return {**vector_learned.extents(), **json.loads(EXTENTS_PATH.read_text(encoding="utf-8"))["assets"]}
 
 
 def extent(asset: str, variant: str | None = None) -> list[float]:

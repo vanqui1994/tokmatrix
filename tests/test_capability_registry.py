@@ -606,6 +606,9 @@ class CapabilityRegistryTest(unittest.TestCase):
             "water_filter_bottle": {"wet"}, "hand_crank_radio": {"wet"}, "walkie_talkie": {"wet"},
             "cure_sprayer": {"wet"}, "signal_mirror": {"wet"}, "sos_stones": {"wet"},
             "firewood_bundle": {"wet"}, "cloth_filter": {"wet"}, "fishing_rod_simple": {"wet"},
+            # peanut_field (remake cây lạc & bác nông dân)
+            "peanut_bush": {"bend", "growth", "roots", "wet"}, "soil_inset": {"growth", "wet"},
+            "face_tuft": {"expression", "look_x", "look_y", "wet"}, "face_lashes": {"expression", "look_x", "look_y", "wet"},
         }
         # Gói làm giàu cho engine video vector (docs/PLAN_vector_enrichment.md): engine chỉ đọc `wet`,
         # riêng nhóm fish đọc thêm `hooked`/`mouth` như cá cũ.

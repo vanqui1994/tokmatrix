@@ -53,7 +53,8 @@
     "mystery_props",
     "wildlife_weird",
     "deep_ocean",
-    "body_more"
+    "body_more",
+    "peanut_field"
   ],
   "rig_style": {
     "name": "hand-drawn-whole-pose-cel",
@@ -38429,6 +38430,120 @@
           -40
         ]
       }
+    },
+    "peanut_bush": {
+      "label": "Bụi lạc lá tròn",
+      "group": "plant",
+      "face": true,
+      "pack": "peanut_field",
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "soil": [
+          0,
+          0
+        ],
+        "face": [
+          0,
+          -62
+        ],
+        "shoot": [
+          0,
+          -86
+        ],
+        "branch": [
+          -4,
+          -24
+        ],
+        "top": [
+          0,
+          -100
+        ],
+        "stem": [
+          0,
+          -12
+        ],
+        "leaf": [
+          34,
+          -58
+        ],
+        "fruit": [
+          0,
+          24
+        ],
+        "surface": [
+          0,
+          -60
+        ]
+      }
+    },
+    "soil_inset": {
+      "label": "Bong bóng mặt cắt đất",
+      "group": "prop",
+      "face": false,
+      "pack": "peanut_field",
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -58
+        ],
+        "top": [
+          0,
+          -104
+        ],
+        "surface": [
+          0,
+          -68
+        ]
+      }
+    },
+    "face_tuft": {
+      "label": "Mặt gắn có chỏm tóc",
+      "group": "rig",
+      "face": true,
+      "pack": "peanut_field",
+      "face_scale": 1.45,
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "face": [
+          0,
+          -50
+        ],
+        "top": [
+          0,
+          -100
+        ]
+      }
+    },
+    "face_lashes": {
+      "label": "Mặt gắn có mi mắt",
+      "group": "rig",
+      "face": true,
+      "pack": "peanut_field",
+      "face_scale": 1.45,
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "face": [
+          0,
+          -50
+        ],
+        "top": [
+          0,
+          -100
+        ]
+      }
     }
   },
   "actions": {
@@ -38700,7 +38815,8 @@
         "peanut_plant",
         "tomato_plant",
         "rice_plant",
-        "corn_plant"
+        "corn_plant",
+        "peanut_bush"
       ],
       "actor_anchor": "sole",
       "target_anchor": "shoot",
@@ -38917,7 +39033,8 @@
         "broccoli",
         "okra",
         "chili",
-        "mushroom"
+        "mushroom",
+        "peanut_bush"
       ],
       "target_anchor": "root",
       "channel": "growth",
@@ -38964,7 +39081,8 @@
         "water_spinach",
         "mustard_greens",
         "spring_onion",
-        "giant_radish"
+        "giant_radish",
+        "peanut_bush"
       ],
       "actor_anchor": "palm",
       "target_anchor": "stem",
@@ -40260,7 +40378,8 @@
         "tomato_plant",
         "tulip",
         "water_spinach",
-        "winter_melon_vine"
+        "winter_melon_vine",
+        "peanut_bush"
       ],
       "channel": "damage",
       "motion": false,
@@ -40338,7 +40457,8 @@
         "tomato_plant",
         "tulip",
         "water_spinach",
-        "winter_melon_vine"
+        "winter_melon_vine",
+        "peanut_bush"
       ],
       "channel": null,
       "motion": false,
@@ -40655,7 +40775,9 @@
         "tortoise",
         "grasshopper",
         "city_mouse",
-        "fox"
+        "fox",
+        "face_tuft",
+        "face_lashes"
       ],
       "targets": [],
       "actor_anchor": "top",
@@ -40958,7 +41080,9 @@
         "white_goat",
         "wild_rabbit",
         "winter_melon",
-        "winter_melon_vine"
+        "winter_melon_vine",
+        "face_tuft",
+        "face_lashes"
       ],
       "targets": [],
       "actor_anchor": "top",
@@ -41267,7 +41391,9 @@
         "deer",
         "wolf",
         "stork",
-        "wild_boar"
+        "wild_boar",
+        "face_tuft",
+        "face_lashes"
       ],
       "targets": [],
       "actor_anchor": "top",
@@ -41570,7 +41696,9 @@
         "white_goat",
         "wild_rabbit",
         "winter_melon",
-        "winter_melon_vine"
+        "winter_melon_vine",
+        "face_tuft",
+        "face_lashes"
       ],
       "targets": [],
       "actor_anchor": "root",
@@ -41873,7 +42001,9 @@
         "white_goat",
         "wild_rabbit",
         "winter_melon",
-        "winter_melon_vine"
+        "winter_melon_vine",
+        "face_tuft",
+        "face_lashes"
       ],
       "targets": [],
       "actor_anchor": "top",
@@ -42276,7 +42406,9 @@
         "white_goat",
         "wild_rabbit",
         "winter_melon",
-        "winter_melon_vine"
+        "winter_melon_vine",
+        "face_tuft",
+        "face_lashes"
       ],
       "targets": [],
       "actor_anchor": "root",

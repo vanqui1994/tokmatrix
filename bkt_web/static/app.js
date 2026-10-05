@@ -9976,7 +9976,7 @@ function rmPollTask(taskId, onDone) {
       rmSetProgress(pct);
       rmSetStatus(`${task.current_step || task.status} · ${pct}%`);
       rmRenderLogs(task.logs);
-      if (['completed', 'error', 'needs_review', 'waiting_antigravity'].includes(task.status)) {
+      if (!['pending', 'processing'].includes(task.status)) {
         clearInterval(rmPollTimer);
         rmSetBusy(false);
         if (task.status === 'completed') {
