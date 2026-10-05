@@ -6007,3 +6007,299 @@ console.log(JSON.stringify(errors));""", {"cat": cat, "states": states_to_test})
                     self.assertLessEqual(abs(dy), 12.0, f"Clip {cid}/{cname} dy={dy} lệch mặt đất > 12px")
 
 
+class WidescreenTest(unittest.TestCase):
+    """Khổ ngang thật 1820×1024 (plan docs/PLAN_vector_widescreen.md nhóm B1 + B2)."""
+
+    PAGE_JS = r"""
+window.bgFor = (key, variant) => { const [preset, locale] = key.split('@'); const bg = ['day', 'night'].includes(variant) ? { preset, time: variant } : { preset, weather: variant }; if (locale) bg.locale = locale; return bg; };
+window.storyFor = (background, frame, extra = {}) => ({ id: 'w', renderer: 'native-vector-v1', duration: 4, frame, characters: [], cues: [],
+  scenes: [{ renderer: 'native-vector-v1', start_time: 0, end_time: 4, characters_present: [], background, poses: {}, actions: [] }], ...extra });
+window.hashPixels = data => { let h1 = 0xdeadbeef, h2 = 0x41c64e6d; for (let i = 0; i < data.length; i += 4) { const v = (data[i] << 24) | (data[i+1] << 16) | (data[i+2] << 8) | data[i+3]; h1 = Math.imul(h1 ^ v, 2654435761); h2 = Math.imul(h2 ^ (v >>> 16), 1597334677); } return (h1 >>> 0).toString(16) + (h2 >>> 0).toString(16); };
+// Cột 64 px: số màu khác nhau (lượng tử 8 mức) và màu trung bình của 3 dải ngang, để bắt phần phải bị vẽ thiếu.
+window.columnStats = background => {
+  const c = document.createElement('canvas'); new RemakeVector.Renderer(c, window.cat, storyFor(background, 'landscape')).render(2.0);
+  const W = c.width, H = c.height, d = c.getContext('2d').getImageData(0, 0, W, H).data;
+  const starts = []; for (let x = 0; x + 64 <= W; x += 64) starts.push(x); if (starts[starts.length - 1] !== W - 64) starts.push(W - 64);
+  const colors = [], bands = [];
+  for (const x0 of starts) {
+    const seen = new Set(), b = [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]];
+    for (let y = 0; y < H; y += 4) for (let x = x0; x < x0 + 64; x += 4) {
+      const i = (y * W + x) * 4, k = Math.min(2, Math.floor(y * 3 / H));
+      seen.add(((d[i] >> 3) << 10) | ((d[i+1] >> 3) << 5) | (d[i+2] >> 3));
+      b[k][0] += d[i]; b[k][1] += d[i+1]; b[k][2] += d[i+2]; b[k][3]++;
+    }
+    colors.push(seen.size); bands.push(b.map(v => [v[0] / v[3], v[1] / v[3], v[2] / v[3]]));
+  }
+  let jump = 0, at = -1;
+  for (let i = 1; i < bands.length; i++) for (let k = 0; k < 3; k++) {
+    const dd = Math.hypot(...bands[i][k].map((v, j) => v - bands[i - 1][k][j])); if (dd > jump) { jump = dd; at = starts[i]; }
+  }
+  return { size: [W, H], minColors: Math.min(...colors), jump, at };
+};
+window.countText = background => {
+  const proto = CanvasRenderingContext2D.prototype, fill = proto.fillText, stroke = proto.strokeText; let n = 0;
+  proto.fillText = function (...a) { n++; return fill.apply(this, a); }; proto.strokeText = function (...a) { n++; return stroke.apply(this, a); };
+  try { new RemakeVector.Renderer(document.createElement('canvas'), window.cat, storyFor(background, 'landscape')).render(2.0); }
+  finally { proto.fillText = fill; proto.strokeText = stroke; }
+  return n;
+};
+window.cropMatch = background => {
+  const a = document.createElement('canvas'), b = document.createElement('canvas');
+  new RemakeVector.Renderer(a, window.cat, storyFor(background, 'portrait')).render(2.0);
+  new RemakeVector.Renderer(b, window.cat, storyFor(background, 'landscape')).render(2.0);
+  const da = a.getContext('2d').getImageData(0, 0, 576, 1024).data, db = b.getContext('2d').getImageData(0, 0, 576, 1024).data;
+  let same = 0; for (let i = 0; i < da.length; i += 4) if (Math.abs(da[i] - db[i]) + Math.abs(da[i+1] - db[i+1]) + Math.abs(da[i+2] - db[i+2]) <= 6) same++;
+  return same / (da.length / 4);
+};
+"""
+
+    @classmethod
+    def setUpClass(cls):
+        from playwright.sync_api import sync_playwright
+        from bkt_web.remake_vector import catalog
+        from tests.test_remake_vector_regression import LANDSCAPE_BACKGROUNDS, load_engine_code
+        cls.backgrounds = LANDSCAPE_BACKGROUNDS
+        cls.playwright = sync_playwright().start()
+        cls.browser = cls.playwright.chromium.launch(args=["--disable-gpu", "--disable-gpu-rasterization", "--force-color-profile=srgb"])
+        cls.page = cls.browser.new_page()
+        cls.page.set_content(f"<script>{load_engine_code()}</script><script>window.cat={json.dumps(catalog())};{cls.PAGE_JS}</script>")
+
+    @classmethod
+    def tearDownClass(cls):
+        cls.browser.close()
+        cls.playwright.stop()
+
+    def _node(self, program, payload=None):
+        from bkt_web.remake_vector import engine_sources
+        prelude = "const fs=require('fs');for(const f of JSON.parse(process.argv[1]))require(f);const V=RemakeVector;"
+        result = subprocess.run(["node", "-e", prelude + program, json.dumps([str(p) for p in engine_sources()])],
+                                input=json.dumps(payload or {}), text=True, capture_output=True)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        return json.loads(result.stdout)
+
+    # -- B1: khổ, kit, validate --------------------------------------------
+    def test_frame_defaults_to_portrait_and_rejects_unknown_frames(self):
+        from bkt_web.remake_vector import examples, frame_size, validate_story
+        story = examples()[0]
+        self.assertEqual(frame_size(story), (576, 1024))
+        self.assertEqual(frame_size({**story, "frame": "landscape"}), (1820, 1024))
+        validate_story({**story, "frame": "landscape"})
+        with self.assertRaises(ValueError):
+            validate_story({**story, "frame": "square"})
+        sizes = self.page.evaluate("""() => ['portrait', 'landscape', undefined].map(f => {
+          const c = document.createElement('canvas'); const s = storyFor({ preset: 'garden' }, f); if (!f) delete s.frame;
+          new RemakeVector.Renderer(c, window.cat, s); return [c.width, c.height]; })""")
+        self.assertEqual(sizes, [[576, 1024], [1820, 1024], [576, 1024]])
+        error = self.page.evaluate("() => { try { new RemakeVector.Renderer(document.createElement('canvas'), window.cat, storyFor({ preset: 'garden' }, 'square')); return null; } catch (e) { return e.message; } }")
+        self.assertIn("square", error or "")
+
+    def test_kit_frame_helpers_are_deterministic(self):
+        out = self._node(r"""
+const k = V.kit;
+console.log(JSON.stringify({
+  portrait: k.frameW({}), landscape: k.frameW({ frame: { w: 1820, h: 1024 } }),
+  a: k.spread(5, 1244, 60, 'x'), b: k.spread(5, 1244, 60, 'x'), c: k.spread(5, 1244, 60, 'y'), none: k.spread(3, 100, 60, 'x'),
+  tiles: (() => { const r = []; k.tileX(1820, 576, (ox, i) => r.push([ox, i])); return r; })(),
+  kitW: k.W, kitH: k.H }));""")
+        self.assertEqual((out["portrait"], out["landscape"]), (576, 1820))
+        self.assertEqual(out["a"], out["b"])
+        self.assertNotEqual(out["a"], out["c"])
+        self.assertEqual(len(out["a"]), 5)
+        self.assertTrue(all(60 <= x <= 1244 - 60 for x in out["a"]))
+        self.assertEqual(out["a"], sorted(out["a"]))
+        self.assertEqual(out["none"], [])
+        self.assertEqual(out["tiles"], [[0, 0], [576, 1], [1152, 2], [1728, 3]])
+        self.assertEqual((out["kitW"], out["kitH"]), (576, 1024), "kit.W/H giữ khổ dọc cho gói chưa chuyển")
+
+    # -- B2: hình nền khổ ngang ---------------------------------------------
+    def test_landscape_backgrounds_have_no_empty_or_broken_columns(self):
+        variants = ["day", "night"] + [w for w in self.page.evaluate("() => window.cat.weather") if w != "clear"]
+        for key in self.backgrounds:
+            for variant in variants:
+                with self.subTest(background=key, variant=variant):
+                    stats = self.page.evaluate("([k, v]) => columnStats(bgFor(k, v))", [key, variant])
+                    self.assertEqual(stats["size"], [1820, 1024])
+                    self.assertGreaterEqual(stats["minColors"], 2, "có cột 64 px chỉ một màu (dải trống)")
+                    self.assertLess(stats["jump"], 150, f"cột tại x={stats['at']} lệch màu bất thường so với cột kề")
+
+    def test_column_detector_flags_backgrounds_that_stop_at_576(self):
+        self.page.evaluate("""() => { if (!RemakeVector.kit.BACKGROUNDS?.wide_test_empty) RemakeVector.register({ backgrounds: {
+          wide_test_empty: { label: 'test', theme: 'garden', ground_y: 760, draw(ctx) { ctx.fillStyle = '#88c'; ctx.fillRect(0, 0, 576, 760); ctx.fillStyle = '#743'; ctx.fillRect(0, 760, 576, 264); } },
+          wide_test_ground: { label: 'test', theme: 'garden', ground_y: 760, draw(ctx) { ctx.fillStyle = '#9cf'; ctx.fillRect(-2000, -2000, 4500, 5000); ctx.fillStyle = '#743'; ctx.fillRect(-2000, 760, 2576, 2240); } } } }); }""")
+        empty = self.page.evaluate("() => columnStats({ preset: 'wide_test_empty' })")
+        ground = self.page.evaluate("() => columnStats({ preset: 'wide_test_ground' })")
+        self.assertLess(empty["minColors"], 2)
+        self.assertLess(ground["minColors"], 2)
+        self.assertGreaterEqual(ground["jump"], 150)
+        self.assertEqual(ground["at"], 576)
+
+    def test_landscape_backgrounds_draw_no_text_and_keep_ground_y(self):
+        from bkt_web.remake_vector import catalog
+        specs = catalog()["background_specs"]
+        ground = self.page.evaluate("(keys) => Object.fromEntries(keys.map(k => [k, RemakeVector.kit.BACKGROUNDS?.[k.split('@')[0]]?.ground_y ?? null]))", self.backgrounds)
+        for key in self.backgrounds:
+            preset = key.split("@")[0]
+            with self.subTest(background=key):
+                for variant in ("day", "night", "rain", "snow"):
+                    self.assertEqual(self.page.evaluate("([k, v]) => countText(bgFor(k, v))", [key, variant]), 0, "hình nền gọi fillText/strokeText")
+                self.assertIsNotNone(ground[key])
+                self.assertEqual(ground[key], specs[preset]["ground_y"])
+
+    def test_landscape_left_panel_matches_portrait(self):
+        # §6.4: phần 0–576 của khổ ngang trùng ≥ 98% khổ dọc (cùng mặt đất, cùng vật cố định).
+        for key in self.backgrounds:
+            for variant in ("day", "night"):
+                with self.subTest(background=key, variant=variant):
+                    self.assertGreaterEqual(self.page.evaluate("([k, v]) => cropMatch(bgFor(k, v))", [key, variant]), 0.98)
+
+    # -- phụ đề, tất định ---------------------------------------------------
+    def test_landscape_subtitle_stays_in_central_1200px_box(self):
+        text = "Đây là một câu phụ đề rất dài để kiểm tra việc xuống dòng của khổ ngang " * 4
+        box = self.page.evaluate("""(text) => {
+          const make = cues => { const c = document.createElement('canvas');
+            new RemakeVector.Renderer(c, window.cat, storyFor({ preset: 'garden' }, 'landscape', { cues })).render(1.0);
+            return c.getContext('2d').getImageData(0, 0, c.width, c.height).data; };
+          const a = make([]), b = make([{ start: 0, end: 4, text, character_id: null }]);
+          let x0 = 1e9, x1 = -1, y0 = 1e9, y1 = -1;
+          for (let y = 0; y < 1024; y++) for (let x = 0; x < 1820; x++) { const i = (y * 1820 + x) * 4;
+            if (a[i] !== b[i] || a[i+1] !== b[i+1] || a[i+2] !== b[i+2]) { x0 = Math.min(x0, x); x1 = Math.max(x1, x); y0 = Math.min(y0, y); y1 = Math.max(y1, y); } }
+          return { x0, x1, y0, y1 }; }""", text)
+        self.assertGreater(box["x1"], box["x0"], "phụ đề không được vẽ")
+        self.assertGreaterEqual(box["x0"], (1820 - 1200) / 2 - 1)
+        self.assertLessEqual(box["x1"], (1820 + 1200) / 2 + 1)
+        self.assertLessEqual(box["y1"], 1024 - 90 + 1)
+        self.assertGreater(box["x1"] - box["x0"], 900, "câu dài phải dùng gần hết hộp 1200 px")
+
+    def test_landscape_render_frame_is_deterministic(self):
+        from bkt_web.remake_vector import quiet_street_examples, to_landscape
+        story = to_landscape(quiet_street_examples()[0], "center")
+        hashes = self.page.evaluate("""(story) => [1.3, 1.3, story.duration / 2].map((t, i) => {
+          const c = document.createElement('canvas'); const r = new RemakeVector.Renderer(c, window.cat, story);
+          r.render(t); if (i === 1) { r.render(0.2); r.render(t); }
+          return [c.width, c.height, hashPixels(c.getContext('2d').getImageData(0, 0, c.width, c.height).data)]; })""", story)
+        self.assertEqual(hashes[0][:2], [1820, 1024])
+        self.assertEqual(hashes[0], hashes[1])
+
+    # -- to_landscape ---------------------------------------------------------
+    def _sampled(self, stories):
+        return self._node(r"""
+const { cat, stories } = JSON.parse(fs.readFileSync(0, 'utf8'));
+console.log(JSON.stringify(stories.map(story => {
+  const out = [];
+  for (const scene of story.scenes) if (scene.kind !== 'title') {
+    const a = scene.start_time, b = scene.end_time;
+    for (const t of [a + 0.05, a + (b - a) * 0.33, a + (b - a) * 0.66, b - 0.05]) {
+      const f = V.sample(story, cat, t);
+      out.push({ t, cam: f.camera, states: Object.fromEntries(Object.entries(f.states).map(([id, s]) => [id, [s.x, s.y, s.height]])) });
+    }
+  }
+  return out;
+})));""", {"cat": __import__("bkt_web.remake_vector", fromlist=["catalog"]).catalog(), "stories": stories})
+
+    def _hook_stories(self):
+        from bkt_web.remake_vector import build_pyramid_examples, examples, first_car_examples, quiet_street_examples
+        return {"haul": build_pyramid_examples()[0], "shamble": quiet_street_examples()[0],
+                "ride": first_car_examples()[0], "basic": examples()[0]}
+
+    def test_to_landscape_center_shifts_everyone_by_the_same_amount(self):
+        from bkt_web.remake_vector import to_landscape, validate_story
+        for name, story in self._hook_stories().items():
+            with self.subTest(story=name):
+                wide = to_landscape(story, "center")
+                validate_story(wide)
+                self.assertEqual(wide["frame"], "landscape")
+                self.assertNotIn("frame", story, "story gốc không được sửa")
+                portrait, landscape = self._sampled([story, wide])
+                for p, l in zip(portrait, landscape):
+                    self.assertEqual(set(p["states"]), set(l["states"]))
+                    for cid, (x, y, h) in p["states"].items():
+                        lx, ly, lh = l["states"][cid]
+                        self.assertAlmostEqual(lx - x, 622, delta=0.05, msg=f"{cid} t={p['t']}")
+                        self.assertAlmostEqual(ly, y, delta=0.05)
+                    self.assertAlmostEqual(l["cam"]["x"] - p["cam"]["x"], 622, delta=0.05)
+        with self.assertRaises(ValueError):
+            to_landscape(to_landscape(self._hook_stories()["basic"]))
+        with self.assertRaises(ValueError):
+            to_landscape(self._hook_stories()["basic"], "zigzag")
+
+    def test_to_landscape_spread_keeps_action_contacts_and_adds_no_overlap(self):
+        from bkt_web.remake_vector import ACTION_ROLES, to_landscape, validate_story
+        for name, story in self._hook_stories().items():
+            with self.subTest(story=name):
+                wide = to_landscape(story, "spread")
+                validate_story(wide)
+                portrait, landscape = self._sampled([story, wide])
+                attached = {c["id"] for c in story["characters"] if c.get("attach_to")}
+                for p, l in zip(portrait, landscape):
+                    shift = {cid: l["states"][cid][0] - x for cid, (x, _, _) in p["states"].items()}
+                    scene = next(s for s in story["scenes"] if s["start_time"] <= p["t"] <= s["end_time"])
+                    for action in scene.get("actions", []):
+                        if not action["start"] <= p["t"] <= action["end"]:
+                            continue
+                        members = [action[r] for r in ACTION_ROLES if isinstance(action.get(r), str) and action[r] in shift]
+                        members += [h for h in action.get("helpers", []) or [] if h in shift]
+                        for m in members[1:]:
+                            self.assertAlmostEqual(shift[m], shift[members[0]], delta=0.05, msg=f"{action['type']} {m} t={p['t']}")
+                    free = [cid for cid in p["states"] if cid not in attached]
+                    for i, a in enumerate(free):
+                        for b in free[i + 1:]:
+                            (ax, _, ah), (bx, _, bh) = p["states"][a], p["states"][b]
+                            if abs(ax - bx) >= 0.45 * (ah + bh):
+                                (lax, _, _), (lbx, _, _) = l["states"][a], l["states"][b]
+                                self.assertGreaterEqual(abs(lax - lbx), 0.45 * (ah + bh) - 0.05, f"{a}/{b} chồng nhau t={p['t']}")
+
+    # -- composer / adapter ---------------------------------------------------
+    def test_composer_exports_landscape_as_1920x1080(self):
+        import sys
+        from bkt_web import remake_composer as composer
+        duration = 1.0
+        characters = [{"id": "farmer", "asset": "farmer", "name": "Nông dân"}]
+        scenes = [{"renderer": "native-vector-v1", "start_time": 0, "end_time": duration, "characters_present": ["farmer"],
+                   "background": {"preset": "garden"}, "actions": [],
+                   "poses": {"farmer": [{"time": 0, "x": 880, "y": 760, "height": 360}, {"time": duration, "x": 940, "y": 760, "height": 360}]}}]
+        cues = [{"start": 0, "end": duration, "text": "Xin chào khổ ngang", "character_id": "farmer"}]
+        # Composer dùng Playwright sync; lớp này đã giữ một Playwright đang chạy nên xuất video ở tiến trình con.
+        program = r"""
+import json, sys
+from pathlib import Path
+from unittest.mock import patch
+from bkt_web import remake_composer as composer
+args = json.loads(sys.stdin.read())
+tmp = Path(args["tmp"])
+with patch.object(composer, "STATIC_DIR", tmp):
+    result = composer.compose_animated_video("wide-test", args["characters"], args["scenes"], args["cues"], tmp / "voice.wav", tmp / "out.mp4", args["duration"], frame="landscape")
+print(json.dumps(str(result) if result else None))
+"""
+        with tempfile.TemporaryDirectory() as tmp:
+            audio, out = Path(tmp) / "voice.wav", Path(tmp) / "out.mp4"
+            subprocess.run(["ffmpeg", "-y", "-v", "error", "-f", "lavfi", "-i", "anullsrc=r=48000:cl=mono", "-t", str(duration), str(audio)], check=True)
+            run = subprocess.run([sys.executable, "-c", program], cwd=str(Path(__file__).resolve().parent.parent), text=True, capture_output=True,
+                                 input=json.dumps({"tmp": tmp, "characters": characters, "scenes": scenes, "cues": cues, "duration": duration}))
+            self.assertEqual(run.returncode, 0, run.stderr)
+            self.assertEqual(json.loads(run.stdout.strip().splitlines()[-1]), str(out))
+            html = (Path(tmp) / "remake_wide-test_animated.html").read_text(encoding="utf-8")
+            self.assertIn("frame:'landscape'", html)
+            self.assertNotIn("{{", html)
+            probe = subprocess.run(["ffprobe", "-v", "error", "-select_streams", "v:0", "-show_entries", "stream=width,height",
+                                    "-of", "csv=p=0", str(out)], capture_output=True, text=True, check=True).stdout.strip()
+            self.assertEqual(probe, "1920,1080")
+        with self.assertRaises(ValueError):
+            composer.compose_animated_video("wide-test", characters, scenes, cues, Path("a.wav"), Path("o.mp4"), duration, frame="square")
+
+    def test_native_adapter_compiles_landscape_canvas(self):
+        from bkt_web.remake_vector import FRAMES, examples, to_landscape
+        from bkt_web.renderer_adapters import get_adapter
+        from bkt_web.renderer_adapters.native_vector import NativeVectorAdapter
+        from bkt_web.storyboard_migration import migrate_v1_to_v2
+        adapter = NativeVectorAdapter()
+        sizes = {(c["width"], c["height"]) for c in adapter.supported_canvases}
+        self.assertEqual(sizes, {FRAMES["portrait"], FRAMES["landscape"]})
+        for story, size in ((examples()[0], (576, 1024)), (to_landscape(examples()[0], "center"), (1820, 1024))):
+            migrated = migrate_v1_to_v2(copy.deepcopy(story))
+            adapter = get_adapter("native-vector-v1")
+            compiled = adapter.compile(migrated["scenes"][0], {"storyboard": migrated})
+            self.assertEqual(compiled.plan["story"], story)
+            self.assertEqual((compiled.canvas["width"], compiled.canvas["height"]), size)
+            self.assertIn(f'width="{size[0]}" height="{size[1]}"', adapter.offline_bundle(compiled))
+
+

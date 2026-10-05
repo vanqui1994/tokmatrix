@@ -52,7 +52,11 @@ class NativeVectorAdapter(RendererAdapter):
         self.renderer_version = catalog["version"]
         canvas = {"width": catalog["canvas"]["width"], "height": catalog["canvas"]["height"], "fps": catalog["canvas"]["fps"]}
         self.default_canvas = dict(canvas)
-        self.supported_canvases = (dict(canvas),)
+        # Khổ ngang (story["frame"] = "landscape") vẽ trên canvas 1820×1024 cùng fps.
+        from bkt_web.remake_vector import FRAMES
+
+        landscape = {"width": FRAMES["landscape"][0], "height": FRAMES["landscape"][1], "fps": canvas["fps"]}
+        self.supported_canvases = (dict(canvas), landscape)
         super().__init__()
 
     # -- capabilities -----------------------------------------------------
@@ -104,6 +108,14 @@ class NativeVectorAdapter(RendererAdapter):
         if index is None:
             raise AdapterError(f"{self.renderer_id}: không tìm thấy scene {scene.scene_id} trong story v1")
         catalog = _catalog()
+        from bkt_web.remake_vector import frame_size
+
+        # Canvas theo khổ của story (dọc 576×1024, ngang 1820×1024); fps giữ theo yêu cầu.
+        try:
+            width, height = frame_size(story)
+        except ValueError as exc:
+            raise AdapterError(f"{self.renderer_id}: {exc}") from exc
+        canvas = {**canvas, "width": width, "height": height}
         return CompiledScene(
             renderer_id=self.renderer_id,
             renderer_version=self.renderer_version,

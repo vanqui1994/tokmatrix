@@ -89,6 +89,7 @@ def compose_animated_video(
     sprite_dir: Optional[Path] = None,
     face_rigs: Optional[Dict[str, Any]] = None,
     log: Optional[Callable[[str, int], None]] = None,
+    frame: str = "portrait",
 ) -> Optional[Path]:
     """Ghép video bằng Playwright headless — ghi lại Sprite Canvas animation.
 
@@ -96,9 +97,17 @@ def compose_animated_video(
     ({char_id: {eyeL, eyeR, mouth, blinkPeriod, blinkOffset, eyeFill}}). Nhân vật
     nào không có rig thì renderer tự dò vùng đầu từ kênh alpha của sprite, nên
     nhép môi và chớp mắt luôn chạy cho mọi nhân vật.
+
+    `frame` (chỉ thư viện vector): "portrait" dựng 576×1024; "landscape" dựng canvas 1820×1024 và
+    xuất MP4 1920×1080.
     """
     if not re.fullmatch(r"[A-Za-z0-9_-]{1,80}", project_slug):
         raise ValueError("Mã dự án không an toàn")
+    try:
+        from bkt_web.remake_vector import EXPORT_SIZES, FRAMES, frame_name
+    except ImportError:
+        from remake_vector import EXPORT_SIZES, FRAMES, frame_name
+    frame = frame_name(frame)
     validate_timeline(scenes, cues, characters, duration)
     if log:
         log("Đang chuẩn bị animation theo timeline nguồn...", 80)
@@ -238,6 +247,8 @@ def compose_animated_video(
     # nên dùng sprite_template.html. Các dự án khác dùng renderer tổng quát antigravity_template.html.
     if all(s.get("renderer") == "native-vector-v1" for s in scenes):
         template_name = "vector_library_template.html"
+    elif frame != "portrait":
+        raise ValueError("Khổ ngang chỉ hỗ trợ cho thư viện vector (native-vector-v1)")
     elif all(s.get("renderer") == "papaya-native-v1" for s in scenes):
         template_name = "papaya_native_template.html"
     else:
@@ -299,6 +310,7 @@ def compose_animated_video(
     html = html.replace("{{AUDIO_URL}}", f"/static/{audio_path.name}" if audio_path.exists() else "")
     html = html.replace("{{PROJECT_NAME}}", project_slug)
     html = html.replace("{{DURATION}}", str(duration))
+    html = html.replace("{{FRAME}}", frame)
 
     # Lưu HTML rendered
     rendered_html = STATIC_DIR / f"remake_{project_slug}_animated.html"
@@ -307,7 +319,7 @@ def compose_animated_video(
         log(f"Đã tạo HTML animation: {rendered_html.name}", 82)
 
     # -------- Ghi video bằng Playwright --------
-    video_raw = _record_with_playwright(rendered_html, duration, log)
+    video_raw = _record_with_playwright(rendered_html, duration, log, size=FRAMES[frame])
 
     if video_raw and video_raw.exists():
         offset = 0.0 if video_raw.name.endswith("-frames.mp4") else _find_sync_offset(video_raw)
@@ -318,7 +330,8 @@ def compose_animated_video(
                 "Không thấy mốc đồng bộ — giữ nguyên bản quay",
                 91,
             )
-        final = _mux_audio(video_raw, audio_path, output_path, log, start_offset=offset)
+        final = _mux_audio(video_raw, audio_path, output_path, log, start_offset=offset,
+                           size=EXPORT_SIZES[frame] if frame != "portrait" else None)
         video_raw.unlink(missing_ok=True)
         return final
 
@@ -332,8 +345,9 @@ def _record_with_playwright(
     html_path: Path,
     duration: float,
     log: Optional[Callable[[str, int], None]] = None,
+    size: tuple = (576, 1024),
 ) -> Optional[Path]:
-    """Mở HTML trong Playwright headless, ghi video."""
+    """Mở HTML trong Playwright headless, ghi video (viewport = `size` của khổ khung)."""
     try:
         from playwright.sync_api import sync_playwright
     except ImportError:
@@ -358,9 +372,9 @@ def _record_with_playwright(
                 ],
             )
             context = browser.new_context(
-                viewport={"width": 576, "height": 1024},
+                viewport={"width": size[0], "height": size[1]},
                 record_video_dir=str(video_dir),
-                record_video_size={"width": 576, "height": 1024},
+                record_video_size={"width": size[0], "height": size[1]},
             )
             page = context.new_page()
             page.goto(html_path.as_uri() + "?render=1", wait_until="load")
@@ -462,12 +476,14 @@ def _mux_audio(
     output_path: Path,
     log: Optional[Callable[[str, int], None]] = None,
     start_offset: float = 0.0,
+    size: Optional[tuple] = None,
 ) -> Optional[Path]:
     """Ghép video (Playwright, không audio) với audio master thành MP4.
 
     `start_offset` là lúc animation thật sự bắt đầu trong video thô; cắt bỏ
     phần chờ đó thì khung hình đầu tiên trùng với mẫu âm thanh đầu tiên, nhờ
-    vậy miệng nhép khớp lời.
+    vậy miệng nhép khớp lời. `size` (rộng, cao) co giãn video ra cỡ xuất
+    (khổ ngang 1820×1024 → 1920×1080); None giữ nguyên cỡ canvas.
     """
     if log:
         log("Đang ghép audio master vào video...", 92)
@@ -481,6 +497,7 @@ def _mux_audio(
         cmd += [
             "-i", str(video_path),
             "-i", str(audio_path),
+            *(["-vf", f"scale={size[0]}:{size[1]}:flags=lanczos,setsar=1"] if size else []),
             "-c:v", "libx264",
             "-preset", "fast",
             "-crf", "22",

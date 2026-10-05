@@ -9,7 +9,17 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))  # chạy trực tiếp (--update-hashes) vẫn import được bkt_web
 STATIC_DIR = ROOT / "bkt_web" / "static"
 HASHES_FILE = ROOT / "tests" / "data" / "vector_hashes.json"
+LANDSCAPE_HASHES_FILE = ROOT / "tests" / "data" / "vector_hashes_landscape.json"
 SAMPLE_TIMES = [0.2, 0.8, 1.6, 2.4, 3.2]
+# Hình nền đã vẽ cho khổ ngang (plan docs/PLAN_vector_widescreen.md nhóm B2): core + farm_fun + modular_scenes.
+# "preset@locale" là một locale của hình nền lắp ghép. Thêm hình nền vào đây khi nó đã vẽ theo `w`.
+LANDSCAPE_BACKGROUNDS = [
+    "garden", "orchard", "balcony", "pepper_patch", "soil_cutaway", "pond", "river", "sea", "underwater",
+    "farmyard_barn", "village_market",
+    *(f"street@{loc}" for loc in ("neutral", "de", "us", "kr", "jp")),
+    *(f"interior@{loc}" for loc in ("neutral", "de", "us", "kr", "jp")),
+]
+LANDSCAPE_SIZE = (1820, 1024)
 
 
 def load_engine_code():
@@ -132,6 +142,62 @@ def compute_hashes():
     }
 
 
+def compute_landscape_hashes(backgrounds=None):
+    """Hash 1820×1024 của mọi hình nền khổ ngang × ngày/đêm/mọi weather (t = 0.5, 2.0)."""
+    cat = json.loads((STATIC_DIR / "remake_vector_catalog.json").read_text(encoding="utf-8"))
+    engine_js = load_engine_code()
+    backgrounds = list(backgrounds or LANDSCAPE_BACKGROUNDS)
+    with sync_playwright() as p:
+        browser = p.chromium.launch(args=["--disable-gpu", "--disable-gpu-rasterization", "--force-color-profile=srgb"])
+        page = browser.new_page()
+        page.set_content(f"""
+        <html><body>
+        <canvas id="stage"></canvas>
+        <script>{engine_js}</script>
+        <script>
+          window.cat = {json.dumps(cat)};
+          function hashPixels(data) {{
+            let h1 = 0xdeadbeef, h2 = 0x41c64e6d;
+            for (let i = 0; i < data.length; i += 4) {{
+              const v = (data[i] << 24) | (data[i+1] << 16) | (data[i+2] << 8) | data[i+3];
+              h1 = Math.imul(h1 ^ v, 2654435761);
+              h2 = Math.imul(h2 ^ (v >>> 16), 1597334677);
+            }}
+            return ((h1 >>> 0).toString(16).padStart(8, '0') + (h2 >>> 0).toString(16).padStart(8, '0'));
+          }}
+          window.renderLandscapeBatch = function(keys, times) {{
+            const canvas = document.getElementById('stage');
+            const res = {{}};
+            for (const key of keys) {{
+              const [preset, locale] = key.split('@');
+              res[key] = {{}};
+              for (const variant of ['day', 'night', ...window.cat.weather.filter(w => w !== 'clear')]) {{
+                const background = ['day', 'night'].includes(variant) ? {{ preset, time: variant }} : {{ preset, weather: variant }};
+                if (locale) background.locale = locale;
+                const story = {{
+                  id: 'wide-' + key + '-' + variant, renderer: 'native-vector-v1', duration: 4, frame: 'landscape',
+                  characters: [],
+                  scenes: [{{ renderer: 'native-vector-v1', start_time: 0, end_time: 4, characters_present: [],
+                              background, poses: {{}}, actions: [] }}]
+                }};
+                const renderer = new RemakeVector.Renderer(canvas, window.cat, story);
+                const ctx = canvas.getContext('2d');
+                res[key][variant] = times.map(t => {{
+                  renderer.render(t);
+                  return hashPixels(ctx.getImageData(0, 0, canvas.width, canvas.height).data) + '@' + canvas.width + 'x' + canvas.height;
+                }});
+              }}
+            }}
+            return res;
+          }};
+        </script>
+        </body></html>
+        """)
+        hashes = page.evaluate("([keys, times]) => window.renderLandscapeBatch(keys, times)", [backgrounds, [0.5, 2.0]])
+        browser.close()
+    return {"size": list(LANDSCAPE_SIZE), "backgrounds": hashes}
+
+
 class VectorRegressionTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
@@ -165,6 +231,30 @@ class VectorRegressionTest(unittest.TestCase):
         self.assertEqual(mismatches, [], f"Pixel regression detected in {len(mismatches)} stories: {mismatches}")
 
 
+class VectorLandscapeRegressionTest(unittest.TestCase):
+    """Mốc riêng cho khổ ngang; không đụng mốc khổ dọc vector_hashes.json."""
+
+    @classmethod
+    def setUpClass(cls):
+        if not LANDSCAPE_HASHES_FILE.exists():
+            raise AssertionError(f"Thiếu {LANDSCAPE_HASHES_FILE}; chạy python3 tests/test_remake_vector_regression.py --update-landscape-hashes trên bản đã duyệt")
+        cls.baseline = json.loads(LANDSCAPE_HASHES_FILE.read_text(encoding="utf-8"))
+        cls.current = compute_landscape_hashes()
+
+    def test_baseline_covers_every_landscape_background(self):
+        self.assertEqual(sorted(self.baseline["backgrounds"]), sorted(LANDSCAPE_BACKGROUNDS))
+        self.assertEqual(self.baseline["size"], list(LANDSCAPE_SIZE))
+
+    def test_landscape_backgrounds_match_pixel_hashes(self):
+        mismatches = []
+        for bg, expected in self.baseline["backgrounds"].items():
+            current = self.current["backgrounds"].get(bg) or {}
+            for variant, hashes in expected.items():
+                if current.get(variant) != hashes:
+                    mismatches.append(f"{bg}/{variant}")
+        self.assertEqual(mismatches, [], f"Landscape pixel regression in {len(mismatches)} backgrounds: {mismatches}")
+
+
 if __name__ == "__main__":
     if "--update-hashes" in sys.argv:
         print("Rendering and updating baseline hashes...")
@@ -172,5 +262,12 @@ if __name__ == "__main__":
         HASHES_FILE.parent.mkdir(parents=True, exist_ok=True)
         HASHES_FILE.write_text(json.dumps(data, indent=2), encoding="utf-8")
         print(f"Updated {len(data['assets'])} assets, {len(data['backgrounds'])} backgrounds, {len(data['stories'])} stories in {HASHES_FILE}")
+    elif "--update-landscape-hashes" in sys.argv:
+        # Chỉ ghi mốc khổ ngang; mốc khổ dọc giữ nguyên.
+        print("Rendering and updating landscape baseline hashes...")
+        data = compute_landscape_hashes()
+        LANDSCAPE_HASHES_FILE.parent.mkdir(parents=True, exist_ok=True)
+        LANDSCAPE_HASHES_FILE.write_text(json.dumps(data, indent=2), encoding="utf-8")
+        print(f"Updated {len(data['backgrounds'])} landscape backgrounds in {LANDSCAPE_HASHES_FILE}")
     else:
         unittest.main()

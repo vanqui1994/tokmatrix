@@ -9,7 +9,7 @@
     throw new Error('farm_fun pack: RemakeVector core engine chưa được nạp.');
   }
 
-  const { path, line, ellipse, INK, TAU, clamp, hash, smooth, mix } = RemakeVector.kit;
+  const { path, line, ellipse, INK, TAU, clamp, hash, smooth, mix, frameW, spread, tileX, seeded, PANEL } = RemakeVector.kit;
   const HANDED = new Set(['human', 'chibi']);
 
   // tug: điểm người/thú phía sau nắm vào (người/chibi: thắt lưng, thú: đuôi).
@@ -56,27 +56,79 @@
   // 1. HÌNH NỀN MỚI: farmyard_barn và village_market (chuẩn ground_y: 810)
   // =========================================================================
 
+  // Đồi cỏ tiếp nối phần mở rộng của khổ ngang (từ x0 tới w), đỉnh đồi tất định theo seed.
+  function extendHills(ctx, x0, y0, w, base, color, seed, lo, hi) {
+    if (w <= x0) return;
+    let d = `M ${x0} ${y0}`, x = x0;
+    for (let i = 0; x < w; i++) {
+      const seg = 240 + seeded(`${seed}:w${i}`) * 120, nx = x + seg, peak = lo + seeded(`${seed}:h${i}`) * (hi - lo);
+      d += ` Q ${x + seg * .5} ${peak - 34} ${nx} ${peak}`;
+      x = nx;
+    }
+    path(ctx, `${d} L ${x} ${base} L ${x0} ${base} Z`, color, null);
+  }
+
+  // Các vật thêm ở phần mở rộng của sân chuồng (khổ ngang).
+  function drawSilo(ctx, cx, isNight) {
+    const body = isNight ? '#4a4844' : '#c4bcae', band = isNight ? '#35332f' : '#9c9486', dome = isNight ? '#3c454c' : '#8d9aa4';
+    path(ctx, `M ${cx - 46} 812 L ${cx - 46} 470 L ${cx + 46} 470 L ${cx + 46} 812 Z`, body, INK, 2.2);
+    for (let y = 510; y < 800; y += 46) line(ctx, [[cx - 46, y], [cx + 46, y]], band, 2.2);
+    path(ctx, `M ${cx - 50} 472 Q ${cx} 400 ${cx + 50} 472 Z`, dome, INK, 2.2);
+    path(ctx, `M ${cx - 10} 560 L ${cx + 10} 560 L ${cx + 10} 600 L ${cx - 10} 600 Z`, isNight ? '#22201c' : '#6a6458', INK, 1.4);
+    line(ctx, [[cx + 30, 470], [cx + 30, 812]], band, 3);
+    for (let y = 490; y < 800; y += 22) line(ctx, [[cx + 24, y], [cx + 36, y]], band, 2);
+  }
+  function drawCoop(ctx, cx, isNight) {
+    const wall = isNight ? '#3a2a20' : '#d9a066', roof = isNight ? '#2c2a2e' : '#5d6670', trim = isNight ? '#5a4a3a' : '#f3e6cf';
+    for (const dx of [-58, 58]) line(ctx, [[cx + dx, 760], [cx + dx, 812]], isNight ? '#2a1c12' : '#6b4526', 6);
+    path(ctx, `M ${cx - 70} 760 L ${cx + 70} 760 L ${cx + 70} 655 L ${cx - 70} 655 Z`, wall, INK, 2.0);
+    for (let x = cx - 50; x < cx + 70; x += 20) line(ctx, [[x, 655], [x, 760]], isNight ? '#2c1f17' : '#c48a52', 1.2);
+    path(ctx, `M ${cx - 84} 660 L ${cx} 600 L ${cx + 84} 660 Z`, roof, INK, 2.2);
+    path(ctx, `M ${cx - 18} 760 L ${cx - 18} 712 Q ${cx} 696 ${cx + 18} 712 L ${cx + 18} 760 Z`, '#2a1a10', INK, 1.4);
+    path(ctx, `M ${cx - 16} 760 L ${cx + 16} 760 L ${cx + 40} 812 L ${cx + 10} 812 Z`, isNight ? '#4a3626' : '#a8754a', INK, 1.2);
+    ellipse(ctx, cx + 42, 690, 13, 11, trim, INK, 1.4);
+    line(ctx, [[cx + 29, 690], [cx + 55, 690]], INK, 1.2);
+    line(ctx, [[cx + 42, 679], [cx + 42, 701]], INK, 1.2);
+  }
+  function drawYardTree(ctx, cx, isNight) {
+    path(ctx, `M ${cx - 12} 812 Q ${cx - 6} 700 ${cx - 9} 600 L ${cx + 9} 600 Q ${cx + 6} 700 ${cx + 12} 812 Z`, isNight ? '#2a1c12' : '#6b4526', INK, 1.8);
+    const dark = isNight ? '#173020' : '#3f7e3a', light = isNight ? '#1f3d28' : '#5aa04a';
+    for (const [dx, dy, r] of [[-48, 570, 46], [46, 566, 48], [-20, 520, 52], [28, 512, 50], [0, 470, 46]]) ellipse(ctx, cx + dx, dy, r, r * .86, dark, INK, 1.6);
+    for (const [dx, dy, r] of [[-26, 540, 26], [22, 500, 24], [-4, 470, 20]]) ellipse(ctx, cx + dx, dy, r, r * .8, light, null);
+  }
+  function drawStrawStack(ctx, cx, s, isNight) {
+    const strawBase = isNight ? '#685020' : '#e2ab34', strawHigh = isNight ? '#886c30' : '#f8cd56';
+    ellipse(ctx, cx, 810 - 40 * s, 75 * s, 45 * s, strawBase, INK, 2.0);
+    ellipse(ctx, cx, 810 - 90 * s, 60 * s, 38 * s, strawBase, INK, 1.8);
+    ellipse(ctx, cx, 810 - 145 * s, 42 * s, 32 * s, strawHigh, INK, 1.8);
+    line(ctx, [[cx, 810 - 215 * s], [cx, 810 - 150 * s]], isNight ? '#2e1c0e' : '#6d421e', 3.0);
+  }
+
   function drawFarmyardBarn(ctx, s, t) {
     const isNight = s.time === 'night';
+    const w = frameW(s), ext = Math.max(0, w - PANEL);
     const skyTop = isNight ? '#0b1626' : '#92c5e8';
     const skyBot = isNight ? '#162842' : '#d2e9f7';
     const grad = ctx.createLinearGradient(0, 0, 0, 810);
     grad.addColorStop(0, skyTop);
     grad.addColorStop(1, skyBot);
     ctx.fillStyle = grad;
-    ctx.fillRect(0, 0, 576, 810);
+    ctx.fillRect(0, 0, w, 810);
 
     if (isNight) {
-      // Các ngôi sao đêm lấp lánh
+      // Các ngôi sao đêm lấp lánh (mỗi ô 576 px một bộ seed riêng; ô 0 y hệt khổ dọc)
       ctx.fillStyle = '#ffffff';
-      for (let i = 0; i < 24; i++) {
-        const sx = (hash('star_x_' + i) % 560) + 8;
-        const sy = (hash('star_y_' + i) % 360) + 20;
-        const sr = 0.8 + ((hash('star_r_' + i) % 15) / 10);
-        ctx.beginPath();
-        ctx.arc(sx, sy, sr, 0, TAU);
-        ctx.fill();
-      }
+      tileX(w, PANEL, (ox, p) => {
+        for (let i = 0; i < 24; i++) {
+          const key = p ? `${p}_${i}` : i;
+          const sx = ox + (hash('star_x_' + key) % 560) + 8;
+          const sy = (hash('star_y_' + key) % 360) + 20;
+          const sr = 0.8 + ((hash('star_r_' + key) % 15) / 10);
+          ctx.beginPath();
+          ctx.arc(sx, sy, sr, 0, TAU);
+          ctx.fill();
+        }
+      });
       // Vầng trăng lưỡi liềm vàng ấm
       ctx.save();
       ellipse(ctx, 480, 110, 22, 22, '#fceda4', null);
@@ -90,12 +142,20 @@
       ellipse(ctx, cloudX, 120, 48, 22, 'rgba(255, 255, 255, 0.75)', null);
       ellipse(ctx, cloudX + 32, 110, 36, 26, 'rgba(255, 255, 255, 0.8)', null);
       ellipse(ctx, cloudX - 28, 124, 32, 18, 'rgba(255, 255, 255, 0.7)', null);
+      // Khổ ngang: thêm mây trôi ở phần mở rộng (độ cao, cỡ theo chỉ số)
+      spread(Math.round(ext / 400), ext, 100, 'barn-cloud').forEach((x0, i) => {
+        const cx = PANEL + ((x0 + t * 8) % (ext + 160)) - 80, cy = 90 + seeded('barn-cloud-y:' + i) * 70, k = .8 + seeded('barn-cloud-s:' + i) * .5;
+        ellipse(ctx, cx, cy, 48 * k, 22 * k, 'rgba(255, 255, 255, 0.75)', null);
+        ellipse(ctx, cx + 32 * k, cy - 10 * k, 36 * k, 26 * k, 'rgba(255, 255, 255, 0.8)', null);
+        ellipse(ctx, cx - 28 * k, cy + 4 * k, 32 * k, 18 * k, 'rgba(255, 255, 255, 0.7)', null);
+      });
       ctx.restore();
     }
 
     // Đồi cỏ xa chân trời
     const hillCol = isNight ? '#163220' : '#72aa5c';
     path(ctx, 'M 0 540 Q 140 480 320 520 Q 460 550 576 500 L 576 810 L 0 810 Z', hillCol, null);
+    extendHills(ctx, PANEL, 500, w, 810, hillCol, 'barn-hill', 470, 545);
 
     // Chuồng trại gỗ (Barn) mộc mạc phía trái / trung tâm
     const barnWall = isNight ? '#2a1b14' : '#684228';
@@ -159,57 +219,119 @@
       line(ctx, [[rx, ry], [rx + (hash('str_d_' + r) % 14) - 7, ry + 12]], isNight ? '#4e3814' : '#caa028', 1.6);
     }
 
+    // Khổ ngang: phần mở rộng có si-lô chứa thóc, chuồng gà kèm đống rơm nhỏ, và một cây lớn (sau hàng rào).
+    if (ext >= 600) {
+      const [siloX, coopX, treeX] = spread(3, ext, 170, 'barn-yard').map(x => PANEL + x);
+      drawSilo(ctx, siloX, isNight);
+      drawYardTree(ctx, treeX, isNight);
+      drawStrawStack(ctx, coopX + 150, .62, isNight);
+      drawCoop(ctx, coopX, isNight);
+      if (isNight) {
+        ctx.save();
+        const halo = ctx.createRadialGradient(coopX - 40, 640, 4, coopX - 40, 640, 55);
+        halo.addColorStop(0, 'rgba(255, 200, 80, 0.7)');
+        halo.addColorStop(1, 'rgba(255, 180, 50, 0)');
+        ctx.fillStyle = halo;
+        ctx.beginPath();
+        ctx.arc(coopX - 40, 640, 55, 0, TAU);
+        ctx.fill();
+        ctx.restore();
+        ellipse(ctx, coopX - 40, 640, 5, 8, '#ffe27a', INK, 1.2);
+      }
+    }
+
     // Hàng rào gỗ (wooden fence) ngang sân
     const fenceCol = isNight ? '#3a2416' : '#8c5d3a';
-    line(ctx, [[320, 710], [576, 710]], fenceCol, 4.0);
-    line(ctx, [[320, 750], [576, 750]], fenceCol, 4.0);
-    for (let fx = 350; fx <= 560; fx += 55) {
+    line(ctx, [[320, 710], [w, 710]], fenceCol, 4.0);
+    line(ctx, [[320, 750], [w, 750]], fenceCol, 4.0);
+    for (let fx = 350; fx <= w - 16; fx += 55) {
       path(ctx, `M ${fx - 4} 680 L ${fx} 668 L ${fx + 4} 680 L ${fx + 4} 790 L ${fx - 4} 790 Z`, fenceCol, INK, 1.4);
     }
 
     // Mặt đất nông trại (ground_y: 810)
     const groundCol = isNight ? '#1e140d' : '#5a3d24';
     ctx.fillStyle = groundCol;
-    ctx.fillRect(0, 810, 576, 214);
-    line(ctx, [[0, 810], [576, 810]], INK, 2.4);
+    ctx.fillRect(0, 810, w, 214);
+    line(ctx, [[0, 810], [w, 810]], INK, 2.4);
 
-    // Các búi cỏ xanh điểm xuyết trước sân
+    // Các búi cỏ xanh điểm xuyết trước sân (khổ ngang: thêm búi rải tất định ở phần mở rộng)
     const grassCol = isNight ? '#1f381e' : '#4d8a38';
-    for (const gx of [40, 150, 270, 390, 520]) {
+    for (const gx of [40, 150, 270, 390, 520, ...spread(Math.round(ext / 120), ext, 30, 'barn-grass').map(x => PANEL + x)]) {
       path(ctx, `M ${gx - 10} 810 Q ${gx - 6} 796 ${gx - 14} 792 Q ${gx - 2} 802 ${gx} 810 Q ${gx + 5} 794 ${gx + 12} 790 Q ${gx + 4} 802 ${gx + 10} 810 Z`, grassCol, null);
+    }
+  }
+
+  // Chợ quê khổ ngang: mỗi dù ở phần mở rộng có màu, độ nghiêng và hàng hoá riêng (theo chỉ số dù).
+  const MARKET_UMBRELLAS = [
+    { day: ['#7b46b8', '#f3ead8'], night: ['#3a2450', '#cfc6b2'], lean: 10, y: 520, r: 118, goods: 'eggplant' },
+    { day: ['#e8892c', '#fbe6a2'], night: ['#5a3410', '#8a7a52'], lean: -12, y: 505, r: 126, goods: 'orange' },
+    { day: ['#2f7fd0', '#f6f0e0'], night: ['#1a2e48', '#c9c2b0'], lean: 8, y: 530, r: 112, goods: 'cabbage' },
+  ];
+  function marketUmbrella(ctx, x, spec, bambooCol, isNight) {
+    const [outer, inner] = isNight ? spec.night : spec.day, y = spec.y, r = spec.r;
+    line(ctx, [[x, y], [x + spec.lean, 810]], bambooCol, 5.0);
+    path(ctx, `M ${x - r} ${y + 34} Q ${x} ${y - 66} ${x + r} ${y + 34} Z`, outer, INK, 2.2);
+    path(ctx, `M ${x - r * .4} ${y + 32} Q ${x} ${y - 66} ${x + r * .4} ${y + 32} Z`, inner, INK, 1.8);
+    path(ctx, `M ${x - r} ${y + 34} Q ${x - r * .5} ${y + 44} ${x} ${y + 34} Q ${x + r * .5} ${y + 44} ${x + r} ${y + 34}`, null, INK, 2.0);
+  }
+  function marketStall(ctx, x, goods, bambooCol) {
+    path(ctx, `M ${x - 95} 715 L ${x + 95} 715 L ${x + 86} 735 L ${x - 86} 735 Z`, bambooCol, INK, 2.0);
+    line(ctx, [[x - 76, 735], [x - 86, 810]], bambooCol, 4.0);
+    line(ctx, [[x + 76, 735], [x + 86, 810]], bambooCol, 4.0);
+    ellipse(ctx, x - 30, 710, 34, 13, '#9c7b44', INK, 1.6);
+    ellipse(ctx, x + 42, 710, 26, 11, '#9c7b44', INK, 1.6);
+    if (goods === 'eggplant') {
+      for (const [dx, rot] of [[-44, -.5], [-30, .3], [-16, -.2]]) ellipse(ctx, x + dx, 700, 6, 12, '#5b2a7a', INK, 1.0, rot);
+      for (const dx of [34, 48]) ellipse(ctx, x + dx, 702, 7, 7, '#e8c13a', INK, 1.0);
+    } else if (goods === 'orange') {
+      for (const [dx, dy] of [[-42, 702], [-28, 700], [-14, 703], [-34, 692], [-20, 691]]) ellipse(ctx, x + dx, dy, 7, 7, '#f08a24', INK, 1.0);
+      for (const dx of [34, 48]) ellipse(ctx, x + dx, 702, 7, 6, '#a8cf4a', INK, 1.0);
+    } else {
+      for (const dx of [-42, -22]) ellipse(ctx, x + dx, 699, 12, 10, '#6fb24e', INK, 1.2);
+      for (const dx of [36, 48]) ellipse(ctx, x + dx, 702, 5, 9, '#d64a3a', INK, 1.0, .4);
     }
   }
 
   function drawVillageMarket(ctx, s, t) {
     const isNight = s.time === 'night';
+    const w = frameW(s), ext = Math.max(0, w - PANEL);
+    const umbrellaXs = ext >= 600 ? spread(MARKET_UMBRELLAS.length, ext, 170, 'vm-umb').map(x => PANEL + x) : [];
     const skyTop = isNight ? '#0e1828' : '#8fc3e8';
     const skyBot = isNight ? '#1e2e42' : '#f0e2ca';
     const grad = ctx.createLinearGradient(0, 0, 0, 810);
     grad.addColorStop(0, skyTop);
     grad.addColorStop(1, skyBot);
     ctx.fillStyle = grad;
-    ctx.fillRect(0, 0, 576, 810);
+    ctx.fillRect(0, 0, w, 810);
 
     if (isNight) {
-      // Bầu trời đêm chợ quê
+      // Bầu trời đêm chợ quê (mỗi ô 576 px một bộ seed; ô 0 y hệt khổ dọc)
       ctx.fillStyle = '#ffffff';
-      for (let i = 0; i < 20; i++) {
-        const sx = (hash('vm_star_x_' + i) % 560) + 8;
-        const sy = (hash('vm_star_y_' + i) % 320) + 20;
-        ctx.beginPath();
-        ctx.arc(sx, sy, 1.0, 0, TAU);
-        ctx.fill();
-      }
+      tileX(w, PANEL, (ox, p) => {
+        for (let i = 0; i < 20; i++) {
+          const key = p ? `${p}_${i}` : i;
+          const sx = ox + (hash('vm_star_x_' + key) % 560) + 8;
+          const sy = (hash('vm_star_y_' + key) % 320) + 20;
+          ctx.beginPath();
+          ctx.arc(sx, sy, 1.0, 0, TAU);
+          ctx.fill();
+        }
+      });
     }
 
     // Hàng tre làng và mái ngói rêu phong xa xăm
     const farCol = isNight ? '#152418' : '#609252';
     path(ctx, 'M 0 570 Q 120 530 260 560 Q 420 530 576 565 L 576 810 L 0 810 Z', farCol, null);
+    extendHills(ctx, PANEL, 565, w, 810, farCol, 'vm-hill', 545, 580);
 
     // Mái ngói cong truyền thống mờ ở phía sau
     const roofCol = isNight ? '#2a1a16' : '#9c4c36';
     path(ctx, 'M 40 540 Q 140 520 240 540 L 230 565 L 50 565 Z', roofCol, INK, 1.4);
     path(ctx, 'M 340 545 Q 440 525 540 545 L 530 570 L 350 570 Z', roofCol, INK, 1.4);
+    spread(Math.round(ext / 300), ext, 110, 'vm-roof').forEach((x0, i) => {
+      const x = PANEL + x0, y = 538 + seeded('vm-roof-y:' + i) * 14, half = 80 + seeded('vm-roof-w:' + i) * 30;
+      path(ctx, `M ${x - half} ${y} Q ${x} ${y - 20} ${x + half} ${y} L ${x + half - 10} ${y + 25} L ${x - half + 10} ${y + 25} Z`, roofCol, INK, 1.4);
+    });
 
     // Cột tre và khung sạp chợ
     const bambooCol = isNight ? '#38321e' : '#c4aa64';
@@ -250,17 +372,27 @@
     line(ctx, [[350, 740], [340, 810]], bambooCol, 4.0);
     line(ctx, [[500, 740], [510, 810]], bambooCol, 4.0);
 
-    // Dây cờ đuôi nheo ngũ sắc giăng ngang phía trên
+    // Khổ ngang: ba dù mới (tím / cam / lam) kèm sạp bán cà tím, cam, bắp cải ở phần mở rộng.
+    umbrellaXs.forEach((x, i) => {
+      ctx.save();
+      marketUmbrella(ctx, x, MARKET_UMBRELLAS[i], bambooCol, isNight);
+      ctx.restore();
+      marketStall(ctx, x + MARKET_UMBRELLAS[i].lean * .5, MARKET_UMBRELLAS[i].goods, bambooCol);
+    });
+
+    // Dây cờ đuôi nheo ngũ sắc giăng ngang phía trên (mỗi ô 576 px một dây; màu cờ lệch theo chỉ số ô)
     const flagY = 380;
-    path(ctx, 'M 0 360 Q 288 420 576 360', null, INK, 1.4);
     const flagColors = ['#e54338', '#f2be34', '#3894e6', '#4ca842', '#e65cc2'];
-    for (let f = 0; f < 10; f++) {
-      const fx = 35 + f * 55;
-      const sag = Math.sin((fx / 576) * Math.PI) * 40;
-      const fy = 360 + sag;
-      const col = flagColors[f % flagColors.length];
-      path(ctx, `M ${fx - 14} ${fy} L ${fx + 14} ${fy} L ${fx} ${fy + 28} Z`, col, INK, 1.2);
-    }
+    tileX(w, PANEL, (ox, p) => {
+      path(ctx, `M ${ox} 360 Q ${ox + PANEL / 2} 420 ${ox + PANEL} 360`, null, INK, 1.4);
+      for (let f = 0; f < 10; f++) {
+        const fx = ox + 35 + f * 55;
+        const sag = Math.sin(((fx - ox) / PANEL) * Math.PI) * 40;
+        const fy = 360 + sag;
+        const col = flagColors[(f + p * 2) % flagColors.length];
+        path(ctx, `M ${fx - 14} ${fy} L ${fx + 14} ${fy} L ${fx} ${fy + 28} Z`, col, INK, 1.2);
+      }
+    });
 
     // Các rổ tre, thúng tre đựng hoa quả rực rỡ trên sạp & mặt đất (Không chữ)
     // Rổ dưa hấu / bí đỏ trên sạp trái
@@ -281,17 +413,17 @@
 
     // Đèn lồng treo ban đêm toả sáng
     if (isNight) {
-      for (const lx of [150, 430]) {
+      for (const [lx, ly] of [[150, 520], [430, 520], ...umbrellaXs.map((x, i) => [x, MARKET_UMBRELLAS[i].y + 10])]) {
         ctx.save();
-        const halo = ctx.createRadialGradient(lx, 520, 4, lx, 520, 55);
+        const halo = ctx.createRadialGradient(lx, ly, 4, lx, ly, 55);
         halo.addColorStop(0, 'rgba(255, 215, 90, 0.75)');
         halo.addColorStop(1, 'rgba(255, 180, 50, 0)');
         ctx.fillStyle = halo;
         ctx.beginPath();
-        ctx.arc(lx, 520, 55, 0, TAU);
+        ctx.arc(lx, ly, 55, 0, TAU);
         ctx.fill();
-        ellipse(ctx, lx, 520, 9, 12, '#ff4a38', INK, 1.4);
-        ellipse(ctx, lx, 520, 4, 6, '#fff090', null);
+        ellipse(ctx, lx, ly, 9, 12, '#ff4a38', INK, 1.4);
+        ellipse(ctx, lx, ly, 4, 6, '#fff090', null);
         ctx.restore();
       }
     }
@@ -299,16 +431,19 @@
     // Mặt đất chợ quê (ground_y: 810) - gạch lát / đất nện màu ấm
     const groundCol = isNight ? '#1e1814' : '#645446';
     ctx.fillStyle = groundCol;
-    ctx.fillRect(0, 810, 576, 214);
-    line(ctx, [[0, 810], [576, 810]], INK, 2.4);
+    ctx.fillRect(0, 810, w, 214);
+    line(ctx, [[0, 810], [w, 810]], INK, 2.4);
 
-    // Vài vân đá lát sàn chợ
+    // Vài vân đá lát sàn chợ (mỗi ô 576 px một bộ seed; ô 0 y hệt khổ dọc)
     const stoneCol = isNight ? '#2a221c' : '#7c6c5c';
-    for (let i = 0; i < 12; i++) {
-      const px = (hash('stone_x_' + i) % 520) + 20;
-      const py = 825 + (hash('stone_y_' + i) % 170);
-      ellipse(ctx, px, py, 14, 6, stoneCol, null);
-    }
+    tileX(w, PANEL, (ox, p) => {
+      for (let i = 0; i < 12; i++) {
+        const key = p ? `${p}_${i}` : i;
+        const px = ox + (hash('stone_x_' + key) % 520) + 20;
+        const py = 825 + (hash('stone_y_' + key) % 170);
+        ellipse(ctx, px, py, 14, 6, stoneCol, null);
+      }
+    });
   }
 
   // =========================================================================
@@ -431,16 +566,17 @@
   // =========================================================================
 
   function farmFunCustomEffects(ctx, snapshot, cat, kit) {
-    const { path, line, ellipse, INK, TAU, clamp, hash } = kit;
+    const { path, line, ellipse, INK, TAU, clamp, hash, frameW } = kit;
 
-    // 3.1 Ăn mừng pháo hoa giấy kim tuyến (celebrate confetti)
+    // 3.1 Ăn mừng pháo hoa giấy kim tuyến (celebrate confetti) — rải theo bề rộng khổ của snapshot
     const hasCelebrate = snapshot.actions.some(a => a.active && a.type === 'celebrate') ||
                          Object.values(snapshot.states).some(s => s.celebrating || s.celebrate);
     if (hasCelebrate) {
       ctx.save();
       const colors = ['#f44336', '#e91e63', '#9c27b0', '#2196f3', '#4caf50', '#ffeb3b', '#ff9800', '#00bcd4'];
-      for (let i = 0; i < 48; i++) {
-        const xSeed = (hash('confetti_x_' + i) % 576);
+      const W = frameW(snapshot);
+      for (let i = 0; i < Math.round(48 * W / PANEL); i++) {
+        const xSeed = (hash('confetti_x_' + i) % W);
         const speed = 120 + (hash('confetti_s_' + i) % 90);
         const y = (((snapshot.t * speed + hash('confetti_y_' + i) % 1024) % 1100) - 50);
         const sway = Math.sin(snapshot.t * 3.5 + i * 1.2) * 24;

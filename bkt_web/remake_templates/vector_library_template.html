@@ -18,8 +18,9 @@
 </section>
 <script>{{VECTOR_ENGINE_JS}}</script>
 <script>
-const story={characters:{{CHARACTERS_JSON}},scenes:{{SCENES_JSON}},cues:{{CUES_JSON}},duration:Number('{{DURATION}}')};
+const story={frame:'{{FRAME}}',characters:{{CHARACTERS_JSON}},scenes:{{SCENES_JSON}},cues:{{CUES_JSON}},duration:Number('{{DURATION}}')};
 const renderer=new RemakeVector.Renderer(document.getElementById('stage'),{{VECTOR_CATALOG_JSON}},story);
+if(story.frame==='landscape'){document.getElementById('stage').style.width='min(100vw,177.78vh)';document.querySelector('.controls').style.width='min(1820px,100%)';}
 const audio=document.getElementById('voice'),seek=document.getElementById('seek'),play=document.getElementById('play'),time=document.getElementById('time');
 const hasAudio=Boolean(audio.getAttribute('src'));
 let playing=false,raf=0,position=0,origin=0;

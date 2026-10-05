@@ -19,6 +19,22 @@ CHIBI_PEOPLE = (
 )
 ALL_PEOPLE = PEOPLE + CHIBI_PEOPLE
 HANDS = ("hand", "hand_right")
+# Khổ khung theo story["frame"] (plan docs/PLAN_vector_widescreen.md). Phải khớp FRAMES trong remake_vector_engine.js.
+# Khổ ngang 1820×1024 cùng chiều cao với khổ dọc; composer xuất nó ra 1920×1080.
+FRAMES = {"portrait": (576, 1024), "landscape": (1820, 1024)}
+EXPORT_SIZES = {"portrait": (576, 1024), "landscape": (1920, 1080)}
+
+
+def frame_name(story_or_frame) -> str:
+    """Tên khổ của story (hoặc của chuỗi khổ); thiếu là portrait, lạ thì ValueError."""
+    name = story_or_frame.get("frame", "portrait") if isinstance(story_or_frame, dict) else (story_or_frame or "portrait")
+    if name not in FRAMES:
+        raise ValueError(f"frame phải là một trong {sorted(FRAMES)} (nhận {name!r})")
+    return name
+
+
+def frame_size(story_or_frame) -> tuple[int, int]:
+    return FRAMES[frame_name(story_or_frame)]
 
 
 @lru_cache(maxsize=1)
@@ -555,6 +571,7 @@ def validate_story(story):
     except ImportError:
         from remake_composer import validate_timeline
     _number(story.get("duration"), 0.01, 1800, "duration")
+    frame_name(story)
     if not story.get("scenes") or any(s.get("renderer") != RENDERER for s in story["scenes"]):
         raise ValueError("Storyboard phải dùng native-vector-v1 cho mọi cảnh")
     validate_timeline(story["scenes"], story.get("cues", []), story["characters"], story["duration"])
@@ -6675,9 +6692,9 @@ def auto_frame(story: dict, max_zoom: float = 2.0) -> dict:
 
     Khung bao lấy từ mọi keyframe (x ± 0.45·height, y − height … y) của nhân vật không gắn attach_to; mặt đất
     (đáy khung bao) nằm ở 78% chiều cao màn hình, phụ đề vẽ ngoài camera nên không bị zoom. Camera bị kẹp
-    trong khung 576×1024 để không lộ mép hình nền. Cảnh không cần phóng (zoom < 1.05) giữ nguyên.
+    trong khung của story (576×1024 dọc, 1820×1024 ngang) để không lộ mép hình nền. Cảnh không cần phóng (zoom < 1.05) giữ nguyên.
     """
-    W, H = 576, 1024
+    W, H = frame_size(story)
     attached = {c["id"] for c in story["characters"] if c.get("attach_to")}
     for scene in story["scenes"]:
         if scene.get("camera") or scene.get("kind") == "title":
@@ -6695,6 +6712,137 @@ def auto_frame(story: dict, max_zoom: float = 2.0) -> dict:
         cy = min(max(y1 - (0.78 * H - H / 2) / zoom, H / 2 / zoom), H - H / 2 / zoom)
         scene["camera"] = [{"time": scene["start_time"], "x": round(cx, 2), "y": round(cy, 2), "zoom": round(zoom, 3)}]
     return story
+
+
+ACTION_ROLES = ("actor", "target", "tool", "helper", "paper")
+
+
+def to_landscape(story: dict, layout: str = "center", margin: float = 40.0) -> dict:
+    """Bản sao khổ ngang 1820×1024 của một story khổ dọc (story gốc không đổi).
+
+    Hình nền giữ nội dung cũ ở x 0–576 và mở rộng sang phải, nên chỉ cần dời x của nhân vật và camera:
+    - ``center``: mọi keyframe của nhân vật không gắn attach_to và mọi khoá camera dời +622 px, khoảng cách giữa
+      các nhân vật giữ nguyên (cả cụm nằm giữa khung).
+    - ``spread``: nhân vật nối với nhau qua action (actor/target/tool/helper/helpers/paper) thành một cụm; mỗi cụm
+      dời cứng (giữ quãng đường, tốc độ và điểm chạm của action), khoảng cách giữa các cụm giãn theo hệ số f ∈ [1, 2]
+      lớn nhất mà mọi keyframe vẫn nằm trong [margin, 1820 − margin]. Nhân vật gắn attach_to đi theo cha.
+    """
+    if frame_name(story) != "portrait":
+        raise ValueError("to_landscape chỉ nhận story khổ dọc")
+    if layout not in ("center", "spread"):
+        raise ValueError(f"layout phải là 'center' hoặc 'spread' (nhận {layout!r})")
+    out = copy.deepcopy(story)
+    out["frame"] = "landscape"
+    (pw, _), (lw, _) = FRAMES["portrait"], FRAMES["landscape"]
+    attached = {c["id"] for c in out["characters"] if c.get("attach_to")}
+    free = [c["id"] for c in out["characters"] if c["id"] not in attached]
+    keys_of = {cid: [] for cid in free}
+    for scene in out["scenes"]:
+        for cid, keys in scene.get("poses", {}).items():
+            if cid in keys_of:
+                keys_of[cid].extend(k for k in keys if "x" in k)
+    cameras = [k for scene in out["scenes"] for k in scene.get("camera", []) or [] if "x" in k]
+
+    if layout == "center":
+        dx = (lw - pw) / 2
+        deltas = {cid: dx for cid in free}
+        camera_x = lambda x: x + dx  # noqa: E731
+    else:
+        parent = {cid: cid for cid in free}
+
+        def find(cid):
+            while parent[cid] != cid:
+                parent[cid] = parent[parent[cid]]
+                cid = parent[cid]
+            return cid
+
+        for scene in out["scenes"]:
+            for action in scene.get("actions", []):
+                members = [action[r] for r in ACTION_ROLES if isinstance(action.get(r), str)]
+                if isinstance(action.get("helpers"), list):
+                    members += [h for h in action["helpers"] if isinstance(h, str)]
+                members = [m for m in members if m in parent]
+                for m in members[1:]:
+                    parent[find(m)] = find(members[0])
+
+        def track(keys, t):
+            """x và height nội suy tuyến tính trên keyframe (đủ để biết hai nhân vật có lại gần/vượt nhau)."""
+            keys = sorted(keys, key=lambda k: k["time"])
+            if t <= keys[0]["time"]:
+                k = keys[0]
+                return k["x"], k.get("height", 0)
+            for a, b in zip(keys, keys[1:]):
+                if t <= b["time"]:
+                    u = (t - a["time"]) / max(1e-9, b["time"] - a["time"])
+                    return a["x"] + (b["x"] - a["x"]) * u, a.get("height", 0) + (b.get("height", 0) - a.get("height", 0)) * u
+            k = keys[-1]
+            return k["x"], k.get("height", 0)
+
+        # Mẫu theo thời gian (0.1 s) của từng nhân vật trong từng cảnh: nhân vật lại gần nhau (khoảng chồng + 60 px,
+        # chừa chỗ cho động tác engine tự dời như shamble) hoặc vượt qua nhau thì gộp chung một cụm cứng.
+        samples = []
+        for scene in out["scenes"]:
+            poses = {cid: [k for k in keys if "x" in k] for cid, keys in scene.get("poses", {}).items() if cid in parent}
+            poses = {cid: keys for cid, keys in poses.items() if keys}
+            if len(poses) < 2:
+                continue
+            start, end = float(scene["start_time"]), float(scene["end_time"])
+            times = [start + i * 0.1 for i in range(int((end - start) / 0.1) + 1)] + [end]
+            samples.append({cid: [track(keys, t) for t in times] for cid, keys in poses.items()})
+        near = 60.0
+        for scene_samples in samples:
+            ids = list(scene_samples)
+            for i, a in enumerate(ids):
+                for b in ids[i + 1:]:
+                    gaps = [(xb - xa, 0.45 * (ha + hb)) for (xa, ha), (xb, hb) in zip(scene_samples[a], scene_samples[b])]
+                    if any(abs(d) < reach + near for d, reach in gaps) or min(d for d, _ in gaps) < 0 < max(d for d, _ in gaps):
+                        parent[find(b)] = find(a)
+        clusters = {}
+        for cid in free:
+            if keys_of[cid]:
+                clusters.setdefault(find(cid), []).append(cid)
+        anchors = {root: sum(k["x"] for cid in ids for k in keys_of[cid]) / sum(len(keys_of[cid]) for cid in ids)
+                   for root, ids in clusters.items()}
+        centre = (min(anchors.values()) + max(anchors.values())) / 2 if anchors else pw / 2
+
+        def plan(f):
+            return {root: lw / 2 + (a - centre) * f - a for root, a in anchors.items()}
+
+        def fits(shift):
+            for root, ids in clusters.items():
+                for cid in ids:
+                    for k in keys_of[cid]:
+                        if not margin <= k["x"] + shift[root] <= lw - margin:
+                            return False
+            # Hai cụm khác nhau không được lại gần hơn khoảng chồng + 30 px (f = 1 luôn đạt vì mọi cụm dời như nhau).
+            for scene_samples in samples:
+                ids = list(scene_samples)
+                for i, a in enumerate(ids):
+                    for b in ids[i + 1:]:
+                        if find(a) == find(b):
+                            continue
+                        ds = shift[find(b)] - shift[find(a)]
+                        for (xa, ha), (xb, hb) in zip(scene_samples[a], scene_samples[b]):
+                            if abs(xb - xa + ds) < 0.45 * (ha + hb) + near / 2:
+                                return False
+            return True
+
+        factor = 1.0
+        for step in range(20, -1, -1):
+            if fits(plan(1 + step * 0.05)):
+                factor = 1 + step * 0.05
+                break
+        shift = plan(factor)
+        deltas = {cid: shift[find(cid)] for cid in free if find(cid) in shift}
+        camera_x = lambda x: lw / 2 + (x - centre) * factor  # noqa: E731
+
+    for cid, keys in keys_of.items():
+        for k in keys:
+            k["x"] = round(k["x"] + deltas.get(cid, 0.0), 2)
+    for k in cameras:
+        k["x"] = round(camera_x(k["x"]), 2)
+    validate_story(out)
+    return out
 
 
 def sample_stories():
