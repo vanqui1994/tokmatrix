@@ -1,3 +1,5 @@
+from pathlib import Path
+import json
 import copy
 import unittest
 from unittest.mock import patch
@@ -605,6 +607,14 @@ class CapabilityRegistryTest(unittest.TestCase):
             "cure_sprayer": {"wet"}, "signal_mirror": {"wet"}, "sos_stones": {"wet"},
             "firewood_bundle": {"wet"}, "cloth_filter": {"wet"}, "fishing_rod_simple": {"wet"},
         }
+        # Gói làm giàu cho engine video vector (docs/PLAN_vector_enrichment.md): engine chỉ đọc `wet`,
+        # riêng nhóm fish đọc thêm `hooked`/`mouth` như cá cũ.
+        enrichment_packs = {"space_deep", "mystery_props", "wildlife_apex", "wildlife_weird", "deep_ocean", "body_more",
+                            "myth_world", "ancient_sites", "folk_spirits", "survival_scenes", "disaster_scenes", "tech_future"}
+        catalog = json.loads((Path(__file__).resolve().parents[1] / "bkt_web/static/remake_vector_catalog.json").read_text(encoding="utf-8"))
+        for asset_id, spec in catalog["assets"].items():
+            if spec.get("pack") in enrichment_packs:
+                expected[asset_id] = {"hooked", "mouth", "wet"} if spec.get("group") == "fish" else {"wet"}
         self.assertEqual(set(document["assets"]), set(expected))
         for asset_id, states in expected.items():
             with self.subTest(asset=asset_id):

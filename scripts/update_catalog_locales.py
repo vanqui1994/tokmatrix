@@ -12,9 +12,9 @@ from pathlib import Path
 CAT_PATH = Path(__file__).resolve().parents[1] / "bkt_web/static/remake_vector_catalog.json"
 
 LOCALES = {
-    "de": {"black_forest_village", "christmas_market", "allotment_garden", "alpine_meadow"},
-    "jp": {"edo_town", "jp_school", "train_platform", "shrine_generic", "onsen_snow"},
-    "kr": {"hanok_village", "joseon_palace_generic", "kr_market", "kr_school", "apartment_street"},
+    "de": {"black_forest_village", "christmas_market", "allotment_garden", "alpine_meadow", "rhine_cliff"},
+    "jp": {"edo_town", "jp_school", "train_platform", "shrine_generic", "onsen_snow", "takamagahara"},
+    "kr": {"hanok_village", "joseon_palace_generic", "kr_market", "kr_school", "apartment_street", "korean_mountain_night"},
     "us": {"suburb_backyard", "national_park", "wild_west_town", "launch_pad", "pumpkin_patch", "moon_surface"},
     "vi": {"village_market"},
 }

@@ -114,3 +114,29 @@ Lưu ý riêng:
 - E: di tích là công trình chung (không bản sao kiến trúc có bản quyền hiện đại); yêu quái bản trẻ em, `settings_by_lang`
   cho nền dân gian theo nước.
 - F: máy bay rơi không cháy nổ, không người bị thương; robot/xe/điện thoại không logo; thảm hoạ vẽ cảnh cứu hộ.
+
+---
+
+## Đợt sửa 1 (review 05/10)
+
+Chung cho mọi agent có việc dưới đây:
+- Test mới `tests/test_vector_enrichment_backgrounds.py` phải qua cho nền của bạn:
+  1. không lộ màu nền mặc định của engine `#c0eff1` quá 1 % khung (khổ dọc + ngang, ngày + đêm) — lỗi do trời chỉ tô tới
+     một nửa còn đất bắt đầu thấp hơn, để hở dải xanh nhạt ở giữa. Tô trời/đất phủ kín [x0, x1] × [0, 1024], các lớp
+     (núi, cây, nhà) chồng lên, không chừa khe;
+  2. nền ngoài trời: ngày khác đêm thật (trời, ánh sáng, đèn cửa sổ) — không vẽ cùng một màu cho cả hai.
+- Nhãn tiếng Anh (`label`) trong `vector_niches.d/<pack>.json` đã được người review viết lại thành tên ngắn đúng nghĩa
+  (bỏ từ chủ đề nhồi vào, tên người thật, tên thương hiệu). **Không đổi lại**. Nhãn chỉ là tên vật được vẽ, không phải
+  danh sách từ khoá để tăng tỉ lệ phủ.
+- Không sửa file ngoài gói của mình; không commit, không deploy. Chạy:
+  `python3 -m unittest tests.test_vector_enrichment_backgrounds tests.test_vector_pack_<pack> tests.test_vector_video tests.test_remake_vector`
+  và MỞ ẢNH nền đã sửa (ngày + đêm, khổ ngang). Báo cáo: dòng kết quả test, mỗi nền một câu mô tả sau sửa.
+
+| Agent | Nền phải sửa |
+|---|---|
+| A | `foggy_harbor`, `radio_telescope_field`: ngày = đêm → làm bản ngày sáng (sương xám sáng, trời ban ngày) |
+| B | `savanna` (11 % lộ nền), `arctic_ice` (17 %) |
+| C | không có lỗi nền — chỉ chạy lại test để xác nhận |
+| D | `olympus_clouds` (12 %), `asgard_bridge` (14 %), `takamagahara` (17 %) lộ nền; `duat_river` (15 %), `underworld_river` (20 %) lộ nền (cảnh dưới âm phủ được phép ngày = đêm); `asgard_bridge` ngày = đêm → bản ngày có trời sáng |
+| E | `andes_terraces` (7 %), `jungle_temple` (22 %), `rock_canyon` (8 %), `misty_forest_night` (25 %), `rhine_cliff` (14 %), `korean_mountain_night` (26 %) |
+| F | `coastal_town` (5 %) |
