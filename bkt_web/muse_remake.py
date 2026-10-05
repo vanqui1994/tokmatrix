@@ -46,6 +46,10 @@ SCENE_SECONDS = 5.0
 LANG_NAMES = {"de": "German", "en": "English", "ko": "Korean", "ja": "Japanese"}
 DEFAULT_VOICE = {"de": "de-DE-ConradNeural", "en": "en-US-AndrewNeural", "ko": "ko-KR-InJoonNeural", "ja": "ja-JP-KeitaNeural"}
 ACTIVE = ("new", "downloading", "analyzing", "shooting", "voicing")
+AUDIO_DIR = ROOT / "compare_studio" / "shared" / "audio"
+MUSIC_CATALOG = ROOT / "compare_studio" / "config" / "music" / "cc0_catalog.json"
+BGM_MOODS = {"playful", "upbeat"}  # hoạt hình vui: chỉ nhạc CC0 vui tươi
+BGM_GAIN, SFX_GAIN = 0.16, 0.45
 
 _thread: Optional[threading.Thread] = None
 _wake = threading.Event()
@@ -246,6 +250,48 @@ def _frames(src: Path, work: Path, n: int, dur: float) -> List[Path]:
     return out
 
 
+def _soft(ref: str) -> Optional[str]:
+    """Bản mờ của khung hình gốc cho Muse: giữ màu và bố cục, chữ/watermark của kênh gốc không còn đọc được
+    (Muse chép lại watermark khi nhận ảnh nét)."""
+    src = Path(ref)
+    if not src.is_file():
+        return None
+    out = src.with_name(src.stem + "_soft.jpg")
+    if not out.is_file():
+        subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", str(src), "-vf", "scale=40:-2,scale=720:-2,gblur=sigma=10",
+                        "-q:v", "4", str(out)], timeout=60)
+    return str(out) if out.is_file() else None
+
+
+TEXT_CHECK = """These are {n} frames, one from each cartoon clip, in order (index 0..{last}).
+List the indexes of frames that show ANY text: letters, words, numbers used as text, usernames, @handles, logos,
+watermarks or subtitles (numbers printed on a cap or shirt as part of a costume are fine).
+Return JSON {{"text": [indexes]}}."""
+
+
+def _text_scenes(film: Dict[str, Any], work: Path) -> List[int]:
+    """Cảnh nào trong clip Muse có chữ/watermark (Gemini nhìn một khung hình giữa mỗi clip)."""
+    import base64
+    done = [s for s in film["scenes"] if s["status"] == "done"]
+    frames = []
+    for s in done:
+        clip = muse_film._dir(film["id"]) / "clips" / f"scene{s['i']:02d}.mp4"
+        f = work / f"check{s['i']:02d}.jpg"
+        subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-ss", "2.5", "-i", str(clip), "-frames:v", "1",
+                        "-vf", "scale=480:-2", "-q:v", "4", str(f)], timeout=60)
+        frames.append((s["i"], f))
+    frames = [(i, f) for i, f in frames if f.is_file()]
+    if not frames:
+        return []
+    parts = [{"text": TEXT_CHECK.format(n=len(frames), last=len(frames) - 1)}]
+    parts += [{"inline_data": {"mime_type": "image/jpeg", "data": base64.b64encode(f.read_bytes()).decode()}} for _, f in frames]
+    try:
+        bad = source_remake._gemini(parts).get("text") or []
+    except Exception:  # noqa: BLE001 — kiểm tra lỗi thì không chặn video
+        return []
+    return [frames[k][0] for k in bad if isinstance(k, int) and 0 <= k < len(frames)]
+
+
 PLAN = """You remake a short Chinese educational cartoon as a NEW original video for a {lang} TikTok account.
 Attached: {n} frames, one per scene, in order. Source transcript (may be empty): {transcript}
 First write "style": one English sentence describing the visual style of these frames in your own words (e.g. flat 2D
@@ -312,8 +358,50 @@ def _wrap(text: str, language: str) -> str:
     return "\\N".join([*lines, cur])
 
 
+def _pick_bgm(key: str, seconds: float) -> Optional[Path]:
+    """Một bài CC0 vui tươi cố định theo video (sha256 của key), đủ dài để không phải lặp; thiếu file thì bỏ nhạc."""
+    import hashlib
+    try:
+        data = json.loads(MUSIC_CATALOG.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return None
+    tracks = [t for t in (data.get("tracks", data) if isinstance(data, dict) else data)
+              if BGM_MOODS & set(t.get("moods", [])) and float(t.get("duration_seconds") or 0) >= seconds + 2
+              and (AUDIO_DIR / "cc0" / f"{t['id']}.mp3").is_file()]
+    if not tracks:
+        return None
+    tracks.sort(key=lambda t: t["id"])
+    pick = tracks[int(hashlib.sha256(key.encode()).hexdigest(), 16) % len(tracks)]
+    return AUDIO_DIR / "cc0" / f"{pick['id']}.mp3"
+
+
+def _mix_audio(work: Path, cuts: List[float], total: float, key: str) -> Optional[str]:
+    """filter_complex trộn lời (input 0) + nhạc nền tự hạ khi có lời + whoosh mỗi lần chuyển cảnh + pop ở câu mở đầu."""
+    bgm = _pick_bgm(key, total)
+    whoosh, pop = AUDIO_DIR / "sfx" / "whoosh.mp3", AUDIO_DIR / "sfx" / "pop.mp3"
+    inputs, chains, mix = [], ["[0:a]aresample=44100,asplit=2[vo][sc]"], ["[vo]"]
+    if bgm:
+        inputs.append(str(bgm))
+        chains.append(f"[1:a]aresample=44100,atrim=0:{total:.2f},volume={BGM_GAIN},afade=t=in:d=1,"
+                      f"afade=t=out:st={max(0.0, total - 2):.2f}:d=2[bg0];"
+                      "[bg0][sc]sidechaincompress=threshold=0.02:ratio=6:attack=15:release=350[bg]")
+        mix.append("[bg]")
+    else:
+        chains[0] = "[0:a]aresample=44100[vo]"
+    sfx = [(whoosh, c - 0.25) for c in cuts if c > 0.5 and whoosh.is_file()] + ([(pop, 0.05)] if pop.is_file() else [])
+    for k, (f, at) in enumerate(sfx):
+        idx = len(inputs) + 1
+        inputs.append(str(f))
+        ms = int(max(0.0, at) * 1000)
+        chains.append(f"[{idx}:a]aresample=44100,volume={SFX_GAIN},adelay={ms}|{ms}[s{k}]")
+        mix.append(f"[s{k}]")
+    chains.append(f"{''.join(mix)}amix=inputs={len(mix)}:normalize=0:duration=first,alimiter=limit=0.95[aout]")
+    (work / "mix_inputs.json").write_text(json.dumps(inputs))
+    return ";".join(chains)
+
+
 def _assemble(work: Path, clips: List[Path], lines: List[str], voice: Dict[str, Any], language: str) -> Path:
-    segs, events, t = [], [], 0.0
+    segs, events, t, cuts = [], [], 0.0, []
     for i, (clip, line) in enumerate(zip(clips, lines)):
         vo = work / f"vo{i:02d}.mp3"
         vd = _tts(line, voice["voice"], voice["speed"], vo, language)
@@ -329,6 +417,7 @@ def _assemble(work: Path, clips: List[Path], lines: List[str], voice: Dict[str, 
                         "-ac", "2", str(seg)], check=True, timeout=300)
         segs.append(seg)
         events.append(f"Dialogue: 0,{_ass_time(t + 0.15)},{_ass_time(t + dur - 0.05)},Cap,,0,0,0,,{_wrap(line, language)}")
+        cuts.append(t)
         t += dur
     (work / "list.txt").write_text("".join(f"file '{s.name}'\n" for s in segs))
     subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-f", "concat", "-safe", "0", "-i", "list.txt", "-c", "copy", "joined.mp4"],
@@ -341,8 +430,14 @@ def _assemble(work: Path, clips: List[Path], lines: List[str], voice: Dict[str, 
         f"Style: Cap,{font},64,&H00FFFFFF,&H00FFFFFF,&H00000000,&H64000000,1,0,0,0,100,100,0,0,1,4,2,2,70,70,330,1\n\n"
         "[Events]\nFormat: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text\n" + "\n".join(events) + "\n",
         encoding="utf-8")
-    subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", "joined.mp4", "-vf", "ass=caps.ass", "-c:v", "libx264", "-crf", "20",
-                    "-preset", "veryfast", "-c:a", "copy", "-movflags", "+faststart", "final.mp4"], cwd=str(work), check=True, timeout=600)
+    graph = _mix_audio(work, cuts, t, str(work))
+    inputs = json.loads((work / "mix_inputs.json").read_text())
+    cmd = ["ffmpeg", "-y", "-loglevel", "error", "-i", "joined.mp4"]
+    for f in inputs:
+        cmd += ["-i", f]
+    cmd += ["-filter_complex", f"[0:v]ass=caps.ass[vout];{graph}", "-map", "[vout]", "-map", "[aout]", "-c:v", "libx264",
+            "-crf", "20", "-preset", "veryfast", "-c:a", "aac", "-b:a", "160k", "-movflags", "+faststart", "final.mp4"]
+    subprocess.run(cmd, cwd=str(work), check=True, timeout=900)
     return work / "final.mp4"
 
 
@@ -375,6 +470,18 @@ def _enqueue_upload(v: Dict[str, Any], channel_id: int, final: Path, caption: st
         return int(cur.lastrowid)
 
 
+def _task_pending(task_id: int) -> bool:
+    with sqlite3.connect(str(CHANNELS_DB), timeout=30) as c:
+        row = c.execute("SELECT status FROM upload_tasks WHERE id=?", (task_id,)).fetchone()
+    return bool(row) and row[0] in ("QUEUED", "PENDING", "WAITING_RENDER")
+
+
+def recheck_text(vid: int) -> None:
+    """Video đã xong nhưng có cảnh dính chữ/watermark: chạy lại từ bước kiểm tra chữ (giữ task đăng)."""
+    _vid_update(vid, status="shooting", step="Kiểm tra chữ/watermark", error="")
+    _wake.set()
+
+
 def process(vid: int) -> None:
     v = _video(vid)
     with _conn() as c:
@@ -402,15 +509,30 @@ def process(vid: int) -> None:
         # Không bảo Muse "y hệt ảnh đính kèm" (Muse từ chối chép phong cách của người khác): phong cách tả bằng chữ,
         # ảnh chỉ để tham khảo bố cục và màu.
         style = plan.get("style") or "bright flat 2D cartoon, thick outlines, cute characters with big eyes"
-        shots = [{"prompt": ("Generate one short video clip (about 5 seconds), vertical 9:16 format, no on-screen text, no subtitles, "
-                             f"no watermark, no speech. Style: {style}. Use the attached picture only as a loose reference for the "
-                             f"layout and colour mood, drawn in your own way. Shot: {s['shot']}"),
-                  "text": s["line"], "ref": data["refs"][i] if i < len(data["refs"]) else None} for i, s in enumerate(plan["scenes"])]
+        shots = [{"prompt": ("Generate one short video clip (about 5 seconds), vertical 9:16 format, no speech. Never draw any "
+                             "text, letters, logos, usernames, @handles or watermarks anywhere in the picture. "
+                             f"Style: {style}. Use the attached blurry picture only as a loose reference for the layout and colour "
+                             f"mood, drawn in your own way. Shot: {s['shot']}"),
+                  "text": s["line"], "ref": _soft(data["refs"][i]) if i < len(data["refs"]) else None} for i, s in enumerate(plan["scenes"])]
         film = muse_film.create_shots(plan["title"] or v["title"], shots, "9:16", keep_audio=False, origin=f"muse_remake:{vid}")
         data["film_id"] = film["id"]
         _vid_update(vid, data=data, film_id=film["id"])
     _vid_update(vid, status="shooting", step="Muse quay từng cảnh")
     film = _wait_film(data["film_id"], vid)
+    for rnd in range(2):  # clip có chữ/watermark → quay lại cảnh đó không kèm ảnh mẫu
+        bad = _text_scenes(film, work)
+        if not bad:
+            break
+        _vid_update(vid, status="shooting", step=f"Quay lại {len(bad)} cảnh có chữ/watermark")
+        p = muse_film.load(film["id"])
+        for sc in p["scenes"]:
+            if sc["i"] in bad:
+                sc["ref"] = None
+                sc["prompt"] = sc["prompt"].replace("Use the attached blurry picture only as a loose reference for the layout and colour mood, drawn in your own way. ", "")
+        muse_film.save(p)
+        for i in bad:
+            muse_film.retry_scene(film["id"], i)
+        film = _wait_film(film["id"], vid)
     clips, lines = [], []
     for s in film["scenes"]:
         clip = muse_film._dir(film["id"]) / "clips" / f"scene{s['i']:02d}.mp4"
@@ -422,7 +544,9 @@ def process(vid: int) -> None:
     _vid_update(vid, status="voicing", step=f"Lồng tiếng {LANG_NAMES[language]}, phụ đề, ghép")
     final = _assemble(work, clips, lines, voice, language)
     caption = (plan.get("caption") or plan.get("title") or "").strip()
-    task_id = _enqueue_upload(v, src["channel_id"], final, caption, language, voice["niche"])
+    task_id = v["upload_task_id"]
+    if not (task_id and _task_pending(task_id)):  # làm lại video đã có task chưa đăng: thay file, giữ task và giờ đăng
+        task_id = _enqueue_upload(v, src["channel_id"], final, caption, language, voice["niche"])
     _vid_update(vid, status="queued", step="", final_path=str(final), upload_task_id=task_id)
 
 
