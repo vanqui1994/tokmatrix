@@ -35,6 +35,9 @@ NICHE_TAGS: Dict[str, List[str]] = {
     "philosophy_paradox": ["#philosophy", "#paradox", "#thinking"],
     "military_arsenal": ["#militaryhistory", "#history", "#engineering"],
     "ancient_mythology": ["#mythology", "#ancient", "#gods"],
+    "zombie_survival": ["#zombie", "#survival", "#animation"],
+    "monster_fishing": ["#fishing", "#seamonster", "#animation"],
+    "happy_farm": ["#farm", "#farmlife", "#animation"],
 }
 LANGUAGE_TAGS: Dict[str, List[str]] = {
     "de": ["#fürdich", "#wissen"],

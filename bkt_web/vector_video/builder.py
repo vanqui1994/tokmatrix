@@ -396,6 +396,8 @@ def build_story(*, slug: str, lang: str, niche_id: str, channel_id: str, scenes:
             for k in poses[cid_subject]:
                 for f in ("expression", "flip", "hand_r_x", "hand_r_y", "jump", "celebrate"):
                     k.pop(f, None)
+                # Trường pose riêng của vật thể (vd zombie: zombie/outfit/expression; quái vật biển: badge 0).
+                k.update(spec.get("pose") or {})
         scene = {
             "renderer": RENDERER, "kind": "scene", "index": i, "start_time": round(s0, 3), "end_time": round(s1, 3),
             "characters_present": list(poses), "poses": poses, "actions": actions, "background": background,

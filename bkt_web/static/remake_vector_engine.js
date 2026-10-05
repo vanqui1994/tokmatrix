@@ -3878,7 +3878,8 @@ globalThis.RemakeVector = (() => {
       motionTrails(ctx, frame, this.catalog, at => this.sample(at));
       for (const state of ordered) drawActor(ctx, state, this.catalog, frame.t, this.cels);
       impacts(ctx, frame, this.catalog);
-      for (const state of ordered) if (this.catalog.assets[state.asset].group === 'monster') {
+      // Huy hiệu bậc của quái vật (có chữ): pose `badge` 0 tắt (video vector không có chữ); mặc định 1 = như cũ.
+      for (const state of ordered) if (this.catalog.assets[state.asset].group === 'monster' && state.badge !== 0) {
         const p = worldAnchor(this.catalog, state, 'top');
         tierBadge(ctx, this.catalog.assets[state.asset].tier, p.x, p.y - 24);
       }

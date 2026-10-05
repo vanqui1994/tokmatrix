@@ -91,8 +91,8 @@ def problems() -> list[str]:
             if spec["asset"] not in cat["assets"]:
                 errs.append(f"{group} {sid}: asset {spec['asset']} không có")
                 continue
-            if cat["assets"][spec["asset"]].get("group") == "monster":
-                errs.append(f"{group} {sid}: nhóm monster luôn vẽ huy hiệu chữ (tierBadge) — không dùng trong video")
+            if cat["assets"][spec["asset"]].get("group") == "monster" and (spec.get("pose") or {}).get("badge") != 0:
+                errs.append(f"{group} {sid}: nhóm monster vẽ huy hiệu chữ (tierBadge) — phải đặt pose badge = 0")
             for bg in spec.get("settings", []):
                 if bg not in cat["background_specs"]:
                     errs.append(f"{group} {sid}: nền gợi ý {bg} không có")

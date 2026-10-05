@@ -170,6 +170,37 @@
     },
     "teacher": {
       "rig": "chibi_teacher"
+    },
+    "farm_teacher": {
+      "rig": "chibi_teacher",
+      "outfit": "farmer_overalls"
+    },
+    "farm_kid": {
+      "rig": "chibi_kid",
+      "outfit": "farmer_overalls"
+    },
+    "farm_girl": {
+      "rig": "chibi_girl",
+      "outfit": "farmer_overalls"
+    },
+    "farm_grandpa": {
+      "rig": "chibi_grandpa",
+      "outfit": "farmer_overalls"
+    },
+    "farm_grandma": {
+      "rig": "chibi_grandma"
+    },
+    "fisher_kid": {
+      "rig": "chibi_kid",
+      "outfit": "life_vest"
+    },
+    "fisher_girl": {
+      "rig": "chibi_girl",
+      "outfit": "raincoat"
+    },
+    "survivor_hoodie": {
+      "rig": "chibi_girl",
+      "outfit": "survivor_hoodie"
     }
   },
   "subjects": {
@@ -803,6 +834,600 @@
     "hedgehog": {
       "asset": "hedgehog",
       "label": "a hedgehog"
+    },
+    "zombie_walker": {
+      "asset": "chibi_boy",
+      "label": "a zombie",
+      "labels": {
+        "de": "Zombie|Zombies",
+        "ko": "좀비",
+        "ja": "ゾンビ"
+      },
+      "pose": {
+        "zombie": 1.0,
+        "outfit": "torn",
+        "expression": "dazed"
+      },
+      "settings": [
+        "abandoned_street",
+        "overgrown_plaza",
+        "subway_tunnel"
+      ]
+    },
+    "zombie_walker_girl": {
+      "asset": "chibi_girl",
+      "label": "a zombie girl",
+      "labels": {
+        "de": "Zombie|Zombies",
+        "ko": "좀비",
+        "ja": "ゾンビ"
+      },
+      "pose": {
+        "zombie": 1.0,
+        "outfit": "torn",
+        "expression": "dazed"
+      }
+    },
+    "cure_sprayer": {
+      "asset": "cure_sprayer",
+      "label": "a cure sprayer",
+      "labels": {
+        "de": "Heilmittel|Gegenmittel",
+        "ko": "치료제",
+        "ja": "治療薬"
+      },
+      "size": "s"
+    },
+    "barricade": {
+      "asset": "barricade_boards",
+      "label": "a barricade",
+      "labels": {
+        "de": "Barrikade",
+        "ko": "바리케이드",
+        "ja": "バリケード"
+      }
+    },
+    "canned_food": {
+      "asset": "canned_food_stack",
+      "label": "canned food",
+      "labels": {
+        "de": "Konserven|Dosen",
+        "ko": "통조림",
+        "ja": "缶詰"
+      },
+      "size": "s"
+    },
+    "shopping_cart": {
+      "asset": "shopping_cart",
+      "label": "a shopping cart",
+      "labels": {
+        "de": "Einkaufswagen",
+        "ko": "쇼핑카트",
+        "ja": "ショッピングカート"
+      }
+    },
+    "walkie_talkie": {
+      "asset": "walkie_talkie",
+      "label": "a walkie-talkie",
+      "labels": {
+        "de": "Funkgerät",
+        "ko": "무전기",
+        "ja": "トランシーバー"
+      },
+      "size": "s"
+    },
+    "solar_panel": {
+      "asset": "solar_panel_small",
+      "label": "a solar panel",
+      "labels": {
+        "de": "Solarpanel|Solarmodul",
+        "ko": "태양광 패널",
+        "ja": "ソーラーパネル"
+      }
+    },
+    "seed_tray": {
+      "asset": "seed_tray",
+      "label": "a seed tray",
+      "labels": {
+        "de": "Saatschale|Setzlinge",
+        "ko": "모종판",
+        "ja": "苗床"
+      },
+      "size": "s"
+    },
+    "water_bottle_filter": {
+      "asset": "water_filter_bottle",
+      "label": "a water filter bottle",
+      "labels": {
+        "de": "Wasserfilter",
+        "ko": "정수 물병",
+        "ja": "浄水ボトル"
+      },
+      "size": "s"
+    },
+    "abandoned_bus": {
+      "asset": "school_bus",
+      "label": "an abandoned bus",
+      "labels": {
+        "de": "Bus",
+        "ko": "버스",
+        "ja": "バス"
+      },
+      "pose": {
+        "decay": 0.7
+      },
+      "size": "l"
+    },
+    "sea_monster_leviathan": {
+      "asset": "sea_monster_leviathan",
+      "float": true,
+      "size": "l",
+      "label": "a sea serpent",
+      "labels": {
+        "de": "Seeschlange|Seeungeheuer",
+        "ko": "바다뱀|바다 괴물",
+        "ja": "シーサーペント|海の怪物"
+      },
+      "pose": {
+        "badge": 0
+      },
+      "settings": [
+        "sea",
+        "stormy_sea",
+        "open_ocean_surface",
+        "deep_sea"
+      ]
+    },
+    "sea_monster_drake": {
+      "asset": "sea_monster_drake",
+      "float": true,
+      "size": "l",
+      "label": "a sea dragon",
+      "labels": {
+        "de": "Seedrache",
+        "ko": "바다 용",
+        "ja": "海竜"
+      },
+      "pose": {
+        "badge": 0
+      },
+      "settings": [
+        "sea",
+        "stormy_sea",
+        "open_ocean_surface",
+        "deep_sea"
+      ]
+    },
+    "sea_monster_behemoth": {
+      "asset": "sea_monster_behemoth",
+      "float": true,
+      "size": "l",
+      "label": "a giant sea beast",
+      "labels": {
+        "de": "Meeresriese",
+        "ko": "거대 바다 괴물",
+        "ja": "巨大な海獣"
+      },
+      "pose": {
+        "badge": 0
+      },
+      "settings": [
+        "sea",
+        "stormy_sea",
+        "open_ocean_surface",
+        "deep_sea"
+      ]
+    },
+    "sea_monster_crystal_whale": {
+      "asset": "sea_monster_crystal_whale",
+      "float": true,
+      "size": "l",
+      "label": "a crystal whale",
+      "labels": {
+        "de": "Kristallwal",
+        "ko": "수정 고래",
+        "ja": "クリスタルクジラ"
+      },
+      "pose": {
+        "badge": 0
+      },
+      "settings": [
+        "sea",
+        "stormy_sea",
+        "open_ocean_surface",
+        "deep_sea"
+      ]
+    },
+    "sea_monster_magma": {
+      "asset": "sea_monster_magma",
+      "float": true,
+      "size": "l",
+      "label": "a lava sea monster",
+      "labels": {
+        "de": "Lavamonster",
+        "ko": "용암 괴물",
+        "ja": "溶岩の怪物"
+      },
+      "pose": {
+        "badge": 0
+      },
+      "settings": [
+        "sea",
+        "stormy_sea",
+        "open_ocean_surface",
+        "deep_sea"
+      ]
+    },
+    "sea_monster_megalodon": {
+      "asset": "sea_monster_megalodon",
+      "float": true,
+      "size": "l",
+      "label": "a megalodon",
+      "labels": {
+        "de": "Megalodon",
+        "ko": "메갈로돈",
+        "ja": "メガロドン"
+      },
+      "pose": {
+        "badge": 0
+      },
+      "settings": [
+        "sea",
+        "stormy_sea",
+        "open_ocean_surface",
+        "deep_sea"
+      ]
+    },
+    "sea_monster_s": {
+      "asset": "sea_monster_s",
+      "float": true,
+      "size": "l",
+      "label": "a small sea monster",
+      "labels": {
+        "de": "kleines Seemonster",
+        "ko": "작은 바다 괴물",
+        "ja": "小さな海の怪物"
+      },
+      "pose": {
+        "badge": 0
+      },
+      "settings": [
+        "sea",
+        "stormy_sea",
+        "open_ocean_surface",
+        "deep_sea"
+      ]
+    },
+    "sea_monster_ss": {
+      "asset": "sea_monster_ss",
+      "float": true,
+      "size": "l",
+      "label": "a rare sea monster",
+      "labels": {
+        "de": "seltenes Seemonster",
+        "ko": "희귀한 바다 괴물",
+        "ja": "珍しい海の怪物"
+      },
+      "pose": {
+        "badge": 0
+      },
+      "settings": [
+        "sea",
+        "stormy_sea",
+        "open_ocean_surface",
+        "deep_sea"
+      ]
+    },
+    "big_fish": {
+      "asset": "big_fish",
+      "float": true,
+      "label": "a big fish",
+      "labels": {
+        "de": "großer Fisch|Riesenfisch",
+        "ko": "큰 물고기|대어",
+        "ja": "大物|大きな魚"
+      },
+      "settings": [
+        "sea",
+        "river",
+        "pond",
+        "foggy_harbor",
+        "open_ocean_surface"
+      ]
+    },
+    "small_fish": {
+      "asset": "fish",
+      "float": true,
+      "size": "s",
+      "label": "a fish",
+      "labels": {
+        "de": "Fisch|Fische",
+        "ko": "물고기",
+        "ja": "魚"
+      },
+      "settings": [
+        "sea",
+        "river",
+        "pond",
+        "foggy_harbor",
+        "open_ocean_surface"
+      ]
+    },
+    "fishing_boat": {
+      "asset": "boat",
+      "label": "a fishing boat",
+      "labels": {
+        "de": "Boot|Fischerboot",
+        "ko": "낚싯배|보트",
+        "ja": "釣り船|ボート"
+      },
+      "size": "l",
+      "settings": [
+        "sea",
+        "river",
+        "pond",
+        "foggy_harbor",
+        "open_ocean_surface"
+      ]
+    },
+    "fishing_rod": {
+      "asset": "fishing_rod",
+      "label": "a fishing rod",
+      "labels": {
+        "de": "Angel|Angelrute",
+        "ko": "낚싯대",
+        "ja": "釣り竿"
+      },
+      "size": "s",
+      "settings": [
+        "sea",
+        "river",
+        "pond",
+        "foggy_harbor",
+        "open_ocean_surface"
+      ]
+    },
+    "bobber": {
+      "asset": "bobber",
+      "float": true,
+      "size": "s",
+      "label": "a fishing float",
+      "labels": {
+        "de": "Schwimmer|Pose",
+        "ko": "찌",
+        "ja": "浮き"
+      },
+      "settings": [
+        "sea",
+        "river",
+        "pond",
+        "foggy_harbor",
+        "open_ocean_surface"
+      ]
+    },
+    "fishing_bucket": {
+      "asset": "bucket",
+      "size": "s",
+      "label": "a bucket",
+      "labels": {
+        "de": "Eimer",
+        "ko": "양동이",
+        "ja": "バケツ"
+      },
+      "settings": [
+        "sea",
+        "river",
+        "pond",
+        "foggy_harbor",
+        "open_ocean_surface"
+      ]
+    },
+    "cow": {
+      "asset": "cow",
+      "label": "a cow",
+      "labels": {
+        "de": "Kuh|Kühe",
+        "ko": "소|젖소",
+        "ja": "牛"
+      }
+    },
+    "pig": {
+      "asset": "pig",
+      "label": "a pig",
+      "labels": {
+        "de": "Schwein|Schweine",
+        "ko": "돼지",
+        "ja": "豚|ブタ"
+      }
+    },
+    "sheep": {
+      "asset": "sheep",
+      "label": "a sheep",
+      "labels": {
+        "de": "Schaf|Schafe",
+        "ko": "양",
+        "ja": "羊|ヒツジ"
+      }
+    },
+    "goat": {
+      "asset": "goat",
+      "label": "a goat",
+      "labels": {
+        "de": "Ziege|Ziegen",
+        "ko": "염소",
+        "ja": "ヤギ"
+      }
+    },
+    "horse": {
+      "asset": "horse",
+      "label": "a horse",
+      "labels": {
+        "de": "Pferd|Pferde",
+        "ko": "말",
+        "ja": "馬|ウマ"
+      }
+    },
+    "chicken": {
+      "asset": "chicken",
+      "label": "a chicken",
+      "labels": {
+        "de": "Huhn|Hühner|Henne",
+        "ko": "닭",
+        "ja": "ニワトリ|鶏"
+      }
+    },
+    "rooster": {
+      "asset": "rooster",
+      "label": "a rooster",
+      "labels": {
+        "de": "Hahn",
+        "ko": "수탉",
+        "ja": "おんどり"
+      }
+    },
+    "donkey": {
+      "asset": "donkey",
+      "label": "a donkey",
+      "labels": {
+        "de": "Esel",
+        "ko": "당나귀",
+        "ja": "ロバ"
+      }
+    },
+    "duck_farm": {
+      "asset": "duck",
+      "label": "a duck",
+      "labels": {
+        "de": "Ente|Enten",
+        "ko": "오리",
+        "ja": "アヒル|カモ"
+      }
+    },
+    "bee": {
+      "asset": "bee",
+      "label": "a bee",
+      "labels": {
+        "de": "Biene|Bienen",
+        "ko": "벌|꿀벌",
+        "ja": "ハチ|ミツバチ"
+      }
+    },
+    "tractor": {
+      "asset": "tractor",
+      "label": "a tractor",
+      "labels": {
+        "de": "Traktor|Trecker",
+        "ko": "트랙터",
+        "ja": "トラクター"
+      }
+    },
+    "windmill": {
+      "asset": "windmill",
+      "label": "a windmill",
+      "labels": {
+        "de": "Windmühle",
+        "ko": "풍차",
+        "ja": "風車"
+      }
+    },
+    "apple_tree": {
+      "asset": "apple_tree",
+      "label": "an apple tree",
+      "labels": {
+        "de": "Apfelbaum",
+        "ko": "사과나무",
+        "ja": "リンゴの木"
+      }
+    },
+    "sunflower": {
+      "asset": "sunflower",
+      "label": "a sunflower",
+      "labels": {
+        "de": "Sonnenblume|Sonnenblumen",
+        "ko": "해바라기",
+        "ja": "ひまわり"
+      }
+    },
+    "pumpkin": {
+      "asset": "pumpkin",
+      "label": "a pumpkin",
+      "labels": {
+        "de": "Kürbis|Kürbisse",
+        "ko": "호박",
+        "ja": "カボチャ"
+      }
+    },
+    "carrot": {
+      "asset": "carrot",
+      "label": "a carrot",
+      "labels": {
+        "de": "Karotte|Möhre|Karotten",
+        "ko": "당근",
+        "ja": "ニンジン"
+      }
+    },
+    "cabbage": {
+      "asset": "cabbage",
+      "label": "a cabbage",
+      "labels": {
+        "de": "Kohl|Kohlkopf",
+        "ko": "양배추",
+        "ja": "キャベツ"
+      }
+    },
+    "corn_plant": {
+      "asset": "corn_plant",
+      "label": "corn",
+      "labels": {
+        "de": "Mais",
+        "ko": "옥수수",
+        "ja": "トウモロコシ"
+      }
+    },
+    "strawberry_plant": {
+      "asset": "strawberry_plant",
+      "label": "strawberries",
+      "labels": {
+        "de": "Erdbeere|Erdbeeren",
+        "ko": "딸기",
+        "ja": "イチゴ"
+      }
+    },
+    "tomato_plant": {
+      "asset": "tomato_plant",
+      "label": "a tomato plant",
+      "labels": {
+        "de": "Tomate|Tomaten",
+        "ko": "토마토",
+        "ja": "トマト"
+      }
+    },
+    "watermelon": {
+      "asset": "watermelon",
+      "label": "a watermelon",
+      "labels": {
+        "de": "Wassermelone",
+        "ko": "수박",
+        "ja": "スイカ"
+      }
+    },
+    "potato": {
+      "asset": "potato",
+      "label": "a potato",
+      "labels": {
+        "de": "Kartoffel|Kartoffeln",
+        "ko": "감자",
+        "ja": "ジャガイモ"
+      }
+    },
+    "radish": {
+      "asset": "radish",
+      "label": "a giant radish",
+      "labels": {
+        "de": "Rübe|Radieschen|Rettich",
+        "ko": "무",
+        "ja": "大根|カブ"
+      }
     }
   },
   "buddies": {
@@ -851,6 +1476,12 @@
     },
     "rabbit": {
       "asset": "rabbit"
+    },
+    "chick": {
+      "asset": "chick"
+    },
+    "duck": {
+      "asset": "duck"
     }
   },
   "niches": {
@@ -1313,6 +1944,172 @@
         "owl",
         "moon",
         "sun"
+      ]
+    },
+    "zombie_survival": {
+      "hosts": [
+        "survivor",
+        "survivor_girl",
+        "survivor_hoodie",
+        "rescuer",
+        "rescuer_boy",
+        "raincoat",
+        "winter",
+        "scientist"
+      ],
+      "buddies": [
+        "dog",
+        "shiba",
+        "pug",
+        "cat"
+      ],
+      "settings": [
+        "abandoned_street",
+        "overgrown_plaza",
+        "rooftop_garden",
+        "subway_tunnel",
+        "flooded_downtown",
+        "safe_camp",
+        "ash_sky_city"
+      ],
+      "subjects": [
+        "zombie_walker",
+        "zombie_walker_girl",
+        "cure_sprayer",
+        "barricade",
+        "canned_food",
+        "shopping_cart",
+        "walkie_talkie",
+        "solar_panel",
+        "seed_tray",
+        "water_bottle_filter",
+        "abandoned_bus",
+        "tent",
+        "water_filter",
+        "boiling_pot",
+        "radio",
+        "sos_stones",
+        "first_aid",
+        "campfire"
+      ]
+    },
+    "monster_fishing": {
+      "hosts": [
+        "fisher_kid",
+        "fisher_girl",
+        "diver",
+        "diver_boy",
+        "marine_teacher",
+        "explorer",
+        "ranger"
+      ],
+      "buddies": [
+        "cat",
+        "crab",
+        "turtle",
+        "penguin",
+        "dog"
+      ],
+      "settings": [
+        "sea",
+        "river",
+        "pond",
+        "stormy_sea",
+        "open_ocean_surface",
+        "foggy_harbor",
+        "deep_sea",
+        "beach_cleanup"
+      ],
+      "subjects": [
+        "sea_monster_leviathan",
+        "sea_monster_drake",
+        "sea_monster_behemoth",
+        "sea_monster_crystal_whale",
+        "sea_monster_magma",
+        "sea_monster_megalodon",
+        "sea_monster_s",
+        "sea_monster_ss",
+        "big_fish",
+        "small_fish",
+        "fishing_boat",
+        "fishing_rod",
+        "bobber",
+        "fishing_bucket",
+        "giant_squid",
+        "great_white_shark",
+        "killer_whale",
+        "sperm_whale",
+        "octopus",
+        "anglerfish",
+        "whale",
+        "lighthouse"
+      ]
+    },
+    "happy_farm": {
+      "hosts": [
+        "farm_teacher",
+        "farm_kid",
+        "farm_girl",
+        "farm_grandpa",
+        "farm_grandma",
+        "student",
+        "teacher"
+      ],
+      "buddies": [
+        "dog",
+        "cat",
+        "chick",
+        "duck",
+        "rabbit"
+      ],
+      "settings": [
+        "farmyard_barn",
+        "garden",
+        "orchard",
+        "fruit_orchard",
+        "greenhouse",
+        "vegetable_rows",
+        "highland_farm",
+        "trellis_garden"
+      ],
+      "settings_by_lang": {
+        "de": [
+          "allotment_garden",
+          "alpine_meadow",
+          "black_forest_village"
+        ],
+        "en": [
+          "pumpkin_patch",
+          "suburb_backyard"
+        ],
+        "ko": [
+          "highland_farm"
+        ]
+      },
+      "subjects": [
+        "cow",
+        "pig",
+        "sheep",
+        "goat",
+        "horse",
+        "chicken",
+        "rooster",
+        "donkey",
+        "duck_farm",
+        "bee",
+        "tractor",
+        "windmill",
+        "apple_tree",
+        "sunflower",
+        "pumpkin",
+        "carrot",
+        "cabbage",
+        "corn_plant",
+        "strawberry_plant",
+        "tomato_plant",
+        "watermelon",
+        "potato",
+        "radish"
       ]
     }
   }

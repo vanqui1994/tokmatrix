@@ -2682,6 +2682,10 @@
     "signal": [
       0,
       1
+    ],
+    "badge": [
+      0,
+      1
     ]
   },
   "pose_defaults": {
@@ -2769,7 +2773,8 @@
     "clarity": 1,
     "crank": 0,
     "powered": 0,
-    "signal": 0
+    "signal": 0,
+    "badge": 1
   },
   "style_colors": [
     "body",
