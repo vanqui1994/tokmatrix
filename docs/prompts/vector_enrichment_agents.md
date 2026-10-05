@@ -132,6 +132,9 @@ Chung cho mọi agent có việc dưới đây:
   `python3 -m unittest tests.test_vector_enrichment_backgrounds tests.test_vector_pack_<pack> tests.test_vector_video tests.test_remake_vector`
   và MỞ ẢNH nền đã sửa (ngày + đêm, khổ ngang). Báo cáo: dòng kết quả test, mỗi nền một câu mô tả sau sửa.
 
+Mẹo từ Agent A: engine truyền `settings.time` ('day'/'night'), không phải `timeOfDay`; tham số thời gian (giây) là `t`
+của hàm `draw(ctx, settings, t)`, không phải `s.time`. Đọc ngày/đêm bằng `settings.time === 'night' || settings.night`.
+
 | Agent | Nền phải sửa |
 |---|---|
 | A | `foggy_harbor`, `radio_telescope_field`: ngày = đêm → làm bản ngày sáng (sương xám sáng, trời ban ngày) |
