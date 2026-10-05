@@ -16,7 +16,7 @@ const FILM_STATUS = {
   assembling: ['🧩 Đang ghép', 'badge-warning'], done: ['✅ Xong', 'badge-success'], partial: ['⚠️ Thiếu cảnh', 'badge-warning'],
   error: ['❌ Lỗi', 'badge-danger'], stopped: ['⏸ Đã dừng', 'badge-neutral'],
 };
-const SCENE_STATUS = { pending: '⏳', running: '🎬', done: '✅', error: '❌' };
+const SCENE_STATUS = { pending: '⏳', running: '🎬', done: '✅', error: '❌', skipped: '⤼' };
 
 function loadMuseFilmTab() {
   filmRefresh();
@@ -47,8 +47,9 @@ async function filmRefresh() {
 function filmCard(p) {
   const [label, cls] = FILM_STATUS[p.status] || [p.status, 'badge-neutral'];
   const scenes = p.scenes || [];
+  const shots = scenes.filter((s) => s.status !== 'skipped');
   const done = scenes.filter((s) => s.status === 'done').length;
-  const total = scenes.length || p.n;
+  const total = shots.length || p.n;
   const pct = total ? Math.round((done / total) * 100) : 0;
   const open = filmOpen === p.id;
   const btn = (cls2, onclick, text) => `<button type="button" class="story-video-action${cls2}" onclick="${onclick}">${text}</button>`;

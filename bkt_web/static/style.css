@@ -9218,3 +9218,4 @@ tr:hover .btn-history-mini { opacity: 0.75; }
 .film-scene-actions { display: flex; gap: 6px; }
 .film-page .story-player video { width: min(100%, 420px); }
 @media (max-width: 560px) { .film-field { margin: 0 14px 14px; } .film-scene { grid-template-columns: 26px minmax(0,1fr); } .film-scene-actions { grid-column: 2; } }
+.film-scene.is-skipped { opacity: .55; }

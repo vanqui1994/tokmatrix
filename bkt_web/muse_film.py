@@ -77,10 +77,18 @@ def list_projects() -> List[Dict[str, Any]]:
     return sorted(out, key=lambda p: -p.get("created", 0))
 
 
+def shot_text(line: str) -> str:
+    """Một dòng ý tưởng → mô tả cảnh: bỏ dấu trích dẫn Markdown (">"), gạch đầu dòng, số thứ tự và "**";
+    trả "" khi không còn chữ nào (Muse nhận "Shot: >" là mô tả rỗng)."""
+    t = re.sub(r"^\s*(?:>\s*)+", "", line or "")
+    t = re.sub(r"^\s*(?:[-*•]|\d+[.)])\s+", "", t).replace("**", "").strip()
+    return t if re.search(r"\w", t) else ""
+
+
 def create(idea: str, scenes: int, style: str, aspect: str, keep_audio: bool, title: str = "") -> Dict[str, Any]:
     pid = uuid.uuid4().hex[:10]
-    lines = [re.sub(r"^\s*(?:[-*•]|\d+[.)])\s*", "", l).strip() for l in idea.splitlines()]
-    manual = [l for l in lines if l] if len([l for l in lines if l]) >= 2 else []
+    lines = [t for t in (shot_text(l) for l in idea.splitlines()) if t]
+    manual = lines if len(lines) >= 2 else []
     p = {"id": pid, "title": title or idea.strip().splitlines()[0][:60], "idea": idea, "n": max(2, min(30, scenes)),
          "style": style if style in STYLES else "cinematic", "aspect": aspect if aspect in ASPECTS else "9:16",
          "keep_audio": bool(keep_audio), "status": "queued", "created": int(time.time()), "scenes": [],
@@ -231,7 +239,10 @@ def process(pid: str) -> None:
         p["status"] = "rendering"; save(p)
         (_dir(pid) / "clips").mkdir(exist_ok=True)
         for s in p["scenes"]:
-            if s["status"] == "done":
+            if s["status"] in ("done", "skipped"):
+                continue
+            if not shot_text(s.get("text", "")):  # dự án tạo trước khi lọc dòng ">" / dòng trống
+                s.update(status="skipped", error=""); save(p)
                 continue
             if _stopped(pid):
                 return
@@ -249,7 +260,7 @@ def process(pid: str) -> None:
                 return
         p["status"] = "assembling"; save(p)
         assemble(p)
-        bad = [s["i"] for s in p["scenes"] if s["status"] != "done"]
+        bad = [s["i"] for s in p["scenes"] if s["status"] not in ("done", "skipped")]
         p.update(status="done" if not bad else "partial", error=f"cảnh lỗi: {bad}" if bad else "")
     except Exception as e:  # noqa: BLE001
         p.update(status="error", error=str(e)[:500])
