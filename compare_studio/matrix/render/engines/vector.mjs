@@ -15,7 +15,34 @@ import { escapeHtml, STRING, INTEGER } from "./common.mjs";
 
 const COMPARE_DIR = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../../..");
 const PROJECT_ROOT = path.resolve(COMPARE_DIR, "..");
-const NICHES = JSON.parse(fs.readFileSync(path.join(COMPARE_DIR, "config", "vector_niches.json"), "utf8"));
+// Cấu hình gốc + các mảnh `vector_niches.d/<pack>.json` (mỗi gói rig một file, chỉ thêm) — giống niches.py.
+function loadNiches() {
+  const dir = path.join(COMPARE_DIR, "config");
+  const data = JSON.parse(fs.readFileSync(path.join(dir, "vector_niches.json"), "utf8"));
+  const fragDir = path.join(dir, "vector_niches.d");
+  const frags = fs.existsSync(fragDir) ? fs.readdirSync(fragDir).filter((f) => f.endsWith(".json")).sort() : [];
+  for (const file of frags) {
+    const frag = JSON.parse(fs.readFileSync(path.join(fragDir, file), "utf8"));
+    for (const group of ["hosts", "subjects", "buddies"]) {
+      for (const [key, spec] of Object.entries(frag[group] || {})) {
+        if (data[group][key]) throw new Error(`vector_niches.d/${file}: ${group} ${key} already exists`);
+        data[group][key] = spec;
+      }
+    }
+    for (const [nid, add] of Object.entries(frag.niches || {})) {
+      const spec = data.niches[nid] || (data.niches[nid] = { hosts: [], buddies: [], settings: [], subjects: [] });
+      for (const field of ["hosts", "buddies", "settings", "subjects"]) spec[field] = [...new Set([...(spec[field] || []), ...(add[field] || [])])];
+      for (const field of ["settings_by_lang", "hosts_by_lang"]) {
+        for (const [lang, items] of Object.entries(add[field] || {})) {
+          spec[field] = spec[field] || {};
+          spec[field][lang] = [...new Set([...(spec[field][lang] || []), ...items])];
+        }
+      }
+    }
+  }
+  return data;
+}
+const NICHES = loadNiches();
 const FONT_DIR = ["tools", "template-kinetic", "assets"];
 export const LANGUAGES = Object.freeze(["de", "en", "ko", "ja"]);
 export const BEATS = Object.freeze(["enter", "exit", "walk", "point", "emote", "react", "celebrate", "think", "look", "reveal"]);

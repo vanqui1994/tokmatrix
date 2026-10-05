@@ -100,6 +100,14 @@ class BuilderTest(unittest.TestCase):
         self.assertIn("subject_planet_mars", subjects)
         self.assertIn("subject_planet_saturn", subjects)
 
+    def test_localized_labels_let_the_fallback_find_subjects_in_every_language(self):
+        from bkt_web.vector_video.builder import _mentions
+        spec = {"label": "a whale", "labels": {"de": "Wal|Wale", "ko": "고래", "ja": "クジラ"}}
+        self.assertTrue(_mentions(spec, "ja", "巨大なクジラは歌う", set()))
+        self.assertTrue(_mentions(spec, "ko", "거대한 고래는", {"거대한", "고래는"}))
+        self.assertTrue(_mentions(spec, "de", "der wal singt", {"der", "wal", "singt"}))
+        self.assertFalse(_mentions(spec, "de", "walnuss", {"walnuss"}))
+
     def test_subjects_are_big_enough_and_never_overlap_people(self):
         story = make()["story"]
         assets = {c["id"]: c["asset"] for c in story["characters"]}

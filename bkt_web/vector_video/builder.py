@@ -135,6 +135,23 @@ def _label_words(label: str) -> list[str]:
     return [w for w in re.findall(r"[\w-]+", label.lower()) if len(w) > 3 and w not in {"the", "a", "an"}]
 
 
+def _mentions(spec: dict, lang: str, text: str, words: set[str]) -> bool:
+    """Lời/ý hình nhắc tới vật thể: từ của nhãn tiếng Anh hoặc nhãn theo ngôn ngữ kênh (`labels`).
+    Chữ CJK không có khoảng trắng nên nhãn ko/ja so như chuỗi con (≥ 2 ký tự); chữ Latin so nguyên từ."""
+    if any(w in words for w in _label_words(spec["label"])):
+        return True
+    local = (spec.get("labels") or {}).get(lang)
+    if not local:
+        return False
+    for term in [t.strip().lower() for t in local.split("|") if t.strip()]:
+        if re.search(r"[\u3040-\u30ff\u3400-\u9fff\uac00-\ud7af]", term):
+            if len(term) >= 2 and term in text:
+                return True
+        elif term in words or any(w in words for w in _label_words(term)):
+            return True
+    return False
+
+
 def fallback_storyboard(scenes: list[dict], niche_id: str, lang: str, title: str = "") -> dict:
     """Chế độ A (tất định, không bịa): giữ nền theo cụm 2 cảnh, chọn vật thể có tên xuất hiện trong lời đọc
     hoặc ý hình, nếu không thì xoay vòng; beat theo mẫu mở đầu → giới thiệu → phản ứng → kết."""
@@ -144,8 +161,9 @@ def fallback_storyboard(scenes: list[dict], niche_id: str, lang: str, title: str
     out = []
     n = len(scenes)
     for i, scene in enumerate(scenes):
-        words = set(re.findall(r"[\w-]+", f"{scene.get('line', '')} {scene.get('visual_intent', '')}".lower()))
-        match = next((s for s in subjects if any(w in words for w in _label_words(allow["subjects"][s]["label"]))), None)
+        text = f"{scene.get('line', '')} {scene.get('visual_intent', '')}".lower()
+        words = set(re.findall(r"[\w-]+", text))
+        match = next((s for s in subjects if _mentions(allow["subjects"][s], lang, text, words)), None)
         # Không bịa: không khớp tên thì giữ vật thể của cảnh trước (cùng chủ đề đang nói), không có thì "none".
         subject = match or (out[-1]["subject"] if out else "none")
         if i == 0:

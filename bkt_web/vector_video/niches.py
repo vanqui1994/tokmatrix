@@ -10,9 +10,33 @@ NICHES_PATH = ROOT / "compare_studio" / "config" / "vector_niches.json"
 LANGUAGES = ("de", "en", "ko", "ja")
 
 
+FRAGMENTS_DIR = NICHES_PATH.parent / "vector_niches.d"
+
+
+def merge(base: dict, frag: dict) -> dict:
+    """Ghép một mảnh `vector_niches.d/<pack>.json` (hosts/subjects/buddies mới, niche thêm nền/vật thể/người dẫn).
+    Mảnh chỉ được thêm: id đã có thì lỗi (mỗi gói một file để các agent làm song song không đè nhau)."""
+    for group in ("hosts", "subjects", "buddies"):
+        for key, spec in frag.get(group, {}).items():
+            if key in base[group]:
+                raise ValueError(f"{group} {key} đã có (mảnh chỉ được thêm)")
+            base[group][key] = spec
+    for nid, add in frag.get("niches", {}).items():
+        spec = base["niches"].setdefault(nid, {"hosts": [], "buddies": [], "settings": [], "subjects": []})
+        for field in ("hosts", "buddies", "settings", "subjects"):
+            spec[field] = list(dict.fromkeys([*spec.get(field, []), *add.get(field, [])]))
+        for field in ("settings_by_lang", "hosts_by_lang"):
+            for lang, items in add.get(field, {}).items():
+                spec.setdefault(field, {})[lang] = list(dict.fromkeys([*spec.get(field, {}).get(lang, []), *items]))
+    return base
+
+
 @lru_cache(maxsize=1)
 def load() -> dict:
-    return json.loads(NICHES_PATH.read_text(encoding="utf-8"))
+    data = json.loads(NICHES_PATH.read_text(encoding="utf-8"))
+    for frag in sorted(FRAGMENTS_DIR.glob("*.json")) if FRAGMENTS_DIR.exists() else []:
+        merge(data, json.loads(frag.read_text(encoding="utf-8")))
+    return data
 
 
 def supported_niches() -> list[str]:
