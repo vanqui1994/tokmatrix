@@ -42,14 +42,14 @@ class RunRequest(BaseModel):
     limit: int = Field(5, ge=1, le=50)
     jobs: int = Field(1, ge=1, le=3)
     lang: str = "auto"
-    images: str = Field("muse", pattern="^(imagerouter|muse)$")
+    images: str = Field("imagerouter", pattern="^(imagerouter|muse)$")
 
 
 class WatchChannel(BaseModel):
     url: str = Field(..., min_length=8, max_length=300)
     limit: int = Field(3, ge=1, le=20)
     lang: str = Field("auto", pattern=r"^[a-z]{2}$|^auto$")
-    images: str = Field("muse", pattern="^(imagerouter|muse)$")
+    images: str = Field("imagerouter", pattern="^(imagerouter|muse)$")
 
 
 class WatchConfig(BaseModel):
@@ -90,7 +90,7 @@ def watch_tick(now: float | None = None) -> str | None:
         if not due:
             return None
         ch = min(due, key=lambda c: c.get("last_run", 0))
-        _launch(ch["url"], ch.get("limit", 3), 1, ch.get("lang", "auto"), ch.get("images", "muse"))
+        _launch(ch["url"], ch.get("limit", 3), 1, ch.get("lang", "auto"), ch.get("images", "imagerouter"))
         ch["last_run"] = int(now)
         _watch_save(data)
         return ch["url"]
@@ -175,6 +175,9 @@ def _launch(url: str, limit: int, jobs: int, lang: str, images: str, resumed: bo
     log = open(LOG, "a" if resumed else "w")
     if resumed:
         log.write(f"\n[{time.strftime('%H:%M:%S')}] tự chạy tiếp sau khi web app khởi động lại\n"); log.flush()
+    # Chủ kênh 06/10: Muse chỉ dùng cho Kuaishou remake (muse_remake), Antigravity cho Matrix → Story Remake luôn vẽ bằng
+    # ImageRouter (Cloudflare dự phòng); giá trị `muse` cũ (runner.json/watch.json/client cũ) cũng chạy ImageRouter.
+    images = "imagerouter"
     env = {**os.environ, "STORY_REMAKE_IMAGES": images}
     proc = subprocess.Popen(cmd, cwd=str(REPO), stdout=log, stderr=subprocess.STDOUT, start_new_session=True, env=env)
     RUNNER.write_text(json.dumps({"pid": proc.pid, "url": url, "limit": limit, "jobs": jobs, "lang": lang, "images": images,
@@ -193,7 +196,7 @@ def resume_interrupted() -> None:
             info.pop("running", None); info["active"] = False
             RUNNER.write_text(json.dumps(info))
             return
-        _launch(info["url"], info.get("limit", 5), info.get("jobs", 1), info.get("lang", "auto"), info.get("images", "muse"), resumed=True, resumes=n)
+        _launch(info["url"], info.get("limit", 5), info.get("jobs", 1), info.get("lang", "auto"), info.get("images", "imagerouter"), resumed=True, resumes=n)
 
 
 @router.get("/status")

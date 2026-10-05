@@ -11,6 +11,14 @@ async function storyJson(url, options) {
 }
 
 function loadStoryRemakeTab() {
+  // Muse dành cho Kuaishou remake: bỏ lựa chọn Muse, Story Remake chỉ vẽ bằng ImageRouter (Cloudflare dự phòng)
+  const imgSel = document.getElementById('story-images');
+  if (imgSel) {
+    imgSel.querySelector('option[value="muse"]')?.remove();
+    imgSel.value = 'imagerouter';
+    const opt = imgSel.querySelector('option[value="imagerouter"]');
+    if (opt) opt.textContent = 'ImageRouter, dự phòng Cloudflare';
+  }
   storyRefresh();
   storyWatchRefresh();
   if (storyTimer) clearInterval(storyTimer);
@@ -82,7 +90,7 @@ async function storyRun() {
     limit: Number(document.getElementById('story-limit').value) || 5,
     jobs: Number(document.getElementById('story-jobs').value) || 1,
     lang: document.getElementById('story-lang').value || 'auto',
-    images: document.getElementById('story-images').value || 'muse',
+    images: document.getElementById('story-images').value || 'imagerouter',
   };
   try {
     await storyJson('/api/story-remake/run', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
@@ -172,7 +180,7 @@ async function storyWatchAdd() {
     url,
     limit: Number(document.getElementById('story-watch-limit').value) || 3,
     lang: document.getElementById('story-lang').value || 'auto',
-    images: document.getElementById('story-images').value || 'muse',
+    images: document.getElementById('story-images').value || 'imagerouter',
   };
   try {
     const r = await storyJson('/api/story-remake/watch', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });

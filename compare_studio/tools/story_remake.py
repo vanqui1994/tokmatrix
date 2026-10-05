@@ -252,8 +252,8 @@ def draw(vid, work, items):
     todo = [it for it in items if not (d / f"{it['key']}.png").exists()]
     if not todo:
         return
-    # Owner 30/09: Muse là nguồn ưu tiên; cảnh Muse lỗi/đứng yên → ImageRouter (Cloudflare dự phòng) vẽ bù.
-    if os.environ.get("STORY_REMAKE_IMAGES", "muse") == "muse" and ON_VPS and muse_ready():
+    # Owner 06/10: ImageRouter (Cloudflare dự phòng) là nguồn ảnh; Muse dành cho Kuaishou remake. `muse` chỉ còn khi gọi tay với STORY_REMAKE_IMAGES=muse.
+    if os.environ.get("STORY_REMAKE_IMAGES", "imagerouter") == "muse" and ON_VPS and muse_ready():
         todo = draw_muse(vid, work, todo)
         if not todo:
             return
