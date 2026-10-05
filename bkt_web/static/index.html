@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/static/style.css?v=4.15">
+  <link rel="stylesheet" href="/static/style.css?v=4.16">
   <link rel="stylesheet" href="/static/light-theme.css?v=3.1">
   <link rel="stylesheet" href="/static/cms-theme.css?v=2.8">
   <link rel="stylesheet" href="/static/flow_view.css?v=2">
@@ -816,22 +816,21 @@
           <div class="card-header">
             <div class="card-header-icon icon-cyan">📥</div>
             <div>
-              <h3>Tải Video Hàng Loạt (Không Logo HD)</h3>
-              <p class="card-subtitle">Hỗ trợ liên kết TikTok HTTPS, giới hạn 50 video mỗi lượt.</p>
+              <h3>Tải Video Hàng Loạt (Nhiều Nền Tảng)</h3>
+              <p class="card-subtitle">TikTok, YouTube, Douyin, Instagram, Facebook, X… · tối đa 50 video mỗi lượt.</p>
             </div>
           </div>
 
           <div class="card-body">
             <div class="form-group">
-              <label for="dl-platform">Nền tảng nguồn:</label>
-              <select id="dl-platform" class="form-control">
-                <option value="tiktok">TikTok (No Watermark API)</option>
-              </select>
+              <label>Nền tảng hỗ trợ <span class="dl-auto-note">(tự nhận theo link)</span>:</label>
+              <div class="dl-platforms" id="dl-platforms" aria-live="polite"></div>
             </div>
 
             <div class="form-group">
-              <label for="dl-urls">Danh sách Link Video (Mỗi link một dòng):</label>
-              <textarea id="dl-urls" class="form-control mono" rows="6" placeholder="https://www.tiktok.com/@user/video/7391823712893&#10;https://www.tiktok.com/@user/video/7391823712894"></textarea>
+              <label for="dl-urls">Danh sách Link Video (Mỗi link một dòng, trộn nhiều nền tảng được):</label>
+              <textarea id="dl-urls" class="form-control mono" rows="6" oninput="dlDetectLinks()" placeholder="https://www.tiktok.com/@user/video/7391823712893&#10;https://www.youtube.com/shorts/abc123&#10;https://www.instagram.com/reel/xyz/"></textarea>
+              <div class="dl-detect" id="dl-detect"></div>
             </div>
 
             <div style="display: flex; gap: 8px; margin: 8px 0 14px 0; flex-wrap: wrap;">
@@ -860,7 +859,7 @@
           <div class="card-body feature-tips">
             <div class="tip-item">
               <span class="tip-badge">100% Gốc</span>
-              <p>Tự động bóc tách và loại bỏ hình mờ, logo TikTok/Douyin không làm mờ hình.</p>
+              <p>TikTok tải bản không logo (chocode → tikwm), lỗi thì thử yt-dlp. Các nền tảng khác tải bản gốc chất lượng cao nhất tới 1080p qua yt-dlp.</p>
             </div>
             <div class="tip-item">
               <span class="tip-badge">Sẵn Sàng Dùng</span>
@@ -5580,7 +5579,7 @@
     </div>
   </div>
 
-  <script src="/static/app.js?v=6.25"></script>
+  <script src="/static/app.js?v=6.26"></script>
   <script src="/static/tiktok_api.js?v=2"></script>
   <script src="/static/dola_video.js?v=4"></script>
   <script src="/static/story_remake.js?v=5"></script>

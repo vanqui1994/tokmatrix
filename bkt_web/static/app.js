@@ -1481,12 +1481,41 @@ function dlClearInput() {
   }
 }
 
+// Nền tảng tải: lấy danh sách từ server, đánh dấu nền tảng của các link đang dán
+let DL_PLATFORMS = [];
+async function dlLoadPlatforms() {
+  try {
+    const d = await (await fetch('/api/downloader/platforms')).json();
+    DL_PLATFORMS = d.platforms || [];
+  } catch (_) { DL_PLATFORMS = []; }
+  dlDetectLinks();
+}
+
+function dlPlatformOf(url) {
+  let host = '';
+  try { const u = new URL(url); if (u.protocol !== 'https:') return null; host = u.hostname.toLowerCase(); } catch (_) { return null; }
+  return DL_PLATFORMS.find((p) => p.hosts.some((h) => host === h || host.endsWith('.' + h))) || null;
+}
+
+function dlDetectLinks() {
+  const lines = (document.getElementById('dl-urls')?.value || '').split('\n').map((u) => u.trim()).filter(Boolean);
+  const counts = {}; let bad = 0;
+  lines.forEach((u) => { const p = dlPlatformOf(u); if (p) counts[p.id] = (counts[p.id] || 0) + 1; else bad += 1; });
+  const box = document.getElementById('dl-platforms');
+  if (box) box.innerHTML = DL_PLATFORMS.map((p) => `<span class="dl-platform${counts[p.id] ? ' is-active' : ''}">${escapeHtml(p.label)}${counts[p.id] ? ` <b>${counts[p.id]}</b>` : ''}</span>`).join('');
+  const info = document.getElementById('dl-detect');
+  if (info) {
+    const total = lines.length - bad;
+    info.innerHTML = !lines.length ? '' : `${total} link hợp lệ${bad ? ` · <span class="dl-bad">${bad} link không hỗ trợ sẽ bị bỏ</span>` : ''}${total > 50 ? ' · <span class="dl-bad">quá 50 link</span>' : ''}`;
+  }
+}
+dlLoadPlatforms();
+
 // Download Button
 const btnStartDownload = document.getElementById('btn-start-download');
 if (btnStartDownload) {
   btnStartDownload.addEventListener('click', async () => {
     const urlsText = document.getElementById('dl-urls').value.trim();
-    const platform = document.getElementById('dl-platform').value;
 
     if (!urlsText) {
       showToast('Vui lòng nhập ít nhất 1 đường link video!');
@@ -1501,12 +1530,13 @@ if (btnStartDownload) {
       const res = await fetch('/api/downloader/download', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ urls, platform })
+        body: JSON.stringify({ urls })
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.detail || 'Không thể tạo tác vụ tải');
       showToast(data.message || 'Đã tạo tác vụ tải video');
       document.getElementById('dl-urls').value = '';
+      dlDetectLinks();
       if (data.job_id) await pollDownloadJob(data.job_id, btnStartDownload);
       await loadDownloadedVideos();
     } catch (err) {
@@ -1529,7 +1559,7 @@ async function pollDownloadJob(jobId, button) {
     const done = (job.completed || 0) + (job.failed || 0);
     button.textContent = `Đang tải ${done}/${job.total}...`;
     if (job.status === 'COMPLETED' || job.status === 'ERROR') {
-      showToast(`Hoàn tất: ${job.completed} thành công, ${job.failed} lỗi`);
+      showToast(`Hoàn tất: ${job.completed} thành công, ${job.failed} lỗi` + (job.failed && job.error_message ? ` — ${job.error_message.split('\n').pop()}` : ''));
       return;
     }
     await new Promise(resolve => setTimeout(resolve, 1000));

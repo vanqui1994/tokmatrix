@@ -29,6 +29,7 @@ deploy/antigravity_accounts_pool.json
 
 # Generated media
 bkt_web/storage/downloads/
+bkt_web/storage/download_cookies/
 bkt_web/storage/rendered/
 bkt_web/storage/remake_uploads/
 bkt_web/storage/generated_scripts/

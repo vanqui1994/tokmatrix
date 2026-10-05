@@ -9230,3 +9230,12 @@ tr:hover .btn-history-mini { opacity: 0.75; }
 .film-account.is-rest .film-account-dot { background: #f79009; }
 .film-account.is-off .film-account-dot { background: #d0d5dd; }
 .film-account.is-off { color: #98a2b3; }
+
+/* Tải video nhiều nền tảng */
+.dl-auto-note { color: var(--text-dim); font-weight: 500; }
+.dl-platforms { display: flex; flex-wrap: wrap; gap: 6px; }
+.dl-platform { padding: 4px 10px; border: 1px solid var(--border-color); border-radius: 999px; font-size: 11.5px; color: var(--text-muted); }
+.dl-platform.is-active { border-color: #1570ef; background: rgba(21,112,239,.08); color: #175cd3; }
+.dl-platform b { margin-left: 2px; }
+.dl-detect { margin-top: 6px; font-size: 12px; color: var(--text-muted); min-height: 16px; }
+.dl-bad { color: var(--red-main); }

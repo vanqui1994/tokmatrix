@@ -54,6 +54,7 @@ try:
     from bkt_web.chocode_routes import router as tiktok_api_router, sync_channel as tiktok_api_sync_channel
     from bkt_web.flow_routes import router as flow_router
     from bkt_web.story_remake_routes import router as story_remake_router
+    from bkt_web import multi_downloader
     from bkt_web import dola_routes
     from bkt_web import dola_admin_proxy
     from bkt_web.muse_film_routes import router as muse_film_router
@@ -83,6 +84,7 @@ except ImportError:
     from chocode_routes import router as tiktok_api_router, sync_channel as tiktok_api_sync_channel
     from flow_routes import router as flow_router
     from story_remake_routes import router as story_remake_router
+    import multi_downloader
     import dola_routes
     import dola_admin_proxy
     from muse_film_routes import router as muse_film_router
@@ -2720,19 +2722,29 @@ def _resolve_tiktok_source_tikwm(url: str) -> Optional[dict]:
     }
 
 
-def download_single_video(url: str) -> Optional[dict]:
+def download_single_video(url: str, errors: Optional[List[str]] = None) -> Optional[dict]:
+    """TikTok: chocode → tikwm (không logo) → yt-dlp. Nền tảng khác (YouTube, Douyin, Instagram…): yt-dlp."""
     clean_url = url.strip()
-    if not clean_url:
+    platform = multi_downloader.detect_platform(clean_url)
+    if not platform:
         return None
-    for resolver in (_resolve_tiktok_source_chocode, _resolve_tiktok_source_tikwm):
-        try:
-            result = _download_resolved_video(clean_url, resolver(clean_url))
-        except Exception as e:
-            print(f"[Downloader] {resolver.__name__} lỗi với {clean_url}: {e}")
-            result = None
-        if result:
-            return result
-    return None
+    if platform == "tiktok":
+        for resolver in (_resolve_tiktok_source_chocode, _resolve_tiktok_source_tikwm):
+            try:
+                result = _download_resolved_video(clean_url, resolver(clean_url))
+            except Exception as e:
+                print(f"[Downloader] {resolver.__name__} lỗi với {clean_url}: {e}")
+                result = None
+            if result:
+                return result
+    try:
+        got = multi_downloader.download_ytdlp(clean_url, platform, DOWNLOADS_DIR)
+    except Exception as e:
+        print(f"[Downloader] yt-dlp lỗi với {clean_url}: {e}")
+        if errors is not None:
+            errors.append(f"{multi_downloader.label(platform)}: {e}")
+        return None
+    return _record_download(clean_url, platform, got, got["path"])
 
 
 def _download_resolved_video(clean_url: str, data: Optional[dict]) -> Optional[dict]:
@@ -2774,13 +2786,23 @@ def _download_resolved_video(clean_url: str, data: Optional[dict]) -> Optional[d
             partial_fpath.unlink()
         return None
 
+    return _record_download(clean_url, "tiktok", data, local_fpath)
+
+
+def _record_download(clean_url: str, platform: str, data: dict, local_fpath: Path) -> dict:
+    vid_id = re.sub(r"[^0-9A-Za-z_-]", "", str(data.get("id") or ""))[:80] or local_fpath.stem
+    title = data.get("title") or f"{multi_downloader.label(platform)} {vid_id}"
+    author = data.get("author") or ""
+    duration = int(data.get("duration") or 0)
+    cover = data.get("cover") or ""
     f_size = local_fpath.stat().st_size
     now = int(time.time())
     conn = connect_db(DB_PATH)
     conn.execute("""
         INSERT INTO downloaded_videos (original_url, platform, title, author, duration, cover_url, local_path, file_size, status, created_at)
-        VALUES (?, 'TikTok', ?, ?, ?, ?, ?, ?, 'COMPLETED', ?)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'COMPLETED', ?)
         ON CONFLICT(original_url) DO UPDATE SET
+            platform=excluded.platform,
             title=excluded.title,
             author=excluded.author,
             duration=excluded.duration,
@@ -2789,7 +2811,7 @@ def _download_resolved_video(clean_url: str, data: Optional[dict]) -> Optional[d
             file_size=excluded.file_size,
             status='COMPLETED',
             created_at=excluded.created_at
-    """, (clean_url, title, author, duration, cover, str(local_fpath), f_size, now))
+    """, (clean_url, multi_downloader.label(platform), title, author, duration, cover, str(local_fpath), f_size, now))
     conn.commit()
     conn.close()
     return {
@@ -2800,6 +2822,7 @@ def _download_resolved_video(clean_url: str, data: Optional[dict]) -> Optional[d
         "file_size": f_size,
         "local_path": str(local_fpath),
         "provider": data.get("provider"),
+        "platform": platform,
     }
 
 def process_batch_download(job_id: int, urls: List[str]):
@@ -2807,13 +2830,14 @@ def process_batch_download(job_id: int, urls: List[str]):
     conn.execute("UPDATE download_jobs SET status='PROCESSING' WHERE id=?", (job_id,))
     conn.commit()
     conn.close()
+    errors: List[str] = []
     for u in urls:
-        result = download_single_video(u)
+        result = download_single_video(u, errors)
         conn = connect_db(DB_PATH)
         if result:
             conn.execute("UPDATE download_jobs SET completed=completed+1 WHERE id=?", (job_id,))
         else:
-            conn.execute("UPDATE download_jobs SET failed=failed+1 WHERE id=?", (job_id,))
+            conn.execute("UPDATE download_jobs SET failed=failed+1, error_message=? WHERE id=?", ("\n".join(errors[-5:])[:2000], job_id))
         conn.commit()
         conn.close()
     conn = connect_db(DB_PATH)
@@ -2826,15 +2850,14 @@ def process_batch_download(job_id: int, urls: List[str]):
 
 @app.post("/api/downloader/download")
 def start_download_videos(item: DownloadItem, background_tasks: BackgroundTasks):
-    if (item.platform or "tiktok").lower() != "tiktok":
-        raise HTTPException(status_code=400, detail="Hiện tại chỉ hỗ trợ TikTok")
     raw_urls = item.urls
-    if isinstance(raw_urls, list):
-        urls = [u.strip() for u in raw_urls if isinstance(u, str) and _is_allowed_tiktok_url(u.strip())]
-    else:
-        urls = [u.strip() for u in str(raw_urls).split("\n") if _is_allowed_tiktok_url(u.strip())]
+    lines = raw_urls if isinstance(raw_urls, list) else str(raw_urls).split("\n")
+    lines = [u.strip() for u in lines if isinstance(u, str) and u.strip()]
+    urls = list(dict.fromkeys(u for u in lines if multi_downloader.detect_platform(u)))
+    skipped = len(lines) - len([u for u in lines if multi_downloader.detect_platform(u)])
     if not urls:
-        raise HTTPException(status_code=400, detail="Vui lòng nhập ít nhất 1 đường link hợp lệ (http...)")
+        names = ", ".join(multi_downloader.label(p) for p in multi_downloader.PLATFORMS)
+        raise HTTPException(status_code=400, detail=f"Không có link https nào thuộc nền tảng hỗ trợ ({names})")
     if len(urls) > 50:
         raise HTTPException(status_code=400, detail="Mỗi lượt chỉ tải tối đa 50 video")
     conn = connect_db(DB_PATH)
@@ -2846,7 +2869,20 @@ def start_download_videos(item: DownloadItem, background_tasks: BackgroundTasks)
     conn.commit()
     conn.close()
     background_tasks.add_task(process_batch_download, job_id, urls)
-    return {"message": f"Bắt đầu tải xuống {len(urls)} video không logo!", "total": len(urls), "job_id": job_id}
+    by_platform: Dict[str, int] = {}
+    for u in urls:
+        name = multi_downloader.label(multi_downloader.detect_platform(u))
+        by_platform[name] = by_platform.get(name, 0) + 1
+    summary = ", ".join(f"{n} {k}" for k, n in by_platform.items())
+    note = f" (bỏ {skipped} link không hỗ trợ)" if skipped else ""
+    return {"message": f"Bắt đầu tải {len(urls)} video: {summary}{note}", "total": len(urls), "job_id": job_id,
+            "platforms": by_platform, "skipped": skipped}
+
+
+@app.get("/api/downloader/platforms")
+def downloader_platforms():
+    return {"platforms": [{"id": k, "label": v["label"], "hosts": v["hosts"],
+                           "cookies": bool(multi_downloader.cookie_file(k))} for k, v in multi_downloader.PLATFORMS.items()]}
 
 
 @app.get("/api/downloader/jobs/{job_id}")
