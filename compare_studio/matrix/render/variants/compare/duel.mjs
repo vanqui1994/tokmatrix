@@ -2,7 +2,7 @@
 // theo điểm 0–10 của từng tiêu chí, mỗi hiệp một hàng — khác cột thanh dọc của tierlist. Composition 2: bảng điểm LED
 // sân vận động (chấm LED đối xứng, số lớn).
 import { defineVariant } from "../kit/define.mjs";
-import { compareBase, compareModel, compareUi, fitBox, pop, val } from "./common.mjs";
+import { compareBase, compareModel, compareUi, fitBox, pop, val, subjectPair } from "./common.mjs";
 import { compareSample } from "./sample.mjs";
 
 const CSS = `
@@ -130,6 +130,7 @@ const tierDuel = defineVariant({
             };
           },
           overlay: (octx) => butterflyOverlay(model, octx.scenes, { x: 40, y: 590, w: 1000, h: 900 }),
+          underlay: () => subjectPair(model, { x: 60, y: 1680, w: 440, h: 195 }, { x: 580, y: 1680, w: 440, h: 195 }, { shape: "square" }), // ảnh đối tượng A/B
           css: CSS,
         };
       },
@@ -149,6 +150,7 @@ ${fitBox("cd-dig a", String(s.totalA), { size: 180, min: 40 })}<i class="cd-dash
 ${fitBox("cd-now", `${s.kicker} · ${s.criterion}`, { size: 30, min: 11 })}</div>`;
           },
           overlay: (octx) => ledRows(model, octx.scenes, { x: 40, y: 740, w: 1000, h: 560 }),
+          underlay: () => subjectPair(model, { x: 60, y: 1680, w: 440, h: 200 }, { x: 580, y: 1680, w: 440, h: 200 }, { shape: "square" }), // ảnh đối tượng A/B
           text: { style: "ticker", region: { x: 40, y: 1370, w: 1000, h: 270 }, size: 44, enter: "slide" },
           css: CSS + LED_CSS,
         };

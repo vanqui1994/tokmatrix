@@ -1,7 +1,7 @@
 // compare/card-game — trò chơi bài chỉ số: A và B là hai lá bài trên mặt bàn nỉ, mỗi hiệp lật thêm một dòng chỉ số
 // (dòng thắng có sao), ngọc điểm sáng dần. Composition 2: mỗi hiệp là một "nước bài" (hai lá A/B nghiêng) xếp lưới.
 import { defineVariant } from "../kit/define.mjs";
-import { box, compareBase, compareModel, compareUi, esc, fitBox, pop, val, winnerLabel } from "./common.mjs";
+import { box, compareBase, compareModel, compareUi, esc, fitBox, pop, val, winnerLabel, subjectPair } from "./common.mjs";
 import { compareSample } from "./sample.mjs";
 
 const CARD_A = "linear-gradient(160deg,color-mix(in srgb,var(--accent-sage) 70%,#fff),var(--accent-sage-ink))";
@@ -11,9 +11,10 @@ const CSS = `
 .cg-card{position:absolute;box-sizing:border-box;border-radius:30px;border:8px solid #f6d27a;box-shadow:0 24px 44px rgba(0,0,0,.5)}
 .cg-card.a{background:${CARD_A}}.cg-card.b{background:${CARD_B}}
 .cg-emb{position:absolute;left:127px;top:22px;width:200px;height:200px}
+.cg-photo{border-radius:50%;overflow:hidden;border:6px solid #f6d27a;box-sizing:border-box;background:#111}.cg-photo img{display:block;width:100%;height:100%;object-fit:cover}
 .cg-nm{position:absolute;left:18px;right:18px;top:232px;height:72px;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.55);border-radius:14px;box-sizing:border-box;padding:0 12px}
 .cg-nm-t{margin:0;color:#fff;font-weight:800;text-align:center;line-height:1.05}
-.cg-tg{position:absolute;left:18px;right:18px;top:308px;height:38px;display:flex;align-items:center;justify-content:center}
+.cg-tg{position:absolute;left:18px;right:18px;top:308px;height:38px;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.45);border-radius:10px}
 .cg-tg-t{margin:0;color:#fff;font-style:italic;text-align:center}
 .cg-stats{position:absolute;left:18px;right:18px;top:356px;height:340px}
 .cg-row{position:absolute;left:0;right:0;display:flex;gap:8px;box-sizing:border-box;padding:0 8px;background:rgba(255,255,255,.9);border-radius:10px}
@@ -60,7 +61,7 @@ function cardsOverlay(model, scenes) {
       tweens.push({ method: "fromTo", target: `#cg-gem-${side}-${n}`, from: { autoAlpha: 0, scale: 0.2 }, vars: { autoAlpha: 1, scale: 1, duration: 0.4, ease: "back.out(2)" }, at: Number((scenes[i].visualStart + 0.5).toFixed(3)) });
       n += 1;
     });
-    return `<div class="cg-card ${side}" style="${box({ x, y: 330, w: 470, h: 800 })}">${emblem(side, subj.mono)}${fitBox("cg-nm", subj.name, { size: 46, min: 16 })}${fitBox("cg-tg", subj.tag, { size: 26, min: 12 })}<div class="cg-stats">${statRows}</div><div class="cg-gems">${gems}</div></div>`;
+    return `<div class="cg-card ${side}" style="${box({ x, y: 330, w: 470, h: 800 })}">${subj.img ? `<div class="cg-emb cg-photo ${side}"><img src="${esc(subj.img)}" alt=""></div>` : emblem(side, subj.mono)}${fitBox("cg-nm", subj.name, { size: 46, min: 16 })}${fitBox("cg-tg", subj.tag, { size: 26, min: 12 })}<div class="cg-stats">${statRows}</div><div class="cg-gems">${gems}</div></div>`;
   };
   return { html: card("a", model.a, 50) + card("b", model.b, 560), tweens };
 }
@@ -157,6 +158,7 @@ const cardGame = defineVariant({
             };
           },
           overlay: (octx) => tricksOverlay(model, octx.scenes, { x: 60, y: 640, w: 960, h: 860 }),
+          underlay: () => subjectPair(model, { x: 60, y: 1665, w: 460, h: 210 }, { x: 560, y: 1665, w: 460, h: 210 }, { shape: "square" }), // ảnh đối tượng A/B
           vars: { "--head-ink": "#fff4d6" },
           css: CSS + TRICK_CSS,
         };

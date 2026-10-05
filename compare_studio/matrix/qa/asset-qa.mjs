@@ -14,6 +14,22 @@ const VISUAL_ARTIFACT_TYPE = {
 };
 const IMAGE_EXTENSIONS = new Set([".png", ".jpg", ".jpeg", ".webp"]);
 
+/**
+ * Nguồn hợp lệ của slot ảnh IMAGE_AI: hàng đợi ảnh AI; bước fallback của variant đã ghi vào asset_fallbacks
+ * ("fallback:<nguồn>", vd. cache ảnh AI của chính acc); hoặc poster của clip stock (cảnh phải có scene.stock và
+ * segment_video trong required_artifacts, nên clip cũng được kiểm checksum).
+ */
+export function sceneImageSourceOk(scene) {
+  const source = String(scene?.asset_source || "");
+  if (AI_IMAGE_SOURCES.includes(source)) return true;
+  if (source.startsWith("fallback:")) return true;
+  if (source === "stock_video") {
+    const required = (scene.required_artifacts || []).map((item) => (typeof item === "string" ? item : item.artifact_type || item.type));
+    return Boolean(scene.stock?.clip_path) && required.includes("segment_video");
+  }
+  return false;
+}
+
 async function fileHash(filePath) {
   return new Promise((resolve, reject) => {
     const hash = crypto.createHash("sha256");
@@ -78,7 +94,7 @@ export async function checkSceneAssets({ manifest, artifacts = [], baseDir = pro
           throw new Error("artifact checksum is missing or does not match");
         }
         if (assetType === "IMAGE_AI" && type === "image") {
-          if (!AI_IMAGE_SOURCES.includes(scene.asset_source)) throw new Error("IMAGE_AI artifact source must be the AI image queue (Antigravity or its ImageRouter/Cloudflare fallback)");
+          if (!sceneImageSourceOk(scene)) throw new Error("IMAGE_AI artifact source must be the AI image queue (Antigravity or its ImageRouter/Cloudflare fallback), a recorded variant fallback or a stock clip poster");
           if (!IMAGE_EXTENSIONS.has(path.extname(filePath).toLowerCase())) throw new Error("IMAGE_AI artifact must be a supported image file");
           const { width, height } = await imageInspector(filePath);
           const ratio = width / height;

@@ -1,7 +1,7 @@
 // compare/boxing-ring — võ đài: A góc đỏ, B góc xanh, thanh máu (tỉ số dạng sát thương), "ROUND n", tấm poster
 // "tale of the tape". Không linh vật: hai bên là găng đấm vẽ SVG mang chữ lồng.
 import { defineVariant } from "../kit/define.mjs";
-import { box, compareBase, compareModel, compareUi, esc, fitBox, pop, span, to, val, winnerLabel } from "./common.mjs";
+import { box, compareBase, compareModel, compareUi, esc, fitBox, pop, span, to, val, winnerLabel, subjectPair } from "./common.mjs";
 import { compareSample } from "./sample.mjs";
 
 const RED = "#c8102e";
@@ -180,6 +180,7 @@ const boxingRing = defineVariant({
             return { html: fitBox("cb-tally", model.scored ? `${s.totalA}:${s.totalB}` : ctx.ui.vs, { id: `cb-tally-${scene.index}`, r: { x: 482, y: 346, w: 116, h: 116 }, size: 40, min: 16 }) };
           },
           overlay: (octx) => healthOverlay(model, octx.scenes, { y: 344 }),
+          underlay: () => subjectPair(model, { x: 60, y: 1650, w: 460, h: 220 }, { x: 560, y: 1650, w: 460, h: 220 }, { shape: "square" }), // ảnh đối tượng A/B
           css: RING_CSS,
         };
       },
@@ -198,9 +199,9 @@ const boxingRing = defineVariant({
             const winA = s.winner === "A" || (s.role === "verdict" && model.final.winner === "A") ? " win" : "";
             const winB = s.winner === "B" || (s.role === "verdict" && model.final.winner === "B") ? " win" : "";
             return `<div class="cb-poster"></div>
-<div class="cb-pside a${winA}">${glove("a", model.a.mono)}${fitBox("cb-pname", model.a.name, { size: 76, min: 22 })}${fitBox("cb-ptag", model.a.tag, { size: 28, min: 12 })}</div>
+<div class="cb-pside a${winA}">${model.a.img ? `<span class="cb-glove"></span>` : glove("a", model.a.mono)}${fitBox("cb-pname", model.a.name, { size: 76, min: 22 })}${fitBox("cb-ptag", model.a.tag, { size: 28, min: 12 })}</div>
 <div class="cb-burst"><svg viewBox="0 0 100 100" aria-hidden="true"><polygon points="50,0 61,30 95,20 72,48 100,70 64,68 58,100 44,72 10,88 28,58 0,38 36,34" fill="#ffd166"/></svg><b>${esc(ctx.ui.vs)}</b></div>
-<div class="cb-pside b${winB}">${glove("b", model.b.mono)}${fitBox("cb-pname", model.b.name, { size: 76, min: 22 })}${fitBox("cb-ptag", model.b.tag, { size: 28, min: 12 })}</div>`;
+<div class="cb-pside b${winB}">${model.b.img ? `<span class="cb-glove"></span>` : glove("b", model.b.mono)}${fitBox("cb-pname", model.b.name, { size: 76, min: 22 })}${fitBox("cb-ptag", model.b.tag, { size: 28, min: 12 })}</div>`;
           },
           sceneExtra: (scene, i) => {
             const s = model.scenes[i];
@@ -209,6 +210,7 @@ const boxingRing = defineVariant({
             return { html: fitBox("cb-foot", text, { id: `cb-foot-${scene.index}`, r: { x: 160, y: 1600, w: 760, h: 84 }, size: 38, min: 14 }) };
           },
           overlay: (octx) => tapeOverlay(model, octx.scenes, ctx.ui, { x: 60, y: 860, w: 960, h: 710 }),
+          perScene: subjectPair(model, { x: 24, y: 610, w: 116, h: 116 }, { x: 940, y: 610, w: 116, h: 116 }, { shape: "round" }), // ảnh đối tượng A/B
           css: RING_CSS + TAPE_CSS,
         };
       },

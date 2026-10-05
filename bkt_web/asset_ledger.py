@@ -5,6 +5,11 @@ video được xếp lịch đăng lên một acc; trước khi xếp lịch, vi
 acc khác thì bị chặn. Asset GLOBAL/COUNTRY/VARIANT (texture, font, kit trong `assets/kit`, `assets/fonts`) không
 được ghi — chúng là một phần layout và được đo bằng bkt_web.creative_similarity.
 
+Clip stock của video (`assets/video/*.mp4`, variant wildlife stock-first) được ghi như ảnh cảnh (sha256, scope VIDEO), và
+`verdict` còn đòi mỗi clip trong `meta.json` → `creative.stock_clips` thuộc đúng acc trong stock ledger
+(bkt_web.stock_video): clip chưa ghi hoặc của acc khác thì chặn. Kiểm tra sở hữu stock này chạy cả khi
+TOKMATRIX_ASSET_LEDGER=0 (clip stock không bao giờ được đăng ở acc không sở hữu).
+
 Tắt bằng TOKMATRIX_ASSET_LEDGER=0.
 
     python3 -m bkt_web.asset_ledger check <slug> <tiktok_id>
@@ -28,6 +33,7 @@ VIDEOS_DIR = BASE_DIR.parent / "compare_studio" / "videos"
 PRIVATE_SCOPES = ("ACCOUNT", "VIDEO", "SCENE")
 SCOPES = ("GLOBAL", "COUNTRY", "VARIANT") + PRIVATE_SCOPES
 IMAGE_SUFFIXES = {".jpg", ".jpeg", ".png", ".webp"}
+VIDEO_SUFFIXES = {".mp4"}
 PHASH_MAX_DISTANCE = 6  # /64 bit — ảnh cắt lại/nén lại của cùng một ảnh
 
 SCHEMA = """
@@ -73,8 +79,57 @@ def _phash_file(path: Path) -> str:
         return ""
 
 
+def stock_clips(slug: str, videos_dir: Path = VIDEOS_DIR) -> List[Dict[str, Any]]:
+    """Clip stock mà video dùng (meta.json → creative.stock_clips), rỗng nếu không có."""
+    try:
+        meta = json.loads((Path(videos_dir) / slug / "meta.json").read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return []
+    clips = (meta.get("creative") or {}).get("stock_clips") if isinstance(meta, dict) else None
+    return [clip for clip in clips or [] if isinstance(clip, dict)]
+
+
+def _stock_assets(slug: str, vdir: Path, videos_dir: Path) -> List[Dict[str, Any]]:
+    clips_dir = vdir / "assets" / "video"
+    if not clips_dir.is_dir():
+        return []
+    by_file = {Path(str(clip.get("file") or "")).name: clip for clip in stock_clips(slug, videos_dir)}
+    out = []
+    for path in sorted(clips_dir.iterdir()):
+        if not path.is_file() or path.suffix.lower() not in VIDEO_SUFFIXES:
+            continue
+        info = by_file.get(path.name, {})
+        out.append({
+            "sha256": hashlib.sha256(path.read_bytes()).hexdigest(), "phash": "", "scope": "VIDEO",
+            "provider": str(info.get("provider") or "stock"), "provider_id": str(info.get("provider_clip_id") or ""),
+            "path": str(path.relative_to(vdir)),
+        })
+    return out
+
+
+def stock_verdict(slug: str, tiktok_id: int, *, videos_dir: Path = VIDEOS_DIR,
+                  stock_conn: Optional[sqlite3.Connection] = None) -> Optional[str]:
+    """Lý do chặn nếu video có clip stock mà acc không sở hữu trong stock ledger; None nếu không có clip hoặc hợp lệ."""
+    clips = stock_clips(slug, videos_dir)
+    if not clips:
+        return None
+    try:
+        from bkt_web import stock_video
+    except ImportError:  # chạy trong bkt_web/
+        import stock_video  # type: ignore
+    if stock_conn is None and not stock_video.DB_PATH.exists():
+        return f"{len(clips)} clip stock nhưng chưa có stock ledger"
+    own = stock_conn or stock_video.connect()
+    try:
+        problems = stock_video.ownership_problems(clips, tiktok_id, own)
+    finally:
+        if stock_conn is None:
+            own.close()
+    return f"{problems[0]}" + (f" (+{len(problems) - 1})" if len(problems) > 1 else "") if problems else None
+
+
 def video_assets(slug: str, videos_dir: Path = VIDEOS_DIR) -> List[Dict[str, Any]]:
-    """Ảnh cảnh (scope VIDEO) của một video, kèm nguồn từ images.json nếu có."""
+    """Ảnh cảnh + clip stock (scope VIDEO) của một video, kèm nguồn từ images.json / meta.json nếu có."""
     vdir = Path(videos_dir) / slug
     images_dir = vdir / "assets" / "images"
     sources: Dict[str, Dict[str, Any]] = {}
@@ -86,7 +141,7 @@ def video_assets(slug: str, videos_dir: Path = VIDEOS_DIR) -> List[Dict[str, Any
                 sources[Path(str(item["dest"])).name] = item
     except (OSError, ValueError):
         pass
-    out = []
+    out = _stock_assets(slug, vdir, videos_dir)
     if not images_dir.is_dir():
         return out
     for path in sorted(images_dir.iterdir()):
@@ -144,8 +199,11 @@ def register(conn: sqlite3.Connection, slug: str, owner_account: int, assets: It
 
 
 def verdict(slug: str, tiktok_id: int, *, conn: Optional[sqlite3.Connection] = None,
-            videos_dir: Path = VIDEOS_DIR) -> Optional[str]:
-    """Lý do chặn (ảnh cảnh đã thuộc acc khác) hoặc None. Không ghi gì."""
+            videos_dir: Path = VIDEOS_DIR, stock_conn: Optional[sqlite3.Connection] = None) -> Optional[str]:
+    """Lý do chặn (clip stock không thuộc acc, ảnh/clip cảnh đã thuộc acc khác) hoặc None. Không ghi gì."""
+    stock = stock_verdict(slug, tiktok_id, videos_dir=videos_dir, stock_conn=stock_conn)
+    if stock:
+        return stock
     if not enabled():
         return None
     if conn is None and not DB_PATH.exists():  # chưa có gì được ghi → không thể trùng; không tạo DB (chạy thử)

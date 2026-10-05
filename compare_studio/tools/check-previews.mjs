@@ -5,6 +5,7 @@
 //
 //   node tools/check-previews.mjs --out /tmp/cp [--engine e] [--variant id] [--langs en,de,ja,ko,vi] [--jobs 4] [--hf 0.7.58]
 //   node tools/check-previews.mjs --out /tmp/cp --reuse          # chỉ check lại preview đã dựng (manifest.json có sẵn)
+//   node tools/check-previews.mjs --out /tmp/cp --engine wildlife --stock   # cảnh lẻ của variant stock-first = <video> thử
 //   HYPERFRAMES_BIN=/path/to/hyperframes node tools/check-previews.mjs …  # dùng bản cài sẵn thay vì npx
 //
 // Ghi <out>/check-report.json: { hyperframes, total, passed, failed: [{slug, structure, lang, dna, findings[]}], by_structure }.
@@ -37,6 +38,7 @@ function args(argv) {
     else if (key === "--jobs") out.jobs = Math.max(1, Number(argv[++i]));
     else if (key === "--hf") out.hf = argv[++i];
     else if (key === "--reuse") out.reuse = true;
+    else if (key === "--stock") out.stock = true;
     else throw new Error(`unknown argument ${key}`);
   }
   if (!out.out) throw new Error("--out <dir> is required");
@@ -89,6 +91,7 @@ export async function main(argv = process.argv.slice(2)) {
     const buildArgs = ["--out", opts.out, "--langs", opts.langs.join(",")];
     if (opts.engine) buildArgs.push("--engine", opts.engine);
     if (opts.variant) buildArgs.push("--variant", opts.variant);
+    if (opts.stock) buildArgs.push("--stock");
     await buildPreviews(buildArgs);
   }
   const { entries } = JSON.parse(fs.readFileSync(manifestPath, "utf8"));

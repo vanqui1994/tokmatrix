@@ -40,11 +40,16 @@ export function getVariant(id, { allowReference = referenceVariantsAllowed() } =
   return variant.status === "active" || allowReference ? variant : null;
 }
 
-/** Variant được gán cho account (status active) và hỗ trợ ngôn ngữ/nước. */
+/** Variant opt-in (`autoAssign: false`) chỉ dùng khi kênh ghi rõ creative.variant_id — không gán tự động. */
+export function isAutoAssignable(variant) {
+  return variant?.autoAssign !== false;
+}
+
+/** Variant được gán cho account (status active, không opt-in) và hỗ trợ ngôn ngữ/nước. */
 export function getVariantsForCountry(lang, { includeReference = false } = {}) {
   const code = String(lang || "").slice(0, 2);
   return ALL.filter((variant) => (variant.status === "active" || (includeReference && variant.status === "reference"))
-    && variant.compatibility.countries.includes(code));
+    && isAutoAssignable(variant) && variant.compatibility.countries.includes(code));
 }
 
 export function getVariantCreativeCapacity(id) {

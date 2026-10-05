@@ -9,8 +9,12 @@ Chạy trong cycle Autopilot, tối đa mỗi `housekeeping_interval_minutes` m�
   hệt (cùng kích thước + md5) trong compare_studio/videos/*/assets. Ảnh chưa có ở video nào thì giữ.
 - purge_posted_after_days (3): video đã đăng SUCCESS quá ngần này ngày, không còn task nào khác cần:
   xoá MP4, assets, projects/<job_id>; GIỮ meta.json/index.html/images.json và vân tay (so trùng vẫn so được).
+  Có archive_rclone_remote (Google Drive…) hoặc archive_vps_host thì MP4 được chép lên đó và đối chiếu kích thước trước.
 - npx_keep_versions (2): cache npx của HyperFrames — giữ N phiên bản mới nhất, bản code ghim cứng
   (hyperframes@X.Y.Z trong compare_studio/matrix/render, tools) và mọi bản/thư mục đang chạy.
+- profile_blob_keep_hours (24): bản sao video TikTok Chrome giữ lại sau upload (Default/blob_storage,
+  Default/IndexedDB/*.indexeddb.blob) — 29/09 chiếm 19/21 GB của bkt_web/profiles. Chỉ xoá file cũ hơn ngần này giờ,
+  bỏ qua profile đang có Chrome mở (--user-data-dir); cookie đăng nhập ở file khác nên acc không bị đăng xuất.
 """
 from __future__ import annotations
 
@@ -28,6 +32,7 @@ from . import store
 BASE_DIR = Path(__file__).resolve().parent.parent
 BRIDGE_ARCHIVE = BASE_DIR / "storage" / "antigravity_bridge" / "archive"
 GENERATED_IMAGES = BASE_DIR / "static" / "generated_images"
+PROFILES_DIR = BASE_DIR / "profiles"
 NPX_DIR = Path(os.environ.get("npm_config_cache", str(Path.home() / ".npm"))) / "_npx"
 KEEP_IN_VIDEO = {"meta.json", "index.html", "images.json", "spec.json", "package.json", "hyperframes.json"}
 IMAGE_EXTS = {".png", ".jpg", ".jpeg", ".webp"}
@@ -143,6 +148,11 @@ def purge_posted_media(after_days: int, now: float, should_halt: Callable[[], bo
         except Exception as exc:
             store.log_event(f"⚠️ Chưa dọn {slug}: không lấy được vân tay ({exc})", "warn")
             continue
+        # Có nơi lưu (Drive qua rclone hoặc VPS) thì chép MP4 lên đó trước; lỗi → giữ nguyên video, thử lại lượt sau.
+        backup = cleanup.archive_target()
+        if backup and not all(backup(mp4, slug, should_halt) for mp4 in cleanup.render_files(slug)):
+            store.log_event(f"⚠️ Chưa dọn {slug}: backup MP4 thất bại", "warn")
+            continue
         for child in list(video_dir.iterdir()):
             if child.name not in KEEP_IN_VIDEO:
                 freed += _remove(child)
@@ -214,6 +224,70 @@ def clean_npx(keep_versions: int) -> Dict[str, int]:
     return {"dirs": dirs, "bytes": freed}
 
 
+def _profiles_in_use() -> Set[str]:
+    """Tên thư mục profile mà một tiến trình Chrome đang mở (--user-data-dir=.../profiles/<tên>)."""
+    used: Set[str] = set()
+    proc = Path("/proc")
+    if not proc.is_dir():
+        return used
+    for pid in proc.iterdir():
+        if not pid.name.isdigit():
+            continue
+        try:
+            args = (pid / "cmdline").read_bytes().decode("utf-8", "ignore").split("\0")
+        except OSError:
+            continue
+        used.update(_user_data_profiles(args))
+    return used
+
+
+def _user_data_profiles(args) -> Set[str]:
+    """Tên profile từ argv (giữ nguyên khoảng trắng trong đường dẫn; cả dạng `--user-data-dir <dir>`)."""
+    found: Set[str] = set()
+    for i, arg in enumerate(args):
+        if arg.startswith("--user-data-dir="):
+            value = arg.split("=", 1)[1]
+        elif arg == "--user-data-dir" and i + 1 < len(args):
+            value = args[i + 1]
+        else:
+            continue
+        path = Path(value.strip('"').rstrip("/"))
+        if path.parent.name == "profiles" and path.name:
+            found.add(path.name)
+    return found
+
+
+def clean_profile_blobs(keep_hours: int, now: float, root: Optional[Path] = None, in_use: Optional[Set[str]] = None) -> Dict[str, int]:
+    """Xoá blob upload cũ (> keep_hours) của các profile Chrome không mở; giữ cookie, Local Storage, IndexedDB leveldb."""
+    root = PROFILES_DIR if root is None else root
+    if keep_hours <= 0 or not root.is_dir():
+        return {"files": 0, "bytes": 0}
+    in_use = _profiles_in_use() if in_use is None else in_use
+    cutoff = now - keep_hours * 3600
+    files = freed = 0
+    for profile in root.iterdir():
+        if not profile.is_dir() or profile.name in in_use:
+            continue
+        # Chrome đang mở profile giữ SingletonLock (symlink) — an toàn cả khi không có /proc (macOS).
+        if (profile / "SingletonLock").is_symlink() or (profile / "SingletonLock").exists():
+            continue
+        default = profile / "Default"
+        targets = [default / "blob_storage", *(default / "IndexedDB").glob("*.indexeddb.blob")]
+        for target in targets:
+            if not target.is_dir():
+                continue
+            for item in target.rglob("*"):
+                try:
+                    if item.is_file() and item.stat().st_mtime < cutoff:
+                        size = item.stat().st_size
+                        item.unlink()
+                        files += 1
+                        freed += size
+                except OSError:
+                    continue
+    return {"files": files, "bytes": freed}
+
+
 def run(should_halt: Callable[[], bool] = lambda: False, now: Optional[float] = None, force: bool = False) -> Dict[str, Any]:
     global _last_run
     now = time.time() if now is None else now
@@ -227,6 +301,7 @@ def run(should_halt: Callable[[], bool] = lambda: False, now: Optional[float] = 
         ("generated_images", lambda: clean_generated_images(_int("generated_images_keep_days", 1), now)),
         ("posted_media", lambda: purge_posted_media(_int("purge_posted_after_days", 3), now, should_halt)),
         ("npx", lambda: clean_npx(_int("npx_keep_versions", 2))),
+        ("profile_blobs", lambda: clean_profile_blobs(_int("profile_blob_keep_hours", 24), now)),
     ):
         try:
             result[name] = fn()

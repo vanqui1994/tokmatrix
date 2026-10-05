@@ -1,7 +1,7 @@
 // compare/scale-balance — cán cân: mỗi hiệp thắng thêm một quả cân vào đĩa của bên đó, đòn cân nghiêng theo tỉ số.
 // Composition 2: hai cân lò xo mặt tròn (kim quay theo điểm cộng dồn) + phiếu cân của từng hiệp.
 import { defineVariant } from "../kit/define.mjs";
-import { box, compareBase, compareModel, compareUi, esc, fitBox, pop, span, to, val, winnerLabel } from "./common.mjs";
+import { box, compareBase, compareModel, compareUi, esc, fitBox, pop, span, to, val, winnerLabel, subjectPair } from "./common.mjs";
 import { compareSample } from "./sample.mjs";
 
 const BRASS = "#b8862f";
@@ -170,6 +170,7 @@ const scaleBalance = defineVariant({
           visual: { frame: "bleed", region: { x: 140, y: 1360, w: 800, h: 280 } },
           panel: (scene, i) => weighCard(model.scenes[i], model, ctx.ui),
           overlay: (octx) => beamOverlay(model, octx.scenes),
+          underlay: () => subjectPair(model, { x: 140, y: 1665, w: 390, h: 210 }, { x: 550, y: 1665, w: 390, h: 210 }, { shape: "square" }), // ảnh đối tượng A/B
           css: `${BEAM_CSS}#root .f-bleed{background:transparent}`,
         };
       },
@@ -185,6 +186,7 @@ const scaleBalance = defineVariant({
           panel: (scene, i) => weighCard(model.scenes[i], model, ctx.ui).replace('class="cs-card"', 'class="cs-slip"'),
           text: { style: "paper_note", region: { x: 70, y: 1390, w: 940, h: 270 }, size: 46, enter: "fade_up" },
           overlay: (octx) => dialOverlay(model, octx.scenes),
+          underlay: () => subjectPair(model, { x: 60, y: 1650, w: 440, h: 225 }, { x: 580, y: 1650, w: 440, h: 225 }, { shape: "square" }), // ảnh đối tượng A/B
           css: BEAM_CSS + DIAL_CSS,
         };
       },

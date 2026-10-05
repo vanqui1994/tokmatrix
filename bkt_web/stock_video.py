@@ -7,10 +7,15 @@ Ledger `storage/stock_ledger.db` giữ mỗi clip đã nhận: provider, id, URL
 giấy phép, tác giả, acc sở hữu và đoạn đã dùng. Một clip đã gán acc A không bao giờ được gán acc B, kể cả khi cùng footage
 đến từ provider khác (≥ 3/5 khung pHash cách ≤ FRAME_MAX_DISTANCE bit).
 
-Tắt mặc định: chỉ chạy khi TOKMATRIX_STOCK_VIDEO=1 (chủ repo chưa quyết Q3; variant vẫn dùng ảnh AI).
+Tắt mặc định: chỉ chạy khi TOKMATRIX_STOCK_VIDEO=1. Khi bật, cảnh của variant wildlife "stock-first"
+(assetProfile.stockVideo) lấy clip qua lệnh `scene` (compare_studio/matrix/creative/stock-video.mjs gọi); cảnh không có
+clip thì dùng ảnh AI như cũ. Acc sở hữu = TikTok id của kênh Matrix (bảng autopilot_channel_map), cùng id mà
+bkt_web.autopilot.publisher dùng khi xếp lịch đăng; mỗi lần dùng một clip lấy một đoạn CHƯA dùng (used_segments).
 
     python3 -m bkt_web.stock_video search "snow leopard hunting" [--provider pexels]
     python3 -m bkt_web.stock_video fetch "snow leopard hunting" --account 12 --out /tmp/clip.mp4 [--min-duration 6]
+    python3 -m bkt_web.stock_video scene --channel extreme_wildlife_03 --query "orca hunting" --query "orca" \
+        --out /tmp/clip.mp4 --segment-length 7 [--exclude pexels:123]      # một dòng JSON {"ok", "clip"|"reason"}
     python3 -m bkt_web.stock_video check /tmp/clip.mp4 --account 12
     python3 -m bkt_web.stock_video stats
 """
@@ -32,6 +37,8 @@ from typing import Any, Dict, Iterable, List, Optional
 
 BASE_DIR = Path(__file__).resolve().parent
 DB_PATH = BASE_DIR / "storage" / "stock_ledger.db"
+AUTOPILOT_DB = BASE_DIR / "storage" / "autopilot.db"
+SEGMENT_STEP = 0.5       # giây: bước dò đoạn còn trống trong clip
 PROVIDERS = ("pexels", "pixabay")
 KEY_NAMES = {"pexels": "stock.pexels", "pixabay": "stock.pixabay"}
 KEY_ENV = {"pexels": "PEXELS_API_KEY", "pixabay": "PIXABAY_API_KEY"}
@@ -217,12 +224,26 @@ def assign(conn: sqlite3.Connection, candidate: Dict[str, Any], fp: Dict[str, An
            segment: Optional[List[float]] = None) -> None:
     """Ghi clip cho acc (gọi sau khi conflicts rỗng). Cùng acc dùng lại clip thì chỉ thêm đoạn đã dùng."""
     key = (candidate["provider"], str(candidate["provider_clip_id"]))
-    row = conn.execute("SELECT owner_account, used_segments FROM clips WHERE provider=? AND provider_clip_id=?", key).fetchone()
-    if row and row["owner_account"] != int(account):
-        raise ValueError(f"clip {key} already belongs to account {row['owner_account']}")
-    segments = json.loads(row["used_segments"]) if row else []
-    if segment:
-        segments.append([round(float(segment[0]), 3), round(float(segment[1]), 3)])
+    # Kiểm tra lại và ghi trong cùng một transaction ghi: hai acc chạy song song không cùng nhận một clip/footage.
+    if conn.in_transaction:
+        conn.commit()
+    conn.execute("BEGIN IMMEDIATE")
+    try:
+        row = conn.execute("SELECT owner_account, used_segments FROM clips WHERE provider=? AND provider_clip_id=?", key).fetchone()
+        if row and row["owner_account"] != int(account):
+            raise ValueError(f"clip {key} already belongs to account {row['owner_account']}")
+        clash = conflicts(conn, candidate, fp, account)
+        if clash:
+            raise ValueError(f"clip {key} conflicts with account {clash[0]['owner_account']} ({clash[0]['reason']})")
+        segments = json.loads(row["used_segments"]) if row else []
+        if segment:
+            seg = [round(float(segment[0]), 3), round(float(segment[1]), 3)]
+            if any(a < seg[1] - 1e-6 and b > seg[0] + 1e-6 for a, b in segments):
+                raise ValueError(f"segment {seg} of clip {key} is already used")
+            segments.append(seg)
+    except Exception:
+        conn.rollback()
+        raise
     conn.execute(
         "INSERT INTO clips(provider, provider_clip_id, canonical_url, content_sha256, frame_hashes, duration, license, author,"
         " owner_account, used_segments, created_at) VALUES (?,?,?,?,?,?,?,?,?,?,?)"
@@ -233,39 +254,146 @@ def assign(conn: sqlite3.Connection, candidate: Dict[str, Any], fp: Dict[str, An
     conn.commit()
 
 
-def fetch_for_scene(query: str, account: int, dest: Path, *, min_duration: float = 5.0, conn: Optional[sqlite3.Connection] = None,
+def clip_key(candidate: Dict[str, Any]) -> str:
+    return f"{candidate.get('provider')}:{candidate.get('provider_clip_id')}"
+
+
+def free_segment(duration: float, used: Iterable[Iterable[float]], length: float,
+                 step: float = SEGMENT_STEP) -> Optional[List[float]]:
+    """Đoạn [s, s+length] đầu tiên nằm trong clip và không chồng lên đoạn nào đã dùng (None nếu hết chỗ)."""
+    duration = float(duration or 0)
+    length = float(length)
+    if length <= 0 or duration + 1e-6 < length:
+        return None
+    spans = sorted((float(a), float(b)) for a, b in used)
+    start = 0.0
+    while start + length <= duration + 1e-6:
+        end = start + length
+        clash = next((b for a, b in spans if a < end - 1e-6 and b > start + 1e-6), None)
+        if clash is None:
+            return [round(start, 3), round(min(end, duration), 3)]
+        start = max(start + step, round(clash, 3))
+    return None
+
+
+def _ledger_row(conn: sqlite3.Connection, candidate: Dict[str, Any]) -> Optional[sqlite3.Row]:
+    return conn.execute("SELECT owner_account, used_segments, duration FROM clips WHERE provider=? AND provider_clip_id=?",
+                        (candidate.get("provider"), str(candidate.get("provider_clip_id")))).fetchone()
+
+
+def fetch_for_scene(query, account: int, dest: Path, *, min_duration: float = 5.0, segment_length: Optional[float] = None,
+                    exclude: Iterable[str] = (), conn: Optional[sqlite3.Connection] = None,
                     providers: Iterable[str] = PROVIDERS, per_page: int = 10) -> Optional[Dict[str, Any]]:
-    """Clip đầu tiên hợp lệ cho acc: đủ dài, không thuộc acc khác. Trả metadata (ghi ledger) hoặc None.
+    """Clip đầu tiên hợp lệ cho acc: đủ dài, không thuộc acc khác, còn một đoạn chưa dùng. Trả metadata (ghi ledger) hoặc None.
+
+    `query`: một chuỗi hoặc danh sách chuỗi (thử lần lượt tới khi có clip). `segment_length` (mặc định min_duration) là độ
+    dài đoạn được nhận; đoạn được ghi vào used_segments để lần sau cùng acc lấy đoạn khác. `exclude` ("provider:id") bỏ các
+    clip đã dùng trong cùng video.
 
     None khi tắt, không có key, không có kết quả hay mọi ứng viên đều trùng: caller dùng bước fallback kế tiếp
     (IMAGE_AI) của assetProfile, không bao giờ im lặng lấy clip của acc khác.
     """
     if not enabled():
         return None
+    queries = [query] if isinstance(query, str) else [q for q in query if q]
+    wanted = float(segment_length or min_duration)
+    skip = set(exclude)
     own = conn is None
     conn = conn or connect()
     try:
-        for candidate in search(query, providers, per_page):
-            if candidate["duration"] < min_duration:
-                continue
-            with tempfile.TemporaryDirectory(prefix="stock-") as tmp:
-                path = Path(tmp) / "clip.mp4"
-                try:
-                    _download(candidate["download_url"], path)
-                    fp = fingerprint(path)
-                except Exception as exc:
-                    print(f"stock_video: skip {candidate['provider']}:{candidate['provider_clip_id']}: {exc}", file=sys.stderr)
+        seen = set()
+        for text in queries:
+            for candidate in search(text, providers, per_page):
+                key = clip_key(candidate)
+                if key in skip or key in seen:
                     continue
-                if conflicts(conn, candidate, fp, account):
+                seen.add(key)
+                if candidate["duration"] < max(min_duration, wanted):
                     continue
-                Path(dest).parent.mkdir(parents=True, exist_ok=True)
-                shutil.move(str(path), str(dest))
-            assign(conn, candidate, fp, account, [0, min(candidate["duration"], min_duration)])
-            return {**{k: v for k, v in candidate.items() if k != "download_url"}, "sha256": fp["sha256"], "path": str(dest)}
+                row = _ledger_row(conn, candidate)
+                used = json.loads(row["used_segments"] or "[]") if row is not None else []
+                if row is not None:
+                    if row["owner_account"] != int(account):
+                        continue  # clip của acc khác: không cần tải
+                    if free_segment(row["duration"] or candidate["duration"], used, wanted) is None:
+                        continue  # acc này đã dùng hết clip
+                with tempfile.TemporaryDirectory(prefix="stock-") as tmp:
+                    path = Path(tmp) / "clip.mp4"
+                    try:
+                        _download(candidate["download_url"], path)
+                        fp = fingerprint(path)
+                    except Exception as exc:
+                        print(f"stock_video: skip {key}: {exc}", file=sys.stderr)
+                        continue
+                    if conflicts(conn, candidate, fp, account):
+                        continue
+                    segment = free_segment(fp["duration"] or candidate["duration"], used, wanted)
+                    if segment is None:
+                        continue
+                    try:
+                        assign(conn, candidate, fp, account, segment)
+                    except ValueError:
+                        continue  # acc khác vừa nhận clip này (chạy song song)
+                    Path(dest).parent.mkdir(parents=True, exist_ok=True)
+                    shutil.move(str(path), str(dest))
+                return {**{k: v for k, v in candidate.items() if k != "download_url"}, "sha256": fp["sha256"], "path": str(dest),
+                        "segment": segment, "clip_duration": fp["duration"] or candidate["duration"], "account": int(account),
+                        "query": text}
         return None
     finally:
         if own:
             conn.close()
+
+
+def account_for_channel(matrix_channel_id: str, db_path: Optional[Path] = None) -> Optional[int]:
+    """TikTok id gắn với kênh Matrix (autopilot_channel_map); đọc thẳng SQLite để không kéo cả gói autopilot."""
+    path = Path(db_path or AUTOPILOT_DB)
+    if not matrix_channel_id or not path.exists():
+        return None
+    conn = sqlite3.connect(f"file:{path}?mode=ro", uri=True, timeout=10)
+    try:
+        row = conn.execute("SELECT tiktok_channel_id FROM autopilot_channel_map WHERE matrix_channel_id=?",
+                           (matrix_channel_id,)).fetchone()
+    except sqlite3.Error:
+        return None
+    finally:
+        conn.close()
+    return int(row[0]) if row and row[0] is not None else None
+
+
+def scene_clip(queries: List[str], *, out: Path, channel: str = "", account: Optional[int] = None,
+               min_duration: float = 5.0, segment_length: Optional[float] = None, exclude: Iterable[str] = (),
+               conn: Optional[sqlite3.Connection] = None) -> Dict[str, Any]:
+    """Kết quả cho asset-manager: {"ok": True, "clip": {...}} hoặc {"ok": False, "reason": ...}; lỗi mạng/ledger không ném ra."""
+    if not enabled():
+        return {"ok": False, "reason": "disabled"}
+    if account is None:
+        account = account_for_channel(channel)
+    if account is None:  # kênh chưa gắn acc TikTok: không biết ai sở hữu clip → không lấy
+        return {"ok": False, "reason": "unmapped_channel"}
+    if not any(api_key(p) for p in PROVIDERS):
+        return {"ok": False, "reason": "no_api_key"}
+    try:
+        clip = fetch_for_scene(queries, account, out, min_duration=min_duration, segment_length=segment_length,
+                               exclude=exclude, conn=conn)
+    except Exception as exc:  # cảnh dùng ảnh AI, không làm hỏng job
+        return {"ok": False, "reason": f"error: {exc}"}
+    if not clip:
+        return {"ok": False, "reason": "no_clip"}
+    return {"ok": True, "clip": clip}
+
+
+def ownership_problems(clips: Iterable[Dict[str, Any]], account: int, conn: sqlite3.Connection) -> List[str]:
+    """Clip stock của một video mà acc không sở hữu trong ledger (chưa ghi, hoặc đã thuộc acc khác)."""
+    problems = []
+    for clip in clips:
+        key = (str(clip.get("provider") or ""), str(clip.get("provider_clip_id") or ""))
+        row = conn.execute("SELECT owner_account FROM clips WHERE provider=? AND provider_clip_id=?", key).fetchone()
+        if row is None:
+            problems.append(f"clip stock {key[0]}:{key[1]} không có trong stock ledger")
+        elif int(row["owner_account"]) != int(account):
+            problems.append(f"clip stock {key[0]}:{key[1]} thuộc acc #{row['owner_account']}")
+    return problems
 
 
 def stats(conn: sqlite3.Connection) -> Dict[str, Any]:
@@ -285,6 +413,14 @@ def main(argv=None) -> int:
     f.add_argument("--account", type=int, required=True)
     f.add_argument("--out", required=True)
     f.add_argument("--min-duration", type=float, default=5.0)
+    sc = sub.add_parser("scene", help="clip cho một cảnh Matrix, in một dòng JSON")
+    sc.add_argument("--channel", default="", help="matrix channel_id (acc = TikTok id trong autopilot_channel_map)")
+    sc.add_argument("--account", type=int)
+    sc.add_argument("--query", action="append", required=True)
+    sc.add_argument("--out", required=True)
+    sc.add_argument("--min-duration", type=float, default=5.0)
+    sc.add_argument("--segment-length", type=float)
+    sc.add_argument("--exclude", action="append", default=[])
     c = sub.add_parser("check")
     c.add_argument("path")
     c.add_argument("--account", type=int, required=True)
@@ -299,6 +435,10 @@ def main(argv=None) -> int:
         result = fetch_for_scene(args.query, args.account, Path(args.out), min_duration=args.min_duration)
         print(json.dumps(result, ensure_ascii=False))
         return 0 if result else 1
+    elif args.cmd == "scene":
+        print(json.dumps(scene_clip(args.query, out=Path(args.out), channel=args.channel, account=args.account,
+                                    min_duration=args.min_duration, segment_length=args.segment_length,
+                                    exclude=args.exclude), ensure_ascii=False))
     elif args.cmd == "check":
         with connect() as conn:
             found = conflicts(conn, {}, fingerprint(Path(args.path)), args.account)

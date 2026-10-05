@@ -5,7 +5,7 @@ import path from "node:path";
 import { promisify } from "node:util";
 import { fileURLToPath } from "node:url";
 import { generateCinemaAudioHtml } from "../../tools/auto-sfx.mjs";
-import { AI_IMAGE_SOURCES } from "../../tools/antigravity-images.mjs";
+import { sceneImageSourceOk } from "../qa/asset-qa.mjs";
 import { checkVideoOutput } from "../../tools/video-qa.mjs";
 import { withRenderSlot } from "./render-slots.mjs";
 import { EXTENDED_ENGINES, extendedEngine } from "./engines/index.mjs";
@@ -154,7 +154,7 @@ function imageDestination(engineType, index, source) {
     throw new Error(`unsupported native visual extension: ${extension}`);
   }
   const extended = extendedReady(engineType);
-  if (extended) return extended.imageName(index, extension);
+  if (extended?.imageName) return extended.imageName(index, extension);
   const base = engineType === "newspaper" ? `act-${index}` : engineType === "vox" ? `beat_${index}` : `scene-${index}`;
   return `assets/images/${base}${extension}`;
 }
@@ -202,6 +202,7 @@ async function hashJobInputs({ job, manifest, projectDir, engineType, scenes }) 
   for (const scene of scenes) {
     sources.push(sourcePath(projectDir, scene.narration_path));
     if (scene.asset_path) sources.push(sourcePath(projectDir, scene.asset_path));
+    if (scene.stock?.clip_path) sources.push(sourcePath(projectDir, scene.stock.clip_path));
   }
   if (engineType === "science") {
     const characters = path.join(COMPARE_DIR, "shared", "assets", "science", "characters");
@@ -224,9 +225,19 @@ async function hashJobInputs({ job, manifest, projectDir, engineType, scenes }) 
   return crypto.createHash("sha256").update(snapshot).digest("hex");
 }
 
+/** Clip stock của cảnh (asset-manager + stock-video.mjs): file phải còn đúng checksum đã ghi lúc lấy. */
+async function stockClipFor(scene, projectDir, index) {
+  const stock = scene.stock;
+  if (!stock?.clip_path || !stock.file_sha256 || !(Number(stock.duration) > 0)) throw new Error(`scene ${index} stock clip metadata is incomplete`);
+  const clipPath = await requiredFile(sourcePath(projectDir, stock.clip_path));
+  if (await hashFile(clipPath) !== stock.file_sha256) throw new Error(`scene ${index} stock clip checksum changed`);
+  return clipPath;
+}
+
 async function copyMediaForScenes({ scenes, engineType, projectDir, videoDir }) {
   const copied = [];
   const visualSources = [];
+  const videoSources = [];
   for (const [offset, scene] of scenes.entries()) {
     const index = offset + 1;
     const narrationSource = await requiredFile(sourcePath(projectDir, scene.narration_path));
@@ -235,13 +246,25 @@ async function copyMediaForScenes({ scenes, engineType, projectDir, videoDir }) 
     await fs.mkdir(path.dirname(voDest), { recursive: true });
     await fs.copyFile(narrationSource, voDest);
     copied.push(voDest);
-    if (!usesSceneImages(engineType)) {
+    videoSources.push(null);
+    // Engine không dùng ảnh (survival…) vẫn nhận ảnh khi variant của kênh khai báo IMAGE_AI (survival/mr-incredible).
+    if (!usesSceneImages(engineType) && scene.asset_type !== "IMAGE_AI") {
       visualSources.push(null);
       continue;
     }
     if (scene.asset_status !== "READY") throw new Error(`scene ${index} visual asset is not READY`);
-    if (scene.asset_type === "IMAGE_AI" && !AI_IMAGE_SOURCES.includes(scene.asset_source)) {
+    if (scene.asset_type === "IMAGE_AI" && !sceneImageSourceOk(scene)) {
       throw new Error(`scene ${index} IMAGE_AI source is not the AI image queue`);
+    }
+    if (scene.asset_source === "stock_video") {
+      // Clip câm của cảnh (poster vẫn đi vào slot ảnh bên dưới, là hình dừng khi cảnh dài hơn đoạn clip).
+      const clipSource = await stockClipFor(scene, projectDir, index);
+      const src = `assets/video/scene-${index}.mp4`;
+      const clipDest = path.join(videoDir, src);
+      await fs.mkdir(path.dirname(clipDest), { recursive: true });
+      await fs.copyFile(clipSource, clipDest);
+      copied.push(clipDest);
+      videoSources[offset] = { src, duration: Number(Number(scene.stock.duration).toFixed(3)) };
     }
     if (!["IMAGE_AI", "SVG", "EXISTING_ASSET"].includes(scene.asset_type)) {
       throw new Error(`${engineType} needs an image-compatible visual artifact for scene ${index}`);
@@ -253,7 +276,7 @@ async function copyMediaForScenes({ scenes, engineType, projectDir, videoDir }) 
     copied.push(imageDest);
     visualSources.push(imgSrc);
   }
-  return { voSources: scenes.map((_, index) => `assets/vo/${voPrefix(engineType)}-${index + 1}.mp3`), visualSources, copied };
+  return { voSources: scenes.map((_, index) => `assets/vo/${voPrefix(engineType)}-${index + 1}.mp3`), visualSources, videoSources, copied };
 }
 
 /**
@@ -296,7 +319,12 @@ async function createEngineHtml({ engineType, slug, title, lang, scenes, channel
     duration: Number(scene.duration_seconds),
     voSrc: media.voSources[offset],
     imgSrc: media.visualSources[offset],
+    // Chỉ cảnh stock mới có khoá này (cảnh ảnh AI giữ đúng object cũ → HTML không đổi).
+    ...(media.videoSources?.[offset] ? { videoSrc: media.videoSources[offset].src, videoDuration: media.videoSources[offset].duration } : {}),
   }));
+  if (!variant && timed.some((scene) => scene.videoSrc)) {
+    throw new Error(`${engineType}: stock clips need a variant renderer (kit stage); the legacy template cannot play them`);
+  }
 
   const extended = extendedReady(engineType);
   if (variant) {
@@ -306,6 +334,7 @@ async function createEngineHtml({ engineType, slug, title, lang, scenes, channel
       : extended.extras.fallback(scenes, { title, language: lang });
     const built = await variant.renderer.buildHtml({
       slug, title, lang, channel, manifest, totalDuration, extras, sfxCues, bgmSegments, cinemaAudioHtml, common, scenes: timed, creative,
+      subjectImages: media.subjectImages || null,
     });
     const problems = lintVariantHtml(built.html);
     if (problems.length) throw new Error(`variant ${variant.id} produced forbidden HTML: ${problems.join("; ")}`);
@@ -513,10 +542,25 @@ export async function buildNativeVideoProject({ job, manifest = job?.manifest, p
   }
   const chosen = channelCreative(channel, engineType);
   const variant = chosen?.variant || null;
-  // Variant chỉ dùng assets/kit và ảnh cảnh; tài nguyên riêng của engine legacy (SFX, mặt meme survival) không chép vào.
+  // Variant chỉ dùng assets/kit, ảnh cảnh và asset tĩnh riêng nó khai (prepareAssets, vd mặt meme của survival/mr-incredible);
+  // tài nguyên riêng của engine legacy (SFX…) không chép vào.
   const staticAssets = variant
-    ? await prepareKitAssets({ targetDir, compareDir: COMPARE_DIR })
+    ? [...await prepareKitAssets({ targetDir, compareDir: COMPARE_DIR }), ...((await variant.prepareAssets?.({ targetDir, compareDir: COMPARE_DIR })) || [])]
     : (await extendedReady(engineType)?.prepareAssets?.({ targetDir, compareDir: COMPARE_DIR })) || [];
+  // Ảnh đối tượng A/B (variant assetProfile.subjectImages, compare): asset-manager xếp 2 ảnh Antigravity mỗi video.
+  if (variant?.assetProfile?.subjectImages) {
+    const subjects = manifest.asset_pipeline?.subject_images;
+    if (!subjects) throw new Error(`${variant.id}: subject images are missing from the asset pipeline`);
+    // {} = ảnh đối tượng đã hết lượt thử và chuỗi fallback chọn "svg": layout dùng huy hiệu không ảnh.
+    media.subjectImages = subjects.a && subjects.b ? {} : null;
+    for (const side of media.subjectImages ? ["a", "b"] : []) {
+      const source = await requiredFile(sourcePath(sourceDir, subjects[side]));
+      const src = `assets/images/subject-${side}${path.extname(source).toLowerCase() || ".png"}`;
+      await copyPreparedImage(source, path.join(targetDir, src));
+      media.copied.push(path.join(targetDir, src));
+      media.subjectImages[side] = src;
+    }
+  }
   const composed = await createEngineHtml({ engineType, slug, title, lang, scenes, channel, manifest, media, totalDuration, variant, dna: chosen?.dna });
   // Variant tự co chữ bằng kit/fit (data-fit); bản sửa bố cục legacy chỉ dành cho template legacy.
   if (!variant) composed.html = applyMatrixLayoutFixes(composed.html, engineType);
@@ -581,6 +625,18 @@ export async function buildNativeVideoProject({ job, manifest = job?.manifest, p
       // Ảnh cảnh không lấy được từ Antigravity mà dùng bước fallback của variant (không bao giờ âm thầm).
       asset_fallbacks: manifest.asset_pipeline?.fallbacks || [],
     };
+    // Clip stock (Pexels/Pixabay) của video: nguồn, giấy phép, tác giả, đoạn đã dùng. bkt_web.asset_ledger đọc danh sách
+    // này trước khi xếp lịch đăng: acc không sở hữu clip trong stock ledger thì bị chặn.
+    const stockClips = scenes.flatMap((scene, offset) => (scene.asset_source === "stock_video" && media.videoSources[offset] ? [{
+      scene: offset + 1, file: media.videoSources[offset].src, poster: media.visualSources[offset],
+      provider: scene.stock.provider, provider_clip_id: scene.stock.provider_clip_id, canonical_url: scene.stock.canonical_url,
+      license: scene.stock.license, author: scene.stock.author, segment: scene.stock.segment, duration: scene.stock.duration,
+      source_sha256: scene.stock.source_sha256, sha256: scene.stock.file_sha256, account: scene.stock.account,
+    }] : []));
+    if (stockClips.length) {
+      metadata.creative.stock_clips = stockClips;
+      metadata.creative.asset_sources = scenes.map((scene) => scene.asset_source || null);
+    }
   }
   const packageJson = {
     name: slug, private: true, type: "module",

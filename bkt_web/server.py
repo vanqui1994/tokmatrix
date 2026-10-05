@@ -56,6 +56,7 @@ try:
     from bkt_web.story_remake_routes import router as story_remake_router
     from bkt_web import dola_routes
     from bkt_web import dola_admin_proxy
+    from bkt_web.muse_film_routes import router as muse_film_router
     from bkt_web import chocode_routes
     from bkt_web import chocode_tiktok
     from bkt_web.autopilot import init_autopilot_db, start_autopilot, stop_autopilot
@@ -84,6 +85,7 @@ except ImportError:
     from story_remake_routes import router as story_remake_router
     import dola_routes
     import dola_admin_proxy
+    from muse_film_routes import router as muse_film_router
     import chocode_routes
     import chocode_tiktok
     from autopilot import init_autopilot_db, start_autopilot, stop_autopilot
@@ -115,15 +117,16 @@ for _dir in [STORAGE_DIR, DOWNLOADS_DIR, RENDERED_DIR, OVERLAYS_DIR, AUDIO_DIR, 
     _dir.mkdir(parents=True, exist_ok=True)
 
 def _resume_story_remake():
-    """Resume a YouTube remake that was interrupted by a web-app restart."""
+    """Lượt Story Remake bị ngắt vì web app khởi động lại (cùng cgroup systemd) → chạy tiếp."""
     try:
         try:
-            from bkt_web import story_remake_routes as _story_routes
+            from bkt_web import story_remake_routes as _srr
         except ImportError:
-            import story_remake_routes as _story_routes
-        _story_routes.resume_interrupted()
-    except Exception as exc:  # keep Story Remake recovery from blocking server startup
+            import story_remake_routes as _srr
+        _srr.resume_interrupted()
+    except Exception as exc:  # noqa: BLE001 — không được chặn server khởi động
         print(f"[story-remake] resume failed: {exc}")
+
 
 @asynccontextmanager
 async def app_lifespan(_app: FastAPI):
@@ -161,6 +164,8 @@ app.include_router(flow_router)
 app.include_router(story_remake_router)
 app.include_router(dola_routes.router)
 app.include_router(dola_admin_proxy.router)
+app.include_router(muse_film_router)
+
 # Token phiên được giữ lại qua các lần khởi động lại server.
 #
 # Trước đây token sinh mới mỗi lần import, nên sau mỗi lần restart thì mọi tab

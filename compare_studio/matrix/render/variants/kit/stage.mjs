@@ -5,7 +5,7 @@
 // design = {
 //   header:  { style, region, align? } | null
 //   visual:  { frame, region, fit?, filter?, sub?(scene,i), label?(scene,i) } | null
-//   text:    { style, region, size?, align?, enter? } | null
+//   text:    { style, region, size?, align?, enter?, rich?(scene,i) → html đã escape } | null
 //   tag:     { style, x, y } | null
 //   decor:   [{ kind, layer?: "under"|"over", ...opts }]
 //   vars:    { "--scope-ink": "#…" }                 // biến vật liệu riêng variant
@@ -13,7 +13,11 @@
 //   sceneExtra?: (scene, i, ctx) → { html, tweens }  // phần tử thêm trong clip cảnh
 //   overlay?: (ctx) → { html, css, tweens }          // phần tử xuyên suốt (bảng tier, tỉ số…) — track 4
 //   underlay?: (ctx) → { html, css, tweens }         // phần tử xuyên suốt nằm DƯỚI cảnh (lưới, bản đồ nền…) — trong clip nền
+//   image?:  { region, frame? }                      // ảnh AI của cảnh đặt riêng khi khung visual là panel dữ liệu
+//                                                   // (compare…); chỉ vẽ khi cảnh có imgSrc, không có → HTML như cũ
+//   perScene?: { html, css }                          // HTML tĩnh chép vào MỌI cảnh, trên panel (ảnh A/B của compare)
 //   css?:    string
+//   fontFamilies?: ["JetBrains Mono", …]            // họ font offline thêm ngoài font thân của DNA (kit/fonts.mjs)
 // }
 import { backgroundCss, backgroundIsDark } from "./backgrounds.mjs";
 import { decorHtml } from "./decor.mjs";
@@ -34,6 +38,24 @@ export function sceneWindows(scenes, totalDuration) {
     return { ...scene, visualStart, visualDuration: Number((end - visualStart).toFixed(3)) };
   });
 }
+
+/**
+ * Cảnh có clip stock (scene.videoSrc): khung của variant chứa poster + <video class="clip"> câm. HyperFrames cấm
+ * <video data-start> nằm trong phần tử cũng có data-start (video bị đóng băng), nên cảnh stock KHÔNG là clip: wrapper
+ * `.v-scene-free` hiện/ẩn bằng set display ở đúng biên cảnh, còn video tự mang data-start/data-duration (giờ toàn cục,
+ * tối đa bằng độ dài đoạn clip). Poster (khung cuối của đoạn) nằm dưới video: cảnh dài hơn đoạn thì dừng ở khung cuối.
+ */
+function stockVisualHtml(scene, { filter }) {
+  const idx = scene.index;
+  const duration = Number(Math.min(scene.visualDuration, Number(scene.videoDuration) || scene.visualDuration).toFixed(3));
+  return `<div class="v-img v-vid" id="v-img-${idx}"${filter ? ` style="filter:${filter}"` : ""}>`
+    + `<img class="v-poster" src="${escapeHtml(scene.imgSrc)}" alt="">`
+    + `<video id="v-clip-${idx}" class="clip v-clip" src="${escapeHtml(scene.videoSrc)}" data-start="${scene.visualStart}" data-duration="${duration}" data-track-index="3" muted playsinline preload="auto"></video>`
+    + "</div>";
+}
+
+const STOCK_CSS = ".v-scene-free{position:absolute;inset:0;isolation:isolate}.v-vid{position:relative;overflow:hidden}"
+  + ".v-vid>.v-poster,.v-vid>.v-clip{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}";
 
 export function pad2(n) {
   return String(n).padStart(2, "0");
@@ -158,7 +180,7 @@ export function buildStage(ctx, design, { ui, cfg = {} }) {
   const bg = creative.axes.background;
   const headInk = backgroundIsDark(bg) ? "#f4f1ea" : "var(--fg)";
 
-  const frames = design.visual ? [design.visual.frame] : [];
+  const frames = [...new Set([...(design.visual ? [design.visual.frame] : []), ...(design.image ? [design.image.frame || "plain"] : [])])];
   const textStyles = design.text ? [design.text.style] : [];
   const header = headerHtml(design.header, { title, ui, lang });
   const under = decorHtml((design.decor || []).filter((item) => item.layer !== "over"), rng, "du");
@@ -167,13 +189,17 @@ export function buildStage(ctx, design, { ui, cfg = {} }) {
   const underlay = design.underlay ? design.underlay({ ...ctx, scenes, ui }) : null;
 
   const tweens = [];
+  let stockScenes = 0;
   const scenesHtml = scenes.map((scene, i) => {
     const idx = scene.index;
+    const stock = Boolean(scene.videoSrc && design.visual && !design.panel);
     let visual = "";
     if (design.visual) {
       const inner = design.panel
         ? `<div class="v-panel" id="v-img-${idx}">${design.panel(scene, i, { ...ctx, scenes, ui })}</div>`
-        : `<img class="v-img" id="v-img-${idx}" src="${escapeHtml(scene.imgSrc)}" alt="" style="${design.visual.filter ? `filter:${design.visual.filter}` : ""}">${overlayHtml(`v-tr-${idx}`, creative.treatmentCss)}`;
+        : stock
+          ? `${stockVisualHtml(scene, { filter: design.visual.filter })}${overlayHtml(`v-tr-${idx}`, creative.treatmentCss)}`
+          : `<img class="v-img" id="v-img-${idx}" src="${escapeHtml(scene.imgSrc)}" alt="" style="${design.visual.filter ? `filter:${design.visual.filter}` : ""}">${overlayHtml(`v-tr-${idx}`, creative.treatmentCss)}`;
       visual = frameHtml(design.visual.frame, {
         id: `v-frame-${idx}`, region: design.visual.region, inner, rng,
         sub: design.visual.sub ? escapeHtml(design.visual.sub(scene, i, ui)) : "",
@@ -188,10 +214,20 @@ export function buildStage(ctx, design, { ui, cfg = {} }) {
       }
     }
     const text = design.text
-      ? textHtml(design.text.style, { id: `v-text-${idx}`, region: design.text.region, text: scene.line, rng, script, size: design.text.size, align: design.text.align })
+      ? textHtml(design.text.style, { id: `v-text-${idx}`, region: design.text.region, text: scene.line, html: design.text.rich ? design.text.rich(scene, i) : undefined, rng, script, size: design.text.size, align: design.text.align })
       : "";
     if (design.text) tweens.push(...textEnterTweens(design.text.enter, { lineId: `v-text-${idx}-line`, boxId: `v-text-${idx}`, at: scene.visualStart, duration: scene.visualDuration }));
     const tag = tagHtml(design.tag, { i, n, ui, lang, id: `v-tag-${idx}` });
+    // Ảnh AI riêng của cảnh cho composition có khung visual là panel dữ liệu (ảnh đã nằm trong khung thì bỏ qua).
+    let sceneImage = "";
+    if (design.image && scene.imgSrc && !(design.visual && !design.panel)) {
+      const region = typeof design.image.region === "function" ? design.image.region(scene, i) : design.image.region;
+      sceneImage = frameHtml(design.image.frame || "plain", {
+        id: `v-sframe-${idx}`, region, rng, sub: "", label: "",
+        inner: `<img class="v-img" id="v-simg-${idx}" src="${escapeHtml(scene.imgSrc)}" alt="">${overlayHtml(`v-str-${idx}`, creative.treatmentCss)}`,
+      });
+      tweens.push(...imageMotionTweens(creative.dna.image_motion, rng, { target: `#v-simg-${idx}`, start: scene.visualStart, duration: scene.visualDuration }));
+    }
     const extra = design.sceneExtra ? design.sceneExtra(scene, i, { ...ctx, scenes, ui }) : null;
     if (extra?.tweens) tweens.push(...extra.tweens);
     if (i > 0) {
@@ -200,9 +236,22 @@ export function buildStage(ctx, design, { ui, cfg = {} }) {
         prevStart: scenes[i - 1].visualStart, nextDuration: scene.visualDuration,
       }));
     }
+    if (stock) {
+      stockScenes += 1;
+      const end = Number((scene.visualStart + scene.visualDuration).toFixed(3));
+      // Trước cảnh: visibility (giữ hộp để kit/fit co chữ đúng khi font nạp xong); sau cảnh: display:none như cảnh cũ ở
+      // transitionTweens (layout audit không coi chữ đã hết cảnh là khối chữ đè lên cảnh mới).
+      if (scene.visualStart > 0) tweens.push({ method: "set", target: `#v-scene-${idx}`, vars: { visibility: "hidden" }, at: 0 });
+      tweens.push({ method: "set", target: `#v-scene-${idx}`, vars: { visibility: "visible", display: "block" }, at: scene.visualStart });
+      if (end < totalDuration) tweens.push({ method: "set", target: `#v-scene-${idx}`, vars: { display: "none" }, at: end });
+      return `
+<div id="v-scene-${idx}" class="v-scene v-scene-free" data-stock-scene="${idx}">
+  <div class="v-inner" id="v-inner-${idx}">${visual}${sceneImage}${text}${tag}${extra?.html || ""}${design.perScene?.html || ""}</div>
+</div>`;
+    }
     return `
 <div id="v-scene-${idx}" class="clip v-scene" data-start="${scene.visualStart}" data-duration="${scene.visualDuration}" data-track-index="3">
-  <div class="v-inner" id="v-inner-${idx}">${visual}${text}${tag}${extra?.html || ""}</div>
+  <div class="v-inner" id="v-inner-${idx}">${visual}${sceneImage}${text}${tag}${extra?.html || ""}${design.perScene?.html || ""}</div>
 </div>`;
   }).join("");
   if (overlay?.tweens) tweens.push(...overlay.tweens);
@@ -239,7 +288,8 @@ ${under.css}
 ${over.css}
 ${overlay?.css || ""}
 ${underlay?.css || ""}
-${design.css || ""}`;
+${design.perScene?.css || ""}
+${design.css || ""}${stockScenes ? `\n${STOCK_CSS}` : ""}`;
 
   const observability = { ...creative.observability, layout: layoutRegions(design) };
   const html = documentHtml({
@@ -248,5 +298,6 @@ ${design.css || ""}`;
     timelineJs: timelineJs(tweens),
     creative: observability,
   });
-  return { html, creative: observability, cfg: { variant_id: creative.variant.id, composition: creative.composition.id, scenes: n, ...cfg } };
+  const out = { html, creative: observability, cfg: { variant_id: creative.variant.id, composition: creative.composition.id, scenes: n, ...cfg } };
+  return design.fontFamilies?.length ? { ...out, fontFamilies: [...design.fontFamilies] } : out;
 }

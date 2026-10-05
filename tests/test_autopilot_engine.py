@@ -1150,6 +1150,80 @@ class CleanupTest(AutopilotTestCase):
 # ---------------------------------------------------------------------------
 
 class HousekeepingTest(AutopilotTestCase):
+    def test_rclone_backup_verifies_size_and_is_preferred_over_vps(self):
+        import tempfile, types
+        from unittest import mock
+        from bkt_web.autopilot import cleanup, store as st
+        with tempfile.TemporaryDirectory() as tmp:
+            mp4 = Path(tmp) / "v.mp4"
+            mp4.write_bytes(b"x" * 1234)
+            calls = []
+            def fake_run(args, **kw):
+                calls.append(args)
+                if args[1] == "lsjson":
+                    return types.SimpleNamespace(returncode=0, stdout='[{"Size": %d}]' % size, stderr="")
+                return types.SimpleNamespace(returncode=0, stdout="", stderr="")
+            size = 1234
+            with mock.patch.object(cleanup.proc, "run", fake_run):
+                self.assertTrue(cleanup.backup_to_rclone(mp4, "slug-1", "gdrive:TokMatrix/archive"))
+            self.assertEqual(calls[0][:4], ["rclone", "copyto", str(mp4), "gdrive:TokMatrix/archive/slug-1/v.mp4"])
+            size = 99  # kích thước trên Drive lệch → không được coi là đã backup
+            with mock.patch.object(cleanup.proc, "run", fake_run):
+                self.assertFalse(cleanup.backup_to_rclone(mp4, "slug-1", "gdrive:TokMatrix/archive"))
+        st.set_config("archive_vps_host", "vps2")
+        self.assertIsNotNone(cleanup.archive_target())
+        st.set_config("archive_rclone_remote", "gdrive:TokMatrix/archive")
+        with mock.patch.object(cleanup, "backup_to_rclone", return_value=True) as rc, mock.patch.object(cleanup, "backup_to_vps") as vps:
+            self.assertTrue(cleanup.archive_target()(Path("/x.mp4"), "s"))
+            rc.assert_called_once()
+            vps.assert_not_called()
+        for bad in ("gdrive", "-flag:x", ":local"):
+            with self.assertRaises(ValueError):
+                st.validate_config("archive_rclone_remote", bad)
+
+    def test_profile_blobs_old_files_only_and_skip_open_profiles(self):
+        import tempfile, os, time
+        from bkt_web.autopilot import housekeeping
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            now = time.time()
+            def mk(rel, age_h):
+                f = root / rel
+                f.parent.mkdir(parents=True, exist_ok=True)
+                f.write_bytes(b"x" * 100)
+                os.utime(f, (now - age_h * 3600, now - age_h * 3600))
+                return f
+            old = mk("channel_1/Default/blob_storage/u/1", 48)
+            fresh = mk("channel_1/Default/blob_storage/u/2", 1)
+            idb = mk("channel_1/Default/IndexedDB/https_www.tiktok.com_0.indexeddb.blob/1/00/a", 48)
+            leveldb = mk("channel_1/Default/IndexedDB/https_www.tiktok.com_0.indexeddb.leveldb/000003.log", 48)
+            cookies = mk("channel_1/Default/Cookies", 48)
+            busy = mk("channel_2/Default/blob_storage/u/1", 48)
+            out = housekeeping.clean_profile_blobs(24, now, root=root, in_use={"channel_2"})
+            self.assertEqual(out["files"], 2)
+            self.assertFalse(old.exists())
+            self.assertFalse(idb.exists())
+            for kept in (fresh, leveldb, cookies, busy):
+                self.assertTrue(kept.exists(), kept)
+            self.assertEqual(housekeeping.clean_profile_blobs(0, now, root=root, in_use=set())["files"], 0)
+
+    def test_profile_in_use_parsing_handles_spaces_and_lock(self):
+        import tempfile, os, time
+        from bkt_web.autopilot import housekeeping
+        args = ["chrome", "--user-data-dir=/Users/x/SSMATool Tiktok/bkt_web/profiles/My Channel", "--foo",
+                "--user-data-dir", "/opt/t/profiles/channel_9/"]
+        self.assertEqual(housekeeping._user_data_profiles(args), {"My Channel", "channel_9"})
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            now = time.time()
+            f = root / "ch" / "Default" / "blob_storage" / "1"
+            f.parent.mkdir(parents=True)
+            f.write_bytes(b"x")
+            os.utime(f, (now - 48 * 3600,) * 2)
+            os.symlink("host-123", root / "ch" / "SingletonLock")
+            self.assertEqual(housekeeping.clean_profile_blobs(24, now, root=root, in_use=set())["files"], 0)
+            self.assertTrue(f.exists())
+
     def setUp(self):
         super().setUp()
         root = Path(self.tmp.name)

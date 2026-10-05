@@ -1049,7 +1049,7 @@ const WORKSTATION_TABS = {
   compare: { icon: '🎬', title: 'Xưởng Video AI Đa Phong Cách (Split-Screen)', pane: 'compare' },
   gpu: { icon: '🎞️', title: 'Render Video GPU H.264 / VideoToolbox', pane: 'gpu' },
   downloader: { icon: '📥', title: 'Tải Video TikTok Không Logo (No-Logo)', pane: 'downloader' },
-  muse: { icon: '🎬', title: 'Phim AI (Muse) — Ý tưởng → Nhiều cảnh → Phim', pane: 'muse' },
+  muse_film: { icon: '🎬', title: 'Phim AI (Muse) — Ý tưởng → Nhiều cảnh → Phim', pane: 'muse_film' },
   story_remake: { icon: '🎞️', title: 'Story Remake — Kênh YouTube → Video Ảnh Phim (giữ audio gốc)', pane: 'story_remake' },
   tiktok_api: { icon: '📡', title: 'TikTok REST API (Chocode)', pane: 'tiktok_api' },
   dola: { icon: '🎥', title: 'Video AI Dola (Seedance) — Prompt → Clip MP4', pane: 'dola' },
@@ -1057,50 +1057,6 @@ const WORKSTATION_TABS = {
   upload: { icon: '🚀', title: 'Lịch Đăng Video Tự Động TikTok', pane: 'upload' },
   settings: { icon: '⚙️', title: 'Cài Đặt Hệ Thống & API Keys', pane: 'settings' }
 };
-
-function toggleMuseMovie(button) {
-  const item = button.closest('.muse-movie-item');
-  if (!item) return;
-  const expanded = button.getAttribute('aria-expanded') !== 'false';
-  button.setAttribute('aria-expanded', String(!expanded));
-  item.classList.toggle('collapsed', expanded);
-}
-
-function submitMuseMovie(event) {
-  event.preventDefault();
-  const story = document.getElementById('muse-story');
-  if (!story || !story.value.trim()) {
-    story?.focus();
-    if (typeof showToast === 'function') showToast('Vui lòng nhập ý tưởng hoặc danh sách cảnh.');
-    return;
-  }
-  if (typeof showToast === 'function') showToast('Layout Muse đã sẵn sàng; API tạo phim chưa được kết nối.');
-}
-
-function previewMuseMovie(button) {
-  const item = button?.closest('.muse-movie-item');
-  const videoUrl = item?.dataset.videoUrl;
-  if (!videoUrl) {
-    if (typeof showToast === 'function') showToast('Phim này chưa có tệp video để xem.');
-    return;
-  }
-  window.open(videoUrl, '_blank', 'noopener');
-}
-
-function downloadMuseMovie(button) {
-  const item = button?.closest('.muse-movie-item');
-  const videoUrl = item?.dataset.videoUrl;
-  if (!videoUrl) {
-    if (typeof showToast === 'function') showToast('Phim này chưa có tệp để tải xuống.');
-    return;
-  }
-  const link = document.createElement('a');
-  link.href = videoUrl;
-  link.download = item?.dataset.filename || 'muse-movie.mp4';
-  document.body.appendChild(link);
-  link.click();
-  link.remove();
-}
 
 function switchTab(tabName) {
   if (!tabName) tabName = 'bkt';
@@ -1140,6 +1096,8 @@ function switchTab(tabName) {
     if (typeof loadVpnWorkstation === 'function') loadVpnWorkstation();
   } else if (tabName === 'downloader') {
     loadDownloadedVideos();
+  } else if (tabName === 'muse_film') {
+    if (typeof loadMuseFilmTab === 'function') loadMuseFilmTab();
   } else if (tabName === 'story_remake') {
     if (typeof loadStoryRemakeTab === 'function') loadStoryRemakeTab();
   } else if (tabName === 'tiktok_api') {
@@ -11575,7 +11533,8 @@ async function loadAiImageQueue(silent = false) {
       // Task engine 'antigravity' do tác nhân NGOÀI sinh ảnh; worker nội bộ
       // (Pollinations) không đụng vào, nên không được nói là "worker đang xử lý".
       const isExternal = item.engine === 'antigravity' || item.engine === 'antigravity_queue';
-      let action = isExternal
+      const isMuse = item.engine === 'muse';
+      let action = isMuse ? '<span class="ai-queue-waiting">🎨 Muse đang vẽ</span>' : isExternal
         ? '<span class="ai-queue-waiting"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Chờ Antigravity nhận</span>'
         : '<span class="ai-queue-waiting"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="ai-spin"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg> Worker đang xử lý...</span>';
       if (item.image_url) {
@@ -11593,7 +11552,7 @@ async function loadAiImageQueue(silent = false) {
             <div class="ai-queue-meta-row">
               ${badge}
               <span class="ai-queue-ratio-badge">${item.aspect_ratio || '1:1'}</span>
-              ${isExternal
+              ${isMuse ? '<span class="ai-queue-engine-badge external">🎨 Muse</span>' : isExternal
                 ? '<span class="ai-queue-engine-badge external"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg> Antigravity</span>'
                 : '<span class="ai-queue-engine-badge"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M9 9h6v6H9z"/></svg> Worker nội bộ</span>'}
               ${item.model && !isExternal ? `<span class="ai-queue-model-badge">${escapeHtml(item.model)}</span>` : ''}
@@ -11719,6 +11678,33 @@ function highlightNewAiImages(filenames) {
     const first = document.querySelector(`.ai-gallery-card[data-filename="${filenames[0]}"]`);
     if (first) first.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }, 150);
+}
+
+async function handleEnqueueMuse() {
+  const f = aiFormValues();
+  if (!f.prompt) {
+    showToast('Vui lòng nhập mô tả ảnh (prompt)!', 4000);
+    document.getElementById('ai-prompt-input')?.focus();
+    return;
+  }
+  const btn = document.getElementById('btn-ai-enqueue-muse');
+  if (btn) btn.disabled = true;
+  try {
+    const res = await fetch('/api/ai-images/queue', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ...f, engine: 'muse', notes: 'Đang chờ Muse vẽ' }),
+    });
+    const data = await res.json();
+    if (!res.ok || !data.success) throw new Error(data.detail || 'Không thể đưa vào hàng đợi');
+    showToast('🎨 Đã gửi Muse vẽ');
+    switchAiStudioSubTab('queue');
+    await loadAiImageQueue();
+  } catch (err) {
+    showToast('Lỗi hàng đợi: ' + err.message, 5000);
+  } finally {
+    if (btn) btn.disabled = false;
+  }
 }
 
 async function handleEnqueueAntigravity() {

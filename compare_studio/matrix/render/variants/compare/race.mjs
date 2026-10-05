@@ -1,7 +1,7 @@
 // compare/race-track — đường đua: A và B là hai xe, mỗi hiệp thắng xe tiến thêm một chặng (vị trí = điểm cộng dồn /
 // số hiệp). Composition 1: hai làn ngang, về đích bên phải; composition 2: đường đua dọc (drag strip) + cột bảng tin.
 import { defineVariant } from "../kit/define.mjs";
-import { box, compareBase, compareModel, compareUi, esc, fitBox, span, to, val, winnerLabel } from "./common.mjs";
+import { box, compareBase, compareModel, compareUi, esc, fitBox, span, to, val, winnerLabel, subjectPair } from "./common.mjs";
 import { compareSample } from "./sample.mjs";
 
 const CAR = { a: "var(--accent-sage)", b: "var(--accent-terra)" };
@@ -128,6 +128,7 @@ const raceTrack = defineVariant({
           sceneExtra: (scene, i) => ({ html: standings(model.scenes[i], model, ctx.ui, [{ x: 60, y: 1170, w: 560, h: 84 }, { x: 640, y: 1170, w: 380, h: 84 }]) }),
           text: { style: "bubble", region: { x: 90, y: 1300, w: 900, h: 300 }, size: 48, enter: "pop" },
           overlay: (octx) => lanesOverlay(model, octx.scenes),
+          underlay: () => subjectPair(model, { x: 60, y: 1640, w: 460, h: 235 }, { x: 560, y: 1640, w: 460, h: 235 }, { shape: "square" }), // ảnh đối tượng A/B
           vars: { "--frame-edge": "#ffcc00" },
           css: CSS,
         };
@@ -145,6 +146,7 @@ const raceTrack = defineVariant({
           text: { style: "panel", region: { x: 580, y: 660, w: 460, h: 640 }, size: 46, enter: "fade_up" },
           sceneExtra: (scene, i) => ({ html: standings(model.scenes[i], model, ctx.ui, [{ x: 580, y: 1330, w: 460, h: 100 }, { x: 580, y: 1450, w: 460, h: 100 }]) }),
           overlay: (octx) => stripOverlay(model, octx.scenes),
+          underlay: () => subjectPair(model, { x: 40, y: 1665, w: 480, h: 210 }, { x: 560, y: 1665, w: 480, h: 210 }, { shape: "square" }), // ảnh đối tượng A/B
           vars: { "--frame-edge": "#ffcc00" },
           css: `${CSS}.cr-board.narrow .cr-bk,.cr-board.narrow .cr-bc{left:20px;right:20px}.cr-board.narrow .cr-bv{width:44%}.cr-board.narrow .cr-bv.a{left:14px}.cr-board.narrow .cr-bv.b{right:14px}`,
         };

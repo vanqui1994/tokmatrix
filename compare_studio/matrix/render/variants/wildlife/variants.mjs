@@ -4,7 +4,7 @@
 // Trục gốc: composition / background / transition / typography khác nhau ở cả 8 variant → mọi cặp khác ≥ 4/6.
 // Theo review V2 mục 20: chỉ wildlife dùng ô cửa tàu ngầm; kính hiển vi của wildlife là khung tròn TĨNH + thước µm
 // (science mới zoom nhiều cấp). Không dùng radar/sonar/lưới cctv/sổ tay kẻ dòng/tủ kính bảo tàng (đã thuộc mystery).
-import { IMAGE_ASSET, IMAGE_COST, ROMAN, neighbours } from "../common.mjs";
+import { IMAGE_ASSET, IMAGE_COST, ROMAN, STOCK_VIDEO_ASSET, STOCK_VIDEO_COST, neighbours } from "../common.mjs";
 import { defineVariant } from "../kit/define.mjs";
 import { frameHtml, regionStyle } from "../kit/frames.mjs";
 import { rngRange } from "../kit/rng.mjs";
@@ -16,6 +16,10 @@ import {
 import { wildlifeSample } from "./sample.mjs";
 
 const base = { engine: "wildlife", asset: IMAGE_ASSET, cost: IMAGE_COST, sample: wildlifeSample };
+// Mục 9.3 docs/MATRIX_VARIANT_SYSTEM_V2.md: variant có footage thật (thảo nguyên, đại dương, bẫy ảnh, phim tài liệu, sách
+// thực địa, di cư) lấy clip stock trước khi TOKMATRIX_STOCK_VIDEO=1; stat-battle (hai loài đặt cạnh nhau) và microscope
+// (vi mô) vẫn dùng ảnh AI.
+const stockBase = { ...base, asset: STOCK_VIDEO_ASSET, cost: STOCK_VIDEO_COST };
 
 const timecode = (seconds) => `00:${pad2(Math.floor(seconds / 60))}:${pad2(Math.floor(seconds % 60))}`;
 const calloutOr = (sp, i, fallback) => calloutAt(sp, i) || fallback;
@@ -44,7 +48,7 @@ const SAVANNA_CSS = ".wl-sv-panel{background:rgba(14,10,4,.88);border-left:6px s
   + ".wl-sv-ital{font-style:italic}.wl-sv-dim{color:#f3e6c4;background:rgba(14,10,4,.82);display:flex;align-items:center;padding:0 16px}";
 
 const savannaHud = defineVariant({
-  ...base,
+  ...stockBase,
   id: "wildlife/savanna-hud",
   name_vi: "HUD ống ngắm thảo nguyên",
   topicPacks: { wildlife_apex_predators: 0.6, wildlife_big_cats: 0.4 },
@@ -167,7 +171,7 @@ const OCEAN_CSS = ".wl-dg-rail{position:absolute;background:repeating-linear-gra
   + ".wl-oc-chip{background:rgba(2,20,28,.9);border:2px solid #5eead4;color:#b7fff1;display:flex;align-items:center;padding:0 14px;letter-spacing:2px}";
 
 const deepOcean = defineVariant({
-  ...base,
+  ...stockBase,
   id: "wildlife/deep-ocean",
   name_vi: "Ô cửa tàu lặn biển sâu",
   topicPacks: { wildlife_deep_sea: 0.7, wildlife_ocean_giants: 0.3 },
@@ -292,7 +296,7 @@ function trailHead(title, ui) {
 }
 
 const trailCam = defineVariant({
-  ...base,
+  ...stockBase,
   id: "wildlife/trail-cam",
   name_vi: "Bẫy ảnh hồng ngoại",
   topicPacks: { wildlife_nocturnal: 0.6, wildlife_elusive_mammals: 0.4 },
@@ -389,7 +393,7 @@ const DOC_CSS = ".v-bg-fill{background:#070707}.wl-nd-row{color:#ece6d8;display:
   + ".wl-nd-bar{color:var(--gold);letter-spacing:5px;display:flex;align-items:center}";
 
 const natureDoc = defineVariant({
-  ...base,
+  ...stockBase,
   id: "wildlife/nature-doc",
   name_vi: "Phim tài liệu thiên nhiên letterbox",
   topicPacks: { wildlife_nature_doc: 0.6, wildlife_ecosystems: 0.4 },
@@ -593,7 +597,7 @@ const GUIDE_CSS = ".wl-fg-run{color:var(--wl-ink);font-weight:700}.wl-fg-runlab{
 const guideVars = { "--wl-ink": "#1f2a1c", "--wl-accent": "#3b5219", "--head-ink": "#1f2a1c" };
 
 const fieldGuide = defineVariant({
-  ...base,
+  ...stockBase,
   id: "wildlife/field-guide",
   name_vi: "Trang sách hướng dẫn thực địa",
   topicPacks: { wildlife_birds: 0.5, wildlife_insects: 0.2, wildlife_field_id: 0.3 },
@@ -827,7 +831,7 @@ function legendRows(sp, area, prefix) {
 }
 
 const migrationMap = defineVariant({
-  ...base,
+  ...stockBase,
   id: "wildlife/migration-map",
   name_vi: "Bản đồ đường di cư",
   topicPacks: { wildlife_migration: 0.7, wildlife_ecosystems: 0.3 },

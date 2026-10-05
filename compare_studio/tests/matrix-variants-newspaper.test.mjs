@@ -42,9 +42,9 @@ function buildFor(variant, composition, lang, dna = defaultDna(variant, composit
   };
 }
 
-test("newspaper registers 7 valid, structurally distinct base variants", () => {
+test("newspaper registers 8 valid, structurally distinct base variants", () => {
   assert.deepEqual(validateRegistry().errors, []);
-  assert.equal(variants.length, 7);
+  assert.equal(variants.length, 8);
   for (const v of variants) {
     assert.deepEqual(validateVariant(v), [], v.id);
     assert.equal(v.status, "active");
@@ -94,6 +94,7 @@ test("newspaper UI labels are localised and shown for every country", () => {
     "newspaper/police-gazette": { en: "POLICE GAZETTE", de: "POLIZEIBLATT", ja: "警察新報", ko: "경찰 공보", vi: "CÔNG BÁO CẢNH SÁT" },
     "newspaper/microfilm": { en: "MICROFILM ARCHIVE", de: "MIKROFILMARCHIV", ja: "マイクロフィルム資料室", ko: "마이크로필름 자료실", vi: "KHO VI PHIM" },
     "newspaper/court-sketch": { en: "COURTROOM SKETCH", de: "GERICHTSZEICHNUNG", ja: "法廷画", ko: "법정 스케치", vi: "KÝ HỌA PHIÊN TÒA" },
+    "newspaper/original": { en: "THE CHRONICLE INVESTIGATION", de: "INVESTIGATIV-BERICHT", ja: "特命調査ファイル", ko: "심층 수사 리포트", vi: "HỒ SƠ ĐIỀU TRA ĐẶC BIỆT" },
   };
   assert.deepEqual(variants.map((v) => v.id).sort(), Object.keys(expected).sort());
   for (const variant of variants) {

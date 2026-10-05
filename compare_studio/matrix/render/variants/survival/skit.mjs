@@ -100,7 +100,14 @@ export function reactorStage(ctx, look) {
   return {
     identity,
     data,
-    panel: (scene, i) => `<div class="rx-bg" style="${look.stage || ""}"></div><div class="rx-w" id="rx-w-${scene.index}">${reactorSvg({ identity, severity: data.items[i].severity, look, id: `rx-${scene.index}` })}</div>`,
+    // Có ảnh AI của cảnh (assetProfile IMAGE_AI): khung chia đôi, KHÔNG đè nhau (owner 29/09) — khung đứng/tròn: ảnh
+    // trên (58%), reactor dưới; khung ngang: ảnh trái, reactor phải (container query theo tỉ lệ khung).
+    // Không có ảnh (preview cũ, dữ liệu thiếu): sân khấu reactor như trước.
+    panel: (scene, i) => {
+      const face = `<div class="rx-w" id="rx-w-${scene.index}">${reactorSvg({ identity, severity: data.items[i].severity, look, id: `rx-${scene.index}` })}</div>`;
+      if (!scene.imgSrc) return `<div class="rx-bg" style="${look.stage || ""}"></div>${face}`;
+      return `<div class="rx-box"><div class="rx-split"><div class="rx-shot"><img class="rx-scene" src="${escapeHtml(scene.imgSrc)}" alt=""></div><div class="rx-react"><div class="rx-bg" style="${look.stage || ""}"></div>${face}</div></div></div>`;
+    },
     tweens: (scene, i) => {
       const expr = data.items[i].expr;
       const target = `#rx-w-${scene.index}`;
@@ -116,7 +123,7 @@ export function reactorStage(ctx, look) {
   };
 }
 
-export const STAGE_CSS = ".rx-bg{position:absolute;inset:0}.rx-w{position:absolute;left:4%;right:4%;top:6%;bottom:0}.rx-svg{display:block}";
+export const STAGE_CSS = ".rx-bg{position:absolute;inset:0}.rx-w{position:absolute;left:4%;right:4%;top:6%;bottom:0}.rx-svg{display:block}.rx-box{position:absolute;inset:0;container-type:size;container-name:rx}.rx-split{position:absolute;inset:0;display:flex;flex-direction:column}.rx-shot{position:relative;flex:0 0 58%;overflow:hidden;background:#000}.rx-scene{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}.rx-react{position:relative;flex:1 1 auto;min-height:0;overflow:hidden;border-top:4px solid rgba(255,255,255,.85)}.rx-react .rx-w{left:14%;right:14%;top:4%;bottom:0}@container rx (min-aspect-ratio: 11/10){.rx-split{flex-direction:row}.rx-shot{flex-basis:56%}.rx-react{border-top:0;border-left:4px solid rgba(255,255,255,.85)}.rx-react .rx-w{left:2%;right:2%;top:14%}}";
 
 export function merge(...parts) {
   return { html: parts.map((p) => p.html || "").join(""), tweens: parts.flatMap((p) => p.tweens || []) };
