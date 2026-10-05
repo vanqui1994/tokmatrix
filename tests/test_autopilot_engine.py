@@ -326,6 +326,16 @@ class PublisherTest(AutopilotTestCase):
         publisher.publish_job(self.job(), self.PLAN)
         self.assertLess(publisher.scheduler.next_slot.call_args.kwargs["now"], ready_at + 3600)
 
+    def test_no_slot_is_handed_out_before_the_publish_hold_ends(self):
+        from bkt_web.autopilot import scheduler
+        hold = int(time.time()) + 2 * 86400
+        store.set_config("publish_hold_until", str(hold))
+        slots = scheduler.free_slots(1)
+        self.assertTrue(slots)
+        self.assertGreaterEqual(min(slots), hold)  # task remake xếp lúc đang giữ không đăng dồn khi mốc hết
+        store.set_config("publish_hold_until", "0")
+        self.assertLess(min(scheduler.free_slots(1)), hold)
+
     def test_upload_scheduler_respects_publish_hold(self):
         from bkt_web.server import upload_hold_active
         store.set_config("publish_hold_until", str(int(time.time()) + 3600))
