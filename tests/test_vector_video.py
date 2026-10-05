@@ -187,6 +187,35 @@ class DnaTest(unittest.TestCase):
         self.assertGreaterEqual(len(dna.AXES) + 1, dna.differences(a, b))
 
 
+class EnableTest(unittest.TestCase):
+    def test_enable_puts_vector_first_bumps_version_and_assigns_dna_on_a_copy(self):
+        import shutil
+        import tempfile
+        import yaml
+        import bkt_web.vector_video.cli as cli
+        tmp = Path(tempfile.mkdtemp())
+        try:
+            shutil.copytree(ROOT / "compare_studio" / "config", tmp / "compare_studio" / "config")
+            old_root, old_dna = cli.ROOT, dna.DNA_PATH
+            cli.ROOT, dna.DNA_PATH = tmp, tmp / "compare_studio" / "config" / "vector_dna.json"
+            try:
+                dry = cli.enable(None, 2, False)
+                self.assertEqual(sorted({p["language"] for p in dry}), ["de", "en", "ja", "ko"])
+                self.assertFalse(dna.DNA_PATH.exists(), "dry-run không ghi gì")
+                before = yaml.safe_load((tmp / "compare_studio/config/channels/deep_space_11.yaml").read_text())
+                cli.enable(["deep_space_11"], 0, True)
+                after = yaml.safe_load((tmp / "compare_studio/config/channels/deep_space_11.yaml").read_text())
+                self.assertEqual(after["creative"]["preferred_engines"], ["vector", *before["creative"]["preferred_engines"]])
+                self.assertEqual(after["config_version"], before["config_version"] + 1)
+                self.assertIn("deep_space_11", json.loads(dna.DNA_PATH.read_text())["channels"])
+                with self.assertRaises(SystemExit):
+                    cli.enable(["geopolitics_maps_01"], 0, True)
+            finally:
+                cli.ROOT, dna.DNA_PATH = old_root, old_dna
+        finally:
+            shutil.rmtree(tmp)
+
+
 class CliTest(unittest.TestCase):
     def test_build_command_speaks_json(self):
         sc, total = scenes()

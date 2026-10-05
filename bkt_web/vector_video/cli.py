@@ -5,6 +5,9 @@
   bundle       --out <dir>: chép engine (lõi + mọi pack, đúng thứ tự engine_sources) và catalog cho HTML offline.
   extents      đo lại kích thước thật của mọi rig (cần Playwright).
   assign-dna   gán Vector DNA cho các kênh có `vector` trong preferred_engines (--apply để ghi).
+  enable       --channels a,b | --per-language N: đưa `vector` lên đầu preferred_engines của kênh (tăng
+               config_version) rồi gán DNA; mặc định chỉ in kế hoạch, --apply mới ghi YAML. Sau đó chạy
+               matrix_config.sync_channel_configs (Autopilot tạm dừng) để DB nhận cấu hình mới.
   preview      --niche --lang --channel --out sheet.jpg [--lines a|b|c]: dựng storyboard dự phòng và vẽ bảng hình.
 """
 from __future__ import annotations
@@ -73,6 +76,57 @@ def assign_dna(apply: bool) -> dict:
     return result
 
 
+def candidate_channels() -> list[dict]:
+    """Kênh bật được engine vector: niche có cấu hình, ngôn ngữ de/en/ko/ja, không khoá variant V2."""
+    import yaml
+    from bkt_web.vector_video.niches import LANGUAGES, supported_niches
+
+    out = []
+    for path in sorted((ROOT / "compare_studio" / "config" / "channels").glob("*.yaml")):
+        data = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+        creative = data.get("creative") or {}
+        lang = (data.get("publishing") or {}).get("language")
+        if data.get("niche_id") in supported_niches() and lang in LANGUAGES and not creative.get("variant_id"):
+            out.append({"channel_id": data["channel_id"], "language": lang, "niche": data["niche_id"], "path": path,
+                        "engines": creative.get("preferred_engines") or [], "config_version": data.get("config_version")})
+    return out
+
+
+def enable(channel_ids: list[str] | None, per_language: int, apply: bool) -> list[dict]:
+    import re
+
+    cands = {c["channel_id"]: c for c in candidate_channels()}
+    if channel_ids:
+        missing = [c for c in channel_ids if c not in cands]
+        if missing:
+            raise SystemExit(f"không bật được vector cho {missing} (niche/ngôn ngữ không hỗ trợ hoặc kênh có variant_id)")
+        chosen = [cands[c] for c in channel_ids]
+    else:
+        chosen, count = [], {}
+        # Mỗi ngôn ngữ N kênh, rải qua các niche khác nhau trước (tất định theo channel_id).
+        for c in sorted(cands.values(), key=lambda c: (c["language"], c["channel_id"])):
+            niches = {x["niche"] for x in chosen if x["language"] == c["language"]}
+            if count.get(c["language"], 0) < per_language and (c["niche"] not in niches or len(niches) >= len({x["niche"] for x in cands.values() if x["language"] == c["language"]})):
+                chosen.append(c)
+                count[c["language"]] = count.get(c["language"], 0) + 1
+    plan = []
+    for c in chosen:
+        already = c["engines"][:1] == ["vector"]
+        plan.append({"channel_id": c["channel_id"], "language": c["language"], "niche": c["niche"], "before": c["engines"],
+                     "after": c["engines"] if already else ["vector", *[e for e in c["engines"] if e != "vector"]]})
+        if apply and not already:
+            text = c["path"].read_text(encoding="utf-8")
+            text, n1 = re.subn(r"(\n  preferred_engines:\n)", r"\1  - vector\n", text, count=1)
+            text = re.sub(r"(\n  preferred_engines:\n  - vector\n)((?:  - [a-z_]+\n)*)", lambda m: m.group(1) + "".join(l + "\n" for l in m.group(2).splitlines() if l.strip() != "- vector"), text, count=1)
+            text, n2 = re.subn(r"^config_version: (\d+)$", lambda m: f"config_version: {int(m.group(1)) + 1}", text, count=1, flags=re.M)
+            if n1 != 1 or n2 != 1:
+                raise SystemExit(f"{c['path'].name}: không tìm thấy preferred_engines/config_version dạng khối")
+            c["path"].write_text(text, encoding="utf-8")
+    if apply:
+        assign_dna(True)
+    return plan
+
+
 def preview(niche: str, lang: str, channel: str, out: Path, lines: list[str]) -> list[str]:
     import base64
     import io
@@ -122,6 +176,10 @@ def main(argv=None):
     sub.add_parser("extents")
     a = sub.add_parser("assign-dna")
     a.add_argument("--apply", action="store_true")
+    e = sub.add_parser("enable")
+    e.add_argument("--channels", default="")
+    e.add_argument("--per-language", type=int, default=0)
+    e.add_argument("--apply", action="store_true")
     p = sub.add_parser("preview")
     p.add_argument("--niche", required=True)
     p.add_argument("--lang", default="en")
@@ -145,6 +203,11 @@ def main(argv=None):
         print(write_extents({"planet": ["mercury", "venus", "earth", "mars", "jupiter", "saturn", "uranus", "neptune"]}))
     elif args.cmd == "assign-dna":
         print(json.dumps(assign_dna(args.apply), indent=1))
+    elif args.cmd == "enable":
+        ids = [c for c in args.channels.split(",") if c]
+        if not ids and args.per_language < 1:
+            raise SystemExit("cần --channels hoặc --per-language N")
+        print(json.dumps(enable(ids or None, args.per_language, args.apply), indent=1, ensure_ascii=False))
     elif args.cmd == "preview":
         lines = [s for s in args.lines.split("|") if s.strip()] or [
             "Imagine a place nobody has ever explained.", "Scientists noticed something strange there.",

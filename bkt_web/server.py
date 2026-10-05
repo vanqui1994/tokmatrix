@@ -53,6 +53,9 @@ try:
     from bkt_web.autopilot_routes import router as autopilot_router
     from bkt_web.chocode_routes import router as tiktok_api_router, sync_channel as tiktok_api_sync_channel
     from bkt_web.flow_routes import router as flow_router
+    from bkt_web.story_remake_routes import router as story_remake_router
+    from bkt_web import dola_routes
+    from bkt_web import dola_admin_proxy
     from bkt_web import chocode_routes
     from bkt_web import chocode_tiktok
     from bkt_web.autopilot import init_autopilot_db, start_autopilot, stop_autopilot
@@ -78,6 +81,9 @@ except ImportError:
     from autopilot_routes import router as autopilot_router
     from chocode_routes import router as tiktok_api_router, sync_channel as tiktok_api_sync_channel
     from flow_routes import router as flow_router
+    from story_remake_routes import router as story_remake_router
+    import dola_routes
+    import dola_admin_proxy
     import chocode_routes
     import chocode_tiktok
     from autopilot import init_autopilot_db, start_autopilot, stop_autopilot
@@ -108,9 +114,21 @@ GENERATED_IMAGES_DIR = STATIC_DIR / "generated_images"
 for _dir in [STORAGE_DIR, DOWNLOADS_DIR, RENDERED_DIR, OVERLAYS_DIR, AUDIO_DIR, GENERATED_IMAGES_DIR]:
     _dir.mkdir(parents=True, exist_ok=True)
 
+def _resume_story_remake():
+    """Resume a YouTube remake that was interrupted by a web-app restart."""
+    try:
+        try:
+            from bkt_web import story_remake_routes as _story_routes
+        except ImportError:
+            import story_remake_routes as _story_routes
+        _story_routes.resume_interrupted()
+    except Exception as exc:  # keep Story Remake recovery from blocking server startup
+        print(f"[story-remake] resume failed: {exc}")
+
 @asynccontextmanager
 async def app_lifespan(_app: FastAPI):
     app_startup()
+    _resume_story_remake()
     try:
         yield
     finally:
@@ -140,6 +158,9 @@ app.include_router(script_router)
 app.include_router(autopilot_router)
 app.include_router(tiktok_api_router)
 app.include_router(flow_router)
+app.include_router(story_remake_router)
+app.include_router(dola_routes.router)
+app.include_router(dola_admin_proxy.router)
 # Token phiên được giữ lại qua các lần khởi động lại server.
 #
 # Trước đây token sinh mới mỗi lần import, nên sau mỗi lần restart thì mọi tab
@@ -3192,7 +3213,8 @@ def api_list_library_videos():
                 "created_at": created or 0,
             })
     conn.close()
-    
+
+    videos.extend(dola_routes.library_videos())
     return {"videos": videos}
 
 class UploadTaskCreate(BaseModel):
@@ -4883,6 +4905,7 @@ def app_startup():
     start_autopilot()
     notify.start()
     start_image_autoassign()
+    dola_routes.start_worker()
 
 def app_shutdown():
     global SCHEDULER_THREAD, VERIFIER_THREAD
@@ -4892,6 +4915,7 @@ def app_shutdown():
     stop_autopilot(timeout=15)
     notify.stop()
     stop_image_autoassign()
+    dola_routes.stop_worker()
     SCHEDULER_STOP.set()
     if SCHEDULER_THREAD and SCHEDULER_THREAD.is_alive():
         SCHEDULER_THREAD.join(timeout=5)

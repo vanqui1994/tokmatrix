@@ -80,3 +80,7 @@ bkt_web/*uk.txt
 VPS_CREDENTIALS.md
 .session_token
 .webauth.json
+
+# Dola account pool (may contain gateway API keys)
+bkt_web/storage/dola_accounts.json
+bkt_web/storage/dola_videos/

@@ -26,6 +26,7 @@ function args(argv) {
     else if (argv[i] === "--topic") out.topic = argv[++i];
     else if (argv[i] === "--out") out.out = argv[++i];
     else if (argv[i] === "--no-render") out.render = false;
+    else if (argv[i] === "--lines-file") out.linesFile = argv[++i];
   }
   if (!out.channel || !out.topic) throw new Error("usage: --channel <id> --topic <title> [--out dir] [--no-render]");
   return out;
@@ -36,20 +37,31 @@ function channelContext(channel) {
   return { ...channel, ...dna, channel: dna, resolved_config: channel?.resolved_config };
 }
 
-export async function vectorSample({ channelId, topic, outDir, render = true, log = console.log }) {
+export async function vectorSample({ channelId, topic, outDir, render = true, linesFile, log = console.log }) {
   const resolved = resolvePilotChannelConfigs({}).find((item) => item.channel_id === channelId);
   if (!resolved) throw new Error(`unknown channel ${channelId}`);
   const channel = channelContext(resolved);
   const language = channel.publishing?.language;
   const blueprintIds = resolved.resolved_config?.channel?.story?.preferred_blueprints || [];
   const blueprint = (resolved.resolved_config?.blueprints || []).find((b) => b.blueprint_id === blueprintIds[0]) || resolved.resolved_config?.blueprints?.[0];
-  const [angle] = await generateAngleSet(topic, { count: 1, language });
-  const outline = buildBlueprintOutline({ blueprint, angle, targetDurationSeconds: 45, pacingBeats: 12 });
-  log(`[vector-sample] ${channelId} (${language}) angle: ${angle.angle}`);
-  const script = await attachEngineExtras({
-    engineType: "vector", topic: { title: topic }, channel, language,
-    script: await generateScript({ topic, angle, channel, outline, language }),
-  });
+  let angle = { angle: topic }, outline = null, script;
+  if (linesFile) {
+    // Kịch bản viết sẵn (một câu mỗi dòng, "câu | ý hình" tuỳ chọn), không gọi LLM: storyboard dự phòng tất định.
+    const lines = (await fs.readFile(linesFile, "utf8")).split(/\r?\n/u).map((l) => l.trim()).filter(Boolean);
+    script = {
+      title: topic, language,
+      scenes: lines.map((raw, i) => { const [line, visual] = raw.split("|").map((x) => x.trim()); return { scene_index: i + 1, line, visual_intent: visual || line, asset_type: "CANVAS" }; }),
+      engine_extras: { engine: "vector", source: "fallback", data: { fallback: true } },
+    };
+  } else {
+    [angle] = await generateAngleSet(topic, { count: 1, language });
+    outline = buildBlueprintOutline({ blueprint, angle, targetDurationSeconds: 45, pacingBeats: 12 });
+    log(`[vector-sample] ${channelId} (${language}) angle: ${angle.angle}`);
+    script = await attachEngineExtras({
+      engineType: "vector", topic: { title: topic }, channel, language,
+      script: await generateScript({ topic, angle, channel, outline, language }),
+    });
+  }
   log(`[vector-sample] script ${script.scenes.length} scenes, extras ${script.engine_extras?.source}`);
   const id = crypto.createHash("sha256").update(`${channelId}\n${topic}`).digest("hex").slice(0, 10);
   const jobId = `vecsample_${id}`;
@@ -80,7 +92,7 @@ if (import.meta.url === pathToFileURL(process.argv[1]).href) {
   const opts = args(process.argv.slice(2));
   const outDir = path.resolve(opts.out || path.join(COMPARE_DIR, ".runtime", "vector-samples", opts.channel));
   await fs.mkdir(outDir, { recursive: true });
-  vectorSample({ channelId: opts.channel, topic: opts.topic, outDir, render: opts.render })
+  vectorSample({ channelId: opts.channel, topic: opts.topic, outDir, render: opts.render, linesFile: opts.linesFile })
     .then((result) => { if (result.qa && !result.qa.passed) process.exitCode = 1; })
     .catch((error) => { console.error(error); process.exitCode = 1; });
 }

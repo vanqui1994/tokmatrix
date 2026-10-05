@@ -1,0 +1,23 @@
+{
+  "accounts": [
+    {
+      "id": "acc_01",
+      "base_url": "http://127.0.0.1:8000",
+      "api_key_env": "DOLA_KEY_ACC_01",
+      "daily_limit": 2
+    },
+    {
+      "id": "acc_02",
+      "base_url": "http://127.0.0.1:8001",
+      "api_key_env": "DOLA_KEY_ACC_02",
+      "daily_limit": 2
+    },
+    {
+      "id": "vps_gateway",
+      "base_url": "https://dola.example.com",
+      "api_key": "",
+      "daily_limit": 6,
+      "enabled": false
+    }
+  ]
+}
