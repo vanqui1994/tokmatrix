@@ -572,6 +572,8 @@ def validate_story(story):
         from remake_composer import validate_timeline
     _number(story.get("duration"), 0.01, 1800, "duration")
     frame_name(story)
+    if "frame_origin_x" in story:
+        _number(story["frame_origin_x"], -5000, 5000, "frame_origin_x")
     if not story.get("scenes") or any(s.get("renderer") != RENDERER for s in story["scenes"]):
         raise ValueError("Storyboard phải dùng native-vector-v1 cho mọi cảnh")
     validate_timeline(story["scenes"], story.get("cues", []), story["characters"], story["duration"])
@@ -6744,9 +6746,9 @@ def to_landscape(story: dict, layout: str = "center", margin: float = 40.0) -> d
     cameras = [k for scene in out["scenes"] for k in scene.get("camera", []) or [] if "x" in k]
 
     if layout == "center":
-        dx = (lw - pw) / 2
-        deltas = {cid: dx for cid in free}
-        camera_x = lambda x: x + dx  # noqa: E731
+        out["frame_origin_x"] = int((lw - pw) / 2)
+        validate_story(out)
+        return out
     else:
         parent = {cid: cid for cid in free}
 

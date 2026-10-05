@@ -11,7 +11,8 @@
 
   const {
     INK, TAU, tone, volume, taper, cylinder, limb, mitten, leaf, blade,
-    ellipse, path, line, withCut, hash, clamp, smooth, mix
+    ellipse, path, line, withCut, hash, clamp, smooth, mix,
+    PANEL, frameW, frameSpan, spread, tileX, seeded
   } = RemakeVector.kit;
 
   function drawPoly(ctx, pts, fill, stroke, width = 1) {
@@ -841,6 +842,8 @@
 
   // 1. EDO_TOWN (Phố cổ Edo truyền thống)
   function drawEdoTown(ctx, settings, t) {
+    const span = frameSpan(settings);
+    const x0 = span.x0, x1 = span.x1;
     const isNight = Boolean(settings.night || settings.time === 'night');
     const groundY = settings.ground_y || 810;
 
@@ -854,7 +857,7 @@
       sky.addColorStop(1, '#fef9c3');
     }
     ctx.fillStyle = sky;
-    ctx.fillRect(0, 0, 576, groundY * 0.65);
+    ctx.fillRect(x0, 0, x1 - x0, groundY * 0.65);
 
     // Mặt trăng đêm / Mặt trời ngày
     if (isNight) {
@@ -863,6 +866,16 @@
       // Sao đêm lấp lánh
       for (let s of [[80, 80], [180, 110], [290, 70], [380, 140], [120, 160]]) {
         ellipse(ctx, s[0], s[1], 1.5, 1.5, '#ffffff', null);
+      }
+      if (x0 < 0) {
+        for (let s of [[x0 + 60, 90], [x0 + 140, 130], [x0 + 220, 70]]) {
+          ellipse(ctx, s[0], s[1], 1.5, 1.5, '#ffffff', null);
+        }
+      }
+      if (x1 > PANEL) {
+        for (let s of [[PANEL + 60, 80], [PANEL + 150, 120], [PANEL + 230, 95]]) {
+          ellipse(ctx, s[0], s[1], 1.5, 1.5, '#ffffff', null);
+        }
       }
     } else {
       ellipse(ctx, 480, 100, 32, 32, '#fbbf24', null);
@@ -881,6 +894,21 @@
     const wallCol = isNight ? '#1f2937' : '#f5f5f4';
     const timberCol = isNight ? '#111827' : '#3d2314';
     const tileCol = isNight ? '#0f172a' : '#334155';
+
+    // Nhà mở rộng bên trái
+    if (x0 < 0) {
+      for (let hx = -240; hx + 240 > x0; hx -= 240) {
+        drawPoly(ctx, [[hx, houseBaseY], [hx + 240, houseBaseY], [hx + 240, houseBaseY - 180], [hx, houseBaseY - 180]], wallCol, INK, 1.4);
+        for (let x = hx; x <= hx + 240; x += 60) {
+          line(ctx, [[x, houseBaseY], [x, houseBaseY - 180]], timberCol, 4.0);
+        }
+        line(ctx, [[hx, houseBaseY - 90], [hx + 240, houseBaseY - 90]], timberCol, 4.0);
+        for (let x = hx + 15; x < hx + 220; x += 15) {
+          line(ctx, [[x, houseBaseY], [x, houseBaseY - 80]], timberCol, 1.2);
+        }
+        drawPoly(ctx, [[hx - 15, houseBaseY - 170], [hx + 255, houseBaseY - 170], [hx + 245, houseBaseY - 215], [hx - 5, houseBaseY - 215]], tileCol, INK, 1.8);
+      }
+    }
 
     // Nhà 1 bên trái (x: 0 -> 240)
     drawPoly(ctx, [[0, houseBaseY], [240, houseBaseY], [240, houseBaseY - 180], [0, houseBaseY - 180]], wallCol, INK, 1.4);
@@ -911,19 +939,33 @@
     ellipse(ctx, 360, houseBaseY - 150, 10, 14, '#dc2626', INK, 1.0);
     if (isNight) ellipse(ctx, 360, houseBaseY - 150, 6, 8, '#fef08a', null);
 
+    // Nhà mở rộng bên phải
+    if (x1 > PANEL) {
+      for (let hx = 576; hx < x1; hx += 240) {
+        drawPoly(ctx, [[hx, houseBaseY], [hx + 240, houseBaseY], [hx + 240, houseBaseY - 190], [hx, houseBaseY - 190]], wallCol, INK, 1.4);
+        for (let x = hx; x <= hx + 240; x += 60) {
+          line(ctx, [[x, houseBaseY], [x, houseBaseY - 190]], timberCol, 4.0);
+        }
+        line(ctx, [[hx, houseBaseY - 95], [hx + 240, houseBaseY - 95]], timberCol, 4.0);
+        drawPoly(ctx, [[hx - 15, houseBaseY - 180], [hx + 255, houseBaseY - 180], [hx + 245, houseBaseY - 225], [hx - 5, houseBaseY - 225]], tileCol, INK, 1.8);
+      }
+    }
+
     // Mặt đường phố lát đá cuội / đất nện trải dài tới đáy khung
     const street = ctx.createLinearGradient(0, houseBaseY, 0, 1024);
     street.addColorStop(0, isNight ? '#1e293b' : '#78716c');
     street.addColorStop(1, isNight ? '#0f172a' : '#57534e');
     ctx.fillStyle = street;
-    ctx.fillRect(0, houseBaseY, 576, 1024 - houseBaseY);
+    ctx.fillRect(x0, houseBaseY, x1 - x0, 1024 - houseBaseY);
 
     // Rãnh thoát nước lát đá hai bên đường
-    line(ctx, [[0, houseBaseY + 15], [576, houseBaseY + 15]], isNight ? '#0f172a' : '#44403c', 2.0);
+    line(ctx, [[x0, houseBaseY + 15], [x1, houseBaseY + 15]], isNight ? '#0f172a' : '#44403c', 2.0);
   }
 
   // 2. JP_SCHOOL (Lớp học Nhật Bản với sàn gỗ & bảng đen)
   function drawJpSchool(ctx, settings, t) {
+    const span = frameSpan(settings);
+    const x0 = span.x0, x1 = span.x1;
     const isNight = Boolean(settings.night || settings.time === 'night');
     const groundY = settings.ground_y || 810;
     const dirty = clamp(settings.dirty ?? 0, 0, 1);
@@ -931,10 +973,25 @@
     // Tường lớp học màu be ấm áp
     const wallCol = isNight ? '#1f2937' : '#fef9c3';
     ctx.fillStyle = wallCol;
-    ctx.fillRect(0, 0, 576, groundY * 0.68);
+    ctx.fillRect(x0, 0, x1 - x0, groundY * 0.68);
+
+    // Cửa sổ mở rộng bên trái
+    const winSky = isNight ? '#020617' : '#38bdf8';
+    if (x0 < -150) {
+      for (let wx = -140; wx >= x0 + 120; wx -= 150) {
+        ctx.fillStyle = winSky;
+        ctx.fillRect(wx - 120, 60, 120, groundY * 0.58);
+        if (!isNight) {
+          ellipse(ctx, wx - 80, groundY * 0.45, 45, 55, '#16a34a', null);
+        }
+        for (let y = 60; y <= groundY * 0.58 + 60; y += 70) {
+          line(ctx, [[wx - 120, y], [wx, y]], '#92400e', 2.5);
+        }
+        line(ctx, [[wx - 60, 60], [wx - 60, groundY * 0.58 + 60]], '#92400e', 2.5);
+      }
+    }
 
     // Cửa sổ kính lớn nhìn ra sân trường bên trái (x: 0 -> 140)
-    const winSky = isNight ? '#020617' : '#38bdf8';
     ctx.fillStyle = winSky;
     ctx.fillRect(10, 60, 120, groundY * 0.58);
     // Cây xanh ngoài cửa sổ
@@ -974,16 +1031,28 @@
     line(ctx, [[350, 60], [350, 44]], '#0f172a', 2.2); // Kim phút chỉ số 12
     line(ctx, [[350, 60], [362, 60]], '#dc2626', 2.0); // Kim giờ chỉ số 3
 
+    // Kệ tủ lớp học bên phải (lockers / cubbies)
+    if (x1 > PANEL + 60) {
+      const kx = 590, kw = Math.min(220, x1 - 600), ky = 160, kh = groundY * 0.68 - 160;
+      drawPoly(ctx, [[kx, ky], [kx + kw, ky], [kx + kw, ky + kh], [kx, ky + kh]], '#92400e', INK, 2.0);
+      for (let y = ky + 40; y < ky + kh; y += 45) {
+        line(ctx, [[kx, y], [kx + kw, y]], '#78350f', 1.5);
+      }
+      for (let x = kx + 55; x < kx + kw; x += 55) {
+        line(ctx, [[x, ky], [x, ky + kh]], '#78350f', 1.5);
+      }
+    }
+
     // Sàn gỗ sáng bóng chạy dài từ groundY * 0.68 xuống đáy màn hình
     const floor = ctx.createLinearGradient(0, groundY * 0.68, 0, 1024);
     floor.addColorStop(0, isNight ? '#331800' : '#d97706');
     floor.addColorStop(1, isNight ? '#1f0d00' : '#b45309');
     ctx.fillStyle = floor;
-    ctx.fillRect(0, groundY * 0.68, 576, 1024 - groundY * 0.68);
+    ctx.fillRect(x0, groundY * 0.68, x1 - x0, 1024 - groundY * 0.68);
 
     // Các đường nối ván sàn gỗ ngang
     for (let y = groundY * 0.72; y <= 1024; y += 45) {
-      line(ctx, [[0, y], [576, y]], isNight ? '#1f0d00' : '#92400e', 1.5);
+      line(ctx, [[x0, y], [x1, y]], isNight ? '#1f0d00' : '#92400e', 1.5);
     }
 
     // Vết bụi bẩn trên sàn (khi dirty > 0)
@@ -1005,6 +1074,8 @@
 
   // 3. TRAIN_PLATFORM (Sân ga tàu điện hiện đại)
   function drawTrainPlatform(ctx, settings, t) {
+    const span = frameSpan(settings);
+    const x0 = span.x0, x1 = span.x1;
     const isNight = Boolean(settings.night || settings.time === 'night');
     const groundY = settings.ground_y || 810;
 
@@ -1018,11 +1089,17 @@
       sky.addColorStop(1, '#e0f2fe');
     }
     ctx.fillStyle = sky;
-    ctx.fillRect(0, 0, 576, groundY * 0.65);
+    ctx.fillRect(x0, 0, x1 - x0, groundY * 0.65);
 
-    // Mái che sân ga bằng thép dạng cantilever (x: 0 -> 420)
-    drawPoly(ctx, [[0, 0], [420, 0], [380, 160], [0, 180]], '#334155', INK, 2.0);
+    // Mái che sân ga bằng thép dạng cantilever (x: x0 -> 420)
+    drawPoly(ctx, [[x0, 0], [420, 0], [380, 160], [x0, 180]], '#334155', INK, 2.0);
     // Dầm đỡ thép chữ I
+    if (x0 < 0) {
+      for (let x = 60 - 100; x >= x0; x -= 100) {
+        line(ctx, [[x, 0], [x - 20, 170]], '#475569', 5.0);
+        ellipse(ctx, x - 20, 170, 12, 4, '#f8fafc', null);
+      }
+    }
     for (let x = 60; x <= 360; x += 100) {
       line(ctx, [[x, 0], [x - 20, 170]], '#475569', 5.0);
       ellipse(ctx, x - 20, 170, 12, 4, '#f8fafc', null); // Đèn LED trần
@@ -1037,23 +1114,34 @@
     // Mũi tên chỉ hướng trắng
     path(ctx, `M 220 167 L 245 167 M 238 160 L 245 167 L 238 174`, null, '#ffffff', 3.0);
 
-    // Đường ray xe lửa và sỏi đá ở bên phải (x: 440 -> 576)
+    // Đường ray xe lửa và sỏi đá ở bên phải (x: 440 -> x1)
     ctx.fillStyle = '#64748b';
-    ctx.fillRect(440, groundY * 0.65, 136, 1024 - groundY * 0.65);
+    ctx.fillRect(440, groundY * 0.65, Math.max(136, x1 - 440), 1024 - groundY * 0.65);
     // Thanh ray thép
     line(ctx, [[470, groundY * 0.65], [470, 1024]], '#cbd5e1', 5.0);
     line(ctx, [[530, groundY * 0.65], [530, 1024]], '#cbd5e1', 5.0);
+    if (x1 > PANEL) {
+      for (let rx = 590; rx + 60 <= x1; rx += 120) {
+        line(ctx, [[rx, groundY * 0.65], [rx, 1024]], '#cbd5e1', 5.0);
+        line(ctx, [[rx + 60, groundY * 0.65], [rx + 60, 1024]], '#cbd5e1', 5.0);
+      }
+    }
     // Tà vẹt gỗ
     for (let y = groundY * 0.68; y <= 1024; y += 38) {
       drawPoly(ctx, [[455, y], [545, y], [545, y + 14], [455, y + 14]], '#334155', null);
+      if (x1 > PANEL) {
+        for (let rx = 590; rx + 60 <= x1; rx += 120) {
+          drawPoly(ctx, [[rx - 15, y], [rx + 75, y], [rx + 75, y + 14], [rx - 15, y + 14]], '#334155', null);
+        }
+      }
     }
 
-    // Nền sân ga bê tông phẳng nhẵn (x: 0 -> 440)
+    // Nền sân ga bê tông phẳng nhẵn (x: x0 -> 440)
     const platGrad = ctx.createLinearGradient(0, groundY * 0.65, 0, 1024);
     platGrad.addColorStop(0, isNight ? '#1e293b' : '#94a3b8');
     platGrad.addColorStop(1, isNight ? '#0f172a' : '#64748b');
     ctx.fillStyle = platGrad;
-    ctx.fillRect(0, groundY * 0.65, 440, 1024 - groundY * 0.65);
+    ctx.fillRect(x0, groundY * 0.65, 440 - x0, 1024 - groundY * 0.65);
 
     // Gạch xúc giác màu vàng cảnh báo cho người khiếm thị (Braille tiles)
     for (let y = groundY * 0.66; y <= 1024; y += 22) {
@@ -1072,6 +1160,8 @@
 
   // 4. SHRINE_GENERIC (Khuôn viên đền cổng Torii giữa rừng thông)
   function drawShrineGeneric(ctx, settings, t) {
+    const span = frameSpan(settings);
+    const x0 = span.x0, x1 = span.x1;
     const isNight = Boolean(settings.night || settings.time === 'night');
     const groundY = settings.ground_y || 810;
 
@@ -1085,7 +1175,7 @@
       sky.addColorStop(1, '#e0f2fe');
     }
     ctx.fillStyle = sky;
-    ctx.fillRect(0, 0, 576, groundY * 0.65);
+    ctx.fillRect(x0, 0, x1 - x0, groundY * 0.65);
 
     // Mặt trăng đêm / mây ngày
     if (isNight) {
@@ -1094,6 +1184,16 @@
       for (let s of [[90, 70], [170, 100], [280, 80], [360, 130]]) {
         ellipse(ctx, s[0], s[1], 1.5, 1.5, '#ffffff', null);
       }
+      if (x0 < 0) {
+        for (let s of [[x0 + 70, 80], [x0 + 160, 120]]) {
+          ellipse(ctx, s[0], s[1], 1.5, 1.5, '#ffffff', null);
+        }
+      }
+      if (x1 > PANEL) {
+        for (let s of [[PANEL + 80, 75], [PANEL + 180, 115]]) {
+          ellipse(ctx, s[0], s[1], 1.5, 1.5, '#ffffff', null);
+        }
+      }
     } else {
       ellipse(ctx, 120, 100, 60, 24, '#ffffff', null);
       ellipse(ctx, 160, 90, 45, 20, '#ffffff', null);
@@ -1101,8 +1201,18 @@
 
     // Rừng thông & tùng bách (Cryptomeria) xanh ngát phía sau
     const treeCol = isNight ? '#064e3b' : '#047857';
+    if (x0 < -20) {
+      for (let x = -75; x >= x0 - 55; x -= 55) {
+        drawPoly(ctx, [[x, groundY * 0.66], [x + 50, groundY * 0.66], [x + 25, groundY * 0.66 - 160]], treeCol, null);
+      }
+    }
     for (let x = -20; x <= 600; x += 55) {
       drawPoly(ctx, [[x, groundY * 0.66], [x + 50, groundY * 0.66], [x + 25, groundY * 0.66 - 160]], treeCol, null);
+    }
+    if (x1 > 600) {
+      for (let x = 635; x <= x1 + 55; x += 55) {
+        drawPoly(ctx, [[x, groundY * 0.66], [x + 50, groundY * 0.66], [x + 25, groundY * 0.66 - 160]], treeCol, null);
+      }
     }
 
     // Mái điện gỗ xa xa thấp thoáng giữa rừng
@@ -1140,22 +1250,34 @@
     ground.addColorStop(0, isNight ? '#1e293b' : '#a8a29e');
     ground.addColorStop(1, isNight ? '#0f172a' : '#78716c');
     ctx.fillStyle = ground;
-    ctx.fillRect(0, tBaseY, 576, 1024 - tBaseY);
+    ctx.fillRect(x0, tBaseY, x1 - x0, 1024 - tBaseY);
 
     // Con đường đá lát trung tâm bước vào đền
     drawPoly(ctx, [[210, tBaseY], [366, tBaseY], [430, 1024], [146, 1024]], isNight ? '#334155' : '#d6d3d1', INK, 1.0);
 
     // Đèn lồng đá Ishidoro hai bên lối đi
-    for (let lx of [90, 480]) {
+    const drawIshidoro = (lx) => {
       const ly = tBaseY + 60;
       drawPoly(ctx, [[lx - 7, ly], [lx + 7, ly], [lx + 7, ly - 70], [lx - 7, ly - 70]], cylinder(ctx, lx - 7, lx + 7, '#94a3b8'), INK, 1.0); // Cột đá
       drawPoly(ctx, [[lx - 16, ly - 70], [lx + 16, ly - 70], [lx + 12, ly - 90], [lx - 12, ly - 90]], isNight ? '#fef08a' : '#f8fafc', INK, 1.0); // Hốc đèn
       drawPoly(ctx, [[lx - 22, ly - 90], [lx + 22, ly - 90], [lx, ly - 105]], '#475569', INK, 1.0); // Mái che đá
+    };
+
+    if (x0 < 0) {
+      drawIshidoro(x0 + 100);
+    }
+    for (let lx of [90, 480]) {
+      drawIshidoro(lx);
+    }
+    if (x1 > PANEL) {
+      drawIshidoro(PANEL + 160);
     }
   }
 
   // 5. ONSEN_SNOW (Suối nước nóng Rotenburo ngập tuyết trắng)
   function drawOnsenSnow(ctx, settings, t) {
+    const span = frameSpan(settings);
+    const x0 = span.x0, x1 = span.x1;
     const isNight = Boolean(settings.night || settings.time === 'night');
     const groundY = settings.ground_y || 810;
     const timeVal = t ?? 0;
@@ -1170,18 +1292,38 @@
       sky.addColorStop(1, '#f1f5f9');
     }
     ctx.fillStyle = sky;
-    ctx.fillRect(0, 0, 576, groundY * 0.65);
+    ctx.fillRect(x0, 0, x1 - x0, groundY * 0.65);
 
     // Núi tuyết chập chùng xa xa
     const mtColor = isNight ? '#0f172a' : '#cbd5e1';
+    if (x0 < -20) {
+      drawPoly(ctx, [[x0 - 50, groundY * 0.65], [100, groundY * 0.65], [x0 * 0.5, groundY * 0.65 - 160]], mtColor, null);
+    }
     drawPoly(ctx, [[-20, groundY * 0.65], [260, groundY * 0.65], [120, groundY * 0.65 - 150]], mtColor, null);
     drawPoly(ctx, [[200, groundY * 0.65], [596, groundY * 0.65], [410, groundY * 0.65 - 180]], mtColor, null);
+    if (x1 > 596) {
+      drawPoly(ctx, [[500, groundY * 0.65], [x1 + 60, groundY * 0.65], [PANEL + (x1 - PANEL) * 0.5, groundY * 0.65 - 170]], mtColor, null);
+    }
 
     // Rặng thông tuyết phủ trắng ngọn
-    for (let x = 10; x <= 560; x += 48) {
+    const drawSnowTree = (x) => {
       drawPoly(ctx, [[x, groundY * 0.66], [x + 40, groundY * 0.66], [x + 20, groundY * 0.66 - 110]], '#064e3b', null);
       // Mũ tuyết trắng trên chóp thông
       drawPoly(ctx, [[x + 10, groundY * 0.66 - 80], [x + 30, groundY * 0.66 - 80], [x + 20, groundY * 0.66 - 110]], '#ffffff', null);
+    };
+
+    if (x0 < 0) {
+      for (let x = 10 - 48; x >= x0 - 20; x -= 48) {
+        drawSnowTree(x);
+      }
+    }
+    for (let x = 10; x <= 560; x += 48) {
+      drawSnowTree(x);
+    }
+    if (x1 > 576) {
+      for (let x = 10 + 12 * 48; x <= x1 + 20; x += 48) {
+        drawSnowTree(x);
+      }
     }
 
     // Mặt đất đá suối phủ tuyết dày
@@ -1189,7 +1331,7 @@
     ground.addColorStop(0, '#e2e8f0');
     ground.addColorStop(1, '#cbd5e1');
     ctx.fillStyle = ground;
-    ctx.fillRect(0, groundY * 0.66, 576, 1024 - groundY * 0.66);
+    ctx.fillRect(x0, groundY * 0.66, x1 - x0, 1024 - groundY * 0.66);
 
     // Hồ suối khoáng nóng lộ thiên (Rotenburo) hình oval tự nhiên
     const poolX = 288, poolY = groundY * 0.85, poolRx = 230, poolRy = 90;

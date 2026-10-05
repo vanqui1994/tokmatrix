@@ -25,7 +25,13 @@
     TAU,
     clamp,
     smooth,
-    mix
+    mix,
+    PANEL,
+    frameW,
+    frameSpan,
+    spread,
+    tileX,
+    seeded
   } = RemakeVector.kit;
 
   function drawPoly(ctx, pts, fill, stroke, width = 1) {
@@ -718,6 +724,8 @@
   // 1. SUBURB_BACKYARD (Sân sau khu ngoại ô Mỹ)
   function drawSuburbBackyard(ctx, settings, t) {
     ctx.save();
+    const span = frameSpan(settings);
+    const x0 = span.x0, x1 = span.x1;
     const isNight = Boolean(settings && (settings.night || settings.time === 'night' || settings.timeOfDay === 'night'));
     const groundY = (settings && settings.ground_y) || 810;
 
@@ -731,7 +739,7 @@
       sky.addColorStop(1, '#e0f2fe');
     }
     ctx.fillStyle = sky;
-    ctx.fillRect(0, 0, 576, groundY);
+    ctx.fillRect(x0, 0, x1 - x0, groundY);
 
     // Mây trắng ban ngày hoặc trăng sao ban đêm
     if (isNight) {
@@ -739,17 +747,39 @@
       for (const [sx, sy] of [[80, 100], [160, 60], [250, 120], [380, 80], [480, 140]]) {
         ctx.fillRect(sx, sy, 2, 2);
       }
+      if (x0 < 0) {
+        for (const [sx, sy] of [[x0 + 60, 90], [x0 + 150, 130]]) {
+          ctx.fillRect(sx, sy, 2, 2);
+        }
+      }
+      if (x1 > PANEL) {
+        for (const [sx, sy] of [[PANEL + 60, 75], [PANEL + 160, 115]]) {
+          ctx.fillRect(sx, sy, 2, 2);
+        }
+      }
       ellipse(ctx, 460, 120, 22, 22, '#fef08a', null);
       ellipse(ctx, 452, 116, 20, 20, '#1e1b4b', null);
     } else {
       ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+      if (x0 < -140) {
+        ellipse(ctx, x0 + 120, 140, 50, 18, null); ctx.fill();
+      }
       ellipse(ctx, 140, 150, 60, 20, null); ctx.fill();
       ellipse(ctx, 380, 180, 75, 24, null); ctx.fill();
+      if (x1 > PANEL + 140) {
+        ellipse(ctx, PANEL + 130, 160, 55, 20, null); ctx.fill();
+      }
     }
 
     // Đường chân trời xa: rặng cây phong và mái nhà ngoại ô
     const horizonCol = isNight ? '#0f172a' : '#94a3b8';
+    if (x0 < 0) {
+      path(ctx, `M ${x0} 620 Q ${(x0) * 0.5} 600 0 620 L 0 ${groundY} L ${x0} ${groundY} Z`, horizonCol, null);
+    }
     path(ctx, `M 0 620 Q 140 590 280 615 T 576 605 L 576 ${groundY} L 0 ${groundY} Z`, horizonCol, null);
+    if (x1 > 576) {
+      path(ctx, `M 576 605 Q ${(576 + x1) * 0.5} 615 ${x1} 610 L ${x1} ${groundY} L 576 ${groundY} Z`, horizonCol, null);
+    }
 
     // Mái ngói tam giác của nhà hàng xóm phía xa
     const roofCol = isNight ? '#1e293b' : '#b91c1c';
@@ -762,28 +792,56 @@
     const fenceShadow = isNight ? '#334155' : '#cbd5e1';
 
     // Hai thanh xà ngang của hàng rào
-    line(ctx, [[0, fenceY + 25], [576, fenceY + 25]], fenceShadow, 5);
-    line(ctx, [[0, fenceY + 65], [576, fenceY + 65]], fenceShadow, 5);
+    line(ctx, [[x0, fenceY + 25], [x1, fenceY + 25]], fenceShadow, 5);
+    line(ctx, [[x0, fenceY + 65], [x1, fenceY + 65]], fenceShadow, 5);
 
     // Các thanh cọc rào có đầu nhọn
-    for (let x = 12; x < 576; x += 22) {
+    const drawPicket = (x) => {
       path(ctx, `M ${x - 6} ${fenceY + 80} L ${x - 6} ${fenceY} L ${x} ${fenceY - 8} L ${x + 6} ${fenceY} L ${x + 6} ${fenceY + 80} Z`, picketCol, INK, 1.0);
+    };
+
+    if (x0 < 0) {
+      for (let x = 12 - 22; x >= x0; x -= 22) {
+        drawPicket(x);
+      }
+    }
+    for (let x = 12; x < 576; x += 22) {
+      drawPicket(x);
+    }
+    if (x1 > 576) {
+      for (let x = 12 + Math.ceil((576 - 12) / 22) * 22; x < x1; x += 22) {
+        drawPicket(x);
+      }
     }
 
     // Bụi hoa cẩm tú cầu & cây bụi xanh dọc chân rào
     const bushCol = isNight ? '#064e3b' : '#15803d';
-    for (let x = 30; x < 576; x += 90) {
+    const drawBush = (x) => {
       ellipse(ctx, x, fenceY + 75, 45, 22, bushCol, null);
       if (!isNight) {
         ellipse(ctx, x - 10, fenceY + 70, 6, 6, '#f472b6', null);
         ellipse(ctx, x + 15, fenceY + 72, 7, 7, '#60a5fa', null);
       }
+    };
+
+    if (x0 < 0) {
+      for (let x = 30 - 90; x >= x0; x -= 90) {
+        drawBush(x);
+      }
+    }
+    for (let x = 30; x < 576; x += 90) {
+      drawBush(x);
+    }
+    if (x1 > 576) {
+      for (let x = 30 + Math.ceil((576 - 30) / 90) * 90; x < x1; x += 90) {
+        drawBush(x);
+      }
     }
 
     // THẢM CỎ XANH MƯỢT SÂN SAU ĐẾN ground_y
     const lawnCol = isNight ? '#022c22' : '#22c55e';
-    path(ctx, `M 0 ${groundY - 30} L 576 ${groundY - 30} L 576 1024 L 0 1024 Z`, lawnCol, null);
-    line(ctx, [[0, groundY], [576, groundY]], isNight ? '#064e3b' : '#16a34a', 2.5);
+    path(ctx, `M ${x0} ${groundY - 30} L ${x1} ${groundY - 30} L ${x1} 1024 L ${x0} 1024 Z`, lawnCol, null);
+    line(ctx, [[x0, groundY], [x1, groundY]], isNight ? '#064e3b' : '#16a34a', 2.5);
 
     ctx.restore();
   }
@@ -791,6 +849,8 @@
   // 2. NATIONAL_PARK (Vườn quốc gia hẻm núi đá đỏ và thác nước)
   function drawNationalPark(ctx, settings, t) {
     ctx.save();
+    const span = frameSpan(settings);
+    const x0 = span.x0, x1 = span.x1;
     const isNight = Boolean(settings && (settings.night || settings.time === 'night' || settings.timeOfDay === 'night'));
     const groundY = (settings && settings.ground_y) || 810;
 
@@ -804,18 +864,34 @@
       sky.addColorStop(1, '#fef08a'); // Ánh vàng rực rỡ hoàng hôn hoặc ban mai
     }
     ctx.fillStyle = sky;
-    ctx.fillRect(0, 0, 576, groundY);
+    ctx.fillRect(x0, 0, x1 - x0, groundY);
 
     if (isNight) {
       ctx.fillStyle = '#ffffff';
       for (const [sx, sy] of [[70, 80], [180, 50], [280, 110], [420, 60], [510, 130]]) {
         ctx.fillRect(sx, sy, 2, 2);
       }
+      if (x0 < 0) {
+        for (const [sx, sy] of [[x0 + 70, 65], [x0 + 150, 95]]) {
+          ctx.fillRect(sx, sy, 2, 2);
+        }
+      }
+      if (x1 > PANEL) {
+        for (const [sx, sy] of [[PANEL + 60, 55], [PANEL + 170, 100]]) {
+          ctx.fillRect(sx, sy, 2, 2);
+        }
+      }
     }
 
     // 1. Rặng núi đá đỏ / Grand Canyon sa thạch phía xa
     const mesaFar = isNight ? '#1e1b4b' : '#c2410c';
+    if (x0 < 0) {
+      path(ctx, `M ${x0} 540 L 0 540 L 0 ${groundY} L ${x0} ${groundY} Z`, mesaFar, null);
+    }
     path(ctx, `M 0 540 L 90 440 L 220 440 L 260 520 L 360 410 L 480 410 L 576 500 L 576 ${groundY} L 0 ${groundY} Z`, mesaFar, null);
+    if (x1 > 576) {
+      path(ctx, `M 576 500 L ${x1} 500 L ${x1} ${groundY} L 576 ${groundY} Z`, mesaFar, null);
+    }
 
     // 2. Vách núi đá hoa cương cao sừng sững bên trái
     const rockLeft = isNight ? '#0f172a' : '#7c2d12';
@@ -841,16 +917,20 @@
 
     // 4. Dòng suối biếc uốn lượn
     const riverCol = isNight ? '#0369a1' : '#06b6d4';
-    path(ctx, `M 240 680 Q 300 710 400 720 L 576 740 L 576 ${groundY - 40} L 280 ${groundY - 40} Z`, riverCol, null);
+    if (x1 > 576) {
+      path(ctx, `M 240 680 Q 300 710 400 720 L ${x1} 740 L ${x1} ${groundY - 40} L 280 ${groundY - 40} Z`, riverCol, null);
+    } else {
+      path(ctx, `M 240 680 Q 300 710 400 720 L 576 740 L 576 ${groundY - 40} L 280 ${groundY - 40} Z`, riverCol, null);
+    }
 
     // 5. Bờ suối sỏi đá & mặt đất tự nhiên tại ground_y
     const groundCol = isNight ? '#1c1917' : '#78716c';
-    path(ctx, `M 0 ${groundY - 50} L 576 ${groundY - 50} L 576 1024 L 0 1024 Z`, groundCol, null);
+    path(ctx, `M ${x0} ${groundY - 50} L ${x1} ${groundY - 50} L ${x1} 1024 L ${x0} 1024 Z`, groundCol, null);
     // Vài hòn đá tảng trên bờ
     for (const [rx, ry] of [[80, groundY - 15], [140, groundY - 8], [440, groundY - 20], [510, groundY - 12]]) {
       ellipse(ctx, rx, ry, 16, 9, tone(groundCol, -0.2), INK, 1.2);
     }
-    line(ctx, [[0, groundY], [576, groundY]], isNight ? '#292524' : '#57534e', 2.5);
+    line(ctx, [[x0, groundY], [x1, groundY]], isNight ? '#292524' : '#57534e', 2.5);
 
     ctx.restore();
   }
@@ -858,6 +938,8 @@
   // 3. WILD_WEST_TOWN (Thị trấn miền Tây hoang dã)
   function drawWildWestTown(ctx, settings, t) {
     ctx.save();
+    const span = frameSpan(settings);
+    const x0 = span.x0, x1 = span.x1;
     const isNight = Boolean(settings && (settings.night || settings.time === 'night' || settings.timeOfDay === 'night'));
     const groundY = (settings && settings.ground_y) || 810;
 
@@ -871,12 +953,18 @@
       sky.addColorStop(1, '#fde047');
     }
     ctx.fillStyle = sky;
-    ctx.fillRect(0, 0, 576, groundY);
+    ctx.fillRect(x0, 0, x1 - x0, groundY);
 
     // Ngọn núi sa thạch đỉnh bằng (Mesa) phía xa
     const mesaCol = isNight ? '#1e1b4b' : '#9a3412';
+    if (x0 < -100) {
+      drawPoly(ctx, [[x0 + 40, 560], [x0 + 80, 490], [x0 + 170, 490], [x0 + 210, 560]], mesaCol, null);
+    }
     drawPoly(ctx, [[40, 560], [90, 480], [210, 480], [260, 560]], mesaCol, null);
     drawPoly(ctx, [[380, 570], [420, 500], [520, 500], [560, 570]], mesaCol, null);
+    if (x1 > PANEL + 100) {
+      drawPoly(ctx, [[PANEL + 40, 565], [PANEL + 80, 495], [PANEL + 170, 495], [PANEL + 210, 565]], mesaCol, null);
+    }
 
     // Cây xương rồng saguaro khổng lồ vươn cành
     const cactusCol = isNight ? '#064e3b' : '#14532d';
@@ -889,6 +977,9 @@
     // DÃY NHÀ GỖ MẶT TIỀN MIỀN TÂY (False-front wooden buildings)
     // Nhà bên trái
     const woodB1 = isNight ? '#1e293b' : '#78350f';
+    const extR = [];
+    if (x0 < 0) extR.push([x0, 0]);
+    if (x1 > PANEL) extR.push([PANEL, x1]);
     drawPoly(ctx, [[10, 740], [10, 560], [170, 560], [170, 740]], woodB1, INK, 1.4);
     // Lan can nóc nhà giả mặt tiền
     drawPoly(ctx, [[5, 560], [175, 560], [175, 545], [5, 545]], tone(woodB1, 0.2), INK, 1.2);
@@ -902,11 +993,58 @@
     drawPoly(ctx, [[395, 580], [570, 580], [570, 565], [395, 565]], tone(woodB2, 0.2), INK, 1.2);
     // Cửa sổ & cửa ra vào
     drawPoly(ctx, [[430, 610], [470, 610], [470, 650], [430, 650]], isNight ? '#fef08a' : '#f8fafc', INK, 1.0);
+    // Phần mở rộng: mặt tiền nhà gỗ riêng (cao khác nhau, lan can giả, hiên, cửa, cửa sổ), thùng gỗ, xương rồng
+    const fronts = isNight ? ['#1e293b', '#1c1917', '#292524', '#312e81'] : ['#78350f', '#92400e', '#9a3412', '#a16207'];
+    for (const [a, b] of extR) {
+      let x = a + 25 + seeded(`ww_start:${a}`) * 30, k = 0;
+      while (x < b - 100) {
+        const r = seeded(`ww:${Math.round(x)}`);
+        const bw = Math.min(130 + r * 70, b - x - 20);
+        if (bw < 110) break;
+        const top = 520 + seeded(`ww_h:${Math.round(x)}`) * 60;
+        const col = fronts[(k + Math.floor(r * 4)) % 4];
+        drawPoly(ctx, [[x, 740], [x, top], [x + bw, top], [x + bw, 740]], col, INK, 1.4);
+        // lan can giả trên nóc, bậc hoặc phẳng
+        if (r > 0.5) drawPoly(ctx, [[x - 4, top], [x + bw + 4, top], [x + bw + 4, top - 14], [x - 4, top - 14]], tone(col, 0.2), INK, 1.2);
+        else drawPoly(ctx, [[x, top], [x + bw, top], [x + bw * 0.7, top - 22], [x + bw * 0.3, top - 22]], tone(col, 0.2), INK, 1.2);
+        // ván ngang
+        for (let y = top + 18; y < 740; y += 18) line(ctx, [[x + 2, y], [x + bw - 2, y]], tone(col, -0.2), 1.0);
+        // cửa sổ tầng trên
+        for (const wx of [x + bw * 0.25, x + bw * 0.62]) {
+          drawPoly(ctx, [[wx, top + 22], [wx + 26, top + 22], [wx + 26, top + 56], [wx, top + 56]], isNight ? '#fef08a' : '#f8fafc', INK, 1.0);
+          line(ctx, [[wx + 13, top + 22], [wx + 13, top + 56]], INK, 0.8);
+        }
+        // hiên + cột
+        path(ctx, `M ${x - 4} 650 L ${x + bw + 4} 650 L ${x + bw + 9} 664 L ${x - 9} 664 Z`, tone(col, -0.15), INK, 1.2);
+        for (const px of [x + 6, x + bw / 2, x + bw - 6]) line(ctx, [[px, 664], [px, 742]], '#451a03', 3);
+        // cửa ra vào (cửa lùa kiểu saloon nếu r lớn)
+        const dx = x + bw * 0.42;
+        drawPoly(ctx, [[dx, 740], [dx, 682], [dx + 30, 682], [dx + 30, 740]], tone(col, -0.35), INK, 1.0);
+        if (r > 0.6) { line(ctx, [[dx + 15, 696], [dx + 15, 726]], tone(col, 0.25), 2); }
+        // thùng gỗ hoặc xương rồng giữa các nhà
+        const gap = 40 + seeded(`ww_gap:${Math.round(x)}`) * 50;
+        const gx = x + bw + gap / 2;
+        if (k % 2 === 0) {
+          drawPoly(ctx, [[gx - 14, 742], [gx + 14, 742], [gx + 12, 716], [gx - 12, 716]], '#a16207', INK, 1.2);
+          line(ctx, [[gx - 13, 729], [gx + 13, 729]], '#451a03', 1.4);
+        } else {
+          line(ctx, [[gx, 742], [gx, 700]], cactusCol, 6);
+          line(ctx, [[gx - 10, 722], [gx, 722]], cactusCol, 4); line(ctx, [[gx - 10, 722], [gx - 10, 708]], cactusCol, 4);
+        }
+        x += bw + gap; k++;
+      }
+    }
 
     // VỈA HÈ LÁT GỖ (Wooden boardwalk)
     const boardwalkCol = isNight ? '#292524' : '#b45309';
+    if (x0 < 0) {
+      path(ctx, `M ${x0} 740 L 0 740 L 0 765 L ${x0} 765 Z`, boardwalkCol, INK, 1.3);
+    }
     path(ctx, 'M 0 740 L 180 740 L 185 765 L 0 765 Z', boardwalkCol, INK, 1.3);
     path(ctx, 'M 390 740 L 576 740 L 576 765 L 385 765 Z', boardwalkCol, INK, 1.3);
+    if (x1 > 576) {
+      path(ctx, `M 576 740 L ${x1} 740 L ${x1} 765 L 576 765 Z`, boardwalkCol, INK, 1.3);
+    }
     // Cọc buộc ngựa (Hitching rail)
     line(ctx, [[195, 750], [240, 750]], '#451a03', 4);
     line(ctx, [[200, 750], [200, 775]], '#451a03', 3);
@@ -915,7 +1053,18 @@
     // ĐƯỜNG ĐẤT BỤI MIỀN TÂY Ở GIỮA ĐẾN ground_y
     const dirtCol = isNight ? '#262626' : '#d97706';
     path(ctx, `M 0 765 L 576 765 L 576 1024 L 0 1024 Z`, cylinder(ctx, 0, 576, dirtCol), null);
-    line(ctx, [[0, groundY], [576, groundY]], isNight ? '#1c1917' : '#92400e', 2.5);
+    // Phần mở rộng: cùng kiểu đổ bóng của đường, lặp mỗi 576 px
+    for (const [a, b] of extR) {
+      for (let sx = a; sx < b; sx += 576) {
+        const ex = Math.min(b, sx + 576);
+        ctx.fillStyle = cylinder(ctx, sx, sx + 576, dirtCol);
+        ctx.fillRect(sx, 765, ex - sx, 1024 - 765);
+      }
+      for (let rx = a + 80; rx < b - 40; rx += 230) {
+        ellipse(ctx, rx + seeded(`ww_rut:${Math.round(rx)}`) * 60, 880 + seeded(`ww_ruty:${Math.round(rx)}`) * 90, 34, 4, tone(dirtCol, -0.3), null);
+      }
+    }
+    line(ctx, [[x0, groundY], [x1, groundY]], isNight ? '#1c1917' : '#92400e', 2.5);
 
     // Bụi cây lăn (Tumbleweed)
     ellipse(ctx, 290, groundY - 14, 14, 14, null, isNight ? '#44403c' : '#a8a29e', 1.4);
@@ -926,6 +1075,8 @@
   // 4. LAUNCH_PAD (Bệ phóng tên lửa bờ biển)
   function drawLaunchPad(ctx, settings, t) {
     ctx.save();
+    const span = frameSpan(settings);
+    const x0 = span.x0, x1 = span.x1;
     const isNight = Boolean(settings && (settings.night || settings.time === 'night' || settings.timeOfDay === 'night'));
     const groundY = (settings && settings.ground_y) || 810;
 
@@ -939,18 +1090,28 @@
       sky.addColorStop(1, '#bae6fd');
     }
     ctx.fillStyle = sky;
-    ctx.fillRect(0, 0, 576, groundY);
+    ctx.fillRect(x0, 0, x1 - x0, groundY);
 
     if (isNight) {
       ctx.fillStyle = '#ffffff';
       for (const [sx, sy] of [[90, 80], [200, 60], [310, 110], [440, 70], [530, 120]]) {
         ctx.fillRect(sx, sy, 2, 2);
       }
+      if (x0 < 0) {
+        for (const [sx, sy] of [[x0 + 70, 70], [x0 + 160, 100]]) {
+          ctx.fillRect(sx, sy, 2, 2);
+        }
+      }
+      if (x1 > PANEL) {
+        for (const [sx, sy] of [[PANEL + 70, 70], [PANEL + 160, 95]]) {
+          ctx.fillRect(sx, sy, 2, 2);
+        }
+      }
     }
 
     // Bờ biển xa xăm & đại dương xanh
     const oceanCol = isNight ? '#082f49' : '#0284c7';
-    path(ctx, `M 0 640 L 576 640 L 576 680 L 0 680 Z`, oceanCol, null);
+    path(ctx, `M ${x0} 640 L ${x1} 640 L ${x1} 680 L ${x0} 680 Z`, oceanCol, null);
 
     // THÁP PHỤC VỤ PHÓNG (Launch Umbilical Tower - giàn thép giằng chéo đỏ cam)
     const towerX = 140;
@@ -985,8 +1146,8 @@
 
     // MẶT SÀN BÊ TÔNG CHỊU LỰC TẠI ground_y
     const padCol = isNight ? '#1e293b' : '#64748b';
-    path(ctx, `M 0 780 L 576 780 L 576 1024 L 0 1024 Z`, padCol, null);
-    line(ctx, [[0, groundY], [576, groundY]], isNight ? '#0f172a' : '#475569', 3.0);
+    path(ctx, `M ${x0} 780 L ${x1} 780 L ${x1} 1024 L ${x0} 1024 Z`, padCol, null);
+    line(ctx, [[x0, groundY], [x1, groundY]], isNight ? '#0f172a' : '#475569', 3.0);
 
     ctx.restore();
   }
@@ -994,6 +1155,8 @@
   // 5. PUMPKIN_PATCH (Cánh đồng bí ngô mùa thu)
   function drawPumpkinPatch(ctx, settings, t) {
     ctx.save();
+    const span = frameSpan(settings);
+    const x0 = span.x0, x1 = span.x1;
     const isNight = Boolean(settings && (settings.night || settings.time === 'night' || settings.timeOfDay === 'night'));
     const groundY = (settings && settings.ground_y) || 810;
 
@@ -1007,7 +1170,7 @@
       sky.addColorStop(1, '#fed7aa'); // Chiều thu êm ả
     }
     ctx.fillStyle = sky;
-    ctx.fillRect(0, 0, 576, groundY);
+    ctx.fillRect(x0, 0, x1 - x0, groundY);
 
     if (isNight) {
       // Trăng tròn mùa thu to lớn (Harvest Moon)
@@ -1016,11 +1179,27 @@
       for (const [sx, sy] of [[60, 90], [170, 70], [280, 130], [360, 80], [520, 110]]) {
         ctx.fillRect(sx, sy, 2, 2);
       }
+      if (x0 < 0) {
+        for (const [sx, sy] of [[x0 + 70, 80], [x0 + 160, 110]]) {
+          ctx.fillRect(sx, sy, 2, 2);
+        }
+      }
+      if (x1 > PANEL) {
+        for (const [sx, sy] of [[PANEL + 60, 85], [PANEL + 150, 120]]) {
+          ctx.fillRect(sx, sy, 2, 2);
+        }
+      }
     }
 
     // Những đồi cỏ úa & hàng cây thu lá đỏ vàng đằng xa
     const hillCol = isNight ? '#1c1917' : '#ca8a04';
+    if (x0 < 0) {
+      path(ctx, `M ${x0} 600 Q ${(x0) * 0.5} 580 0 600 L 0 ${groundY} L ${x0} ${groundY} Z`, hillCol, null);
+    }
     path(ctx, `M 0 600 Q 150 560 300 590 T 576 575 L 576 ${groundY} L 0 ${groundY} Z`, hillCol, null);
+    if (x1 > 576) {
+      path(ctx, `M 576 575 Q ${(576 + x1) * 0.5} 580 ${x1} 575 L ${x1} ${groundY} L 576 ${groundY} Z`, hillCol, null);
+    }
 
     // Cây mùa thu lá cam đỏ
     for (const [tx, ty, r, c] of [[80, 560, 32, '#dc2626'], [140, 570, 26, '#ea580c'], [480, 550, 38, '#b45309']]) {
@@ -1039,18 +1218,32 @@
 
     // MẶT ĐẤT CANH TÁC NÂU MÀU MỠ TẠI ground_y
     const soilCol = isNight ? '#271c19' : '#78350f';
-    path(ctx, `M 0 680 L 576 680 L 576 1024 L 0 1024 Z`, soilCol, null);
+    path(ctx, `M ${x0} 680 L ${x1} 680 L ${x1} 1024 L ${x0} 1024 Z`, soilCol, null);
 
     // Dây leo bí ngô xanh ngoằn ngoèo & lá bí ngô xòe rộng
     const vineCol = isNight ? '#064e3b' : '#15803d';
+    if (x0 < 0) {
+      path(ctx, `M ${x0 + 20} 740 Q ${(x0 + 40) * 0.5} 710 40 730`, null, vineCol, 3.5);
+      for (let vx = x0 + 60; vx < 20; vx += 90) {
+        ellipse(ctx, vx, 725, 10, 8, vineCol, null, 0.4);
+        ellipse(ctx, vx + 14, 729, 12, 10, isNight ? '#9a3412' : '#f97316', INK, 1.0);
+      }
+    }
     path(ctx, 'M 40 730 Q 120 700 220 740 T 420 720 T 560 750', null, vineCol, 3.5);
     for (const [vx, vy] of [[70, 720], [160, 725], [260, 735], [360, 715], [470, 740]]) {
       ellipse(ctx, vx, vy, 10, 8, vineCol, null, 0.4);
       // Quả bí ngô nằm rải rác trên cánh đồng
       ellipse(ctx, vx + 14, vy + 4, 12, 10, isNight ? '#9a3412' : '#f97316', INK, 1.0);
     }
+    if (x1 > PANEL) {
+      path(ctx, `M 560 750 Q ${(560 + x1) * 0.5} 720 ${x1 - 20} 740`, null, vineCol, 3.5);
+      for (let vx = 590; vx < x1 - 30; vx += 90) {
+        ellipse(ctx, vx, 730, 10, 8, vineCol, null, 0.4);
+        ellipse(ctx, vx + 14, 734, 12, 10, isNight ? '#9a3412' : '#f97316', INK, 1.0);
+      }
+    }
 
-    line(ctx, [[0, groundY], [576, groundY]], isNight ? '#1c1917' : '#451a03', 2.5);
+    line(ctx, [[x0, groundY], [x1, groundY]], isNight ? '#1c1917' : '#451a03', 2.5);
 
     ctx.restore();
   }
@@ -1058,14 +1251,21 @@
   // 6. MOON_SURFACE (Bề mặt Mặt Trăng với hố thiên thạch & Trái Đất)
   function drawMoonSurface(ctx, settings, t) {
     ctx.save();
+    const span = frameSpan(settings);
+    const x0 = span.x0, x1 = span.x1;
     const groundY = (settings && settings.ground_y) || 810;
 
     // Không gian vũ trụ đen sâu thẳm
     ctx.fillStyle = '#020617';
-    ctx.fillRect(0, 0, 576, groundY);
+    ctx.fillRect(x0, 0, x1 - x0, groundY);
 
     // Hàng ngàn vì sao lấp lánh (tất định theo vị trí)
     ctx.fillStyle = '#ffffff';
+    if (x0 < 0) {
+      for (const [sx, sy] of [[x0 + 40, 90], [x0 + 120, 150], [x0 + 200, 70], [x0 + 80, 270], [x0 + 180, 310]]) {
+        ctx.fillRect(sx, sy, 1.8, 1.8);
+      }
+    }
     const stars = [
       [40, 80], [90, 160], [140, 60], [210, 130], [260, 75],
       [310, 180], [360, 95], [450, 70], [510, 140], [540, 50],
@@ -1073,6 +1273,11 @@
     ];
     for (const [sx, sy] of stars) {
       ctx.fillRect(sx, sy, 1.8, 1.8);
+    }
+    if (x1 > PANEL) {
+      for (const [sx, sy] of [[PANEL + 50, 85], [PANEL + 140, 145], [PANEL + 210, 65], [PANEL + 80, 280], [PANEL + 160, 330]]) {
+        ctx.fillRect(sx, sy, 1.8, 1.8);
+      }
     }
 
     // TRÁI ĐẤT XANH HY VỌNG (Blue Marble / Earthrise)
@@ -1100,11 +1305,19 @@
 
     // RẶNG ĐỒI MẶT TRĂNG KHUM KHUM GỒ GHỀ (Lunar horizon)
     const moonGrey = '#4b5563';
+    if (x0 < 0) {
+      path(ctx, `M ${x0} 640 Q ${(x0) * 0.5} 625 0 640 L 0 ${groundY} L ${x0} ${groundY} Z`, moonGrey, null);
+      path(ctx, `M ${x0} 680 Q ${(x0) * 0.5} 665 0 680 L 0 ${groundY} L ${x0} ${groundY} Z`, '#6b7280', null);
+    }
     path(ctx, `M 0 640 Q 120 610 260 635 T 576 620 L 576 ${groundY} L 0 ${groundY} Z`, moonGrey, null);
     path(ctx, `M 0 680 Q 180 655 360 675 T 576 660 L 576 ${groundY} L 0 ${groundY} Z`, '#6b7280', null);
+    if (x1 > 576) {
+      path(ctx, `M 576 620 Q ${(576 + x1) * 0.5} 630 ${x1} 625 L ${x1} ${groundY} L 576 ${groundY} Z`, moonGrey, null);
+      path(ctx, `M 576 660 Q ${(576 + x1) * 0.5} 670 ${x1} 665 L ${x1} ${groundY} L 576 ${groundY} Z`, '#6b7280', null);
+    }
 
     // MẶT ĐẤT BỤI MẶT TRĂNG (Lunar regolith) TẠI ground_y
-    path(ctx, `M 0 710 L 576 710 L 576 1024 L 0 1024 Z`, '#9ca3af', null);
+    path(ctx, `M ${x0} 710 L ${x1} 710 L ${x1} 1024 L ${x0} 1024 Z`, '#9ca3af', null);
 
     // CÁC HỐ THIÊN THẠCH (Craters) VỚI GỜ NỔI VÀ BÓNG TỐI SÂU
     const craters = [
@@ -1129,7 +1342,7 @@
       ellipse(ctx, bx - 1, by - 1, br * 0.5, br * 0.35, '#d1d5db', null);
     }
 
-    line(ctx, [[0, groundY], [576, groundY]], '#6b7280', 2.5);
+    line(ctx, [[x0, groundY], [x1, groundY]], '#6b7280', 2.5);
 
     ctx.restore();
   }

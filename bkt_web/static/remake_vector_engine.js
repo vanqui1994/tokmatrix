@@ -5,14 +5,17 @@ globalThis.RemakeVector = (() => {
   // snapshot (frame.frame) và settings hình nền (settings.frame) mang khổ của chính nó.
   // Khổ dọc 576×1024 là mặc định và phải cho pixel y hệt bản trước khi có khổ ngang.
   const FRAMES = Object.freeze({
-    portrait: Object.freeze({ w: 576, h: 1024 }),
-    landscape: Object.freeze({ w: 1820, h: 1024 })
+    portrait: Object.freeze({ w: 576, h: 1024, origin_x: 0 }),
+    landscape: Object.freeze({ w: 1820, h: 1024, origin_x: 0 })
   });
   const PORTRAIT = FRAMES.portrait;
   function storyFrame(story) {
     const name = (story && story.frame) || 'portrait';
     if (!Object.prototype.hasOwnProperty.call(FRAMES, name)) throw new Error(`story.frame không hợp lệ: ${name} (portrait|landscape)`);
-    return FRAMES[name];
+    const base = FRAMES[name];
+    const origin_x = (story && typeof story.frame_origin_x === 'number') ? story.frame_origin_x : 0;
+    if (origin_x === 0) return base;
+    return Object.freeze({ w: base.w, h: base.h, origin_x });
   }
   // Cel vẽ tay chỉ dùng cho trang thư viện (Renderer option { cels: true }).
   // Video remake và bản xuất MP4 mở HTML qua file://, không có /static, nên
@@ -3275,23 +3278,44 @@ globalThis.RemakeVector = (() => {
     return f && f.w > 0 && f.h > 0 ? f : PORTRAIT;
   }
   function frameW(settings) { return frameOf(settings).w; }
+  function frameSpan(settings) {
+    const f = frameOf(settings);
+    const ox = (f && typeof f.origin_x === 'number') ? f.origin_x : 0;
+    return { x0: -ox, x1: f.w - ox, w: f.w, h: f.h, origin_x: ox };
+  }
   // Số tất định trong [0, 1) theo seed (trộn bit: hash() của hai chuỗi liền nhau gần bằng nhau).
   function seeded(seed) {
     let h = hash(String(seed)) ^ 0x9e3779b9;
     h = Math.imul(h ^ (h >>> 16), 0x85ebca6b); h = Math.imul(h ^ (h >>> 13), 0xc2b2ae35);
     return ((h ^ (h >>> 16)) >>> 0) / 4294967296;
   }
-  // Rải n vật đều trên [margin, w − margin]; seed khác rỗng thì lệch tất định ±20 % bước.
-  function spread(n, w, margin = 0, seed = '') {
+  // Rải n vật đều trên [margin, w − margin] hoặc [x0 + margin, x1 - margin]; seed khác rỗng thì lệch tất định ±20 % bước.
+  function spread(n, range, margin = 0, seed = '') {
     const count = Math.max(0, Math.floor(n));
-    if (!count || !(w > 2 * margin)) return [];
-    const step = (w - 2 * margin) / count;
-    return Array.from({ length: count }, (_, i) => margin + step * (i + .5) + (seed === '' ? 0 : (seeded(`${seed}:${i}`) - .5) * step * .4));
+    let x0 = 0, x1 = 0;
+    if (Array.isArray(range)) { x0 = range[0]; x1 = range[1]; }
+    else if (range && typeof range === 'object' && 'x0' in range) { x0 = range.x0; x1 = range.x1; }
+    else { x0 = 0; x1 = Number(range); }
+    const span = x1 - x0;
+    if (!count || !(span > 2 * margin)) return [];
+    const step = (span - 2 * margin) / count;
+    return Array.from({ length: count }, (_, i) => x0 + margin + step * (i + .5) + (seed === '' ? 0 : (seeded(`${seed}:${i}`) - .5) * step * .4));
   }
-  // Lặp hoạ tiết tới hết bề rộng: fn(x, i) với x = start + i·step < w.
-  function tileX(w, step, fn, start = 0) {
+  // Lặp hoạ tiết tới hết bề rộng: fn(ox, i).
+  // Nếu range là số w: ox = start + i*step < w (thứ tự và chỉ số i >= 0 giữ nguyên).
+  // Nếu range là [x0, x1] hoặc { x0, x1 }: lặp ô i >= 0 (ox >= 0) trước, sau đó lặp ô i < 0 (ox < 0) khi x0 < 0.
+  function tileX(range, step, fn, start = 0) {
     if (!(step > 0)) throw new Error('tileX: step phải > 0');
-    for (let i = 0; start + i * step < w; i++) fn(start + i * step, i);
+    let x0 = 0, x1 = 0, isSpan = false;
+    if (Array.isArray(range)) { x0 = range[0]; x1 = range[1]; isSpan = true; }
+    else if (range && typeof range === 'object' && 'x0' in range) { x0 = range.x0; x1 = range.x1; isSpan = true; }
+    else { x0 = start; x1 = Number(range); }
+    if (!isSpan) {
+      for (let i = 0; start + i * step < x1; i++) fn(start + i * step, i);
+      return;
+    }
+    for (let i = 0; i * step < x1; i++) fn(i * step, i);
+    for (let i = -1; (i + 1) * step > x0; i--) fn(i * step, i);
   }
   function cloudPuff(ctx, x, y, s, color) {
     for (const [dx, dy, r] of [[-35, 5, 28], [0, -12, 38], [40, 2, 30]]) ellipse(ctx, x + dx * s, y + dy * s, r * s, r * .65 * s, color, null);
@@ -3311,9 +3335,11 @@ globalThis.RemakeVector = (() => {
     if (hot && !night) { ellipse(ctx, 255, 110, 70, 70, 'rgba(255,214,110,.35)', null); ellipse(ctx, 255, 110, 44, 44, '#ffd24a', '#f0a92a', 3); }
     if (night) { ellipse(ctx, 460, 100, 28, 30, '#f3e3af', null); ellipse(ctx, 471, 91, 26, 27, '#243750', null); }
     else for (const [x, y] of [[90, 85], [420, 100]]) for (const [dx, dy, r] of [[-35, 5, 28], [0, -12, 38], [40, 2, 30]]) ellipse(ctx, x + dx, y + dy, r, r * .65, rain ? '#788f95' : '#fffdf1', null);
-    // Khổ ngang: thêm mây (cỡ và độ cao khác nhau) ở phần mở rộng; mặt trời / trăng vẫn chỉ một.
-    const ext = frameW(settings) - PANEL;
-    if (ext > 0 && !night) spread(Math.round(ext / 330), ext, 90, 'sky-cloud').forEach((x, i) => cloudPuff(ctx, PANEL + x, 74 + seeded(`sky-cloud-y:${i}`) * 56, .75 + seeded(`sky-cloud-s:${i}`) * .45, rain ? '#788f95' : '#fffdf1'));
+    // Khổ ngang: thêm mây ở phần mở rộng; mặt trời / trăng vẫn chỉ một.
+    const { x0, x1 } = frameSpan(settings);
+    const extRight = Math.max(0, x1 - PANEL), extLeft = Math.max(0, -x0);
+    if (extLeft > 0 && !night) spread(Math.round(extLeft / 330), extLeft, 90, 'sky-cloud-l').forEach((x, i) => cloudPuff(ctx, x0 + x, 74 + seeded(`sky-cloud-ly:${i}`) * 56, .75 + seeded(`sky-cloud-ls:${i}`) * .45, rain ? '#788f95' : '#fffdf1'));
+    if (extRight > 0 && !night) spread(Math.round(extRight / 330), extRight, 90, 'sky-cloud').forEach((x, i) => cloudPuff(ctx, PANEL + x, 74 + seeded(`sky-cloud-y:${i}`) * 56, .75 + seeded(`sky-cloud-s:${i}`) * .45, rain ? '#788f95' : '#fffdf1'));
   }
   const BACKGROUNDS = {
     garden: {
@@ -3322,12 +3348,15 @@ globalThis.RemakeVector = (() => {
         defaultSky(ctx, settings);
         const night = settings.time === 'night';
         ctx.fillStyle = night ? '#345348' : '#bdd296';
-        const w = frameW(settings), ext = Math.max(0, w - PANEL);
-        for (let i = 0; i < 12 + Math.ceil(ext / 60); i++) ellipse(ctx, i * 60, 760, 80, 100 + i % 3 * 30, ctx.fillStyle, null);
-        // Khổ ngang: vài cây xa trên đồi ở phần mở rộng.
-        spread(Math.round(ext / 300), ext, 120, 'garden-tree').forEach((x, i) => farTree(ctx, PANEL + x, 712 + seeded(`garden-tree-y:${i}`) * 24, .9 + seeded(`garden-tree-s:${i}`) * .35, night));
+        const { x0, x1 } = frameSpan(settings);
+        const extRight = Math.max(0, x1 - PANEL), extLeft = Math.max(0, -x0);
+        for (let i = 0; i < 12 + Math.ceil(extRight / 60); i++) ellipse(ctx, i * 60, 760, 80, 100 + i % 3 * 30, ctx.fillStyle, null);
+        if (extLeft > 0) for (let i = 1; i <= Math.ceil(extLeft / 60); i++) ellipse(ctx, -i * 60, 760, 80, 100 + (12 - i % 3) % 3 * 30, ctx.fillStyle, null);
+        // Khổ ngang: cây xa trên đồi ở hai phần mở rộng.
+        spread(Math.round(extRight / 300), extRight, 120, 'garden-tree').forEach((x, i) => farTree(ctx, PANEL + x, 712 + seeded(`garden-tree-y:${i}`) * 24, .9 + seeded(`garden-tree-s:${i}`) * .35, night));
+        if (extLeft > 0) spread(Math.round(extLeft / 300), extLeft, 120, 'garden-tree-l').forEach((x, i) => farTree(ctx, x0 + x, 712 + seeded(`garden-tree-ly:${i}`) * 24, .9 + seeded(`garden-tree-ls:${i}`) * .35, night));
         ctx.fillStyle = '#c5a67e'; ctx.fillRect(-2000, 810, 4500, 2190);
-        tileX(w, PANEL, (ox, p) => { for (let i = 0; i < 35; i++) { const k = p * 35 + i; ellipse(ctx, ox + (k * 113 + 20) % PANEL, 830 + (k * 43) % 190, 8, 2, '#aa8864', null); } });
+        tileX([x0, x1], PANEL, (ox, p) => { for (let i = 0; i < 35; i++) { const k = Math.abs(p) * 35 + i; ellipse(ctx, ox + (k * 113 + 20) % PANEL, 830 + (k * 43) % 190, 8, 2, '#aa8864', null); } });
       }
     },
     orchard: {
@@ -3336,10 +3365,10 @@ globalThis.RemakeVector = (() => {
         BACKGROUNDS.garden.draw(ctx, settings, t, kit);
         path(ctx, 'M -20 410 Q 280 350 610 407', null, '#705640', 18);
         for (let i = 0; i < 7; i++) leaf(ctx, i * 97, 384, 1.2, i % 2 ? -.8 : .8, '#4e9153');
-        // Khổ ngang: cành thứ hai chìa vào từ mép phải, cao hơn và ngắn hơn cành gốc.
-        const w = frameW(settings);
-        if (w - PANEL >= 700) {
-          const p0 = [w + 20, 360], p1 = [w - 300, 300], p2 = [w - 620, 372];
+        // Khổ ngang: cành thứ hai chìa vào từ mép phải khi phần mở rộng phải đủ lớn.
+        const { x1 } = frameSpan(settings);
+        if (x1 - PANEL >= 700) {
+          const p0 = [x1 + 20, 360], p1 = [x1 - 300, 300], p2 = [x1 - 620, 372];
           path(ctx, `M ${p0[0]} ${p0[1]} Q ${p1[0]} ${p1[1]} ${p2[0]} ${p2[1]}`, null, '#705640', 15);
           for (let i = 0; i < 6; i++) {
             const u = (i + .5) / 6, x = (1 - u) ** 2 * p0[0] + 2 * (1 - u) * u * p1[0] + u * u * p2[0], y = (1 - u) ** 2 * p0[1] + 2 * (1 - u) * u * p1[1] + u * u * p2[1];
@@ -3353,14 +3382,24 @@ globalThis.RemakeVector = (() => {
       draw(ctx, settings, t, kit) {
         defaultSky(ctx, settings);
         ctx.fillStyle = '#e2d0b3'; ctx.fillRect(-2000, 780, 4500, 2220);
-        const { w, h } = frameOf(settings), ext = Math.max(0, w - PANEL);
-        for (let i = 0; i < 8 + Math.ceil(ext / 90); i++) line(ctx, [[i * 90 - 60, 780], [i * 110 - 125, h]], '#b29e83', 2);
-        for (const y of [840, 920, 1000]) line(ctx, [[0, y], [w, y]], '#b29e83', 2);
-        for (let x = 10; x < w; x += 86) { line(ctx, [[x, 0], [x, 775]], '#829a96', 9); line(ctx, [[x - 2, 0], [x - 2, 775]], '#e1e9d9', 3); }
-        line(ctx, [[0, 675], [w, 675]], '#819a93', 11);
-        // Khổ ngang: chậu hoa treo trên lan can ở phần mở rộng (màu hoa theo chỉ số chậu).
-        spread(Math.round(ext / 420), ext, 140, 'balcony-pot').forEach((x0, i) => {
-          const x = PANEL + x0, bloom = ['#e86a8a', '#f2c443', '#c77ce0'][i % 3];
+        const { x0, x1, h } = frameSpan(settings);
+        const extRight = Math.max(0, x1 - PANEL), extLeft = Math.max(0, -x0);
+        for (let i = 0; i < 8 + Math.ceil(extRight / 90); i++) line(ctx, [[i * 90 - 60, 780], [i * 110 - 125, h]], '#b29e83', 2);
+        if (extLeft > 0) for (let i = 1; i <= Math.ceil(extLeft / 90); i++) line(ctx, [[-i * 90 - 60, 780], [-i * 110 - 125, h]], '#b29e83', 2);
+        for (const y of [840, 920, 1000]) line(ctx, [[Math.min(0, x0), y], [Math.max(PANEL, x1), y]], '#b29e83', 2);
+        for (let x = 10; x < x1; x += 86) { line(ctx, [[x, 0], [x, 775]], '#829a96', 9); line(ctx, [[x - 2, 0], [x - 2, 775]], '#e1e9d9', 3); }
+        if (extLeft > 0) for (let x = 10 - 86; x > x0; x -= 86) { line(ctx, [[x, 0], [x, 775]], '#829a96', 9); line(ctx, [[x - 2, 0], [x - 2, 775]], '#e1e9d9', 3); }
+        line(ctx, [[Math.min(0, x0), 675], [Math.max(PANEL, x1), 675]], '#819a93', 11);
+        // Khổ ngang: chậu hoa treo trên lan can ở hai phần mở rộng.
+        spread(Math.round(extRight / 420), extRight, 140, 'balcony-pot').forEach((x0_rel, i) => {
+          const x = PANEL + x0_rel, bloom = ['#e86a8a', '#f2c443', '#c77ce0'][i % 3];
+          for (let k = 0; k < 5; k++) leaf(ctx, x - 26 + k * 13, 642, .7, (k - 2) * .35, '#5d9b4c');
+          for (let k = 0; k < 3; k++) ellipse(ctx, x - 18 + k * 18, 622 - (k % 2) * 8, 6, 6, bloom, INK, 1);
+          path(ctx, `M ${x - 40} 640 L ${x + 40} 640 L ${x + 34} 672 L ${x - 34} 672 Z`, '#b8643e', INK, 1.6);
+          line(ctx, [[x - 38, 648], [x + 38, 648]], '#9a5032', 2);
+        });
+        if (extLeft > 0) spread(Math.round(extLeft / 420), extLeft, 140, 'balcony-pot-l').forEach((x0_rel, i) => {
+          const x = x0 + x0_rel, bloom = ['#f2c443', '#c77ce0', '#e86a8a'][i % 3];
           for (let k = 0; k < 5; k++) leaf(ctx, x - 26 + k * 13, 642, .7, (k - 2) * .35, '#5d9b4c');
           for (let k = 0; k < 3; k++) ellipse(ctx, x - 18 + k * 18, 622 - (k % 2) * 8, 6, 6, bloom, INK, 1);
           path(ctx, `M ${x - 40} 640 L ${x + 40} 640 L ${x + 34} 672 L ${x - 34} 672 Z`, '#b8643e', INK, 1.6);
@@ -3373,8 +3412,10 @@ globalThis.RemakeVector = (() => {
       draw(ctx, settings, t, kit) {
         BACKGROUNDS.garden.draw(ctx, settings, t, kit);
         const night = settings.time === 'night';
-        const ext = Math.max(0, frameW(settings) - PANEL);
-        for (let i = 0; i < 5 + Math.ceil(ext / 141); i++) leaf(ctx, i * 141, 870 - i % 2 * 220, 3, i % 2 ? -.7 : .8, night ? '#3e795d' : '#69af60');
+        const { x0, x1 } = frameSpan(settings);
+        const extRight = Math.max(0, x1 - PANEL), extLeft = Math.max(0, -x0);
+        for (let i = 0; i < 5 + Math.ceil(extRight / 141); i++) leaf(ctx, i * 141, 870 - i % 2 * 220, 3, i % 2 ? -.7 : .8, night ? '#3e795d' : '#69af60');
+        if (extLeft > 0) for (let i = 1; i <= Math.ceil(extLeft / 141); i++) leaf(ctx, -i * 141, 870 - (i % 2) * 220, 3, i % 2 ? -.7 : .8, night ? '#3e795d' : '#69af60');
       }
     },
     soil_cutaway: {
@@ -3382,14 +3423,20 @@ globalThis.RemakeVector = (() => {
       draw(ctx, settings, t, kit) {
         defaultSky(ctx, settings);
         ctx.fillStyle = '#76583d'; ctx.fillRect(-2000, 480, 4500, 2520);
-        const w = frameW(settings), ext = Math.max(0, w - PANEL);
-        line(ctx, [[0, 480], [w, 480]], '#719553', 10);
-        tileX(w, PANEL, (ox, p) => { for (let i = 0; i < 90; i++) { const k = p * 90 + i; ellipse(ctx, ox + (k * 79) % PANEL, 499 + (k * 51) % 520, 3, 1.5, '#a78555', null); } });
-        // Khổ ngang: vài hòn đá vùi trong đất ở phần mở rộng.
-        spread(Math.round(ext / 360), ext, 110, 'soil-stone').forEach((x, i) => {
+        const { x0, x1 } = frameSpan(settings);
+        const extRight = Math.max(0, x1 - PANEL), extLeft = Math.max(0, -x0);
+        line(ctx, [[Math.min(0, x0), 480], [Math.max(PANEL, x1), 480]], '#719553', 10);
+        tileX([x0, x1], PANEL, (ox, p) => { for (let i = 0; i < 90; i++) { const k = Math.abs(p) * 90 + i; ellipse(ctx, ox + (k * 79) % PANEL, 499 + (k * 51) % 520, 3, 1.5, '#a78555', null); } });
+        // Khổ ngang: vài hòn đá vùi trong đất ở hai phần mở rộng.
+        spread(Math.round(extRight / 360), extRight, 110, 'soil-stone').forEach((x, i) => {
           const y = 600 + seeded(`soil-stone-y:${i}`) * 320, rx = 22 + seeded(`soil-stone-r:${i}`) * 18;
           ellipse(ctx, PANEL + x, y, rx, rx * .62, '#8b6d4f', '#5e4630', 2);
           ellipse(ctx, PANEL + x - rx * .3, y - rx * .2, rx * .35, rx * .18, '#a08263', null);
+        });
+        if (extLeft > 0) spread(Math.round(extLeft / 360), extLeft, 110, 'soil-stone-l').forEach((x, i) => {
+          const y = 600 + seeded(`soil-stone-ly:${i}`) * 320, rx = 22 + seeded(`soil-stone-lr:${i}`) * 18;
+          ellipse(ctx, x0 + x, y, rx, rx * .62, '#8b6d4f', '#5e4630', 2);
+          ellipse(ctx, x0 + x - rx * .3, y - rx * .2, rx * .35, rx * .18, '#a08263', null);
         });
       }
     },
@@ -3400,30 +3447,47 @@ globalThis.RemakeVector = (() => {
         const night = settings.time === 'night';
         ctx.fillStyle = night ? '#1d3550' : '#6fb4cf'; ctx.fillRect(-2000, -2000, 4500, 5000);
         ctx.fillStyle = night ? '#122438' : '#4f93b8'; ctx.fillRect(-2000, 760, 4500, 2240);
-        const { w, h } = frameOf(settings), ext = Math.max(0, w - PANEL);
-        tileX(w, PANEL, (ox, p) => { for (let i = 0; i < 14; i++) {
-          const k = p * 14 + i, y = 780 + i * 22 + Math.sin(t * .6 + k) * 2;
+        const { x0, x1, h } = frameSpan(settings);
+        const extRight = Math.max(0, x1 - PANEL), extLeft = Math.max(0, -x0);
+        tileX([x0, x1], PANEL, (ox, p) => { for (let i = 0; i < 14; i++) {
+          const k = Math.abs(p) * 14 + i, y = 780 + i * 22 + Math.sin(t * .6 + k) * 2;
           ellipse(ctx, ox + (k % 3) * 210 + 60, y, 90, 5, 'rgba(255,255,255,.14)', null);
         } });
         for (const bx of [-40, 316]) for (let i = 0; i < 6; i++) path(ctx, `M ${bx + i * 14} 700 Q ${bx + 6 + i * 14} 616 ${bx + 16 + i * 14} 700`, null, '#3f7a3a', 5);
-        for (let i = 0; i < 5 + Math.ceil(ext / 160); i++) ellipse(ctx, i * 160 - 30, 640, 130, 90, night ? '#274a3a' : '#5f9a4c', null);
-        // Khổ ngang: lá súng (vài lá có hoa) trên mặt ao và khóm cỏ nến ven bờ ở phần mở rộng.
-        spread(Math.round(ext / 420), ext, 150, 'pond-reed').forEach((x0, i) => {
-          const x = PANEL + x0;
+        for (let i = 0; i < 5 + Math.ceil(extRight / 160); i++) ellipse(ctx, i * 160 - 30, 640, 130, 90, night ? '#274a3a' : '#5f9a4c', null);
+        if (extLeft > 0) for (let i = 1; i <= Math.ceil(extLeft / 160); i++) ellipse(ctx, -i * 160 - 30, 640, 130, 90, night ? '#274a3a' : '#5f9a4c', null);
+        // Khổ ngang: lá súng và cỏ nến ở hai phần mở rộng.
+        spread(Math.round(extRight / 420), extRight, 150, 'pond-reed').forEach((x0_rel, i) => {
+          const x = PANEL + x0_rel;
           for (let j = 0; j < 5; j++) {
             const bx = x + (j - 2) * 9, top = 690 - seeded(`pond-reed-h:${i}:${j}`) * 40, lean = (j - 2) * 6;
             path(ctx, `M ${bx} 778 Q ${bx + lean * .3} ${(778 + top) / 2} ${bx + lean} ${top}`, null, night ? '#2f5a34' : '#4c8a3e', 4);
             if (j % 2 === 1) ellipse(ctx, bx + lean * .85, top + 18, 4.5, 14, night ? '#4a3524' : '#7a5232', null);
           }
         });
-        spread(Math.round(ext / 260), ext, 90, 'pond-lily').forEach((x0, i) => {
-          const x = PANEL + x0, y = 800 + seeded(`pond-lily-y:${i}`) * 110, r = 20 + seeded(`pond-lily-r:${i}`) * 10;
+        if (extLeft > 0) spread(Math.round(extLeft / 420), extLeft, 150, 'pond-reed-l').forEach((x0_rel, i) => {
+          const x = x0 + x0_rel;
+          for (let j = 0; j < 5; j++) {
+            const bx = x + (j - 2) * 9, top = 690 - seeded(`pond-reed-lh:${i}:${j}`) * 40, lean = (j - 2) * 6;
+            path(ctx, `M ${bx} 778 Q ${bx + lean * .3} ${(778 + top) / 2} ${bx + lean} ${top}`, null, night ? '#2f5a34' : '#4c8a3e', 4);
+            if (j % 2 === 1) ellipse(ctx, bx + lean * .85, top + 18, 4.5, 14, night ? '#4a3524' : '#7a5232', null);
+          }
+        });
+        spread(Math.round(extRight / 260), extRight, 90, 'pond-lily').forEach((x0_rel, i) => {
+          const x = PANEL + x0_rel, y = 800 + seeded(`pond-lily-y:${i}`) * 110, r = 20 + seeded(`pond-lily-r:${i}`) * 10;
           ctx.beginPath(); ctx.moveTo(x, y); ctx.ellipse(x, y, r, r * .42, 0, .4, Math.PI * 2 - .4); ctx.closePath();
           ctx.fillStyle = night ? '#2f5a3e' : '#4f9a4a'; ctx.fill();
           ctx.strokeStyle = night ? '#1e3a28' : '#2f6a33'; ctx.lineWidth = 1.4; ctx.stroke();
           if (i % 2 === 0) { ellipse(ctx, x - r * .35, y - 5, 7, 5, night ? '#c99bb0' : '#f3a6c4', INK, 1); ellipse(ctx, x - r * .35, y - 7, 3, 2.4, '#fff2a8', null); }
         });
-        tileX(w, PANEL, (ox, p) => { for (let i = 0; i < 26; i++) { const k = p * 26 + i; ellipse(ctx, ox + (k * 137 + 40) % PANEL, 800 + (k * 53) % (h - 800), 4, 8, 'rgba(255,255,255,.12)', null); } });
+        if (extLeft > 0) spread(Math.round(extLeft / 260), extLeft, 90, 'pond-lily-l').forEach((x0_rel, i) => {
+          const x = x0 + x0_rel, y = 800 + seeded(`pond-lily-ly:${i}`) * 110, r = 20 + seeded(`pond-lily-lr:${i}`) * 10;
+          ctx.beginPath(); ctx.moveTo(x, y); ctx.ellipse(x, y, r, r * .42, 0, .4, Math.PI * 2 - .4); ctx.closePath();
+          ctx.fillStyle = night ? '#2f5a3e' : '#4f9a4a'; ctx.fill();
+          ctx.strokeStyle = night ? '#1e3a28' : '#2f6a33'; ctx.lineWidth = 1.4; ctx.stroke();
+          if (i % 2 === 0) { ellipse(ctx, x - r * .35, y - 5, 7, 5, night ? '#c99bb0' : '#f3a6c4', INK, 1); ellipse(ctx, x - r * .35, y - 7, 3, 2.4, '#fff2a8', null); }
+        });
+        tileX([x0, x1], PANEL, (ox, p) => { for (let i = 0; i < 26; i++) { const k = Math.abs(p) * 26 + i; ellipse(ctx, ox + (k * 137 + 40) % PANEL, 800 + (k * 53) % (h - 800), 4, 8, 'rgba(255,255,255,.12)', null); } });
       }
     },
     river: {
@@ -3433,21 +3497,29 @@ globalThis.RemakeVector = (() => {
         const night = settings.time === 'night';
         ctx.fillStyle = night ? '#1d3550' : '#6fb4cf'; ctx.fillRect(-2000, -2000, 4500, 5000);
         ctx.fillStyle = night ? '#122438' : '#4f93b8'; ctx.fillRect(-2000, 760, 4500, 2240);
-        const { w, h } = frameOf(settings), ext = Math.max(0, w - PANEL);
-        tileX(w, PANEL, (ox, p) => { for (let i = 0; i < 14; i++) {
-          const k = p * 14 + i, y = 780 + i * 22 + Math.sin(t * .6 + k) * 2;
+        const { x0, x1, h } = frameSpan(settings);
+        const extRight = Math.max(0, x1 - PANEL), extLeft = Math.max(0, -x0);
+        tileX([x0, x1], PANEL, (ox, p) => { for (let i = 0; i < 14; i++) {
+          const k = Math.abs(p) * 14 + i, y = 780 + i * 22 + Math.sin(t * .6 + k) * 2;
           ellipse(ctx, ox + (k % 3) * 210 + 60, y, 90, 5, 'rgba(255,255,255,.14)', null);
         } });
         ctx.fillStyle = night ? '#0b1b2c' : '#2c6d94';
-        for (let i = 0; i < 5 + Math.ceil(ext / 160); i++) ellipse(ctx, i * 160 - 30, 640, 130, 90, night ? '#274a3a' : '#5f9a4c', null);
-        // Khổ ngang: cây xa trên bờ bên kia và đá ven nước ở phần mở rộng.
-        spread(Math.round(ext / 520), ext, 200, 'river-tree').forEach((x, i) => farTree(ctx, PANEL + x, 600, 1 + seeded(`river-tree-s:${i}`) * .3, night));
-        spread(Math.round(ext / 380), ext, 120, 'river-rock').forEach((x0, i) => {
-          const x = PANEL + x0, y = 772 + seeded(`river-rock-y:${i}`) * 26, r = 18 + seeded(`river-rock-r:${i}`) * 16;
+        for (let i = 0; i < 5 + Math.ceil(extRight / 160); i++) ellipse(ctx, i * 160 - 30, 640, 130, 90, night ? '#274a3a' : '#5f9a4c', null);
+        if (extLeft > 0) for (let i = 1; i <= Math.ceil(extLeft / 160); i++) ellipse(ctx, -i * 160 - 30, 640, 130, 90, night ? '#274a3a' : '#5f9a4c', null);
+        // Khổ ngang: cây xa trên bờ bên kia và đá ven nước ở hai phần mở rộng.
+        spread(Math.round(extRight / 520), extRight, 200, 'river-tree').forEach((x, i) => farTree(ctx, PANEL + x, 600, 1 + seeded(`river-tree-s:${i}`) * .3, night));
+        if (extLeft > 0) spread(Math.round(extLeft / 520), extLeft, 200, 'river-tree-l').forEach((x, i) => farTree(ctx, x0 + x, 600, 1 + seeded(`river-tree-ls:${i}`) * .3, night));
+        spread(Math.round(extRight / 380), extRight, 120, 'river-rock').forEach((x0_rel, i) => {
+          const x = PANEL + x0_rel, y = 772 + seeded(`river-rock-y:${i}`) * 26, r = 18 + seeded(`river-rock-r:${i}`) * 16;
           ellipse(ctx, x, y, r, r * .55, night ? '#3d4a52' : '#7d8a8c', night ? '#26313a' : '#55636a', 1.6);
           ellipse(ctx, x - r * .3, y - r * .2, r * .4, r * .16, night ? '#55636c' : '#a3afb0', null);
         });
-        tileX(w, PANEL, (ox, p) => { for (let i = 0; i < 26; i++) { const k = p * 26 + i; ellipse(ctx, ox + (k * 137 + 40) % PANEL, 800 + (k * 53) % (h - 800), 4, 8, 'rgba(255,255,255,.12)', null); } });
+        if (extLeft > 0) spread(Math.round(extLeft / 380), extLeft, 120, 'river-rock-l').forEach((x0_rel, i) => {
+          const x = x0 + x0_rel, y = 772 + seeded(`river-rock-ly:${i}`) * 26, r = 18 + seeded(`river-rock-lr:${i}`) * 16;
+          ellipse(ctx, x, y, r, r * .55, night ? '#3d4a52' : '#7d8a8c', night ? '#26313a' : '#55636a', 1.6);
+          ellipse(ctx, x - r * .3, y - r * .2, r * .4, r * .16, night ? '#55636c' : '#a3afb0', null);
+        });
+        tileX([x0, x1], PANEL, (ox, p) => { for (let i = 0; i < 26; i++) { const k = Math.abs(p) * 26 + i; ellipse(ctx, ox + (k * 137 + 40) % PANEL, 800 + (k * 53) % (h - 800), 4, 8, 'rgba(255,255,255,.12)', null); } });
       }
     },
     sea: {
@@ -3462,21 +3534,30 @@ globalThis.RemakeVector = (() => {
         defaultSky(ctx, settings);
         const night = settings.time === 'night';
         ctx.fillStyle = night ? '#1d3550' : '#3f7fa6'; ctx.fillRect(-2000, -2000, 4500, 5000);
-        const { w, h } = frameOf(settings), ext = Math.max(0, w - PANEL);
-        tileX(w, PANEL, (ox, p) => { for (let i = 0; i < 14; i++) {
-          const k = p * 14 + i, y = 120 + i * 22 + Math.sin(t * .6 + k) * 4;
+        const { x0, x1, h } = frameSpan(settings);
+        const extRight = Math.max(0, x1 - PANEL), extLeft = Math.max(0, -x0);
+        tileX([x0, x1], PANEL, (ox, p) => { for (let i = 0; i < 14; i++) {
+          const k = Math.abs(p) * 14 + i, y = 120 + i * 22 + Math.sin(t * .6 + k) * 4;
           ellipse(ctx, ox + (k % 3) * 210 + 60, y, 90, 5, 'rgba(255,255,255,.14)', null);
         } });
-        for (let i = 0; i < 5 + Math.ceil(ext / 160); i++) ellipse(ctx, i * 160 - 30, 640, 130, 90, night ? '#274a3a' : '#5f9a4c', null);
-        // Khổ ngang: rong biển đung đưa (tất định theo t) trên nền đáy ở phần mở rộng.
-        spread(Math.round(ext / 200), ext, 60, 'uw-weed').forEach((x0, i) => {
-          const x = PANEL + x0, tall = 110 + seeded(`uw-weed-h:${i}`) * 110, sway = Math.sin(t * 1.1 + i * 1.7) * 12;
+        for (let i = 0; i < 5 + Math.ceil(extRight / 160); i++) ellipse(ctx, i * 160 - 30, 640, 130, 90, night ? '#274a3a' : '#5f9a4c', null);
+        if (extLeft > 0) for (let i = 1; i <= Math.ceil(extLeft / 160); i++) ellipse(ctx, -i * 160 - 30, 640, 130, 90, night ? '#274a3a' : '#5f9a4c', null);
+        // Khổ ngang: rong biển đung đưa ở hai phần mở rộng.
+        spread(Math.round(extRight / 200), extRight, 60, 'uw-weed').forEach((x0_rel, i) => {
+          const x = PANEL + x0_rel, tall = 110 + seeded(`uw-weed-h:${i}`) * 110, sway = Math.sin(t * 1.1 + i * 1.7) * 12;
           path(ctx, `M ${x} 780 Q ${x - 18 + sway * .5} ${780 - tall * .45} ${x + sway * .6} ${780 - tall * .62} Q ${x + 20 + sway} ${780 - tall * .8} ${x + sway} ${780 - tall}`, null, night ? '#1f4a36' : '#2a6644', 8);
           path(ctx, `M ${x + 10} 780 Q ${x + 24 + sway * .4} ${780 - tall * .35} ${x + 14 + sway * .5} ${780 - tall * .55}`, null, night ? '#2a5a40' : '#3f8f5a', 6);
           ellipse(ctx, x + 4, 784, 22, 9, night ? '#34424a' : '#6f7f84', null);
           ellipse(ctx, x - 14, 788, 11, 6, night ? '#3d4c55' : '#8a989b', null);
         });
-        tileX(w, PANEL, (ox, p) => { for (let i = 0; i < 26; i++) { const k = p * 26 + i; ellipse(ctx, ox + (k * 137 + 40) % PANEL, 800 + (k * 53) % (h - 800), 4, 8, 'rgba(255,255,255,.12)', null); } });
+        if (extLeft > 0) spread(Math.round(extLeft / 200), extLeft, 60, 'uw-weed-l').forEach((x0_rel, i) => {
+          const x = x0 + x0_rel, tall = 110 + seeded(`uw-weed-lh:${i}`) * 110, sway = Math.sin(t * 1.1 + i * 1.7) * 12;
+          path(ctx, `M ${x} 780 Q ${x - 18 + sway * .5} ${780 - tall * .45} ${x + sway * .6} ${780 - tall * .62} Q ${x + 20 + sway} ${780 - tall * .8} ${x + sway} ${780 - tall}`, null, night ? '#1f4a36' : '#2a6644', 8);
+          path(ctx, `M ${x + 10} 780 Q ${x + 24 + sway * .4} ${780 - tall * .35} ${x + 14 + sway * .5} ${780 - tall * .55}`, null, night ? '#2a5a40' : '#3f8f5a', 6);
+          ellipse(ctx, x + 4, 784, 22, 9, night ? '#34424a' : '#6f7f84', null);
+          ellipse(ctx, x - 14, 788, 11, 6, night ? '#3d4c55' : '#8a989b', null);
+        });
+        tileX([x0, x1], PANEL, (ox, p) => { for (let i = 0; i < 26; i++) { const k = Math.abs(p) * 26 + i; ellipse(ctx, ox + (k * 137 + 40) % PANEL, 800 + (k * 53) % (h - 800), 4, 8, 'rgba(255,255,255,.12)', null); } });
       }
     }
   };
@@ -3770,7 +3851,7 @@ globalThis.RemakeVector = (() => {
     sample(t) { return sample(this.story, this.catalog, t); }
     render(t, debug = false) {
       const frame = this.sample(t), ctx = this.ctx, scene = frame.scene;
-      const { w: W, h: H } = this.frame, wide = this.frame !== PORTRAIT;
+      const { w: W, h: H } = this.frame, wide = this.frame.w !== PORTRAIT.w;
       ctx.reset();
       if (scene.kind === 'title') {
         ctx.fillStyle = '#162522'; ctx.fillRect(0, 0, W, H);
@@ -3786,6 +3867,7 @@ globalThis.RemakeVector = (() => {
       const quake = clamp(bg.quake || 0);
       const shakeX = quake ? Math.sin(frame.t * 47) * 7 * quake + Math.sin(frame.t * 23) * 3 * quake : 0, shakeY = quake ? Math.cos(frame.t * 39) * 4 * quake : 0;
       ctx.save(); ctx.translate(W / 2 + shakeX, H / 2 + shakeY); ctx.scale(frame.camera.zoom, frame.camera.zoom); ctx.translate(-frame.camera.x, -frame.camera.y);
+      if (this.frame.origin_x) ctx.translate(this.frame.origin_x, 0);
       background(ctx, bg, frame.t);
       // Vật gắn layer over_face đã được nâng z cao hơn cha lúc gắn (attach), nên chỉ cần sắp theo z.
       const ordered = Object.values(frame.states).sort((a, b) => a.z - b.z);
@@ -3797,7 +3879,9 @@ globalThis.RemakeVector = (() => {
         const p = worldAnchor(this.catalog, state, 'top');
         tierBadge(ctx, this.catalog.assets[state.asset].tier, p.x, p.y - 24);
       }
-      effects(ctx, frame, this.catalog); weather(ctx, bg, frame.t); hazards(ctx, bg, frame.t);
+      effects(ctx, frame, this.catalog);
+      if (this.frame.origin_x) ctx.translate(-this.frame.origin_x, 0);
+      weather(ctx, bg, frame.t); hazards(ctx, bg, frame.t);
       if (debug) for (const s of ordered) for (const name of Object.keys(this.catalog.assets[s.asset].anchors)) {
         const p = worldAnchor(this.catalog, s, name); ellipse(ctx, p.x, p.y, 3, 3, '#fd3f65', null);
         ctx.font = '11px system-ui'; ctx.fillStyle = '#17252b'; ctx.textAlign = 'left'; ctx.fillText(`${s.id}.${name}`, p.x + 5, p.y);
@@ -4000,6 +4084,7 @@ globalThis.RemakeVector = (() => {
     PANEL,
     frame: frameOf,
     frameW,
+    frameSpan,
     spread,
     tileX,
     seeded,

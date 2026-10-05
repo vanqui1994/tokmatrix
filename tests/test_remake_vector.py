@@ -6202,25 +6202,51 @@ console.log(JSON.stringify(stories.map(story => {
                 "ride": first_car_examples()[0], "basic": examples()[0]}
 
     def test_to_landscape_center_shifts_everyone_by_the_same_amount(self):
-        from bkt_web.remake_vector import to_landscape, validate_story
+        from bkt_web.remake_vector import crossing_street_examples, to_landscape, validate_story
         for name, story in self._hook_stories().items():
             with self.subTest(story=name):
                 wide = to_landscape(story, "center")
                 validate_story(wide)
                 self.assertEqual(wide["frame"], "landscape")
+                self.assertEqual(wide["frame_origin_x"], 622)
                 self.assertNotIn("frame", story, "story gốc không được sửa")
                 portrait, landscape = self._sampled([story, wide])
                 for p, l in zip(portrait, landscape):
                     self.assertEqual(set(p["states"]), set(l["states"]))
                     for cid, (x, y, h) in p["states"].items():
                         lx, ly, lh = l["states"][cid]
-                        self.assertAlmostEqual(lx - x, 622, delta=0.05, msg=f"{cid} t={p['t']}")
+                        self.assertAlmostEqual(lx, x, delta=0.05, msg=f"{cid} t={p['t']}")
                         self.assertAlmostEqual(ly, y, delta=0.05)
-                    self.assertAlmostEqual(l["cam"]["x"] - p["cam"]["x"], 622, delta=0.05)
+                    has_explicit_cam = any(s.get("camera") for s in story["scenes"])
+                    if has_explicit_cam:
+                        self.assertAlmostEqual(l["cam"]["x"], p["cam"]["x"], delta=0.05)
+                    else:
+                        self.assertAlmostEqual(l["cam"]["x"] - p["cam"]["x"], 622, delta=0.05)
         with self.assertRaises(ValueError):
             to_landscape(to_landscape(self._hook_stories()["basic"]))
         with self.assertRaises(ValueError):
             to_landscape(self._hook_stories()["basic"], "zigzag")
+
+        # Test mốc vạch qua đường: nhân vật đứng trên vạch qua đường (±20 px) và phần trái không trống
+        cross_story = crossing_street_examples()[0]
+        cross_wide = to_landscape(cross_story, "center")
+        self.assertEqual(cross_wide["frame_origin_x"], 622)
+        stats = self.page.evaluate("""(story) => {
+          const c = document.createElement('canvas');
+          new RemakeVector.Renderer(c, window.cat, story).render(2.0);
+          const W = c.width, H = c.height, d = c.getContext('2d').getImageData(0, 0, W, H).data;
+          const leftColors = [];
+          for (let x0 = 0; x0 < 622; x0 += 64) {
+            const seen = new Set();
+            for (let y = 0; y < H; y += 4) for (let x = x0; x < Math.min(x0 + 64, W); x += 4) {
+              const i = (y * W + x) * 4;
+              seen.add(((d[i] >> 3) << 10) | ((d[i+1] >> 3) << 5) | (d[i+2] >> 3));
+            }
+            leftColors.push(seen.size);
+          }
+          return { minColors: Math.min(...leftColors) };
+        }""", cross_wide)
+        self.assertGreaterEqual(stats["minColors"], 2, "phần mở rộng bên trái [−622, 0) bị trống")
 
     def test_to_landscape_spread_keeps_action_contacts_and_adds_no_overlap(self):
         from bkt_web.remake_vector import ACTION_ROLES, to_landscape, validate_story

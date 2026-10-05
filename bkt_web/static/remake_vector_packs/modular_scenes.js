@@ -9,7 +9,7 @@
 
   if (typeof RemakeVector === 'undefined') throw new Error('RemakeVector core engine must be loaded before engine packs.');
 
-  const { path, line, ellipse, cylinder, taper, volume, tone, limb, mitten, INK, TAU, clamp, hash, smooth, mix, frameW, spread, tileX, seeded, PANEL } = RemakeVector.kit;
+  const { path, line, ellipse, cylinder, taper, volume, tone, limb, mitten, INK, TAU, clamp, hash, smooth, mix, frameW, frameSpan, spread, tileX, seeded, PANEL } = RemakeVector.kit;
 
   function drawPoly(ctx, pts, fill, stroke, width = 1) {
     if (!pts || pts.length < 2) return;
@@ -48,7 +48,11 @@
     const isNight = settings.time === 'night';
     const locale = settings.locale || 'neutral';
     const groundY = 810;
-    const w = frameW(settings), ext = Math.max(0, w - PANEL);
+    const { x0, x1, w } = frameSpan(settings);
+    const minX = Math.min(0, x0), maxX = Math.max(PANEL, x1);
+    const fullW = maxX - minX;
+    const extRight = Math.max(0, x1 - PANEL);
+    const extLeft = Math.max(0, -x0);
 
     // 1.1 BẦU TRỜ
     const skyGrad = ctx.createLinearGradient(0, 0, 0, groundY * 0.6);
@@ -60,7 +64,7 @@
       skyGrad.addColorStop(1, '#e0f2fe');
     }
     ctx.fillStyle = skyGrad;
-    ctx.fillRect(0, 0, w, groundY);
+    ctx.fillRect(minX, 0, fullW, groundY);
 
     if (isNight) {
       // Sao đêm lấp lánh tất định (mỗi ô 576 px một bộ seed; ô 0 y hệt khổ dọc)
@@ -72,6 +76,16 @@
           ellipse(ctx, sx, sy, 1.2, 1.2, '#f8fafc', null);
         }
       });
+      if (extLeft > 0) {
+        tileX([-extLeft, 0], PANEL, (ox, p) => {
+          for (let si = 0; si < 20; si++) {
+            const key = `l_${p}_${si}`;
+            const sx = ox + (hash('street_star_x_' + key) % 550) + 13;
+            const sy = (hash('street_star_y_' + key) % 250) + 20;
+            ellipse(ctx, sx, sy, 1.2, 1.2, '#f8fafc', null);
+          }
+        });
+      }
     }
 
     // 1.2 DÃY NHÀ PHÍA XA THEO LOCALE (FAR BUILDINGS)
@@ -79,7 +93,7 @@
     if (locale === 'de') {
       // Dãy nhà phố cổ Đức mái tam giác nhọn cao
       const walls = ['#fef08a', '#fecaca', '#bfdbfe', '#d9f99d', '#fed7aa'];
-      for (let i = 0; i < 4 + Math.ceil(ext / 145); i++) {
+      for (let i = 0; i < 4 + Math.ceil(extRight / 145); i++) {
         const hx = i * 145 - 20;
         const hw = 140;
         const hh = i < 4 ? 320 + (i % 2) * 50 : 300 + Math.round(seeded('st-de-h:' + i) * 100);
@@ -88,48 +102,99 @@
         // Mái ngói nhọn dốc đứng
         drawPoly(ctx, [[hx - 6, groundY * 0.65 - hh * 0.6], [hx + hw + 6, groundY * 0.65 - hh * 0.6], [hx + hw * 0.5, groundY * 0.65 - hh]], isNight ? '#0f172a' : '#b91c1c', INK, 1.8);
       }
+      if (extLeft > 0) {
+        for (let i = -1; i >= -Math.ceil(extLeft / 145); i--) {
+          const hx = i * 145 - 20;
+          const hw = 140;
+          const hh = 300 + Math.round(seeded('st-de-h:' + i) * 100);
+          const wallCol = isNight ? '#1e293b' : walls[Math.floor(seeded('st-de-c:' + i) * walls.length)];
+          drawPoly(ctx, [[hx, groundY * 0.65], [hx + hw, groundY * 0.65], [hx + hw, groundY * 0.65 - hh * 0.6], [hx, groundY * 0.65 - hh * 0.6]], wallCol, INK, 1.6);
+          drawPoly(ctx, [[hx - 6, groundY * 0.65 - hh * 0.6], [hx + hw + 6, groundY * 0.65 - hh * 0.6], [hx + hw * 0.5, groundY * 0.65 - hh]], isNight ? '#0f172a' : '#b91c1c', INK, 1.8);
+        }
+      }
     } else if (locale === 'kr') {
       // Chung cư cao tầng hiện đại phía sau + mái ngói cong Hanok phía trước
-      for (let i = 0; i < 3 + Math.ceil(ext / 180); i++) {
+      for (let i = 0; i < 3 + Math.ceil(extRight / 180); i++) {
         const ax = i * 180 + 10;
         const top = i < 3 ? 180 : 150 + Math.round(seeded('st-kr-h:' + i) * 90);
         drawPoly(ctx, [[ax, groundY * 0.65], [ax + 120, groundY * 0.65], [ax + 120, top], [ax, top]], isNight ? '#0f172a' : '#e2e8f0', INK, 1.4);
       }
+      if (extLeft > 0) {
+        for (let i = -1; i >= -Math.ceil(extLeft / 180); i--) {
+          const ax = i * 180 + 10;
+          const top = 150 + Math.round(seeded('st-kr-h:' + i) * 90);
+          drawPoly(ctx, [[ax, groundY * 0.65], [ax + 120, groundY * 0.65], [ax + 120, top], [ax, top]], isNight ? '#0f172a' : '#e2e8f0', INK, 1.4);
+        }
+      }
       // Mái ngói Hanok
       path(ctx, `M 60 ${groundY * 0.65} Q 288 ${groundY * 0.65 - 80} 516 ${groundY * 0.65}`, null, isNight ? '#1e293b' : '#334155', 8.0);
-      spread(Math.round(ext / 520), ext, 230, 'st-kr-roof').forEach((x0, i) => {
-        const x = PANEL + x0, half = 170 + seeded('st-kr-rw:' + i) * 40;
+      spread(Math.round(extRight / 520), extRight, 230, 'st-kr-roof').forEach((x0r, i) => {
+        const x = PANEL + x0r, half = 170 + seeded('st-kr-rw:' + i) * 40;
         path(ctx, `M ${x - half} ${groundY * 0.65} Q ${x} ${groundY * 0.65 - 70} ${x + half} ${groundY * 0.65}`, null, isNight ? '#1e293b' : '#334155', 8.0);
       });
+      if (extLeft > 0) {
+        spread(Math.round(extLeft / 520), extLeft, 230, 'st-kr-roof-l').forEach((x0l, i) => {
+          const x = -x0l, half = 170 + seeded('st-kr-rw-l:' + i) * 40;
+          path(ctx, `M ${x - half} ${groundY * 0.65} Q ${x} ${groundY * 0.65 - 70} ${x + half} ${groundY * 0.65}`, null, isNight ? '#1e293b' : '#334155', 8.0);
+        });
+      }
     } else if (locale === 'jp') {
       // Phố có mái che Shotengai & biển hiệu hình ảnh
-      drawPoly(ctx, [[0, groundY * 0.65], [w, groundY * 0.65], [w, groundY * 0.5], [0, groundY * 0.5]], isNight ? '#0f172a' : '#cbd5e1', INK, 1.5);
+      drawPoly(ctx, [[minX, groundY * 0.65], [maxX, groundY * 0.65], [maxX, groundY * 0.5], [minX, groundY * 0.5]], isNight ? '#0f172a' : '#cbd5e1', INK, 1.5);
       // Đèn lồng đỏ treo dưới mái
       for (let lx = 60; lx <= w - 56; lx += 90) {
         ellipse(ctx, lx, groundY * 0.55, 10, 14, '#ef4444', INK, 1.2);
       }
+      if (extLeft > 0) {
+        for (let lx = 60 - 90; lx >= minX + 56; lx -= 90) {
+          ellipse(ctx, lx, groundY * 0.55, 10, 14, '#ef4444', INK, 1.2);
+        }
+      }
       // Khổ ngang: rèm cửa hàng (noren, không chữ) dưới mái che ở phần mở rộng
-      spread(Math.round(ext / 300), ext, 110, 'st-jp-noren').forEach((x0, i) => {
-        const x = PANEL + x0, col = ['#1e3a8a', '#991b1b', '#3f6212'][i % 3];
+      spread(Math.round(extRight / 300), extRight, 110, 'st-jp-noren').forEach((x0r, i) => {
+        const x = PANEL + x0r, col = ['#1e3a8a', '#991b1b', '#3f6212'][i % 3];
         for (let k = 0; k < 3; k++) drawPoly(ctx, [[x - 45 + k * 31, groundY * 0.65], [x - 17 + k * 31, groundY * 0.65], [x - 17 + k * 31, groundY * 0.65 + 70], [x - 45 + k * 31, groundY * 0.65 + 70]], isNight ? tone(col, -.3) : col, INK, 1.2);
         ellipse(ctx, x, groundY * 0.65 + 34, 10, 10, '#f8fafc', null);
       });
+      if (extLeft > 0) {
+        spread(Math.round(extLeft / 300), extLeft, 110, 'st-jp-noren-l').forEach((x0l, i) => {
+          const x = -x0l, col = ['#1e3a8a', '#991b1b', '#3f6212'][i % 3];
+          for (let k = 0; k < 3; k++) drawPoly(ctx, [[x - 45 + k * 31, groundY * 0.65], [x - 17 + k * 31, groundY * 0.65], [x - 17 + k * 31, groundY * 0.65 + 70], [x - 45 + k * 31, groundY * 0.65 + 70]], isNight ? tone(col, -.3) : col, INK, 1.2);
+          ellipse(ctx, x, groundY * 0.65 + 34, 10, 10, '#f8fafc', null);
+        });
+      }
     } else if (locale === 'us') {
       // Khu ngoại ô nhà gỗ siding thấp thoáng sau rặng cây
       const sidings = ['#f8fafc', '#dbeafe', '#fef3c7', '#dcfce7'];
-      for (let i = 0; i < 3 + Math.ceil(ext / 200); i++) {
+      for (let i = 0; i < 3 + Math.ceil(extRight / 200); i++) {
         const ux = i * 200 - 30;
         const uh = i < 3 ? 180 : 160 + Math.round(seeded('st-us-h:' + i) * 40);
         const siding = isNight ? '#1e293b' : (i < 3 ? '#f8fafc' : sidings[Math.floor(seeded('st-us-c:' + i) * sidings.length)]);
         drawPoly(ctx, [[ux, groundY * 0.65], [ux + 160, groundY * 0.65], [ux + 160, groundY * 0.65 - uh], [ux, groundY * 0.65 - uh]], siding, INK, 1.5);
         drawPoly(ctx, [[ux - 8, groundY * 0.65 - uh], [ux + 168, groundY * 0.65 - uh], [ux + 80, groundY * 0.65 - uh - 60]], isNight ? '#0f172a' : '#475569', INK, 1.8);
       }
+      if (extLeft > 0) {
+        for (let i = -1; i >= -Math.ceil(extLeft / 200); i--) {
+          const ux = i * 200 - 30;
+          const uh = 160 + Math.round(seeded('st-us-h:' + i) * 40);
+          const siding = isNight ? '#1e293b' : sidings[Math.floor(seeded('st-us-c:' + i) * sidings.length)];
+          drawPoly(ctx, [[ux, groundY * 0.65], [ux + 160, groundY * 0.65], [ux + 160, groundY * 0.65 - uh], [ux, groundY * 0.65 - uh]], siding, INK, 1.5);
+          drawPoly(ctx, [[ux - 8, groundY * 0.65 - uh], [ux + 168, groundY * 0.65 - uh], [ux + 80, groundY * 0.65 - uh - 60]], isNight ? '#0f172a' : '#475569', INK, 1.8);
+        }
+      }
     } else {
       // Phố hiện đại trung tính
-      for (let i = 0; i < 4 + Math.ceil(ext / 150); i++) {
+      for (let i = 0; i < 4 + Math.ceil(extRight / 150); i++) {
         const bx = i * 150 - 20;
         const top = i < 4 ? 220 + (i % 2) * 60 : 180 + Math.round(seeded('st-n-h:' + i) * 120);
         drawPoly(ctx, [[bx, groundY * 0.65], [bx + 130, groundY * 0.65], [bx + 130, top], [bx, top]], isNight ? '#1e293b' : '#e2e8f0', INK, 1.5);
+      }
+      if (extLeft > 0) {
+        for (let i = -1; i >= -Math.ceil(extLeft / 150); i--) {
+          const bx = i * 150 - 20;
+          const top = 180 + Math.round(seeded('st-n-h:' + i) * 120);
+          drawPoly(ctx, [[bx, groundY * 0.65], [bx + 130, groundY * 0.65], [bx + 130, top], [bx, top]], isNight ? '#1e293b' : '#e2e8f0', INK, 1.5);
+        }
       }
     }
 
@@ -143,12 +208,17 @@
       groundGrad.addColorStop(1, '#64748b');
     }
     ctx.fillStyle = groundGrad;
-    ctx.fillRect(0, groundY * 0.65, w, 1024 - groundY * 0.65);
+    ctx.fillRect(minX, groundY * 0.65, fullW, 1024 - groundY * 0.65);
 
     // Vỉa hè lát gạch
-    drawPoly(ctx, [[0, groundY - 60], [w, groundY - 60], [w, groundY], [0, groundY]], isNight ? '#334155' : '#cbd5e1', INK, 1.8);
+    drawPoly(ctx, [[minX, groundY - 60], [maxX, groundY - 60], [maxX, groundY], [minX, groundY]], isNight ? '#334155' : '#cbd5e1', INK, 1.8);
     for (let vx = 0; vx <= w; vx += 45) {
       line(ctx, [[vx, groundY - 60], [vx, groundY]], isNight ? '#1e293b' : '#94a3b8', 1.2);
+    }
+    if (extLeft > 0) {
+      for (let vx = -45; vx >= minX; vx -= 45) {
+        line(ctx, [[vx, groundY - 60], [vx, groundY]], isNight ? '#1e293b' : '#94a3b8', 1.2);
+      }
     }
 
     // Vạch qua đường cho người đi bộ (Crosswalk)
@@ -159,11 +229,19 @@
     // Cột đèn đường chiếu sáng
     streetLamp(ctx, 75, groundY, isNight);
     // Khổ ngang: vạch giữa đường đứt khúc, cột đèn và cây trong bồn xen kẽ trên vỉa hè ở phần mở rộng
-    if (ext > 0) {
+    if (extRight > 0) {
       tileX(w, 120, x => drawPoly(ctx, [[x, groundY + 102], [x + 60, groundY + 102], [x + 60, groundY + 110], [x, groundY + 110]], isNight ? '#a8a29e' : '#f8fafc', null), PANEL + 30);
-      spread(Math.round(ext / 210), ext, 80, 'st-furniture').forEach((x0, i) => {
-        if (i % 2 === 0) streetLamp(ctx, PANEL + x0, groundY, isNight);
-        else sidewalkTree(ctx, PANEL + x0, groundY, isNight, .9 + seeded('st-tree-k:' + i) * .25);
+      spread(Math.round(extRight / 210), extRight, 80, 'st-furniture').forEach((x0r, i) => {
+        if (i % 2 === 0) streetLamp(ctx, PANEL + x0r, groundY, isNight);
+        else sidewalkTree(ctx, PANEL + x0r, groundY, isNight, .9 + seeded('st-tree-k:' + i) * .25);
+      });
+    }
+    if (extLeft > 0) {
+      tileX([-extLeft, -30], 120, x => drawPoly(ctx, [[x, groundY + 102], [x + 60, groundY + 102], [x + 60, groundY + 110], [x, groundY + 110]], isNight ? '#a8a29e' : '#f8fafc', null));
+      spread(Math.round(extLeft / 210), extLeft, 80, 'st-furniture-l').forEach((x0l, i) => {
+        const x = -x0l;
+        if (i % 2 === 0) streetLamp(ctx, x, groundY, isNight);
+        else sidewalkTree(ctx, x, groundY, isNight, .9 + seeded('st-tree-kl:' + i) * .25);
       });
     }
   }
@@ -239,36 +317,55 @@
     const isNight = settings.time === 'night';
     const locale = settings.locale || 'neutral';
     const groundY = 810;
-    const w = frameW(settings), ext = Math.max(0, w - PANEL);
+    const { x0, x1, w } = frameSpan(settings);
+    const minX = Math.min(0, x0), maxX = Math.max(PANEL, x1);
+    const fullW = maxX - minX;
+    const extRight = Math.max(0, x1 - PANEL);
+    const extLeft = Math.max(0, -x0);
 
     // 2.1 TƯỜNG PHÒNG
     const wallColor = isNight ? '#1e293b' : (locale === 'kr' ? '#fef3c7' : (locale === 'jp' ? '#fdf6e2' : '#f8fafc'));
     ctx.fillStyle = wallColor;
-    ctx.fillRect(0, 0, w, groundY);
+    ctx.fillRect(minX, 0, fullW, groundY);
 
     // 2.2 SÀN NHÀ THEO LOCALE
     if (locale === 'jp') {
       // Chiếu cói Tatami viền đen
-      drawPoly(ctx, [[0, groundY], [w, groundY], [w, 1024], [0, 1024]], isNight ? '#713f12' : '#d97706', INK, 2.0);
+      drawPoly(ctx, [[minX, groundY], [maxX, groundY], [maxX, 1024], [minX, 1024]], isNight ? '#713f12' : '#d97706', INK, 2.0);
       for (let tx = 0; tx <= w; tx += 144) {
         line(ctx, [[tx, groundY], [tx, 1024]], '#1e293b', 4.0); // Nẹp viền đen tatami
       }
+      if (extLeft > 0) {
+        for (let tx = -144; tx >= minX; tx -= 144) {
+          line(ctx, [[tx, groundY], [tx, 1024]], '#1e293b', 4.0);
+        }
+      }
     } else if (locale === 'kr') {
       // Sàn sưởi Ondol gạch men vàng bóng
-      drawPoly(ctx, [[0, groundY], [w, groundY], [w, 1024], [0, 1024]], isNight ? '#854d0e' : '#f59e0b', INK, 2.0);
+      drawPoly(ctx, [[minX, groundY], [maxX, groundY], [maxX, 1024], [minX, 1024]], isNight ? '#854d0e' : '#f59e0b', INK, 2.0);
       for (let ox = 0; ox <= w; ox += 96) {
         line(ctx, [[ox, groundY], [ox, 1024]], '#b45309', 1.5);
+      }
+      if (extLeft > 0) {
+        for (let ox = -96; ox >= minX; ox -= 96) {
+          line(ctx, [[ox, groundY], [ox, 1024]], '#b45309', 1.5);
+        }
       }
     } else if (locale === 'us') {
       // Thảm trải sàn màu kem / be
       ctx.fillStyle = isNight ? '#334155' : '#e2e8f0';
-      ctx.fillRect(0, groundY, w, 1024 - groundY);
-      line(ctx, [[0, groundY], [w, groundY]], '#94a3b8', 2.0);
+      ctx.fillRect(minX, groundY, fullW, 1024 - groundY);
+      line(ctx, [[minX, groundY], [maxX, groundY]], '#94a3b8', 2.0);
     } else {
       // Sàn ván gỗ tự nhiên (de / neutral)
-      drawPoly(ctx, [[0, groundY], [w, groundY], [w, 1024], [0, 1024]], isNight ? '#451a03' : '#b45309', INK, 2.0);
+      drawPoly(ctx, [[minX, groundY], [maxX, groundY], [maxX, 1024], [minX, 1024]], isNight ? '#451a03' : '#b45309', INK, 2.0);
       for (let px = 0; px <= w; px += 64) {
         line(ctx, [[px, groundY], [px, 1024]], isNight ? '#292524' : '#78350f', 1.5);
+      }
+      if (extLeft > 0) {
+        for (let px = -64; px >= minX; px -= 64) {
+          line(ctx, [[px, groundY], [px, 1024]], isNight ? '#292524' : '#78350f', 1.5);
+        }
       }
     }
 
@@ -279,12 +376,17 @@
     ceilingLamp(ctx, 288, isNight);
 
     // Khổ ngang: phần mở rộng có cửa ra vào, cửa sổ thứ hai (kèm đèn trần) và tranh + chậu cây.
-    if (ext >= 600) {
-      const [doorX, windowX, pictureX] = spread(3, ext, 150, 'interior-ext').map(x => PANEL + x);
+    if (extRight >= 600) {
+      const [doorX, windowX, pictureX] = spread(3, extRight, 150, 'interior-ext').map(x => PANEL + x);
       drawDoor(ctx, doorX, groundY, isNight, locale);
       drawWindow(ctx, windowX - 120, 220, 240, 240, isNight, locale);
       ceilingLamp(ctx, windowX, isNight);
       drawPictureAndPlant(ctx, pictureX - 60, groundY, isNight);
+    }
+    if (extLeft >= 500) {
+      const [picL, doorL] = spread(2, extLeft, 120, 'interior-ext-l').map(x => -x);
+      drawPictureAndPlant(ctx, picL, groundY, isNight);
+      drawDoor(ctx, doorL, groundY, isNight, locale);
     }
   }
 

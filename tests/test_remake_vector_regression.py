@@ -14,10 +14,25 @@ SAMPLE_TIMES = [0.2, 0.8, 1.6, 2.4, 3.2]
 # Hình nền đã vẽ cho khổ ngang (plan docs/PLAN_vector_widescreen.md nhóm B2): core + farm_fun + modular_scenes.
 # "preset@locale" là một locale của hình nền lắp ghép. Thêm hình nền vào đây khi nó đã vẽ theo `w`.
 LANDSCAPE_BACKGROUNDS = [
+    # B2
     "garden", "orchard", "balcony", "pepper_patch", "soil_cutaway", "pond", "river", "sea", "underwater",
     "farmyard_barn", "village_market",
     *(f"street@{loc}" for loc in ("neutral", "de", "us", "kr", "jp")),
     *(f"interior@{loc}" for loc in ("neutral", "de", "us", "kr", "jp")),
+    # B3 - Ancient
+    "stone_age_cave", "nile_bank", "desert_dunes", "roman_town", "greek_stadium",
+    # B3 - Medieval
+    "castle_yard", "medieval_village", "viking_fjord",
+    # B3 - Inventions
+    "workshop_1900", "old_town_1900",
+    # B3 - German culture
+    "black_forest_village", "christmas_market", "allotment_garden", "alpine_meadow",
+    # B3 - Japanese culture
+    "edo_town", "jp_school", "train_platform", "shrine_generic", "onsen_snow",
+    # B3 - Korean culture
+    "hanok_village", "joseon_palace_generic", "kr_market", "kr_school", "apartment_street",
+    # B3 - US culture
+    "suburb_backyard", "national_park", "wild_west_town", "launch_pad", "pumpkin_patch", "moon_surface",
 ]
 LANDSCAPE_SIZE = (1820, 1024)
 

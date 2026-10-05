@@ -10,7 +10,8 @@
 
   const {
     INK, TAU, tone, volume, taper, limb, mitten, leaf, blade,
-    ellipse, path, line, withCut, hash, clamp, smooth, mix
+    ellipse, path, line, withCut, hash, clamp, smooth, mix,
+    PANEL, frameW, frameSpan, spread, tileX, seeded
   } = RemakeVector.kit;
 
   function drawPoly(ctx, pts, fill, stroke, width = 1) {
@@ -766,6 +767,8 @@
 
   // 1. BLACK_FOREST_VILLAGE (Làng Rừng Đen nhà khung gỗ)
   function drawBlackForestVillage(ctx, settings, t) {
+    const span = frameSpan(settings);
+    const x0 = span.x0, x1 = span.x1;
     const isNight = Boolean(settings.night || settings.time === 'night');
     const groundY = settings.ground_y || 810;
 
@@ -779,7 +782,7 @@
       sky.addColorStop(1, '#e0f2fe');
     }
     ctx.fillStyle = sky;
-    ctx.fillRect(0, 0, 576, groundY * 0.65);
+    ctx.fillRect(x0, 0, x1 - x0, groundY * 0.65);
 
     // Trăng sao đêm
     if (isNight) {
@@ -788,6 +791,18 @@
       for (let i = 0; i < 24; i++) {
         ellipse(ctx, (i * 73) % 560 + 10, (i * 47) % 220 + 20, 1.2, 1.2, '#ffffff', null);
       }
+      if (x0 < 0) {
+        for (let i = 0; i < 24; i++) {
+          const sx = x0 + ((i * 73) % Math.abs(x0));
+          ellipse(ctx, sx, (i * 47) % 220 + 20, 1.2, 1.2, '#ffffff', null);
+        }
+      }
+      if (x1 > PANEL) {
+        for (let i = 0; i < 24; i++) {
+          const sx = PANEL + ((i * 73) % (x1 - PANEL));
+          ellipse(ctx, sx, (i * 47) % 220 + 20, 1.2, 1.2, '#ffffff', null);
+        }
+      }
     }
 
     // Dãy núi và rừng thông Rừng Đen (Schwarzwald) bạt ngàn phía xa
@@ -795,27 +810,51 @@
     const pineMid = isNight ? '#0b2621' : '#1c4d3e';
 
     // Lớp thông xa
+    if (x0 < -20) {
+      for (let x = -38; x >= x0 - 18; x -= 18) {
+        const ph = 120 + Math.sin(x * 0.02) * 35;
+        drawPoly(ctx, [[x - 14, groundY * 0.62], [x + 14, groundY * 0.62], [x, groundY * 0.62 - ph]], pineFar, null);
+      }
+    }
     for (let x = -20; x <= 600; x += 18) {
       const ph = 120 + Math.sin(x * 0.02) * 35;
       drawPoly(ctx, [[x - 14, groundY * 0.62], [x + 14, groundY * 0.62], [x, groundY * 0.62 - ph]], pineFar, null);
     }
+    if (x1 > 600) {
+      for (let x = 618; x <= x1 + 18; x += 18) {
+        const ph = 120 + Math.sin(x * 0.02) * 35;
+        drawPoly(ctx, [[x - 14, groundY * 0.62], [x + 14, groundY * 0.62], [x, groundY * 0.62 - ph]], pineFar, null);
+      }
+    }
+
     // Lớp thông trung
+    if (x0 < -10) {
+      for (let x = -36; x >= x0 - 26; x -= 26) {
+        const ph = 90 + Math.cos(x * 0.03) * 25;
+        drawPoly(ctx, [[x - 18, groundY * 0.65], [x + 18, groundY * 0.65], [x, groundY * 0.65 - ph]], pineMid, null);
+      }
+    }
     for (let x = -10; x <= 590; x += 26) {
       const ph = 90 + Math.cos(x * 0.03) * 25;
       drawPoly(ctx, [[x - 18, groundY * 0.65], [x + 18, groundY * 0.65], [x, groundY * 0.65 - ph]], pineMid, null);
     }
+    if (x1 > 590) {
+      for (let x = 616; x <= x1 + 26; x += 26) {
+        const ph = 90 + Math.cos(x * 0.03) * 25;
+        drawPoly(ctx, [[x - 18, groundY * 0.65], [x + 18, groundY * 0.65], [x, groundY * 0.65 - ph]], pineMid, null);
+      }
+    }
 
     // Dãy nhà khung gỗ lộ (Fachwerkhaus) truyền thống nước Đức
-    for (let i = 0; i < 3; i++) {
-      const hx = i * 190 + 15;
+    const drawHouse = (hx, i) => {
       const hw = 165;
-      const hh = 300 + (i % 2) * 30;
+      const hh = 300 + (Math.abs(i) % 2) * 30;
       const wallBaseY = groundY * 0.65;
       const wallTopY = wallBaseY - hh * 0.58;
       const roofPeakY = wallBaseY - hh;
       const plasterCol = isNight ? '#1e293b' : '#fefce8';
       const beamCol = isNight ? '#0f172a' : '#3d200e';
-      const roofCol = isNight ? '#090d16' : (i === 1 ? '#854d0e' : '#991b1b');
+      const roofCol = isNight ? '#090d16' : (Math.abs(i) % 3 === 1 ? '#854d0e' : '#991b1b');
 
       // Tường vách thạch cao trắng ngà
       drawPoly(ctx, [[hx, wallBaseY], [hx + hw, wallBaseY], [hx + hw, wallTopY], [hx, wallTopY]], plasterCol, INK, 1.5);
@@ -838,6 +877,20 @@
         line(ctx, [[wx, winY - 12], [wx, winY + 12]], beamCol, 1.2);
         line(ctx, [[wx - 14, winY], [wx + 14, winY]], beamCol, 1.2);
       }
+    };
+
+    if (x0 < 0) {
+      for (let hx = 15 - 190, idx = -1; hx + 165 >= x0; hx -= 190, idx--) {
+        drawHouse(hx, idx);
+      }
+    }
+    for (let i = 0; i < 3; i++) {
+      drawHouse(i * 190 + 15, i);
+    }
+    if (x1 > PANEL) {
+      for (let hx = 15 + 3 * 190, idx = 3; hx <= x1; hx += 190, idx++) {
+        drawHouse(hx, idx);
+      }
     }
 
     // Mặt đường lát đá cuội và lối đi làng quê
@@ -845,20 +898,32 @@
     ground.addColorStop(0, isNight ? '#1e293b' : '#78716c');
     ground.addColorStop(1, isNight ? '#0f172a' : '#57534e');
     ctx.fillStyle = ground;
-    ctx.fillRect(0, groundY * 0.65, 576, 1024 - groundY * 0.65);
+    ctx.fillRect(x0, groundY * 0.65, x1 - x0, 1024 - groundY * 0.65);
 
     // Họa tiết đá cuội tròn lát đường
     for (let r = 0; r < 12; r++) {
       const ry = groundY * 0.68 + r * 28;
       const xOff = (r % 2) * 16;
+      if (x0 < 0) {
+        for (let rx = xOff - 32; rx >= x0; rx -= 32) {
+          ellipse(ctx, rx, ry, 13, 6, isNight ? '#0f172a' : '#a8a29e', null);
+        }
+      }
       for (let rx = xOff; rx < 576; rx += 32) {
         ellipse(ctx, rx, ry, 13, 6, isNight ? '#0f172a' : '#a8a29e', null);
+      }
+      if (x1 > 576) {
+        for (let rx = xOff + Math.ceil((576 - xOff) / 32) * 32; rx <= x1; rx += 32) {
+          ellipse(ctx, rx, ry, 13, 6, isNight ? '#0f172a' : '#a8a29e', null);
+        }
       }
     }
   }
 
   // 2. CHRISTMAS_MARKET (Chợ Giáng sinh lung linh)
   function drawChristmasMarket(ctx, settings, t) {
+    const span = frameSpan(settings);
+    const x0 = span.x0, x1 = span.x1;
     const isNight = Boolean(settings.night || settings.time === 'night');
     const groundY = settings.ground_y || 810;
 
@@ -867,7 +932,7 @@
     sky.addColorStop(0, isNight ? '#090d16' : '#1e1b4b');
     sky.addColorStop(1, isNight ? '#1e1b4b' : '#312e81');
     ctx.fillStyle = sky;
-    ctx.fillRect(0, 0, 576, groundY * 0.62);
+    ctx.fillRect(x0, 0, x1 - x0, groundY * 0.62);
 
     // Bụi tuyết rơi nhẹ lấp lánh trong đêm
     for (let i = 0; i < 36; i++) {
@@ -875,16 +940,37 @@
       const sy = (i * 29 + t * 45) % (groundY * 0.6);
       ellipse(ctx, sx, sy, 1.5, 1.5, '#ffffff', null);
     }
+    if (x0 < 0) {
+      for (let i = 0; i < 36; i++) {
+        const sx = x0 + ((i * 43 + t * 15) % Math.abs(x0));
+        const sy = (i * 29 + t * 45) % (groundY * 0.6);
+        ellipse(ctx, sx, sy, 1.5, 1.5, '#ffffff', null);
+      }
+    }
+    if (x1 > PANEL) {
+      for (let i = 0; i < 36; i++) {
+        const sx = PANEL + ((i * 43 + t * 15) % (x1 - PANEL));
+        const sy = (i * 29 + t * 45) % (groundY * 0.6);
+        ellipse(ctx, sx, sy, 1.5, 1.5, '#ffffff', null);
+      }
+    }
 
     // Bóng toà thị chính / nhà thờ cổ kính phía sau mờ ảo
     const townHall = '#0f172a';
+    if (x0 < 0) {
+      drawPoly(ctx, [[x0, groundY * 0.62], [100, groundY * 0.62], [100, 180], [x0, 180]], '#0c1220', null);
+      drawPoly(ctx, [[x0 + 40, 180], [x0 + 80, 180], [x0 + 60, 40]], '#0c1220', null);
+    }
     drawPoly(ctx, [[140, groundY * 0.62], [436, groundY * 0.62], [436, 140], [288, 60], [140, 140]], townHall, null);
     // Tháp chuông nhọn
     drawPoly(ctx, [[264, 60], [312, 60], [288, -20]], townHall, null);
+    if (x1 > PANEL) {
+      drawPoly(ctx, [[PANEL, groundY * 0.62], [x1, groundY * 0.62], [x1, 190], [PANEL, 190]], '#0c1220', null);
+      drawPoly(ctx, [[x1 - 80, 190], [x1 - 40, 190], [x1 - 60, 50]], '#0c1220', null);
+    }
 
     // Hàng quầy gỗ chợ Giáng sinh giăng hàng ngang
-    for (let i = 0; i < 4; i++) {
-      const sx = i * 145 + 5;
+    const drawStall = (sx) => {
       const sw = 135;
       const baseTopY = groundY * 0.62 - 110;
       // Thùng quầy gỗ
@@ -894,6 +980,20 @@
       // Rèm lượn sóng viền mái
       for (let x = sx; x <= sx + sw; x += 10) {
         ellipse(ctx, x, baseTopY + 35, 4, 3, '#fef2f2', null);
+      }
+    };
+
+    if (x0 < 0) {
+      for (let sx = 5 - 145; sx + 135 >= x0; sx -= 145) {
+        drawStall(sx);
+      }
+    }
+    for (let i = 0; i < 4; i++) {
+      drawStall(i * 145 + 5);
+    }
+    if (x1 > PANEL) {
+      for (let sx = 5 + 4 * 145; sx <= x1; sx += 145) {
+        drawStall(sx);
       }
     }
 
@@ -907,22 +1007,50 @@
       ellipse(ctx, lx, ly, 3.5, 4.5, '#fef08a', null);
       ellipse(ctx, lx, ly, 10, 10, 'rgba(254, 240, 138, 0.35)', null);
     }
+    if (x0 < 0) {
+      path(ctx, `M ${x0} 180 Q ${x0 * 0.5} 240 0 180`, null, '#78716c', 1.2);
+      for (let i = 0; i < 8; i++) {
+        const u = i / 7;
+        const lx = x0 + u * (-x0);
+        const ly = 180 + Math.sin(u * Math.PI) * 60;
+        ellipse(ctx, lx, ly, 3.5, 4.5, '#fef08a', null);
+        ellipse(ctx, lx, ly, 10, 10, 'rgba(254, 240, 138, 0.35)', null);
+      }
+    }
+    if (x1 > PANEL) {
+      path(ctx, `M ${PANEL} 180 Q ${(PANEL + x1) * 0.5} 240 ${x1} 180`, null, '#78716c', 1.2);
+      for (let i = 0; i < 8; i++) {
+        const u = i / 7;
+        const lx = PANEL + u * (x1 - PANEL);
+        const ly = 180 + Math.sin(u * Math.PI) * 60;
+        ellipse(ctx, lx, ly, 3.5, 4.5, '#fef08a', null);
+        ellipse(ctx, lx, ly, 10, 10, 'rgba(254, 240, 138, 0.35)', null);
+      }
+    }
 
     // Mặt đất tuyết phủ trên đá cuội ấm áp
     const ground = ctx.createLinearGradient(0, groundY * 0.62, 0, 1024);
     ground.addColorStop(0, '#334155');
     ground.addColorStop(1, '#1e293b');
     ctx.fillStyle = ground;
-    ctx.fillRect(0, groundY * 0.62, 576, 1024 - groundY * 0.62);
+    ctx.fillRect(x0, groundY * 0.62, x1 - x0, 1024 - groundY * 0.62);
 
     // Mảng tuyết trắng xốp đọng lại thành gờ
+    if (x0 < 0) {
+      ellipse(ctx, x0 + 120, groundY * 0.75, 140, 16, '#cbd5e1', null);
+    }
     ellipse(ctx, 288, groundY * 0.7, 240, 18, '#e2e8f0', null);
     ellipse(ctx, 160, groundY * 0.85, 180, 16, '#cbd5e1', null);
     ellipse(ctx, 420, groundY * 0.88, 160, 15, '#cbd5e1', null);
+    if (x1 > PANEL) {
+      ellipse(ctx, PANEL + 140, groundY * 0.78, 150, 16, '#cbd5e1', null);
+    }
   }
 
   // 3. ALLOTMENT_GARDEN (Vườn thuê Schrebergarten Đức)
   function drawAllotmentGarden(ctx, settings, t) {
+    const span = frameSpan(settings);
+    const x0 = span.x0, x1 = span.x1;
     const isNight = Boolean(settings.night || settings.time === 'night');
     const groundY = settings.ground_y || 810;
 
@@ -936,18 +1064,34 @@
       sky.addColorStop(1, '#dbeafe');
     }
     ctx.fillStyle = sky;
-    ctx.fillRect(0, 0, 576, groundY * 0.65);
+    ctx.fillRect(x0, 0, x1 - x0, groundY * 0.65);
 
     // Đám mây trắng xốp
     if (!isNight) {
+      if (x0 < -120) {
+        ellipse(ctx, x0 + 140, 110, 50, 22, '#ffffff', null);
+      }
       ellipse(ctx, 140, 100, 55, 24, '#ffffff', null);
       ellipse(ctx, 175, 90, 40, 22, '#ffffff', null);
       ellipse(ctx, 420, 140, 65, 26, '#ffffff', null);
+      if (x1 > PANEL + 120) {
+        ellipse(ctx, PANEL + 140, 120, 55, 24, '#ffffff', null);
+      }
     }
 
     // Hàng rào cây xanh và tán cây ăn quả xa xa
+    if (x0 < -20) {
+      for (let x = -65; x >= x0 - 40; x -= 45) {
+        ellipse(ctx, x, groundY * 0.64, 38, 48, isNight ? '#064e3b' : '#15803d', null);
+      }
+    }
     for (let x = -20; x <= 600; x += 45) {
       ellipse(ctx, x, groundY * 0.64, 38, 48, isNight ? '#064e3b' : '#15803d', null);
+    }
+    if (x1 > 600) {
+      for (let x = 645; x <= x1 + 40; x += 45) {
+        ellipse(ctx, x, groundY * 0.64, 38, 48, isNight ? '#064e3b' : '#15803d', null);
+      }
     }
 
     // Nhà chòi vườn gỗ nhỏ (Gartenlaube) xinh xắn bên phải
@@ -966,9 +1110,25 @@
     }
 
     // Hàng rào cọc gỗ trắng thấp (Jägerzaun / Picket fence)
+    const drawPicket = (x) => {
+      path(ctx, `M ${x - 3} ${groundY * 0.66} L ${x - 3} ${groundY * 0.66 - 28} L ${x} ${groundY * 0.66 - 32} L ${x + 3} ${groundY * 0.66 - 28} L ${x + 3} ${groundY * 0.66} Z`, '#f8fafc', INK, 1.0);
+    };
+
+    if (x0 < 0) {
+      line(ctx, [[x0, groundY * 0.66], [0, groundY * 0.66]], '#a8a29e', 2.0);
+      for (let x = 10 - 18; x >= x0; x -= 18) {
+        drawPicket(x);
+      }
+    }
     line(ctx, [[0, groundY * 0.66], [shedX, groundY * 0.66]], '#a8a29e', 2.0);
     for (let x = 10; x < shedX; x += 18) {
-      path(ctx, `M ${x - 3} ${groundY * 0.66} L ${x - 3} ${groundY * 0.66 - 28} L ${x} ${groundY * 0.66 - 32} L ${x + 3} ${groundY * 0.66 - 28} L ${x + 3} ${groundY * 0.66} Z`, '#f8fafc', INK, 1.0);
+      drawPicket(x);
+    }
+    if (x1 > PANEL) {
+      line(ctx, [[shedX + shedW, groundY * 0.66], [x1, groundY * 0.66]], '#a8a29e', 2.0);
+      for (let x = shedX + shedW + 18; x <= x1; x += 18) {
+        drawPicket(x);
+      }
     }
 
     // Mặt đất vườn màu mỡ: luống đất trồng rau màu nâu sẫm
@@ -976,19 +1136,27 @@
     ground.addColorStop(0, isNight ? '#1e293b' : '#451a03');
     ground.addColorStop(1, isNight ? '#0f172a' : '#291102');
     ctx.fillStyle = ground;
-    ctx.fillRect(0, groundY * 0.66, 576, 1024 - groundY * 0.66);
+    ctx.fillRect(x0, groundY * 0.66, x1 - x0, 1024 - groundY * 0.66);
 
     // Luống trồng rau với viền gỗ nâng cao (raised garden bed)
+    if (x0 < -180) {
+      drawPoly(ctx, [[x0 + 40, groundY * 0.78], [-20, groundY * 0.78], [-40, groundY * 0.93], [x0 + 60, groundY * 0.93]], isNight ? '#1e293b' : '#542305', INK, 1.4);
+    }
     drawPoly(ctx, [[40, groundY * 0.76], [536, groundY * 0.76], [516, groundY * 0.95], [60, groundY * 0.95]], isNight ? '#1e293b' : '#542305', INK, 1.4);
     // Luống đất vun gờ
     for (let r = 0; r < 3; r++) {
       const ly = groundY * 0.8 + r * 35;
       ellipse(ctx, 288, ly, 220, 10, isNight ? '#0f172a' : '#3d1802', null);
     }
+    if (x1 > PANEL + 180) {
+      drawPoly(ctx, [[PANEL + 20, groundY * 0.78], [x1 - 40, groundY * 0.78], [x1 - 60, groundY * 0.93], [PANEL + 40, groundY * 0.93]], isNight ? '#1e293b' : '#542305', INK, 1.4);
+    }
   }
 
   // 4. ALPINE_MEADOW (Đồng cỏ núi cao Alpine thanh bình)
   function drawAlpineMeadow(ctx, settings, t) {
+    const span = frameSpan(settings);
+    const x0 = span.x0, x1 = span.x1;
     const isNight = Boolean(settings.night || settings.time === 'night');
     const groundY = settings.ground_y || 810;
 
@@ -1002,12 +1170,16 @@
       sky.addColorStop(1, '#bae6fd');
     }
     ctx.fillStyle = sky;
-    ctx.fillRect(0, 0, 576, groundY * 0.55);
+    ctx.fillRect(x0, 0, x1 - x0, groundY * 0.55);
 
     // Những đỉnh núi tuyết dãy Alps hùng vĩ cao chót vót phía chân trời
     const mountainRock = isNight ? '#1e293b' : '#64748b';
     const snowCol = '#f8fafc';
 
+    if (x0 < 0) {
+      drawPoly(ctx, [[x0 - 50, groundY * 0.55], [60, groundY * 0.55], [x0 * 0.5, 80]], mountainRock, null);
+      drawPoly(ctx, [[x0 * 0.5 - 30, 150], [x0 * 0.5 + 30, 150], [x0 * 0.5, 80]], snowCol, null);
+    }
     // Đỉnh 1 (trái)
     drawPoly(ctx, [[-40, groundY * 0.55], [160, groundY * 0.55], [60, 90]], mountainRock, null);
     drawPoly(ctx, [[30, 160], [90, 160], [60, 90]], snowCol, null);
@@ -1017,16 +1189,26 @@
     // Đỉnh 3 (phải)
     drawPoly(ctx, [[280, groundY * 0.55], [590, groundY * 0.55], [440, 110]], mountainRock, null);
     drawPoly(ctx, [[390, 175], [490, 175], [440, 110]], snowCol, null);
+    if (x1 > PANEL) {
+      drawPoly(ctx, [[500, groundY * 0.55], [x1 + 60, groundY * 0.55], [PANEL + (x1 - PANEL) * 0.5, 75]], mountainRock, null);
+      drawPoly(ctx, [[PANEL + (x1 - PANEL) * 0.5 - 35, 145], [PANEL + (x1 - PANEL) * 0.5 + 35, 145], [PANEL + (x1 - PANEL) * 0.5, 75]], snowCol, null);
+    }
 
     // Đồng cỏ dốc màu xanh ngọc bích trải dài
     const pasture = ctx.createLinearGradient(0, groundY * 0.55, 0, 1024);
     pasture.addColorStop(0, isNight ? '#064e3b' : '#15803d');
     pasture.addColorStop(1, isNight ? '#022c22' : '#166534');
     ctx.fillStyle = pasture;
-    ctx.fillRect(0, groundY * 0.55, 576, 1024 - groundY * 0.55);
+    ctx.fillRect(x0, groundY * 0.55, x1 - x0, 1024 - groundY * 0.55);
 
     // Những đợt đồi cỏ nhấp nhô
+    if (x0 < -40) {
+      path(ctx, `M ${x0} ${groundY * 0.55} Q ${(x0 - 40) * 0.5} ${groundY * 0.58} -40 ${groundY * 0.55} L -40 1024 L ${x0} 1024 Z`, isNight ? '#065f46' : '#16a34a', null);
+    }
     path(ctx, `M -40 ${groundY * 0.55} Q 180 ${groundY * 0.5} 360 ${groundY * 0.58} Q 480 ${groundY * 0.62} 600 ${groundY * 0.55} L 600 1024 L -40 1024 Z`, isNight ? '#065f46' : '#16a34a', null);
+    if (x1 > 600) {
+      path(ctx, `M 600 ${groundY * 0.55} Q ${(600 + x1) * 0.5} ${groundY * 0.58} ${x1} ${groundY * 0.55} L ${x1} 1024 L 600 1024 Z`, isNight ? '#065f46' : '#16a34a', null);
+    }
 
     // Ngôi nhà gỗ trên núi (Alpine Almhütte / Chalet) xa xa trên sườn đồi
     const hutX = 70, hutY = groundY * 0.56;
@@ -1034,13 +1216,36 @@
     drawPoly(ctx, [[hutX - 5, hutY - 26], [hutX + 55, hutY - 26], [hutX + 25, hutY - 42]], '#78350f', null);
 
     // Hàng rào gỗ thanh giằng chéo (rustic post and rail fence)
+    if (x0 < 0) {
+      line(ctx, [[x0, groundY * 0.74], [0, groundY * 0.74]], '#78350f', 3.0);
+      line(ctx, [[x0, groundY * 0.78], [0, groundY * 0.78]], '#78350f', 3.0);
+      for (let x = 30 - 75; x >= x0; x -= 75) {
+        line(ctx, [[x, groundY * 0.82], [x, groundY * 0.68]], '#451a03', 4.5);
+      }
+    }
     line(ctx, [[0, groundY * 0.74], [576, groundY * 0.72]], '#78350f', 3.0);
     line(ctx, [[0, groundY * 0.78], [576, groundY * 0.76]], '#78350f', 3.0);
     for (let x = 30; x < 576; x += 75) {
       line(ctx, [[x, groundY * 0.82], [x, groundY * 0.68]], '#451a03', 4.5);
     }
+    if (x1 > 576) {
+      line(ctx, [[576, groundY * 0.72], [x1, groundY * 0.72]], '#78350f', 3.0);
+      line(ctx, [[576, groundY * 0.76], [x1, groundY * 0.76]], '#78350f', 3.0);
+      for (let x = 30 + 8 * 75; x <= x1; x += 75) {
+        line(ctx, [[x, groundY * 0.82], [x, groundY * 0.68]], '#451a03', 4.5);
+      }
+    }
 
     // Những cụm hoa dại vùng núi Alps (hoa gentian xanh biếc, hoa nhung tuyết edelweiss trắng)
+    if (x0 < 0) {
+      const leftFlowers = [
+        [x0 + 60, groundY * 0.84, '#2563eb'], [x0 + 140, groundY * 0.88, '#ffffff'], [x0 + 210, groundY * 0.85, '#fde047']
+      ];
+      for (const [fx, fy, col] of leftFlowers) {
+        ellipse(ctx, fx, fy, 3.5, 3.5, col, null);
+        ellipse(ctx, fx, fy, 1.2, 1.2, '#f59e0b', null);
+      }
+    }
     const flowers = [
       [40, groundY * 0.84, '#2563eb'], [120, groundY * 0.89, '#fde047'], [190, groundY * 0.82, '#ffffff'],
       [270, groundY * 0.87, '#2563eb'], [340, groundY * 0.83, '#ffffff'], [420, groundY * 0.88, '#fde047'],
@@ -1049,6 +1254,15 @@
     for (const [fx, fy, col] of flowers) {
       ellipse(ctx, fx, fy, 3.5, 3.5, col, null);
       ellipse(ctx, fx, fy, 1.2, 1.2, '#f59e0b', null);
+    }
+    if (x1 > PANEL) {
+      const rightFlowers = [
+        [PANEL + 60, groundY * 0.86, '#ffffff'], [PANEL + 130, groundY * 0.83, '#2563eb'], [PANEL + 200, groundY * 0.89, '#fde047']
+      ];
+      for (const [fx, fy, col] of rightFlowers) {
+        ellipse(ctx, fx, fy, 3.5, 3.5, col, null);
+        ellipse(ctx, fx, fy, 1.2, 1.2, '#f59e0b', null);
+      }
     }
   }
 
