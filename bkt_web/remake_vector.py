@@ -6945,6 +6945,9 @@ def build_showcase():
         validate_story(story)
     path = STATIC_DIR / "remake_vector_examples.json"
     path.write_text(json.dumps(samples, ensure_ascii=False, indent=2), encoding="utf-8")
+    # Story khổ ngang (B5) ở file riêng: trang thư viện nối vào nhóm "Khổ ngang 16:9".
+    from bkt_web.remake_vector_wide_stories import wide_stories
+    (STATIC_DIR / "remake_vector_examples_wide.json").write_text(json.dumps(wide_stories(), ensure_ascii=False, indent=2), encoding="utf-8")
     return path
 
 

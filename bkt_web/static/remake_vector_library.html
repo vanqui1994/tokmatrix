@@ -137,10 +137,10 @@
         </aside>
     </main>
 
-    <script src="/static/remake_vector_engine.js?v=20260929-1"></script>
+    <script src="/static/remake_vector_engine.js?v=20261005-1"></script>
     <script>
         // Bump cùng bản phát hành khi engine hoặc pack thay đổi để trình duyệt tái sử dụng cache giữa các lần mở trang.
-        const PACK_STAMP = '20260929-1';
+        const PACK_STAMP = '20261005-1';
         const $ = id => document.getElementById(id);
         let celsOn = false, catalog, samples, charactersData = {}, clipsData = {}, story, renderer, tab = 'assets', selected = 'watermelon', custom = false, t = 0, playing = false, raf = 0, origin = 0, last = 0, lastFrame = null;
         let category = 'all', listedTab = null, visibleLimit = 48, pageSignature = '';
@@ -156,6 +156,8 @@
             $('background').disabled = custom;
             story = structuredClone(value);
             renderer = new RemakeVector.Renderer($('stage'), catalog, story, { cels: celsOn && $('cels').checked });
+            $('stage').classList.toggle('wide', story.frame === 'landscape');
+            document.querySelector('.stage-preview').classList.toggle('wide', story.frame === 'landscape');
             $('name').textContent = title || story.name || 'Storyboard tùy chỉnh';
             $('description').textContent = story.note || (tab === 'assets' && !custom ? `${categoryOf(selected).label} · ${selected}` : tab === 'characters' && !custom ? `${charactersData[selected]?.role || 'Nhân vật'} · ${selected}` : 'Mẫu vector độc lập, không dùng hình nền nguồn.');
             $('kind').textContent = custom ? 'JSON tuỳ chỉnh' : { assets: 'Rig', characters: 'Nhân vật', actions: 'Động tác', examples: 'Mẫu' }[tab];
@@ -216,7 +218,7 @@
             return { key: cat[0], label: cat[1], icon: cat[2] };
         }
         function entries() {
-            if (tab === 'examples') return samples.map(s => ({ id: s.id, label: s.name, cat: { key: 'examples', label: 'Mẫu kỹ thuật', icon: '🎬' } }));
+            if (tab === 'examples') return samples.map(s => ({ id: s.id, label: s.name, cat: s.frame === 'landscape' ? { key: 'wide', label: 'Khổ ngang 16:9', icon: '🖥️' } : { key: 'examples', label: 'Mẫu kỹ thuật', icon: '🎬' } }));
             if (tab === 'actions') return Object.entries(catalog.actions).map(([id, a]) => ({ id, label: a.label, cat: actionCategoryOf(id) }));
             if (tab === 'characters') {
                 const market = $('char-market')?.value || 'all';
@@ -243,7 +245,7 @@
             return Object.entries(catalog.assets).map(([id, a]) => ({ id, label: a.label, cat: categoryOf(id) }));
         }
         function categoryList() {
-            if (tab === 'examples') return [['examples', 'Mẫu kỹ thuật', '🎬']];
+            if (tab === 'examples') return [['wide', 'Khổ ngang 16:9', '🖥️'], ['examples', 'Mẫu kỹ thuật', '🎬']];
             if (tab === 'actions') return ACTION_CATS;
             if (tab === 'characters') return CHARACTER_CATS;
             return ASSET_CATS;
@@ -255,7 +257,7 @@
         const thumbCache = new Map(), thumbQueue = [], work = document.createElement('canvas');
         let thumbTimer = 0;
         function thumbStory(kind, id) {
-            if (kind === 'examples') { const s = samples.find(x => x.id === id); return { story: s, at: s.duration * .4, crop: null }; }
+            if (kind === 'examples') { const s = samples.find(x => x.id === id); return { story: s, at: s.duration * .4, crop: s.frame === 'landscape' ? [0, 0, 1820, 1024] : null }; }
             if (kind === 'actions') { const s = actionStory(id); return { story: s, at: 2.5, crop: null }; }
             if (kind === 'characters') {
                 const s = characterStory(id, null, 'stage_plain');
@@ -622,10 +624,11 @@
             fetch('/static/remake_vector_catalog.json', { cache: 'no-cache' }).then(r => { if (!r.ok) throw new Error('Không nạp được catalog'); return r.json(); }),
             fetch('/static/remake_vector_examples.json', { cache: 'no-cache' }).then(r => { if (!r.ok) throw new Error('Chưa có mẫu. Chạy python3 -m bkt_web.remake_vector --build-showcase'); return r.json(); }),
             fetch('/static/remake_vector_characters.json', { cache: 'no-cache' }).then(r => r.json()).catch(() => ({})),
-            fetch('/static/remake_vector_clips.json', { cache: 'no-cache' }).then(r => r.json()).catch(() => ({}))
-        ]).then(async ([, c, e, chars, clips]) => {
+            fetch('/static/remake_vector_clips.json', { cache: 'no-cache' }).then(r => r.json()).catch(() => ({})),
+            fetch('/static/remake_vector_examples_wide.json', { cache: 'no-cache' }).then(r => r.ok ? r.json() : []).catch(() => [])
+        ]).then(async ([, c, e, chars, clips, wide]) => {
             catalog = c;
-            samples = e;
+            samples = e.concat(wide || []);
             charactersData = chars || {};
             clipsData = clips || {};
             if (c.engine_packs && c.engine_packs.length) {

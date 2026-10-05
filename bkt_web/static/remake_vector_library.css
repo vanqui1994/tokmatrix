@@ -77,6 +77,8 @@ select:disabled, input:disabled { opacity: .55 }
 .stage-preview { display: flex; flex: 1 1 0; justify-content: center; align-items: center; min-height: 260px; max-height: 610px; padding: 14px; border: 1px solid #e4eaf2; border-radius: 14px; background: radial-gradient(circle at 50% 38%, #fff 0, #f6f8fc 58%, #edf1f7 100%) }
 .viewer { display: flex; align-items: center; justify-content: center; height: 100%; max-width: 100%; padding: 4px; border-radius: 12px; background: #172236; box-shadow: 0 12px 28px rgba(27, 42, 67, .19) }
 canvas#stage { display: block; width: auto; height: 100%; max-width: 100%; aspect-ratio: 9 / 16; border-radius: 8px }
+canvas#stage.wide { width: 100%; height: auto; max-height: 100%; aspect-ratio: 1820 / 1024 }
+.stage-preview.wide, .stage-preview.wide .viewer { flex: none; height: auto; min-height: 0 }
 .transport { display: flex; align-items: center; gap: 6px; margin-top: 13px }
 .transport button, .side button { min-height: 40px; padding: 0 12px; border: 1px solid var(--line); border-radius: 9px; background: #fff; font-weight: 650 }
 .transport button:hover, .side button:hover { background: var(--blue-pale) }

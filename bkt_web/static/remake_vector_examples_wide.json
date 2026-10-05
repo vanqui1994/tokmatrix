@@ -1,0 +1,2734 @@
+[
+  {
+    "id": "the_cure_wide",
+    "name": "W1 · The Cure (widescreen)",
+    "renderer": "native-vector-v1",
+    "fidelity": "technical-demo",
+    "frame": "landscape",
+    "note": "Widescreen sample (zombies are fiction): Dr. Hana walks the long subway tunnel, cures three dazed walkers one by one, and they all head for the exit together.",
+    "duration": 32.0,
+    "characters": [
+      {
+        "id": "dr_hana",
+        "name": "Dr. Hana",
+        "asset": "chibi_teacher",
+        "role": "scientist",
+        "outfit": "scientist",
+        "style": {
+          "skin": "#ffdfc4",
+          "hair": "#0f172a"
+        }
+      },
+      {
+        "id": "dr_hana_cure_sprayer",
+        "asset": "cure_sprayer",
+        "attach_to": {
+          "id": "dr_hana",
+          "anchor": "hand_r"
+        }
+      },
+      {
+        "id": "nora",
+        "name": "Nora",
+        "asset": "chibi_girl",
+        "role": "survivor",
+        "outfit": "torn",
+        "style": {
+          "skin": "#ffdfc4",
+          "hair": "#b45309"
+        }
+      },
+      {
+        "id": "zombie_walker_a",
+        "name": "Zombie Walker A",
+        "asset": "chibi_boy",
+        "role": "crowd",
+        "outfit": "torn",
+        "style": {
+          "skin": "#f1c9a5",
+          "hair": "#334155"
+        }
+      },
+      {
+        "id": "zombie_walker_b",
+        "name": "Zombie Walker B",
+        "asset": "chibi_girl",
+        "role": "crowd",
+        "outfit": "torn",
+        "style": {
+          "skin": "#c68642",
+          "hair": "#1e293b"
+        }
+      }
+    ],
+    "scenes": [
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 0.0,
+        "end_time": 12.0,
+        "characters_present": [
+          "dr_hana",
+          "dr_hana_cure_sprayer",
+          "nora",
+          "zombie_walker_a",
+          "zombie_walker_b"
+        ],
+        "poses": {
+          "dr_hana": [
+            {
+              "time": 0.0,
+              "x": 60.0,
+              "y": 830.0,
+              "height": 250.0,
+              "zombie": 0.0,
+              "cured": 0.0,
+              "opacity": 1.0,
+              "expression": "neutral",
+              "outfit": "scientist"
+            },
+            {
+              "time": 10.0,
+              "x": 480.0,
+              "y": 830.0,
+              "height": 250.0,
+              "zombie": 0.0,
+              "cured": 0.0,
+              "opacity": 1.0,
+              "expression": "neutral",
+              "outfit": "scientist"
+            },
+            {
+              "time": 12.0,
+              "x": 480.0,
+              "y": 830.0,
+              "height": 250.0,
+              "zombie": 0.0,
+              "cured": 0.0,
+              "opacity": 1.0,
+              "expression": "neutral",
+              "outfit": "scientist"
+            }
+          ],
+          "dr_hana_cure_sprayer": [
+            {
+              "time": 0.0,
+              "x": 14.399999999999999,
+              "y": 26.4,
+              "height": 120,
+              "rotation": 0,
+              "opacity": 1.0
+            },
+            {
+              "time": 12.0,
+              "x": 14.399999999999999,
+              "y": 26.4,
+              "height": 120,
+              "rotation": 0,
+              "opacity": 1.0
+            }
+          ],
+          "nora": [
+            {
+              "time": 0.0,
+              "x": 1480.0,
+              "y": 830.0,
+              "height": 215.0,
+              "zombie": 1.0,
+              "cured": 0.0,
+              "opacity": 1.0,
+              "expression": "dazed",
+              "outfit": "torn"
+            },
+            {
+              "time": 12.0,
+              "x": 1480.0,
+              "y": 830.0,
+              "height": 215.0,
+              "zombie": 1.0,
+              "cured": 0.0,
+              "opacity": 1.0,
+              "expression": "dazed",
+              "outfit": "torn"
+            }
+          ],
+          "zombie_walker_a": [
+            {
+              "time": 0.0,
+              "x": 1620.0,
+              "y": 830.0,
+              "height": 215.0,
+              "zombie": 1.0,
+              "cured": 0.0,
+              "opacity": 1.0,
+              "expression": "dazed",
+              "outfit": "torn"
+            },
+            {
+              "time": 12.0,
+              "x": 1620.0,
+              "y": 830.0,
+              "height": 215.0,
+              "zombie": 1.0,
+              "cured": 0.0,
+              "opacity": 1.0,
+              "expression": "dazed",
+              "outfit": "torn"
+            }
+          ],
+          "zombie_walker_b": [
+            {
+              "time": 0.0,
+              "x": 1760.0,
+              "y": 830.0,
+              "height": 215.0,
+              "zombie": 1.0,
+              "cured": 0.0,
+              "opacity": 1.0,
+              "expression": "dazed",
+              "outfit": "torn"
+            },
+            {
+              "time": 12.0,
+              "x": 1760.0,
+              "y": 830.0,
+              "height": 215.0,
+              "zombie": 1.0,
+              "cured": 0.0,
+              "opacity": 1.0,
+              "expression": "dazed",
+              "outfit": "torn"
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "shamble",
+            "start": 0.0,
+            "end": 12.0,
+            "actor": "nora",
+            "direction": "left",
+            "distance": 420
+          },
+          {
+            "type": "shamble",
+            "start": 0.0,
+            "end": 12.0,
+            "actor": "zombie_walker_a",
+            "direction": "left",
+            "distance": 420
+          },
+          {
+            "type": "shamble",
+            "start": 0.0,
+            "end": 12.0,
+            "actor": "zombie_walker_b",
+            "direction": "left",
+            "distance": 420
+          }
+        ],
+        "background": {
+          "preset": "subway_tunnel"
+        },
+        "index": 0
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 12.0,
+        "end_time": 22.0,
+        "characters_present": [
+          "dr_hana",
+          "dr_hana_cure_sprayer",
+          "nora",
+          "zombie_walker_a",
+          "zombie_walker_b"
+        ],
+        "poses": {
+          "dr_hana": [
+            {
+              "time": 12.0,
+              "x": 480.0,
+              "y": 830.0,
+              "height": 250.0,
+              "zombie": 0.0,
+              "cured": 0.0,
+              "opacity": 1.0,
+              "expression": "neutral",
+              "outfit": "scientist"
+            },
+            {
+              "time": 15.5,
+              "x": 900.0,
+              "y": 830.0,
+              "height": 250.0,
+              "zombie": 0.0,
+              "cured": 0.0,
+              "opacity": 1.0,
+              "expression": "neutral",
+              "outfit": "scientist"
+            },
+            {
+              "time": 22.0,
+              "x": 900.0,
+              "y": 830.0,
+              "height": 250.0,
+              "zombie": 0.0,
+              "cured": 0.0,
+              "opacity": 1.0,
+              "expression": "happy",
+              "outfit": "scientist"
+            }
+          ],
+          "dr_hana_cure_sprayer": [
+            {
+              "time": 12.0,
+              "x": 14.399999999999999,
+              "y": 26.4,
+              "height": 120,
+              "rotation": 0,
+              "opacity": 1.0
+            },
+            {
+              "time": 22.0,
+              "x": 14.399999999999999,
+              "y": 26.4,
+              "height": 120,
+              "rotation": 0,
+              "opacity": 1.0
+            }
+          ],
+          "nora": [
+            {
+              "time": 12.0,
+              "x": 1060.0,
+              "y": 830.0,
+              "height": 215.0,
+              "zombie": 1.0,
+              "cured": 0.0,
+              "opacity": 1.0,
+              "expression": "dazed",
+              "outfit": "torn"
+            },
+            {
+              "time": 16.0,
+              "x": 1060.0,
+              "y": 830.0,
+              "height": 215.0,
+              "zombie": 1.0,
+              "cured": 0.0,
+              "opacity": 1.0,
+              "expression": "dazed",
+              "outfit": "torn"
+            },
+            {
+              "time": 17.5,
+              "x": 1060.0,
+              "y": 830.0,
+              "height": 215.0,
+              "zombie": 0.0,
+              "cured": 1.0,
+              "opacity": 1.0,
+              "expression": "happy",
+              "outfit": "survivor_hoodie_purple"
+            },
+            {
+              "time": 22.0,
+              "x": 1060.0,
+              "y": 830.0,
+              "height": 215.0,
+              "zombie": 0.0,
+              "cured": 1.0,
+              "opacity": 1.0,
+              "expression": "happy",
+              "outfit": "survivor_hoodie_purple"
+            }
+          ],
+          "zombie_walker_a": [
+            {
+              "time": 12.0,
+              "x": 1200.0,
+              "y": 830.0,
+              "height": 215.0,
+              "zombie": 1.0,
+              "cured": 0.0,
+              "opacity": 1.0,
+              "expression": "dazed",
+              "outfit": "torn"
+            },
+            {
+              "time": 17.5,
+              "x": 1200.0,
+              "y": 830.0,
+              "height": 215.0,
+              "zombie": 1.0,
+              "cured": 0.0,
+              "opacity": 1.0,
+              "expression": "dazed",
+              "outfit": "torn"
+            },
+            {
+              "time": 19.0,
+              "x": 1200.0,
+              "y": 830.0,
+              "height": 215.0,
+              "zombie": 0.0,
+              "cured": 1.0,
+              "opacity": 1.0,
+              "expression": "happy",
+              "outfit": "winter_coat"
+            },
+            {
+              "time": 22.0,
+              "x": 1200.0,
+              "y": 830.0,
+              "height": 215.0,
+              "zombie": 0.0,
+              "cured": 1.0,
+              "opacity": 1.0,
+              "expression": "happy",
+              "outfit": "winter_coat"
+            }
+          ],
+          "zombie_walker_b": [
+            {
+              "time": 12.0,
+              "x": 1340.0,
+              "y": 830.0,
+              "height": 215.0,
+              "zombie": 1.0,
+              "cured": 0.0,
+              "opacity": 1.0,
+              "expression": "dazed",
+              "outfit": "torn"
+            },
+            {
+              "time": 19.0,
+              "x": 1340.0,
+              "y": 830.0,
+              "height": 215.0,
+              "zombie": 1.0,
+              "cured": 0.0,
+              "opacity": 1.0,
+              "expression": "dazed",
+              "outfit": "torn"
+            },
+            {
+              "time": 20.5,
+              "x": 1340.0,
+              "y": 830.0,
+              "height": 215.0,
+              "zombie": 0.0,
+              "cured": 1.0,
+              "opacity": 1.0,
+              "expression": "happy",
+              "outfit": "hi_vis_vest"
+            },
+            {
+              "time": 22.0,
+              "x": 1340.0,
+              "y": 830.0,
+              "height": 215.0,
+              "zombie": 0.0,
+              "cured": 1.0,
+              "opacity": 1.0,
+              "expression": "happy",
+              "outfit": "hi_vis_vest"
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "cure_spray",
+            "start": 16.0,
+            "end": 17.5,
+            "actor": "dr_hana",
+            "target": "nora"
+          },
+          {
+            "type": "cure_spray",
+            "start": 17.5,
+            "end": 19.0,
+            "actor": "dr_hana",
+            "target": "zombie_walker_a"
+          },
+          {
+            "type": "cure_spray",
+            "start": 19.0,
+            "end": 20.5,
+            "actor": "dr_hana",
+            "target": "zombie_walker_b"
+          }
+        ],
+        "background": {
+          "preset": "subway_tunnel"
+        },
+        "index": 1
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 22.0,
+        "end_time": 32.0,
+        "characters_present": [
+          "dr_hana",
+          "dr_hana_cure_sprayer",
+          "nora",
+          "zombie_walker_a",
+          "zombie_walker_b"
+        ],
+        "poses": {
+          "dr_hana": [
+            {
+              "time": 22.0,
+              "x": 900.0,
+              "y": 830.0,
+              "height": 250.0,
+              "zombie": 0.0,
+              "cured": 0.0,
+              "opacity": 1.0,
+              "expression": "happy",
+              "outfit": "scientist"
+            },
+            {
+              "time": 30.0,
+              "x": 1310.0,
+              "y": 830.0,
+              "height": 250.0,
+              "zombie": 0.0,
+              "cured": 0.0,
+              "opacity": 1.0,
+              "expression": "happy",
+              "outfit": "scientist"
+            },
+            {
+              "time": 32.0,
+              "x": 1310.0,
+              "y": 830.0,
+              "height": 250.0,
+              "zombie": 0.0,
+              "cured": 0.0,
+              "opacity": 1.0,
+              "expression": "happy",
+              "outfit": "scientist"
+            }
+          ],
+          "dr_hana_cure_sprayer": [
+            {
+              "time": 22.0,
+              "x": 14.399999999999999,
+              "y": 26.4,
+              "height": 120,
+              "rotation": 0,
+              "opacity": 1.0
+            },
+            {
+              "time": 32.0,
+              "x": 14.399999999999999,
+              "y": 26.4,
+              "height": 120,
+              "rotation": 0,
+              "opacity": 1.0
+            }
+          ],
+          "nora": [
+            {
+              "time": 22.0,
+              "x": 1060.0,
+              "y": 830.0,
+              "height": 215.0,
+              "zombie": 0.0,
+              "cured": 1.0,
+              "opacity": 1.0,
+              "expression": "happy",
+              "outfit": "survivor_hoodie_purple"
+            },
+            {
+              "time": 30.0,
+              "x": 1460.0,
+              "y": 830.0,
+              "height": 215.0,
+              "zombie": 0.0,
+              "cured": 1.0,
+              "opacity": 1.0,
+              "expression": "happy",
+              "outfit": "survivor_hoodie_purple"
+            },
+            {
+              "time": 32.0,
+              "x": 1460.0,
+              "y": 830.0,
+              "height": 215.0,
+              "zombie": 0.0,
+              "cured": 1.0,
+              "opacity": 1.0,
+              "expression": "happy",
+              "outfit": "survivor_hoodie_purple"
+            }
+          ],
+          "zombie_walker_a": [
+            {
+              "time": 22.0,
+              "x": 1200.0,
+              "y": 830.0,
+              "height": 215.0,
+              "zombie": 0.0,
+              "cured": 1.0,
+              "opacity": 1.0,
+              "expression": "happy",
+              "outfit": "winter_coat"
+            },
+            {
+              "time": 30.0,
+              "x": 1600.0,
+              "y": 830.0,
+              "height": 215.0,
+              "zombie": 0.0,
+              "cured": 1.0,
+              "opacity": 1.0,
+              "expression": "happy",
+              "outfit": "winter_coat"
+            },
+            {
+              "time": 32.0,
+              "x": 1600.0,
+              "y": 830.0,
+              "height": 215.0,
+              "zombie": 0.0,
+              "cured": 1.0,
+              "opacity": 1.0,
+              "expression": "happy",
+              "outfit": "winter_coat"
+            }
+          ],
+          "zombie_walker_b": [
+            {
+              "time": 22.0,
+              "x": 1340.0,
+              "y": 830.0,
+              "height": 215.0,
+              "zombie": 0.0,
+              "cured": 1.0,
+              "opacity": 1.0,
+              "expression": "happy",
+              "outfit": "hi_vis_vest"
+            },
+            {
+              "time": 30.0,
+              "x": 1740.0,
+              "y": 830.0,
+              "height": 215.0,
+              "zombie": 0.0,
+              "cured": 1.0,
+              "opacity": 1.0,
+              "expression": "happy",
+              "outfit": "hi_vis_vest"
+            },
+            {
+              "time": 32.0,
+              "x": 1740.0,
+              "y": 830.0,
+              "height": 215.0,
+              "zombie": 0.0,
+              "cured": 1.0,
+              "opacity": 1.0,
+              "expression": "happy",
+              "outfit": "hi_vis_vest"
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "emote",
+            "start": 29.0,
+            "end": 31.5,
+            "actor": "nora",
+            "emote": "heart"
+          },
+          {
+            "type": "emote",
+            "start": 29.5,
+            "end": 31.5,
+            "actor": "dr_hana",
+            "emote": "heart"
+          }
+        ],
+        "background": {
+          "preset": "subway_tunnel"
+        },
+        "index": 2
+      }
+    ],
+    "cues": [
+      {
+        "start": 0.5,
+        "end": 11.5,
+        "character_id": "dr_hana",
+        "text": "Down the long subway tunnel, Dr. Hana carries her new cure. Three dazed walkers drift slowly towards her.",
+        "expression": "neutral"
+      },
+      {
+        "start": 12.5,
+        "end": 21.5,
+        "character_id": "dr_hana",
+        "text": "One gentle sparkling mist at a time. Nora, then her two friends, wake up as themselves again.",
+        "expression": "happy"
+      },
+      {
+        "start": 22.5,
+        "end": 31.5,
+        "character_id": "nora",
+        "text": "Together we walk out into the daylight. Science and kindness win!",
+        "expression": "happy"
+      }
+    ]
+  },
+  {
+    "id": "quiet_street_wide",
+    "name": "W2 · Quiet Street (widescreen)",
+    "renderer": "native-vector-v1",
+    "fidelity": "technical-demo",
+    "frame": "landscape",
+    "note": "Widescreen sample (zombies are fiction): Mika and Leo hide behind an old bus, throw an empty can far down the long street to draw two walkers away, and slip back the way they came.",
+    "duration": 36.0,
+    "characters": [
+      {
+        "id": "mika",
+        "name": "Mika",
+        "asset": "chibi_girl",
+        "role": "leader",
+        "outfit": "survivor_jacket",
+        "style": {
+          "skin": "#ffdfc4",
+          "hair": "#78350f"
+        }
+      },
+      {
+        "id": "mika_walkie_talkie",
+        "asset": "walkie_talkie",
+        "attach_to": {
+          "id": "mika",
+          "anchor": "hand_r"
+        }
+      },
+      {
+        "id": "leo",
+        "name": "Leo",
+        "asset": "chibi_boy",
+        "role": "scout",
+        "outfit": "survivor_hoodie",
+        "style": {
+          "skin": "#f7d0b5",
+          "hair": "#1e293b"
+        }
+      },
+      {
+        "id": "leo_flashlight",
+        "asset": "flashlight",
+        "attach_to": {
+          "id": "leo",
+          "anchor": "hand_r"
+        }
+      },
+      {
+        "id": "zombie_walker_a",
+        "name": "Zombie Walker A",
+        "asset": "chibi_boy",
+        "role": "crowd",
+        "outfit": "torn",
+        "style": {
+          "skin": "#f1c9a5",
+          "hair": "#334155"
+        }
+      },
+      {
+        "id": "zombie_walker_b",
+        "name": "Zombie Walker B",
+        "asset": "chibi_girl",
+        "role": "crowd",
+        "outfit": "torn",
+        "style": {
+          "skin": "#c68642",
+          "hair": "#1e293b"
+        }
+      },
+      {
+        "id": "bus",
+        "name": "Old bus",
+        "asset": "city_bus"
+      },
+      {
+        "id": "can",
+        "name": "Empty can",
+        "asset": "can"
+      }
+    ],
+    "scenes": [
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 0.0,
+        "end_time": 12.0,
+        "characters_present": [
+          "bus",
+          "mika",
+          "leo",
+          "leo_flashlight",
+          "zombie_walker_a",
+          "zombie_walker_b"
+        ],
+        "poses": {
+          "bus": [
+            {
+              "time": 0.0,
+              "x": 640,
+              "y": 840,
+              "height": 240,
+              "decay": 0.6
+            },
+            {
+              "time": 12.0,
+              "x": 640,
+              "y": 840,
+              "height": 240,
+              "decay": 0.6
+            }
+          ],
+          "mika": [
+            {
+              "time": 0.0,
+              "x": 60.0,
+              "y": 830.0,
+              "height": 230.0,
+              "zombie": 0.0,
+              "cured": 0.0,
+              "opacity": 1.0,
+              "expression": "neutral",
+              "outfit": "survivor_jacket",
+              "z": -1
+            },
+            {
+              "time": 8.0,
+              "x": 540.0,
+              "y": 830.0,
+              "height": 230.0,
+              "zombie": 0.0,
+              "cured": 0.0,
+              "opacity": 1.0,
+              "expression": "neutral",
+              "outfit": "survivor_jacket",
+              "z": -1
+            },
+            {
+              "time": 12.0,
+              "x": 540.0,
+              "y": 845.0,
+              "height": 230.0,
+              "zombie": 0.0,
+              "cured": 0.0,
+              "opacity": 1.0,
+              "expression": "worried",
+              "outfit": "survivor_jacket",
+              "z": -1
+            }
+          ],
+          "leo": [
+            {
+              "time": 0.0,
+              "x": -80.0,
+              "y": 830.0,
+              "height": 230.0,
+              "zombie": 0.0,
+              "cured": 0.0,
+              "opacity": 1.0,
+              "expression": "neutral",
+              "outfit": "survivor_hoodie",
+              "z": -1
+            },
+            {
+              "time": 9.0,
+              "x": 720.0,
+              "y": 830.0,
+              "height": 230.0,
+              "zombie": 0.0,
+              "cured": 0.0,
+              "opacity": 1.0,
+              "expression": "neutral",
+              "outfit": "survivor_hoodie",
+              "z": -1
+            },
+            {
+              "time": 12.0,
+              "x": 720.0,
+              "y": 845.0,
+              "height": 230.0,
+              "zombie": 0.0,
+              "cured": 0.0,
+              "opacity": 1.0,
+              "expression": "worried",
+              "outfit": "survivor_hoodie",
+              "z": -1
+            }
+          ],
+          "leo_flashlight": [
+            {
+              "time": 0.0,
+              "x": -3.882285676537811,
+              "y": 14.488887394336025,
+              "height": 200,
+              "rotation": 15,
+              "opacity": 1.0
+            },
+            {
+              "time": 12.0,
+              "x": -3.882285676537811,
+              "y": 14.488887394336025,
+              "height": 200,
+              "rotation": 15,
+              "opacity": 1.0
+            }
+          ],
+          "zombie_walker_a": [
+            {
+              "time": 0.0,
+              "x": 1600.0,
+              "y": 830.0,
+              "height": 230.0,
+              "zombie": 1.0,
+              "cured": 0.0,
+              "opacity": 1.0,
+              "expression": "dazed",
+              "outfit": "torn"
+            },
+            {
+              "time": 12.0,
+              "x": 1600.0,
+              "y": 830.0,
+              "height": 230.0,
+              "zombie": 1.0,
+              "cured": 0.0,
+              "opacity": 1.0,
+              "expression": "dazed",
+              "outfit": "torn"
+            }
+          ],
+          "zombie_walker_b": [
+            {
+              "time": 0.0,
+              "x": 1780.0,
+              "y": 830.0,
+              "height": 230.0,
+              "zombie": 1.0,
+              "cured": 0.0,
+              "opacity": 1.0,
+              "expression": "dazed",
+              "outfit": "torn"
+            },
+            {
+              "time": 12.0,
+              "x": 1780.0,
+              "y": 830.0,
+              "height": 230.0,
+              "zombie": 1.0,
+              "cured": 0.0,
+              "opacity": 1.0,
+              "expression": "dazed",
+              "outfit": "torn"
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "shamble",
+            "start": 0.0,
+            "end": 12.0,
+            "actor": "zombie_walker_a",
+            "direction": "left",
+            "distance": 420
+          },
+          {
+            "type": "shamble",
+            "start": 0.0,
+            "end": 12.0,
+            "actor": "zombie_walker_b",
+            "direction": "left",
+            "distance": 420
+          }
+        ],
+        "background": {
+          "preset": "abandoned_street",
+          "weather": "fog"
+        },
+        "index": 0
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 12.0,
+        "end_time": 24.0,
+        "characters_present": [
+          "bus",
+          "mika",
+          "leo",
+          "leo_flashlight",
+          "can",
+          "zombie_walker_a",
+          "zombie_walker_b"
+        ],
+        "poses": {
+          "bus": [
+            {
+              "time": 12.0,
+              "x": 640,
+              "y": 840,
+              "height": 240,
+              "decay": 0.6
+            },
+            {
+              "time": 24.0,
+              "x": 640,
+              "y": 840,
+              "height": 240,
+              "decay": 0.6
+            }
+          ],
+          "mika": [
+            {
+              "time": 12.0,
+              "x": 540.0,
+              "y": 845.0,
+              "height": 230.0,
+              "zombie": 0.0,
+              "cured": 0.0,
+              "opacity": 1.0,
+              "expression": "worried",
+              "outfit": "survivor_jacket",
+              "z": -1
+            },
+            {
+              "time": 24.0,
+              "x": 540.0,
+              "y": 845.0,
+              "height": 230.0,
+              "zombie": 0.0,
+              "cured": 0.0,
+              "opacity": 1.0,
+              "expression": "neutral",
+              "outfit": "survivor_jacket",
+              "z": -1
+            }
+          ],
+          "leo": [
+            {
+              "time": 12.0,
+              "x": 720.0,
+              "y": 845.0,
+              "height": 230.0,
+              "zombie": 0.0,
+              "cured": 0.0,
+              "opacity": 1.0,
+              "expression": "neutral",
+              "outfit": "survivor_hoodie",
+              "z": -1
+            },
+            {
+              "time": 12.6,
+              "x": 720.0,
+              "y": 830.0,
+              "height": 230.0,
+              "zombie": 0.0,
+              "cured": 0.0,
+              "opacity": 1.0,
+              "expression": "neutral",
+              "outfit": "survivor_hoodie",
+              "z": -1,
+              "hand_r_x": 20,
+              "hand_r_y": -70
+            },
+            {
+              "time": 13.2,
+              "x": 720.0,
+              "y": 845.0,
+              "height": 230.0,
+              "zombie": 0.0,
+              "cured": 0.0,
+              "opacity": 1.0,
+              "expression": "neutral",
+              "outfit": "survivor_hoodie",
+              "z": -1
+            },
+            {
+              "time": 24.0,
+              "x": 720.0,
+              "y": 845.0,
+              "height": 230.0,
+              "zombie": 0.0,
+              "cured": 0.0,
+              "opacity": 1.0,
+              "expression": "happy",
+              "outfit": "survivor_hoodie",
+              "z": -1
+            }
+          ],
+          "leo_flashlight": [
+            {
+              "time": 12.0,
+              "x": -3.882285676537811,
+              "y": 14.488887394336025,
+              "height": 200,
+              "rotation": 15,
+              "opacity": 1.0
+            },
+            {
+              "time": 24.0,
+              "x": -3.882285676537811,
+              "y": 14.488887394336025,
+              "height": 200,
+              "rotation": 15,
+              "opacity": 1.0
+            }
+          ],
+          "can": [
+            {
+              "time": 12.0,
+              "x": 750,
+              "y": 700,
+              "height": 110,
+              "opacity": 0.0
+            },
+            {
+              "time": 12.6,
+              "x": 750,
+              "y": 700,
+              "height": 110,
+              "opacity": 1.0
+            },
+            {
+              "time": 13.8,
+              "x": 1180,
+              "y": 330,
+              "height": 110,
+              "rotation": 300,
+              "opacity": 1.0
+            },
+            {
+              "time": 15.0,
+              "x": 1700,
+              "y": 845,
+              "height": 110,
+              "rotation": 600,
+              "opacity": 1.0
+            },
+            {
+              "time": 24.0,
+              "x": 1700,
+              "y": 845,
+              "height": 110,
+              "rotation": 600,
+              "opacity": 1.0
+            }
+          ],
+          "zombie_walker_a": [
+            {
+              "time": 12.0,
+              "x": 1180.0,
+              "y": 830.0,
+              "height": 230.0,
+              "zombie": 1.0,
+              "cured": 0.0,
+              "opacity": 1.0,
+              "expression": "dazed",
+              "outfit": "torn"
+            },
+            {
+              "time": 24.0,
+              "x": 1180.0,
+              "y": 830.0,
+              "height": 230.0,
+              "zombie": 1.0,
+              "cured": 0.0,
+              "opacity": 1.0,
+              "expression": "dazed",
+              "outfit": "torn"
+            }
+          ],
+          "zombie_walker_b": [
+            {
+              "time": 12.0,
+              "x": 1360.0,
+              "y": 830.0,
+              "height": 230.0,
+              "zombie": 1.0,
+              "cured": 0.0,
+              "opacity": 1.0,
+              "expression": "dazed",
+              "outfit": "torn"
+            },
+            {
+              "time": 24.0,
+              "x": 1360.0,
+              "y": 830.0,
+              "height": 230.0,
+              "zombie": 1.0,
+              "cured": 0.0,
+              "opacity": 1.0,
+              "expression": "dazed",
+              "outfit": "torn"
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "distract",
+            "start": 15.0,
+            "end": 16.0,
+            "actor": "leo",
+            "target": "can"
+          },
+          {
+            "type": "shamble",
+            "start": 16.0,
+            "end": 24.0,
+            "actor": "zombie_walker_a",
+            "direction": "right",
+            "distance": 280
+          },
+          {
+            "type": "shamble",
+            "start": 16.0,
+            "end": 24.0,
+            "actor": "zombie_walker_b",
+            "direction": "right",
+            "distance": 200
+          }
+        ],
+        "background": {
+          "preset": "abandoned_street",
+          "weather": "fog"
+        },
+        "index": 1
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 24.0,
+        "end_time": 36.0,
+        "characters_present": [
+          "bus",
+          "mika",
+          "leo",
+          "leo_flashlight",
+          "can",
+          "zombie_walker_a",
+          "zombie_walker_b"
+        ],
+        "poses": {
+          "bus": [
+            {
+              "time": 24.0,
+              "x": 640,
+              "y": 840,
+              "height": 240,
+              "decay": 0.6
+            },
+            {
+              "time": 36.0,
+              "x": 640,
+              "y": 840,
+              "height": 240,
+              "decay": 0.6
+            }
+          ],
+          "mika": [
+            {
+              "time": 24.0,
+              "x": 540.0,
+              "y": 845.0,
+              "height": 230.0,
+              "zombie": 0.0,
+              "cured": 0.0,
+              "opacity": 1.0,
+              "expression": "neutral",
+              "outfit": "survivor_jacket",
+              "z": -1
+            },
+            {
+              "time": 25.0,
+              "x": 540.0,
+              "y": 830.0,
+              "height": 230.0,
+              "zombie": 0.0,
+              "cured": 0.0,
+              "opacity": 1.0,
+              "expression": "neutral",
+              "outfit": "survivor_jacket",
+              "z": -1
+            },
+            {
+              "time": 34.0,
+              "x": 80.0,
+              "y": 830.0,
+              "height": 230.0,
+              "zombie": 0.0,
+              "cured": 0.0,
+              "opacity": 1.0,
+              "expression": "happy",
+              "outfit": "survivor_jacket",
+              "z": -1
+            },
+            {
+              "time": 36.0,
+              "x": 80.0,
+              "y": 830.0,
+              "height": 230.0,
+              "zombie": 0.0,
+              "cured": 0.0,
+              "opacity": 1.0,
+              "expression": "happy",
+              "outfit": "survivor_jacket",
+              "z": -1
+            }
+          ],
+          "leo": [
+            {
+              "time": 24.0,
+              "x": 720.0,
+              "y": 845.0,
+              "height": 230.0,
+              "zombie": 0.0,
+              "cured": 0.0,
+              "opacity": 1.0,
+              "expression": "neutral",
+              "outfit": "survivor_hoodie",
+              "z": -1
+            },
+            {
+              "time": 25.0,
+              "x": 720.0,
+              "y": 830.0,
+              "height": 230.0,
+              "zombie": 0.0,
+              "cured": 0.0,
+              "opacity": 1.0,
+              "expression": "neutral",
+              "outfit": "survivor_hoodie",
+              "z": -1
+            },
+            {
+              "time": 34.0,
+              "x": 240.0,
+              "y": 830.0,
+              "height": 230.0,
+              "zombie": 0.0,
+              "cured": 0.0,
+              "opacity": 1.0,
+              "expression": "happy",
+              "outfit": "survivor_hoodie",
+              "z": -1
+            },
+            {
+              "time": 36.0,
+              "x": 240.0,
+              "y": 830.0,
+              "height": 230.0,
+              "zombie": 0.0,
+              "cured": 0.0,
+              "opacity": 1.0,
+              "expression": "happy",
+              "outfit": "survivor_hoodie",
+              "z": -1
+            }
+          ],
+          "leo_flashlight": [
+            {
+              "time": 24.0,
+              "x": -3.882285676537811,
+              "y": 14.488887394336025,
+              "height": 200,
+              "rotation": 15,
+              "opacity": 1.0
+            },
+            {
+              "time": 36.0,
+              "x": -3.882285676537811,
+              "y": 14.488887394336025,
+              "height": 200,
+              "rotation": 15,
+              "opacity": 1.0
+            }
+          ],
+          "can": [
+            {
+              "time": 24.0,
+              "x": 1700,
+              "y": 845,
+              "height": 110,
+              "rotation": 600
+            },
+            {
+              "time": 36.0,
+              "x": 1700,
+              "y": 845,
+              "height": 110,
+              "rotation": 600
+            }
+          ],
+          "zombie_walker_a": [
+            {
+              "time": 24.0,
+              "x": 1460.0,
+              "y": 830.0,
+              "height": 230.0,
+              "zombie": 1.0,
+              "cured": 0.0,
+              "opacity": 1.0,
+              "expression": "dazed",
+              "outfit": "torn"
+            },
+            {
+              "time": 36.0,
+              "x": 1460.0,
+              "y": 830.0,
+              "height": 230.0,
+              "zombie": 1.0,
+              "cured": 0.0,
+              "opacity": 1.0,
+              "expression": "dazed",
+              "outfit": "torn"
+            }
+          ],
+          "zombie_walker_b": [
+            {
+              "time": 24.0,
+              "x": 1560.0,
+              "y": 830.0,
+              "height": 230.0,
+              "zombie": 1.0,
+              "cured": 0.0,
+              "opacity": 1.0,
+              "expression": "dazed",
+              "outfit": "torn"
+            },
+            {
+              "time": 36.0,
+              "x": 1560.0,
+              "y": 830.0,
+              "height": 230.0,
+              "zombie": 1.0,
+              "cured": 0.0,
+              "opacity": 1.0,
+              "expression": "dazed",
+              "outfit": "torn"
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "shamble",
+            "start": 24.0,
+            "end": 36.0,
+            "actor": "zombie_walker_b",
+            "direction": "right",
+            "distance": 40
+          },
+          {
+            "type": "emote",
+            "start": 31.0,
+            "end": 35.5,
+            "actor": "leo",
+            "emote": "heart"
+          }
+        ],
+        "background": {
+          "preset": "abandoned_street",
+          "weather": "fog"
+        },
+        "index": 2
+      }
+    ],
+    "cues": [
+      {
+        "start": 0.5,
+        "end": 11.5,
+        "character_id": "mika",
+        "text": "Two dazed walkers drift down the long empty street. Mika and Leo crouch low behind an old bus.",
+        "expression": "neutral"
+      },
+      {
+        "start": 12.5,
+        "end": 23.5,
+        "character_id": "leo",
+        "text": "Leo throws an empty can far down the street. The clatter draws both walkers away.",
+        "expression": "happy"
+      },
+      {
+        "start": 24.5,
+        "end": 35.5,
+        "character_id": "mika",
+        "text": "Stay quiet, stay together, always keep a way out. The team slips away safely.",
+        "expression": "happy"
+      }
+    ]
+  },
+  {
+    "id": "tortoise_and_hare_wide",
+    "name": "W3 · The Tortoise and the Hare (widescreen)",
+    "renderer": "native-vector-v1",
+    "fidelity": "technical-demo",
+    "frame": "landscape",
+    "note": "Widescreen sample (Aesop's fable): on a long meadow track the hare dashes ahead and naps under a tree, while the tortoise keeps walking and reaches the finish first.",
+    "duration": 32.0,
+    "characters": [
+      {
+        "id": "hare",
+        "name": "Hare",
+        "asset": "rabbit"
+      },
+      {
+        "id": "tortoise",
+        "name": "Tortoise",
+        "asset": "tortoise"
+      },
+      {
+        "id": "tree",
+        "name": "Shady tree",
+        "asset": "persimmon_tree"
+      },
+      {
+        "id": "flag",
+        "name": "Finish banner",
+        "asset": "banner_plain"
+      }
+    ],
+    "scenes": [
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 0.0,
+        "end_time": 10.0,
+        "characters_present": [
+          "hare",
+          "tortoise",
+          "tree",
+          "flag"
+        ],
+        "poses": {
+          "hare": [
+            {
+              "time": 0.0,
+              "x": 80,
+              "y": 810,
+              "height": 130,
+              "walk": 1,
+              "z": 2
+            },
+            {
+              "time": 4.0,
+              "x": 980,
+              "y": 810,
+              "height": 130,
+              "walk": 1,
+              "z": 2
+            },
+            {
+              "time": 10.0,
+              "x": 980,
+              "y": 810,
+              "height": 130,
+              "walk": 0,
+              "z": 2
+            }
+          ],
+          "tortoise": [
+            {
+              "time": 0.0,
+              "x": 60,
+              "y": 810,
+              "height": 140,
+              "walk": 1,
+              "z": 3
+            },
+            {
+              "time": 10.0,
+              "x": 460,
+              "y": 810,
+              "height": 140,
+              "walk": 1,
+              "z": 3
+            }
+          ],
+          "tree": [
+            {
+              "time": 0.0,
+              "x": 1060,
+              "y": 810,
+              "height": 300,
+              "z": 0
+            },
+            {
+              "time": 10.0,
+              "x": 1060,
+              "y": 810,
+              "height": 300,
+              "z": 0
+            }
+          ],
+          "flag": [
+            {
+              "time": 0.0,
+              "x": 1700,
+              "y": 810,
+              "height": 230,
+              "z": 0
+            },
+            {
+              "time": 10.0,
+              "x": 1700,
+              "y": 810,
+              "height": 230,
+              "z": 0
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "emote",
+            "start": 5.0,
+            "end": 9.5,
+            "actor": "hare",
+            "emote": "zzz"
+          }
+        ],
+        "background": {
+          "preset": "alpine_meadow"
+        },
+        "index": 0
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 10.0,
+        "end_time": 20.0,
+        "characters_present": [
+          "hare",
+          "tortoise",
+          "tree",
+          "flag"
+        ],
+        "poses": {
+          "hare": [
+            {
+              "time": 10.0,
+              "x": 980,
+              "y": 810,
+              "height": 130,
+              "walk": 0,
+              "z": 2
+            },
+            {
+              "time": 20.0,
+              "x": 980,
+              "y": 810,
+              "height": 130,
+              "walk": 0,
+              "z": 2
+            }
+          ],
+          "tortoise": [
+            {
+              "time": 10.0,
+              "x": 460,
+              "y": 810,
+              "height": 140,
+              "walk": 1,
+              "z": 3
+            },
+            {
+              "time": 20.0,
+              "x": 880,
+              "y": 810,
+              "height": 140,
+              "walk": 1,
+              "z": 3
+            }
+          ],
+          "tree": [
+            {
+              "time": 10.0,
+              "x": 1060,
+              "y": 810,
+              "height": 300,
+              "z": 0
+            },
+            {
+              "time": 20.0,
+              "x": 1060,
+              "y": 810,
+              "height": 300,
+              "z": 0
+            }
+          ],
+          "flag": [
+            {
+              "time": 10.0,
+              "x": 1700,
+              "y": 810,
+              "height": 230,
+              "z": 0
+            },
+            {
+              "time": 20.0,
+              "x": 1700,
+              "y": 810,
+              "height": 230,
+              "z": 0
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "emote",
+            "start": 10.5,
+            "end": 19.5,
+            "actor": "hare",
+            "emote": "zzz"
+          }
+        ],
+        "background": {
+          "preset": "alpine_meadow"
+        },
+        "index": 1
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 20.0,
+        "end_time": 32.0,
+        "characters_present": [
+          "hare",
+          "tortoise",
+          "tree",
+          "flag"
+        ],
+        "poses": {
+          "hare": [
+            {
+              "time": 20.0,
+              "x": 980,
+              "y": 810,
+              "height": 130,
+              "walk": 0,
+              "z": 2
+            },
+            {
+              "time": 27.0,
+              "x": 980,
+              "y": 810,
+              "height": 130,
+              "walk": 0,
+              "z": 2
+            },
+            {
+              "time": 29.5,
+              "x": 1460,
+              "y": 810,
+              "height": 130,
+              "walk": 1,
+              "z": 2
+            },
+            {
+              "time": 32.0,
+              "x": 1460,
+              "y": 810,
+              "height": 130,
+              "walk": 0,
+              "z": 2
+            }
+          ],
+          "tortoise": [
+            {
+              "time": 20.0,
+              "x": 880,
+              "y": 810,
+              "height": 140,
+              "walk": 1,
+              "z": 3
+            },
+            {
+              "time": 29.0,
+              "x": 1640,
+              "y": 810,
+              "height": 140,
+              "walk": 1,
+              "z": 3
+            },
+            {
+              "time": 32.0,
+              "x": 1640,
+              "y": 810,
+              "height": 140,
+              "walk": 0,
+              "z": 3
+            }
+          ],
+          "tree": [
+            {
+              "time": 20.0,
+              "x": 1060,
+              "y": 810,
+              "height": 300,
+              "z": 0
+            },
+            {
+              "time": 32.0,
+              "x": 1060,
+              "y": 810,
+              "height": 300,
+              "z": 0
+            }
+          ],
+          "flag": [
+            {
+              "time": 20.0,
+              "x": 1700,
+              "y": 810,
+              "height": 230,
+              "z": 0
+            },
+            {
+              "time": 32.0,
+              "x": 1700,
+              "y": 810,
+              "height": 230,
+              "z": 0
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "emote",
+            "start": 20.5,
+            "end": 26.5,
+            "actor": "hare",
+            "emote": "zzz"
+          },
+          {
+            "type": "emote",
+            "start": 29.5,
+            "end": 31.8,
+            "actor": "tortoise",
+            "emote": "heart"
+          },
+          {
+            "type": "emote",
+            "start": 30.0,
+            "end": 31.8,
+            "actor": "hare",
+            "emote": "heart"
+          }
+        ],
+        "background": {
+          "preset": "alpine_meadow"
+        },
+        "index": 2
+      }
+    ],
+    "cues": [
+      {
+        "start": 0.5,
+        "end": 9.5,
+        "character_id": "hare",
+        "text": "The hare races far ahead, then lies down for a nap in the shade.",
+        "expression": "happy"
+      },
+      {
+        "start": 10.5,
+        "end": 19.5,
+        "character_id": "tortoise",
+        "text": "Slow and steady, step after step, the tortoise keeps going.",
+        "expression": "neutral"
+      },
+      {
+        "start": 20.5,
+        "end": 31.5,
+        "character_id": "tortoise",
+        "text": "The tortoise crosses the finish line first. The two friends cheer together!",
+        "expression": "happy"
+      }
+    ]
+  },
+  {
+    "id": "castle_life_wide",
+    "name": "W4 · Castle Life (widescreen)",
+    "renderer": "native-vector-v1",
+    "fidelity": "technical-demo",
+    "frame": "landscape",
+    "note": "Widescreen sample (medieval, no fighting): the drawbridge comes down, a horse cart rolls across the whole yard, two friends practise with a wooden shield, then everyone walks to the village market.",
+    "duration": 30.0,
+    "characters": [
+      {
+        "id": "castle",
+        "name": "Castle",
+        "asset": "castle"
+      },
+      {
+        "id": "cart",
+        "name": "Horse cart",
+        "asset": "horse_cart"
+      },
+      {
+        "id": "horse",
+        "name": "Horse",
+        "asset": "horse"
+      },
+      {
+        "id": "driver",
+        "name": "Cart driver",
+        "asset": "chibi_teacher"
+      },
+      {
+        "id": "banner",
+        "name": "Plain banner",
+        "asset": "banner_plain"
+      },
+      {
+        "id": "knight_trainee",
+        "name": "Young knight",
+        "asset": "chibi_boy"
+      },
+      {
+        "id": "shield",
+        "name": "Wooden shield",
+        "asset": "wooden_shield",
+        "attach_to": {
+          "id": "knight_trainee",
+          "anchor": "hand_l"
+        }
+      },
+      {
+        "id": "partner",
+        "name": "Friend",
+        "asset": "chibi_kid"
+      },
+      {
+        "id": "sword",
+        "name": "Toy sword",
+        "asset": "toy_sword",
+        "attach_to": {
+          "id": "partner",
+          "anchor": "hand_r"
+        }
+      },
+      {
+        "id": "stall",
+        "name": "Market stall",
+        "asset": "market_stall"
+      }
+    ],
+    "scenes": [
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 0.0,
+        "end_time": 10.0,
+        "characters_present": [
+          "castle",
+          "cart",
+          "horse",
+          "driver"
+        ],
+        "poses": {
+          "castle": [
+            {
+              "time": 0.0,
+              "x": 1180,
+              "y": 810,
+              "height": 210,
+              "open": 0.03
+            },
+            {
+              "time": 3.0,
+              "x": 1180,
+              "y": 810,
+              "height": 210,
+              "open": 1.0
+            },
+            {
+              "time": 10.0,
+              "x": 1180,
+              "y": 810,
+              "height": 210,
+              "open": 1.0
+            }
+          ],
+          "cart": [
+            {
+              "time": 0.0,
+              "x": -120,
+              "y": 900,
+              "height": 170
+            },
+            {
+              "time": 3.0,
+              "x": -120,
+              "y": 900,
+              "height": 170
+            },
+            {
+              "time": 10.0,
+              "x": 940,
+              "y": 900,
+              "height": 170
+            }
+          ],
+          "horse": [
+            {
+              "time": 0.0,
+              "x": -20,
+              "y": 900,
+              "height": 170
+            },
+            {
+              "time": 3.0,
+              "x": -20,
+              "y": 900,
+              "height": 170
+            },
+            {
+              "time": 10.0,
+              "x": 1040,
+              "y": 900,
+              "height": 170
+            }
+          ],
+          "driver": [
+            {
+              "time": 0.0,
+              "x": -120,
+              "y": 900,
+              "height": 180,
+              "outfit": "medieval_villager",
+              "expression": "happy"
+            },
+            {
+              "time": 10.0,
+              "x": 940,
+              "y": 900,
+              "height": 180,
+              "outfit": "medieval_villager",
+              "expression": "happy"
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "ride",
+            "start": 0.0,
+            "end": 10.0,
+            "actor": "driver",
+            "target": "cart",
+            "seat": "seat_1"
+          },
+          {
+            "type": "emote",
+            "start": 6.0,
+            "end": 9.5,
+            "actor": "driver",
+            "emote": "music"
+          }
+        ],
+        "background": {
+          "preset": "castle_yard"
+        },
+        "index": 0
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 10.0,
+        "end_time": 20.0,
+        "characters_present": [
+          "banner",
+          "knight_trainee",
+          "shield",
+          "partner",
+          "sword"
+        ],
+        "poses": {
+          "banner": [
+            {
+              "time": 10.0,
+              "x": 910,
+              "y": 760,
+              "height": 220
+            },
+            {
+              "time": 20.0,
+              "x": 910,
+              "y": 760,
+              "height": 220
+            }
+          ],
+          "knight_trainee": [
+            {
+              "time": 10.0,
+              "x": 260,
+              "y": 810,
+              "height": 230,
+              "outfit": "knight",
+              "expression": "happy"
+            },
+            {
+              "time": 14.0,
+              "x": 760,
+              "y": 810,
+              "height": 230,
+              "outfit": "knight",
+              "expression": "happy"
+            },
+            {
+              "time": 15.0,
+              "x": 760,
+              "y": 810,
+              "height": 230,
+              "outfit": "knight",
+              "expression": "happy",
+              "hand_l_x": 30,
+              "hand_l_y": -40
+            },
+            {
+              "time": 16.0,
+              "x": 760,
+              "y": 810,
+              "height": 230,
+              "outfit": "knight",
+              "expression": "happy",
+              "hand_l_x": 26,
+              "hand_l_y": -30
+            },
+            {
+              "time": 17.0,
+              "x": 760,
+              "y": 810,
+              "height": 230,
+              "outfit": "knight",
+              "expression": "happy",
+              "hand_l_x": 30,
+              "hand_l_y": -40
+            },
+            {
+              "time": 20.0,
+              "x": 760,
+              "y": 810,
+              "height": 230,
+              "outfit": "knight",
+              "expression": "happy",
+              "hand_l_x": 30,
+              "hand_l_y": -40
+            }
+          ],
+          "shield": [
+            {
+              "time": 10.0,
+              "x": -0.0,
+              "y": 17.85,
+              "height": 210,
+              "rotation": 0
+            },
+            {
+              "time": 20.0,
+              "x": -0.0,
+              "y": 17.85,
+              "height": 210,
+              "rotation": 0
+            }
+          ],
+          "partner": [
+            {
+              "time": 10.0,
+              "x": 1520,
+              "y": 810,
+              "height": 230,
+              "outfit": "medieval_villager",
+              "expression": "happy",
+              "flip": true
+            },
+            {
+              "time": 14.0,
+              "x": 1060,
+              "y": 810,
+              "height": 230,
+              "outfit": "medieval_villager",
+              "expression": "happy",
+              "flip": true
+            },
+            {
+              "time": 15.0,
+              "x": 1060,
+              "y": 810,
+              "height": 230,
+              "outfit": "medieval_villager",
+              "expression": "happy",
+              "flip": true,
+              "hand_r_x": 20,
+              "hand_r_y": -62
+            },
+            {
+              "time": 16.0,
+              "x": 1060,
+              "y": 810,
+              "height": 230,
+              "outfit": "medieval_villager",
+              "expression": "happy",
+              "flip": true,
+              "hand_r_x": 30,
+              "hand_r_y": -34
+            },
+            {
+              "time": 17.0,
+              "x": 1060,
+              "y": 810,
+              "height": 230,
+              "outfit": "medieval_villager",
+              "expression": "happy",
+              "flip": true,
+              "hand_r_x": 20,
+              "hand_r_y": -62
+            },
+            {
+              "time": 20.0,
+              "x": 1060,
+              "y": 810,
+              "height": 230,
+              "outfit": "medieval_villager",
+              "expression": "happy",
+              "flip": true,
+              "hand_r_x": 30,
+              "hand_r_y": -34
+            }
+          ],
+          "sword": [
+            {
+              "time": 10.0,
+              "x": 6.156362579862037,
+              "y": 16.914467174146353,
+              "height": 160,
+              "rotation": -20
+            },
+            {
+              "time": 20.0,
+              "x": 6.156362579862037,
+              "y": 16.914467174146353,
+              "height": 160,
+              "rotation": -20
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "emote",
+            "start": 11.0,
+            "end": 13.5,
+            "actor": "knight_trainee",
+            "emote": "music"
+          },
+          {
+            "type": "emote",
+            "start": 16.0,
+            "end": 19.5,
+            "actor": "partner",
+            "emote": "heart"
+          }
+        ],
+        "background": {
+          "preset": "castle_yard"
+        },
+        "index": 1
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 20.0,
+        "end_time": 30.0,
+        "characters_present": [
+          "stall",
+          "knight_trainee",
+          "shield",
+          "partner",
+          "sword",
+          "driver"
+        ],
+        "poses": {
+          "stall": [
+            {
+              "time": 20.0,
+              "x": 1500,
+              "y": 810,
+              "height": 240
+            },
+            {
+              "time": 30.0,
+              "x": 1500,
+              "y": 810,
+              "height": 240
+            }
+          ],
+          "knight_trainee": [
+            {
+              "time": 20.0,
+              "x": 120,
+              "y": 810,
+              "height": 230,
+              "outfit": "knight",
+              "expression": "happy"
+            },
+            {
+              "time": 28.0,
+              "x": 820,
+              "y": 810,
+              "height": 230,
+              "outfit": "knight",
+              "expression": "happy"
+            },
+            {
+              "time": 30.0,
+              "x": 820,
+              "y": 810,
+              "height": 230,
+              "outfit": "knight",
+              "expression": "happy"
+            }
+          ],
+          "shield": [
+            {
+              "time": 20.0,
+              "x": -0.0,
+              "y": 17.85,
+              "height": 210,
+              "rotation": 0
+            },
+            {
+              "time": 30.0,
+              "x": -0.0,
+              "y": 17.85,
+              "height": 210,
+              "rotation": 0
+            }
+          ],
+          "partner": [
+            {
+              "time": 20.0,
+              "x": 300,
+              "y": 810,
+              "height": 230,
+              "outfit": "medieval_villager",
+              "expression": "happy"
+            },
+            {
+              "time": 28.0,
+              "x": 1000,
+              "y": 810,
+              "height": 230,
+              "outfit": "medieval_villager",
+              "expression": "happy"
+            },
+            {
+              "time": 30.0,
+              "x": 1000,
+              "y": 810,
+              "height": 230,
+              "outfit": "medieval_villager",
+              "expression": "happy"
+            }
+          ],
+          "sword": [
+            {
+              "time": 20.0,
+              "x": 6.156362579862037,
+              "y": 16.914467174146353,
+              "height": 160,
+              "rotation": -20
+            },
+            {
+              "time": 30.0,
+              "x": 6.156362579862037,
+              "y": 16.914467174146353,
+              "height": 160,
+              "rotation": -20
+            }
+          ],
+          "driver": [
+            {
+              "time": 20.0,
+              "x": 500,
+              "y": 810,
+              "height": 240,
+              "outfit": "medieval_villager",
+              "expression": "happy"
+            },
+            {
+              "time": 28.0,
+              "x": 1200,
+              "y": 810,
+              "height": 240,
+              "outfit": "medieval_villager",
+              "expression": "happy"
+            },
+            {
+              "time": 30.0,
+              "x": 1200,
+              "y": 810,
+              "height": 240,
+              "outfit": "medieval_villager",
+              "expression": "happy"
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "emote",
+            "start": 28.0,
+            "end": 29.8,
+            "actor": "driver",
+            "emote": "heart"
+          }
+        ],
+        "background": {
+          "preset": "medieval_village"
+        },
+        "index": 2
+      }
+    ],
+    "cues": [
+      {
+        "start": 0.5,
+        "end": 9.5,
+        "character_id": "driver",
+        "text": "The drawbridge comes down and a horse cart full of vegetables rolls into the castle yard.",
+        "expression": "happy"
+      },
+      {
+        "start": 10.5,
+        "end": 19.5,
+        "character_id": "knight_trainee",
+        "text": "Under the banner, two friends practise holding a wooden shield, safely and with a smile.",
+        "expression": "happy"
+      },
+      {
+        "start": 20.5,
+        "end": 29.5,
+        "character_id": "partner",
+        "text": "Training done! Everyone walks down to the village market together.",
+        "expression": "happy"
+      }
+    ]
+  },
+  {
+    "id": "solar_system_tour_wide",
+    "name": "W5 · Solar System Tour (widescreen)",
+    "renderer": "native-vector-v1",
+    "fidelity": "technical-demo",
+    "frame": "landscape",
+    "note": "Widescreen sample: a rocket flies across the wide frame past all eight planets in order, from Mercury to Neptune.",
+    "duration": 20.0,
+    "characters": [
+      {
+        "id": "ship",
+        "name": "Rocket",
+        "asset": "rocket"
+      },
+      {
+        "id": "sun",
+        "name": "Sun",
+        "asset": "sun"
+      },
+      {
+        "id": "p1",
+        "name": "Planet",
+        "asset": "planet"
+      },
+      {
+        "id": "p2",
+        "name": "Planet",
+        "asset": "planet"
+      },
+      {
+        "id": "p3",
+        "name": "Planet",
+        "asset": "planet"
+      },
+      {
+        "id": "p4",
+        "name": "Planet",
+        "asset": "planet"
+      },
+      {
+        "id": "p5",
+        "name": "Planet",
+        "asset": "planet"
+      },
+      {
+        "id": "p6",
+        "name": "Planet",
+        "asset": "planet"
+      },
+      {
+        "id": "p7",
+        "name": "Planet",
+        "asset": "planet"
+      },
+      {
+        "id": "p8",
+        "name": "Planet",
+        "asset": "planet"
+      }
+    ],
+    "scenes": [
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 0.0,
+        "end_time": 10.0,
+        "characters_present": [
+          "ship",
+          "sun",
+          "p1",
+          "p2",
+          "p3",
+          "p4"
+        ],
+        "poses": {
+          "ship": [
+            {
+              "time": 0.0,
+              "x": -80,
+              "y": 380,
+              "height": 120,
+              "rotation": 90
+            },
+            {
+              "time": 10.0,
+              "x": 1900,
+              "y": 380,
+              "height": 120,
+              "rotation": 90
+            }
+          ],
+          "sun": [
+            {
+              "time": 0.0,
+              "x": 90,
+              "y": 600,
+              "height": 260
+            },
+            {
+              "time": 10.0,
+              "x": 90,
+              "y": 600,
+              "height": 260
+            }
+          ],
+          "p1": [
+            {
+              "time": 0.0,
+              "x": 420,
+              "y": 560,
+              "height": 90,
+              "variant": "mercury"
+            },
+            {
+              "time": 10.0,
+              "x": 420,
+              "y": 560,
+              "height": 90,
+              "variant": "mercury"
+            }
+          ],
+          "p2": [
+            {
+              "time": 0.0,
+              "x": 760,
+              "y": 545,
+              "height": 120,
+              "variant": "venus"
+            },
+            {
+              "time": 10.0,
+              "x": 760,
+              "y": 545,
+              "height": 120,
+              "variant": "venus"
+            }
+          ],
+          "p3": [
+            {
+              "time": 0.0,
+              "x": 1120,
+              "y": 550,
+              "height": 130,
+              "variant": "earth"
+            },
+            {
+              "time": 10.0,
+              "x": 1120,
+              "y": 550,
+              "height": 130,
+              "variant": "earth"
+            }
+          ],
+          "p4": [
+            {
+              "time": 0.0,
+              "x": 1480,
+              "y": 540,
+              "height": 110,
+              "variant": "mars"
+            },
+            {
+              "time": 10.0,
+              "x": 1480,
+              "y": 540,
+              "height": 110,
+              "variant": "mars"
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "fly",
+            "start": 0.5,
+            "end": 9.5,
+            "actor": "ship"
+          }
+        ],
+        "background": {
+          "preset": "space_orbit"
+        },
+        "index": 0
+      },
+      {
+        "renderer": "native-vector-v1",
+        "kind": "scene",
+        "start_time": 10.0,
+        "end_time": 20.0,
+        "characters_present": [
+          "ship",
+          "p5",
+          "p6",
+          "p7",
+          "p8"
+        ],
+        "poses": {
+          "ship": [
+            {
+              "time": 10.0,
+              "x": -80,
+              "y": 330,
+              "height": 120,
+              "rotation": 90
+            },
+            {
+              "time": 20.0,
+              "x": 1900,
+              "y": 330,
+              "height": 120,
+              "rotation": 90
+            }
+          ],
+          "p5": [
+            {
+              "time": 10.0,
+              "x": 280,
+              "y": 580,
+              "height": 220,
+              "variant": "jupiter"
+            },
+            {
+              "time": 20.0,
+              "x": 280,
+              "y": 580,
+              "height": 220,
+              "variant": "jupiter"
+            }
+          ],
+          "p6": [
+            {
+              "time": 10.0,
+              "x": 700,
+              "y": 570,
+              "height": 200,
+              "variant": "saturn"
+            },
+            {
+              "time": 20.0,
+              "x": 700,
+              "y": 570,
+              "height": 200,
+              "variant": "saturn"
+            }
+          ],
+          "p7": [
+            {
+              "time": 10.0,
+              "x": 1130,
+              "y": 560,
+              "height": 150,
+              "variant": "uranus"
+            },
+            {
+              "time": 20.0,
+              "x": 1130,
+              "y": 560,
+              "height": 150,
+              "variant": "uranus"
+            }
+          ],
+          "p8": [
+            {
+              "time": 10.0,
+              "x": 1520,
+              "y": 560,
+              "height": 140,
+              "variant": "neptune"
+            },
+            {
+              "time": 20.0,
+              "x": 1520,
+              "y": 560,
+              "height": 140,
+              "variant": "neptune"
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "fly",
+            "start": 10.5,
+            "end": 19.5,
+            "actor": "ship"
+          }
+        ],
+        "background": {
+          "preset": "space_orbit"
+        },
+        "index": 1
+      }
+    ],
+    "cues": [
+      {
+        "start": 0.5,
+        "end": 9.5,
+        "character_id": "ship",
+        "text": "Leaving the Sun behind, the rocket passes the rocky planets: Mercury, Venus, Earth and Mars.",
+        "offscreen": true
+      },
+      {
+        "start": 10.5,
+        "end": 19.5,
+        "character_id": "ship",
+        "text": "Further out wait the giants: Jupiter, Saturn, Uranus and Neptune.",
+        "offscreen": true
+      }
+    ]
+  }
+]
