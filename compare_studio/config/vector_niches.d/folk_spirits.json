@@ -1,0 +1,183 @@
+{
+  "subjects": {
+    "kitsune": {
+      "asset": "kitsune",
+      "label": "Kitsune fox",
+      "labels": {
+        "de": "Kitsune|Fuchsgeist",
+        "ko": "키츠네|여우요괴",
+        "ja": "キツネ|妖狐|九尾の狐|狐火"
+      },
+      "settings": [
+        "misty_forest_night",
+        "rhine_cliff"
+      ],
+      "size": "m"
+    },
+    "gumiho": {
+      "asset": "gumiho",
+      "label": "Gumiho",
+      "labels": {
+        "de": "Gumiho|neunschwänziger Fuchs",
+        "ko": "구미호|여우구슬",
+        "ja": "クミホ|九尾の狐"
+      },
+      "settings": [
+        "korean_mountain_night",
+        "misty_forest_night"
+      ],
+      "size": "m"
+    },
+    "dokkaebi": {
+      "asset": "dokkaebi",
+      "label": "Dokkaebi",
+      "labels": {
+        "de": "Dokkaebi|koreanischer Kobold",
+        "ko": "도깨비|도깨비방망이",
+        "ja": "トッケビ|鬼|オニ"
+      },
+      "settings": [
+        "korean_mountain_night",
+        "misty_forest_night"
+      ],
+      "size": "m"
+    },
+    "yuki_onna": {
+      "asset": "yuki_onna",
+      "label": "Yuki-onna",
+      "labels": {
+        "de": "Yuki-onna|Schneefrau",
+        "ko": "유키온나|설녀",
+        "ja": "雪女|ゆきおんな"
+      },
+      "settings": [
+        "misty_forest_night",
+        "alpine_meadow"
+      ],
+      "size": "m"
+    },
+    "krampus_folk": {
+      "asset": "krampus_folk",
+      "label": "Krampus",
+      "labels": {
+        "de": "Krampus|Krampuslauf",
+        "ko": "크람푸스",
+        "ja": "クランプス"
+      },
+      "settings": [
+        "alpine_meadow",
+        "christmas_market"
+      ],
+      "size": "m"
+    },
+    "clay_golem": {
+      "asset": "clay_golem",
+      "label": "Golem of Prague",
+      "labels": {
+        "de": "Golem|Prager Golem|Lehmgolem",
+        "ko": "골렘|프라하골렘|흙골렘",
+        "ja": "ゴーレム|プラハのゴーレム"
+      },
+      "settings": [
+        "misty_forest_night",
+        "medieval_village"
+      ],
+      "size": "l"
+    },
+    "will_o_wisp": {
+      "asset": "will_o_wisp",
+      "float": true,
+      "label": "Will-o'-the-wisp",
+      "labels": {
+        "de": "Irrlicht|Irrlichter|Moorlicht",
+        "ko": "도깨비불|윌오더위스프",
+        "ja": "鬼火|ウィルオザウィスプ|狐火"
+      },
+      "settings": [
+        "misty_forest_night"
+      ],
+      "size": "m"
+    },
+    "selkie": {
+      "asset": "selkie",
+      "label": "Selkies",
+      "labels": {
+        "de": "Selkie|Selkies|Robbenmensch",
+        "ko": "셀키|물개요정",
+        "ja": "セルキー|アザラシ妖精"
+      },
+      "settings": [
+        "rhine_cliff",
+        "sea"
+      ],
+      "size": "m"
+    },
+    "rubezahl_spirit": {
+      "asset": "rubezahl_spirit",
+      "label": "Rübezahl",
+      "labels": {
+        "de": "Rübezahl|Berggeist Rübezahl|Riesengebirge",
+        "ko": "뤼베찰|산의정령",
+        "ja": "リューベツァール|山の精霊"
+      },
+      "settings": [
+        "misty_forest_night",
+        "alpine_meadow"
+      ],
+      "size": "l"
+    },
+    "welsh_red_dragon": {
+      "asset": "welsh_red_dragon",
+      "label": "Red Dragon",
+      "labels": {
+        "de": "roter Drache|Walisischer Drache",
+        "ko": "붉은용|웨일스붉은용",
+        "ja": "赤い竜|ウェールズの赤い竜"
+      },
+      "settings": [
+        "misty_forest_night",
+        "rhine_cliff"
+      ],
+      "size": "l"
+    }
+  },
+  "hosts": {},
+  "buddies": {},
+  "niches": {
+    "folklore_legends": {
+      "settings": [
+        "misty_forest_night",
+        "rhine_cliff",
+        "korean_mountain_night"
+      ],
+      "settings_by_lang": {
+        "de": [
+          "rhine_cliff",
+          "misty_forest_night"
+        ],
+        "en": [
+          "misty_forest_night",
+          "rhine_cliff"
+        ],
+        "ko": [
+          "korean_mountain_night"
+        ],
+        "ja": [
+          "misty_forest_night"
+        ]
+      },
+      "subjects": [
+        "kitsune",
+        "gumiho",
+        "dokkaebi",
+        "yuki_onna",
+        "krampus_folk",
+        "clay_golem",
+        "will_o_wisp",
+        "selkie",
+        "rubezahl_spirit",
+        "welsh_red_dragon"
+      ]
+    }
+  }
+}

@@ -1,0 +1,170 @@
+{
+  "subjects": {
+    "crashed_plane": {
+      "asset": "crashed_plane",
+      "label": "a crashed plane",
+      "labels": {
+        "de": "Flugzeugabsturz|Absturz",
+        "ko": "추락비행기|비행기추락|비행기",
+        "ja": "墜落飛行機|飛行機事故|飛行機"
+      },
+      "settings": [
+        "jungle_crash_site",
+        "national_park"
+      ],
+      "size": "l"
+    },
+    "life_raft": {
+      "asset": "life_raft",
+      "label": "a life raft",
+      "labels": {
+        "de": "Rettungsinsel|Rettungsboot|Floß",
+        "ko": "구명뗏목|구명보트|뗏목",
+        "ja": "救命いかだ|救命ボート|いかだ"
+      },
+      "settings": [
+        "safe_camp",
+        "flooded_downtown",
+        "beach_cleanup"
+      ],
+      "size": "m"
+    },
+    "icebound_ship": {
+      "asset": "icebound_ship",
+      "label": "an icebound ship",
+      "labels": {
+        "de": "Eisschiff|Expeditionsschiff",
+        "ko": "빙하선박|탐험선|조난선",
+        "ja": "氷海船|探検船|遭難船"
+      },
+      "settings": [
+        "antarctic_camp"
+      ],
+      "size": "l"
+    },
+    "snow_shelter": {
+      "asset": "snow_shelter",
+      "label": "a snow shelter",
+      "labels": {
+        "de": "Schneehöhle|Iglu|Notunterkunft",
+        "ko": "이글루|눈동굴|설동",
+        "ja": "雪洞|イグルー|避難所"
+      },
+      "settings": [
+        "antarctic_camp",
+        "mountain_peak"
+      ],
+      "size": "m"
+    },
+    "miner_helmet": {
+      "asset": "miner_helmet",
+      "label": "a miner helmet",
+      "labels": {
+        "de": "Grubenhelm|Bergarbeiterhelm",
+        "ko": "광부안전모|안전모|작업모",
+        "ja": "鉱夫ヘルメット|ヘルメット|安全帽"
+      },
+      "settings": [
+        "mine_tunnel"
+      ],
+      "size": "s"
+    },
+    "climbing_rope": {
+      "asset": "climbing_rope",
+      "label": "a climbing rope",
+      "labels": {
+        "de": "Kletterseil|Bergseil",
+        "ko": "등반로프|로프|밧줄",
+        "ja": "登山ロープ|ロープ|ザイル"
+      },
+      "settings": [
+        "mountain_peak",
+        "mine_tunnel"
+      ],
+      "size": "s"
+    },
+    "oxygen_tank": {
+      "asset": "oxygen_tank",
+      "label": "an oxygen tank",
+      "labels": {
+        "de": "Sauerstoffflasche|Sauerstofftank",
+        "ko": "산소통|산소탱크|산소호흡기",
+        "ja": "酸素ボンベ|酸素タンク|酸素吸入器"
+      },
+      "settings": [
+        "mountain_peak",
+        "antarctic_camp"
+      ],
+      "size": "s"
+    },
+    "avalanche_probe": {
+      "asset": "avalanche_probe",
+      "label": "an avalanche probe",
+      "labels": {
+        "de": "Lawinensonde",
+        "ko": "눈사태탐침|탐침봉|탐침",
+        "ja": "雪崩プローブ|ゾンデ棒|プローブ"
+      },
+      "settings": [
+        "mountain_peak",
+        "antarctic_camp"
+      ],
+      "size": "s"
+    },
+    "rescue_flare": {
+      "asset": "rescue_flare",
+      "label": "a rescue flare",
+      "labels": {
+        "de": "Signalrakete|Signalfackel|Leuchtfackel",
+        "ko": "신호탄|조명탄|조난신호",
+        "ja": "救難信号弾|発煙筒|フレア"
+      },
+      "settings": [
+        "antarctic_camp",
+        "desert_noon",
+        "mountain_peak"
+      ],
+      "size": "s"
+    },
+    "canteen_flask": {
+      "asset": "canteen_flask",
+      "label": "a water canteen",
+      "labels": {
+        "de": "Feldflasche|Wasserflasche|Trinkflasche",
+        "ko": "수통|물통|보온수통",
+        "ja": "水筒|キャンティーン|給水ボトル"
+      },
+      "settings": [
+        "desert_noon",
+        "jungle_crash_site",
+        "mountain_peak"
+      ],
+      "size": "s"
+    }
+  },
+  "hosts": {},
+  "buddies": {},
+  "niches": {
+    "extreme_survival": {
+      "subjects": [
+        "crashed_plane",
+        "life_raft",
+        "icebound_ship",
+        "snow_shelter",
+        "miner_helmet",
+        "climbing_rope",
+        "oxygen_tank",
+        "avalanche_probe",
+        "rescue_flare",
+        "canteen_flask"
+      ],
+      "settings": [
+        "jungle_crash_site",
+        "antarctic_camp",
+        "mine_tunnel",
+        "mountain_peak",
+        "desert_noon"
+      ]
+    }
+  }
+}

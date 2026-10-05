@@ -1,0 +1,162 @@
+{
+  "subjects": {
+    "giant_squid": {
+      "asset": "giant_squid",
+      "float": true,
+      "label": "a giant squid",
+      "labels": {
+        "de": "Riesenkalmar|Riesenkalmare|Architeuthis",
+        "ko": "대왕오징어|거대오징어",
+        "ja": "ダイオウイカ|大王烏賊"
+      },
+      "settings": [
+        "trench_floor",
+        "deep_sea"
+      ],
+      "size": "l"
+    },
+    "sperm_whale": {
+      "asset": "sperm_whale",
+      "float": true,
+      "label": "a sperm whale",
+      "labels": {
+        "de": "Pottwal|Pottwale",
+        "ko": "향유고래|향고래",
+        "ja": "マッコウクジラ|抹香鯨"
+      },
+      "settings": [
+        "deep_sea",
+        "stormy_sea"
+      ],
+      "size": "l"
+    },
+    "bathyscaphe": {
+      "asset": "bathyscaphe",
+      "float": true,
+      "label": "a bathyscaphe",
+      "labels": {
+        "de": "Bathyscaph|Tiefseeboot|Tauchkugel",
+        "ko": "바티스카프|심해잠수정",
+        "ja": "バチスカーフ|深海探査艇"
+      },
+      "settings": [
+        "trench_floor",
+        "deep_sea"
+      ],
+      "size": "m"
+    },
+    "research_submarine": {
+      "asset": "research_submarine",
+      "float": true,
+      "label": "a research submarine",
+      "labels": {
+        "de": "U-Boot|Forschungs-U-Boot|Tauchboot",
+        "ko": "연구잠수함|연구잠수정|탐사정",
+        "ja": "調査潜水艦|調査潜水艇|深海潜水艇"
+      },
+      "settings": [
+        "deep_sea",
+        "trench_floor"
+      ],
+      "size": "l"
+    },
+    "hydrothermal_vent": {
+      "asset": "hydrothermal_vent",
+      "float": false,
+      "label": "a hydrothermal vent",
+      "labels": {
+        "de": "Hydrothermalquelle|Hydrothermalquellen|Schwarzer Raucher|Tiefsee-Schlot",
+        "ko": "열수분출공|심해열수구|블랙스모커",
+        "ja": "熱水噴出孔|ブラックスモーカー"
+      },
+      "settings": [
+        "hydrothermal_field",
+        "trench_floor"
+      ],
+      "size": "l"
+    },
+    "tube_worms": {
+      "asset": "tube_worms",
+      "float": false,
+      "label": "giant tube worms",
+      "labels": {
+        "de": "Röhrenwurm|Röhrenwürmer|Bartwurm",
+        "ko": "관벌레|심해관벌레",
+        "ja": "チューブワーム|ハオリムシ"
+      },
+      "settings": [
+        "hydrothermal_field",
+        "trench_floor"
+      ],
+      "size": "m"
+    },
+    "sunken_liner": {
+      "asset": "sunken_liner",
+      "float": false,
+      "label": "a sunken ocean liner",
+      "labels": {
+        "de": "Schiffswrack|gesunkenes Schiff|Wrack|Ozeandampfer",
+        "ko": "침몰여객선|난파선|침몰선|타이타닉",
+        "ja": "沈没客船|沈没船|難破船|タイタニック"
+      },
+      "settings": [
+        "trench_floor",
+        "deep_sea"
+      ],
+      "size": "l"
+    },
+    "rogue_wave": {
+      "asset": "rogue_wave",
+      "float": false,
+      "label": "a rogue wave",
+      "labels": {
+        "de": "Monsterwelle|Monsterwellen|Kaventsmann|Riesenwelle",
+        "ko": "괴물파도|이상파랑|거대파도",
+        "ja": "モンスターウェーブ|巨大波|狂波"
+      },
+      "settings": [
+        "stormy_sea"
+      ],
+      "size": "l"
+    },
+    "bioluminescent_fish_swarm": {
+      "asset": "bioluminescent_fish_swarm",
+      "float": true,
+      "label": "glowing deep-sea fish",
+      "labels": {
+        "de": "Leuchtfische|Leuchtfisch|Tiefseefische|Biolumineszenz",
+        "ko": "발광어|심해발광어|발광물고기",
+        "ja": "発光魚|発光深海魚|発光生物"
+      },
+      "settings": [
+        "trench_floor",
+        "deep_sea"
+      ],
+      "size": "m"
+    }
+  },
+  "hosts": {},
+  "buddies": {},
+  "niches": {
+    "ocean_mysteries": {
+      "hosts": [],
+      "buddies": [],
+      "settings": [
+        "trench_floor",
+        "hydrothermal_field",
+        "stormy_sea"
+      ],
+      "subjects": [
+        "giant_squid",
+        "sperm_whale",
+        "bathyscaphe",
+        "research_submarine",
+        "hydrothermal_vent",
+        "tube_worms",
+        "sunken_liner",
+        "rogue_wave",
+        "bioluminescent_fish_swarm"
+      ]
+    }
+  }
+}

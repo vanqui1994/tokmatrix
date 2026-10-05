@@ -84,3 +84,4 @@ VPS_CREDENTIALS.md
 # Dola account pool (may contain gateway API keys)
 bkt_web/storage/dola_accounts.json
 bkt_web/storage/dola_videos/
+bkt_web/static/remake_vector_catalog.lock

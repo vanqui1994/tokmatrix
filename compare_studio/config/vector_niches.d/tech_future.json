@@ -1,0 +1,173 @@
+{
+  "subjects": {
+    "friendly_robot": {
+      "asset": "friendly_robot",
+      "label": "a robot",
+      "labels": {
+        "en": "robot|robots|humanoid|farms|vertical",
+        "de": "Roboter|humanoider Roboter|Hilfsroboter",
+        "ko": "로봇|인간형로봇|도우미로봇",
+        "ja": "ロボット|人型ロボット|アシスタントロボット"
+      },
+      "settings": [
+        "smart_city",
+        "science_lab"
+      ],
+      "size": "m"
+    },
+    "ai_chip": {
+      "asset": "ai_chip",
+      "label": "a computer chip",
+      "labels": {
+        "de": "Mikrochip|KI-Chip|Halbleiter",
+        "ko": "반도체칩|AI칩|신경망프로세서",
+        "ja": "AIチップ|半導体|マイクロチップ"
+      },
+      "settings": [
+        "chip_fab_clean_room",
+        "science_lab"
+      ],
+      "size": "s"
+    },
+    "server_rack": {
+      "asset": "server_rack",
+      "label": "a server rack",
+      "labels": {
+        "de": "Serverschrank|Rechenzentrum",
+        "ko": "서버랙|데이터센터서버|서버",
+        "ja": "サーバーラック|サーバー|データセンター"
+      },
+      "settings": [
+        "data_center"
+      ],
+      "size": "m"
+    },
+    "undersea_cable": {
+      "asset": "undersea_cable",
+      "label": "an undersea cable",
+      "labels": {
+        "de": "Seekabel|Glasfaserkabel|Unterseekabel",
+        "ko": "해저케이블|광케이블|인터넷케이블",
+        "ja": "海底ケーブル|光ファイバー|通信ケーブル"
+      },
+      "settings": [
+        "deep_sea",
+        "data_center"
+      ],
+      "size": "s"
+    },
+    "satellite_gps": {
+      "asset": "satellite_gps",
+      "float": true,
+      "label": "a GPS satellite",
+      "labels": {
+        "en": "gps|satellite|navigation|rockets|debris|starlink",
+        "de": "GPS-Satellit|Navigationssatellit|Satellit",
+        "ko": "GPS위성|항법위성|인공위성",
+        "ja": "GPS衛星|航法衛星|人工衛星"
+      },
+      "settings": [
+        "space_orbit"
+      ],
+      "size": "m"
+    },
+    "lithium_battery": {
+      "asset": "lithium_battery",
+      "label": "a lithium battery",
+      "labels": {
+        "en": "battery|lithium|batteries|cell",
+        "de": "Lithium-Batterie|Akkumulator|Batteriezelle",
+        "ko": "리튬배터리|이차전지|배터리셀",
+        "ja": "リチウム電池|蓄電池|バッテリーセル"
+      },
+      "settings": [
+        "science_lab",
+        "chip_fab_clean_room"
+      ],
+      "size": "s"
+    },
+    "autonomous_car": {
+      "asset": "autonomous_car",
+      "label": "a self-driving car",
+      "labels": {
+        "en": "car|self-driving|autonomous|vehicle|tesla|drones",
+        "de": "autonomes Auto|selbstfahrendes Auto|Elektroauto",
+        "ko": "자율주행차|전기차|무인자동차",
+        "ja": "自動運転車|電気自動車|自律走行車"
+      },
+      "settings": [
+        "smart_city",
+        "apartment_street"
+      ],
+      "size": "m"
+    },
+    "quantum_computer": {
+      "asset": "quantum_computer",
+      "label": "a quantum computer",
+      "labels": {
+        "en": "quantum|computer|processor|windows|macos|fusion",
+        "de": "Quantencomputer|Quantenprozessor|Kryostat",
+        "ko": "양자컴퓨터|양자프로세서|초전도컴퓨터",
+        "ja": "量子コンピュータ|量子プロセッサ|超伝導量子"
+      },
+      "settings": [
+        "data_center",
+        "science_lab"
+      ],
+      "size": "m"
+    },
+    "ai_chat_bubble": {
+      "asset": "ai_chat_bubble",
+      "float": true,
+      "label": "an AI chat assistant",
+      "labels": {
+        "en": "chatgpt|search|deepfakes|medicine|medical|ai|passwords|passkeys",
+        "de": "KI-Chat|Sprachmodell|Schnittstelle",
+        "ko": "AI채팅|언어모델|대화창",
+        "ja": "AIチャット|言語モデル|対話インターフェース"
+      },
+      "settings": [
+        "smart_city",
+        "data_center"
+      ],
+      "size": "m"
+    },
+    "telecom_tower": {
+      "asset": "telecom_tower",
+      "label": "a cell tower",
+      "labels": {
+        "en": "iphone|android|tower|cellular|networks|twin|digital twin|headphones",
+        "de": "Mobilfunkmast|Funkmast|Sendeturm",
+        "ko": "통신탑|기지국철탑|송신탑",
+        "ja": "電波塔|基地局アンテナ|通信タワー"
+      },
+      "settings": [
+        "smart_city"
+      ],
+      "size": "m"
+    }
+  },
+  "hosts": {},
+  "buddies": {},
+  "niches": {
+    "tech_ai_future": {
+      "subjects": [
+        "friendly_robot",
+        "ai_chip",
+        "server_rack",
+        "undersea_cable",
+        "satellite_gps",
+        "lithium_battery",
+        "autonomous_car",
+        "quantum_computer",
+        "ai_chat_bubble",
+        "telecom_tower"
+      ],
+      "settings": [
+        "data_center",
+        "smart_city",
+        "chip_fab_clean_room"
+      ]
+    }
+  }
+}

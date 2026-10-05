@@ -1,0 +1,344 @@
+{
+  "hosts": {
+    "norse_teller": {
+      "rig": "chibi_grandpa",
+      "outfit": "viking"
+    },
+    "greek_teller": {
+      "rig": "chibi_teacher",
+      "outfit": "greek_tunic"
+    },
+    "egypt_teller": {
+      "rig": "chibi_boy",
+      "outfit": "egypt_worker"
+    },
+    "jp_myth_host": {
+      "rig": "chibi_kid",
+      "outfit": "kimono"
+    },
+    "kr_myth_host": {
+      "rig": "chibi_kid",
+      "outfit": "hanbok"
+    }
+  },
+  "buddies": {},
+  "subjects": {
+    "chibi_deity_greek": {
+      "asset": "chibi_deity_greek",
+      "label": "a Greek god",
+      "labels": {
+        "de": "Griechische Gottheit|Herakles|Herkules|Apollo",
+        "ko": "그리스 신|헤라클레스|아폴론|길가메시",
+        "ja": "ギリシャ神|ヘラクレス|アポロン|ギルガメッシュ"
+      },
+      "settings": [
+        "olympus_clouds",
+        "underworld_river"
+      ],
+      "size": "m"
+    },
+    "chibi_deity_norse": {
+      "asset": "chibi_deity_norse",
+      "label": "a Norse god",
+      "labels": {
+        "de": "Nordische Gottheit|Odin|Loki|Freyja|Walküre",
+        "ko": "북유럽 신|오딘|로키|프레이야|발키리",
+        "ja": "北欧神|オーディン|ロキ|フレイヤ|ワルキューレ"
+      },
+      "settings": [
+        "asgard_bridge"
+      ],
+      "size": "m"
+    },
+    "chibi_deity_egypt": {
+      "asset": "chibi_deity_egypt",
+      "label": "an Egyptian god",
+      "labels": {
+        "de": "Ägyptische Gottheit|Anubis|Osiris|Isis",
+        "ko": "이집트 신|아누비스|오시리스|이시스",
+        "ja": "エジプト神|アヌビス|オシリス|イシス"
+      },
+      "settings": [
+        "duat_river"
+      ],
+      "size": "m"
+    },
+    "chibi_deity_jp": {
+      "asset": "chibi_deity_jp",
+      "label": "a Japanese goddess",
+      "labels": {
+        "de": "Amaterasu|Sonnengöttin|Izanagi|Izanami",
+        "ko": "아마테라스|태양신|이자나기|이자나미",
+        "ja": "アマテラス|天照大御神|太陽神|イザナギ|イザナミ"
+      },
+      "settings": [
+        "takamagahara"
+      ],
+      "size": "m"
+    },
+    "chibi_deity_kr": {
+      "asset": "chibi_deity_kr",
+      "label": "a Korean founding hero",
+      "labels": {
+        "de": "Dangun|Koreanischer Schöpfungsmythos",
+        "ko": "단군|단군신화|환웅",
+        "ja": "タングン|壇君|韓国神話"
+      },
+      "settings": [
+        "takamagahara"
+      ],
+      "size": "m"
+    },
+    "world_tree_yggdrasil": {
+      "asset": "world_tree_yggdrasil",
+      "label": "the world tree Yggdrasil",
+      "labels": {
+        "de": "Yggdrasil|Weltenbaum|Ragnarök",
+        "ko": "위그드라실|세계수|라그나로크",
+        "ja": "ユグドラシル|世界樹|ラグナロク"
+      },
+      "settings": [
+        "asgard_bridge",
+        "olympus_clouds"
+      ],
+      "size": "l"
+    },
+    "thunder_hammer": {
+      "asset": "thunder_hammer",
+      "label": "a thunder hammer",
+      "labels": {
+        "de": "Mjölnir|Thors Hammer|Donnerhammer",
+        "ko": "묠니르|토르의 망치|천둥 망치",
+        "ja": "ミョルニル|トールのハンマー|雷槌"
+      },
+      "settings": [
+        "asgard_bridge"
+      ],
+      "size": "m"
+    },
+    "scale_of_truth": {
+      "asset": "scale_of_truth",
+      "label": "the scale of truth",
+      "labels": {
+        "de": "Waage der Wahrheit|Herzenswägung",
+        "ko": "진실의 저울|심장 무게 달기|깃털|심장",
+        "ja": "真実の天秤|死者の審判|羽|心臓"
+      },
+      "settings": [
+        "duat_river"
+      ],
+      "size": "m"
+    },
+    "myth_labyrinth": {
+      "asset": "myth_labyrinth",
+      "label": "a labyrinth",
+      "labels": {
+        "de": "Labyrinth von Kreta|Minotauros|Irrgarten",
+        "ko": "크레타의 미궁|라비린토스|미노타우로스",
+        "ja": "クレタ島の迷宮|ラビリンス|ミノタウロス"
+      },
+      "settings": [
+        "olympus_clouds",
+        "underworld_river"
+      ],
+      "size": "l"
+    },
+    "wooden_horse_trojan": {
+      "asset": "wooden_horse_trojan",
+      "label": "the Trojan horse",
+      "labels": {
+        "de": "Trojanisches Pferd|Troja|Trojanischer Krieg",
+        "ko": "트로이 목마|트로이 전쟁|목마",
+        "ja": "トロイの木馬|トロイア戦争"
+      },
+      "settings": [
+        "olympus_clouds"
+      ],
+      "size": "l"
+    },
+    "yamata_serpent": {
+      "asset": "yamata_serpent",
+      "label": "an eight-headed serpent",
+      "labels": {
+        "de": "Achtköpfige Schlange|Yamata no Orochi|Susanoo",
+        "ko": "야마타노오로치|팔기대사|스사노오|메두사",
+        "ja": "八岐大蛇|ヤマタノオロチ|スサノオ|メドゥーサ"
+      },
+      "settings": [
+        "takamagahara",
+        "underworld_river"
+      ],
+      "size": "l"
+    },
+    "pandora_jar": {
+      "asset": "pandora_jar",
+      "label": "Pandora's jar",
+      "labels": {
+        "de": "Büchse der Pandora|Pandora-Krug|Pandora",
+        "ko": "판도라의 상자|판도라의 항아리|판도라",
+        "ja": "パンドラの箱|パンドラの壺|パンドラ"
+      },
+      "settings": [
+        "olympus_clouds",
+        "underworld_river"
+      ],
+      "size": "m"
+    },
+    "sun_barge": {
+      "asset": "sun_barge",
+      "float": true,
+      "label": "the sun boat",
+      "labels": {
+        "de": "Sonnenbarke des Re|Sonnenschiff",
+        "ko": "태양의 돛배|라의 배|태양선|대홍수",
+        "ja": "太陽の船|ラーの航海|太陽舟|洪水神話"
+      },
+      "settings": [
+        "duat_river",
+        "underworld_river"
+      ],
+      "size": "l"
+    },
+    "prometheus_torch": {
+      "asset": "prometheus_torch",
+      "label": "the torch of Prometheus",
+      "labels": {
+        "de": "Prometheus|Fackel",
+        "ko": "프로메테우스|성화|횃불|불",
+        "ja": "プロメテウス|聖火|たいまつ|火"
+      },
+      "settings": [
+        "olympus_clouds",
+        "underworld_river"
+      ],
+      "size": "m"
+    },
+    "icarus_wings": {
+      "asset": "icarus_wings",
+      "float": true,
+      "label": "wings of Icarus",
+      "labels": {
+        "de": "Flügel des Ikarus|Ikarus-Flügel|Flügel",
+        "ko": "이카로스의 날개|깃털 날개|날개",
+        "ja": "イカロスの翼|蝋の翼|翼"
+      },
+      "settings": [
+        "olympus_clouds",
+        "asgard_bridge"
+      ],
+      "size": "m"
+    },
+    "golden_lyre": {
+      "asset": "golden_lyre",
+      "label": "a golden lyre",
+      "labels": {
+        "de": "Goldene Leier|Orpheus-Harfe|Orpheus",
+        "ko": "오르페우스의 하프|황금 리라|오르페우스",
+        "ja": "オルフェウスの竪琴|黄金のライアー|オルフェウス"
+      },
+      "settings": [
+        "olympus_clouds",
+        "underworld_river"
+      ],
+      "size": "m"
+    },
+    "sisyphus_boulder": {
+      "asset": "sisyphus_boulder",
+      "label": "the boulder of Sisyphus",
+      "labels": {
+        "de": "Sisyphos-Stein|Sisyphus",
+        "ko": "시시포스의 바위|거대한 바위|시시포스|로물루스",
+        "ja": "シジフォスの岩|転がる大岩|シーシュポス|ロムルス"
+      },
+      "settings": [
+        "underworld_river",
+        "olympus_clouds"
+      ],
+      "size": "l"
+    },
+    "myth_dragon": {
+      "asset": "myth_dragon",
+      "float": true,
+      "label": "a dragon",
+      "labels": {
+        "de": "Drache|Drachen|Roter Drache|Fabeldrache",
+        "ko": "신화의 용|드래곤|용|붉은 용",
+        "ja": "伝説の竜|ドラゴン|龍|赤い竜"
+      },
+      "settings": [
+        "olympus_clouds",
+        "asgard_bridge",
+        "underworld_river"
+      ],
+      "size": "l"
+    }
+  },
+  "niches": {
+    "ancient_mythology": {
+      "hosts_by_lang": {
+        "de": [
+          "norse_teller",
+          "viking"
+        ],
+        "ja": [
+          "jp_myth_host",
+          "edo"
+        ],
+        "ko": [
+          "kr_myth_host",
+          "hanbok"
+        ],
+        "en": [
+          "greek_teller",
+          "greek",
+          "egypt"
+        ]
+      },
+      "hosts": [
+        "greek_teller",
+        "norse_teller",
+        "egypt_teller",
+        "jp_myth_host",
+        "kr_myth_host"
+      ],
+      "settings": [
+        "olympus_clouds",
+        "asgard_bridge",
+        "duat_river",
+        "takamagahara",
+        "underworld_river"
+      ],
+      "subjects": [
+        "chibi_deity_greek",
+        "chibi_deity_norse",
+        "chibi_deity_egypt",
+        "chibi_deity_jp",
+        "chibi_deity_kr",
+        "world_tree_yggdrasil",
+        "thunder_hammer",
+        "scale_of_truth",
+        "myth_labyrinth",
+        "wooden_horse_trojan",
+        "yamata_serpent",
+        "pandora_jar",
+        "sun_barge",
+        "prometheus_torch",
+        "icarus_wings",
+        "golden_lyre",
+        "sisyphus_boulder",
+        "myth_dragon"
+      ]
+    },
+    "folklore_legends": {
+      "settings": [
+        "underworld_river",
+        "asgard_bridge"
+      ],
+      "subjects": [
+        "myth_dragon",
+        "world_tree_yggdrasil",
+        "yamata_serpent"
+      ]
+    }
+  }
+}

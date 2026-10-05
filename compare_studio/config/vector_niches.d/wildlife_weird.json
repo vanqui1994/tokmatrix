@@ -1,0 +1,193 @@
+{
+  "subjects": {
+    "mantis_shrimp": {
+      "asset": "mantis_shrimp",
+      "float": true,
+      "label": "a mantis shrimp",
+      "labels": {
+        "en": "mantis shrimp|shrimp",
+        "de": "Fangschreckenkrebs|Fangschreckenkrebse",
+        "ko": "갯가재",
+        "ja": "シャコ|モンハナシャコ"
+      },
+      "settings": [
+        "coral_reef",
+        "deep_sea",
+        "open_ocean_surface"
+      ],
+      "size": "s"
+    },
+    "tardigrade": {
+      "asset": "tardigrade",
+      "label": "a tardigrade",
+      "labels": {
+        "en": "tardigrade|tardigrades|water bear",
+        "de": "Bärtierchen",
+        "ko": "완보동물|물곰",
+        "ja": "クマムシ|緩歩動物"
+      },
+      "settings": [
+        "micro_world",
+        "deep_sea"
+      ],
+      "size": "s"
+    },
+    "axolotl": {
+      "asset": "axolotl",
+      "label": "an axolotl",
+      "labels": {
+        "en": "axolotl|axolotls",
+        "de": "Axolotl",
+        "ko": "아홀로틀|우파루파",
+        "ja": "ウーパールーパー|アホロートル"
+      },
+      "settings": [
+        "micro_world",
+        "coral_reef"
+      ],
+      "size": "s"
+    },
+    "greenland_shark": {
+      "asset": "greenland_shark",
+      "float": true,
+      "label": "a greenland shark",
+      "labels": {
+        "en": "greenland shark|greenland sharks",
+        "de": "Grönlandhai|Grönlandhaie|Eishai",
+        "ko": "그린란드상어",
+        "ja": "ニシオンデンザメ|グリーンランドシャーク"
+      },
+      "settings": [
+        "arctic_ice",
+        "deep_sea",
+        "open_ocean_surface"
+      ],
+      "size": "l"
+    },
+    "electric_eel": {
+      "asset": "electric_eel",
+      "float": true,
+      "label": "an electric eel",
+      "labels": {
+        "en": "electric eel|electric eels",
+        "de": "Zitteraal|Zitteraale",
+        "ko": "전기뱀장어",
+        "ja": "デンキウナギ"
+      },
+      "settings": [
+        "coral_reef",
+        "deep_sea"
+      ],
+      "size": "m"
+    },
+    "bombardier_beetle": {
+      "asset": "bombardier_beetle",
+      "label": "a bombardier beetle",
+      "labels": {
+        "en": "bombardier beetle|bombardier beetles",
+        "de": "Bombardierkäfer",
+        "ko": "폭탄먼지벌레",
+        "ja": "ミイデラゴミムシ|ボンバルディアビートル"
+      },
+      "settings": [
+        "savanna",
+        "national_park"
+      ],
+      "size": "s"
+    },
+    "wood_frog": {
+      "asset": "wood_frog",
+      "label": "a wood frog",
+      "labels": {
+        "en": "wood frog|wood frogs",
+        "de": "Waldfrosch|Waldfrösche",
+        "ko": "알래스카산개구리|산개구리",
+        "ja": "アカガエル|アラスカアカガエル"
+      },
+      "settings": [
+        "arctic_ice",
+        "alpine_meadow",
+        "national_park"
+      ],
+      "size": "s"
+    },
+    "naked_mole_rat": {
+      "asset": "naked_mole_rat",
+      "label": "a naked mole rat",
+      "labels": {
+        "en": "naked mole-rat|naked mole rat|mole rat",
+        "de": "Nacktmull|Nacktmulle",
+        "ko": "벌거숭이두더지쥐",
+        "ja": "ハダカデバネズミ"
+      },
+      "settings": [
+        "savanna",
+        "national_park"
+      ],
+      "size": "s"
+    },
+    "archerfish": {
+      "asset": "archerfish",
+      "float": true,
+      "label": "an archerfish",
+      "labels": {
+        "en": "archerfish|archer fish",
+        "de": "Schützenfisch|Schützenfische",
+        "ko": "물총고기",
+        "ja": "テッポウウオ|鉄砲魚"
+      },
+      "settings": [
+        "coral_reef",
+        "open_ocean_surface"
+      ],
+      "size": "s"
+    },
+    "arctic_tern": {
+      "asset": "arctic_tern",
+      "label": "an arctic tern",
+      "labels": {
+        "en": "arctic tern|arctic terns|tern",
+        "de": "Küstenseeschwalbe|Küstenseeschwalben",
+        "ko": "북극제비갈매기|제비갈매기",
+        "ja": "キョクアジサシ|アジサシ"
+      },
+      "settings": [
+        "arctic_ice",
+        "open_ocean_surface",
+        "beach_cleanup"
+      ],
+      "size": "s"
+    }
+  },
+  "hosts": {},
+  "buddies": {},
+  "niches": {
+    "extreme_wildlife": {
+      "subjects": [
+        "mantis_shrimp",
+        "tardigrade",
+        "axolotl",
+        "greenland_shark",
+        "electric_eel",
+        "bombardier_beetle",
+        "wood_frog",
+        "naked_mole_rat",
+        "archerfish",
+        "arctic_tern"
+      ],
+      "settings": [
+        "micro_world"
+      ]
+    },
+    "ocean_mysteries": {
+      "subjects": [
+        "greenland_shark",
+        "mantis_shrimp",
+        "archerfish"
+      ],
+      "settings": [
+        "micro_world"
+      ]
+    }
+  }
+}

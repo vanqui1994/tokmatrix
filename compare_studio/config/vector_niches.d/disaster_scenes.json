@@ -1,0 +1,167 @@
+{
+  "subjects": {
+    "meteor_impact": {
+      "asset": "meteor_impact",
+      "float": true,
+      "label": "an asteroid impact",
+      "labels": {
+        "de": "Meteoriteneinschlag|Asteroid|Meteor",
+        "ko": "운석충돌|소행성|유성",
+        "ja": "隕石衝突|小惑星|流星"
+      },
+      "settings": [
+        "volcano_island",
+        "desert_dunes"
+      ],
+      "size": "m"
+    },
+    "tsunami_wave": {
+      "asset": "tsunami_wave",
+      "label": "a tsunami",
+      "labels": {
+        "de": "Tsunami|Riesenwelle|Flutwelle",
+        "ko": "지진해일|쓰나미|거대파도",
+        "ja": "津波|大津波|大波"
+      },
+      "settings": [
+        "coastal_town",
+        "beach_cleanup"
+      ],
+      "size": "l"
+    },
+    "supervolcano": {
+      "asset": "supervolcano",
+      "label": "a supervolcano eruption",
+      "labels": {
+        "de": "Supervulkan|Vulkanausbruch|Caldera",
+        "ko": "초화산|화산폭발|칼데라",
+        "ja": "破局噴火|超巨大火山|カルデラ"
+      },
+      "settings": [
+        "volcano_island",
+        "ash_sky_city"
+      ],
+      "size": "l"
+    },
+    "earthquake_fissure": {
+      "asset": "earthquake_fissure",
+      "label": "an earthquake fissure",
+      "labels": {
+        "de": "Erdbebenspalte|Erdbeben|Verwerfung",
+        "ko": "지진균열|단층|지진",
+        "ja": "地震断層|地割れ|地震"
+      },
+      "settings": [
+        "ash_sky_city",
+        "abandoned_street"
+      ],
+      "size": "l"
+    },
+    "smoke_plume": {
+      "asset": "smoke_plume",
+      "label": "a smoke plume",
+      "labels": {
+        "de": "Rauchsäule|Smog",
+        "ko": "연기기둥|화재연기|스모그",
+        "ja": "煙柱|噴煙|スモッグ"
+      },
+      "settings": [
+        "ash_sky_city",
+        "abandoned_street"
+      ],
+      "size": "m"
+    },
+    "dust_storm_wall": {
+      "asset": "dust_storm_wall",
+      "label": "a dust storm",
+      "labels": {
+        "de": "Sandsturm|Staubsturm|Haboob",
+        "ko": "모래폭풍|황사|먼지폭풍",
+        "ja": "砂嵐|粉塵嵐|砂塵"
+      },
+      "settings": [
+        "dust_bowl_farm"
+      ],
+      "size": "l"
+    },
+    "warning_beacon": {
+      "asset": "warning_beacon",
+      "label": "an emergency siren",
+      "labels": {
+        "de": "Warnsirene|Alarmleuchte|Notfallbake",
+        "ko": "경보사이렌|경광등|비상비콘",
+        "ja": "警報サイレン|回転灯|非常ビーコン"
+      },
+      "settings": [
+        "coastal_town",
+        "ash_sky_city"
+      ],
+      "size": "s"
+    },
+    "rescue_vehicle": {
+      "asset": "rescue_vehicle",
+      "label": "a rescue truck",
+      "labels": {
+        "de": "Rettungsfahrzeug|Einsatzwagen|Katastrophenschutzfahrzeug",
+        "ko": "구조차량|재난구조차|구급차",
+        "ja": "救助車両|レスキュー車|緊急車両"
+      },
+      "settings": [
+        "ash_sky_city",
+        "coastal_town"
+      ],
+      "size": "m"
+    },
+    "flood_sandbags": {
+      "asset": "flood_sandbags",
+      "label": "flood sandbags",
+      "labels": {
+        "de": "Sandsackdeich|Sandsäcke|Hochwasserschutz",
+        "ko": "모래주머니|방호벽|제방",
+        "ja": "土のう|防波堤|水防土のう"
+      },
+      "settings": [
+        "coastal_town",
+        "flooded_downtown"
+      ],
+      "size": "m"
+    },
+    "cartoon_microbe": {
+      "asset": "cartoon_microbe",
+      "float": true,
+      "label": "a germ",
+      "labels": {
+        "de": "Mikrobe|Virus|Bakterium",
+        "ko": "미생물|바이러스|세균",
+        "ja": "微生物|ウイルス|細菌"
+      },
+      "settings": [
+        "ash_sky_city"
+      ],
+      "size": "s"
+    }
+  },
+  "hosts": {},
+  "buddies": {},
+  "niches": {
+    "mega_catastrophes": {
+      "subjects": [
+        "meteor_impact",
+        "tsunami_wave",
+        "supervolcano",
+        "earthquake_fissure",
+        "smoke_plume",
+        "dust_storm_wall",
+        "warning_beacon",
+        "rescue_vehicle",
+        "flood_sandbags",
+        "cartoon_microbe"
+      ],
+      "settings": [
+        "coastal_town",
+        "ash_sky_city",
+        "dust_bowl_farm"
+      ]
+    }
+  }
+}

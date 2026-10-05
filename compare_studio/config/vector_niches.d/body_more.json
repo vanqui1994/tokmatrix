@@ -1,0 +1,161 @@
+{
+  "subjects": {
+    "regenerating_liver": {
+      "asset": "regenerating_liver",
+      "float": false,
+      "label": "a regenerating liver",
+      "labels": {
+        "de": "Leber|Leberregeneration|regenerierende Leber",
+        "ko": "간|간재생",
+        "ja": "肝臓|肝再生"
+      },
+      "settings": [
+        "body_inside",
+        "clinic_room"
+      ],
+      "size": "m"
+    },
+    "appendix_chibi": {
+      "asset": "appendix_chibi",
+      "float": false,
+      "label": "the appendix",
+      "labels": {
+        "de": "Blinddarm|Wurmfortsatz",
+        "ko": "맹장|충수",
+        "ja": "虫垂|盲腸"
+      },
+      "settings": [
+        "body_inside",
+        "stomach_inside"
+      ],
+      "size": "s"
+    },
+    "neuron_chibi": {
+      "asset": "neuron_chibi",
+      "float": true,
+      "label": "a neuron nerve cell",
+      "labels": {
+        "de": "Neuron|Neuronen|Nervenzelle|Nervenzellen|Nerv",
+        "ko": "뉴런|신경세포|신경",
+        "ja": "ニューロン|神経細胞|神経"
+      },
+      "settings": [
+        "brain_hq",
+        "body_inside"
+      ],
+      "size": "m"
+    },
+    "fingerprint": {
+      "asset": "fingerprint",
+      "float": false,
+      "label": "a fingerprint",
+      "labels": {
+        "de": "Fingerabdruck|Fingerabdrücke",
+        "ko": "지문",
+        "ja": "指紋"
+      },
+      "settings": [
+        "science_lab",
+        "clinic_room"
+      ],
+      "size": "m"
+    },
+    "vaccine_training": {
+      "asset": "vaccine_training",
+      "float": false,
+      "label": "a vaccine and antibodies",
+      "labels": {
+        "de": "Impfstoff|Impfung|Antikörper",
+        "ko": "백신|항체|면역훈련",
+        "ja": "ワクチン|抗体|免疫訓練"
+      },
+      "settings": [
+        "clinic_room",
+        "hospital_ward"
+      ],
+      "size": "m"
+    },
+    "fever_thermometer": {
+      "asset": "fever_thermometer",
+      "float": false,
+      "label": "a fever thermometer",
+      "labels": {
+        "de": "Fieberthermometer|Fieber",
+        "ko": "체온계|발열|열",
+        "ja": "体温計|발열|열"
+      },
+      "settings": [
+        "clinic_room",
+        "hospital_ward"
+      ],
+      "size": "m"
+    },
+    "fracture_healing_bone": {
+      "asset": "fracture_healing_bone",
+      "float": false,
+      "label": "a healing bone fracture",
+      "labels": {
+        "de": "Knochenbruch|Knochenheilung|Gips|Fraktur",
+        "ko": "골절|깁스|뼈치유",
+        "ja": "骨折|ギプス|骨治癒"
+      },
+      "settings": [
+        "clinic_room",
+        "hospital_ward"
+      ],
+      "size": "m"
+    },
+    "sleeping_brain": {
+      "asset": "sleeping_brain",
+      "float": false,
+      "label": "a sleeping brain",
+      "labels": {
+        "de": "schlafendes Gehirn|Schlaf|Schlafparalyse",
+        "ko": "잠자는뇌|수면|수면마비",
+        "ja": "眠る脳|睡眠|睡眠麻痺"
+      },
+      "settings": [
+        "sleep_lab",
+        "brain_hq"
+      ],
+      "size": "m"
+    },
+    "memory_cell_chibi": {
+      "asset": "memory_cell_chibi",
+      "float": false,
+      "label": "a memory cell",
+      "labels": {
+        "de": "Gedächtniszelle|Gedächtniszellen|Erinnerungszelle",
+        "ko": "기억세포|면역기억",
+        "ja": "記憶細胞|免疫記憶"
+      },
+      "settings": [
+        "brain_hq",
+        "sleep_lab"
+      ],
+      "size": "m"
+    }
+  },
+  "hosts": {},
+  "buddies": {},
+  "niches": {
+    "medical_anomalies": {
+      "hosts": [],
+      "buddies": [],
+      "settings": [
+        "sleep_lab"
+      ],
+      "subjects": [
+        "regenerating_liver",
+        "appendix_chibi",
+        "neuron_chibi",
+        "fingerprint",
+        "vaccine_training",
+        "fever_thermometer",
+        "fracture_healing_bone",
+        "sleeping_brain",
+        "memory_cell_chibi"
+      ]
+    }
+  }
+}

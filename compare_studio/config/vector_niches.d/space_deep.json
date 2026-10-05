@@ -1,0 +1,186 @@
+{
+  "hosts": {},
+  "buddies": {},
+  "subjects": {
+    "black_hole": {
+      "asset": "black_hole",
+      "float": true,
+      "label": "a black hole",
+      "labels": {
+        "de": "Schwarzes Loch|Ereignishorizont",
+        "ko": "블랙홀|사건의지평선|특이점",
+        "ja": "ブラックホール|事象の地平面|特異点"
+      },
+      "settings": [
+        "deep_space_view",
+        "space_orbit"
+      ],
+      "size": "l"
+    },
+    "neutron_star": {
+      "asset": "neutron_star",
+      "float": true,
+      "label": "a neutron star",
+      "labels": {
+        "de": "Neutronenstern|Pulsar|Magnetar",
+        "ko": "중성자별|펄사|마그네타",
+        "ja": "中性子星|パルサー|マグネター"
+      },
+      "settings": [
+        "deep_space_view",
+        "space_orbit"
+      ],
+      "size": "m"
+    },
+    "spiral_galaxy": {
+      "asset": "spiral_galaxy",
+      "float": true,
+      "label": "a spiral galaxy",
+      "labels": {
+        "de": "Spiralgalaxie|Milchstraße|Galaxie",
+        "ko": "나선은하|은하수|은하",
+        "ja": "渦巻銀河|天の川|銀河"
+      },
+      "settings": [
+        "deep_space_view",
+        "observatory_night"
+      ],
+      "size": "l"
+    },
+    "nebula": {
+      "asset": "nebula",
+      "float": true,
+      "label": "a nebula",
+      "labels": {
+        "de": "Gasnebel|Nebula|Sternennebel",
+        "ko": "성운|성간물질|우주구름",
+        "ja": "星雲|ガス星雲|宇宙の雲"
+      },
+      "settings": [
+        "deep_space_view",
+        "observatory_night"
+      ],
+      "size": "l"
+    },
+    "space_telescope": {
+      "asset": "space_telescope",
+      "float": true,
+      "label": "a space telescope",
+      "labels": {
+        "de": "Weltraumteleskop|Teleskop",
+        "ko": "우주망원경|망원경|우주탐사",
+        "ja": "宇宙望遠鏡|望遠鏡|探査衛星"
+      },
+      "settings": [
+        "deep_space_view",
+        "space_orbit"
+      ],
+      "size": "m"
+    },
+    "space_probe": {
+      "asset": "space_probe",
+      "float": true,
+      "label": "a space probe",
+      "labels": {
+        "de": "Raumsonde|Weltraumsonde|Sonde",
+        "ko": "우주탐사선|보이저|탐사선",
+        "ja": "宇宙探査機|ボイジャー|探査機"
+      },
+      "settings": [
+        "deep_space_view",
+        "space_orbit"
+      ],
+      "size": "m"
+    },
+    "pluto": {
+      "asset": "pluto",
+      "float": true,
+      "label": "Pluto",
+      "labels": {
+        "de": "Pluto|Zwergplanet|Kuipergürtel",
+        "ko": "명왕성|왜소행성|카이퍼벨트",
+        "ja": "冥王星|準惑星|カイパーベルト"
+      },
+      "settings": [
+        "deep_space_view",
+        "space_orbit"
+      ],
+      "size": "m"
+    },
+    "asteroid": {
+      "asset": "asteroid",
+      "float": true,
+      "label": "an asteroid",
+      "labels": {
+        "de": "Asteroid|Meteorit|Weltraumfelsen",
+        "ko": "소행성|운석|우주암석",
+        "ja": "小惑星|隕石|小天体"
+      },
+      "settings": [
+        "deep_space_view",
+        "space_orbit"
+      ],
+      "size": "m"
+    },
+    "shooting_star": {
+      "asset": "shooting_star",
+      "float": true,
+      "label": "a shooting star",
+      "labels": {
+        "de": "Sternschnuppe|Meteor|Feuerball",
+        "ko": "유성|별똥별|유성우",
+        "ja": "流れ星|流星|火球"
+      },
+      "settings": [
+        "deep_space_view",
+        "observatory_night"
+      ],
+      "size": "m"
+    },
+    "exoplanet_lava": {
+      "asset": "exoplanet_lava",
+      "float": true,
+      "label": "a lava planet",
+      "labels": {
+        "de": "Lava-Exoplanet|Lavawelt|Magmaplanet",
+        "ko": "용암외계행성|마그마행성|외계행성",
+        "ja": "溶岩系外惑星|マグマ惑星|系外惑星"
+      },
+      "settings": [
+        "deep_space_view",
+        "space_orbit"
+      ],
+      "size": "m"
+    }
+  },
+  "niches": {
+    "deep_space": {
+      "subjects": [
+        "black_hole",
+        "neutron_star",
+        "spiral_galaxy",
+        "nebula",
+        "space_telescope",
+        "space_probe",
+        "pluto",
+        "asteroid",
+        "shooting_star",
+        "exoplanet_lava"
+      ],
+      "settings": [
+        "deep_space_view",
+        "observatory_night"
+      ]
+    },
+    "mega_catastrophes": {
+      "subjects": [
+        "asteroid",
+        "shooting_star",
+        "black_hole"
+      ],
+      "settings": [
+        "deep_space_view"
+      ]
+    }
+  }
+}

@@ -1,0 +1,151 @@
+{
+  "hosts": {},
+  "buddies": {},
+  "subjects": {
+    "cipher_manuscript": {
+      "asset": "cipher_manuscript",
+      "label": "a cipher manuscript",
+      "labels": {
+        "de": "Chiffren-Manuskript|Voynich-Manuskript|Kryptogramm",
+        "ko": "암호필사본|보이니치필사본|고대암호|코드",
+        "ja": "暗号写本|ヴォイニッチ手稿|未解読文書|暗号"
+      },
+      "settings": [
+        "stone_circle_field",
+        "easter_island_generic"
+      ],
+      "size": "m"
+    },
+    "twin_engine_plane": {
+      "asset": "twin_engine_plane",
+      "label": "a twin-engine plane",
+      "labels": {
+        "de": "Zweimotoriges Flugzeug|Propellerflugzeug|Flugzeug",
+        "ko": "쌍발비행기|프로펠러기|탐험비행기|비행",
+        "ja": "双発飛行機|プロペラ機|探検機|飛行"
+      },
+      "settings": [
+        "foggy_harbor",
+        "beach_cleanup"
+      ],
+      "size": "l"
+    },
+    "ghost_ship": {
+      "asset": "ghost_ship",
+      "label": "a ghost ship",
+      "labels": {
+        "de": "Geisterschiff|Verlassenes Schiff",
+        "ko": "유령선|메리셀레스트|조난선|탐험선",
+        "ja": "幽霊船|メアリー・セレスト号|無人船|探検船"
+      },
+      "settings": [
+        "foggy_harbor",
+        "deep_sea"
+      ],
+      "size": "l"
+    },
+    "abandoned_lighthouse": {
+      "asset": "abandoned_lighthouse",
+      "label": "an abandoned lighthouse",
+      "labels": {
+        "de": "Verlassener Leuchtturm|Leuchtturm",
+        "ko": "버려진등대|무인등대|절벽등대|등대",
+        "ja": "廃灯台|無人灯台|断崖の灯台|灯台"
+      },
+      "settings": [
+        "foggy_harbor",
+        "coral_reef"
+      ],
+      "size": "l"
+    },
+    "money_pit": {
+      "asset": "money_pit",
+      "label": "a treasure shaft",
+      "labels": {
+        "de": "Schatzschacht|Geldgrube|Grabungsschacht",
+        "ko": "머니피트|오크섬보물갱도|비밀갱도|보물",
+        "ja": "マネーピット|財宝抗|オーク島発掘坑|財宝"
+      },
+      "settings": [
+        "foggy_harbor",
+        "stone_circle_field"
+      ],
+      "size": "l"
+    },
+    "phaistos_disk": {
+      "asset": "phaistos_disk",
+      "label": "a spiral clay disc",
+      "labels": {
+        "de": "Diskos von Phaistos|Tonscheibe",
+        "ko": "파이스토스원반|고대점토원반|문양원반|비문",
+        "ja": "ファイストスの円盤|粘土板|未解読記号|銘文"
+      },
+      "settings": [
+        "stone_circle_field",
+        "easter_island_generic"
+      ],
+      "size": "m"
+    },
+    "radio_telescope": {
+      "asset": "radio_telescope",
+      "label": "a radio telescope",
+      "labels": {
+        "de": "Radioteleskop|Parabolantenne",
+        "ko": "전파망원경|파라볼라안테나|우주신호|신호",
+        "ja": "電波望遠鏡|パラボラアンテナ|宇宙電波|信号"
+      },
+      "settings": [
+        "radio_telescope_field",
+        "deep_space_view"
+      ],
+      "size": "l"
+    },
+    "antique_compass": {
+      "asset": "antique_compass",
+      "label": "an old compass",
+      "labels": {
+        "de": "Antiker Kompass|Messingkompass|Magnetnadel",
+        "ko": "고풍나침반|황동나침반|항해나침반|나침반",
+        "ja": "アンティーク方位磁石|羅針盤|真鍮コンパス|方位磁針"
+      },
+      "settings": [
+        "foggy_harbor",
+        "radio_telescope_field"
+      ],
+      "size": "m"
+    },
+    "treasure_map": {
+      "asset": "treasure_map",
+      "label": "a treasure map",
+      "labels": {
+        "de": "Schatzkarte|Pergamentkarte|Piratenkarte",
+        "ko": "보물지도|양피지지지도|비밀지도|황금",
+        "ja": "宝の地図|羊皮紙の地図|海賊の地図|黄金"
+      },
+      "settings": [
+        "foggy_harbor",
+        "easter_island_generic"
+      ],
+      "size": "m"
+    }
+  },
+  "niches": {
+    "unsolved_mysteries": {
+      "subjects": [
+        "cipher_manuscript",
+        "twin_engine_plane",
+        "ghost_ship",
+        "abandoned_lighthouse",
+        "money_pit",
+        "phaistos_disk",
+        "radio_telescope",
+        "antique_compass",
+        "treasure_map"
+      ],
+      "settings": [
+        "foggy_harbor",
+        "radio_telescope_field"
+      ]
+    }
+  }
+}

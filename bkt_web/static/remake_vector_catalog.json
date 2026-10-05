@@ -41,7 +41,19 @@
     "fables",
     "wasteland",
     "zombies",
-    "survival_kit"
+    "survival_kit",
+    "survival_scenes",
+    "space_deep",
+    "disaster_scenes",
+    "wildlife_apex",
+    "ancient_sites",
+    "folk_spirits",
+    "myth_world",
+    "tech_future",
+    "mystery_props",
+    "wildlife_weird",
+    "deep_ocean",
+    "body_more"
   ],
   "rig_style": {
     "name": "hand-drawn-whole-pose-cel",
@@ -201,7 +213,41 @@
     "rooftop_garden",
     "subway_tunnel",
     "flooded_downtown",
-    "safe_camp"
+    "safe_camp",
+    "jungle_crash_site",
+    "antarctic_camp",
+    "mine_tunnel",
+    "mountain_peak",
+    "desert_noon",
+    "deep_space_view",
+    "observatory_night",
+    "coastal_town",
+    "ash_sky_city",
+    "dust_bowl_farm",
+    "savanna",
+    "arctic_ice",
+    "open_ocean_surface",
+    "andes_terraces",
+    "jungle_temple",
+    "rock_canyon",
+    "misty_forest_night",
+    "rhine_cliff",
+    "korean_mountain_night",
+    "olympus_clouds",
+    "asgard_bridge",
+    "duat_river",
+    "takamagahara",
+    "underworld_river",
+    "data_center",
+    "smart_city",
+    "chip_fab_clean_room",
+    "foggy_harbor",
+    "radio_telescope_field",
+    "micro_world",
+    "trench_floor",
+    "hydrothermal_field",
+    "stormy_sea",
+    "sleep_lab"
   ],
   "background_specs": {
     "garden": {
@@ -1424,6 +1470,683 @@
         "apocalypse",
         "survival",
         "camp"
+      ],
+      "locale": "neutral"
+    },
+    "jungle_crash_site": {
+      "label": "Jungle crash site clearing",
+      "theme": "farm",
+      "ground_y": 810,
+      "weather": [
+        "clear",
+        "rain",
+        "snow",
+        "wind",
+        "fog",
+        "storm",
+        "hot"
+      ],
+      "topics": [
+        "survival",
+        "nature",
+        "forest"
+      ],
+      "locale": "neutral"
+    },
+    "antarctic_camp": {
+      "label": "Antarctic polar expedition camp",
+      "theme": "highland",
+      "ground_y": 810,
+      "weather": [
+        "clear",
+        "rain",
+        "snow",
+        "wind",
+        "fog",
+        "storm",
+        "hot"
+      ],
+      "topics": [
+        "survival",
+        "polar",
+        "ice"
+      ],
+      "locale": "neutral"
+    },
+    "mine_tunnel": {
+      "label": "Underground mine shaft tunnel",
+      "theme": "building",
+      "ground_y": 810,
+      "weather": [
+        "clear",
+        "rain",
+        "snow",
+        "wind",
+        "fog",
+        "storm",
+        "hot"
+      ],
+      "topics": [
+        "survival",
+        "underground",
+        "rescue"
+      ],
+      "locale": "neutral"
+    },
+    "mountain_peak": {
+      "label": "Alpine mountain summit ridge",
+      "theme": "highland",
+      "ground_y": 810,
+      "weather": [
+        "clear",
+        "rain",
+        "snow",
+        "wind",
+        "fog",
+        "storm",
+        "hot"
+      ],
+      "topics": [
+        "survival",
+        "mountain",
+        "climbing"
+      ],
+      "locale": "neutral"
+    },
+    "desert_noon": {
+      "label": "Midday desert sand dunes",
+      "theme": "farm",
+      "ground_y": 810,
+      "weather": [
+        "clear",
+        "rain",
+        "snow",
+        "wind",
+        "fog",
+        "storm",
+        "hot"
+      ],
+      "topics": [
+        "survival",
+        "desert",
+        "heat"
+      ],
+      "locale": "neutral"
+    },
+    "deep_space_view": {
+      "label": "Deep Space Cosmic Panorama",
+      "theme": "highland",
+      "ground_y": 810,
+      "weather": [
+        "clear",
+        "rain",
+        "snow",
+        "wind",
+        "fog",
+        "storm",
+        "hot"
+      ],
+      "topics": [
+        "deep_space",
+        "space"
+      ],
+      "locale": "neutral"
+    },
+    "observatory_night": {
+      "label": "Mountain Night Observatory",
+      "theme": "highland",
+      "ground_y": 810,
+      "weather": [
+        "clear",
+        "rain",
+        "snow",
+        "wind",
+        "fog",
+        "storm",
+        "hot"
+      ],
+      "topics": [
+        "deep_space",
+        "space",
+        "technology"
+      ],
+      "locale": "neutral"
+    },
+    "coastal_town": {
+      "label": "Fortified coastal seaside town",
+      "theme": "water",
+      "ground_y": 810,
+      "weather": [
+        "clear",
+        "rain",
+        "snow",
+        "wind",
+        "fog",
+        "storm",
+        "hot"
+      ],
+      "topics": [
+        "disaster",
+        "ocean",
+        "coastal"
+      ],
+      "locale": "neutral"
+    },
+    "ash_sky_city": {
+      "label": "Metropolitan city under ash overcast sky",
+      "theme": "street",
+      "ground_y": 810,
+      "weather": [
+        "clear",
+        "rain",
+        "snow",
+        "wind",
+        "fog",
+        "storm",
+        "hot"
+      ],
+      "topics": [
+        "disaster",
+        "city",
+        "atmosphere"
+      ],
+      "locale": "neutral"
+    },
+    "dust_bowl_farm": {
+      "label": "Windswept prairie farm in dust storm",
+      "theme": "farm",
+      "ground_y": 810,
+      "weather": [
+        "clear",
+        "rain",
+        "snow",
+        "wind",
+        "fog",
+        "storm",
+        "hot"
+      ],
+      "topics": [
+        "disaster",
+        "nature",
+        "storm"
+      ],
+      "locale": "neutral"
+    },
+    "savanna": {
+      "label": "Savanna (Thảo nguyên hoang dã)",
+      "theme": "nature",
+      "ground_y": 810,
+      "weather": [
+        "clear",
+        "rain",
+        "snow",
+        "wind",
+        "fog",
+        "storm",
+        "hot"
+      ],
+      "topics": [
+        "wildlife",
+        "africa",
+        "nature",
+        "safari"
+      ],
+      "locale": "neutral"
+    },
+    "arctic_ice": {
+      "label": "Arctic Ice (Băng tuyết Bắc Cực)",
+      "theme": "nature",
+      "ground_y": 810,
+      "weather": [
+        "clear",
+        "rain",
+        "snow",
+        "wind",
+        "fog",
+        "storm",
+        "hot"
+      ],
+      "topics": [
+        "arctic",
+        "ice",
+        "polar",
+        "wildlife"
+      ],
+      "locale": "neutral"
+    },
+    "open_ocean_surface": {
+      "label": "Open Ocean Surface (Mặt biển đại dương)",
+      "theme": "water",
+      "ground_y": 810,
+      "open_water": true,
+      "weather": [
+        "clear",
+        "rain",
+        "snow",
+        "wind",
+        "fog",
+        "storm",
+        "hot"
+      ],
+      "topics": [
+        "ocean",
+        "sea",
+        "wildlife",
+        "marine"
+      ],
+      "locale": "neutral"
+    },
+    "andes_terraces": {
+      "label": "High Andes mountain terraces",
+      "theme": "highland",
+      "ground_y": 810,
+      "weather": [
+        "clear",
+        "rain",
+        "snow",
+        "wind",
+        "fog",
+        "storm",
+        "hot"
+      ],
+      "topics": [
+        "ancient",
+        "nature",
+        "lost_civilizations"
+      ],
+      "locale": "neutral"
+    },
+    "jungle_temple": {
+      "label": "Dense jungle ancient temple ruins",
+      "theme": "farm",
+      "ground_y": 810,
+      "weather": [
+        "clear",
+        "rain",
+        "snow",
+        "wind",
+        "fog",
+        "storm",
+        "hot"
+      ],
+      "topics": [
+        "ancient",
+        "nature",
+        "lost_civilizations"
+      ],
+      "locale": "neutral"
+    },
+    "rock_canyon": {
+      "label": "Sandstone desert rock canyon",
+      "theme": "farm",
+      "ground_y": 810,
+      "weather": [
+        "clear",
+        "rain",
+        "snow",
+        "wind",
+        "fog",
+        "storm",
+        "hot"
+      ],
+      "topics": [
+        "ancient",
+        "nature",
+        "lost_civilizations",
+        "unsolved_mysteries"
+      ],
+      "locale": "neutral"
+    },
+    "misty_forest_night": {
+      "label": "Misty enchanted night forest",
+      "theme": "highland",
+      "ground_y": 810,
+      "weather": [
+        "clear",
+        "rain",
+        "snow",
+        "wind",
+        "fog",
+        "storm",
+        "hot"
+      ],
+      "topics": [
+        "folklore",
+        "nature"
+      ],
+      "locale": "neutral"
+    },
+    "rhine_cliff": {
+      "label": "Loreley Rhine river cliff",
+      "theme": "water",
+      "ground_y": 810,
+      "weather": [
+        "clear",
+        "rain",
+        "snow",
+        "wind",
+        "fog",
+        "storm",
+        "hot"
+      ],
+      "topics": [
+        "folklore",
+        "nature"
+      ],
+      "locale": "de"
+    },
+    "korean_mountain_night": {
+      "label": "Korean mountain ridge under moonlight",
+      "theme": "highland",
+      "ground_y": 810,
+      "weather": [
+        "clear",
+        "rain",
+        "snow",
+        "wind",
+        "fog",
+        "storm",
+        "hot"
+      ],
+      "topics": [
+        "folklore",
+        "nature"
+      ],
+      "locale": "kr"
+    },
+    "olympus_clouds": {
+      "label": "Đỉnh Olympus bồng bềnh mây (Mount Olympus Clouds)",
+      "theme": "highland",
+      "ground_y": 810,
+      "weather": [
+        "clear",
+        "rain",
+        "snow",
+        "wind",
+        "fog",
+        "storm",
+        "hot"
+      ],
+      "topics": [
+        "ancient_mythology",
+        "history"
+      ],
+      "locale": "neutral"
+    },
+    "asgard_bridge": {
+      "label": "Cầu vồng Bifrost tới Asgard (Bifrost Rainbow Bridge)",
+      "theme": "highland",
+      "ground_y": 810,
+      "weather": [
+        "clear",
+        "rain",
+        "snow",
+        "wind",
+        "fog",
+        "storm",
+        "hot"
+      ],
+      "topics": [
+        "ancient_mythology",
+        "fantasy"
+      ],
+      "locale": "neutral"
+    },
+    "duat_river": {
+      "label": "Dòng sông Duat cõi âm Ai Cập (Duat River of the Afterlife)",
+      "theme": "water",
+      "ground_y": 810,
+      "weather": [
+        "clear",
+        "rain",
+        "snow",
+        "wind",
+        "fog",
+        "storm",
+        "hot"
+      ],
+      "topics": [
+        "ancient_mythology",
+        "mysteries"
+      ],
+      "locale": "neutral"
+    },
+    "takamagahara": {
+      "label": "Cao Thiên Nguyên Takamagahara (High Plain of Heaven)",
+      "theme": "garden",
+      "ground_y": 810,
+      "weather": [
+        "clear",
+        "rain",
+        "snow",
+        "wind",
+        "fog",
+        "storm",
+        "hot"
+      ],
+      "topics": [
+        "ancient_mythology",
+        "jp_culture"
+      ],
+      "locale": "jp"
+    },
+    "underworld_river": {
+      "label": "Dòng sông Styx cõi âm Hy Lạp (River Styx Underworld)",
+      "theme": "water",
+      "ground_y": 810,
+      "weather": [
+        "clear",
+        "rain",
+        "snow",
+        "wind",
+        "fog",
+        "storm",
+        "hot"
+      ],
+      "topics": [
+        "ancient_mythology",
+        "mysteries"
+      ],
+      "locale": "neutral"
+    },
+    "data_center": {
+      "label": "Hyperscale enterprise server data center",
+      "theme": "building",
+      "ground_y": 810,
+      "weather": [
+        "clear",
+        "rain",
+        "snow",
+        "wind",
+        "fog",
+        "storm",
+        "hot"
+      ],
+      "topics": [
+        "tech",
+        "ai",
+        "computers"
+      ],
+      "locale": "neutral"
+    },
+    "smart_city": {
+      "label": "Futuristic eco smart city boulevard",
+      "theme": "street",
+      "ground_y": 810,
+      "weather": [
+        "clear",
+        "rain",
+        "snow",
+        "wind",
+        "fog",
+        "storm",
+        "hot"
+      ],
+      "topics": [
+        "tech",
+        "future",
+        "city"
+      ],
+      "locale": "neutral"
+    },
+    "chip_fab_clean_room": {
+      "label": "Semiconductor cleanroom fabrication facility",
+      "theme": "building",
+      "ground_y": 810,
+      "weather": [
+        "clear",
+        "rain",
+        "snow",
+        "wind",
+        "fog",
+        "storm",
+        "hot"
+      ],
+      "topics": [
+        "tech",
+        "semiconductor",
+        "science"
+      ],
+      "locale": "neutral"
+    },
+    "foggy_harbor": {
+      "label": "Foggy Harbor Pier",
+      "theme": "water",
+      "ground_y": 810,
+      "weather": [
+        "clear",
+        "rain",
+        "snow",
+        "wind",
+        "fog",
+        "storm",
+        "hot"
+      ],
+      "topics": [
+        "unsolved_mysteries",
+        "ocean"
+      ],
+      "locale": "neutral"
+    },
+    "radio_telescope_field": {
+      "label": "Radio Telescope Observatory Field",
+      "theme": "highland",
+      "ground_y": 810,
+      "weather": [
+        "clear",
+        "rain",
+        "snow",
+        "wind",
+        "fog",
+        "storm",
+        "hot"
+      ],
+      "topics": [
+        "unsolved_mysteries",
+        "deep_space",
+        "technology"
+      ],
+      "locale": "neutral"
+    },
+    "micro_world": {
+      "label": "Micro World (Thế giới giọt nước vi mô)",
+      "theme": "nature",
+      "ground_y": 810,
+      "weather": [
+        "clear",
+        "rain",
+        "snow",
+        "wind",
+        "fog",
+        "storm",
+        "hot"
+      ],
+      "topics": [
+        "micro",
+        "biology",
+        "weird",
+        "nature",
+        "science"
+      ],
+      "locale": "neutral"
+    },
+    "trench_floor": {
+      "label": "Đáy rãnh Mariana siêu sâu",
+      "theme": "water",
+      "ground_y": 810,
+      "weather": [
+        "clear",
+        "rain",
+        "snow",
+        "wind",
+        "fog",
+        "storm",
+        "hot"
+      ],
+      "topics": [
+        "ocean",
+        "nature",
+        "mystery"
+      ],
+      "locale": "neutral"
+    },
+    "hydrothermal_field": {
+      "label": "Cánh đồng thuỷ nhiệt đáy biển",
+      "theme": "water",
+      "ground_y": 810,
+      "weather": [
+        "clear",
+        "rain",
+        "snow",
+        "wind",
+        "fog",
+        "storm",
+        "hot"
+      ],
+      "topics": [
+        "ocean",
+        "nature",
+        "science"
+      ],
+      "locale": "neutral"
+    },
+    "stormy_sea": {
+      "label": "Biển bão tố gầm thét",
+      "theme": "water",
+      "ground_y": 810,
+      "weather": [
+        "clear",
+        "rain",
+        "snow",
+        "wind",
+        "fog",
+        "storm",
+        "hot"
+      ],
+      "topics": [
+        "ocean",
+        "nature",
+        "disaster"
+      ],
+      "locale": "neutral"
+    },
+    "sleep_lab": {
+      "label": "Phòng nghiên cứu giấc ngủ",
+      "theme": "interior",
+      "ground_y": 810,
+      "weather": [
+        "clear",
+        "rain",
+        "snow",
+        "wind",
+        "fog",
+        "storm",
+        "hot"
+      ],
+      "topics": [
+        "medical",
+        "science",
+        "daily_life"
       ],
       "locale": "neutral"
     }
@@ -32466,6 +33189,5239 @@
         "tank": [
           -10,
           -25
+        ]
+      }
+    },
+    "crashed_plane": {
+      "label": "a crashed plane flight in the jungle or forest",
+      "group": "prop",
+      "pack": "survival_scenes",
+      "topics": [
+        "survival",
+        "airplane",
+        "forest"
+      ],
+      "face": false,
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -45
+        ],
+        "top": [
+          0,
+          -80
+        ],
+        "cockpit": [
+          15,
+          -45
+        ],
+        "wing_l": [
+          -35,
+          -45
+        ],
+        "wing_r": [
+          35,
+          -45
+        ],
+        "tail": [
+          -45,
+          -75
+        ]
+      }
+    },
+    "life_raft": {
+      "label": "an inflatable rescue life raft for currents raft adrift submarine selkirk crusoe and drowning survivors",
+      "group": "prop",
+      "pack": "survival_scenes",
+      "topics": [
+        "survival",
+        "ocean",
+        "rescue"
+      ],
+      "face": false,
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -30
+        ],
+        "top": [
+          0,
+          -65
+        ],
+        "canopy": [
+          0,
+          -60
+        ],
+        "rim_l": [
+          -42,
+          -18
+        ],
+        "rim_r": [
+          42,
+          -18
+        ],
+        "inside": [
+          0,
+          -15
+        ],
+        "grip": [
+          0,
+          -20
+        ]
+      }
+    },
+    "icebound_ship": {
+      "label": "an icebound expedition ship in antarctic ice for shackleton crew",
+      "group": "prop",
+      "pack": "survival_scenes",
+      "topics": [
+        "survival",
+        "polar",
+        "ship"
+      ],
+      "face": false,
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -45
+        ],
+        "top": [
+          0,
+          -90
+        ],
+        "mast": [
+          5,
+          -88
+        ],
+        "bow": [
+          40,
+          -25
+        ],
+        "stern": [
+          -42,
+          -30
+        ],
+        "ice_base": [
+          0,
+          -5
+        ]
+      }
+    },
+    "snow_shelter": {
+      "label": "a mountain snow shelter igloo for frostbite hypothermia lightning storm and andes survivors",
+      "group": "prop",
+      "pack": "survival_scenes",
+      "topics": [
+        "survival",
+        "polar",
+        "shelter"
+      ],
+      "face": false,
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -35
+        ],
+        "top": [
+          0,
+          -65
+        ],
+        "entrance": [
+          20,
+          -15
+        ],
+        "dome_top": [
+          0,
+          -62
+        ]
+      }
+    },
+    "miner_helmet": {
+      "label": "a miner helmet with headlamp for miners underground earthquake and cave rescue",
+      "group": "prop",
+      "pack": "survival_scenes",
+      "topics": [
+        "survival",
+        "underground",
+        "gear"
+      ],
+      "face": false,
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -32
+        ],
+        "top": [
+          0,
+          -60
+        ],
+        "headlamp": [
+          18,
+          -32
+        ],
+        "beam": [
+          38,
+          -32
+        ],
+        "grip": [
+          0,
+          -20
+        ]
+      }
+    },
+    "climbing_rope": {
+      "label": "a climbing rope with carabiners for ralston canyon quicksand and mountain",
+      "group": "prop",
+      "pack": "survival_scenes",
+      "topics": [
+        "survival",
+        "mountain",
+        "gear"
+      ],
+      "face": false,
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -35
+        ],
+        "top": [
+          0,
+          -68
+        ],
+        "grip": [
+          0,
+          -35
+        ],
+        "carabiner_top": [
+          12,
+          -64
+        ],
+        "carabiner_bottom": [
+          -10,
+          -10
+        ]
+      }
+    },
+    "oxygen_tank": {
+      "label": "an altitude oxygen tank cylinder for extreme altitude and apollo space",
+      "group": "prop",
+      "pack": "survival_scenes",
+      "topics": [
+        "survival",
+        "mountain",
+        "medical"
+      ],
+      "face": false,
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -40
+        ],
+        "top": [
+          0,
+          -78
+        ],
+        "valve": [
+          0,
+          -72
+        ],
+        "gauge": [
+          12,
+          -68
+        ],
+        "mask": [
+          24,
+          -40
+        ],
+        "grip": [
+          -14,
+          -38
+        ]
+      }
+    },
+    "avalanche_probe": {
+      "label": "an avalanche rescue probe pole for avalanche victims",
+      "group": "prop",
+      "pack": "survival_scenes",
+      "topics": [
+        "survival",
+        "mountain",
+        "rescue"
+      ],
+      "face": false,
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -42
+        ],
+        "top": [
+          0,
+          -82
+        ],
+        "handle": [
+          0,
+          -78
+        ],
+        "tip": [
+          0,
+          -5
+        ],
+        "grip": [
+          0,
+          -45
+        ]
+      }
+    },
+    "rescue_flare": {
+      "label": "a glowing rescue signal flare to signal for rescue evacuation from the air",
+      "group": "prop",
+      "pack": "survival_scenes",
+      "topics": [
+        "survival",
+        "rescue",
+        "signal"
+      ],
+      "face": false,
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -40
+        ],
+        "top": [
+          0,
+          -85
+        ],
+        "flame": [
+          0,
+          -78
+        ],
+        "nozzle": [
+          0,
+          -55
+        ],
+        "grip": [
+          0,
+          -25
+        ]
+      }
+    },
+    "canteen_flask": {
+      "label": "a survival canteen flask for water shade lost in forests desert sahara heat stroke",
+      "group": "prop",
+      "pack": "survival_scenes",
+      "topics": [
+        "survival",
+        "water",
+        "gear"
+      ],
+      "face": false,
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -32
+        ],
+        "top": [
+          0,
+          -64
+        ],
+        "cap": [
+          0,
+          -60
+        ],
+        "strap_l": [
+          -28,
+          -25
+        ],
+        "strap_r": [
+          28,
+          -25
+        ],
+        "grip": [
+          0,
+          -25
+        ]
+      }
+    },
+    "black_hole": {
+      "label": "Supermassive Black Hole",
+      "group": "prop",
+      "pack": "space_deep",
+      "topics": [
+        "deep_space",
+        "space",
+        "mega_catastrophes"
+      ],
+      "face": false,
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -50
+        ],
+        "jet_top": [
+          0,
+          -90
+        ],
+        "jet_bottom": [
+          0,
+          -10
+        ],
+        "accretion_l": [
+          -70,
+          -50
+        ],
+        "accretion_r": [
+          70,
+          -50
+        ]
+      }
+    },
+    "neutron_star": {
+      "label": "Pulsar Neutron Star",
+      "group": "prop",
+      "pack": "space_deep",
+      "topics": [
+        "deep_space",
+        "space"
+      ],
+      "face": false,
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -50
+        ],
+        "beam_top": [
+          0,
+          -95
+        ],
+        "beam_bottom": [
+          0,
+          -5
+        ],
+        "magnetic_l": [
+          -45,
+          -50
+        ],
+        "magnetic_r": [
+          45,
+          -50
+        ]
+      }
+    },
+    "spiral_galaxy": {
+      "label": "Spiral Galaxy",
+      "group": "prop",
+      "pack": "space_deep",
+      "topics": [
+        "deep_space",
+        "space"
+      ],
+      "face": false,
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -50
+        ],
+        "arm_1": [
+          -60,
+          -50
+        ],
+        "arm_2": [
+          60,
+          -50
+        ],
+        "core": [
+          0,
+          -50
+        ]
+      }
+    },
+    "nebula": {
+      "label": "Emission Nebula Cloud",
+      "group": "prop",
+      "pack": "space_deep",
+      "topics": [
+        "deep_space",
+        "space"
+      ],
+      "face": false,
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -50
+        ],
+        "cloud_l": [
+          -55,
+          -50
+        ],
+        "cloud_r": [
+          55,
+          -50
+        ],
+        "star_core": [
+          0,
+          -50
+        ]
+      }
+    },
+    "space_telescope": {
+      "label": "Deep Space Orbital Telescope",
+      "group": "prop",
+      "pack": "space_deep",
+      "topics": [
+        "deep_space",
+        "space",
+        "technology"
+      ],
+      "face": false,
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -50
+        ],
+        "solar_l": [
+          -75,
+          -50
+        ],
+        "solar_r": [
+          75,
+          -50
+        ],
+        "aperture": [
+          0,
+          -90
+        ],
+        "antenna": [
+          0,
+          -10
+        ]
+      }
+    },
+    "space_probe": {
+      "label": "Deep Space Interstellar Probe",
+      "group": "prop",
+      "pack": "space_deep",
+      "topics": [
+        "deep_space",
+        "space",
+        "technology"
+      ],
+      "face": false,
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -50
+        ],
+        "dish": [
+          0,
+          -70
+        ],
+        "golden_record": [
+          0,
+          -35
+        ],
+        "boom_l": [
+          -55,
+          -45
+        ],
+        "boom_r": [
+          55,
+          -45
+        ]
+      }
+    },
+    "pluto": {
+      "label": "Pluto Dwarf Planet",
+      "group": "prop",
+      "pack": "space_deep",
+      "topics": [
+        "deep_space",
+        "space"
+      ],
+      "face": true,
+      "face_scale": 0.5,
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -50
+        ],
+        "face": [
+          0,
+          -50
+        ],
+        "top": [
+          0,
+          -90
+        ],
+        "heart": [
+          10,
+          -45
+        ],
+        "moon_charon": [
+          70,
+          -70
+        ]
+      }
+    },
+    "asteroid": {
+      "label": "Rocky Asteroid",
+      "group": "prop",
+      "pack": "space_deep",
+      "topics": [
+        "deep_space",
+        "space",
+        "mega_catastrophes"
+      ],
+      "face": false,
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -50
+        ],
+        "crater_top": [
+          0,
+          -75
+        ],
+        "edge_l": [
+          -45,
+          -50
+        ],
+        "edge_r": [
+          45,
+          -50
+        ]
+      }
+    },
+    "shooting_star": {
+      "label": "Meteor Shooting Star",
+      "group": "prop",
+      "pack": "space_deep",
+      "topics": [
+        "deep_space",
+        "space",
+        "mega_catastrophes"
+      ],
+      "face": false,
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -50
+        ],
+        "head": [
+          40,
+          -25
+        ],
+        "tail": [
+          -65,
+          -75
+        ]
+      }
+    },
+    "exoplanet_lava": {
+      "label": "Volcanic Lava Exoplanet",
+      "group": "prop",
+      "pack": "space_deep",
+      "topics": [
+        "deep_space",
+        "space"
+      ],
+      "face": false,
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -50
+        ],
+        "lava_lake": [
+          0,
+          -45
+        ],
+        "atmospheric_rim": [
+          0,
+          -92
+        ]
+      }
+    },
+    "meteor_impact": {
+      "label": "a giant asteroid meteor impact for chicxulub and tunguska event",
+      "group": "prop",
+      "pack": "disaster_scenes",
+      "topics": [
+        "disaster",
+        "space",
+        "catastrophe"
+      ],
+      "face": false,
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -45
+        ],
+        "top": [
+          0,
+          -85
+        ],
+        "rock": [
+          12,
+          -32
+        ],
+        "tail": [
+          -15,
+          -55
+        ],
+        "shockwave": [
+          28,
+          -28
+        ]
+      }
+    },
+    "tsunami_wave": {
+      "label": "a massive tsunami ocean wave for storegga slide and sea flood",
+      "group": "prop",
+      "pack": "disaster_scenes",
+      "topics": [
+        "disaster",
+        "ocean",
+        "water"
+      ],
+      "face": false,
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -45
+        ],
+        "top": [
+          0,
+          -88
+        ],
+        "crest": [
+          18,
+          -82
+        ],
+        "foam": [
+          24,
+          -75
+        ],
+        "base_l": [
+          -42,
+          0
+        ],
+        "base_r": [
+          42,
+          0
+        ]
+      }
+    },
+    "supervolcano": {
+      "label": "a supervolcano caldera eruption for krakatoa tambora toba yellowstone helens laki and summer",
+      "group": "prop",
+      "pack": "disaster_scenes",
+      "topics": [
+        "disaster",
+        "volcano",
+        "nature"
+      ],
+      "face": false,
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -45
+        ],
+        "top": [
+          0,
+          -92
+        ],
+        "crater": [
+          0,
+          -48
+        ],
+        "ash_top": [
+          0,
+          -86
+        ],
+        "flank_l": [
+          -45,
+          0
+        ],
+        "flank_r": [
+          45,
+          0
+        ]
+      }
+    },
+    "earthquake_fissure": {
+      "label": "an earthquake ground fissure fault for kanto lisbon messina tangshan and kobe",
+      "group": "prop",
+      "pack": "disaster_scenes",
+      "topics": [
+        "disaster",
+        "earthquake",
+        "geology"
+      ],
+      "face": false,
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -25
+        ],
+        "top": [
+          0,
+          -50
+        ],
+        "chasm": [
+          0,
+          -18
+        ],
+        "left_ledge": [
+          -36,
+          -35
+        ],
+        "right_ledge": [
+          36,
+          -40
+        ]
+      }
+    },
+    "smoke_plume": {
+      "label": "a billowing smoke plume smog cloud for chicago london fire halifax explosion and flights",
+      "group": "prop",
+      "pack": "disaster_scenes",
+      "topics": [
+        "disaster",
+        "fire",
+        "air"
+      ],
+      "face": false,
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -46
+        ],
+        "top": [
+          0,
+          -90
+        ],
+        "base": [
+          0,
+          -5
+        ],
+        "cloud_l": [
+          -28,
+          -60
+        ],
+        "cloud_r": [
+          28,
+          -60
+        ]
+      }
+    },
+    "dust_storm_wall": {
+      "label": "a towering dust bowl storm wall for aral sea and desert",
+      "group": "prop",
+      "pack": "disaster_scenes",
+      "topics": [
+        "disaster",
+        "weather",
+        "desert"
+      ],
+      "face": false,
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -45
+        ],
+        "top": [
+          0,
+          -88
+        ],
+        "front": [
+          24,
+          -38
+        ],
+        "top_billow": [
+          0,
+          -84
+        ],
+        "base_l": [
+          -42,
+          0
+        ]
+      }
+    },
+    "warning_beacon": {
+      "label": "an emergency warning beacon siren for fukushima carrington event and disaster",
+      "group": "prop",
+      "pack": "disaster_scenes",
+      "topics": [
+        "disaster",
+        "rescue",
+        "signal"
+      ],
+      "face": false,
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -45
+        ],
+        "top": [
+          0,
+          -88
+        ],
+        "beacon": [
+          0,
+          -78
+        ],
+        "siren_l": [
+          -16,
+          -66
+        ],
+        "siren_r": [
+          16,
+          -66
+        ],
+        "solar": [
+          -16,
+          -50
+        ],
+        "base": [
+          0,
+          0
+        ]
+      }
+    },
+    "rescue_vehicle": {
+      "label": "an emergency rescue vehicle truck for chernobyl exclusion zone",
+      "group": "vehicle",
+      "pack": "disaster_scenes",
+      "topics": [
+        "disaster",
+        "rescue",
+        "vehicle"
+      ],
+      "face": false,
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -32
+        ],
+        "top": [
+          0,
+          -66
+        ],
+        "lightbar": [
+          0,
+          -48
+        ],
+        "cab": [
+          15,
+          -35
+        ],
+        "rear": [
+          -30,
+          -35
+        ],
+        "wheel_f": [
+          22,
+          -10
+        ],
+        "wheel_r": [
+          -22,
+          -10
+        ]
+      }
+    },
+    "flood_sandbags": {
+      "label": "defensive flood sandbags barrier for north sea johnstown dam and flood",
+      "group": "prop",
+      "pack": "disaster_scenes",
+      "topics": [
+        "disaster",
+        "flood",
+        "defense"
+      ],
+      "face": false,
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -28
+        ],
+        "top": [
+          0,
+          -56
+        ],
+        "stake_l": [
+          -34,
+          -48
+        ],
+        "stake_r": [
+          34,
+          -48
+        ],
+        "top_bag": [
+          0,
+          -45
+        ],
+        "base": [
+          0,
+          0
+        ]
+      }
+    },
+    "cartoon_microbe": {
+      "label": "a cute virus cartoon microbe bacteria for black death and flu pandemic",
+      "group": "prop",
+      "pack": "disaster_scenes",
+      "topics": [
+        "disaster",
+        "medical",
+        "microbe"
+      ],
+      "face": true,
+      "face_scale": 0.6,
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -40
+        ],
+        "face": [
+          0,
+          -40
+        ],
+        "top": [
+          0,
+          -75
+        ],
+        "pod_top": [
+          0,
+          -71
+        ],
+        "pod_l": [
+          -31,
+          -40
+        ],
+        "pod_r": [
+          31,
+          -40
+        ]
+      }
+    },
+    "lion": {
+      "label": "a lion",
+      "group": "animal",
+      "face": false,
+      "pack": "wildlife_apex",
+      "topics": [
+        "wildlife",
+        "safari",
+        "apex"
+      ],
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "head": [
+          28,
+          -52
+        ],
+        "face": [
+          32,
+          -50
+        ],
+        "mouth": [
+          42,
+          -45
+        ],
+        "nose": [
+          44,
+          -48
+        ],
+        "back": [
+          -6,
+          -50
+        ],
+        "surface": [
+          -6,
+          -50
+        ],
+        "tail": [
+          -46,
+          -30
+        ],
+        "grip": [
+          0,
+          -35
+        ],
+        "top": [
+          28,
+          -68
+        ]
+      }
+    },
+    "tiger": {
+      "label": "a tiger",
+      "group": "animal",
+      "face": false,
+      "pack": "wildlife_apex",
+      "topics": [
+        "wildlife",
+        "asia",
+        "apex"
+      ],
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "head": [
+          30,
+          -50
+        ],
+        "face": [
+          34,
+          -48
+        ],
+        "mouth": [
+          44,
+          -44
+        ],
+        "nose": [
+          46,
+          -46
+        ],
+        "back": [
+          -6,
+          -48
+        ],
+        "surface": [
+          -6,
+          -48
+        ],
+        "tail": [
+          -48,
+          -28
+        ],
+        "grip": [
+          0,
+          -35
+        ],
+        "top": [
+          30,
+          -64
+        ]
+      }
+    },
+    "jaguar": {
+      "label": "a jaguar",
+      "group": "animal",
+      "face": false,
+      "pack": "wildlife_apex",
+      "topics": [
+        "wildlife",
+        "jungle",
+        "apex"
+      ],
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "head": [
+          28,
+          -48
+        ],
+        "face": [
+          32,
+          -46
+        ],
+        "mouth": [
+          42,
+          -42
+        ],
+        "nose": [
+          44,
+          -44
+        ],
+        "back": [
+          -6,
+          -46
+        ],
+        "surface": [
+          -6,
+          -46
+        ],
+        "tail": [
+          -46,
+          -26
+        ],
+        "grip": [
+          0,
+          -32
+        ],
+        "top": [
+          28,
+          -62
+        ]
+      }
+    },
+    "great_white_shark": {
+      "label": "a great white shark",
+      "group": "fish",
+      "face": false,
+      "pack": "wildlife_apex",
+      "topics": [
+        "ocean",
+        "marine",
+        "shark",
+        "apex"
+      ],
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -36
+        ],
+        "head": [
+          44,
+          -36
+        ],
+        "mouth": [
+          40,
+          -28
+        ],
+        "snout": [
+          54,
+          -36
+        ],
+        "eye": [
+          36,
+          -40
+        ],
+        "dorsal": [
+          4,
+          -68
+        ],
+        "top": [
+          4,
+          -68
+        ],
+        "back": [
+          0,
+          -50
+        ],
+        "belly": [
+          0,
+          -18
+        ],
+        "tail": [
+          -52,
+          -36
+        ],
+        "grip": [
+          0,
+          -36
+        ]
+      }
+    },
+    "killer_whale": {
+      "label": "a killer whale",
+      "group": "animal",
+      "face": false,
+      "pack": "wildlife_apex",
+      "topics": [
+        "ocean",
+        "marine",
+        "whale",
+        "apex"
+      ],
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -36
+        ],
+        "head": [
+          46,
+          -36
+        ],
+        "mouth": [
+          54,
+          -32
+        ],
+        "eye": [
+          38,
+          -38
+        ],
+        "blowhole": [
+          20,
+          -56
+        ],
+        "dorsal": [
+          2,
+          -72
+        ],
+        "top": [
+          2,
+          -72
+        ],
+        "back": [
+          0,
+          -52
+        ],
+        "belly": [
+          0,
+          -16
+        ],
+        "fluke": [
+          -54,
+          -36
+        ],
+        "grip": [
+          0,
+          -36
+        ]
+      }
+    },
+    "polar_bear": {
+      "label": "a polar bear",
+      "group": "animal",
+      "face": false,
+      "pack": "wildlife_apex",
+      "topics": [
+        "arctic",
+        "polar",
+        "bear",
+        "apex"
+      ],
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "head": [
+          36,
+          -56
+        ],
+        "face": [
+          40,
+          -54
+        ],
+        "mouth": [
+          52,
+          -48
+        ],
+        "nose": [
+          54,
+          -52
+        ],
+        "back": [
+          -6,
+          -58
+        ],
+        "surface": [
+          -6,
+          -58
+        ],
+        "tail": [
+          -48,
+          -42
+        ],
+        "grip": [
+          0,
+          -40
+        ],
+        "top": [
+          36,
+          -70
+        ]
+      }
+    },
+    "rhino": {
+      "label": "a rhino",
+      "group": "animal",
+      "face": false,
+      "pack": "wildlife_apex",
+      "topics": [
+        "wildlife",
+        "safari",
+        "savanna"
+      ],
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "head": [
+          32,
+          -50
+        ],
+        "face": [
+          36,
+          -48
+        ],
+        "mouth": [
+          46,
+          -38
+        ],
+        "snout": [
+          48,
+          -42
+        ],
+        "horn": [
+          52,
+          -58
+        ],
+        "back": [
+          -8,
+          -58
+        ],
+        "surface": [
+          -8,
+          -58
+        ],
+        "tail": [
+          -46,
+          -32
+        ],
+        "grip": [
+          0,
+          -40
+        ],
+        "top": [
+          30,
+          -72
+        ]
+      }
+    },
+    "peregrine_falcon": {
+      "label": "a peregrine falcon",
+      "group": "bird",
+      "face": false,
+      "pack": "wildlife_apex",
+      "topics": [
+        "bird",
+        "raptor",
+        "speed",
+        "apex"
+      ],
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "head": [
+          12,
+          -58
+        ],
+        "face": [
+          14,
+          -56
+        ],
+        "beak": [
+          28,
+          -54
+        ],
+        "mouth": [
+          26,
+          -52
+        ],
+        "eye": [
+          16,
+          -58
+        ],
+        "wing": [
+          -10,
+          -40
+        ],
+        "back": [
+          -6,
+          -50
+        ],
+        "surface": [
+          -6,
+          -50
+        ],
+        "tail": [
+          -28,
+          -20
+        ],
+        "grip": [
+          0,
+          -25
+        ],
+        "top": [
+          12,
+          -70
+        ]
+      }
+    },
+    "snowy_owl": {
+      "label": "a snowy owl",
+      "group": "bird",
+      "face": false,
+      "pack": "wildlife_apex",
+      "topics": [
+        "bird",
+        "owl",
+        "arctic",
+        "apex"
+      ],
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "head": [
+          0,
+          -56
+        ],
+        "face": [
+          2,
+          -56
+        ],
+        "beak": [
+          6,
+          -52
+        ],
+        "mouth": [
+          6,
+          -50
+        ],
+        "eye": [
+          2,
+          -58
+        ],
+        "wing": [
+          -18,
+          -36
+        ],
+        "back": [
+          -12,
+          -48
+        ],
+        "surface": [
+          -12,
+          -48
+        ],
+        "tail": [
+          -18,
+          -12
+        ],
+        "grip": [
+          0,
+          -30
+        ],
+        "top": [
+          0,
+          -74
+        ]
+      }
+    },
+    "komodo_dragon": {
+      "label": "a komodo dragon",
+      "group": "animal",
+      "face": false,
+      "pack": "wildlife_apex",
+      "topics": [
+        "wildlife",
+        "reptile",
+        "lizard",
+        "apex"
+      ],
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "head": [
+          36,
+          -34
+        ],
+        "face": [
+          40,
+          -32
+        ],
+        "snout": [
+          48,
+          -30
+        ],
+        "mouth": [
+          46,
+          -26
+        ],
+        "tongue": [
+          58,
+          -28
+        ],
+        "back": [
+          -8,
+          -32
+        ],
+        "surface": [
+          -8,
+          -32
+        ],
+        "tail": [
+          -50,
+          -18
+        ],
+        "grip": [
+          0,
+          -20
+        ],
+        "top": [
+          32,
+          -46
+        ]
+      }
+    },
+    "machu_picchu": {
+      "label": "Machu Picchu ruins",
+      "group": "building",
+      "pack": "ancient_sites",
+      "topics": [
+        "ancient",
+        "lost_civilizations"
+      ],
+      "face": false,
+      "rest_pose": {
+        "growth": 1
+      },
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -50
+        ],
+        "top": [
+          0,
+          -95
+        ],
+        "peak": [
+          15,
+          -92
+        ],
+        "terrace_1": [
+          -24,
+          -30
+        ],
+        "terrace_2": [
+          24,
+          -45
+        ]
+      }
+    },
+    "angkor_temple": {
+      "label": "Angkor temple",
+      "group": "building",
+      "pack": "ancient_sites",
+      "topics": [
+        "ancient",
+        "lost_civilizations"
+      ],
+      "face": false,
+      "rest_pose": {
+        "growth": 1
+      },
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -52
+        ],
+        "top": [
+          0,
+          -95
+        ],
+        "tower_c": [
+          0,
+          -95
+        ],
+        "tower_l": [
+          -28,
+          -65
+        ],
+        "tower_r": [
+          28,
+          -65
+        ],
+        "entrance": [
+          0,
+          -18
+        ]
+      }
+    },
+    "petra_facade": {
+      "label": "Petra rock-cut facade",
+      "group": "building",
+      "pack": "ancient_sites",
+      "topics": [
+        "ancient",
+        "lost_civilizations"
+      ],
+      "face": false,
+      "rest_pose": {
+        "growth": 1
+      },
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -54
+        ],
+        "top": [
+          0,
+          -95
+        ],
+        "urn": [
+          0,
+          -95
+        ],
+        "column_l": [
+          -26,
+          -30
+        ],
+        "column_r": [
+          26,
+          -30
+        ],
+        "portal": [
+          0,
+          -15
+        ]
+      }
+    },
+    "nazca_geoglyph": {
+      "label": "Nazca hummingbird geoglyph",
+      "group": "prop",
+      "pack": "ancient_sites",
+      "topics": [
+        "ancient",
+        "lost_civilizations",
+        "unsolved_mysteries"
+      ],
+      "face": false,
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -50
+        ],
+        "top": [
+          0,
+          -94
+        ],
+        "beak_tip": [
+          0,
+          -94
+        ],
+        "wing_l": [
+          -42,
+          -52
+        ],
+        "wing_r": [
+          42,
+          -52
+        ],
+        "tail": [
+          0,
+          -10
+        ]
+      }
+    },
+    "terracotta_warriors": {
+      "label": "Terracotta army warriors",
+      "group": "prop",
+      "pack": "ancient_sites",
+      "topics": [
+        "ancient",
+        "lost_civilizations"
+      ],
+      "face": false,
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -50
+        ],
+        "top": [
+          0,
+          -88
+        ],
+        "head_c": [
+          0,
+          -82
+        ],
+        "head_l": [
+          -26,
+          -74
+        ],
+        "head_r": [
+          26,
+          -74
+        ],
+        "chest": [
+          0,
+          -52
+        ]
+      }
+    },
+    "antikythera_mechanism": {
+      "label": "Antikythera mechanism",
+      "group": "prop",
+      "pack": "ancient_sites",
+      "topics": [
+        "ancient",
+        "lost_civilizations",
+        "unsolved_mysteries"
+      ],
+      "face": false,
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -50
+        ],
+        "top": [
+          0,
+          -94
+        ],
+        "dial": [
+          0,
+          -50
+        ],
+        "crank": [
+          38,
+          -50
+        ],
+        "gear_main": [
+          0,
+          -50
+        ]
+      }
+    },
+    "gobekli_pillar": {
+      "label": "Göbekli Tepe stone pillar",
+      "group": "building",
+      "pack": "ancient_sites",
+      "topics": [
+        "ancient",
+        "lost_civilizations",
+        "unsolved_mysteries"
+      ],
+      "face": false,
+      "rest_pose": {
+        "growth": 1
+      },
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -50
+        ],
+        "top": [
+          0,
+          -94
+        ],
+        "cap_l": [
+          -32,
+          -85
+        ],
+        "cap_r": [
+          32,
+          -85
+        ],
+        "belt": [
+          0,
+          -25
+        ],
+        "relief": [
+          0,
+          -52
+        ]
+      }
+    },
+    "underground_city": {
+      "label": "Underground city cutaway",
+      "group": "building",
+      "pack": "ancient_sites",
+      "topics": [
+        "ancient",
+        "lost_civilizations",
+        "unsolved_mysteries"
+      ],
+      "face": false,
+      "rest_pose": {
+        "growth": 1
+      },
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -50
+        ],
+        "top": [
+          0,
+          -94
+        ],
+        "stone_door": [
+          -24,
+          -26
+        ],
+        "vent_shaft": [
+          28,
+          -75
+        ],
+        "level_1": [
+          0,
+          -74
+        ],
+        "level_2": [
+          0,
+          -42
+        ],
+        "level_3": [
+          0,
+          -16
+        ]
+      }
+    },
+    "ancient_library_scroll": {
+      "label": "Ancient library scroll stack",
+      "group": "prop",
+      "pack": "ancient_sites",
+      "topics": [
+        "ancient",
+        "lost_civilizations",
+        "unsolved_mysteries"
+      ],
+      "face": false,
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -48
+        ],
+        "top": [
+          0,
+          -92
+        ],
+        "scroll_open": [
+          0,
+          -32
+        ],
+        "shelf_top": [
+          0,
+          -84
+        ],
+        "tag": [
+          -20,
+          -55
+        ]
+      }
+    },
+    "kitsune": {
+      "label": "Kitsune spirit fox",
+      "group": "animal",
+      "pack": "folk_spirits",
+      "topics": [
+        "folklore"
+      ],
+      "face": false,
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -45
+        ],
+        "top": [
+          0,
+          -88
+        ],
+        "head": [
+          0,
+          -62
+        ],
+        "orb": [
+          28,
+          -68
+        ],
+        "tail_l": [
+          -34,
+          -40
+        ],
+        "tail_r": [
+          34,
+          -40
+        ]
+      }
+    },
+    "gumiho": {
+      "label": "Gumiho nine-tailed fox",
+      "group": "animal",
+      "pack": "folk_spirits",
+      "topics": [
+        "folklore"
+      ],
+      "face": false,
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -45
+        ],
+        "top": [
+          0,
+          -88
+        ],
+        "head": [
+          0,
+          -60
+        ],
+        "bead": [
+          0,
+          -32
+        ],
+        "tail_fan": [
+          0,
+          -50
+        ]
+      }
+    },
+    "dokkaebi": {
+      "label": "Dokkaebi goblin with club",
+      "group": "chibi",
+      "pack": "folk_spirits",
+      "topics": [
+        "folklore"
+      ],
+      "face": false,
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -45
+        ],
+        "top": [
+          0,
+          -90
+        ],
+        "head": [
+          0,
+          -60
+        ],
+        "horn": [
+          0,
+          -88
+        ],
+        "club": [
+          26,
+          -48
+        ],
+        "hand_l": [
+          -22,
+          -40
+        ],
+        "hand_r": [
+          22,
+          -40
+        ]
+      }
+    },
+    "yuki_onna": {
+      "label": "Yuki-onna snow maiden",
+      "group": "chibi",
+      "pack": "folk_spirits",
+      "topics": [
+        "folklore"
+      ],
+      "face": false,
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -46
+        ],
+        "top": [
+          0,
+          -92
+        ],
+        "head": [
+          0,
+          -66
+        ],
+        "hand_l": [
+          -20,
+          -42
+        ],
+        "hand_r": [
+          20,
+          -42
+        ],
+        "snow_swirl": [
+          25,
+          -55
+        ]
+      }
+    },
+    "krampus_folk": {
+      "label": "Krampus alpine spirit",
+      "group": "animal",
+      "pack": "folk_spirits",
+      "topics": [
+        "folklore"
+      ],
+      "face": false,
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -46
+        ],
+        "top": [
+          0,
+          -95
+        ],
+        "head": [
+          0,
+          -62
+        ],
+        "horn_l": [
+          -22,
+          -92
+        ],
+        "horn_r": [
+          22,
+          -92
+        ],
+        "bell": [
+          0,
+          -28
+        ],
+        "twigs": [
+          -26,
+          -50
+        ]
+      }
+    },
+    "clay_golem": {
+      "label": "Clay golem guardian",
+      "group": "chibi",
+      "pack": "folk_spirits",
+      "topics": [
+        "folklore"
+      ],
+      "face": false,
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -50
+        ],
+        "top": [
+          0,
+          -94
+        ],
+        "head": [
+          0,
+          -72
+        ],
+        "rune": [
+          0,
+          -78
+        ],
+        "chest": [
+          0,
+          -52
+        ],
+        "fist_l": [
+          -34,
+          -35
+        ],
+        "fist_r": [
+          34,
+          -35
+        ]
+      }
+    },
+    "will_o_wisp": {
+      "label": "Will-o'-the-wisp spirit light",
+      "group": "prop",
+      "pack": "folk_spirits",
+      "topics": [
+        "folklore"
+      ],
+      "face": false,
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -48
+        ],
+        "top": [
+          0,
+          -90
+        ],
+        "orb_main": [
+          0,
+          -50
+        ],
+        "orb_small1": [
+          -24,
+          -35
+        ],
+        "orb_small2": [
+          24,
+          -62
+        ]
+      }
+    },
+    "selkie": {
+      "label": "Selkie seal spirit",
+      "group": "animal",
+      "pack": "folk_spirits",
+      "topics": [
+        "folklore"
+      ],
+      "face": false,
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -42
+        ],
+        "top": [
+          0,
+          -84
+        ],
+        "head": [
+          0,
+          -60
+        ],
+        "pelt": [
+          -15,
+          -45
+        ],
+        "flipper_l": [
+          -26,
+          -20
+        ],
+        "flipper_r": [
+          26,
+          -20
+        ]
+      }
+    },
+    "rubezahl_spirit": {
+      "label": "Rübezahl mountain spirit",
+      "group": "chibi",
+      "pack": "folk_spirits",
+      "topics": [
+        "folklore"
+      ],
+      "face": false,
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -50
+        ],
+        "top": [
+          0,
+          -96
+        ],
+        "head": [
+          0,
+          -68
+        ],
+        "staff_top": [
+          30,
+          -92
+        ],
+        "beard": [
+          0,
+          -50
+        ],
+        "lantern": [
+          30,
+          -60
+        ]
+      }
+    },
+    "welsh_red_dragon": {
+      "label": "Welsh red dragon",
+      "group": "animal",
+      "pack": "folk_spirits",
+      "topics": [
+        "folklore"
+      ],
+      "face": false,
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -48
+        ],
+        "top": [
+          0,
+          -92
+        ],
+        "head": [
+          0,
+          -68
+        ],
+        "wing_l": [
+          -38,
+          -65
+        ],
+        "wing_r": [
+          38,
+          -65
+        ],
+        "tail_tip": [
+          35,
+          -25
+        ],
+        "mouth": [
+          14,
+          -62
+        ]
+      }
+    },
+    "chibi_deity_greek": {
+      "label": "a Greek deity",
+      "group": "prop",
+      "face": false,
+      "pack": "myth_world",
+      "topics": [
+        "ancient_mythology"
+      ],
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -45
+        ],
+        "top": [
+          0,
+          -88
+        ],
+        "head": [
+          0,
+          -62
+        ],
+        "face": [
+          0,
+          -62
+        ],
+        "hand_r": [
+          22,
+          -35
+        ],
+        "hand_l": [
+          -22,
+          -35
+        ],
+        "grip": [
+          22,
+          -35
+        ]
+      }
+    },
+    "chibi_deity_norse": {
+      "label": "a Norse deity",
+      "group": "prop",
+      "face": false,
+      "pack": "myth_world",
+      "topics": [
+        "ancient_mythology"
+      ],
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -45
+        ],
+        "top": [
+          0,
+          -92
+        ],
+        "head": [
+          0,
+          -60
+        ],
+        "face": [
+          0,
+          -60
+        ],
+        "hand_r": [
+          24,
+          -36
+        ],
+        "hand_l": [
+          -24,
+          -36
+        ],
+        "grip": [
+          24,
+          -36
+        ]
+      }
+    },
+    "chibi_deity_egypt": {
+      "label": "an Egyptian deity",
+      "group": "prop",
+      "face": false,
+      "pack": "myth_world",
+      "topics": [
+        "ancient_mythology"
+      ],
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -46
+        ],
+        "top": [
+          0,
+          -94
+        ],
+        "head": [
+          0,
+          -60
+        ],
+        "face": [
+          0,
+          -60
+        ],
+        "hand_r": [
+          22,
+          -35
+        ],
+        "hand_l": [
+          -22,
+          -35
+        ],
+        "grip": [
+          22,
+          -35
+        ]
+      }
+    },
+    "chibi_deity_jp": {
+      "label": "a Japanese deity",
+      "group": "prop",
+      "face": false,
+      "pack": "myth_world",
+      "topics": [
+        "ancient_mythology",
+        "jp_culture"
+      ],
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -45
+        ],
+        "top": [
+          0,
+          -90
+        ],
+        "head": [
+          0,
+          -62
+        ],
+        "face": [
+          0,
+          -62
+        ],
+        "hand_r": [
+          22,
+          -35
+        ],
+        "hand_l": [
+          -22,
+          -35
+        ],
+        "grip": [
+          22,
+          -35
+        ]
+      }
+    },
+    "chibi_deity_kr": {
+      "label": "a Korean deity",
+      "group": "prop",
+      "face": false,
+      "pack": "myth_world",
+      "topics": [
+        "ancient_mythology",
+        "kr_culture"
+      ],
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -45
+        ],
+        "top": [
+          0,
+          -92
+        ],
+        "head": [
+          0,
+          -60
+        ],
+        "face": [
+          0,
+          -60
+        ],
+        "hand_r": [
+          22,
+          -35
+        ],
+        "hand_l": [
+          -22,
+          -35
+        ],
+        "grip": [
+          22,
+          -35
+        ]
+      }
+    },
+    "world_tree_yggdrasil": {
+      "label": "the world tree Yggdrasil",
+      "group": "prop",
+      "face": false,
+      "pack": "myth_world",
+      "topics": [
+        "ancient_mythology",
+        "nature"
+      ],
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -48
+        ],
+        "top": [
+          0,
+          -96
+        ],
+        "trunk": [
+          0,
+          -30
+        ],
+        "canopy": [
+          0,
+          -70
+        ],
+        "grip": [
+          0,
+          -45
+        ]
+      }
+    },
+    "thunder_hammer": {
+      "label": "Thor's thunder hammer",
+      "group": "prop",
+      "face": false,
+      "pack": "myth_world",
+      "topics": [
+        "ancient_mythology"
+      ],
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -40
+        ],
+        "top": [
+          0,
+          -82
+        ],
+        "head": [
+          0,
+          -65
+        ],
+        "grip": [
+          0,
+          -25
+        ]
+      }
+    },
+    "scale_of_truth": {
+      "label": "the scale of truth",
+      "group": "prop",
+      "face": false,
+      "pack": "myth_world",
+      "topics": [
+        "ancient_mythology"
+      ],
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -45
+        ],
+        "top": [
+          0,
+          -90
+        ],
+        "pan_l": [
+          -24,
+          -40
+        ],
+        "pan_r": [
+          24,
+          -40
+        ],
+        "grip": [
+          0,
+          -45
+        ]
+      }
+    },
+    "myth_labyrinth": {
+      "label": "the Cretan labyrinth",
+      "group": "building",
+      "rest_pose": {
+        "growth": 1
+      },
+      "face": false,
+      "pack": "myth_world",
+      "topics": [
+        "ancient_mythology",
+        "history"
+      ],
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -35
+        ],
+        "top": [
+          0,
+          -75
+        ],
+        "entrance": [
+          0,
+          -10
+        ],
+        "core": [
+          0,
+          -38
+        ],
+        "grip": [
+          0,
+          -35
+        ]
+      }
+    },
+    "wooden_horse_trojan": {
+      "label": "the Trojan wooden horse",
+      "group": "prop",
+      "face": false,
+      "pack": "myth_world",
+      "topics": [
+        "ancient_mythology",
+        "history"
+      ],
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -45
+        ],
+        "top": [
+          12,
+          -92
+        ],
+        "head": [
+          24,
+          -75
+        ],
+        "body": [
+          -5,
+          -45
+        ],
+        "hatch": [
+          -5,
+          -42
+        ],
+        "grip": [
+          0,
+          -45
+        ]
+      }
+    },
+    "yamata_serpent": {
+      "label": "the eight-headed serpent",
+      "group": "animal",
+      "face": false,
+      "pack": "myth_world",
+      "topics": [
+        "ancient_mythology",
+        "jp_culture"
+      ],
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -42
+        ],
+        "top": [
+          0,
+          -88
+        ],
+        "head_main": [
+          0,
+          -78
+        ],
+        "head_1": [
+          -28,
+          -70
+        ],
+        "head_2": [
+          28,
+          -70
+        ],
+        "grip": [
+          0,
+          -40
+        ]
+      }
+    },
+    "pandora_jar": {
+      "label": "Pandora's jar",
+      "group": "prop",
+      "face": false,
+      "pack": "myth_world",
+      "topics": [
+        "ancient_mythology"
+      ],
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -40
+        ],
+        "top": [
+          0,
+          -85
+        ],
+        "opening": [
+          0,
+          -62
+        ],
+        "mist": [
+          8,
+          -78
+        ],
+        "grip": [
+          0,
+          -40
+        ]
+      }
+    },
+    "sun_barge": {
+      "label": "the sun barge of Ra",
+      "group": "vehicle",
+      "face": false,
+      "pack": "myth_world",
+      "topics": [
+        "ancient_mythology"
+      ],
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -35
+        ],
+        "top": [
+          0,
+          -80
+        ],
+        "prow": [
+          38,
+          -55
+        ],
+        "stern": [
+          -38,
+          -55
+        ],
+        "sun": [
+          0,
+          -58
+        ],
+        "grip": [
+          0,
+          -35
+        ]
+      }
+    },
+    "prometheus_torch": {
+      "label": "the torch of Prometheus",
+      "group": "prop",
+      "face": false,
+      "pack": "myth_world",
+      "topics": [
+        "ancient_mythology"
+      ],
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -45
+        ],
+        "top": [
+          0,
+          -92
+        ],
+        "flame": [
+          0,
+          -75
+        ],
+        "grip": [
+          0,
+          -32
+        ]
+      }
+    },
+    "icarus_wings": {
+      "label": "the wings of Icarus",
+      "group": "prop",
+      "face": false,
+      "pack": "myth_world",
+      "topics": [
+        "ancient_mythology"
+      ],
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -45
+        ],
+        "top": [
+          0,
+          -85
+        ],
+        "wing_l": [
+          -32,
+          -60
+        ],
+        "wing_r": [
+          32,
+          -60
+        ],
+        "grip": [
+          0,
+          -45
+        ]
+      }
+    },
+    "golden_lyre": {
+      "label": "the golden lyre of Orpheus",
+      "group": "prop",
+      "face": false,
+      "pack": "myth_world",
+      "topics": [
+        "ancient_mythology"
+      ],
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -45
+        ],
+        "top": [
+          0,
+          -86
+        ],
+        "strings": [
+          0,
+          -45
+        ],
+        "grip": [
+          0,
+          -38
+        ]
+      }
+    },
+    "sisyphus_boulder": {
+      "label": "the boulder of Sisyphus",
+      "group": "prop",
+      "face": false,
+      "pack": "myth_world",
+      "topics": [
+        "ancient_mythology"
+      ],
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -42
+        ],
+        "top": [
+          0,
+          -84
+        ],
+        "grip": [
+          0,
+          -42
+        ]
+      }
+    },
+    "myth_dragon": {
+      "label": "a mythical dragon",
+      "group": "animal",
+      "face": false,
+      "pack": "myth_world",
+      "topics": [
+        "ancient_mythology",
+        "folklore_legends"
+      ],
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -45
+        ],
+        "top": [
+          0,
+          -90
+        ],
+        "head": [
+          22,
+          -68
+        ],
+        "wing": [
+          -16,
+          -60
+        ],
+        "tail": [
+          -34,
+          -20
+        ],
+        "grip": [
+          0,
+          -45
+        ]
+      }
+    },
+    "friendly_robot": {
+      "label": "a friendly humanoid robot helper for turing test facial recognition and laundry",
+      "group": "prop",
+      "pack": "tech_future",
+      "topics": [
+        "tech",
+        "robot",
+        "ai"
+      ],
+      "face": false,
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -45
+        ],
+        "top": [
+          0,
+          -88
+        ],
+        "hand_l": [
+          -20,
+          -42
+        ],
+        "hand_r": [
+          20,
+          -42
+        ],
+        "head": [
+          0,
+          -68
+        ]
+      }
+    },
+    "ai_chip": {
+      "label": "an AI neural processor chip for semiconductors cpu moore brain-computer interfaces and crispr",
+      "group": "prop",
+      "pack": "tech_future",
+      "topics": [
+        "tech",
+        "chip",
+        "hardware"
+      ],
+      "face": false,
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -40
+        ],
+        "top": [
+          0,
+          -80
+        ],
+        "die": [
+          0,
+          -40
+        ],
+        "pin_l": [
+          -34,
+          -40
+        ],
+        "pin_r": [
+          34,
+          -40
+        ]
+      }
+    },
+    "server_rack": {
+      "label": "a datacenter server rack unit for supercomputers weather data desktop bug and meat",
+      "group": "prop",
+      "pack": "tech_future",
+      "topics": [
+        "tech",
+        "datacenter",
+        "internet"
+      ],
+      "face": false,
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -45
+        ],
+        "top": [
+          0,
+          -92
+        ],
+        "leds": [
+          17,
+          -60
+        ],
+        "handle": [
+          -24,
+          -45
+        ]
+      }
+    },
+    "undersea_cable": {
+      "label": "an undersea fiber-optic cable for internet fiber oceans and cables",
+      "group": "prop",
+      "pack": "tech_future",
+      "topics": [
+        "tech",
+        "network",
+        "cables"
+      ],
+      "face": false,
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -38
+        ],
+        "top": [
+          0,
+          -76
+        ],
+        "core": [
+          0,
+          -38
+        ],
+        "armor": [
+          0,
+          -38
+        ]
+      }
+    },
+    "satellite_gps": {
+      "label": "a GPS navigation satellite for starlink and navigation with solar and debris",
+      "group": "prop",
+      "pack": "tech_future",
+      "topics": [
+        "tech",
+        "satellite",
+        "space"
+      ],
+      "face": false,
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -45
+        ],
+        "top": [
+          0,
+          -82
+        ],
+        "wing_l": [
+          -44,
+          -45
+        ],
+        "wing_r": [
+          44,
+          -45
+        ],
+        "antenna": [
+          0,
+          -18
+        ]
+      }
+    },
+    "lithium_battery": {
+      "label": "a rechargeable lithium battery cell and batteries",
+      "group": "prop",
+      "pack": "tech_future",
+      "topics": [
+        "tech",
+        "energy",
+        "battery"
+      ],
+      "face": false,
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -42
+        ],
+        "top": [
+          0,
+          -84
+        ],
+        "cap_top": [
+          0,
+          -80
+        ],
+        "window": [
+          0,
+          -42
+        ]
+      }
+    },
+    "autonomous_car": {
+      "label": "an autonomous electric car self-driving vehicle for tesla and drones",
+      "group": "vehicle",
+      "pack": "tech_future",
+      "topics": [
+        "tech",
+        "car",
+        "ai"
+      ],
+      "face": false,
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -32
+        ],
+        "top": [
+          0,
+          -64
+        ],
+        "lidar": [
+          0,
+          -51
+        ],
+        "wheel_f": [
+          24,
+          -10
+        ],
+        "wheel_r": [
+          -24,
+          -10
+        ]
+      }
+    },
+    "quantum_computer": {
+      "label": "a quantum computer processor for quantum computing windows macos and fusion",
+      "group": "prop",
+      "pack": "tech_future",
+      "topics": [
+        "tech",
+        "quantum",
+        "computer"
+      ],
+      "face": false,
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -50
+        ],
+        "top": [
+          0,
+          -94
+        ],
+        "top_flange": [
+          0,
+          -87
+        ],
+        "stage_2": [
+          0,
+          -62
+        ],
+        "stage_3": [
+          0,
+          -40
+        ],
+        "qpu": [
+          0,
+          -11
+        ]
+      }
+    },
+    "ai_chat_bubble": {
+      "label": "an AI chat bubble interface for chatgpt search language models and deepfakes",
+      "group": "prop",
+      "pack": "tech_future",
+      "topics": [
+        "tech",
+        "ai",
+        "software"
+      ],
+      "face": false,
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -45
+        ],
+        "top": [
+          0,
+          -85
+        ],
+        "prompt": [
+          -6,
+          -64
+        ],
+        "response": [
+          6,
+          -28
+        ]
+      }
+    },
+    "telecom_tower": {
+      "label": "a 5G and 6G telecom cellular tower for networks noise-cancelling headphones and twin",
+      "group": "prop",
+      "pack": "tech_future",
+      "topics": [
+        "tech",
+        "network",
+        "telecom"
+      ],
+      "face": false,
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -48
+        ],
+        "top": [
+          0,
+          -96
+        ],
+        "antenna_top": [
+          0,
+          -88
+        ],
+        "dish": [
+          -18,
+          -48
+        ],
+        "beacon": [
+          0,
+          -94
+        ]
+      }
+    },
+    "cipher_manuscript": {
+      "label": "Voynich Cipher Manuscript",
+      "group": "prop",
+      "pack": "mystery_props",
+      "topics": [
+        "unsolved_mysteries",
+        "ancient",
+        "mystery"
+      ],
+      "face": false,
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -50
+        ],
+        "top": [
+          0,
+          -90
+        ],
+        "page_l": [
+          -40,
+          -50
+        ],
+        "page_r": [
+          40,
+          -50
+        ]
+      }
+    },
+    "twin_engine_plane": {
+      "label": "Electra Twin Engine Plane",
+      "group": "prop",
+      "pack": "mystery_props",
+      "topics": [
+        "unsolved_mysteries",
+        "inventions",
+        "vehicle"
+      ],
+      "face": false,
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -50
+        ],
+        "nose": [
+          65,
+          -50
+        ],
+        "tail": [
+          -65,
+          -60
+        ],
+        "wing_l": [
+          -10,
+          -35
+        ],
+        "wing_r": [
+          -10,
+          -65
+        ],
+        "propeller_1": [
+          30,
+          -35
+        ],
+        "propeller_2": [
+          30,
+          -65
+        ]
+      }
+    },
+    "ghost_ship": {
+      "label": "Ghost Ship Mary Celeste",
+      "group": "prop",
+      "pack": "mystery_props",
+      "topics": [
+        "unsolved_mysteries",
+        "ocean",
+        "vehicle"
+      ],
+      "face": false,
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -50
+        ],
+        "bow": [
+          70,
+          -45
+        ],
+        "stern": [
+          -65,
+          -50
+        ],
+        "mast_main": [
+          0,
+          -95
+        ],
+        "mast_fore": [
+          40,
+          -85
+        ],
+        "mast_mizzen": [
+          -35,
+          -85
+        ],
+        "wheel": [
+          -45,
+          -55
+        ]
+      }
+    },
+    "abandoned_lighthouse": {
+      "label": "Abandoned Cliffside Lighthouse",
+      "group": "prop",
+      "pack": "mystery_props",
+      "topics": [
+        "unsolved_mysteries",
+        "ocean",
+        "building"
+      ],
+      "face": false,
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -50
+        ],
+        "top": [
+          0,
+          -95
+        ],
+        "lamp": [
+          0,
+          -80
+        ],
+        "balcony": [
+          0,
+          -70
+        ],
+        "door": [
+          0,
+          -15
+        ],
+        "rock_base": [
+          0,
+          -5
+        ]
+      }
+    },
+    "money_pit": {
+      "label": "Oak Island Money Pit",
+      "group": "prop",
+      "pack": "mystery_props",
+      "topics": [
+        "unsolved_mysteries",
+        "mystery",
+        "building"
+      ],
+      "face": false,
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -50
+        ],
+        "top": [
+          0,
+          -95
+        ],
+        "pulley": [
+          0,
+          -85
+        ],
+        "surface": [
+          0,
+          -65
+        ],
+        "depth": [
+          0,
+          -15
+        ],
+        "chest_depth": [
+          0,
+          -20
+        ]
+      }
+    },
+    "phaistos_disk": {
+      "label": "Ancient Phaistos Disk",
+      "group": "prop",
+      "pack": "mystery_props",
+      "topics": [
+        "unsolved_mysteries",
+        "ancient",
+        "mystery"
+      ],
+      "face": false,
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -50
+        ],
+        "top": [
+          0,
+          -90
+        ],
+        "edge_l": [
+          -45,
+          -50
+        ],
+        "edge_r": [
+          45,
+          -50
+        ],
+        "center_spiral": [
+          0,
+          -50
+        ]
+      }
+    },
+    "radio_telescope": {
+      "label": "Radio Telescope Parabolic Dish",
+      "group": "prop",
+      "pack": "mystery_props",
+      "topics": [
+        "unsolved_mysteries",
+        "technology",
+        "deep_space"
+      ],
+      "face": false,
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -50
+        ],
+        "dish_center": [
+          10,
+          -65
+        ],
+        "feed_horn": [
+          28,
+          -78
+        ],
+        "base": [
+          0,
+          -10
+        ],
+        "dish_rim_l": [
+          -35,
+          -50
+        ],
+        "dish_rim_r": [
+          55,
+          -80
+        ]
+      }
+    },
+    "antique_compass": {
+      "label": "Antique Navigational Brass Compass",
+      "group": "prop",
+      "pack": "mystery_props",
+      "topics": [
+        "unsolved_mysteries",
+        "inventions",
+        "ocean"
+      ],
+      "face": false,
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -50
+        ],
+        "ring_top": [
+          0,
+          -92
+        ],
+        "needle_n": [
+          0,
+          -78
+        ],
+        "needle_s": [
+          0,
+          -22
+        ],
+        "edge_l": [
+          -45,
+          -50
+        ],
+        "edge_r": [
+          45,
+          -50
+        ]
+      }
+    },
+    "treasure_map": {
+      "label": "Parchment Treasure Map",
+      "group": "prop",
+      "pack": "mystery_props",
+      "topics": [
+        "unsolved_mysteries",
+        "ocean",
+        "mystery"
+      ],
+      "face": false,
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -50
+        ],
+        "top": [
+          0,
+          -88
+        ],
+        "mark_x": [
+          15,
+          -45
+        ],
+        "island": [
+          -10,
+          -50
+        ],
+        "roll_l": [
+          -45,
+          -50
+        ],
+        "roll_r": [
+          45,
+          -50
+        ]
+      }
+    },
+    "mantis_shrimp": {
+      "label": "a mantis shrimp",
+      "group": "fish",
+      "face": false,
+      "pack": "wildlife_weird",
+      "topics": [
+        "marine",
+        "ocean",
+        "weird",
+        "shrimp"
+      ],
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "head": [
+          28,
+          -36
+        ],
+        "face": [
+          30,
+          -36
+        ],
+        "eye": [
+          32,
+          -44
+        ],
+        "club": [
+          24,
+          -22
+        ],
+        "back": [
+          -6,
+          -38
+        ],
+        "surface": [
+          -6,
+          -38
+        ],
+        "tail": [
+          -40,
+          -26
+        ],
+        "grip": [
+          0,
+          -25
+        ],
+        "top": [
+          28,
+          -52
+        ]
+      }
+    },
+    "tardigrade": {
+      "label": "a tardigrade",
+      "group": "animal",
+      "face": false,
+      "pack": "wildlife_weird",
+      "topics": [
+        "micro",
+        "space",
+        "weird",
+        "tardigrade",
+        "biology"
+      ],
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "head": [
+          30,
+          -35
+        ],
+        "mouth": [
+          38,
+          -32
+        ],
+        "eye": [
+          28,
+          -38
+        ],
+        "back": [
+          -2,
+          -48
+        ],
+        "surface": [
+          -2,
+          -48
+        ],
+        "grip": [
+          0,
+          -30
+        ],
+        "top": [
+          -2,
+          -54
+        ]
+      }
+    },
+    "axolotl": {
+      "label": "an axolotl",
+      "group": "fish",
+      "face": false,
+      "pack": "wildlife_weird",
+      "topics": [
+        "amphibian",
+        "weird",
+        "axolotl",
+        "biology"
+      ],
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "head": [
+          26,
+          -36
+        ],
+        "face": [
+          28,
+          -36
+        ],
+        "mouth": [
+          34,
+          -30
+        ],
+        "gill": [
+          20,
+          -48
+        ],
+        "back": [
+          -8,
+          -34
+        ],
+        "surface": [
+          -8,
+          -34
+        ],
+        "tail": [
+          -42,
+          -26
+        ],
+        "grip": [
+          0,
+          -25
+        ],
+        "top": [
+          20,
+          -56
+        ]
+      }
+    },
+    "greenland_shark": {
+      "label": "a greenland shark",
+      "group": "fish",
+      "face": false,
+      "pack": "wildlife_weird",
+      "topics": [
+        "ocean",
+        "shark",
+        "ancient",
+        "weird",
+        "deep_sea"
+      ],
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -34
+        ],
+        "head": [
+          44,
+          -34
+        ],
+        "mouth": [
+          42,
+          -24
+        ],
+        "eye": [
+          36,
+          -38
+        ],
+        "top": [
+          2,
+          -54
+        ],
+        "back": [
+          0,
+          -48
+        ],
+        "belly": [
+          0,
+          -18
+        ],
+        "tail": [
+          -52,
+          -34
+        ],
+        "grip": [
+          0,
+          -30
+        ]
+      }
+    },
+    "electric_eel": {
+      "label": "an electric eel",
+      "group": "fish",
+      "face": false,
+      "pack": "wildlife_weird",
+      "topics": [
+        "river",
+        "electric",
+        "fish",
+        "weird"
+      ],
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -30
+        ],
+        "head": [
+          46,
+          -34
+        ],
+        "face": [
+          44,
+          -34
+        ],
+        "mouth": [
+          52,
+          -32
+        ],
+        "eye": [
+          42,
+          -38
+        ],
+        "back": [
+          0,
+          -42
+        ],
+        "surface": [
+          0,
+          -42
+        ],
+        "tail": [
+          -50,
+          -26
+        ],
+        "top": [
+          0,
+          -48
+        ],
+        "grip": [
+          0,
+          -30
+        ]
+      }
+    },
+    "bombardier_beetle": {
+      "label": "a bombardier beetle",
+      "group": "animal",
+      "face": false,
+      "pack": "wildlife_weird",
+      "topics": [
+        "insect",
+        "beetle",
+        "chemical",
+        "weird"
+      ],
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "head": [
+          28,
+          -32
+        ],
+        "antenna": [
+          36,
+          -46
+        ],
+        "thorax": [
+          12,
+          -34
+        ],
+        "back": [
+          -10,
+          -36
+        ],
+        "surface": [
+          -10,
+          -36
+        ],
+        "nozzle": [
+          -32,
+          -22
+        ],
+        "top": [
+          -2,
+          -48
+        ],
+        "grip": [
+          0,
+          -25
+        ]
+      }
+    },
+    "wood_frog": {
+      "label": "a wood frog",
+      "group": "animal",
+      "face": false,
+      "pack": "wildlife_weird",
+      "topics": [
+        "amphibian",
+        "frog",
+        "arctic",
+        "freeze",
+        "weird"
+      ],
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "head": [
+          20,
+          -32
+        ],
+        "face": [
+          22,
+          -32
+        ],
+        "mouth": [
+          26,
+          -26
+        ],
+        "eye": [
+          18,
+          -38
+        ],
+        "back": [
+          -12,
+          -34
+        ],
+        "surface": [
+          -12,
+          -34
+        ],
+        "leg": [
+          -20,
+          -18
+        ],
+        "grip": [
+          0,
+          -20
+        ],
+        "top": [
+          12,
+          -46
+        ]
+      }
+    },
+    "naked_mole_rat": {
+      "label": "a naked mole rat",
+      "group": "animal",
+      "face": false,
+      "pack": "wildlife_weird",
+      "topics": [
+        "mammal",
+        "underground",
+        "weird",
+        "longevity"
+      ],
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "head": [
+          28,
+          -28
+        ],
+        "face": [
+          30,
+          -28
+        ],
+        "teeth": [
+          36,
+          -24
+        ],
+        "nose": [
+          34,
+          -30
+        ],
+        "back": [
+          -6,
+          -30
+        ],
+        "surface": [
+          -6,
+          -30
+        ],
+        "tail": [
+          -38,
+          -18
+        ],
+        "grip": [
+          0,
+          -20
+        ],
+        "top": [
+          12,
+          -40
+        ]
+      }
+    },
+    "archerfish": {
+      "label": "an archerfish",
+      "group": "fish",
+      "face": false,
+      "pack": "wildlife_weird",
+      "topics": [
+        "fish",
+        "river",
+        "shooter",
+        "weird"
+      ],
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -32
+        ],
+        "head": [
+          32,
+          -36
+        ],
+        "mouth": [
+          38,
+          -38
+        ],
+        "eye": [
+          28,
+          -42
+        ],
+        "back": [
+          -4,
+          -48
+        ],
+        "top": [
+          -4,
+          -54
+        ],
+        "tail": [
+          -42,
+          -30
+        ],
+        "grip": [
+          0,
+          -28
+        ]
+      }
+    },
+    "arctic_tern": {
+      "label": "an arctic tern",
+      "group": "bird",
+      "face": false,
+      "pack": "wildlife_weird",
+      "topics": [
+        "bird",
+        "arctic",
+        "migration",
+        "weird",
+        "ocean"
+      ],
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "head": [
+          16,
+          -52
+        ],
+        "face": [
+          18,
+          -50
+        ],
+        "beak": [
+          32,
+          -48
+        ],
+        "eye": [
+          18,
+          -52
+        ],
+        "wing": [
+          -8,
+          -42
+        ],
+        "back": [
+          -6,
+          -42
+        ],
+        "surface": [
+          -6,
+          -42
+        ],
+        "tail": [
+          -36,
+          -26
+        ],
+        "grip": [
+          0,
+          -25
+        ],
+        "top": [
+          16,
+          -64
+        ]
+      }
+    },
+    "giant_squid": {
+      "label": "giant squid",
+      "group": "animal",
+      "face": false,
+      "pack": "deep_ocean",
+      "topics": [
+        "ocean",
+        "wildlife",
+        "mystery"
+      ],
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -50
+        ],
+        "top": [
+          0,
+          -96
+        ],
+        "head": [
+          0,
+          -42
+        ],
+        "eye": [
+          -10,
+          -43
+        ],
+        "tentacles": [
+          0,
+          -10
+        ],
+        "mantle": [
+          0,
+          -75
+        ],
+        "grip": [
+          0,
+          -40
+        ]
+      }
+    },
+    "sperm_whale": {
+      "label": "a sperm whale",
+      "group": "animal",
+      "face": false,
+      "pack": "deep_ocean",
+      "topics": [
+        "ocean",
+        "wildlife"
+      ],
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -45
+        ],
+        "head": [
+          35,
+          -50
+        ],
+        "mouth": [
+          35,
+          -34
+        ],
+        "tail": [
+          -48,
+          -48
+        ],
+        "top": [
+          0,
+          -76
+        ],
+        "belly": [
+          0,
+          -36
+        ],
+        "flipper": [
+          6,
+          -38
+        ],
+        "grip": [
+          0,
+          -45
+        ]
+      }
+    },
+    "bathyscaphe": {
+      "label": "a bathyscaphe",
+      "group": "prop",
+      "face": false,
+      "pack": "deep_ocean",
+      "topics": [
+        "ocean",
+        "inventions",
+        "mystery"
+      ],
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -45
+        ],
+        "top": [
+          0,
+          -88
+        ],
+        "sphere": [
+          0,
+          -28
+        ],
+        "window": [
+          12,
+          -28
+        ],
+        "light": [
+          18,
+          -32
+        ],
+        "propeller": [
+          -44,
+          -58
+        ],
+        "grip": [
+          0,
+          -30
+        ]
+      }
+    },
+    "research_submarine": {
+      "label": "a research submarine",
+      "group": "prop",
+      "face": false,
+      "pack": "deep_ocean",
+      "topics": [
+        "ocean",
+        "science",
+        "inventions"
+      ],
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -45
+        ],
+        "top": [
+          0,
+          -86
+        ],
+        "viewport": [
+          32,
+          -38
+        ],
+        "claw": [
+          46,
+          -10
+        ],
+        "light": [
+          36,
+          -60
+        ],
+        "thruster": [
+          -44,
+          -42
+        ],
+        "grip": [
+          0,
+          -40
+        ]
+      }
+    },
+    "hydrothermal_vent": {
+      "label": "a hydrothermal vent",
+      "group": "prop",
+      "face": false,
+      "pack": "deep_ocean",
+      "topics": [
+        "ocean",
+        "nature",
+        "science"
+      ],
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -45
+        ],
+        "top": [
+          0,
+          -96
+        ],
+        "chimney_top": [
+          0,
+          -68
+        ],
+        "smoke": [
+          0,
+          -85
+        ],
+        "base": [
+          0,
+          0
+        ],
+        "grip": [
+          0,
+          -45
+        ]
+      }
+    },
+    "tube_worms": {
+      "label": "tube worms",
+      "group": "animal",
+      "face": false,
+      "pack": "deep_ocean",
+      "topics": [
+        "ocean",
+        "wildlife",
+        "nature"
+      ],
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -45
+        ],
+        "top": [
+          0,
+          -88
+        ],
+        "plume_1": [
+          -16,
+          -72
+        ],
+        "plume_2": [
+          -2,
+          -82
+        ],
+        "plume_3": [
+          25,
+          -76
+        ],
+        "base": [
+          0,
+          0
+        ],
+        "grip": [
+          0,
+          -45
+        ]
+      }
+    },
+    "sunken_liner": {
+      "label": "a sunken ocean liner",
+      "group": "prop",
+      "face": false,
+      "pack": "deep_ocean",
+      "topics": [
+        "ocean",
+        "history",
+        "mystery"
+      ],
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -40
+        ],
+        "top": [
+          0,
+          -84
+        ],
+        "bow": [
+          46,
+          -34
+        ],
+        "stern": [
+          -48,
+          -38
+        ],
+        "bridge": [
+          0,
+          -56
+        ],
+        "funnel_1": [
+          -8,
+          -82
+        ],
+        "funnel_2": [
+          8,
+          -76
+        ],
+        "anchor": [
+          40,
+          -4
+        ],
+        "grip": [
+          0,
+          -40
+        ]
+      }
+    },
+    "rogue_wave": {
+      "label": "a rogue wave",
+      "group": "prop",
+      "face": false,
+      "pack": "deep_ocean",
+      "topics": [
+        "ocean",
+        "nature",
+        "disaster"
+      ],
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -45
+        ],
+        "top": [
+          16,
+          -94
+        ],
+        "crest": [
+          16,
+          -88
+        ],
+        "trough": [
+          -35,
+          -15
+        ],
+        "curl": [
+          26,
+          -75
+        ],
+        "grip": [
+          0,
+          -45
+        ]
+      }
+    },
+    "bioluminescent_fish_swarm": {
+      "label": "a swarm of bioluminescent fish",
+      "group": "animal",
+      "face": false,
+      "pack": "deep_ocean",
+      "topics": [
+        "ocean",
+        "wildlife",
+        "nature"
+      ],
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -45
+        ],
+        "top": [
+          20,
+          -86
+        ],
+        "lead": [
+          36,
+          -65
+        ],
+        "tail_group": [
+          -36,
+          -22
+        ],
+        "glow_center": [
+          0,
+          -45
+        ],
+        "grip": [
+          0,
+          -45
+        ]
+      }
+    },
+    "regenerating_liver": {
+      "label": "a regenerating liver",
+      "group": "organ",
+      "face": true,
+      "face_scale": 0.55,
+      "pack": "body_more",
+      "topics": [
+        "medical",
+        "body",
+        "science"
+      ],
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -38
+        ],
+        "face": [
+          0,
+          -42
+        ],
+        "mouth": [
+          -5,
+          -38
+        ],
+        "top": [
+          0,
+          -78
+        ],
+        "hand_l": [
+          -32,
+          -32
+        ],
+        "hand_r": [
+          28,
+          -28
+        ],
+        "regrow_zone": [
+          22,
+          -38
+        ],
+        "grip": [
+          0,
+          -38
+        ]
+      }
+    },
+    "appendix_chibi": {
+      "label": "an appendix chibi",
+      "group": "organ",
+      "face": true,
+      "face_scale": 0.5,
+      "pack": "body_more",
+      "topics": [
+        "medical",
+        "body",
+        "science"
+      ],
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -36
+        ],
+        "face": [
+          0,
+          -46
+        ],
+        "mouth": [
+          0,
+          -41
+        ],
+        "top": [
+          0,
+          -76
+        ],
+        "hand_l": [
+          -20,
+          -38
+        ],
+        "hand_r": [
+          20,
+          -42
+        ],
+        "pouch": [
+          0,
+          -22
+        ],
+        "grip": [
+          0,
+          -36
+        ]
+      }
+    },
+    "neuron_chibi": {
+      "label": "a neuron cell",
+      "group": "organ",
+      "face": true,
+      "face_scale": 0.5,
+      "pack": "body_more",
+      "topics": [
+        "medical",
+        "body",
+        "science"
+      ],
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -48
+        ],
+        "face": [
+          0,
+          -58
+        ],
+        "mouth": [
+          0,
+          -55
+        ],
+        "top": [
+          0,
+          -90
+        ],
+        "soma": [
+          0,
+          -58
+        ],
+        "dendrite_l": [
+          -32,
+          -76
+        ],
+        "dendrite_r": [
+          32,
+          -76
+        ],
+        "synapse": [
+          0,
+          -2
+        ],
+        "grip": [
+          0,
+          -48
+        ]
+      }
+    },
+    "fingerprint": {
+      "label": "a fingerprint",
+      "group": "prop",
+      "face": false,
+      "pack": "body_more",
+      "topics": [
+        "medical",
+        "science",
+        "mystery"
+      ],
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -50
+        ],
+        "top": [
+          0,
+          -88
+        ],
+        "core": [
+          0,
+          -50
+        ],
+        "rim": [
+          0,
+          -86
+        ],
+        "grip": [
+          0,
+          -46
+        ]
+      }
+    },
+    "vaccine_training": {
+      "label": "a vaccine training",
+      "group": "prop",
+      "face": true,
+      "face_scale": 0.45,
+      "pack": "body_more",
+      "topics": [
+        "medical",
+        "science",
+        "body"
+      ],
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -42
+        ],
+        "top": [
+          0,
+          -84
+        ],
+        "vial": [
+          -20,
+          -35
+        ],
+        "antibody": [
+          20,
+          -35
+        ],
+        "shield": [
+          36,
+          -34
+        ],
+        "face": [
+          -20,
+          -30
+        ],
+        "grip": [
+          0,
+          -42
+        ]
+      }
+    },
+    "fever_thermometer": {
+      "label": "a fever thermometer",
+      "group": "prop",
+      "face": true,
+      "face_scale": 0.45,
+      "pack": "body_more",
+      "topics": [
+        "medical",
+        "health",
+        "daily_life"
+      ],
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -45
+        ],
+        "top": [
+          0,
+          -90
+        ],
+        "bulb": [
+          0,
+          -16
+        ],
+        "face": [
+          0,
+          -16
+        ],
+        "stem": [
+          0,
+          -60
+        ],
+        "ice_pack": [
+          0,
+          -86
+        ],
+        "grip": [
+          0,
+          -45
+        ]
+      }
+    },
+    "fracture_healing_bone": {
+      "label": "a healing bone fracture",
+      "group": "organ",
+      "face": true,
+      "face_scale": 0.45,
+      "pack": "body_more",
+      "topics": [
+        "medical",
+        "body",
+        "health"
+      ],
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -43
+        ],
+        "top": [
+          0,
+          -86
+        ],
+        "face": [
+          0,
+          -62
+        ],
+        "cast": [
+          0,
+          -41
+        ],
+        "callus": [
+          0,
+          -43
+        ],
+        "grip": [
+          0,
+          -43
+        ]
+      }
+    },
+    "sleeping_brain": {
+      "label": "a sleeping brain",
+      "group": "organ",
+      "face": true,
+      "face_scale": 0.55,
+      "pack": "body_more",
+      "topics": [
+        "medical",
+        "body",
+        "science"
+      ],
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -42
+        ],
+        "top": [
+          0,
+          -86
+        ],
+        "face": [
+          0,
+          -38
+        ],
+        "mouth": [
+          0,
+          -33
+        ],
+        "nightcap": [
+          14,
+          -80
+        ],
+        "pillow": [
+          0,
+          -6
+        ],
+        "grip": [
+          0,
+          -42
+        ]
+      }
+    },
+    "memory_cell_chibi": {
+      "label": "a memory cell chibi",
+      "group": "organ",
+      "face": true,
+      "face_scale": 0.5,
+      "pack": "body_more",
+      "topics": [
+        "medical",
+        "body",
+        "science"
+      ],
+      "anchors": {
+        "root": [
+          0,
+          0
+        ],
+        "center": [
+          0,
+          -42
+        ],
+        "top": [
+          0,
+          -82
+        ],
+        "face": [
+          0,
+          -42
+        ],
+        "mouth": [
+          0,
+          -40
+        ],
+        "satchel": [
+          -22,
+          -36
+        ],
+        "lens": [
+          22,
+          -38
+        ],
+        "grip": [
+          0,
+          -40
         ]
       }
     }

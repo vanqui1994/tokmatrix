@@ -1,0 +1,204 @@
+{
+  "subjects": {
+    "lion": {
+      "asset": "lion",
+      "label": "a lion",
+      "labels": {
+        "en": "lion|lions",
+        "de": "Löwe|Löwen",
+        "ko": "사자",
+        "ja": "ライオン"
+      },
+      "settings": [
+        "savanna"
+      ],
+      "size": "m"
+    },
+    "bengal_tiger": {
+      "asset": "tiger",
+      "label": "a tiger",
+      "labels": {
+        "en": "tiger|tigers|bengal tiger",
+        "de": "Tiger",
+        "ko": "호랑이",
+        "ja": "トラ|虎"
+      },
+      "settings": [
+        "savanna",
+        "national_park"
+      ],
+      "size": "m"
+    },
+    "jaguar": {
+      "asset": "jaguar",
+      "label": "a jaguar",
+      "labels": {
+        "en": "jaguar|jaguars",
+        "de": "Jaguar|Jaguare",
+        "ko": "재규어",
+        "ja": "ジャガー"
+      },
+      "settings": [
+        "savanna",
+        "national_park"
+      ],
+      "size": "m"
+    },
+    "great_white_shark": {
+      "asset": "great_white_shark",
+      "float": true,
+      "label": "a great white shark",
+      "labels": {
+        "en": "shark|sharks|great white shark|white shark",
+        "de": "Hai|Haie|Weißer Hai",
+        "ko": "상어|백상아리",
+        "ja": "サメ|ホオジロザメ|鮫"
+      },
+      "settings": [
+        "open_ocean_surface",
+        "deep_sea",
+        "coral_reef"
+      ],
+      "size": "l"
+    },
+    "killer_whale": {
+      "asset": "killer_whale",
+      "float": true,
+      "label": "a killer whale",
+      "labels": {
+        "en": "orca|orcas|killer whale|killer whales",
+        "de": "Orca|Orcas|Schwertwal|Schwertwale",
+        "ko": "범고래",
+        "ja": "シャチ"
+      },
+      "settings": [
+        "open_ocean_surface",
+        "arctic_ice",
+        "deep_sea"
+      ],
+      "size": "l"
+    },
+    "polar_bear": {
+      "asset": "polar_bear",
+      "label": "a polar bear",
+      "labels": {
+        "en": "polar bear|polar bears",
+        "de": "Eisbär|Eisbären|Polarbär",
+        "ko": "북극곰",
+        "ja": "ホッキョクグマ|白くま|シロクマ"
+      },
+      "settings": [
+        "arctic_ice"
+      ],
+      "size": "l"
+    },
+    "rhino": {
+      "asset": "rhino",
+      "label": "a rhino",
+      "labels": {
+        "en": "rhino|rhinos|rhinoceros",
+        "de": "Nashorn|Nashörner",
+        "ko": "코뿔소",
+        "ja": "サイ|犀"
+      },
+      "settings": [
+        "savanna"
+      ],
+      "size": "l"
+    },
+    "peregrine_falcon": {
+      "asset": "peregrine_falcon",
+      "label": "a peregrine falcon",
+      "labels": {
+        "en": "falcon|falcons|peregrine falcon|peregrine",
+        "de": "Falke|Falken|Wanderfalke",
+        "ko": "매|송골매",
+        "ja": "ハヤブサ|隼"
+      },
+      "settings": [
+        "savanna",
+        "alpine_meadow",
+        "national_park"
+      ],
+      "size": "s"
+    },
+    "snowy_owl": {
+      "asset": "snowy_owl",
+      "label": "a snowy owl",
+      "labels": {
+        "en": "owl|owls|snowy owl",
+        "de": "Eule|Eulen|Schnee-Eule|Schneeule",
+        "ko": "올빼미|부엉이|흰올빼미",
+        "ja": "フクロウ|シロフクロウ|梟"
+      },
+      "settings": [
+        "arctic_ice",
+        "alpine_meadow"
+      ],
+      "size": "s"
+    },
+    "komodo_dragon": {
+      "asset": "komodo_dragon",
+      "label": "a komodo dragon",
+      "labels": {
+        "en": "komodo dragon|komodo",
+        "de": "Komodowaran|Komodowarane",
+        "ko": "코모도왕도마뱀|코모도",
+        "ja": "コモドオオトカゲ|コモドドラゴン"
+      },
+      "settings": [
+        "savanna",
+        "national_park"
+      ],
+      "size": "m"
+    },
+    "hippo": {
+      "asset": "hippo",
+      "label": "a hippo",
+      "labels": {
+        "en": "hippo|hippos|hippopotamus",
+        "de": "Flusspferd|Flusspferde|Nilpferd|Nilpferde",
+        "ko": "하마",
+        "ja": "カバ"
+      },
+      "settings": [
+        "savanna"
+      ],
+      "size": "l"
+    }
+  },
+  "hosts": {},
+  "buddies": {},
+  "niches": {
+    "extreme_wildlife": {
+      "subjects": [
+        "lion",
+        "bengal_tiger",
+        "jaguar",
+        "great_white_shark",
+        "killer_whale",
+        "polar_bear",
+        "rhino",
+        "peregrine_falcon",
+        "snowy_owl",
+        "komodo_dragon",
+        "hippo"
+      ],
+      "settings": [
+        "savanna",
+        "arctic_ice",
+        "open_ocean_surface"
+      ]
+    },
+    "ocean_mysteries": {
+      "subjects": [
+        "great_white_shark",
+        "killer_whale"
+      ],
+      "settings": [
+        "open_ocean_surface",
+        "arctic_ice"
+      ]
+    }
+  }
+}
