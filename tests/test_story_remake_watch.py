@@ -31,6 +31,7 @@ class StoryWatchTest(unittest.TestCase):
 
     def test_shorts_url_accepts_only_channel_links(self):
         self.assertEqual(srr.shorts_url("https://youtube.com/@abc.def/"), "https://www.youtube.com/@abc.def/shorts")
+        self.assertEqual(srr.shorts_url("https://www.youtube.com/@ArniK%C3%B6nigin/shorts"), "https://www.youtube.com/@ArniKönigin/shorts")
         self.assertEqual(srr.shorts_url("https://www.youtube.com/channel/UC12_x/shorts"), "https://www.youtube.com/channel/UC12_x/shorts")
         for bad in ("https://www.youtube.com/watch?v=abc", "https://evil.com/@x", "-x", "https://www.youtube.com/@x/videos"):
             with self.assertRaises(ValueError):

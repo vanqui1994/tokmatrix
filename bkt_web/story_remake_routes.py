@@ -67,7 +67,8 @@ class WatchConfig(BaseModel):
 
 def shorts_url(url: str) -> str:
     """Link kênh YouTube → tab Shorts của kênh (chỉ nhận link kênh, không nhận video lẻ)."""
-    m = CHANNEL_RE.match(url.strip())
+    from urllib.parse import unquote
+    m = CHANNEL_RE.match(unquote(url.strip()))  # link copy từ trình duyệt mã hoá chữ có dấu (@ArniK%C3%B6nigin)
     if not m:
         raise ValueError("Cần link kênh YouTube dạng https://www.youtube.com/@tenkenh")
     return f"https://www.youtube.com/{m.group(2)}/shorts"
