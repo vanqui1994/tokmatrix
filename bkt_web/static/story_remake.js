@@ -59,27 +59,111 @@ async function storyRefresh() {
     : (r.url ? `Lượt gần nhất: ${r.url}` : 'Chưa chạy lượt nào');
   const log = document.getElementById('story-log');
   if (log) log.textContent = data.log || 'Chưa có nhật ký.';
-  const vids = data.videos || [];
-  const done = vids.filter((v) => v.status === 'done').length;
+  storyView.vids = data.videos || [];
+  storyRenderList();
+}
+
+// ---- Thư viện: lưới thẻ 9:16 + tìm / lọc trạng thái / sắp xếp / phân trang, xem video trong cửa sổ nổi.
+const STORY_PAGE = 24;
+const storyView = { vids: [], filter: 'all', q: '', sort: 'new', shown: STORY_PAGE, sig: '' };
+
+function storyLibraryMount() {
+  if (document.getElementById('story-toolbar')) return;
+  if (!document.getElementById('story-lib-css')) {
+    const css = document.createElement('style');
+    css.id = 'story-lib-css';
+    css.textContent = `#pane-story_remake .story-toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:12px 16px;border-bottom:1px solid #eaecf0;background:#fff}
+#pane-story_remake .story-toolbar input{flex:1 1 180px;min-width:140px;height:34px;padding:0 10px;border:1px solid #d0d5dd;border-radius:8px;font-size:13px}
+#pane-story_remake .story-toolbar select{height:34px;border:1px solid #d0d5dd;border-radius:8px;font-size:12px;padding:0 6px;background:#fff}
+#pane-story_remake .story-chips{display:flex;flex-wrap:wrap;gap:6px;width:100%}
+#pane-story_remake .story-chip{border:1px solid #d0d5dd;background:#fff;border-radius:999px;padding:4px 10px;font-size:12px;color:#344054;cursor:pointer}
+#pane-story_remake .story-chip b{font-weight:600;color:#667085;margin-left:3px}
+#pane-story_remake .story-chip.is-on{background:#1d4ed8;border-color:#1d4ed8;color:#fff}
+#pane-story_remake .story-chip.is-on b{color:#dbeafe}
+#pane-story_remake #story-list.sr-grid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;min-height:0}
+#pane-story_remake .sr-card{display:flex;flex-direction:column;min-width:0;border:1px solid #eaecf0;border-radius:11px;background:#fff;overflow:hidden}
+#pane-story_remake .sr-thumb{position:relative;aspect-ratio:9/16;background:#101828;cursor:default}
+#pane-story_remake .sr-thumb.can-play{cursor:pointer}
+#pane-story_remake .sr-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+#pane-story_remake .sr-thumb .story-status-pill{position:absolute;left:6px;top:6px;right:auto;bottom:auto;width:auto;height:auto;padding:2px 7px;border-radius:999px;font-size:10px;line-height:1.5;white-space:nowrap}
+#pane-story_remake .sr-noimg{display:flex;align-items:center;justify-content:center;height:100%;color:#98a2b3;font-size:26px}
+#pane-story_remake .sr-play{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0;background:rgba(16,24,40,.35);color:#fff;font-size:34px;transition:opacity .15s}
+#pane-story_remake .sr-thumb.can-play:hover .sr-play{opacity:1}
+#pane-story_remake .sr-body{padding:8px 9px 9px;display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+#pane-story_remake .sr-title{font-size:12px;font-weight:600;color:#101828;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;word-break:break-word}
+#pane-story_remake .sr-meta{font-size:11px;color:#667085}
+#pane-story_remake .sr-err{font-size:11px;color:#b42318;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+#pane-story_remake .sr-actions{display:flex;gap:6px;margin-top:auto;padding-top:5px}
+#pane-story_remake .sr-actions a,#pane-story_remake .sr-actions button{flex:1;text-align:center;font-size:11px;padding:5px 0;border:1px solid #d0d5dd;border-radius:7px;background:#fff;color:#344054;text-decoration:none;cursor:pointer}
+#pane-story_remake .sr-actions .is-primary{background:#1d4ed8;border-color:#1d4ed8;color:#fff}
+#pane-story_remake .sr-more{grid-column:1/-1;justify-self:center;margin:4px 0 2px;padding:8px 18px;border:1px solid #d0d5dd;border-radius:9px;background:#fff;font-size:12px;cursor:pointer}
+#pane-story_remake .sr-none{grid-column:1/-1;text-align:center;color:#667085;font-size:13px;padding:30px 0}
+.sr-modal{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;background:rgba(16,24,40,.72);padding:16px}
+.sr-modal video{max-height:88vh;max-width:min(100%,520px);border-radius:12px;background:#000}
+.sr-modal button{position:absolute;top:14px;right:18px;font-size:26px;color:#fff;background:none;border:0;cursor:pointer}
+@media (max-width:560px){#pane-story_remake #story-list.sr-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}}`;
+    document.head.appendChild(css);
+  }
+  const list = document.getElementById('story-list');
+  if (!list) return;
+  list.classList.add('sr-grid');
+  const bar = document.createElement('div');
+  bar.id = 'story-toolbar';
+  bar.className = 'story-toolbar';
+  bar.innerHTML = `<input id="story-q" type="search" placeholder="Tìm theo tiêu đề hoặc id…" aria-label="Tìm video">
+    <select id="story-sort" aria-label="Sắp xếp"><option value="new">Mới cập nhật</option><option value="old">Cũ nhất</option><option value="title">Tên A–Z</option><option value="long">Dài nhất</option></select>
+    <div id="story-chips" class="story-chips" role="group" aria-label="Lọc trạng thái"></div>`;
+  list.parentNode.insertBefore(bar, list);
+  document.getElementById('story-q').addEventListener('input', (e) => { storyView.q = e.target.value.trim().toLowerCase(); storyView.shown = STORY_PAGE; storyRenderList(true); });
+  document.getElementById('story-sort').addEventListener('change', (e) => { storyView.sort = e.target.value; storyRenderList(true); });
+}
+
+function storySetFilter(f) { storyView.filter = f; storyView.shown = STORY_PAGE; storyRenderList(true); }
+function storyMore() { storyView.shown += STORY_PAGE; storyRenderList(true); }
+
+function storyRenderList(force) {
+  storyLibraryMount();
+  const all = storyView.vids;
+  const sig = JSON.stringify(all.map((v) => [v.id, v.status, v.step, v.has_mp4, v.has_thumb, v.updated]));
+  if (!force && sig === storyView.sig) return;  // không vẽ lại mỗi 5 s khi không đổi (giữ vị trí cuộn / hover)
+  storyView.sig = sig;
+  const counts = { all: all.length };
+  all.forEach((v) => { counts[v.status] = (counts[v.status] || 0) + 1; });
   const count = document.getElementById('story-count');
-  if (count) count.textContent = `${done} / ${vids.length} xong`;
-  document.getElementById('story-list').innerHTML = vids.map((v) => {
+  if (count) count.textContent = `${counts.done || 0} / ${all.length} xong`;
+  const chips = [['all', 'Tất cả'], ['done', 'Xong'], ['running', 'Đang làm'], ['error', 'Lỗi'], ['skipped', 'Bỏ qua']];
+  document.getElementById('story-chips').innerHTML = chips.filter(([k]) => k === 'all' || counts[k])
+    .map(([k, label]) => `<button type="button" class="story-chip${storyView.filter === k ? ' is-on' : ''}" onclick="storySetFilter('${k}')">${label}<b>${counts[k] || 0}</b></button>`).join('');
+  const list = document.getElementById('story-list');
+  if (!all.length) {
+    list.innerHTML = `<div class="story-empty-state" style="grid-column:1/-1"><span class="story-empty-icon" aria-hidden="true">▶</span><strong>Chưa có video remake</strong><p>Dán link kênh hoặc video YouTube ở khung bên trái, rồi bắt đầu lượt chạy đầu tiên.</p><button type="button" onclick="document.getElementById('story-url').focus()">Nhập link YouTube</button></div>`;
+    return;
+  }
+  const q = storyView.q;
+  let vids = all.filter((v) => (storyView.filter === 'all' || v.status === storyView.filter)
+    && (!q || `${v.title || ''} ${v.id}`.toLowerCase().includes(q)));
+  const cmp = { new: (a, b) => b.updated - a.updated, old: (a, b) => a.updated - b.updated,
+    title: (a, b) => String(a.title || a.id).localeCompare(String(b.title || b.id)), long: (a, b) => (b.seconds || 0) - (a.seconds || 0) }[storyView.sort];
+  vids = vids.sort(cmp);
+  const page = vids.slice(0, storyView.shown);
+  list.innerHTML = page.map((v) => {
     const [label, cls] = STORY_STATUS[v.status] || [v.status, 'badge-neutral'];
-    const step = v.status === 'running' && v.step ? ` · ${STORY_STEP[v.step] || v.step}` : '';
-    const thumb = v.has_thumb ? `<img src="/api/story-remake/thumb/${encodeURIComponent(v.id)}" alt="Khung hình xem trước của ${escapeHtml(v.title || v.id)}">` : '<div class="story-video-placeholder" aria-hidden="true">▶</div>';
-    const meta = [v.scenes ? `${v.scenes} cảnh` : '', v.seconds ? `${Math.round(v.seconds / 60)} phút` : ''].filter(Boolean).join(' · ');
-    return `<article class="story-video-card">
-      <div class="story-video-thumb">${thumb}<span class="story-status-pill ${cls}">${label}</span></div>
-      <div class="story-video-content">
-        <div class="story-video-title">${escapeHtml(v.title || v.id)}</div>
-        <div class="story-video-meta">${escapeHtml(meta || 'YouTube story')}${escapeHtml(step)}</div>
-        ${v.reason ? `<div class="story-video-note">${escapeHtml(v.reason)}</div>` : ''}
-        ${v.error ? `<div class="story-video-error">${escapeHtml(v.error.slice(0, 400))}</div>` : ''}
-        ${v.has_mp4 ? `<div class="story-video-actions">
-          <button class="story-video-action is-primary" type="button" onclick="storyPlay('${encodeURIComponent(v.id)}')">Xem video</button>
-          <a class="story-video-action" href="/api/story-remake/video/${encodeURIComponent(v.id)}" download="${escapeHtml(v.id)}.mp4">Tải MP4</a></div>` : ''}
+    const step = v.status === 'running' && v.step ? `${STORY_STEP[v.step] || v.step}` : '';
+    const id = encodeURIComponent(v.id);
+    const thumb = v.has_thumb ? `<img loading="lazy" src="/api/story-remake/thumb/${id}" alt="">` : '<div class="sr-noimg" aria-hidden="true">▶</div>';
+    const meta = [v.scenes ? `${v.scenes} cảnh` : '', v.seconds ? `${Math.max(1, Math.round(v.seconds / 60))} phút làm` : '', step].filter(Boolean).join(' · ');
+    const play = v.has_mp4 ? ` can-play" onclick="storyPlay('${id}')" title="Xem video` : '';
+    return `<article class="sr-card">
+      <div class="sr-thumb${play}">${thumb}<span class="story-status-pill ${cls}">${label}</span>${v.has_mp4 ? '<span class="sr-play" aria-hidden="true">▶</span>' : ''}</div>
+      <div class="sr-body">
+        <div class="sr-title" title="${escapeHtml(v.title || v.id)}">${escapeHtml(v.title || v.id)}</div>
+        ${meta ? `<div class="sr-meta">${escapeHtml(meta)}</div>` : ''}
+        ${v.reason ? `<div class="sr-meta" title="${escapeHtml(v.reason)}">${escapeHtml(v.reason)}</div>` : ''}
+        ${v.error ? `<div class="sr-err" title="${escapeHtml(v.error.slice(0, 600))}">${escapeHtml(v.error.slice(0, 200))}</div>` : ''}
+        ${v.has_mp4 ? `<div class="sr-actions"><button type="button" class="is-primary" onclick="storyPlay('${id}')">Xem</button><a href="/api/story-remake/video/${id}" download="${escapeHtml(v.id)}.mp4">Tải</a></div>` : ''}
       </div></article>`;
-  }).join('') || `<div class="story-empty-state"><span class="story-empty-icon" aria-hidden="true">▶</span><strong>Chưa có video remake</strong><p>Dán link kênh hoặc video YouTube ở khung bên trái, rồi bắt đầu lượt chạy đầu tiên.</p><button type="button" onclick="document.getElementById('story-url').focus()">Nhập link YouTube</button></div>`;
+  }).join('') || '<div class="sr-none">Không có video khớp bộ lọc.</div>';
+  if (vids.length > page.length) list.insertAdjacentHTML('beforeend', `<button type="button" class="sr-more" onclick="storyMore()">Xem thêm (${vids.length - page.length} video)</button>`);
 }
 
 async function storyRun() {
@@ -105,12 +189,19 @@ async function storyStop() {
 }
 
 function storyPlay(id) {
-  const box = document.getElementById('story-player');
-  if (!box) return;
-  box.hidden = false;
-  box.innerHTML = `<video src="/api/story-remake/video/${id}" controls autoplay playsinline aria-label="Video Story Remake" ></video>`;
-  box.scrollIntoView({ behavior: 'smooth' });
+  storyClosePlayer();
+  const m = document.createElement('div');
+  m.id = 'story-modal';
+  m.className = 'sr-modal';
+  m.setAttribute('role', 'dialog');
+  m.setAttribute('aria-label', 'Xem video Story Remake');
+  m.innerHTML = `<button type="button" aria-label="Đóng" onclick="storyClosePlayer()">✕</button><video src="/api/story-remake/video/${id}" controls autoplay playsinline></video>`;
+  m.addEventListener('click', (e) => { if (e.target === m) storyClosePlayer(); });
+  document.body.appendChild(m);
 }
+
+function storyClosePlayer() { document.getElementById('story-modal')?.remove(); }
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape') storyClosePlayer(); });
 
 // ---- Theo dõi kênh Shorts: thêm kênh → server tự chạy kênh đó ngay khi rảnh, rồi định kỳ làm Shorts mới (/api/story-remake/watch)
 function storyWatchMount() {
@@ -121,6 +212,7 @@ function storyWatchMount() {
     const css = document.createElement('style');
     css.id = 'story-watch-css';
     css.textContent = `.story-watch{margin:14px 0 0;padding-top:4px;border-top:1px solid #eaecf0}
+.story-watch > .story-card-heading{margin-bottom:16px}
 .story-watch-switch{display:flex;align-items:center;gap:6px;font-size:12px;color:#344054}
 .story-watch-list{display:flex;flex-direction:column;gap:6px;margin:10px 20px 4px}
 .story-watch-item{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:8px 10px;border:1px solid #eaecf0;border-radius:10px;font-size:12px}
@@ -134,7 +226,7 @@ function storyWatchMount() {
   box.className = 'story-watch';
   box.innerHTML = `
     <div class="story-card-heading"><div><span class="story-card-kicker">TỰ ĐỘNG</span><h3>Theo dõi kênh Shorts</h3></div></div>
-    <div class="story-field">
+    <div class="story-field story-url-field">
       <label for="story-watch-url">Link kênh YouTube</label>
       <input id="story-watch-url" class="form-control" type="url" placeholder="https://www.youtube.com/@tenkenh" autocomplete="url">
       <span class="story-field-help">Thêm kênh rồi hệ thống tự remake các Shorts mới nhất (theo cấu hình nguồn hình / ngôn ngữ ở trên), kiểm tra lại định kỳ.</span>
