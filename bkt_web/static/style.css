@@ -9188,3 +9188,33 @@ tr:hover .btn-history-mini { opacity: 0.75; }
 #pane-dola .dola-acc { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 6px 8px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 13px; }
 #pane-dola .dola-acc .btn { margin-left: auto; }
 #pane-dola .dola-gw-links { margin-left: auto; display: flex; flex-wrap: wrap; gap: 6px; justify-content: flex-end; }
+
+/* Phim AI (Muse) — dùng chung khung story-* của Story Remake */
+#pane-muse_film { color: #101828; }
+.film-field { margin: 0 20px 18px; }
+.film-optional { color: #98a2b3; font-weight: 500; }
+.film-page .film-idea { min-height: 180px; resize: vertical; line-height: 1.55; }
+.film-label { color: #344054; font-size: 12px; font-weight: 700; }
+.film-check { display: flex; align-items: center; gap: 8px; min-height: 42px; padding: 0 11px; border: 1px solid #d0d5dd; border-radius: 9px; background: #fff; color: #344054; font-size: 13px; cursor: pointer; }
+.film-check input { width: 16px; height: 16px; margin: 0; }
+.film-card { padding: 14px 16px; border: 1px solid #eaecf0; border-radius: 11px; background: #fff; box-shadow: 0 1px 2px rgba(16,24,40,.035); }
+.film-card-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; width: 100%; padding: 0; border: 0; background: none; text-align: left; cursor: pointer; font: inherit; color: inherit; }
+.film-card-title { color: #101828; font-size: 14px; font-weight: 700; line-height: 1.4; overflow-wrap: anywhere; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.film-card-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 7px; color: #667085; font-size: 11px; }
+.film-chevron { flex: 0 0 auto; color: #98a2b3; font-size: 12px; transition: transform .15s; }
+.film-card.is-open .film-chevron { transform: rotate(180deg); }
+.film-progress { height: 6px; margin-top: 12px; overflow: hidden; border-radius: 999px; background: #f2f4f7; }
+.film-progress span { display: block; height: 100%; border-radius: inherit; background: #1570ef; transition: width .3s; }
+.film-card.is-done .film-progress span { background: #12b76a; }
+.film-error { margin-top: 8px; padding: 7px 9px; border-radius: 7px; background: #fef3f2; color: #b42318; font-size: 11px; line-height: 1.45; overflow-wrap: anywhere; }
+.film-scenes { display: grid; gap: 6px; margin-top: 14px; padding-top: 12px; border-top: 1px solid #eaecf0; max-height: 460px; overflow-y: auto; }
+.film-scene { display: grid; grid-template-columns: 28px minmax(0,1fr) auto; gap: 10px; align-items: start; padding: 9px 10px; border: 1px solid #f2f4f7; border-radius: 9px; background: #fcfcfd; }
+.film-scene-no { display: grid; place-items: center; width: 26px; height: 26px; border-radius: 7px; background: #f2f4f7; color: #475467; font-size: 11px; font-weight: 800; }
+.film-scene.is-done .film-scene-no { background: #ecfdf3; color: #067647; }
+.film-scene.is-running .film-scene-no { background: #eff8ff; color: #175cd3; }
+.film-scene.is-error .film-scene-no { background: #fef3f2; color: #b42318; }
+.film-scene-text { color: #344054; font-size: 12px; line-height: 1.5; overflow-wrap: anywhere; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.film-scene-text.is-empty { color: #98a2b3; font-style: italic; }
+.film-scene-actions { display: flex; gap: 6px; }
+.film-page .story-player video { width: min(100%, 420px); }
+@media (max-width: 560px) { .film-field { margin: 0 14px 14px; } .film-scene { grid-template-columns: 26px minmax(0,1fr); } .film-scene-actions { grid-column: 2; } }

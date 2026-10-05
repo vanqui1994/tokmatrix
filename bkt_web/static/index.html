@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/static/style.css?v=4.12">
+  <link rel="stylesheet" href="/static/style.css?v=4.13">
   <link rel="stylesheet" href="/static/light-theme.css?v=3.1">
   <link rel="stylesheet" href="/static/cms-theme.css?v=2.8">
   <link rel="stylesheet" href="/static/flow_view.css?v=2">
@@ -677,26 +677,68 @@
     </div>
 
     <div class="tab-pane" id="pane-muse_film" style="display: none;">
-      <div class="studio-grid-2col">
-        <div class="panel-card">
-          <div class="card-header"><h3>🎬 Tạo phim AI nhiều cảnh bằng Muse</h3></div>
-          <p style="font-size:13px;color:var(--color-ink-dim);margin:0 0 10px">Nhập ý tưởng / câu chuyện — AI viết kịch bản N cảnh với nhân vật cố định, Muse quay mỗi cảnh một clip ~5 giây, rồi ghép thành một phim. Hoặc nhập <b>mỗi dòng một cảnh</b> để tự đạo diễn. Muse quay lần lượt (~1 phút/cảnh).</p>
-          <label style="font-size:12px;font-weight:700">Tên phim (tuỳ chọn)</label>
-          <input id="film-title" class="form-control" style="width:100%;margin:4px 0 10px">
-          <label style="font-size:12px;font-weight:700">Ý tưởng / câu chuyện, hoặc mỗi dòng một cảnh</label>
-          <textarea id="film-idea" class="form-control" rows="7" style="width:100%;margin:4px 0 10px" placeholder="Một phi công trẻ lái F-16 cờ Nhật bay qua bão, gặp sự cố và hạ cánh khẩn cấp trên tàu sân bay…"></textarea>
-          <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
-            <label style="font-size:12px">Số cảnh <input id="film-scenes" type="number" min="2" max="30" value="6" class="form-control" style="width:80px"></label>
-            <label style="font-size:12px">Phong cách <select id="film-style" class="form-control"><option value="cinematic">Điện ảnh (ảnh thật)</option><option value="anime">Anime</option><option value="3d">Hoạt hình 3D</option><option value="documentary">Phim tài liệu</option></select></label>
-            <label style="font-size:12px">Khung <select id="film-aspect" class="form-control"><option value="9:16">Dọc 9:16</option><option value="16:9">Ngang 16:9</option><option value="1:1">Vuông 1:1</option></select></label>
-            <label style="font-size:12px"><input id="film-audio" type="checkbox" checked> Giữ tiếng của clip</label>
+      <div class="story-remake-page film-page">
+        <header class="story-remake-heading">
+          <div class="story-remake-heading-copy">
+            <span class="story-remake-eyebrow">MUSE FILM STUDIO</span>
+            <h2>Phim AI nhiều cảnh</h2>
+            <p>AI viết kịch bản với nhân vật cố định, Muse quay mỗi cảnh một clip khoảng 5 giây, rồi ghép thành một phim. Muse quay lần lượt, khoảng 1 phút mỗi cảnh.</p>
           </div>
-          <div style="margin-top:12px"><button class="btn btn-primary" onclick="filmCreate()">🎬 Tạo phim</button></div>
-          <div id="film-player" style="margin-top:12px"></div>
-        </div>
-        <div class="panel-card">
-          <div class="card-header"><h3>Phim của bạn</h3></div>
-          <div id="film-list"></div>
+          <div class="story-remake-heading-mark" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="13" rx="2.5"/><path d="M3 10h18M7 6l2 4M12 6l2 4M17 6l2 4"/></svg>
+          </div>
+        </header>
+
+        <div class="story-remake-layout">
+          <section class="story-card story-setup-card" aria-labelledby="film-setup-title">
+            <div class="story-card-heading">
+              <div><span class="story-card-kicker">01 · Ý TƯỞNG &amp; CẤU HÌNH</span><h3 id="film-setup-title">Tạo phim mới</h3></div>
+              <span class="story-card-icon" aria-hidden="true">✦</span>
+            </div>
+
+            <div class="story-field film-field">
+              <label for="film-title">Tên phim <span class="film-optional">(tuỳ chọn)</span></label>
+              <input id="film-title" class="form-control" maxlength="120" placeholder="Để trống: lấy dòng đầu của ý tưởng">
+            </div>
+
+            <div class="story-field film-field">
+              <label for="film-idea">Ý tưởng hoặc câu chuyện</label>
+              <textarea id="film-idea" class="form-control film-idea" rows="8" placeholder="Một phi công trẻ bay qua cơn bão lúc hoàng hôn, gặp sự cố động cơ và hạ cánh khẩn cấp an toàn…"></textarea>
+              <span class="story-field-help">Viết một đoạn để AI tự chia cảnh. Muốn tự đạo diễn thì viết <b>mỗi dòng một cảnh</b>: khi có từ 2 dòng trở lên, mỗi dòng thành một cảnh và ô "Số cảnh" bị bỏ qua.</span>
+            </div>
+
+            <div class="story-options-grid">
+              <div class="story-field">
+                <label for="film-scenes">Số cảnh</label>
+                <input id="film-scenes" type="number" min="2" max="30" value="6" class="form-control">
+              </div>
+              <div class="story-field">
+                <label for="film-aspect">Khung hình</label>
+                <select id="film-aspect" class="form-control"><option value="9:16">Dọc 9:16</option><option value="16:9">Ngang 16:9</option><option value="1:1">Vuông 1:1</option></select>
+              </div>
+              <div class="story-field">
+                <label for="film-style">Phong cách</label>
+                <select id="film-style" class="form-control"><option value="cinematic">Điện ảnh (ảnh thật)</option><option value="anime">Anime</option><option value="3d">Hoạt hình 3D</option><option value="documentary">Phim tài liệu</option></select>
+              </div>
+              <div class="story-field">
+                <span class="film-label">Âm thanh</span>
+                <label class="film-check"><input id="film-audio" type="checkbox" checked> Giữ tiếng của clip</label>
+              </div>
+            </div>
+
+            <div class="story-actions">
+              <button type="button" class="story-start-button" onclick="filmCreate()">🎬 Tạo phim</button>
+            </div>
+          </section>
+
+          <section class="story-card story-library-card" aria-labelledby="film-library-title">
+            <div class="story-card-heading">
+              <div><span class="story-card-kicker">02 · THƯ VIỆN</span><h3 id="film-library-title">Phim của bạn</h3></div>
+              <span class="story-count-pill" id="film-count">--</span>
+            </div>
+            <div class="story-player" id="film-player" hidden></div>
+            <div class="story-list" id="film-list"></div>
+          </section>
         </div>
       </div>
     </div>
@@ -5541,7 +5583,7 @@
   <script src="/static/tiktok_api.js?v=2"></script>
   <script src="/static/dola_video.js?v=4"></script>
   <script src="/static/story_remake.js?v=5"></script>
-  <script src="/static/muse_film.js?v=1"></script>
+  <script src="/static/muse_film.js?v=2"></script>
   <script src="/static/flow_view.js?v=6"></script>
 </body>
 </html>
