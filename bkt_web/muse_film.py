@@ -163,6 +163,14 @@ def plan(p: Dict[str, Any]) -> None:
 
 
 # ------------------------------------------------------------------ clip Muse
+# Tin cuối của chat: tin của mình bắt đầu bằng "You:" (khung group/msg), tin Muse là khung touch:select-none.
+_LAST_MSG = """()=>{const m=[...document.querySelectorAll('[class*=message],[class*=Message],[class*="group/msg"],[class*="touch:select-none"]')]
+ .filter(e=>(e.innerText||'').trim()); const e=m[m.length-1]; return e ? (e.innerText||'').trim().slice(0,600) : ''}"""
+REFUSAL = re.compile(r"(can[’']?t|cannot|unable to|won[’']?t be able to|not able to) (make|do|create|help|generate)", re.I)
+OFFER = re.compile(r"\?\s*$|want (that|me|it)|if you('d)? like|i (could|can) (do|make)", re.I)
+ACCEPT = "Yes, please make that version as a 9:16 video clip."
+
+
 async def _attach(page, ref: str) -> None:
     """Đính kèm ảnh mẫu (khung hình gốc) vào ô chat Muse rồi chờ ảnh tải lên xong."""
     before = await page.evaluate("document.querySelectorAll('img').length")
@@ -192,8 +200,19 @@ async def _clip(prompt: str, cdp: str, ref: Optional[str] = None) -> Dict[str, A
         await box.fill(prompt)
         await box.press("Enter")
         t0 = time.time()
+        accepted = False
         while time.time() - t0 < TIMEOUT:
             await asyncio.sleep(5)
+            last = await page.evaluate(_LAST_MSG)
+            if last and not last.startswith("You") and REFUSAL.search(last):
+                # Muse từ chối (bạo lực, chép phong cách…): nhận phương án Muse tự đề nghị một lần, không thì báo lỗi ngay
+                if accepted or not OFFER.search(last):
+                    raise RuntimeError(f"Muse từ chối: {last[:300]}")
+                accepted = True
+                await box.fill(ACCEPT)
+                await box.press("Enter")
+                await asyncio.sleep(3)
+                continue
             new = [src for src in await page.evaluate(_VIDEOS) if src not in seen]
             if new:
                 for _ in range(6):

@@ -248,14 +248,18 @@ def _frames(src: Path, work: Path, n: int, dur: float) -> List[Path]:
 
 PLAN = """You remake a short Chinese educational cartoon as a NEW original video for a {lang} TikTok account.
 Attached: {n} frames, one per scene, in order. Source transcript (may be empty): {transcript}
+First write "style": one English sentence describing the visual style of these frames in your own words (e.g. flat 2D
+cartoon, thick dark outlines, bright saturated colours, chibi characters with big round eyes, simple painted backgrounds).
 For EACH of the {n} scenes write:
- - "shot": an English prompt for a video model that recreates this scene in exactly the same art style as its frame
-   (same character designs, colours, line style) but as a fresh shot: describe characters, action, camera move,
-   setting; about 5 seconds; no text, no subtitles, no speech bubbles.
+ - "shot": an English prompt for a video model describing a fresh, ORIGINAL shot with the same story beat as its frame:
+   characters (describe their look), a gentle action, camera move, setting; about 5 seconds; no text, no subtitles, no
+   speech bubbles. It must be family-friendly: no weapons (no swords, knives, guns), nobody hurt, cut, hit, burned or
+   scared; turn any rough action into a gentle one (e.g. trimming leaves with garden shears, watering, pointing,
+   cheering). Do not name the source channel, brands or existing characters.
  - "line": ONE narration sentence in {lang} for that scene ({length}), teaching the same facts in your own words,
    flowing as one story; scene 1 is a hook question.
 Also "title" (short, {lang}) and "caption" (1-2 sentences, {lang}, no hashtags).
-Return JSON {{"title": "...", "caption": "...", "scenes": [{{"shot": "...", "line": "..."}}]}} with exactly {n} scenes."""
+Return JSON {{"title": "...", "caption": "...", "style": "...", "scenes": [{{"shot": "...", "line": "..."}}]}} with exactly {n} scenes."""
 
 
 def _plan(frames: List[Path], transcript: Dict[str, Any], language: str) -> Dict[str, Any]:
@@ -269,7 +273,9 @@ def _plan(frames: List[Path], transcript: Dict[str, Any], language: str) -> Dict
     scenes = [s for s in data.get("scenes") or [] if s.get("shot") and s.get("line")]
     if len(scenes) < max(3, len(frames) // 2):
         raise RuntimeError("Gemini trả quá ít cảnh")
-    return {"title": str(data.get("title") or "")[:80], "caption": str(data.get("caption") or "")[:300], "scenes": scenes[:len(frames)]}
+    return {"title": str(data.get("title") or "")[:80], "caption": str(data.get("caption") or "")[:300],
+            "style": str(data.get("style") or "bright flat 2D cartoon, thick outlines, cute characters with big eyes")[:300],
+            "scenes": scenes[:len(frames)]}
 
 
 def _tts(text: str, voice: str, speed: float, out: Path, language: str = "en") -> float:
@@ -393,9 +399,12 @@ def process(vid: int) -> None:
         _vid_update(vid, data=data, new_title=data["plan"]["title"])
     plan = data["plan"]
     if not data.get("film_id"):
+        # Không bảo Muse "y hệt ảnh đính kèm" (Muse từ chối chép phong cách của người khác): phong cách tả bằng chữ,
+        # ảnh chỉ để tham khảo bố cục và màu.
+        style = plan.get("style") or "bright flat 2D cartoon, thick outlines, cute characters with big eyes"
         shots = [{"prompt": ("Generate one short video clip (about 5 seconds), vertical 9:16 format, no on-screen text, no subtitles, "
-                             "no watermark, no speech. Recreate this scene in exactly the same art style as the attached image (same "
-                             f"character designs, colours and line style) as a new original shot: {s['shot']}"),
+                             f"no watermark, no speech. Style: {style}. Use the attached picture only as a loose reference for the "
+                             f"layout and colour mood, drawn in your own way. Shot: {s['shot']}"),
                   "text": s["line"], "ref": data["refs"][i] if i < len(data["refs"]) else None} for i, s in enumerate(plan["scenes"])]
         film = muse_film.create_shots(plan["title"] or v["title"], shots, "9:16", keep_audio=False, origin=f"muse_remake:{vid}")
         data["film_id"] = film["id"]
