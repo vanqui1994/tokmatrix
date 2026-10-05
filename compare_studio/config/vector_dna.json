@@ -1,0 +1,125 @@
+{
+  "channels": {
+    "ancient_mythology_01": {
+      "caption": "outline",
+      "cast": [
+        2,
+        3
+      ],
+      "framing": "close",
+      "pacing": "busy",
+      "palette": "day"
+    },
+    "deep_space_11": {
+      "caption": "box",
+      "cast": [
+        0,
+        0
+      ],
+      "framing": "pan",
+      "pacing": "calm",
+      "palette": "night"
+    },
+    "extreme_survival_01": {
+      "caption": "box",
+      "cast": [
+        0,
+        0
+      ],
+      "framing": "wide",
+      "pacing": "calm",
+      "palette": "night"
+    },
+    "extreme_survival_08": {
+      "caption": "box",
+      "cast": [
+        3,
+        -1
+      ],
+      "framing": "close",
+      "pacing": "busy",
+      "palette": "mist"
+    },
+    "extreme_wildlife_01": {
+      "caption": "outline",
+      "cast": [
+        5,
+        2
+      ],
+      "framing": "wide",
+      "pacing": "calm",
+      "palette": "alternate"
+    },
+    "folklore_legends_01": {
+      "caption": "box",
+      "cast": [
+        6,
+        4
+      ],
+      "framing": "pan",
+      "pacing": "normal",
+      "palette": "day"
+    },
+    "ocean_mysteries_02": {
+      "caption": "pill",
+      "cast": [
+        5,
+        2
+      ],
+      "framing": "pan",
+      "pacing": "busy",
+      "palette": "night"
+    },
+    "ocean_mysteries_03": {
+      "caption": "band",
+      "cast": [
+        1,
+        2
+      ],
+      "framing": "pan",
+      "pacing": "calm",
+      "palette": "mist"
+    },
+    "ocean_mysteries_04": {
+      "caption": "pill",
+      "cast": [
+        2,
+        -1
+      ],
+      "framing": "close",
+      "pacing": "busy",
+      "palette": "day"
+    },
+    "ocean_mysteries_08": {
+      "caption": "pill",
+      "cast": [
+        5,
+        1
+      ],
+      "framing": "close",
+      "pacing": "calm",
+      "palette": "mist"
+    },
+    "ocean_mysteries_09": {
+      "caption": "pill",
+      "cast": [
+        3,
+        0
+      ],
+      "framing": "wide",
+      "pacing": "busy",
+      "palette": "alternate"
+    },
+    "ocean_mysteries_10": {
+      "caption": "outline",
+      "cast": [
+        3,
+        -1
+      ],
+      "framing": "pan",
+      "pacing": "normal",
+      "palette": "alternate"
+    }
+  },
+  "schema_version": 1
+}

@@ -9,7 +9,7 @@ audio:
   - freepd-study-and-relax
   - oga-fantasy-orchestral-theme
 channel_id: deep_space_11
-config_version: 8
+config_version: 9
 creative:
   cut_cadence_seconds: 2.7
   palette:
@@ -17,6 +17,7 @@ creative:
     primary: '#0B0C10'
     text: '#C5C6C7'
   preferred_engines:
+  - vector
   - survival
   - mystery
   - tierlist
