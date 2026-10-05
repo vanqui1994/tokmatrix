@@ -1,0 +1,15 @@
+[Unit]
+Description=Chrome cho tai khoan Muse thu 2 (muse.ai) tren man hinh ao :1, CDP 127.0.0.1:9334
+After=tokmatrix-xvfb.service
+Requires=tokmatrix-xvfb.service
+
+[Service]
+User=tokmatrix
+Group=tokmatrix
+Environment=DISPLAY=:1
+ExecStart=/usr/bin/google-chrome --user-data-dir=/opt/tokmatrix/bkt_web/storage/muse_chrome_profile_2 --remote-debugging-address=127.0.0.1 --remote-debugging-port=9334 --no-first-run --no-default-browser-check --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-renderer-backgrounding --window-size=1400,1000 --window-position=480,70 https://muse.ai/
+Restart=on-failure
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target

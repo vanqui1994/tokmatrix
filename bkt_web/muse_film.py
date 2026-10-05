@@ -2,7 +2,7 @@
 
 Dự án ở storage/muse_films/<id>/ (project.json + clips/sceneNN.mp4 + film.mp4). Một luồng nền chạy lần lượt các dự án:
 kịch bản (Gemini, dự phòng: tách dòng người dùng nhập) → clip từng cảnh qua muse.ai (Chrome CDP, khoá chung với ảnh Muse)
-→ ffmpeg ghép (chuyển cảnh hoà 0,4 s, chuẩn hoá 720×1280 24 fps). Cảnh lỗi thử lại 2 lần rồi đánh dấu lỗi; nút "tạo lại"
+(nhiều tài khoản Muse: các cảnh chia cho các tài khoản rảnh, quay song song) → ffmpeg ghép (chuyển cảnh hoà 0,4 s, chuẩn hoá 720×1280 24 fps). Cảnh lỗi thử lại 2 lần rồi đánh dấu lỗi; nút "tạo lại"
 chỉ làm lại cảnh đó.
 """
 from __future__ import annotations
@@ -149,10 +149,10 @@ def plan(p: Dict[str, Any]) -> None:
 
 
 # ------------------------------------------------------------------ clip Muse
-async def _clip(prompt: str) -> Dict[str, Any]:
+async def _clip(prompt: str, cdp: str) -> Dict[str, Any]:
     from playwright.async_api import async_playwright
     async with async_playwright() as pw:
-        browser = await pw.chromium.connect_over_cdp(muse_image.CDP)
+        browser = await pw.chromium.connect_over_cdp(cdp)
         pages = [pg for ctx in browser.contexts for pg in ctx.pages if "muse.ai" in pg.url]
         if not pages:
             raise RuntimeError("Chrome Muse chưa mở trang muse.ai")
@@ -177,9 +177,11 @@ async def _clip(prompt: str) -> Dict[str, Any]:
         raise RuntimeError(f"Muse không trả video sau {TIMEOUT}s")
 
 
-def make_clip(prompt: str) -> Dict[str, Any]:
-    with muse_image.MUSE_LOCK:
-        return asyncio.run(_clip(prompt))
+def make_clip(prompt: str, label: str = "clip") -> Dict[str, Any]:
+    with muse_image.account(label) as cdp:
+        got = asyncio.run(_clip(prompt, cdp))
+    got["account"] = cdp
+    return got
 
 
 # ------------------------------------------------------------------ ghép phim
@@ -242,26 +244,44 @@ def process(pid: str) -> None:
         plan(p)
         p["status"] = "rendering"; save(p)
         (_dir(pid) / "clips").mkdir(exist_ok=True)
+        todo = []
         for s in p["scenes"]:
             if s["status"] in ("done", "skipped"):
                 continue
             if not shot_text(s.get("text", "")):  # dự án tạo trước khi lọc dòng ">" / dòng trống
                 s.update(status="skipped", error=""); save(p)
                 continue
-            if _stopped(pid):
-                return
+            if s["status"] == "running":  # web app khởi động lại giữa lúc quay
+                s["status"] = "pending"
+            todo.append(s)
+        guard = threading.Lock()  # các luồng cùng sửa p và ghi project.json
+
+        def shoot(s):
             while s["tries"] < 2 and s["status"] != "done" and p["status"] != "stopped":
-                s["status"] = "running"; save(p)
+                if _stopped(pid):
+                    with guard:
+                        p["status"] = "stopped"
+                    return
+                with guard:
+                    s["status"] = "running"; save(p)
                 try:
-                    got = make_clip(s["prompt"])
+                    got = make_clip(s["prompt"], f"{pid} cảnh {s['i'] + 1}")
                     (_dir(pid) / "clips" / f"scene{s['i']:02d}.mp4").write_bytes(got["raw"])
-                    s.update(status="done", error="", seconds=got["sec"], size=[got["w"], got["h"]], duration=round(got["d"], 2))
+                    upd = dict(status="done", error="", seconds=got["sec"], size=[got["w"], got["h"]], duration=round(got["d"], 2), account=got["account"])
                 except Exception as e:  # noqa: BLE001
                     s["tries"] += 1
-                    s.update(status="error" if s["tries"] >= 2 else "pending", error=str(e)[:300])
-                save(p)
-            if p["status"] == "stopped":
-                return
+                    upd = dict(status="error" if s["tries"] >= 2 else "pending", error=str(e)[:300])
+                with guard:
+                    s.update(upd); save(p)
+
+        workers = max(1, min(len(muse_image.ACCOUNTS), len(todo)))
+        if todo:
+            from concurrent.futures import ThreadPoolExecutor
+            with ThreadPoolExecutor(workers, thread_name_prefix=f"muse-film-{pid}") as pool:
+                list(pool.map(shoot, todo))
+        if p["status"] == "stopped" or _stopped(pid):
+            p["status"] = "stopped"; save(p)
+            return
         p["status"] = "assembling"; save(p)
         assemble(p)
         bad = [s["i"] for s in p["scenes"] if s["status"] not in ("done", "skipped")]

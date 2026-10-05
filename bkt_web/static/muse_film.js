@@ -34,6 +34,7 @@ async function filmRefresh() {
   const running = list.filter((p) => ['queued', 'planning', 'rendering', 'assembling'].includes(p.status)).length;
   const badge = document.getElementById('badge-film-status');
   if (badge) badge.textContent = running ? `${running} chạy` : '--';
+  filmAccounts(data.accounts || []);
   const count = document.getElementById('film-count');
   if (count) count.textContent = `${list.length} phim`;
   document.getElementById('film-list').innerHTML = list.map(filmCard).join('') || `
@@ -42,6 +43,22 @@ async function filmRefresh() {
       <strong>Chưa có phim nào</strong>
       <p>Nhập ý tưởng ở khung bên trái rồi bấm "Tạo phim". Phim mới sẽ hiện ở đây cùng tiến độ từng cảnh.</p>
     </div>`;
+}
+
+function filmAccounts(accounts) {
+  const box = document.getElementById('film-accounts');
+  if (!box) return;
+  box.innerHTML = accounts.map((a, i) => {
+    const port = (a.cdp.match(/:(\d+)$/) || [])[1] || a.cdp;
+    let state = 'is-idle', text = 'Rảnh';
+    if (!a.chrome) { state = 'is-off'; text = 'Chrome chưa mở'; }
+    else if (a.busy) { state = 'is-busy'; text = `Đang chạy · ${a.busy}`; }
+    else if (a.resting) { state = 'is-rest'; text = `Nghỉ ${a.resting}s sau lỗi`; }
+    return `<div class="film-account ${state}" title="${escapeHtml(a.last_error || '')}">
+      <span class="film-account-dot"></span><strong>Tài khoản ${i + 1}</strong><span class="film-account-port">:${escapeHtml(port)}</span>
+      <span class="film-account-state">${escapeHtml(text)}</span><span class="film-account-done">${a.done} xong</span>
+    </div>`;
+  }).join('');
 }
 
 function filmCard(p) {

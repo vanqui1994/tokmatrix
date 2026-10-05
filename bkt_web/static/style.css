@@ -9219,3 +9219,14 @@ tr:hover .btn-history-mini { opacity: 0.75; }
 .film-page .story-player video { width: min(100%, 420px); }
 @media (max-width: 560px) { .film-field { margin: 0 14px 14px; } .film-scene { grid-template-columns: 26px minmax(0,1fr); } .film-scene-actions { grid-column: 2; } }
 .film-scene.is-skipped { opacity: .55; }
+.film-accounts { display: flex; flex-wrap: wrap; gap: 8px; padding: 12px 16px 0; background: #fcfcfd; }
+.film-accounts:empty { display: none; }
+.film-account { display: flex; align-items: center; gap: 7px; min-width: 0; padding: 7px 11px; border: 1px solid #eaecf0; border-radius: 999px; background: #fff; color: #344054; font-size: 11px; }
+.film-account strong { font-weight: 700; }
+.film-account-port, .film-account-done { color: #98a2b3; }
+.film-account-state { overflow: hidden; max-width: 220px; text-overflow: ellipsis; white-space: nowrap; }
+.film-account-dot { width: 8px; height: 8px; flex: 0 0 auto; border-radius: 50%; background: #12b76a; }
+.film-account.is-busy .film-account-dot { background: #1570ef; box-shadow: 0 0 0 3px rgba(21,112,239,.15); }
+.film-account.is-rest .film-account-dot { background: #f79009; }
+.film-account.is-off .film-account-dot { background: #d0d5dd; }
+.film-account.is-off { color: #98a2b3; }

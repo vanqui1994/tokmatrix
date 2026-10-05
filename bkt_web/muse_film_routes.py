@@ -31,7 +31,8 @@ def _get(pid: str):
 
 @router.get("/projects")
 def projects():
-    return {"projects": muse_film.list_projects(), "styles": list(muse_film.STYLES), "aspects": list(muse_film.ASPECTS)}
+    return {"projects": muse_film.list_projects(), "styles": list(muse_film.STYLES), "aspects": list(muse_film.ASPECTS),
+            "accounts": muse_film.muse_image.accounts_status()}
 
 
 @router.post("/projects")

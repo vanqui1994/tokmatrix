@@ -2,11 +2,14 @@
 
 Chrome riêng (service tokmatrix-muse-chrome, hồ sơ storage/muse_chrome_profile, người dùng tự đăng nhập qua noVNC)
 mở cổng CDP 127.0.0.1:9333. Worker trong server lấy từng task `engine='muse'` đang chờ, gõ prompt vào ô "Message",
-chờ ảnh mới xuất hiện trong chat, đọc blob ngay trong trang và hoàn tất task (model `muse`). Một task một lúc: Muse là
-một cuộc chat, gửi song song sẽ lẫn ảnh.
+chờ ảnh mới xuất hiện trong chat, đọc blob ngay trong trang và hoàn tất task (model `muse`).
+
+Nhiều tài khoản: mỗi tài khoản là một Chrome riêng (tokmatrix-muse-chrome-2 → cổng 9334, …). Mỗi tài khoản là MỘT
+cuộc chat nên chỉ chạy một việc một lúc (khoá theo tài khoản, dùng chung với clip của muse_film); các tài khoản chạy
+song song. Tài khoản lỗi (Chrome tắt, đăng xuất, quá giờ) nghỉ COOLDOWN giây, việc chuyển sang tài khoản khác.
 
   TOKMATRIX_MUSE=0          tắt worker
-  TOKMATRIX_MUSE_CDP        mặc định http://127.0.0.1:9333
+  TOKMATRIX_MUSE_CDPS       danh sách CDP, phẩy ngăn cách (mặc định TOKMATRIX_MUSE_CDP hoặc http://127.0.0.1:9333)
   TOKMATRIX_MUSE_TIMEOUT    giây chờ một ảnh (mặc định 300)
 """
 from __future__ import annotations
@@ -20,6 +23,8 @@ import time
 from typing import Any, Dict, Optional
 
 CDP = os.environ.get("TOKMATRIX_MUSE_CDP", "http://127.0.0.1:9333")
+ACCOUNTS = [u.strip().rstrip("/") for u in os.environ.get("TOKMATRIX_MUSE_CDPS", CDP).split(",") if u.strip()]
+COOLDOWN = int(os.environ.get("TOKMATRIX_MUSE_COOLDOWN", "90"))
 TIMEOUT = int(os.environ.get("TOKMATRIX_MUSE_TIMEOUT", "300"))
 MAX_ATTEMPTS = 3
 ENGINE = "muse"
@@ -27,9 +32,67 @@ ASPECT_WORDS = {"9:16": "vertical 9:16 portrait", "16:9": "horizontal 16:9 lands
 
 _thread: Optional[threading.Thread] = None
 _stop = threading.Event()
-# Muse là MỘT cuộc chat: ảnh (worker này) và video (muse_film) dùng chung khoá để không gửi chồng prompt.
-MUSE_LOCK = threading.Lock()
+_threads: list = []
 _state: Dict[str, Any] = {"last_ok": None, "last_error": None, "done": 0, "failed": 0, "busy": None}
+
+
+class _Account:
+    def __init__(self, cdp: str):
+        self.cdp, self.lock = cdp, threading.Lock()
+        self.busy: Optional[str] = None
+        self.rest_until = 0.0
+        self.last_error: Optional[str] = None
+        self.done = 0
+
+
+_ACCOUNTS = [_Account(u) for u in ACCOUNTS]
+_PICK = threading.Lock()
+
+
+def _reachable(cdp: str) -> bool:
+    import urllib.request
+    try:
+        urllib.request.urlopen(f"{cdp}/json/version", timeout=3).read()
+        return True
+    except Exception:  # noqa: BLE001
+        return False
+
+
+class account:
+    """`with account("ảnh …") as cdp:` giữ một tài khoản Muse rảnh (chờ tới khi có). Lỗi trong khối → tài khoản nghỉ."""
+
+    def __init__(self, label: str = "", wait: float = 3600):
+        self.label, self.wait, self.acc = label, wait, None
+
+    def __enter__(self) -> str:
+        t0 = time.time()
+        while True:
+            with _PICK:
+                now = time.time()
+                for a in sorted(_ACCOUNTS, key=lambda a: a.done):  # chia đều cho các tài khoản
+                    if a.rest_until <= now and not a.lock.locked() and _reachable(a.cdp) and a.lock.acquire(blocking=False):
+                        a.busy, self.acc = self.label or "busy", a
+                        return a.cdp
+                    if a.rest_until <= now and not a.lock.locked() and not _reachable(a.cdp):
+                        a.rest_until, a.last_error = now + COOLDOWN, f"{time.strftime('%H:%M:%S')} Chrome không mở ({a.cdp})"
+            if time.time() - t0 > self.wait:
+                raise RuntimeError("Không có tài khoản Muse nào rảnh")
+            time.sleep(2)
+
+    def __exit__(self, exc_type, exc, tb) -> None:
+        a = self.acc
+        if exc is not None:
+            a.rest_until, a.last_error = time.time() + COOLDOWN, f"{time.strftime('%H:%M:%S')} {exc}"[:300]
+        else:
+            a.done += 1
+        a.busy = None
+        a.lock.release()
+
+
+def accounts_status() -> list:
+    now = time.time()
+    return [{"cdp": a.cdp, "chrome": _reachable(a.cdp), "busy": a.busy, "done": a.done, "last_error": a.last_error,
+             "resting": max(0, int(a.rest_until - now))} for a in _ACCOUNTS]
 
 # Muse gỡ ảnh cũ khỏi DOM khi chat dài: nhận ảnh mới theo địa chỉ blob: chưa thấy trước khi gửi prompt.
 _IMGS = "()=>[...document.querySelectorAll('img')].filter(i=>i.naturalWidth>200 && i.src.startsWith('blob:')).map(i=>i.src)"
@@ -66,10 +129,10 @@ async def keep_awake(page) -> None:
         print(f"[muse] keep_awake: {e}", flush=True)
 
 
-async def _generate(prompt: str) -> Dict[str, Any]:
+async def _generate(prompt: str, cdp: str = CDP) -> Dict[str, Any]:
     from playwright.async_api import async_playwright
     async with async_playwright() as p:
-        browser = await p.chromium.connect_over_cdp(CDP)
+        browser = await p.chromium.connect_over_cdp(cdp)
         pages = [pg for ctx in browser.contexts for pg in ctx.pages if "muse.ai" in pg.url]
         if not pages:
             raise RuntimeError("Chrome Muse chưa mở trang muse.ai")
@@ -96,8 +159,8 @@ async def _generate(prompt: str) -> Dict[str, Any]:
 def generate(prompt: str, negative: str = "", aspect: str = "9:16") -> Dict[str, Any]:
     """Vẽ một ảnh qua Muse, trả {"png": bytes, "size": (w,h), "seconds"}. Ảnh webp đổi sang PNG."""
     from PIL import Image
-    with MUSE_LOCK:
-        got = asyncio.run(_generate(build_prompt(prompt, negative, aspect)))
+    with account("ảnh") as cdp:
+        got = asyncio.run(_generate(build_prompt(prompt, negative, aspect), cdp))
     with Image.open(io.BytesIO(got["raw"])) as im:
         out = io.BytesIO()
         im.convert("RGB").save(out, "PNG")
@@ -151,7 +214,7 @@ def run_once() -> bool:
     task = _next_task()
     if not task:
         return False
-    _state["busy"] = task["id"]
+    _state["busy"] = task["id"]  # nhiều luồng: chỉ là việc gần nhất
     try:
         got = generate(task["prompt"], task["negative"], task["aspect"])
         _finish(task, got["png"])
@@ -175,12 +238,16 @@ def _loop() -> None:
 
 
 def start() -> None:
+    """Một luồng ảnh cho mỗi tài khoản: các tài khoản vẽ song song, mỗi tài khoản một ảnh một lúc."""
     global _thread
-    if os.environ.get("TOKMATRIX_MUSE", "1") == "0" or (_thread and _thread.is_alive()):
+    if os.environ.get("TOKMATRIX_MUSE", "1") == "0" or any(t.is_alive() for t in _threads):
         return
     _stop.clear()
-    _thread = threading.Thread(target=_loop, name="muse-images", daemon=True)
-    _thread.start()
+    for i in range(len(_ACCOUNTS)):
+        t = threading.Thread(target=_loop, name=f"muse-images-{i + 1}", daemon=True)
+        t.start()
+        _threads.append(t)
+    _thread = _threads[0]
 
 
 def stop() -> None:
@@ -188,11 +255,6 @@ def stop() -> None:
 
 
 def status() -> Dict[str, Any]:
-    import urllib.request
-    try:
-        urllib.request.urlopen(f"{CDP}/json/version", timeout=3).read()
-        chrome = True
-    except Exception:
-        chrome = False
-    return {"enabled": os.environ.get("TOKMATRIX_MUSE", "1") != "0", "chrome": chrome,
-            "running": bool(_thread and _thread.is_alive()), **_state}
+    accounts = accounts_status()
+    return {"enabled": os.environ.get("TOKMATRIX_MUSE", "1") != "0", "chrome": any(a["chrome"] for a in accounts),
+            "running": any(t.is_alive() for t in _threads), "accounts": accounts, **_state}
