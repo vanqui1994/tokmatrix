@@ -59,13 +59,20 @@ def load(pid: str) -> Dict[str, Any]:
     return json.loads((_dir(pid) / "project.json").read_text())
 
 
+_SAVE_LOCK = threading.Lock()
+
+
 def save(p: Dict[str, Any]) -> None:
+    """Ghi project.json nguyên tử. Nhiều luồng ghi cùng dự án (các tài khoản Muse quay song song, muse_remake đánh dấu
+    quay lại): mỗi lần ghi một file tạm riêng + khoá, nếu không hai luồng chung một .tmp sẽ trộn nội dung."""
     d = _dir(p["id"])
     d.mkdir(parents=True, exist_ok=True)
     p["updated"] = int(time.time())
-    tmp = d / "project.json.tmp"
-    tmp.write_text(json.dumps(p, ensure_ascii=False, indent=1))
-    tmp.replace(d / "project.json")
+    text = json.dumps(p, ensure_ascii=False, indent=1)
+    with _SAVE_LOCK:
+        tmp = d / f"project.json.{os.getpid()}.{threading.get_ident()}.tmp"
+        tmp.write_text(text)
+        tmp.replace(d / "project.json")
 
 
 def list_projects() -> List[Dict[str, Any]]:
