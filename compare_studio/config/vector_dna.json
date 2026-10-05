@@ -90,6 +90,16 @@
       "pacing": "busy",
       "palette": "day"
     },
+    "ocean_mysteries_05": {
+      "caption": "box",
+      "cast": [
+        6,
+        3
+      ],
+      "framing": "pan",
+      "pacing": "normal",
+      "palette": "night"
+    },
     "ocean_mysteries_08": {
       "caption": "pill",
       "cast": [
