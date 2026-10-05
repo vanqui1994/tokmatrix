@@ -9,7 +9,7 @@ audio:
   - freepd-abstract-anxiety
   - freepd-guerilla-tactics
 channel_id: folklore_legends_11
-config_version: 8
+config_version: 9
 creative:
   cut_cadence_seconds: 2.9
   palette:

@@ -9,7 +9,7 @@ audio:
   - freepd-go-on-without-me
   - oga-fantasy-orchestral-theme
 channel_id: extreme_survival_13
-config_version: 10
+config_version: 11
 creative:
   cut_cadence_seconds: 2.5
   palette:

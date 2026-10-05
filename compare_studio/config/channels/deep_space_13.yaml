@@ -9,7 +9,7 @@ audio:
   - freepd-fresh-focus
   - freepd-meditating-beat
 channel_id: deep_space_13
-config_version: 9
+config_version: 10
 creative:
   cut_cadence_seconds: 2.6
   palette:

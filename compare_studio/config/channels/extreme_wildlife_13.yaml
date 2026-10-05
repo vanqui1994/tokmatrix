@@ -9,7 +9,7 @@ audio:
   - freepd-night-attack
   - freepd-video-game-blockbuster
 channel_id: extreme_wildlife_13
-config_version: 9
+config_version: 10
 creative:
   cut_cadence_seconds: 2.7
   palette:

@@ -9,7 +9,7 @@ audio:
   - freepd-inventing-flight
   - oga-the-rush
 channel_id: extreme_wildlife_12
-config_version: 9
+config_version: 10
 creative:
   cut_cadence_seconds: 2.3
   palette:

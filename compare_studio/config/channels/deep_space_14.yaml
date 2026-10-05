@@ -9,7 +9,7 @@ audio:
   - freepd-desert-fox-underscore
   - freepd-motions
 channel_id: deep_space_14
-config_version: 8
+config_version: 9
 creative:
   cut_cadence_seconds: 3.0
   palette:

@@ -9,7 +9,7 @@ audio:
   - freepd-ancient-rite
   - freepd-go-on-without-me
 channel_id: unsolved_mysteries_11
-config_version: 8
+config_version: 9
 creative:
   cut_cadence_seconds: 2.4
   palette:

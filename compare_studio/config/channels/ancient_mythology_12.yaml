@@ -9,7 +9,7 @@ audio:
   - freepd-arpent
   - oga-sirens-in-darkness
 channel_id: ancient_mythology_12
-config_version: 9
+config_version: 10
 creative:
   cut_cadence_seconds: 2.9
   palette:

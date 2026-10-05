@@ -9,7 +9,7 @@ audio:
   - freepd-cornfield-chase
   - freepd-horror-suspense
 channel_id: unsolved_mysteries_13
-config_version: 8
+config_version: 9
 creative:
   cut_cadence_seconds: 2.9
   palette:

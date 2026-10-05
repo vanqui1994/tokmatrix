@@ -9,7 +9,7 @@ audio:
   - freepd-big-eyes
   - freepd-motions
 channel_id: ocean_mysteries_12
-config_version: 8
+config_version: 9
 creative:
   cut_cadence_seconds: 2.7
   palette:

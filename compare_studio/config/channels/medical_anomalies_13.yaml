@@ -9,7 +9,7 @@ audio:
   - freepd-release-the-hybrids
   - oga-fantasy-orchestral-theme
 channel_id: medical_anomalies_13
-config_version: 9
+config_version: 10
 creative:
   cut_cadence_seconds: 3.0
   palette:

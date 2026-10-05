@@ -9,7 +9,7 @@ audio:
   - freepd-night-vigil
   - freepd-travelers-notebook
 channel_id: ancient_mythology_13
-config_version: 9
+config_version: 10
 creative:
   cut_cadence_seconds: 2.4
   palette:

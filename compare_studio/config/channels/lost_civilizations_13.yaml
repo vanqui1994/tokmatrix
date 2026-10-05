@@ -9,7 +9,7 @@ audio:
   - freepd-evil-incoming
   - freepd-midnight-in-the-green-house
 channel_id: lost_civilizations_13
-config_version: 8
+config_version: 9
 creative:
   cut_cadence_seconds: 2.4
   palette:

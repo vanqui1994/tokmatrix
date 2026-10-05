@@ -9,7 +9,7 @@ audio:
   - freepd-abstract-anxiety
   - freepd-night-vigil
 channel_id: mega_catastrophes_11
-config_version: 11
+config_version: 12
 creative:
   cut_cadence_seconds: 3.0
   palette:

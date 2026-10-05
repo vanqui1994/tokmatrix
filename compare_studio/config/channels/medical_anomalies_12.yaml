@@ -9,7 +9,7 @@ audio:
   - freepd-go-on-without-me
   - freepd-infinite-wonder
 channel_id: medical_anomalies_12
-config_version: 9
+config_version: 10
 creative:
   cut_cadence_seconds: 2.3
   palette:

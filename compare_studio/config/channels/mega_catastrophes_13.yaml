@@ -9,7 +9,7 @@ audio:
   - freepd-cornfield-chase
   - freepd-release-the-hybrids
 channel_id: mega_catastrophes_13
-config_version: 10
+config_version: 11
 creative:
   cut_cadence_seconds: 2.4
   palette:

@@ -9,7 +9,7 @@ audio:
   - freepd-inspiration
   - oga-at-the-end-of-hope
 channel_id: ancient_mythology_14
-config_version: 8
+config_version: 9
 creative:
   cut_cadence_seconds: 2.9
   palette:

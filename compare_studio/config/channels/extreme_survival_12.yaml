@@ -9,7 +9,7 @@ audio:
   - freepd-action-strike
   - freepd-behind-enemy-lines
 channel_id: extreme_survival_12
-config_version: 10
+config_version: 11
 creative:
   cut_cadence_seconds: 2.3
   palette:

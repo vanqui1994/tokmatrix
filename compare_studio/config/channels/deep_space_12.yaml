@@ -9,7 +9,7 @@ audio:
   - freepd-natural-vibes
   - freepd-soundtrack-from-the-starcourt-mall
 channel_id: deep_space_12
-config_version: 8
+config_version: 9
 creative:
   cut_cadence_seconds: 2.9
   palette:

@@ -9,7 +9,7 @@ audio:
   - freepd-hidden-truth
   - freepd-meditating-beat
 channel_id: tech_ai_future_12
-config_version: 7
+config_version: 8
 creative:
   cut_cadence_seconds: 2.3
   palette:
