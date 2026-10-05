@@ -197,9 +197,9 @@ def _ks_item(ph: Dict[str, Any], author: str = "") -> Dict[str, Any]:
             "posted": int(float(ph.get("timestamp") or 0) / 1000)}
 
 
-_KS_SCROLL = """()=>{[...document.querySelectorAll('*')].filter(e=>e.scrollHeight>e.clientHeight+50&&
+_KS_SCROLL = """()=>{if(!document.body)return; [...document.querySelectorAll('*')].filter(e=>e.scrollHeight>e.clientHeight+50&&
  ['auto','scroll'].includes(getComputedStyle(e).overflowY)).forEach(e=>e.scrollTop=e.scrollHeight);
- window.scrollTo(0,document.body.scrollHeight)}"""
+ window.scrollTo(0,document.body.scrollHeight)}"""  # trang chưa dựng xong body: bỏ lượt cuộn này
 
 
 def is_kuaishou_profile(url: str) -> bool:
@@ -273,7 +273,10 @@ async def _ks_capture(url: str, want: int, target: str = "") -> Dict[str, Any]:
                     continue
                 if len(photos) >= want or state["end"]:
                     break
-                await page.evaluate(_KS_SCROLL)  # profile cuộn trong DIV.wb-content, không phải window
+                try:
+                    await page.evaluate(_KS_SCROLL)  # profile cuộn trong DIV.wb-content, không phải window
+                except Exception as e:  # noqa: BLE001 — trang đang chuyển hướng/dựng lại: thử lượt sau
+                    print(f"[Kuaishou] cuộn: {str(e)[:120]}", flush=True)
                 idle = idle + 1 if len(photos) == before else 0
                 if idle >= 8:  # ~12 s không có video mới
                     break
