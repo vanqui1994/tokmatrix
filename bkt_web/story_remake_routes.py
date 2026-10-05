@@ -8,8 +8,10 @@ from __future__ import annotations
 import json
 import os
 import signal
+import re
 import subprocess
 import sys
+import threading
 import time
 from pathlib import Path
 from typing import Any, Dict, List
@@ -25,6 +27,12 @@ RUNNER = ROOT / "runner.json"
 LOG = ROOT / "runner.log"
 EXIT = ROOT / "runner_exit.json"  # tool ghi khi thoát: {"pid", "code", "signal"}
 MAX_RESUMES = 3
+# Kênh Shorts theo dõi: luồng nền chạy lần lượt từng kênh khi không có lượt nào đang chạy (tool tự bỏ qua video đã xong,
+# nên mỗi lần chỉ làm Shorts mới). Tắt bằng TOKMATRIX_STORY_WATCH=0.
+WATCH = ROOT / "watch.json"
+WATCH_TICK = 60
+WATCH_LOCK = threading.Lock()
+CHANNEL_RE = re.compile(r"^https?://(www\.|m\.)?youtube\.com/(@[\w.\-]+|channel/[\w\-]+|c/[\w.\-]+)(/shorts)?/?$")
 
 router = APIRouter(prefix="/api/story-remake", tags=["story_remake"])
 
@@ -35,6 +43,77 @@ class RunRequest(BaseModel):
     jobs: int = Field(1, ge=1, le=3)
     lang: str = "auto"
     images: str = Field("muse", pattern="^(imagerouter|muse)$")
+
+
+class WatchChannel(BaseModel):
+    url: str = Field(..., min_length=8, max_length=300)
+    limit: int = Field(3, ge=1, le=20)
+    lang: str = Field("auto", pattern=r"^[a-z]{2}$|^auto$")
+    images: str = Field("muse", pattern="^(imagerouter|muse)$")
+
+
+class WatchConfig(BaseModel):
+    interval_min: int = Field(60, ge=15, le=1440)
+    enabled: bool = True
+
+
+def shorts_url(url: str) -> str:
+    """Link kênh YouTube → tab Shorts của kênh (chỉ nhận link kênh, không nhận video lẻ)."""
+    m = CHANNEL_RE.match(url.strip())
+    if not m:
+        raise ValueError("Cần link kênh YouTube dạng https://www.youtube.com/@tenkenh")
+    return f"https://www.youtube.com/{m.group(2)}/shorts"
+
+
+def _watch_load() -> Dict[str, Any]:
+    try:
+        data = json.loads(WATCH.read_text())
+    except Exception:
+        data = {}
+    data.setdefault("interval_min", 60); data.setdefault("enabled", True); data.setdefault("channels", [])
+    return data
+
+
+def _watch_save(data: Dict[str, Any]) -> None:
+    ROOT.mkdir(parents=True, exist_ok=True)
+    tmp = WATCH.with_suffix(".tmp"); tmp.write_text(json.dumps(data, ensure_ascii=False, indent=1)); tmp.replace(WATCH)
+
+
+def watch_tick(now: float | None = None) -> str | None:
+    """Một nhịp: nếu rảnh, chạy kênh theo dõi đến hạn lâu nhất chưa chạy. Trả url đã chạy (hoặc None)."""
+    now = now or time.time()
+    with WATCH_LOCK:
+        data = _watch_load()
+        if not data["enabled"] or _runner().get("running"):
+            return None
+        due = [c for c in data["channels"] if c.get("enabled", True) and now - c.get("last_run", 0) >= data["interval_min"] * 60]
+        if not due:
+            return None
+        ch = min(due, key=lambda c: c.get("last_run", 0))
+        _launch(ch["url"], ch.get("limit", 3), 1, ch.get("lang", "auto"), ch.get("images", "muse"))
+        ch["last_run"] = int(now)
+        _watch_save(data)
+        return ch["url"]
+
+
+def _watch_loop() -> None:
+    while True:
+        try:
+            watch_tick()
+        except Exception as exc:  # noqa: BLE001 — luồng nền không được chết
+            print(f"[story-remake] watch: {exc}")
+        time.sleep(WATCH_TICK)
+
+
+_watch_started = False
+
+
+def start_watch() -> None:
+    global _watch_started
+    if _watch_started or os.environ.get("TOKMATRIX_STORY_WATCH", "1") == "0":
+        return
+    _watch_started = True
+    threading.Thread(target=_watch_loop, name="story-remake-watch", daemon=True).start()
 
 
 def _runner() -> Dict[str, Any]:
@@ -104,7 +183,9 @@ def _launch(url: str, limit: int, jobs: int, lang: str, images: str, resumed: bo
 
 
 def resume_interrupted() -> None:
-    """Gọi lúc server khởi động: lượt chạy chưa xong (active, tiến trình đã chết theo web app) → chạy lại, tool tự bỏ qua video đã xong."""
+    """Gọi lúc server khởi động: lượt chạy chưa xong (active, tiến trình đã chết theo web app) → chạy lại, tool tự bỏ qua video đã xong.
+    Cũng bật luồng theo dõi kênh Shorts."""
+    start_watch()
     info = _runner()
     if info.get("active") and not info.get("running") and info.get("url"):
         n = int(info.get("resumes", 0)) + 1
@@ -170,3 +251,56 @@ def thumb(vid: str):
     if not vid.replace("-", "").replace("_", "").isalnum():
         raise HTTPException(400, "id không hợp lệ")
     return _file(ROOT / vid / "img" / "sc00.png", "image/png")
+
+
+@router.get("/watch")
+def watch_list():
+    data = _watch_load()
+    data["running_url"] = _runner().get("url") if _runner().get("running") else None
+    return data
+
+
+@router.post("/watch")
+def watch_add(ch: WatchChannel):
+    try:
+        url = shorts_url(ch.url)
+    except ValueError as exc:
+        raise HTTPException(400, str(exc))
+    with WATCH_LOCK:
+        data = _watch_load()
+        if any(c["url"] == url for c in data["channels"]):
+            raise HTTPException(409, "Kênh này đã có trong danh sách theo dõi")
+        data["channels"].append({"url": url, "limit": ch.limit, "lang": ch.lang, "images": ch.images, "enabled": True,
+                                 "added": int(time.time()), "last_run": 0})
+        _watch_save(data)
+    start_watch()
+    return {"added": url, "started": watch_tick()}  # rảnh thì chạy ngay kênh vừa thêm
+
+
+@router.post("/watch/remove")
+def watch_remove(ch: WatchChannel):
+    with WATCH_LOCK:
+        data = _watch_load()
+        n = len(data["channels"])
+        data["channels"] = [c for c in data["channels"] if c["url"] != ch.url]
+        _watch_save(data)
+    return {"removed": n != len(data["channels"])}
+
+
+@router.post("/watch/toggle")
+def watch_toggle(ch: WatchChannel):
+    with WATCH_LOCK:
+        data = _watch_load()
+        for c in data["channels"]:
+            if c["url"] == ch.url:
+                c["enabled"] = not c.get("enabled", True)
+                _watch_save(data)
+                return {"enabled": c["enabled"]}
+    raise HTTPException(404, "Không có kênh này")
+
+
+@router.put("/watch/config")
+def watch_config(cfg: WatchConfig):
+    with WATCH_LOCK:
+        data = _watch_load(); data.update(interval_min=cfg.interval_min, enabled=cfg.enabled); _watch_save(data)
+    return data

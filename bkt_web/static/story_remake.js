@@ -12,10 +12,12 @@ async function storyJson(url, options) {
 
 function loadStoryRemakeTab() {
   storyRefresh();
+  storyWatchRefresh();
   if (storyTimer) clearInterval(storyTimer);
   storyTimer = setInterval(() => {
     if (document.getElementById('pane-story_remake')?.style.display === 'none') { clearInterval(storyTimer); storyTimer = null; return; }
     storyRefresh();
+    storyWatchRefresh();
   }, 5000);
 }
 
@@ -100,4 +102,94 @@ function storyPlay(id) {
   box.hidden = false;
   box.innerHTML = `<video src="/api/story-remake/video/${id}" controls autoplay playsinline aria-label="Video Story Remake" ></video>`;
   box.scrollIntoView({ behavior: 'smooth' });
+}
+
+// ---- Theo dõi kênh Shorts: thêm kênh → server tự chạy kênh đó ngay khi rảnh, rồi định kỳ làm Shorts mới (/api/story-remake/watch)
+function storyWatchMount() {
+  if (document.getElementById('story-watch')) return;
+  const anchor = document.querySelector('#pane-story_remake .story-log-details');
+  if (!anchor) return;
+  if (!document.getElementById('story-watch-css')) {
+    const css = document.createElement('style');
+    css.id = 'story-watch-css';
+    css.textContent = `.story-watch{margin:14px 0 0;padding-top:4px;border-top:1px solid #eaecf0}
+.story-watch-switch{display:flex;align-items:center;gap:6px;font-size:12px;color:#344054}
+.story-watch-list{display:flex;flex-direction:column;gap:6px;margin:10px 20px 4px}
+.story-watch-item{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:8px 10px;border:1px solid #eaecf0;border-radius:10px;font-size:12px}
+.story-watch-item.is-off{opacity:.55}
+.story-watch-item span{display:block;color:#667085;font-size:11px;margin-top:2px}
+.story-watch-item button{font-size:11px;padding:4px 8px;border:1px solid #d0d5dd;border-radius:8px;background:#fff;cursor:pointer;margin-left:4px}`;
+    document.head.appendChild(css);
+  }
+  const box = document.createElement('div');
+  box.id = 'story-watch';
+  box.className = 'story-watch';
+  box.innerHTML = `
+    <div class="story-card-heading"><div><span class="story-card-kicker">TỰ ĐỘNG</span><h3>Theo dõi kênh Shorts</h3></div></div>
+    <div class="story-field">
+      <label for="story-watch-url">Link kênh YouTube</label>
+      <input id="story-watch-url" class="form-control" type="url" placeholder="https://www.youtube.com/@tenkenh" autocomplete="url">
+      <span class="story-field-help">Thêm kênh rồi hệ thống tự remake các Shorts mới nhất (theo cấu hình nguồn hình / ngôn ngữ ở trên), kiểm tra lại định kỳ.</span>
+    </div>
+    <div class="story-options-grid">
+      <div class="story-field"><label for="story-watch-limit">Shorts mỗi lượt</label><input id="story-watch-limit" type="number" min="1" max="20" value="3" class="form-control"></div>
+      <div class="story-field"><label for="story-watch-interval">Kiểm tra mỗi (phút)</label><input id="story-watch-interval" type="number" min="15" max="1440" value="60" class="form-control" onchange="storyWatchConfig()"></div>
+    </div>
+    <div class="story-actions">
+      <button class="story-start-button" type="button" onclick="storyWatchAdd()">＋ Thêm kênh & tự chạy</button>
+      <label class="story-watch-switch"><input id="story-watch-enabled" type="checkbox" checked onchange="storyWatchConfig()"> Bật tự chạy</label>
+    </div>
+    <div id="story-watch-list" class="story-watch-list"></div>`;
+  anchor.parentNode.insertBefore(box, anchor);
+}
+
+async function storyWatchRefresh() {
+  storyWatchMount();
+  const list = document.getElementById('story-watch-list');
+  if (!list) return;
+  let data;
+  try { data = await storyJson('/api/story-remake/watch'); } catch (e) { list.textContent = e.message; return; }
+  const iv = document.getElementById('story-watch-interval');
+  if (iv && document.activeElement !== iv) iv.value = data.interval_min;
+  const en = document.getElementById('story-watch-enabled');
+  if (en) en.checked = !!data.enabled;
+  const when = (t) => (t ? new Date(t * 1000).toLocaleString('vi-VN') : 'chưa chạy');
+  list.innerHTML = (data.channels || []).map((c) => {
+    const name = c.url.replace(/^https:\/\/www\.youtube\.com\//, '').replace(/\/shorts$/, '');
+    const live = data.running_url === c.url ? ' · ⏳ đang chạy' : '';
+    const u = escapeHtml(JSON.stringify(c.url));
+    return `<div class="story-watch-item${c.enabled ? '' : ' is-off'}">
+      <div><strong>${escapeHtml(name)}</strong><span>${c.limit} Shorts/lượt · lần cuối: ${escapeHtml(when(c.last_run))}${live}</span></div>
+      <div><button type="button" onclick='storyWatchAct("toggle", ${u})'>${c.enabled ? 'Tạm dừng' : 'Bật lại'}</button>
+      <button type="button" onclick='storyWatchAct("remove", ${u})'>Xoá</button></div></div>`;
+  }).join('') || '<div class="story-field-help">Chưa theo dõi kênh nào.</div>';
+}
+
+async function storyWatchAdd() {
+  const url = document.getElementById('story-watch-url').value.trim();
+  if (!url) { alert('Dán link kênh YouTube'); return; }
+  const body = {
+    url,
+    limit: Number(document.getElementById('story-watch-limit').value) || 3,
+    lang: document.getElementById('story-lang').value || 'auto',
+    images: document.getElementById('story-images').value || 'muse',
+  };
+  try {
+    const r = await storyJson('/api/story-remake/watch', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+    document.getElementById('story-watch-url').value = '';
+    if (!r.started) alert('Đã thêm kênh. Đang có lượt khác chạy — kênh sẽ tự chạy khi lượt đó xong.');
+  } catch (e) { alert(e.message); }
+  storyWatchRefresh(); storyRefresh();
+}
+
+async function storyWatchAct(action, url) {
+  if (action === 'remove' && !confirm('Bỏ theo dõi kênh này? Video đã remake vẫn giữ.')) return;
+  await storyJson(`/api/story-remake/watch/${action}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ url }) }).catch((e) => alert(e.message));
+  storyWatchRefresh();
+}
+
+async function storyWatchConfig() {
+  const body = { interval_min: Number(document.getElementById('story-watch-interval').value) || 60, enabled: document.getElementById('story-watch-enabled').checked };
+  await storyJson('/api/story-remake/watch/config', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) }).catch((e) => alert(e.message));
+  storyWatchRefresh();
 }
