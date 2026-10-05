@@ -380,6 +380,33 @@
   }
 
   // =============================================================
+
+  // Khổ ngang (B4): hai dải mở rộng [x0, 0) và [576, x1); khổ dọc trả về rỗng nên pixel dọc không đổi.
+  function extRanges(x0, x1) {
+    const out = [];
+    if (x0 < 0) out.push([x0, 0]);
+    if (x1 > 576) out.push([576, x1]);
+    return out;
+  }
+  // Nối tiếp hoạ tiết lặp (start, step; vòng gốc dừng ở origEnd) sang hai dải mở rộng.
+  function tileExt(ext, start, step, origEnd, fn) {
+    for (const [a, b] of ext) {
+      if (a < 0) { for (let x = start - step; x > a - step; x -= step) fn(x); }
+      else { let x = start; while (x <= origEnd) x += step; for (; x < b + step; x += step) fn(x); }
+    }
+  }
+  // Rải vật tất định trên dải mở rộng: bước step ± 30 %, seed theo toạ độ.
+  function scatterExt(ext, step, key, fn) {
+    for (const [a, b] of ext) {
+      let i = 0;
+      for (let x = a + step * 0.5; x < b - step * 0.3; i++) {
+        const r = RemakeVector.kit.seeded(`${key}:${Math.round(x)}`);
+        fn(x, r, i);
+        x += step * (0.7 + r * 0.6);
+      }
+    }
+  }
+
   // BACKGROUNDS
   // =============================================================
 
@@ -388,6 +415,8 @@
     ctx.save();
     const w = 576;
     const h = 1024;
+    const sp = RemakeVector.kit.frameSpan(settings);
+    const X0 = sp.x0, X1 = sp.x1, ext = extRanges(X0, X1);
     const groundY = settings.ground_y || 810;
     const isNight = settings.time === 'night';
 
@@ -402,14 +431,21 @@
       skyGrad.addColorStop(1, '#fed7aa');
     }
     ctx.fillStyle = skyGrad;
-    ctx.fillRect(0, 0, w, 480);
+    ctx.fillRect(X0, 0, X1 - X0, 480);
 
     // Open Pacific Ocean horizon
     const seaGrad = ctx.createLinearGradient(0, 480, 0, 640);
     seaGrad.addColorStop(0, isNight ? '#0f172a' : '#0369a1');
     seaGrad.addColorStop(1, isNight ? '#1e293b' : '#0ea5e9');
     ctx.fillStyle = seaGrad;
-    ctx.fillRect(0, 480, w, 160);
+    ctx.fillRect(X0, 480, X1 - X0, 160);
+    // Khổ ngang: đảo nhỏ, vách đá và sóng bạc đầu ngoài khơi
+    scatterExt(ext, 320, 'isle', (x, r, i) => {
+      ctx.fillStyle = isNight ? '#1e293b' : (i % 2 ? '#4d7c0f' : '#57534e');
+      ctx.beginPath(); ctx.moveTo(x - 90 - r * 40, 600); ctx.quadraticCurveTo(x, 540 - r * 40, x + 80 + r * 40, 600); ctx.closePath(); ctx.fill();
+      ctx.strokeStyle = 'rgba(255,255,255,0.35)'; ctx.lineWidth = 2;
+      for (let j = 0; j < 3; j++) { const wx = x - 120 + j * 90 + Math.sin((t || 0) + j) * 6; ctx.beginPath(); ctx.moveTo(wx, 520 + j * 30); ctx.lineTo(wx + 26, 520 + j * 30); ctx.stroke(); }
+    });
 
     // Distant volcanic caldera cone
     ctx.fillStyle = isNight ? '#1e293b' : '#65a30d';
@@ -434,13 +470,34 @@
     ctx.lineTo(0, groundY);
     ctx.closePath();
     ctx.fill();
+    for (const [ea, eb] of ext) {
+      ctx.beginPath(); ctx.moveTo(ea, 628);
+      for (let x = ea; x < eb; x += 260) ctx.quadraticCurveTo(x + 130, 590 + RemakeVector.kit.seeded(`eh:${Math.round(x)}`) * 40, Math.min(eb, x + 260), 628);
+      ctx.lineTo(eb, groundY); ctx.lineTo(ea, groundY); ctx.closePath(); ctx.fill();
+    }
+    // Khổ ngang: tường đá thấp, bụi cây, ngựa hoang nhỏ phía xa (không dựng thêm tượng)
+    scatterExt(ext, 220, 'easter', (x, r, i) => {
+      const k = i % 3;
+      if (k === 0) {
+        ctx.fillStyle = isNight ? '#334155' : '#78716c';
+        for (let j = 0; j < 5; j++) { ctx.beginPath(); ctx.ellipse(x - 50 + j * 24, groundY - 10 - (j % 2) * 6, 14, 10, 0, 0, TAU); ctx.fill(); }
+      } else if (k === 1) {
+        ctx.fillStyle = isNight ? '#14532d' : '#3f6212';
+        for (const [dx, rr] of [[-18, 20], [0, 28], [20, 18]]) { ctx.beginPath(); ctx.arc(x + dx, groundY - rr * 0.8, rr, Math.PI, 0); ctx.fill(); }
+      } else {
+        const hy = 650 + r * 30, hx = x;
+        ctx.fillStyle = isNight ? '#1c1917' : '#7c2d12';
+        ctx.fillRect(hx - 14, hy - 10, 28, 10); ctx.fillRect(hx + 10, hy - 18, 6, 10); ctx.fillRect(hx + 12, hy - 20, 9, 5);
+        for (const lx of [-12, -6, 6, 11]) ctx.fillRect(hx + lx, hy, 2.5, 10);
+      }
+    });
 
     // Fore meadow (Cỏ xanh phía trước)
     const meadowGrad = ctx.createLinearGradient(0, groundY, 0, h);
     meadowGrad.addColorStop(0, isNight ? '#022c22' : '#65a30d');
     meadowGrad.addColorStop(1, isNight ? '#064e3b' : '#3f6212');
     ctx.fillStyle = meadowGrad;
-    ctx.fillRect(0, groundY, w, h - groundY);
+    ctx.fillRect(X0, groundY, X1 - X0, h - groundY);
 
     // Wind blown grass tufts
     ctx.strokeStyle = isNight ? '#065f46' : '#a3e635';
@@ -451,6 +508,12 @@
       line(ctx, x, gy, x + sway - 3, gy - 12, null, 1.4);
       line(ctx, x + 4, gy, x + sway + 3, gy - 14, null, 1.4);
     }
+    tileExt(ext, 30, 45, 575, (x) => {
+      const gy = groundY + 15 + ((Math.abs(x) * 17) % 120);
+      const sway = Math.sin((t || 0) * 3 + x) * 4;
+      line(ctx, x, gy, x + sway - 3, gy - 12, null, 1.4);
+      line(ctx, x + 4, gy, x + sway + 3, gy - 14, null, 1.4);
+    });
 
     ctx.restore();
   }
@@ -460,6 +523,8 @@
     ctx.save();
     const w = 576;
     const h = 1024;
+    const sp = RemakeVector.kit.frameSpan(settings);
+    const X0 = sp.x0, X1 = sp.x1, ext = extRanges(X0, X1);
     const groundY = settings.ground_y || 810;
     const isNight = settings.time === 'night';
 
@@ -475,7 +540,9 @@
       skyGrad.addColorStop(1, '#cbd5e1');
     }
     ctx.fillStyle = skyGrad;
-    ctx.fillRect(0, 0, w, 520);
+    ctx.fillRect(X0, 0, X1 - X0, 520);
+    ctx.fillStyle = isNight ? '#0f172a' : '#64748b';
+    scatterExt(ext, 150, 'far_stone', (x, r) => { ctx.fillRect(x, 520 + r * 8, 10 + r * 6, 24 + r * 10); if (r > 0.5) ctx.fillRect(x + 22, 524, 12, 26); });
 
     // Distant silhouette standing stones on horizon
     ctx.fillStyle = isNight ? '#0f172a' : '#64748b';
@@ -493,6 +560,23 @@
     ctx.lineTo(0, groundY);
     ctx.closePath();
     ctx.fill();
+    for (const [ea, eb] of ext) {
+      ctx.beginPath(); ctx.moveTo(ea, 536);
+      for (let x = ea; x < eb; x += 300) ctx.quadraticCurveTo(x + 150, 505 + RemakeVector.kit.seeded(`sh:${Math.round(x)}`) * 40, Math.min(eb, x + 300), 536);
+      ctx.lineTo(eb, groundY); ctx.lineTo(ea, groundY); ctx.closePath(); ctx.fill();
+    }
+    // Khổ ngang: cự thạch đứng lẻ, hàng rào đá khô, bụi thạch nam
+    scatterExt(ext, 240, 'menhir', (x, r, i) => {
+      if (i % 2 === 0) {
+        const sh = 120 + r * 90, sw = 34 + r * 16;
+        ctx.fillStyle = isNight ? '#334155' : '#94a3b8';
+        ctx.beginPath(); ctx.moveTo(x - sw / 2, groundY); ctx.lineTo(x - sw / 2 + 4, groundY - sh); ctx.quadraticCurveTo(x, groundY - sh - 14, x + sw / 2 - 2, groundY - sh + 4); ctx.lineTo(x + sw / 2, groundY); ctx.closePath(); ctx.fill();
+        ctx.fillStyle = isNight ? '#14532d' : '#65a30d'; ctx.beginPath(); ctx.ellipse(x - 6, groundY - sh * 0.4, 8, 14, 0, 0, TAU); ctx.fill();
+      } else {
+        ctx.fillStyle = isNight ? '#3b0764' : '#a855f7';
+        for (let j = 0; j < 6; j++) { ctx.beginPath(); ctx.arc(x - 40 + j * 16, groundY - 10 - (j % 2) * 6, 10, 0, TAU); ctx.fill(); }
+      }
+    });
 
     // Low ground mist (Sương mù là là mặt đất)
     ctx.save();
@@ -502,6 +586,11 @@
     ctx.ellipse(200, 560, 160, 20, 0, 0, TAU);
     ctx.ellipse(420, 570, 140, 18, 0, 0, TAU);
     ctx.fill();
+    for (const [ea, eb] of ext) {
+      ctx.beginPath();
+      for (let x = ea + 120; x < eb; x += 280) ctx.ellipse(x, 556 + RemakeVector.kit.seeded(`mist:${Math.round(x)}`) * 20, 150, 18, 0, 0, TAU);
+      ctx.fill();
+    }
     ctx.restore();
 
     // Foreground grassy soil
@@ -509,7 +598,7 @@
     foreGrad.addColorStop(0, isNight ? '#052e16' : '#3f6212');
     foreGrad.addColorStop(1, isNight ? '#022c22' : '#1a2e05');
     ctx.fillStyle = foreGrad;
-    ctx.fillRect(0, groundY, w, h - groundY);
+    ctx.fillRect(X0, groundY, X1 - X0, h - groundY);
 
     ctx.restore();
   }
@@ -519,6 +608,8 @@
     ctx.save();
     const w = 576;
     const h = 1024;
+    const sp = RemakeVector.kit.frameSpan(settings);
+    const X0 = sp.x0, X1 = sp.x1, ext = extRanges(X0, X1);
     const groundY = settings.ground_y || 810;
     const isNight = settings.time === 'night';
 
@@ -534,24 +625,25 @@
       waterGrad.addColorStop(1, '#115e59');
     }
     ctx.fillStyle = waterGrad;
-    ctx.fillRect(0, 0, w, groundY);
+    ctx.fillRect(X0, 0, X1 - X0, groundY);
 
     // Ancient sunken stone pavement floor (Nền đá cổ lát dưới đáy biển)
     const floorGrad = ctx.createLinearGradient(0, groundY, 0, h);
     floorGrad.addColorStop(0, isNight ? '#1e293b' : '#334155');
     floorGrad.addColorStop(1, isNight ? '#0f172a' : '#1e293b');
     ctx.fillStyle = floorGrad;
-    ctx.fillRect(0, groundY, w, h - groundY);
+    ctx.fillRect(X0, groundY, X1 - X0, h - groundY);
 
     // Paving slab stone grid lines
     ctx.strokeStyle = isNight ? '#334155' : '#475569';
     ctx.lineWidth = 1.6;
     for (let y = groundY + 20; y < h; y += 40) {
-      line(ctx, 0, y, w, y, null, 1.6);
+      line(ctx, X0, y, X1, y, null, 1.6);
     }
     for (let x = 40; x < w; x += 80) {
       line(ctx, x, groundY, x, h, null, 1.6);
     }
+    tileExt(ext, 40, 80, 575, (x) => line(ctx, x, groundY, x, h, null, 1.6));
 
     // Distant sunken pillars silhouettes
     ctx.save();
@@ -562,6 +654,31 @@
     ctx.fillRect(380, groundY - 150, 24, 150);
     ctx.fillRect(480, groundY - 120, 20, 120);
     ctx.restore();
+
+    // Khổ ngang: cột đổ, bậc thềm, vòm cổng, rong biển và cá nhỏ
+    scatterExt(ext, 200, 'ruin', (x, r, i) => {
+      const stone = isNight ? '#334155' : '#94a3b8', dark = isNight ? '#1e293b' : '#64748b';
+      const k = i % 4;
+      ctx.save();
+      if (k === 0) {
+        const ph = 160 + r * 120;
+        ctx.fillStyle = stone; ctx.fillRect(x - 16, groundY - ph, 32, ph);
+        ctx.fillStyle = dark; ctx.fillRect(x - 24, groundY - ph - 14, 48, 14); ctx.fillRect(x - 22, groundY - 12, 44, 12);
+        ctx.strokeStyle = dark; ctx.lineWidth = 1.5; for (const dx of [-8, 0, 8]) { ctx.beginPath(); ctx.moveTo(x + dx, groundY - ph + 6); ctx.lineTo(x + dx, groundY - 14); ctx.stroke(); }
+      } else if (k === 1) {
+        ctx.fillStyle = stone; ctx.save(); ctx.translate(x, groundY - 14); ctx.rotate(-0.12 + r * 0.24); ctx.fillRect(-70, -14, 140, 28); ctx.restore();
+        ctx.fillStyle = dark; ctx.beginPath(); ctx.arc(x + 74, groundY - 14, 14, 0, TAU); ctx.fill();
+      } else if (k === 2) {
+        ctx.fillStyle = stone; ctx.fillRect(x - 60, groundY - 140, 22, 140); ctx.fillRect(x + 38, groundY - 140, 22, 140);
+        ctx.beginPath(); ctx.moveTo(x - 60, groundY - 140); ctx.quadraticCurveTo(x, groundY - 210, x + 60, groundY - 140); ctx.lineTo(x + 38, groundY - 140); ctx.quadraticCurveTo(x, groundY - 185, x - 38, groundY - 140); ctx.closePath(); ctx.fill();
+      } else {
+        ctx.strokeStyle = isNight ? '#065f46' : '#16a34a'; ctx.lineWidth = 6; ctx.lineCap = 'round';
+        for (let j = 0; j < 3; j++) { const sw = Math.sin((t || 0) * 1.4 + j + r * 4) * 10; ctx.beginPath(); ctx.moveTo(x - 12 + j * 12, groundY); ctx.quadraticCurveTo(x - 12 + j * 12 + sw, groundY - 70, x - 12 + j * 12 - sw, groundY - 120 - r * 40); ctx.stroke(); }
+        ctx.fillStyle = '#facc15'; const fx = x + 40 + Math.sin((t || 0) * 0.8 + r * 6) * 30, fy = 420 + r * 200;
+        ctx.beginPath(); ctx.ellipse(fx, fy, 12, 6, 0, 0, TAU); ctx.fill(); ctx.beginPath(); ctx.moveTo(fx - 10, fy); ctx.lineTo(fx - 20, fy - 6); ctx.lineTo(fx - 20, fy + 6); ctx.closePath(); ctx.fill();
+      }
+      ctx.restore();
+    });
 
     ctx.restore();
   }

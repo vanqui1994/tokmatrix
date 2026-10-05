@@ -77,5 +77,5 @@ Mỗi hàm vẽ hình nền: thay `576` bằng `w = kit.frameW(settings)`, chia 
 | B1 | Engine (`frame`, `W/H` theo renderer, kit helpers, lớp phủ, phụ đề, composer, adapter) + `to_landscape` | pixel dọc y hệt; 1 hình nền core vẽ ngang đúng |
 | B2 | Hình nền core (`remake_vector_engine.js`) + `farm_fun`, `buildings`, `modular_scenes` | test 3–4 qua cho các hình nền này |
 | B3 | [x] Gói văn hoá và lịch sử (`ancient`, `medieval`, `inventions`, `de/jp/kr/us_culture`) — 30 hình nền, test 3–4 qua, baseline 51 hình nền ngang | xong |
-| B4 | Gói khoa học, sinh tồn, đại dương, cơ thể (`nature`, `space`, `ocean`, `mysteries`, `fables`, `wasteland`, `body_world`, `medical`, `recycling`, `safety`) | như trên |
+| B4 | [x] Gói khoa học, sinh tồn, đại dương, cơ thể (`nature`, `space`, `ocean`, `mysteries`, `wasteland`, `body_world`, `medical`, `recycling`; `fables`, `safety` không có hình nền) — 41 hình nền, baseline 92 hình nền ngang | xong |
 | B5 | 5 story `*_wide`, baseline ngang, xuất MP4 thử | duyệt bằng mắt |

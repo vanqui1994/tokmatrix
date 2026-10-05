@@ -552,6 +552,33 @@
   // 3. 10 HÌNH NỀN MỚI (§11) CHUẨN ground_y: 810 (NGÀY & ĐÊM, KHÔNG CHỮ)
   // =========================================================================
 
+
+  // Khổ ngang (B4): hai dải mở rộng [x0, 0) và [576, x1); khổ dọc trả về rỗng nên pixel dọc không đổi.
+  function extRanges(x0, x1) {
+    const out = [];
+    if (x0 < 0) out.push([x0, 0]);
+    if (x1 > 576) out.push([576, x1]);
+    return out;
+  }
+  // Nối tiếp hoạ tiết lặp (start, step; vòng gốc dừng ở origEnd) sang hai dải mở rộng.
+  function tileExt(ext, start, step, origEnd, fn) {
+    for (const [a, b] of ext) {
+      if (a < 0) { for (let x = start - step; x > a - step; x -= step) fn(x); }
+      else { let x = start; while (x <= origEnd) x += step; for (; x < b + step; x += step) fn(x); }
+    }
+  }
+  // Rải vật tất định trên dải mở rộng: bước step ± 30 %, seed theo toạ độ.
+  function scatterExt(ext, step, key, fn) {
+    for (const [a, b] of ext) {
+      let i = 0;
+      for (let x = a + step * 0.5; x < b - step * 0.3; i++) {
+        const r = RemakeVector.kit.seeded(`${key}:${Math.round(x)}`);
+        fn(x, r, i);
+        x += step * (0.7 + r * 0.6);
+      }
+    }
+  }
+
   const MEDICAL_BACKGROUNDS = {
     // 1. Phòng khách (living_room)
     living_room: {
@@ -559,10 +586,12 @@
       theme: 'home',
       ground_y: 810,
       draw(ctx, s, t, kit) {
+        const { x0, x1 } = RemakeVector.kit.frameSpan(s);
+        const ext = extRanges(x0, x1);
         const isNight = s.time === 'night';
         // Tường phòng khách màu kem vàng / ấm áp
         ctx.fillStyle = isNight ? '#1e1c24' : '#faf5ee';
-        ctx.fillRect(0, 0, 576, 810);
+        ctx.fillRect(x0, 0, x1 - x0, 810);
 
         // Khung cửa sổ nhìn ra trời
         ctx.fillStyle = isNight ? '#0b1626' : '#bfdbfe';
@@ -616,12 +645,39 @@
           ctx.restore();
         }
 
+        // Khổ ngang: cửa sổ, kệ sách, tranh, cây cảnh, ghế bành xen kẽ
+        scatterExt(ext, 230, 'living', (x, r, i) => {
+          const k = (i + Math.floor(r * 4)) % 4;
+          if (k === 0) {
+            ctx.fillStyle = isNight ? '#0b1626' : '#bfdbfe'; ctx.fillRect(x - 70, 220, 140, 220);
+            line(ctx, [[x - 70, 220], [x + 70, 220], [x + 70, 440], [x - 70, 440], [x - 70, 220]], '#78350f', 3.0);
+            line(ctx, [[x, 220], [x, 440]], '#78350f', 2.0); line(ctx, [[x - 70, 330], [x + 70, 330]], '#78350f', 2.0);
+            path(ctx, `M ${x - 80} 210 L ${x - 60} 210 L ${x - 64} 460 L ${x - 84} 460 Z`, '#fda4af', INK, 1.2);
+            path(ctx, `M ${x + 60} 210 L ${x + 80} 210 L ${x + 84} 460 L ${x + 64} 460 Z`, '#fda4af', INK, 1.2);
+          } else if (k === 1) {
+            path(ctx, `M ${x - 60} 520 L ${x + 60} 520 L ${x + 60} 810 L ${x - 60} 810 Z`, '#a16207', INK, 1.8);
+            for (const sy of [600, 690, 780]) {
+              line(ctx, [[x - 60, sy], [x + 60, sy]], '#713f12', 2.0);
+              for (let bx = x - 52, n = 0; bx < x + 46; bx += 14, n++) path(ctx, `M ${bx} ${sy} L ${bx + 11} ${sy} L ${bx + 11} ${sy - 50 - (n % 3) * 8} L ${bx} ${sy - 50 - (n % 3) * 8} Z`, ['#ef4444', '#3b82f6', '#22c55e', '#f59e0b', '#8b5cf6'][(n + i) % 5], INK, 0.8);
+            }
+          } else if (k === 2) {
+            path(ctx, `M ${x - 55} 270 L ${x + 55} 270 L ${x + 55} 370 L ${x - 55} 370 Z`, isNight ? '#1e293b' : '#fef9c3', INK, 2.0);
+            ellipse(ctx, x, 320, 22 + r * 10, 22 + r * 10, ['#f472b6', '#38bdf8', '#fb923c'][i % 3], null);
+            path(ctx, `M ${x - 30} 810 L ${x + 30} 810 L ${x + 24} 760 L ${x - 24} 760 Z`, '#c2410c', INK, 1.4);
+            for (const [dx, dy, rr] of [[0, -90, 30], [-22, -70, 22], [22, -72, 22]]) ellipse(ctx, x + dx, 810 + dy, rr, rr, isNight ? '#14532d' : '#22c55e', INK, 1.2);
+          } else {
+            const ac = isNight ? '#4c1d95' : '#a78bfa';
+            path(ctx, `M ${x - 60} 700 L ${x + 60} 700 L ${x + 60} 810 L ${x - 60} 810 Z`, ac, INK, 2.0);
+            path(ctx, `M ${x - 60} 610 Q ${x} 600 ${x + 60} 610 L ${x + 60} 700 L ${x - 60} 700 Z`, tone(ac, -0.1), INK, 2.0);
+            ellipse(ctx, x - 64, 700, 12, 40, tone(ac, 0.1), INK, 1.6); ellipse(ctx, x + 64, 700, 12, 40, tone(ac, 0.1), INK, 1.6);
+          }
+        });
         // Mặt sàn gỗ phòng khách (ground_y: 810)
         ctx.fillStyle = isNight ? '#1c130d' : '#854d0e';
-        ctx.fillRect(0, 810, 576, 214);
-        line(ctx, [[0, 810], [576, 810]], INK, 2.4);
+        ctx.fillRect(x0, 810, x1 - x0, 214);
+        line(ctx, [[x0, 810], [x1, 810]], INK, 2.4);
         for (let y = 850; y < 1024; y += 45) {
-          line(ctx, [[0, y], [576, y]], isNight ? '#0f0a07' : '#713f12', 1.0);
+          line(ctx, [[x0, y], [x1, y]], isNight ? '#0f0a07' : '#713f12', 1.0);
         }
       }
     },
@@ -632,15 +688,18 @@
       theme: 'home',
       ground_y: 810,
       draw(ctx, s, t, kit) {
+        const { x0, x1 } = RemakeVector.kit.frameSpan(s);
+        const ext = extRanges(x0, x1);
         const isNight = s.time === 'night';
         // Tường gạch men xanh ngọc / trắng mát dịu
         ctx.fillStyle = isNight ? '#0f292f' : '#e0f2fe';
-        ctx.fillRect(0, 0, 576, 810);
+        ctx.fillRect(x0, 0, x1 - x0, 810);
         // Lưới đường ron gạch men
         ctx.strokeStyle = isNight ? 'rgba(255,255,255,0.06)' : 'rgba(14, 165, 233, 0.15)';
         ctx.lineWidth = 1.0;
         for (let x = 0; x < 576; x += 48) line(ctx, [[x, 0], [x, 810]], ctx.strokeStyle, 1.0);
-        for (let y = 0; y < 810; y += 48) line(ctx, [[0, y], [576, y]], ctx.strokeStyle, 1.0);
+        for (let y = 0; y < 810; y += 48) line(ctx, [[x0, y], [x1, y]], ctx.strokeStyle, 1.0);
+        tileExt(ext, 0, 48, 575, (x) => line(ctx, [[x, 0], [x, 810]], ctx.strokeStyle, 1.0));
 
         // Gương soi hình vòm lớn ở giữa
         const mirrorGrad = ctx.createLinearGradient(180, 240, 396, 560);
@@ -672,6 +731,24 @@
         path(ctx, 'M 50 480 L 110 480 L 115 620 L 45 620 Z', '#fef08a', INK, 1.6);
         line(ctx, [[50, 590], [110, 590]], '#38bdf8', 2.0);
 
+        scatterExt(ext, 210, 'bath', (x, r, i) => {
+          const k = i % 3;
+          if (k === 0) {
+            ellipse(ctx, x, 380, 60, 80, isNight ? '#1e293b' : '#f0f9ff', '#94a3b8', 3.0);
+            line(ctx, [[x - 30, 430], [x + 10, 330]], 'rgba(255,255,255,0.6)', 2.5);
+            path(ctx, `M ${x - 70} 520 L ${x + 70} 520 L ${x + 70} 534 L ${x - 70} 534 Z`, '#e2e8f0', INK, 1.4);
+            taper(ctx, x - 30, 520, x - 30, 496, 7, 7, ['#38bdf8', '#f472b6', '#4ade80'][Math.floor(r * 3)], INK, 1.1);
+            ellipse(ctx, x + 25, 512, 12, 8, '#fde68a', INK, 1.0);
+          } else if (k === 1) {
+            line(ctx, [[x - 50, 470], [x + 50, 470]], '#94a3b8', 3.0);
+            for (const [dx, col] of [[-26, '#fda4af'], [24, '#93c5fd']]) path(ctx, `M ${x + dx - 22} 470 L ${x + dx + 22} 470 L ${x + dx + 24} ${600 + r * 30} L ${x + dx - 24} ${600 + r * 30} Z`, col, INK, 1.4);
+          } else {
+            path(ctx, `M ${x - 90} 700 L ${x + 90} 700 Q ${x + 90} 810 ${x} 810 Q ${x - 90} 810 ${x - 90} 700 Z`, isNight ? '#cbd5e1' : '#ffffff', INK, 2.2);
+            line(ctx, [[x - 94, 700], [x + 94, 700]], '#94a3b8', 3.0);
+            path(ctx, `M ${x + 70} 700 L ${x + 70} 640 Q ${x + 70} 625 ${x + 55} 630`, null, '#64748b', 4.0);
+            for (let k2 = 0; k2 < 4; k2++) ellipse(ctx, x - 50 + k2 * 30, 690 - ((t * 20 + k2 * 9) % 30), 6, 6, 'rgba(255,255,255,0.8)', '#bae6fd', 1.0);
+          }
+        });
         // Đèn trần phòng tắm
         if (isNight) {
           ellipse(ctx, 288, 40, 22, 10, '#fef08a', null);
@@ -679,9 +756,10 @@
 
         // Sàn gạch mosaic chống trượt (ground_y: 810)
         ctx.fillStyle = isNight ? '#0b1c24' : '#0284c7';
-        ctx.fillRect(0, 810, 576, 214);
-        line(ctx, [[0, 810], [576, 810]], INK, 2.4);
+        ctx.fillRect(x0, 810, x1 - x0, 214);
+        line(ctx, [[x0, 810], [x1, 810]], INK, 2.4);
         for (let x = 0; x < 576; x += 32) line(ctx, [[x, 810], [x, 1024]], 'rgba(255,255,255,0.15)', 1.0);
+        tileExt(ext, 0, 32, 575, (x) => line(ctx, [[x, 810], [x, 1024]], 'rgba(255,255,255,0.15)', 1.0));
       }
     },
 
@@ -691,9 +769,11 @@
       theme: 'school',
       ground_y: 810,
       draw(ctx, s, t, kit) {
+        const { x0, x1 } = RemakeVector.kit.frameSpan(s);
+        const ext = extRanges(x0, x1);
         const isNight = s.time === 'night';
         ctx.fillStyle = isNight ? '#1e2028' : '#fffbeb';
-        ctx.fillRect(0, 0, 576, 810);
+        ctx.fillRect(x0, 0, x1 - x0, 810);
 
         // Cửa sổ nhìn ra trời và cây xanh phía trái
         ctx.fillStyle = isNight ? '#0b1626' : '#bae6fd';
@@ -729,10 +809,27 @@
         line(ctx, [[170, 755], [160, 810]], '#b45309', 3.5);
         line(ctx, [[430, 755], [440, 810]], '#b45309', 3.5);
 
+        scatterExt(ext, 190, 'class', (x, r, i) => {
+          if (i % 2 === 0) {
+            ctx.fillStyle = isNight ? '#0b1626' : '#bae6fd'; ctx.fillRect(x - 55, 220, 110, 220);
+            ellipse(ctx, x, 410, 40, 30, '#4ade80', null);
+            line(ctx, [[x - 55, 220], [x + 55, 220], [x + 55, 440], [x - 55, 440], [x - 55, 220]], '#b45309', 2.5);
+            line(ctx, [[x, 220], [x, 440]], '#b45309', 1.8);
+          } else {
+            path(ctx, `M ${x - 60} 260 L ${x + 60} 260 L ${x + 60} 400 L ${x - 60} 400 Z`, '#ca8a04', INK, 2.0);
+            for (let j = 0; j < 4; j++) {
+              const px = x - 52 + (j % 2) * 56, py = 270 + Math.floor(j / 2) * 64;
+              path(ctx, `M ${px} ${py} L ${px + 48} ${py} L ${px + 48} ${py + 56} L ${px} ${py + 56} Z`, '#f8fafc', INK, 1.0);
+              ellipse(ctx, px + 24, py + 28, 10, 10, ['#f43f5e', '#38bdf8', '#22c55e', '#facc15'][(j + i) % 4], null);
+            }
+          }
+          path(ctx, `M ${x - 70} 740 L ${x + 70} 740 L ${x + 64} 760 L ${x - 64} 760 Z`, '#d97706', INK, 1.8);
+          line(ctx, [[x - 55, 760], [x - 60, 810]], '#b45309', 3.5); line(ctx, [[x + 55, 760], [x + 60, 810]], '#b45309', 3.5);
+        });
         // Mặt sàn lớp học (ground_y: 810)
         ctx.fillStyle = isNight ? '#18181b' : '#78350f';
-        ctx.fillRect(0, 810, 576, 214);
-        line(ctx, [[0, 810], [576, 810]], INK, 2.4);
+        ctx.fillRect(x0, 810, x1 - x0, 214);
+        line(ctx, [[x0, 810], [x1, 810]], INK, 2.4);
       }
     },
 
@@ -742,6 +839,8 @@
       theme: 'school',
       ground_y: 810,
       draw(ctx, s, t, kit) {
+        const { x0, x1 } = RemakeVector.kit.frameSpan(s);
+        const ext = extRanges(x0, x1);
         const isNight = s.time === 'night';
         // Bầu trời
         const skyTop = isNight ? '#0b1626' : '#7dd3fc';
@@ -749,7 +848,7 @@
         const grad = ctx.createLinearGradient(0, 0, 0, 810);
         grad.addColorStop(0, skyTop); grad.addColorStop(1, skyBot);
         ctx.fillStyle = grad;
-        ctx.fillRect(0, 0, 576, 810);
+        ctx.fillRect(x0, 0, x1 - x0, 810);
 
         // Dãy phòng học xa xa với mái ngói đỏ
         path(ctx, 'M 60 520 L 520 520 L 520 810 L 60 810 Z', isNight ? '#1e293b' : '#fef08a', INK, 2.0);
@@ -770,10 +869,23 @@
         const ribbonWave = Math.sin(t * 4) * 6;
         path(ctx, `M 160 350 Q 185 ${355 + ribbonWave} 210 ${350 - ribbonWave}`, null, '#38bdf8', 3.0);
 
+        scatterExt(ext, 260, 'yard', (x, r, i) => {
+          if (i % 2 === 0) {
+            const bw = 180 + r * 60;
+            path(ctx, `M ${x - bw / 2} 560 L ${x + bw / 2} 560 L ${x + bw / 2} 810 L ${x - bw / 2} 810 Z`, isNight ? '#1e293b' : '#fde68a', INK, 2.0);
+            path(ctx, `M ${x - bw / 2 - 18} 560 L ${x} 490 L ${x + bw / 2 + 18} 560 Z`, isNight ? '#450a0a' : '#ef4444', INK, 2.2);
+            for (let k = -1; k <= 1; k++) { ctx.fillStyle = isNight ? '#fde68a' : '#bae6fd'; ctx.fillRect(x + k * 55 - 18, 610, 36, 44); }
+            path(ctx, `M ${x - 22} 810 L ${x + 22} 810 L ${x + 22} 730 L ${x - 22} 730 Z`, '#92400e', INK, 1.4);
+          } else {
+            taper(ctx, x, 810, x, 600 + r * 30, 16, 12, '#78350f', INK, 2.0);
+            ellipse(ctx, x, 550 + r * 30, 80 + r * 20, 70, isNight ? '#14532d' : '#22c55e', null);
+            ellipse(ctx, x - 25, 525 + r * 30, 34, 26, isNight ? '#166534' : '#4ade80', null);
+          }
+        });
         // Sân gạch bê tông trường học (ground_y: 810)
         ctx.fillStyle = isNight ? '#1f2937' : '#9ca3af';
-        ctx.fillRect(0, 810, 576, 214);
-        line(ctx, [[0, 810], [576, 810]], INK, 2.4);
+        ctx.fillRect(x0, 810, x1 - x0, 214);
+        line(ctx, [[x0, 810], [x1, 810]], INK, 2.4);
       }
     },
 
@@ -783,14 +895,39 @@
       theme: 'school',
       ground_y: 810,
       draw(ctx, s, t, kit) {
+        const { x0, x1 } = RemakeVector.kit.frameSpan(s);
+        const ext = extRanges(x0, x1);
         const isNight = s.time === 'night';
         // Bầu trời
         ctx.fillStyle = isNight ? '#0b1626' : '#bae6fd';
-        ctx.fillRect(0, 0, 576, 810);
+        ctx.fillRect(x0, 0, x1 - x0, 810);
 
         // Đồi cỏ xa chân trời
         path(ctx, 'M 0 620 Q 160 560 320 600 Q 460 630 576 580 L 576 810 L 0 810 Z', isNight ? '#064e3b' : '#86efac', null);
 
+        for (const [ea, eb] of ext) {
+          for (let ox = ea < 0 ? -576 : 576; ea < 0 ? ox + 576 > ea : ox < eb; ox += ea < 0 ? -576 : 576) {
+            path(ctx, `M ${ox} 600 Q ${ox + 140} 640 ${ox + 290} 590 Q ${ox + 430} 550 ${ox + 576} 610 L ${ox + 576} 810 L ${ox} 810 Z`, isNight ? '#064e3b' : '#86efac', null);
+          }
+        }
+        scatterExt(ext, 240, 'play', (x, r, i) => {
+          const k = i % 3;
+          if (k === 0) {
+            line(ctx, [[x - 60, 810], [x, 680]], '#475569', 3); line(ctx, [[x + 60, 810], [x, 680]], '#475569', 3);
+            const tilt = Math.sin(t * 2 + r * 6) * 14;
+            line(ctx, [[x - 90, 680 + tilt], [x + 90, 680 - tilt]], '#f97316', 8);
+            ellipse(ctx, x - 86, 676 + tilt, 9, 5, '#ef4444', INK, 1.2); ellipse(ctx, x + 86, 676 - tilt, 9, 5, '#3b82f6', INK, 1.2);
+          } else if (k === 1) {
+            path(ctx, `M ${x - 70} 810 L ${x + 70} 810 L ${x + 70} 780 L ${x - 70} 780 Z`, '#fbbf24', INK, 1.6);
+            ellipse(ctx, x, 778, 64, 10, '#fde68a', null);
+            path(ctx, `M ${x - 10} 778 L ${x + 6} 760 L ${x + 18} 778 Z`, '#f59e0b', INK, 1.0);
+            ellipse(ctx, x - 34, 772, 10, 6, '#38bdf8', INK, 1.0);
+          } else {
+            taper(ctx, x, 810, x, 640, 14, 10, '#78350f', INK, 1.8);
+            ellipse(ctx, x, 590, 70 + r * 20, 60, isNight ? '#14532d' : '#16a34a', null);
+            ellipse(ctx, x + 20, 575, 28, 22, isNight ? '#166534' : '#4ade80', null);
+          }
+        });
         // Cầu trượt xoắn sắc màu phía trái
         // Thang leo
         line(ctx, [[80, 810], [80, 540]], '#e11d48', 3.5);
@@ -814,8 +951,8 @@
 
         // Bãi cỏ sân chơi (ground_y: 810)
         ctx.fillStyle = isNight ? '#064e3b' : '#22c55e';
-        ctx.fillRect(0, 810, 576, 214);
-        line(ctx, [[0, 810], [576, 810]], INK, 2.4);
+        ctx.fillRect(x0, 810, x1 - x0, 214);
+        line(ctx, [[x0, 810], [x1, 810]], INK, 2.4);
       }
     },
 
@@ -825,10 +962,12 @@
       theme: 'clinic',
       ground_y: 810,
       draw(ctx, s, t, kit) {
+        const { x0, x1 } = RemakeVector.kit.frameSpan(s);
+        const ext = extRanges(x0, x1);
         const isNight = s.time === 'night';
         // Tường phòng khám màu xanh bạc hà nhạt tinh tươm
         ctx.fillStyle = isNight ? '#0f2324' : '#f0fdf4';
-        ctx.fillRect(0, 0, 576, 810);
+        ctx.fillRect(x0, 0, x1 - x0, 810);
 
         // Tủ thuốc kính góc trái có DẤU CỘNG XANH LÁ
         path(ctx, 'M 40 320 L 140 320 L 140 760 L 40 760 Z', '#ffffff', INK, 2.0);
@@ -854,10 +993,28 @@
         // Ống đựng nhiệt kế và đèn khám trên bàn
         taper(ctx, 480, 680, 480, 650, 6, 6, '#cbd5e1', INK, 1.2);
 
+        scatterExt(ext, 220, 'clinic', (x, r, i) => {
+          const k = i % 3;
+          if (k === 0) {
+            path(ctx, `M ${x - 70} 600 L ${x + 70} 600 L ${x + 70} 640 L ${x - 70} 640 Z`, '#f8fafc', INK, 1.8);
+            path(ctx, `M ${x - 80} 640 L ${x + 80} 640 L ${x + 80} 660 L ${x - 80} 660 Z`, '#38bdf8', INK, 1.6);
+            for (const lx of [x - 70, x + 70]) line(ctx, [[lx, 660], [lx, 810]], '#94a3b8', 3.0);
+            ellipse(ctx, x - 50, 594, 18, 8, '#e0f2fe', INK, 1.0);
+          } else if (k === 1) {
+            ctx.fillStyle = isNight ? '#0b1626' : '#bfdbfe'; ctx.fillRect(x - 60, 220, 120, 200);
+            line(ctx, [[x - 60, 220], [x + 60, 220], [x + 60, 420], [x - 60, 420], [x - 60, 220]], '#94a3b8', 2.5);
+            line(ctx, [[x, 220], [x, 420]], '#94a3b8', 1.8);
+          } else {
+            path(ctx, `M ${x - 45} 320 L ${x + 45} 320 L ${x + 45} 760 L ${x - 45} 760 Z`, isNight ? '#475569' : '#ffffff', INK, 2.0);
+            line(ctx, [[x, 360], [x, 396]], '#10b981', 4.0); line(ctx, [[x - 18, 378], [x + 18, 378]], '#10b981', 4.0);
+            for (const sy of [480, 600]) line(ctx, [[x - 45, sy], [x + 45, sy]], '#94a3b8', 1.4);
+            for (let j = 0; j < 3; j++) taper(ctx, x - 24 + j * 24, 600, x - 24 + j * 24, 575, 7, 7, ['#fde68a', '#bae6fd', '#fbcfe8'][j], INK, 1.0);
+          }
+        });
         // Sàn gạch vinyl y tế sáng (ground_y: 810)
         ctx.fillStyle = isNight ? '#13211f' : '#ccfbf1';
-        ctx.fillRect(0, 810, 576, 214);
-        line(ctx, [[0, 810], [576, 810]], INK, 2.4);
+        ctx.fillRect(x0, 810, x1 - x0, 214);
+        line(ctx, [[x0, 810], [x1, 810]], INK, 2.4);
       }
     },
 
@@ -867,9 +1024,11 @@
       theme: 'clinic',
       ground_y: 810,
       draw(ctx, s, t, kit) {
+        const { x0, x1 } = RemakeVector.kit.frameSpan(s);
+        const ext = extRanges(x0, x1);
         const isNight = s.time === 'night';
         ctx.fillStyle = isNight ? '#111827' : '#f8fafc';
-        ctx.fillRect(0, 0, 576, 810);
+        ctx.fillRect(x0, 0, x1 - x0, 810);
 
         // Cửa sổ kính rộng nhìn ra ngoài
         ctx.fillStyle = isNight ? '#0b1626' : '#bfdbfe';
@@ -889,10 +1048,21 @@
         // Bình truyền dịch trong suốt
         taper(ctx, 280, 450, 280, 410, 8, 8, 'rgba(240,249,255,0.85)', INK, 1.2);
 
+        scatterExt(ext, 250, 'ward', (x, r, i) => {
+          path(ctx, `M ${x - 120} 180 L ${x - 60} 180 L ${x - 60} 810 L ${x - 120} 810 Z`, isNight ? '#134e4a' : '#ccfbf1', INK, 1.8);
+          for (let ry = x - 120; ry <= x - 60; ry += 15) line(ctx, [[ry, 180], [ry, 810]], '#99f6e4', 1.2);
+          // giường bệnh
+          path(ctx, `M ${x - 40} 690 L ${x + 110} 690 L ${x + 110} 720 L ${x - 40} 720 Z`, '#f8fafc', INK, 1.8);
+          path(ctx, `M ${x - 40} 640 L ${x - 28} 640 L ${x - 28} 720 L ${x - 40} 720 Z`, '#94a3b8', INK, 1.2);
+          ellipse(ctx, x - 5, 680, 22, 10, '#e0f2fe', INK, 1.0);
+          path(ctx, `M ${x + 20} 678 L ${x + 110} 678 L ${x + 110} 692 L ${x + 20} 692 Z`, ['#bae6fd', '#bbf7d0', '#fde68a'][i % 3], INK, 1.0);
+          for (const lx of [x - 34, x + 104]) line(ctx, [[lx, 720], [lx, 806]], '#94a3b8', 3.0);
+          for (const lx of [x - 34, x + 104]) ellipse(ctx, lx, 806, 5, 5, '#475569', null);
+        });
         // Sàn phòng bệnh (ground_y: 810)
         ctx.fillStyle = isNight ? '#1f2937' : '#e2e8f0';
-        ctx.fillRect(0, 810, 576, 214);
-        line(ctx, [[0, 810], [576, 810]], INK, 2.4);
+        ctx.fillRect(x0, 810, x1 - x0, 214);
+        line(ctx, [[x0, 810], [x1, 810]], INK, 2.4);
       }
     },
 
@@ -902,9 +1072,11 @@
       theme: 'clinic',
       ground_y: 810,
       draw(ctx, s, t, kit) {
+        const { x0, x1 } = RemakeVector.kit.frameSpan(s);
+        const ext = extRanges(x0, x1);
         const isNight = s.time === 'night';
         ctx.fillStyle = isNight ? '#1c2024' : '#f0fdf4';
-        ctx.fillRect(0, 0, 576, 810);
+        ctx.fillRect(x0, 0, x1 - x0, 810);
 
         // Kệ thuốc nhiều tầng chứa các hộp thuốc màu sắc phong phú (KHÔNG CHỮ)
         for (let ky = 220; ky <= 620; ky += 80) {
@@ -918,6 +1090,22 @@
           }
         }
 
+        for (const [ea, eb] of ext) {
+          for (let ky = 220; ky <= 620; ky += 80) {
+            path(ctx, `M ${ea + 20} ${ky} L ${eb - 20} ${ky} L ${eb - 20} ${ky + 14} L ${ea + 20} ${ky + 14} Z`, '#e2e8f0', INK, 1.4);
+            const colors = ['#ef4444', '#3b82f6', '#10b981', '#f59e0b', '#8b5cf6'];
+            for (let hx = ea + 36; hx <= eb - 60; hx += 36) {
+              const hh = 26 + Math.floor(RemakeVector.kit.seeded(`box:${hx}:${ky}`) * 3) * 6;
+              path(ctx, `M ${hx} ${ky} L ${hx + 24} ${ky} L ${hx + 24} ${ky - hh} L ${hx} ${ky - hh} Z`, colors[Math.abs(hx + ky) % colors.length], INK, 1.0);
+              line(ctx, [[hx + 4, ky - hh / 2], [hx + 20, ky - hh / 2]], '#ffffff', 1.4);
+            }
+          }
+        }
+        scatterExt(ext, 300, 'pharm', (x, r) => {
+          ellipse(ctx, x, 730, 40, 14, '#d1fae5', INK, 1.4);
+          path(ctx, `M ${x - 30} 810 L ${x + 30} 810 L ${x + 26} 740 L ${x - 26} 740 Z`, '#e2e8f0', INK, 1.4);
+          ellipse(ctx, x, 690, 26, 36, isNight ? '#14532d' : '#22c55e', INK, 1.2);
+        });
         // Quầy kính dược sĩ phía trước
         path(ctx, 'M 100 690 L 476 690 L 476 810 L 100 810 Z', isNight ? '#1e293b' : '#ffffff', INK, 2.2);
         ellipse(ctx, 288, 750, 24, 24, '#ecfdf5', '#10b981', 1.8);
@@ -926,8 +1114,8 @@
 
         // Sàn nhà thuốc (ground_y: 810)
         ctx.fillStyle = isNight ? '#0f172a' : '#dcfce7';
-        ctx.fillRect(0, 810, 576, 214);
-        line(ctx, [[0, 810], [576, 810]], INK, 2.4);
+        ctx.fillRect(x0, 810, x1 - x0, 214);
+        line(ctx, [[x0, 810], [x1, 810]], INK, 2.4);
       }
     },
 
@@ -937,9 +1125,11 @@
       theme: 'clinic',
       ground_y: 810,
       draw(ctx, s, t, kit) {
+        const { x0, x1 } = RemakeVector.kit.frameSpan(s);
+        const ext = extRanges(x0, x1);
         const isNight = s.time === 'night';
         ctx.fillStyle = isNight ? '#0b1d28' : '#ecfeff';
-        ctx.fillRect(0, 0, 576, 810);
+        ctx.fillRect(x0, 0, x1 - x0, 810);
 
         // Bức tranh hàm răng hoạt hình cười tươi không chữ
         path(ctx, 'M 200 240 L 376 240 L 376 380 L 200 380 Z', '#ffffff', '#0284c7', 3.0);
@@ -971,10 +1161,27 @@
           ctx.restore();
         }
 
+        scatterExt(ext, 230, 'dent', (x, r, i) => {
+          const k = i % 3;
+          if (k === 0) {
+            path(ctx, `M ${x - 70} 250 L ${x + 70} 250 L ${x + 70} 370 L ${x - 70} 370 Z`, '#ffffff', '#0284c7', 3.0);
+            path(ctx, `M ${x - 12} 280 C ${x - 18} 295 ${x - 13} 320 ${x - 8} 340 C ${x - 3} 320 ${x + 3} 320 ${x + 8} 340 C ${x + 13} 320 ${x + 18} 295 ${x + 12} 280 Z`, ['#38bdf8', '#4ade80', '#f472b6'][Math.floor(r * 3)], null);
+            for (const dx of [-30, 40]) ellipse(ctx, x + dx, 330, 9, 4, '#e0f2fe', null);
+          } else if (k === 1) {
+            path(ctx, `M ${x - 55} 560 L ${x + 55} 560 L ${x + 55} 810 L ${x - 55} 810 Z`, '#f8fafc', INK, 2.0);
+            for (const sy of [620, 700]) line(ctx, [[x - 55, sy], [x + 55, sy]], '#cbd5e1', 1.4);
+            for (const sy of [590, 660, 740]) ellipse(ctx, x + 40, sy, 3, 3, '#64748b', null);
+            for (let j = 0; j < 3; j++) taper(ctx, x - 30 + j * 20, 560, x - 30 + j * 20, 534, 5, 5, ['#38bdf8', '#f472b6', '#facc15'][j], INK, 1.0);
+          } else {
+            path(ctx, `M ${x - 40} 810 L ${x + 40} 810 L ${x + 30} 700 L ${x - 30} 700 Z`, '#e0f2fe', INK, 1.6);
+            ellipse(ctx, x, 690, 40, 10, '#bae6fd', INK, 1.4);
+            path(ctx, `M ${x + 20} 690 L ${x + 20} 660 Q ${x + 20} 650 ${x + 10} 654`, null, '#64748b', 3);
+          }
+        });
         // Sàn phòng nha khoa (ground_y: 810)
         ctx.fillStyle = isNight ? '#0c1e28' : '#cffafe';
-        ctx.fillRect(0, 810, 576, 214);
-        line(ctx, [[0, 810], [576, 810]], INK, 2.4);
+        ctx.fillRect(x0, 810, x1 - x0, 214);
+        line(ctx, [[x0, 810], [x1, 810]], INK, 2.4);
       }
     },
 
@@ -984,9 +1191,11 @@
       theme: 'lab',
       ground_y: 810,
       draw(ctx, s, t, kit) {
+        const { x0, x1 } = RemakeVector.kit.frameSpan(s);
+        const ext = extRanges(x0, x1);
         const isNight = s.time === 'night';
         ctx.fillStyle = isNight ? '#131b2e' : '#f1f5f9';
-        ctx.fillRect(0, 0, 576, 810);
+        ctx.fillRect(x0, 0, x1 - x0, 810);
 
         // Kính hiển vi quang học đặt trên bàn phụ bên trái
         const microX = 140, microY = 640;
@@ -1013,14 +1222,44 @@
         const bubbleY = ((t * 15) % 18);
         ellipse(ctx, erlX, erlY - 4 - bubbleY, 2.0, 2.0, '#ffffff', null);
 
+        scatterExt(ext, 200, 'lab', (x, r, i) => {
+          const k = i % 3;
+          if (k === 0) {
+            for (let j = 0; j < 3; j++) {
+              const fx = x - 50 + j * 50, col = ['#ec4899', '#22c55e', '#f59e0b', '#a855f7'][(j + i) % 4];
+              ellipse(ctx, fx, 620, 15, 15, 'rgba(255,255,255,0.75)', INK, 1.4);
+              ellipse(ctx, fx, 626, 12, 8, col, null);
+              line(ctx, [[fx, 605], [fx, 585]], INK, 1.4);
+            }
+          } else if (k === 1) {
+            path(ctx, `M ${x - 60} 230 L ${x + 60} 230 L ${x + 60} 400 L ${x - 60} 400 Z`, '#f8fafc', INK, 2.0);
+            for (let j = 0; j < 6; j++) {
+              const ax = x - 40 + (j % 3) * 40, ay = 270 + Math.floor(j / 3) * 80;
+              ellipse(ctx, ax, ay, 9, 9, ['#3b82f6', '#ef4444', '#22c55e'][j % 3], INK, 1.2);
+              if (j % 3 < 2) line(ctx, [[ax + 9, ay], [ax + 31, ay]], '#64748b', 2.0);
+            }
+          } else {
+            path(ctx, `M ${x - 40} 640 L ${x + 40} 640 L ${x + 40} 560 L ${x - 40} 560 Z`, '#e2e8f0', INK, 1.6);
+            path(ctx, `M ${x - 30} 600 L ${x + 30} 600 L ${x + 30} 572 L ${x - 30} 572 Z`, isNight ? '#0f172a' : '#bae6fd', INK, 1.2);
+            ellipse(ctx, x, 620, 8, 8, '#22c55e', null);
+          }
+        });
+        for (const [ea, eb] of ext) {
+          path(ctx, `M ${ea} 640 L ${eb} 640 L ${eb} 810 L ${ea} 810 Z`, isNight ? '#0f172a' : '#1e293b', INK, 2.4);
+          line(ctx, [[ea, 646], [eb, 646]], '#475569', 2.0);
+          for (let cx = (ea < 0 ? ea + 120 : ea + 140); cx < eb - 60; cx += 260) {
+            line(ctx, [[cx, 660], [cx, 800]], '#334155', 2.0);
+            ellipse(ctx, cx + 20, 730, 4, 4, '#94a3b8', null);
+          }
+        }
         // Bàn đá đen phòng thí nghiệm (chịu lực)
         path(ctx, 'M 40 640 L 536 640 L 536 810 L 40 810 Z', isNight ? '#0f172a' : '#1e293b', INK, 2.4);
         line(ctx, [[40, 646], [536, 646]], '#475569', 2.0);
 
         // Sàn phòng thí nghiệm chống tĩnh điện (ground_y: 810)
         ctx.fillStyle = isNight ? '#090d16' : '#94a3b8';
-        ctx.fillRect(0, 810, 576, 214);
-        line(ctx, [[0, 810], [576, 810]], INK, 2.4);
+        ctx.fillRect(x0, 810, x1 - x0, 214);
+        line(ctx, [[x0, 810], [x1, 810]], INK, 2.4);
       }
     },
 
@@ -1030,12 +1269,14 @@
       theme: 'body',
       ground_y: 810,
       draw(ctx, s, t, kit) {
+        const { x0, x1 } = RemakeVector.kit.frameSpan(s);
+        const ext = extRanges(x0, x1);
         // Nền hồng phấn mềm mại của mạch máu / mô
         const grad = ctx.createLinearGradient(0, 0, 0, 810);
         grad.addColorStop(0, '#f472b6');
         grad.addColorStop(1, '#fda4af');
         ctx.fillStyle = grad;
-        ctx.fillRect(0, 0, 576, 810);
+        ctx.fillRect(x0, 0, x1 - x0, 810);
 
         // Các tế bào hồng cầu mờ trôi lững lờ ở hậu cảnh
         for (let i = 0; i < 7; i++) {
@@ -1045,14 +1286,23 @@
           ellipse(ctx, bx, by, 8, 6, 'rgba(185, 28, 28, 0.3)', null, 0.3);
         }
 
+        for (const [ea, eb] of ext) {
+          const span = eb - ea;
+          for (let i = 0; i < Math.round(span / 85); i++) {
+            const bx = ea + ((hash('rbc_ex_' + ea + '_' + i) + t * 24) % (span + 40)) - 20;
+            const by = (hash('rbc_ey_' + ea + '_' + i) % 700) + 40;
+            ellipse(ctx, bx, by, 16, 12, 'rgba(239, 68, 68, 0.45)', null, 0.3);
+            ellipse(ctx, bx, by, 8, 6, 'rgba(185, 28, 28, 0.3)', null, 0.3);
+          }
+        }
         // Vách mạch máu cong mềm mại uốn lượn 2 bên
         path(ctx, 'M 0 0 Q 60 400 0 810 L 0 810 Z', 'rgba(244, 63, 94, 0.5)', null);
         path(ctx, 'M 576 0 Q 516 400 576 810 L 576 810 Z', 'rgba(244, 63, 94, 0.5)', null);
 
         // Nền đáy mềm (ground_y: 810)
         ctx.fillStyle = '#fb7185';
-        ctx.fillRect(0, 810, 576, 214);
-        line(ctx, [[0, 810], [576, 810]], '#e11d48', 2.4);
+        ctx.fillRect(x0, 810, x1 - x0, 214);
+        line(ctx, [[x0, 810], [x1, 810]], '#e11d48', 2.4);
       }
     },
   };

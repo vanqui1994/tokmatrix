@@ -33,6 +33,19 @@ LANDSCAPE_BACKGROUNDS = [
     "hanok_village", "joseon_palace_generic", "kr_market", "kr_school", "apartment_street",
     # B3 - US culture
     "suburb_backyard", "national_park", "wild_west_town", "launch_pad", "pumpkin_patch", "moon_surface",
+    # B4 - nature, space
+    "water_cycle_valley", "volcano_island", "dig_site", "space_orbit", "mars_surface",
+    # B4 - ocean, mysteries
+    "coral_reef", "beach_cleanup", "deep_sea", "easter_island_generic", "stone_circle_field", "ruins_underwater",
+    # B4 - wasteland, recycling
+    "abandoned_street", "overgrown_plaza", "rooftop_garden", "subway_tunnel", "flooded_downtown", "safe_camp",
+    "recycling_yard",
+    # B4 - body_world
+    "blood_vessel", "lung_alveoli", "stomach_inside", "intestine_town", "skin_surface", "wound_site",
+    "mouth_cave", "nose_cave", "lymph_node_base", "bone_marrow_factory", "brain_hq", "training_camp",
+    # B4 - medical
+    "living_room", "bathroom_sink", "classroom", "school_yard", "playground", "clinic_room", "hospital_ward",
+    "pharmacy", "dentist_room", "science_lab", "body_inside",
 ]
 LANDSCAPE_SIZE = (1820, 1024)
 

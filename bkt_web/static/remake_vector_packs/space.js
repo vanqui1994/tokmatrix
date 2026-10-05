@@ -549,8 +549,37 @@
   // Cả 2 đều ground_y: 810, 7 weathers, day/night, ZERO TEXT!
   // =============================================================
 
+
+  // Khổ ngang (B4): hai dải mở rộng [x0, 0) và [576, x1); khổ dọc trả về rỗng nên pixel dọc không đổi.
+  function extRanges(x0, x1) {
+    const out = [];
+    if (x0 < 0) out.push([x0, 0]);
+    if (x1 > 576) out.push([576, x1]);
+    return out;
+  }
+  // Nối tiếp hoạ tiết lặp (start, step; vòng gốc dừng ở origEnd) sang hai dải mở rộng.
+  function tileExt(ext, start, step, origEnd, fn) {
+    for (const [a, b] of ext) {
+      if (a < 0) { for (let x = start - step; x > a - step; x -= step) fn(x); }
+      else { let x = start; while (x <= origEnd) x += step; for (; x < b + step; x += step) fn(x); }
+    }
+  }
+  // Rải vật tất định trên dải mở rộng: bước step ± 30 %, seed theo toạ độ.
+  function scatterExt(ext, step, key, fn) {
+    for (const [a, b] of ext) {
+      let i = 0;
+      for (let x = a + step * 0.5; x < b - step * 0.3; i++) {
+        const r = RemakeVector.kit.seeded(`${key}:${Math.round(x)}`);
+        fn(x, r, i);
+        x += step * (0.7 + r * 0.6);
+      }
+    }
+  }
+
   function drawSpaceOrbit(ctx, settings, t) {
     ctx.save();
+    const sp = RemakeVector.kit.frameSpan(settings);
+    const X0 = sp.x0, X1 = sp.x1, ext = extRanges(X0, X1);
     const isNight = Boolean(settings && (settings.night || settings.time === 'night' || settings.timeOfDay === 'night'));
     const groundY = (settings && settings.ground_y) || 810;
     const weather = (settings && settings.weather) || 'clear';
@@ -567,7 +596,7 @@
       sky.addColorStop(1, '#1e1b4b');
     }
     ctx.fillStyle = sky;
-    ctx.fillRect(0, 0, 576, 1024);
+    ctx.fillRect(X0, 0, X1 - X0, 1024);
 
     // Dải tinh vân khí vũ trụ mờ ảo (Nebula glow)
     const neb = ctx.createRadialGradient(200, 260, 20, 200, 260, 220);
@@ -593,6 +622,38 @@
       }
       ctx.restore();
     }
+    // Khổ ngang: sao, tinh vân, hành tinh xa và trạm vệ tinh nhỏ ở hai bên
+    scatterExt(ext, 34, 'orbit_star', (x, r, i) => {
+      const sy = 10 + r * (groundY - 150);
+      ctx.save();
+      ctx.globalAlpha = 0.4 + 0.6 * Math.abs(Math.sin(t * 1.5 + i * 2.1));
+      ellipse(ctx, x, sy, i % 5 === 0 ? 2.0 : 1.2, i % 5 === 0 ? 2.0 : 1.2, '#ffffff', null);
+      ctx.restore();
+    });
+    for (const [ea, eb] of ext) {
+      const cx = (ea + eb) / 2, cy = 300;
+      const neb2 = ctx.createRadialGradient(cx, cy, 20, cx, cy, 260);
+      neb2.addColorStop(0, ea < 0 ? 'rgba(236, 72, 153, 0.14)' : 'rgba(45, 212, 191, 0.14)');
+      neb2.addColorStop(1, 'rgba(0, 0, 0, 0)');
+      ctx.fillStyle = neb2;
+      ctx.fillRect(ea, 0, eb - ea, groundY);
+      const px = ea < 0 ? ea + (eb - ea) * 0.3 : ea + (eb - ea) * 0.7, py = 180;
+      if (ea < 0) {
+        ellipse(ctx, px, py, 46, 46, '#f59e0b', null);
+        ellipse(ctx, px - 10, py - 12, 30, 8, 'rgba(255, 255, 255, 0.25)', null, -0.2);
+        ellipse(ctx, px, py, 80, 14, null, 'rgba(253, 230, 138, 0.8)', 3, -0.25);
+      } else {
+        ellipse(ctx, px, py, 34, 34, '#94a3b8', null);
+        ellipse(ctx, px - 10, py - 6, 7, 7, '#64748b', null);
+        ellipse(ctx, px + 12, py + 10, 5, 5, '#64748b', null);
+      }
+      const sx = ea < 0 ? ea + (eb - ea) * 0.7 : ea + (eb - ea) * 0.3, sy = 420 + Math.sin(t * 0.6) * 10;
+      ctx.save(); ctx.translate(sx, sy); ctx.rotate(0.2 + t * 0.05);
+      ctx.fillStyle = '#cbd5e1'; ctx.fillRect(-10, -8, 20, 16);
+      ctx.fillStyle = '#1d4ed8'; ctx.fillRect(-46, -6, 32, 12); ctx.fillRect(14, -6, 32, 12);
+      ctx.strokeStyle = '#93c5fd'; ctx.lineWidth = 0.8; for (const bx of [-38, -30, -22, 22, 30, 38]) { ctx.beginPath(); ctx.moveTo(bx, -6); ctx.lineTo(bx, 6); ctx.stroke(); }
+      ctx.restore();
+    }
 
     // Hiệu ứng thời tiết vũ trụ
     if (weather === 'storm') {
@@ -611,6 +672,12 @@
         ctx.lineTo(0, groundY - 40);
         ctx.closePath();
         ctx.fill();
+        for (const [ea, eb] of ext) {
+          ctx.beginPath();
+          ctx.moveTo(ea, groundY - 190 + Math.sin(t * 2 + j + ea) * 20);
+          ctx.bezierCurveTo(ea + (eb - ea) * 0.3, groundY - 240 + j * 20, ea + (eb - ea) * 0.7, groundY - 140 - j * 20, eb, groundY - 190);
+          ctx.lineTo(eb, groundY - 40); ctx.lineTo(ea, groundY - 40); ctx.closePath(); ctx.fill();
+        }
       }
       ctx.restore();
     } else if (weather === 'snow' || weather === 'rain') {
@@ -664,13 +731,20 @@
     ctx.beginPath();
     ctx.ellipse(460, groundY - 15, 90, 20, 0.15, 0, TAU);
     ctx.fill();
+    // Khổ ngang: lục địa và mây trên phần Trái Đất ở hai bên
+    scatterExt(ext, 220, 'earth_land', (x, r, i) => {
+      ctx.fillStyle = i % 2 ? '#15803d' : '#a16207';
+      ctx.beginPath(); ctx.ellipse(x, groundY + 60 + r * 60, 90 + r * 50, 36 + r * 14, r - 0.5, 0, TAU); ctx.fill();
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.73)';
+      ctx.beginPath(); ctx.ellipse(x + 60, groundY + 10 + r * 50, 80 + r * 40, 16, 0.1, 0, TAU); ctx.fill();
+    });
 
     if (isNight) {
       const shadowGrad = ctx.createLinearGradient(0, groundY - 100, 576, groundY + 100);
       shadowGrad.addColorStop(0, 'rgba(2, 6, 23, 0.85)');
       shadowGrad.addColorStop(1, 'rgba(2, 6, 23, 0.2)');
       ctx.fillStyle = shadowGrad;
-      ctx.fillRect(0, groundY - 120, 576, 300);
+      ctx.fillRect(X0, groundY - 120, X1 - X0, 300);
     }
 
     ctx.restore();
@@ -688,6 +762,8 @@
 
   function drawMarsSurface(ctx, settings, t) {
     ctx.save();
+    const sp = RemakeVector.kit.frameSpan(settings);
+    const X0 = sp.x0, X1 = sp.x1, ext = extRanges(X0, X1);
     const isNight = Boolean(settings && (settings.night || settings.time === 'night' || settings.timeOfDay === 'night'));
     const groundY = (settings && settings.ground_y) || 810;
     const weather = (settings && settings.weather) || 'clear';
@@ -704,7 +780,9 @@
       sky.addColorStop(1, '#fed7aa');
     }
     ctx.fillStyle = sky;
-    ctx.fillRect(0, 0, 576, groundY * 0.7);
+    ctx.fillRect(X0, 0, X1 - X0, groundY * 0.7);
+    ctx.fillStyle = isNight ? '#57180c' : '#fed7aa';
+    for (const [ea, eb] of ext) ctx.fillRect(ea, groundY * 0.7 - 1, eb - ea, groundY * 0.3 - 40);
 
     // Mặt trời nhỏ màu xanh lam nhạt (đặc trưng hoàng hôn Sao Hoả do bụi phân tán ánh sáng)
     if (!isNight) {
@@ -718,10 +796,26 @@
     // Dãy vành núi miệng hố va chạm và núi lửa xa xăm (Crater rim mountains)
     const mountainCol = isNight ? '#3b1209' : '#9a3412';
     path(ctx, `M 0 ${groundY - 110} Q 110 ${groundY - 190} 220 ${groundY - 120} Q 360 ${groundY - 210} 480 ${groundY - 130} L 576 ${groundY - 150} L 576 ${groundY} L 0 ${groundY} Z`, mountainCol, null);
+    // Khổ ngang: vành hố va chạm và núi lửa khiên rộng (kiểu Olympus) ở xa
+    for (const [ea, eb] of ext) {
+      let d = `M ${ea} ${groundY} L ${ea} ${groundY - (ea < 0 ? 120 : 150)}`;
+      for (let x = ea; x < eb; x += 220) {
+        const r = RemakeVector.kit.seeded(`mars_rim:${Math.round(x)}`);
+        d += ` Q ${x + 110} ${groundY - 170 - r * 80} ${Math.min(eb, x + 220)} ${groundY - 120 - r * 20}`;
+      }
+      path(ctx, d + ` L ${eb} ${groundY} Z`, mountainCol, null);
+      const vx = (ea + eb) / 2;
+      path(ctx, `M ${vx - 260} ${groundY - 100} Q ${vx - 120} ${groundY - 230} ${vx - 30} ${groundY - 250} L ${vx + 30} ${groundY - 250} Q ${vx + 120} ${groundY - 230} ${vx + 260} ${groundY - 100} Z`, isNight ? '#2e0f06' : '#7c2d12', null);
+    }
 
     // Đồi sa mạc cát đỏ tầng giữa
     const midHillCol = isNight ? '#451a03' : '#c2410c';
     path(ctx, `M 0 ${groundY - 70} Q 180 ${groundY - 130} 360 ${groundY - 60} Q 480 ${groundY - 100} 576 ${groundY - 75} L 576 ${groundY} L 0 ${groundY} Z`, midHillCol, null);
+    for (const [ea, eb] of ext) {
+      let d = `M ${ea} ${groundY} L ${ea} ${groundY - 72}`;
+      for (let x = ea; x < eb; x += 260) d += ` Q ${x + 130} ${groundY - 110 - RemakeVector.kit.seeded(`mars_hill:${Math.round(x)}`) * 40} ${Math.min(eb, x + 260)} ${groundY - 72}`;
+      path(ctx, d + ` L ${eb} ${groundY} Z`, midHillCol, null);
+    }
 
     // Bề mặt đất Sao Hoả gồ ghề đầy đá basalt (từ groundY - 50 xuống 1024)
     const marsGround = ctx.createLinearGradient(0, groundY - 50, 0, 1024);
@@ -729,7 +823,7 @@
     marsGround.addColorStop(0.5, isNight ? '#3b1209' : '#9a3412');
     marsGround.addColorStop(1, isNight ? '#240a05' : '#7c2d12');
     ctx.fillStyle = marsGround;
-    ctx.fillRect(0, groundY - 50, 576, 1024 - (groundY - 50));
+    ctx.fillRect(X0, groundY - 50, X1 - X0, 1024 - (groundY - 50));
 
     // Các tảng đá và hố lõm sa mạc Sao Hoả
     const rocks = [
@@ -746,6 +840,21 @@
       ellipse(ctx, rx, ry, rw, rh, isNight ? '#240a05' : '#7c2d12', INK, 1.2);
       ellipse(ctx, rx - rw * 0.2, ry - rh * 0.2, rw * 0.45, rh * 0.35, isNight ? '#3b1209' : '#ea580c', null);
     }
+    // Khổ ngang: đá, hố va chạm nhỏ, vệt bánh xe tự hành
+    scatterExt(ext, 85, 'mars_rock', (x, r, i) => {
+      const ry = groundY + 15 + r * 120;
+      if (i % 4 === 3) {
+        ellipse(ctx, x, ry + 10, 44 + r * 20, 12, isNight ? '#240a05' : '#7c2d12', null);
+        ellipse(ctx, x, ry + 6, 36 + r * 16, 8, isNight ? '#3b1209' : '#9a3412', null);
+      } else {
+        const rw = 12 + r * 20, rh = rw * 0.5;
+        ellipse(ctx, x, ry, rw, rh, isNight ? '#240a05' : '#7c2d12', INK, 1.2);
+        ellipse(ctx, x - rw * 0.2, ry - rh * 0.2, rw * 0.45, rh * 0.35, isNight ? '#3b1209' : '#ea580c', null);
+      }
+    });
+    for (const [ea, eb] of ext) {
+      for (const dy of [0, 26]) line(ctx, [[ea, groundY + 160 + dy], [eb, groundY + 150 + dy]], isNight ? 'rgba(36, 10, 5, 0.6)' : 'rgba(124, 45, 18, 0.55)', 5);
+    }
 
     if (weather === 'storm' || weather === 'wind') {
       ctx.save();
@@ -755,6 +864,8 @@
       dust.addColorStop(1, 'rgba(124, 45, 18, 0.20)');
       ctx.fillStyle = dust;
       ctx.fillRect(0, 0, 576, 1024);
+      ctx.fillStyle = 'rgba(194, 65, 12, 0.32)';
+      for (const [ea, eb] of ext) ctx.fillRect(ea, 0, eb - ea, 1024);
       ctx.restore();
     }
 

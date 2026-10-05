@@ -1187,6 +1187,33 @@
   // 3. 12 HÌNH NỀN HIỂN VI TRONG CƠ THỂ (GROUND_Y: 810)
   // =========================================================================
 
+
+  // Khổ ngang (B4): hai dải mở rộng [x0, 0) và [576, x1); khổ dọc trả về rỗng nên pixel dọc không đổi.
+  function extRanges(x0, x1) {
+    const out = [];
+    if (x0 < 0) out.push([x0, 0]);
+    if (x1 > 576) out.push([576, x1]);
+    return out;
+  }
+  // Nối tiếp hoạ tiết lặp (start, step; vòng gốc dừng ở origEnd) sang hai dải mở rộng.
+  function tileExt(ext, start, step, origEnd, fn) {
+    for (const [a, b] of ext) {
+      if (a < 0) { for (let x = start - step; x > a - step; x -= step) fn(x); }
+      else { let x = start; while (x <= origEnd) x += step; for (; x < b + step; x += step) fn(x); }
+    }
+  }
+  // Rải vật tất định trên dải mở rộng: bước step ± 30 %, seed theo toạ độ.
+  function scatterExt(ext, step, key, fn) {
+    for (const [a, b] of ext) {
+      let i = 0;
+      for (let x = a + step * 0.5; x < b - step * 0.3; i++) {
+        const r = RemakeVector.kit.seeded(`${key}:${Math.round(x)}`);
+        fn(x, r, i);
+        x += step * (0.7 + r * 0.6);
+      }
+    }
+  }
+
   const BODY_BACKGROUNDS = {
     // 1. Đường huyết mạch (blood_vessel)
     blood_vessel: {
@@ -1195,8 +1222,10 @@
       ground_y: 810,
       draw(ctx, s, t, kit) {
         const isNight = s.time === 'night';
+        const { x0, x1 } = RemakeVector.kit.frameSpan(s);
+        const ext = extRanges(x0, x1);
         ctx.fillStyle = isNight ? '#1f0914' : '#ffe4e6';
-        ctx.fillRect(0, 0, 576, 810);
+        ctx.fillRect(x0, 0, x1 - x0, 810);
 
         // Thành mạch máu hồng cong mềm
         path(ctx, 'M 0 0 Q 288 80 576 0 L 576 120 Q 288 200 0 120 Z', isNight ? '#4c0519' : '#fecdd3', null);
@@ -1209,10 +1238,23 @@
           ellipse(ctx, rx, ry, 18, 12, 'rgba(244, 63, 94, 0.35)', null);
         }
 
+        // Khổ ngang: thành mạch nối tiếp, hồng cầu và bạch cầu trôi ở hai bên
+        for (const [ea, eb] of ext) {
+          for (let ox = ea < 0 ? -576 : 576; ea < 0 ? ox + 576 > ea : ox < eb; ox += ea < 0 ? -576 : 576) {
+            path(ctx, `M ${ox} 0 Q ${ox + 288} 80 ${ox + 576} 0 L ${ox + 576} 120 Q ${ox + 288} 200 ${ox} 120 Z`, isNight ? '#4c0519' : '#fecdd3', null);
+            path(ctx, `M ${ox} 690 Q ${ox + 288} 610 ${ox + 576} 690 L ${ox + 576} 810 L ${ox} 810 Z`, isNight ? '#4c0519' : '#fecdd3', null);
+          }
+        }
+        scatterExt(ext, 110, 'bv_rbc', (x, r, i) => {
+          const rx = x + Math.sin(t * 1.5 + i) * 20 + t * 30 % 40;
+          const ry = 250 + r * 330 + Math.sin(t * 2 + i) * 30;
+          if (r > 0.82) ellipse(ctx, rx, ry, 30, 30, 'rgba(241, 245, 249, 0.55)', 'rgba(148, 163, 184, 0.6)', 1.4);
+          else { ellipse(ctx, rx, ry, 22, 14, 'rgba(244, 63, 94, 0.4)', null); ellipse(ctx, rx, ry, 9, 5, 'rgba(190, 18, 60, 0.25)', null); }
+        });
         // Đáy mạch (ground_y: 810)
         ctx.fillStyle = isNight ? '#3b0716' : '#fda4af';
-        ctx.fillRect(0, 810, 576, 214);
-        line(ctx, [[0, 810], [576, 810]], isNight ? '#881337' : '#e11d48', 2.4);
+        ctx.fillRect(x0, 810, x1 - x0, 214);
+        line(ctx, [[x0, 810], [x1, 810]], isNight ? '#881337' : '#e11d48', 2.4);
       }
     },
 
@@ -1223,8 +1265,10 @@
       ground_y: 810,
       draw(ctx, s, t, kit) {
         const isNight = s.time === 'night';
+        const { x0, x1 } = RemakeVector.kit.frameSpan(s);
+        const ext = extRanges(x0, x1);
         ctx.fillStyle = isNight ? '#1e1124' : '#fdf2f8';
-        ctx.fillRect(0, 0, 576, 810);
+        ctx.fillRect(x0, 0, x1 - x0, 810);
 
         // Chùm bóng phế nang phồng xẹp theo t
         const pulse = Math.sin(t * 3) * 8;
@@ -1237,10 +1281,18 @@
           ellipse(ctx, bx - 15, by - 15, 12, 8, '#ffffff', null);
         }
 
+        scatterExt(ext, 150, 'lung', (x, r, i) => {
+          for (const [by, k] of [[200 + r * 120, 0], [440 + r * 150, 1]]) {
+            const br = 55 + RemakeVector.kit.seeded(`lung_r:${Math.round(x)}:${k}`) * 35;
+            const bx = x + (k ? 40 : 0);
+            ellipse(ctx, bx, by, br + pulse, br + pulse, isNight ? '#4a154b' : '#fce7f3', '#f472b6', 1.8);
+            ellipse(ctx, bx - 15, by - 15, 12, 8, '#ffffff', null);
+          }
+        });
         // Sàn phế nang (ground_y: 810)
         ctx.fillStyle = isNight ? '#2e1065' : '#fbcfe8';
-        ctx.fillRect(0, 810, 576, 214);
-        line(ctx, [[0, 810], [576, 810]], '#db2777', 2.4);
+        ctx.fillRect(x0, 810, x1 - x0, 214);
+        line(ctx, [[x0, 810], [x1, 810]], '#db2777', 2.4);
       }
     },
 
@@ -1251,21 +1303,30 @@
       ground_y: 810,
       draw(ctx, s, t, kit) {
         const isNight = s.time === 'night';
+        const { x0, x1 } = RemakeVector.kit.frameSpan(s);
+        const ext = extRanges(x0, x1);
         ctx.fillStyle = isNight ? '#1c1917' : '#fff1f2';
-        ctx.fillRect(0, 0, 576, 810);
+        ctx.fillRect(x0, 0, x1 - x0, 810);
 
         // Nếp gấp niêm mạc dạ dày (rugae)
         for (let x = 60; x < 576; x += 110) {
           path(ctx, `M ${x} 0 Q ${x + 20} 240 ${x} 480`, null, isNight ? '#4c0519' : '#fecdd3', 14);
         }
 
+        tileExt(ext, 60, 110, 575, (x) => path(ctx, `M ${x} 0 Q ${x + 20} 240 ${x} 480`, null, isNight ? '#4c0519' : '#fecdd3', 14));
+        for (const [ea, eb] of ext) {
+          for (let ox = ea < 0 ? -576 : 576; ea < 0 ? ox + 576 > ea : ox < eb; ox += ea < 0 ? -576 : 576) {
+            path(ctx, `M ${ox} 680 Q ${ox + 144} 650 ${ox + 288} 680 Q ${ox + 432} 710 ${ox + 576} 680 L ${ox + 576} 810 L ${ox} 810 Z`, 'rgba(163, 230, 53, 0.35)', null);
+          }
+        }
+        scatterExt(ext, 70, 'acid', (x, r) => ellipse(ctx, x, 720 + r * 70 - ((t * 30 + r * 50) % 40), 4 + r * 6, 4 + r * 6, null, 'rgba(101, 163, 13, 0.6)', 1.4));
         // Hồ acid sủi bọt ở đáy
         path(ctx, 'M 0 680 Q 144 650 288 680 Q 432 710 576 680 L 576 810 L 0 810 Z', 'rgba(163, 230, 53, 0.35)', null);
 
         // Sàn dạ dày (ground_y: 810)
         ctx.fillStyle = isNight ? '#292524' : '#fda4af';
-        ctx.fillRect(0, 810, 576, 214);
-        line(ctx, [[0, 810], [576, 810]], '#e11d48', 2.4);
+        ctx.fillRect(x0, 810, x1 - x0, 214);
+        line(ctx, [[x0, 810], [x1, 810]], '#e11d48', 2.4);
       }
     },
 
@@ -1276,8 +1337,10 @@
       ground_y: 810,
       draw(ctx, s, t, kit) {
         const isNight = s.time === 'night';
+        const { x0, x1 } = RemakeVector.kit.frameSpan(s);
+        const ext = extRanges(x0, x1);
         ctx.fillStyle = isNight ? '#1a1008' : '#fff7ed';
-        ctx.fillRect(0, 0, 576, 810);
+        ctx.fillRect(x0, 0, x1 - x0, 810);
 
         // Hàng ngàn lông nhung mềm như đồi cỏ nhấp nhô
         for (let x = 30; x <= 550; x += 40) {
@@ -1285,10 +1348,16 @@
           taper(ctx, x, 810, x + sway, 520, 16, 12, isNight ? '#7c2d12' : '#fed7aa', '#ea580c', 1.4);
         }
 
+        tileExt(ext, 30, 40, 550, (x) => {
+          const sway = Math.sin(t * 4 + x * 0.1) * 8;
+          const top = 520 + (RemakeVector.kit.seeded(`villus:${x}`) - 0.5) * 80;
+          taper(ctx, x, 810, x + sway, top, 16, 12, isNight ? '#7c2d12' : '#fed7aa', '#ea580c', 1.4);
+        });
+        scatterExt(ext, 160, 'gut_bug', (x, r) => { ellipse(ctx, x, 360 + r * 100, 14, 8, 'rgba(34, 197, 94, 0.45)', '#15803d', 1.0, r); });
         // Sàn đồi lông nhung (ground_y: 810)
         ctx.fillStyle = isNight ? '#431407' : '#fdba74';
-        ctx.fillRect(0, 810, 576, 214);
-        line(ctx, [[0, 810], [576, 810]], '#c2410c', 2.4);
+        ctx.fillRect(x0, 810, x1 - x0, 214);
+        line(ctx, [[x0, 810], [x1, 810]], '#c2410c', 2.4);
       }
     },
 
@@ -1299,18 +1368,22 @@
       ground_y: 810,
       draw(ctx, s, t, kit) {
         const isNight = s.time === 'night';
+        const { x0, x1 } = RemakeVector.kit.frameSpan(s);
+        const ext = extRanges(x0, x1);
         ctx.fillStyle = isNight ? '#18181b' : '#fafaf9';
-        ctx.fillRect(0, 0, 576, 810);
+        ctx.fillRect(x0, 0, x1 - x0, 810);
 
         // Sợi lông chân lông mọc như thân cây cao
         for (const hx of [120, 320, 480]) {
           path(ctx, `M ${hx} 810 Q ${hx + 30} 420 ${hx + 50} 180`, null, '#78350f', 6.0);
         }
 
+        scatterExt(ext, 170, 'hair', (x, r) => path(ctx, `M ${x} 810 Q ${x + 20 + r * 20} ${420 + r * 60} ${x + 30 + r * 40} ${160 + r * 80}`, null, '#78350f', 5 + r * 2));
+        scatterExt(ext, 90, 'pore', (x, r) => ellipse(ctx, x, 770 + r * 30, 10 + r * 6, 4, isNight ? '#3f3f46' : '#e7c3a4', null));
         // Ô tế bào sừng xếp lớp
         ctx.fillStyle = isNight ? '#27272a' : '#f5d0b5';
-        ctx.fillRect(0, 810, 576, 214);
-        line(ctx, [[0, 810], [576, 810]], '#d97706', 2.4);
+        ctx.fillRect(x0, 810, x1 - x0, 214);
+        line(ctx, [[x0, 810], [x1, 810]], '#d97706', 2.4);
       }
     },
 
@@ -1321,8 +1394,10 @@
       ground_y: 810,
       draw(ctx, s, t, kit) {
         const isNight = s.time === 'night';
+        const { x0, x1 } = RemakeVector.kit.frameSpan(s);
+        const ext = extRanges(x0, x1);
         ctx.fillStyle = isNight ? '#1f1315' : '#fff1f2';
-        ctx.fillRect(0, 0, 576, 810);
+        ctx.fillRect(x0, 0, x1 - x0, 810);
 
         // Khe núi xước hoạt hình màu cam đào (không đỏ máu me)
         path(ctx, 'M 220 810 L 250 480 L 290 810 Z', isNight ? '#4c0519' : '#fda4af', null);
@@ -1331,10 +1406,12 @@
         line(ctx, [[210, 680], [310, 640]], '#e2e8f0', 2.0);
         line(ctx, [[210, 600], [300, 670]], '#e2e8f0', 2.0);
 
+        scatterExt(ext, 190, 'wound_hair', (x, r) => path(ctx, `M ${x} 810 Q ${x + 25} ${460 + r * 60} ${x + 40} ${220 + r * 80}`, null, '#78350f', 5));
+        scatterExt(ext, 120, 'platelet', (x, r) => { ellipse(ctx, x, 560 + r * 160, 9, 6, isNight ? '#a78bfa' : '#c4b5fd', '#7c3aed', 1.0, r * 3); });
         // Sàn vết xước (ground_y: 810)
         ctx.fillStyle = isNight ? '#3b0716' : '#fecdd3';
-        ctx.fillRect(0, 810, 576, 214);
-        line(ctx, [[0, 810], [576, 810]], '#fb7185', 2.4);
+        ctx.fillRect(x0, 810, x1 - x0, 214);
+        line(ctx, [[x0, 810], [x1, 810]], '#fb7185', 2.4);
       }
     },
 
@@ -1345,8 +1422,10 @@
       ground_y: 810,
       draw(ctx, s, t, kit) {
         const isNight = s.time === 'night';
+        const { x0, x1 } = RemakeVector.kit.frameSpan(s);
+        const ext = extRanges(x0, x1);
         ctx.fillStyle = isNight ? '#200b14' : '#ffe4e6';
-        ctx.fillRect(0, 0, 576, 810);
+        ctx.fillRect(x0, 0, x1 - x0, 810);
 
         // Dãy răng trên trắng như nhũ đá
         for (let x = 40; x <= 540; x += 55) {
@@ -1358,10 +1437,15 @@
           path(ctx, `M ${x - 20} 810 L ${x + 20} 810 L ${x + 16} 750 L ${x - 16} 750 Z`, '#ffffff', '#cbd5e1', 1.6);
         }
 
+        tileExt(ext, 40, 55, 540, (x) => {
+          path(ctx, `M ${x - 22} 0 L ${x + 22} 0 L ${x + 16} 70 L ${x - 16} 70 Z`, '#ffffff', '#cbd5e1', 1.6);
+          path(ctx, `M ${x - 20} 810 L ${x + 20} 810 L ${x + 16} 750 L ${x - 16} 750 Z`, '#ffffff', '#cbd5e1', 1.6);
+        });
+        scatterExt(ext, 220, 'uvula', (x, r) => ellipse(ctx, x, 380 + r * 160, 16 + r * 10, 10 + r * 6, isNight ? 'rgba(251, 113, 133, 0.25)' : 'rgba(251, 113, 133, 0.35)', null));
         // Lưỡi hồng làm sàn (ground_y: 810)
         ctx.fillStyle = isNight ? '#4c0519' : '#fb7185';
-        ctx.fillRect(0, 810, 576, 214);
-        line(ctx, [[0, 810], [576, 810]], '#e11d48', 2.4);
+        ctx.fillRect(x0, 810, x1 - x0, 214);
+        line(ctx, [[x0, 810], [x1, 810]], '#e11d48', 2.4);
       }
     },
 
@@ -1372,8 +1456,10 @@
       ground_y: 810,
       draw(ctx, s, t, kit) {
         const isNight = s.time === 'night';
+        const { x0, x1 } = RemakeVector.kit.frameSpan(s);
+        const ext = extRanges(x0, x1);
         ctx.fillStyle = isNight ? '#1e1b2e' : '#fdf4ff';
-        ctx.fillRect(0, 0, 576, 810);
+        ctx.fillRect(x0, 0, x1 - x0, 810);
 
         // Rừng lông mũi đung đưa
         for (let x = 30; x <= 550; x += 45) {
@@ -1388,10 +1474,16 @@
           ellipse(ctx, px, py, 3, 3, '#facc15', null);
         }
 
+        tileExt(ext, 30, 45, 550, (x) => {
+          const sway = Math.sin(t * 5 + x) * 10;
+          const top = 420 + (RemakeVector.kit.seeded(`nosehair:${x}`) - 0.5) * 120;
+          path(ctx, `M ${x} 810 Q ${x + sway * 0.6} 580 ${x + sway} ${top}`, null, isNight ? '#475569' : '#78350f', 3.5);
+        });
+        scatterExt(ext, 75, 'pollen', (x, r, i) => ellipse(ctx, x + Math.sin(t + i) * 15, 240 + r * 120 + Math.sin(t * 3 + i) * 30, 3, 3, '#facc15', null));
         // Sàn khoang mũi (ground_y: 810)
         ctx.fillStyle = isNight ? '#2e1065' : '#f5d0fe';
-        ctx.fillRect(0, 810, 576, 214);
-        line(ctx, [[0, 810], [576, 810]], '#c026d3', 2.4);
+        ctx.fillRect(x0, 810, x1 - x0, 214);
+        line(ctx, [[x0, 810], [x1, 810]], '#c026d3', 2.4);
       }
     },
 
@@ -1402,8 +1494,10 @@
       ground_y: 810,
       draw(ctx, s, t, kit) {
         const isNight = s.time === 'night';
+        const { x0, x1 } = RemakeVector.kit.frameSpan(s);
+        const ext = extRanges(x0, x1);
         ctx.fillStyle = isNight ? '#0a1d2e' : '#ecfeff';
-        ctx.fillRect(0, 0, 576, 810);
+        ctx.fillRect(x0, 0, x1 - x0, 810);
 
         // Doanh trại vòm tròn kiểu pháo đài tương lai
         path(ctx, 'M 120 810 Q 288 320 456 810 Z', isNight ? '#083344' : '#cffafe', '#06b6d4', 2.5);
@@ -1414,10 +1508,16 @@
         // Chữ Y trên cờ
         path(ctx, 'M 298 318 L 306 318 M 306 318 L 312 312 M 306 318 L 312 324', null, '#ffffff', 1.8);
 
+        scatterExt(ext, 300, 'lymph', (x, r) => {
+          const hw = 80 + r * 50, top = 520 + r * 120;
+          path(ctx, `M ${x - hw} 810 Q ${x} ${top - (810 - top)} ${x + hw} 810 Z`, isNight ? '#083344' : '#cffafe', '#06b6d4', 2.2);
+          ellipse(ctx, x, 790 - (810 - top) * 0.3, 14, 18, isNight ? '#0e7490' : '#a5f3fc', '#0891b2', 1.4);
+          path(ctx, `M ${x - 10} ${top - 40} L ${x} ${top - 25} L ${x + 10} ${top - 40} M ${x} ${top - 25} L ${x} ${top - 8}`, null, '#0891b2', 3);
+        });
         // Sàn căn cứ (ground_y: 810)
         ctx.fillStyle = isNight ? '#0c2436' : '#a5f3fc';
-        ctx.fillRect(0, 810, 576, 214);
-        line(ctx, [[0, 810], [576, 810]], '#0891b2', 2.4);
+        ctx.fillRect(x0, 810, x1 - x0, 214);
+        line(ctx, [[x0, 810], [x1, 810]], '#0891b2', 2.4);
       }
     },
 
@@ -1428,8 +1528,10 @@
       ground_y: 810,
       draw(ctx, s, t, kit) {
         const isNight = s.time === 'night';
+        const { x0, x1 } = RemakeVector.kit.frameSpan(s);
+        const ext = extRanges(x0, x1);
         ctx.fillStyle = isNight ? '#1c1409' : '#fffbeb';
-        ctx.fillRect(0, 0, 576, 810);
+        ctx.fillRect(x0, 0, x1 - x0, 810);
 
         // Khung tuỷ xương xốp dạng tổ ong
         for (let x = 60; x <= 520; x += 100) {
@@ -1438,6 +1540,14 @@
           }
         }
 
+        tileExt(ext, 60, 100, 575, (x) => {
+          for (let y = 140; y <= 560; y += 100) ellipse(ctx, x, y, 32, 28, isNight ? '#451a03' : '#fef3c7', '#d97706', 1.5);
+        });
+        for (const [ea, eb] of ext) {
+          line(ctx, [[ea, 680], [eb, 680]], '#94a3b8', 4.0);
+        }
+        tileExt(ext, 90, 70, 480, (x) => ellipse(ctx, x, 680, 5, 5, '#475569', null));
+        scatterExt(ext, 140, 'stemcell', (x, r) => ellipse(ctx, x + ((t * 25) % 70), 662, 12, 12, isNight ? '#a78bfa' : '#ddd6fe', '#7c3aed', 1.2));
         // Băng chuyền đưa tế bào non ra ngoài
         line(ctx, [[60, 680], [516, 680]], '#94a3b8', 4.0);
         for (let cx = 90; cx <= 480; cx += 70) {
@@ -1446,8 +1556,8 @@
 
         // Sàn nhà máy (ground_y: 810)
         ctx.fillStyle = isNight ? '#291804' : '#fde68a';
-        ctx.fillRect(0, 810, 576, 214);
-        line(ctx, [[0, 810], [576, 810]], '#b45309', 2.4);
+        ctx.fillRect(x0, 810, x1 - x0, 214);
+        line(ctx, [[x0, 810], [x1, 810]], '#b45309', 2.4);
       }
     },
 
@@ -1458,8 +1568,10 @@
       ground_y: 810,
       draw(ctx, s, t, kit) {
         const isNight = s.time === 'night';
+        const { x0, x1 } = RemakeVector.kit.frameSpan(s);
+        const ext = extRanges(x0, x1);
         ctx.fillStyle = isNight ? '#0b1120' : '#f8fafc';
-        ctx.fillRect(0, 0, 576, 810);
+        ctx.fillRect(x0, 0, x1 - x0, 810);
 
         // Màn hình sóng nơ-ron điện não đồ (chỉ hình đồ thị sóng, không có chữ)
         path(ctx, 'M 140 240 L 436 240 L 436 420 L 140 420 Z', isNight ? '#020617' : '#0f172a', '#38bdf8', 2.5);
@@ -1475,10 +1587,22 @@
         // Bàn điều khiển hiện đại
         path(ctx, 'M 80 810 L 140 680 L 436 680 L 496 810 Z', isNight ? '#1e293b' : '#e2e8f0', '#64748b', 2.0);
 
+        scatterExt(ext, 280, 'brainhq', (x, r, i) => {
+          const mw = 150 + r * 50, my = 200 + r * 80;
+          path(ctx, `M ${x - mw / 2} ${my} L ${x + mw / 2} ${my} L ${x + mw / 2} ${my + 120} L ${x - mw / 2} ${my + 120} Z`, isNight ? '#020617' : '#0f172a', '#38bdf8', 2.2);
+          ctx.beginPath();
+          for (let k = 0; k <= mw - 30; k += 8) {
+            const sy = my + 60 + Math.sin(t * (5 + i) + k * 0.2) * 20 * (r + 0.4);
+            if (k === 0) ctx.moveTo(x - mw / 2 + 15 + k, sy); else ctx.lineTo(x - mw / 2 + 15 + k, sy);
+          }
+          ctx.strokeStyle = ['#22c55e', '#f472b6', '#facc15'][i % 3]; ctx.lineWidth = 2.0; ctx.stroke();
+          path(ctx, `M ${x - 110} 810 L ${x - 70} 720 L ${x + 70} 720 L ${x + 110} 810 Z`, isNight ? '#1e293b' : '#e2e8f0', '#64748b', 2.0);
+          for (let k = -2; k <= 2; k++) ellipse(ctx, x + k * 22, 745, 5, 5, ['#22c55e', '#f43f5e', '#38bdf8', '#facc15', '#a78bfa'][(k + 2 + i) % 5], null);
+        });
         // Sàn chỉ huy (ground_y: 810)
         ctx.fillStyle = isNight ? '#0f172a' : '#cbd5e1';
-        ctx.fillRect(0, 810, 576, 214);
-        line(ctx, [[0, 810], [576, 810]], '#334155', 2.4);
+        ctx.fillRect(x0, 810, x1 - x0, 214);
+        line(ctx, [[x0, 810], [x1, 810]], '#334155', 2.4);
       }
     },
 
@@ -1489,8 +1613,10 @@
       ground_y: 810,
       draw(ctx, s, t, kit) {
         const isNight = s.time === 'night';
+        const { x0, x1 } = RemakeVector.kit.frameSpan(s);
+        const ext = extRanges(x0, x1);
         ctx.fillStyle = isNight ? '#141c10' : '#f0fdf4';
-        ctx.fillRect(0, 0, 576, 810);
+        ctx.fillRect(x0, 0, x1 - x0, 810);
 
         // Bù nhìn vi khuẩn tập bắn cho tân binh
         for (const dummyX of [140, 436]) {
@@ -1508,10 +1634,22 @@
         line(ctx, [[240, 810], [240, 740]], '#475569', 2.5);
         line(ctx, [[336, 810], [336, 740]], '#475569', 2.5);
 
+        scatterExt(ext, 220, 'dummy', (x, r, i) => {
+          if (i % 2 === 0) {
+            line(ctx, [[x, 810], [x, 600 + r * 40]], '#78350f', 4.0);
+            ellipse(ctx, x, 570 + r * 40, 22, 22, '#ca8a04', INK, 1.8);
+            for (let k = 0; k < 4; k++) { const ang = (k * TAU) / 4; ellipse(ctx, x + Math.cos(ang) * 24, 570 + r * 40 + Math.sin(ang) * 24, 3, 3, '#a16207', null); }
+          } else {
+            const hh = 50 + r * 30;
+            line(ctx, [[x - 45, 810 - hh], [x + 45, 810 - hh]], '#f59e0b', 3.0);
+            line(ctx, [[x - 45, 810], [x - 45, 810 - hh]], '#475569', 2.5);
+            line(ctx, [[x + 45, 810], [x + 45, 810 - hh]], '#475569', 2.5);
+          }
+        });
         // Sàn sân tập (ground_y: 810)
         ctx.fillStyle = isNight ? '#1e293b' : '#bbf7d0';
-        ctx.fillRect(0, 810, 576, 214);
-        line(ctx, [[0, 810], [576, 810]], '#16a34a', 2.4);
+        ctx.fillRect(x0, 810, x1 - x0, 214);
+        line(ctx, [[x0, 810], [x1, 810]], '#16a34a', 2.4);
       }
     }
   };

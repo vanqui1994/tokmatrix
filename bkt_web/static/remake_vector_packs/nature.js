@@ -560,8 +560,37 @@
   // Tất cả đều ground_y: 810, 7 weathers, day/night, ZERO TEXT!
   // =============================================================
 
+
+  // Khổ ngang (B4): hai dải mở rộng [x0, 0) và [576, x1); khổ dọc trả về rỗng nên pixel dọc không đổi.
+  function extRanges(x0, x1) {
+    const out = [];
+    if (x0 < 0) out.push([x0, 0]);
+    if (x1 > 576) out.push([576, x1]);
+    return out;
+  }
+  // Nối tiếp hoạ tiết lặp (start, step; vòng gốc dừng ở origEnd) sang hai dải mở rộng.
+  function tileExt(ext, start, step, origEnd, fn) {
+    for (const [a, b] of ext) {
+      if (a < 0) { for (let x = start - step; x > a - step; x -= step) fn(x); }
+      else { let x = start; while (x <= origEnd) x += step; for (; x < b + step; x += step) fn(x); }
+    }
+  }
+  // Rải vật tất định trên dải mở rộng: bước step ± 30 %, seed theo toạ độ.
+  function scatterExt(ext, step, key, fn) {
+    for (const [a, b] of ext) {
+      let i = 0;
+      for (let x = a + step * 0.5; x < b - step * 0.3; i++) {
+        const r = RemakeVector.kit.seeded(`${key}:${Math.round(x)}`);
+        fn(x, r, i);
+        x += step * (0.7 + r * 0.6);
+      }
+    }
+  }
+
   function drawWaterCycleValley(ctx, settings, t) {
     ctx.save();
+    const sp = RemakeVector.kit.frameSpan(settings);
+    const X0 = sp.x0, X1 = sp.x1, ext = extRanges(X0, X1);
     const isNight = Boolean(settings && (settings.night || settings.time === 'night' || settings.timeOfDay === 'night'));
     const groundY = (settings && settings.ground_y) || 810;
 
@@ -577,7 +606,7 @@
       sky.addColorStop(1, '#fef08a');
     }
     ctx.fillStyle = sky;
-    ctx.fillRect(0, 0, 576, groundY * 0.7);
+    ctx.fillRect(X0, 0, X1 - X0, groundY * 0.7);
 
     // no_sun: story tự đặt rig `sun` có mặt, nên tắt mặt trời vẽ sẵn để không có hai mặt trời.
     if (settings && settings.no_sun) {
@@ -595,6 +624,24 @@
 
     drawPoly(ctx, [[320, groundY - 80], [450, groundY - 260], [576, groundY - 120], [576, groundY], [320, groundY]], mountainCol, null);
     drawPoly(ctx, [[450, groundY - 260], [410, groundY - 190], [435, groundY - 200], [450, groundY - 180], [470, groundY - 205], [490, groundY - 185]], snowCol, null);
+    // Khổ ngang bên phải: dãy núi tuyết nối tiếp, cao thấp khác nhau, rừng thông chân núi
+    if (X1 > 576) {
+      ctx.fillStyle = isNight ? '#1e293b' : '#fef08a';
+      ctx.fillRect(576, groundY * 0.7 - 1, X1 - 576, groundY * 0.3 - 49);
+      const pts = [[576, groundY], [576, groundY - 120]];
+      const peaks = [];
+      for (let x = 576; x < X1; ) {
+        const r = RemakeVector.kit.seeded(`wc_peak:${Math.round(x)}`);
+        const pw = 150 + r * 120, ph = 180 + RemakeVector.kit.seeded(`wc_ph:${Math.round(x)}`) * 160;
+        pts.push([x + pw * 0.5, groundY - ph], [x + pw, groundY - 110 - r * 40]);
+        peaks.push([x + pw * 0.5, ph]);
+        x += pw;
+      }
+      pts.push([pts[pts.length - 1][0], groundY]);
+      drawPoly(ctx, pts, mountainCol, null);
+      for (const [px, ph] of peaks) drawPoly(ctx, [[px, groundY - ph], [px - 34, groundY - ph + 60], [px - 14, groundY - ph + 48], [px, groundY - ph + 70], [px + 16, groundY - ph + 46], [px + 34, groundY - ph + 62]], snowCol, null);
+      scatterExt([[576, X1]], 36, 'wc_pine', (x, r) => drawPoly(ctx, [[x - 14, groundY - 40], [x + 14, groundY - 40], [x, groundY - 90 - r * 40]], isNight ? '#064e3b' : '#166534', null));
+    }
 
     // Đồi trung du thoai thoải ở giữa (x từ 140 đến 400)
     const hillCol = isNight ? '#064e3b' : '#15803d';
@@ -606,7 +653,7 @@
     ground.addColorStop(0.6, isNight ? '#022c22' : '#16a34a');
     ground.addColorStop(1, isNight ? '#0f172a' : '#15803d');
     ctx.fillStyle = ground;
-    ctx.fillRect(0, groundY - 50, 576, 1024 - (groundY - 50));
+    ctx.fillRect(Math.max(0, X0), groundY - 50, X1 - Math.max(0, X0), 1024 - (groundY - 50));
 
     // Đại dương bên trái thung lũng (x từ 0 đến 180, nước biển biếc)
     const sea = ctx.createLinearGradient(0, groundY - 40, 0, 1024);
@@ -620,6 +667,24 @@
     ctx.lineTo(0, 1024);
     ctx.closePath();
     ctx.fill();
+    // Khổ ngang bên trái: biển rộng ra tới mép khung, sóng, đảo nhỏ, thuyền buồm
+    if (X0 < 0) {
+      ctx.fillRect(X0, groundY - 40, -X0 + 1, 1024 - (groundY - 40));
+      const sea2 = ctx.createLinearGradient(0, groundY * 0.7, 0, groundY - 40);
+      sea2.addColorStop(0, isNight ? '#082f49' : '#0369a1');
+      sea2.addColorStop(1, isNight ? '#0c4a6e' : '#0284c7');
+      ctx.fillStyle = sea2;
+      ctx.fillRect(X0, groundY * 0.7, -X0, groundY * 0.3 - 40);
+      scatterExt([[X0, 0]], 90, 'wc_wave', (x, r) => line(ctx, [[x, groundY * 0.7 + 20 + r * 180], [x + 30, groundY * 0.7 + 22 + r * 180]], 'rgba(255, 255, 255, 0.55)', 1.6));
+      scatterExt([[X0, 0]], 260, 'wc_isle', (x, r, i) => {
+        if (i % 2 === 0) path(ctx, `M ${x - 70} ${groundY * 0.7 + 4} Q ${x} ${groundY * 0.7 - 50 - r * 40} ${x + 70} ${groundY * 0.7 + 4} Z`, isNight ? '#064e3b' : '#15803d', null);
+        else {
+          const bx = x + Math.sin((t || 0) * 0.5 + r * 5) * 12, by = groundY - 20 + r * 60;
+          drawPoly(ctx, [[bx - 26, by], [bx + 26, by], [bx + 18, by + 12], [bx - 18, by + 12]], '#b45309', INK, 1.2);
+          drawPoly(ctx, [[bx, by], [bx, by - 46], [bx + 24, by - 4]], '#f8fafc', INK, 1.0);
+        }
+      });
+    }
 
     // Dòng sông uốn lượn từ sườn núi tuyết chảy về biển
     ctx.save();
@@ -635,6 +700,8 @@
 
   function drawVolcanoIsland(ctx, settings, t) {
     ctx.save();
+    const sp = RemakeVector.kit.frameSpan(settings);
+    const X0 = sp.x0, X1 = sp.x1, ext = extRanges(X0, X1);
     const isNight = Boolean(settings && (settings.night || settings.time === 'night' || settings.timeOfDay === 'night'));
     const groundY = (settings && settings.ground_y) || 810;
 
@@ -650,14 +717,20 @@
       sky.addColorStop(1, '#fef08a');
     }
     ctx.fillStyle = sky;
-    ctx.fillRect(0, 0, 576, groundY * 0.65);
+    ctx.fillRect(X0, 0, X1 - X0, groundY * 0.65);
 
     // Đại dương bao quanh hòn đảo ở đường chân trời
     const sea = ctx.createLinearGradient(0, groundY - 140, 0, groundY - 40);
     sea.addColorStop(0, isNight ? '#0c4a6e' : '#0369a1');
     sea.addColorStop(1, isNight ? '#075985' : '#0284c7');
     ctx.fillStyle = sea;
-    ctx.fillRect(0, groundY - 140, 576, 100);
+    ctx.fillRect(X0, groundY - 140, X1 - X0, 100);
+    // Khổ ngang: đảo xa, núi lửa nhỏ đã tắt, sóng
+    scatterExt(ext, 300, 'vi_isle', (x, r, i) => {
+      if (i % 2 === 0) drawPoly(ctx, [[x - 90, groundY - 40], [x - 10, groundY - 110 - r * 40], [x + 20, groundY - 104 - r * 40], [x + 100, groundY - 40]], isNight ? '#1e293b' : '#475569', null);
+      else path(ctx, `M ${x - 80} ${groundY - 40} Q ${x} ${groundY - 90 - r * 20} ${x + 80} ${groundY - 40} Z`, isNight ? '#064e3b' : '#15803d', null);
+      line(ctx, [[x - 120, groundY - 120 + r * 50], [x - 90, groundY - 120 + r * 50]], 'rgba(255, 255, 255, 0.5)', 1.4);
+    });
 
     // Đỉnh núi lửa xa xa ở hậu cảnh
     drawPoly(ctx, [[140, groundY - 40], [288, groundY - 180], [436, groundY - 40]], isNight ? '#1e293b' : '#334155', null);
@@ -669,12 +742,24 @@
     islandGround.addColorStop(0.3, isNight ? '#0f172a' : '#1e293b');
     islandGround.addColorStop(1, isNight ? '#020617' : '#0f172a');
     ctx.fillStyle = islandGround;
-    ctx.fillRect(0, groundY - 40, 576, 1024 - (groundY - 40));
+    ctx.fillRect(X0, groundY - 40, X1 - X0, 1024 - (groundY - 40));
 
     // Thảm cây cối nhiệt đới xanh rì bên sườn đảo
     for (let x = 30; x <= 540; x += 60) {
       ellipse(ctx, x, groundY - 35, 24, 12, isNight ? '#064e3b' : '#15803d', null);
     }
+    tileExt(ext, 30, 60, 540, (x) => ellipse(ctx, x, groundY - 35, 24, 12, isNight ? '#064e3b' : '#15803d', null));
+    scatterExt(ext, 170, 'vi_palm', (x, r, i) => {
+      if (i % 2) return;
+      path(ctx, `M ${x} ${groundY - 30} Q ${x + 20} ${groundY - 140} ${x + 8 + r * 20} ${groundY - 230}`, null, '#78350f', 9);
+      const tx = x + 8 + r * 20, ty = groundY - 230;
+      for (let j = 0; j < 5; j++) { const a = -Math.PI + j * Math.PI / 4; path(ctx, `M ${tx} ${ty} Q ${tx + Math.cos(a) * 40} ${ty - 24} ${tx + Math.cos(a) * 72} ${ty + 18}`, null, isNight ? '#064e3b' : '#16a34a', 7); }
+    });
+    scatterExt(ext, 120, 'vi_rock', (x, r) => {
+      const rw = 22 + r * 18, rh = 12 + r * 8, ry = groundY + 25 + r * 40;
+      ellipse(ctx, x, ry, rw, rh, '#0f172a', INK, 1.4);
+      ellipse(ctx, x - rw * 0.2, ry - rh * 0.2, rw * 0.5, rh * 0.4, '#334155', null);
+    });
 
     // Các tảng đá nham thạch đen gồ ghề trên bãi biển
     const basaltRocks = [
@@ -694,6 +779,8 @@
 
   function drawDigSite(ctx, settings, t) {
     ctx.save();
+    const sp = RemakeVector.kit.frameSpan(settings);
+    const X0 = sp.x0, X1 = sp.x1, ext = extRanges(X0, X1);
     const isNight = Boolean(settings && (settings.night || settings.time === 'night' || settings.timeOfDay === 'night'));
     const groundY = (settings && settings.ground_y) || 810;
 
@@ -708,11 +795,25 @@
       sky.addColorStop(1, '#fef08a');
     }
     ctx.fillStyle = sky;
-    ctx.fillRect(0, 0, 576, groundY * 0.5);
+    ctx.fillRect(X0, 0, X1 - X0, groundY * 0.5);
+    // Khổ ngang: lều khảo cổ, xe cút kít, đống sàng đất trên bờ hố
+    scatterExt(ext, 260, 'dig_camp', (x, r, i) => {
+      const by = groundY - 240;
+      if (i % 2 === 0) {
+        drawPoly(ctx, [[x - 70, by], [x, by - 80 - r * 20], [x + 70, by]], isNight ? '#78350f' : '#f59e0b', INK, 1.4);
+        drawPoly(ctx, [[x - 14, by], [x, by - 40], [x + 14, by]], isNight ? '#1c1917' : '#78350f', null);
+      } else {
+        drawPoly(ctx, [[x - 50, by], [x + 50, by], [x + 30, by - 30], [x - 30, by - 30]], isNight ? '#57534e' : '#a8a29e', INK, 1.2);
+        ellipse(ctx, x + 70, by - 10, 10, 10, '#475569', INK, 1.0);
+        line(ctx, [[x - 60, by - 20], [x + 70, by - 10]], '#64748b', 3);
+      }
+    });
 
     // Vách tầng địa chất khai quật ở hậu cảnh
     const wallBase = groundY - 60;
     drawPoly(ctx, [[0, wallBase], [576, wallBase], [576, groundY - 240], [0, groundY - 220]], isNight ? '#451a03' : '#a8a29e', INK, 1.4);
+    if (X0 < 0) drawPoly(ctx, [[X0, wallBase], [0, wallBase], [0, groundY - 220], [X0, groundY - 230]], isNight ? '#451a03' : '#a8a29e', INK, 1.4);
+    if (X1 > 576) drawPoly(ctx, [[576, wallBase], [X1, wallBase], [X1, groundY - 230], [576, groundY - 240]], isNight ? '#451a03' : '#a8a29e', INK, 1.4);
 
     const strataLayers = [
       { y: groundY - 220, col: isNight ? '#2e1005' : '#c2410c' },
@@ -722,9 +823,16 @@
     ];
     for (const st of strataLayers) {
       ctx.fillStyle = st.col;
-      ctx.fillRect(0, st.y, 576, 35);
-      line(ctx, [[0, st.y + 35], [576, st.y + 35]], isNight ? '#1c1917' : '#57534e', 1.2);
+      ctx.fillRect(X0, st.y, X1 - X0, 35);
+      line(ctx, [[X0, st.y + 35], [X1, st.y + 35]], isNight ? '#1c1917' : '#57534e', 1.2);
     }
+    // Khổ ngang: hoá thạch vỏ ốc, xương nhỏ và đá cuội lộ ra trong vách tầng
+    scatterExt(ext, 110, 'strata_fossil', (x, r, i) => {
+      const fy = groundY - 200 + Math.floor(r * 4) * 40 + 14;
+      if (i % 3 === 0) { ellipse(ctx, x, fy, 11, 9, '#f5f5f4', '#57534e', 1.0); path(ctx, `M ${x - 6} ${fy} Q ${x} ${fy - 7} ${x + 6} ${fy}`, null, '#57534e', 1.0); }
+      else if (i % 3 === 1) { line(ctx, [[x - 14, fy], [x + 14, fy - 4]], '#f5f5f4', 4); ellipse(ctx, x - 14, fy, 4, 4, '#f5f5f4', null); ellipse(ctx, x + 14, fy - 4, 4, 4, '#f5f5f4', null); }
+      else ellipse(ctx, x, fy, 7, 5, '#78716c', null);
+    });
 
     // Nền hố khai quật đất cát nện (từ wallBase xuống 1024)
     const digGround = ctx.createLinearGradient(0, wallBase, 0, 1024);
@@ -732,7 +840,7 @@
     digGround.addColorStop(0.5, isNight ? '#29180c' : '#c08552');
     digGround.addColorStop(1, isNight ? '#1c0f05' : '#a97142');
     ctx.fillStyle = digGround;
-    ctx.fillRect(0, wallBase, 576, 1024 - wallBase);
+    ctx.fillRect(X0, wallBase, X1 - X0, 1024 - wallBase);
 
     // Lưới dây căng ô vuông khảo sát cổ sinh học (ZERO text!)
     ctx.save();
@@ -747,6 +855,27 @@
       line(ctx, [[gx, wallBase + 10], [gx, wallBase + 2]], '#78350f', 2.6);
       ellipse(ctx, gx, wallBase + 2, 2.5, 2, '#ea580c', null);
     }
+    // Khổ ngang: các ô lưới khảo sát riêng, xô, chổi cọ, bàn chải
+    for (const [ea, eb] of ext) {
+      const ga = ea < 0 ? ea + 30 : ea + 50, gb = ea < 0 ? eb - 50 : eb - 30;
+      for (let gy = wallBase + 30; gy < 1024; gy += 45) line(ctx, [[ga, gy], [gb, gy]], 'rgba(254, 240, 138, 0.6)', 1.0);
+      for (let gx = ga; gx <= gb; gx += 70) {
+        line(ctx, [[gx, wallBase + 10], [gx, 1000]], 'rgba(254, 240, 138, 0.6)', 1.0);
+        line(ctx, [[gx, wallBase + 10], [gx, wallBase + 2]], '#78350f', 2.6);
+        ellipse(ctx, gx, wallBase + 2, 2.5, 2, '#ea580c', null);
+      }
+    }
+    scatterExt(ext, 230, 'dig_tool', (x, r, i) => {
+      const ty = wallBase + 60 + r * 120;
+      if (i % 2 === 0) {
+        drawPoly(ctx, [[x - 18, ty], [x + 18, ty], [x + 14, ty + 34], [x - 14, ty + 34]], ['#ef4444', '#3b82f6', '#f59e0b'][Math.floor(r * 3)], INK, 1.2);
+        path(ctx, `M ${x - 16} ${ty} Q ${x} ${ty - 22} ${x + 16} ${ty}`, null, '#475569', 1.6);
+      } else {
+        line(ctx, [[x - 20, ty + 20], [x + 16, ty - 4]], '#a16207', 4);
+        drawPoly(ctx, [[x + 14, ty - 10], [x + 30, ty - 16], [x + 26, ty + 2]], '#78350f', INK, 1.0);
+        ellipse(ctx, x - 40, ty + 26, 16, 6, '#f5f5f4', '#57534e', 1.0);
+      }
+    });
     ctx.restore();
 
     ctx.restore();

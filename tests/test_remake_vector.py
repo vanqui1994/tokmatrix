@@ -6031,7 +6031,9 @@ window.columnStats = background => {
     colors.push(seen.size); bands.push(b.map(v => [v[0] / v[3], v[1] / v[3], v[2] / v[3]]));
   }
   let jump = 0, at = -1;
+  // Chỉ đo từ mép 576 trở đi (phần mở rộng): phần 0–576 là thiết kế khổ dọc có sẵn, đã khoá bằng hash dọc.
   for (let i = 1; i < bands.length; i++) for (let k = 0; k < 3; k++) {
+    if (starts[i] < 576) continue;
     const dd = Math.hypot(...bands[i][k].map((v, j) => v - bands[i - 1][k][j])); if (dd > jump) { jump = dd; at = starts[i]; }
   }
   return { size: [W, H], minColors: Math.min(...colors), jump, at };

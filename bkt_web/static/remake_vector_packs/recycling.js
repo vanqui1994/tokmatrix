@@ -654,9 +654,37 @@
   // -------------------------------------------------------------
   // 3. HÌNH NỀN BÃI TÁI CHẾ VÀ PHÂN LOẠI (recycling_yard)
   // -------------------------------------------------------------
+
+  // Khổ ngang (B4): hai dải mở rộng [x0, 0) và [576, x1); khổ dọc trả về rỗng nên pixel dọc không đổi.
+  function extRanges(x0, x1) {
+    const out = [];
+    if (x0 < 0) out.push([x0, 0]);
+    if (x1 > 576) out.push([576, x1]);
+    return out;
+  }
+  // Nối tiếp hoạ tiết lặp (start, step; vòng gốc dừng ở origEnd) sang hai dải mở rộng.
+  function tileExt(ext, start, step, origEnd, fn) {
+    for (const [a, b] of ext) {
+      if (a < 0) { for (let x = start - step; x > a - step; x -= step) fn(x); }
+      else { let x = start; while (x <= origEnd) x += step; for (; x < b + step; x += step) fn(x); }
+    }
+  }
+  // Rải vật tất định trên dải mở rộng: bước step ± 30 %, seed theo toạ độ.
+  function scatterExt(ext, step, key, fn) {
+    for (const [a, b] of ext) {
+      let i = 0;
+      for (let x = a + step * 0.5; x < b - step * 0.3; i++) {
+        const r = RemakeVector.kit.seeded(`${key}:${Math.round(x)}`);
+        fn(x, r, i);
+        x += step * (0.7 + r * 0.6);
+      }
+    }
+  }
+
   function drawRecyclingYard(ctx, s, t, opt = {}) {
     const W = 576, H = 1024;
     const groundY = 810;
+    const sp = RemakeVector.kit.frameSpan(s), X0 = sp.x0, X1 = sp.x1, ext = extRanges(X0, X1);
     const isNight = opt.night || s.night;
     const weather = opt.weather || s.weather || 'clear';
     const season = opt.season || s.season || 'summer';
@@ -674,7 +702,7 @@
       sky.addColorStop(1, '#e0f2fe');
     }
     ctx.fillStyle = sky;
-    ctx.fillRect(0, 0, W, groundY);
+    ctx.fillRect(X0, 0, X1 - X0, groundY);
 
     // Mây nhẹ hoặc đồi cây phía xa
     ctx.fillStyle = isNight ? '#1e293b' : '#cbd5e1';
@@ -682,6 +710,22 @@
       const cx = 80 + i * 140;
       ellipse(ctx, cx, groundY - 260, 90, 45, ctx.fillStyle, null);
     }
+    tileExt(ext, 80, 140, 499, (cx) => ellipse(ctx, cx, groundY - 250 - RemakeVector.kit.seeded(`ry_hill:${cx}`) * 30, 90, 45, isNight ? '#1e293b' : '#cbd5e1', null));
+    // Khổ ngang: nhà xưởng tái chế, ống khói hơi nước sạch, tuabin gió phía xa
+    scatterExt(ext, 330, 'ry_far', (x, r, i) => {
+      if (i % 2 === 0) {
+        drawPoly(ctx, [[x - 110, groundY - 120], [x + 110, groundY - 120], [x + 110, groundY - 230], [x - 110, groundY - 230]], isNight ? '#334155' : '#94a3b8', INK, 1.4);
+        for (let k = 0; k < 4; k++) drawPoly(ctx, [[x - 110 + k * 55, groundY - 230], [x - 55 + k * 55, groundY - 230], [x - 82 + k * 55, groundY - 262]], isNight ? '#475569' : '#64748b', INK, 1.2);
+        drawPoly(ctx, [[x + 60, groundY - 262], [x + 80, groundY - 262], [x + 80, groundY - 330], [x + 60, groundY - 330]], isNight ? '#475569' : '#cbd5e1', INK, 1.2);
+        for (let k = 0; k < 3; k++) ellipse(ctx, x + 70 + k * 10, groundY - 345 - k * 18 - ((t * 10) % 12), 12 + k * 4, 9 + k * 3, 'rgba(255, 255, 255, 0.6)', null);
+      } else {
+        line(ctx, [[x, groundY - 120], [x, groundY - 380]], '#e2e8f0', 4);
+        ctx.save(); ctx.translate(x, groundY - 380); ctx.rotate(t * 1.2 + r * 6);
+        for (let k = 0; k < 3; k++) { ctx.rotate(TAU / 3); drawPoly(ctx, [[0, -3], [70, -1], [70, 1], [0, 3]], '#f8fafc', '#94a3b8', 1.0); }
+        ctx.restore();
+        ellipse(ctx, x, groundY - 380, 5, 5, '#94a3b8', null);
+      }
+    });
 
     // Mặt đất bê tông bãi tập kết
     const ground = ctx.createLinearGradient(0, groundY, 0, H);
@@ -693,13 +737,14 @@
       ground.addColorStop(1, '#cbd5e1');
     }
     ctx.fillStyle = ground;
-    ctx.fillRect(0, groundY, W, H - groundY);
+    ctx.fillRect(X0, groundY, X1 - X0, H - groundY);
 
     // Đường kẻ phân làn vạch vàng an toàn
-    line(ctx, [[0, groundY], [W, groundY]], '#475569', 2.5);
+    line(ctx, [[X0, groundY], [X1, groundY]], '#475569', 2.5);
     for (let x = 20; x < W; x += 50) {
       line(ctx, [[x, groundY + 8], [x + 25, groundY + 8]], '#facc15', 3.0);
     }
+    tileExt(ext, 20, 50, W - 1, (x) => line(ctx, [[x, groundY + 8], [x + 25, groundY + 8]], '#facc15', 3.0));
 
     // Hàng rào lưới thép phía sau bãi
     ctx.strokeStyle = '#94a3b8';
@@ -709,7 +754,30 @@
       line(ctx, [[x, groundY - 120], [x + 30, groundY]], 'rgba(148, 163, 184, 0.4)', 0.8);
       line(ctx, [[x + 30, groundY - 120], [x, groundY]], 'rgba(148, 163, 184, 0.4)', 0.8);
     }
-    line(ctx, [[0, groundY - 120], [W, groundY - 120]], '#64748b', 2.0);
+    tileExt(ext, 0, 30, W - 1, (x) => {
+      line(ctx, [[x, groundY - 120], [x, groundY]], '#94a3b8', 1.0);
+      line(ctx, [[x, groundY - 120], [x + 30, groundY]], 'rgba(148, 163, 184, 0.4)', 0.8);
+      line(ctx, [[x + 30, groundY - 120], [x, groundY]], 'rgba(148, 163, 184, 0.4)', 0.8);
+    });
+    line(ctx, [[X0, groundY - 120], [X1, groundY - 120]], '#64748b', 2.0);
+    // Khổ ngang: thêm ngăn kim loại / pin, công-te-nơ, kiện giấy ép, xe nâng nhỏ
+    scatterExt(ext, 190, 'ry_bay', (x, r, i) => {
+      const k = i % 4;
+      if (k === 0 || k === 2) {
+        const pic = k === 0 ? 'can' : 'battery', col = k === 0 ? '#94a3b8' : '#ef4444';
+        drawPoly(ctx, [[x - 55, groundY], [x + 55, groundY], [x + 55, groundY - 70], [x - 55, groundY - 70]], isNight ? '#1e293b' : '#f1f5f9', '#475569', 2.0);
+        drawPoly(ctx, [[x - 55, groundY - 70], [x + 55, groundY - 70], [x + 55, groundY - 62], [x - 55, groundY - 62]], col, null);
+        PICTOGRAMS.recycling(ctx, x, groundY - 35, 26, pic);
+      } else if (k === 1) {
+        const cc = ['#16a34a', '#2563eb', '#ea580c'][Math.floor(r * 3)];
+        drawPoly(ctx, [[x - 70, groundY], [x + 70, groundY], [x + 76, groundY - 90], [x - 76, groundY - 90]], cc, INK, 2.0);
+        for (let j = -2; j <= 2; j++) line(ctx, [[x + j * 26, groundY - 6], [x + j * 28, groundY - 84]], tone(cc, -0.25), 2);
+        ellipse(ctx, x - 50, groundY, 9, 9, '#1f2937', null); ellipse(ctx, x + 50, groundY, 9, 9, '#1f2937', null);
+      } else {
+        for (let j = 0; j < 3; j++) drawPoly(ctx, [[x - 50 + j * 34, groundY], [x - 20 + j * 34, groundY], [x - 20 + j * 34, groundY - 40 - (j % 2) * 30], [x - 50 + j * 34, groundY - 40 - (j % 2) * 30]], j % 2 ? '#d6d3d1' : '#e7e5e4', '#78716c', 1.2);
+        for (let j = 0; j < 3; j++) line(ctx, [[x - 50 + j * 34, groundY - 20], [x - 20 + j * 34, groundY - 20]], '#78716c', 1.4);
+      }
+    });
 
     // 4 khu / ngăn chứa phân loại (Bays) với biển pictogram không chữ
     const bays = [

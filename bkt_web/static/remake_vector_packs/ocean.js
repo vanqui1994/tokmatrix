@@ -813,6 +813,33 @@
   }
 
   // =============================================================
+
+  // Khổ ngang (B4): hai dải mở rộng [x0, 0) và [576, x1); khổ dọc trả về rỗng nên pixel dọc không đổi.
+  function extRanges(x0, x1) {
+    const out = [];
+    if (x0 < 0) out.push([x0, 0]);
+    if (x1 > 576) out.push([576, x1]);
+    return out;
+  }
+  // Nối tiếp hoạ tiết lặp (start, step; vòng gốc dừng ở origEnd) sang hai dải mở rộng.
+  function tileExt(ext, start, step, origEnd, fn) {
+    for (const [a, b] of ext) {
+      if (a < 0) { for (let x = start - step; x > a - step; x -= step) fn(x); }
+      else { let x = start; while (x <= origEnd) x += step; for (; x < b + step; x += step) fn(x); }
+    }
+  }
+  // Rải vật tất định trên dải mở rộng: bước step ± 30 %, seed theo toạ độ.
+  function scatterExt(ext, step, key, fn) {
+    for (const [a, b] of ext) {
+      let i = 0;
+      for (let x = a + step * 0.5; x < b - step * 0.3; i++) {
+        const r = RemakeVector.kit.seeded(`${key}:${Math.round(x)}`);
+        fn(x, r, i);
+        x += step * (0.7 + r * 0.6);
+      }
+    }
+  }
+
   // BACKGROUNDS
   // =============================================================
 
@@ -821,6 +848,8 @@
     ctx.save();
     const w = 576;
     const h = 1024;
+    const sp = RemakeVector.kit.frameSpan(settings);
+    const X0 = sp.x0, X1 = sp.x1, ext = extRanges(X0, X1);
     const groundY = settings.ground_y || 810;
     const isNight = settings.time === 'night';
 
@@ -837,7 +866,7 @@
       waterGrad.addColorStop(1, '#115e59');
     }
     ctx.fillStyle = waterGrad;
-    ctx.fillRect(0, 0, w, groundY);
+    ctx.fillRect(X0, 0, X1 - X0, groundY);
 
     // Sunbeams filtering from ocean surface (Tia nắng chiếu xiên qua nước)
     if (!isNight && settings.weather !== 'storm') {
@@ -854,6 +883,10 @@
         ctx.fillStyle = '#ffffff';
         ctx.fill();
       }
+      tileExt(ext, 80, 100, 480, (sx) => {
+        ctx.beginPath(); ctx.moveTo(sx, 0); ctx.lineTo(sx + 80, 0); ctx.lineTo(sx + 160, groundY); ctx.lineTo(sx + 40, groundY); ctx.closePath();
+        ctx.fillStyle = '#ffffff'; ctx.fill();
+      });
       ctx.restore();
     }
 
@@ -886,7 +919,42 @@
     ctx.lineTo(w, groundY);
     ctx.closePath();
     ctx.fill();
+    for (const [ea, eb] of ext) {
+      ctx.beginPath();
+      ctx.moveTo(ea, groundY);
+      for (let x = ea; x <= eb; x += 40) ctx.lineTo(x, groundY - (60 + Math.sin(x * 0.04) * 35));
+      ctx.lineTo(eb, groundY);
+      ctx.closePath();
+      ctx.fill();
+    }
     ctx.restore();
+
+    // Khổ ngang: bọt nước, san hô nhiều màu, đá và rong ở hai bên
+    scatterExt(ext, 40, 'reef_bubble', (x, r, i) => {
+      const by = ((r * groundY) - (t || 0) * 35 * (0.6 + r)) % groundY;
+      ctx.beginPath(); ctx.arc(x + Math.sin((t || 0) + i) * 8, by < 0 ? groundY + by : by, 3 + (i % 4), 0, TAU);
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.25)'; ctx.fill();
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.4)'; ctx.lineWidth = 1; ctx.stroke();
+    });
+    scatterExt(ext, 110, 'reef_coral', (x, r, i) => {
+      const cols = isNight ? ['#9d174d', '#6b21a8', '#9a3412', '#155e75'] : ['#f472b6', '#a855f7', '#fb923c', '#22d3ee', '#facc15'];
+      const col = cols[(i + Math.floor(r * 5)) % cols.length];
+      const k = Math.floor(RemakeVector.kit.seeded(`coralk:${Math.round(x)}`) * 4);
+      ctx.save();
+      if (k === 0) {
+        for (const [dx, hh] of [[-14, 50], [0, 80], [14, 60]]) { ctx.strokeStyle = col; ctx.lineWidth = 9; ctx.lineCap = 'round'; ctx.beginPath(); ctx.moveTo(x, groundY); ctx.quadraticCurveTo(x + dx * 0.5, groundY - hh * 0.6, x + dx * 1.6, groundY - hh * (0.8 + r * 0.5)); ctx.stroke(); }
+      } else if (k === 1) {
+        ctx.fillStyle = col; ctx.beginPath(); ctx.ellipse(x, groundY - 22, 34 + r * 12, 26 + r * 8, 0, Math.PI, 0); ctx.fill();
+        ctx.strokeStyle = 'rgba(0,0,0,0.18)'; ctx.lineWidth = 2; for (let j = -2; j <= 2; j++) { ctx.beginPath(); ctx.arc(x, groundY - 10, 10 + Math.abs(j) * 6, Math.PI * 1.1, Math.PI * 1.9); ctx.stroke(); }
+      } else if (k === 2) {
+        ctx.strokeStyle = isNight ? '#065f46' : '#16a34a'; ctx.lineWidth = 6; ctx.lineCap = 'round';
+        for (let j = 0; j < 3; j++) { const sw = Math.sin((t || 0) * 1.5 + j + r * 5) * 10; ctx.beginPath(); ctx.moveTo(x + j * 10 - 10, groundY); ctx.quadraticCurveTo(x + j * 10 - 10 + sw, groundY - 70, x + j * 10 - 10 - sw, groundY - 130 - r * 40); ctx.stroke(); }
+      } else {
+        ctx.fillStyle = isNight ? '#334155' : '#78716c'; ctx.beginPath(); ctx.ellipse(x, groundY - 10, 40 + r * 20, 22, 0, Math.PI, 0); ctx.fill();
+        ctx.fillStyle = col; for (let j = 0; j < 3; j++) { ctx.beginPath(); ctx.arc(x - 20 + j * 20, groundY - 28 - (j % 2) * 8, 7, 0, TAU); ctx.fill(); }
+      }
+      ctx.restore();
+    });
 
     // Seabed sand (Đáy cát vàng)
     const sandGrad = ctx.createLinearGradient(0, groundY, 0, h);
@@ -894,7 +962,7 @@
     sandGrad.addColorStop(0.2, isNight ? '#0f172a' : '#fde047');
     sandGrad.addColorStop(1, isNight ? '#020617' : '#ca8a04');
     ctx.fillStyle = sandGrad;
-    ctx.fillRect(0, groundY, w, h - groundY);
+    ctx.fillRect(X0, groundY, X1 - X0, h - groundY);
 
     // Sand ripples
     ctx.strokeStyle = isNight ? '#334155' : '#eab308';
@@ -906,6 +974,12 @@
         ctx.quadraticCurveTo(x + 25, y + Math.sin(x * 0.05) * 6, x + 50, y);
       }
       ctx.stroke();
+      for (const [ea, eb] of ext) {
+        ctx.beginPath();
+        ctx.moveTo(ea, y);
+        for (let x = ea; x < eb; x += 50) ctx.quadraticCurveTo(x + 25, y + Math.sin(x * 0.05) * 6, x + 50, y);
+        ctx.stroke();
+      }
     }
 
     ctx.restore();
@@ -916,6 +990,8 @@
     ctx.save();
     const w = 576;
     const h = 1024;
+    const sp = RemakeVector.kit.frameSpan(settings);
+    const X0 = sp.x0, X1 = sp.x1, ext = extRanges(X0, X1);
     const groundY = settings.ground_y || 810;
     const isNight = settings.time === 'night';
 
@@ -930,14 +1006,29 @@
       skyGrad.addColorStop(1, '#fef08a');
     }
     ctx.fillStyle = skyGrad;
-    ctx.fillRect(0, 0, w, 420);
+    ctx.fillRect(X0, 0, X1 - X0, 420);
 
     // Ocean horizon
     const seaGrad = ctx.createLinearGradient(0, 420, 0, 680);
     seaGrad.addColorStop(0, isNight ? '#0f172a' : '#0284c7');
     seaGrad.addColorStop(1, isNight ? '#022c22' : '#0d9488');
     ctx.fillStyle = seaGrad;
-    ctx.fillRect(0, 420, w, 260);
+    ctx.fillRect(X0, 420, X1 - X0, 260);
+    // Khổ ngang: thuyền buồm xa, mũi đất và hải đăng nhỏ ở chân trời
+    scatterExt(ext, 330, 'beach_far', (x, r, i) => {
+      if (i % 2 === 0) {
+        const bx = x + Math.sin((t || 0) * 0.3 + r * 6) * 10;
+        ctx.fillStyle = isNight ? '#334155' : '#ffffff';
+        ctx.beginPath(); ctx.moveTo(bx, 470); ctx.lineTo(bx, 430 - r * 15); ctx.lineTo(bx + 22, 470); ctx.closePath(); ctx.fill();
+        ctx.fillStyle = isNight ? '#1e293b' : '#7c2d12'; ctx.fillRect(bx - 14, 470, 40, 7);
+      } else {
+        ctx.fillStyle = isNight ? '#14532d' : '#4d7c0f';
+        ctx.beginPath(); ctx.moveTo(x - 110, 424); ctx.quadraticCurveTo(x - 20, 380 - r * 30, x + 90, 424); ctx.closePath(); ctx.fill();
+        ctx.fillStyle = isNight ? '#e2e8f0' : '#f8fafc'; ctx.fillRect(x + 10, 372 - r * 30, 10, 34);
+        ctx.fillStyle = '#ef4444'; ctx.fillRect(x + 10, 384 - r * 30, 10, 6);
+        ctx.fillStyle = isNight ? '#fde047' : '#475569'; ctx.fillRect(x + 9, 364 - r * 30, 12, 8);
+      }
+    });
 
     // Gentle surf foam breaking
     const waveY = 660 + Math.sin((t || 0) * 1.8) * 15;
@@ -952,6 +1043,13 @@
     ctx.closePath();
     ctx.fillStyle = 'rgba(255, 255, 255, 0.45)';
     ctx.fill();
+    for (const [ea, eb] of ext) {
+      ctx.beginPath();
+      ctx.moveTo(ea, waveY);
+      for (let x = ea; x < eb; x += 60) ctx.quadraticCurveTo(x + 30, waveY + 8, x + 60, waveY);
+      ctx.lineTo(eb, groundY); ctx.lineTo(ea, groundY); ctx.closePath();
+      ctx.fill();
+    }
     ctx.restore();
 
     // Beach Sand (Bãi cát rộng)
@@ -960,7 +1058,7 @@
     sandGrad.addColorStop(0.4, isNight ? '#1e293b' : '#fde047');
     sandGrad.addColorStop(1, isNight ? '#0f172a' : '#eab308');
     ctx.fillStyle = sandGrad;
-    ctx.fillRect(0, 680, w, h - 680);
+    ctx.fillRect(X0, 680, X1 - X0, h - 680);
 
     // Coastal dunes at back
     ctx.fillStyle = isNight ? '#1e293b' : '#ca8a04';
@@ -972,6 +1070,29 @@
     ctx.lineTo(0, 710);
     ctx.closePath();
     ctx.fill();
+    for (const [ea, eb] of ext) {
+      ctx.beginPath(); ctx.moveTo(ea, 680);
+      for (let x = ea; x < eb; x += 300) ctx.quadraticCurveTo(x + 150, 650 + RemakeVector.kit.seeded(`dune:${Math.round(x)}`) * 25, Math.min(eb, x + 300), 680);
+      ctx.lineTo(eb, 710); ctx.lineTo(ea, 710); ctx.closePath(); ctx.fill();
+    }
+    // Khổ ngang: cây dừa, đá, vỏ sò, sao biển trên bãi cát
+    scatterExt(ext, 190, 'beach', (x, r, i) => {
+      const k = i % 3;
+      if (k === 0) {
+        ctx.strokeStyle = isNight ? '#44403c' : '#92400e'; ctx.lineWidth = 12; ctx.lineCap = 'round';
+        ctx.beginPath(); ctx.moveTo(x, groundY - 10); ctx.quadraticCurveTo(x + 30, groundY - 160, x + 10 + r * 30, groundY - 300); ctx.stroke();
+        ctx.strokeStyle = isNight ? '#14532d' : '#16a34a'; ctx.lineWidth = 9;
+        const tx = x + 10 + r * 30, ty = groundY - 300;
+        for (let j = 0; j < 5; j++) { const a = -Math.PI + j * Math.PI / 4; ctx.beginPath(); ctx.moveTo(tx, ty); ctx.quadraticCurveTo(tx + Math.cos(a) * 50, ty - 30, tx + Math.cos(a) * 90, ty + 20 + Math.abs(Math.sin(a)) * 10); ctx.stroke(); }
+      } else if (k === 1) {
+        ctx.fillStyle = isNight ? '#334155' : '#a8a29e'; ctx.beginPath(); ctx.ellipse(x, groundY - 8, 34 + r * 20, 20, 0, Math.PI, 0); ctx.fill();
+        ctx.fillStyle = isNight ? '#475569' : '#d6d3d1'; ctx.beginPath(); ctx.ellipse(x + 30, groundY - 4, 16, 10, 0, Math.PI, 0); ctx.fill();
+      } else {
+        ctx.fillStyle = '#fb923c';
+        ctx.beginPath(); for (let j = 0; j < 10; j++) { const a = -Math.PI / 2 + j * Math.PI / 5, rr = j % 2 ? 6 : 14; ctx.lineTo(x + Math.cos(a) * rr, groundY + 40 + r * 60 + Math.sin(a) * rr); } ctx.closePath(); ctx.fill();
+        ctx.fillStyle = '#fbcfe8'; ctx.beginPath(); ctx.ellipse(x + 50, groundY + 90 - r * 30, 10, 8, 0, Math.PI, 0); ctx.fill();
+      }
+    });
 
     ctx.restore();
   }
@@ -981,6 +1102,8 @@
     ctx.save();
     const w = 576;
     const h = 1024;
+    const sp = RemakeVector.kit.frameSpan(settings);
+    const X0 = sp.x0, X1 = sp.x1, ext = extRanges(X0, X1);
     const groundY = settings.ground_y || 810;
 
     // Abyssal gradient
@@ -990,7 +1113,7 @@
     deepGrad.addColorStop(0.8, '#031726');
     deepGrad.addColorStop(1, '#020b14');
     ctx.fillStyle = deepGrad;
-    ctx.fillRect(0, 0, w, h);
+    ctx.fillRect(X0, 0, X1 - X0, h);
 
     // Drifting marine snow (Hạt phù du phát quang mờ)
     ctx.save();
@@ -1003,6 +1126,12 @@
       ctx.fillStyle = i % 2 === 0 ? 'rgba(103, 232, 249, 0.45)' : 'rgba(255, 255, 255, 0.35)';
       ctx.fill();
     }
+    scatterExt(ext, 30, 'snow', (x, r, i) => {
+      ctx.beginPath();
+      ctx.arc(x + Math.sin((t || 0) * 0.8 + i) * 15, (r * h + (t || 0) * 12) % h, (i % 3) * 0.9 + 1.1, 0, TAU);
+      ctx.fillStyle = i % 2 === 0 ? 'rgba(103, 232, 249, 0.45)' : 'rgba(255, 255, 255, 0.35)';
+      ctx.fill();
+    });
     ctx.restore();
 
     // Rocky trench floor
@@ -1017,6 +1146,29 @@
     ctx.lineTo(0, h);
     ctx.closePath();
     ctx.fill();
+    // Khổ ngang: đáy đá lởm chởm, ống khói thuỷ nhiệt toả bọt, giun ống phát sáng
+    for (const [ea, eb] of ext) {
+      ctx.beginPath(); ctx.moveTo(ea, h); ctx.lineTo(ea, groundY);
+      for (let x = ea; x < eb; x += 140) ctx.lineTo(Math.min(eb, x + 140), groundY + (RemakeVector.kit.seeded(`trench:${Math.round(x)}`) - 0.6) * 44);
+      ctx.lineTo(eb, h); ctx.closePath(); ctx.fill();
+    }
+    scatterExt(ext, 260, 'vent', (x, r, i) => {
+      if (i % 2 === 0) {
+        ctx.fillStyle = '#1e293b';
+        ctx.beginPath(); ctx.moveTo(x - 30, groundY + 6); ctx.lineTo(x - 12, groundY - 90 - r * 50); ctx.lineTo(x + 12, groundY - 90 - r * 50); ctx.lineTo(x + 30, groundY + 6); ctx.closePath(); ctx.fill();
+        for (let j = 0; j < 4; j++) {
+          const py = groundY - 100 - r * 50 - (((t || 0) * 30 + j * 30) % 120);
+          ctx.beginPath(); ctx.arc(x + Math.sin((t || 0) * 2 + j) * 8, py, 6 + j * 2, 0, TAU);
+          ctx.fillStyle = 'rgba(148, 163, 184, 0.18)'; ctx.fill();
+        }
+      } else {
+        for (let j = 0; j < 4; j++) {
+          const tx = x - 24 + j * 16, th = 40 + RemakeVector.kit.seeded(`tube:${Math.round(x)}:${j}`) * 40;
+          ctx.fillStyle = '#e2e8f0'; ctx.fillRect(tx - 3, groundY - th, 6, th);
+          ctx.beginPath(); ctx.arc(tx, groundY - th, 7, 0, TAU); ctx.fillStyle = 'rgba(244, 63, 94, 0.75)'; ctx.fill();
+        }
+      }
+    });
 
     ctx.restore();
   }
