@@ -2,7 +2,7 @@
 
 Dựa trên kích thước đo thật (`extents`), lấy mẫu vị trí theo keyframe (nội suy tuyến tính) ở giữa và cuối
 mỗi cảnh, kiểm:
-1. nhân vật đang hiện nằm trong khung (≥ 70 % khung bao), trừ lúc đang đi vào/ra;
+1. nhân vật đang hiện nằm trong phần camera thấy (≥ 92 % khung bao), trừ lúc đang đi vào/ra;
 2. hai nhân vật / vật thể không chồng nhau > 25 % khung bao nhỏ hơn;
 3. vật thể ≥ 60 px mỗi chiều;
 4. người và thú đứng đúng mặt đất của nền (± 12 px);
@@ -64,6 +64,12 @@ def check(story: dict) -> list[str]:
         moving = {cid for cid, keys in sc["poses"].items() if max(k["x"] for k in keys) - min(k["x"] for k in keys) > 200}
         for t in (s0 + (s1 - s0) * 0.5, s1 - 0.05):
             boxes = {}
+            # Phần khung camera thật sự thấy (camera zoom cắt mép).
+            view = (0, 0, W, H)
+            if sc.get("camera"):
+                cam = sc["camera"]
+                cx, cy, z = (_interp(cam, t, f, d) for f, d in (("x", W / 2), ("y", H / 2), ("zoom", 1.0)))
+                view = (cx - W / 2 / z, cy - H / 2 / z, cx + W / 2 / z, cy + H / 2 / z)
             for cid, keys in sc["poses"].items():
                 if _interp(keys, t, "opacity", 1.0) < 0.5:
                     continue
@@ -73,8 +79,8 @@ def check(story: dict) -> list[str]:
                 variant = keys[0].get("variant")
                 b = bbox(asset, x, y, h, variant, flip)
                 boxes[cid] = b
-                inside = _overlap(b, (0, 0, W, H)) / max(1.0, _area(b))
-                if inside < 0.7 and cid not in moving:
+                inside = _overlap(b, view) / max(1.0, _area(b))
+                if inside < 0.92 and cid not in moving:
                     errs.append(f"{tag} t={t:.1f}: {cid} ra ngoài khung ({inside:.0%} trong khung)")
                 if b[2] - b[0] < 60 or b[3] - b[1] < 60:
                     if not cid.startswith("buddy"):

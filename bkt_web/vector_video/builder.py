@@ -28,7 +28,13 @@ PACING = {"calm": 1, "normal": 2, "busy": 3}
 HOST_H = {"wide": 230, "close": 245, "pan": 235}
 BUDDY_VISUAL_H = 118
 GAP = 14
+MIN_SUBJECT_H = 90           # vật thể dưới đất cao tối thiểu (px, khung 576)
 FLOAT_BAND = (110, 575)      # vật bay nằm trên đầu nhân vật (đầu chibi 230 ở y ≈ 600)
+# Lề an toàn theo khung hình của DNA: camera zoom cắt mép khung (close 1.1 tâm giữa, pan 1.06 lia ±14 px),
+# nên người/thú/vật thể phải nằm trong phần camera thật sự thấy.
+SAFE_X = {"wide": 22.0, "close": 50.0, "pan": 54.0}
+FLOAT_TOP = {"wide": 110.0, "close": 150.0, "pan": 110.0}
+CAMERA = {"close": {"zoom": (1.0, 1.1), "x": (288, 288), "y": (560, 600)}, "pan": {"zoom": (1.06, 1.06), "x": (274, 302), "y": (540, 540)}}
 SUBJECT_W = {"s": 190, "m": 250, "l": 330}
 SUBJECT_FLOAT_H = {"s": 210, "m": 280, "l": 360}
 SUBJECT_GROUND_H = {"s": 190, "m": 250, "l": 330}
@@ -97,20 +103,22 @@ def _host_actor(host: dict) -> dict:
     return actor
 
 
-def _subject_geometry(spec: dict, ground: float, people: list[tuple[float, float]]) -> tuple[float, float, float]:
+def _subject_geometry(spec: dict, ground: float, people: list[tuple[float, float]], margin: float = 22.0, float_top: float = FLOAT_BAND[0]) -> tuple[float, float, float]:
     """(x, y, height) cho vật thể; people = khung ngang (x0, x1) của người/thú đang đứng."""
     left, top, right, bottom = extent(spec["asset"], spec.get("variant"))
     size = spec.get("size", "m")
     if spec.get("float"):
-        lo, hi = 22.0, W - 22.0
-        band_top, band_bottom = FLOAT_BAND
+        lo, hi = margin, W - margin
+        band_top, band_bottom = float_top, FLOAT_BAND[1]
         h = min(SUBJECT_W[size] / (right - left), SUBJECT_FLOAT_H[size] / (bottom - top), (band_bottom - band_top) / (bottom - top))
         x = (lo + hi) / 2 - (left + right) / 2 * h
         y = (band_top + band_bottom) / 2 - (top + bottom) / 2 * h
         return round(x, 1), round(y, 1), round(h, 1)
-    lo = max([22.0] + [x1 + GAP for x0, x1 in people if x1 < W / 2])
-    hi = min([W - 22.0] + [x0 - GAP for x0, x1 in people if x0 > W / 2])
+    lo = max([margin] + [x1 + GAP for x0, x1 in people if x1 < W / 2])
+    hi = min([W - margin] + [x0 - GAP for x0, x1 in people if x0 > W / 2])
     h = min(min(SUBJECT_W[size], hi - lo) / (right - left), SUBJECT_GROUND_H[size] / (bottom - top), (ground - 120) / (bottom - top))
+    # Vật dẹt: nâng cỡ tới khi cao ≥ MIN_SUBJECT_H nhưng không vượt khoảng trống giữa người.
+    h = max(h, min(MIN_SUBJECT_H / (bottom - top), (hi - lo) / (right - left)))
     x = (lo + hi) / 2 - (left + right) / 2 * h
     return round(x, 1), round(ground, 1), round(h, 1)
 
@@ -154,9 +162,14 @@ def fallback_storyboard(scenes: list[dict], niche_id: str, lang: str, title: str
             beats = pattern[(i - 1) % len(pattern)]
             if subject == "none":
                 beats = [b for b in beats if b["type"] != "reveal"] or [{"type": "react", "who": "host", "mood": "surprised"}]
+        setting = settings[((h >> 3) + i // 2) % len(settings)]
+        fits = [bg for bg in (allow["subjects"].get(subject, {}).get("settings") or []) if bg in settings]
+        if fits and setting not in fits:
+            # Vật thể có bối cảnh hợp (tàu đắm dưới đáy biển, hành tinh ngoài không gian): giữ nền cảnh trước nếu hợp.
+            setting = out[-1]["setting"] if out and out[-1]["setting"] in fits else fits[0]
         out.append({
             "scene_index": i + 1,
-            "setting": settings[((h >> 3) + i // 2) % len(settings)],
+            "setting": setting,
             "subject": subject,
             "mood": ("happy", "surprised", "neutral", "worried")[(h + i) % 4] if 0 < i < n - 1 else "happy",
             "beats": beats,
@@ -207,6 +220,7 @@ def build_story(*, slug: str, lang: str, niche_id: str, channel_id: str, scenes:
     buddy_id = buddies[dna["cast"][1]] if dna["cast"][1] >= 0 else None
     buddy_spec = allow["buddies"][buddy_id] if buddy_id else None
     max_beats = PACING[dna["pacing"]]
+    safe = SAFE_X[dna["framing"]]
     host_h = HOST_H[dna["framing"]]
     hl, ht, hr, hb = extent(host_spec["rig"])
     characters = [_host_actor(host_spec)]
@@ -228,21 +242,28 @@ def build_story(*, slug: str, lang: str, niche_id: str, channel_id: str, scenes:
             background["weather"] = "fog"
         subject_key = sc.get("subject") if sc.get("subject") not in (None, "none") else None
         spec = allow["subjects"][subject_key] if subject_key else None
-        beats = [b for b in sc["beats"] if b.get("who") != "buddy" or buddy_spec][:max_beats]
+        buddy_here = bool(buddy_spec)
+        if buddy_spec and spec and not spec.get("float"):
+            # Vật thể dẹt (cá sấu, tàu…) cần cả khoảng giữa để cao ≥ MIN_SUBJECT_H: bạn đồng hành nhường cảnh này.
+            sl, st, sr, sb = extent(spec["asset"], spec.get("variant"))
+            gap = (W - safe + bl * buddy_h - br * buddy_h - GAP) - (safe - hl * host_h + hr * host_h + GAP) - 2 * safe
+            if MIN_SUBJECT_H * (sr - sl) / (sb - st) > gap:
+                buddy_here = False
+        beats = [b for b in sc["beats"] if b.get("who") != "buddy" or buddy_here][:max_beats]
         if spec and not spec.get("float"):
-            host_x = 24 - hl * host_h
-            buddy_x = (W - 24 - br * buddy_h) if buddy_spec else None
+            host_x = safe - hl * host_h
+            buddy_x = (W - safe - br * buddy_h) if buddy_here else None
         else:
-            host_x = 190.0 if buddy_spec else 230.0
-            buddy_x = 400.0 if buddy_spec else None
+            host_x = 190.0 if buddy_here else 230.0
+            buddy_x = 400.0 if buddy_here else None
         host_x = round(host_x, 1)
         people = [(host_x + hl * host_h, host_x + hr * host_h)]
-        if buddy_spec:
+        if buddy_here:
             buddy_x = round(buddy_x, 1)
             people.append((buddy_x + bl * buddy_h, buddy_x + br * buddy_h))
         poses: dict[str, list] = {}
         actions = []
-        actor_asset = {"host": host_spec["rig"], "buddy": buddy_spec["asset"] if buddy_spec else None}
+        actor_asset = {"host": host_spec["rig"], "buddy": buddy_spec["asset"] if buddy_here else None}
 
         def add_action(action):
             # Chỉ thêm động tác mà catalog cho phép với rig đó (vd. cú không có bong bóng emote), gọn trong cảnh.
@@ -253,7 +274,7 @@ def build_story(*, slug: str, lang: str, niche_id: str, channel_id: str, scenes:
                 actions.append(action)
         host = Track(s0, s1, x=host_x, y=ground, height=host_h, flip=False, expression=sc.get("mood", "neutral"), opacity=1.0, hand_r_x=24, hand_r_y=-22, jump=0, celebrate=0)
         tracks = {"host": host}
-        if buddy_spec:
+        if buddy_here:
             tracks["buddy"] = Track(s0, s1, x=buddy_x, y=ground, height=buddy_h, flip=True, expression="happy", opacity=1.0, jump=0)
         subj = None
         if spec:
@@ -261,7 +282,7 @@ def build_story(*, slug: str, lang: str, niche_id: str, channel_id: str, scenes:
             if cid not in subject_ids:
                 subject_ids.append(cid)
                 characters.append({"id": cid, "name": spec["label"], "asset": spec["asset"]})
-            sx, sy, sh = _subject_geometry(spec, ground, people)
+            sx, sy, sh = _subject_geometry(spec, ground, people, safe, FLOAT_TOP[dna["framing"]])
             reveal = any(b["type"] == "reveal" for b in beats)
             subj = Track(s0, s1, x=sx, y=sy, height=sh, opacity=0.0 if reveal else 1.0, variant=spec.get("variant"), z=-1)
             tracks[cid] = subj
@@ -361,13 +382,11 @@ def build_story(*, slug: str, lang: str, niche_id: str, channel_id: str, scenes:
             "renderer": RENDERER, "kind": "scene", "index": i, "start_time": round(s0, 3), "end_time": round(s1, 3),
             "characters_present": list(poses), "poses": poses, "actions": actions, "background": background,
         }
-        if dna["framing"] == "close":
-            scene["camera"] = [{"time": round(s0, 3), "x": 288, "y": 560, "zoom": 1.0},
-                               {"time": round(s1, 3), "x": round(288 * 0.75 + host_x * 0.25, 1), "y": 600, "zoom": 1.12}]
-        elif dna["framing"] == "pan":
-            direction = 1 if i % 2 == 0 else -1
-            scene["camera"] = [{"time": round(s0, 3), "x": 288 - 26 * direction, "y": 540, "zoom": 1.07},
-                               {"time": round(s1, 3), "x": 288 + 26 * direction, "y": 540, "zoom": 1.07}]
+        cam = CAMERA.get(dna["framing"])
+        if cam:
+            xs = cam["x"] if i % 2 == 0 else cam["x"][::-1]
+            scene["camera"] = [{"time": round(s0, 3), "x": xs[0], "y": cam["y"][0], "zoom": cam["zoom"][0]},
+                               {"time": round(s1, 3), "x": xs[1], "y": cam["y"][1], "zoom": cam["zoom"][1]}]
         out_scenes.append(scene)
     story = {
         "id": slug, "name": title or slug, "renderer": RENDERER, "fidelity": "technical-demo",

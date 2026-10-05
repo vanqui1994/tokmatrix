@@ -1,212 +1,1204 @@
 {
   "schema_version": 1,
   "note": "Engine vector (docs/PLAN_vector_video_engine.md §7): niche Matrix → nền, nhân vật dẫn chuyện, bạn đồng hành và vật thể được phép. Chỉ de/en/ko/ja; không asset mang dấu hiệu Việt. Asset/biến thể phải có trong catalog và remake_vector_extents.json (test kiểm).",
-  "languages": ["de", "en", "ko", "ja"],
-  "blocked_assets": ["chibi_farmer", "conical_hat", "rice_paddy", "terraced_field", "water_buffalo", "buffalo"],
+  "languages": [
+    "de",
+    "en",
+    "ko",
+    "ja"
+  ],
+  "blocked_assets": [
+    "chibi_farmer",
+    "conical_hat",
+    "rice_paddy",
+    "terraced_field",
+    "water_buffalo",
+    "buffalo"
+  ],
   "hosts": {
-    "explorer": { "rig": "chibi_girl", "outfit": "paleontologist" },
-    "scientist": { "rig": "chibi_teacher", "outfit": "scientist" },
-    "astronaut": { "rig": "chibi_boy", "outfit": "astronaut" },
-    "diver": { "rig": "chibi_girl", "outfit": "diver" },
-    "doctor": { "rig": "chibi_doctor" },
-    "nurse": { "rig": "chibi_nurse" },
-    "survivor": { "rig": "chibi_boy", "outfit": "survivor_jacket" },
-    "ranger": { "rig": "chibi_teacher", "outfit": "pioneer" },
-    "inventor": { "rig": "chibi_grandpa", "outfit": "inventor_1900" },
-    "pilot": { "rig": "chibi_girl", "outfit": "pilot" },
-    "storyteller": { "rig": "chibi_grandma" },
-    "student": { "rig": "chibi_kid" },
-    "firefighter": { "rig": "chibi_teacher", "outfit": "firefighter" },
-    "knight": { "rig": "chibi_boy", "outfit": "knight" },
-    "egypt": { "rig": "chibi_girl", "outfit": "egypt_noble" },
-    "greek": { "rig": "chibi_boy", "outfit": "greek_tunic" },
-    "viking": { "rig": "chibi_teacher", "outfit": "viking" },
-    "stone_age": { "rig": "chibi_kid", "outfit": "stone_age" },
-    "dirndl": { "rig": "chibi_girl", "outfit": "dirndl" },
-    "lederhosen": { "rig": "chibi_boy", "outfit": "lederhosen" },
-    "kimono": { "rig": "chibi_girl", "outfit": "kimono" },
-    "edo": { "rig": "chibi_grandpa", "outfit": "edo_craftsman" },
-    "hanbok": { "rig": "chibi_girl", "outfit": "hanbok" },
-    "joseon": { "rig": "chibi_grandpa", "outfit": "joseon_scholar" },
-    "cowboy": { "rig": "chibi_boy", "outfit": "cowboy" },
-    "winter": { "rig": "chibi_kid", "outfit": "winter_coat" },
-    "raincoat": { "rig": "chibi_girl", "outfit": "raincoat" },
-    "rescuer": { "rig": "chibi_teacher", "outfit": "hi_vis_vest" }
+    "explorer": {
+      "rig": "chibi_girl",
+      "outfit": "paleontologist"
+    },
+    "scientist": {
+      "rig": "chibi_teacher",
+      "outfit": "scientist"
+    },
+    "astronaut": {
+      "rig": "chibi_boy",
+      "outfit": "astronaut"
+    },
+    "diver": {
+      "rig": "chibi_girl",
+      "outfit": "diver"
+    },
+    "doctor": {
+      "rig": "chibi_doctor"
+    },
+    "nurse": {
+      "rig": "chibi_nurse"
+    },
+    "survivor": {
+      "rig": "chibi_boy",
+      "outfit": "survivor_jacket"
+    },
+    "ranger": {
+      "rig": "chibi_teacher",
+      "outfit": "pioneer"
+    },
+    "inventor": {
+      "rig": "chibi_grandpa",
+      "outfit": "inventor_1900"
+    },
+    "pilot": {
+      "rig": "chibi_girl",
+      "outfit": "pilot"
+    },
+    "storyteller": {
+      "rig": "chibi_grandma"
+    },
+    "student": {
+      "rig": "chibi_kid"
+    },
+    "firefighter": {
+      "rig": "chibi_teacher",
+      "outfit": "firefighter"
+    },
+    "knight": {
+      "rig": "chibi_boy",
+      "outfit": "knight"
+    },
+    "egypt": {
+      "rig": "chibi_girl",
+      "outfit": "egypt_noble"
+    },
+    "greek": {
+      "rig": "chibi_boy",
+      "outfit": "greek_tunic"
+    },
+    "viking": {
+      "rig": "chibi_teacher",
+      "outfit": "viking"
+    },
+    "stone_age": {
+      "rig": "chibi_kid",
+      "outfit": "stone_age"
+    },
+    "dirndl": {
+      "rig": "chibi_girl",
+      "outfit": "dirndl"
+    },
+    "lederhosen": {
+      "rig": "chibi_boy",
+      "outfit": "lederhosen"
+    },
+    "kimono": {
+      "rig": "chibi_girl",
+      "outfit": "kimono"
+    },
+    "edo": {
+      "rig": "chibi_grandpa",
+      "outfit": "edo_craftsman"
+    },
+    "hanbok": {
+      "rig": "chibi_girl",
+      "outfit": "hanbok"
+    },
+    "joseon": {
+      "rig": "chibi_grandpa",
+      "outfit": "joseon_scholar"
+    },
+    "cowboy": {
+      "rig": "chibi_boy",
+      "outfit": "cowboy"
+    },
+    "winter": {
+      "rig": "chibi_kid",
+      "outfit": "winter_coat"
+    },
+    "raincoat": {
+      "rig": "chibi_girl",
+      "outfit": "raincoat"
+    },
+    "rescuer": {
+      "rig": "chibi_teacher",
+      "outfit": "hi_vis_vest"
+    }
   },
   "subjects": {
-    "planet_mercury": { "asset": "planet", "variant": "mercury", "float": true, "label": "Mercury" },
-    "planet_venus": { "asset": "planet", "variant": "venus", "float": true, "label": "Venus" },
-    "planet_earth": { "asset": "planet", "variant": "earth", "float": true, "label": "Earth" },
-    "planet_mars": { "asset": "planet", "variant": "mars", "float": true, "label": "Mars" },
-    "planet_jupiter": { "asset": "planet", "variant": "jupiter", "float": true, "label": "Jupiter" },
-    "planet_saturn": { "asset": "planet", "variant": "saturn", "float": true, "label": "Saturn" },
-    "planet_uranus": { "asset": "planet", "variant": "uranus", "float": true, "label": "Uranus" },
-    "planet_neptune": { "asset": "planet", "variant": "neptune", "float": true, "label": "Neptune" },
-    "sun": { "asset": "sun", "float": true, "label": "the Sun", "role": "sun" },
-    "moon": { "asset": "moon", "float": true, "label": "the Moon", "role": "moon" },
-    "comet": { "asset": "comet", "float": true, "label": "a comet" },
-    "satellite": { "asset": "satellite", "float": true, "label": "a satellite" },
-    "space_station": { "asset": "space_station", "float": true, "label": "a space station" },
-    "rocket": { "asset": "rocket", "label": "a rocket", "size": "l" },
-    "lunar_lander": { "asset": "lunar_lander", "label": "a lunar lander" },
-    "volcano": { "asset": "volcano", "label": "a volcano", "size": "l" },
-    "cloud": { "asset": "cloud", "float": true, "label": "a rain cloud" },
-    "rainbow": { "asset": "rainbow", "float": true, "label": "a rainbow", "size": "l" },
-    "earth_cutaway": { "asset": "earth_cutaway", "label": "Earth's layers" },
-    "fossil": { "asset": "fossil", "label": "a fossil" },
-    "trex": { "asset": "trex", "label": "a T. rex", "size": "l" },
-    "triceratops": { "asset": "triceratops", "label": "a triceratops", "size": "l" },
-    "pterodactyl": { "asset": "pterodactyl", "float": true, "label": "a pterosaur" },
-    "mammoth": { "asset": "mammoth", "label": "a mammoth", "size": "l" },
-    "whale": { "asset": "whale", "float": true, "label": "a whale", "size": "l" },
-    "octopus": { "asset": "octopus", "float": true, "label": "an octopus" },
-    "jellyfish": { "asset": "jellyfish", "float": true, "label": "a jellyfish" },
-    "anglerfish": { "asset": "anglerfish", "float": true, "label": "an anglerfish" },
-    "sea_turtle": { "asset": "sea_turtle", "float": true, "label": "a sea turtle" },
-    "coral": { "asset": "coral", "label": "a coral" },
-    "sunken_ship": { "asset": "sunken_ship", "label": "a sunken ship", "size": "l" },
-    "atlantis_ruins": { "asset": "atlantis_ruins", "label": "ancient sunken ruins", "size": "l" },
-    "leviathan": { "asset": "sea_monster_leviathan", "float": true, "label": "a legendary sea serpent", "size": "l" },
-    "megalodon": { "asset": "sea_monster_megalodon", "float": true, "label": "a giant prehistoric shark", "size": "l" },
-    "crystal_whale": { "asset": "sea_monster_crystal_whale", "float": true, "label": "a glowing deep-sea giant", "size": "l" },
-    "moai": { "asset": "moai_generic", "label": "a stone head statue", "size": "l" },
-    "standing_stones": { "asset": "standing_stones", "label": "a stone circle", "size": "l" },
-    "pyramid": { "asset": "pyramid", "label": "a pyramid", "size": "l" },
-    "temple": { "asset": "temple_classic", "label": "a temple", "size": "l" },
-    "excavation": { "asset": "excavation_grid", "label": "an excavation site" },
-    "papyrus": { "asset": "papyrus_roll", "label": "an old scroll" },
-    "campfire": { "asset": "campfire", "label": "a campfire" },
-    "castle": { "asset": "castle", "label": "a castle", "size": "l" },
-    "longship": { "asset": "longship", "label": "a longship", "size": "l" },
-    "printing_press": { "asset": "printing_press", "label": "a printing press" },
-    "early_bulb": { "asset": "early_bulb", "label": "an early light bulb" },
-    "phonograph": { "asset": "phonograph", "label": "a phonograph" },
-    "biplane": { "asset": "biplane_1903", "label": "an early airplane", "size": "l" },
-    "smartphone": { "asset": "smartphone", "label": "a smartphone" },
-    "heart": { "asset": "heart_chibi", "label": "the heart" },
-    "lungs": { "asset": "lungs_chibi", "label": "the lungs" },
-    "brain": { "asset": "brain_chibi", "label": "the brain" },
-    "stomach": { "asset": "stomach_chibi", "label": "the stomach" },
-    "bone": { "asset": "bone_chibi", "label": "a bone" },
-    "eye": { "asset": "eye_chibi", "label": "the eye" },
-    "body_xray": { "asset": "body_xray", "label": "an x-ray body", "size": "l" },
-    "virus": { "asset": "virus_spike", "float": true, "label": "a virus" },
-    "bacteria": { "asset": "bacteria_cluster", "float": true, "label": "bacteria" },
-    "white_cell": { "asset": "killer_t_knight", "label": "a defender cell" },
-    "tooth": { "asset": "tooth_chibi", "label": "a tooth" },
-    "tent": { "asset": "tent", "label": "a tent" },
-    "water_filter": { "asset": "rain_barrel_filter", "label": "a rain-water filter" },
-    "boiling_pot": { "asset": "water_pot_boiling", "label": "a pot of boiling water" },
-    "radio": { "asset": "hand_crank_radio", "label": "a hand-crank radio" },
-    "sos_stones": { "asset": "sos_stones", "label": "an SOS signal" },
-    "first_aid": { "asset": "first_aid_kit", "label": "a first-aid kit" },
-    "lighthouse": { "asset": "lighthouse", "label": "a lighthouse", "size": "l" },
-    "fox": { "asset": "fox", "label": "a fox" },
-    "wolf": { "asset": "wolf", "label": "a wolf" },
-    "owl": { "asset": "owl", "float": true, "label": "an owl" },
-    "tanuki": { "asset": "tanuki", "label": "a tanuki" },
-    "crane": { "asset": "crane", "label": "a crane" },
-    "magpie": { "asset": "magpie", "float": true, "label": "a magpie" },
-    "tiger": { "asset": "cartoon_tiger", "label": "a tiger" },
-    "persimmon_tree": { "asset": "persimmon_tree", "label": "a persimmon tree", "size": "l" },
-    "bear": { "asset": "bear", "label": "a bear" },
-    "bison": { "asset": "bison", "label": "a bison" },
-    "elephant": { "asset": "elephant", "label": "an elephant", "size": "l" },
-    "giraffe": { "asset": "giraffe", "label": "a giraffe", "size": "l" },
-    "cheetah": { "asset": "cheetah", "label": "a cheetah" },
-    "crocodile": { "asset": "crocodile", "label": "a crocodile" },
-    "gorilla": { "asset": "gorilla", "label": "a gorilla" },
-    "penguin": { "asset": "penguin", "label": "a penguin" },
-    "eagle": { "asset": "eagle", "float": true, "label": "an eagle" },
-    "snow_monkey": { "asset": "snow_monkey", "label": "a snow monkey" },
-    "deer": { "asset": "deer", "label": "a deer" },
-    "hedgehog": { "asset": "hedgehog", "label": "a hedgehog" }
+    "planet_mercury": {
+      "asset": "planet",
+      "variant": "mercury",
+      "float": true,
+      "label": "Mercury",
+      "settings": [
+        "space_orbit",
+        "moon_surface",
+        "mars_surface"
+      ]
+    },
+    "planet_venus": {
+      "asset": "planet",
+      "variant": "venus",
+      "float": true,
+      "label": "Venus",
+      "settings": [
+        "space_orbit",
+        "moon_surface",
+        "mars_surface"
+      ]
+    },
+    "planet_earth": {
+      "asset": "planet",
+      "variant": "earth",
+      "float": true,
+      "label": "Earth",
+      "settings": [
+        "space_orbit",
+        "moon_surface",
+        "mars_surface"
+      ]
+    },
+    "planet_mars": {
+      "asset": "planet",
+      "variant": "mars",
+      "float": true,
+      "label": "Mars",
+      "settings": [
+        "space_orbit",
+        "moon_surface",
+        "mars_surface"
+      ]
+    },
+    "planet_jupiter": {
+      "asset": "planet",
+      "variant": "jupiter",
+      "float": true,
+      "label": "Jupiter",
+      "settings": [
+        "space_orbit",
+        "moon_surface",
+        "mars_surface"
+      ]
+    },
+    "planet_saturn": {
+      "asset": "planet",
+      "variant": "saturn",
+      "float": true,
+      "label": "Saturn",
+      "settings": [
+        "space_orbit",
+        "moon_surface",
+        "mars_surface"
+      ]
+    },
+    "planet_uranus": {
+      "asset": "planet",
+      "variant": "uranus",
+      "float": true,
+      "label": "Uranus",
+      "settings": [
+        "space_orbit",
+        "moon_surface",
+        "mars_surface"
+      ]
+    },
+    "planet_neptune": {
+      "asset": "planet",
+      "variant": "neptune",
+      "float": true,
+      "label": "Neptune",
+      "settings": [
+        "space_orbit",
+        "moon_surface",
+        "mars_surface"
+      ]
+    },
+    "sun": {
+      "asset": "sun",
+      "float": true,
+      "label": "the Sun",
+      "role": "sun",
+      "settings": [
+        "space_orbit",
+        "moon_surface",
+        "mars_surface"
+      ]
+    },
+    "moon": {
+      "asset": "moon",
+      "float": true,
+      "label": "the Moon",
+      "role": "moon",
+      "settings": [
+        "space_orbit",
+        "moon_surface",
+        "mars_surface"
+      ]
+    },
+    "comet": {
+      "asset": "comet",
+      "float": true,
+      "label": "a comet",
+      "settings": [
+        "space_orbit",
+        "moon_surface",
+        "mars_surface"
+      ]
+    },
+    "satellite": {
+      "asset": "satellite",
+      "float": true,
+      "label": "a satellite",
+      "settings": [
+        "space_orbit",
+        "moon_surface",
+        "mars_surface"
+      ]
+    },
+    "space_station": {
+      "asset": "space_station",
+      "float": true,
+      "label": "a space station",
+      "settings": [
+        "space_orbit",
+        "moon_surface",
+        "mars_surface"
+      ]
+    },
+    "rocket": {
+      "asset": "rocket",
+      "label": "a rocket",
+      "size": "l",
+      "settings": [
+        "launch_pad",
+        "moon_surface",
+        "mars_surface"
+      ]
+    },
+    "lunar_lander": {
+      "asset": "lunar_lander",
+      "label": "a lunar lander",
+      "settings": [
+        "moon_surface",
+        "launch_pad"
+      ]
+    },
+    "volcano": {
+      "asset": "volcano",
+      "label": "a volcano",
+      "size": "l",
+      "settings": [
+        "volcano_island",
+        "water_cycle_valley"
+      ]
+    },
+    "cloud": {
+      "asset": "cloud",
+      "float": true,
+      "label": "a rain cloud"
+    },
+    "rainbow": {
+      "asset": "rainbow",
+      "float": true,
+      "label": "a rainbow",
+      "size": "l"
+    },
+    "earth_cutaway": {
+      "asset": "earth_cutaway",
+      "label": "Earth's layers"
+    },
+    "fossil": {
+      "asset": "fossil",
+      "label": "a fossil",
+      "settings": [
+        "dig_site",
+        "stone_age_cave"
+      ]
+    },
+    "trex": {
+      "asset": "trex",
+      "label": "a T. rex",
+      "size": "l"
+    },
+    "triceratops": {
+      "asset": "triceratops",
+      "label": "a triceratops",
+      "size": "l"
+    },
+    "pterodactyl": {
+      "asset": "pterodactyl",
+      "float": true,
+      "label": "a pterosaur"
+    },
+    "mammoth": {
+      "asset": "mammoth",
+      "label": "a mammoth",
+      "size": "l",
+      "settings": [
+        "stone_age_cave",
+        "stone_circle_field"
+      ]
+    },
+    "whale": {
+      "asset": "whale",
+      "float": true,
+      "label": "a whale",
+      "size": "l",
+      "settings": [
+        "coral_reef",
+        "deep_sea"
+      ]
+    },
+    "octopus": {
+      "asset": "octopus",
+      "float": true,
+      "label": "an octopus",
+      "settings": [
+        "coral_reef",
+        "deep_sea",
+        "ruins_underwater"
+      ]
+    },
+    "jellyfish": {
+      "asset": "jellyfish",
+      "float": true,
+      "label": "a jellyfish",
+      "settings": [
+        "deep_sea",
+        "coral_reef"
+      ]
+    },
+    "anglerfish": {
+      "asset": "anglerfish",
+      "float": true,
+      "label": "an anglerfish",
+      "settings": [
+        "deep_sea"
+      ]
+    },
+    "sea_turtle": {
+      "asset": "sea_turtle",
+      "float": true,
+      "label": "a sea turtle",
+      "settings": [
+        "coral_reef",
+        "beach_cleanup"
+      ]
+    },
+    "coral": {
+      "asset": "coral",
+      "label": "a coral",
+      "settings": [
+        "coral_reef"
+      ]
+    },
+    "sunken_ship": {
+      "asset": "sunken_ship",
+      "label": "a sunken ship",
+      "size": "l",
+      "settings": [
+        "deep_sea",
+        "ruins_underwater",
+        "coral_reef"
+      ]
+    },
+    "atlantis_ruins": {
+      "asset": "atlantis_ruins",
+      "label": "ancient sunken ruins",
+      "size": "l",
+      "settings": [
+        "ruins_underwater",
+        "deep_sea"
+      ]
+    },
+    "moai": {
+      "asset": "moai_generic",
+      "label": "a stone head statue",
+      "size": "l",
+      "settings": [
+        "easter_island_generic"
+      ]
+    },
+    "standing_stones": {
+      "asset": "standing_stones",
+      "label": "a stone circle",
+      "size": "l",
+      "settings": [
+        "stone_circle_field"
+      ]
+    },
+    "pyramid": {
+      "asset": "pyramid",
+      "label": "a pyramid",
+      "size": "l",
+      "settings": [
+        "desert_dunes",
+        "nile_bank"
+      ]
+    },
+    "temple": {
+      "asset": "temple_classic",
+      "label": "a temple",
+      "size": "l",
+      "settings": [
+        "greek_stadium",
+        "roman_town"
+      ]
+    },
+    "excavation": {
+      "asset": "excavation_grid",
+      "label": "an excavation site",
+      "settings": [
+        "dig_site"
+      ]
+    },
+    "papyrus": {
+      "asset": "papyrus_roll",
+      "label": "an old scroll"
+    },
+    "campfire": {
+      "asset": "campfire",
+      "label": "a campfire",
+      "settings": [
+        "stone_age_cave",
+        "safe_camp",
+        "national_park"
+      ]
+    },
+    "castle": {
+      "asset": "castle",
+      "label": "a castle",
+      "size": "l",
+      "settings": [
+        "castle_yard",
+        "medieval_village"
+      ]
+    },
+    "longship": {
+      "asset": "longship",
+      "label": "a longship",
+      "size": "l",
+      "settings": [
+        "viking_fjord"
+      ]
+    },
+    "printing_press": {
+      "asset": "printing_press",
+      "label": "a printing press",
+      "settings": [
+        "workshop_1900",
+        "old_town_1900"
+      ]
+    },
+    "early_bulb": {
+      "asset": "early_bulb",
+      "label": "an early light bulb",
+      "settings": [
+        "workshop_1900",
+        "science_lab"
+      ]
+    },
+    "phonograph": {
+      "asset": "phonograph",
+      "label": "a phonograph",
+      "settings": [
+        "workshop_1900"
+      ]
+    },
+    "biplane": {
+      "asset": "biplane_1903",
+      "label": "an early airplane",
+      "size": "l",
+      "settings": [
+        "old_town_1900",
+        "launch_pad"
+      ]
+    },
+    "smartphone": {
+      "asset": "smartphone",
+      "label": "a smartphone",
+      "settings": [
+        "apartment_street",
+        "science_lab"
+      ]
+    },
+    "heart": {
+      "asset": "heart_chibi",
+      "label": "the heart",
+      "settings": [
+        "body_inside",
+        "blood_vessel"
+      ]
+    },
+    "lungs": {
+      "asset": "lungs_chibi",
+      "label": "the lungs",
+      "settings": [
+        "lung_alveoli",
+        "body_inside"
+      ]
+    },
+    "brain": {
+      "asset": "brain_chibi",
+      "label": "the brain",
+      "settings": [
+        "brain_hq",
+        "body_inside"
+      ]
+    },
+    "stomach": {
+      "asset": "stomach_chibi",
+      "label": "the stomach",
+      "settings": [
+        "stomach_inside",
+        "body_inside"
+      ]
+    },
+    "bone": {
+      "asset": "bone_chibi",
+      "label": "a bone"
+    },
+    "eye": {
+      "asset": "eye_chibi",
+      "label": "the eye"
+    },
+    "body_xray": {
+      "asset": "body_xray",
+      "label": "an x-ray body",
+      "size": "l",
+      "settings": [
+        "clinic_room",
+        "hospital_ward"
+      ]
+    },
+    "virus": {
+      "asset": "virus_spike",
+      "float": true,
+      "label": "a virus",
+      "settings": [
+        "blood_vessel",
+        "body_inside",
+        "lung_alveoli"
+      ]
+    },
+    "bacteria": {
+      "asset": "bacteria_cluster",
+      "float": true,
+      "label": "bacteria",
+      "settings": [
+        "stomach_inside",
+        "body_inside"
+      ]
+    },
+    "white_cell": {
+      "asset": "killer_t_knight",
+      "label": "a defender cell",
+      "settings": [
+        "blood_vessel",
+        "body_inside"
+      ]
+    },
+    "tooth": {
+      "asset": "tooth_chibi",
+      "label": "a tooth",
+      "settings": [
+        "clinic_room"
+      ]
+    },
+    "tent": {
+      "asset": "tent",
+      "label": "a tent",
+      "settings": [
+        "safe_camp",
+        "national_park"
+      ]
+    },
+    "water_filter": {
+      "asset": "rain_barrel_filter",
+      "label": "a rain-water filter",
+      "settings": [
+        "safe_camp",
+        "rooftop_garden"
+      ]
+    },
+    "boiling_pot": {
+      "asset": "water_pot_boiling",
+      "label": "a pot of boiling water",
+      "settings": [
+        "safe_camp"
+      ]
+    },
+    "radio": {
+      "asset": "hand_crank_radio",
+      "label": "a hand-crank radio"
+    },
+    "sos_stones": {
+      "asset": "sos_stones",
+      "label": "an SOS signal"
+    },
+    "first_aid": {
+      "asset": "first_aid_kit",
+      "label": "a first-aid kit"
+    },
+    "lighthouse": {
+      "asset": "lighthouse",
+      "label": "a lighthouse",
+      "size": "l",
+      "settings": [
+        "beach_cleanup",
+        "viking_fjord"
+      ]
+    },
+    "fox": {
+      "asset": "fox",
+      "label": "a fox"
+    },
+    "wolf": {
+      "asset": "wolf",
+      "label": "a wolf"
+    },
+    "owl": {
+      "asset": "owl",
+      "float": true,
+      "label": "an owl"
+    },
+    "tanuki": {
+      "asset": "tanuki",
+      "label": "a tanuki"
+    },
+    "crane": {
+      "asset": "crane",
+      "label": "a crane"
+    },
+    "magpie": {
+      "asset": "magpie",
+      "float": true,
+      "label": "a magpie"
+    },
+    "tiger": {
+      "asset": "cartoon_tiger",
+      "label": "a tiger"
+    },
+    "persimmon_tree": {
+      "asset": "persimmon_tree",
+      "label": "a persimmon tree",
+      "size": "l"
+    },
+    "bear": {
+      "asset": "bear",
+      "label": "a bear"
+    },
+    "bison": {
+      "asset": "bison",
+      "label": "a bison"
+    },
+    "elephant": {
+      "asset": "elephant",
+      "label": "an elephant",
+      "size": "l",
+      "settings": [
+        "national_park",
+        "desert_dunes"
+      ]
+    },
+    "giraffe": {
+      "asset": "giraffe",
+      "label": "a giraffe",
+      "size": "l",
+      "settings": [
+        "national_park",
+        "desert_dunes"
+      ]
+    },
+    "cheetah": {
+      "asset": "cheetah",
+      "label": "a cheetah",
+      "settings": [
+        "national_park",
+        "desert_dunes"
+      ]
+    },
+    "crocodile": {
+      "asset": "crocodile",
+      "label": "a crocodile",
+      "settings": [
+        "national_park"
+      ]
+    },
+    "gorilla": {
+      "asset": "gorilla",
+      "label": "a gorilla",
+      "settings": [
+        "national_park"
+      ]
+    },
+    "penguin": {
+      "asset": "penguin",
+      "label": "a penguin",
+      "settings": [
+        "beach_cleanup"
+      ]
+    },
+    "eagle": {
+      "asset": "eagle",
+      "float": true,
+      "label": "an eagle"
+    },
+    "snow_monkey": {
+      "asset": "snow_monkey",
+      "label": "a snow monkey"
+    },
+    "deer": {
+      "asset": "deer",
+      "label": "a deer"
+    },
+    "hedgehog": {
+      "asset": "hedgehog",
+      "label": "a hedgehog"
+    }
   },
   "buddies": {
-    "dog": { "asset": "dog" },
-    "cat": { "asset": "cat" },
-    "shiba": { "asset": "shiba" },
-    "red_panda": { "asset": "red_panda" },
-    "penguin": { "asset": "penguin" },
-    "hedgehog": { "asset": "hedgehog" },
-    "owl": { "asset": "owl" },
-    "meerkat": { "asset": "meerkat" },
-    "capybara": { "asset": "capybara" },
-    "sea_turtle": { "asset": "sea_turtle", "float": true }
+    "dog": {
+      "asset": "dog"
+    },
+    "cat": {
+      "asset": "cat"
+    },
+    "shiba": {
+      "asset": "shiba"
+    },
+    "red_panda": {
+      "asset": "red_panda"
+    },
+    "penguin": {
+      "asset": "penguin"
+    },
+    "hedgehog": {
+      "asset": "hedgehog"
+    },
+    "owl": {
+      "asset": "owl"
+    },
+    "meerkat": {
+      "asset": "meerkat"
+    },
+    "capybara": {
+      "asset": "capybara"
+    },
+    "sea_turtle": {
+      "asset": "sea_turtle",
+      "float": true
+    }
   },
   "niches": {
     "folklore_legends": {
-      "hosts": ["storyteller", "student", "ranger", "winter"],
-      "buddies": ["dog", "cat", "owl", "hedgehog"],
-      "settings": ["alpine_meadow", "national_park", "stone_circle_field"],
+      "hosts": [
+        "storyteller",
+        "student",
+        "ranger",
+        "winter"
+      ],
+      "buddies": [
+        "dog",
+        "cat",
+        "owl",
+        "hedgehog"
+      ],
+      "settings": [
+        "alpine_meadow",
+        "national_park",
+        "stone_circle_field"
+      ],
       "settings_by_lang": {
-        "de": ["black_forest_village", "christmas_market", "alpine_meadow"],
-        "en": ["national_park", "wild_west_town", "pumpkin_patch", "suburb_backyard"],
-        "ko": ["hanok_village", "joseon_palace_generic", "kr_market"],
-        "ja": ["edo_town", "shrine_generic", "onsen_snow"]
+        "de": [
+          "black_forest_village",
+          "christmas_market",
+          "alpine_meadow"
+        ],
+        "en": [
+          "national_park",
+          "wild_west_town",
+          "pumpkin_patch",
+          "suburb_backyard"
+        ],
+        "ko": [
+          "hanok_village",
+          "joseon_palace_generic",
+          "kr_market"
+        ],
+        "ja": [
+          "edo_town",
+          "shrine_generic",
+          "onsen_snow"
+        ]
       },
-      "hosts_by_lang": { "de": ["dirndl", "lederhosen"], "en": ["cowboy"], "ko": ["hanbok", "joseon"], "ja": ["kimono", "edo"] },
-      "subjects": ["fox", "wolf", "owl", "tanuki", "crane", "magpie", "tiger", "persimmon_tree", "bear", "deer", "castle", "moon", "campfire"]
+      "hosts_by_lang": {
+        "de": [
+          "dirndl",
+          "lederhosen"
+        ],
+        "en": [
+          "cowboy"
+        ],
+        "ko": [
+          "hanbok",
+          "joseon"
+        ],
+        "ja": [
+          "kimono",
+          "edo"
+        ]
+      },
+      "subjects": [
+        "fox",
+        "wolf",
+        "owl",
+        "tanuki",
+        "crane",
+        "magpie",
+        "tiger",
+        "persimmon_tree",
+        "bear",
+        "deer",
+        "castle",
+        "moon",
+        "campfire"
+      ]
     },
     "unsolved_mysteries": {
-      "hosts": ["explorer", "scientist", "diver", "ranger"],
-      "buddies": ["dog", "owl", "cat"],
-      "settings": ["stone_circle_field", "easter_island_generic", "ruins_underwater", "dig_site", "desert_dunes"],
-      "subjects": ["moai", "standing_stones", "atlantis_ruins", "sunken_ship", "pyramid", "excavation", "papyrus", "fossil", "leviathan", "moon"]
+      "hosts": [
+        "explorer",
+        "scientist",
+        "diver",
+        "ranger"
+      ],
+      "buddies": [
+        "dog",
+        "owl",
+        "cat"
+      ],
+      "settings": [
+        "stone_circle_field",
+        "easter_island_generic",
+        "ruins_underwater",
+        "dig_site",
+        "desert_dunes"
+      ],
+      "subjects": [
+        "moai",
+        "standing_stones",
+        "atlantis_ruins",
+        "sunken_ship",
+        "pyramid",
+        "excavation",
+        "papyrus",
+        "fossil",
+        "moon"
+      ]
     },
     "deep_space": {
-      "hosts": ["astronaut", "scientist", "pilot"],
-      "buddies": ["dog", "cat"],
-      "settings": ["space_orbit", "moon_surface", "mars_surface", "launch_pad"],
-      "subjects": ["planet_mercury", "planet_venus", "planet_earth", "planet_mars", "planet_jupiter", "planet_saturn", "planet_uranus", "planet_neptune", "sun", "moon", "comet", "satellite", "space_station", "rocket", "lunar_lander"]
+      "hosts": [
+        "astronaut",
+        "scientist",
+        "pilot"
+      ],
+      "buddies": [
+        "dog",
+        "cat"
+      ],
+      "settings": [
+        "space_orbit",
+        "moon_surface",
+        "mars_surface",
+        "launch_pad"
+      ],
+      "subjects": [
+        "planet_mercury",
+        "planet_venus",
+        "planet_earth",
+        "planet_mars",
+        "planet_jupiter",
+        "planet_saturn",
+        "planet_uranus",
+        "planet_neptune",
+        "sun",
+        "moon",
+        "comet",
+        "satellite",
+        "space_station",
+        "rocket",
+        "lunar_lander"
+      ]
     },
     "extreme_wildlife": {
-      "hosts": ["ranger", "explorer", "diver", "scientist"],
-      "buddies": ["meerkat", "dog", "capybara"],
-      "settings": ["national_park", "alpine_meadow", "coral_reef", "deep_sea", "desert_dunes", "beach_cleanup"],
-      "subjects": ["elephant", "giraffe", "cheetah", "crocodile", "gorilla", "bear", "bison", "eagle", "penguin", "whale", "octopus", "jellyfish", "anglerfish", "sea_turtle", "snow_monkey", "wolf", "fox", "deer"]
+      "hosts": [
+        "ranger",
+        "explorer",
+        "diver",
+        "scientist"
+      ],
+      "buddies": [
+        "meerkat",
+        "dog",
+        "capybara"
+      ],
+      "settings": [
+        "national_park",
+        "alpine_meadow",
+        "coral_reef",
+        "deep_sea",
+        "desert_dunes",
+        "beach_cleanup"
+      ],
+      "subjects": [
+        "elephant",
+        "giraffe",
+        "cheetah",
+        "crocodile",
+        "gorilla",
+        "bear",
+        "bison",
+        "eagle",
+        "penguin",
+        "whale",
+        "octopus",
+        "jellyfish",
+        "anglerfish",
+        "sea_turtle",
+        "snow_monkey",
+        "wolf",
+        "fox",
+        "deer"
+      ]
     },
     "extreme_survival": {
-      "hosts": ["survivor", "rescuer", "firefighter", "raincoat", "winter"],
-      "buddies": ["dog", "shiba"],
-      "settings": ["safe_camp", "abandoned_street", "flooded_downtown", "rooftop_garden", "overgrown_plaza", "national_park", "subway_tunnel"],
-      "subjects": ["tent", "water_filter", "boiling_pot", "radio", "sos_stones", "first_aid", "campfire", "volcano", "cloud", "lighthouse"]
+      "hosts": [
+        "survivor",
+        "rescuer",
+        "firefighter",
+        "raincoat",
+        "winter"
+      ],
+      "buddies": [
+        "dog",
+        "shiba"
+      ],
+      "settings": [
+        "safe_camp",
+        "abandoned_street",
+        "flooded_downtown",
+        "rooftop_garden",
+        "overgrown_plaza",
+        "national_park",
+        "subway_tunnel"
+      ],
+      "subjects": [
+        "tent",
+        "water_filter",
+        "boiling_pot",
+        "radio",
+        "sos_stones",
+        "first_aid",
+        "campfire",
+        "volcano",
+        "cloud",
+        "lighthouse"
+      ]
     },
     "tech_ai_future": {
-      "hosts": ["inventor", "scientist", "student", "pilot"],
-      "buddies": ["cat", "dog"],
-      "settings": ["workshop_1900", "science_lab", "old_town_1900", "launch_pad", "apartment_street"],
-      "subjects": ["printing_press", "early_bulb", "phonograph", "biplane", "smartphone", "rocket", "satellite", "space_station"]
+      "hosts": [
+        "inventor",
+        "scientist",
+        "student",
+        "pilot"
+      ],
+      "buddies": [
+        "cat",
+        "dog"
+      ],
+      "settings": [
+        "workshop_1900",
+        "science_lab",
+        "old_town_1900",
+        "launch_pad",
+        "apartment_street"
+      ],
+      "subjects": [
+        "printing_press",
+        "early_bulb",
+        "phonograph",
+        "biplane",
+        "smartphone",
+        "rocket",
+        "satellite",
+        "space_station"
+      ]
     },
     "lost_civilizations": {
-      "hosts": ["explorer", "egypt", "greek", "stone_age", "scientist"],
-      "buddies": ["meerkat", "owl", "dog"],
-      "settings": ["nile_bank", "desert_dunes", "roman_town", "greek_stadium", "stone_age_cave", "dig_site", "easter_island_generic"],
-      "subjects": ["pyramid", "temple", "moai", "standing_stones", "papyrus", "excavation", "campfire", "mammoth", "fossil", "atlantis_ruins"]
+      "hosts": [
+        "explorer",
+        "egypt",
+        "greek",
+        "stone_age",
+        "scientist"
+      ],
+      "buddies": [
+        "meerkat",
+        "owl",
+        "dog"
+      ],
+      "settings": [
+        "nile_bank",
+        "desert_dunes",
+        "roman_town",
+        "greek_stadium",
+        "stone_age_cave",
+        "dig_site",
+        "easter_island_generic"
+      ],
+      "subjects": [
+        "pyramid",
+        "temple",
+        "moai",
+        "standing_stones",
+        "papyrus",
+        "excavation",
+        "campfire",
+        "mammoth",
+        "fossil",
+        "atlantis_ruins"
+      ]
     },
     "medical_anomalies": {
-      "hosts": ["doctor", "nurse", "scientist", "student"],
-      "buddies": ["cat", "red_panda"],
-      "settings": ["clinic_room", "hospital_ward", "science_lab", "body_inside", "blood_vessel", "brain_hq", "lung_alveoli", "stomach_inside"],
-      "subjects": ["heart", "lungs", "brain", "stomach", "bone", "eye", "body_xray", "virus", "bacteria", "white_cell", "tooth", "first_aid"]
+      "hosts": [
+        "doctor",
+        "nurse",
+        "scientist",
+        "student"
+      ],
+      "buddies": [
+        "cat",
+        "red_panda"
+      ],
+      "settings": [
+        "clinic_room",
+        "hospital_ward",
+        "science_lab",
+        "body_inside",
+        "blood_vessel",
+        "brain_hq",
+        "lung_alveoli",
+        "stomach_inside"
+      ],
+      "subjects": [
+        "heart",
+        "lungs",
+        "brain",
+        "stomach",
+        "bone",
+        "eye",
+        "body_xray",
+        "virus",
+        "bacteria",
+        "white_cell",
+        "tooth",
+        "first_aid"
+      ]
     },
     "mega_catastrophes": {
-      "hosts": ["rescuer", "firefighter", "scientist", "raincoat"],
-      "buddies": ["dog", "shiba"],
-      "settings": ["volcano_island", "flooded_downtown", "abandoned_street", "water_cycle_valley", "safe_camp", "beach_cleanup"],
-      "subjects": ["volcano", "cloud", "earth_cutaway", "lighthouse", "radio", "first_aid", "sos_stones", "trex", "comet"]
+      "hosts": [
+        "rescuer",
+        "firefighter",
+        "scientist",
+        "raincoat"
+      ],
+      "buddies": [
+        "dog",
+        "shiba"
+      ],
+      "settings": [
+        "volcano_island",
+        "flooded_downtown",
+        "abandoned_street",
+        "water_cycle_valley",
+        "safe_camp",
+        "beach_cleanup"
+      ],
+      "subjects": [
+        "volcano",
+        "cloud",
+        "earth_cutaway",
+        "lighthouse",
+        "radio",
+        "first_aid",
+        "sos_stones",
+        "trex",
+        "comet"
+      ]
     },
     "ocean_mysteries": {
-      "hosts": ["diver", "explorer", "scientist"],
-      "buddies": ["penguin", "sea_turtle"],
-      "settings": ["deep_sea", "coral_reef", "ruins_underwater", "beach_cleanup", "viking_fjord"],
-      "subjects": ["whale", "octopus", "jellyfish", "anglerfish", "sea_turtle", "coral", "sunken_ship", "atlantis_ruins", "leviathan", "megalodon", "crystal_whale", "lighthouse"]
+      "hosts": [
+        "diver",
+        "explorer",
+        "scientist"
+      ],
+      "buddies": [
+        "penguin",
+        "sea_turtle"
+      ],
+      "settings": [
+        "deep_sea",
+        "coral_reef",
+        "ruins_underwater",
+        "beach_cleanup",
+        "viking_fjord"
+      ],
+      "subjects": [
+        "whale",
+        "octopus",
+        "jellyfish",
+        "anglerfish",
+        "sea_turtle",
+        "coral",
+        "sunken_ship",
+        "atlantis_ruins",
+        "lighthouse"
+      ]
     },
     "ancient_mythology": {
-      "hosts": ["greek", "viking", "knight", "egypt", "storyteller"],
-      "buddies": ["owl", "dog"],
-      "settings": ["greek_stadium", "roman_town", "castle_yard", "medieval_village", "viking_fjord", "nile_bank", "stone_circle_field"],
-      "subjects": ["temple", "pyramid", "castle", "longship", "standing_stones", "eagle", "wolf", "owl", "moon", "sun", "leviathan"]
+      "hosts": [
+        "greek",
+        "viking",
+        "knight",
+        "egypt",
+        "storyteller"
+      ],
+      "buddies": [
+        "owl",
+        "dog"
+      ],
+      "settings": [
+        "greek_stadium",
+        "roman_town",
+        "castle_yard",
+        "medieval_village",
+        "viking_fjord",
+        "nile_bank",
+        "stone_circle_field"
+      ],
+      "subjects": [
+        "temple",
+        "pyramid",
+        "castle",
+        "longship",
+        "standing_stones",
+        "eagle",
+        "wolf",
+        "owl",
+        "moon",
+        "sun"
+      ]
     }
   }
 }

@@ -66,7 +66,13 @@ def problems() -> list[str]:
             key = f"{spec['asset']}.{spec['variant']}" if spec.get("variant") else spec["asset"]
             if spec["asset"] not in cat["assets"]:
                 errs.append(f"{group} {sid}: asset {spec['asset']} không có")
-            elif key not in ext:
+                continue
+            if cat["assets"][spec["asset"]].get("group") == "monster":
+                errs.append(f"{group} {sid}: nhóm monster luôn vẽ huy hiệu chữ (tierBadge) — không dùng trong video")
+            for bg in spec.get("settings", []):
+                if bg not in cat["background_specs"]:
+                    errs.append(f"{group} {sid}: nền gợi ý {bg} không có")
+            if key not in ext:
                 errs.append(f"{group} {sid}: chưa đo kích thước {key}")
     for nid, spec in data["niches"].items():
         for bg in [*spec["settings"], *[b for bs in spec.get("settings_by_lang", {}).values() for b in bs]]:

@@ -100,7 +100,11 @@ function prompt({ script, topic, language, channel }) {
   const allow = nicheAllowed(ch.niche_id, language) || nicheAllowed("deep_space", language);
   const scenes = script?.scenes || [];
   const listing = scenes.map((scene, i) => `${i + 1}. ${String(scene.line || "").trim()} (visual: ${String(scene.visual_intent || "").trim()})`).join("\n");
-  const subjects = allow.subjects.map((id) => `${id} = ${NICHES.subjects[id].label}`).join("; ");
+  const subjects = allow.subjects.map((id) => {
+    const spec = NICHES.subjects[id];
+    const fits = (spec.settings || []).filter((bg) => allow.settings.includes(bg));
+    return `${id} = ${spec.label}${fits.length ? ` (setting: ${fits.join("/")})` : ""}`;
+  }).join("; ");
   return `Topic: ${topic || script?.title || ""}
 This short video is a 2D cartoon (vector chibi characters). A friendly host character (and sometimes an animal buddy) presents each narration line in a drawn setting, next to one drawn subject.
 Narration (fixed, do NOT rewrite it), one entry per scene:
@@ -111,6 +115,7 @@ Return JSON {"scenes": [...]} with exactly ${scenes.length} items, one per scene
 - "setting": one of [${allow.settings.join(", ")}]. Keep the same setting for neighbouring scenes unless the narration moves somewhere else.
 - "subject": the drawn object/creature that best illustrates the line, one of [${subjects}], or "none".
   Only pick a subject that the line or its visual is really about; never show something unrelated.
+  When a subject lists a setting, use one of those settings for that scene (a sunken ship lies on the sea floor, planets are in space).
 - "mood": host expression, one of [${MOODS.join(", ")}] matching the line.
 - "beats": 1–3 short actions in order. type ∈ [${BEATS.join(", ")}]; who ∈ host | buddy | subject.
   reveal = the subject appears (who=subject, needs a subject). point/look = turn to the subject. emote needs "symbol" ∈ [${EMOTES.join(", ")}].
