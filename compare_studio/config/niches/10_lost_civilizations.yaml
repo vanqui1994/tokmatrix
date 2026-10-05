@@ -2,4 +2,4 @@ niche_id: lost_civilizations
 name: Văn Minh Cổ Đại
 language: vi
 summary: Khảo cổ, nền văn minh cổ và các phát hiện được ghi nhận.
-allowed_engines: [folklore, mystery, newspaper, vox, chalk, science, tierlist]
+allowed_engines: [folklore, mystery, newspaper, vox, chalk, science, tierlist, vector]

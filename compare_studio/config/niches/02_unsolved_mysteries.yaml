@@ -9,3 +9,4 @@ allowed_engines:
   - vox
   - tierlist
   - kinetic
+  - vector

@@ -2,4 +2,4 @@ niche_id: tech_ai_future
 name: Công Nghệ & Tương Lai AI
 language: vi
 summary: Công nghệ, AI và các kịch bản tương lai được phân tách khỏi suy đoán.
-allowed_engines: [mystery, vox, chalk, science, tierlist, kinetic, wildlife]
+allowed_engines: [mystery, vox, chalk, science, tierlist, kinetic, wildlife, vector]

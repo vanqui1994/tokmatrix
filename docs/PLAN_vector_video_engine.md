@@ -9,6 +9,15 @@ video đăng TikTok.
 - không rig/trang phục mang dấu hiệu Việt (`chibi_farmer` với nón lá, áo bà ba…) trong video của engine này;
 - validator của engine từ chối kênh có `language: vi` và asset nằm trong danh sách `VI_ONLY_ASSETS`.
 
+## 0. Trạng thái (05/10/2026)
+
+- Tuần 0 xong: HyperFrames 0.7.58 render canvas tất định (2 lần render cùng md5 khung), 1080×1920 qua `Renderer(..., {scale})`.
+- Tuần 1–3 xong phần code: `compare_studio/matrix/render/engines/vector.mjs`, `bkt_web/vector_video/` (extents, niches, dna,
+  builder, qa, cli), `config/vector_niches.json` (11 niche), DNA 5 trục, QA hình học, tool `tools/vector-sample.mjs`.
+  Quét 264 tổ hợp niche × ngôn ngữ × kênh và 300 storyboard ngẫu nhiên: 100 % qua QA, không treo.
+- Đăng ký: `RENDERABLE_ENGINES`, `revive.py`, `compatibility_matrix.yaml` + `allowed_engines` của 11 niche.
+- Chưa làm: tuần 4 (bật `vector` trong `preferred_engines` của kênh thật + gán DNA) — chờ chủ kênh chọn kênh.
+
 ## 1. Mục tiêu và tiêu chí xong
 
 - Engine `vector` nằm trong `RENDERABLE_ENGINES`, Autopilot chọn được cho kênh có `preferred_engines`

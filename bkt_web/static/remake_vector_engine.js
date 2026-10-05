@@ -3846,13 +3846,16 @@ globalThis.RemakeVector = (() => {
       this.cels = Boolean(options.cels);
       // Khổ theo story.frame (portrait 576×1024 mặc định, landscape 1820×1024); frame lạ thì ném lỗi.
       this.frame = storyFrame(story);
-      canvas.width = this.frame.w; canvas.height = this.frame.h;
+      // scale > 1 vẽ cùng khung ở độ phân giải cao hơn (vd. 1.875 → 1080×1920 cho video); 1 = pixel y hệt cũ.
+      this.scale = Number(options.scale) > 0 ? Number(options.scale) : 1;
+      canvas.width = Math.round(this.frame.w * this.scale); canvas.height = Math.round(this.frame.h * this.scale);
     }
     sample(t) { return sample(this.story, this.catalog, t); }
     render(t, debug = false) {
       const frame = this.sample(t), ctx = this.ctx, scene = frame.scene;
       const { w: W, h: H } = this.frame, wide = this.frame.w !== PORTRAIT.w;
       ctx.reset();
+      if (this.scale !== 1) ctx.scale(this.scale, this.scale);
       if (scene.kind === 'title') {
         ctx.fillStyle = '#162522'; ctx.fillRect(0, 0, W, H);
         ctx.fillStyle = '#876f42'; ctx.fillRect(0, 350, W, 320);

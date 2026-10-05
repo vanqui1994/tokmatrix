@@ -33,7 +33,7 @@ test("all matrix YAML files validate against schemas and cross-references", () =
   assert.equal(result.documents.channels.length, channelFiles.length);
   assert.equal(result.files, yamlCount(configDir));
   assert.equal(result.documents.compatibility_matrix[0].data.niches.length, 18);
-  assert.equal(result.documents.compatibility_matrix[0].data.engines.length, 11);
+  assert.equal(result.documents.compatibility_matrix[0].data.engines.length, 12);
 });
 
 test("Channel DNA schema rejects invalid persona ranges and missing required fields", () => {

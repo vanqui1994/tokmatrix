@@ -2,4 +2,4 @@ niche_id: ocean_mysteries
 name: Đại Dương & Rãnh Vực
 language: vi
 summary: Hải dương học, rãnh sâu và những bí ẩn được khảo sát bằng khoa học.
-allowed_engines: [mystery, vox, science, survival, tierlist, kinetic, wildlife]
+allowed_engines: [mystery, vox, science, survival, tierlist, kinetic, wildlife, vector]
