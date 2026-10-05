@@ -68,7 +68,7 @@ def assign_dna(apply: bool) -> dict:
 
     channels = vector_channels()
     result = dna.assign(channels, dna.load_assignments())
-    bad = dna.violations(result, {c["channel_id"]: c["language"] for c in channels})
+    bad = dna.violations(result, {c["channel_id"]: c["language"] for c in channels}, {c["channel_id"]: c["niche"] for c in channels})
     if bad:
         raise SystemExit(f"DNA vi phạm: {bad}")
     if apply:

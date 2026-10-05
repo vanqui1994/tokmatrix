@@ -1,6 +1,8 @@
 """Vector DNA: hình ảnh riêng của từng kênh (docs/PLAN_vector_video_engine.md §5).
 
-Năm trục; hai kênh cùng nước (cùng ngôn ngữ) phải khác nhau ở ≥ 3/5 trục:
+Năm trục; hai kênh cùng niche (kể cả khác nước — TikTok so trùng giữa mọi tài khoản, mỗi video là của một
+nước) phải khác nhau ở ≥ 3/5 trục và không trùng dàn diễn. Kênh khác niche đã khác nền/vật thể; ràng buộc
+3/5 cho cả một nước là bất khả ở quy mô thật (4 trục ngoài dàn diễn chỉ chứa ~36 mã cách nhau 3):
 - `cast`: người dẫn (chỉ số trong danh sách host của niche) + bạn đồng hành (hoặc không có);
 - `palette`: tông màu theo thời gian/thời tiết của các cảnh (`day`, `night`, `alternate`, `mist`);
 - `framing`: khung hình (`wide`, `close` zoom nhẹ vào người dẫn, `pan` lia chậm);
@@ -73,37 +75,42 @@ def assign(channels: list[dict], existing: dict | None = None) -> dict:
     """
     existing = existing or {}
     out: dict[str, dict] = {}
-    by_lang: dict[str, list[str]] = {}
+    done: list[dict] = []
     for ch in sorted(channels, key=lambda c: c["channel_id"]):
         cid, lang = ch["channel_id"], ch["language"]
-        peers = [out[p] for p in by_lang.get(lang, [])]
+        peers = [out[d["channel_id"]] for d in done if d.get("niche") == ch.get("niche")]
+        same_niche = [out[d["channel_id"]] for d in done if d.get("niche") == ch.get("niche")]
+
+        def ok(cand):
+            return all(differences(cand, p) >= MIN_DIFF for p in peers) and all(cand["cast"] != p["cast"] for p in same_niche)
+
         keep = existing.get(cid)
-        if keep and all(differences(keep, p) >= MIN_DIFF for p in peers):
+        if keep and ok(keep):
             out[cid] = keep
         else:
             pool = list(_candidates(ch["hosts"], ch["buddies"]))
             start = _h(cid) % len(pool)
             pool = pool[start:] + pool[:start]
-            best, best_score = None, -1
-            for cand in pool:
-                score = min((differences(cand, p) for p in peers), default=6)
-                if score >= MIN_DIFF and score > best_score:
-                    best, best_score = cand, score
-                    if score >= 5:
-                        break
+            # Lấy ứng viên hợp lệ đầu tiên (thứ tự xoay theo hash kênh): chọn "khác nhiều nhất" làm cạn không gian
+            # tổ hợp rất nhanh (kẹt ở kênh thứ ~29 của một nước).
+            best = next((cand for cand in pool if ok(cand)), None)
             if best is None:
-                raise ValueError(f"không tìm được DNA khác ≥ {MIN_DIFF}/5 trục cho {cid} ({lang}, {len(peers)} kênh cùng nước)")
+                raise ValueError(f"không tìm được DNA khác ≥ {MIN_DIFF}/5 trục cho {cid} ({lang}, {len(peers)} kênh cùng nước/niche)")
             out[cid] = best
-        by_lang.setdefault(lang, []).append(cid)
+        done.append(ch)
     return out
 
 
-def violations(assignments: dict, languages: dict) -> list[str]:
-    """Cặp kênh cùng nước khác nhau < 3/5 trục."""
+def violations(assignments: dict, languages: dict, niches: dict | None = None) -> list[str]:
+    """Cặp kênh cùng nước hoặc cùng niche khác nhau < 3/5 trục, hoặc cùng niche trùng dàn diễn."""
+    niches = niches or {}
     errs = []
     ids = sorted(assignments)
     for i, a in enumerate(ids):
         for b in ids[i + 1:]:
-            if languages.get(a) == languages.get(b) and differences(assignments[a], assignments[b]) < MIN_DIFF:
+            same_niche = niches.get(a) is not None and niches.get(a) == niches.get(b)
+            if same_niche and differences(assignments[a], assignments[b]) < MIN_DIFF:
                 errs.append(f"{a} ~ {b}")
+            elif same_niche and assignments[a]["cast"] == assignments[b]["cast"]:
+                errs.append(f"{a} ~ {b} (cùng dàn diễn)")
     return errs

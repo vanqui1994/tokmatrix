@@ -123,6 +123,53 @@
     "rescuer": {
       "rig": "chibi_teacher",
       "outfit": "hi_vis_vest"
+    },
+    "diver_boy": {
+      "rig": "chibi_boy",
+      "outfit": "diver"
+    },
+    "marine_teacher": {
+      "rig": "chibi_teacher",
+      "outfit": "life_vest"
+    },
+    "explorer_boy": {
+      "rig": "chibi_boy",
+      "outfit": "paleontologist"
+    },
+    "scientist_girl": {
+      "rig": "chibi_girl",
+      "outfit": "scientist"
+    },
+    "astronaut_girl": {
+      "rig": "chibi_girl",
+      "outfit": "astronaut"
+    },
+    "pilot_boy": {
+      "rig": "chibi_boy",
+      "outfit": "pilot"
+    },
+    "ranger_girl": {
+      "rig": "chibi_girl",
+      "outfit": "pioneer"
+    },
+    "doctor_girl": {
+      "rig": "chibi_girl",
+      "outfit": "scientist"
+    },
+    "survivor_girl": {
+      "rig": "chibi_girl",
+      "outfit": "survivor_hoodie_purple"
+    },
+    "rescuer_boy": {
+      "rig": "chibi_boy",
+      "outfit": "hi_vis_vest"
+    },
+    "grandpa_explorer": {
+      "rig": "chibi_grandpa",
+      "outfit": "paleontologist"
+    },
+    "teacher": {
+      "rig": "chibi_teacher"
     }
   },
   "subjects": {
@@ -789,6 +836,21 @@
     "sea_turtle": {
       "asset": "sea_turtle",
       "float": true
+    },
+    "pug": {
+      "asset": "pug"
+    },
+    "koala": {
+      "asset": "koala"
+    },
+    "turtle": {
+      "asset": "turtle"
+    },
+    "crab": {
+      "asset": "crab"
+    },
+    "rabbit": {
+      "asset": "rabbit"
     }
   },
   "niches": {
@@ -797,13 +859,17 @@
         "storyteller",
         "student",
         "ranger",
-        "winter"
+        "winter",
+        "teacher",
+        "ranger_girl"
       ],
       "buddies": [
         "dog",
         "cat",
         "owl",
-        "hedgehog"
+        "hedgehog",
+        "red_panda",
+        "rabbit"
       ],
       "settings": [
         "alpine_meadow",
@@ -871,12 +937,17 @@
         "explorer",
         "scientist",
         "diver",
-        "ranger"
+        "ranger",
+        "explorer_boy",
+        "scientist_girl",
+        "grandpa_explorer"
       ],
       "buddies": [
         "dog",
         "owl",
-        "cat"
+        "cat",
+        "shiba",
+        "capybara"
       ],
       "settings": [
         "stone_circle_field",
@@ -901,11 +972,17 @@
       "hosts": [
         "astronaut",
         "scientist",
-        "pilot"
+        "pilot",
+        "astronaut_girl",
+        "pilot_boy",
+        "scientist_girl",
+        "teacher"
       ],
       "buddies": [
         "dog",
-        "cat"
+        "cat",
+        "shiba",
+        "red_panda"
       ],
       "settings": [
         "space_orbit",
@@ -936,12 +1013,17 @@
         "ranger",
         "explorer",
         "diver",
-        "scientist"
+        "scientist",
+        "ranger_girl",
+        "explorer_boy",
+        "diver_boy"
       ],
       "buddies": [
         "meerkat",
         "dog",
-        "capybara"
+        "capybara",
+        "koala",
+        "red_panda"
       ],
       "settings": [
         "national_park",
@@ -978,11 +1060,16 @@
         "rescuer",
         "firefighter",
         "raincoat",
-        "winter"
+        "winter",
+        "survivor_girl",
+        "rescuer_boy"
       ],
       "buddies": [
         "dog",
-        "shiba"
+        "shiba",
+        "pug",
+        "capybara",
+        "cat"
       ],
       "settings": [
         "safe_camp",
@@ -1011,11 +1098,16 @@
         "inventor",
         "scientist",
         "student",
-        "pilot"
+        "pilot",
+        "scientist_girl",
+        "pilot_boy",
+        "teacher"
       ],
       "buddies": [
         "cat",
-        "dog"
+        "dog",
+        "shiba",
+        "red_panda"
       ],
       "settings": [
         "workshop_1900",
@@ -1041,12 +1133,16 @@
         "egypt",
         "greek",
         "stone_age",
-        "scientist"
+        "scientist",
+        "explorer_boy",
+        "grandpa_explorer"
       ],
       "buddies": [
         "meerkat",
         "owl",
-        "dog"
+        "dog",
+        "capybara",
+        "cat"
       ],
       "settings": [
         "nile_bank",
@@ -1075,11 +1171,16 @@
         "doctor",
         "nurse",
         "scientist",
-        "student"
+        "student",
+        "doctor_girl",
+        "teacher",
+        "scientist_girl"
       ],
       "buddies": [
         "cat",
-        "red_panda"
+        "red_panda",
+        "capybara",
+        "rabbit"
       ],
       "settings": [
         "clinic_room",
@@ -1111,11 +1212,16 @@
         "rescuer",
         "firefighter",
         "scientist",
-        "raincoat"
+        "raincoat",
+        "rescuer_boy",
+        "survivor_girl",
+        "scientist_girl"
       ],
       "buddies": [
         "dog",
-        "shiba"
+        "shiba",
+        "pug",
+        "cat"
       ],
       "settings": [
         "volcano_island",
@@ -1141,11 +1247,17 @@
       "hosts": [
         "diver",
         "explorer",
-        "scientist"
+        "scientist",
+        "diver_boy",
+        "marine_teacher",
+        "scientist_girl",
+        "explorer_boy"
       ],
       "buddies": [
         "penguin",
-        "sea_turtle"
+        "sea_turtle",
+        "crab",
+        "turtle"
       ],
       "settings": [
         "deep_sea",
@@ -1171,11 +1283,15 @@
         "viking",
         "knight",
         "egypt",
-        "storyteller"
+        "storyteller",
+        "grandpa_explorer",
+        "teacher"
       ],
       "buddies": [
         "owl",
-        "dog"
+        "dog",
+        "cat",
+        "rabbit"
       ],
       "settings": [
         "greek_stadium",

@@ -174,13 +174,20 @@ class QaTest(unittest.TestCase):
 
 
 class DnaTest(unittest.TestCase):
-    def test_assignment_keeps_same_country_channels_apart(self):
-        channels = [{"channel_id": f"c{i:02d}", "language": "de" if i % 2 else "en", "niche": "deep_space", "hosts": 3, "buddies": 2} for i in range(24)]
+    def test_assignment_keeps_same_niche_channels_apart(self):
+        channels = [{"channel_id": f"c{i:02d}", "language": "de" if i % 2 else "en", "niche": ["deep_space", "ocean_mysteries", "medical_anomalies"][i % 3], "hosts": 5, "buddies": 4} for i in range(24)]
         result = dna.assign(channels)
-        self.assertEqual(dna.violations(result, {c["channel_id"]: c["language"] for c in channels}), [])
+        self.assertEqual(dna.violations(result, {c["channel_id"]: c["language"] for c in channels}, {c["channel_id"]: c["niche"] for c in channels}), [])
         self.assertEqual(result, dna.assign(channels), "tất định")
         again = dna.assign(channels, result)
         self.assertEqual(again, result, "giữ DNA cũ còn hợp lệ")
+
+    def test_same_niche_channels_of_different_countries_never_share_a_cast(self):
+        channels = [{"channel_id": f"ocean_{i:02d}", "language": ["ko", "ja"][i % 2], "niche": "ocean_mysteries", "hosts": 7, "buddies": 4} for i in range(13)]
+        result = dna.assign(channels)
+        casts = [tuple(v["cast"]) for v in result.values()]
+        self.assertEqual(len(casts), len(set(casts)))
+        self.assertEqual(dna.violations(result, {c["channel_id"]: c["language"] for c in channels}, {c["channel_id"]: c["niche"] for c in channels}), [])
 
     def test_axes_change_the_story(self):
         a, b = dna.derive("x1"), dna.derive("x2")
