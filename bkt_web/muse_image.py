@@ -31,9 +31,10 @@ _stop = threading.Event()
 MUSE_LOCK = threading.Lock()
 _state: Dict[str, Any] = {"last_ok": None, "last_error": None, "done": 0, "failed": 0, "busy": None}
 
-_IMG_COUNT = "()=>[...document.querySelectorAll('img')].filter(i=>i.naturalWidth>200 && i.src.startsWith('blob:')).length"
-_LAST_IMG = """async()=>{const im=[...document.querySelectorAll('img')].filter(i=>i.naturalWidth>200 && i.src.startsWith('blob:')).pop();
- if(!im) return null; const b=await (await fetch(im.src)).blob(); const buf=new Uint8Array(await b.arrayBuffer()); let s='';
+# Muse gỡ ảnh cũ khỏi DOM khi chat dài: nhận ảnh mới theo địa chỉ blob: chưa thấy trước khi gửi prompt.
+_IMGS = "()=>[...document.querySelectorAll('img')].filter(i=>i.naturalWidth>200 && i.src.startsWith('blob:')).map(i=>i.src)"
+_GET_IMG = """async(src)=>{const im=[...document.querySelectorAll('img')].filter(i=>i.src===src && i.naturalWidth>200).pop();
+ if(!im) return null; const b=await (await fetch(src)).blob(); const buf=new Uint8Array(await b.arrayBuffer()); let s='';
  for(let i=0;i<buf.length;i+=32768) s+=String.fromCharCode.apply(null,buf.subarray(i,i+32768));
  return {w:im.naturalWidth,h:im.naturalHeight,type:b.type,b64:btoa(s)}}"""
 
@@ -77,15 +78,16 @@ async def _generate(prompt: str) -> Dict[str, Any]:
         if await box.count() == 0:
             raise RuntimeError("Muse chưa đăng nhập (không thấy ô Message) — đăng nhập lại qua noVNC")
         await keep_awake(page)
-        before = await page.evaluate(_IMG_COUNT)
+        seen = set(await page.evaluate(_IMGS))
         await box.fill(prompt)
         await box.press("Enter")
         t0 = time.time()
         while time.time() - t0 < TIMEOUT:
             await asyncio.sleep(3)
-            if await page.evaluate(_IMG_COUNT) > before:
+            new = [src for src in await page.evaluate(_IMGS) if src not in seen]
+            if new:
                 await asyncio.sleep(2)  # ảnh vừa hiện: đợi blob tải xong
-                data = await page.evaluate(_LAST_IMG)
+                data = await page.evaluate(_GET_IMG, new[-1])
                 if data:
                     return {"raw": base64.b64decode(data["b64"]), "size": (data["w"], data["h"]), "seconds": round(time.time() - t0, 1)}
         raise RuntimeError(f"Muse không trả ảnh sau {TIMEOUT}s")

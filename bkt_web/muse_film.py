@@ -39,9 +39,11 @@ _lock = threading.Lock()
 _wake = threading.Event()
 _thread: Optional[threading.Thread] = None
 
-_VIDEOS = "()=>[...document.querySelectorAll('video')].filter(v=>(v.videoWidth>=600||v.videoHeight>=600)&&(v.currentSrc||v.src||'').startsWith('blob:')).length"
-_LAST_VIDEO = """async()=>{const vs=[...document.querySelectorAll('video')].filter(v=>(v.videoWidth>=600||v.videoHeight>=600)&&(v.currentSrc||v.src||'').startsWith('blob:'));
- const v=vs.pop(); if(!v||!(v.duration>0)) return null; const b=await (await fetch(v.currentSrc||v.src)).blob();
+# Muse chỉ giữ vài video gần nhất trong DOM (video cũ bị gỡ khi chat dài), nên không đếm video mà nhận
+# video mới theo địa chỉ blob: chưa từng thấy trước khi gửi prompt.
+_VIDEOS = "()=>[...document.querySelectorAll('video')].filter(v=>(v.videoWidth>=600||v.videoHeight>=600)&&(v.currentSrc||v.src||'').startsWith('blob:')).map(v=>v.currentSrc||v.src)"
+_GET_VIDEO = """async(src)=>{const v=[...document.querySelectorAll('video')].filter(v=>(v.currentSrc||v.src)===src).pop();
+ if(!v||!(v.duration>0)) return null; const b=await (await fetch(src)).blob();
  const buf=new Uint8Array(await b.arrayBuffer()); let s=''; for(let i=0;i<buf.length;i+=32768) s+=String.fromCharCode.apply(null,buf.subarray(i,i+32768));
  return {w:v.videoWidth,h:v.videoHeight,d:v.duration,type:b.type,b64:btoa(s)}}"""
 
@@ -159,15 +161,16 @@ async def _clip(prompt: str) -> Dict[str, Any]:
         if await box.count() == 0:
             raise RuntimeError("Muse chưa đăng nhập — đăng nhập lại qua noVNC")
         await muse_image.keep_awake(page)
-        before = await page.evaluate(_VIDEOS)
+        seen = set(await page.evaluate(_VIDEOS))
         await box.fill(prompt)
         await box.press("Enter")
         t0 = time.time()
         while time.time() - t0 < TIMEOUT:
             await asyncio.sleep(5)
-            if await page.evaluate(_VIDEOS) > before:
+            new = [src for src in await page.evaluate(_VIDEOS) if src not in seen]
+            if new:
                 for _ in range(6):
-                    data = await page.evaluate(_LAST_VIDEO)
+                    data = await page.evaluate(_GET_VIDEO, new[-1])
                     if data:
                         return {"raw": base64.b64decode(data["b64"]), "w": data["w"], "h": data["h"], "d": data["d"], "sec": round(time.time() - t0)}
                     await asyncio.sleep(3)
