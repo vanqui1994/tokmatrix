@@ -127,3 +127,59 @@ class StoryEnqueueTest(unittest.TestCase):
         self.assertEqual(srr.enqueue_done(), 0)
         self.assertEqual(self.tasks(), [])
         self.assertIn("không đăng", self.state("b1")["upload_error"])
+
+
+class SourcesByAccountTest(unittest.TestCase):
+    """Bảng nguồn theo tài khoản: mỗi tài khoản một nguồn (YouTube → watch.json, Kuaishou → muse_remake)."""
+
+    def setUp(self):
+        import sqlite3
+        from bkt_web import muse_remake
+        self.tmp = Path(tempfile.mkdtemp())
+        db = self.tmp / "ch.db"
+        with sqlite3.connect(db) as c:
+            c.execute("CREATE TABLE channels(id INTEGER PRIMARY KEY, username TEXT, country TEXT, status TEXT)")
+            c.execute("INSERT INTO channels VALUES (1,'a','DE',''),(2,'b','DE','')")
+        self.ks = []
+
+        def add(url, acc, per):
+            if any(s["channel_id"] == acc for s in self.ks):
+                raise ValueError("dup")
+            self.ks.append({"id": len(self.ks) + 1, "profile_url": url, "channel_id": acc, "per_day": per, "enabled": 1, "counts": {}})
+        for p in (patch.object(srr, "ROOT", self.tmp), patch.object(srr, "WATCH", self.tmp / "watch.json"),
+                  patch.object(srr, "CHANNELS_DB", db), patch.object(srr, "start_watch", lambda: None),
+                  patch.object(srr, "_account_language", lambda a: {"language": "de", "niche": ""}),
+                  patch.object(srr, "_autopilot_niches", lambda: {1: "deep_space"}),
+                  patch.object(muse_remake, "sources", lambda: list(self.ks)),
+                  patch.object(muse_remake, "add_source", add),
+                  patch.object(muse_remake, "update_source", lambda sid, per_day=None, enabled=None: [s.update(per_day=per_day) for s in self.ks if s["id"] == sid]),
+                  patch.object(muse_remake, "delete_source", lambda sid: self.ks.__setitem__(slice(None), [s for s in self.ks if s["id"] != sid])),
+                  patch.object(muse_remake.multi_downloader, "kuaishou_profile_url", lambda u: u)):
+            p.start()
+        app = FastAPI(); app.include_router(srr.router)
+        self.client = TestClient(app)
+
+    def tearDown(self):
+        patch.stopall()
+
+    def put(self, *rows):
+        return self.client.put("/api/story-remake/sources", json={"items": [dict(zip(("account_id", "url", "per_day"), r)) for r in rows]}).json()["results"]
+
+    def row(self, acc):
+        return next(r for r in self.client.get("/api/story-remake/sources").json()["accounts"] if r["id"] == acc)
+
+    def test_switch_between_youtube_kuaishou_and_none(self):
+        self.assertEqual(self.put((1, "https://www.youtube.com/@kanal", 4))[0]["kind"], "youtube")
+        r = self.row(1)
+        self.assertEqual((r["kind"], r["url"], r["per_day"], r["autopilot_niche"]), ("youtube", "https://www.youtube.com/@kanal/shorts", 4, "deep_space"))
+        self.put((1, "https://www.kuaishou.com/profile/x1", 2))
+        self.assertEqual((self.row(1)["kind"], len(srr._watch_load()["channels"])), ("kuaishou", 0))
+        self.put((1, "", 2))
+        self.assertEqual((self.row(1)["kind"], self.ks), ("", []))
+
+    def test_one_youtube_channel_per_account_and_bad_links(self):
+        self.put((1, "https://www.youtube.com/@kanal", 3))
+        res = self.put((2, "https://youtube.com/@kanal/", 3), (2, "https://example.com/x", 3))
+        self.assertFalse(res[0]["ok"]) ; self.assertIn("tài khoản khác", res[0]["error"])
+        self.assertFalse(res[1]["ok"])
+        self.assertEqual(self.row(2)["kind"], "")

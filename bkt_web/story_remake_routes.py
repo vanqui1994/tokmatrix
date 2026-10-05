@@ -404,3 +404,103 @@ def watch_config(cfg: WatchConfig):
     with WATCH_LOCK:
         data = _watch_load(); data.update(interval_min=cfg.interval_min, enabled=cfg.enabled); _watch_save(data)
     return data
+
+
+# ---- Nguồn theo tài khoản: một bảng gán link YouTube (Story Remake, kênh Shorts theo dõi) hoặc profile Kuaishou
+# (muse_remake) cho từng tài khoản TikTok. Mỗi tài khoản một nguồn; link tự nhận loại.
+class SourceRow(BaseModel):
+    account_id: int
+    url: str = Field("", max_length=300)
+    per_day: int = Field(3, ge=1, le=20)
+
+
+class SourceRows(BaseModel):
+    items: List[SourceRow] = Field(..., max_length=300)
+
+
+def source_kind(url: str) -> str:
+    u = url.strip().lower()
+    if not u:
+        return ""
+    if "youtube.com/" in u or "youtu.be/" in u:
+        return "youtube"
+    if "kuaishou.com/" in u:
+        return "kuaishou"
+    raise ValueError("Link phải là kênh YouTube hoặc profile Kuaishou")
+
+
+def _autopilot_niches() -> Dict[int, str]:
+    try:
+        with sqlite3.connect(str(REPO / "bkt_web" / "storage" / "autopilot.db"), timeout=30) as c:
+            return {r[0]: r[1] for r in c.execute("SELECT tiktok_channel_id, niche_id FROM autopilot_channel_map")}
+    except sqlite3.Error:
+        return {}
+
+
+@router.get("/sources")
+def sources_by_account():
+    from bkt_web import muse_remake
+    watch = {c["account_id"]: c for c in _watch_load()["channels"] if c.get("account_id")}
+    ks = {s["channel_id"]: s for s in muse_remake.sources()}
+    niches = _autopilot_niches()
+    with sqlite3.connect(str(CHANNELS_DB), timeout=30) as c:
+        rows = c.execute("SELECT id, username, country, status FROM channels ORDER BY username").fetchall()
+    out = []
+    for cid, name, country, status in rows:
+        y, k = watch.get(cid), ks.get(cid)
+        out.append({"id": cid, "name": name or f"#{cid}", "country": country or "", "status": status or "",
+                    "language": _account_language(cid)["language"], "autopilot_niche": niches.get(cid, ""),
+                    "kind": "youtube" if y else ("kuaishou" if k else ""),
+                    "url": (y or {}).get("url") or (k or {}).get("profile_url") or "",
+                    "per_day": (y or {}).get("limit") or (k or {}).get("per_day") or 3,
+                    "enabled": bool((y or {}).get("enabled", True) if y else (k or {}).get("enabled", 1)),
+                    "last_run": (y or {}).get("last_run") or 0, "counts": (k or {}).get("counts") or {}})
+    return {"accounts": out}
+
+
+def _set_source(row: SourceRow, data: Dict[str, Any]) -> str:
+    """Gán nguồn cho một tài khoản (data = watch.json đang khoá). Trả loại nguồn sau khi lưu."""
+    from bkt_web import muse_remake
+    kind = source_kind(row.url)
+    url = shorts_url(row.url) if kind == "youtube" else row.url.strip()
+    acc = row.account_id
+    old_y = next((c for c in data["channels"] if c.get("account_id") == acc), None)
+    old_k = next((s for s in muse_remake.sources() if s["channel_id"] == acc), None)
+    if kind == "youtube":
+        other = next((c for c in data["channels"] if c["url"] == url and c.get("account_id") != acc), None)
+        if other:
+            raise ValueError("Kênh YouTube này đã gán cho tài khoản khác (một kênh ↔ một tài khoản)")
+    if old_k and not (kind == "kuaishou" and old_k["profile_url"] == muse_remake.multi_downloader.kuaishou_profile_url(url)):
+        muse_remake.delete_source(old_k["id"])
+        old_k = None
+    if old_y and not (kind == "youtube" and old_y["url"] == url):
+        data["channels"].remove(old_y)
+        old_y = None
+    if kind == "youtube":
+        if old_y:
+            old_y["limit"] = row.per_day
+        else:
+            data["channels"].append({"url": url, "limit": row.per_day, "lang": "auto", "images": "imagerouter", "enabled": True,
+                                     "account_id": acc, "added": int(time.time()), "last_run": 0})
+    elif kind == "kuaishou":
+        if old_k:
+            muse_remake.update_source(old_k["id"], per_day=min(row.per_day, 10))
+        else:
+            muse_remake.add_source(url, acc, min(row.per_day, 10))
+    return kind
+
+
+@router.put("/sources")
+def save_sources(req: SourceRows):
+    results = []
+    with WATCH_LOCK:
+        data = _watch_load()
+        for row in req.items:
+            try:
+                _check_account(row.account_id)
+                results.append({"account_id": row.account_id, "ok": True, "kind": _set_source(row, data)})
+            except (ValueError, HTTPException) as exc:
+                results.append({"account_id": row.account_id, "ok": False, "error": getattr(exc, "detail", None) or str(exc)})
+        _watch_save(data)
+    start_watch()
+    return {"results": results}

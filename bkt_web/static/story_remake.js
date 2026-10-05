@@ -21,6 +21,7 @@ function loadStoryRemakeTab() {
   }
   storyRefresh();
   storyWatchRefresh();
+  storySrcLoad();
   if (storyTimer) clearInterval(storyTimer);
   storyTimer = setInterval(() => {
     if (document.getElementById('pane-story_remake')?.style.display === 'none') { clearInterval(storyTimer); storyTimer = null; return; }
@@ -325,4 +326,159 @@ async function storyWatchConfig() {
   const body = { interval_min: Number(document.getElementById('story-watch-interval').value) || 60, enabled: document.getElementById('story-watch-enabled').checked };
   await storyJson('/api/story-remake/watch/config', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) }).catch((e) => alert(e.message));
   storyWatchRefresh();
+}
+
+// ---- Nguồn theo tài khoản: một bảng gán link kênh YouTube (Story Remake) hoặc profile Kuaishou (Muse) cho từng tài khoản.
+// Không tự làm mới mỗi 5 s (đang sửa sẽ mất) — tải khi mở tab và sau khi lưu.
+const storySrc = { rows: [], dirty: {}, lang: '', q: '', only: false };
+
+function storySourcesMount() {
+  if (document.getElementById('story-sources')) return;
+  const layout = document.querySelector('#pane-story_remake .story-remake-layout');
+  if (!layout) return;
+  if (!document.getElementById('story-src-css')) {
+    const css = document.createElement('style');
+    css.id = 'story-src-css';
+    css.textContent = `#story-sources{margin-top:18px}
+#story-sources .ss-bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:12px 16px;border-bottom:1px solid #eaecf0}
+#story-sources .ss-bar input[type=search]{flex:1 1 200px;height:34px;padding:0 10px;border:1px solid #d0d5dd;border-radius:8px;font-size:13px}
+#story-sources .ss-bar select{height:34px;border:1px solid #d0d5dd;border-radius:8px;font-size:12px;padding:0 6px;background:#fff}
+#story-sources .ss-bar label{font-size:12px;color:#344054;display:flex;gap:5px;align-items:center}
+#story-sources .ss-sum{font-size:12px;color:#667085;margin-left:auto}
+#story-sources .ss-wrap{max-height:520px;overflow:auto}
+#story-sources table{width:100%;border-collapse:collapse;font-size:12px}
+#story-sources th{position:sticky;top:0;background:#f9fafb;text-align:left;font-weight:600;color:#475467;padding:8px 10px;border-bottom:1px solid #eaecf0;z-index:1}
+#story-sources td{padding:6px 10px;border-bottom:1px solid #f2f4f7;vertical-align:middle}
+#story-sources tr.is-dirty td{background:#fffaeb}
+#story-sources td input.ss-url{width:100%;min-width:220px;height:30px;padding:0 8px;border:1px solid #d0d5dd;border-radius:7px;font-size:12px}
+#story-sources td input.ss-n{width:56px;height:30px;padding:0 6px;border:1px solid #d0d5dd;border-radius:7px}
+#story-sources .ss-kind{display:inline-block;padding:2px 8px;border-radius:999px;font-size:11px;font-weight:600}
+#story-sources .k-youtube{background:#fee4e2;color:#b42318}#story-sources .k-kuaishou{background:#fff4ed;color:#c4320a}#story-sources .k-none{background:#f2f4f7;color:#667085}
+#story-sources .ss-err{color:#b42318;font-size:11px}
+#story-sources .ss-ap{color:#667085;font-size:11px}
+#story-sources .ss-foot{display:flex;flex-wrap:wrap;gap:10px;align-items:flex-start;padding:12px 16px;border-top:1px solid #eaecf0}
+#story-sources textarea{flex:1 1 320px;min-height:64px;padding:8px;border:1px solid #d0d5dd;border-radius:8px;font:12px ui-monospace,monospace}
+#story-sources .ss-foot button{padding:8px 14px;border-radius:8px;border:1px solid #d0d5dd;background:#fff;font-size:12px;cursor:pointer}
+#story-sources .ss-foot .is-primary{background:#1d4ed8;border-color:#1d4ed8;color:#fff}`;
+    document.head.appendChild(css);
+  }
+  const card = document.createElement('section');
+  card.id = 'story-sources';
+  card.className = 'story-card';
+  card.innerHTML = `<div class="story-card-heading"><div><span class="story-card-kicker">03 · NGUỒN THEO TÀI KHOẢN</span><h3>Link nguồn của từng tài khoản</h3></div></div>
+    <div class="ss-bar">
+      <input type="search" id="ss-q" placeholder="Tìm tài khoản…" aria-label="Tìm tài khoản">
+      <select id="ss-lang" aria-label="Lọc ngôn ngữ"><option value="">Mọi nước</option><option value="de">Đức (de)</option><option value="en">Mỹ (en)</option><option value="ko">Hàn (ko)</option><option value="ja">Nhật (ja)</option></select>
+      <label><input type="checkbox" id="ss-only"> Chỉ tài khoản có nguồn</label>
+      <span class="ss-sum" id="ss-sum"></span>
+    </div>
+    <div class="ss-wrap"><table><thead><tr><th>Tài khoản</th><th>Nước</th><th>Đang chạy Autopilot</th><th>Loại</th><th>Link kênh YouTube / profile Kuaishou</th><th>Video/lượt</th><th></th></tr></thead><tbody id="ss-body"></tbody></table></div>
+    <div class="ss-foot">
+      <textarea id="ss-bulk" placeholder="Dán hàng loạt, mỗi dòng: tên tài khoản | link | số video (tuỳ chọn)&#10;vd: geschichten_de1 | https://www.youtube.com/@kanal | 3"></textarea>
+      <div style="display:flex;flex-direction:column;gap:6px">
+        <button type="button" onclick="storySrcBulk()">Áp dụng dán hàng loạt</button>
+        <button type="button" class="is-primary" id="ss-save" onclick="storySrcSave()">Lưu thay đổi</button>
+      </div>
+    </div>`;
+  layout.insertAdjacentElement('afterend', card);
+  document.getElementById('ss-q').addEventListener('input', (e) => { storySrc.q = e.target.value.trim().toLowerCase(); storySrcRender(); });
+  document.getElementById('ss-lang').addEventListener('change', (e) => { storySrc.lang = e.target.value; storySrcRender(); });
+  document.getElementById('ss-only').addEventListener('change', (e) => { storySrc.only = e.target.checked; storySrcRender(); });
+}
+
+function storySrcKind(url) {
+  const u = (url || '').toLowerCase();
+  if (!u) return '';
+  if (u.includes('youtube.com/') || u.includes('youtu.be/')) return 'youtube';
+  if (u.includes('kuaishou.com/')) return 'kuaishou';
+  return '?';
+}
+
+async function storySrcLoad() {
+  storySourcesMount();
+  try {
+    storySrc.rows = (await storyJson('/api/story-remake/sources')).accounts || [];
+    storySrc.dirty = {};
+  } catch (e) { document.getElementById('ss-body').innerHTML = `<tr><td colspan="7" class="ss-err">${escapeHtml(e.message)}</td></tr>`; return; }
+  storySrcRender();
+}
+
+function storySrcRender() {
+  const body = document.getElementById('ss-body');
+  if (!body) return;
+  const view = storySrc.rows.filter((r) => {
+    const d = storySrc.dirty[r.id];
+    const url = d ? d.url : r.url;
+    return (!storySrc.lang || r.language === storySrc.lang) && (!storySrc.q || r.name.toLowerCase().includes(storySrc.q)) && (!storySrc.only || url);
+  });
+  const n = { youtube: 0, kuaishou: 0 };
+  storySrc.rows.forEach((r) => { const k = storySrcKind(storySrc.dirty[r.id]?.url ?? r.url); if (n[k] !== undefined) n[k] += 1; });
+  document.getElementById('ss-sum').textContent = `YouTube ${n.youtube} · Kuaishou ${n.kuaishou} · ${storySrc.rows.length} tài khoản` + (Object.keys(storySrc.dirty).length ? ` · ${Object.keys(storySrc.dirty).length} chưa lưu` : '');
+  body.innerHTML = view.map((r) => {
+    const d = storySrc.dirty[r.id] || {};
+    const url = d.url ?? r.url, per = d.per_day ?? r.per_day;
+    const kind = storySrcKindHtml(storySrcKind(url));
+    return `<tr class="${storySrc.dirty[r.id] ? 'is-dirty' : ''}"><td><strong>${escapeHtml(r.name)}</strong>${r.status && r.status !== 'CHƯA BKT' && r.status !== 'BKT' ? ` <span class="ss-err">${escapeHtml(r.status)}</span>` : ''}</td>
+      <td>${escapeHtml(r.language)}</td>
+      <td class="ss-ap">${escapeHtml(r.autopilot_niche || '—')}</td>
+      <td>${kind}</td>
+      <td><input class="ss-url" value="${escapeHtml(url)}" placeholder="https://www.youtube.com/@kenh hoặc https://www.kuaishou.com/profile/…" oninput="storySrcEdit(${r.id}, 'url', this.value, this)"></td>
+      <td><input class="ss-n" type="number" min="1" max="20" value="${per}" oninput="storySrcEdit(${r.id}, 'per_day', Number(this.value) || 1, this)"></td>
+      <td>${d.error ? `<span class="ss-err">${escapeHtml(d.error)}</span>` : ''}</td></tr>`;
+  }).join('') || '<tr><td colspan="7" style="text-align:center;color:#667085;padding:20px">Không có tài khoản khớp bộ lọc.</td></tr>';
+}
+
+function storySrcKindHtml(k) {
+  return k === 'youtube' ? '<span class="ss-kind k-youtube">YouTube</span>' : k === 'kuaishou' ? '<span class="ss-kind k-kuaishou">Kuaishou</span>'
+    : k === '?' ? '<span class="ss-kind k-none">link sai</span>' : '<span class="ss-kind k-none">—</span>';
+}
+
+function storySrcEdit(id, field, value, el) {
+  // chỉ cập nhật dòng đang sửa (vẽ lại cả bảng làm mất con trỏ trong ô)
+  const r = storySrc.rows.find((x) => x.id === id);
+  const d = storySrc.dirty[id] || { url: r.url, per_day: r.per_day };
+  d[field] = field === 'url' ? value.trim() : value;
+  delete d.error;
+  if (d.url === r.url && d.per_day === r.per_day) delete storySrc.dirty[id]; else storySrc.dirty[id] = d;
+  const tr = el && el.closest('tr');
+  if (tr) {
+    tr.classList.toggle('is-dirty', !!storySrc.dirty[id]);
+    tr.children[3].innerHTML = storySrcKindHtml(storySrcKind(d.url));
+  }
+  const n = { youtube: 0, kuaishou: 0 };
+  storySrc.rows.forEach((x) => { const k = storySrcKind(storySrc.dirty[x.id]?.url ?? x.url); if (n[k] !== undefined) n[k] += 1; });
+  const dirty = Object.keys(storySrc.dirty).length;
+  document.getElementById('ss-sum').textContent = `YouTube ${n.youtube} · Kuaishou ${n.kuaishou} · ${storySrc.rows.length} tài khoản` + (dirty ? ` · ${dirty} chưa lưu` : '');
+}
+
+function storySrcBulk() {
+  const lines = document.getElementById('ss-bulk').value.split('\n').map((l) => l.trim()).filter(Boolean);
+  const miss = [];
+  lines.forEach((line) => {
+    const [name, url, n] = line.split(/\s*[|\t]\s*/);
+    const r = storySrc.rows.find((x) => x.name.toLowerCase() === (name || '').replace(/^@/, '').toLowerCase());
+    if (!r) { miss.push(name); return; }
+    storySrc.dirty[r.id] = { url: (url || '').trim(), per_day: Number(n) || r.per_day };
+  });
+  storySrcRender();
+  if (miss.length) alert(`Không tìm thấy ${miss.length} tài khoản: ${miss.slice(0, 10).join(', ')}`);
+}
+
+async function storySrcSave() {
+  const items = Object.entries(storySrc.dirty).map(([id, d]) => ({ account_id: Number(id), url: d.url || '', per_day: d.per_day || 3 }));
+  if (!items.length) { alert('Chưa có thay đổi'); return; }
+  const bad = items.filter((i) => storySrcKind(i.url) === '?');
+  if (bad.length) { alert(`${bad.length} dòng có link không phải YouTube/Kuaishou`); return; }
+  const btn = document.getElementById('ss-save');
+  btn.disabled = true;
+  try {
+    const res = (await storyJson('/api/story-remake/sources', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ items }) })).results || [];
+    const errs = res.filter((r) => !r.ok);
+    await storySrcLoad();
+    errs.forEach((r) => { const row = storySrc.rows.find((x) => x.id === r.account_id); storySrc.dirty[r.account_id] = { url: items.find((i) => i.account_id === r.account_id).url, per_day: row ? row.per_day : 3, error: r.error }; });
+    storySrcRender();
+    alert(errs.length ? `Đã lưu ${res.length - errs.length}, lỗi ${errs.length} (xem cột cuối)` : `Đã lưu ${res.length} tài khoản`);
+    storyWatchRefresh();
+  } catch (e) { alert(e.message); }
+  btn.disabled = false;
 }
