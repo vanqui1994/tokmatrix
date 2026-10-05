@@ -9239,3 +9239,4 @@ tr:hover .btn-history-mini { opacity: 0.75; }
 .dl-platform b { margin-left: 2px; }
 .dl-detect { margin-top: 6px; font-size: 12px; color: var(--text-muted); min-height: 16px; }
 .dl-bad { color: var(--red-main); }
+.dl-platform.is-off { opacity: .5; text-decoration: line-through; }

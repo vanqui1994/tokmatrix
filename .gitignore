@@ -86,3 +86,11 @@ VPS_CREDENTIALS.md
 bkt_web/storage/dola_accounts.json
 bkt_web/storage/dola_videos/
 bkt_web/static/remake_vector_catalog.lock
+bkt_web/storage/muse_chrome_profile*/
+bkt_web/storage/kuaishou_chrome_profile/
+bkt_web/storage/muse_remake/
+bkt_web/storage/muse_remake.db
+bkt_web/storage/muse_films/
+bkt_web/storage/source_remakes/
+bkt_web/storage/vector_learned/
+bkt_web/storage/vector_learning.db

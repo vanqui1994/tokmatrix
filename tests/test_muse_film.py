@@ -68,7 +68,7 @@ class ParallelFilmTest(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             live, peak, lock = [0], [0], threading.Lock()
 
-            def fake_clip(prompt, label="clip"):
+            def fake_clip(prompt, label="clip", ref=None):
                 with lock:
                     live[0] += 1
                     peak[0] = max(peak[0], live[0])

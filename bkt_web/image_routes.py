@@ -443,10 +443,12 @@ def start_image_queue_worker() -> None:
     cf_image_fallback.start()
     muse_image.start()
     try:
-        from bkt_web import muse_film
+        from bkt_web import muse_film, muse_remake
     except ImportError:
         import muse_film
+        import muse_remake
     muse_film.start()
+    muse_remake.start()
 
 
 def stop_image_queue_worker() -> None:

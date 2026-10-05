@@ -172,6 +172,11 @@
               <span class="nav-text">Phim AI (Muse)</span>
               <span class="tab-badge badge-neutral" id="badge-film-status">--</span>
             </button>
+            <button type="button" class="nav-tab" data-tab="muse_remake" onclick="switchTab('muse_remake')">
+              <span class="nav-icon">🔁</span>
+              <span class="nav-text">Kuaishou → Muse</span>
+              <span class="tab-badge badge-neutral" id="badge-mr-status">--</span>
+            </button>
             <button type="button" class="nav-tab" data-tab="dola" onclick="switchTab('dola')">
               <span class="nav-icon" aria-hidden="true">🎥</span>
               <span class="nav-text">Video AI (Dola)</span>
@@ -739,6 +744,54 @@
             <div class="film-accounts" id="film-accounts" aria-live="polite"></div>
             <div class="story-player" id="film-player" hidden></div>
             <div class="story-list" id="film-list"></div>
+          </section>
+        </div>
+      </div>
+    </div>
+
+    <div class="tab-pane" id="pane-muse_remake" style="display: none;">
+      <div class="story-remake-page film-page">
+        <header class="story-remake-heading">
+          <div class="story-remake-heading-copy">
+            <span class="story-remake-eyebrow">KUAISHOU → MUSE</span>
+            <h2>Làm lại video Kuaishou bằng Muse</h2>
+            <p>Mỗi profile Kuaishou gán cho một tài khoản TikTok. Video mới được Muse quay lại cùng phong cách (đính kèm khung hình gốc), lồng tiếng và phụ đề theo ngôn ngữ của tài khoản, rồi vào hàng đợi đăng.</p>
+          </div>
+          <div class="story-remake-heading-mark" aria-hidden="true">🔁</div>
+        </header>
+        <div class="story-remake-layout">
+          <section class="story-card story-setup-card" aria-labelledby="mr-setup-title">
+            <div class="story-card-heading">
+              <div><span class="story-card-kicker">01 · GÁN NGUỒN</span><h3 id="mr-setup-title">Profile → tài khoản</h3></div>
+              <span class="story-card-icon" aria-hidden="true">🔗</span>
+            </div>
+            <div class="story-field film-field">
+              <label for="mr-profile">Link profile Kuaishou</label>
+              <input id="mr-profile" class="form-control" type="url" placeholder="https://www.kuaishou.com/profile/3xev268u3f9fnr2">
+              <span class="story-field-help">Chrome Kuaishou trên VPS phải đang đăng nhập (quét QR qua noVNC).</span>
+            </div>
+            <div class="story-options-grid">
+              <div class="story-field">
+                <label for="mr-account">Tài khoản TikTok</label>
+                <select id="mr-account" class="form-control"></select>
+              </div>
+              <div class="story-field">
+                <label for="mr-per-day">Số video mỗi ngày</label>
+                <input id="mr-per-day" type="number" min="1" max="10" value="2" class="form-control">
+              </div>
+            </div>
+            <div class="story-actions">
+              <button type="button" class="story-start-button" onclick="mrAddSource()">🔗 Gán profile</button>
+            </div>
+            <div class="story-list" id="mr-sources" style="margin-top:16px;min-height:0"></div>
+          </section>
+          <section class="story-card story-library-card" aria-labelledby="mr-videos-title">
+            <div class="story-card-heading">
+              <div><span class="story-card-kicker">02 · VIDEO</span><h3 id="mr-videos-title">Video remake</h3></div>
+              <span class="story-count-pill" id="mr-count">--</span>
+            </div>
+            <div class="story-player" id="mr-player" hidden></div>
+            <div class="story-list" id="mr-videos"></div>
           </section>
         </div>
       </div>
@@ -5579,11 +5632,12 @@
     </div>
   </div>
 
-  <script src="/static/app.js?v=6.26"></script>
+  <script src="/static/app.js?v=6.27"></script>
   <script src="/static/tiktok_api.js?v=2"></script>
   <script src="/static/dola_video.js?v=4"></script>
   <script src="/static/story_remake.js?v=5"></script>
   <script src="/static/muse_film.js?v=4"></script>
+  <script src="/static/muse_remake.js?v=1"></script>
   <script src="/static/flow_view.js?v=6"></script>
 </body>
 </html>

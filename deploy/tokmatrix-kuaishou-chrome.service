@@ -1,0 +1,15 @@
+[Unit]
+Description=Chrome cho Kuaishou (tai video, dang nhap bang QR) tren man hinh ao :1, CDP 127.0.0.1:9340
+After=tokmatrix-xvfb.service
+Requires=tokmatrix-xvfb.service
+
+[Service]
+User=tokmatrix
+Group=tokmatrix
+Environment=DISPLAY=:1
+ExecStart=/usr/bin/google-chrome --user-data-dir=/opt/tokmatrix/bkt_web/storage/kuaishou_chrome_profile --remote-debugging-address=127.0.0.1 --remote-debugging-port=9340 --no-first-run --no-default-browser-check --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-renderer-backgrounding --window-size=1400,1000 --window-position=320,50 https://www.kuaishou.com/
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target

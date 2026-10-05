@@ -58,6 +58,7 @@ try:
     from bkt_web import dola_routes
     from bkt_web import dola_admin_proxy
     from bkt_web.muse_film_routes import router as muse_film_router
+    from bkt_web.muse_remake_routes import router as muse_remake_router
     from bkt_web import chocode_routes
     from bkt_web import chocode_tiktok
     from bkt_web.autopilot import init_autopilot_db, start_autopilot, stop_autopilot
@@ -88,6 +89,7 @@ except ImportError:
     import dola_routes
     import dola_admin_proxy
     from muse_film_routes import router as muse_film_router
+    from muse_remake_routes import router as muse_remake_router
     import chocode_routes
     import chocode_tiktok
     from autopilot import init_autopilot_db, start_autopilot, stop_autopilot
@@ -167,6 +169,7 @@ app.include_router(story_remake_router)
 app.include_router(dola_routes.router)
 app.include_router(dola_admin_proxy.router)
 app.include_router(muse_film_router)
+app.include_router(muse_remake_router)
 
 # Token phiên được giữ lại qua các lần khởi động lại server.
 #
@@ -2632,6 +2635,7 @@ def api_test_nord_server(item: TestNordServerItem):
 class DownloadItem(BaseModel):
     urls: Union[str, List[str]]
     platform: Optional[str] = "tiktok"
+    profile_limit: int = Field(20, ge=1, le=200)  # link profile Kuaishou → tối đa N video mới nhất
 
 
 TIKTOK_HOSTS = {"tiktok.com", "www.tiktok.com", "m.tiktok.com", "vm.tiktok.com", "vt.tiktok.com"}
@@ -2728,6 +2732,19 @@ def download_single_video(url: str, errors: Optional[List[str]] = None) -> Optio
     platform = multi_downloader.detect_platform(clean_url)
     if not platform:
         return None
+    if platform == "kuaishou":  # không có trong yt-dlp: Chrome Kuaishou đã đăng nhập (multi_downloader.resolve_kuaishou)
+        try:
+            info = multi_downloader.resolve_kuaishou(clean_url)
+            result = _download_resolved_video(clean_url, {**info, "provider": "kuaishou"}, "kuaishou",
+                                              {"User-Agent": TIKTOK_MEDIA_HEADERS["User-Agent"], "Referer": "https://www.kuaishou.com/"})
+            if not result:
+                raise RuntimeError("tải file MP4 từ CDN Kuaishou thất bại")
+            return result
+        except Exception as e:
+            print(f"[Downloader] Kuaishou lỗi với {clean_url}: {e}")
+            if errors is not None:
+                errors.append(f"Kuaishou: {e}")
+            return None
     if platform == "tiktok":
         for resolver in (_resolve_tiktok_source_chocode, _resolve_tiktok_source_tikwm):
             try:
@@ -2747,7 +2764,8 @@ def download_single_video(url: str, errors: Optional[List[str]] = None) -> Optio
     return _record_download(clean_url, platform, got, got["path"])
 
 
-def _download_resolved_video(clean_url: str, data: Optional[dict]) -> Optional[dict]:
+def _download_resolved_video(clean_url: str, data: Optional[dict], platform: str = "tiktok",
+                             headers: Optional[dict] = None) -> Optional[dict]:
     if not data or not data.get("play_url"):
         return None
     raw_id = str(data.get("id") or int(time.time() * 1000))
@@ -2756,11 +2774,11 @@ def _download_resolved_video(clean_url: str, data: Optional[dict]) -> Optional[d
     author = data.get("author") or ""
     duration = int(data.get("duration") or 0)
     cover = data.get("cover") or ""
-    out_filename = f"{vid_id}.mp4"
+    out_filename = f"{vid_id}.mp4" if platform == "tiktok" else f"{platform}_{vid_id}.mp4"
     local_fpath = DOWNLOADS_DIR / out_filename
     partial_fpath = DOWNLOADS_DIR / f".{out_filename}.part"
     try:
-        v_stream = _safe_stream_get(data["play_url"], headers=TIKTOK_MEDIA_HEADERS)
+        v_stream = _safe_stream_get(data["play_url"], headers=headers or TIKTOK_MEDIA_HEADERS)
         if v_stream.status_code != 200:
             raise ValueError(f"Media trả HTTP {v_stream.status_code}")
         declared_size = int(v_stream.headers.get("content-length") or 0)
@@ -2786,7 +2804,7 @@ def _download_resolved_video(clean_url: str, data: Optional[dict]) -> Optional[d
             partial_fpath.unlink()
         return None
 
-    return _record_download(clean_url, "tiktok", data, local_fpath)
+    return _record_download(clean_url, platform, data, local_fpath)
 
 
 def _record_download(clean_url: str, platform: str, data: dict, local_fpath: Path) -> dict:
@@ -2825,14 +2843,47 @@ def _record_download(clean_url: str, platform: str, data: dict, local_fpath: Pat
         "platform": platform,
     }
 
-def process_batch_download(job_id: int, urls: List[str]):
+def _expand_profiles(job_id: int, urls: List[str], profile_limit: int, errors: List[str]) -> List[Any]:
+    """Link profile Kuaishou → các video (đã có link MP4, không mở trang từng video); link khác giữ nguyên."""
+    out: List[Any] = []
+    for u in urls:
+        if not multi_downloader.is_kuaishou_profile(u):
+            out.append(u)
+            continue
+        try:
+            out.extend(multi_downloader.kuaishou_profile(u, profile_limit))
+        except Exception as e:
+            print(f"[Downloader] profile Kuaishou lỗi {u}: {e}")
+            errors.append(f"Kuaishou profile: {e}")
+            out.append(None)  # tính là một lỗi
+    conn = connect_db(DB_PATH)
+    conn.execute("UPDATE download_jobs SET total=? WHERE id=?", (len(out), job_id))
+    conn.commit()
+    conn.close()
+    return out
+
+
+def _download_kuaishou_item(item: dict, errors: List[str]) -> Optional[dict]:
+    result = _download_resolved_video(item["url"], {**item, "provider": "kuaishou"}, "kuaishou",
+                                      {"User-Agent": TIKTOK_MEDIA_HEADERS["User-Agent"], "Referer": "https://www.kuaishou.com/"})
+    if not result:
+        errors.append(f"Kuaishou: tải MP4 thất bại ({item['url']})")
+    return result
+
+
+def process_batch_download(job_id: int, urls: List[str], profile_limit: int = 20):
     conn = connect_db(DB_PATH)
     conn.execute("UPDATE download_jobs SET status='PROCESSING' WHERE id=?", (job_id,))
     conn.commit()
     conn.close()
     errors: List[str] = []
-    for u in urls:
-        result = download_single_video(u, errors)
+    for u in _expand_profiles(job_id, urls, profile_limit, errors):
+        if u is None:
+            result = None
+        elif isinstance(u, dict):
+            result = _download_kuaishou_item(u, errors)
+        else:
+            result = download_single_video(u, errors)
         conn = connect_db(DB_PATH)
         if result:
             conn.execute("UPDATE download_jobs SET completed=completed+1 WHERE id=?", (job_id,))
@@ -2868,7 +2919,7 @@ def start_download_videos(item: DownloadItem, background_tasks: BackgroundTasks)
     job_id = cur.lastrowid
     conn.commit()
     conn.close()
-    background_tasks.add_task(process_batch_download, job_id, urls)
+    background_tasks.add_task(process_batch_download, job_id, urls, item.profile_limit)
     by_platform: Dict[str, int] = {}
     for u in urls:
         name = multi_downloader.label(multi_downloader.detect_platform(u))
@@ -2882,7 +2933,9 @@ def start_download_videos(item: DownloadItem, background_tasks: BackgroundTasks)
 @app.get("/api/downloader/platforms")
 def downloader_platforms():
     return {"platforms": [{"id": k, "label": v["label"], "hosts": v["hosts"],
-                           "cookies": bool(multi_downloader.cookie_file(k))} for k, v in multi_downloader.PLATFORMS.items()]}
+                           "cookies": bool(multi_downloader.cookie_file(k)),
+                           "ready": multi_downloader.kuaishou_ready() if k == "kuaishou" else True}
+                          for k, v in multi_downloader.PLATFORMS.items()]}
 
 
 @app.get("/api/downloader/jobs/{job_id}")

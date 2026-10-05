@@ -1050,6 +1050,7 @@ const WORKSTATION_TABS = {
   gpu: { icon: '🎞️', title: 'Render Video GPU H.264 / VideoToolbox', pane: 'gpu' },
   downloader: { icon: '📥', title: 'Tải Video TikTok Không Logo (No-Logo)', pane: 'downloader' },
   muse_film: { icon: '🎬', title: 'Phim AI (Muse) — Ý tưởng → Nhiều cảnh → Phim', pane: 'muse_film' },
+  muse_remake: { icon: '🔁', title: 'Kuaishou → Muse — làm lại cùng phong cách, lời theo ngôn ngữ tài khoản', pane: 'muse_remake' },
   story_remake: { icon: '🎞️', title: 'Story Remake — Kênh YouTube → Video Ảnh Phim (giữ audio gốc)', pane: 'story_remake' },
   tiktok_api: { icon: '📡', title: 'TikTok REST API (Chocode)', pane: 'tiktok_api' },
   dola: { icon: '🎥', title: 'Video AI Dola (Seedance) — Prompt → Clip MP4', pane: 'dola' },
@@ -1098,6 +1099,8 @@ function switchTab(tabName) {
     loadDownloadedVideos();
   } else if (tabName === 'muse_film') {
     if (typeof loadMuseFilmTab === 'function') loadMuseFilmTab();
+  } else if (tabName === 'muse_remake') {
+    if (typeof loadMuseRemakeTab === 'function') loadMuseRemakeTab();
   } else if (tabName === 'story_remake') {
     if (typeof loadStoryRemakeTab === 'function') loadStoryRemakeTab();
   } else if (tabName === 'tiktok_api') {
@@ -1502,7 +1505,7 @@ function dlDetectLinks() {
   const counts = {}; let bad = 0;
   lines.forEach((u) => { const p = dlPlatformOf(u); if (p) counts[p.id] = (counts[p.id] || 0) + 1; else bad += 1; });
   const box = document.getElementById('dl-platforms');
-  if (box) box.innerHTML = DL_PLATFORMS.map((p) => `<span class="dl-platform${counts[p.id] ? ' is-active' : ''}">${escapeHtml(p.label)}${counts[p.id] ? ` <b>${counts[p.id]}</b>` : ''}</span>`).join('');
+  if (box) box.innerHTML = DL_PLATFORMS.map((p) => `<span class="dl-platform${counts[p.id] ? ' is-active' : ''}${p.ready === false ? ' is-off' : ''}" title="${p.ready === false ? 'Chrome Kuaishou chưa mở / chưa đăng nhập' : ''}">${escapeHtml(p.label)}${counts[p.id] ? ` <b>${counts[p.id]}</b>` : ''}</span>`).join('');
   const info = document.getElementById('dl-detect');
   if (info) {
     const total = lines.length - bad;

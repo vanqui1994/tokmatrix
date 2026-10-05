@@ -100,6 +100,20 @@ def create(idea: str, scenes: int, style: str, aspect: str, keep_audio: bool, ti
     return p
 
 
+def create_shots(title: str, shots: List[Dict[str, Any]], aspect: str = "9:16", keep_audio: bool = False,
+                 origin: str = "") -> Dict[str, Any]:
+    """Dự án có sẵn từng cảnh (prompt Muse, chữ hiển thị, ảnh mẫu `ref`), bỏ bước viết kịch bản. Dùng cho remake video nguồn."""
+    pid = uuid.uuid4().hex[:10]
+    p = {"id": pid, "title": title[:80] or pid, "idea": "\n".join(s.get("text", "") for s in shots), "n": len(shots),
+         "style": "cinematic", "aspect": aspect if aspect in ASPECTS else "9:16", "keep_audio": bool(keep_audio),
+         "status": "rendering", "created": int(time.time()), "manual": [], "cast": [], "error": "", "origin": origin,
+         "scenes": [{"i": i, "text": s.get("text") or s["prompt"], "prompt": s["prompt"], "ref": s.get("ref"),
+                     "status": "pending", "tries": 0, "error": ""} for i, s in enumerate(shots)]}
+    save(p)
+    _wake.set()
+    return p
+
+
 # ------------------------------------------------------------------ kịch bản
 PLAN = """You are a film director. Turn the idea below into a short film of exactly {n} consecutive shots, each ~5 seconds of video.
 Define the recurring cast (max 4) with a precise fixed look (age, ethnicity, hair, face, outfit) so a video model draws them identically.
@@ -149,7 +163,18 @@ def plan(p: Dict[str, Any]) -> None:
 
 
 # ------------------------------------------------------------------ clip Muse
-async def _clip(prompt: str, cdp: str) -> Dict[str, Any]:
+async def _attach(page, ref: str) -> None:
+    """Đính kèm ảnh mẫu (khung hình gốc) vào ô chat Muse rồi chờ ảnh tải lên xong."""
+    before = await page.evaluate("document.querySelectorAll('img').length")
+    await page.locator("input[type=file]").first.set_input_files(ref)
+    for _ in range(40):  # ≤ 20 s: ảnh xem trước hiện trong ô chat
+        await asyncio.sleep(0.5)
+        if await page.evaluate("document.querySelectorAll('img').length") > before:
+            break
+    await asyncio.sleep(2)  # chờ tải lên máy chủ Muse (nút gửi bị khoá trong lúc tải)
+
+
+async def _clip(prompt: str, cdp: str, ref: Optional[str] = None) -> Dict[str, Any]:
     from playwright.async_api import async_playwright
     async with async_playwright() as pw:
         browser = await pw.chromium.connect_over_cdp(cdp)
@@ -162,6 +187,8 @@ async def _clip(prompt: str, cdp: str) -> Dict[str, Any]:
             raise RuntimeError("Muse chưa đăng nhập — đăng nhập lại qua noVNC")
         await muse_image.keep_awake(page)
         seen = set(await page.evaluate(_VIDEOS))
+        if ref and Path(ref).is_file():
+            await _attach(page, ref)
         await box.fill(prompt)
         await box.press("Enter")
         t0 = time.time()
@@ -177,9 +204,9 @@ async def _clip(prompt: str, cdp: str) -> Dict[str, Any]:
         raise RuntimeError(f"Muse không trả video sau {TIMEOUT}s")
 
 
-def make_clip(prompt: str, label: str = "clip") -> Dict[str, Any]:
+def make_clip(prompt: str, label: str = "clip", ref: Optional[str] = None) -> Dict[str, Any]:
     with muse_image.account(label) as cdp:
-        got = asyncio.run(_clip(prompt, cdp))
+        got = asyncio.run(_clip(prompt, cdp, ref))
     got["account"] = cdp
     return got
 
@@ -265,7 +292,7 @@ def process(pid: str) -> None:
                 with guard:
                     s["status"] = "running"; save(p)
                 try:
-                    got = make_clip(s["prompt"], f"{pid} cảnh {s['i'] + 1}")
+                    got = make_clip(s["prompt"], f"{pid} cảnh {s['i'] + 1}", s.get("ref"))
                     (_dir(pid) / "clips" / f"scene{s['i']:02d}.mp4").write_bytes(got["raw"])
                     upd = dict(status="done", error="", seconds=got["sec"], size=[got["w"], got["h"]], duration=round(got["d"], 2), account=got["account"])
                 except Exception as e:  # noqa: BLE001
