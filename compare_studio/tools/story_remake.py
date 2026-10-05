@@ -64,13 +64,18 @@ def sh(cmd, **kw):
 
 
 # ---------------------------------------------------------------- 1. kênh / tải
+LIST_DEPTH = int(os.environ.get("STORY_REMAKE_LIST_DEPTH", "500"))
+MAX_ATTEMPTS = 3
+
+
 def list_channel(url, limit):
-    """Danh sách video của kênh (Shorts + video thường), mới nhất trước."""
+    """Danh sách video của kênh (Shorts + video thường), mới nhất trước. Lấy sâu tới LIST_DEPTH video (danh sách phẳng,
+    rẻ): hết video mới thì lượt chạy đi tiếp xuống video cũ chưa từng remake."""
     urls = [url.rstrip("/") + s for s in ("/shorts", "/videos")] if re.search(r"youtube\.com/(@|channel/|c/)", url) and not re.search(r"/(shorts|videos)$", url) else [url]
     out = []
     for u in urls:
         try:
-            data = json.loads(ytdlp("--flat-playlist", "-J", "--playlist-end", str(limit * 3), u))
+            data = json.loads(ytdlp("--flat-playlist", "-J", "--playlist-end", str(max(limit * 3, LIST_DEPTH)), u))
         except subprocess.CalledProcessError:
             continue
         for e in data.get("entries") or []:
@@ -495,8 +500,8 @@ def remake(item, lang="auto"):
     vid = item["id"]; work = ROOT / vid; work.mkdir(parents=True, exist_ok=True)
     state_f = work / "state.json"
     state = json.loads(state_f.read_text()) if state_f.exists() else {"id": vid, "url": item["url"], "title": item.get("title", "")}
-    if state.get("status") in ("done", "skipped"):
-        return state
+    if state.get("status") in ("done", "skipped") or state.get("attempts", 0) >= MAX_ATTEMPTS:
+        return {**state, "cached": True}  # đã làm (hoặc lỗi quá MAX_ATTEMPTS lần) ở lượt trước: không tính vào hạn mức lượt này
     if os.environ.get("STORY_REMAKE_ACCOUNT") and not state.get("account_id"):
         state["account_id"] = int(os.environ["STORY_REMAKE_ACCOUNT"])  # web app đưa video xong vào hàng đợi đăng của tài khoản này
     t0 = time.time()
@@ -517,7 +522,7 @@ def remake(item, lang="auto"):
         state.pop("error", None); state.update(status="done", mp4=str(final), seconds=round(time.time() - t0), scenes=len(plan["scenes"]))
         log(vid, f"xong {final} ({state['seconds']}s)")
     except Exception as e:
-        state.update(status="error", error=str(e)[:2000]); log(vid, f"LỖI {e}")
+        state.update(status="error", error=str(e)[:2000], attempts=state.get("attempts", 0) + 1); log(vid, f"LỖI {e}")
     state_f.write_text(json.dumps(state, ensure_ascii=False, indent=1))
     return state
 
@@ -577,6 +582,8 @@ def _main():
     results, done = [], 0
     with ThreadPoolExecutor(a.jobs) as ex:
         for r in ex.map(lambda it: remake(it, a.lang), items):
+            if r.pop("cached", False):
+                continue  # video đã xử lý ở lượt trước: đi tiếp xuống video cũ hơn
             results.append(r); done += r.get("status") == "done"
             if done >= a.limit:
                 ex.shutdown(wait=True, cancel_futures=True)  # không thì `with` vẫn làm hết mọi video còn chờ (tới limit×6)
