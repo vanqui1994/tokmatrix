@@ -9,12 +9,14 @@ import json
 import os
 import signal
 import re
+import shutil
+import sqlite3
 import subprocess
 import sys
 import threading
 import time
 from pathlib import Path
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional
 
 from fastapi import APIRouter, HTTPException
 from fastapi.responses import FileResponse
@@ -32,6 +34,10 @@ MAX_RESUMES = 3
 WATCH = ROOT / "watch.json"
 WATCH_TICK = 60
 WATCH_LOCK = threading.Lock()
+# Remake xong → hàng đợi đăng của tài khoản đã chọn (kênh theo dõi hoặc lượt chạy tay). Trình đăng chỉ nhận MP4 trong
+# bkt_web/storage, nên bản đăng là bản chép ở storage/story_remake/<id>.mp4.
+CHANNELS_DB = REPO / "bkt_web" / "bkt_channels.db"
+UPLOAD_DIR = REPO / "bkt_web" / "storage" / "story_remake"
 CHANNEL_RE = re.compile(r"^https?://(www\.|m\.)?youtube\.com/(@[\w.\-]+|channel/[\w\-]+|c/[\w.\-]+)(/shorts)?/?$")
 
 router = APIRouter(prefix="/api/story-remake", tags=["story_remake"])
@@ -43,6 +49,7 @@ class RunRequest(BaseModel):
     jobs: int = Field(1, ge=1, le=3)
     lang: str = "auto"
     images: str = Field("imagerouter", pattern="^(imagerouter|muse)$")
+    account_id: Optional[int] = None  # tài khoản TikTok đăng video làm xong (không chọn = không đăng)
 
 
 class WatchChannel(BaseModel):
@@ -50,6 +57,7 @@ class WatchChannel(BaseModel):
     limit: int = Field(3, ge=1, le=20)
     lang: str = Field("auto", pattern=r"^[a-z]{2}$|^auto$")
     images: str = Field("imagerouter", pattern="^(imagerouter|muse)$")
+    account_id: Optional[int] = None
 
 
 class WatchConfig(BaseModel):
@@ -90,14 +98,84 @@ def watch_tick(now: float | None = None) -> str | None:
         if not due:
             return None
         ch = min(due, key=lambda c: c.get("last_run", 0))
-        _launch(ch["url"], ch.get("limit", 3), 1, ch.get("lang", "auto"), ch.get("images", "imagerouter"))
+        _launch(ch["url"], ch.get("limit", 3), 1, ch.get("lang", "auto"), ch.get("images", "imagerouter"), account_id=ch.get("account_id"))
         ch["last_run"] = int(now)
         _watch_save(data)
         return ch["url"]
 
 
+def _account_language(account_id: int) -> Dict[str, str]:
+    from bkt_web import muse_remake
+    v = muse_remake.account_voice(account_id)
+    return {"language": v["language"], "niche": v.get("niche") or ""}
+
+
+def _video_lang(work: Path) -> str:
+    try:
+        return str(json.loads((work / "words.json").read_text()).get("lang") or "")
+    except Exception:
+        return ""
+
+
+def _caption(state: Dict[str, Any], work: Path) -> str:
+    title = (state.get("title") or "").strip()
+    if title:
+        return title[:150]
+    try:
+        words = json.loads((work / "words.json").read_text())["words"]
+        return " ".join(w[2] for w in words)[:150].rsplit(" ", 1)[0] + "…"
+    except Exception:
+        return ""
+
+
+def enqueue_done() -> int:
+    """Video `done` có `account_id`, chưa có task đăng → chép MP4 vào storage và tạo upload_tasks QUEUED ở khung giờ
+    kế tiếp của tài khoản. Lời kể khác ngôn ngữ tài khoản (mỗi tài khoản một nước) → không đăng, ghi `upload_error`."""
+    from bkt_web.autopilot import captions, scheduler
+    n = 0
+    for sf in ROOT.glob("*/state.json") if ROOT.exists() else []:
+        try:
+            st = json.loads(sf.read_text())
+        except Exception:
+            continue
+        acc = st.get("account_id")
+        if st.get("status") != "done" or not acc or st.get("upload_task_id") or st.get("upload_error"):
+            continue
+        vid, work = st["id"], sf.parent
+        src = ROOT / "out" / f"{vid}.mp4"
+        if not src.exists():
+            continue
+        info, lang = _account_language(int(acc)), _video_lang(work)
+        if lang != info["language"]:
+            st["upload_error"] = f"Lời kể tiếng {lang or '?'}, tài khoản đăng tiếng {info['language']} — không đăng"
+            sf.write_text(json.dumps(st, ensure_ascii=False, indent=1))
+            continue
+        run_id = f"story_remake:{vid}"
+        with sqlite3.connect(str(CHANNELS_DB), timeout=30) as c:
+            row = c.execute("SELECT id FROM upload_tasks WHERE run_id=? AND channel_id=?", (run_id, int(acc))).fetchone()
+            if row:
+                task_id = int(row[0])
+            else:
+                UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
+                dest = UPLOAD_DIR / f"{vid}.mp4"
+                shutil.copy2(src, dest)
+                slot = scheduler.next_slot(int(acc)) or int(time.time()) + 3600
+                cur = c.execute("INSERT INTO upload_tasks(channel_id, video_path, caption, hashtags, schedule_time, status, created_at, "
+                                "ai_generated, run_id) VALUES (?,?,?,?,?,'QUEUED',?,0,?)",
+                                (int(acc), str(dest), _caption(st, work), captions.hashtags_for(info["niche"], lang), int(slot), int(time.time()), run_id))
+                task_id = int(cur.lastrowid)
+                n += 1
+        st["upload_task_id"] = task_id
+        sf.write_text(json.dumps(st, ensure_ascii=False, indent=1))
+    return n
+
+
 def _watch_loop() -> None:
     while True:
+        try:
+            enqueue_done()
+        except Exception as exc:  # noqa: BLE001
+            print(f"[story-remake] enqueue: {exc}")
         try:
             watch_tick()
         except Exception as exc:  # noqa: BLE001 — luồng nền không được chết
@@ -168,7 +246,8 @@ def _videos(running: bool = True) -> List[Dict[str, Any]]:
     return sorted(out, key=lambda s: -s["updated"])
 
 
-def _launch(url: str, limit: int, jobs: int, lang: str, images: str, resumed: bool = False, resumes: int = 0) -> int:
+def _launch(url: str, limit: int, jobs: int, lang: str, images: str, resumed: bool = False, resumes: int = 0,
+            account_id: Optional[int] = None) -> int:
     ROOT.mkdir(parents=True, exist_ok=True)
     mode = "channel" if ("/@" in url or "/channel/" in url or "/c/" in url or "list=" in url) else "video"
     cmd = [sys.executable, str(TOOL), mode, url] + (["--limit", str(limit), "--jobs", str(jobs)] if mode == "channel" else []) + ["--lang", lang]
@@ -178,10 +257,10 @@ def _launch(url: str, limit: int, jobs: int, lang: str, images: str, resumed: bo
     # Chủ kênh 06/10: Muse chỉ dùng cho Kuaishou remake (muse_remake), Antigravity cho Matrix → Story Remake luôn vẽ bằng
     # ImageRouter (Cloudflare dự phòng); giá trị `muse` cũ (runner.json/watch.json/client cũ) cũng chạy ImageRouter.
     images = "imagerouter"
-    env = {**os.environ, "STORY_REMAKE_IMAGES": images}
+    env = {**os.environ, "STORY_REMAKE_IMAGES": images, "STORY_REMAKE_ACCOUNT": str(account_id or "")}
     proc = subprocess.Popen(cmd, cwd=str(REPO), stdout=log, stderr=subprocess.STDOUT, start_new_session=True, env=env)
     RUNNER.write_text(json.dumps({"pid": proc.pid, "url": url, "limit": limit, "jobs": jobs, "lang": lang, "images": images,
-                                  "started": int(time.time()), "active": True, "resumes": resumes}))
+                                  "started": int(time.time()), "active": True, "resumes": resumes, "account_id": account_id}))
     return proc.pid
 
 
@@ -196,7 +275,8 @@ def resume_interrupted() -> None:
             info.pop("running", None); info["active"] = False
             RUNNER.write_text(json.dumps(info))
             return
-        _launch(info["url"], info.get("limit", 5), info.get("jobs", 1), info.get("lang", "auto"), info.get("images", "imagerouter"), resumed=True, resumes=n)
+        _launch(info["url"], info.get("limit", 5), info.get("jobs", 1), info.get("lang", "auto"), info.get("images", "imagerouter"), resumed=True, resumes=n,
+                account_id=info.get("account_id"))
 
 
 @router.get("/status")
@@ -218,7 +298,8 @@ def status():
 def run(req: RunRequest):
     if _runner().get("running"):
         raise HTTPException(409, "Đang có một lượt chạy — dừng lượt đó trước")
-    pid = _launch(req.url, req.limit, req.jobs, req.lang, req.images)
+    _check_account(req.account_id)
+    pid = _launch(req.url, req.limit, req.jobs, req.lang, req.images, account_id=req.account_id)
     return {"started": True, "pid": pid}
 
 
@@ -256,6 +337,21 @@ def thumb(vid: str):
     return _file(ROOT / vid / "img" / "sc00.png", "image/png")
 
 
+def _check_account(account_id: Optional[int]) -> None:
+    if account_id is None:
+        return
+    with sqlite3.connect(str(CHANNELS_DB), timeout=30) as c:
+        if not c.execute("SELECT 1 FROM channels WHERE id=?", (account_id,)).fetchone():
+            raise HTTPException(400, "Không có tài khoản TikTok này")
+
+
+@router.get("/accounts")
+def accounts():
+    with sqlite3.connect(str(CHANNELS_DB), timeout=30) as c:
+        rows = c.execute("SELECT id, username FROM channels ORDER BY username").fetchall()
+    return {"accounts": [{"id": cid, "name": name or f"#{cid}", "language": _account_language(cid)["language"]} for cid, name in rows]}
+
+
 @router.get("/watch")
 def watch_list():
     data = _watch_load()
@@ -273,7 +369,8 @@ def watch_add(ch: WatchChannel):
         data = _watch_load()
         if any(c["url"] == url for c in data["channels"]):
             raise HTTPException(409, "Kênh này đã có trong danh sách theo dõi")
-        data["channels"].append({"url": url, "limit": ch.limit, "lang": ch.lang, "images": ch.images, "enabled": True,
+        _check_account(ch.account_id)
+        data["channels"].append({"url": url, "limit": ch.limit, "lang": ch.lang, "images": ch.images, "enabled": True, "account_id": ch.account_id,
                                  "added": int(time.time()), "last_run": 0})
         _watch_save(data)
     start_watch()

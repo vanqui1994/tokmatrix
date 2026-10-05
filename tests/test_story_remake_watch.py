@@ -71,3 +71,59 @@ class StoryWatchTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class StoryEnqueueTest(unittest.TestCase):
+    """Remake xong → hàng đợi đăng của tài khoản đã chọn (một lần, đúng ngôn ngữ, MP4 chép vào storage)."""
+
+    def setUp(self):
+        import json, sqlite3
+        self.tmp = Path(tempfile.mkdtemp())
+        self.db = self.tmp / "ch.db"
+        with sqlite3.connect(self.db) as c:
+            c.execute("CREATE TABLE channels(id INTEGER PRIMARY KEY, username TEXT)")
+            c.execute("INSERT INTO channels VALUES (7, 'acc_de'), (8, 'acc_ja')")
+            c.execute("CREATE TABLE upload_tasks(id INTEGER PRIMARY KEY AUTOINCREMENT, channel_id INT, video_path TEXT, caption TEXT, "
+                      "hashtags TEXT, schedule_time INT, status TEXT, created_at INT, ai_generated INT, run_id TEXT)")
+        for p in (patch.object(srr, "ROOT", self.tmp / "sr"), patch.object(srr, "CHANNELS_DB", self.db),
+                  patch.object(srr, "UPLOAD_DIR", self.tmp / "storage"),
+                  patch.object(srr, "_account_language", lambda a: {"language": {7: "de", 8: "ja"}[a], "niche": ""}),
+                  patch("bkt_web.autopilot.scheduler.next_slot", lambda a: 1_900_000_000)):
+            p.start()
+        (self.tmp / "sr" / "out").mkdir(parents=True)
+
+        def video(vid, lang, **state):
+            w = self.tmp / "sr" / vid; w.mkdir()
+            (w / "words.json").write_text(json.dumps({"lang": lang, "words": [[0, 1, "Hallo"], [1, 2, "Welt"]]}))
+            (w / "state.json").write_text(json.dumps({"id": vid, "status": "done", **state}))
+            (self.tmp / "sr" / "out" / f"{vid}.mp4").write_bytes(b"mp4")
+        self.video = video
+        self.json = json
+
+    def tearDown(self):
+        patch.stopall()
+
+    def state(self, vid):
+        return self.json.loads((self.tmp / "sr" / vid / "state.json").read_text())
+
+    def tasks(self):
+        import sqlite3
+        with sqlite3.connect(self.db) as c:
+            return c.execute("SELECT channel_id, video_path, caption, status, run_id, schedule_time FROM upload_tasks").fetchall()
+
+    def test_done_video_is_queued_once_for_its_account(self):
+        self.video("a1", "de", account_id=7, title="Die Nachbarin")
+        self.video("a2", "de")  # không chọn tài khoản → không đăng
+        self.assertEqual(srr.enqueue_done(), 1)
+        self.assertEqual(srr.enqueue_done(), 0)
+        [(ch, path, caption, status, run_id, slot)] = self.tasks()
+        self.assertEqual((ch, caption, status, run_id, slot), (7, "Die Nachbarin", "QUEUED", "story_remake:a1", 1_900_000_000))
+        self.assertTrue(path.startswith(str(self.tmp / "storage")) and Path(path).exists())
+        self.assertTrue(self.state("a1")["upload_task_id"])
+        self.assertNotIn("upload_task_id", self.state("a2"))
+
+    def test_narration_in_another_language_is_not_posted(self):
+        self.video("b1", "de", account_id=8)
+        self.assertEqual(srr.enqueue_done(), 0)
+        self.assertEqual(self.tasks(), [])
+        self.assertIn("không đăng", self.state("b1")["upload_error"])

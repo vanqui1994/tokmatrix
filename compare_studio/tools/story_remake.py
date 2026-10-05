@@ -497,6 +497,8 @@ def remake(item, lang="auto"):
     state = json.loads(state_f.read_text()) if state_f.exists() else {"id": vid, "url": item["url"], "title": item.get("title", "")}
     if state.get("status") in ("done", "skipped"):
         return state
+    if os.environ.get("STORY_REMAKE_ACCOUNT") and not state.get("account_id"):
+        state["account_id"] = int(os.environ["STORY_REMAKE_ACCOUNT"])  # web app đưa video xong vào hàng đợi đăng của tài khoản này
     t0 = time.time()
     try:
         fetch(item, work); log(vid, "tải xong")

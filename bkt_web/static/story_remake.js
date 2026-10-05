@@ -124,7 +124,7 @@ function storyMore() { storyView.shown += STORY_PAGE; storyRenderList(true); }
 function storyRenderList(force) {
   storyLibraryMount();
   const all = storyView.vids;
-  const sig = JSON.stringify(all.map((v) => [v.id, v.status, v.step, v.has_mp4, v.has_thumb, v.updated]));
+  const sig = JSON.stringify(all.map((v) => [v.id, v.status, v.step, v.has_mp4, v.has_thumb, v.updated, v.upload_task_id, v.upload_error]));
   if (!force && sig === storyView.sig) return;  // không vẽ lại mỗi 5 s khi không đổi (giữ vị trí cuộn / hover)
   storyView.sig = sig;
   const counts = { all: all.length };
@@ -159,6 +159,8 @@ function storyRenderList(force) {
         <div class="sr-title" title="${escapeHtml(v.title || v.id)}">${escapeHtml(v.title || v.id)}</div>
         ${meta ? `<div class="sr-meta">${escapeHtml(meta)}</div>` : ''}
         ${v.reason ? `<div class="sr-meta" title="${escapeHtml(v.reason)}">${escapeHtml(v.reason)}</div>` : ''}
+        ${v.upload_task_id ? `<div class="sr-meta">📤 Đã vào hàng đợi đăng${v.account_id ? ` · ${escapeHtml(storyAccountName(v.account_id))}` : ''}</div>` : (v.account_id && v.status === 'done' && !v.upload_error ? '<div class="sr-meta">📤 Chờ xếp lịch đăng…</div>' : '')}
+        ${v.upload_error ? `<div class="sr-err" title="${escapeHtml(v.upload_error)}">${escapeHtml(v.upload_error)}</div>` : ''}
         ${v.error ? `<div class="sr-err" title="${escapeHtml(v.error.slice(0, 600))}">${escapeHtml(v.error.slice(0, 200))}</div>` : ''}
         ${v.has_mp4 ? `<div class="sr-actions"><button type="button" class="is-primary" onclick="storyPlay('${id}')">Xem</button><a href="/api/story-remake/video/${id}" download="${escapeHtml(v.id)}.mp4">Tải</a></div>` : ''}
       </div></article>`;
@@ -175,6 +177,7 @@ async function storyRun() {
     jobs: Number(document.getElementById('story-jobs').value) || 1,
     lang: document.getElementById('story-lang').value || 'auto',
     images: document.getElementById('story-images').value || 'imagerouter',
+    account_id: Number(document.getElementById('story-account')?.value) || null,
   };
   try {
     await storyJson('/api/story-remake/run', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
@@ -202,6 +205,32 @@ function storyPlay(id) {
 
 function storyClosePlayer() { document.getElementById('story-modal')?.remove(); }
 document.addEventListener('keydown', (e) => { if (e.key === 'Escape') storyClosePlayer(); });
+
+// ---- Tài khoản đăng: video remake xong vào hàng đợi đăng của tài khoản này (bỏ trống = không đăng).
+let storyAccounts = null;
+async function storyLoadAccounts() {
+  if (storyAccounts) return storyAccounts;
+  try { storyAccounts = (await storyJson('/api/story-remake/accounts')).accounts || []; } catch (e) { storyAccounts = []; }
+  return storyAccounts;
+}
+function storyAccountOptions() {
+  return '<option value="">Không đăng</option>' + (storyAccounts || []).map((a) => `<option value="${a.id}">${escapeHtml(a.name)} (${escapeHtml(a.language)})</option>`).join('');
+}
+function storyAccountName(id) {
+  const a = (storyAccounts || []).find((x) => x.id === id);
+  return a ? `${a.name} (${a.language})` : `#${id}`;
+}
+async function storyAccountMount() {
+  await storyLoadAccounts();
+  const grid = document.querySelector('#pane-story_remake .story-setup-card > .story-options-grid');
+  if (grid && !document.getElementById('story-account')) {
+    grid.insertAdjacentHTML('beforeend', `<div class="story-field" style="grid-column:1/-1"><label for="story-account">Đăng lên tài khoản</label>
+      <select id="story-account" class="form-control">${storyAccountOptions()}</select>
+      <span class="story-field-help">Video xong tự vào hàng đợi đăng của tài khoản (khung giờ kế tiếp). Lời kể phải cùng ngôn ngữ với tài khoản.</span></div>`);
+  }
+  const w = document.getElementById('story-watch-account');
+  if (w && !w.options.length) w.innerHTML = storyAccountOptions();
+}
 
 // ---- Theo dõi kênh Shorts: thêm kênh → server tự chạy kênh đó ngay khi rảnh, rồi định kỳ làm Shorts mới (/api/story-remake/watch)
 function storyWatchMount() {
@@ -234,6 +263,7 @@ function storyWatchMount() {
     <div class="story-options-grid">
       <div class="story-field"><label for="story-watch-limit">Shorts mỗi lượt</label><input id="story-watch-limit" type="number" min="1" max="20" value="3" class="form-control"></div>
       <div class="story-field"><label for="story-watch-interval">Kiểm tra mỗi (phút)</label><input id="story-watch-interval" type="number" min="15" max="1440" value="60" class="form-control" onchange="storyWatchConfig()"></div>
+      <div class="story-field" style="grid-column:1/-1"><label for="story-watch-account">Đăng lên tài khoản</label><select id="story-watch-account" class="form-control"></select></div>
     </div>
     <div class="story-actions">
       <button class="story-start-button" type="button" onclick="storyWatchAdd()">＋ Thêm kênh & tự chạy</button>
@@ -245,6 +275,7 @@ function storyWatchMount() {
 
 async function storyWatchRefresh() {
   storyWatchMount();
+  await storyAccountMount();
   const list = document.getElementById('story-watch-list');
   if (!list) return;
   let data;
@@ -259,7 +290,7 @@ async function storyWatchRefresh() {
     const live = data.running_url === c.url ? ' · ⏳ đang chạy' : '';
     const u = escapeHtml(JSON.stringify(c.url));
     return `<div class="story-watch-item${c.enabled ? '' : ' is-off'}">
-      <div><strong>${escapeHtml(name)}</strong><span>${c.limit} Shorts/lượt · lần cuối: ${escapeHtml(when(c.last_run))}${live}</span></div>
+      <div><strong>${escapeHtml(name)}</strong><span>${c.account_id ? `→ ${escapeHtml(storyAccountName(c.account_id))} · ` : 'không đăng · '}${c.limit} Shorts/lượt · lần cuối: ${escapeHtml(when(c.last_run))}${live}</span></div>
       <div><button type="button" onclick='storyWatchAct("toggle", ${u})'>${c.enabled ? 'Tạm dừng' : 'Bật lại'}</button>
       <button type="button" onclick='storyWatchAct("remove", ${u})'>Xoá</button></div></div>`;
   }).join('') || '<div class="story-field-help">Chưa theo dõi kênh nào.</div>';
@@ -273,7 +304,9 @@ async function storyWatchAdd() {
     limit: Number(document.getElementById('story-watch-limit').value) || 3,
     lang: document.getElementById('story-lang').value || 'auto',
     images: document.getElementById('story-images').value || 'imagerouter',
+    account_id: Number(document.getElementById('story-watch-account').value) || null,
   };
+  if (!body.account_id && !confirm('Chưa chọn tài khoản đăng — video remake xong sẽ không tự đăng. Vẫn thêm kênh?')) return;
   try {
     const r = await storyJson('/api/story-remake/watch', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
     document.getElementById('story-watch-url').value = '';
