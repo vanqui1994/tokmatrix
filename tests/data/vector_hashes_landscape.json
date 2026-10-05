@@ -3132,5 +3132,45 @@
         "40fb33ef5cc78890@1820x1024"
       ]
     }
+  },
+  "stories": {
+    "the_cure_wide": [
+      "a913c7efddcc4394@1820x1024",
+      "9a7583ef72122063@1820x1024",
+      "7aa090efb68f6082@1820x1024",
+      "221905ef31c0964b@1820x1024",
+      "2ae7e2ef1f4fcc63@1820x1024",
+      "c64ae2efd25f9f14@1820x1024"
+    ],
+    "quiet_street_wide": [
+      "b52e64efd5c611a1@1820x1024",
+      "caba03ef2906bb5a@1820x1024",
+      "155f94ef025cb788@1820x1024",
+      "6a15e9efe2e5e357@1820x1024",
+      "7a8461efc31c1722@1820x1024",
+      "96690bef555d330b@1820x1024"
+    ],
+    "tortoise_and_hare_wide": [
+      "9021e0ef2a30e5ec@1820x1024",
+      "a3e15fef898f2106@1820x1024",
+      "12f8eaef713024be@1820x1024",
+      "af5169efd265b0bb@1820x1024",
+      "65557aef589108bf@1820x1024",
+      "4a2b3eef3a385fd3@1820x1024"
+    ],
+    "castle_life_wide": [
+      "4ab496ef6f3e44af@1820x1024",
+      "f73452ef83bcc6b7@1820x1024",
+      "8ca12fef77a04dd6@1820x1024",
+      "065ab0efb1463841@1820x1024",
+      "92ad98ef8e389cb8@1820x1024",
+      "eeee39eff4a7eeed@1820x1024"
+    ],
+    "solar_system_tour_wide": [
+      "d3f351efd6d87d50@1820x1024",
+      "58c3d7ef26c67909@1820x1024",
+      "02d7d2eff5ed35d3@1820x1024",
+      "d71b0eefd68ce28d@1820x1024"
+    ]
   }
 }

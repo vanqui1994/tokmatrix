@@ -13,6 +13,8 @@ LANDSCAPE_HASHES_FILE = ROOT / "tests" / "data" / "vector_hashes_landscape.json"
 SAMPLE_TIMES = [0.2, 0.8, 1.6, 2.4, 3.2]
 # Hình nền đã vẽ cho khổ ngang (plan docs/PLAN_vector_widescreen.md nhóm B2): core + farm_fun + modular_scenes.
 # "preset@locale" là một locale của hình nền lắp ghép. Thêm hình nền vào đây khi nó đã vẽ theo `w`.
+from bkt_web.remake_vector_wide_stories import wide_stories  # noqa: E402
+
 LANDSCAPE_BACKGROUNDS = [
     # B2
     "garden", "orchard", "balcony", "pepper_patch", "soil_cutaway", "pond", "river", "sea", "underwater",
@@ -218,12 +220,27 @@ def compute_landscape_hashes(backgrounds=None):
             }}
             return res;
           }};
+          // Story khổ ngang (B5): mỗi cảnh hash ở 25 % và 75 % thời lượng.
+          window.renderWideStories = function(stories) {{
+            const canvas = document.getElementById('stage');
+            const res = {{}};
+            for (const story of stories) {{
+              const renderer = new RemakeVector.Renderer(canvas, window.cat, story);
+              const ctx = canvas.getContext('2d');
+              res[story.id] = story.scenes.flatMap(sc => [0.25, 0.75].map(u => {{
+                renderer.render(sc.start_time + (sc.end_time - sc.start_time) * u);
+                return hashPixels(ctx.getImageData(0, 0, canvas.width, canvas.height).data) + '@' + canvas.width + 'x' + canvas.height;
+              }}));
+            }}
+            return res;
+          }};
         </script>
         </body></html>
         """)
         hashes = page.evaluate("([keys, times]) => window.renderLandscapeBatch(keys, times)", [backgrounds, [0.5, 2.0]])
+        story_hashes = page.evaluate("(stories) => window.renderWideStories(stories)", wide_stories())
         browser.close()
-    return {"size": list(LANDSCAPE_SIZE), "backgrounds": hashes}
+    return {"size": list(LANDSCAPE_SIZE), "backgrounds": hashes, "stories": story_hashes}
 
 
 class VectorRegressionTest(unittest.TestCase):
@@ -268,6 +285,12 @@ class VectorLandscapeRegressionTest(unittest.TestCase):
             raise AssertionError(f"Thiếu {LANDSCAPE_HASHES_FILE}; chạy python3 tests/test_remake_vector_regression.py --update-landscape-hashes trên bản đã duyệt")
         cls.baseline = json.loads(LANDSCAPE_HASHES_FILE.read_text(encoding="utf-8"))
         cls.current = compute_landscape_hashes()
+
+    def test_wide_stories_match_pixel_hashes(self):
+        baseline = self.baseline.get("stories")
+        self.assertEqual(sorted(baseline or {}), sorted(s["id"] for s in wide_stories()), "Mốc chưa có đủ story khổ ngang; --update-landscape-hashes")
+        mismatches = [sid for sid, expected in baseline.items() if self.current["stories"].get(sid) != expected]
+        self.assertEqual(mismatches, [], f"Pixel regression detected in {len(mismatches)} wide stories: {mismatches}")
 
     def test_baseline_covers_every_landscape_background(self):
         self.assertEqual(sorted(self.baseline["backgrounds"]), sorted(LANDSCAPE_BACKGROUNDS))

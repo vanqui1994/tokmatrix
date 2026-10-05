@@ -6007,6 +6007,57 @@ console.log(JSON.stringify(errors));""", {"cat": cat, "states": states_to_test})
                     self.assertLessEqual(abs(dy), 12.0, f"Clip {cid}/{cname} dy={dy} lệch mặt đất > 12px")
 
 
+class WideStoriesTest(unittest.TestCase):
+    """B5: năm story khổ ngang dùng thật bề rộng, không có nội dung thị trường Việt, zombie đi chậm."""
+
+    @classmethod
+    def setUpClass(cls):
+        from bkt_web.remake_vector_wide_stories import wide_stories
+        cls.stories = wide_stories()
+
+    def test_five_landscape_stories_validate(self):
+        self.assertEqual([s["id"] for s in self.stories], ["the_cure_wide", "quiet_street_wide", "tortoise_and_hare_wide", "castle_life_wide", "solar_system_tour_wide"])
+        for story in self.stories:
+            self.assertEqual(story["frame"], "landscape")
+            __import__("bkt_web.remake_vector", fromlist=["validate_story"]).validate_story(story)
+
+    def test_every_scene_moves_someone_at_least_400_px(self):
+        for story in self.stories:
+            attached = {c["id"] for c in story["characters"] if c.get("attach_to")}
+            for scene in story["scenes"]:
+                with self.subTest(story=story["id"], scene=scene["index"]):
+                    travel = max(max(k["x"] for k in keys) - min(k["x"] for k in keys)
+                                 for cid, keys in scene["poses"].items() if cid not in attached)
+                    self.assertGreaterEqual(travel, 400)
+
+    def test_cast_spans_the_wide_frame(self):
+        for story in self.stories:
+            xs = [k["x"] for sc in story["scenes"] for keys in sc["poses"].values() for k in keys if "x" in k and k["x"] > 0]
+            self.assertGreater(max(xs), 1200, story["id"])
+
+    def test_no_vietnamese_market_content(self):
+        for story in self.stories:
+            self.assertNotIn("chibi_farmer", {c["asset"] for c in story["characters"]})
+            for cue in story["cues"]:
+                self.assertTrue(cue["text"].isascii(), cue["text"])
+
+    def test_zombies_stay_slow(self):
+        for story in self.stories:
+            for scene in story["scenes"]:
+                dur = scene["end_time"] - scene["start_time"]
+                for a in scene.get("actions", []):
+                    if a["type"] == "shamble":
+                        self.assertLessEqual(a["distance"], 35 * (a["end"] - a["start"]) + 1e-6)
+                for cid, keys in scene["poses"].items():
+                    if not cid.startswith("zombie_walker") and cid != "nora":
+                        continue
+                    for a, b in zip(keys, keys[1:]):
+                        # Đã khỏi bệnh (cured = 1) thì đi như người thường.
+                        if b["time"] > a["time"] and a.get("cured", 0) < 1:
+                            self.assertLessEqual(abs(b["x"] - a["x"]) / (b["time"] - a["time"]), 40.0 + 1e-6, f"{story['id']}/{cid}")
+                self.assertGreater(dur, 0)
+
+
 class WidescreenTest(unittest.TestCase):
     """Khổ ngang thật 1820×1024 (plan docs/PLAN_vector_widescreen.md nhóm B1 + B2)."""
 
