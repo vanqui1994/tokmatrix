@@ -251,6 +251,15 @@ def _videos(running: bool = True) -> List[Dict[str, Any]]:
     return sorted(out, key=lambda s: -s["updated"])
 
 
+def muse_idle() -> bool:
+    """Muse rảnh cho Story Remake: Kuaishou → Muse không còn nguồn nào bật."""
+    try:
+        from bkt_web import muse_remake
+        return not any(s.get("enabled") for s in muse_remake.sources())
+    except Exception:  # noqa: BLE001 — không đọc được thì giữ ImageRouter
+        return False
+
+
 def _launch(url: str, limit: int, jobs: int, lang: str, images: str, resumed: bool = False, resumes: int = 0,
             account_id: Optional[int] = None, translate_to: str = "") -> int:
     ROOT.mkdir(parents=True, exist_ok=True)
@@ -259,9 +268,10 @@ def _launch(url: str, limit: int, jobs: int, lang: str, images: str, resumed: bo
     log = open(LOG, "a" if resumed else "w")
     if resumed:
         log.write(f"\n[{time.strftime('%H:%M:%S')}] tự chạy tiếp sau khi web app khởi động lại\n"); log.flush()
-    # Chủ kênh 06/10: Muse chỉ dùng cho Kuaishou remake (muse_remake), Antigravity cho Matrix → Story Remake luôn vẽ bằng
-    # ImageRouter (Cloudflare dự phòng); giá trị `muse` cũ (runner.json/watch.json/client cũ) cũng chạy ImageRouter.
-    images = "imagerouter"
+    # Chủ kênh 06/10: Muse dành cho Kuaishou remake (muse_remake), Antigravity cho Matrix → Story Remake vẽ bằng ImageRouter
+    # (Cloudflare dự phòng). Khi Kuaishou → Muse không có nguồn nào bật (tạm ngưng), Muse rảnh nên Story Remake dùng Muse
+    # trước (cảnh lỗi/đứng > STORY_REMAKE_MUSE_STALL vẫn do ImageRouter vẽ bù); bật lại nguồn Kuaishou là quay về ImageRouter.
+    images = "muse" if muse_idle() else "imagerouter"
     env = {**os.environ, "STORY_REMAKE_IMAGES": images, "STORY_REMAKE_ACCOUNT": str(account_id or ""),
            "STORY_REMAKE_TRANSLATE": translate_to or ""}
     proc = subprocess.Popen(cmd, cwd=str(REPO), stdout=log, stderr=subprocess.STDOUT, start_new_session=True, env=env)

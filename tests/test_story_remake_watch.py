@@ -184,3 +184,25 @@ class SourcesByAccountTest(unittest.TestCase):
         self.assertFalse(res[0]["ok"]) ; self.assertIn("tài khoản khác", res[0]["error"])
         self.assertFalse(res[1]["ok"])
         self.assertEqual(self.row(2)["kind"], "")
+
+
+class StoryImagesSourceTest(unittest.TestCase):
+    """Story Remake dùng Muse chỉ khi Kuaishou → Muse không có nguồn nào bật (Muse rảnh); còn lại ImageRouter."""
+
+    def launched_images(self, sources):
+        from bkt_web import muse_remake
+        envs = []
+
+        class P:  # Popen giả: ghi lại env, không chạy tool
+            pid = 4242
+            def __init__(self, cmd, **kw): envs.append(kw["env"])
+        tmp = Path(tempfile.mkdtemp())
+        with patch.object(muse_remake, "sources", lambda: sources), patch.object(srr.subprocess, "Popen", P), \
+                patch.object(srr, "ROOT", tmp), patch.object(srr, "RUNNER", tmp / "runner.json"), patch.object(srr, "LOG", tmp / "runner.log"):
+            srr._launch("https://www.youtube.com/@k/shorts", 3, 1, "auto", "imagerouter")
+        return envs[0]["STORY_REMAKE_IMAGES"]
+
+    def test_muse_only_while_kuaishou_muse_is_paused(self):
+        self.assertEqual(self.launched_images([{"enabled": 0}, {"enabled": 0}]), "muse")
+        self.assertEqual(self.launched_images([]), "muse")
+        self.assertEqual(self.launched_images([{"enabled": 1}, {"enabled": 0}]), "imagerouter")
