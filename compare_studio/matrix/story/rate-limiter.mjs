@@ -96,6 +96,14 @@ export class FileTokenBucket {
     }
   }
 
+  /** Còn bị chặn bao lâu (ms) do 429 trước đó; 0 = không bị chặn. */
+  async blockedMs() {
+    return this.#withLock(() => {
+      const now = this.now();
+      return Math.max(0, (this.#read(now).blocked_until || 0) - now);
+    });
+  }
+
   /** Nhận 429: chặn mọi process tới `ms` nữa (không rút ngắn cooldown đang có). */
   async cooldown(ms) {
     return this.#withLock(() => {
@@ -107,4 +115,4 @@ export class FileTokenBucket {
   }
 }
 
-export const unlimited = { acquire: async () => {}, cooldown: async () => {} };
+export const unlimited = { acquire: async () => {}, cooldown: async () => {}, blockedMs: async () => 0 };

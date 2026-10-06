@@ -50,11 +50,23 @@ test("failed and timed-out bridge tasks raise retryable errors", async () => {
 test("auto mode falls back to the bridge only for quota/temporary Gemini errors", async () => {
   const bridge = async () => ({ from: "bridge" });
   const quota = Object.assign(new Error("429"), { status: 429, retryable: true });
-  assert.deepEqual(await selectProvider("auto", { gemini: async () => { throw quota; }, bridge })({}), { from: "bridge" });
+  const free = { blockedMs: async () => 0 };
+  assert.deepEqual(await selectProvider("auto", { gemini: async () => { throw quota; }, bridge, limiter: free })({}), { from: "bridge" });
   const badRequest = Object.assign(new Error("400"), { status: 400, retryable: false });
-  await assert.rejects(selectProvider("auto", { gemini: async () => { throw badRequest; }, bridge })({}), /400/);
+  await assert.rejects(selectProvider("auto", { gemini: async () => { throw badRequest; }, bridge, limiter: free })({}), /400/);
   assert.equal(selectProvider("bridge", { gemini: null, bridge }), bridge);
   assert.throws(() => selectProvider("openai"), /không hợp lệ/);
+});
+
+test("auto mode does not sleep in the limiter while Gemini is blocked for hours (06/10: batches hung in PLANNING)", async () => {
+  const bridge = async () => ({ from: "bridge" });
+  let geminiCalls = 0;
+  const gemini = async () => { geminiCalls += 1; return { from: "gemini" }; };
+  const blocked = { blockedMs: async () => 23 * 3600_000 };
+  assert.deepEqual(await selectProvider("auto", { gemini, bridge, limiter: blocked })({}), { from: "bridge" });
+  assert.equal(geminiCalls, 0);
+  const brief = { blockedMs: async () => 5_000 };  // nghỉ ngắn (RPM): vẫn chờ Gemini
+  assert.deepEqual(await selectProvider("auto", { gemini, bridge, limiter: brief })({}), { from: "gemini" });
 });
 
 test("end to end: angles written by the Antigravity agent through the real script queue", async () => {
