@@ -12,6 +12,7 @@ trùng. Không bao giờ làm video tiếng Việt: kênh Matrix phải là de/e
 from __future__ import annotations
 
 import json
+import re
 import shutil
 import sqlite3
 import threading
@@ -82,6 +83,11 @@ def add_source(profile_url: str, account_id: int, per_day: int = 3, matrix_chann
     url = multi_downloader.kuaishou_profile_url(profile_url)
     if not url:
         raise ValueError("Cần link profile Kuaishou: https://www.kuaishou.com/profile/… hoặc link chia sẻ profile v.kuaishou.com/…")
+    if not re.search(r"/profile/3x[0-9a-z]{8,}$", url):
+        # 06/10: link chia sẻ của tài khoản livestream dẫn tới /profile/<tên người dùng> (WWY13929, Yangliangliyu, ndzx2020):
+        # trang chuyển hướng vòng lặp, không trả video và làm treo Chrome Kuaishou dùng chung với Kuaishou → Muse.
+        raise ValueError("Profile phải có mã dạng 3x… (www.kuaishou.com/profile/3x…); link này dẫn tới tên người dùng "
+                         "của tài khoản livestream, không quét được video")
     if account_id not in muse_remake._account_names():
         raise ValueError("Không có tài khoản TikTok này")
     if any(s["profile_url"] == url or s["channel_id"] == account_id for s in muse_remake.sources()):

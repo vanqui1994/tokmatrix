@@ -36,7 +36,7 @@ class KuaishouVectorTest(unittest.TestCase):
                   patch.object(kv.multi_downloader, "kuaishou_profile", lambda u, n: [
                       {"id": f"k{i}", "url": f"https://www.kuaishou.com/short-video/k{i}", "title": "", "posted": 100 - i} for i in range(5)]),
                   patch.object(kv.muse_remake, "_account_names", lambda: {7: "acc_ko", 8: "acc_ja"}),
-                  patch.object(kv.muse_remake, "sources", lambda: [{"profile_url": "https://www.kuaishou.com/profile/muse", "channel_id": 9}]),
+                  patch.object(kv.muse_remake, "sources", lambda: [{"profile_url": "https://www.kuaishou.com/profile/3xmusemusemu", "channel_id": 9}]),
                   patch.object(kv.muse_remake, "_download", download),
                   patch.object(kv.source_remake, "_channel", lambda cid: {"id": cid, "niche": "ocean_mysteries", "language": "ko"}),
                   patch.object(kv.source_remake, "create", create),
@@ -53,17 +53,19 @@ class KuaishouVectorTest(unittest.TestCase):
             return c.execute("SELECT channel_id, status, run_id, schedule_time FROM upload_tasks").fetchall()
 
     def test_one_profile_one_account_across_both_kuaishou_lines(self):
-        kv.add_source("https://www.kuaishou.com/profile/a", 7, 2, "ocean_mysteries_11")
-        for url, acc in (("https://www.kuaishou.com/profile/a", 8), ("https://www.kuaishou.com/profile/b", 7),
-                         ("https://www.kuaishou.com/profile/muse", 8)):
+        kv.add_source("https://www.kuaishou.com/profile/3xaaaaaaaaaa", 7, 2, "ocean_mysteries_11")
+        for url, acc in (("https://www.kuaishou.com/profile/3xaaaaaaaaaa", 8), ("https://www.kuaishou.com/profile/3xbbbbbbbbbb", 7),
+                         ("https://www.kuaishou.com/profile/3xmusemusemu", 8)):
             with self.assertRaises(ValueError):
                 kv.add_source(url, acc, 2, "ocean_mysteries_03")
+        with self.assertRaises(ValueError):  # tên người dùng (tài khoản livestream) làm treo Chrome
+            kv.add_source("https://www.kuaishou.com/profile/WWY13929", 8, 2, "ocean_mysteries_03")
         with self.assertRaises(ValueError):  # tài khoản không có kênh Matrix
             with patch.object(kv, "matrix_channel_for", lambda a: ""):
-                kv.add_source("https://www.kuaishou.com/profile/c", 8, 2)
+                kv.add_source("https://www.kuaishou.com/profile/3xcccccccccc", 8, 2)
 
     def test_videos_flow_to_the_upload_queue_once_within_the_daily_quota(self):
-        kv.add_source("https://www.kuaishou.com/profile/a", 7, 2, "ocean_mysteries_11")
+        kv.add_source("https://www.kuaishou.com/profile/3xaaaaaaaaaa", 7, 2, "ocean_mysteries_11")
         kv.tick(T)
         with kv._conn() as c:
             st = dict(c.execute("SELECT ks_id, status FROM videos").fetchall())
@@ -78,7 +80,7 @@ class KuaishouVectorTest(unittest.TestCase):
         self.assertEqual(len(self.jobs), 2)
 
     def test_errors_retry_after_an_hour_up_to_three_times(self):
-        kv.add_source("https://www.kuaishou.com/profile/a", 7, 1, "ocean_mysteries_11")
+        kv.add_source("https://www.kuaishou.com/profile/3xaaaaaaaaaa", 7, 1, "ocean_mysteries_11")
         kv.tick(T)
         self.jobs["job0"]["status"] = "error"; self.jobs["job0"]["error"] = "Gemini 429"
         kv.tick(T + 60)
