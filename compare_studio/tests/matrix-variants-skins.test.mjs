@@ -13,7 +13,7 @@ import { lintVariantHtml } from "../matrix/render/variants/kit/lint.mjs";
 import { resolveCreativeContext } from "../matrix/render/variants/kit/resolve.mjs";
 import { MIN_SKIN_DISTANCE, assignSkins, skinDistance, skinPairOk, skinViolations } from "../matrix/render/variants/skins.mjs";
 import { channelCreative } from "../matrix/render/native-engine-adapter.mjs";
-import { NICHE_VARIANTS, planNicheSkins, planSkins } from "../tools/assign-skins.mjs";
+import { KEEP_ONLY_VARIANTS, NICHE_VARIANTS, planNicheSkins, planSkins } from "../tools/assign-skins.mjs";
 import { validateConfigs } from "../tools/matrix-config-validator.mjs";
 
 const COMPARE_DIR = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
@@ -152,7 +152,10 @@ test("every survival channel has a niche-mapped survival skin and the per-countr
   assert.deepEqual(plan.rows.filter((row) => row.status !== "kept").map((row) => `${row.channel_id}:${row.status}`), []);
   assert.deepEqual(plan.violations, []);
   const byId = new Map(plan.channels.map((channel) => [channel.channel_id, channel]));
-  for (const row of plan.rows) assert.ok(NICHE_VARIANTS.survival[byId.get(row.channel_id).niche].includes(row.variant_id), row.channel_id);
+  // Variant gán tay để thử (KEEP_ONLY_VARIANTS, vd survival/mr-incredible) được giữ dù không nằm trong danh sách niche.
+  for (const row of plan.rows) {
+    assert.ok(NICHE_VARIANTS.survival[byId.get(row.channel_id).niche].includes(row.variant_id) || KEEP_ONLY_VARIANTS.survival.includes(row.variant_id), row.channel_id);
+  }
   // Nhiều variant cùng engine: kênh mới được chọn DNA xa với bộ da của variant khác cùng nước.
   const others = [{ channel_id: "x", country: "de", dna: plan.rows.find((row) => row.country === "de").dna }];
   const variant = getVariant("survival/endurance");
@@ -192,4 +195,10 @@ test("config validator rejects a skin outside preferred_engines or with an inval
   } finally {
     fs.rmSync(tmp, { recursive: true, force: true });
   }
+});
+
+test("keep-only survival/mr-incredible stays on its trial channels and is never picked for others", () => {
+  const plan = planNicheSkins({ dir: CHANNEL_DIR, engine: "survival" });
+  const mri = plan.rows.filter((row) => row.variant_id === "survival/mr-incredible").map((row) => `${row.channel_id}:${row.status}`).sort();
+  assert.deepEqual(mri, ["extreme_survival_11:kept", "forbidden_experiments_06:kept"]);
 });

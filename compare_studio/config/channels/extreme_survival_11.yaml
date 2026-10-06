@@ -9,7 +9,7 @@ audio:
   - freepd-abstract-anxiety
   - freepd-release-the-hybrids
 channel_id: extreme_survival_11
-config_version: 11
+config_version: 12
 creative:
   cut_cadence_seconds: 2.3
   palette:
@@ -47,16 +47,16 @@ creative:
         tone: 0
         caption: bottom
     survival:
-      variant_id: survival/no-sleep
+      variant_id: survival/mr-incredible
       dna:
         dna_version: 2
         variant_version: 1
-        composition: week_strip
-        typography: typewriter
-        treatment: paper_texture
-        image_motion: handheld
-        transition: folder_flip
-        tone: 3
+        composition: legacy
+        typography: heavy
+        treatment: clean
+        image_motion: still_grain
+        transition: fade_black
+        tone: 0
         caption: fixed
 name: Survival & Disaster 11
 niche_id: extreme_survival

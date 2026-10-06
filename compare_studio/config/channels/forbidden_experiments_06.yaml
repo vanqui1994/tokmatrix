@@ -1,5 +1,5 @@
 channel_id: forbidden_experiments_06
-config_version: 8
+config_version: 9
 niche_id: forbidden_experiments
 name: Verrückte Experimente 06
 tiktok_account_ref: null
@@ -41,16 +41,16 @@ creative:
         tone: 0
         caption: top
     survival:
-      variant_id: survival/no-sleep
+      variant_id: survival/mr-incredible
       dna:
         dna_version: 2
         variant_version: 1
-        composition: week_strip
-        typography: rounded
-        treatment: paper_texture
-        image_motion: handheld
-        transition: page_turn
-        tone: 1
+        composition: legacy
+        typography: heavy
+        treatment: clean
+        image_motion: push_in
+        transition: cut
+        tone: 0
         caption: fixed
 audio:
   voice_id: de-DE-ConradNeural

@@ -84,6 +84,12 @@ export function planSkins({ dir = CHANNEL_DIR, variantId, niches }) {
  * Gán bộ da theo niche (NICHE_VARIANTS[engine]): mỗi kênh một variant của niche, DNA chọn xa nhất với MỌI bộ da cùng
  * engine + cùng nước (kể cả variant khác), nên luật khác biệt của validator vẫn đúng trên cả engine. Tất định.
  */
+/**
+ * Variant chủ repo tự gán tay cho vài kênh thử (06/10: survival/mr-incredible cho #160 và #126): kênh đang có thì giữ nguyên
+ * khi gán theo niche, nhưng không bao giờ được chọn cho kênh mới (không nằm trong NICHE_VARIANTS).
+ */
+export const KEEP_ONLY_VARIANTS = Object.freeze({ survival: Object.freeze(["survival/mr-incredible"]) });
+
 export function planNicheSkins({ dir = CHANNEL_DIR, engine, niches, nicheVariants = NICHE_VARIANTS[engine] }) {
   if (!nicheVariants) throw new Error(`no niche → variant map for engine ${engine}`);
   const variants = new Map();
@@ -92,6 +98,10 @@ export function planNicheSkins({ dir = CHANNEL_DIR, engine, niches, nicheVariant
     if (!variant || variant.engine !== engine) throw new Error(`variant ${id} is unknown, inactive or not ${engine}`);
     if (!isAutoAssignable(variant)) throw new Error(`variant ${id} is opt-in (autoAssign: false) and cannot be assigned by niche`);
     variants.set(id, variant);
+  }
+  for (const id of KEEP_ONLY_VARIANTS[engine] || []) {
+    const variant = getVariant(id, { allowReference: false });
+    if (variant?.engine === engine) variants.set(id, variant);
   }
   const all = loadChannels(dir, engine).sort((a, b) => a.channel_id.localeCompare(b.channel_id));
   const channels = all.filter(inNiches(niches));
@@ -107,7 +117,8 @@ export function planNicheSkins({ dir = CHANNEL_DIR, engine, niches, nicheVariant
   const bump = (key, id) => { if (!counts.has(key)) counts.set(key, new Map()); counts.get(key).set(id, (counts.get(key).get(id) || 0) + 1); };
   for (const channel of all) {
     const list = nicheVariants[channel.niche];
-    const keep = planned.has(channel.channel_id) ? list?.includes(channel.skin?.variant_id) : Boolean(channel.skin?.dna);
+    const pinned = (KEEP_ONLY_VARIANTS[engine] || []).includes(channel.skin?.variant_id) && Boolean(channel.skin?.dna);
+    const keep = planned.has(channel.channel_id) ? (list?.includes(channel.skin?.variant_id) || pinned) : Boolean(channel.skin?.dna);
     if (!keep) continue;
     if (planned.has(channel.channel_id)) choice.set(channel.channel_id, channel.skin.variant_id);
     bump(country(channel), channel.skin.variant_id);
