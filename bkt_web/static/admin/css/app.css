@@ -45,3 +45,47 @@ body { background: var(--bs-tertiary-bg); }
   .app-content-header .breadcrumb { display: none; }
   .small-box h3 { font-size: 1.5rem; }
 }
+
+/* ---------- Lịch đăng ---------- */
+.up-step { display: flex; align-items: center; gap: .5rem; font-weight: 600; margin-bottom: .75rem; }
+.up-step > span { display: inline-flex; width: 1.6rem; height: 1.6rem; border-radius: 50%; align-items: center; justify-content: center; background: var(--bs-primary); color: #fff; font-size: .85rem; }
+.up-lib { display: grid; gap: .5rem; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); max-height: 330px; overflow: auto; padding: 2px; }
+.up-lib-item { display: flex; flex-direction: column; text-align: left; padding: .35rem; border: 2px solid var(--bs-border-color); border-radius: .5rem; background: var(--bs-body-bg); }
+.up-lib-item.on { border-color: var(--bs-primary); box-shadow: 0 0 0 .2rem rgba(var(--bs-primary-rgb), .2); }
+.up-lib-thumb { aspect-ratio: 9/16; border-radius: .35rem; background: var(--bs-secondary-bg) center/cover; display: flex; align-items: center; justify-content: center; margin-bottom: .3rem; color: var(--bs-secondary-color); }
+.up-lib-title { font-size: .78rem; font-weight: 600; line-height: 1.2; }
+.up-chips { display: flex; flex-wrap: wrap; gap: .4rem; max-height: 220px; overflow: auto; }
+.up-chip { border: 1px solid var(--bs-border-color); background: var(--bs-body-bg); border-radius: 999px; padding: .2rem .7rem; font-size: .82rem; }
+.up-chip small { margin-left: .35rem; color: var(--bs-secondary-color); }
+.up-chip.on { background: var(--bs-primary); border-color: var(--bs-primary); color: #fff; }
+.up-chip.on small { color: rgba(255,255,255,.75); }
+.up-golden.active { background: var(--bs-primary); color: #fff; border-color: var(--bs-primary); }
+.up-phone { position: sticky; top: 1rem; width: 280px; margin: 0 auto; aspect-ratio: 9/18.5; border: 10px solid #111; border-radius: 34px; background: #000; overflow: hidden; color: #fff; }
+.up-phone-screen { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
+.up-phone-screen video, .up-phone-screen img { width: 100%; height: 100%; object-fit: cover; }
+.up-phone-overlay { position: absolute; left: .75rem; right: 3.5rem; bottom: 1rem; text-shadow: 0 1px 2px rgba(0,0,0,.7); }
+.up-phone-actions { position: absolute; right: .6rem; bottom: 4rem; display: flex; flex-direction: column; gap: 1rem; font-size: 1.4rem; }
+.up-group-head { cursor: pointer; user-select: none; }
+.up-card .up-media { position: relative; aspect-ratio: 4/3; background: var(--bs-secondary-bg); cursor: pointer; overflow: hidden; border-radius: var(--bs-card-inner-border-radius) var(--bs-card-inner-border-radius) 0 0; display: flex; align-items: center; justify-content: center; }
+.up-card .up-media img { width: 100%; height: 100%; object-fit: cover; }
+.up-card .up-play { position: absolute; font-size: 2.2rem; color: rgba(255,255,255,.9); text-shadow: 0 2px 6px rgba(0,0,0,.5); }
+.up-card .up-media-top { position: absolute; top: .35rem; left: .35rem; right: .35rem; display: flex; justify-content: space-between; gap: .25rem; }
+.up-cal { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 4px; }
+.up-cal-head { text-align: center; font-weight: 600; font-size: .8rem; color: var(--bs-secondary-color); padding: .25rem 0; }
+.up-cal-cell { min-height: 108px; border: 1px solid var(--bs-border-color); border-radius: .4rem; padding: .3rem; font-size: .75rem; overflow: hidden; }
+.up-cal-cell.other { background: var(--bs-tertiary-bg); border-style: dashed; }
+.up-cal-cell.today { border-color: var(--bs-primary); box-shadow: inset 0 0 0 1px var(--bs-primary); }
+.up-cal-cell.has { cursor: pointer; }
+.up-cal-cell.has:hover { background: var(--bs-secondary-bg); }
+.up-cal-date { font-weight: 700; }
+.up-ev { border-radius: .25rem; padding: 0 .3rem; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: .72rem; }
+@media (max-width: 767.98px) { .up-cal-cell { min-height: 64px; } .up-ev { display: none; } }
+
+/* ---------- Mạng & VPN ---------- */
+.vpn-hero { display: flex; flex-wrap: wrap; gap: 1rem; justify-content: space-between; align-items: center; padding: 1.25rem 1.5rem; border-radius: .75rem; color: #fff;
+  background: linear-gradient(135deg, #0b1f3a 0%, #134e8a 60%, #0ea5e9 100%); box-shadow: 0 6px 20px rgba(14, 165, 233, .2); }
+.vpn-country-grid { display: grid; gap: .75rem; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); max-height: 420px; overflow: auto; padding: 2px; }
+.vpn-country { border: 1px solid var(--bs-border-color); border-radius: .6rem; padding: .7rem; cursor: pointer; transition: border-color .15s, box-shadow .15s; background: var(--bs-body-bg); }
+.vpn-country:hover { border-color: var(--bs-primary); }
+.vpn-country.active { border-color: var(--bs-primary); box-shadow: 0 0 0 .2rem rgba(var(--bs-primary-rgb), .2); }
+.vpn-load { display: inline-block; border-radius: 999px; padding: .1rem .55rem; font-size: .78rem; }
