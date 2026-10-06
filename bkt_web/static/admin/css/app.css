@@ -113,3 +113,4 @@ body { background: var(--bs-tertiary-bg); }
 .st-gallery img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: .35rem; cursor: pointer; border: 3px solid transparent; }
 .st-gallery img.on { border-color: var(--bs-primary); }
 @media (max-width: 991.98px) { .st-lib { position: static; max-height: 420px; } }
+.st-template { border: 1px dashed var(--bs-border-color); border-radius: .5rem; align-items: center; }

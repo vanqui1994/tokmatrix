@@ -41,6 +41,10 @@
     el.innerHTML = `<div class="card st-lib mb-0"><div class="card-header"><h3 class="card-title"><i class="bi bi-collection-play me-2"></i>Thư viện</h3>
       <div class="card-tools"><span class="badge text-bg-secondary">${vids.length} video · ${fmt.dur(vids.reduce((a, v) => a + (v.duration || 0), 0))}</span></div></div>
       <div class="card-body p-2 border-bottom vstack gap-2">
+        <div class="d-flex flex-wrap gap-2"><button class="btn btn-sm btn-primary flex-grow-1" data-action="new-ai"><i class="bi bi-magic me-1"></i>Tạo video mới AI</button>
+          <button class="btn btn-sm btn-outline-secondary" data-action="matrix" title="Tạo một mẻ video theo Channel DNA"><i class="bi bi-diagram-3 me-1"></i>Matrix batch</button></div>
+        <a class="st-item st-template ${ctx.sub === '__template' ? 'active' : ''}" href="#/studio/__template"><i class="bi bi-layout-text-window-reverse fs-4 text-primary"></i>
+          <span><span class="st-item-title">Bố cục chuẩn & đánh giá mẫu</span><span class="cell-sub">Nhịp thời gian chuẩn của từng thể loại</span></span></a>
         <div class="input-group input-group-sm"><span class="input-group-text"><i class="bi bi-search"></i></span><input type="search" class="form-control" placeholder="Tìm tiêu đề hoặc slug…" value="${esc(p.q || '')}" data-q></div>
         <div class="d-flex gap-2"><select class="form-select form-select-sm" data-sort>${[['new', 'Mới nhất'], ['old', 'Cũ nhất'], ['title', 'Theo tên'], ['dur', 'Dài nhất']].map(([v, l]) => `<option value="${v}" ${v === (p.sort || 'new') ? 'selected' : ''}>${l}</option>`).join('')}</select>
           <select class="form-select form-select-sm" data-rendered><option value="">Mọi trạng thái</option><option value="1" ${p.rendered === '1' ? 'selected' : ''}>Đã render</option><option value="0" ${p.rendered === '0' ? 'selected' : ''}>Chưa render</option></select></div>
@@ -325,6 +329,13 @@
     }
   }
 
+  /** Cửa sổ Tạo video mới (legacy_studio.js) gọi khi tác vụ create bắt đầu: mở tab Log của video mới. */
+  window.StudioRunStream = (runId, task, slug) => {
+    cache.at = 0;
+    streamRun(runId, task, slug, () => { cache.at = 0; });
+    location.hash = `#/studio/${encodeURIComponent(slug)}/logs`;
+  };
+
   App.page({
     id: 'studio', group: 'production', title: 'Video Studio', icon: 'collection-play',
     desc: 'Compare Studio / Matrix: xem trước, sửa kịch bản, đổi ảnh, render, xếp lịch đăng',
@@ -335,6 +346,8 @@
       const side = ctx.el.querySelector('[data-side]'), main = ctx.el.querySelector('[data-main]');
       sidebar(side, ctx, vids);
       bindActions(side, {
+        'new-ai': () => window.LegacyStudio.openNew(),
+        matrix: () => window.LegacyStudio.openMatrix(),
         async gen() {
           const st = await api.get('/api/compare-videos/status');
           if (st.is_running) { toast('Đang có tiến trình tạo video chạy', 'warning'); return; }
@@ -347,6 +360,12 @@
           toast(r.message, r.status === 'started' ? 'success' : 'warning');
         },
       });
+      if (ctx.sub === '__template') {
+        main.innerHTML = `<div class="d-flex justify-content-end mb-2"><button class="btn btn-sm btn-outline-primary" data-action="zones"><i class="bi bi-phone me-1"></i>Bố cục 3 vùng (9:16)</button></div><div data-tpl></div>`;
+        window.LegacyStudio.renderTemplate(main.querySelector('[data-tpl]'));
+        bindActions(main, { zones: () => window.LegacyStudio.openLayout() });
+        return;
+      }
       const slug = ctx.sub || (filterList(vids, ctx.params)[0] || {}).slug;
       if (!slug) { main.innerHTML = empty('Chưa có video nào'); return; }
       if (!ctx.sub) { history.replaceState(null, '', `#/studio/${encodeURIComponent(slug)}/preview${location.hash.includes('?') ? '?' + location.hash.split('?')[1] : ''}`); ctx.sub = slug; ctx.rest = ['preview']; sidebar(side, ctx, vids); }
