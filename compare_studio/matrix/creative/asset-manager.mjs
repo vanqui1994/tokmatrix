@@ -69,6 +69,24 @@ export function withVariantAssetType(scenes, channel, engineType) {
 }
 
 /**
+ * Variant có `assetProfile.imageStyle` (vd survival/mr-incredible): ảnh AI theo phong cách của variant thay vì Style Bible
+ * của niche — các trường visual_language / prompt_tags / palette / negative_prompt thay cho của kênh, giữ style_id.
+ * Kênh legacy hoặc variant không khai báo: trả channel nguyên vẹn.
+ */
+export function withVariantImageStyle(channel, engineType) {
+  let imageStyle = null;
+  try {
+    imageStyle = channelCreative(channel, engineType)?.variant?.assetProfile?.imageStyle || null;
+  } catch {
+    imageStyle = null;
+  }
+  const base = channel?.resolved_config?.style || channel?.style;
+  if (!imageStyle || !base) return channel;
+  const style = { ...base, ...imageStyle, style_id: base.style_id };
+  return { ...channel, ...(channel.style ? { style } : {}), resolved_config: { ...(channel.resolved_config || {}), style } };
+}
+
+/**
  * Variant "stock-first" (assetProfile.stockVideo, mục 9.3 docs/MATRIX_VARIANT_SYSTEM_V2.md): cảnh IMAGE_AI thử clip stock
  * trước khi xếp hàng ảnh AI. Kênh legacy/variant khác: false.
  */
@@ -149,7 +167,7 @@ export async function prepareSceneAssets({
   if (!/^[a-zA-Z0-9][a-zA-Z0-9_-]{0,127}$/.test(jobId || "")) throw new Error("jobId must be a safe path component");
   const scenes = sceneList(manifest);
   if (!Array.isArray(scenes) || scenes.length === 0) throw new Error("storyboard manifest must contain at least one scene");
-  const visuals = directSceneVisuals({ scenes: withVariantAssetType(scenes, channel, engineType), channel, engineType });
+  const visuals = directSceneVisuals({ scenes: withVariantAssetType(scenes, channel, engineType), channel: withVariantImageStyle(channel, engineType), engineType });
   const needsRenderer = visuals.some((scene) => !["IMAGE_AI", "EXISTING_ASSET"].includes(scene.asset_type));
   if (needsRenderer && typeof artifactRenderer !== "function") {
     throw new Error("non-image scenes require an explicit artifactRenderer; no AI-image fallback is allowed");

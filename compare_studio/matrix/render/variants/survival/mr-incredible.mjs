@@ -279,9 +279,18 @@ const UI = {
   ko: { label: "생존 단계", scene: "단계" },
 };
 
+// Ảnh từng cấp như bản Studio cũ (generate-survival-topic.mjs imagePrompt, video mẫu survival-radiation-exposure-levels-en):
+// minh hoạ khoa học 3D phát sáng neon trên nền đen, chủ thể ở giữa — không theo Style Bible "documentary" của niche.
+export const MR_INCREDIBLE_IMAGE_STYLE = Object.freeze({
+  visual_language: "detailed 3D colorful scientific graphic illustration, vibrant neon glowing colors, holographic medical-scan look, octane render, single subject centered on a clean pure black background",
+  prompt_tags: ["glowing rim light", "high detail", "centered square composition", "dark empty background"],
+  palette: { primary: "pure black background", accent: "neon cyan, magenta and orange glow", text: "none" },
+  negative_prompt: "photograph, realistic photo, people, faces, text, letters, numbers, labels, watermark, cluttered background",
+});
+
 const mrIncredible = defineVariant({
   engine: "survival",
-  asset: IMAGE_ASSET,
+  asset: { ...IMAGE_ASSET, imageStyle: MR_INCREDIBLE_IMAGE_STYLE },
   cost: IMAGE_COST,
   sample: survivalSample,
   id: "survival/mr-incredible",

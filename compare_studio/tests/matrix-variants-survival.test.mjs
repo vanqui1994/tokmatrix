@@ -177,3 +177,24 @@ test("an IMAGE_AI variant on a text engine queues AI images; legacy channels and
   const chalk = { channel_id: "y", creative: { variant_id: "chalk/atlas", dna: defaultDna(getVariant("chalk/atlas"), Object.keys(getVariant("chalk/atlas").visualProfile.compositions)[0]) } };
   assert.equal(withVariantAssetType(scenes, chalk, "chalk"), scenes, "TEXT variants keep their asset type");
 });
+
+test("mr-incredible draws its level images as glowing 3D illustrations on black, not in the niche's documentary style", async () => {
+  const { withVariantImageStyle } = await import("../matrix/creative/asset-manager.mjs");
+  const { compileImagePrompt } = await import("../matrix/creative/prompt-compiler.mjs");
+  const nicheStyle = { style_id: "dark_mystery_v1", visual_language: "cinematic documentary photograph, volumetric fog", prompt_tags: ["film grain"],
+    palette: { primary: "charcoal", accent: "amber", text: "ivory" }, negative_prompt: "gore" };
+  const dna = defaultDna(getVariant(MRI), "legacy");
+  const mri = { channel_id: "x", creative: { variant_id: MRI, dna }, resolved_config: { style: nicheStyle } };
+  const styled = withVariantImageStyle(mri, "survival");
+  const style = styled.resolved_config.style;
+  assert.equal(style.style_id, "dark_mystery_v1", "style_id stays (visual director checks it against the channel)");
+  const prompt = compileImagePrompt({ scene: { asset_type: "IMAGE_AI", visual_intent: "bone marrow cells collapsing" }, style });
+  assert.match(prompt.prompt, /3D colorful scientific graphic illustration/);
+  assert.match(prompt.prompt, /neon/);
+  assert.match(prompt.prompt, /pure black background/);
+  assert.doesNotMatch(prompt.prompt, /cinematic documentary photograph|film grain|charcoal/);
+  assert.match(prompt.negative_prompt, /photograph/);
+  const legacy = { channel_id: "legacy", resolved_config: { style: nicheStyle } };
+  assert.equal(withVariantImageStyle(legacy, "survival"), legacy, "channels without the variant keep their Style Bible");
+  assert.equal(mri.resolved_config.style, nicheStyle, "input channel is not mutated");
+});
