@@ -227,6 +227,9 @@ def kuaishou_profile_url(url: str) -> Optional[str]:
     return f"https://www.kuaishou.com/profile/{m.group(1)}" if m else None
 
 
+FIRST_LOAD_TICKS = 40  # × 1,5 s: chờ danh sách video của profile tải lần đầu
+
+
 async def _ks_capture(url: str, want: int, target: str = "") -> Dict[str, Any]:
     """Mở link trong Chrome Kuaishou, để trang tự gọi /rest/v/* (có chữ ký), cuộn tới khi đủ `want` video."""
     import asyncio
@@ -277,8 +280,13 @@ async def _ks_capture(url: str, want: int, target: str = "") -> Dict[str, Any]:
                     await page.evaluate(_KS_SCROLL)  # profile cuộn trong DIV.wb-content, không phải window
                 except Exception as e:  # noqa: BLE001 — trang đang chuyển hướng/dựng lại: thử lượt sau
                     print(f"[Kuaishou] cuộn: {str(e)[:120]}", flush=True)
-                idle = idle + 1 if len(photos) == before else 0
-                if idle >= 8:  # ~12 s không có video mới
+                # 06/10: profile tải chậm (danh sách video về sau > 12 s) bị bỏ cuộc trước khi có video nào → "không có video".
+                # Chỉ đếm "không có video mới" sau khi đã có video; lần tải đầu chờ tối đa FIRST_LOAD_TICKS (~60 s).
+                if photos:
+                    idle = idle + 1 if len(photos) == before else 0
+                    if idle >= 8:  # ~12 s không có video mới
+                        break
+                elif _ >= FIRST_LOAD_TICKS:
                     break
             # trang một video: video đó nằm trong __APOLLO_STATE__ (SSR); graphql sau đó chỉ là video gợi ý
             for ph in _ks_photos(await page.evaluate("window.__APOLLO_STATE__ || null")):
