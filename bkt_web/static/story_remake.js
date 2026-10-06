@@ -372,7 +372,7 @@ function storySourcesMount() {
       <label><input type="checkbox" id="ss-only"> Chỉ tài khoản có nguồn</label>
       <span class="ss-sum" id="ss-sum"></span>
     </div>
-    <div class="ss-wrap"><table><thead><tr><th>Tài khoản</th><th>Nước</th><th>Đang chạy Autopilot</th><th>Loại</th><th>Link kênh YouTube / profile Kuaishou</th><th>Video/lượt</th><th title="Dịch lời kể sang ngôn ngữ tài khoản, đọc lại bằng giọng tài khoản, vẽ nhân vật theo nước tài khoản">Dịch</th><th></th></tr></thead><tbody id="ss-body"></tbody></table></div>
+    <div class="ss-wrap"><table><thead><tr><th>Tài khoản</th><th>Nước</th><th>Đang chạy Autopilot</th><th>Loại</th><th>Link kênh YouTube / profile Kuaishou</th><th>Video/lượt</th><th title="YouTube: dịch lời kể sang ngôn ngữ tài khoản, đọc lại bằng giọng tài khoản, vẽ nhân vật theo nước tài khoản">Dịch</th><th title="Kuaishou: remake bằng hoạt hình vector (lời dẫn viết lại theo ngôn ngữ tài khoản) thay vì Muse">Vector</th><th></th></tr></thead><tbody id="ss-body"></tbody></table></div>
     <div class="ss-foot">
       <textarea id="ss-bulk" placeholder="Dán hàng loạt, mỗi dòng: tên tài khoản | link | số video | dịch (tuỳ chọn)&#10;vd: geschichten_de1 | https://www.youtube.com/@kanal | 3&#10;vd: japan_acc | https://www.youtube.com/@kanal_de | 3 | dịch"></textarea>
       <div style="display:flex;flex-direction:column;gap:6px">
@@ -399,7 +399,7 @@ async function storySrcLoad() {
   try {
     storySrc.rows = (await storyJson('/api/story-remake/sources')).accounts || [];
     storySrc.dirty = {};
-  } catch (e) { document.getElementById('ss-body').innerHTML = `<tr><td colspan="8" class="ss-err">${escapeHtml(e.message)}</td></tr>`; return; }
+  } catch (e) { document.getElementById('ss-body').innerHTML = `<tr><td colspan="9" class="ss-err">${escapeHtml(e.message)}</td></tr>`; return; }
   storySrcRender();
 }
 
@@ -416,7 +416,7 @@ function storySrcRender() {
   document.getElementById('ss-sum').textContent = `YouTube ${n.youtube} · Kuaishou ${n.kuaishou} · ${storySrc.rows.length} tài khoản` + (Object.keys(storySrc.dirty).length ? ` · ${Object.keys(storySrc.dirty).length} chưa lưu` : '');
   body.innerHTML = view.map((r) => {
     const d = storySrc.dirty[r.id] || {};
-    const url = d.url ?? r.url, per = d.per_day ?? r.per_day, tr = d.translate ?? r.translate;
+    const url = d.url ?? r.url, per = d.per_day ?? r.per_day, tr = d.translate ?? r.translate, vec = d.vector ?? r.vector;
     const kind = storySrcKindHtml(storySrcKind(url));
     return `<tr class="${storySrc.dirty[r.id] ? 'is-dirty' : ''}"><td><strong>${escapeHtml(r.name)}</strong>${r.status && r.status !== 'CHƯA BKT' && r.status !== 'BKT' ? ` <span class="ss-err">${escapeHtml(r.status)}</span>` : ''}</td>
       <td>${escapeHtml(r.language)}</td>
@@ -425,8 +425,9 @@ function storySrcRender() {
       <td><input class="ss-url" value="${escapeHtml(url)}" placeholder="https://www.youtube.com/@kenh hoặc https://www.kuaishou.com/profile/…" oninput="storySrcEdit(${r.id}, 'url', this.value, this)"></td>
       <td><input class="ss-n" type="number" min="1" max="20" value="${per}" oninput="storySrcEdit(${r.id}, 'per_day', Number(this.value) || 1, this)"></td>
       <td><input type="checkbox" ${tr ? 'checked' : ''} title="Dịch sang ${escapeHtml(r.language)}" onchange="storySrcEdit(${r.id}, 'translate', this.checked, this)"></td>
+      <td><input type="checkbox" ${vec ? 'checked' : ''} title="Kuaishou → vector" onchange="storySrcEdit(${r.id}, 'vector', this.checked, this)"></td>
       <td>${d.error ? `<span class="ss-err">${escapeHtml(d.error)}</span>` : ''}</td></tr>`;
-  }).join('') || '<tr><td colspan="8" style="text-align:center;color:#667085;padding:20px">Không có tài khoản khớp bộ lọc.</td></tr>';
+  }).join('') || '<tr><td colspan="9" style="text-align:center;color:#667085;padding:20px">Không có tài khoản khớp bộ lọc.</td></tr>';
 }
 
 function storySrcKindHtml(k) {
@@ -437,10 +438,10 @@ function storySrcKindHtml(k) {
 function storySrcEdit(id, field, value, el) {
   // chỉ cập nhật dòng đang sửa (vẽ lại cả bảng làm mất con trỏ trong ô)
   const r = storySrc.rows.find((x) => x.id === id);
-  const d = storySrc.dirty[id] || { url: r.url, per_day: r.per_day, translate: !!r.translate };
+  const d = storySrc.dirty[id] || { url: r.url, per_day: r.per_day, translate: !!r.translate, vector: !!r.vector };
   d[field] = field === 'url' ? value.trim() : value;
   delete d.error;
-  if (d.url === r.url && d.per_day === r.per_day && d.translate === !!r.translate) delete storySrc.dirty[id]; else storySrc.dirty[id] = d;
+  if (d.url === r.url && d.per_day === r.per_day && d.translate === !!r.translate && d.vector === !!r.vector) delete storySrc.dirty[id]; else storySrc.dirty[id] = d;
   const tr = el && el.closest('tr');
   if (tr) {
     tr.classList.toggle('is-dirty', !!storySrc.dirty[id]);
@@ -456,17 +457,17 @@ function storySrcBulk() {
   const lines = document.getElementById('ss-bulk').value.split('\n').map((l) => l.trim()).filter(Boolean);
   const miss = [];
   lines.forEach((line) => {
-    const [name, url, n, tr] = line.split(/\s*[|\t]\s*/);
+    const [name, url, n, tr, vec] = line.split(/\s*[|\t]\s*/);
     const r = storySrc.rows.find((x) => x.name.toLowerCase() === (name || '').replace(/^@/, '').toLowerCase());
     if (!r) { miss.push(name); return; }
-    storySrc.dirty[r.id] = { url: (url || '').trim(), per_day: Number(n) || r.per_day, translate: /^(dịch|dich|translate|1|y|yes)$/i.test((tr || '').trim()) };
+    storySrc.dirty[r.id] = { url: (url || '').trim(), per_day: Number(n) || r.per_day, translate: /^(dịch|dich|translate|1|y|yes)$/i.test((tr || '').trim()), vector: /vector/i.test(`${tr || ''} ${vec || ''}`) };
   });
   storySrcRender();
   if (miss.length) alert(`Không tìm thấy ${miss.length} tài khoản: ${miss.slice(0, 10).join(', ')}`);
 }
 
 async function storySrcSave() {
-  const items = Object.entries(storySrc.dirty).map(([id, d]) => ({ account_id: Number(id), url: d.url || '', per_day: d.per_day || 3, translate: !!d.translate }));
+  const items = Object.entries(storySrc.dirty).map(([id, d]) => ({ account_id: Number(id), url: d.url || '', per_day: d.per_day || 3, translate: !!d.translate, vector: !!d.vector }));
   if (!items.length) { alert('Chưa có thay đổi'); return; }
   const bad = items.filter((i) => storySrcKind(i.url) === '?');
   if (bad.length) { alert(`${bad.length} dòng có link không phải YouTube/Kuaishou`); return; }

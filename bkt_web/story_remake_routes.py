@@ -194,6 +194,12 @@ def start_watch() -> None:
         return
     _watch_started = True
     threading.Thread(target=_watch_loop, name="story-remake-watch", daemon=True).start()
+    if os.environ.get("TOKMATRIX_KUAISHOU_VECTOR", "1") != "0":
+        try:
+            from bkt_web import kuaishou_vector
+            kuaishou_vector.start()
+        except Exception as exc:  # noqa: BLE001 — không chặn Story Remake
+            print(f"[kuaishou-vector] start: {exc}")
 
 
 def _runner() -> Dict[str, Any]:
@@ -417,6 +423,8 @@ class SourceRow(BaseModel):
     url: str = Field("", max_length=300)
     per_day: int = Field(3, ge=1, le=20)
     translate: bool = False  # YouTube: dịch lời kể sang ngôn ngữ tài khoản + vẽ nhân vật theo nước tài khoản
+    vector: bool = False  # Kuaishou: remake bằng hoạt hình vector (kuaishou_vector) thay vì Muse
+    matrix_channel_id: str = Field("", max_length=80)  # vector: kênh Matrix cho tài khoản đã rời Autopilot
 
 
 class SourceRows(BaseModel):
@@ -445,20 +453,23 @@ def _autopilot_niches() -> Dict[int, str]:
 @router.get("/sources")
 def sources_by_account():
     from bkt_web import muse_remake
+    from bkt_web import kuaishou_vector
     watch = {c["account_id"]: c for c in _watch_load()["channels"] if c.get("account_id")}
     ks = {s["channel_id"]: s for s in muse_remake.sources()}
+    kv = {s["channel_id"]: s for s in kuaishou_vector.sources()}
     niches = _autopilot_niches()
     with sqlite3.connect(str(CHANNELS_DB), timeout=30) as c:
         rows = c.execute("SELECT id, username, country, status FROM channels ORDER BY username").fetchall()
     out = []
     for cid, name, country, status in rows:
-        y, k = watch.get(cid), ks.get(cid)
+        y, k = watch.get(cid), ks.get(cid) or kv.get(cid)
         out.append({"id": cid, "name": name or f"#{cid}", "country": country or "", "status": status or "",
                     "language": _account_language(cid)["language"], "autopilot_niche": niches.get(cid, ""),
                     "kind": "youtube" if y else ("kuaishou" if k else ""),
                     "url": (y or {}).get("url") or (k or {}).get("profile_url") or "",
                     "per_day": (y or {}).get("limit") or (k or {}).get("per_day") or 3,
                     "translate": bool((y or {}).get("translate_to")),
+                    "vector": cid in kv,
                     "enabled": bool((y or {}).get("enabled", True) if y else (k or {}).get("enabled", 1)),
                     "last_run": (y or {}).get("last_run") or 0, "counts": (k or {}).get("counts") or {}})
     return {"accounts": out}
@@ -471,12 +482,18 @@ def _set_source(row: SourceRow, data: Dict[str, Any]) -> str:
     url = shorts_url(row.url) if kind == "youtube" else row.url.strip()
     acc = row.account_id
     old_y = next((c for c in data["channels"] if c.get("account_id") == acc), None)
+    from bkt_web import kuaishou_vector
     old_k = next((s for s in muse_remake.sources() if s["channel_id"] == acc), None)
+    old_v = next((s for s in kuaishou_vector.sources() if s["channel_id"] == acc), None)
+    want_v = kind == "kuaishou" and row.vector
+    if old_v and not (want_v and old_v["profile_url"] == muse_remake.multi_downloader.kuaishou_profile_url(url)):
+        kuaishou_vector.delete_source(old_v["id"])
+        old_v = None
     if kind == "youtube":
         other = next((c for c in data["channels"] if c["url"] == url and c.get("account_id") != acc), None)
         if other:
             raise ValueError("Kênh YouTube này đã gán cho tài khoản khác (một kênh ↔ một tài khoản)")
-    if old_k and not (kind == "kuaishou" and old_k["profile_url"] == muse_remake.multi_downloader.kuaishou_profile_url(url)):
+    if old_k and not (kind == "kuaishou" and not row.vector and old_k["profile_url"] == muse_remake.multi_downloader.kuaishou_profile_url(url)):
         muse_remake.delete_source(old_k["id"])
         old_k = None
     if old_y and not (kind == "youtube" and old_y["url"] == url):
@@ -490,6 +507,12 @@ def _set_source(row: SourceRow, data: Dict[str, Any]) -> str:
         else:
             data["channels"].append({"url": url, "limit": row.per_day, "lang": "auto", "images": "imagerouter", "enabled": True,
                                      "account_id": acc, "added": int(time.time()), "last_run": 0, "translate_to": translate_to})
+    elif want_v:
+        if old_v:
+            kuaishou_vector.update_source(old_v["id"], per_day=min(row.per_day, 10))
+        else:
+            kuaishou_vector.add_source(url, acc, min(row.per_day, 10), row.matrix_channel_id)
+        return "kuaishou_vector"
     elif kind == "kuaishou":
         if old_k:
             muse_remake.update_source(old_k["id"], per_day=min(row.per_day, 10))
