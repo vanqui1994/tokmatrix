@@ -21,7 +21,7 @@ ON_VPS = str(REPO) == "/opt/tokmatrix"
 HF = os.environ.get("HYPERFRAMES_BIN") or str((Path("/opt/tokmatrix") if ON_VPS else Path.home()) / ".npm/_npx/7b0dd3f84959b546/node_modules/.bin/hyperframes")
 VPS = os.environ.get("STORY_REMAKE_VPS", "tokmatrix")
 YTDLP = str(REPO / "venv" / "bin" / "yt-dlp") if ON_VPS else "yt-dlp"
-PROXY = {"url": None}  # socks5 của tunnel NordVPN riêng (VPS: YouTube chặn IP datacenter)
+PROXY = {"url": None, "conf": None, "country": "Germany", "bad": set()}  # socks5 của tunnel NordVPN riêng (VPS: YouTube chặn IP datacenter)
 
 
 def open_tunnel(country="Germany"):
@@ -33,22 +33,42 @@ def open_tunnel(country="Germany"):
     import sqlite3, vpn_manager
     used = {r[0] for r in sqlite3.connect(str(REPO / "bkt_web" / "bkt_channels.db")).execute("select vpn_config from channels where vpn_config!=''")}
     base = REPO / "bkt_web" / "vpn_configs"
+    PROXY["country"] = country
     for conf in sorted(base.glob(f"NordVPN_{country}/**/*.conf"), reverse=True):
         rel = str(conf.relative_to(base))
-        if rel in used:
+        if rel in used or rel in PROXY["bad"]:
             continue
         try:
             r = vpn_manager.start_verified_wireguard_proxy("story_remake", rel)
-            PROXY["url"] = r["socks5_url"]
+            PROXY["url"], PROXY["conf"] = r["socks5_url"], rel
             return vpn_manager
         except Exception as e:
+            PROXY["bad"].add(rel)  # server chết: lượt sau không thử lại
             print(f"tunnel {rel}: {e}", flush=True)
     raise RuntimeError("không mở được tunnel NordVPN cho yt-dlp")
 
 
+# lỗi do IP/tunnel (YouTube bắt "not a bot", tunnel rớt): đổi sang config NordVPN khác rồi thử lại
+NET_ERRORS = re.compile(r"not a bot|Connection refused|timed out|Unable to download API page|HTTP Error 429|Socks|TransportError", re.I)
+YTDLP_TRIES = 3
+
+
 def ytdlp(*args):
-    extra = ["--js-runtimes", "node"] + (["--proxy", PROXY["url"]] if PROXY["url"] else [])
-    return sh([YTDLP, *extra, *args])
+    for attempt in range(YTDLP_TRIES):
+        extra = ["--js-runtimes", "node"] + (["--proxy", PROXY["url"]] if PROXY["url"] else [])
+        r = subprocess.run([YTDLP, *extra, *args], capture_output=True, text=True)
+        if r.returncode == 0:
+            return r.stdout
+        err = " ".join(l for l in (r.stderr or "").splitlines() if "ERROR" in l) or (r.stderr or "").strip()[-400:]
+        if PROXY["url"] and NET_ERRORS.search(r.stderr or "") and attempt + 1 < YTDLP_TRIES:
+            print(f"yt-dlp qua {PROXY['conf']} lỗi ({err[:200]}), đổi tunnel", flush=True)
+            PROXY["bad"].add(PROXY["conf"])
+            import vpn_manager
+            vpn_manager.stop_wireguard_proxy("story_remake")
+            PROXY["url"] = None
+            open_tunnel(PROXY["country"])
+            continue
+        raise RuntimeError(f"yt-dlp lỗi: {err[:600]}")
 sys.path.insert(0, str(REPO))
 
 STYLE = ("Cinematic film still, photorealistic, 35mm anamorphic lens, shallow depth of field, moody dramatic lighting, "
@@ -76,7 +96,7 @@ def list_channel(url, limit):
     for u in urls:
         try:
             data = json.loads(ytdlp("--flat-playlist", "-J", "--playlist-end", str(max(limit * 3, LIST_DEPTH)), u))
-        except subprocess.CalledProcessError:
+        except (subprocess.CalledProcessError, RuntimeError):
             continue
         for e in data.get("entries") or []:
             if e.get("id") and (e.get("duration") or 60) <= 600:
@@ -100,7 +120,7 @@ def fetch(item, work):
     ytdlp("-q", "-f", "bestaudio", "-x", "--audio-format", "mp3", "--audio-quality", "2", "-o", str(work / "vo.%(ext)s"), src)
     try:
         ytdlp("-q", "-f", "worst[ext=mp4]/worst", "-o", str(work / "source.%(ext)s"), src)
-    except subprocess.CalledProcessError:
+    except (subprocess.CalledProcessError, RuntimeError):
         pass
 
 
@@ -117,11 +137,14 @@ def transcribe(work, lang, audio="vo.mp3", cache="words.json"):
     return json.loads(f.read_text())
 
 
+MIN_WORDS = 5
+
+
 def is_story(words, duration):
-    """Giọng kể liên tục: ≥ 1,6 từ/giây trên ≥ 70% thời lượng, dài 30 s–10 phút."""
-    if not words or duration < 30 or duration > 600:
-        return False
-    return len(words) / duration >= 1.6 and (words[-1][1] - words[0][0]) / duration >= 0.7
+    """Owner 06/10: làm hết, không lọc theo độ dài hay mật độ lời (bộ lọc ≥ 1,6 từ/giây bỏ 90/92 Shorts tiếng Hàn: Whisper
+    tách tiếng Hàn theo cụm 어절 nên lời kể bình thường chỉ 0,4–1,3 "từ"/giây). Chỉ bỏ video gần như không có lời:
+    không có câu thì không chia được cảnh, không có phụ đề."""
+    return len(words or []) >= MIN_WORDS and duration > 0
 
 
 CJK = re.compile(r"[\u3040-\u30ff\u3400-\u9fff\uac00-\ud7af\uff00-\uffef]")
@@ -606,6 +629,8 @@ def remake(item, lang="auto"):
     vid = item["id"]; work = ROOT / vid; work.mkdir(parents=True, exist_ok=True)
     state_f = work / "state.json"
     state = json.loads(state_f.read_text()) if state_f.exists() else {"id": vid, "url": item["url"], "title": item.get("title", "")}
+    if state.get("status") == "skipped" and str(state.get("reason", "")).startswith("không phải story"):
+        state.pop("status"); state.pop("reason", None)  # bỏ qua theo bộ lọc cũ (trước 06/10) → làm lại
     if state.get("status") in ("done", "skipped") or state.get("attempts", 0) >= MAX_ATTEMPTS:
         return {**state, "cached": True}  # đã làm (hoặc lỗi quá MAX_ATTEMPTS lần) ở lượt trước: không tính vào hạn mức lượt này
     if os.environ.get("STORY_REMAKE_ACCOUNT") and not state.get("account_id"):
@@ -621,7 +646,7 @@ def remake(item, lang="auto"):
             odur = float(sh(["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", str(work / "orig_vo.mp3")]).strip())
             otr = transcribe(work, "auto", audio="orig_vo.mp3", cache="orig_words.json")
             if not is_story(otr["words"], odur):
-                state.update(status="skipped", reason=f"không phải story ({len(otr['words'])} từ / {odur:.0f}s)"); state_f.write_text(json.dumps(state, ensure_ascii=False, indent=1)); log(vid, state["reason"]); return state
+                state.update(status="skipped", reason=f"gần như không có lời ({len(otr['words'])} từ / {odur:.0f}s)"); state_f.write_text(json.dumps(state, ensure_ascii=False, indent=1)); log(vid, state["reason"]); return state
             if otr["lang"] == target:
                 raise RuntimeError(f"nguồn đã là tiếng {target}, không cần dịch")
             translate_voice(vid, work, target, otr["lang"])
@@ -629,7 +654,7 @@ def remake(item, lang="auto"):
         dur = float(sh(["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", str(work / "vo.mp3")]).strip())
         tr = transcribe(work, lang); words = tr["words"]
         if not is_story(words, dur):
-            state.update(status="skipped", reason=f"không phải story ({len(words)} từ / {dur:.0f}s)"); state_f.write_text(json.dumps(state, ensure_ascii=False, indent=1)); log(vid, state["reason"]); return state
+            state.update(status="skipped", reason=f"gần như không có lời ({len(words)} từ / {dur:.0f}s)"); state_f.write_text(json.dumps(state, ensure_ascii=False, indent=1)); log(vid, state["reason"]); return state
         log(vid, f"{len(words)} từ, ngôn ngữ {tr['lang']}")
         plan = direct(vid, work, words, tr["lang"], LOCALE_LOOK.get(target, "") if target else ""); log(vid, f"{len(plan['scenes'])} cảnh ({plan['director']})")
         draw(vid, work, image_prompts(plan)); log(vid, "ảnh xong")

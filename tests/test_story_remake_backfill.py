@@ -93,3 +93,23 @@ class TranslateModeTest(unittest.TestCase):
         patch.object(tool, "ask_gemini", lambda p: got.append(p) or json.dumps({"cast": [], "scenes": [{"start": 0}]})).start()
         tool.direct("v2", work, [[0, 1, "母は"], [1, 2, "嘘。"]], "ja", tool.LOCALE_LOOK["ja"])
         self.assertIn("present-day Japan", got[0])
+
+
+class NoStoryFilterTest(unittest.TestCase):
+    """Owner 06/10: làm hết — chỉ bỏ video gần như không có lời; video bị bộ lọc cũ bỏ qua được làm lại."""
+
+    def test_sparse_korean_and_short_videos_are_made(self):
+        ko = [[i * 1.0, i * 1.0 + 0.8, "단어"] for i in range(20)]  # 20 cụm / 45 s ≈ 0,44 "từ"/giây
+        self.assertTrue(tool.is_story(ko, 45))
+        self.assertTrue(tool.is_story([[0, 1, "a"]] * 6, 12))  # Shorts dưới 30 s
+        self.assertFalse(tool.is_story([[0, 1, "la"]] * 3, 40))  # gần như không có lời
+
+    def test_old_filter_skips_are_redone(self):
+        tmp = Path(tempfile.mkdtemp())
+        with patch.object(tool, "ROOT", tmp), patch.object(tool, "fetch", side_effect=RuntimeError("đã vào lại pipeline")):
+            (tmp / "k1").mkdir()
+            (tmp / "k1" / "state.json").write_text(json.dumps({"id": "k1", "status": "skipped", "reason": "không phải story (20 từ / 45s)"}))
+            (tmp / "k2").mkdir()
+            (tmp / "k2" / "state.json").write_text(json.dumps({"id": "k2", "status": "skipped", "reason": "gần như không có lời (2 từ / 40s)"}))
+            self.assertEqual(tool.remake({"id": "k1", "url": "u"})["status"], "error")  # chạy lại, không trả cached
+            self.assertTrue(tool.remake({"id": "k2", "url": "u"}).get("cached"))
