@@ -17,7 +17,7 @@
 
   async function ksVideos(el, ctx) {
     const src = ctx.params.source || '';
-    const t = dataTable(el, { rows: [], pageSize: 30, columns: [
+    const t = dataTable(el, { pageSize: 30, columns: [
       { key: 'title', label: 'Video', render: (v) => `<div class="d-flex gap-2 align-items-center">${v.cover ? `<img src="${esc(v.cover)}" alt="" width="40" height="70" class="rounded object-fit-cover" loading="lazy" referrerpolicy="no-referrer">` : ''}
         <span><span class="text-truncate-2">${esc(v.new_title || v.title || v.ks_id)}</span><span class="cell-sub">${esc(v.language)} · ${fmt.dur(v.duration)} · nguồn #${v.source_id}</span></span></div>` },
       { key: 'status', label: 'Trạng thái', render: (v) => `${badge(v.status)}${v.step ? `<span class="cell-sub">${esc(v.step)}</span>` : ''}${v.error ? `<span class="cell-sub text-danger" title="${esc(v.error)}">${esc(fmt.short(v.error, 80))}</span>` : ''}` },

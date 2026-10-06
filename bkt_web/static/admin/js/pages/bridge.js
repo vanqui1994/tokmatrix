@@ -41,7 +41,7 @@
     el.append(head);
     const box = card({ title: 'Hàng đợi kịch bản', icon: 'file-earmark-text', tools: `<button class="btn btn-sm btn-outline-secondary" data-action="clear"><i class="bi bi-trash3 me-1"></i>Dọn task xong</button>` });
     el.append(box);
-    const t = dataTable(box.querySelector('.card-body'), { rows: [], pageSize: 30, columns: [
+    const t = dataTable(box.querySelector('.card-body'), { pageSize: 30, columns: [
       { key: 'id', label: 'Task', render: (x) => `<span class="mono small">${esc(fmt.short(x.id, 14))}</span><span class="cell-sub">${esc(x.video_type)} · ${esc(x.lang)}</span>` },
       { key: 'prompt', label: 'Yêu cầu', render: (x) => `<span class="text-truncate-2" style="max-width:420px">${esc(x.prompt || x.notes || '')}</span>` },
       { key: 'status', label: 'Trạng thái', render: (x) => `${badge(x.status)}${x.worker_id ? `<span class="cell-sub">${esc(x.worker_id)}</span>` : ''}${x.error_message ? `<span class="cell-sub text-danger">${esc(fmt.short(x.error_message, 80))}</span>` : ''}` },

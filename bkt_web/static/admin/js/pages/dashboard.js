@@ -15,10 +15,10 @@
       const d = sum.data;
       ctx.el.innerHTML = `
         <div class="row">
-          <div class="col-lg-3 col-6">${statBox({ value: fmt.num(d.channels.total), label: `Kênh TikTok · ${fmt.num(d.channels.monetized)} đã bật kiếm tiền`, icon: 'people', tone: 'primary', href: '#/channels' })}</div>
-          <div class="col-lg-3 col-6">${statBox({ value: fmt.num(d.upload.queued), label: `Bài chờ đăng · ${fmt.num(d.upload.uploading)} đang đăng`, icon: 'calendar2-week', tone: 'warning', href: '#/upload' })}</div>
-          <div class="col-lg-3 col-6">${statBox({ value: fmt.num(d.upload.success), label: `Đã đăng · ${fmt.num(d.upload.failed)} lỗi · ${fmt.num(d.upload.needs_check || 0)} cần kiểm tra`, icon: 'check2-circle', tone: 'success', href: '#/upload?status=SUCCESS' })}</div>
-          <div class="col-lg-3 col-6">${statBox({ value: fmt.num(d.images.pending + d.images.processing), label: `Ảnh AI đang chờ · ${fmt.num(d.images.failed)} lỗi`, icon: 'images', tone: 'info', href: '#/ai-images' })}</div>
+          <div class="col-lg-3 col-6">${statBox({ value: fmt.num(d.channels.total), label: 'Kênh TikTok', sub: `${fmt.num(d.channels.monetized)} đã bật kiếm tiền`, icon: 'people', tone: 'primary', href: '#/channels' })}</div>
+          <div class="col-lg-3 col-6">${statBox({ value: fmt.num(d.upload.queued), label: 'Bài chờ đăng', sub: `${fmt.num(d.upload.uploading)} đang đăng`, icon: 'calendar2-week', tone: 'warning', href: '#/upload' })}</div>
+          <div class="col-lg-3 col-6">${statBox({ value: fmt.num(d.upload.success), label: 'Đã đăng', sub: `${fmt.num(d.upload.failed)} lỗi · ${fmt.num(d.upload.needs_check || 0)} cần kiểm tra`, icon: 'check2-circle', tone: 'success', href: '#/upload?status=SUCCESS' })}</div>
+          <div class="col-lg-3 col-6">${statBox({ value: fmt.num(d.images.pending + d.images.processing), label: 'Ảnh AI đang chờ', sub: `${fmt.num(d.images.failed)} lỗi`, icon: 'images', tone: 'info', href: '#/ai-images' })}</div>
         </div>
         <div class="row">
           <div class="col-lg-8" data-slot="chart"></div>
@@ -49,7 +49,7 @@
               { label: 'Follower', data: hist.days.map((x) => x.followers), borderColor: style.getPropertyValue('--bs-primary'), tension: .3, yAxisID: 'y1' },
             ],
           },
-          options: { maintainAspectRatio: false, interaction: { mode: 'index', intersect: false }, scales: { y1: { position: 'right', grid: { drawOnChartArea: false } } } },
+          options: { maintainAspectRatio: false, interaction: { mode: 'index', intersect: false }, scales: { y: { beginAtZero: true, suggestedMax: 1, ticks: { precision: 0 } }, y1: { position: 'right', beginAtZero: true, ticks: { precision: 0 }, grid: { drawOnChartArea: false } } } },
         });
         ctx.onLeave(() => chart.destroy());
       }

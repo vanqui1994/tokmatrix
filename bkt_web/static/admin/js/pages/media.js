@@ -18,7 +18,7 @@
       ctx.el.append(form);
       const box = card({ title: 'Video đã tải', icon: 'collection-play' });
       ctx.el.append(box);
-      const t = dataTable(box.querySelector('.card-body'), { rows: [], pageSize: 30, columns: [
+      const t = dataTable(box.querySelector('.card-body'), { pageSize: 30, columns: [
         { key: 'title', label: 'Video', render: (v) => `<div class="d-flex gap-2 align-items-center">${v.cover_url ? `<img src="${esc(v.cover_url)}" width="40" height="70" class="rounded object-fit-cover" loading="lazy" alt="" referrerpolicy="no-referrer">` : ''}
           <span><span class="text-truncate-2">${esc(v.title || v.original_url)}</span><span class="cell-sub">${esc(v.platform)} · ${esc(v.author || '')} · ${fmt.dur(v.duration)} · ${fmt.bytes(v.file_size)}</span></span></div>` },
         { key: 'status', label: 'Trạng thái', render: (v) => badge(v.status) },
@@ -60,7 +60,7 @@
       ctx.el.innerHTML = '';
       const box = card({ title: 'Tác vụ biên tập', icon: 'magic', tools: `<button class="btn btn-sm btn-primary" data-action="new"><i class="bi bi-plus-lg me-1"></i>Biên tập video</button>` });
       ctx.el.append(box);
-      const t = dataTable(box.querySelector('.card-body'), { rows: [], pageSize: 30, columns: [
+      const t = dataTable(box.querySelector('.card-body'), { pageSize: 30, columns: [
         { key: 'title', label: 'Tác vụ', render: (x) => `${esc(x.title)}<span class="cell-sub">${x.flip ? 'lật · ' : ''}x${x.speed} · cắt ${x.crop_percent}%${x.color_adjust ? ' · màu' : ''}</span>` },
         { key: 'status', label: 'Trạng thái', render: (x) => `${badge(x.status)}${x.status === 'PROCESSING' ? `<div class="progress mt-1" style="height:4px"><div class="progress-bar" style="width:${x.progress || 0}%"></div></div>` : ''}${x.error_message ? `<span class="cell-sub text-danger">${esc(fmt.short(x.error_message, 80))}</span>` : ''}` },
         { key: 'created_at', label: 'Tạo lúc', render: (x) => fmt.time(x.created_at) },

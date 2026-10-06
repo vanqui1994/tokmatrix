@@ -62,7 +62,24 @@
     constructor(status, message, data) { super(message); this.status = status; this.data = data; }
   }
 
+  // Thanh tiến trình trên cùng: hiện khi có request đang chạy quá 150 ms (request nhanh không nháy).
+  let inflight = 0, barTimer = null, background = 0; // background > 0: đang chạy poll/huy hiệu, không hiện thanh
+  function busy(delta) {
+    inflight = Math.max(0, inflight + delta);
+    const bar = document.getElementById('top-progress');
+    if (!bar) return;
+    clearTimeout(barTimer);
+    if (inflight) barTimer = setTimeout(() => bar.classList.add('on'), 150);
+    else { bar.classList.remove('on'); }
+  }
+
   async function request(method, path, body, opts = {}) {
+    if (opts.quiet || background) return requestRaw(method, path, body, opts);
+    busy(1);
+    try { return await requestRaw(method, path, body, opts); } finally { busy(-1); }
+  }
+
+  async function requestRaw(method, path, body, opts = {}) {
     const init = { method, headers: { Accept: 'application/json' }, credentials: 'same-origin', signal: opts.signal };
     if (body instanceof FormData) init.body = body;
     else if (body !== undefined) { init.headers['Content-Type'] = 'application/json'; init.body = JSON.stringify(body); }
@@ -217,9 +234,9 @@
   const badge = (s, label) => `<span class="badge text-bg-${statusTone(s)}">${esc(label ?? STATUS_LABEL[s] ?? s ?? '—')}</span>`;
 
   /** Ô số liệu kiểu AdminLTE small-box. */
-  const statBox = ({ value, label, icon = 'bar-chart', tone = 'primary', href }) => `
+  const statBox = ({ value, label, sub = '', icon = 'bar-chart', tone = 'primary', href }) => `
     <div class="small-box text-bg-${tone}">
-      <div class="inner"><h3>${esc(value)}</h3><p>${esc(label)}</p></div>
+      <div class="inner"><h3>${esc(value)}</h3><p class="mb-0">${esc(label)}</p><div class="small-box-sub">${esc(sub) || '&nbsp;'}</div></div>
       <i class="small-box-icon bi bi-${icon}"></i>
       ${href ? `<a href="${href}" class="small-box-footer link-light link-underline-opacity-0">Xem chi tiết <i class="bi bi-arrow-right-circle"></i></a>` : ''}
     </div>`;
@@ -239,14 +256,20 @@
   const empty = (text = 'Chưa có dữ liệu', icon = 'inbox') =>
     `<div class="text-center text-body-secondary py-5"><i class="bi bi-${icon} fs-1 d-block mb-2 opacity-50"></i>${esc(text)}</div>`;
   const spinner = (text = 'Đang tải…') =>
-    `<div class="text-center text-body-secondary py-5"><div class="spinner-border spinner-border-sm me-2"></div>${esc(text)}</div>`;
+    `<div class="page-spinner text-center text-body-secondary py-5"><div class="spinner-border spinner-border-sm me-2"></div>${esc(text)}</div>`;
+  /** Lớp phủ đang tải trên một card (AdminLTE .overlay) — trả hàm gỡ. */
+  function cardLoading(cardEl, text = '') {
+    const o = h(`<div class="overlay"><div class="text-center"><div class="spinner-border text-primary"></div>${text ? `<div class="small mt-2">${esc(text)}</div>` : ''}</div></div>`);
+    cardEl.append(o);
+    return () => o.remove();
+  }
 
   /**
    * Bảng dữ liệu có ô tìm kiếm, sắp xếp, phân trang phía client.
    * columns: [{key, label, render(row) → HTML, sort(row) → giá trị, cls, width}]
    */
-  function dataTable(container, { columns, rows = [], pageSize = 25, search = true, empty: emptyText = 'Không có dòng nào', rowKey, toolbar = '', onRender }) {
-    const state = { q: '', sortKey: null, dir: 1, page: 0, rows };
+  function dataTable(container, { columns, rows, pageSize = 25, search = true, empty: emptyText = 'Không có dòng nào', rowKey, toolbar = '', onRender }) {
+    const state = { q: '', sortKey: null, dir: 1, page: 0, rows: rows || [], loading: rows === undefined };
     container.innerHTML = `
       <div class="d-flex flex-wrap gap-2 align-items-center mb-2">
         ${search ? `<div class="input-group input-group-sm" style="max-width:280px"><span class="input-group-text"><i class="bi bi-search"></i></span>
@@ -275,6 +298,11 @@
       return list;
     }
     function render() {
+      if (state.loading) {
+        tbody.innerHTML = Array.from({ length: 6 }, () => `<tr class="skeleton-row">${columns.map(() => '<td><span class="skeleton"></span></td>').join('')}</tr>`).join('');
+        foot.innerHTML = '<span><span class="spinner-border spinner-border-sm me-1"></span>Đang tải…</span>';
+        return;
+      }
       const list = view();
       const pages = Math.max(1, Math.ceil(list.length / pageSize));
       state.page = Math.min(state.page, pages - 1);
@@ -302,7 +330,8 @@
     foot.addEventListener('click', (e) => { const b = e.target.closest('[data-p]'); if (b) { state.page += Number(b.dataset.p); render(); } });
     render();
     return {
-      setRows(r) { state.rows = r || []; render(); },
+      setRows(r) { state.rows = r || []; state.loading = false; render(); },
+      setLoading(v = true) { state.loading = v; render(); },
       get rows() { return state.rows; },
       toolbar: $('[data-dt-toolbar]', container),
       refresh: render,
@@ -318,9 +347,22 @@
       if (!fn) return;
       ev.preventDefault();
       if (el.disabled) return;
-      const busy = el.tagName === 'BUTTON';
-      if (busy) el.disabled = true;
-      try { await fn(el, ev); } catch (e) { notifyError(e); } finally { if (busy && el.isConnected) el.disabled = false; }
+      const isBtn = el.tagName === 'BUTTON';
+      let icon = null, timer = null;
+      if (isBtn) {
+        el.disabled = true;
+        // Chỉ hiện spinner nếu thao tác lâu hơn 200 ms (bấm mở hộp thoại không nháy).
+        timer = setTimeout(() => {
+          icon = el.querySelector('i.bi');
+          const sp = document.createElement('span');
+          sp.className = 'spinner-border spinner-border-sm btn-spin';
+          if (icon) { icon.classList.add('d-none'); icon.after(sp); } else el.prepend(sp);
+        }, 200);
+      }
+      try { await fn(el, ev); } catch (e) { notifyError(e); } finally {
+        clearTimeout(timer);
+        if (isBtn && el.isConnected) { el.disabled = false; el.querySelector('.btn-spin')?.remove(); icon?.classList.remove('d-none'); }
+      }
     });
   }
 
@@ -330,7 +372,9 @@
     container.innerHTML = `<ul class="nav nav-tabs mb-3">${items.map((i) =>
       `<li class="nav-item"><a class="nav-link ${i.id === current ? 'active' : ''}" href="#/${ctx.id}/${i.id}">${i.icon ? `<i class="bi bi-${i.icon} me-1"></i>` : ''}${esc(i.label)}</a></li>`).join('')}</ul><div data-tab-body></div>`;
     const item = items.find((i) => i.id === current);
-    return item.render($('[data-tab-body]', container));
+    const body = $('[data-tab-body]', container);
+    body.innerHTML = spinner();
+    return Promise.resolve(item.render(body)).then((r) => { const s = body.querySelector(':scope > .page-spinner'); if (s && body.childElementCount > 1) s.remove(); return r; });
   }
 
   // ------------------------------------------------------------------ router + trang
@@ -362,6 +406,14 @@
     }).join('');
   }
 
+  /** Chạy fn như việc nền: request bên trong không bật thanh tiến trình. */
+  function quietly(fn) {
+    background++;
+    let p;
+    try { p = Promise.resolve(fn()); } catch (e) { p = Promise.reject(e); }
+    return p.catch(() => {}).finally(() => { background--; });
+  }
+
   async function refreshBadges() {
     for (const p of PAGES.values()) {
       if (!p.badge) continue;
@@ -387,7 +439,7 @@
       id: def.id, sub: r.sub, rest: r.rest, params: r.params, el: $('#page'), signal: ctrl.signal,
       /** Lặp fn mỗi ms khi tab đang hiển thị; tự dừng khi rời trang. */
       every(ms, fn) {
-        const t = setInterval(() => { if (!document.hidden && alive) Promise.resolve(fn()).catch(() => {}); }, ms);
+        const t = setInterval(() => { if (!document.hidden && alive) quietly(fn); }, ms);
         timers.push(t);
         return t;
       },
@@ -414,8 +466,13 @@
     $$('#side-menu .nav-link').forEach((a) => a.classList.toggle('active', a.dataset.page === def.id));
     document.body.classList.remove('sidebar-open');
 
-    ctx.el.innerHTML = spinner();
-    try { await def.render(ctx); }
+    ctx.el.classList.add('page-leaving');
+    const slow = setTimeout(() => { if (alive) { ctx.el.classList.remove('page-leaving'); ctx.el.innerHTML = spinner(); } }, 300);
+    const settle = () => { clearTimeout(slow); ctx.el.classList.remove('page-leaving'); };
+    const firstPaint = new MutationObserver(() => { settle(); firstPaint.disconnect(); });
+    firstPaint.observe(ctx.el, { childList: true });
+    ctx.onLeave(() => { clearTimeout(slow); firstPaint.disconnect(); });
+    try { await def.render(ctx); settle(); }
     catch (e) {
       if (e.name === 'AbortError') return;
       ctx.el.innerHTML = `<div class="alert alert-danger"><i class="bi bi-exclamation-octagon me-2"></i>Không tải được trang: ${esc(e.message)}</div>`;
@@ -444,8 +501,8 @@
     window.addEventListener('hashchange', route);
     if (!location.hash) history.replaceState(null, '', '#/dashboard');
     route();
-    refreshBadges();
-    setInterval(() => { if (!document.hidden) refreshBadges(); }, 30000);
+    quietly(refreshBadges);
+    setInterval(() => { if (!document.hidden) quietly(refreshBadges); }, 30000);
     const clock = () => { $('#hdr-clock').textContent = new Date().toLocaleString('vi-VN', { weekday: 'short', hour: '2-digit', minute: '2-digit', day: '2-digit', month: '2-digit' }); };
     clock(); setInterval(clock, 30000);
     api.get('/api/auth/me').then((me) => { if (me && me.username) $('#hdr-user span').textContent = me.username; }).catch(() => {});
@@ -458,7 +515,7 @@
 
   window.App = {
     api, esc, $, $$, h, fmt, toast, notifyError, modal, confirm: confirmBox, formModal, field, readForm,
-    badge, statusTone, STATUS_LABEL, statBox, infoBox, card, empty, spinner, dataTable, bindActions, tabs,
+    badge, statusTone, STATUS_LABEL, statBox, infoBox, card, empty, spinner, cardLoading, dataTable, bindActions, tabs,
     group, page, start, refreshBadges, go: (hash) => { location.hash = hash; },
   };
 })();

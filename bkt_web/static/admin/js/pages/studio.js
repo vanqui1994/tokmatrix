@@ -96,7 +96,7 @@
     el.innerHTML = `<div class="row g-3"><div class="col-md-6 d-flex flex-column align-items-center">
       <div class="btn-group btn-group-sm mb-2"><button class="btn btn-outline-primary active" data-action="mode" data-m="render">Bản render ${d.hasRender ? '<span class="badge text-bg-success">MP4</span>' : ''}</button>
         <button class="btn btn-outline-primary" data-action="mode" data-m="canvas">Canvas sống</button></div>
-      <div class="st-phone" data-stage>${d.hasRender ? `<video src="/api/videos/${encodeURIComponent(slug)}/render" controls playsinline></video>` : `<div class="text-white-50 text-center p-4"><i class="bi bi-film fs-1 d-block"></i>Chưa render — bấm "Render" hoặc xem Canvas sống</div>`}</div>
+      <div class="st-phone" data-stage>${d.hasRender ? `<video src="/api/videos/${encodeURIComponent(slug)}/render" poster="/api/compare-videos/video/${encodeURIComponent(slug)}/poster" preload="metadata" controls playsinline></video>` : `<div class="text-white-50 text-center p-4"><i class="bi bi-film fs-1 d-block"></i>Chưa render — bấm "Render" hoặc xem Canvas sống</div>`}</div>
       <div class="small text-body-secondary mt-2">1080×1920 · ${fmt.dur(d.duration)} · H.264</div></div>
       <div class="col-md-6"><div class="card mb-0"><div class="card-header"><h3 class="card-title"><i class="bi bi-info-circle me-2"></i>Thông số</h3></div><div class="card-body"><dl class="row kv mb-0">
         <dt class="col-5">Thể loại</dt><dd class="col-7">${meta(d.type)[0]} ${esc(meta(d.type)[1])}</dd>

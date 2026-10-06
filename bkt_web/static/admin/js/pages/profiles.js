@@ -7,7 +7,7 @@
     const box = card({ title: 'Profile', icon: 'browser-chrome', tools: `<button class="btn btn-sm btn-primary" data-action="new"><i class="bi bi-plus-lg me-1"></i>Profile mới</button>` });
     el.append(box);
     const group = ctx.params.group || '';
-    const t = dataTable(box.querySelector('.card-body'), { rows: [], pageSize: 30,
+    const t = dataTable(box.querySelector('.card-body'), { pageSize: 30,
       toolbar: `<select class="form-select form-select-sm" data-g style="width:auto"><option value="">Mọi nhóm</option>${g.groups.map((x) => `<option value="${esc(x.Id)}" ${x.Id === group ? 'selected' : ''}>${esc(x.Name)}</option>`).join('')}</select>`,
       columns: [
         { key: 'Name', label: 'Profile', text: (p) => `${p.Name} ${p.Note} ${p.Tags} ${p.Id}`, render: (p) => `<b>${esc(p.Name)}</b><span class="cell-sub mono">${esc(p.Id)}</span>${p.Note ? `<span class="cell-sub">${esc(p.Note)}</span>` : ''}` },
@@ -50,7 +50,7 @@
     const box = card({ title: 'Kho proxy', icon: 'hdd-network', tools: `<button class="btn btn-sm btn-primary me-1" data-action="import"><i class="bi bi-upload me-1"></i>Nhập</button>
       <button class="btn btn-sm btn-outline-primary" data-action="check"><i class="bi bi-activity me-1"></i>Kiểm tra tất cả</button>` });
     el.append(box);
-    const t = dataTable(box.querySelector('.card-body'), { rows: [], pageSize: 50, columns: [
+    const t = dataTable(box.querySelector('.card-body'), { pageSize: 50, columns: [
       { key: 'RawProxy', label: 'Proxy', render: (x) => `<span class="mono small">${esc(x.RawProxy)}</span><span class="cell-sub">${esc(x.Folder)} · ${esc(x.Protocol || '')}</span>` },
       { key: 'Status', label: 'Trạng thái', render: (x) => `${badge(x.Status === 'live' ? 'ok' : x.Status === 'dead' ? 'error' : 'pending', x.Status || 'chưa kiểm tra')}${x.LastError ? `<span class="cell-sub text-danger">${esc(fmt.short(x.LastError, 60))}</span>` : ''}` },
       { key: 'RealIp', label: 'IP thật', render: (x) => `${esc(x.RealIp || '—')}<span class="cell-sub">${esc(x.Country || '')}${x.PingMs ? ` · ${x.PingMs} ms` : ''}</span>` },

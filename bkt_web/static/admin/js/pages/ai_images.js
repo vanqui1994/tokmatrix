@@ -19,7 +19,7 @@
     const box = card({ title: 'Hàng đợi ảnh', icon: 'list-ol', tools: `<button class="btn btn-sm btn-primary me-1" data-action="new"><i class="bi bi-plus-lg me-1"></i>Yêu cầu ảnh</button>
       <button class="btn btn-sm btn-outline-secondary" data-action="clear"><i class="bi bi-trash3 me-1"></i>Dọn mục xong/lỗi</button>` });
     el.append(box);
-    const t = dataTable(box.querySelector('.card-body'), { rows: [], pageSize: 30,
+    const t = dataTable(box.querySelector('.card-body'), { pageSize: 30,
       toolbar: `<div class="btn-group btn-group-sm">${[['', 'Tất cả'], ['pending', 'Chờ'], ['processing', 'Đang vẽ'], ['completed', 'Xong'], ['failed', 'Lỗi']].map(([v, l]) =>
         `<a class="btn btn-outline-secondary ${v === st ? 'active' : ''}" href="#/ai-images/queue${v ? '?status=' + v : ''}">${l}</a>`).join('')}</div>`,
       columns: [

@@ -22,7 +22,7 @@
       const proj = card({ title: 'Dự án', icon: 'folder2-open' });
       ctx.el.querySelector('[data-c]').append(proj);
 
-      const t = dataTable(proj.querySelector('.card-body'), { rows: [], pageSize: 20, columns: [
+      const t = dataTable(proj.querySelector('.card-body'), { pageSize: 20, columns: [
         { key: 'name', label: 'Dự án', render: (p) => `<b>${esc(p.name)}</b><span class="cell-sub">${esc(p.source)} · ${fmt.dur(p.duration)} · ${p.cues_count} câu · ${esc(p.voice || '')}</span>` },
         { key: 'theme_label', label: 'Chủ đề', render: (p) => `${esc(p.theme_label || p.theme || '')}<span class="cell-sub">${esc(p.script_source_label || '')}</span>` },
         { key: 'locales', label: 'Ngôn ngữ', sort: false, render: (p) => (p.locales || []).map((l) => `<span class="badge text-bg-secondary me-1">${esc(l)}</span>`).join('') },

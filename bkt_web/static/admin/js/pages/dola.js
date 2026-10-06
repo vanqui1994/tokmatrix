@@ -46,7 +46,7 @@
       ${st.config_error ? `<div class="alert alert-danger">${esc(st.config_error)}</div>` : ''}`;
     const box = card({ title: 'Task video', icon: 'film', tools: `<button class="btn btn-sm btn-primary" data-action="new"><i class="bi bi-plus-lg me-1"></i>Tạo video</button>` });
     el.append(box);
-    const t = dataTable(box.querySelector('.card-body'), { rows: [], pageSize: 25, columns: [
+    const t = dataTable(box.querySelector('.card-body'), { pageSize: 25, columns: [
       { key: 'id', label: '#' },
       { key: 'prompt', label: 'Prompt', render: (x) => `<span class="text-truncate-2" style="max-width:420px">${esc(x.prompt)}</span><span class="cell-sub">${esc(x.model)} · ${x.duration}s · ${esc(x.ratio)}${x.account_id ? ' · ' + esc(x.account_id) : ''}</span>` },
       { key: 'status', label: 'Trạng thái', render: (x) => `${badge(x.status)}${x.remote_status ? `<span class="cell-sub">${esc(x.remote_status)}</span>` : ''}${x.error ? `<span class="cell-sub text-danger" title="${esc(x.error)}">${esc(fmt.short(x.error, 80))}</span>` : ''}` },

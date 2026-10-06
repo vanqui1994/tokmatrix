@@ -39,7 +39,7 @@
         const c = new Chart(cv, { type: 'line', data: { labels: d.series.map((x) => x.day.slice(5)), datasets: [
           { label: 'Follower', data: d.series.map((x) => x.followers), tension: .3 },
           { label: 'View', data: d.series.map((x) => x.views), tension: .3, yAxisID: 'y1' }] },
-        options: { maintainAspectRatio: false, interaction: { mode: 'index', intersect: false }, scales: { y1: { position: 'right', grid: { drawOnChartArea: false } } } } });
+        options: { maintainAspectRatio: false, interaction: { mode: 'index', intersect: false }, scales: { y: { beginAtZero: true, ticks: { precision: 0 } }, y1: { position: 'right', beginAtZero: true, ticks: { precision: 0 }, grid: { drawOnChartArea: false } } } } });
         ctx.onLeave(() => c.destroy());
       }
       q('[data-b]').append(card({ title: 'Doanh thu theo tiền tệ', icon: 'cash-coin', bodyCls: 'p-0', body: d.money.length ? `<table class="table table-sm mb-0"><thead><tr><th>Tiền tệ</th><th class="text-end">Kiếm được</th><th class="text-end">Số dư</th><th class="text-end">RPM</th></tr></thead>

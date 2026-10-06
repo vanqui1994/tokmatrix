@@ -48,7 +48,7 @@
       if (c) new Chart(c, { type: 'line', data: { labels: pts.map((p) => p.captured_at), datasets: [
         { label: 'Doanh thu', data: pts.map((p) => p.earned), tension: .3 },
         { label: 'Follower', data: pts.map((p) => p.follower_count), tension: .3, yAxisID: 'y1' }] },
-      options: { maintainAspectRatio: false, scales: { y1: { position: 'right', grid: { drawOnChartArea: false } } } } });
+      options: { maintainAspectRatio: false, scales: { y: { beginAtZero: true }, y1: { position: 'right', beginAtZero: true, grid: { drawOnChartArea: false } } } } });
     } catch (e) { body.innerHTML = `<div class="alert alert-danger">${esc(e.message)}</div>`; }
   }
 
@@ -111,7 +111,7 @@
                 <span class="cell-sub">#${c.id} · ${esc(c.nickname)} ${c.note ? '· ' + esc(c.note) : ''}</span>` },
               { key: 'country', label: 'Nước', render: (c) => `${esc(c.original_country || c.country)}${c.publisher ? `<span class="cell-sub">${esc(c.publisher)}</span>` : ''}` },
               { key: 'status', label: 'BKT', render: (c) => statusBadge(c.status) + (c.kyc && c.kyc !== 'No' ? '<span class="cell-sub">KYC</span>' : '') },
-              { key: 'earned', label: 'Doanh thu', cls: 'text-end', render: (c) => `${fmt.money(c.earned)} <span class="cell-sub">số dư ${fmt.money(c.balance)} ${esc(c.currency)}</span>` },
+              { key: 'earned', label: 'Doanh thu', cls: 'text-end', render: (c) => { const cur = c.currency && c.currency !== '#' ? c.currency : ''; return `${fmt.money(c.earned, cur)}<span class="cell-sub">số dư ${fmt.money(c.balance, cur)}</span>`; } },
               { key: 'follower_count', label: 'Follower', cls: 'text-end', render: (c) => `${fmt.num(c.follower_count)}<span class="cell-sub">${fmt.num(c.video_count)} video</span>` },
               { key: 'vpn_location', label: 'VPN', render: (c) => (c.vpn_config ? `<span class="small">${esc(c.vpn_location || c.vpn_config.split('/').pop())}</span>` : '<span class="text-danger small">chưa gán</span>') },
               { key: 'session_state', label: 'Phiên', render: (c) => (c.session_state ? `<span class="badge text-bg-${c.session_state === 'OK' ? 'success' : 'warning'}">${esc(c.session_state)}</span>` : '—') + `<span class="cell-sub">${fmt.ago(c.last_checked)}</span>` },
