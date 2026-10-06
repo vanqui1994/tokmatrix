@@ -27,7 +27,7 @@ from concurrent.futures import ThreadPoolExecutor
 
 from fastapi import APIRouter, FastAPI, HTTPException, BackgroundTasks, Request
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import JSONResponse, FileResponse, RedirectResponse, HTMLResponse
+from fastapi.responses import JSONResponse, FileResponse, RedirectResponse, HTMLResponse, Response
 from pydantic import BaseModel, Field, ConfigDict
 from curl_cffi import requests
 from playwright.async_api import async_playwright
@@ -41,6 +41,7 @@ try:
     from bkt_web.nuoinick_routes import nn_router
     from bkt_web.publish_kit import build_publish_kit as build_compare_publish_kit
     from bkt_web import publish_flow
+    from bkt_web import upload_tasks
     from bkt_web.matrix_routes import router as matrix_router
     from bkt_web.compare_native import compare_native_router, start_run as start_compare_run, stop_all_runs as stop_compare_runs, start_image_autoassign, stop_image_autoassign, video_detail as compare_video_detail, RUNS as COMPARE_RUNS, detect_video_type_for_slug, video_lang_title, pending_images as compare_pending_images
     from bkt_web.image_routes import (
@@ -72,6 +73,7 @@ except ImportError:
     from nuoinick_routes import nn_router
     from publish_kit import build_publish_kit as build_compare_publish_kit
     import publish_flow
+    import upload_tasks
     from matrix_routes import router as matrix_router
     from compare_native import compare_native_router, start_run as start_compare_run, stop_all_runs as stop_compare_runs, start_image_autoassign, stop_image_autoassign, video_detail as compare_video_detail, RUNS as COMPARE_RUNS, detect_video_type_for_slug, video_lang_title, pending_images as compare_pending_images
     from image_routes import (
@@ -100,25 +102,25 @@ CHROME_EXEC_PATH = os.environ.get(
     "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
 )
 
-# Paths
-BASE_DIR = Path(__file__).resolve().parent
-PROJECT_ROOT = BASE_DIR.parent
-STATIC_DIR = BASE_DIR / "static"
-DB_PATH = BASE_DIR / "bkt_channels.db"
-DATA_COOKIES_PATH = PROJECT_ROOT / "data" / "Cookies"
-SECRET_KEY_PATH = BASE_DIR / ".secret.key"
+# Paths (định nghĩa trong paths.py; giữ tên cũ ở đây cho mã và test đang dùng server.X)
+try:
+    from bkt_web import paths
+except ImportError:
+    import paths
+BASE_DIR = paths.BASE_DIR
+PROJECT_ROOT = paths.PROJECT_ROOT
+STATIC_DIR = paths.STATIC_DIR
+DB_PATH = paths.DB_PATH
+DATA_COOKIES_PATH = paths.DATA_COOKIES_PATH
+SECRET_KEY_PATH = paths.SECRET_KEY_PATH
 SECRET_STORE = SecretStore(SECRET_KEY_PATH)
-SECRET_SETTING_KEYS = {"api_captcha", "proxy_list"}
 
-STORAGE_DIR = BASE_DIR / "storage"
-DOWNLOADS_DIR = STORAGE_DIR / "downloads"
-RENDERED_DIR = STORAGE_DIR / "rendered"
-OVERLAYS_DIR = STORAGE_DIR / "overlays"
-AUDIO_DIR = STORAGE_DIR / "audio"
-GENERATED_IMAGES_DIR = STATIC_DIR / "generated_images"
-
-for _dir in [STORAGE_DIR, DOWNLOADS_DIR, RENDERED_DIR, OVERLAYS_DIR, AUDIO_DIR, GENERATED_IMAGES_DIR]:
-    _dir.mkdir(parents=True, exist_ok=True)
+STORAGE_DIR = paths.STORAGE_DIR
+DOWNLOADS_DIR = paths.DOWNLOADS_DIR
+RENDERED_DIR = paths.RENDERED_DIR
+OVERLAYS_DIR = paths.OVERLAYS_DIR
+AUDIO_DIR = paths.AUDIO_DIR
+GENERATED_IMAGES_DIR = paths.GENERATED_IMAGES_DIR
 
 def _resume_story_remake():
     """Lượt Story Remake bị ngắt vì web app khởi động lại (cùng cgroup systemd) → chạy tiếp."""
@@ -170,6 +172,14 @@ app.include_router(dola_routes.router)
 app.include_router(dola_admin_proxy.router)
 app.include_router(muse_film_router)
 app.include_router(muse_remake_router)
+# Router tách khỏi server.py (bkt_web/routes/): số liệu, hệ thống, VPN, tải/biên tập video.
+try:
+    from bkt_web.routes import media_routes, stats_routes, system_routes, vpn_routes
+except ImportError:
+    from routes import media_routes, stats_routes, system_routes, vpn_routes
+for _r in (stats_routes, system_routes, vpn_routes, media_routes):
+    app.include_router(_r.router)
+build_ffmpeg_render_cmd = media_routes.build_ffmpeg_render_cmd  # giữ tên cũ (test_regressions)
 
 # Token phiên được giữ lại qua các lần khởi động lại server.
 #
@@ -528,7 +538,6 @@ def apply_check_result(conn, ch_id: int, res: dict) -> None:
     record_channel_metrics(conn, ch_id, res)
 
 
-
 def init_db():
     conn = connect_db(DB_PATH)
     configure_database(conn)
@@ -595,6 +604,8 @@ def init_db():
         cursor.execute("ALTER TABLE channels ADD COLUMN session_state TEXT DEFAULT ''")
     if "session_checked_at" not in existing_cols:
         cursor.execute("ALTER TABLE channels ADD COLUMN session_checked_at INTEGER DEFAULT 0")
+    if "original_country" not in existing_cols:  # nước gốc của kênh (GET /api/channels đọc cột này)
+        cursor.execute("ALTER TABLE channels ADD COLUMN original_country TEXT DEFAULT ''")
     if "publisher" not in existing_cols:
         # Nhãn phân loại nguồn kênh (pub1 / pub2 / ...). '' = chưa gán.
         cursor.execute("ALTER TABLE channels ADD COLUMN publisher TEXT DEFAULT ''")
@@ -1746,7 +1757,6 @@ def store_channel_videos(cursor, ch_id: int, found_videos: List[dict], replace: 
         )
 
 
-
 async def fetch_channel_videos_authentic(ch_id: int, force_refresh: bool = False) -> List[dict]:
     """
     Fetches genuine channel videos. Never generates mock or fake data.
@@ -2255,17 +2265,6 @@ def get_scan_status():
 class AssignVpnItem(BaseModel):
     vpn_config: str
 
-@app.get("/api/vpn/stats")
-def api_get_vpn_stats():
-    return vpn_manager.get_vpn_stats()
-
-@app.get("/api/vpn/catalog/{country}")
-def api_get_vpn_catalog_country(country: str):
-    cat = vpn_manager.get_vpn_catalog()
-    c = country.strip().upper()
-    if c == "UK":
-        c = "GB"
-    return cat.get(c, [])
 
 @app.post("/api/channels/vpn/auto-assign-all")
 def api_auto_assign_vpn_all():
@@ -2303,21 +2302,6 @@ def api_assign_channel_vpn(ch_id: int, item: AssignVpnItem):
     conn.commit()
     conn.close()
     return {"success": True, "vpn_config": item.vpn_config, "vpn_location": label}
-
-@app.get("/api/vpn/dead-servers")
-def api_list_dead_vpn_servers():
-    """Liệt kê kênh đang trỏ vào server VPN đã khai tử (chỉ xem, không sửa)."""
-    dead = vpn_manager.find_dead_vpn_assignments()
-    return {"count": len(dead), "channels": dead}
-
-
-@app.post("/api/vpn/reassign-dead")
-def api_reassign_dead_vpn_servers(apply: bool = True):
-    """Tự chuyển các kênh dính server chết sang server còn sống cùng quốc gia."""
-    try:
-        return vpn_manager.reassign_dead_vpns(apply=apply)
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
 
 
 class BuildProfilesItem(BaseModel):
@@ -2503,9 +2487,6 @@ async def api_save_profile_session(ch_id: int):
             except Exception:
                 pass
 
-class TestVpnServerItem(BaseModel):
-    vpn_config: str
-    country: Optional[str] = "DE"
 
 @app.get("/api/channels/{ch_id}/vpn/check-full")
 def api_check_channel_vpn_full(ch_id: int):
@@ -2554,697 +2535,6 @@ def api_check_channel_vpn_full(ch_id: int):
 def api_test_channel_vpn(ch_id: int):
     return api_check_channel_vpn_full(ch_id)
 
-@app.post("/api/vpn/test-server")
-def api_test_server(item: TestVpnServerItem):
-    if not item.vpn_config:
-        raise HTTPException(status_code=400, detail="Thiếu file cấu hình vpn_config")
-    try:
-        vpn_manager.resolve_vpn_config(item.vpn_config)
-    except (ValueError, FileNotFoundError):
-        raise HTTPException(status_code=400, detail="Cấu hình VPN không hợp lệ")
-    res = vpn_manager.check_vpn_ip_and_tiktok(
-        conf_rel_path=item.vpn_config,
-        target_country=item.country or "DE"
-    )
-    if res.get("api", {}).get("success"):
-        res["ip"] = res["api"].get("ip")
-        res["time_ms"] = res["api"].get("latency_ms")
-    return res
-
-@app.get("/api/vpn/active-tunnels")
-def api_get_active_tunnels():
-    tunnels = []
-    for cid, t in vpn_manager.ACTIVE_TUNNELS.items():
-        tunnels.append({
-            "channel_id": cid,
-            "socks_port": t.get("socks_port"),
-            "conf_rel_path": t.get("conf_rel_path"),
-            "location": t.get("location"),
-            "pid": t.get("pid")
-        })
-    return {"count": len(tunnels), "tunnels": tunnels}
-
-@app.post("/api/vpn/stop-all")
-def api_stop_all_tunnels():
-    count = len(vpn_manager.ACTIVE_TUNNELS)
-    vpn_manager.stop_all_wireguard_proxies()
-    try:
-        from bkt_web import nord_api
-        count += nord_api.stop_all_dynamic_nord_tunnels()
-    except Exception:
-        pass
-    return {"success": True, "message": f"Đã ngắt toàn bộ {count} tunnel WireGuard!", "stopped_count": count}
-
-# --- NordVPN Live API Endpoints (150+ Countries, 8000+ Servers) ---
-class TestNordServerItem(BaseModel):
-    hostname: str
-    public_key: str
-    country_code: Optional[str] = "DE"
-    city: Optional[str] = ""
-
-@app.get("/api/vpn/nord/countries")
-def api_get_nord_countries(refresh: bool = False):
-    try:
-        from bkt_web import nord_api
-        return nord_api.get_nord_countries(force_refresh=refresh)
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
-
-@app.get("/api/vpn/nord/servers/{country_code}")
-def api_get_nord_servers(country_code: str, limit: int = 100, refresh: bool = False):
-    try:
-        from bkt_web import nord_api
-        return nord_api.get_nord_servers_for_country(country_code, limit=limit, force_refresh=refresh)
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
-
-@app.post("/api/vpn/nord/test")
-def api_test_nord_server(item: TestNordServerItem):
-    try:
-        from bkt_web import nord_api
-        return nord_api.test_nord_server_connection(
-            hostname=item.hostname,
-            public_key=item.public_key,
-            target_country=item.country_code or "DE",
-            city=item.city or ""
-        )
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
-
-# --- Module 2: Auto Downloader (No-Watermark Video Downloader) ---
-class DownloadItem(BaseModel):
-    urls: Union[str, List[str]]
-    platform: Optional[str] = "tiktok"
-    profile_limit: int = Field(20, ge=1, le=200)  # link profile Kuaishou → tối đa N video mới nhất
-
-
-TIKTOK_HOSTS = {"tiktok.com", "www.tiktok.com", "m.tiktok.com", "vm.tiktok.com", "vt.tiktok.com"}
-MAX_DOWNLOAD_BYTES = 500 * 1024 * 1024
-
-
-def _is_allowed_tiktok_url(value: str) -> bool:
-    try:
-        parsed = urllib.parse.urlparse(value)
-        host = (parsed.hostname or "").lower()
-        return parsed.scheme == "https" and (host in TIKTOK_HOSTS or host.endswith(".tiktok.com"))
-    except ValueError:
-        return False
-
-
-def _is_public_http_url(value: str) -> bool:
-    try:
-        parsed = urllib.parse.urlparse(value)
-        if parsed.scheme not in {"http", "https"} or not parsed.hostname:
-            return False
-        for info in socket.getaddrinfo(parsed.hostname, parsed.port or (443 if parsed.scheme == "https" else 80)):
-            ip = ipaddress.ip_address(info[4][0])
-            if not ip.is_global:
-                return False
-        return True
-    except (ValueError, OSError, socket.gaierror):
-        return False
-
-
-def _safe_stream_get(url: str, *, max_redirects: int = 5, headers: Optional[dict] = None):
-    """Follow redirects manually so every hop receives the SSRF check."""
-    current = url
-    for _ in range(max_redirects + 1):
-        if not _is_public_http_url(current):
-            raise ValueError("URL media trỏ tới mạng nội bộ hoặc host không hợp lệ")
-        response = requests.get(current, timeout=60, stream=True, allow_redirects=False, headers=headers)
-        if response.status_code in {301, 302, 303, 307, 308}:
-            location = response.headers.get("location")
-            if not location:
-                raise ValueError("Redirect media không có Location")
-            current = urllib.parse.urljoin(current, location)
-            continue
-        return response
-    raise ValueError("Media redirect quá nhiều lần")
-
-TIKTOK_MEDIA_HEADERS = {
-    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Safari/537.36",
-    "Referer": "https://www.tiktok.com/",
-}
-
-
-def _resolve_tiktok_source_chocode(url: str) -> Optional[dict]:
-    """Nguồn chính khi đã có khoá chocode; None nếu chưa cấu hình hoặc API trả dữ liệu mẫu."""
-    if not chocode_tiktok.is_configured():
-        return None
-    try:
-        info = chocode_tiktok.resolve_video_download(url)
-    except chocode_tiktok.ChocodeError as e:
-        print(f"[Downloader] chocode bỏ qua {url}: {e}")
-        return None
-    return {
-        "provider": "chocode",
-        "id": info["id"],
-        "title": info["title"],
-        "author": info["author"],
-        "duration": info["duration"],
-        "cover": info["cover"],
-        "play_url": info["play_url"],
-    }
-
-
-def _resolve_tiktok_source_tikwm(url: str) -> Optional[dict]:
-    r = requests.get("https://www.tikwm.com/api/", params={"url": url}, timeout=15, allow_redirects=False)
-    if r.status_code != 200:
-        return None
-    d = r.json()
-    if d.get("code") != 0 or "data" not in d:
-        return None
-    data = d["data"]
-    return {
-        "provider": "tikwm",
-        "id": data.get("id"),
-        "title": data.get("title"),
-        "author": data.get("author", {}).get("unique_id", ""),
-        "duration": int(data.get("duration", 0)),
-        "cover": data.get("cover", ""),
-        "play_url": data.get("play") or data.get("wmplay"),
-    }
-
-
-def download_single_video(url: str, errors: Optional[List[str]] = None) -> Optional[dict]:
-    """TikTok: chocode → tikwm (không logo) → yt-dlp. Nền tảng khác (YouTube, Douyin, Instagram…): yt-dlp."""
-    clean_url = url.strip()
-    platform = multi_downloader.detect_platform(clean_url)
-    if not platform:
-        return None
-    if platform == "kuaishou":  # không có trong yt-dlp: Chrome Kuaishou đã đăng nhập (multi_downloader.resolve_kuaishou)
-        try:
-            info = multi_downloader.resolve_kuaishou(clean_url)
-            result = _download_resolved_video(clean_url, {**info, "provider": "kuaishou"}, "kuaishou",
-                                              {"User-Agent": TIKTOK_MEDIA_HEADERS["User-Agent"], "Referer": "https://www.kuaishou.com/"})
-            if not result:
-                raise RuntimeError("tải file MP4 từ CDN Kuaishou thất bại")
-            return result
-        except Exception as e:
-            print(f"[Downloader] Kuaishou lỗi với {clean_url}: {e}")
-            if errors is not None:
-                errors.append(f"Kuaishou: {e}")
-            return None
-    if platform == "tiktok":
-        for resolver in (_resolve_tiktok_source_chocode, _resolve_tiktok_source_tikwm):
-            try:
-                result = _download_resolved_video(clean_url, resolver(clean_url))
-            except Exception as e:
-                print(f"[Downloader] {resolver.__name__} lỗi với {clean_url}: {e}")
-                result = None
-            if result:
-                return result
-    try:
-        got = multi_downloader.download_ytdlp(clean_url, platform, DOWNLOADS_DIR)
-    except Exception as e:
-        print(f"[Downloader] yt-dlp lỗi với {clean_url}: {e}")
-        if errors is not None:
-            errors.append(f"{multi_downloader.label(platform)}: {e}")
-        return None
-    return _record_download(clean_url, platform, got, got["path"])
-
-
-def _download_resolved_video(clean_url: str, data: Optional[dict], platform: str = "tiktok",
-                             headers: Optional[dict] = None) -> Optional[dict]:
-    if not data or not data.get("play_url"):
-        return None
-    raw_id = str(data.get("id") or int(time.time() * 1000))
-    vid_id = re.sub(r"[^0-9A-Za-z_-]", "", raw_id)[:80] or str(int(time.time() * 1000))
-    title = data.get("title") or f"TikTok Video {vid_id}"
-    author = data.get("author") or ""
-    duration = int(data.get("duration") or 0)
-    cover = data.get("cover") or ""
-    out_filename = f"{vid_id}.mp4" if platform == "tiktok" else f"{platform}_{vid_id}.mp4"
-    local_fpath = DOWNLOADS_DIR / out_filename
-    partial_fpath = DOWNLOADS_DIR / f".{out_filename}.part"
-    try:
-        v_stream = _safe_stream_get(data["play_url"], headers=headers or TIKTOK_MEDIA_HEADERS)
-        if v_stream.status_code != 200:
-            raise ValueError(f"Media trả HTTP {v_stream.status_code}")
-        declared_size = int(v_stream.headers.get("content-length") or 0)
-        if declared_size > MAX_DOWNLOAD_BYTES:
-            raise ValueError("Video vượt quá giới hạn 500 MB")
-        total_written = 0
-        with open(partial_fpath, "wb") as f:
-            for chunk in v_stream.iter_content(chunk_size=1024 * 1024):
-                if not chunk:
-                    continue
-                if total_written == 0 and b"ftyp" not in chunk[:16]:
-                    raise ValueError("Media trả về không phải file MP4")
-                total_written += len(chunk)
-                if total_written > MAX_DOWNLOAD_BYTES:
-                    raise ValueError("Video vượt quá giới hạn 500 MB")
-                f.write(chunk)
-        if total_written == 0:
-            raise ValueError("Media trả về file rỗng")
-        partial_fpath.replace(local_fpath)
-    except Exception as e:
-        print(f"[Downloader] {data.get('provider')} lỗi tải {clean_url}: {e}")
-        if partial_fpath.exists():
-            partial_fpath.unlink()
-        return None
-
-    return _record_download(clean_url, platform, data, local_fpath)
-
-
-def _record_download(clean_url: str, platform: str, data: dict, local_fpath: Path) -> dict:
-    vid_id = re.sub(r"[^0-9A-Za-z_-]", "", str(data.get("id") or ""))[:80] or local_fpath.stem
-    title = data.get("title") or f"{multi_downloader.label(platform)} {vid_id}"
-    author = data.get("author") or ""
-    duration = int(data.get("duration") or 0)
-    cover = data.get("cover") or ""
-    f_size = local_fpath.stat().st_size
-    now = int(time.time())
-    conn = connect_db(DB_PATH)
-    conn.execute("""
-        INSERT INTO downloaded_videos (original_url, platform, title, author, duration, cover_url, local_path, file_size, status, created_at)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'COMPLETED', ?)
-        ON CONFLICT(original_url) DO UPDATE SET
-            platform=excluded.platform,
-            title=excluded.title,
-            author=excluded.author,
-            duration=excluded.duration,
-            cover_url=excluded.cover_url,
-            local_path=excluded.local_path,
-            file_size=excluded.file_size,
-            status='COMPLETED',
-            created_at=excluded.created_at
-    """, (clean_url, multi_downloader.label(platform), title, author, duration, cover, str(local_fpath), f_size, now))
-    conn.commit()
-    conn.close()
-    return {
-        "id": vid_id,
-        "title": title,
-        "author": author,
-        "duration": duration,
-        "file_size": f_size,
-        "local_path": str(local_fpath),
-        "provider": data.get("provider"),
-        "platform": platform,
-    }
-
-def _expand_profiles(job_id: int, urls: List[str], profile_limit: int, errors: List[str]) -> List[Any]:
-    """Link profile Kuaishou → các video (đã có link MP4, không mở trang từng video); link khác giữ nguyên."""
-    out: List[Any] = []
-    for u in urls:
-        if not multi_downloader.is_kuaishou_profile(u):
-            out.append(u)
-            continue
-        try:
-            out.extend(multi_downloader.kuaishou_profile(u, profile_limit))
-        except Exception as e:
-            print(f"[Downloader] profile Kuaishou lỗi {u}: {e}")
-            errors.append(f"Kuaishou profile: {e}")
-            out.append(None)  # tính là một lỗi
-    conn = connect_db(DB_PATH)
-    conn.execute("UPDATE download_jobs SET total=? WHERE id=?", (len(out), job_id))
-    conn.commit()
-    conn.close()
-    return out
-
-
-def _download_kuaishou_item(item: dict, errors: List[str]) -> Optional[dict]:
-    result = _download_resolved_video(item["url"], {**item, "provider": "kuaishou"}, "kuaishou",
-                                      {"User-Agent": TIKTOK_MEDIA_HEADERS["User-Agent"], "Referer": "https://www.kuaishou.com/"})
-    if not result:
-        errors.append(f"Kuaishou: tải MP4 thất bại ({item['url']})")
-    return result
-
-
-def process_batch_download(job_id: int, urls: List[str], profile_limit: int = 20):
-    conn = connect_db(DB_PATH)
-    conn.execute("UPDATE download_jobs SET status='PROCESSING' WHERE id=?", (job_id,))
-    conn.commit()
-    conn.close()
-    errors: List[str] = []
-    for u in _expand_profiles(job_id, urls, profile_limit, errors):
-        if u is None:
-            result = None
-        elif isinstance(u, dict):
-            result = _download_kuaishou_item(u, errors)
-        else:
-            result = download_single_video(u, errors)
-        conn = connect_db(DB_PATH)
-        if result:
-            conn.execute("UPDATE download_jobs SET completed=completed+1 WHERE id=?", (job_id,))
-        else:
-            conn.execute("UPDATE download_jobs SET failed=failed+1, error_message=? WHERE id=?", ("\n".join(errors[-5:])[:2000], job_id))
-        conn.commit()
-        conn.close()
-    conn = connect_db(DB_PATH)
-    conn.execute(
-        "UPDATE download_jobs SET status=?, finished_at=? WHERE id=?",
-        ("COMPLETED", int(time.time()), job_id),
-    )
-    conn.commit()
-    conn.close()
-
-@app.post("/api/downloader/download")
-def start_download_videos(item: DownloadItem, background_tasks: BackgroundTasks):
-    raw_urls = item.urls
-    lines = raw_urls if isinstance(raw_urls, list) else str(raw_urls).split("\n")
-    lines = [u.strip() for u in lines if isinstance(u, str) and u.strip()]
-    urls = list(dict.fromkeys(u for u in lines if multi_downloader.detect_platform(u)))
-    skipped = len(lines) - len([u for u in lines if multi_downloader.detect_platform(u)])
-    if not urls:
-        names = ", ".join(multi_downloader.label(p) for p in multi_downloader.PLATFORMS)
-        raise HTTPException(status_code=400, detail=f"Không có link https nào thuộc nền tảng hỗ trợ ({names})")
-    if len(urls) > 50:
-        raise HTTPException(status_code=400, detail="Mỗi lượt chỉ tải tối đa 50 video")
-    conn = connect_db(DB_PATH)
-    cur = conn.execute(
-        "INSERT INTO download_jobs(total, status, created_at) VALUES (?, 'QUEUED', ?)",
-        (len(urls), int(time.time())),
-    )
-    job_id = cur.lastrowid
-    conn.commit()
-    conn.close()
-    background_tasks.add_task(process_batch_download, job_id, urls, item.profile_limit)
-    by_platform: Dict[str, int] = {}
-    for u in urls:
-        name = multi_downloader.label(multi_downloader.detect_platform(u))
-        by_platform[name] = by_platform.get(name, 0) + 1
-    summary = ", ".join(f"{n} {k}" for k, n in by_platform.items())
-    note = f" (bỏ {skipped} link không hỗ trợ)" if skipped else ""
-    return {"message": f"Bắt đầu tải {len(urls)} video: {summary}{note}", "total": len(urls), "job_id": job_id,
-            "platforms": by_platform, "skipped": skipped}
-
-
-@app.get("/api/downloader/platforms")
-def downloader_platforms():
-    return {"platforms": [{"id": k, "label": v["label"], "hosts": v["hosts"],
-                           "cookies": bool(multi_downloader.cookie_file(k)),
-                           "ready": multi_downloader.kuaishou_ready() if k == "kuaishou" else True}
-                          for k, v in multi_downloader.PLATFORMS.items()]}
-
-
-@app.get("/api/downloader/jobs/{job_id}")
-def get_download_job(job_id: int):
-    conn = connect_db(DB_PATH)
-    row = conn.execute(
-        "SELECT id,total,completed,failed,status,error_message,created_at,finished_at FROM download_jobs WHERE id=?",
-        (job_id,),
-    ).fetchone()
-    conn.close()
-    if not row:
-        raise HTTPException(status_code=404, detail="Không tìm thấy tác vụ tải")
-    keys = ["id", "total", "completed", "failed", "status", "error_message", "created_at", "finished_at"]
-    return dict(zip(keys, row))
-
-@app.get("/api/downloader/videos")
-def get_downloaded_videos():
-    conn = connect_db(DB_PATH)
-    c = conn.cursor()
-    c.execute("SELECT id, original_url, platform, title, author, duration, cover_url, local_path, file_size, status, created_at FROM downloaded_videos ORDER BY created_at DESC")
-    rows = c.fetchall()
-    conn.close()
-    items = []
-    for r in rows:
-        local_name = Path(r[7]).name if r[7] else ""
-        items.append({
-            "id": r[0],
-            "original_url": r[1],
-            "platform": r[2],
-            "title": r[3],
-            "author": r[4],
-            "duration": r[5],
-            "cover_url": r[6],
-            "local_path": r[7],
-            "file_size": r[8],
-            "status": r[9],
-            "created_at": r[10],
-            "video_url": f"/storage/downloads/{local_name}" if local_name else ""
-        })
-    return {"videos": items}
-
-@app.delete("/api/downloader/videos/{vid_id}")
-def delete_downloaded_video(vid_id: int):
-    conn = connect_db(DB_PATH)
-    c = conn.cursor()
-    c.execute("SELECT local_path FROM downloaded_videos WHERE id=?", (vid_id,))
-    row = c.fetchone()
-    if row and row[0]:
-        try:
-            p = Path(row[0]).resolve()
-            if p.is_relative_to(DOWNLOADS_DIR.resolve()) and p.exists():
-                p.unlink()
-        except Exception:
-            pass
-    c.execute("DELETE FROM downloaded_videos WHERE id=?", (vid_id,))
-    conn.commit()
-    conn.close()
-    return {"message": "Đã xóa video khỏi danh sách"}
-
-# --- Module 3: Auto Render (FFmpeg VideoToolbox & Format Normalization) ---
-class RenderTaskCreate(BaseModel):
-    model_config = ConfigDict(extra="forbid")
-
-    video_id: Optional[int] = None
-    input_path: Optional[str] = None
-    task_name: str = Field(default="Render Video", max_length=120)
-    flip: bool = True
-    speed: float = Field(default=1.04, ge=0.5, le=2.0)
-    crop_percent: float = Field(default=3.0, ge=0.0, le=20.0)
-    color_adjust: bool = True
-    overlay_filename: Optional[str] = None
-    audio_filename: Optional[str] = None
-    use_gpu: bool = True
-
-
-RENDER_PROCESSES: Dict[int, subprocess.Popen] = {}
-RENDER_PROCESSES_LOCK = threading.Lock()
-
-def build_ffmpeg_render_cmd(
-    in_file: str,
-    out_file: str,
-    flip: bool,
-    speed: float,
-    crop_pct: float,
-    color_adj: bool,
-    overlay_file: str,
-    audio_file: str,
-    use_gpu: bool,
-) -> List[str]:
-    """Dựng lệnh ffmpeg cho một tác vụ render. Tách riêng để kiểm thử được."""
-    vf_filters = []
-    if flip:
-        vf_filters.append("hflip")
-    if crop_pct > 0:
-        pct = crop_pct / 100.0
-        vf_filters.append(f"crop=in_w*(1-{pct}):in_h*(1-{pct}):(in_w*({pct}))/2:(in_h*({pct}))/2,scale=1080:1920")
-    if color_adj:
-        vf_filters.append("eq=brightness=0.02:contrast=1.04:saturation=1.05")
-    if speed != 1.0:
-        vf_filters.append(f"setpts=PTS/{speed}")
-
-    vf_str = ",".join(vf_filters) if vf_filters else "null"
-    cmd = ["ffmpeg", "-y", "-i", in_file]
-
-    inputs = 1
-    overlay_idx = -1
-    audio_idx = -1
-    if overlay_file:
-        cmd.extend(["-i", overlay_file])
-        overlay_idx = inputs
-        inputs += 1
-    if audio_file:
-        cmd.extend(["-i", audio_file])
-        audio_idx = inputs
-        inputs += 1
-
-    v_encoder = "h264_videotoolbox" if use_gpu else "libx264"
-
-    if overlay_idx > 0:
-        fc = f"[0:v]{vf_str}[v_main];[v_main][{overlay_idx}:v]overlay=0:0[vout]"
-        cmd.extend(["-filter_complex", fc, "-map", "[vout]"])
-    else:
-        cmd.extend(["-vf", vf_str, "-map", "0:v"])
-
-    if audio_idx > 0:
-        cmd.extend(["-map", f"{audio_idx}:a", "-c:a", "aac", "-shortest"])
-    else:
-        # Đã -map video tường minh nên ffmpeg tắt chọn stream mặc định. Thiếu
-        # "-map 0:a?" ở đây là mất sạch tiếng gốc, kể cả khi có -af, và ffmpeg
-        # không hề cảnh báo.
-        cmd.extend(["-map", "0:a?"])
-        if speed != 1.0:
-            cmd.extend(["-af", f"atempo={speed}"])
-        cmd.extend(["-c:a", "aac"])
-
-    cmd.extend(["-c:v", v_encoder, "-b:v", "4000k", out_file])
-    return cmd
-
-
-def execute_ffmpeg_render_job(task_id: int, in_file: str, out_file: str, flip: bool, speed: float, crop_pct: float, color_adj: bool, overlay_name: Optional[str], audio_name: Optional[str], use_gpu: bool):
-    conn = connect_db(DB_PATH)
-    c = conn.cursor()
-    c.execute("UPDATE render_tasks SET status='PROCESSING', progress=15 WHERE id=?", (task_id,))
-    conn.commit()
-    conn.close()
-
-    try:
-        overlay_file = str(safe_child(OVERLAYS_DIR, overlay_name, must_exist=True)) if overlay_name else ""
-        audio_file = str(safe_child(AUDIO_DIR, audio_name, must_exist=True)) if audio_name else ""
-        cmd = build_ffmpeg_render_cmd(
-            in_file, out_file, flip, speed, crop_pct, color_adj, overlay_file, audio_file, use_gpu
-        )
-
-        proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
-        with RENDER_PROCESSES_LOCK:
-            RENDER_PROCESSES[task_id] = proc
-        try:
-            stdout, stderr = proc.communicate(timeout=1800)
-        except subprocess.TimeoutExpired:
-            proc.kill()
-            stdout, stderr = proc.communicate()
-            raise RuntimeError("FFmpeg vượt quá thời gian render tối đa 30 phút")
-        finally:
-            with RENDER_PROCESSES_LOCK:
-                RENDER_PROCESSES.pop(task_id, None)
-
-        now = int(time.time())
-        conn = connect_db(DB_PATH)
-        c = conn.cursor()
-        current = c.execute("SELECT status FROM render_tasks WHERE id=?", (task_id,)).fetchone()
-        if current and current[0] == "CANCELLED":
-            # Tác vụ bị người dùng huỷ giữa chừng: bỏ luôn file dở dang.
-            Path(out_file).unlink(missing_ok=True)
-        elif proc.returncode == 0:
-            c.execute("UPDATE render_tasks SET status='COMPLETED', progress=100, finished_at=? WHERE id=?", (now, task_id))
-        else:
-            err_msg = stderr[-1000:] if stderr else "FFmpeg exit non-zero"
-            c.execute("UPDATE render_tasks SET status='ERROR', progress=0, error_message=? WHERE id=?", (err_msg, task_id))
-            Path(out_file).unlink(missing_ok=True)
-        conn.commit()
-        conn.close()
-    except Exception as e:
-        Path(out_file).unlink(missing_ok=True)
-        conn = connect_db(DB_PATH)
-        c = conn.cursor()
-        c.execute("UPDATE render_tasks SET status='ERROR', progress=0, error_message=? WHERE id=?", (str(e), task_id))
-        conn.commit()
-        conn.close()
-
-@app.post("/api/render/create-task")
-def create_render_task(item: RenderTaskCreate, background_tasks: BackgroundTasks):
-    in_file = item.input_path
-    title = item.task_name or "Render Video"
-    if item.video_id:
-        conn = connect_db(DB_PATH)
-        c = conn.cursor()
-        c.execute("SELECT local_path, title FROM downloaded_videos WHERE id=?", (item.video_id,))
-        r = c.fetchone()
-        conn.close()
-        if r:
-            in_file, title = r[0], r[1]
-
-    if not in_file or not Path(in_file).is_file():
-        raise HTTPException(status_code=400, detail="Không tìm thấy file video đầu vào để biên tập")
-
-    resolved_input = Path(in_file).resolve()
-    allowed_roots = [STORAGE_DIR.resolve(), AUTO_COMPARE_VIDEOS_DIR.resolve()]
-    if not any(resolved_input.is_relative_to(root) for root in allowed_roots):
-        raise HTTPException(status_code=400, detail="Video đầu vào nằm ngoài thư viện được phép")
-    in_file = str(resolved_input)
-
-    try:
-        if item.overlay_filename:
-            safe_child(OVERLAYS_DIR, item.overlay_filename, must_exist=True)
-        if item.audio_filename:
-            safe_child(AUDIO_DIR, item.audio_filename, must_exist=True)
-    except (ValueError, FileNotFoundError):
-        raise HTTPException(status_code=400, detail="Overlay hoặc audio không hợp lệ")
-
-    safe_stem = re.sub(r"[^0-9A-Za-z._-]", "_", Path(in_file).stem)[:80] or "video"
-    out_name = f"render_{int(time.time())}_{secrets.token_hex(4)}_{safe_stem}.mp4"
-    out_file = str(RENDERED_DIR / out_name)
-
-    now = int(time.time())
-    conn = connect_db(DB_PATH)
-    c = conn.cursor()
-    c.execute("""
-        INSERT INTO render_tasks (input_video_path, output_video_path, title, overlay_path, audio_path, flip, speed, crop_percent, color_adjust, use_gpu, status, progress, created_at)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'QUEUED', 5, ?)
-    """, (in_file, out_file, title, item.overlay_filename or "", item.audio_filename or "", 1 if item.flip else 0, item.speed, item.crop_percent, 1 if item.color_adjust else 0, 1 if item.use_gpu else 0, now))
-    task_id = c.lastrowid
-    conn.commit()
-    conn.close()
-
-    background_tasks.add_task(execute_ffmpeg_render_job, task_id, in_file, out_file, item.flip, item.speed, item.crop_percent, item.color_adjust, item.overlay_filename, item.audio_filename, item.use_gpu)
-    return {"message": "Đã tạo tác vụ biên tập video thành công!", "task_id": task_id}
-
-@app.get("/api/render/tasks")
-def list_render_tasks():
-    conn = connect_db(DB_PATH)
-    c = conn.cursor()
-    c.execute("SELECT id, input_video_path, output_video_path, title, flip, speed, crop_percent, color_adjust, use_gpu, status, progress, error_message, created_at, finished_at FROM render_tasks ORDER BY created_at DESC")
-    rows = c.fetchall()
-    conn.close()
-    items = []
-    for r in rows:
-        out_name = Path(r[2]).name if r[2] else ""
-        items.append({
-            "id": r[0],
-            "input_video_path": r[1],
-            "output_video_path": r[2],
-            "title": r[3],
-            "flip": r[4],
-            "speed": r[5],
-            "crop_percent": r[6],
-            "color_adjust": r[7],
-            "use_gpu": r[8],
-            "status": r[9],
-            "progress": r[10],
-            "error_message": r[11],
-            "created_at": r[12],
-            "finished_at": r[13],
-            "video_url": f"/storage/rendered/{out_name}" if out_name and (RENDERED_DIR / out_name).exists() else ""
-        })
-    return {"tasks": items}
-
-@app.delete("/api/render/tasks/{task_id}")
-def delete_render_task(task_id: int):
-    conn = connect_db(DB_PATH)
-    c = conn.cursor()
-    c.execute("SELECT output_video_path, status FROM render_tasks WHERE id=?", (task_id,))
-    row = c.fetchone()
-    if row and row[1] == "PROCESSING":
-        conn.close()
-        raise HTTPException(status_code=409, detail="Hãy hủy tác vụ đang chạy trước khi xóa")
-    if row and row[0]:
-        try:
-            p = Path(row[0]).resolve()
-            if p.is_relative_to(RENDERED_DIR.resolve()) and p.exists():
-                p.unlink()
-        except Exception:
-            pass
-    c.execute("DELETE FROM render_tasks WHERE id=?", (task_id,))
-    conn.commit()
-    conn.close()
-    return {"message": "Đã xóa tác vụ biên tập"}
-
-
-@app.post("/api/render/tasks/{task_id}/cancel")
-def cancel_render_task(task_id: int):
-    with RENDER_PROCESSES_LOCK:
-        proc = RENDER_PROCESSES.get(task_id)
-    if not proc or proc.poll() is not None:
-        raise HTTPException(status_code=409, detail="Tác vụ không còn chạy")
-    proc.terminate()
-    conn = connect_db(DB_PATH)
-    conn.execute(
-        "UPDATE render_tasks SET status='CANCELLED', progress=0, error_message='Đã hủy bởi người dùng', finished_at=? WHERE id=?",
-        (int(time.time()), task_id),
-    )
-    conn.commit()
-    conn.close()
-    return {"message": "Đã gửi yêu cầu hủy render"}
-
-@app.get("/api/render/assets")
-def get_render_assets():
-    overlays = [f.name for f in OVERLAYS_DIR.glob("*.png")]
-    audios = [f.name for f in AUDIO_DIR.glob("*.*") if f.suffix.lower() in (".mp3", ".wav", ".m4a", ".aac")]
-    return {"overlays": overlays, "audios": audios}
 
 # --- Module 4: Auto Upload (Playwright TikTok Publisher) ---
 
@@ -3389,12 +2679,8 @@ def create_upload_task(item: UploadTaskCreate):
     created_ids = []
     for i, ch_id in enumerate(ch_ids):
         sched_time = base_sched + (i * stagger * 60)
-        c.execute("""
-            INSERT INTO upload_tasks (channel_id, video_path, caption, hashtags, schedule_time, status, created_at,
-                                      ai_generated, video_slug)
-            VALUES (?, ?, ?, ?, ?, 'QUEUED', ?, ?, ?)
-        """, (ch_id, video_file, item.caption, item.hashtags, sched_time, now, 1 if item.ai_generated else 0, video_slug))
-        created_ids.append(c.lastrowid)
+        created_ids.append(upload_tasks.insert(conn, ch_id, video_file, item.caption, item.hashtags, sched_time,
+                                               ai_generated=item.ai_generated, video_slug=video_slug))
     
     conn.commit()
     conn.close()
@@ -3601,13 +2887,6 @@ async def api_publish_dry_run(req: PublishDryRunRequest, background_tasks: Backg
     background_tasks.add_task(worker)
     return {"success": True, "message": "Đã bắt đầu chạy khô", "screenshot": f"/storage/publish_dryrun/{shot.name}"}
 
-# --- Module 5: Settings (Cài Đặt Hệ Thống) ---
-ALLOWED_SETTING_KEYS = {
-    "api_captcha",
-    "prefer_api_captcha",
-    "default_render_gpu",
-    "proxy_list",
-}
 
 PROFILE_SETTING_DEFAULTS = {
     "publish_profile_channels": "",
@@ -3673,200 +2952,17 @@ def profile_metrics(days: int = 7):
     return {"days":days,"generated_at":now,"by_mode":modes,"session_events":{"by_source":{r[0]:{"events":r[1],"channels":r[2]} for r in events}},"baseline":baseline}
 
 
-@app.get("/api/audit-events")
-def get_audit_events(limit: int = 100):
-    limit = max(1, min(limit, 500))
-    conn = connect_db(DB_PATH)
-    rows = conn.execute(
-        """
-        SELECT id, method, path, status_code, created_at
-        FROM audit_events ORDER BY id DESC LIMIT ?
-        """,
-        (limit,),
-    ).fetchall()
-    conn.close()
-    return {
-        "events": [
-            {
-                "id": row[0],
-                "method": row[1],
-                "path": row[2],
-                "status_code": row[3],
-                "created_at": row[4],
-            }
-            for row in rows
-        ]
-    }
-
-
-@app.get("/api/settings")
-def get_system_settings():
-    conn = connect_db(DB_PATH)
-    c = conn.cursor()
-    c.execute("SELECT key, value FROM settings")
-    rows = c.fetchall()
-    conn.close()
-    settings_dict = {
-        "api_captcha": "",
-        "api_captcha_configured": False,
-        "prefer_api_captcha": "achi",
-        "default_render_gpu": "true",
-        "proxy_list": "",
-        "download_folder": str(DOWNLOADS_DIR),
-        "render_folder": str(RENDERED_DIR),
-    }
-    for k, v in rows:
-        if k in SECRET_SETTING_KEYS:
-            continue  # khoá bí mật nay nằm ở kho khoá chung
-        elif k in ALLOWED_SETTING_KEYS:
-            settings_dict[k] = v
-
-    # Khoá captcha lấy từ kho chung (Cài Đặt Hệ Thống → Kho Khoá API)
-    settings_dict["api_captcha_configured"] = bool(key_vault.get_key("captcha.achi"))
-
-    return settings_dict
-
-@app.post("/api/settings")
-def save_system_settings(data: Dict[str, Any]):
-    conn = connect_db(DB_PATH)
-    c = conn.cursor()
-    for k, v in data.items():
-        if k not in ALLOWED_SETTING_KEYS:
-            conn.close()
-            raise HTTPException(status_code=400, detail=f"Setting không hợp lệ: {k}")
-        value = str(v)
-        if k in SECRET_SETTING_KEYS:
-            # Giữ tương thích với giao diện cũ: key gửi vào đây được chuyển
-            # thẳng sang kho khoá chung chứ không lưu ở bảng settings nữa.
-            if value and k == "api_captcha":
-                key_vault.set_key("captcha.achi", value)
-            continue
-        c.execute("INSERT INTO settings (key, value) VALUES (?, ?) ON CONFLICT(key) DO UPDATE SET value=excluded.value", (k, value))
-    conn.commit()
-    conn.close()
-
-    return {"message": "Đã lưu cài đặt hệ thống thành công!"}
-
 # ---------------------------------------------------------------------------
 # KHO KHOÁ API — một chỗ duy nhất cho mọi API key của ứng dụng
 # ---------------------------------------------------------------------------
 
-class ApiKeySave(BaseModel):
-    model_config = ConfigDict(extra="forbid")
-    value: str = Field(default="", max_length=4096)
-
-
-@app.get("/api/keys")
-def list_api_keys():
-    """Trạng thái từng khoá. Không bao giờ kèm giá trị thật."""
-    return {"keys": key_vault.status()}
-
-
-@app.put("/api/keys/{name}")
-def save_api_key(name: str, item: ApiKeySave):
-    if name not in key_vault.SPEC_BY_NAME:
-        raise HTTPException(status_code=404, detail=f"Không có khoá tên '{name}'")
-    key_vault.set_key(name, item.value)
-    return {"success": True, "name": name, "configured": bool(key_vault.get_key(name))}
-
-
-@app.delete("/api/keys/{name}")
-def delete_api_key(name: str):
-    if name not in key_vault.SPEC_BY_NAME:
-        raise HTTPException(status_code=404, detail=f"Không có khoá tên '{name}'")
-    key_vault.delete_key(name)
-    return {"success": True, "name": name, "configured": False}
-
-
-@app.post("/api/keys/{name}/test")
-def test_api_key(name: str):
-    """Gọi thử nhà cung cấp để xác nhận khoá còn dùng được."""
-    if name not in key_vault.SPEC_BY_NAME:
-        raise HTTPException(status_code=404, detail=f"Không có khoá tên '{name}'")
-    key = key_vault.get_key(name)
-    if not key:
-        raise HTTPException(status_code=400, detail="Khoá này chưa được đặt")
-    try:
-        if name == "ai.gemini":
-            r = requests.get(
-                "https://generativelanguage.googleapis.com/v1beta/models",
-                headers={"x-goog-api-key": key}, timeout=20,
-            )
-            if r.status_code == 200:
-                models = [
-                    m["name"].split("/")[-1] for m in r.json().get("models", [])
-                    if "generateContent" in m.get("supportedGenerationMethods", [])
-                ]
-                return {"valid": True, "message": f"Khoá hợp lệ — {len(models)} model dùng được"}
-            return {"valid": False, "message": f"Google trả về HTTP {r.status_code}: {r.text[:200]}"}
-
-        if name == "ai.claude":
-            r = requests.get(
-                "https://api.anthropic.com/v1/models",
-                headers={"x-api-key": key, "anthropic-version": "2023-06-01"}, timeout=20,
-            )
-            return ({"valid": True, "message": "Khoá Claude hợp lệ"} if r.status_code == 200
-                    else {"valid": False, "message": f"Anthropic trả về HTTP {r.status_code}: {r.text[:200]}"})
-
-        if name == "ai.openai":
-            r = requests.get(
-                "https://api.openai.com/v1/models",
-                headers={"Authorization": f"Bearer {key}"}, timeout=20,
-            )
-            return ({"valid": True, "message": "Khoá OpenAI hợp lệ"} if r.status_code == 200
-                    else {"valid": False, "message": f"OpenAI trả về HTTP {r.status_code}: {r.text[:200]}"})
-
-        if name == "captcha.achi":
-            return test_achi_captcha({"api_captcha": key})
-    except Exception as exc:
-        return {"valid": False, "message": f"Lỗi kết nối: {exc}"}
-
-    return {"valid": True, "message": "Khoá đã lưu. Nhà cung cấp này chưa có bước kiểm tra tự động."}
-
-
-@app.post("/api/settings/test-achi")
-def test_achi_captcha(data: Dict[str, str]):
-    key = data.get("api_captcha", "").strip()
-    if not key:
-        key = key_vault.get_key("captcha.achi")
-    if not key:
-        raise HTTPException(status_code=400, detail="Vui lòng nhập API Key Achi Captcha để kiểm tra")
-    
-    try:
-        payload = {
-            "clientKey": key,
-            "task": {
-                "type": "TiktokCaptchaTask",
-                "subType": 1,
-                "image": "dGVzdA=="
-            }
-        }
-        r = requests.post("https://api.achicaptcha.com/createTask", json=payload, timeout=10)
-        res_data = r.json()
-        error_id = res_data.get("errorId", 0)
-        error_desc = res_data.get("errorDescription", "")
-        
-        if error_id == 1 or "key" in error_desc.lower():
-            return {"valid": False, "message": f"API Key không hợp lệ: {error_desc or 'Sai clientKey'}"}
-        elif error_id == 6:
-            return {"valid": True, "message": "API Key chính xác! (Số dư tài khoản AchiCaptcha hiện tại = 0, cần nạp thêm credit)"}
-        elif error_id == 0 or "taskId" in res_data:
-            return {"valid": True, "message": "Kết nối thành công! API Key Achi Captcha hợp lệ và sẵn sàng giải captcha."}
-        else:
-            return {"valid": True, "message": f"AchiCaptcha phản hồi: {error_desc or 'Đã kết nối thành công'}"}
-    except Exception as e:
-        return {"valid": False, "message": f"Lỗi kết nối tới AchiCaptcha: {str(e)}"}
 
 # ==============================================================================
 # AUTO COMPARE VIDEO MOD INTEGRATION (SENIOR FULLSTACK HUB)
 # ==============================================================================
-AUTO_COMPARE_DIR = Path(
-    os.environ.get("TOKMATRIX_COMPARE_DIR", str(PROJECT_ROOT / "compare_studio"))
-).resolve()
-if not AUTO_COMPARE_DIR.exists() and (PROJECT_ROOT.parent / "auto-compare-video-mod").exists():
-    AUTO_COMPARE_DIR = (PROJECT_ROOT.parent / "auto-compare-video-mod").resolve()
-AUTO_COMPARE_VIDEOS_DIR = AUTO_COMPARE_DIR / "videos"
-AUTO_COMPARE_TOOLS_DIR = AUTO_COMPARE_DIR / "tools"
+AUTO_COMPARE_DIR = paths.AUTO_COMPARE_DIR
+AUTO_COMPARE_VIDEOS_DIR = paths.AUTO_COMPARE_VIDEOS_DIR
+AUTO_COMPARE_TOOLS_DIR = paths.AUTO_COMPARE_TOOLS_DIR
 
 compare_gen_status = {
     "is_running": False,
@@ -4233,15 +3329,8 @@ async def api_publish_now(req: PublishNowRequest, background_tasks: BackgroundTa
             conn.close()
             raise HTTPException(status_code=400, detail="Tác vụ đăng không khớp kênh hoặc video")
     else:
-        cur = conn.execute(
-            """
-            INSERT INTO upload_tasks(channel_id,video_path,caption,hashtags,schedule_time,status,created_at,ai_generated,video_slug)
-            VALUES(?,?,?,?,?,'QUEUED',?,?,?)
-            """,
-            (req.channel_id, str(video_path), req.caption, req.hashtags, int(time.time()), int(time.time()),
-             1 if req.ai_generated else 0, req.video_slug or ""),
-        )
-        task_id = cur.lastrowid
+        task_id = upload_tasks.insert(conn, req.channel_id, str(video_path), req.caption, req.hashtags, int(time.time()),
+                                      ai_generated=req.ai_generated, video_slug=req.video_slug or "")
     conn.commit()
     conn.close()
 
@@ -4445,366 +3534,10 @@ def api_get_compare_video_snapshot(slug: str):
 # LỊCH SỬ CHỈ SỐ KÊNH & BẢNG ĐIỀU KHIỂN TỔNG
 # =============================================================================
 
-@app.get("/api/channels/{ch_id}/history")
-def api_channel_history(ch_id: int, days: int = 30):
-    """Chuỗi thời gian doanh thu / RPM / follower của một kênh."""
-    since = int(time.time()) - max(1, days) * 86400
-    conn = connect_db(DB_PATH)
-    try:
-        rows = conn.execute(
-            """SELECT captured_at, captured_ts, earned, balance, rpm,
-                      follower_count, view_count, like_count, video_count, status
-               FROM channel_metrics_history
-               WHERE channel_id=? AND captured_ts >= ?
-               ORDER BY captured_ts ASC""",
-            (ch_id, since),
-        ).fetchall()
-        info = conn.execute(
-            "SELECT note, username, nickname, currency FROM channels WHERE id=?", (ch_id,)
-        ).fetchone()
-    finally:
-        conn.close()
-
-    points = [
-        {
-            "captured_at": r[0], "captured_ts": r[1], "earned": r[2], "balance": r[3],
-            "rpm": r[4], "follower_count": r[5], "view_count": r[6], "like_count": r[7],
-            "video_count": r[8], "status": r[9],
-        }
-        for r in rows
-    ]
-    growth = {}
-    if len(points) >= 2:
-        first, last = points[0], points[-1]
-        growth = {
-            "earned": round((last["earned"] or 0) - (first["earned"] or 0), 2),
-            "follower": (last["follower_count"] or 0) - (first["follower_count"] or 0),
-            "view": (last["view_count"] or 0) - (first["view_count"] or 0),
-        }
-    return {
-        "success": True,
-        "channel": {
-            "id": ch_id,
-            "note": info[0] if info else "",
-            "username": info[1] if info else "",
-            "nickname": info[2] if info else "",
-            "currency": info[3] if info else "",
-        },
-        "points": points,
-        "growth": growth,
-        "total": len(points),
-    }
-
-
-@app.get("/api/channels/history-summary")
-def api_channels_history_summary(days: int = 30):
-    """Tổng doanh thu toàn hệ thống theo từng ngày (điểm cuối cùng của mỗi kênh/ngày)."""
-    since = int(time.time()) - max(1, days) * 86400
-    conn = connect_db(DB_PATH)
-    try:
-        rows = conn.execute(
-            """SELECT day, SUM(earned) AS earned, SUM(followers) AS followers,
-                      AVG(rpm) AS rpm, COUNT(*) AS channels
-               FROM (
-                   SELECT date(captured_ts, 'unixepoch', 'localtime') AS day,
-                          channel_id,
-                          MAX(captured_ts) AS ts,
-                          earned, follower_count AS followers, rpm
-                   FROM channel_metrics_history
-                   WHERE captured_ts >= ?
-                   GROUP BY day, channel_id
-               )
-               GROUP BY day ORDER BY day ASC""",
-            (since,),
-        ).fetchall()
-    finally:
-        conn.close()
-    return {
-        "success": True,
-        "days": [
-            {"day": r[0], "earned": round(r[1] or 0, 2), "followers": int(r[2] or 0),
-             "rpm": round(r[3] or 0, 2), "channels": r[4]}
-            for r in rows
-        ],
-    }
-
-
-@app.get("/api/dashboard/summary")
-def api_dashboard_summary():
-    """Số liệu gom cho Bảng Điều Khiển: kênh, render, lịch đăng, hàng đợi ảnh, nick."""
-    conn = connect_db(DB_PATH)
-
-    def scalar(sql, params=(), default=0):
-        try:
-            row = conn.execute(sql, params).fetchone()
-            return (row[0] if row and row[0] is not None else default)
-        except Exception:
-            return default
-
-    def rows(sql, params=()):
-        try:
-            return conn.execute(sql, params).fetchall()
-        except Exception:
-            return []
-
-    try:
-        today_start = int(time.mktime(time.strptime(time.strftime("%Y-%m-%d"), "%Y-%m-%d")))
-        data = {
-            "channels": {
-                "total": scalar("SELECT COUNT(*) FROM channels"),
-                "monetized": scalar("SELECT COUNT(*) FROM channels WHERE status LIKE '%BKT%' OR status LIKE '%Đã bật%'"),
-                "earned_total": round(scalar("SELECT SUM(earned) FROM channels") or 0, 2),
-                "balance_total": round(scalar("SELECT SUM(balance) FROM channels") or 0, 2),
-                "checked_today": scalar("SELECT COUNT(*) FROM channels WHERE last_checked >= ?", (today_start,)),
-            },
-            "render": {
-                "queued": scalar("SELECT COUNT(*) FROM render_tasks WHERE status='QUEUED'"),
-                "processing": scalar("SELECT COUNT(*) FROM render_tasks WHERE status='PROCESSING'"),
-                "done": scalar("SELECT COUNT(*) FROM render_tasks WHERE status='DONE'"),
-                "error": scalar("SELECT COUNT(*) FROM render_tasks WHERE status='ERROR'"),
-            },
-            "upload": {
-                "queued": scalar("SELECT COUNT(*) FROM upload_tasks WHERE status IN ('QUEUED','PENDING')"),
-                "uploading": scalar("SELECT COUNT(*) FROM upload_tasks WHERE status='UPLOADING'"),
-                "success": scalar("SELECT COUNT(*) FROM upload_tasks WHERE status='SUCCESS'"),
-                "failed": scalar("SELECT COUNT(*) FROM upload_tasks WHERE status='FAILED'"),
-                "next": [
-                    {"id": r[0], "caption": (r[1] or "")[:60], "schedule_time": r[2], "channel_id": r[3]}
-                    for r in rows(
-                        """SELECT id, caption, schedule_time, channel_id FROM upload_tasks
-                           WHERE status IN ('QUEUED','PENDING') ORDER BY schedule_time ASC LIMIT 5"""
-                    )
-                ],
-            },
-            "images": {
-                "pending": scalar("SELECT COUNT(*) FROM image_queue WHERE status='pending'"),
-                "processing": scalar("SELECT COUNT(*) FROM image_queue WHERE status='processing'"),
-                "completed": scalar("SELECT COUNT(*) FROM image_queue WHERE status='completed'"),
-                "failed": scalar("SELECT COUNT(*) FROM image_queue WHERE status='failed'"),
-                "library": scalar("SELECT COUNT(*) FROM image_assets"),
-            },
-            "accounts": {
-                "fb_reg": scalar("SELECT COUNT(*) FROM fb_reg_accounts"),
-                "fb_live": scalar("SELECT COUNT(*) FROM fb_accounts"),
-                "nicks": scalar("SELECT COUNT(*) FROM FacebookAccounts")
-                         + scalar("SELECT COUNT(*) FROM TikTokAccounts"),
-            },
-            "recent_errors": [
-                {"kind": "Render", "id": r[0], "message": (r[1] or "")[:120], "at": r[2]}
-                for r in rows(
-                    "SELECT id, error_message, created_at FROM render_tasks WHERE status='ERROR' ORDER BY id DESC LIMIT 5"
-                )
-            ] + [
-                {"kind": "Đăng TikTok", "id": r[0], "message": (r[1] or "")[:120], "at": r[2]}
-                for r in rows(
-                    "SELECT id, error_message, created_at FROM upload_tasks WHERE status='FAILED' ORDER BY id DESC LIMIT 5"
-                )
-            ],
-        }
-    finally:
-        conn.close()
-    return {"success": True, "data": data}
-
 
 # =============================================================================
 # THỐNG KÊ TÀI KHOẢN TIKTOK
 # =============================================================================
-
-def _stats_bucket(rows, label_key="label"):
-    """Chuẩn hoá kết quả GROUP BY thành danh sách có nhãn và số lượng."""
-    return [{label_key: (r[0] or "(trống)"), "count": r[1]} for r in rows]
-
-
-@app.get("/api/stats/accounts")
-def api_stats_accounts(days: int = 30):
-    """Thống kê toàn bộ tài khoản TikTok: cơ cấu, khán giả, tăng trưởng, nội dung.
-
-    Tiền tệ được gom theo từng mã thay vì cộng gộp: bảng `channels` giữ mỗi kênh
-    một `currency` riêng (EUR, GBP, KRW…) nên một phép SUM duy nhất sẽ ra con số
-    vô nghĩa. Ứng dụng không có nguồn tỷ giá nào, vì vậy không quy đổi và cũng
-    không tự gắn ký hiệu "$" cho số tiền của kênh khác vùng.
-    """
-    days = max(1, min(int(30 if days is None else days), 365))
-    since = int(time.time()) - days * 86400
-    today_start = int(time.mktime(time.strptime(time.strftime("%Y-%m-%d"), "%Y-%m-%d")))
-    conn = connect_db(DB_PATH)
-
-    def rows(sql, params=()):
-        try:
-            return conn.execute(sql, params).fetchall()
-        except Exception:
-            return []
-
-    def scalar(sql, params=(), default=0):
-        row = rows(sql, params)
-        if not row or row[0][0] is None:
-            return default
-        return row[0][0]
-
-    try:
-        totals = {
-            "channels": scalar("SELECT COUNT(*) FROM channels"),
-            "monetized": scalar("SELECT COUNT(*) FROM channels WHERE status LIKE '%BKT%' AND status NOT LIKE '%CHƯA%'"),
-            "dead": scalar("SELECT COUNT(*) FROM channels WHERE status LIKE '%DIE%'"),
-            "never_checked": scalar("SELECT COUNT(*) FROM channels WHERE COALESCE(last_checked, 0) = 0"),
-            "checked_today": scalar("SELECT COUNT(*) FROM channels WHERE last_checked >= ?", (today_start,)),
-            "kyc_done": scalar("SELECT COUNT(*) FROM channels WHERE kyc NOT IN ('No', '', 'no')"),
-            "vpn_assigned": scalar("SELECT COUNT(*) FROM channels WHERE COALESCE(vpn_config, '') <> ''"),
-            "with_profile": scalar("SELECT COUNT(*) FROM channels WHERE COALESCE(profile_dir, '') <> ''"),
-        }
-
-        audience_row = rows(
-            """SELECT COALESCE(SUM(follower_count), 0), COALESCE(SUM(like_count), 0),
-                      COALESCE(SUM(view_count), 0), COALESCE(SUM(video_count), 0)
-               FROM channels"""
-        )
-        f, l, v, vid = audience_row[0] if audience_row else (0, 0, 0, 0)
-        audience = {
-            "followers": int(f or 0),
-            "likes": int(l or 0),
-            "views": int(v or 0),
-            "videos": int(vid or 0),
-            "avg_followers": round((f or 0) / totals["channels"], 1) if totals["channels"] else 0,
-        }
-
-        # Mỗi mã tiền tệ một dòng. "#" là giá trị mặc định khi kênh chưa quét ra tiền tệ.
-        money = [
-            {
-                "currency": r[0] or "#",
-                "channels": r[1],
-                "earned": round(r[2] or 0, 2),
-                "balance": round(r[3] or 0, 2),
-                "avg_rpm": round(r[4] or 0, 2),
-            }
-            for r in rows(
-                """SELECT currency, COUNT(*), SUM(earned), SUM(balance), AVG(rpm)
-                   FROM channels GROUP BY currency ORDER BY SUM(earned) DESC"""
-            )
-        ]
-
-        by_status = _stats_bucket(rows(
-            "SELECT status, COUNT(*) FROM channels GROUP BY status ORDER BY COUNT(*) DESC"
-        ), "status")
-        by_country = [
-            {
-                "country": r[0] or "(trống)",
-                "count": r[1],
-                "followers": int(r[2] or 0),
-                "views": int(r[3] or 0),
-                "monetized": r[4],
-            }
-            for r in rows(
-                """SELECT country, COUNT(*), SUM(follower_count), SUM(view_count),
-                          SUM(CASE WHEN status LIKE '%BKT%' AND status NOT LIKE '%CHƯA%' THEN 1 ELSE 0 END)
-                   FROM channels GROUP BY country ORDER BY COUNT(*) DESC"""
-            )
-        ]
-        by_publisher = _stats_bucket(rows(
-            "SELECT COALESCE(NULLIF(publisher, ''), 'Chưa gán'), COUNT(*) FROM channels GROUP BY 1 ORDER BY COUNT(*) DESC"
-        ), "publisher")
-
-        # Chuỗi theo ngày: mỗi kênh chỉ lấy mốc cuối cùng trong ngày rồi mới cộng lại,
-        # nếu không thì một ngày quét nhiều lần sẽ nhân đôi số follower.
-        series = [
-            {
-                "day": r[0],
-                "followers": int(r[1] or 0),
-                "views": int(r[2] or 0),
-                "likes": int(r[3] or 0),
-                "channels": r[4],
-            }
-            for r in rows(
-                """SELECT day, SUM(follower_count), SUM(view_count), SUM(like_count), COUNT(*)
-                   FROM (
-                       SELECT date(captured_ts, 'unixepoch', 'localtime') AS day,
-                              channel_id,
-                              MAX(captured_ts) AS ts,
-                              follower_count, view_count, like_count
-                       FROM channel_metrics_history
-                       WHERE captured_ts >= ?
-                       GROUP BY day, channel_id
-                   )
-                   GROUP BY day ORDER BY day ASC""",
-                (since,),
-            )
-        ]
-        growth = {}
-        if len(series) >= 2:
-            first, last = series[0], series[-1]
-            growth = {
-                "followers": last["followers"] - first["followers"],
-                "views": last["views"] - first["views"],
-                "likes": last["likes"] - first["likes"],
-                "from_day": first["day"],
-                "to_day": last["day"],
-            }
-
-        top_channels = [
-            {
-                "id": r[0], "username": r[1] or "", "note": r[2] or "", "status": r[3] or "",
-                "country": r[4] or "", "followers": int(r[5] or 0), "views": int(r[6] or 0),
-                "videos": int(r[7] or 0),
-            }
-            for r in rows(
-                """SELECT id, username, note, status, country, follower_count, view_count, video_count
-                   FROM channels ORDER BY follower_count DESC, view_count DESC LIMIT 10"""
-            )
-        ]
-
-        videos = {
-            "total": scalar("SELECT COUNT(*) FROM channel_videos"),
-            "channels_with_videos": scalar("SELECT COUNT(DISTINCT channel_id) FROM channel_videos"),
-            "prohibited": scalar("SELECT COUNT(*) FROM channel_videos WHERE is_prohibited=1"),
-            "reviewing": scalar("SELECT COUNT(*) FROM channel_videos WHERE is_reviewing=1"),
-            "not_original": scalar("SELECT COUNT(*) FROM channel_videos WHERE is_original=0"),
-            "by_shadowban": _stats_bucket(rows(
-                "SELECT shadowban_status, COUNT(*) FROM channel_videos GROUP BY shadowban_status ORDER BY COUNT(*) DESC"
-            ), "shadowban"),
-            "top": [
-                {
-                    "video_id": r[0], "desc": (r[1] or "")[:80], "views": int(r[2] or 0),
-                    "likes": int(r[3] or 0), "comments": int(r[4] or 0), "shares": int(r[5] or 0),
-                    "channel_id": r[6], "url": r[7] or "",
-                }
-                for r in rows(
-                    """SELECT video_id, desc, view_count, like_count, comment_count, share_count,
-                              channel_id, video_url
-                       FROM channel_videos ORDER BY view_count DESC LIMIT 10"""
-                )
-            ],
-        }
-
-        # Kênh lâu chưa quét nhất — đây là việc cần làm, không phải số liệu trang trí.
-        stale = [
-            {
-                "id": r[0], "username": r[1] or "", "note": r[2] or "",
-                "last_checked": int(r[3] or 0), "status": r[4] or "",
-            }
-            for r in rows(
-                """SELECT id, username, note, last_checked, status FROM channels
-                   ORDER BY COALESCE(last_checked, 0) ASC LIMIT 8"""
-            )
-        ]
-    finally:
-        conn.close()
-
-    return {
-        "success": True,
-        "data": {
-            "days": days,
-            "totals": totals,
-            "audience": audience,
-            "money": money,
-            "by_status": by_status,
-            "by_country": by_country,
-            "by_publisher": by_publisher,
-            "series": series,
-            "growth": growth,
-            "top_channels": top_channels,
-            "videos": videos,
-            "stale": stale,
-        },
-    }
 
 
 # Tư liệu vatlieuhoathinh (trang static/vatlieuhoathinh_studio.html) nằm ở PROJECT_ROOT/crawled_vatlieuhoathinh.
@@ -5029,7 +3762,13 @@ def get_compare_studio_status():
 
 @app.get("/")
 def serve_index():
-    return FileResponse(str(STATIC_DIR / "index.html"))
+    # Bảng quản trị (AdminLTE): một trang, router theo #/trang trong static/admin/js.
+    return FileResponse(str(STATIC_DIR / "admin" / "index.html"), headers={"cache-control": "no-cache"})
+
+
+@app.get("/admin", include_in_schema=False)
+def serve_admin_alias():
+    return RedirectResponse(url="/", status_code=307)
 
 @app.get("/favicon.ico", include_in_schema=False)
 def serve_favicon():

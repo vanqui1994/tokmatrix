@@ -129,11 +129,10 @@ def transcribe(work, lang, audio="vo.mp3", cache="words.json"):
     f = work / cache
     if f.exists():
         return json.loads(f.read_text())
-    from faster_whisper import WhisperModel
-    m = WhisperModel("small", compute_type="int8")
-    segs, info = m.transcribe(str(work / audio), language=None if lang == "auto" else lang, word_timestamps=True)
-    words = [[round(float(w.start), 2), round(float(w.end), 2), w.word.strip()] for s in segs for w in s.words]
-    f.write_text(json.dumps({"lang": info.language, "words": words}, ensure_ascii=False))
+    from bkt_web.services import speech
+    r = speech.transcribe(work / audio, size="small", language=lang, words=True)
+    words = [w for s in r["segments"] for w in s["words"]]
+    f.write_text(json.dumps({"lang": r["language"], "words": words}, ensure_ascii=False))
     return json.loads(f.read_text())
 
 
@@ -267,19 +266,12 @@ Story language: {lang}. Sentences:
 
 
 def ask_gemini(prompt):
-    from bkt_web.key_vault import get_key
-    key = get_key("ai.gemini")
-    body = json.dumps({"contents": [{"parts": [{"text": prompt}]}], "generationConfig": {"responseMimeType": "application/json", "temperature": 0.6}}).encode()
-    last = None
-    for model in ("gemini-3.8-flash", "gemini-3.6-flash", "gemini-3.5-flash", "gemini-3.5-flash-lite"):
-        for _ in range(2):
-            try:
-                req = urllib.request.Request(f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={key}", body, {"Content-Type": "application/json"})
-                r = json.load(urllib.request.urlopen(req, timeout=240))
-                return r["candidates"][0]["content"]["parts"][0]["text"]
-            except Exception as e:
-                last = e; time.sleep(3)
-    raise RuntimeError(f"gemini: {last}")
+    from bkt_web.services import gemini
+    try:
+        return gemini.generate(prompt, models=gemini.FLASH_CHAIN, json_mode=True, temperature=0.6, timeout=240,
+                               attempts=2, retry_delay=3)
+    except gemini.GeminiError as e:
+        raise RuntimeError(f"gemini: {e}") from e
 
 
 def _vps_queue(payload):

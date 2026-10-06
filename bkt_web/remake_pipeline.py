@@ -110,32 +110,19 @@ def translate_cues_with_ai(segments: List[Dict[str, Any]], source_lang: str = "z
 
     if api_key and payload:
         try:
-            import httpx
-            model = os.environ.get("TOKMATRIX_GEMINI_MODEL", "gemini-3.5-flash")
-            url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
+            try:
+                from bkt_web.services import gemini
+            except ImportError:
+                from services import gemini
             prompt = (
                 "Bạn là biên kịch hoạt hình TikTok hàng đầu Việt Nam. Hãy chuyển thể danh sách câu thoại sau sang tiếng Việt đối đáp "
                 "tự nhiên, hài hước, dí dỏm, giữ đúng thứ tự câu và nội dung câu chuyện. Trả về đúng JSON array [{\"id\": 0, \"text\": \"...\"}].\n"
                 f"Kịch bản nguồn ({source_lang}): " + json.dumps(payload, ensure_ascii=False)
             )
-            res = httpx.post(
-                url,
-                headers={"x-goog-api-key": api_key, "content-type": "application/json"},
-                json={
-                    "contents": [{"parts": [{"text": prompt}]}],
-                    "generationConfig": {
-                        "responseMimeType": "application/json",
-                        "thinkingConfig": {"thinkingBudget": 0}
-                    }
-                },
-                timeout=30
-            )
-            if res.status_code == 200:
-                body = res.json()
-                text_content = body["candidates"][0]["content"]["parts"][0]["text"]
-                parsed = json.loads(text_content)
-                parsed_map = {item["id"]: item["text"] for item in parsed if isinstance(item, dict) and "id" in item and "text" in item}
-                return [parsed_map.get(i, segments[i]["text"]) for i in range(len(segments))]
+            parsed = gemini.generate_json(prompt, models=[os.environ.get("TOKMATRIX_GEMINI_MODEL", "gemini-3.5-flash")],
+                                          key=api_key, thinking_budget=0, timeout=30)
+            parsed_map = {item["id"]: item["text"] for item in parsed if isinstance(item, dict) and "id" in item and "text" in item}
+            return [parsed_map.get(i, segments[i]["text"]) for i in range(len(segments))]
         except Exception as e:
             print(f"[Gemini Translate Error] {e}")
 
@@ -411,41 +398,18 @@ def analyze_story_with_ai(
 
     # Gemini hay trả 503 nhất thời; một cú lỗi không nên đẩy cả video sang
     # nhánh suy luận từ khoá kém chính xác hơn.
+    try:
+        from bkt_web.services import gemini
+    except ImportError:
+        from services import gemini
     parsed = None
     last_error = ""
-    try:
-        import httpx
-    except ImportError:
-        return None
-
     model = os.environ.get("TOKMATRIX_GEMINI_MODEL", "gemini-2.5-flash")
-    url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
-    for attempt in range(4):
-        try:
-            res = httpx.post(
-                url,
-                headers={"x-goog-api-key": api_key, "content-type": "application/json"},
-                json={
-                    "contents": [{"parts": [{"text": prompt}]}],
-                    "generationConfig": {"responseMimeType": "application/json",
-                                         "thinkingConfig": {"thinkingBudget": 0}},
-                },
-                timeout=60,
-            )
-            if res.status_code == 200:
-                parsed = json.loads(res.json()["candidates"][0]["content"]["parts"][0]["text"])
-                break
-            last_error = f"HTTP {res.status_code}"
-            if res.status_code < 500:
-                break           # lỗi do request, thử lại cũng vậy
-        except Exception as exc:
-            last_error = str(exc)[:120]
-
-        if attempt < 3:
-            wait = 2 * (attempt + 1)
-            if log:
-                log(f"AI phân tích lỗi ({last_error}) — thử lại sau {wait}s", 43)
-            time.sleep(wait)
+    try:
+        parsed = gemini.generate_json(prompt, models=[model], key=api_key, thinking_budget=0, timeout=60,
+                                      attempts=4, retry_delay=2)
+    except Exception as exc:
+        last_error = str(exc)[:160]
 
     if parsed is None:
         if log:
@@ -656,25 +620,11 @@ class RemakePipeline:
             _atomic_write_json(self.job_dir / "transcription.json", self.transcription)
             return self.transcription
         try:
-            from faster_whisper import WhisperModel
-            model = WhisperModel("base", device="cpu", compute_type="int8")
-            segments, info = model.transcribe(str(self.source_audio_path), vad_filter=True)
-            
-            raw_segments = []
-            for s in segments:
-                t = s.text.strip()
-                if t:
-                    raw_segments.append({
-                        "start": round(s.start, 2),
-                        "end": round(s.end, 2),
-                        "text": t
-                    })
-            
-            self.transcription = {
-                "language": info.language,
-                "probability": round(float(info.language_probability), 4),
-                "segments": raw_segments
-            }
+            try:
+                from bkt_web.services import speech
+            except ImportError:
+                from services import speech
+            self.transcription = speech.transcribe(self.source_audio_path, size="base", vad=True)
         except Exception as e:
             # Trước đây chỗ này chèn 2 câu thoại tự chế rồi báo "thành công" — người dùng
             # nhận được video dựng trên nội dung không hề có trong nguồn. Nay dừng hẳn.

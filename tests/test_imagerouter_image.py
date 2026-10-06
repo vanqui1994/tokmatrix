@@ -96,7 +96,7 @@ class TranslateTest(unittest.TestCase):
     def _client(self, reply):
         def handler(request):
             self.requests.append(request)
-            assert "generativelanguage" in str(request.url) and request.url.params["key"] == "g-key"
+            assert "generativelanguage" in str(request.url) and request.headers["x-goog-api-key"] == "g-key"
             return reply()
         return httpx.Client(transport=httpx.MockTransport(handler))
 

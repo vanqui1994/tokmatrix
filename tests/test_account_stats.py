@@ -12,7 +12,8 @@ import unittest
 from pathlib import Path
 from unittest.mock import patch
 
-from bkt_web import server
+from bkt_web import paths, server
+from bkt_web.routes import stats_routes
 
 
 def seed_database(db_path: Path) -> None:
@@ -56,9 +57,10 @@ class AccountStatsTest(unittest.TestCase):
         self._tmp = tempfile.TemporaryDirectory()
         self.db = Path(self._tmp.name) / "stats.db"
         seed_database(self.db)
-        self._patch = patch.object(server, "DB_PATH", self.db)
-        self._patch.start()
-        self.addCleanup(self._patch.stop)
+        for target in (server, paths):  # route đọc paths.DB_PATH lúc gọi
+            p = patch.object(target, "DB_PATH", self.db)
+            p.start()
+            self.addCleanup(p.stop)
         self.addCleanup(self._tmp.cleanup)
 
     def add_metric(self, channel_id: int, ts: int, followers: int, views: int = 0):
@@ -75,7 +77,7 @@ class AccountStatsTest(unittest.TestCase):
         conn.close()
 
     def test_totals_and_audience(self):
-        data = server.api_stats_accounts(30)["data"]
+        data = stats_routes.api_stats_accounts(30)["data"]
         totals = data["totals"]
         self.assertEqual(totals["channels"], 3)
         self.assertEqual(totals["monetized"], 1)       # "CHƯA BKT" không được tính là đã bật
@@ -88,7 +90,7 @@ class AccountStatsTest(unittest.TestCase):
         self.assertEqual(data["audience"]["views"], 24000)
 
     def test_currencies_are_not_summed_together(self):
-        money = {row["currency"]: row for row in server.api_stats_accounts(30)["data"]["money"]}
+        money = {row["currency"]: row for row in stats_routes.api_stats_accounts(30)["data"]["money"]}
         self.assertEqual(set(money), {"EUR", "GBP", "#"})
         self.assertEqual(money["EUR"]["earned"], 10.5)
         self.assertEqual(money["GBP"]["earned"], 7.0)
@@ -106,14 +108,14 @@ class AccountStatsTest(unittest.TestCase):
         self.add_metric(2, nxt + 3700, followers=70)
 
         days_back = max(1, int((time.time() - day) / 86400) + 2)
-        data = server.api_stats_accounts(days_back)["data"]
+        data = stats_routes.api_stats_accounts(days_back)["data"]
         series = {p["day"]: p for p in data["series"]}
         self.assertEqual(series["2026-09-20"]["followers"], 200)   # 140 + 60, không phải 300
         self.assertEqual(series["2026-09-20"]["channels"], 2)
         self.assertEqual(data["growth"]["followers"], 50)          # 250 - 200
 
     def test_video_breakdown_and_stale_list(self):
-        data = server.api_stats_accounts(30)["data"]
+        data = stats_routes.api_stats_accounts(30)["data"]
         videos = data["videos"]
         self.assertEqual(videos["total"], 2)
         self.assertEqual(videos["channels_with_videos"], 2)
@@ -127,8 +129,8 @@ class AccountStatsTest(unittest.TestCase):
         self.assertEqual(data["stale"][0]["username"], "acc_dead")
 
     def test_days_parameter_is_clamped(self):
-        self.assertEqual(server.api_stats_accounts(0)["data"]["days"], 1)
-        self.assertEqual(server.api_stats_accounts(9999)["data"]["days"], 365)
+        self.assertEqual(stats_routes.api_stats_accounts(0)["data"]["days"], 1)
+        self.assertEqual(stats_routes.api_stats_accounts(9999)["data"]["days"], 365)
 
 
 if __name__ == "__main__":

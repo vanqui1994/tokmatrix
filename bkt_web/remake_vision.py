@@ -14,7 +14,6 @@ import base64
 import json
 import os
 import subprocess
-import time
 from pathlib import Path
 from typing import Any, Callable, Dict, List, Optional
 
@@ -208,59 +207,21 @@ RÀNG BUỘC BẮT BUỘC:
     parts.append({"text": prompt})
 
     try:
-        import httpx
+        from bkt_web.services import gemini
     except ImportError:
-        if log:
-            log("Thiếu httpx — không gọi được Gemini", 30)
-        return None
+        from services import gemini
 
-    # Thử nhiều model: env var → 3.5-flash → 2.5-flash
-    models_to_try = [
-        os.environ.get("TOKMATRIX_GEMINI_MODEL", "gemini-3.5-flash"),
-        "gemini-3.5-flash",
-        "gemini-2.5-flash",
-    ]
-    # Deduplicate, giữ thứ tự
-    seen = set()
-    models_to_try = [m for m in models_to_try if not (m in seen or seen.add(m))]
-
+    # Thử nhiều model: env var → 3.5-flash → 2.5-flash; 429 sang model kế, 5xx thử lại một lần.
+    models_to_try = [os.environ.get("TOKMATRIX_GEMINI_MODEL", "gemini-3.5-flash"), "gemini-3.5-flash", "gemini-2.5-flash"]
     parsed = None
     last_error = ""
-    for model in models_to_try:
-        url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
-        if log:
-            log(f"Thử model {model}...", 30)
-        for attempt in range(2):
-            try:
-                res = httpx.post(
-                    url,
-                    headers={"x-goog-api-key": api_key, "content-type": "application/json"},
-                    json={
-                        "contents": [{"parts": parts}],
-                        "generationConfig": {
-                            "responseMimeType": "application/json",
-                            "thinkingConfig": {"thinkingBudget": 0},
-                        },
-                    },
-                    timeout=90,
-                )
-                if res.status_code == 200:
-                    text = res.json()["candidates"][0]["content"]["parts"][0]["text"]
-                    parsed = json.loads(text)
-                    break
-                last_error = f"HTTP {res.status_code} ({model})"
-                if res.status_code == 429:
-                    break  # Chuyển model khác
-                if res.status_code < 500:
-                    break
-            except Exception as exc:
-                last_error = str(exc)[:120]
-
-            if attempt < 1:
-                time.sleep(3)
-
-        if parsed:
-            break
+    if log:
+        log(f"Gọi Gemini Vision ({', '.join(dict.fromkeys(models_to_try))})...", 30)
+    try:
+        parsed = gemini.generate_json(parts, models=models_to_try, key=api_key, thinking_budget=0, timeout=90,
+                                      attempts=2, retry_delay=3)
+    except Exception as exc:  # lỗi mạng/khoá/JSON hỏng: trả None để lớp gọi tự xử lý
+        last_error = str(exc)[:200]
 
     if parsed is None:
         if log:

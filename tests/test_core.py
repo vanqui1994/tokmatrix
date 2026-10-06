@@ -8,7 +8,8 @@ import httpx
 from pydantic import ValidationError
 
 from bkt_web.security import SecretStore, safe_child, validate_slug
-from bkt_web.server import RenderTaskCreate, app
+from bkt_web.routes.media_routes import RenderTaskCreate
+from bkt_web.server import app
 from bkt_web.facebook_engine import FacebookEngine
 from bkt_web.facebook_routes import init_fb_db
 

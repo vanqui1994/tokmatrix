@@ -19,9 +19,11 @@ from typing import Any, Dict, List, Optional
 try:
     from bkt_web.db_utils import connect_db
     from bkt_web import compare_native as cn
+    from bkt_web import upload_tasks
 except ImportError:  # chạy trực tiếp trong bkt_web/
     from db_utils import connect_db
     import compare_native as cn
+    import upload_tasks
 
 DB_PATH = Path(__file__).resolve().parent / "bkt_channels.db"
 
@@ -137,14 +139,10 @@ def enqueue_upload(
         if near and not confirm_nearby:
             raise PublishError(409, f"Kênh @{ch['username']} đã có {len(near)} bài trong vòng 2 giờ quanh giờ hẹn",
                                nearby=near, needsConfirm=True)
-        cur = conn.execute(
-            """INSERT INTO upload_tasks (channel_id, video_path, caption, hashtags, schedule_time, status, created_at,
-                                         ai_generated, run_id, video_slug)
-               VALUES (?,?,?,?,?,?,?,?,?,?)""",
-            (ch["id"], video_path, caption, hashtags, schedule_ts, status, now, 1 if ai_generated else 0, run_id or "", slug),
-        )
+        task_id = upload_tasks.insert(conn, ch["id"], video_path, caption, hashtags, schedule_ts, status=status,
+                                      ai_generated=ai_generated, run_id=run_id, video_slug=slug)
         conn.commit()
-        return {"id": cur.lastrowid, "status": status, "channel": ch, "schedule_time": schedule_ts,
+        return {"id": task_id, "status": status, "channel": ch, "schedule_time": schedule_ts,
                 "video_path": video_path, "nearby": near}
     finally:
         conn.close()

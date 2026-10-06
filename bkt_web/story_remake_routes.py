@@ -133,7 +133,7 @@ def _caption(state: Dict[str, Any], work: Path) -> str:
 def enqueue_done() -> int:
     """Video `done` có `account_id`, chưa có task đăng → chép MP4 vào storage và tạo upload_tasks QUEUED ở khung giờ
     kế tiếp của tài khoản. Lời kể khác ngôn ngữ tài khoản (mỗi tài khoản một nước) → không đăng, ghi `upload_error`."""
-    from bkt_web.autopilot import captions, scheduler
+    from bkt_web import upload_tasks
     n = 0
     for sf in ROOT.glob("*/state.json") if ROOT.exists() else []:
         try:
@@ -161,11 +161,8 @@ def enqueue_done() -> int:
                 UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
                 dest = UPLOAD_DIR / f"{vid}.mp4"
                 shutil.copy2(src, dest)
-                slot = scheduler.next_slot(int(acc)) or int(time.time()) + 3600
-                cur = c.execute("INSERT INTO upload_tasks(channel_id, video_path, caption, hashtags, schedule_time, status, created_at, "
-                                "ai_generated, run_id) VALUES (?,?,?,?,?,'QUEUED',?,0,?)",
-                                (int(acc), str(dest), _caption(st, work), captions.hashtags_for(info["niche"], lang), int(slot), int(time.time()), run_id))
-                task_id = int(cur.lastrowid)
+                task_id = upload_tasks.enqueue_auto(c, int(acc), str(dest), _caption(st, work), niche=info["niche"],
+                                                    language=lang, run_id=run_id)
                 n += 1
         st["upload_task_id"] = task_id
         sf.write_text(json.dumps(st, ensure_ascii=False, indent=1))

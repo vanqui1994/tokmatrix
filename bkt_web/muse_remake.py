@@ -458,16 +458,12 @@ def _wait_film(film_id: str, vid: int) -> Dict[str, Any]:
 
 def _enqueue_upload(v: Dict[str, Any], channel_id: int, final: Path, caption: str, language: str, niche: str) -> int:
     try:
-        from bkt_web.autopilot import captions, scheduler
+        from bkt_web import upload_tasks
     except ImportError:
-        from autopilot import captions, scheduler
-    hashtags = captions.hashtags_for(niche or "medical_anomalies", language)
-    slot = scheduler.next_slot(channel_id) or int(time.time()) + 3600
+        import upload_tasks
     with sqlite3.connect(str(CHANNELS_DB), timeout=30) as c:
-        cur = c.execute("INSERT INTO upload_tasks(channel_id, video_path, caption, hashtags, schedule_time, status, created_at, "
-                        "ai_generated, run_id) VALUES (?,?,?,?,?,'QUEUED',?,0,?)",
-                        (channel_id, str(final), caption, hashtags, int(slot), int(time.time()), f"muse_remake:{v['id']}"))
-        return int(cur.lastrowid)
+        return upload_tasks.enqueue_auto(c, channel_id, str(final), caption, niche=niche or "medical_anomalies",
+                                         language=language, run_id=f"muse_remake:{v['id']}")
 
 
 def _task_pending(task_id: int) -> bool:

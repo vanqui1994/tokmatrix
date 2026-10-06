@@ -249,7 +249,7 @@ class RouteTests(GatewayMixin, unittest.TestCase):
 
 class DownloaderFallbackTests(unittest.TestCase):
     def test_falls_back_to_tikwm_when_chocode_returns_mock(self):
-        from bkt_web import server
+        from bkt_web.routes import media_routes as server  # downloader nằm ở routes/media_routes.py
         calls = []
 
         def fake_download(url, data):

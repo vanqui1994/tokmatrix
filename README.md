@@ -136,7 +136,7 @@ thái, 40 mục gần nhất kèm lỗi, log Autopilot hoặc log đăng trực 
 - Dữ liệu: `GET /api/flow/{autopilot|publish|scripts}?hours=48`
   ([flow_routes.py](bkt_web/flow_routes.py)). **Chỉ đọc**: mở SQLite ở chế độ
   `mode=ro`, không ghi, không gọi mạng; DB chưa tồn tại thì trả số 0.
-- Bố cục node, cạnh và mô tả nằm trong [flow_view.js](bkt_web/static/flow_view.js);
+- Tên và biểu tượng node nằm trong [flow.js](bkt_web/static/admin/js/pages/flow.js) (`LABELS`);
   backend chỉ trả số liệu theo id node. Thêm bước mới phải sửa cả hai phía.
 - `content_jobs.state` là bước **vừa xong**; job đang chờ/chạy ở node kế tiếp. Job
   có `locked_by` là đang chạy. Job nằm ở `READY_TO_PUBLISH` quá một chu kỳ Autopilot
@@ -250,16 +250,32 @@ Mặc định dữ liệu trao đổi nằm tại
 update nguyên tử để nhiều IDE agent không xử lý trùng task. Bridge không ghi API
 key vào request bundle và chỉ chấp nhận PNG/JPG/WebP.
 
-## Giao diện và cache
+## Cấu trúc backend dùng chung
 
-`index.html` chỉ nạp `style.css` → `light-theme.css` → `cms-theme.css` →
-`flow_view.css`. `cms-theme.css` là lớp quyết định giao diện cuối cùng.
-`feature-theme.css` và `animal-island.css` **không được nạp**: style viết vào đó
-không có tác dụng (modal "Video & Chẩn đoán kênh" từng vỡ bố cục vì lý do này).
+- `bkt_web/services/gemini.py`: gọi Gemini (khoá, chuỗi model dự phòng, thử lại). Không viết thêm vòng gọi Gemini riêng.
+- `bkt_web/services/speech.py`: bóc lời bằng faster-whisper.
+- `bkt_web/upload_tasks.py`: chỗ duy nhất ghi `upload_tasks`.
+- `bkt_web/paths.py`: đường dẫn dùng chung; `bkt_web/routes/`: router tách khỏi `server.py`.
+- `bkt_web/workers.py`: danh sách worker nền, xem ở trang "Worker nền" (`/api/system/workers`).
 
-Các file tĩnh được tham chiếu kèm số phiên bản gõ tay (`app.js?v=…`,
-`cms-theme.css?v=…`, `flow_view.js?v=…`). Sửa JS/CSS phải tăng số này, nếu không
-trình duyệt và Cloudflare vẫn giữ bản cũ.
+## Giao diện quản trị
+
+`/` là bảng quản trị AdminLTE 4 (Bootstrap 5, Bootstrap Icons, Chart.js qua CDN) trong
+`bkt_web/static/admin/`: `index.html` (khung), `js/core.js` (API client, router, bảng,
+hộp thoại), `js/pages/<trang>.js` (mỗi file đăng ký một hoặc vài trang bằng `App.page`),
+`js/app.js` (nhóm menu + khởi động), `css/app.css`. `/admin` chuyển hướng về `/`.
+
+- Router theo URL: `#/trang/tab-con?bộ-lọc` — reload, Back/Forward và gửi link đều mở
+  đúng trang, đúng tab, đúng bộ lọc.
+- Poll trong trang dùng `ctx.every(ms, fn)`: chỉ chạy khi tab đang hiển thị và tự dừng khi
+  rời trang. Đừng dùng `setInterval` trần.
+- Thêm trang: tạo `js/pages/x.js` gọi `App.page({id, group, title, icon, render(ctx)})`,
+  thêm thẻ `<script>` vào `admin/index.html` theo thứ tự menu, tăng `?v=`.
+- Giao diện cũ (`index.html`, `app.js`, `style.css`, `cms-theme.css`, `flow_view.js`…) đã
+  bỏ; bản sao ở `~/Code/_ssmatool_old_ui_20261006`.
+
+Các file tĩnh được tham chiếu kèm `?v=`; sửa JS/CSS phải tăng số này, nếu không trình
+duyệt và Cloudflare vẫn giữ bản cũ.
 
 ## Triển khai VPS
 
@@ -270,8 +286,8 @@ nằm sau nginx và Cloudflare.
 Cập nhật vài file:
 
 ```bash
-scp bkt_web/static/app.js tokmatrix:/tmp/
-ssh tokmatrix 'install -o tokmatrix -g tokmatrix -m 644 /tmp/app.js /opt/tokmatrix/bkt_web/static/'
+scp bkt_web/static/admin/js/pages/upload.js tokmatrix:/tmp/
+ssh tokmatrix 'install -o tokmatrix -g tokmatrix -m 644 /tmp/upload.js /opt/tokmatrix/bkt_web/static/admin/js/pages/'
 ssh tokmatrix 'systemctl restart tokmatrix-web'   # chỉ cần khi đổi mã Python
 ```
 
@@ -287,8 +303,6 @@ ssh tokmatrix 'systemctl restart tokmatrix-web'   # chỉ cần khi đổi mã P
 - Bước dọn dẹp của Autopilot (`cleanup_posted_videos`) tìm `status='POSTED'`, nhưng
   publisher ghi `SUCCESS`, nên video đã đăng không bao giờ được backup/xoá. Sơ đồ
   luồng hiện cảnh báo ở node "Dọn dẹp".
-- `GET /api/dashboard/summary` đếm `upload.failed` bằng `FAILED`, bỏ sót `ERROR`,
-  `NEEDS_CHECK` và `WAITING_RENDER`.
 - CLI `antigravity_scriptwriter.py` gọi `/api/scripts/*` không kèm cookie, mà prefix
   này không nằm trong danh sách localhost được phép, nên khi đã bật đăng nhập web
   nó nhận `401`.
@@ -298,8 +312,7 @@ ssh tokmatrix 'systemctl restart tokmatrix-web'   # chỉ cần khi đổi mã P
 ```bash
 python3 -m unittest discover -s tests -v
 python3 -m py_compile bkt_web/*.py ssmatool_engine_mac/*.py
-node --check bkt_web/static/app.js
-node --check bkt_web/static/flow_view.js
+for f in bkt_web/static/admin/js/*.js bkt_web/static/admin/js/pages/*.js; do node --check "$f"; done
 ```
 
 `tests/test_regressions.py` khoá lại các lỗi đã sửa: va chạm route giữa `nn_router`

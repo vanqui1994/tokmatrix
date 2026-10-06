@@ -58,10 +58,8 @@ REQUEST_DIMS = {"1:1": (1024, 1024), "9:16": (1088, 1920), "16:9": (1920, 1088),
 SPEND_FILE = Path(__file__).resolve().parent / "storage" / "imagerouter_spend.json"
 TRANSLATE_ENABLED = os.environ.get("TOKMATRIX_IMAGEROUTER_TRANSLATE", "1") != "0"
 TRANSLATE_MODEL = os.environ.get("TOKMATRIX_IMAGEROUTER_TRANSLATE_MODEL", "gemini-3.5-flash-lite")
-TRANSLATE_URL = "https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
 TRANSLATE_CACHE_FILE = Path(__file__).resolve().parent / "storage" / "imagerouter_translations.json"
 TRANSLATE_CACHE_MAX = 3000
-COMPARE_ENV = Path(__file__).resolve().parent.parent / "compare_studio" / ".env"
 
 _lock = threading.Lock()
 _model_cooldown: Dict[str, float] = {}   # model → epoch hết nghỉ (model lỗi tạm thời)
@@ -222,25 +220,8 @@ def needs_translation(prompt: str) -> bool:
 
 
 def _gemini_key() -> str:
-    try:
-        try:
-            from bkt_web.key_vault import get_key
-        except ImportError:
-            from key_vault import get_key
-        value = get_key("ai.gemini")
-    except Exception:
-        value = ""
-    value = value or os.environ.get("GEMINI_API_KEY", "") or os.environ.get("GEMNINI_KEY", "")
-    if value:
-        return value
-    try:
-        for line in COMPARE_ENV.read_text(encoding="utf-8").splitlines():
-            name, _, raw = line.partition("=")
-            if name.strip() in ("GEMNINI_KEY", "GEMINI_API_KEY") and raw.strip():
-                return raw.strip().strip('"').strip("'")
-    except OSError:
-        pass
-    return ""
+    from bkt_web.services import gemini
+    return gemini.api_key()
 
 
 def _cache() -> Dict[str, str]:
@@ -282,33 +263,23 @@ def to_english(prompt: str, client: Optional[httpx.Client] = None) -> str:
     api_key = _gemini_key()
     if not api_key or time.time() < _translate_cooldown:
         return prompt
-    body = {"contents": [{"parts": [{"text": (
-        "Translate this image-generation prompt into natural English. Keep its comma-separated structure, "
-        "keep parts that are already English unchanged, add nothing. Output only the translated prompt.\n\n"
-        + prompt[:MAX_PROMPT_CHARS])}]}],
-        "generationConfig": {"temperature": 0, "maxOutputTokens": 800}}
-    owns = client is None
-    client = client or httpx.Client(timeout=30.0)
+    from bkt_web.services import gemini
+    request = ("Translate this image-generation prompt into natural English. Keep its comma-separated structure, "
+               "keep parts that are already English unchanged, add nothing. Output only the translated prompt.\n\n"
+               + prompt[:MAX_PROMPT_CHARS])
     try:
-        resp = client.post(TRANSLATE_URL.format(model=TRANSLATE_MODEL), params={"key": api_key}, json=body,
-                           timeout=30.0)
-        data = resp.json() if resp.content else {}
-        if resp.status_code != 200:
-            raise ValueError(f"Gemini HTTP {resp.status_code}: {str((data.get('error') or {}).get('message', ''))[:120]}")
-        parts = ((data.get("candidates") or [{}])[0].get("content") or {}).get("parts") or []
-        text = " ".join(" ".join(str(p.get("text", "")) for p in parts).split()).strip().strip('"')
+        raw = gemini.generate(request, models=[TRANSLATE_MODEL], temperature=0, max_tokens=800, timeout=30.0,
+                              key=api_key, client=client)
+        text = " ".join(raw.split()).strip().strip('"')
         if not text or _non_latin(text):
             raise ValueError("Gemini không trả bản dịch tiếng Anh")
-    except (httpx.HTTPError, ValueError) as exc:
+    except (gemini.GeminiError, ValueError) as exc:
         with _lock:
             _stats["translate_failed"] += 1
             _stats["translate_last_error"] = str(exc)[:200]
             _translate_cooldown = time.time() + (120 if "429" in str(exc) else 30)
         logger.warning("Dịch prompt ImageRouter lỗi, gửi bản gốc: %s", exc)
         return prompt
-    finally:
-        if owns:
-            client.close()
     _cache_put(key, text)
     with _lock:
         _stats["translated"] += 1

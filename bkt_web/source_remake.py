@@ -17,7 +17,6 @@ import re
 import subprocess
 import threading
 import time
-import urllib.request
 import uuid
 from pathlib import Path
 from typing import Any, Dict, List, Optional
@@ -109,11 +108,13 @@ def transcribe(src: Path, work: Path) -> Dict[str, Any]:
     wav = work / "audio.wav"
     subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", str(src), "-vn", "-ac", "1", "-ar", "16000", str(wav)],
                    check=True, timeout=300)
-    from faster_whisper import WhisperModel
-    model = WhisperModel("small", device="cpu", compute_type="int8")
-    segs, info = model.transcribe(str(wav), vad_filter=True)
-    segments = [{"start": round(s.start, 2), "end": round(s.end, 2), "text": s.text.strip()} for s in segs if s.text.strip()]
-    return {"language": info.language, "segments": segments, "text": " ".join(s["text"] for s in segments)}
+    try:
+        from bkt_web.services import speech
+    except ImportError:
+        from services import speech
+    r = speech.transcribe(wav, size="small", vad=True)
+    segments = r["segments"]
+    return {"language": r["language"], "segments": segments, "text": " ".join(s["text"] for s in segments)}
 
 
 def keyframes(src: Path, work: Path, count: int = 8) -> List[Path]:
@@ -144,21 +145,13 @@ Source transcript:
 
 def _gemini(parts: List[Dict[str, Any]]) -> Dict[str, Any]:
     try:
-        from bkt_web.key_vault import get_key
+        from bkt_web.services import gemini
     except ImportError:
-        from key_vault import get_key
-    key = get_key("ai.gemini")
-    body = json.dumps({"contents": [{"parts": parts}], "generationConfig": {"responseMimeType": "application/json"}}).encode()
-    last = None
-    for model in ("gemini-3.8-flash", "gemini-3.6-flash", "gemini-3.5-flash", "gemini-3.5-flash-lite"):
-        try:
-            req = urllib.request.Request(f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={key}",
-                                         body, {"Content-Type": "application/json"})
-            r = json.load(urllib.request.urlopen(req, timeout=240))
-            return json.loads(r["candidates"][0]["content"]["parts"][0]["text"])
-        except Exception as e:  # noqa: BLE001
-            last = e
-    raise RuntimeError(f"Gemini không viết được lời dẫn: {last}")
+        from services import gemini
+    try:
+        return gemini.generate_json(parts, models=gemini.FLASH_CHAIN, timeout=240)
+    except gemini.GeminiError as e:
+        raise RuntimeError(f"Gemini không viết được lời dẫn: {e}") from e
 
 
 def write_lines(transcript: Dict[str, Any], frames: List[Path], language: str, niche: str) -> Dict[str, Any]:

@@ -23,7 +23,6 @@ logger = logging.getLogger(__name__)
 GENERATED_DIR = store.BKT_DIR / "storage" / "autopilot_topics"
 # Thử lần lượt; 503 "high demand"/429 thì chuyển model kế tiếp.
 GEMINI_MODELS = ("gemini-3.5-flash", "gemini-3.6-flash", "gemini-3.5-flash-lite")
-GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
 _STOPWORDS = {
     "the", "and", "for", "with", "that", "this", "from", "into", "what", "when", "which", "while", "why", "how",
     "who", "whose", "than", "then", "they", "their", "them", "were", "was", "are", "is", "its", "it's", "your",
@@ -75,29 +74,12 @@ def _niche_name(niche_id: str) -> str:
 
 
 def _ask_gemini(prompt: str) -> str:
-    import httpx
-    from bkt_web.imagerouter_image import _gemini_key
+    from bkt_web.services import gemini
 
-    api_key = _gemini_key()
-    if not api_key:
-        raise RuntimeError("chưa có khoá Gemini (key vault ai.gemini / GEMNINI_KEY)")
-    body = {"contents": [{"parts": [{"text": prompt}]}],
-            "generationConfig": {"temperature": 0.9, "maxOutputTokens": 4000}}
-    errors = []
-    for model in GEMINI_MODELS:
-        try:
-            resp = httpx.post(GEMINI_URL.format(model=model), params={"key": api_key}, json=body, timeout=90.0)
-        except httpx.HTTPError as exc:
-            errors.append(f"{model}: {type(exc).__name__}")
-            continue
-        data = resp.json() if resp.content else {}
-        if resp.status_code == 200:
-            parts = ((data.get("candidates") or [{}])[0].get("content") or {}).get("parts") or []
-            return "\n".join(str(p.get("text", "")) for p in parts)
-        errors.append(f"{model}: HTTP {resp.status_code} {str((data.get('error') or {}).get('message', ''))[:80]}")
-        if resp.status_code not in (429, 500, 503, 404):
-            break
-    raise RuntimeError("Gemini lỗi — " + "; ".join(errors))
+    try:
+        return gemini.generate(prompt, models=GEMINI_MODELS, temperature=0.9, max_tokens=4000, timeout=90.0)
+    except gemini.GeminiError as exc:
+        raise RuntimeError(str(exc)) from exc
 
 
 def generate(niche_id: str, existing: List[str], count: int = 40, brief: str = "") -> List[str]:

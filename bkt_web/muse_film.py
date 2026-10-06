@@ -15,7 +15,6 @@ import re
 import subprocess
 import threading
 import time
-import urllib.request
 import uuid
 from pathlib import Path
 from typing import Any, Dict, List, Optional
@@ -132,20 +131,13 @@ Return JSON {{"title": "...", "cast":[{{"id","look"}}], "shots":[{{"prompt","cam
 
 def _gemini(prompt: str) -> Dict[str, Any]:
     try:
-        from bkt_web.key_vault import get_key
+        from bkt_web.services import gemini
     except ImportError:
-        from key_vault import get_key
-    key = get_key("ai.gemini")
-    body = json.dumps({"contents": [{"parts": [{"text": prompt}]}], "generationConfig": {"responseMimeType": "application/json"}}).encode()
-    last = None
-    for model in ("gemini-3.8-flash", "gemini-3.6-flash", "gemini-3.5-flash", "gemini-3.5-flash-lite"):
-        try:
-            req = urllib.request.Request(f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={key}", body, {"Content-Type": "application/json"})
-            r = json.load(urllib.request.urlopen(req, timeout=180))
-            return json.loads(r["candidates"][0]["content"]["parts"][0]["text"])
-        except Exception as e:  # noqa: BLE001
-            last = e
-    raise RuntimeError(f"Gemini không trả kịch bản: {last}")
+        from services import gemini
+    try:
+        return gemini.generate_json(prompt, models=gemini.FLASH_CHAIN)
+    except gemini.GeminiError as e:
+        raise RuntimeError(f"Gemini không trả kịch bản: {e}") from e
 
 
 def plan(p: Dict[str, Any]) -> None:

@@ -6,11 +6,9 @@ import json
 import os
 import re
 import subprocess
-import time
 from pathlib import Path
 from typing import Any, Callable, Dict, List, Optional
 
-import httpx
 
 try:
     from bkt_web import key_vault
@@ -214,21 +212,14 @@ def translate_cues(
         "Chỉ trả về JSON array [{\"index\":0,\"text\":\"...\"}] đủ đúng số câu.\n"
         + json.dumps(payload_cues, ensure_ascii=False)
     )
+    try:
+        from bkt_web.services import gemini
+    except ImportError:
+        from services import gemini
     model = os.environ.get("TOKMATRIX_GEMINI_MODEL", "gemini-flash-latest")
-    url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
-    response = None
-    for attempt in range(4):
-        response = httpx.post(
-            url,
-            headers={"x-goog-api-key": api_key, "content-type": "application/json"},
-            json={"contents": [{"parts": [{"text": prompt}]}], "generationConfig": {"temperature": 0.2}},
-            timeout=90,
-        )
-        if response.status_code < 500:
-            break
-        time.sleep(2.0 * (attempt + 1))
-    assert response is not None
-    if response.status_code >= 400:
+    try:
+        raw = gemini.generate(prompt, models=[model], key=api_key, temperature=0.2, timeout=90, attempts=4, retry_delay=2)
+    except gemini.GeminiError:
         try:
             from deep_translator import GoogleTranslator
             target = {"zh-CN": "zh-CN", "zh-TW": "zh-TW"}.get(locale, locale.split("-", 1)[0])
@@ -241,10 +232,8 @@ def translate_cues(
                 ]
         except Exception:
             pass
-    response.raise_for_status()
-    data = response.json()
-    parts = (((data.get("candidates") or [{}])[0].get("content") or {}).get("parts") or [])
-    translated = _extract_json("".join(part.get("text", "") for part in parts))
+        raise
+    translated = _extract_json(raw)
     by_index = {int(item["index"]): str(item["text"]).strip() for item in translated}
     if set(by_index) != set(range(len(cues))) or any(not text for text in by_index.values()):
         raise ValueError("Bản dịch thiếu câu hoặc sai thứ tự; hệ thống đã dừng để tránh đổi nội dung")
