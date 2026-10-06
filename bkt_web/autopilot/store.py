@@ -178,6 +178,8 @@ DEFAULT_CONFIG = {
     "purge_posted_after_days": "3",
     "npx_keep_versions": "2",
     "profile_blob_keep_hours": "24",
+    "story_remake_work_keep_hours": "2",
+    "muse_remake_purge": "1",
 }
 # = RENDERABLE_ENGINES của native-engine-adapter.mjs
 ENGINE_IDS = ("mystery", "newspaper", "vox", "folklore", "kinetic", "science",
@@ -207,6 +209,8 @@ _INT_RANGES = {
     "purge_posted_after_days": (0, 365),
     "npx_keep_versions": (0, 10),
     "profile_blob_keep_hours": (0, 720),
+    "story_remake_work_keep_hours": (0, 720),
+    "muse_remake_purge": (0, 1),
     "topic_subject_gap_days": (0, 30),
 }
 TOPIC_SOURCES = ("curated", "file", "matrix")

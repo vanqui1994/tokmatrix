@@ -15,6 +15,11 @@ Chạy trong cycle Autopilot, tối đa mỗi `housekeeping_interval_minutes` m�
 - profile_blob_keep_hours (24): bản sao video TikTok Chrome giữ lại sau upload (Default/blob_storage,
   Default/IndexedDB/*.indexeddb.blob) — 29/09 chiếm 19/21 GB của bkt_web/profiles. Chỉ xoá file cũ hơn ngần này giờ,
   bỏ qua profile đang có Chrome mở (--user-data-dir); cookie đăng nhập ở file khác nên acc không bị đăng xuất.
+- story_remake_work_keep_hours (2): thư mục làm việc Story Remake (compare_studio/.runtime/story-remake/<id>/) của video
+  `done`/`skipped` không đổi trong ngần này giờ: xoá ffm/, img/, tts/ và MP4 trung gian (~0,5 GB/video, 06/10 chiếm 12 GB);
+  giữ *.json + audio để tool vẫn biết video đã làm, MP4 thành phẩm nằm ở out/ không bị đụng.
+- muse_remake_purge (1): video Kuaishou → Muse đã đăng SUCCESS: xoá video nguồn, khung hình, đoạn ghép, lời đọc và clip
+  Muse (muse_films/<id>/clips, film.mp4); giữ final.mp4 + JSON.
 """
 from __future__ import annotations
 
@@ -288,6 +293,77 @@ def clean_profile_blobs(keep_hours: int, now: float, root: Optional[Path] = None
     return {"files": files, "bytes": freed}
 
 
+STORY_REMAKE_DIR = BASE_DIR.parent / "compare_studio" / ".runtime" / "story-remake"
+STORY_WORK_SUBDIRS = ("ffm", "img", "tts")
+
+
+def clean_story_remake_work(keep_hours: int, now: float, root: Optional[Path] = None) -> Dict[str, int]:
+    root = STORY_REMAKE_DIR if root is None else root
+    if keep_hours <= 0 or not root.is_dir():
+        return {"dirs": 0, "bytes": 0}
+    cutoff = now - keep_hours * 3600
+    dirs = freed = 0
+    for state in root.glob("*/state.json"):
+        work = state.parent
+        if work.name == "out":
+            continue
+        try:
+            status = json.loads(state.read_text(encoding="utf-8")).get("status")
+        except (OSError, ValueError):
+            continue
+        if status not in ("done", "skipped"):
+            continue
+        try:
+            if state.stat().st_mtime > cutoff:
+                continue  # vừa xong hoặc đang được chạy lại (tool ghi state.json ở mỗi bước)
+        except OSError:
+            continue
+        before = freed
+        for sub in STORY_WORK_SUBDIRS:
+            if (work / sub).exists():
+                freed += _remove(work / sub)
+        for mp4 in work.glob("*.mp4"):
+            freed += _remove(mp4)
+        dirs += freed > before
+    return {"dirs": dirs, "bytes": freed}
+
+
+MUSE_REMAKE_DIR = BASE_DIR / "storage" / "muse_remake"
+MUSE_FILMS_DIR = BASE_DIR / "storage" / "muse_films"
+
+
+def clean_muse_remake(enabled: int, db: Optional[Path] = None, channels_db: Optional[Path] = None) -> Dict[str, int]:
+    """Video Kuaishou → Muse đã đăng SUCCESS: chỉ giữ final.mp4 + JSON."""
+    import sqlite3
+    db = db or BASE_DIR / "storage" / "muse_remake.db"
+    channels_db = channels_db or BASE_DIR / "bkt_channels.db"
+    if not enabled or not db.is_file():
+        return {"videos": 0, "bytes": 0}
+    with sqlite3.connect(str(db), timeout=30) as c:
+        rows = c.execute("SELECT id, film_id, upload_task_id FROM videos WHERE upload_task_id>0").fetchall()
+    if not rows:
+        return {"videos": 0, "bytes": 0}
+    with sqlite3.connect(str(channels_db), timeout=30) as c:
+        posted = {r[0] for r in c.execute(f"SELECT id FROM upload_tasks WHERE status='SUCCESS' AND id IN ({','.join('?' * len(rows))})",
+                                           [r[2] for r in rows])}
+    videos = freed = 0
+    for vid, film_id, task_id in rows:
+        if task_id not in posted:
+            continue
+        before = freed
+        work = MUSE_REMAKE_DIR / str(int(vid))
+        for f in (work.iterdir() if work.is_dir() else []):
+            if f.is_file() and f.name != "final.mp4" and f.suffix != ".json":
+                freed += _remove(f)
+        if film_id and re.fullmatch(r"[a-z0-9]{6,20}", film_id):
+            film = MUSE_FILMS_DIR / film_id
+            for part in (film / "clips", film / "film.mp4"):
+                if part.exists():
+                    freed += _remove(part)
+        videos += freed > before
+    return {"videos": videos, "bytes": freed}
+
+
 def run(should_halt: Callable[[], bool] = lambda: False, now: Optional[float] = None, force: bool = False) -> Dict[str, Any]:
     global _last_run
     now = time.time() if now is None else now
@@ -302,6 +378,8 @@ def run(should_halt: Callable[[], bool] = lambda: False, now: Optional[float] = 
         ("posted_media", lambda: purge_posted_media(_int("purge_posted_after_days", 3), now, should_halt)),
         ("npx", lambda: clean_npx(_int("npx_keep_versions", 2))),
         ("profile_blobs", lambda: clean_profile_blobs(_int("profile_blob_keep_hours", 24), now)),
+        ("story_remake_work", lambda: clean_story_remake_work(_int("story_remake_work_keep_hours", 2), now)),
+        ("muse_remake", lambda: clean_muse_remake(_int("muse_remake_purge", 1))),
     ):
         try:
             result[name] = fn()
