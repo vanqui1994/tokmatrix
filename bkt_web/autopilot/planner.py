@@ -322,7 +322,8 @@ def run_plan_item(plan: Dict[str, Any], should_halt: ShouldHalt = _never) -> str
 
 
 # Job ở các trạng thái này không cần batch-matrix chạy tiếp (đã xong phần sản xuất hoặc đã hỏng hẳn).
-PRODUCTION_DONE_STATES = {"READY_TO_PUBLISH", "SCHEDULED", "PUBLISHED", "ANALYTICS_PENDING", "COMPLETED", "FAILED", "DEAD_LETTER"}
+PRODUCTION_DONE_STATES = {"READY_TO_PUBLISH", "SCHEDULED", "PUBLISHED", "ANALYTICS_PENDING", "COMPLETED", "FAILED", "DEAD_LETTER",
+                          "CANCELLED"}
 
 
 def has_unfinished_jobs(batch_id: str) -> bool:

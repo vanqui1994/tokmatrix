@@ -37,6 +37,18 @@ class MatrixDatabaseTests(unittest.TestCase):
         params.update(overrides)
         return matrix_db.create_job(**params)
 
+    def test_cancelled_jobs_are_terminal_and_never_claimed(self):
+        self.create_job(job_id="job-2", video_slug="test-video-2")
+        conn = sqlite3.connect(self.db_path)
+        conn.execute("UPDATE content_jobs SET state='SCHEDULED' WHERE job_id='job-2'")
+        conn.commit(); conn.close()
+        self.assertEqual(matrix_db.cancel_jobs(["job-1", "job-2"], "job cũ trước 26/09", db_path=self.db_path), 1)
+        conn = sqlite3.connect(self.db_path)
+        states = dict(conn.execute("SELECT job_id, state FROM content_jobs").fetchall()); conn.close()
+        self.assertEqual(states, {"job-1": "CANCELLED", "job-2": "SCHEDULED"})  # đã xếp lịch thì không huỷ
+        self.assertIsNone(matrix_db.claim_next_job(worker_id="w", db_path=self.db_path))
+        self.assertIn("CANCELLED", matrix_db.TERMINAL_STATES)
+
     def test_revive_job_resets_a_dead_job_for_the_same_channel(self):
         conn = sqlite3.connect(self.db_path)
         conn.execute("UPDATE content_jobs SET state='DEAD_LETTER', retry_count=4, error_message='CHART scene 1 requires chart_spec data', "

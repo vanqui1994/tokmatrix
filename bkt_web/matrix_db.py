@@ -23,9 +23,10 @@ DB_PATH = Path(__file__).resolve().parent / "storage" / "matrix_factory.db"
 JOB_STATES = {
     "CREATED", "PLANNING", "SCRIPTING", "SCRIPT_QA", "ASSET_GENERATING", "ASSET_QA",
     "READY_TO_RENDER", "RENDERING", "VIDEO_QA", "READY_TO_PUBLISH", "SCHEDULED",
-    "PUBLISHED", "ANALYTICS_PENDING", "COMPLETED", "RETRY_WAIT", "FAILED", "DEAD_LETTER",
+    "PUBLISHED", "ANALYTICS_PENDING", "COMPLETED", "RETRY_WAIT", "FAILED", "DEAD_LETTER", "CANCELLED",
 }
-TERMINAL_STATES = {"COMPLETED", "FAILED", "DEAD_LETTER"}
+# CANCELLED (owner 07/10): job bỏ hẳn — không worker nào nhận, revive không làm lại (khác FAILED/DEAD_LETTER).
+TERMINAL_STATES = {"COMPLETED", "FAILED", "DEAD_LETTER", "CANCELLED"}
 TRANSITIONS = {
     "CREATED": {"PLANNING"},
     "PLANNING": {"SCRIPTING"},
@@ -513,7 +514,7 @@ def claim_next_job(
     timestamp = _now() if now is None else int(now)
     conn = _transaction(db_path)
     try:
-        filters = "state NOT IN ('COMPLETED','FAILED','DEAD_LETTER','SCHEDULED')"
+        filters = "state NOT IN ('COMPLETED','FAILED','DEAD_LETTER','CANCELLED','SCHEDULED')"
         params: list[Any] = []
         if states is not None:
             work_states = list(dict.fromkeys(states))
@@ -1026,3 +1027,28 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+
+
+def cancel_jobs(job_ids: Iterable[str], reason: str, db_path: str | Path | None = None, now: int | None = None) -> int:
+    """Bỏ hẳn các job chưa kết thúc (CANCELLED): giữ file/manifest, gỡ khoá, ghi lý do. Trả số job đã huỷ."""
+    ids = [str(j) for j in job_ids]
+    if not ids:
+        return 0
+    timestamp = _now() if now is None else int(now)
+    conn = _transaction(db_path)
+    try:
+        placeholders = ",".join("?" for _ in ids)
+        cur = conn.execute(
+            f"""UPDATE content_jobs SET state='CANCELLED', error_message=?, locked_by=NULL, locked_at=NULL,
+                lease_expires_at=NULL, next_retry_at=NULL, updated_at=?
+                WHERE job_id IN ({placeholders}) AND state NOT IN ('COMPLETED','FAILED','DEAD_LETTER','CANCELLED',
+                'READY_TO_PUBLISH','SCHEDULED','PUBLISHED','ANALYTICS_PENDING')""",
+            [reason[:500], timestamp, *ids],
+        )
+        conn.commit()
+        return cur.rowcount
+    except Exception:
+        conn.rollback()
+        raise
+    finally:
+        conn.close()
