@@ -618,7 +618,21 @@ async def video_detail(slug: str) -> Dict[str, Any]:
 
     kind = detect_video_type(slug, meta, spec_raw, html, brief)
 
+    def matrix_script() -> list:
+        rows = []
+        for i, sc in enumerate(_matrix_scene_list(g(spec_raw, "script"))):
+            n = i + 1
+            img = next((r for r in (f"assets/images/scene-{n}.jpg", f"assets/images/scene-{n}.png") if exists(r)), None)
+            rows.append({"n": n, "sceneId": n, "spoken": sc["line"], "caption": sc["line"],
+                         "start": nn(sc["start"], i * 5.0), "dur": nn(sc["duration"], 5.0),
+                         "beat": f"Cảnh {n}: {sc['telemetry'] or f'Phân cảnh {n}'}", "title": f"Phân cảnh {n}",
+                         "imagePrompt": sc["imagePrompt"], **({"image": media(img)} if img else {})})
+        return rows
+
     def done(script: list, *, override_lines: bool = False) -> Dict[str, Any]:
+        if not script:  # thể loại không đọc được cảnh (layout biến thể Matrix): dựng từ spec.script
+            script = matrix_script()
+            override_lines = override_lines or bool(script)
         out = {**summary, "script": script, "spec": spec, "brief": brief_out}
         if override_lines:
             out["lines"] = len(script)
