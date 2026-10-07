@@ -1,5 +1,5 @@
 channel_id: space_03
-config_version: 10
+config_version: 11
 niche_id: deep_space
 name: Physics In A Minute
 tiktok_account_ref: null
@@ -10,16 +10,15 @@ persona:
   catchphrase_prefix: 'Thí nghiệm tưởng tượng này giúp ta nhìn ra một quy luật thật:'
 story:
   preferred_blueprints:
-    - science_explainer
+  - science_explainer
   preferred_hook_types:
-    - thought_experiment
-    - everyday_physics
+  - thought_experiment
+  - everyday_physics
   target_duration_seconds: 55
   pacing_beats: 12
 creative:
   preferred_engines:
-    - science
-    - kinetic
+  - science
   visual_style_id: cosmic_space_v1
   cut_cadence_seconds: 2.7
   palette:
@@ -27,30 +26,18 @@ creative:
     accent: '#66FCF1'
     text: '#C5C6C7'
   skins:
-    kinetic:
-      variant_id: kinetic/type-poster
+    science:
+      variant_id: science/space-hud
       dna:
         dna_version: 2
         variant_version: 1
-        composition: center_stack
+        composition: viewport
         typography: condensed
         treatment: vignette_dark
         image_motion: parallax
-        transition: zoom_through
-        tone: 8
-        caption: bottom
-    science:
-      variant_id: science/explainer-board
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: hud_panel
-        typography: serif
-        treatment: film_grain
-        image_motion: ken_burns_slow
-        transition: wipe
-        tone: 2
-        caption: middle
+        transition: shutter
+        tone: 0
+        caption: fixed
 audio:
   voice_id: DiT_de_female_jiangshi
   voice_speed: 1.02
@@ -59,13 +46,13 @@ audio:
   soundscape_id: science
   sfx_density: low
   bgm_pool:
-    - freepd-hidden-truth
-    - oga-sirens-in-darkness
+  - freepd-hidden-truth
+  - oga-sirens-in-darkness
 publishing:
   language: de
   default_schedule_window: 19:30-20:30
   hashtags:
-    - vatly
-    - khoahoc
-    - thunghiem
-    - physicsinaminute
+  - vatly
+  - khoahoc
+  - thunghiem
+  - physicsinaminute

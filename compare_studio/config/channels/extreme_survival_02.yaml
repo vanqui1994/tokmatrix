@@ -1,5 +1,5 @@
 channel_id: extreme_survival_02
-config_version: 11
+config_version: 12
 niche_id: extreme_survival
 name: Überleben & Katastrophen 02
 tiktok_account_ref: null
@@ -19,8 +19,6 @@ story:
 creative:
   preferred_engines:
   - tierlist
-  - kinetic
-  - science
   visual_style_id: dark_mystery_v1
   cut_cadence_seconds: 2.8
   palette:
@@ -28,42 +26,18 @@ creative:
     accent: '#D6A84F'
     text: '#F2EEE6'
   skins:
-    kinetic:
-      variant_id: kinetic/type-poster
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: split_band
-        typography: grotesk
-        treatment: clean
-        image_motion: still_grain
-        transition: cut
-        tone: 5
-        caption: bottom
-    science:
-      variant_id: science/explainer-board
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: hud_panel
-        typography: mono
-        treatment: paper_texture
-        image_motion: push_in
-        transition: zoom_through
-        tone: 4
-        caption: bottom
     tierlist:
-      variant_id: tierlist/ranking-board
+      variant_id: tierlist/weapon-rack
       dna:
         dna_version: 2
         variant_version: 1
-        composition: rows_board
-        typography: grotesk
-        treatment: duotone
-        image_motion: ken_burns_fast
+        composition: wall_rack
+        typography: condensed
+        treatment: sepia_grain
+        image_motion: ken_burns_slow
         transition: slide
-        tone: 2
-        caption: bottom
+        tone: 1
+        caption: fixed
 audio:
   voice_id: de-DE-KatjaNeural
   voice_speed: 0.96

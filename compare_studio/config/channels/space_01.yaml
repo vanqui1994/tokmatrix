@@ -1,5 +1,5 @@
 channel_id: space_01
-config_version: 11
+config_version: 12
 niche_id: deep_space
 name: Cosmic Impossible
 tiktok_account_ref: null
@@ -10,17 +10,16 @@ persona:
   catchphrase_prefix: Bạn có dám đối mặt với sự thật rằng...
 story:
   preferred_blueprints:
-    - science_explainer
-    - mystery_reveal
+  - science_explainer
+  - mystery_reveal
   preferred_hook_types:
-    - impossible_scale
-    - paradox_question
+  - impossible_scale
+  - paradox_question
   target_duration_seconds: 52
   pacing_beats: 12
 creative:
   preferred_engines:
-    - science
-    - kinetic
+  - science
   visual_style_id: cosmic_space_v1
   cut_cadence_seconds: 2.8
   palette:
@@ -28,30 +27,18 @@ creative:
     accent: '#66FCF1'
     text: '#C5C6C7'
   skins:
-    kinetic:
-      variant_id: kinetic/type-poster
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: split_band
-        typography: rounded
-        treatment: film_grain
-        image_motion: pan_lateral
-        transition: wipe
-        tone: 0
-        caption: middle
     science:
-      variant_id: science/explainer-board
+      variant_id: science/xray
       dna:
         dna_version: 2
         variant_version: 1
-        composition: hud_panel
-        typography: serif
-        treatment: paper_texture
-        image_motion: pan_lateral
-        transition: slide
-        tone: 3
-        caption: middle
+        composition: film_sheets
+        typography: grotesk
+        treatment: duotone
+        image_motion: still_grain
+        transition: cut
+        tone: 0
+        caption: fixed
 audio:
   voice_id: DiT_de_female_jiangshi
   voice_speed: 1.02
@@ -60,13 +47,13 @@ audio:
   soundscape_id: science
   sfx_density: medium
   bgm_pool:
-    - freepd-mana-two-part-1
-    - oga-november-snow
+  - freepd-mana-two-part-1
+  - oga-november-snow
 publishing:
   language: de
   default_schedule_window: 19:30-20:30
   hashtags:
-    - khoahoc
-    - vutru
-    - khampha
-    - cosmicimpossible
+  - khoahoc
+  - vutru
+  - khampha
+  - cosmicimpossible

@@ -1,5 +1,5 @@
 channel_id: geopolitics_maps_06
-config_version: 10
+config_version: 11
 niche_id: geopolitics_maps
 name: Geopolitik & Grenzen 06
 tiktok_account_ref: null
@@ -18,9 +18,7 @@ story:
   pacing_beats: 12
 creative:
   preferred_engines:
-  - wildlife
   - chalk
-  - vox
   visual_style_id: dark_mystery_v1
   cut_cadence_seconds: 2.4
   palette:
@@ -33,35 +31,11 @@ creative:
       dna:
         dna_version: 2
         variant_version: 1
-        composition: feeds
-        typography: grotesk
+        composition: orbit_split
+        typography: mono
         treatment: film_grain
         image_motion: ken_burns_fast
-        transition: zoom_through
-        tone: 2
-        caption: fixed
-    wildlife:
-      variant_id: wildlife/trail-cam
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: burst_strip
-        typography: mono
-        treatment: vignette_dark
-        image_motion: handheld
-        transition: tv_noise
-        tone: 4
-        caption: fixed
-    vox:
-      variant_id: vox/data-card
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: ring_gauge
-        typography: heavy
-        treatment: duotone
-        image_motion: ken_burns_slow
-        transition: shutter
+        transition: cut
         tone: 0
         caption: fixed
 audio:

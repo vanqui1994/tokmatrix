@@ -1,5 +1,5 @@
 channel_id: infamous_figures_09
-config_version: 10
+config_version: 11
 niche_id: infamous_figures
 name: Berüchtigte Gestalten 09
 tiktok_account_ref: null
@@ -19,8 +19,6 @@ story:
 creative:
   preferred_engines:
   - tierlist
-  - vox
-  - mystery
   visual_style_id: dark_mystery_v1
   cut_cadence_seconds: 2.4
   palette:
@@ -33,37 +31,13 @@ creative:
       dna:
         dna_version: 2
         variant_version: 1
-        composition: showcase_top
-        typography: rounded
-        treatment: film_grain
-        image_motion: push_in
-        transition: shutter
-        tone: 5
-        caption: middle
-    mystery:
-      variant_id: mystery/cursed-objects
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: catalogue_card
-        typography: slab
-        treatment: film_grain
-        image_motion: ken_burns_slow
-        transition: flip_3d
-        tone: 0
-        caption: fixed
-    vox:
-      variant_id: vox/data-card
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: stat_top
-        typography: condensed
-        treatment: halftone
-        image_motion: push_in
+        composition: rows_board
+        typography: grotesk
+        treatment: vignette_dark
+        image_motion: parallax
         transition: slide
-        tone: 1
-        caption: fixed
+        tone: 6
+        caption: middle
 audio:
   voice_id: DiT_de_male_koubo
   voice_speed: 0.96

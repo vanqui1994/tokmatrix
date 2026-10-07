@@ -1,5 +1,5 @@
 channel_id: lost_civilizations_07
-config_version: 10
+config_version: 11
 niche_id: lost_civilizations
 name: Antike Zivilisationen 07
 tiktok_account_ref: null
@@ -25,17 +25,19 @@ creative:
     primary: '#111318'
     accent: '#D6A84F'
     text: '#F2EEE6'
-  variant_id: chalk/whiteboard
-  dna:
-    dna_version: 2
-    variant_version: 1
-    composition: marker_map
-    typography: rounded
-    treatment: clean
-    image_motion: push_in
-    transition: slide
-    tone: 2
-    caption: fixed
+  skins:
+    chalk:
+      variant_id: chalk/whiteboard
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: marker_map
+        typography: grotesk
+        treatment: paper_texture
+        image_motion: push_in
+        transition: slide
+        tone: 3
+        caption: fixed
 audio:
   voice_id: de-DE-KatjaNeural
   voice_speed: 1.05

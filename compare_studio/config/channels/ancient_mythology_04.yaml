@@ -1,5 +1,5 @@
 channel_id: ancient_mythology_04
-config_version: 10
+config_version: 11
 niche_id: ancient_mythology
 name: Antike Mythen 04
 tiktok_account_ref: null
@@ -18,8 +18,6 @@ story:
   pacing_beats: 12
 creative:
   preferred_engines:
-  - kinetic
-  - newspaper
   - folklore
   visual_style_id: dark_mystery_v1
   cut_cadence_seconds: 2.6
@@ -28,41 +26,17 @@ creative:
     accent: '#D6A84F'
     text: '#F2EEE6'
   skins:
-    newspaper:
-      variant_id: newspaper/front-page
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: side_masthead
-        typography: condensed
-        treatment: clean
-        image_motion: push_in
-        transition: cut
-        tone: 7
-        caption: bottom
-    kinetic:
-      variant_id: kinetic/type-poster
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: center_stack
-        typography: slab
-        treatment: halftone
-        image_motion: parallax
-        transition: wipe
-        tone: 1
-        caption: middle
     folklore:
       variant_id: folklore/european-grimoire
       dna:
         dna_version: 2
         variant_version: 1
-        composition: open_book
-        typography: display_serif
-        treatment: sepia_grain
-        image_motion: scan_light
-        transition: ink_bleed
-        tone: 3
+        composition: sigil_circle
+        typography: slab
+        treatment: vignette_dark
+        image_motion: ken_burns_slow
+        transition: page_turn
+        tone: 1
         caption: fixed
 audio:
   voice_id: DiT_de_male_koubo

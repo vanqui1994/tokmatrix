@@ -1,5 +1,5 @@
 channel_id: space_02
-config_version: 9
+config_version: 10
 niche_id: deep_space
 name: Scale Of The Cosmos
 tiktok_account_ref: null
@@ -10,16 +10,15 @@ persona:
   catchphrase_prefix: 'Nếu đặt Trái Đất cạnh vật thể này, mọi con số sẽ thay đổi:'
 story:
   preferred_blueprints:
-    - science_explainer
+  - science_explainer
   preferred_hook_types:
-    - scale_comparison
-    - record_breaking_distance
+  - scale_comparison
+  - record_breaking_distance
   target_duration_seconds: 50
   pacing_beats: 12
 creative:
   preferred_engines:
-    - science
-    - tierlist
+  - science
   visual_style_id: cosmic_space_v1
   cut_cadence_seconds: 2.5
   palette:
@@ -28,29 +27,17 @@ creative:
     text: '#C5C6C7'
   skins:
     science:
-      variant_id: science/explainer-board
+      variant_id: science/quiz-show
       dna:
         dna_version: 2
         variant_version: 1
-        composition: whiteboard
-        typography: mono
+        composition: podium
+        typography: heavy
         treatment: halftone
-        image_motion: push_in
-        transition: zoom_through
-        tone: 8
-        caption: top
-    tierlist:
-      variant_id: tierlist/ranking-board
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: showcase_top
-        typography: rounded
-        treatment: halftone
-        image_motion: ken_burns_fast
-        transition: wipe
-        tone: 2
-        caption: bottom
+        image_motion: still_grain
+        transition: slide
+        tone: 1
+        caption: fixed
 audio:
   voice_id: de-DE-KatjaNeural
   voice_speed: 0.99
@@ -59,13 +46,13 @@ audio:
   soundscape_id: science
   sfx_density: low
   bgm_pool:
-    - freepd-horror-mytery
-    - freepd-inspiration
+  - freepd-horror-mytery
+  - freepd-inspiration
 publishing:
   language: de
   default_schedule_window: 19:30-20:30
   hashtags:
-    - thienvan
-    - khoangcachvutru
-    - hematroi
-    - scaleofthecosmos
+  - thienvan
+  - khoangcachvutru
+  - hematroi
+  - scaleofthecosmos

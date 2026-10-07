@@ -1,5 +1,5 @@
 channel_id: medical_anomalies_04
-config_version: 11
+config_version: 12
 niche_id: medical_anomalies
 name: Medizin & Biologische Rätsel 04
 tiktok_account_ref: null
@@ -18,8 +18,6 @@ story:
   pacing_beats: 12
 creative:
   preferred_engines:
-  - newspaper
-  - kinetic
   - survival
   visual_style_id: dark_mystery_v1
   cut_cadence_seconds: 2.6
@@ -28,41 +26,17 @@ creative:
     accent: '#D6A84F'
     text: '#F2EEE6'
   skins:
-    newspaper:
-      variant_id: newspaper/front-page
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: front_page
-        typography: grotesk
-        treatment: sepia_grain
-        image_motion: pan_lateral
-        transition: slide
-        tone: 4
-        caption: middle
-    kinetic:
-      variant_id: kinetic/type-poster
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: center_stack
-        typography: slab
-        treatment: vignette_dark
-        image_motion: pan_lateral
-        transition: slide
-        tone: 8
-        caption: middle
     survival:
       variant_id: survival/lab-exposure
       dna:
         dna_version: 2
         variant_version: 1
         composition: bench
-        typography: mono
+        typography: grotesk
         treatment: halftone
-        image_motion: scan_light
+        image_motion: still_grain
         transition: tv_noise
-        tone: 0
+        tone: 5
         caption: fixed
 audio:
   voice_id: de-DE-KillianNeural

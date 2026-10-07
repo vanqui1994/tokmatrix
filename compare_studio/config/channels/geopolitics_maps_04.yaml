@@ -1,5 +1,5 @@
 channel_id: geopolitics_maps_04
-config_version: 10
+config_version: 11
 niche_id: geopolitics_maps
 name: Geopolitik & Grenzen 04
 tiktok_account_ref: null
@@ -18,52 +18,24 @@ story:
   pacing_beats: 12
 creative:
   preferred_engines:
-  - kinetic
-  - tierlist
-  - wildlife
+  - compare
   visual_style_id: dark_mystery_v1
   cut_cadence_seconds: 2.6
   palette:
     primary: '#111318'
     accent: '#D6A84F'
     text: '#F2EEE6'
-  skins:
-    kinetic:
-      variant_id: kinetic/type-poster
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: tilted_board
-        typography: condensed
-        treatment: film_grain
-        image_motion: pan_lateral
-        transition: wipe
-        tone: 8
-        caption: top
-    tierlist:
-      variant_id: tierlist/ranking-board
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: rows_board
-        typography: condensed
-        treatment: film_grain
-        image_motion: ken_burns_fast
-        transition: wipe
-        tone: 2
-        caption: top
-    wildlife:
-      variant_id: wildlife/field-guide
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: plate_page
-        typography: slab
-        treatment: sepia_grain
-        image_motion: still_grain
-        transition: paper_tear
-        tone: 0
-        caption: fixed
+  variant_id: compare/courtroom
+  dna:
+    dna_version: 2
+    variant_version: 1
+    composition: bench
+    typography: typewriter
+    treatment: sepia_grain
+    image_motion: scan_light
+    transition: page_turn
+    tone: 3
+    caption: fixed
 audio:
   voice_id: de-DE-AmalaNeural
   voice_speed: 0.99

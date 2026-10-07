@@ -1,5 +1,5 @@
 channel_id: philosophy_paradox_04
-config_version: 10
+config_version: 11
 niche_id: philosophy_paradox
 name: 철학의 역설 04
 tiktok_account_ref: null
@@ -19,8 +19,6 @@ story:
 creative:
   preferred_engines:
   - science
-  - tierlist
-  - mystery
   visual_style_id: dark_mystery_v1
   cut_cadence_seconds: 2.6
   palette:
@@ -34,36 +32,12 @@ creative:
         dna_version: 2
         variant_version: 1
         composition: hud_panel
-        typography: grotesk
-        treatment: vignette_dark
-        image_motion: parallax
-        transition: shutter
-        tone: 8
-        caption: middle
-    tierlist:
-      variant_id: tierlist/ranking-board
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: rows_board
-        typography: grotesk
-        treatment: halftone
-        image_motion: parallax
-        transition: shutter
-        tone: 8
+        typography: rounded
+        treatment: clean
+        image_motion: push_in
+        transition: cut
+        tone: 7
         caption: bottom
-    mystery:
-      variant_id: mystery/lost-places
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: flashlight_circle
-        typography: display_serif
-        treatment: vignette_dark
-        image_motion: parallax
-        transition: ink_bleed
-        tone: 4
-        caption: fixed
 audio:
   voice_id: ko-KR-SunHiNeural
   voice_speed: 1.05

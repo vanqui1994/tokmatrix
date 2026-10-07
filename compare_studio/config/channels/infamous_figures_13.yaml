@@ -9,7 +9,7 @@ audio:
   - freepd-evil-incoming
   - oga-fantasy-orchestral-theme
 channel_id: infamous_figures_13
-config_version: 9
+config_version: 10
 creative:
   cut_cadence_seconds: 2.5
   palette:
@@ -17,9 +17,7 @@ creative:
     primary: '#111318'
     text: '#F2EEE6'
   preferred_engines:
-  - vox
   - mystery
-  - chalk
   visual_style_id: dark_mystery_v1
   skins:
     mystery:
@@ -27,35 +25,11 @@ creative:
       dna:
         dna_version: 2
         variant_version: 1
-        composition: folder_card
+        composition: clipboard_top
         typography: typewriter
-        treatment: sepia_grain
-        image_motion: ken_burns_slow
-        transition: cut
-        tone: 2
-        caption: fixed
-    chalk:
-      variant_id: chalk/atlas
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: torn_plate
-        typography: serif
-        treatment: paper_texture
-        image_motion: ken_burns_slow
-        transition: page_turn
-        tone: 2
-        caption: fixed
-    vox:
-      variant_id: vox/paper-collage
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: cutout_column
-        typography: heavy
         treatment: paper_texture
         image_motion: push_in
-        transition: cut
+        transition: folder_flip
         tone: 3
         caption: fixed
 name: Berüchtigte Gestalten 13

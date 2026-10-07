@@ -1,5 +1,5 @@
 channel_id: ancient_mythology_02
-config_version: 10
+config_version: 11
 niche_id: ancient_mythology
 name: Antike Mythen 02
 tiktok_account_ref: null
@@ -19,8 +19,6 @@ story:
 creative:
   preferred_engines:
   - tierlist
-  - mystery
-  - kinetic
   visual_style_id: dark_mystery_v1
   cut_cadence_seconds: 2.8
   palette:
@@ -28,42 +26,18 @@ creative:
     accent: '#D6A84F'
     text: '#F2EEE6'
   skins:
-    kinetic:
-      variant_id: kinetic/type-poster
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: tilted_board
-        typography: grotesk
-        treatment: clean
-        image_motion: pan_lateral
-        transition: slide
-        tone: 3
-        caption: top
     tierlist:
       variant_id: tierlist/ranking-board
       dna:
         dna_version: 2
         variant_version: 1
-        composition: showcase_top
-        typography: condensed
+        composition: pyramid
+        typography: rounded
         treatment: duotone
         image_motion: ken_burns_fast
-        transition: slide
-        tone: 0
-        caption: middle
-    mystery:
-      variant_id: mystery/cursed-objects
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: glass_case
-        typography: display_serif
-        treatment: vignette_dark
-        image_motion: ken_burns_slow
-        transition: fade_black
-        tone: 3
-        caption: fixed
+        transition: cut
+        tone: 8
+        caption: top
 audio:
   voice_id: de-DE-ConradNeural
   voice_speed: 0.99

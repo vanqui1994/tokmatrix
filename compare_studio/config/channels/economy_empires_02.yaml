@@ -1,5 +1,5 @@
 channel_id: economy_empires_02
-config_version: 9
+config_version: 10
 niche_id: economy_empires
 name: Wirtschaft & Märkte 02
 tiktok_account_ref: null
@@ -19,8 +19,6 @@ story:
 creative:
   preferred_engines:
   - newspaper
-  - tierlist
-  - chalk
   visual_style_id: dark_mystery_v1
   cut_cadence_seconds: 2.8
   palette:
@@ -33,37 +31,13 @@ creative:
       dna:
         dna_version: 2
         variant_version: 1
-        composition: front_page
+        composition: magazine_cover
         typography: slab
-        treatment: clean
-        image_motion: ken_burns_fast
-        transition: page_turn
-        tone: 5
-        caption: middle
-    tierlist:
-      variant_id: tierlist/ranking-board
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: showcase_top
-        typography: condensed
-        treatment: vignette_dark
+        treatment: paper_texture
         image_motion: push_in
-        transition: wipe
+        transition: slide
         tone: 1
-        caption: top
-    chalk:
-      variant_id: chalk/satellite
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: orbit_split
-        typography: mono
-        treatment: vignette_dark
-        image_motion: ken_burns_fast
-        transition: zoom_through
-        tone: 0
-        caption: fixed
+        caption: middle
 audio:
   voice_id: de-DE-ConradNeural
   voice_speed: 0.99

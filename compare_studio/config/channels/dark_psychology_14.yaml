@@ -9,7 +9,7 @@ audio:
   - freepd-hidden-truth
   - freepd-night-attack
 channel_id: dark_psychology_14
-config_version: 10
+config_version: 11
 creative:
   cut_cadence_seconds: 3.0
   palette:
@@ -17,46 +17,20 @@ creative:
     primary: '#111318'
     text: '#F2EEE6'
   preferred_engines:
-  - science
-  - newspaper
   - mystery
   visual_style_id: dark_mystery_v1
   skins:
-    newspaper:
-      variant_id: newspaper/front-page
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: side_masthead
-        typography: condensed
-        treatment: paper_texture
-        image_motion: pan_lateral
-        transition: slide
-        tone: 8
-        caption: middle
-    science:
-      variant_id: science/explainer-board
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: lab_notebook
-        typography: serif
-        treatment: halftone
-        image_motion: pan_lateral
-        transition: wipe
-        tone: 5
-        caption: top
     mystery:
       variant_id: mystery/cctv
       dna:
         dna_version: 2
         variant_version: 1
-        composition: quad_cam
+        composition: single_monitor
         typography: condensed
-        treatment: vhs_noise
-        image_motion: handheld
-        transition: tv_noise
-        tone: 3
+        treatment: film_grain
+        image_motion: still_grain
+        transition: cut
+        tone: 2
         caption: fixed
 name: Psychologie & Verhalten 14
 niche_id: dark_psychology

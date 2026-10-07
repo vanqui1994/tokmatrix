@@ -9,7 +9,7 @@ audio:
   - freepd-cornfield-chase
   - freepd-go-on-without-me
 channel_id: military_arsenal_12
-config_version: 12
+config_version: 13
 creative:
   cut_cadence_seconds: 2.5
   palette:
@@ -17,46 +17,20 @@ creative:
     primary: '#111318'
     text: '#F2EEE6'
   preferred_engines:
-  - newspaper
   - tierlist
-  - vox
   visual_style_id: dark_mystery_v1
   skins:
-    newspaper:
-      variant_id: newspaper/front-page
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: side_masthead
-        typography: slab
-        treatment: halftone
-        image_motion: ken_burns_slow
-        transition: cut
-        tone: 3
-        caption: middle
     tierlist:
-      variant_id: tierlist/ranking-board
+      variant_id: tierlist/classic-rows
       dna:
         dna_version: 2
         variant_version: 1
         composition: rows_board
-        typography: slab
-        treatment: clean
-        image_motion: parallax
-        transition: cut
-        tone: 5
-        caption: middle
-    vox:
-      variant_id: vox/data-card
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: stat_top
         typography: heavy
-        treatment: halftone
-        image_motion: ken_burns_slow
+        treatment: clean
+        image_motion: push_in
         transition: cut
-        tone: 2
+        tone: 1
         caption: fixed
 name: Weapons & War Machines 12
 niche_id: military_arsenal

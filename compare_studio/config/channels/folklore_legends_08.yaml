@@ -1,5 +1,5 @@
 channel_id: folklore_legends_08
-config_version: 11
+config_version: 12
 niche_id: folklore_legends
 name: Folklore & The Unseen 08
 tiktok_account_ref: null
@@ -18,9 +18,7 @@ story:
   pacing_beats: 12
 creative:
   preferred_engines:
-  - tierlist
   - newspaper
-  - kinetic
   visual_style_id: dark_mystery_v1
   cut_cadence_seconds: 2.8
   palette:
@@ -33,37 +31,13 @@ creative:
       dna:
         dna_version: 2
         variant_version: 1
-        composition: magazine_cover
-        typography: grotesk
-        treatment: sepia_grain
-        image_motion: parallax
-        transition: shutter
-        tone: 6
-        caption: bottom
-    kinetic:
-      variant_id: kinetic/type-poster
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: split_band
+        composition: side_masthead
         typography: condensed
-        treatment: paper_texture
-        image_motion: still_grain
-        transition: zoom_through
-        tone: 0
-        caption: bottom
-    tierlist:
-      variant_id: tierlist/ranking-board
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: showcase_top
-        typography: rounded
         treatment: clean
-        image_motion: push_in
-        transition: cut
-        tone: 7
-        caption: top
+        image_motion: ken_burns_slow
+        transition: shutter
+        tone: 3
+        caption: middle
 audio:
   voice_id: en-US-GuyNeural
   voice_speed: 0.99

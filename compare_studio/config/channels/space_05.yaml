@@ -1,5 +1,5 @@
 channel_id: space_05
-config_version: 13
+config_version: 14
 niche_id: deep_space
 name: Cosmic What If Lab
 tiktok_account_ref: null
@@ -18,9 +18,7 @@ story:
   pacing_beats: 12
 creative:
   preferred_engines:
-  - kinetic
   - science
-  - survival
   visual_style_id: cosmic_space_v1
   cut_cadence_seconds: 2.4
   palette:
@@ -28,42 +26,18 @@ creative:
     accent: '#66FCF1'
     text: '#C5C6C7'
   skins:
-    kinetic:
-      variant_id: kinetic/type-poster
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: center_stack
-        typography: slab
-        treatment: film_grain
-        image_motion: still_grain
-        transition: shutter
-        tone: 3
-        caption: middle
     science:
       variant_id: science/explainer-board
       dna:
         dna_version: 2
         variant_version: 1
-        composition: whiteboard
-        typography: grotesk
-        treatment: film_grain
-        image_motion: push_in
-        transition: slide
+        composition: hud_panel
+        typography: rounded
+        treatment: paper_texture
+        image_motion: pan_lateral
+        transition: shutter
         tone: 8
         caption: bottom
-    survival:
-      variant_id: survival/space-exposure
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: telemetry_column
-        typography: grotesk
-        treatment: vignette_dark
-        image_motion: ken_burns_slow
-        transition: glitch
-        tone: 2
-        caption: fixed
 audio:
   voice_id: de-DE-KatjaNeural
   voice_speed: 1.05

@@ -1,5 +1,5 @@
 channel_id: medical_anomalies_06
-config_version: 11
+config_version: 12
 niche_id: medical_anomalies
 name: Medizin & Biologische Rätsel 06
 tiktok_account_ref: null
@@ -18,8 +18,6 @@ story:
   pacing_beats: 12
 creative:
   preferred_engines:
-  - survival
-  - tierlist
   - science
   visual_style_id: dark_mystery_v1
   cut_cadence_seconds: 2.4
@@ -29,40 +27,16 @@ creative:
     text: '#F2EEE6'
   skins:
     science:
-      variant_id: science/explainer-board
+      variant_id: science/microscope-zoom
       dna:
         dna_version: 2
         variant_version: 1
-        composition: hud_panel
-        typography: serif
+        composition: zoom_levels
+        typography: rounded
         treatment: clean
-        image_motion: ken_burns_slow
+        image_motion: ken_burns_fast
         transition: zoom_through
-        tone: 7
-        caption: bottom
-    tierlist:
-      variant_id: tierlist/ranking-board
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: rows_board
-        typography: condensed
-        treatment: duotone
-        image_motion: push_in
-        transition: slide
-        tone: 5
-        caption: top
-    survival:
-      variant_id: survival/lab-exposure
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: hazard_ring
-        typography: grotesk
-        treatment: vhs_noise
-        image_motion: still_grain
-        transition: cut
-        tone: 2
+        tone: 4
         caption: fixed
 audio:
   voice_id: de-DE-FlorianMultilingualNeural

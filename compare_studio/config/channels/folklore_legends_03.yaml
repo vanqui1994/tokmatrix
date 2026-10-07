@@ -1,5 +1,5 @@
 channel_id: folklore_legends_03
-config_version: 11
+config_version: 12
 niche_id: folklore_legends
 name: Folklore & The Unseen 03
 tiktok_account_ref: null
@@ -19,8 +19,6 @@ story:
 creative:
   preferred_engines:
   - tierlist
-  - newspaper
-  - kinetic
   visual_style_id: dark_mystery_v1
   cut_cadence_seconds: 2.4
   palette:
@@ -28,42 +26,18 @@ creative:
     accent: '#D6A84F'
     text: '#F2EEE6'
   skins:
-    newspaper:
-      variant_id: newspaper/front-page
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: magazine_cover
-        typography: slab
-        treatment: paper_texture
-        image_motion: ken_burns_fast
-        transition: slide
-        tone: 1
-        caption: top
-    kinetic:
-      variant_id: kinetic/type-poster
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: split_band
-        typography: grotesk
-        treatment: halftone
-        image_motion: still_grain
-        transition: wipe
-        tone: 2
-        caption: top
     tierlist:
       variant_id: tierlist/ranking-board
       dna:
         dna_version: 2
         variant_version: 1
         composition: showcase_top
-        typography: grotesk
+        typography: condensed
         treatment: duotone
         image_motion: pan_lateral
-        transition: slide
-        tone: 6
-        caption: middle
+        transition: cut
+        tone: 4
+        caption: bottom
 audio:
   voice_id: en_us_002
   voice_speed: 0.99

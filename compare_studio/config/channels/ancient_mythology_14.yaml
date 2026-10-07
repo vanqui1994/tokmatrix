@@ -9,7 +9,7 @@ audio:
   - freepd-inspiration
   - oga-at-the-end-of-hope
 channel_id: ancient_mythology_14
-config_version: 10
+config_version: 11
 creative:
   cut_cadence_seconds: 2.9
   palette:
@@ -18,45 +18,19 @@ creative:
     text: '#F2EEE6'
   preferred_engines:
   - folklore
-  - tierlist
-  - newspaper
   visual_style_id: dark_mystery_v1
   skins:
-    newspaper:
-      variant_id: newspaper/front-page
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: front_page
-        typography: serif
-        treatment: film_grain
-        image_motion: ken_burns_slow
-        transition: slide
-        tone: 5
-        caption: bottom
-    tierlist:
-      variant_id: tierlist/ranking-board
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: rows_board
-        typography: grotesk
-        treatment: clean
-        image_motion: pan_lateral
-        transition: slide
-        tone: 4
-        caption: top
     folklore:
       variant_id: folklore/tarot-deck
       dna:
         dna_version: 2
         variant_version: 1
-        composition: three_card_spread
+        composition: card_flip
         typography: display_serif
         treatment: duotone
-        image_motion: still_grain
-        transition: zoom_through
-        tone: 0
+        image_motion: ken_burns_slow
+        transition: fade_black
+        tone: 2
         caption: fixed
 name: Antike Mythen 14
 niche_id: ancient_mythology

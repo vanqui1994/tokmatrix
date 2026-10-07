@@ -81,9 +81,9 @@ export function createMysteryFixture(root, { lang = "de", creative, slug = "myst
   const channel = structuredClone(resolveChannelsForTopic("unsolved_mysteries", 1)[0]);
   const inner = channel.resolved_config?.channel || channel.channel || channel;
   inner.publishing = { ...(inner.publishing || {}), language: lang };
-  if (creative) {
-    inner.creative = { ...inner.creative, preferred_engines: ["mystery"], ...creative };
-  }
+  // Kênh thật đều có bộ da riêng (owner 07/10: 1 skin = 1 acc); fixture không truyền creative = kênh legacy không skin.
+  const { skins: _skins, variant_id: _variant, dna: _dna, ...plain } = inner.creative || {};
+  inner.creative = creative ? { ...plain, preferred_engines: ["mystery"], ...creative } : plain;
   channel.engine_type = "mystery";
   const job = { job_id: jobId, batch_id: "batch-test", channel_id: channel.channel_id, engine_type: "mystery", video_slug: slug, created_at: 1 };
   const end = scenes.at(-1).start_seconds + scenes.at(-1).duration_seconds;

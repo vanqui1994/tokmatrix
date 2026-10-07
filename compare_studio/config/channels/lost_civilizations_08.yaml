@@ -1,5 +1,5 @@
 channel_id: lost_civilizations_08
-config_version: 11
+config_version: 12
 niche_id: lost_civilizations
 name: Antike Zivilisationen 08
 tiktok_account_ref: null
@@ -19,8 +19,6 @@ story:
 creative:
   preferred_engines:
   - newspaper
-  - mystery
-  - folklore
   visual_style_id: dark_mystery_v1
   cut_cadence_seconds: 2.8
   palette:
@@ -29,39 +27,15 @@ creative:
     text: '#F2EEE6'
   skins:
     newspaper:
-      variant_id: newspaper/front-page
+      variant_id: newspaper/telegram-wire
       dna:
         dna_version: 2
         variant_version: 1
-        composition: front_page
-        typography: slab
-        treatment: sepia_grain
-        image_motion: ken_burns_slow
-        transition: cut
-        tone: 1
-        caption: bottom
-    mystery:
-      variant_id: mystery/evidence-board
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: suspect_grid
-        typography: grotesk
-        treatment: clean
-        image_motion: push_in
-        transition: zoom_through
-        tone: 1
-        caption: fixed
-    folklore:
-      variant_id: folklore/shadow-puppet
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: tall_screen
-        typography: grotesk
+        composition: ticker_tape
+        typography: mono
         treatment: film_grain
-        image_motion: parallax
-        transition: fade_black
+        image_motion: ken_burns_slow
+        transition: slide
         tone: 0
         caption: fixed
 audio:

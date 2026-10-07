@@ -9,7 +9,7 @@ audio:
   - freepd-big-eyes
   - freepd-motions
 channel_id: ocean_mysteries_12
-config_version: 10
+config_version: 11
 creative:
   cut_cadence_seconds: 2.7
   palette:
@@ -17,47 +17,19 @@ creative:
     primary: '#111318'
     text: '#F2EEE6'
   preferred_engines:
-  - tierlist
-  - mystery
-  - survival
+  - compare
   visual_style_id: dark_mystery_v1
-  skins:
-    tierlist:
-      variant_id: tierlist/ranking-board
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: showcase_top
-        typography: slab
-        treatment: halftone
-        image_motion: parallax
-        transition: slide
-        tone: 6
-        caption: middle
-    survival:
-      variant_id: survival/extreme-cold
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: frosted_glass
-        typography: rounded
-        treatment: vignette_dark
-        image_motion: still_grain
-        transition: cut
-        tone: 4
-        caption: fixed
-    mystery:
-      variant_id: mystery/decoded
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: cipher_hex
-        typography: mono
-        treatment: vhs_noise
-        image_motion: scan_light
-        transition: tv_noise
-        tone: 0
-        caption: fixed
+  variant_id: compare/original
+  dna:
+    dna_version: 2
+    variant_version: 1
+    composition: columns
+    typography: heavy
+    treatment: paper_texture
+    image_motion: still_grain
+    transition: cut
+    tone: 2
+    caption: fixed
 name: 바다와 심해 해구 12
 niche_id: ocean_mysteries
 persona:

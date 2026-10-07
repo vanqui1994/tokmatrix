@@ -9,7 +9,7 @@ audio:
   - freepd-abstract-anxiety
   - freepd-release-the-hybrids
 channel_id: extreme_survival_11
-config_version: 12
+config_version: 13
 creative:
   cut_cadence_seconds: 2.3
   palette:
@@ -17,46 +17,20 @@ creative:
     primary: '#111318'
     text: '#F2EEE6'
   preferred_engines:
-  - tierlist
-  - kinetic
   - survival
   visual_style_id: dark_mystery_v1
   skins:
-    kinetic:
-      variant_id: kinetic/type-poster
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: center_stack
-        typography: condensed
-        treatment: vignette_dark
-        image_motion: still_grain
-        transition: shutter
-        tone: 5
-        caption: middle
-    tierlist:
-      variant_id: tierlist/ranking-board
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: showcase_top
-        typography: slab
-        treatment: duotone
-        image_motion: ken_burns_fast
-        transition: cut
-        tone: 0
-        caption: bottom
     survival:
       variant_id: survival/mr-incredible
       dna:
         dna_version: 2
         variant_version: 1
-        composition: legacy
-        typography: heavy
+        composition: face_card
+        typography: grotesk
         treatment: clean
         image_motion: still_grain
-        transition: fade_black
-        tone: 0
+        transition: zoom_through
+        tone: 4
         caption: fixed
 name: Survival & Disaster 11
 niche_id: extreme_survival

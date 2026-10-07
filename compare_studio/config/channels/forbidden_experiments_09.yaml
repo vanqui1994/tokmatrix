@@ -1,5 +1,5 @@
 channel_id: forbidden_experiments_09
-config_version: 10
+config_version: 11
 niche_id: forbidden_experiments
 name: Verrückte Experimente 09
 tiktok_account_ref: null
@@ -19,8 +19,6 @@ story:
 creative:
   preferred_engines:
   - newspaper
-  - science
-  - vox
   visual_style_id: dark_mystery_v1
   cut_cadence_seconds: 2.4
   palette:
@@ -29,38 +27,14 @@ creative:
     text: '#F2EEE6'
   skins:
     newspaper:
-      variant_id: newspaper/front-page
+      variant_id: newspaper/court-sketch
       dna:
         dna_version: 2
         variant_version: 1
-        composition: magazine_cover
-        typography: slab
-        treatment: film_grain
-        image_motion: ken_burns_fast
-        transition: page_turn
-        tone: 8
-        caption: top
-    science:
-      variant_id: science/explainer-board
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: lab_notebook
-        typography: rounded
-        treatment: film_grain
+        composition: sketch_pad
+        typography: grotesk
+        treatment: halftone
         image_motion: ken_burns_slow
-        transition: slide
-        tone: 8
-        caption: top
-    vox:
-      variant_id: vox/split-then-now
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: side_by_side
-        typography: display_serif
-        treatment: vignette_dark
-        image_motion: still_grain
         transition: fade_black
         tone: 4
         caption: fixed

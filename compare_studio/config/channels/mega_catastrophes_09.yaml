@@ -1,5 +1,5 @@
 channel_id: mega_catastrophes_09
-config_version: 11
+config_version: 12
 niche_id: mega_catastrophes
 name: Earth's Great Disasters 09
 tiktok_account_ref: null
@@ -19,8 +19,6 @@ story:
 creative:
   preferred_engines:
   - survival
-  - science
-  - newspaper
   visual_style_id: dark_mystery_v1
   cut_cadence_seconds: 2.4
   palette:
@@ -28,41 +26,17 @@ creative:
     accent: '#D6A84F'
     text: '#F2EEE6'
   skins:
-    newspaper:
-      variant_id: newspaper/front-page
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: magazine_cover
-        typography: condensed
-        treatment: film_grain
-        image_motion: ken_burns_slow
-        transition: page_turn
-        tone: 0
-        caption: middle
-    science:
-      variant_id: science/explainer-board
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: lab_notebook
-        typography: mono
-        treatment: vignette_dark
-        image_motion: parallax
-        transition: slide
-        tone: 0
-        caption: top
     survival:
       variant_id: survival/extreme-heat
       dna:
         dna_version: 2
         variant_version: 1
-        composition: mirage
-        typography: heavy
+        composition: thermo_left
+        typography: condensed
         treatment: film_grain
         image_motion: ken_burns_fast
-        transition: fade_black
-        tone: 1
+        transition: zoom_through
+        tone: 3
         caption: fixed
 audio:
   voice_id: BV029_streaming

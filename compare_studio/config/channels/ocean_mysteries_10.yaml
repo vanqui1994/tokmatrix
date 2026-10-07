@@ -1,5 +1,5 @@
 channel_id: ocean_mysteries_10
-config_version: 10
+config_version: 11
 niche_id: ocean_mysteries
 name: 바다와 심해 해구 10
 tiktok_account_ref: null
@@ -19,52 +19,12 @@ story:
 creative:
   preferred_engines:
   - vector
-  - mystery
-  - survival
-  - tierlist
   visual_style_id: dark_mystery_v1
   cut_cadence_seconds: 2.6
   palette:
     primary: '#111318'
     accent: '#D6A84F'
     text: '#F2EEE6'
-  skins:
-    tierlist:
-      variant_id: tierlist/ranking-board
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: pyramid
-        typography: grotesk
-        treatment: film_grain
-        image_motion: ken_burns_fast
-        transition: wipe
-        tone: 7
-        caption: top
-    survival:
-      variant_id: survival/extreme-cold
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: ice_card
-        typography: serif
-        treatment: clean
-        image_motion: ken_burns_slow
-        transition: cut
-        tone: 0
-        caption: fixed
-    mystery:
-      variant_id: mystery/evidence-board
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: pinned_web
-        typography: grotesk
-        treatment: clean
-        image_motion: ken_burns_slow
-        transition: slide
-        tone: 1
-        caption: fixed
 audio:
   voice_id: ko-KR-HyunsuMultilingualNeural
   voice_speed: 1.02

@@ -1,5 +1,5 @@
 channel_id: infamous_figures_07
-config_version: 10
+config_version: 11
 niche_id: infamous_figures
 name: Berüchtigte Gestalten 07
 tiktok_account_ref: null
@@ -18,9 +18,7 @@ story:
   pacing_beats: 12
 creative:
   preferred_engines:
-  - wildlife
   - newspaper
-  - tierlist
   visual_style_id: dark_mystery_v1
   cut_cadence_seconds: 2.6
   palette:
@@ -29,40 +27,16 @@ creative:
     text: '#F2EEE6'
   skins:
     newspaper:
-      variant_id: newspaper/front-page
+      variant_id: newspaper/wanted-poster
       dna:
         dna_version: 2
         variant_version: 1
-        composition: front_page
-        typography: serif
-        treatment: clean
-        image_motion: ken_burns_fast
-        transition: slide
-        tone: 6
-        caption: top
-    tierlist:
-      variant_id: tierlist/ranking-board
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: pyramid
-        typography: slab
-        treatment: halftone
-        image_motion: parallax
-        transition: cut
-        tone: 7
-        caption: top
-    wildlife:
-      variant_id: wildlife/savanna-hud
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: scope_center
-        typography: condensed
-        treatment: clean
-        image_motion: ken_burns_fast
-        transition: shutter
-        tone: 1
+        composition: torn_overlap
+        typography: display_serif
+        treatment: paper_texture
+        image_motion: still_grain
+        transition: flip_3d
+        tone: 0
         caption: fixed
 audio:
   voice_id: DiT_de_female_qingsong

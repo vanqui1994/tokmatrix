@@ -9,7 +9,7 @@ audio:
   - freepd-night-attack
   - freepd-video-game-blockbuster
 channel_id: extreme_wildlife_13
-config_version: 11
+config_version: 12
 creative:
   cut_cadence_seconds: 2.7
   palette:
@@ -17,47 +17,19 @@ creative:
     primary: '#111318'
     text: '#F2EEE6'
   preferred_engines:
-  - survival
-  - vox
-  - kinetic
+  - compare
   visual_style_id: dark_mystery_v1
-  skins:
-    kinetic:
-      variant_id: kinetic/type-poster
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: center_stack
-        typography: rounded
-        treatment: film_grain
-        image_motion: pan_lateral
-        transition: slide
-        tone: 7
-        caption: bottom
-    survival:
-      variant_id: survival/extreme-cold
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: frosted_glass
-        typography: rounded
-        treatment: vignette_dark
-        image_motion: parallax
-        transition: ink_bleed
-        tone: 4
-        caption: fixed
-    vox:
-      variant_id: vox/original
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: torn_bleed
-        typography: heavy
-        treatment: film_grain
-        image_motion: parallax
-        transition: fade_black
-        tone: 2
-        caption: fixed
+  variant_id: compare/card-game
+  dna:
+    dna_version: 2
+    variant_version: 1
+    composition: trick_grid
+    typography: rounded
+    treatment: halftone
+    image_motion: scan_light
+    transition: cut
+    tone: 1
+    caption: fixed
 name: Creatures of the Deep 13
 niche_id: extreme_wildlife
 persona:

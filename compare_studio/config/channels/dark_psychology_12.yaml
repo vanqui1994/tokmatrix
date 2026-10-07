@@ -9,7 +9,7 @@ audio:
   - freepd-think-about-it
   - oga-underwater-theme
 channel_id: dark_psychology_12
-config_version: 10
+config_version: 11
 creative:
   cut_cadence_seconds: 2.3
   palette:
@@ -17,47 +17,21 @@ creative:
     primary: '#111318'
     text: '#F2EEE6'
   preferred_engines:
-  - newspaper
   - mystery
-  - science
   visual_style_id: dark_mystery_v1
   skins:
-    newspaper:
-      variant_id: newspaper/front-page
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: front_page
-        typography: serif
-        treatment: halftone
-        image_motion: push_in
-        transition: cut
-        tone: 1
-        caption: top
-    science:
-      variant_id: science/explainer-board
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: hud_panel
-        typography: grotesk
-        treatment: clean
-        image_motion: parallax
-        transition: slide
-        tone: 7
-        caption: middle
     mystery:
-      variant_id: mystery/reference-dossier
+      variant_id: mystery/cursed-objects
       dna:
         dna_version: 2
         variant_version: 1
-        composition: evidence_strip
-        typography: serif
-        treatment: sepia_grain
+        composition: catalogue_card
+        typography: display_serif
+        treatment: vignette_dark
         image_motion: ken_burns_slow
-        transition: page_turn
+        transition: flip_3d
         tone: 0
-        caption: bottom
+        caption: fixed
 name: Psychologie & Verhalten 12
 niche_id: dark_psychology
 persona:

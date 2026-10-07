@@ -1,5 +1,5 @@
 channel_id: military_arsenal_07
-config_version: 10
+config_version: 11
 niche_id: military_arsenal
 name: Weapons & War Machines 07
 tiktok_account_ref: null
@@ -18,8 +18,6 @@ story:
   pacing_beats: 12
 creative:
   preferred_engines:
-  - science
-  - survival
   - chalk
   visual_style_id: dark_mystery_v1
   cut_cadence_seconds: 2.6
@@ -28,41 +26,17 @@ creative:
     accent: '#D6A84F'
     text: '#F2EEE6'
   skins:
-    science:
-      variant_id: science/explainer-board
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: whiteboard
-        typography: grotesk
-        treatment: clean
-        image_motion: parallax
-        transition: shutter
-        tone: 5
-        caption: middle
-    survival:
-      variant_id: survival/extreme-heat
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: mirage
-        typography: slab
-        treatment: film_grain
-        image_motion: push_in
-        transition: cut
-        tone: 0
-        caption: fixed
     chalk:
       variant_id: chalk/sand-table
       dna:
         dna_version: 2
         variant_version: 1
-        composition: tilted
+        composition: orders_top
         typography: condensed
         treatment: sepia_grain
-        image_motion: ken_burns_slow
+        image_motion: parallax
         transition: zoom_through
-        tone: 1
+        tone: 3
         caption: fixed
 audio:
   voice_id: en-GB-SoniaNeural

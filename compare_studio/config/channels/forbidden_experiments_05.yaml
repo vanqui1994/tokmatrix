@@ -1,5 +1,5 @@
 channel_id: forbidden_experiments_05
-config_version: 10
+config_version: 11
 niche_id: forbidden_experiments
 name: Crazy Experiments 05
 tiktok_account_ref: null
@@ -18,9 +18,7 @@ story:
   pacing_beats: 12
 creative:
   preferred_engines:
-  - tierlist
   - kinetic
-  - survival
   visual_style_id: dark_mystery_v1
   cut_cadence_seconds: 2.8
   palette:
@@ -33,37 +31,13 @@ creative:
       dna:
         dna_version: 2
         variant_version: 1
-        composition: center_stack
+        composition: tilted_board
         typography: grotesk
-        treatment: vignette_dark
+        treatment: halftone
         image_motion: parallax
         transition: wipe
-        tone: 6
-        caption: middle
-    tierlist:
-      variant_id: tierlist/ranking-board
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: pyramid
-        typography: condensed
-        treatment: duotone
-        image_motion: ken_burns_slow
-        transition: slide
-        tone: 3
-        caption: top
-    survival:
-      variant_id: survival/lab-exposure
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: hazard_ring
-        typography: slab
-        treatment: halftone
-        image_motion: push_in
-        transition: glitch
-        tone: 5
-        caption: fixed
+        tone: 7
+        caption: bottom
 audio:
   voice_id: ICL_en_male_captain
   voice_speed: 1.02

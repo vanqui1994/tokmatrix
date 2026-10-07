@@ -9,7 +9,7 @@ audio:
   - freepd-abstract-anxiety
   - freepd-behind-enemy-lines
 channel_id: forbidden_experiments_13
-config_version: 9
+config_version: 10
 creative:
   cut_cadence_seconds: 2.7
   palette:
@@ -18,45 +18,19 @@ creative:
     text: '#F2EEE6'
   preferred_engines:
   - science
-  - vox
-  - tierlist
   visual_style_id: dark_mystery_v1
   skins:
     science:
-      variant_id: science/explainer-board
+      variant_id: science/periodic
       dna:
         dna_version: 2
         variant_version: 1
-        composition: whiteboard
-        typography: mono
-        treatment: clean
-        image_motion: parallax
-        transition: shutter
-        tone: 6
-        caption: bottom
-    tierlist:
-      variant_id: tierlist/ranking-board
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: rows_board
-        typography: slab
-        treatment: film_grain
-        image_motion: pan_lateral
-        transition: slide
-        tone: 7
-        caption: middle
-    vox:
-      variant_id: vox/original
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: torn_bleed
-        typography: heavy
-        treatment: clean
-        image_motion: ken_burns_slow
-        transition: paper_tear
-        tone: 2
+        composition: element_tile
+        typography: condensed
+        treatment: halftone
+        image_motion: push_in
+        transition: flip_3d
+        tone: 4
         caption: fixed
 name: Verrückte Experimente 13
 niche_id: forbidden_experiments

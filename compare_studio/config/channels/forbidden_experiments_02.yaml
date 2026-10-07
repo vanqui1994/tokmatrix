@@ -1,5 +1,5 @@
 channel_id: forbidden_experiments_02
-config_version: 10
+config_version: 11
 niche_id: forbidden_experiments
 name: Crazy Experiments 02
 tiktok_account_ref: null
@@ -19,8 +19,6 @@ story:
 creative:
   preferred_engines:
   - newspaper
-  - science
-  - vox
   visual_style_id: dark_mystery_v1
   cut_cadence_seconds: 2.8
   palette:
@@ -33,37 +31,13 @@ creative:
       dna:
         dna_version: 2
         variant_version: 1
-        composition: front_page
-        typography: slab
-        treatment: sepia_grain
+        composition: magazine_cover
+        typography: serif
+        treatment: film_grain
         image_motion: ken_burns_fast
-        transition: wipe
-        tone: 3
-        caption: bottom
-    science:
-      variant_id: science/explainer-board
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: lab_notebook
-        typography: rounded
-        treatment: paper_texture
-        image_motion: parallax
-        transition: wipe
+        transition: cut
         tone: 5
         caption: bottom
-    vox:
-      variant_id: vox/documentary-lowerthird
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: letterbox
-        typography: condensed
-        treatment: film_grain
-        image_motion: push_in
-        transition: cut
-        tone: 1
-        caption: fixed
 audio:
   voice_id: en-US-EmmaNeural
   voice_speed: 0.99

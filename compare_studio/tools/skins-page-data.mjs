@@ -15,6 +15,7 @@ const THUMBS = path.resolve(HERE, "../../bkt_web/static/skins");  // ảnh chụ
 
 export function buildSkinsData(channelDir = CHANNELS) {
   const usage = {};  // variant id → {de: n, …}
+  const owners = {};  // "variant#composition" → ["de ancient_mythology_05", …] (1 skin = 1 acc, owner 07/10)
   const engineChannels = {};  // engine → số kênh (de/en/ko/ja) liệt kê engine trong preferred_engines
   for (const file of fs.readdirSync(channelDir).filter((f) => f.endsWith(".yaml")).sort()) {
     const data = YAML.parse(fs.readFileSync(path.join(channelDir, file), "utf8")) || {};
@@ -22,6 +23,8 @@ export function buildSkinsData(channelDir = CHANNELS) {
     if (!LANGS.includes(lang)) continue;
     const creative = data.creative || {};
     for (const engine of creative.preferred_engines || []) engineChannels[engine] = (engineChannels[engine] || 0) + 1;
+    const skins = [creative.variant_id && { variant_id: creative.variant_id, dna: creative.dna }, ...Object.values(creative.skins || {})];
+    for (const skin of skins.filter((x) => x?.variant_id && x.dna?.composition)) (owners[`${skin.variant_id}#${skin.dna.composition}`] ||= []).push(`${lang} ${data.channel_id}`);
     const ids = [creative.variant_id, ...Object.values(creative.skins || {}).map((s) => s?.variant_id)].filter(Boolean);
     for (const id of new Set(ids)) {
       usage[id] ||= Object.fromEntries(LANGS.map((l) => [l, 0]));
@@ -32,7 +35,8 @@ export function buildSkinsData(channelDir = CHANNELS) {
   for (const v of listVariants()) {
     const compositions = Object.entries(v.visualProfile?.compositions || {}).map(([id, c]) => {
       const thumb = `${v.id.replace("/", "__")}__${id}.jpg`;
-      return { id, describe: c.describe || "", axes: c.axes || {}, thumb: fs.existsSync(path.join(THUMBS, thumb)) ? `skins/${thumb}` : "" };
+      return { id, describe: c.describe || "", axes: c.axes || {}, thumb: fs.existsSync(path.join(THUMBS, thumb)) ? `skins/${thumb}` : "",
+        accounts: owners[`${v.id}#${id}`] || [] };
     });
     (engines[v.engine] ||= { engine: v.engine, channels: engineChannels[v.engine] || 0, variants: [] }).variants.push({
       id: v.id, name: v.name_vi || v.id, status: v.status, auto_assign: v.autoAssign !== false,

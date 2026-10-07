@@ -1,5 +1,5 @@
 channel_id: forbidden_experiments_01
-config_version: 9
+config_version: 10
 niche_id: forbidden_experiments
 name: Crazy Experiments 01
 tiktok_account_ref: null
@@ -19,8 +19,6 @@ story:
 creative:
   preferred_engines:
   - mystery
-  - newspaper
-  - science
   visual_style_id: dark_mystery_v1
   cut_cadence_seconds: 2.6
   palette:
@@ -28,40 +26,16 @@ creative:
     accent: '#D6A84F'
     text: '#F2EEE6'
   skins:
-    newspaper:
-      variant_id: newspaper/front-page
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: side_masthead
-        typography: condensed
-        treatment: halftone
-        image_motion: pan_lateral
-        transition: slide
-        tone: 4
-        caption: top
-    science:
-      variant_id: science/explainer-board
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: hud_panel
-        typography: mono
-        treatment: clean
-        image_motion: ken_burns_slow
-        transition: slide
-        tone: 3
-        caption: middle
     mystery:
       variant_id: mystery/case-file
       dna:
         dna_version: 2
         variant_version: 1
         composition: polaroid_spread
-        typography: mono
-        treatment: paper_texture
-        image_motion: handheld
-        transition: folder_flip
+        typography: slab
+        treatment: sepia_grain
+        image_motion: ken_burns_slow
+        transition: page_turn
         tone: 1
         caption: fixed
 audio:

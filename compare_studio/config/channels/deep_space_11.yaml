@@ -9,7 +9,7 @@ audio:
   - freepd-study-and-relax
   - oga-fantasy-orchestral-theme
 channel_id: deep_space_11
-config_version: 10
+config_version: 11
 creative:
   cut_cadence_seconds: 2.7
   palette:
@@ -18,47 +18,7 @@ creative:
     text: '#C5C6C7'
   preferred_engines:
   - vector
-  - survival
-  - mystery
-  - tierlist
   visual_style_id: cosmic_space_v1
-  skins:
-    tierlist:
-      variant_id: tierlist/ranking-board
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: pyramid
-        typography: rounded
-        treatment: vignette_dark
-        image_motion: parallax
-        transition: slide
-        tone: 0
-        caption: top
-    survival:
-      variant_id: survival/space-exposure
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: visor
-        typography: condensed
-        treatment: film_grain
-        image_motion: push_in
-        transition: fade_black
-        tone: 4
-        caption: fixed
-    mystery:
-      variant_id: mystery/ufo-radar
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: witness_phone
-        typography: mono
-        treatment: vignette_dark
-        image_motion: handheld
-        transition: zoom_through
-        tone: 4
-        caption: fixed
 name: Kosmos & Physik 11
 niche_id: deep_space
 persona:

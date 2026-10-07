@@ -1,5 +1,5 @@
 channel_id: geopolitics_maps_10
-config_version: 10
+config_version: 11
 niche_id: geopolitics_maps
 name: Geopolitik & Grenzen 10
 tiktok_account_ref: null
@@ -18,52 +18,24 @@ story:
   pacing_beats: 12
 creative:
   preferred_engines:
-  - kinetic
-  - tierlist
-  - wildlife
+  - compare
   visual_style_id: dark_mystery_v1
   cut_cadence_seconds: 2.6
   palette:
     primary: '#111318'
     accent: '#D6A84F'
     text: '#F2EEE6'
-  skins:
-    kinetic:
-      variant_id: kinetic/type-poster
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: tilted_board
-        typography: grotesk
-        treatment: vignette_dark
-        image_motion: push_in
-        transition: wipe
-        tone: 7
-        caption: top
-    tierlist:
-      variant_id: tierlist/ranking-board
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: rows_board
-        typography: condensed
-        treatment: vignette_dark
-        image_motion: ken_burns_slow
-        transition: zoom_through
-        tone: 4
-        caption: middle
-    wildlife:
-      variant_id: wildlife/stat-battle
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: stat_grid
-        typography: heavy
-        treatment: duotone
-        image_motion: push_in
-        transition: slide
-        tone: 5
-        caption: fixed
+  variant_id: compare/split-screen
+  dna:
+    dna_version: 2
+    variant_version: 1
+    composition: top_bottom
+    typography: grotesk
+    treatment: duotone
+    image_motion: parallax
+    transition: wipe
+    tone: 5
+    caption: fixed
 audio:
   voice_id: de-DE-FlorianMultilingualNeural
   voice_speed: 1.05

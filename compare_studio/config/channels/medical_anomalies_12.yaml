@@ -6,10 +6,10 @@ audio:
   voice_pitch: 1
   voice_speed: 0.99
   bgm_pool:
-    - freepd-go-on-without-me
-    - freepd-infinite-wonder
+  - freepd-go-on-without-me
+  - freepd-infinite-wonder
 channel_id: medical_anomalies_12
-config_version: 11
+config_version: 12
 creative:
   cut_cadence_seconds: 2.3
   palette:
@@ -17,34 +17,21 @@ creative:
     primary: '#111318'
     text: '#F2EEE6'
   preferred_engines:
-    - kinetic
-    - newspaper
+  - newspaper
   visual_style_id: dark_mystery_v1
   skins:
     newspaper:
-      variant_id: newspaper/front-page
+      variant_id: newspaper/microfilm
       dna:
         dna_version: 2
         variant_version: 1
-        composition: magazine_cover
-        typography: serif
-        treatment: halftone
-        image_motion: ken_burns_fast
-        transition: cut
-        tone: 3
-        caption: middle
-    kinetic:
-      variant_id: kinetic/type-poster
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: tilted_board
+        composition: reader_screen
         typography: condensed
-        treatment: halftone
-        image_motion: still_grain
-        transition: shutter
-        tone: 1
-        caption: middle
+        treatment: vignette_dark
+        image_motion: scan_light
+        transition: cut
+        tone: 4
+        caption: fixed
 name: Medizin & Biologische Rätsel 12
 niche_id: medical_anomalies
 persona:
@@ -55,16 +42,16 @@ persona:
 publishing:
   default_schedule_window: 19:30-20:30
   hashtags:
-    - medicalanomalies
-    - khampha
-    - facts
+  - medicalanomalies
+  - khampha
+  - facts
   language: de
 story:
   pacing_beats: 12
   preferred_blueprints:
-    - mystery_reveal
+  - mystery_reveal
   preferred_hook_types:
-    - evidence_hook
-    - paradox_question
+  - evidence_hook
+  - paradox_question
   target_duration_seconds: 47
 tiktok_account_ref: null

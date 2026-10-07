@@ -1,5 +1,5 @@
 channel_id: dark_psychology_09
-config_version: 10
+config_version: 11
 niche_id: dark_psychology
 name: Psychologie & Verhalten 09
 tiktok_account_ref: null
@@ -18,9 +18,7 @@ story:
   pacing_beats: 12
 creative:
   preferred_engines:
-  - vox
   - mystery
-  - science
   visual_style_id: dark_mystery_v1
   cut_cadence_seconds: 2.4
   palette:
@@ -28,41 +26,17 @@ creative:
     accent: '#D6A84F'
     text: '#F2EEE6'
   skins:
-    science:
-      variant_id: science/explainer-board
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: lab_notebook
-        typography: mono
-        treatment: halftone
-        image_motion: still_grain
-        transition: zoom_through
-        tone: 6
-        caption: middle
     mystery:
       variant_id: mystery/case-file
       dna:
         dna_version: 2
         variant_version: 1
-        composition: clipboard_top
-        typography: slab
-        treatment: sepia_grain
-        image_motion: handheld
-        transition: folder_flip
-        tone: 2
-        caption: fixed
-    vox:
-      variant_id: vox/map-route
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: route_map
-        typography: heavy
-        treatment: paper_texture
-        image_motion: pan_lateral
-        transition: zoom_through
-        tone: 2
+        composition: polaroid_spread
+        typography: mono
+        treatment: film_grain
+        image_motion: ken_burns_slow
+        transition: page_turn
+        tone: 1
         caption: fixed
 audio:
   voice_id: de-DE-KatjaNeural

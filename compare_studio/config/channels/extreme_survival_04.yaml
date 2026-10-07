@@ -1,5 +1,5 @@
 channel_id: extreme_survival_04
-config_version: 11
+config_version: 12
 niche_id: extreme_survival
 name: Überleben & Katastrophen 04
 tiktok_account_ref: null
@@ -18,8 +18,6 @@ story:
   pacing_beats: 12
 creative:
   preferred_engines:
-  - science
-  - vox
   - chalk
   visual_style_id: dark_mystery_v1
   cut_cadence_seconds: 2.6
@@ -28,41 +26,17 @@ creative:
     accent: '#D6A84F'
     text: '#F2EEE6'
   skins:
-    science:
-      variant_id: science/explainer-board
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: lab_notebook
-        typography: rounded
-        treatment: vignette_dark
-        image_motion: parallax
-        transition: wipe
-        tone: 2
-        caption: middle
     chalk:
       variant_id: chalk/thermal
       dna:
         dna_version: 2
         variant_version: 1
-        composition: viewfinder
+        composition: scope_top
         typography: grotesk
         treatment: vhs_noise
-        image_motion: scan_light
-        transition: tv_noise
-        tone: 3
-        caption: fixed
-    vox:
-      variant_id: vox/documentary-lowerthird
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: full_bleed
-        typography: condensed
-        treatment: vignette_dark
-        image_motion: push_in
-        transition: cut
-        tone: 0
+        image_motion: handheld
+        transition: glitch
+        tone: 1
         caption: fixed
 audio:
   voice_id: DiT_de_female_qingsong

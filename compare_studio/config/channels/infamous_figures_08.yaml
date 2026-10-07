@@ -1,5 +1,5 @@
 channel_id: infamous_figures_08
-config_version: 10
+config_version: 11
 niche_id: infamous_figures
 name: Berüchtigte Gestalten 08
 tiktok_account_ref: null
@@ -19,8 +19,6 @@ story:
 creative:
   preferred_engines:
   - newspaper
-  - tierlist
-  - vox
   visual_style_id: dark_mystery_v1
   cut_cadence_seconds: 2.8
   palette:
@@ -29,40 +27,16 @@ creative:
     text: '#F2EEE6'
   skins:
     newspaper:
-      variant_id: newspaper/front-page
+      variant_id: newspaper/original
       dna:
         dna_version: 2
         variant_version: 1
-        composition: magazine_cover
-        typography: slab
-        treatment: halftone
-        image_motion: push_in
-        transition: cut
-        tone: 4
-        caption: bottom
-    tierlist:
-      variant_id: tierlist/ranking-board
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: rows_board
-        typography: slab
-        treatment: halftone
-        image_motion: pan_lateral
-        transition: wipe
-        tone: 4
-        caption: bottom
-    vox:
-      variant_id: vox/documentary-lowerthird
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: full_bleed
-        typography: serif
+        composition: file_first
+        typography: typewriter
         treatment: vignette_dark
-        image_motion: pan_lateral
+        image_motion: push_in
         transition: fade_black
-        tone: 2
+        tone: 1
         caption: fixed
 audio:
   voice_id: de-DE-FlorianMultilingualNeural

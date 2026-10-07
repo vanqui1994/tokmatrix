@@ -1,5 +1,5 @@
 channel_id: space_08
-config_version: 12
+config_version: 13
 niche_id: deep_space
 name: Kosmos & Physik 08
 tiktok_account_ref: null
@@ -10,47 +10,32 @@ persona:
   catchphrase_prefix: 'Điều đáng chú ý trong câu chuyện này là:'
 story:
   preferred_blueprints:
-    - science_explainer
+  - science_explainer
   preferred_hook_types:
-    - evidence_hook
-    - paradox_question
+  - evidence_hook
+  - paradox_question
   target_duration_seconds: 48
   pacing_beats: 12
 creative:
   preferred_engines:
-    - kinetic
-    - tierlist
+  - compare
   visual_style_id: cosmic_space_v1
   cut_cadence_seconds: 2.8
   palette:
     primary: '#0B0C10'
     accent: '#66FCF1'
     text: '#C5C6C7'
-  skins:
-    kinetic:
-      variant_id: kinetic/type-poster
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: split_band
-        typography: rounded
-        treatment: clean
-        image_motion: still_grain
-        transition: slide
-        tone: 7
-        caption: top
-    tierlist:
-      variant_id: tierlist/ranking-board
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: rows_board
-        typography: slab
-        treatment: vignette_dark
-        image_motion: pan_lateral
-        transition: cut
-        tone: 0
-        caption: top
+  variant_id: compare/card-game
+  dna:
+    dna_version: 2
+    variant_version: 1
+    composition: stat_cards
+    typography: rounded
+    treatment: halftone
+    image_motion: scan_light
+    transition: flip_3d
+    tone: 4
+    caption: fixed
 audio:
   voice_id: DiT_de_female_jiangshi
   voice_speed: 0.96
@@ -59,12 +44,12 @@ audio:
   soundscape_id: vox
   sfx_density: medium
   bgm_pool:
-    - freepd-inventing-flight
-    - freepd-lonely-mountain
+  - freepd-inventing-flight
+  - freepd-lonely-mountain
 publishing:
   language: de
   default_schedule_window: 19:30-20:30
   hashtags:
-    - deepspace
-    - khampha
-    - facts
+  - deepspace
+  - khampha
+  - facts

@@ -1,5 +1,5 @@
 channel_id: extreme_survival_07
-config_version: 11
+config_version: 12
 niche_id: extreme_survival
 name: Überleben & Katastrophen 07
 tiktok_account_ref: null
@@ -18,9 +18,7 @@ story:
   pacing_beats: 12
 creative:
   preferred_engines:
-  - newspaper
   - wildlife
-  - mystery
   visual_style_id: dark_mystery_v1
   cut_cadence_seconds: 2.6
   palette:
@@ -28,40 +26,16 @@ creative:
     accent: '#D6A84F'
     text: '#F2EEE6'
   skins:
-    newspaper:
-      variant_id: newspaper/front-page
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: front_page
-        typography: condensed
-        treatment: halftone
-        image_motion: pan_lateral
-        transition: slide
-        tone: 6
-        caption: bottom
-    mystery:
-      variant_id: mystery/sonar-log
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: sonar_full
-        typography: grotesk
-        treatment: clean
-        image_motion: ken_burns_fast
-        transition: wipe
-        tone: 4
-        caption: fixed
     wildlife:
       variant_id: wildlife/nature-doc
       dna:
         dna_version: 2
         variant_version: 1
         composition: letterbox_band
-        typography: grotesk
-        treatment: clean
-        image_motion: parallax
-        transition: wipe
+        typography: serif
+        treatment: vignette_dark
+        image_motion: ken_burns_slow
+        transition: fade_black
         tone: 1
         caption: fixed
 audio:

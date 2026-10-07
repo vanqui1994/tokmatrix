@@ -9,7 +9,7 @@ audio:
   - freepd-ice-and-snow
   - oga-underwater-theme
 channel_id: ocean_mysteries_13
-config_version: 11
+config_version: 12
 creative:
   cut_cadence_seconds: 2.4
   palette:
@@ -17,47 +17,19 @@ creative:
     primary: '#111318'
     text: '#F2EEE6'
   preferred_engines:
-  - mystery
-  - survival
-  - tierlist
+  - compare
   visual_style_id: dark_mystery_v1
-  skins:
-    tierlist:
-      variant_id: tierlist/ranking-board
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: pyramid
-        typography: rounded
-        treatment: vignette_dark
-        image_motion: ken_burns_slow
-        transition: shutter
-        tone: 2
-        caption: middle
-    survival:
-      variant_id: survival/deep-sea
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: ruler_left
-        typography: mono
-        treatment: film_grain
-        image_motion: still_grain
-        transition: fade_black
-        tone: 2
-        caption: fixed
-    mystery:
-      variant_id: mystery/cctv
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: single_monitor
-        typography: condensed
-        treatment: film_grain
-        image_motion: still_grain
-        transition: cut
-        tone: 2
-        caption: fixed
+  variant_id: compare/boxing-ring
+  dna:
+    dna_version: 2
+    variant_version: 1
+    composition: tale_of_tape
+    typography: condensed
+    treatment: film_grain
+    image_motion: handheld
+    transition: shutter
+    tone: 0
+    caption: fixed
 name: 바다와 심해 해구 13
 niche_id: ocean_mysteries
 persona:

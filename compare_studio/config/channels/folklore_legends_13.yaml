@@ -9,7 +9,7 @@ audio:
   - freepd-behind-enemy-lines
   - freepd-night-vigil
 channel_id: folklore_legends_13
-config_version: 10
+config_version: 11
 creative:
   cut_cadence_seconds: 2.8
   palette:
@@ -17,45 +17,19 @@ creative:
     primary: '#111318'
     text: '#F2EEE6'
   preferred_engines:
-  - kinetic
   - folklore
-  - mystery
   visual_style_id: dark_mystery_v1
   skins:
-    kinetic:
-      variant_id: kinetic/type-poster
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: center_stack
-        typography: slab
-        treatment: paper_texture
-        image_motion: push_in
-        transition: wipe
-        tone: 2
-        caption: bottom
-    mystery:
-      variant_id: mystery/cursed-objects
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: glass_case
-        typography: display_serif
-        treatment: vignette_dark
-        image_motion: push_in
-        transition: cut
-        tone: 3
-        caption: fixed
     folklore:
       variant_id: folklore/shadow-puppet
       dna:
         dna_version: 2
         variant_version: 1
         composition: paper_screen
-        typography: grotesk
+        typography: rounded
         treatment: film_grain
-        image_motion: parallax
-        transition: ink_bleed
+        image_motion: pan_lateral
+        transition: slide
         tone: 4
         caption: fixed
 name: Folklore & The Unseen 13

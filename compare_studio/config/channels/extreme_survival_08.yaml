@@ -1,5 +1,5 @@
 channel_id: extreme_survival_08
-config_version: 9
+config_version: 10
 niche_id: extreme_survival
 name: Survival & Disaster 08
 tiktok_account_ref: null
@@ -19,52 +19,12 @@ story:
 creative:
   preferred_engines:
   - vector
-  - wildlife
-  - mystery
-  - survival
   visual_style_id: dark_mystery_v1
   cut_cadence_seconds: 2.8
   palette:
     primary: '#111318'
     accent: '#D6A84F'
     text: '#F2EEE6'
-  skins:
-    survival:
-      variant_id: survival/endurance
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: stopwatch
-        typography: heavy
-        treatment: film_grain
-        image_motion: handheld
-        transition: slide
-        tone: 0
-        caption: fixed
-    mystery:
-      variant_id: mystery/case-file
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: folder_card
-        typography: slab
-        treatment: film_grain
-        image_motion: handheld
-        transition: page_turn
-        tone: 2
-        caption: fixed
-    wildlife:
-      variant_id: wildlife/nature-doc
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: fullframe_credits
-        typography: grotesk
-        treatment: film_grain
-        image_motion: parallax
-        transition: fade_black
-        tone: 4
-        caption: fixed
 audio:
   voice_id: en-US-AndrewNeural
   voice_speed: 1.02

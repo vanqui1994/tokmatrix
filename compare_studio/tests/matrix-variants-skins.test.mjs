@@ -137,18 +137,19 @@ test("skin rule flags pairs that share layout and colour", () => {
 
 test("every channel config already has a valid skin for each skin variant's engine", () => {
   const plan = planSkins({ dir: CHANNEL_DIR, variantId: NEWSPAPER.id });
-  // 80 kênh newspaper trừ các kênh đã chuyển sang Creative DNA V2 (variant_id, không còn bộ da).
-  assert.ok(plan.rows.length >= 75);
+  // Owner 07/10: mỗi acc một engine + một bố cục riêng (tools/assign-unique-skins.mjs) → còn ~20 kênh newspaper.
+  assert.ok(plan.rows.length >= 15);
   for (const variant of SKIN_VARIANT_IDS.map((id) => getVariant(id))) {
     const rows = planSkins({ dir: CHANNEL_DIR, variantId: variant.id });
-    assert.deepEqual(rows.rows.filter((row) => row.status !== "kept").map((row) => row.channel_id), [], variant.id);
+    if (!rows.channels.some((channel) => channel.skin?.variant_id === variant.id)) continue;
+    assert.deepEqual(rows.rows.filter((row) => row.status !== "kept" && row.channel_id && rows.channels.find((c) => c.channel_id === row.channel_id).skin?.variant_id === variant.id).map((row) => row.channel_id), [], variant.id);
     assert.deepEqual(rows.violations, [], variant.id);
   }
 });
 
 test("every survival channel has a niche-mapped survival skin and the per-country rule holds across variants", () => {
   const plan = planNicheSkins({ dir: CHANNEL_DIR, engine: "survival" });
-  assert.ok(plan.rows.length >= 40); // 44 kênh survival trừ kênh đã có variant_id (Creative DNA V2)
+  assert.ok(plan.rows.length >= 10); // sau 1 skin = 1 acc (07/10) còn ~21 kênh survival
   assert.deepEqual(plan.rows.filter((row) => row.status !== "kept").map((row) => `${row.channel_id}:${row.status}`), []);
   assert.deepEqual(plan.violations, []);
   const byId = new Map(plan.channels.map((channel) => [channel.channel_id, channel]));
@@ -183,7 +184,8 @@ test("config validator rejects a skin outside preferred_engines or with an inval
   const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "skins-config-"));
   try {
     fs.cpSync(path.join(COMPARE_DIR, "config"), tmp, { recursive: true });
-    const file = path.join(tmp, "channels", "ancient_mythology_03.yaml");
+    const name = fs.readdirSync(path.join(tmp, "channels")).find((f) => /^\s+newspaper:/mu.test(fs.readFileSync(path.join(tmp, "channels", f), "utf8").split("skins:")[1] || ""));
+    const file = path.join(tmp, "channels", name);
     const doc = YAML.parseDocument(fs.readFileSync(file, "utf8"));
     doc.setIn(["creative", "preferred_engines"], ["mystery", "kinetic"]);
     doc.setIn(["creative", "skins", "newspaper", "dna", "caption"], "sideways");
@@ -201,4 +203,13 @@ test("keep-only survival/mr-incredible stays on its trial channels and is never 
   const plan = planNicheSkins({ dir: CHANNEL_DIR, engine: "survival" });
   const mri = plan.rows.filter((row) => row.variant_id === "survival/mr-incredible").map((row) => `${row.channel_id}:${row.status}`).sort();
   assert.deepEqual(mri, ["extreme_survival_11:kept", "forbidden_experiments_06:kept"]);
+});
+
+test("one skin per account: every de/en/ko/ja account has one engine and a layout no other account of its country uses", async () => {
+  const { planUniqueSkins } = await import("../tools/assign-unique-skins.mjs");
+  const plan = planUniqueSkins({ dir: CHANNEL_DIR });
+  assert.deepEqual(plan.rows.filter((row) => row.status !== "same" && row.status !== "vector").map((row) => `${row.channel_id}:${row.status}`), []);
+  assert.deepEqual(plan.duplicates, []);
+  assert.deepEqual(plan.violations, []);
+  assert.ok(plan.rows.filter((row) => row.engine === "compare").length >= 10, "compare layouts go to accounts of compare niches");
 });

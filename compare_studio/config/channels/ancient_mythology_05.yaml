@@ -1,5 +1,5 @@
 channel_id: ancient_mythology_05
-config_version: 10
+config_version: 11
 niche_id: ancient_mythology
 name: Antike Mythen 05
 tiktok_account_ref: null
@@ -18,9 +18,7 @@ story:
   pacing_beats: 12
 creative:
   preferred_engines:
-  - newspaper
   - folklore
-  - tierlist
   visual_style_id: dark_mystery_v1
   cut_cadence_seconds: 2.8
   palette:
@@ -28,41 +26,17 @@ creative:
     accent: '#D6A84F'
     text: '#F2EEE6'
   skins:
-    newspaper:
-      variant_id: newspaper/front-page
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: magazine_cover
-        typography: serif
-        treatment: sepia_grain
-        image_motion: ken_burns_fast
-        transition: shutter
-        tone: 5
-        caption: top
-    tierlist:
-      variant_id: tierlist/ranking-board
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: rows_board
-        typography: rounded
-        treatment: clean
-        image_motion: push_in
-        transition: wipe
-        tone: 5
-        caption: bottom
     folklore:
       variant_id: folklore/haunted-vhs
       dna:
         dna_version: 2
         variant_version: 1
-        composition: tape_play
-        typography: typewriter
-        treatment: vhs_noise
-        image_motion: still_grain
-        transition: tv_noise
-        tone: 5
+        composition: cassette
+        typography: condensed
+        treatment: film_grain
+        image_motion: scan_light
+        transition: cut
+        tone: 2
         caption: fixed
 audio:
   voice_id: de-DE-FlorianMultilingualNeural

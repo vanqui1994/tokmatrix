@@ -22,6 +22,11 @@ def pre_canary_copy(dst: Path) -> Path:
     for path in (dst / "channels").glob("*.yaml"):
         data = yaml.safe_load(path.read_text(encoding="utf-8"))
         creative = data.get("creative") or {}
+        # Kênh compare (1 skin = 1 acc, 07/10) chỉ chạy qua variant_id: về engine legacy đầu tiên của niche.
+        if creative.get("preferred_engines") == ["compare"]:
+            niche = next(yaml.safe_load(f.read_text(encoding="utf-8")) for f in (dst / "niches").glob("*.yaml")
+                         if yaml.safe_load(f.read_text(encoding="utf-8")).get("niche_id") == data["niche_id"])
+            creative["preferred_engines"] = [e for e in niche["allowed_engines"] if e != "vector"][:1]
         if creative.pop("variant_id", None):
             creative.pop("dna", None)
             data["config_version"] = int(data["config_version"]) + 1

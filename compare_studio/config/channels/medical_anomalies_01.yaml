@@ -1,5 +1,5 @@
 channel_id: medical_anomalies_01
-config_version: 11
+config_version: 12
 niche_id: medical_anomalies
 name: Medizin & Biologische Rätsel 01
 tiktok_account_ref: null
@@ -19,8 +19,6 @@ story:
 creative:
   preferred_engines:
   - science
-  - mystery
-  - vox
   visual_style_id: dark_mystery_v1
   cut_cadence_seconds: 2.6
   palette:
@@ -29,39 +27,15 @@ creative:
     text: '#F2EEE6'
   skins:
     science:
-      variant_id: science/explainer-board
+      variant_id: science/periodic
       dna:
         dna_version: 2
         variant_version: 1
-        composition: whiteboard
-        typography: mono
+        composition: tile_column
+        typography: heavy
         treatment: film_grain
-        image_motion: parallax
+        image_motion: push_in
         transition: cut
-        tone: 0
-        caption: middle
-    mystery:
-      variant_id: mystery/cctv
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: single_monitor
-        typography: condensed
-        treatment: vhs_noise
-        image_motion: still_grain
-        transition: cut
-        tone: 2
-        caption: fixed
-    vox:
-      variant_id: vox/zine-xerox
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: cutup_grid
-        typography: typewriter
-        treatment: film_grain
-        image_motion: still_grain
-        transition: glitch
         tone: 2
         caption: fixed
 audio:

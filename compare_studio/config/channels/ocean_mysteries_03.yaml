@@ -1,5 +1,5 @@
 channel_id: ocean_mysteries_03
-config_version: 10
+config_version: 11
 niche_id: ocean_mysteries
 name: 海と深海海溝 03
 tiktok_account_ref: null
@@ -19,52 +19,12 @@ story:
 creative:
   preferred_engines:
   - vector
-  - mystery
-  - survival
-  - tierlist
   visual_style_id: dark_mystery_v1
   cut_cadence_seconds: 2.4
   palette:
     primary: '#111318'
     accent: '#D6A84F'
     text: '#F2EEE6'
-  skins:
-    tierlist:
-      variant_id: tierlist/ranking-board
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: showcase_top
-        typography: condensed
-        treatment: vignette_dark
-        image_motion: ken_burns_slow
-        transition: slide
-        tone: 7
-        caption: bottom
-    survival:
-      variant_id: survival/extreme-cold
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: frosted_glass
-        typography: rounded
-        treatment: vignette_dark
-        image_motion: ken_burns_slow
-        transition: cut
-        tone: 2
-        caption: fixed
-    mystery:
-      variant_id: mystery/case-file
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: polaroid_spread
-        typography: typewriter
-        treatment: paper_texture
-        image_motion: handheld
-        transition: folder_flip
-        tone: 2
-        caption: fixed
 audio:
   voice_id: ICL_ja_male_xinggan
   voice_speed: 1.02

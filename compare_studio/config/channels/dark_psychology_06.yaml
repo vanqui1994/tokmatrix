@@ -1,5 +1,5 @@
 channel_id: dark_psychology_06
-config_version: 10
+config_version: 11
 niche_id: dark_psychology
 name: Psychologie & Verhalten 06
 tiktok_account_ref: null
@@ -18,8 +18,6 @@ story:
   pacing_beats: 12
 creative:
   preferred_engines:
-  - tierlist
-  - chalk
   - kinetic
   visual_style_id: dark_mystery_v1
   cut_cadence_seconds: 2.4
@@ -33,37 +31,13 @@ creative:
       dna:
         dna_version: 2
         variant_version: 1
-        composition: split_band
-        typography: slab
-        treatment: film_grain
-        image_motion: parallax
-        transition: shutter
-        tone: 5
-        caption: top
-    tierlist:
-      variant_id: tierlist/ranking-board
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: rows_board
+        composition: tilted_board
         typography: condensed
-        treatment: film_grain
-        image_motion: ken_burns_slow
-        transition: shutter
-        tone: 3
-        caption: bottom
-    chalk:
-      variant_id: chalk/blueprint
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: title_block
-        typography: typewriter
-        treatment: halftone
+        treatment: vignette_dark
         image_motion: still_grain
-        transition: shutter
-        tone: 0
-        caption: fixed
+        transition: wipe
+        tone: 7
+        caption: middle
 audio:
   voice_id: de-DE-FlorianMultilingualNeural
   voice_speed: 0.96

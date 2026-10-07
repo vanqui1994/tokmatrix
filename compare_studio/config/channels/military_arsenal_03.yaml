@@ -1,5 +1,5 @@
 channel_id: military_arsenal_03
-config_version: 11
+config_version: 12
 niche_id: military_arsenal
 name: Weapons & War Machines 03
 tiktok_account_ref: null
@@ -18,52 +18,24 @@ story:
   pacing_beats: 12
 creative:
   preferred_engines:
-  - vox
-  - newspaper
-  - wildlife
+  - compare
   visual_style_id: dark_mystery_v1
   cut_cadence_seconds: 2.4
   palette:
     primary: '#111318'
     accent: '#D6A84F'
     text: '#F2EEE6'
-  skins:
-    newspaper:
-      variant_id: newspaper/front-page
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: magazine_cover
-        typography: condensed
-        treatment: sepia_grain
-        image_motion: push_in
-        transition: wipe
-        tone: 2
-        caption: top
-    wildlife:
-      variant_id: wildlife/migration-map
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: flyway_medallion
-        typography: serif
-        treatment: sepia_grain
-        image_motion: ken_burns_slow
-        transition: slide
-        tone: 1
-        caption: fixed
-    vox:
-      variant_id: vox/original
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: torn_card
-        typography: condensed
-        treatment: halftone
-        image_motion: ken_burns_slow
-        transition: paper_tear
-        tone: 1
-        caption: fixed
+  variant_id: compare/tier-duel
+  dna:
+    dna_version: 2
+    variant_version: 1
+    composition: butterfly
+    typography: mono
+    treatment: film_grain
+    image_motion: handheld
+    transition: shutter
+    tone: 5
+    caption: fixed
 audio:
   voice_id: en_female_nail_artist
   voice_speed: 0.99

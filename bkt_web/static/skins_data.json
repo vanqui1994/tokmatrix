@@ -1,15 +1,15 @@
 {
- "generated_at": "2026-10-07T02:27:39.021Z",
+ "generated_at": "2026-10-07T02:56:09.808Z",
  "totals": {
   "engines": 11,
   "variants": 85,
   "compositions": 175,
-  "variants_in_use": 52
+  "variants_in_use": 74
  },
  "engines": [
   {
    "engine": "chalk",
-   "channels": 37,
+   "channels": 15,
    "variants": [
     {
      "id": "chalk/atlas",
@@ -25,7 +25,11 @@
         "composition": "scroll",
         "textPlacement": "bottom"
        },
-       "thumb": "skins/chalk__atlas__scroll_plate.jpg"
+       "thumb": "skins/chalk__atlas__scroll_plate.jpg",
+       "accounts": [
+        "de economy_empires_13",
+        "en military_arsenal_09"
+       ]
       },
       {
        "id": "torn_plate",
@@ -35,11 +39,14 @@
         "textPlacement": "on_image",
         "background": "wood_paper"
        },
-       "thumb": "skins/chalk__atlas__torn_plate.jpg"
+       "thumb": "skins/chalk__atlas__torn_plate.jpg",
+       "accounts": [
+        "de geopolitics_maps_07"
+       ]
       }
      ],
      "usage": {
-      "de": 4,
+      "de": 2,
       "en": 1,
       "ko": 0,
       "ja": 0
@@ -59,7 +66,11 @@
         "composition": "poster",
         "textPlacement": "bottom"
        },
-       "thumb": "skins/chalk__blueprint__title_block.jpg"
+       "thumb": "skins/chalk__blueprint__title_block.jpg",
+       "accounts": [
+        "de geopolitics_maps_01",
+        "ko philosophy_paradox_03"
+       ]
       },
       {
        "id": "detail_grid",
@@ -69,11 +80,14 @@
         "textPlacement": "top",
         "background": "paper"
        },
-       "thumb": "skins/chalk__blueprint__detail_grid.jpg"
+       "thumb": "skins/chalk__blueprint__detail_grid.jpg",
+       "accounts": [
+        "en military_arsenal_01"
+       ]
       }
      ],
      "usage": {
-      "de": 4,
+      "de": 1,
       "en": 1,
       "ko": 1,
       "ja": 0
@@ -93,7 +107,8 @@
         "composition": "tilted_board",
         "textPlacement": "bottom"
        },
-       "thumb": "skins/chalk__sand-table__tilted.jpg"
+       "thumb": "skins/chalk__sand-table__tilted.jpg",
+       "accounts": []
       },
       {
        "id": "orders_top",
@@ -102,11 +117,15 @@
         "composition": "diorama",
         "textPlacement": "top"
        },
-       "thumb": "skins/chalk__sand-table__orders_top.jpg"
+       "thumb": "skins/chalk__sand-table__orders_top.jpg",
+       "accounts": [
+        "de geopolitics_maps_05",
+        "en military_arsenal_07"
+       ]
       }
      ],
      "usage": {
-      "de": 4,
+      "de": 1,
       "en": 1,
       "ko": 0,
       "ja": 0
@@ -126,7 +145,8 @@
         "composition": "multi_cam",
         "textPlacement": "bottom"
        },
-       "thumb": "skins/chalk__satellite__feeds.jpg"
+       "thumb": "skins/chalk__satellite__feeds.jpg",
+       "accounts": []
       },
       {
        "id": "orbit_split",
@@ -136,12 +156,15 @@
         "textPlacement": "top",
         "background": "darkness"
        },
-       "thumb": "skins/chalk__satellite__orbit_split.jpg"
+       "thumb": "skins/chalk__satellite__orbit_split.jpg",
+       "accounts": [
+        "de geopolitics_maps_06"
+       ]
       }
      ],
      "usage": {
-      "de": 4,
-      "en": 1,
+      "de": 1,
+      "en": 0,
       "ko": 0,
       "ja": 0
      }
@@ -160,7 +183,8 @@
         "composition": "device_frame",
         "textPlacement": "lower_third"
        },
-       "thumb": "skins/chalk__thermal__viewfinder.jpg"
+       "thumb": "skins/chalk__thermal__viewfinder.jpg",
+       "accounts": []
       },
       {
        "id": "scope_top",
@@ -169,12 +193,15 @@
         "composition": "circle_frame",
         "textPlacement": "top"
        },
-       "thumb": "skins/chalk__thermal__scope_top.jpg"
+       "thumb": "skins/chalk__thermal__scope_top.jpg",
+       "accounts": [
+        "de extreme_survival_04"
+       ]
       }
      ],
      "usage": {
-      "de": 4,
-      "en": 1,
+      "de": 1,
+      "en": 0,
       "ko": 0,
       "ja": 0
      }
@@ -193,7 +220,11 @@
         "composition": "map_full",
         "textPlacement": "bottom"
        },
-       "thumb": "skins/chalk__war-room__board.jpg"
+       "thumb": "skins/chalk__war-room__board.jpg",
+       "accounts": [
+        "de extreme_survival_06",
+        "en mega_catastrophes_06"
+       ]
       },
       {
        "id": "rail",
@@ -202,13 +233,16 @@
         "composition": "split_vertical",
         "textPlacement": "right_column"
        },
-       "thumb": "skins/chalk__war-room__rail.jpg"
+       "thumb": "skins/chalk__war-room__rail.jpg",
+       "accounts": [
+        "de infamous_figures_05"
+       ]
       }
      ],
      "usage": {
-      "de": 4,
+      "de": 2,
       "en": 1,
-      "ko": 1,
+      "ko": 0,
       "ja": 0
      }
     },
@@ -226,7 +260,10 @@
         "composition": "hero_image",
         "textPlacement": "bottom"
        },
-       "thumb": "skins/chalk__whiteboard__marker_map.jpg"
+       "thumb": "skins/chalk__whiteboard__marker_map.jpg",
+       "accounts": [
+        "de lost_civilizations_07"
+       ]
       },
       {
        "id": "sticky_notes",
@@ -235,11 +272,14 @@
         "composition": "card_stack",
         "textPlacement": "left_column"
        },
-       "thumb": "skins/chalk__whiteboard__sticky_notes.jpg"
+       "thumb": "skins/chalk__whiteboard__sticky_notes.jpg",
+       "accounts": [
+        "de extreme_survival_05"
+       ]
       }
      ],
      "usage": {
-      "de": 5,
+      "de": 2,
       "en": 0,
       "ko": 0,
       "ja": 0
@@ -249,7 +289,7 @@
   },
   {
    "engine": "compare",
-   "channels": 0,
+   "channels": 35,
    "variants": [
     {
      "id": "compare/boxing-ring",
@@ -265,7 +305,11 @@
         "composition": "ring",
         "textPlacement": "bottom"
        },
-       "thumb": "skins/compare__boxing-ring__ring_ropes.jpg"
+       "thumb": "skins/compare__boxing-ring__ring_ropes.jpg",
+       "accounts": [
+        "de economy_empires_11",
+        "en military_arsenal_05"
+       ]
       },
       {
        "id": "tale_of_tape",
@@ -275,13 +319,18 @@
         "textPlacement": "top",
         "background": "velvet"
        },
-       "thumb": "skins/compare__boxing-ring__tale_of_tape.jpg"
+       "thumb": "skins/compare__boxing-ring__tale_of_tape.jpg",
+       "accounts": [
+        "de economy_empires_03",
+        "en extreme_wildlife_11",
+        "ko ocean_mysteries_13"
+       ]
       }
      ],
      "usage": {
-      "de": 0,
-      "en": 0,
-      "ko": 0,
+      "de": 2,
+      "en": 2,
+      "ko": 1,
       "ja": 0
      }
     },
@@ -299,7 +348,11 @@
         "composition": "card_stack",
         "textPlacement": "lower_third"
        },
-       "thumb": "skins/compare__card-game__stat_cards.jpg"
+       "thumb": "skins/compare__card-game__stat_cards.jpg",
+       "accounts": [
+        "en extreme_wildlife_03",
+        "de space_08"
+       ]
       },
       {
        "id": "trick_grid",
@@ -309,13 +362,18 @@
         "textPlacement": "top",
         "background": "wood_paper"
        },
-       "thumb": "skins/compare__card-game__trick_grid.jpg"
+       "thumb": "skins/compare__card-game__trick_grid.jpg",
+       "accounts": [
+        "en extreme_wildlife_13",
+        "ko ocean_mysteries_11",
+        "de space_10"
+       ]
       }
      ],
      "usage": {
-      "de": 0,
-      "en": 0,
-      "ko": 0,
+      "de": 2,
+      "en": 2,
+      "ko": 1,
       "ja": 0
      }
     },
@@ -333,7 +391,12 @@
         "composition": "diorama",
         "textPlacement": "right_column"
        },
-       "thumb": "skins/compare__courtroom__bench.jpg"
+       "thumb": "skins/compare__courtroom__bench.jpg",
+       "accounts": [
+        "de geopolitics_maps_04",
+        "en military_arsenal_08",
+        "ja ocean_mysteries_01"
+       ]
       },
       {
        "id": "verdict_form",
@@ -343,14 +406,19 @@
         "textPlacement": "bottom",
         "background": "paper"
        },
-       "thumb": "skins/compare__courtroom__verdict_form.jpg"
+       "thumb": "skins/compare__courtroom__verdict_form.jpg",
+       "accounts": [
+        "de geopolitics_maps_12",
+        "en military_arsenal_04",
+        "ja ocean_mysteries_06"
+       ]
       }
      ],
      "usage": {
-      "de": 0,
-      "en": 0,
+      "de": 2,
+      "en": 2,
       "ko": 0,
-      "ja": 0
+      "ja": 2
      }
     },
     {
@@ -367,7 +435,11 @@
         "composition": "card_stack",
         "textPlacement": "center"
        },
-       "thumb": "skins/compare__original__arena.jpg"
+       "thumb": "skins/compare__original__arena.jpg",
+       "accounts": [
+        "de economy_empires_12",
+        "en extreme_wildlife_08"
+       ]
       },
       {
        "id": "columns",
@@ -376,13 +448,18 @@
         "composition": "split_vertical",
         "textPlacement": "bottom"
        },
-       "thumb": "skins/compare__original__columns.jpg"
+       "thumb": "skins/compare__original__columns.jpg",
+       "accounts": [
+        "de economy_empires_10",
+        "en extreme_wildlife_09",
+        "ko ocean_mysteries_12"
+       ]
       }
      ],
      "usage": {
-      "de": 0,
-      "en": 0,
-      "ko": 0,
+      "de": 2,
+      "en": 2,
+      "ko": 1,
       "ja": 0
      }
     },
@@ -400,7 +477,11 @@
         "composition": "split_horizontal",
         "textPlacement": "floating"
        },
-       "thumb": "skins/compare__race-track__side_lanes.jpg"
+       "thumb": "skins/compare__race-track__side_lanes.jpg",
+       "accounts": [
+        "de deep_space_12",
+        "en extreme_wildlife_10"
+       ]
       },
       {
        "id": "drag_strip",
@@ -409,12 +490,16 @@
         "composition": "split_vertical",
         "textPlacement": "right_column"
        },
-       "thumb": "skins/compare__race-track__drag_strip.jpg"
+       "thumb": "skins/compare__race-track__drag_strip.jpg",
+       "accounts": [
+        "de deep_space_13",
+        "en extreme_wildlife_12"
+       ]
       }
      ],
      "usage": {
-      "de": 0,
-      "en": 0,
+      "de": 2,
+      "en": 2,
       "ko": 0,
       "ja": 0
      }
@@ -433,7 +518,11 @@
         "composition": "scale",
         "textPlacement": "top"
        },
-       "thumb": "skins/compare__scale-balance__beam_scale.jpg"
+       "thumb": "skins/compare__scale-balance__beam_scale.jpg",
+       "accounts": [
+        "de economy_empires_04",
+        "en extreme_wildlife_04"
+       ]
       },
       {
        "id": "spring_dials",
@@ -443,12 +532,16 @@
         "textPlacement": "bottom",
         "background": "paper"
        },
-       "thumb": "skins/compare__scale-balance__spring_dials.jpg"
+       "thumb": "skins/compare__scale-balance__spring_dials.jpg",
+       "accounts": [
+        "de economy_empires_09",
+        "en extreme_wildlife_02"
+       ]
       }
      ],
      "usage": {
-      "de": 0,
-      "en": 0,
+      "de": 2,
+      "en": 2,
       "ko": 0,
       "ja": 0
      }
@@ -467,7 +560,10 @@
         "composition": "split_vertical",
         "textPlacement": "center"
        },
-       "thumb": "skins/compare__split-screen__left_right.jpg"
+       "thumb": "skins/compare__split-screen__left_right.jpg",
+       "accounts": [
+        "de geopolitics_maps_11"
+       ]
       },
       {
        "id": "top_bottom",
@@ -477,11 +573,14 @@
         "textPlacement": "right_column",
         "background": "flat_color"
        },
-       "thumb": "skins/compare__split-screen__top_bottom.jpg"
+       "thumb": "skins/compare__split-screen__top_bottom.jpg",
+       "accounts": [
+        "de geopolitics_maps_10"
+       ]
       }
      ],
      "usage": {
-      "de": 0,
+      "de": 2,
       "en": 0,
       "ko": 0,
       "ja": 0
@@ -501,7 +600,11 @@
         "composition": "ledger_columns",
         "textPlacement": "top"
        },
-       "thumb": "skins/compare__tier-duel__butterfly.jpg"
+       "thumb": "skins/compare__tier-duel__butterfly.jpg",
+       "accounts": [
+        "de geopolitics_maps_13",
+        "en military_arsenal_03"
+       ]
       },
       {
        "id": "led_scoreboard",
@@ -511,12 +614,16 @@
         "textPlacement": "bottom",
         "background": "darkness"
        },
-       "thumb": "skins/compare__tier-duel__led_scoreboard.jpg"
+       "thumb": "skins/compare__tier-duel__led_scoreboard.jpg",
+       "accounts": [
+        "de deep_space_14",
+        "en military_arsenal_06"
+       ]
       }
      ],
      "usage": {
-      "de": 0,
-      "en": 0,
+      "de": 2,
+      "en": 2,
       "ko": 0,
       "ja": 0
      }
@@ -525,7 +632,7 @@
   },
   {
    "engine": "folklore",
-   "channels": 28,
+   "channels": 18,
    "variants": [
     {
      "id": "folklore/european-grimoire",
@@ -541,7 +648,11 @@
         "composition": "notebook_page",
         "textPlacement": "right_column"
        },
-       "thumb": "skins/folklore__european-grimoire__open_book.jpg"
+       "thumb": "skins/folklore__european-grimoire__open_book.jpg",
+       "accounts": [
+        "de ancient_mythology_11",
+        "en folklore_legends_10"
+       ]
       },
       {
        "id": "sigil_circle",
@@ -550,12 +661,15 @@
         "composition": "circle_frame",
         "textPlacement": "top"
        },
-       "thumb": "skins/folklore__european-grimoire__sigil_circle.jpg"
+       "thumb": "skins/folklore__european-grimoire__sigil_circle.jpg",
+       "accounts": [
+        "de ancient_mythology_04"
+       ]
       }
      ],
      "usage": {
-      "de": 4,
-      "en": 2,
+      "de": 2,
+      "en": 1,
       "ko": 0,
       "ja": 0
      }
@@ -574,7 +688,11 @@
         "composition": "device_frame",
         "textPlacement": "lower_third"
        },
-       "thumb": "skins/folklore__haunted-vhs__tape_play.jpg"
+       "thumb": "skins/folklore__haunted-vhs__tape_play.jpg",
+       "accounts": [
+        "de ancient_mythology_12",
+        "en folklore_legends_11"
+       ]
       },
       {
        "id": "cassette",
@@ -584,11 +702,15 @@
         "textPlacement": "bottom",
         "background": "darkness"
        },
-       "thumb": "skins/folklore__haunted-vhs__cassette.jpg"
+       "thumb": "skins/folklore__haunted-vhs__cassette.jpg",
+       "accounts": [
+        "de ancient_mythology_05",
+        "en folklore_legends_04"
+       ]
       }
      ],
      "usage": {
-      "de": 4,
+      "de": 2,
       "en": 2,
       "ko": 0,
       "ja": 0
@@ -608,7 +730,8 @@
         "composition": "scroll",
         "textPlacement": "vertical_side"
        },
-       "thumb": "skins/folklore__japanese-yokai-scroll__emaki.jpg"
+       "thumb": "skins/folklore__japanese-yokai-scroll__emaki.jpg",
+       "accounts": []
       },
       {
        "id": "kakejiku",
@@ -618,7 +741,8 @@
         "textPlacement": "bottom",
         "background": "wood_paper"
        },
-       "thumb": "skins/folklore__japanese-yokai-scroll__kakejiku.jpg"
+       "thumb": "skins/folklore__japanese-yokai-scroll__kakejiku.jpg",
+       "accounts": []
       }
      ],
      "usage": {
@@ -642,7 +766,8 @@
         "composition": "split_vertical",
         "textPlacement": "center"
        },
-       "thumb": "skins/folklore__korean-gwishin__hanji_door.jpg"
+       "thumb": "skins/folklore__korean-gwishin__hanji_door.jpg",
+       "accounts": []
       },
       {
        "id": "moon_window",
@@ -652,7 +777,8 @@
         "textPlacement": "bottom",
         "background": "darkness"
        },
-       "thumb": "skins/folklore__korean-gwishin__moon_window.jpg"
+       "thumb": "skins/folklore__korean-gwishin__moon_window.jpg",
+       "accounts": []
       }
      ],
      "usage": {
@@ -676,7 +802,11 @@
         "composition": "ring",
         "textPlacement": "bottom"
        },
-       "thumb": "skins/folklore__nordic-runestone__carved_slab.jpg"
+       "thumb": "skins/folklore__nordic-runestone__carved_slab.jpg",
+       "accounts": [
+        "en folklore_legends_05",
+        "de lost_civilizations_03"
+       ]
       },
       {
        "id": "standing_stones",
@@ -685,11 +815,15 @@
         "composition": "pyramid",
         "textPlacement": "top"
        },
-       "thumb": "skins/folklore__nordic-runestone__standing_stones.jpg"
+       "thumb": "skins/folklore__nordic-runestone__standing_stones.jpg",
+       "accounts": [
+        "de ancient_mythology_10",
+        "en folklore_legends_12"
+       ]
       }
      ],
      "usage": {
-      "de": 4,
+      "de": 2,
       "en": 2,
       "ko": 0,
       "ja": 0
@@ -709,7 +843,11 @@
         "composition": "diorama",
         "textPlacement": "bottom"
        },
-       "thumb": "skins/folklore__shadow-puppet__paper_screen.jpg"
+       "thumb": "skins/folklore__shadow-puppet__paper_screen.jpg",
+       "accounts": [
+        "de ancient_mythology_13",
+        "en folklore_legends_13"
+       ]
       },
       {
        "id": "tall_screen",
@@ -718,11 +856,15 @@
         "composition": "hero_image",
         "textPlacement": "top"
        },
-       "thumb": "skins/folklore__shadow-puppet__tall_screen.jpg"
+       "thumb": "skins/folklore__shadow-puppet__tall_screen.jpg",
+       "accounts": [
+        "en folklore_legends_06",
+        "de lost_civilizations_13"
+       ]
       }
      ],
      "usage": {
-      "de": 4,
+      "de": 2,
       "en": 2,
       "ko": 0,
       "ja": 0
@@ -742,7 +884,10 @@
         "composition": "card_stack",
         "textPlacement": "on_image"
        },
-       "thumb": "skins/folklore__tarot-deck__card_flip.jpg"
+       "thumb": "skins/folklore__tarot-deck__card_flip.jpg",
+       "accounts": [
+        "de ancient_mythology_14"
+       ]
       },
       {
        "id": "three_card_spread",
@@ -751,11 +896,15 @@
         "composition": "grid",
         "textPlacement": "bottom"
        },
-       "thumb": "skins/folklore__tarot-deck__three_card_spread.jpg"
+       "thumb": "skins/folklore__tarot-deck__three_card_spread.jpg",
+       "accounts": [
+        "de ancient_mythology_09",
+        "en folklore_legends_09"
+       ]
       }
      ],
      "usage": {
-      "de": 3,
+      "de": 2,
       "en": 1,
       "ko": 0,
       "ja": 0
@@ -775,7 +924,8 @@
         "composition": "hero_image",
         "textPlacement": "top"
        },
-       "thumb": "skins/folklore__vn-original__night_stage.jpg"
+       "thumb": "skins/folklore__vn-original__night_stage.jpg",
+       "accounts": []
       },
       {
        "id": "altar_niche",
@@ -784,7 +934,8 @@
         "composition": "diorama",
         "textPlacement": "bottom"
        },
-       "thumb": "skins/folklore__vn-original__altar_niche.jpg"
+       "thumb": "skins/folklore__vn-original__altar_niche.jpg",
+       "accounts": []
       }
      ],
      "usage": {
@@ -798,7 +949,7 @@
   },
   {
    "engine": "kinetic",
-   "channels": 80,
+   "channels": 4,
    "variants": [
     {
      "id": "kinetic/type-poster",
@@ -815,7 +966,10 @@
         "textPlacement": "center",
         "background": "flat_color"
        },
-       "thumb": "skins/kinetic__type-poster__center_stack.jpg"
+       "thumb": "skins/kinetic__type-poster__center_stack.jpg",
+       "accounts": [
+        "de dark_psychology_08"
+       ]
       },
       {
        "id": "split_band",
@@ -825,7 +979,10 @@
         "textPlacement": "top",
         "background": "gradient"
        },
-       "thumb": "skins/kinetic__type-poster__split_band.jpg"
+       "thumb": "skins/kinetic__type-poster__split_band.jpg",
+       "accounts": [
+        "de dark_psychology_01"
+       ]
       },
       {
        "id": "tilted_board",
@@ -835,21 +992,25 @@
         "textPlacement": "center",
         "background": "paper"
        },
-       "thumb": "skins/kinetic__type-poster__tilted_board.jpg"
+       "thumb": "skins/kinetic__type-poster__tilted_board.jpg",
+       "accounts": [
+        "de dark_psychology_06",
+        "en forbidden_experiments_05"
+       ]
       }
      ],
      "usage": {
-      "de": 48,
-      "en": 29,
+      "de": 3,
+      "en": 1,
       "ko": 0,
-      "ja": 3
+      "ja": 0
      }
     }
    ]
   },
   {
    "engine": "mystery",
-   "channels": 68,
+   "channels": 24,
    "variants": [
     {
      "id": "mystery/case-file",
@@ -865,7 +1026,10 @@
         "composition": "folder_card",
         "textPlacement": "bottom"
        },
-       "thumb": "skins/mystery__case-file__folder_card.jpg"
+       "thumb": "skins/mystery__case-file__folder_card.jpg",
+       "accounts": [
+        "de ancient_mythology_03"
+       ]
       },
       {
        "id": "polaroid_spread",
@@ -874,7 +1038,11 @@
         "composition": "card_stack",
         "textPlacement": "right_column"
        },
-       "thumb": "skins/mystery__case-file__polaroid_spread.jpg"
+       "thumb": "skins/mystery__case-file__polaroid_spread.jpg",
+       "accounts": [
+        "de dark_psychology_09",
+        "en forbidden_experiments_01"
+       ]
       },
       {
        "id": "clipboard_top",
@@ -883,14 +1051,17 @@
         "composition": "split_horizontal",
         "textPlacement": "top"
        },
-       "thumb": "skins/mystery__case-file__clipboard_top.jpg"
+       "thumb": "skins/mystery__case-file__clipboard_top.jpg",
+       "accounts": [
+        "de infamous_figures_13"
+       ]
       }
      ],
      "usage": {
-      "de": 5,
-      "en": 2,
-      "ko": 1,
-      "ja": 1
+      "de": 3,
+      "en": 1,
+      "ko": 0,
+      "ja": 0
      }
     },
     {
@@ -907,7 +1078,10 @@
         "composition": "multi_cam",
         "textPlacement": "top"
        },
-       "thumb": "skins/mystery__cctv__quad_cam.jpg"
+       "thumb": "skins/mystery__cctv__quad_cam.jpg",
+       "accounts": [
+        "de ancient_mythology_08"
+       ]
       },
       {
        "id": "single_monitor",
@@ -916,13 +1090,16 @@
         "composition": "device_frame",
         "textPlacement": "bottom"
        },
-       "thumb": "skins/mystery__cctv__single_monitor.jpg"
+       "thumb": "skins/mystery__cctv__single_monitor.jpg",
+       "accounts": [
+        "de dark_psychology_14"
+       ]
       }
      ],
      "usage": {
-      "de": 4,
-      "en": 1,
-      "ko": 1,
+      "de": 2,
+      "en": 0,
+      "ko": 0,
       "ja": 0
      }
     },
@@ -940,7 +1117,10 @@
         "composition": "diorama",
         "textPlacement": "bottom"
        },
-       "thumb": "skins/mystery__cursed-objects__glass_case.jpg"
+       "thumb": "skins/mystery__cursed-objects__glass_case.jpg",
+       "accounts": [
+        "de medical_anomalies_02"
+       ]
       },
       {
        "id": "catalogue_card",
@@ -949,12 +1129,15 @@
         "composition": "card_stack",
         "textPlacement": "right_column"
        },
-       "thumb": "skins/mystery__cursed-objects__catalogue_card.jpg"
+       "thumb": "skins/mystery__cursed-objects__catalogue_card.jpg",
+       "accounts": [
+        "de dark_psychology_12"
+       ]
       }
      ],
      "usage": {
-      "de": 4,
-      "en": 2,
+      "de": 2,
+      "en": 0,
       "ko": 0,
       "ja": 0
      }
@@ -973,7 +1156,10 @@
         "composition": "device_frame",
         "textPlacement": "on_image"
        },
-       "thumb": "skins/mystery__decoded__crt_terminal.jpg"
+       "thumb": "skins/mystery__decoded__crt_terminal.jpg",
+       "accounts": [
+        "de dark_psychology_13"
+       ]
       },
       {
        "id": "cipher_hex",
@@ -982,13 +1168,16 @@
         "composition": "grid",
         "textPlacement": "bottom"
        },
-       "thumb": "skins/mystery__decoded__cipher_hex.jpg"
+       "thumb": "skins/mystery__decoded__cipher_hex.jpg",
+       "accounts": [
+        "de lost_civilizations_02"
+       ]
       }
      ],
      "usage": {
-      "de": 4,
-      "en": 2,
-      "ko": 1,
+      "de": 2,
+      "en": 0,
+      "ko": 0,
       "ja": 0
      }
     },
@@ -1006,7 +1195,10 @@
         "composition": "tilted_board",
         "textPlacement": "right_column"
        },
-       "thumb": "skins/mystery__evidence-board__pinned_web.jpg"
+       "thumb": "skins/mystery__evidence-board__pinned_web.jpg",
+       "accounts": [
+        "de forbidden_experiments_07"
+       ]
       },
       {
        "id": "suspect_grid",
@@ -1015,13 +1207,16 @@
         "composition": "grid",
         "textPlacement": "bottom"
        },
-       "thumb": "skins/mystery__evidence-board__suspect_grid.jpg"
+       "thumb": "skins/mystery__evidence-board__suspect_grid.jpg",
+       "accounts": [
+        "de dark_psychology_11"
+       ]
       }
      ],
      "usage": {
-      "de": 5,
-      "en": 2,
-      "ko": 1,
+      "de": 2,
+      "en": 0,
+      "ko": 0,
       "ja": 0
      }
     },
@@ -1039,7 +1234,10 @@
         "composition": "notebook_page",
         "textPlacement": "left_column"
        },
-       "thumb": "skins/mystery__field-journal__taped_page.jpg"
+       "thumb": "skins/mystery__field-journal__taped_page.jpg",
+       "accounts": [
+        "de medical_anomalies_07"
+       ]
       },
       {
        "id": "torn_sketch",
@@ -1048,14 +1246,17 @@
         "composition": "hero_image",
         "textPlacement": "bottom"
        },
-       "thumb": "skins/mystery__field-journal__torn_sketch.jpg"
+       "thumb": "skins/mystery__field-journal__torn_sketch.jpg",
+       "accounts": [
+        "de infamous_figures_10"
+       ]
       }
      ],
      "usage": {
-      "de": 4,
-      "en": 1,
+      "de": 2,
+      "en": 0,
       "ko": 0,
-      "ja": 1
+      "ja": 0
      }
     },
     {
@@ -1072,7 +1273,11 @@
         "composition": "hero_image",
         "textPlacement": "center"
        },
-       "thumb": "skins/mystery__lost-places__full_bleed.jpg"
+       "thumb": "skins/mystery__lost-places__full_bleed.jpg",
+       "accounts": [
+        "en folklore_legends_07",
+        "de lost_civilizations_01"
+       ]
       },
       {
        "id": "flashlight_circle",
@@ -1081,13 +1286,16 @@
         "composition": "circle_frame",
         "textPlacement": "bottom"
        },
-       "thumb": "skins/mystery__lost-places__flashlight_circle.jpg"
+       "thumb": "skins/mystery__lost-places__flashlight_circle.jpg",
+       "accounts": [
+        "de infamous_figures_04"
+       ]
       }
      ],
      "usage": {
-      "de": 4,
+      "de": 2,
       "en": 1,
-      "ko": 1,
+      "ko": 0,
       "ja": 0
      }
     },
@@ -1105,7 +1313,8 @@
         "composition": "hero_image",
         "textPlacement": "bottom"
        },
-       "thumb": ""
+       "thumb": "",
+       "accounts": []
       },
       {
        "id": "evidence_strip",
@@ -1115,7 +1324,8 @@
         "textPlacement": "right_column",
         "background": "paper"
        },
-       "thumb": ""
+       "thumb": "",
+       "accounts": []
       }
      ],
      "usage": {
@@ -1139,7 +1349,11 @@
         "composition": "hero_image",
         "textPlacement": "bottom"
        },
-       "thumb": "skins/mystery__reference-dossier__hero_evidence.jpg"
+       "thumb": "skins/mystery__reference-dossier__hero_evidence.jpg",
+       "accounts": [
+        "en folklore_legends_02",
+        "de forbidden_experiments_08"
+       ]
       },
       {
        "id": "evidence_strip",
@@ -1149,13 +1363,16 @@
         "textPlacement": "right_column",
         "background": "paper"
        },
-       "thumb": "skins/mystery__reference-dossier__evidence_strip.jpg"
+       "thumb": "skins/mystery__reference-dossier__evidence_strip.jpg",
+       "accounts": [
+        "de lost_civilizations_09"
+       ]
       }
      ],
      "usage": {
-      "de": 4,
-      "en": 2,
-      "ko": 1,
+      "de": 2,
+      "en": 1,
+      "ko": 0,
       "ja": 0
      }
     },
@@ -1173,7 +1390,10 @@
         "composition": "map_full",
         "textPlacement": "bottom"
        },
-       "thumb": "skins/mystery__sonar-log__sonar_full.jpg"
+       "thumb": "skins/mystery__sonar-log__sonar_full.jpg",
+       "accounts": [
+        "de dark_psychology_03"
+       ]
       },
       {
        "id": "ship_log",
@@ -1182,14 +1402,17 @@
         "composition": "circle_frame",
         "textPlacement": "top"
        },
-       "thumb": "skins/mystery__sonar-log__ship_log.jpg"
+       "thumb": "skins/mystery__sonar-log__ship_log.jpg",
+       "accounts": [
+        "de infamous_figures_11"
+       ]
       }
      ],
      "usage": {
-      "de": 4,
-      "en": 1,
-      "ko": 1,
-      "ja": 1
+      "de": 2,
+      "en": 0,
+      "ko": 0,
+      "ja": 0
      }
     },
     {
@@ -1206,7 +1429,10 @@
         "composition": "radar",
         "textPlacement": "lower_third"
        },
-       "thumb": "skins/mystery__ufo-radar__radar_scope.jpg"
+       "thumb": "skins/mystery__ufo-radar__radar_scope.jpg",
+       "accounts": [
+        "de infamous_figures_12"
+       ]
       },
       {
        "id": "witness_phone",
@@ -1215,12 +1441,15 @@
         "composition": "device_frame",
         "textPlacement": "top"
        },
-       "thumb": "skins/mystery__ufo-radar__witness_phone.jpg"
+       "thumb": "skins/mystery__ufo-radar__witness_phone.jpg",
+       "accounts": [
+        "de medical_anomalies_09"
+       ]
       }
      ],
      "usage": {
-      "de": 5,
-      "en": 1,
+      "de": 2,
+      "en": 0,
       "ko": 0,
       "ja": 0
      }
@@ -1229,7 +1458,7 @@
   },
   {
    "engine": "newspaper",
-   "channels": 73,
+   "channels": 20,
    "variants": [
     {
      "id": "newspaper/court-sketch",
@@ -1245,7 +1474,10 @@
         "composition": "notebook_page",
         "textPlacement": "bottom"
        },
-       "thumb": "skins/newspaper__court-sketch__sketch_pad.jpg"
+       "thumb": "skins/newspaper__court-sketch__sketch_pad.jpg",
+       "accounts": [
+        "de forbidden_experiments_09"
+       ]
       },
       {
        "id": "easel_board",
@@ -1254,11 +1486,14 @@
         "composition": "tilted_board",
         "textPlacement": "floating"
        },
-       "thumb": "skins/newspaper__court-sketch__easel_board.jpg"
+       "thumb": "skins/newspaper__court-sketch__easel_board.jpg",
+       "accounts": [
+        "de lost_civilizations_06"
+       ]
       }
      ],
      "usage": {
-      "de": 0,
+      "de": 2,
       "en": 0,
       "ko": 0,
       "ja": 0
@@ -1279,7 +1514,11 @@
         "textPlacement": "bottom",
         "background": "paper"
        },
-       "thumb": "skins/newspaper__front-page__front_page.jpg"
+       "thumb": "skins/newspaper__front-page__front_page.jpg",
+       "accounts": [
+        "de geopolitics_maps_08",
+        "en mega_catastrophes_12"
+       ]
       },
       {
        "id": "side_masthead",
@@ -1289,7 +1528,11 @@
         "textPlacement": "right_column",
         "background": "paper"
        },
-       "thumb": "skins/newspaper__front-page__side_masthead.jpg"
+       "thumb": "skins/newspaper__front-page__side_masthead.jpg",
+       "accounts": [
+        "de economy_empires_08",
+        "en folklore_legends_08"
+       ]
       },
       {
        "id": "magazine_cover",
@@ -1299,12 +1542,16 @@
         "textPlacement": "on_image",
         "background": "darkness"
        },
-       "thumb": "skins/newspaper__front-page__magazine_cover.jpg"
+       "thumb": "skins/newspaper__front-page__magazine_cover.jpg",
+       "accounts": [
+        "de economy_empires_02",
+        "en forbidden_experiments_02"
+       ]
       }
      ],
      "usage": {
-      "de": 53,
-      "en": 20,
+      "de": 3,
+      "en": 3,
       "ko": 0,
       "ja": 0
      }
@@ -1323,7 +1570,10 @@
         "composition": "device_frame",
         "textPlacement": "bottom"
        },
-       "thumb": "skins/newspaper__microfilm__reader_screen.jpg"
+       "thumb": "skins/newspaper__microfilm__reader_screen.jpg",
+       "accounts": [
+        "de medical_anomalies_12"
+       ]
       },
       {
        "id": "film_reel",
@@ -1332,11 +1582,14 @@
         "composition": "film_strip",
         "textPlacement": "right_column"
        },
-       "thumb": "skins/newspaper__microfilm__film_reel.jpg"
+       "thumb": "skins/newspaper__microfilm__film_reel.jpg",
+       "accounts": [
+        "de dark_psychology_10"
+       ]
       }
      ],
      "usage": {
-      "de": 0,
+      "de": 2,
       "en": 0,
       "ko": 0,
       "ja": 0
@@ -1356,7 +1609,8 @@
         "composition": "folder_card",
         "textPlacement": "bottom"
        },
-       "thumb": "skins/newspaper__original__dossier.jpg"
+       "thumb": "skins/newspaper__original__dossier.jpg",
+       "accounts": []
       },
       {
        "id": "file_first",
@@ -1365,11 +1619,14 @@
         "composition": "split_horizontal",
         "textPlacement": "top"
        },
-       "thumb": "skins/newspaper__original__file_first.jpg"
+       "thumb": "skins/newspaper__original__file_first.jpg",
+       "accounts": [
+        "de infamous_figures_08"
+       ]
       }
      ],
      "usage": {
-      "de": 0,
+      "de": 1,
       "en": 0,
       "ko": 0,
       "ja": 0
@@ -1389,7 +1646,8 @@
         "composition": "circle_frame",
         "textPlacement": "bottom"
        },
-       "thumb": "skins/newspaper__police-gazette__medallion.jpg"
+       "thumb": "skins/newspaper__police-gazette__medallion.jpg",
+       "accounts": []
       },
       {
        "id": "oval_row",
@@ -1398,11 +1656,14 @@
         "composition": "grid",
         "textPlacement": "top"
        },
-       "thumb": "skins/newspaper__police-gazette__oval_row.jpg"
+       "thumb": "skins/newspaper__police-gazette__oval_row.jpg",
+       "accounts": [
+        "de geopolitics_maps_09"
+       ]
       }
      ],
      "usage": {
-      "de": 0,
+      "de": 1,
       "en": 0,
       "ko": 0,
       "ja": 0
@@ -1422,7 +1683,10 @@
         "composition": "hero_image",
         "textPlacement": "bottom"
        },
-       "thumb": "skins/newspaper__tabloid-extra__diagonal_cover.jpg"
+       "thumb": "skins/newspaper__tabloid-extra__diagonal_cover.jpg",
+       "accounts": [
+        "de geopolitics_maps_02"
+       ]
       },
       {
        "id": "split_front",
@@ -1431,11 +1695,14 @@
         "composition": "split_vertical",
         "textPlacement": "left_column"
        },
-       "thumb": "skins/newspaper__tabloid-extra__split_front.jpg"
+       "thumb": "skins/newspaper__tabloid-extra__split_front.jpg",
+       "accounts": [
+        "de dark_psychology_05"
+       ]
       }
      ],
      "usage": {
-      "de": 0,
+      "de": 2,
       "en": 0,
       "ko": 0,
       "ja": 0
@@ -1455,7 +1722,10 @@
         "composition": "card_stack",
         "textPlacement": "top"
        },
-       "thumb": "skins/newspaper__telegram-wire__telegram_form.jpg"
+       "thumb": "skins/newspaper__telegram-wire__telegram_form.jpg",
+       "accounts": [
+        "de infamous_figures_06"
+       ]
       },
       {
        "id": "ticker_tape",
@@ -1464,11 +1734,14 @@
         "composition": "scroll",
         "textPlacement": "center"
        },
-       "thumb": "skins/newspaper__telegram-wire__ticker_tape.jpg"
+       "thumb": "skins/newspaper__telegram-wire__ticker_tape.jpg",
+       "accounts": [
+        "de lost_civilizations_08"
+       ]
       }
      ],
      "usage": {
-      "de": 0,
+      "de": 2,
       "en": 0,
       "ko": 0,
       "ja": 0
@@ -1488,7 +1761,10 @@
         "composition": "ledger_columns",
         "textPlacement": "right_column"
        },
-       "thumb": "skins/newspaper__victorian-broadsheet__columns_page.jpg"
+       "thumb": "skins/newspaper__victorian-broadsheet__columns_page.jpg",
+       "accounts": [
+        "de geopolitics_maps_03"
+       ]
       },
       {
        "id": "fold_story",
@@ -1497,11 +1773,14 @@
         "composition": "split_horizontal",
         "textPlacement": "top"
        },
-       "thumb": "skins/newspaper__victorian-broadsheet__fold_story.jpg"
+       "thumb": "skins/newspaper__victorian-broadsheet__fold_story.jpg",
+       "accounts": [
+        "de mega_catastrophes_03"
+       ]
       }
      ],
      "usage": {
-      "de": 0,
+      "de": 2,
       "en": 0,
       "ko": 0,
       "ja": 0
@@ -1521,7 +1800,10 @@
         "composition": "poster",
         "textPlacement": "center"
        },
-       "thumb": "skins/newspaper__wanted-poster__wall_poster.jpg"
+       "thumb": "skins/newspaper__wanted-poster__wall_poster.jpg",
+       "accounts": [
+        "de infamous_figures_01"
+       ]
       },
       {
        "id": "torn_overlap",
@@ -1530,11 +1812,14 @@
         "composition": "card_stack",
         "textPlacement": "top"
        },
-       "thumb": "skins/newspaper__wanted-poster__torn_overlap.jpg"
+       "thumb": "skins/newspaper__wanted-poster__torn_overlap.jpg",
+       "accounts": [
+        "de infamous_figures_07"
+       ]
       }
      ],
      "usage": {
-      "de": 0,
+      "de": 2,
       "en": 0,
       "ko": 0,
       "ja": 0
@@ -1544,7 +1829,7 @@
   },
   {
    "engine": "science",
-   "channels": 62,
+   "channels": 21,
    "variants": [
     {
      "id": "science/explainer-board",
@@ -1561,7 +1846,11 @@
         "textPlacement": "bottom",
         "background": "whiteboard"
        },
-       "thumb": "skins/science__explainer-board__whiteboard.jpg"
+       "thumb": "skins/science__explainer-board__whiteboard.jpg",
+       "accounts": [
+        "en mega_catastrophes_10",
+        "de space_07"
+       ]
       },
       {
        "id": "lab_notebook",
@@ -1571,7 +1860,11 @@
         "textPlacement": "left_column",
         "background": "paper"
        },
-       "thumb": "skins/science__explainer-board__lab_notebook.jpg"
+       "thumb": "skins/science__explainer-board__lab_notebook.jpg",
+       "accounts": [
+        "de mega_catastrophes_02",
+        "en mega_catastrophes_11"
+       ]
       },
       {
        "id": "hud_panel",
@@ -1581,14 +1874,19 @@
         "textPlacement": "center",
         "background": "blueprint"
        },
-       "thumb": "skins/science__explainer-board__hud_panel.jpg"
+       "thumb": "skins/science__explainer-board__hud_panel.jpg",
+       "accounts": [
+        "en mega_catastrophes_13",
+        "ko philosophy_paradox_04",
+        "de space_05"
+       ]
       }
      ],
      "usage": {
-      "de": 36,
-      "en": 18,
-      "ko": 5,
-      "ja": 2
+      "de": 3,
+      "en": 3,
+      "ko": 1,
+      "ja": 0
      }
     },
     {
@@ -1605,7 +1903,10 @@
         "composition": "notebook_page",
         "textPlacement": "right_column"
        },
-       "thumb": "skins/science__lab-notebook__ruled_page.jpg"
+       "thumb": "skins/science__lab-notebook__ruled_page.jpg",
+       "accounts": [
+        "de dark_psychology_04"
+       ]
       },
       {
        "id": "experiment_log",
@@ -1614,11 +1915,14 @@
         "composition": "ledger_columns",
         "textPlacement": "top"
        },
-       "thumb": "skins/science__lab-notebook__experiment_log.jpg"
+       "thumb": "skins/science__lab-notebook__experiment_log.jpg",
+       "accounts": [
+        "de space_06"
+       ]
       }
      ],
      "usage": {
-      "de": 0,
+      "de": 2,
       "en": 0,
       "ko": 0,
       "ja": 0
@@ -1638,7 +1942,10 @@
         "composition": "device_frame",
         "textPlacement": "left_column"
        },
-       "thumb": "skins/science__lecture-whiteboard__projector_screen.jpg"
+       "thumb": "skins/science__lecture-whiteboard__projector_screen.jpg",
+       "accounts": [
+        "de forbidden_experiments_10"
+       ]
       },
       {
        "id": "board_notes",
@@ -1647,11 +1954,14 @@
         "composition": "split_horizontal",
         "textPlacement": "top"
        },
-       "thumb": "skins/science__lecture-whiteboard__board_notes.jpg"
+       "thumb": "skins/science__lecture-whiteboard__board_notes.jpg",
+       "accounts": [
+        "de extreme_survival_03"
+       ]
       }
      ],
      "usage": {
-      "de": 1,
+      "de": 2,
       "en": 0,
       "ko": 0,
       "ja": 0
@@ -1671,7 +1981,10 @@
         "composition": "circle_frame",
         "textPlacement": "bottom"
        },
-       "thumb": "skins/science__microscope-zoom__zoom_levels.jpg"
+       "thumb": "skins/science__microscope-zoom__zoom_levels.jpg",
+       "accounts": [
+        "de medical_anomalies_06"
+       ]
       },
       {
        "id": "zoom_stack",
@@ -1680,11 +1993,14 @@
         "composition": "card_stack",
         "textPlacement": "top"
        },
-       "thumb": "skins/science__microscope-zoom__zoom_stack.jpg"
+       "thumb": "skins/science__microscope-zoom__zoom_stack.jpg",
+       "accounts": [
+        "de forbidden_experiments_11"
+       ]
       }
      ],
      "usage": {
-      "de": 0,
+      "de": 2,
       "en": 0,
       "ko": 0,
       "ja": 0
@@ -1704,7 +2020,10 @@
         "composition": "grid",
         "textPlacement": "top"
        },
-       "thumb": "skins/science__periodic__element_tile.jpg"
+       "thumb": "skins/science__periodic__element_tile.jpg",
+       "accounts": [
+        "de forbidden_experiments_13"
+       ]
       },
       {
        "id": "tile_column",
@@ -1713,11 +2032,14 @@
         "composition": "card_stack",
         "textPlacement": "right_column"
        },
-       "thumb": "skins/science__periodic__tile_column.jpg"
+       "thumb": "skins/science__periodic__tile_column.jpg",
+       "accounts": [
+        "de medical_anomalies_01"
+       ]
       }
      ],
      "usage": {
-      "de": 0,
+      "de": 2,
       "en": 0,
       "ko": 0,
       "ja": 0
@@ -1737,7 +2059,10 @@
         "composition": "split_horizontal",
         "textPlacement": "top"
        },
-       "thumb": "skins/science__quiz-show__three_answers.jpg"
+       "thumb": "skins/science__quiz-show__three_answers.jpg",
+       "accounts": [
+        "de lost_civilizations_05"
+       ]
       },
       {
        "id": "podium",
@@ -1746,11 +2071,14 @@
         "composition": "pyramid",
         "textPlacement": "bottom"
        },
-       "thumb": "skins/science__quiz-show__podium.jpg"
+       "thumb": "skins/science__quiz-show__podium.jpg",
+       "accounts": [
+        "de space_02"
+       ]
       }
      ],
      "usage": {
-      "de": 0,
+      "de": 2,
       "en": 0,
       "ko": 0,
       "ja": 0
@@ -1770,7 +2098,10 @@
         "composition": "hero_image",
         "textPlacement": "lower_third"
        },
-       "thumb": "skins/science__space-hud__viewport.jpg"
+       "thumb": "skins/science__space-hud__viewport.jpg",
+       "accounts": [
+        "de space_03"
+       ]
       },
       {
        "id": "cockpit_console",
@@ -1779,11 +2110,14 @@
         "composition": "device_frame",
         "textPlacement": "top"
        },
-       "thumb": "skins/science__space-hud__cockpit_console.jpg"
+       "thumb": "skins/science__space-hud__cockpit_console.jpg",
+       "accounts": [
+        "de space_04"
+       ]
       }
      ],
      "usage": {
-      "de": 0,
+      "de": 2,
       "en": 0,
       "ko": 0,
       "ja": 0
@@ -1803,7 +2137,10 @@
         "composition": "split_vertical",
         "textPlacement": "bottom"
        },
-       "thumb": "skins/science__xray__lightbox.jpg"
+       "thumb": "skins/science__xray__lightbox.jpg",
+       "accounts": [
+        "de medical_anomalies_08"
+       ]
       },
       {
        "id": "film_sheets",
@@ -1812,11 +2149,14 @@
         "composition": "film_strip",
         "textPlacement": "right_column"
        },
-       "thumb": "skins/science__xray__film_sheets.jpg"
+       "thumb": "skins/science__xray__film_sheets.jpg",
+       "accounts": [
+        "de space_01"
+       ]
       }
      ],
      "usage": {
-      "de": 0,
+      "de": 2,
       "en": 0,
       "ko": 0,
       "ja": 0
@@ -1826,7 +2166,7 @@
   },
   {
    "engine": "survival",
-   "channels": 43,
+   "channels": 12,
    "variants": [
     {
      "id": "survival/deep-sea",
@@ -1842,7 +2182,8 @@
         "composition": "scale",
         "textPlacement": "bottom"
        },
-       "thumb": "skins/survival__deep-sea__ruler_right.jpg"
+       "thumb": "skins/survival__deep-sea__ruler_right.jpg",
+       "accounts": []
       },
       {
        "id": "ruler_left",
@@ -1851,14 +2192,17 @@
         "composition": "split_horizontal",
         "textPlacement": "top"
        },
-       "thumb": "skins/survival__deep-sea__ruler_left.jpg"
+       "thumb": "skins/survival__deep-sea__ruler_left.jpg",
+       "accounts": [
+        "en extreme_survival_12"
+       ]
       }
      ],
      "usage": {
       "de": 0,
-      "en": 3,
-      "ko": 3,
-      "ja": 2
+      "en": 1,
+      "ko": 0,
+      "ja": 0
      }
     },
     {
@@ -1875,7 +2219,8 @@
         "composition": "split_vertical",
         "textPlacement": "bottom"
        },
-       "thumb": "skins/survival__endurance__stopwatch.jpg"
+       "thumb": "skins/survival__endurance__stopwatch.jpg",
+       "accounts": []
       },
       {
        "id": "race_lane",
@@ -1884,12 +2229,13 @@
         "composition": "timeline_track",
         "textPlacement": "top"
        },
-       "thumb": "skins/survival__endurance__race_lane.jpg"
+       "thumb": "skins/survival__endurance__race_lane.jpg",
+       "accounts": []
       }
      ],
      "usage": {
-      "de": 1,
-      "en": 4,
+      "de": 0,
+      "en": 0,
       "ko": 0,
       "ja": 0
      }
@@ -1908,7 +2254,8 @@
         "composition": "hero_image",
         "textPlacement": "bottom"
        },
-       "thumb": "skins/survival__extreme-cold__frosted_glass.jpg"
+       "thumb": "skins/survival__extreme-cold__frosted_glass.jpg",
+       "accounts": []
       },
       {
        "id": "ice_card",
@@ -1917,14 +2264,17 @@
         "composition": "card_stack",
         "textPlacement": "top"
        },
-       "thumb": "skins/survival__extreme-cold__ice_card.jpg"
+       "thumb": "skins/survival__extreme-cold__ice_card.jpg",
+       "accounts": [
+        "en extreme_survival_09"
+       ]
       }
      ],
      "usage": {
       "de": 0,
-      "en": 4,
-      "ko": 2,
-      "ja": 1
+      "en": 1,
+      "ko": 0,
+      "ja": 0
      }
     },
     {
@@ -1941,7 +2291,10 @@
         "composition": "poster",
         "textPlacement": "bottom"
        },
-       "thumb": "skins/survival__extreme-heat__thermo_left.jpg"
+       "thumb": "skins/survival__extreme-heat__thermo_left.jpg",
+       "accounts": [
+        "en mega_catastrophes_09"
+       ]
       },
       {
        "id": "mirage",
@@ -1950,12 +2303,16 @@
         "composition": "hero_image",
         "textPlacement": "lower_third"
        },
-       "thumb": "skins/survival__extreme-heat__mirage.jpg"
+       "thumb": "skins/survival__extreme-heat__mirage.jpg",
+       "accounts": [
+        "en extreme_survival_10",
+        "de mega_catastrophes_01"
+       ]
       }
      ],
      "usage": {
       "de": 1,
-      "en": 5,
+      "en": 2,
       "ko": 0,
       "ja": 0
      }
@@ -1974,7 +2331,11 @@
         "composition": "split_horizontal",
         "textPlacement": "top"
        },
-       "thumb": "skins/survival__lab-exposure__bench.jpg"
+       "thumb": "skins/survival__lab-exposure__bench.jpg",
+       "accounts": [
+        "de medical_anomalies_04",
+        "en mega_catastrophes_08"
+       ]
       },
       {
        "id": "hazard_ring",
@@ -1983,12 +2344,15 @@
         "composition": "circle_frame",
         "textPlacement": "bottom"
        },
-       "thumb": "skins/survival__lab-exposure__hazard_ring.jpg"
+       "thumb": "skins/survival__lab-exposure__hazard_ring.jpg",
+       "accounts": [
+        "en mega_catastrophes_07"
+       ]
       }
      ],
      "usage": {
-      "de": 4,
-      "en": 3,
+      "de": 1,
+      "en": 2,
       "ko": 0,
       "ja": 0
      }
@@ -2007,7 +2371,8 @@
         "composition": "card_stack",
         "textPlacement": "bottom"
        },
-       "thumb": "skins/survival__mr-incredible__legacy.jpg"
+       "thumb": "skins/survival__mr-incredible__legacy.jpg",
+       "accounts": []
       },
       {
        "id": "face_card",
@@ -2017,7 +2382,11 @@
         "textPlacement": "bottom",
         "background": "darkness"
        },
-       "thumb": "skins/survival__mr-incredible__face_card.jpg"
+       "thumb": "skins/survival__mr-incredible__face_card.jpg",
+       "accounts": [
+        "en extreme_survival_11",
+        "de forbidden_experiments_06"
+       ]
       }
      ],
      "usage": {
@@ -2041,7 +2410,8 @@
         "composition": "grid",
         "textPlacement": "bottom"
        },
-       "thumb": "skins/survival__no-sleep__desk.jpg"
+       "thumb": "skins/survival__no-sleep__desk.jpg",
+       "accounts": []
       },
       {
        "id": "week_strip",
@@ -2050,12 +2420,15 @@
         "composition": "ledger_columns",
         "textPlacement": "top"
        },
-       "thumb": "skins/survival__no-sleep__week_strip.jpg"
+       "thumb": "skins/survival__no-sleep__week_strip.jpg",
+       "accounts": [
+        "de medical_anomalies_05"
+       ]
       }
      ],
      "usage": {
-      "de": 2,
-      "en": 1,
+      "de": 1,
+      "en": 0,
       "ko": 0,
       "ja": 0
      }
@@ -2074,7 +2447,8 @@
         "composition": "card_stack",
         "textPlacement": "bottom"
        },
-       "thumb": "skins/survival__original__scanner.jpg"
+       "thumb": "skins/survival__original__scanner.jpg",
+       "accounts": []
       },
       {
        "id": "reactor_top",
@@ -2083,7 +2457,8 @@
         "composition": "split_horizontal",
         "textPlacement": "top"
        },
-       "thumb": "skins/survival__original__reactor_top.jpg"
+       "thumb": "skins/survival__original__reactor_top.jpg",
+       "accounts": []
       }
      ],
      "usage": {
@@ -2107,7 +2482,10 @@
         "composition": "device_frame",
         "textPlacement": "lower_third"
        },
-       "thumb": "skins/survival__space-exposure__visor.jpg"
+       "thumb": "skins/survival__space-exposure__visor.jpg",
+       "accounts": [
+        "de space_09"
+       ]
       },
       {
        "id": "telemetry_column",
@@ -2116,11 +2494,12 @@
         "composition": "ring",
         "textPlacement": "right_column"
        },
-       "thumb": "skins/survival__space-exposure__telemetry_column.jpg"
+       "thumb": "skins/survival__space-exposure__telemetry_column.jpg",
+       "accounts": []
       }
      ],
      "usage": {
-      "de": 5,
+      "de": 1,
       "en": 0,
       "ko": 0,
       "ja": 0
@@ -2130,7 +2509,7 @@
   },
   {
    "engine": "tierlist",
-   "channels": 90,
+   "channels": 13,
    "variants": [
     {
      "id": "tierlist/classic-rows",
@@ -2146,7 +2525,10 @@
         "composition": "ledger_columns",
         "textPlacement": "bottom"
        },
-       "thumb": "skins/tierlist__classic-rows__rows_board.jpg"
+       "thumb": "skins/tierlist__classic-rows__rows_board.jpg",
+       "accounts": [
+        "en military_arsenal_12"
+       ]
       },
       {
        "id": "tier_columns",
@@ -2155,12 +2537,13 @@
         "composition": "split_horizontal",
         "textPlacement": "on_image"
        },
-       "thumb": "skins/tierlist__classic-rows__tier_columns.jpg"
+       "thumb": "skins/tierlist__classic-rows__tier_columns.jpg",
+       "accounts": []
       }
      ],
      "usage": {
       "de": 0,
-      "en": 0,
+      "en": 1,
       "ko": 0,
       "ja": 0
      }
@@ -2179,7 +2562,8 @@
         "composition": "ring",
         "textPlacement": "lower_third"
        },
-       "thumb": "skins/tierlist__orbit__solar_arcs.jpg"
+       "thumb": "skins/tierlist__orbit__solar_arcs.jpg",
+       "accounts": []
       },
       {
        "id": "telescope",
@@ -2189,7 +2573,10 @@
         "textPlacement": "on_image",
         "background": "darkness"
        },
-       "thumb": "skins/tierlist__orbit__telescope.jpg"
+       "thumb": "skins/tierlist__orbit__telescope.jpg",
+       "accounts": [
+        "en extreme_survival_13"
+       ]
       }
      ],
      "usage": {
@@ -2213,7 +2600,8 @@
         "composition": "split_horizontal",
         "textPlacement": "center"
        },
-       "thumb": "skins/tierlist__podium__stairs.jpg"
+       "thumb": "skins/tierlist__podium__stairs.jpg",
+       "accounts": []
       },
       {
        "id": "olympic",
@@ -2223,7 +2611,8 @@
         "textPlacement": "top",
         "background": "velvet"
        },
-       "thumb": "skins/tierlist__podium__olympic.jpg"
+       "thumb": "skins/tierlist__podium__olympic.jpg",
+       "accounts": []
       }
      ],
      "usage": {
@@ -2247,7 +2636,10 @@
         "composition": "pyramid",
         "textPlacement": "top"
        },
-       "thumb": "skins/tierlist__pyramid__stone_pyramid.jpg"
+       "thumb": "skins/tierlist__pyramid__stone_pyramid.jpg",
+       "accounts": [
+        "en military_arsenal_13"
+       ]
       },
       {
        "id": "glass_apex",
@@ -2257,12 +2649,15 @@
         "textPlacement": "bottom",
         "background": "darkness"
        },
-       "thumb": "skins/tierlist__pyramid__glass_apex.jpg"
+       "thumb": "skins/tierlist__pyramid__glass_apex.jpg",
+       "accounts": [
+        "en military_arsenal_02"
+       ]
       }
      ],
      "usage": {
       "de": 0,
-      "en": 0,
+      "en": 2,
       "ko": 0,
       "ja": 0
      }
@@ -2282,7 +2677,11 @@
         "textPlacement": "bottom",
         "background": "flat_color"
        },
-       "thumb": "skins/tierlist__ranking-board__rows_board.jpg"
+       "thumb": "skins/tierlist__ranking-board__rows_board.jpg",
+       "accounts": [
+        "de infamous_figures_09",
+        "en military_arsenal_11"
+       ]
       },
       {
        "id": "showcase_top",
@@ -2292,7 +2691,11 @@
         "textPlacement": "top",
         "background": "gradient"
        },
-       "thumb": "skins/tierlist__ranking-board__showcase_top.jpg"
+       "thumb": "skins/tierlist__ranking-board__showcase_top.jpg",
+       "accounts": [
+        "en folklore_legends_03",
+        "de infamous_figures_02"
+       ]
       },
       {
        "id": "pyramid",
@@ -2302,14 +2705,18 @@
         "textPlacement": "center",
         "background": "paper"
        },
-       "thumb": "skins/tierlist__ranking-board__pyramid.jpg"
+       "thumb": "skins/tierlist__ranking-board__pyramid.jpg",
+       "accounts": [
+        "de ancient_mythology_02",
+        "en military_arsenal_10"
+       ]
       }
      ],
      "usage": {
-      "de": 52,
-      "en": 28,
-      "ko": 6,
-      "ja": 3
+      "de": 3,
+      "en": 3,
+      "ko": 0,
+      "ja": 0
      }
     },
     {
@@ -2326,7 +2733,10 @@
         "composition": "diorama",
         "textPlacement": "right_column"
        },
-       "thumb": "skins/tierlist__store-shelves__store_shelf.jpg"
+       "thumb": "skins/tierlist__store-shelves__store_shelf.jpg",
+       "accounts": [
+        "de ancient_mythology_07"
+       ]
       },
       {
        "id": "receipt",
@@ -2336,11 +2746,12 @@
         "textPlacement": "left_column",
         "background": "paper"
        },
-       "thumb": "skins/tierlist__store-shelves__receipt.jpg"
+       "thumb": "skins/tierlist__store-shelves__receipt.jpg",
+       "accounts": []
       }
      ],
      "usage": {
-      "de": 0,
+      "de": 1,
       "en": 0,
       "ko": 0,
       "ja": 0
@@ -2360,7 +2771,8 @@
         "composition": "grid",
         "textPlacement": "floating"
        },
-       "thumb": "skins/tierlist__unsolved-cases__drawer_cabinet.jpg"
+       "thumb": "skins/tierlist__unsolved-cases__drawer_cabinet.jpg",
+       "accounts": []
       },
       {
        "id": "card_catalog",
@@ -2370,7 +2782,8 @@
         "textPlacement": "bottom",
         "background": "wood_paper"
        },
-       "thumb": "skins/tierlist__unsolved-cases__card_catalog.jpg"
+       "thumb": "skins/tierlist__unsolved-cases__card_catalog.jpg",
+       "accounts": []
       }
      ],
      "usage": {
@@ -2394,7 +2807,10 @@
         "composition": "tilted_board",
         "textPlacement": "left_column"
        },
-       "thumb": "skins/tierlist__weapon-rack__wall_rack.jpg"
+       "thumb": "skins/tierlist__weapon-rack__wall_rack.jpg",
+       "accounts": [
+        "de extreme_survival_02"
+       ]
       },
       {
        "id": "pegboard",
@@ -2404,11 +2820,14 @@
         "textPlacement": "bottom",
         "background": "metal"
        },
-       "thumb": "skins/tierlist__weapon-rack__pegboard.jpg"
+       "thumb": "skins/tierlist__weapon-rack__pegboard.jpg",
+       "accounts": [
+        "de ancient_mythology_06"
+       ]
       }
      ],
      "usage": {
-      "de": 0,
+      "de": 2,
       "en": 0,
       "ko": 0,
       "ja": 0
@@ -2418,7 +2837,7 @@
   },
   {
    "engine": "vox",
-   "channels": 72,
+   "channels": 22,
    "variants": [
     {
      "id": "vox/data-card",
@@ -2434,7 +2853,11 @@
         "composition": "split_horizontal",
         "textPlacement": "top"
        },
-       "thumb": "skins/vox__data-card__stat_top.jpg"
+       "thumb": "skins/vox__data-card__stat_top.jpg",
+       "accounts": [
+        "de economy_empires_07",
+        "en forbidden_experiments_03"
+       ]
       },
       {
        "id": "ring_gauge",
@@ -2443,14 +2866,17 @@
         "composition": "ring",
         "textPlacement": "bottom"
        },
-       "thumb": "skins/vox__data-card__ring_gauge.jpg"
+       "thumb": "skins/vox__data-card__ring_gauge.jpg",
+       "accounts": [
+        "de dark_psychology_02"
+       ]
       }
      ],
      "usage": {
-      "de": 6,
-      "en": 3,
+      "de": 2,
+      "en": 1,
       "ko": 0,
-      "ja": 1
+      "ja": 0
      }
     },
     {
@@ -2467,7 +2893,11 @@
         "composition": "hero_image",
         "textPlacement": "lower_third"
        },
-       "thumb": "skins/vox__documentary-lowerthird__full_bleed.jpg"
+       "thumb": "skins/vox__documentary-lowerthird__full_bleed.jpg",
+       "accounts": [
+        "de medical_anomalies_03",
+        "ko philosophy_paradox_02"
+       ]
       },
       {
        "id": "letterbox",
@@ -2476,14 +2906,17 @@
         "composition": "split_horizontal",
         "textPlacement": "bottom"
        },
-       "thumb": "skins/vox__documentary-lowerthird__letterbox.jpg"
+       "thumb": "skins/vox__documentary-lowerthird__letterbox.jpg",
+       "accounts": [
+        "de lost_civilizations_04"
+       ]
       }
      ],
      "usage": {
-      "de": 6,
-      "en": 3,
+      "de": 2,
+      "en": 0,
       "ko": 1,
-      "ja": 1
+      "ja": 0
      }
     },
     {
@@ -2500,7 +2933,11 @@
         "composition": "map_full",
         "textPlacement": "bottom"
        },
-       "thumb": "skins/vox__map-route__route_map.jpg"
+       "thumb": "skins/vox__map-route__route_map.jpg",
+       "accounts": [
+        "de medical_anomalies_11",
+        "en mega_catastrophes_05"
+       ]
       },
       {
        "id": "photo_inset",
@@ -2509,12 +2946,15 @@
         "composition": "hero_image",
         "textPlacement": "top"
        },
-       "thumb": "skins/vox__map-route__photo_inset.jpg"
+       "thumb": "skins/vox__map-route__photo_inset.jpg",
+       "accounts": [
+        "de lost_civilizations_12"
+       ]
       }
      ],
      "usage": {
-      "de": 6,
-      "en": 3,
+      "de": 2,
+      "en": 1,
       "ko": 0,
       "ja": 0
      }
@@ -2533,7 +2973,10 @@
         "composition": "hero_image",
         "textPlacement": "bottom"
        },
-       "thumb": "skins/vox__original__torn_bleed.jpg"
+       "thumb": "skins/vox__original__torn_bleed.jpg",
+       "accounts": [
+        "de economy_empires_06"
+       ]
       },
       {
        "id": "torn_card",
@@ -2542,12 +2985,15 @@
         "composition": "card_stack",
         "textPlacement": "top"
        },
-       "thumb": "skins/vox__original__torn_card.jpg"
+       "thumb": "skins/vox__original__torn_card.jpg",
+       "accounts": [
+        "de infamous_figures_03"
+       ]
       }
      ],
      "usage": {
-      "de": 5,
-      "en": 2,
+      "de": 2,
+      "en": 0,
       "ko": 0,
       "ja": 0
      }
@@ -2566,7 +3012,10 @@
         "composition": "card_stack",
         "textPlacement": "floating"
        },
-       "thumb": "skins/vox__paper-collage__torn_layers.jpg"
+       "thumb": "skins/vox__paper-collage__torn_layers.jpg",
+       "accounts": [
+        "de economy_empires_01"
+       ]
       },
       {
        "id": "cutout_column",
@@ -2575,12 +3024,16 @@
         "composition": "split_vertical",
         "textPlacement": "left_column"
        },
-       "thumb": "skins/vox__paper-collage__cutout_column.jpg"
+       "thumb": "skins/vox__paper-collage__cutout_column.jpg",
+       "accounts": [
+        "de medical_anomalies_13",
+        "ko philosophy_paradox_01"
+       ]
       }
      ],
      "usage": {
-      "de": 6,
-      "en": 2,
+      "de": 2,
+      "en": 0,
       "ko": 1,
       "ja": 0
      }
@@ -2599,7 +3052,10 @@
         "composition": "split_vertical",
         "textPlacement": "center"
        },
-       "thumb": "skins/vox__split-then-now__side_by_side.jpg"
+       "thumb": "skins/vox__split-then-now__side_by_side.jpg",
+       "accounts": [
+        "de lost_civilizations_11"
+       ]
       },
       {
        "id": "lens_reveal",
@@ -2608,12 +3064,16 @@
         "composition": "circle_frame",
         "textPlacement": "bottom"
        },
-       "thumb": "skins/vox__split-then-now__lens_reveal.jpg"
+       "thumb": "skins/vox__split-then-now__lens_reveal.jpg",
+       "accounts": [
+        "de medical_anomalies_10",
+        "en mega_catastrophes_04"
+       ]
       }
      ],
      "usage": {
-      "de": 6,
-      "en": 3,
+      "de": 2,
+      "en": 1,
       "ko": 0,
       "ja": 0
      }
@@ -2632,7 +3092,10 @@
         "composition": "timeline_track",
         "textPlacement": "bottom"
        },
-       "thumb": "skins/vox__timeline-explainer__track_below.jpg"
+       "thumb": "skins/vox__timeline-explainer__track_below.jpg",
+       "accounts": [
+        "de lost_civilizations_10"
+       ]
       },
       {
        "id": "band_middle",
@@ -2641,12 +3104,16 @@
         "composition": "hero_image",
         "textPlacement": "top"
        },
-       "thumb": "skins/vox__timeline-explainer__band_middle.jpg"
+       "thumb": "skins/vox__timeline-explainer__band_middle.jpg",
+       "accounts": [
+        "de dark_psychology_07",
+        "en forbidden_experiments_04"
+       ]
       }
      ],
      "usage": {
-      "de": 6,
-      "en": 3,
+      "de": 2,
+      "en": 1,
       "ko": 0,
       "ja": 0
      }
@@ -2665,7 +3132,10 @@
         "composition": "poster",
         "textPlacement": "on_image"
        },
-       "thumb": "skins/vox__zine-xerox__xerox_page.jpg"
+       "thumb": "skins/vox__zine-xerox__xerox_page.jpg",
+       "accounts": [
+        "de forbidden_experiments_12"
+       ]
       },
       {
        "id": "cutup_grid",
@@ -2674,12 +3144,15 @@
         "composition": "grid",
         "textPlacement": "center"
        },
-       "thumb": "skins/vox__zine-xerox__cutup_grid.jpg"
+       "thumb": "skins/vox__zine-xerox__cutup_grid.jpg",
+       "accounts": [
+        "de economy_empires_05"
+       ]
       }
      ],
      "usage": {
-      "de": 6,
-      "en": 2,
+      "de": 2,
+      "en": 0,
       "ko": 0,
       "ja": 0
      }
@@ -2688,7 +3161,7 @@
   },
   {
    "engine": "wildlife",
-   "channels": 29,
+   "channels": 5,
    "variants": [
     {
      "id": "wildlife/deep-ocean",
@@ -2704,7 +3177,8 @@
         "composition": "porthole",
         "textPlacement": "bottom"
        },
-       "thumb": "skins/wildlife__deep-ocean__porthole_gauge.jpg"
+       "thumb": "skins/wildlife__deep-ocean__porthole_gauge.jpg",
+       "accounts": []
       },
       {
        "id": "sub_capsule",
@@ -2713,13 +3187,16 @@
         "composition": "split_vertical",
         "textPlacement": "top"
        },
-       "thumb": "skins/wildlife__deep-ocean__sub_capsule.jpg"
+       "thumb": "skins/wildlife__deep-ocean__sub_capsule.jpg",
+       "accounts": [
+        "ja ocean_mysteries_07"
+       ]
       }
      ],
      "usage": {
-      "de": 2,
-      "en": 1,
-      "ko": 1,
+      "de": 0,
+      "en": 0,
+      "ko": 0,
       "ja": 1
      }
     },
@@ -2737,7 +3214,8 @@
         "composition": "split_vertical",
         "textPlacement": "left_column"
        },
-       "thumb": "skins/wildlife__field-guide__species_spread.jpg"
+       "thumb": "skins/wildlife__field-guide__species_spread.jpg",
+       "accounts": []
       },
       {
        "id": "plate_page",
@@ -2746,12 +3224,13 @@
         "composition": "ledger_columns",
         "textPlacement": "right_column"
        },
-       "thumb": "skins/wildlife__field-guide__plate_page.jpg"
+       "thumb": "skins/wildlife__field-guide__plate_page.jpg",
+       "accounts": []
       }
      ],
      "usage": {
-      "de": 3,
-      "en": 1,
+      "de": 0,
+      "en": 0,
       "ko": 0,
       "ja": 0
      }
@@ -2770,7 +3249,8 @@
         "composition": "ring",
         "textPlacement": "bottom"
        },
-       "thumb": "skins/wildlife__microscope__eyepiece.jpg"
+       "thumb": "skins/wildlife__microscope__eyepiece.jpg",
+       "accounts": []
       },
       {
        "id": "slide_bench",
@@ -2779,12 +3259,13 @@
         "composition": "split_horizontal",
         "textPlacement": "top"
        },
-       "thumb": "skins/wildlife__microscope__slide_bench.jpg"
+       "thumb": "skins/wildlife__microscope__slide_bench.jpg",
+       "accounts": []
       }
      ],
      "usage": {
-      "de": 2,
-      "en": 1,
+      "de": 0,
+      "en": 0,
       "ko": 0,
       "ja": 0
      }
@@ -2803,7 +3284,8 @@
         "composition": "map_full",
         "textPlacement": "top"
        },
-       "thumb": "skins/wildlife__migration-map__route_window.jpg"
+       "thumb": "skins/wildlife__migration-map__route_window.jpg",
+       "accounts": []
       },
       {
        "id": "flyway_medallion",
@@ -2812,12 +3294,13 @@
         "composition": "circle_frame",
         "textPlacement": "bottom"
        },
-       "thumb": "skins/wildlife__migration-map__flyway_medallion.jpg"
+       "thumb": "skins/wildlife__migration-map__flyway_medallion.jpg",
+       "accounts": []
       }
      ],
      "usage": {
-      "de": 2,
-      "en": 1,
+      "de": 0,
+      "en": 0,
       "ko": 0,
       "ja": 0
      }
@@ -2836,7 +3319,10 @@
         "composition": "split_horizontal",
         "textPlacement": "bottom"
        },
-       "thumb": "skins/wildlife__nature-doc__letterbox_band.jpg"
+       "thumb": "skins/wildlife__nature-doc__letterbox_band.jpg",
+       "accounts": [
+        "de extreme_survival_07"
+       ]
       },
       {
        "id": "fullframe_credits",
@@ -2845,12 +3331,13 @@
         "composition": "poster",
         "textPlacement": "on_image"
        },
-       "thumb": "skins/wildlife__nature-doc__fullframe_credits.jpg"
+       "thumb": "skins/wildlife__nature-doc__fullframe_credits.jpg",
+       "accounts": []
       }
      ],
      "usage": {
-      "de": 3,
-      "en": 1,
+      "de": 1,
+      "en": 0,
       "ko": 0,
       "ja": 0
      }
@@ -2869,7 +3356,8 @@
         "composition": "circle_frame",
         "textPlacement": "lower_third"
        },
-       "thumb": "skins/wildlife__savanna-hud__scope_center.jpg"
+       "thumb": "skins/wildlife__savanna-hud__scope_center.jpg",
+       "accounts": []
       },
       {
        "id": "rangefinder",
@@ -2878,11 +3366,14 @@
         "composition": "hero_image",
         "textPlacement": "top"
        },
-       "thumb": "skins/wildlife__savanna-hud__rangefinder.jpg"
+       "thumb": "skins/wildlife__savanna-hud__rangefinder.jpg",
+       "accounts": [
+        "en extreme_wildlife_05"
+       ]
       }
      ],
      "usage": {
-      "de": 3,
+      "de": 0,
       "en": 1,
       "ko": 0,
       "ja": 0
@@ -2902,7 +3393,10 @@
         "composition": "card_stack",
         "textPlacement": "top"
        },
-       "thumb": "skins/wildlife__stat-battle__trading_card.jpg"
+       "thumb": "skins/wildlife__stat-battle__trading_card.jpg",
+       "accounts": [
+        "en extreme_wildlife_07"
+       ]
       },
       {
        "id": "stat_grid",
@@ -2911,11 +3405,12 @@
         "composition": "grid",
         "textPlacement": "bottom"
        },
-       "thumb": "skins/wildlife__stat-battle__stat_grid.jpg"
+       "thumb": "skins/wildlife__stat-battle__stat_grid.jpg",
+       "accounts": []
       }
      ],
      "usage": {
-      "de": 2,
+      "de": 0,
       "en": 1,
       "ko": 0,
       "ja": 0
@@ -2935,7 +3430,10 @@
         "composition": "hero_image",
         "textPlacement": "top"
        },
-       "thumb": "skins/wildlife__trail-cam__ir_still.jpg"
+       "thumb": "skins/wildlife__trail-cam__ir_still.jpg",
+       "accounts": [
+        "en extreme_wildlife_06"
+       ]
       },
       {
        "id": "burst_strip",
@@ -2944,11 +3442,12 @@
         "composition": "film_strip",
         "textPlacement": "bottom"
        },
-       "thumb": "skins/wildlife__trail-cam__burst_strip.jpg"
+       "thumb": "skins/wildlife__trail-cam__burst_strip.jpg",
+       "accounts": []
       }
      ],
      "usage": {
-      "de": 2,
+      "de": 0,
       "en": 1,
       "ko": 0,
       "ja": 0

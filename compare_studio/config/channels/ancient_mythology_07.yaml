@@ -1,5 +1,5 @@
 channel_id: ancient_mythology_07
-config_version: 10
+config_version: 11
 niche_id: ancient_mythology
 name: Antike Mythen 07
 tiktok_account_ref: null
@@ -19,8 +19,6 @@ story:
 creative:
   preferred_engines:
   - tierlist
-  - mystery
-  - kinetic
   visual_style_id: dark_mystery_v1
   cut_cadence_seconds: 2.6
   palette:
@@ -28,42 +26,18 @@ creative:
     accent: '#D6A84F'
     text: '#F2EEE6'
   skins:
-    kinetic:
-      variant_id: kinetic/type-poster
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: center_stack
-        typography: rounded
-        treatment: vignette_dark
-        image_motion: still_grain
-        transition: shutter
-        tone: 0
-        caption: bottom
     tierlist:
-      variant_id: tierlist/ranking-board
+      variant_id: tierlist/store-shelves
       dna:
         dna_version: 2
         variant_version: 1
-        composition: rows_board
-        typography: condensed
+        composition: store_shelf
+        typography: grotesk
         treatment: halftone
-        image_motion: parallax
-        transition: zoom_through
-        tone: 6
-        caption: top
-    mystery:
-      variant_id: mystery/reference-dossier
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: hero_evidence
-        typography: serif
-        treatment: paper_texture
-        image_motion: handheld
-        transition: folder_flip
-        tone: 1
-        caption: bottom
+        image_motion: pan_lateral
+        transition: wipe
+        tone: 2
+        caption: fixed
 audio:
   voice_id: DiT_de_female_qingsong
   voice_speed: 1.02

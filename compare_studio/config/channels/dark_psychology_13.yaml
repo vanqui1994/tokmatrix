@@ -9,7 +9,7 @@ audio:
   - freepd-midnight-in-the-green-house
   - freepd-mothership
 channel_id: dark_psychology_13
-config_version: 10
+config_version: 11
 creative:
   cut_cadence_seconds: 3.0
   palette:
@@ -18,34 +18,8 @@ creative:
     text: '#F2EEE6'
   preferred_engines:
   - mystery
-  - science
-  - newspaper
   visual_style_id: dark_mystery_v1
   skins:
-    newspaper:
-      variant_id: newspaper/front-page
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: magazine_cover
-        typography: serif
-        treatment: clean
-        image_motion: parallax
-        transition: page_turn
-        tone: 3
-        caption: bottom
-    science:
-      variant_id: science/explainer-board
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: whiteboard
-        typography: rounded
-        treatment: film_grain
-        image_motion: still_grain
-        transition: cut
-        tone: 4
-        caption: bottom
     mystery:
       variant_id: mystery/decoded
       dna:
@@ -53,8 +27,8 @@ creative:
         variant_version: 1
         composition: crt_terminal
         typography: grotesk
-        treatment: vhs_noise
-        image_motion: push_in
+        treatment: halftone
+        image_motion: scan_light
         transition: glitch
         tone: 5
         caption: fixed

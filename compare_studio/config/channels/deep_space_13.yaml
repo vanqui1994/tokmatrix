@@ -9,7 +9,7 @@ audio:
   - freepd-fresh-focus
   - freepd-meditating-beat
 channel_id: deep_space_13
-config_version: 11
+config_version: 12
 creative:
   cut_cadence_seconds: 2.6
   palette:
@@ -17,47 +17,19 @@ creative:
     primary: '#0B0C10'
     text: '#C5C6C7'
   preferred_engines:
-  - tierlist
-  - survival
-  - mystery
+  - compare
   visual_style_id: cosmic_space_v1
-  skins:
-    tierlist:
-      variant_id: tierlist/ranking-board
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: showcase_top
-        typography: grotesk
-        treatment: film_grain
-        image_motion: ken_burns_fast
-        transition: zoom_through
-        tone: 7
-        caption: top
-    survival:
-      variant_id: survival/space-exposure
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: telemetry_column
-        typography: mono
-        treatment: clean
-        image_motion: still_grain
-        transition: shutter
-        tone: 0
-        caption: fixed
-    mystery:
-      variant_id: mystery/cursed-objects
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: catalogue_card
-        typography: serif
-        treatment: sepia_grain
-        image_motion: push_in
-        transition: cut
-        tone: 1
-        caption: fixed
+  variant_id: compare/race-track
+  dna:
+    dna_version: 2
+    variant_version: 1
+    composition: drag_strip
+    typography: heavy
+    treatment: film_grain
+    image_motion: handheld
+    transition: wipe
+    tone: 3
+    caption: fixed
 name: Kosmos & Physik 13
 niche_id: deep_space
 persona:

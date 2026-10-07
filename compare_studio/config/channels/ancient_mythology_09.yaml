@@ -1,5 +1,5 @@
 channel_id: ancient_mythology_09
-config_version: 10
+config_version: 11
 niche_id: ancient_mythology
 name: Antike Mythen 09
 tiktok_account_ref: null
@@ -18,8 +18,6 @@ story:
   pacing_beats: 12
 creative:
   preferred_engines:
-  - kinetic
-  - newspaper
   - folklore
   visual_style_id: dark_mystery_v1
   cut_cadence_seconds: 2.4
@@ -28,41 +26,17 @@ creative:
     accent: '#D6A84F'
     text: '#F2EEE6'
   skins:
-    newspaper:
-      variant_id: newspaper/front-page
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: side_masthead
-        typography: grotesk
-        treatment: halftone
-        image_motion: pan_lateral
-        transition: page_turn
-        tone: 3
-        caption: top
-    kinetic:
-      variant_id: kinetic/type-poster
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: split_band
-        typography: rounded
-        treatment: vignette_dark
-        image_motion: pan_lateral
-        transition: cut
-        tone: 8
-        caption: top
     folklore:
       variant_id: folklore/tarot-deck
       dna:
         dna_version: 2
         variant_version: 1
-        composition: card_flip
+        composition: three_card_spread
         typography: serif
         treatment: duotone
-        image_motion: ken_burns_slow
+        image_motion: push_in
         transition: flip_3d
-        tone: 1
+        tone: 3
         caption: fixed
 audio:
   voice_id: de-DE-KatjaNeural

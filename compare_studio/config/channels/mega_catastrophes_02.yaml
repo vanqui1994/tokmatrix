@@ -1,5 +1,5 @@
 channel_id: mega_catastrophes_02
-config_version: 12
+config_version: 13
 niche_id: mega_catastrophes
 name: Naturkatastrophen der Erde 02
 tiktok_account_ref: null
@@ -19,8 +19,6 @@ story:
 creative:
   preferred_engines:
   - science
-  - newspaper
-  - kinetic
   visual_style_id: dark_mystery_v1
   cut_cadence_seconds: 2.8
   palette:
@@ -28,42 +26,18 @@ creative:
     accent: '#D6A84F'
     text: '#F2EEE6'
   skins:
-    newspaper:
-      variant_id: newspaper/front-page
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: side_masthead
-        typography: serif
-        treatment: halftone
-        image_motion: parallax
-        transition: slide
-        tone: 2
-        caption: bottom
-    kinetic:
-      variant_id: kinetic/type-poster
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: center_stack
-        typography: slab
-        treatment: clean
-        image_motion: parallax
-        transition: slide
-        tone: 3
-        caption: bottom
     science:
       variant_id: science/explainer-board
       dna:
         dna_version: 2
         variant_version: 1
         composition: lab_notebook
-        typography: mono
+        typography: serif
         treatment: vignette_dark
-        image_motion: parallax
+        image_motion: pan_lateral
         transition: slide
-        tone: 1
-        caption: bottom
+        tone: 6
+        caption: middle
 audio:
   voice_id: DiT_de_female_jiangshi
   voice_speed: 1.05

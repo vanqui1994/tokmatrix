@@ -1,5 +1,5 @@
 channel_id: extreme_survival_06
-config_version: 11
+config_version: 12
 niche_id: extreme_survival
 name: Überleben & Katastrophen 06
 tiktok_account_ref: null
@@ -19,8 +19,6 @@ story:
 creative:
   preferred_engines:
   - chalk
-  - newspaper
-  - wildlife
   visual_style_id: dark_mystery_v1
   cut_cadence_seconds: 2.4
   palette:
@@ -28,41 +26,17 @@ creative:
     accent: '#D6A84F'
     text: '#F2EEE6'
   skins:
-    newspaper:
-      variant_id: newspaper/front-page
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: side_masthead
-        typography: grotesk
-        treatment: paper_texture
-        image_motion: parallax
-        transition: shutter
-        tone: 4
-        caption: top
     chalk:
       variant_id: chalk/war-room
       dna:
         dna_version: 2
         variant_version: 1
         composition: board
-        typography: grotesk
-        treatment: clean
+        typography: heavy
+        treatment: vignette_dark
         image_motion: push_in
         transition: cut
-        tone: 1
-        caption: fixed
-    wildlife:
-      variant_id: wildlife/microscope
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: slide_bench
-        typography: mono
-        treatment: halftone
-        image_motion: scan_light
-        transition: fade_black
-        tone: 0
+        tone: 4
         caption: fixed
 audio:
   voice_id: de-DE-KillianNeural

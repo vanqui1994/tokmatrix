@@ -189,7 +189,8 @@ function lightbox(v, k) {
     ${v.compositions.length > 1 ? '<button class="nav" data-d="-1" aria-label="Bố cục trước">‹</button>' : ""}
     <figure>${c.thumb ? `<img src="${esc(c.thumb)}" alt="">` : ""}<figcaption><h4>${esc(v.name)}</h4>
       <p><b>${esc(c.id)}</b> · bố cục ${k + 1}/${v.compositions.length}</p><p>${esc(c.describe)}</p>
-      <p>${LANGS.map((l) => `${l.toUpperCase()} ${v.usage[l] || 0}`).join(" · ")} tài khoản</p><p><code>${esc(v.id)}</code></p></figcaption></figure>
+      <p>Bố cục này: ${(c.accounts || []).length ? (c.accounts || []).map(esc).join(" · ") : "chưa gán tài khoản"}</p>
+      <p>Cả skin: ${LANGS.map((l) => `${l.toUpperCase()} ${v.usage[l] || 0}`).join(" · ")} tài khoản</p><p><code>${esc(v.id)}</code></p></figcaption></figure>
     ${v.compositions.length > 1 ? '<button class="nav" data-d="1" aria-label="Bố cục sau">›</button>' : ""}`;
   d.addEventListener("click", (ev) => {
     const b = ev.target.closest("button");

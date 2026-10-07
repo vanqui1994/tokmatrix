@@ -9,7 +9,7 @@ audio:
   - freepd-mothership
   - freepd-travelers-notebook
 channel_id: lost_civilizations_11
-config_version: 11
+config_version: 12
 creative:
   cut_cadence_seconds: 2.9
   palette:
@@ -18,43 +18,17 @@ creative:
     text: '#F2EEE6'
   preferred_engines:
   - vox
-  - science
-  - folklore
   visual_style_id: dark_mystery_v1
   skins:
-    science:
-      variant_id: science/explainer-board
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: hud_panel
-        typography: rounded
-        treatment: vignette_dark
-        image_motion: ken_burns_slow
-        transition: wipe
-        tone: 8
-        caption: bottom
-    folklore:
-      variant_id: folklore/haunted-vhs
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: tape_play
-        typography: condensed
-        treatment: vhs_noise
-        image_motion: scan_light
-        transition: glitch
-        tone: 3
-        caption: fixed
     vox:
       variant_id: vox/split-then-now
       dna:
         dna_version: 2
         variant_version: 1
-        composition: lens_reveal
+        composition: side_by_side
         typography: display_serif
         treatment: film_grain
-        image_motion: ken_burns_slow
+        image_motion: ken_burns_fast
         transition: fade_black
         tone: 0
         caption: fixed

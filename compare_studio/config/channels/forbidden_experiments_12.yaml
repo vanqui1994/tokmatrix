@@ -9,7 +9,7 @@ audio:
   - freepd-evil-incoming
   - freepd-guerilla-tactics
 channel_id: forbidden_experiments_12
-config_version: 9
+config_version: 10
 creative:
   cut_cadence_seconds: 2.8
   palette:
@@ -17,46 +17,20 @@ creative:
     primary: '#111318'
     text: '#F2EEE6'
   preferred_engines:
-  - tierlist
-  - science
   - vox
   visual_style_id: dark_mystery_v1
   skins:
-    science:
-      variant_id: science/explainer-board
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: lab_notebook
-        typography: serif
-        treatment: paper_texture
-        image_motion: ken_burns_slow
-        transition: cut
-        tone: 7
-        caption: middle
-    tierlist:
-      variant_id: tierlist/ranking-board
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: showcase_top
-        typography: slab
-        treatment: clean
-        image_motion: parallax
-        transition: shutter
-        tone: 0
-        caption: top
     vox:
       variant_id: vox/zine-xerox
       dna:
         dna_version: 2
         variant_version: 1
         composition: xerox_page
-        typography: typewriter
+        typography: mono
         treatment: vhs_noise
-        image_motion: still_grain
-        transition: tv_noise
-        tone: 0
+        image_motion: handheld
+        transition: glitch
+        tone: 5
         caption: fixed
 name: Verrückte Experimente 12
 niche_id: forbidden_experiments

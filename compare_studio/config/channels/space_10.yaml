@@ -1,5 +1,5 @@
 channel_id: space_10
-config_version: 12
+config_version: 13
 niche_id: deep_space
 name: Kosmos & Physik 10
 tiktok_account_ref: null
@@ -18,52 +18,24 @@ story:
   pacing_beats: 12
 creative:
   preferred_engines:
-  - tierlist
-  - survival
-  - mystery
+  - compare
   visual_style_id: cosmic_space_v1
   cut_cadence_seconds: 2.6
   palette:
     primary: '#0B0C10'
     accent: '#66FCF1'
     text: '#C5C6C7'
-  skins:
-    tierlist:
-      variant_id: tierlist/ranking-board
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: showcase_top
-        typography: condensed
-        treatment: halftone
-        image_motion: pan_lateral
-        transition: cut
-        tone: 6
-        caption: middle
-    survival:
-      variant_id: survival/space-exposure
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: telemetry_column
-        typography: condensed
-        treatment: vignette_dark
-        image_motion: still_grain
-        transition: fade_black
-        tone: 3
-        caption: fixed
-    mystery:
-      variant_id: mystery/evidence-board
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: pinned_web
-        typography: typewriter
-        treatment: film_grain
-        image_motion: pan_lateral
-        transition: slide
-        tone: 2
-        caption: fixed
+  variant_id: compare/card-game
+  dna:
+    dna_version: 2
+    variant_version: 1
+    composition: trick_grid
+    typography: grotesk
+    treatment: clean
+    image_motion: handheld
+    transition: flip_3d
+    tone: 0
+    caption: fixed
 audio:
   voice_id: DiT_de_female_jiangshi
   voice_speed: 1.02

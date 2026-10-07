@@ -1,5 +1,5 @@
 channel_id: ocean_mysteries_01
-config_version: 8
+config_version: 9
 niche_id: ocean_mysteries
 name: 海と深海海溝 01
 tiktok_account_ref: null
@@ -18,22 +18,22 @@ story:
   pacing_beats: 12
 creative:
   preferred_engines:
-  - mystery
+  - compare
   visual_style_id: dark_mystery_v1
   cut_cadence_seconds: 2.6
   palette:
     primary: '#111318'
     accent: '#D6A84F'
     text: '#F2EEE6'
-  variant_id: mystery/field-journal
+  variant_id: compare/courtroom
   dna:
     dna_version: 2
     variant_version: 1
-    composition: taped_page
-    typography: serif
-    treatment: clean
-    image_motion: pan_lateral
-    transition: paper_tear
+    composition: bench
+    typography: typewriter
+    treatment: paper_texture
+    image_motion: scan_light
+    transition: shutter
     tone: 0
     caption: fixed
 audio:

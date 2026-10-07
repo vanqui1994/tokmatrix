@@ -1,5 +1,5 @@
 channel_id: extreme_wildlife_08
-config_version: 10
+config_version: 11
 niche_id: extreme_wildlife
 name: Creatures of the Deep 08
 tiktok_account_ref: null
@@ -18,52 +18,24 @@ story:
   pacing_beats: 12
 creative:
   preferred_engines:
-  - tierlist
-  - science
-  - survival
+  - compare
   visual_style_id: dark_mystery_v1
   cut_cadence_seconds: 2.8
   palette:
     primary: '#111318'
     accent: '#D6A84F'
     text: '#F2EEE6'
-  skins:
-    science:
-      variant_id: science/explainer-board
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: whiteboard
-        typography: serif
-        treatment: vignette_dark
-        image_motion: pan_lateral
-        transition: slide
-        tone: 7
-        caption: bottom
-    tierlist:
-      variant_id: tierlist/ranking-board
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: rows_board
-        typography: grotesk
-        treatment: halftone
-        image_motion: parallax
-        transition: cut
-        tone: 4
-        caption: top
-    survival:
-      variant_id: survival/endurance
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: race_lane
-        typography: heavy
-        treatment: clean
-        image_motion: push_in
-        transition: slide
-        tone: 4
-        caption: fixed
+  variant_id: compare/original
+  dna:
+    dna_version: 2
+    variant_version: 1
+    composition: arena
+    typography: grotesk
+    treatment: film_grain
+    image_motion: still_grain
+    transition: slide
+    tone: 1
+    caption: fixed
 audio:
   voice_id: en-US-JennyNeural
   voice_speed: 1.02

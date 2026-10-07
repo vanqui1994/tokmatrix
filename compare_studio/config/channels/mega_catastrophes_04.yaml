@@ -1,5 +1,5 @@
 channel_id: mega_catastrophes_04
-config_version: 11
+config_version: 12
 niche_id: mega_catastrophes
 name: Earth's Great Disasters 04
 tiktok_account_ref: null
@@ -18,9 +18,7 @@ story:
   pacing_beats: 12
 creative:
   preferred_engines:
-  - kinetic
   - vox
-  - chalk
   visual_style_id: dark_mystery_v1
   cut_cadence_seconds: 2.6
   palette:
@@ -28,30 +26,6 @@ creative:
     accent: '#D6A84F'
     text: '#F2EEE6'
   skins:
-    kinetic:
-      variant_id: kinetic/type-poster
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: split_band
-        typography: slab
-        treatment: clean
-        image_motion: push_in
-        transition: zoom_through
-        tone: 3
-        caption: bottom
-    chalk:
-      variant_id: chalk/thermal
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: scope_top
-        typography: condensed
-        treatment: vhs_noise
-        image_motion: handheld
-        transition: tv_noise
-        tone: 3
-        caption: fixed
     vox:
       variant_id: vox/split-then-now
       dna:
@@ -59,10 +33,10 @@ creative:
         variant_version: 1
         composition: lens_reveal
         typography: display_serif
-        treatment: clean
+        treatment: film_grain
         image_motion: still_grain
         transition: fade_black
-        tone: 1
+        tone: 4
         caption: fixed
 audio:
   voice_id: multi_female_wenjingmaomao_moon_bigtts_cc

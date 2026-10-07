@@ -1,5 +1,5 @@
 channel_id: folklore_legends_02
-config_version: 11
+config_version: 12
 niche_id: folklore_legends
 name: Folklore & The Unseen 02
 tiktok_account_ref: null
@@ -19,8 +19,6 @@ story:
 creative:
   preferred_engines:
   - mystery
-  - tierlist
-  - newspaper
   visual_style_id: dark_mystery_v1
   cut_cadence_seconds: 2.8
   palette:
@@ -28,41 +26,17 @@ creative:
     accent: '#D6A84F'
     text: '#F2EEE6'
   skins:
-    newspaper:
-      variant_id: newspaper/front-page
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: front_page
-        typography: grotesk
-        treatment: halftone
-        image_motion: pan_lateral
-        transition: wipe
-        tone: 8
-        caption: middle
-    tierlist:
-      variant_id: tierlist/ranking-board
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: pyramid
-        typography: slab
-        treatment: vignette_dark
-        image_motion: ken_burns_slow
-        transition: cut
-        tone: 1
-        caption: middle
     mystery:
       variant_id: mystery/reference-dossier
       dna:
         dna_version: 2
         variant_version: 1
         composition: hero_evidence
-        typography: serif
+        typography: typewriter
         treatment: paper_texture
-        image_motion: push_in
-        transition: page_turn
-        tone: 0
+        image_motion: handheld
+        transition: folder_flip
+        tone: 2
         caption: bottom
 audio:
   voice_id: en-US-JennyNeural

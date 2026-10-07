@@ -1,5 +1,5 @@
 channel_id: ancient_mythology_06
-config_version: 10
+config_version: 11
 niche_id: ancient_mythology
 name: Antike Mythen 06
 tiktok_account_ref: null
@@ -18,9 +18,7 @@ story:
   pacing_beats: 12
 creative:
   preferred_engines:
-  - folklore
   - tierlist
-  - mystery
   visual_style_id: dark_mystery_v1
   cut_cadence_seconds: 2.4
   palette:
@@ -29,40 +27,16 @@ creative:
     text: '#F2EEE6'
   skins:
     tierlist:
-      variant_id: tierlist/ranking-board
+      variant_id: tierlist/weapon-rack
       dna:
         dna_version: 2
         variant_version: 1
-        composition: pyramid
-        typography: grotesk
-        treatment: vignette_dark
-        image_motion: ken_burns_slow
-        transition: cut
-        tone: 2
-        caption: middle
-    mystery:
-      variant_id: mystery/evidence-board
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: suspect_grid
-        typography: condensed
-        treatment: clean
-        image_motion: pan_lateral
-        transition: slide
-        tone: 4
-        caption: fixed
-    folklore:
-      variant_id: folklore/shadow-puppet
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: paper_screen
-        typography: grotesk
-        treatment: clean
-        image_motion: parallax
-        transition: slide
-        tone: 1
+        composition: pegboard
+        typography: heavy
+        treatment: film_grain
+        image_motion: still_grain
+        transition: shutter
+        tone: 0
         caption: fixed
 audio:
   voice_id: de-DE-KillianNeural

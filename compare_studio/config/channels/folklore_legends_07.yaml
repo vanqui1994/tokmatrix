@@ -1,5 +1,5 @@
 channel_id: folklore_legends_07
-config_version: 10
+config_version: 11
 niche_id: folklore_legends
 name: Folklore & The Unseen 07
 tiktok_account_ref: null
@@ -19,8 +19,6 @@ story:
 creative:
   preferred_engines:
   - mystery
-  - tierlist
-  - newspaper
   visual_style_id: dark_mystery_v1
   cut_cadence_seconds: 2.6
   palette:
@@ -28,41 +26,17 @@ creative:
     accent: '#D6A84F'
     text: '#F2EEE6'
   skins:
-    newspaper:
-      variant_id: newspaper/front-page
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: side_masthead
-        typography: serif
-        treatment: clean
-        image_motion: ken_burns_slow
-        transition: page_turn
-        tone: 7
-        caption: top
-    tierlist:
-      variant_id: tierlist/ranking-board
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: pyramid
-        typography: slab
-        treatment: clean
-        image_motion: ken_burns_fast
-        transition: zoom_through
-        tone: 8
-        caption: top
     mystery:
       variant_id: mystery/lost-places
       dna:
         dna_version: 2
         variant_version: 1
         composition: full_bleed
-        typography: display_serif
-        treatment: clean
+        typography: condensed
+        treatment: film_grain
         image_motion: parallax
-        transition: ink_bleed
-        tone: 4
+        transition: fade_black
+        tone: 0
         caption: fixed
 audio:
   voice_id: en-US-AvaNeural

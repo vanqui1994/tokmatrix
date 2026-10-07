@@ -1,5 +1,5 @@
 channel_id: infamous_figures_03
-config_version: 10
+config_version: 11
 niche_id: infamous_figures
 name: Berüchtigte Gestalten 03
 tiktok_account_ref: null
@@ -19,8 +19,6 @@ story:
 creative:
   preferred_engines:
   - vox
-  - mystery
-  - chalk
   visual_style_id: dark_mystery_v1
   cut_cadence_seconds: 2.4
   palette:
@@ -28,39 +26,15 @@ creative:
     accent: '#D6A84F'
     text: '#F2EEE6'
   skins:
-    mystery:
-      variant_id: mystery/cctv
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: quad_cam
-        typography: mono
-        treatment: vhs_noise
-        image_motion: scan_light
-        transition: glitch
-        tone: 2
-        caption: fixed
-    chalk:
-      variant_id: chalk/thermal
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: viewfinder
-        typography: condensed
-        treatment: vignette_dark
-        image_motion: scan_light
-        transition: glitch
-        tone: 1
-        caption: fixed
     vox:
       variant_id: vox/original
       dna:
         dna_version: 2
         variant_version: 1
-        composition: torn_bleed
-        typography: condensed
+        composition: torn_card
+        typography: grotesk
         treatment: halftone
-        image_motion: ken_burns_slow
+        image_motion: parallax
         transition: fade_black
         tone: 4
         caption: fixed

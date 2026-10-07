@@ -1,5 +1,5 @@
 channel_id: extreme_wildlife_07
-config_version: 10
+config_version: 11
 niche_id: extreme_wildlife
 name: Creatures of the Deep 07
 tiktok_account_ref: null
@@ -19,8 +19,6 @@ story:
 creative:
   preferred_engines:
   - wildlife
-  - tierlist
-  - science
   visual_style_id: dark_mystery_v1
   cut_cadence_seconds: 2.6
   palette:
@@ -28,39 +26,15 @@ creative:
     accent: '#D6A84F'
     text: '#F2EEE6'
   skins:
-    science:
-      variant_id: science/explainer-board
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: hud_panel
-        typography: serif
-        treatment: film_grain
-        image_motion: parallax
-        transition: wipe
-        tone: 8
-        caption: top
-    tierlist:
-      variant_id: tierlist/ranking-board
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: pyramid
-        typography: rounded
-        treatment: vignette_dark
-        image_motion: pan_lateral
-        transition: wipe
-        tone: 4
-        caption: top
     wildlife:
       variant_id: wildlife/stat-battle
       dna:
         dna_version: 2
         variant_version: 1
-        composition: stat_grid
+        composition: trading_card
         typography: condensed
-        treatment: duotone
-        image_motion: ken_burns_fast
+        treatment: halftone
+        image_motion: ken_burns_slow
         transition: zoom_through
         tone: 3
         caption: fixed

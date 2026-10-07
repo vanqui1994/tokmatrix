@@ -9,7 +9,7 @@ audio:
   - freepd-arpent
   - freepd-inventing-flight
 channel_id: lost_civilizations_12
-config_version: 10
+config_version: 11
 creative:
   cut_cadence_seconds: 2.8
   palette:
@@ -17,46 +17,20 @@ creative:
     primary: '#111318'
     text: '#F2EEE6'
   preferred_engines:
-  - science
-  - folklore
   - vox
   visual_style_id: dark_mystery_v1
   skins:
-    science:
-      variant_id: science/explainer-board
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: lab_notebook
-        typography: serif
-        treatment: halftone
-        image_motion: push_in
-        transition: slide
-        tone: 1
-        caption: middle
-    folklore:
-      variant_id: folklore/nordic-runestone
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: carved_slab
-        typography: slab
-        treatment: clean
-        image_motion: ken_burns_slow
-        transition: shutter
-        tone: 2
-        caption: fixed
     vox:
       variant_id: vox/map-route
       dna:
         dna_version: 2
         variant_version: 1
-        composition: route_map
-        typography: grotesk
+        composition: photo_inset
+        typography: rounded
         treatment: paper_texture
         image_motion: push_in
-        transition: wipe
-        tone: 0
+        transition: slide
+        tone: 4
         caption: fixed
 name: Antike Zivilisationen 12
 niche_id: lost_civilizations

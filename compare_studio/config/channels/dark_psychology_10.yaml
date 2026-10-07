@@ -1,5 +1,5 @@
 channel_id: dark_psychology_10
-config_version: 10
+config_version: 11
 niche_id: dark_psychology
 name: Psychologie & Verhalten 10
 tiktok_account_ref: null
@@ -25,17 +25,19 @@ creative:
     primary: '#111318'
     accent: '#D6A84F'
     text: '#F2EEE6'
-  variant_id: newspaper/front-page
-  dna:
-    dna_version: 2
-    variant_version: 1
-    composition: side_masthead
-    typography: condensed
-    treatment: paper_texture
-    image_motion: push_in
-    transition: cut
-    tone: 6
-    caption: middle
+  skins:
+    newspaper:
+      variant_id: newspaper/microfilm
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: film_reel
+        typography: mono
+        treatment: vignette_dark
+        image_motion: still_grain
+        transition: wipe
+        tone: 2
+        caption: fixed
 audio:
   voice_id: de-DE-KatjaNeural
   voice_speed: 1.05
