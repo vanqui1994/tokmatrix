@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Skin video Matrix</title>
+<style>
+:root{--bg:#f6f7f9;--card:#fff;--fg:#111827;--muted:#6b7280;--line:#e5e7eb;--accent:#2563eb;--ok:#047857;--warn:#b45309;--chip:#eef2ff}
+@media (prefers-color-scheme:dark){:root{--bg:#0f1115;--card:#171a21;--fg:#e5e7eb;--muted:#9ca3af;--line:#2a2f3a;--accent:#60a5fa;--ok:#34d399;--warn:#fbbf24;--chip:#1e2433}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:14px/1.45 system-ui,-apple-system,"Segoe UI",sans-serif}
+main{max-width:1180px;margin:0 auto;padding:20px 16px 48px}
+h1{font-size:22px;margin:0 0 4px}
+.sub{color:var(--muted);margin:0 0 16px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:16px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px}
+.stat b{display:block;font-size:24px}
+.stat span{color:var(--muted);font-size:12px}
+.bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:14px}
+.bar input[type=search]{flex:1 1 220px;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--fg)}
+.bar select{padding:8px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--fg)}
+.bar label{color:var(--muted);font-size:13px;display:flex;gap:6px;align-items:center}
+section{background:var(--card);border:1px solid var(--line);border-radius:12px;margin-bottom:14px;overflow:hidden}
+section h2{margin:0;padding:12px 14px;font-size:16px;border-bottom:1px solid var(--line);display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+section h2 small{color:var(--muted);font-weight:400;font-size:12px}
+.wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:760px}
+th,td{padding:8px 12px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{font-size:12px;color:var(--muted);font-weight:600}
+td.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.id{color:var(--muted);font-size:12px}
+.chip{display:inline-block;margin:2px 4px 2px 0;padding:2px 8px;border-radius:999px;background:var(--chip);font-size:12px;cursor:help}
+.tag{font-size:11px;padding:1px 6px;border-radius:6px;border:1px solid var(--line);color:var(--muted);margin-left:4px}
+.tag.warn{color:var(--warn);border-color:var(--warn)}
+.zero{color:var(--muted)}
+.total{font-weight:700;color:var(--ok)}
+.foot{color:var(--muted);font-size:12px;margin-top:10px}
+</style>
+</head>
+<body>
+<main>
+  <h1>Skin video Matrix</h1>
+  <p class="sub" id="sub">Đang tải…</p>
+  <div class="stats" id="stats"></div>
+  <div class="bar">
+    <input type="search" id="q" placeholder="Tìm skin, bố cục, mô tả…" aria-label="Tìm skin">
+    <select id="engine" aria-label="Lọc engine"><option value="">Mọi engine</option></select>
+    <label><input type="checkbox" id="unused"> Chỉ skin chưa dùng</label>
+  </div>
+  <div id="list"></div>
+  <p class="foot">Số tài khoản = kênh có skin đó (creative.skins hoặc variant_id), chỉ tính kênh de/en/ko/ja. Cập nhật: <code>node compare_studio/tools/skins-page-data.mjs</code>. Engine <code>vector</code> không dùng skin (mỗi kênh có Vector DNA riêng).</p>
+</main>
+<script>
+const LANGS = ["de", "en", "ko", "ja"];
+const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+let DATA = null;
+
+function render() {
+  const q = document.getElementById("q").value.trim().toLowerCase();
+  const eng = document.getElementById("engine").value;
+  const onlyUnused = document.getElementById("unused").checked;
+  const html = [];
+  for (const e of DATA.engines) {
+    if (eng && e.engine !== eng) continue;
+    const rows = e.variants.filter((v) => {
+      const used = LANGS.reduce((n, l) => n + (v.usage[l] || 0), 0);
+      if (onlyUnused && used) return false;
+      if (!q) return true;
+      return [v.id, v.name, ...v.compositions.flatMap((c) => [c.id, c.describe])].join(" ").toLowerCase().includes(q);
+    });
+    if (!rows.length) continue;
+    const comps = e.variants.reduce((n, v) => n + v.compositions.length, 0);
+    const inUse = e.variants.filter((v) => LANGS.some((l) => v.usage[l])).length;
+    html.push(`<section><h2>${esc(e.engine)} <small>${e.variants.length} skin · ${comps} bố cục · ${inUse} đang dùng · ${e.channels} kênh liệt kê engine</small></h2><div class="wrap"><table>
+      <thead><tr><th>Skin</th><th>Bố cục (rê chuột xem mô tả)</th>${LANGS.map((l) => `<th class="n">${l}</th>`).join("")}<th class="n">Tổng</th></tr></thead><tbody>`);
+    for (const v of rows) {
+      const total = LANGS.reduce((n, l) => n + (v.usage[l] || 0), 0);
+      const tags = [v.status !== "active" ? `<span class="tag warn">${esc(v.status)}</span>` : "", v.auto_assign ? "" : '<span class="tag warn">opt-in</span>',
+        v.asset ? `<span class="tag">${esc(v.asset)}</span>` : ""].join("");
+      html.push(`<tr><td><b>${esc(v.name)}</b>${tags}<div class="id">${esc(v.id)}</div></td>
+        <td>${v.compositions.map((c) => `<span class="chip" title="${esc(c.describe)}">${esc(c.id)}</span>`).join("")}</td>
+        ${LANGS.map((l) => `<td class="n ${v.usage[l] ? "" : "zero"}">${v.usage[l] || 0}</td>`).join("")}
+        <td class="n ${total ? "total" : "zero"}">${total}</td></tr>`);
+    }
+    html.push("</tbody></table></div></section>");
+  }
+  document.getElementById("list").innerHTML = html.join("") || '<p class="sub">Không có skin khớp bộ lọc.</p>';
+}
+
+fetch("skins_data.json", { cache: "no-store" }).then((r) => r.json()).then((d) => {
+  DATA = d;
+  const t = d.totals;
+  document.getElementById("sub").textContent = `Mọi bộ da (variant) và bố cục của từng engine, kèm số tài khoản đang dùng theo nước. Dữ liệu lúc ${new Date(d.generated_at).toLocaleString("vi-VN")}.`;
+  document.getElementById("stats").innerHTML = [["Engine", t.engines], ["Skin (variant)", t.variants], ["Bố cục", t.compositions], ["Skin đang dùng", t.variants_in_use]]
+    .map(([k, v]) => `<div class="stat"><b>${v}</b><span>${k}</span></div>`).join("");
+  const sel = document.getElementById("engine");
+  for (const e of d.engines) sel.insertAdjacentHTML("beforeend", `<option value="${esc(e.engine)}">${esc(e.engine)} (${e.variants.length})</option>`);
+  for (const id of ["q", "engine", "unused"]) document.getElementById(id).addEventListener("input", render);
+  render();
+}).catch((e) => { document.getElementById("sub").textContent = `Không tải được dữ liệu: ${e.message}`; });
+</script>
+</body>
+</html>

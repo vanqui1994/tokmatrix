@@ -1,0 +1,2785 @@
+{
+ "generated_at": "2026-10-07T02:04:12.881Z",
+ "totals": {
+  "engines": 11,
+  "variants": 85,
+  "compositions": 175,
+  "variants_in_use": 52
+ },
+ "engines": [
+  {
+   "engine": "chalk",
+   "channels": 37,
+   "variants": [
+    {
+     "id": "chalk/atlas",
+     "name": "Atlas cổ minh hoạ",
+     "status": "active",
+     "auto_assign": true,
+     "asset": "TEXT",
+     "compositions": [
+      {
+       "id": "scroll_plate",
+       "describe": "Bản đồ atlas cổ trên cuộn giấy trục gỗ; headline trên băng rôn đỏ; lời đọc mực nâu có số bản La Mã",
+       "axes": {
+        "composition": "scroll",
+        "textPlacement": "bottom"
+       }
+      },
+      {
+       "id": "torn_plate",
+       "describe": "Hải đồ biển sẫm trên bàn gỗ — trang atlas xé mép tràn gần hết màn; ô chú giải (legend) góc trái trên và hộp lời đọc giấy da đè lên phần biển cuối trang",
+       "axes": {
+        "composition": "hero_image",
+        "textPlacement": "on_image",
+        "background": "wood_paper"
+       }
+      }
+     ],
+     "usage": {
+      "de": 4,
+      "en": 1,
+      "ko": 0,
+      "ja": 0
+     }
+    },
+    {
+     "id": "chalk/blueprint",
+     "name": "Bản vẽ chiến lược xanh",
+     "status": "active",
+     "auto_assign": true,
+     "asset": "TEXT",
+     "compositions": [
+      {
+       "id": "title_block",
+       "describe": "Tờ bản vẽ: bản đồ nét trắng trong khung kỹ thuật, dưới là ô thuyết minh (lời đọc) + khung tên bản vẽ (số tờ, headline, tỉ lệ)",
+       "axes": {
+        "composition": "poster",
+        "textPlacement": "bottom"
+       }
+      },
+      {
+       "id": "detail_grid",
+       "describe": "Bản in diazo (nét xanh đậm trên giấy kem); đầu trang kiểu tiêu đề bản vẽ (kẻ đôi); thuyết minh ở trên; bản đồ chính + hàng 3 ô chi tiết (chú giải từng phần tử của cảnh) bên dưới",
+       "axes": {
+        "composition": "grid",
+        "textPlacement": "top",
+        "background": "paper"
+       }
+      }
+     ],
+     "usage": {
+      "de": 4,
+      "en": 1,
+      "ko": 1,
+      "ja": 0
+     }
+    },
+    {
+     "id": "chalk/sand-table",
+     "name": "Sa bàn cát",
+     "status": "active",
+     "auto_assign": true,
+     "asset": "TEXT",
+     "compositions": [
+      {
+       "id": "tilted",
+       "describe": "Sa bàn cát khung gỗ nghiêng phối cảnh chiếm giữa; bảng tên đồng trên cùng; headline trên thẻ giấy ghim; lời đọc trên tờ lệnh",
+       "axes": {
+        "composition": "tilted_board",
+        "textPlacement": "bottom"
+       }
+      },
+      {
+       "id": "orders_top",
+       "describe": "Tờ lệnh (lời đọc) ở trên kèm dấu số giai đoạn; sa bàn nhìn thẳng từ trên (không nghiêng) chiếm nửa dưới; headline trên biển gỗ",
+       "axes": {
+        "composition": "diorama",
+        "textPlacement": "top"
+       }
+      }
+     ],
+     "usage": {
+      "de": 4,
+      "en": 1,
+      "ko": 0,
+      "ja": 0
+     }
+    },
+    {
+     "id": "chalk/satellite",
+     "name": "Ảnh vệ tinh khoanh vùng",
+     "status": "active",
+     "auto_assign": true,
+     "asset": "TEXT",
+     "compositions": [
+      {
+       "id": "feeds",
+       "describe": "Màn điều khiển: khung vệ tinh chính + 2 ô zoom vào từng phần tử của cảnh (vùng/ghim/mũi tên); lời đọc hộp kính dưới",
+       "axes": {
+        "composition": "multi_cam",
+        "textPlacement": "bottom"
+       }
+      },
+      {
+       "id": "orbit_split",
+       "describe": "Ảnh vệ tinh hồng ngoại màu giả (đất đỏ, biển đen); lời đọc hộp kính ở trên; ảnh vệ tinh vuông lớn tràn ngang nửa dưới, headline nhãn đen góc trên, thước quỹ đạo dọc bên phải",
+       "axes": {
+        "composition": "split_horizontal",
+        "textPlacement": "top",
+        "background": "darkness"
+       }
+      }
+     ],
+     "usage": {
+      "de": 4,
+      "en": 1,
+      "ko": 0,
+      "ja": 0
+     }
+    },
+    {
+     "id": "chalk/thermal",
+     "name": "Bản đồ ảnh nhiệt",
+     "status": "active",
+     "auto_assign": true,
+     "asset": "TEXT",
+     "compositions": [
+      {
+       "id": "viewfinder",
+       "describe": "Kính ngắm ảnh nhiệt tràn ngang: vùng tô sáng là vệt nhiệt phát sáng, tâm ngắm giữa, thang màu nhiệt bên phải; lời đọc lower-third",
+       "axes": {
+        "composition": "device_frame",
+        "textPlacement": "lower_third"
+       }
+      },
+      {
+       "id": "scope_top",
+       "describe": "Lời đọc OSD cam ở trên; ống ngắm tròn ảnh nhiệt (vạch chữ thập cam) giữa màn; headline dải cảnh báo bên dưới ống ngắm",
+       "axes": {
+        "composition": "circle_frame",
+        "textPlacement": "top"
+       }
+      }
+     ],
+     "usage": {
+      "de": 4,
+      "en": 1,
+      "ko": 0,
+      "ja": 0
+     }
+    },
+    {
+     "id": "chalk/war-room",
+     "name": "Phòng tác chiến bảng phấn",
+     "status": "active",
+     "auto_assign": true,
+     "asset": "TEXT",
+     "compositions": [
+      {
+       "id": "board",
+       "describe": "Bảng phấn: tựa phấn trên cùng, headline vàng, bản đồ phấn tràn ngang giữa màn, lời đọc viết phấn phía dưới, khay phấn",
+       "axes": {
+        "composition": "map_full",
+        "textPlacement": "bottom"
+       }
+      },
+      {
+       "id": "rail",
+       "describe": "Thanh tựa dọc khung gỗ bên trái; bản đồ phấn trong khung kẻ phấn phía trên; dưới là chú giải phấn (cột trái) + lời đọc (cột phải)",
+       "axes": {
+        "composition": "split_vertical",
+        "textPlacement": "right_column"
+       }
+      }
+     ],
+     "usage": {
+      "de": 4,
+      "en": 1,
+      "ko": 1,
+      "ja": 0
+     }
+    },
+    {
+     "id": "chalk/whiteboard",
+     "name": "Bảng trắng bút dạ",
+     "status": "active",
+     "auto_assign": true,
+     "asset": "TEXT",
+     "compositions": [
+      {
+       "id": "marker_map",
+       "describe": "Bản đồ vẽ bút dạ chiếm giữa bảng trắng; headline gạch chân đỏ; lời đọc trong khung viền dạ đen phía dưới; nam châm góc bảng",
+       "axes": {
+        "composition": "hero_image",
+        "textPlacement": "bottom"
+       }
+      },
+      {
+       "id": "sticky_notes",
+       "describe": "Bản đồ dạ phía trên; dưới là hai tờ giấy nhớ dán nghiêng: lời đọc (vàng, trái) và ghi chú các phần tử của cảnh (hồng, phải)",
+       "axes": {
+        "composition": "card_stack",
+        "textPlacement": "left_column"
+       }
+      }
+     ],
+     "usage": {
+      "de": 5,
+      "en": 0,
+      "ko": 0,
+      "ja": 0
+     }
+    }
+   ]
+  },
+  {
+   "engine": "compare",
+   "channels": 0,
+   "variants": [
+    {
+     "id": "compare/boxing-ring",
+     "name": "Võ đài đối kháng",
+     "status": "active",
+     "auto_assign": true,
+     "asset": "SVG",
+     "compositions": [
+      {
+       "id": "ring_ropes",
+       "describe": "Võ đài nhìn chính diện: dây đài 3 màu, trụ đỏ/xanh, găng A/B ở hai góc (bên thắng giơ găng); bảng tiêu chí giữa đài; thanh máu hai bên trên cùng rút theo từng hiệp; lời đọc phụ đề dưới đài",
+       "axes": {
+        "composition": "ring",
+        "textPlacement": "bottom"
+       }
+      },
+      {
+       "id": "tale_of_tape",
+       "describe": "Poster đêm đấu: nền nhung, dải băng tiêu đề; lời đọc trên cùng; poster chéo đỏ/xanh với tên A/B + tia VS; bảng 'tale of the tape' thêm từng dòng (giá trị A | tiêu chí | giá trị B, ô thắng tô vàng); tỉ số/nhà vô địch ở chân",
+       "axes": {
+        "composition": "poster",
+        "textPlacement": "top",
+        "background": "velvet"
+       }
+      }
+     ],
+     "usage": {
+      "de": 0,
+      "en": 0,
+      "ko": 0,
+      "ja": 0
+     }
+    },
+    {
+     "id": "compare/card-game",
+     "name": "Bài chỉ số đối đầu",
+     "status": "active",
+     "auto_assign": true,
+     "asset": "SVG",
+     "compositions": [
+      {
+       "id": "stat_cards",
+       "describe": "Hai lá bài chỉ số A/B trên bàn nỉ: huy hiệu chữ lồng, tên, dòng chỉ số lật thêm mỗi hiệp (dòng thắng có sao, nền vàng), hàng ngọc điểm sáng dần; bảng tiêu chí hiện tại dưới hai lá; lời đọc lower-third",
+       "axes": {
+        "composition": "card_stack",
+        "textPlacement": "lower_third"
+       }
+      },
+      {
+       "id": "trick_grid",
+       "describe": "Bàn gỗ: mỗi hiệp là một nước bài — hai lá nhỏ A/B nghiêng ghi giá trị, lá thắng viền vàng + sao — xếp lưới 2 cột; lời đọc dải băng nhãn trên cùng; tỉ số 'nước bài thắng' hai bên ở chân",
+       "axes": {
+        "composition": "grid",
+        "textPlacement": "top",
+        "background": "wood_paper"
+       }
+      }
+     ],
+     "usage": {
+      "de": 0,
+      "en": 0,
+      "ko": 0,
+      "ja": 0
+     }
+    },
+    {
+     "id": "compare/courtroom",
+     "name": "Phiên toà phân xử",
+     "status": "active",
+     "auto_assign": true,
+     "asset": "SVG",
+     "compositions": [
+      {
+       "id": "bench",
+       "describe": "Bục thẩm phán gỗ với con dấu cán cân, hai bên đương sự A/B; thẻ vật chứng (COUNT n, tiêu chí, giá trị hai bên, ô tick bên thắng) bên trái; hộp bồi thẩm 12 người đổi màu theo tỉ số; biên bản lời đọc cột phải; dấu phán quyết cuối",
+       "axes": {
+        "composition": "diorama",
+        "textPlacement": "right_column"
+       }
+      },
+      {
+       "id": "verdict_form",
+       "describe": "Phiếu phán quyết in trên giấy: tiêu đề + 'A v. B', mỗi hiệp một mục (COUNT n — tiêu chí) với hai ô tick 'A: giá trị' / 'B: giá trị', dấu tick đỏ đóng vào bên thắng; dòng chữ ký ghi tỉ số/phán quyết; lời đọc bản đánh máy dưới cùng",
+       "axes": {
+        "composition": "folder_card",
+        "textPlacement": "bottom",
+        "background": "paper"
+       }
+      }
+     ],
+     "usage": {
+      "de": 0,
+      "en": 0,
+      "ko": 0,
+      "ja": 0
+     }
+    },
+    {
+     "id": "compare/original",
+     "name": "So sánh (giao diện gốc)",
+     "status": "active",
+     "auto_assign": true,
+     "asset": "SVG",
+     "compositions": [
+      {
+       "id": "arena",
+       "describe": "Khuôn gốc 3 vùng: kicker + tiêu chí trên cùng; thẻ A | VS | thẻ B (huy hiệu chữ lồng tròn, tên, tag, bên thắng viền vàng + nhãn SIEGER, bên thua xám đi); hàng giá trị + thanh 0–10 hai bên, tỉ số cộng dồn giữa; lời đọc giữa màn tô tên A/B; linh vật nước dưới cùng chỉ về bên thắng",
+       "axes": {
+        "composition": "card_stack",
+        "textPlacement": "center"
+       }
+      },
+      {
+       "id": "columns",
+       "describe": "Anh em của khuôn gốc: hai thẻ thành hai cột cao A | B chứa luôn giá trị + thanh 0–10 ở chân cột, VS giữa; tỉ số dưới hai cột; lời đọc thấp hơn, linh vật nhỏ hơn dưới cùng",
+       "axes": {
+        "composition": "split_vertical",
+        "textPlacement": "bottom"
+       }
+      }
+     ],
+     "usage": {
+      "de": 0,
+      "en": 0,
+      "ko": 0,
+      "ja": 0
+     }
+    },
+    {
+     "id": "compare/race-track",
+     "name": "Đường đua so sánh",
+     "status": "active",
+     "auto_assign": true,
+     "asset": "SVG",
+     "compositions": [
+      {
+       "id": "side_lanes",
+       "describe": "Bảng pit trên cùng (LAP n, tiêu chí, giá trị A/B); đường nhựa hai làn ngang, xe A/B chạy sang phải theo điểm cộng dồn, cờ ca-rô ở đích; bảng xếp hạng P1/P2; lời đọc bong bóng bình luận viên nổi phía dưới",
+       "axes": {
+        "composition": "split_horizontal",
+        "textPlacement": "floating"
+       }
+      },
+      {
+       "id": "drag_strip",
+       "describe": "Đường drag dọc bên trái: hai làn, xe A/B chạy từ vạch xuất phát dưới lên cờ ca-rô trên theo điểm; cột phải: bảng pit (tiêu chí/giá trị), lời đọc, bảng P1/P2",
+       "axes": {
+        "composition": "split_vertical",
+        "textPlacement": "right_column"
+       }
+      }
+     ],
+     "usage": {
+      "de": 0,
+      "en": 0,
+      "ko": 0,
+      "ja": 0
+     }
+    },
+    {
+     "id": "compare/scale-balance",
+     "name": "Cán cân so sánh",
+     "status": "active",
+     "auto_assign": true,
+     "asset": "SVG",
+     "compositions": [
+      {
+       "id": "beam_scale",
+       "describe": "Cán cân đòn bằng đồng trên nền đá: hai đĩa treo xích mang tên A/B, mỗi điểm thêm một quả cân vào đĩa, đòn nghiêng theo tỉ số; lời đọc khắc trên cùng; phiếu tiêu chí (A >/</= B) dưới chân cân",
+       "axes": {
+        "composition": "scale",
+        "textPlacement": "top"
+       }
+      },
+      {
+       "id": "spring_dials",
+       "describe": "Hai cân lò xo mặt tròn cạnh nhau trên giấy (vạch 0…số hiệp, kim đỏ quay khi bên đó ghi điểm), tên + tên khoa học dưới mặt cân; phiếu cân răng cưa ghi tiêu chí và giá trị; lời đọc giấy note dưới cùng",
+       "axes": {
+        "composition": "circle_frame",
+        "textPlacement": "bottom",
+        "background": "paper"
+       }
+      }
+     ],
+     "usage": {
+      "de": 0,
+      "en": 0,
+      "ko": 0,
+      "ja": 0
+     }
+    },
+    {
+     "id": "compare/split-screen",
+     "name": "Màn hình chia đôi",
+     "status": "active",
+     "auto_assign": true,
+     "asset": "SVG",
+     "compositions": [
+      {
+       "id": "left_right",
+       "describe": "Màn chia dọc toàn khung: nửa trái màu A, nửa phải màu B, vạch trắng + nút VS trượt ngang theo tỉ số; tên, giá trị lớn và tổng điểm mỗi bên; thẻ tiêu chí trắng giữa trên; lời đọc hộp kính giữa màn",
+       "axes": {
+        "composition": "split_vertical",
+        "textPlacement": "center"
+       }
+      },
+      {
+       "id": "top_bottom",
+       "describe": "Màn chia ngang: nửa trên màu A, nửa dưới màu B, vạch chia + thẻ tiêu chí tròn trượt lên/xuống theo tỉ số; cột trái là tên/giá trị/điểm từng bên; lời đọc cột kính dọc bên phải vắt qua hai nửa",
+       "axes": {
+        "composition": "split_horizontal",
+        "textPlacement": "right_column",
+        "background": "flat_color"
+       }
+      }
+     ],
+     "usage": {
+      "de": 0,
+      "en": 0,
+      "ko": 0,
+      "ja": 0
+     }
+    },
+    {
+     "id": "compare/tier-duel",
+     "name": "Đấu chỉ số thanh đối xứng",
+     "status": "active",
+     "auto_assign": true,
+     "asset": "SVG",
+     "compositions": [
+      {
+       "id": "butterfly",
+       "describe": "Biểu đồ cánh bướm trên nền kim loại: tên A/B hai bên trục giữa, mỗi hiệp một hàng — tiêu chí ở giữa, thanh A mọc sang trái và thanh B sang phải theo điểm, giá trị ở hai mép, bên thắng viền vàng + sao; tổng điểm hai bên dưới cùng; lời đọc khối trên",
+       "axes": {
+        "composition": "ledger_columns",
+        "textPlacement": "top"
+       }
+      },
+      {
+       "id": "led_scoreboard",
+       "describe": "Bảng điểm LED sân vận động: tên đội A/B, số điểm LED lớn màu hổ phách, dòng 'tiêu chí hiện tại'; dưới là các hàng chấm LED đối xứng (A sáng xanh sang trái, B sáng cam sang phải) theo điểm từng hiệp; lời đọc dải ticker dưới cùng",
+       "axes": {
+        "composition": "grid",
+        "textPlacement": "bottom",
+        "background": "darkness"
+       }
+      }
+     ],
+     "usage": {
+      "de": 0,
+      "en": 0,
+      "ko": 0,
+      "ja": 0
+     }
+    }
+   ]
+  },
+  {
+   "engine": "folklore",
+   "channels": 28,
+   "variants": [
+    {
+     "id": "folklore/european-grimoire",
+     "name": "Sách phép phù thuỷ châu Âu",
+     "status": "active",
+     "auto_assign": true,
+     "asset": "IMAGE_AI",
+     "compositions": [
+      {
+       "id": "open_book",
+       "describe": "Sách phép mở hai trang dưới ánh nến: tranh minh hoạ khung khắc ở trang trái + số folio La Mã đỏ; lời đọc mực nâu ở trang phải",
+       "axes": {
+        "composition": "notebook_page",
+        "textPlacement": "right_column"
+       }
+      },
+      {
+       "id": "sigil_circle",
+       "describe": "Lời đọc trên mảnh da thuộc ngay dưới tiêu đề; ảnh trong vòng tròn phép ở nửa dưới giữa ấn phù (hai vòng + ngôi sao nối 5 điểm)",
+       "axes": {
+        "composition": "circle_frame",
+        "textPlacement": "top"
+       }
+      }
+     ],
+     "usage": {
+      "de": 4,
+      "en": 2,
+      "ko": 0,
+      "ja": 0
+     }
+    },
+    {
+     "id": "folklore/haunted-vhs",
+     "name": "Băng VHS truyền thuyết đô thị",
+     "status": "active",
+     "auto_assign": true,
+     "asset": "IMAGE_AI",
+     "compositions": [
+      {
+       "id": "tape_play",
+       "describe": "Một khung 4:3 tràn ngang (không viền TV), OSD băng từ PLAY/SP/ngày/giờ, vạch tracking trôi dọc; đầu mỗi cảnh chớp màn ◀◀ tua băng; lời đọc lower-third",
+       "axes": {
+        "composition": "device_frame",
+        "textPlacement": "lower_third"
+       }
+      },
+      {
+       "id": "cassette",
+       "describe": "Màn 4:3 phía trên; phía dưới là băng cassette VHS, lời đọc viết tay trên nhãn băng, hai bánh cuộn quay (tua) mỗi cảnh",
+       "axes": {
+        "composition": "split_horizontal",
+        "textPlacement": "bottom",
+        "background": "darkness"
+       }
+      }
+     ],
+     "usage": {
+      "de": 4,
+      "en": 2,
+      "ko": 0,
+      "ja": 0
+     }
+    },
+    {
+     "id": "folklore/japanese-yokai-scroll",
+     "name": "Cuộn tranh yêu quái Nhật",
+     "status": "active",
+     "auto_assign": true,
+     "asset": "IMAGE_AI",
+     "compositions": [
+      {
+       "id": "emaki",
+       "describe": "Cuộn emaki có trục gỗ hai đầu + dấu triện đỏ. ja: ảnh cao bên trái + cột chữ dọc bên phải; Latin/Hàn: dải cuộn ngang + dải giấy washi chữ ngang bên dưới",
+       "axes": {
+        "composition": "scroll",
+        "textPlacement": "vertical_side"
+       }
+      },
+      {
+       "id": "kakejiku",
+       "describe": "Tranh treo kakejiku (trục trên/dưới) trên vách gỗ tokonoma; lời đọc dưới tranh — ja: khối cột chữ dọc đọc phải→trái, Latin/Hàn: chữ ngang",
+       "axes": {
+        "composition": "poster",
+        "textPlacement": "bottom",
+        "background": "wood_paper"
+       }
+      }
+     ],
+     "usage": {
+      "de": 0,
+      "en": 0,
+      "ko": 0,
+      "ja": 0
+     }
+    },
+    {
+     "id": "folklore/korean-gwishin",
+     "name": "Ma Hàn sau cửa giấy",
+     "status": "active",
+     "auto_assign": true,
+     "asset": "IMAGE_AI",
+     "compositions": [
+      {
+       "id": "hanji_door",
+       "describe": "Hai cánh cửa giấy hanji gấp mở sang hai bên mỗi cảnh, sau cửa là ảnh qua song gỗ; lời đọc trên tờ hanji giữa màn; đèn lồng đỏ góc dưới",
+       "axes": {
+        "composition": "split_vertical",
+        "textPlacement": "center"
+       }
+      },
+      {
+       "id": "moon_window",
+       "describe": "Cửa sổ trăng tròn khung gỗ có song hoa văn trong phòng tối; phụ đề dưới cửa; ánh đèn lồng hắt từ dưới",
+       "axes": {
+        "composition": "circle_frame",
+        "textPlacement": "bottom",
+        "background": "darkness"
+       }
+      }
+     ],
+     "usage": {
+      "de": 0,
+      "en": 0,
+      "ko": 0,
+      "ja": 0
+     }
+    },
+    {
+     "id": "folklore/nordic-runestone",
+     "name": "Đá khắc rune Bắc Âu",
+     "status": "active",
+     "auto_assign": true,
+     "asset": "IMAGE_AI",
+     "compositions": [
+      {
+       "id": "carved_slab",
+       "describe": "Phiến đá rune đứng: dải rắn đỏ son khắc vạch rune ôm quanh ảnh vòm; lời đọc khắc chìm trên đá phía dưới",
+       "axes": {
+        "composition": "ring",
+        "textPlacement": "bottom"
+       }
+      },
+      {
+       "id": "standing_stones",
+       "describe": "Vòng đá đứng: ảnh chính trong phiến đá cao giữa, hai phiến thấp hai bên chiếu cảnh trước/sau; lời đọc khắc trên phiến ngang phía trên",
+       "axes": {
+        "composition": "pyramid",
+        "textPlacement": "top"
+       }
+      }
+     ],
+     "usage": {
+      "de": 4,
+      "en": 2,
+      "ko": 0,
+      "ja": 0
+     }
+    },
+    {
+     "id": "folklore/shadow-puppet",
+     "name": "Rối bóng dân gian",
+     "status": "active",
+     "auto_assign": true,
+     "asset": "IMAGE_AI",
+     "compositions": [
+      {
+       "id": "paper_screen",
+       "describe": "Sân khấu rối bóng: màn giấy sáng cam giữa hai tấm rèm nhung đỏ, ảnh thành bóng đen; sàn gỗ phía dưới mang phụ đề",
+       "axes": {
+        "composition": "diorama",
+        "textPlacement": "bottom"
+       }
+      },
+      {
+       "id": "tall_screen",
+       "describe": "Màn giấy cao gần toàn màn với các que điều khiển rối chìa lên từ đáy; lời đọc phía trên màn",
+       "axes": {
+        "composition": "hero_image",
+        "textPlacement": "top"
+       }
+      }
+     ],
+     "usage": {
+      "de": 4,
+      "en": 2,
+      "ko": 0,
+      "ja": 0
+     }
+    },
+    {
+     "id": "folklore/tarot-deck",
+     "name": "Bộ bài tarot điềm báo",
+     "status": "active",
+     "auto_assign": true,
+     "asset": "IMAGE_AI",
+     "compositions": [
+      {
+       "id": "card_flip",
+       "describe": "Một lá tarot lớn lật mỗi cảnh (hai lá úp xoè phía sau), số La Mã trên đầu lá; lời đọc trên thẻ vàng đè phần dưới lá bài",
+       "axes": {
+        "composition": "card_stack",
+        "textPlacement": "on_image"
+       }
+      },
+      {
+       "id": "three_card_spread",
+       "describe": "Trải ba lá: quá khứ / hiện tại / tương lai — lá giữa là ảnh cảnh này, hai lá bên là cảnh trước/sau; nhãn vị trí dưới mỗi lá; lời đọc trên dải lụa đỏ",
+       "axes": {
+        "composition": "grid",
+        "textPlacement": "bottom"
+       }
+      }
+     ],
+     "usage": {
+      "de": 3,
+      "en": 1,
+      "ko": 0,
+      "ja": 0
+     }
+    },
+    {
+     "id": "folklore/vn-original",
+     "name": "Tâm linh dân gian (giao diện gốc)",
+     "status": "active",
+     "auto_assign": true,
+     "asset": "IMAGE_AI",
+     "compositions": [
+      {
+       "id": "night_stage",
+       "describe": "Khuôn gốc: nhãn series nhỏ + tiêu đề trên cùng, phụ đề lớn giữa phần trên, ảnh tràn nửa dưới mờ dần lên trời đêm, ánh nến + bụi",
+       "axes": {
+        "composition": "hero_image",
+        "textPlacement": "top"
+       }
+      },
+      {
+       "id": "altar_niche",
+       "describe": "Bàn thờ: ảnh trong khám vòm sơn son giữa hai dải câu đối đỏ, bát hương ba nén nhang phía dưới; lời đọc trong hộp kính đáy",
+       "axes": {
+        "composition": "diorama",
+        "textPlacement": "bottom"
+       }
+      }
+     ],
+     "usage": {
+      "de": 0,
+      "en": 0,
+      "ko": 0,
+      "ja": 0
+     }
+    }
+   ]
+  },
+  {
+   "engine": "kinetic",
+   "channels": 80,
+   "variants": [
+    {
+     "id": "kinetic/type-poster",
+     "name": "Chữ động (3 layout: chữ giữa / dải màu + số / bảng nghiêng) + linh vật nước",
+     "status": "active",
+     "auto_assign": true,
+     "asset": "TEXT",
+     "compositions": [
+      {
+       "id": "center_stack",
+       "describe": "Chữ lớn giữa màn, dải hoa văn nước phía trên, linh vật góc dưới trái",
+       "axes": {
+        "composition": "poster",
+        "textPlacement": "center",
+        "background": "flat_color"
+       }
+      },
+      {
+       "id": "split_band",
+       "describe": "Nửa trên là dải màu tối có số cảnh khổng lồ và chữ lớn căn trái; lời đọc dưới; linh vật bên phải",
+       "axes": {
+        "composition": "split_horizontal",
+        "textPlacement": "top",
+        "background": "gradient"
+       }
+      },
+      {
+       "id": "tilted_board",
+       "describe": "Chữ lớn trên tấm bảng xoay nghiêng có bóng màu nhấn; linh vật ló dưới bảng",
+       "axes": {
+        "composition": "tilted_board",
+        "textPlacement": "center",
+        "background": "paper"
+       }
+      }
+     ],
+     "usage": {
+      "de": 48,
+      "en": 29,
+      "ko": 0,
+      "ja": 3
+     }
+    }
+   ]
+  },
+  {
+   "engine": "mystery",
+   "channels": 68,
+   "variants": [
+    {
+     "id": "mystery/case-file",
+     "name": "Hồ sơ vụ án",
+     "status": "active",
+     "auto_assign": true,
+     "asset": "IMAGE_AI",
+     "compositions": [
+      {
+       "id": "folder_card",
+       "describe": "Bìa hồ sơ manila kẹp ảnh tang vật ở giữa; lời đọc đánh máy trên tờ giấy kẻ phía dưới; dấu số tang vật",
+       "axes": {
+        "composition": "folder_card",
+        "textPlacement": "bottom"
+       }
+      },
+      {
+       "id": "polaroid_spread",
+       "describe": "Polaroid nghiêng bên trái (chú thích viết dưới ảnh), 2 polaroid cảnh khác chồng phía sau; giấy note vàng bên phải",
+       "axes": {
+        "composition": "card_stack",
+        "textPlacement": "right_column"
+       }
+      },
+      {
+       "id": "clipboard_top",
+       "describe": "Lời đọc đánh máy ở nửa trên; ảnh kẹp trên bìa kẹp hồ sơ ở nửa dưới",
+       "axes": {
+        "composition": "split_horizontal",
+        "textPlacement": "top"
+       }
+      }
+     ],
+     "usage": {
+      "de": 5,
+      "en": 2,
+      "ko": 1,
+      "ja": 1
+     }
+    },
+    {
+     "id": "mystery/cctv",
+     "name": "Camera an ninh 4 kênh",
+     "status": "active",
+     "auto_assign": true,
+     "asset": "IMAGE_AI",
+     "compositions": [
+      {
+       "id": "quad_cam",
+       "describe": "Lưới camera: kênh chính lớn + 3 kênh nhỏ (cảnh khác, đen trắng); lời đọc dạng OSD phía trên",
+       "axes": {
+        "composition": "multi_cam",
+        "textPlacement": "top"
+       }
+      },
+      {
+       "id": "single_monitor",
+       "describe": "Một màn CRT lớn chiếu kênh camera; lời đọc OSD trong khung dưới màn",
+       "axes": {
+        "composition": "device_frame",
+        "textPlacement": "bottom"
+       }
+      }
+     ],
+     "usage": {
+      "de": 4,
+      "en": 1,
+      "ko": 1,
+      "ja": 0
+     }
+    },
+    {
+     "id": "mystery/cursed-objects",
+     "name": "Hiện vật bị nguyền",
+     "status": "active",
+     "auto_assign": true,
+     "asset": "IMAGE_AI",
+     "compositions": [
+      {
+       "id": "glass_case",
+       "describe": "Tủ kính bảo tàng có đèn spot chiếu hiện vật; thẻ đồng khắc lời đọc bên dưới",
+       "axes": {
+        "composition": "diorama",
+        "textPlacement": "bottom"
+       }
+      },
+      {
+       "id": "catalogue_card",
+       "describe": "Ảnh hiện vật trong lá bài danh mục mạ vàng bên trái; thẻ đồng dọc bên phải",
+       "axes": {
+        "composition": "card_stack",
+        "textPlacement": "right_column"
+       }
+      }
+     ],
+     "usage": {
+      "de": 4,
+      "en": 2,
+      "ko": 0,
+      "ja": 0
+     }
+    },
+    {
+     "id": "mystery/decoded",
+     "name": "Mật mã chưa giải",
+     "status": "active",
+     "auto_assign": true,
+     "asset": "IMAGE_AI",
+     "compositions": [
+      {
+       "id": "crt_terminal",
+       "describe": "Màn CRT lớn chiếu ảnh; lời đọc gõ từng ký tự đè lên ảnh như terminal",
+       "axes": {
+        "composition": "device_frame",
+        "textPlacement": "on_image"
+       }
+      },
+      {
+       "id": "cipher_hex",
+       "describe": "Ảnh trong khung lục giác trên lưới ô mã; lời đọc OSD phía dưới",
+       "axes": {
+        "composition": "grid",
+        "textPlacement": "bottom"
+       }
+      }
+     ],
+     "usage": {
+      "de": 4,
+      "en": 2,
+      "ko": 1,
+      "ja": 0
+     }
+    },
+    {
+     "id": "mystery/evidence-board",
+     "name": "Bảng điều tra chỉ đỏ",
+     "status": "active",
+     "auto_assign": true,
+     "asset": "IMAGE_AI",
+     "compositions": [
+      {
+       "id": "pinned_web",
+       "describe": "Ảnh ghim đinh bên trái, chỉ đỏ nối các ghim khắp bảng; lời đọc trên giấy note ghim góc phải dưới",
+       "axes": {
+        "composition": "tilted_board",
+        "textPlacement": "right_column"
+       }
+      },
+      {
+       "id": "suspect_grid",
+       "describe": "Ảnh chính ghim giữa bảng + hàng 3 ảnh manh mối (các cảnh khác) nối chỉ đỏ; lời đọc dải giấy dưới cùng",
+       "axes": {
+        "composition": "grid",
+        "textPlacement": "bottom"
+       }
+      }
+     ],
+     "usage": {
+      "de": 5,
+      "en": 2,
+      "ko": 1,
+      "ja": 0
+     }
+    },
+    {
+     "id": "mystery/field-journal",
+     "name": "Sổ tay thám hiểm sinh vật bí ẩn",
+     "status": "active",
+     "auto_assign": true,
+     "asset": "IMAGE_AI",
+     "compositions": [
+      {
+       "id": "taped_page",
+       "describe": "Trang sổ kẻ dòng: ghi chép cột trái, ảnh dán băng keo bên phải, băng washi",
+       "axes": {
+        "composition": "notebook_page",
+        "textPlacement": "left_column"
+       }
+      },
+      {
+       "id": "torn_sketch",
+       "describe": "Gáy sổ dọc bên trái mang tên; ảnh phác trên mảnh giấy xé chiếm nửa trên; ghi chép trên giấy nhớ nghiêng",
+       "axes": {
+        "composition": "hero_image",
+        "textPlacement": "bottom"
+       }
+      }
+     ],
+     "usage": {
+      "de": 4,
+      "en": 1,
+      "ko": 0,
+      "ja": 1
+     }
+    },
+    {
+     "id": "mystery/lost-places",
+     "name": "Nơi bị bỏ hoang",
+     "status": "active",
+     "auto_assign": true,
+     "asset": "IMAGE_AI",
+     "compositions": [
+      {
+       "id": "full_bleed",
+       "describe": "Ảnh tràn toàn màn tối; tiêu đề giữa trên; phụ đề điện ảnh giữa màn; số chương La Mã",
+       "axes": {
+        "composition": "hero_image",
+        "textPlacement": "center"
+       }
+      },
+      {
+       "id": "flashlight_circle",
+       "describe": "Vòng đèn pin tròn giữa màn đen chiếu ảnh; phụ đề dưới vòng sáng",
+       "axes": {
+        "composition": "circle_frame",
+        "textPlacement": "bottom"
+       }
+      }
+     ],
+     "usage": {
+      "de": 4,
+      "en": 1,
+      "ko": 1,
+      "ja": 0
+     }
+    },
+    {
+     "id": "mystery/phase0-reference",
+     "name": "Hồ sơ tham chiếu (Phase 0)",
+     "status": "reference",
+     "auto_assign": true,
+     "asset": "IMAGE_AI",
+     "compositions": [
+      {
+       "id": "hero_evidence",
+       "describe": "Ảnh tang vật lớn phía trên, khung dày lệch nhẹ; lời đọc trong hộp tối phía dưới",
+       "axes": {
+        "composition": "hero_image",
+        "textPlacement": "bottom"
+       }
+      },
+      {
+       "id": "evidence_strip",
+       "describe": "Dải ảnh dọc bên trái cao gần hết màn; ghi chú giấy sáng bên phải",
+       "axes": {
+        "composition": "split_vertical",
+        "textPlacement": "right_column",
+        "background": "paper"
+       }
+      }
+     ],
+     "usage": {
+      "de": 0,
+      "en": 0,
+      "ko": 0,
+      "ja": 0
+     }
+    },
+    {
+     "id": "mystery/reference-dossier",
+     "name": "Hồ sơ tang vật",
+     "status": "active",
+     "auto_assign": true,
+     "asset": "IMAGE_AI",
+     "compositions": [
+      {
+       "id": "hero_evidence",
+       "describe": "Ảnh tang vật lớn phía trên, khung dày lệch nhẹ; lời đọc trong hộp tối phía dưới",
+       "axes": {
+        "composition": "hero_image",
+        "textPlacement": "bottom"
+       }
+      },
+      {
+       "id": "evidence_strip",
+       "describe": "Dải ảnh dọc bên trái cao gần hết màn; ghi chú giấy sáng bên phải",
+       "axes": {
+        "composition": "split_vertical",
+        "textPlacement": "right_column",
+        "background": "paper"
+       }
+      }
+     ],
+     "usage": {
+      "de": 4,
+      "en": 2,
+      "ko": 1,
+      "ja": 0
+     }
+    },
+    {
+     "id": "mystery/sonar-log",
+     "name": "Nhật ký sonar biển sâu",
+     "status": "active",
+     "auto_assign": true,
+     "asset": "IMAGE_AI",
+     "compositions": [
+      {
+       "id": "sonar_full",
+       "describe": "Ảnh tràn màn nhuộm xanh sâu + vòng sonar đồng tâm + thước độ sâu bên phải; lời đọc hộp kính dưới",
+       "axes": {
+        "composition": "map_full",
+        "textPlacement": "bottom"
+       }
+      },
+      {
+       "id": "ship_log",
+       "describe": "Trang nhật ký hải trình phía trên; màn sonar tròn (xanh ngọc) chiếu ảnh phía dưới",
+       "axes": {
+        "composition": "circle_frame",
+        "textPlacement": "top"
+       }
+      }
+     ],
+     "usage": {
+      "de": 4,
+      "en": 1,
+      "ko": 1,
+      "ja": 1
+     }
+    },
+    {
+     "id": "mystery/ufo-radar",
+     "name": "Radar vật thể bay",
+     "status": "active",
+     "auto_assign": true,
+     "asset": "IMAGE_AI",
+     "compositions": [
+      {
+       "id": "radar_scope",
+       "describe": "Màn radar tròn quét 360° chiếu ảnh ở tâm; khung góc HUD; lời đọc lower-third",
+       "axes": {
+        "composition": "radar",
+        "textPlacement": "lower_third"
+       }
+      },
+      {
+       "id": "witness_phone",
+       "describe": "Video nhân chứng trong khung điện thoại dọc; lời đọc trong hộp kính phía trên",
+       "axes": {
+        "composition": "device_frame",
+        "textPlacement": "top"
+       }
+      }
+     ],
+     "usage": {
+      "de": 5,
+      "en": 1,
+      "ko": 0,
+      "ja": 0
+     }
+    }
+   ]
+  },
+  {
+   "engine": "newspaper",
+   "channels": 73,
+   "variants": [
+    {
+     "id": "newspaper/court-sketch",
+     "name": "Ký hoạ phiên toà",
+     "status": "active",
+     "auto_assign": true,
+     "asset": "IMAGE_AI",
+     "compositions": [
+      {
+       "id": "sketch_pad",
+       "describe": "Tập giấy vẽ gáy lò xo: ký hoạ bút chì hiện dần theo nét quét; dưới là tờ biên bản có lề đỏ và dòng kẻ mang lời đọc",
+       "axes": {
+        "composition": "notebook_page",
+        "textPlacement": "bottom"
+       }
+      },
+      {
+       "id": "easel_board",
+       "describe": "Ký hoạ lớn ghim trên giá vẽ nghiêng (chân giá bên dưới); tờ biên bản nổi đè góc trái dưới bức vẽ",
+       "axes": {
+        "composition": "tilted_board",
+        "textPlacement": "floating"
+       }
+      }
+     ],
+     "usage": {
+      "de": 0,
+      "en": 0,
+      "ko": 0,
+      "ja": 0
+     }
+    },
+    {
+     "id": "newspaper/front-page",
+     "name": "Trang báo (3 layout: khổ lớn / măng-sét dọc / bìa tạp chí)",
+     "status": "active",
+     "auto_assign": true,
+     "asset": "IMAGE_AI",
+     "compositions": [
+      {
+       "id": "front_page",
+       "describe": "Báo khổ lớn: măng-sét ngang viền kép, tiêu đề giữa, ảnh lớn, khối lời đọc trên/đè/dưới ảnh",
+       "axes": {
+        "composition": "ledger_columns",
+        "textPlacement": "bottom",
+        "background": "paper"
+       }
+      },
+      {
+       "id": "side_masthead",
+       "describe": "Măng-sét dọc bên trái trên dải hoa văn nước; tiêu đề + ảnh + lời đọc ở cột phải",
+       "axes": {
+        "composition": "split_vertical",
+        "textPlacement": "right_column",
+        "background": "paper"
+       }
+      },
+      {
+       "id": "magazine_cover",
+       "describe": "Bìa tạp chí: ảnh tràn màn, măng-sét cỡ lớn đè lên ảnh, lời đọc như dòng tít bìa, viền hoa văn nước",
+       "axes": {
+        "composition": "poster",
+        "textPlacement": "on_image",
+        "background": "darkness"
+       }
+      }
+     ],
+     "usage": {
+      "de": 53,
+      "en": 20,
+      "ko": 0,
+      "ja": 0
+     }
+    },
+    {
+     "id": "newspaper/microfilm",
+     "name": "Máy đọc microfilm lưu trữ",
+     "status": "active",
+     "auto_assign": true,
+     "asset": "IMAGE_AI",
+     "compositions": [
+      {
+       "id": "reader_screen",
+       "describe": "Màn máy đọc microfilm viền kim loại dày: ảnh hiện âm bản rồi chuyển dương bản; bảng núm điều khiển; lời đọc chữ trắng trên nền đen dưới máy",
+       "axes": {
+        "composition": "device_frame",
+        "textPlacement": "bottom"
+       }
+      },
+      {
+       "id": "film_reel",
+       "describe": "Dải phim dọc bên trái: khung trước và sau (cảnh khác, âm bản) kẹp khung hiện tại lớn chuyển âm→dương; tiêu đề và lời đọc trong cột phải",
+       "axes": {
+        "composition": "film_strip",
+        "textPlacement": "right_column"
+       }
+      }
+     ],
+     "usage": {
+      "de": 0,
+      "en": 0,
+      "ko": 0,
+      "ja": 0
+     }
+    },
+    {
+     "id": "newspaper/original",
+     "name": "Hồ sơ điều tra (giao diện gốc)",
+     "status": "active",
+     "auto_assign": true,
+     "asset": "IMAGE_AI",
+     "compositions": [
+      {
+       "id": "dossier",
+       "describe": "Khuôn gốc: dải báo (tab hồ sơ, VOL./PRICE, măng-sét serif có sao, tiêu đề đỏ) trên bàn gỗ tối; bìa manila với polaroid ghim đỏ + chỉ đỏ + băng vàng góc + nhãn EXHIBIT; tờ classified file đánh máy cả kịch bản ở dưới",
+       "axes": {
+        "composition": "folder_card",
+        "textPlacement": "bottom"
+       }
+      },
+      {
+       "id": "file_first",
+       "describe": "Cùng bộ đồ vật, đảo tầng: tờ classified file (cả kịch bản) ngay dưới dải báo, bìa manila với polaroid ở nửa dưới",
+       "axes": {
+        "composition": "split_horizontal",
+        "textPlacement": "top"
+       }
+      }
+     ],
+     "usage": {
+      "de": 0,
+      "en": 0,
+      "ko": 0,
+      "ja": 0
+     }
+    },
+    {
+     "id": "newspaper/police-gazette",
+     "name": "Công báo cảnh sát",
+     "status": "active",
+     "auto_assign": true,
+     "asset": "IMAGE_AI",
+     "compositions": [
+      {
+       "id": "medallion",
+       "describe": "Măng-sét đỏ đen; ảnh trong huy chương tròn có vành răng cưa đỏ đen; số hiệu dưới huy chương; lời đọc trong khung viền đôi đỏ",
+       "axes": {
+        "composition": "circle_frame",
+        "textPlacement": "bottom"
+       }
+      },
+      {
+       "id": "oval_row",
+       "describe": "Măng-sét trên; lời đọc trong khung viền đôi ngay dưới; hàng ba chân dung bầu dục: cảnh hiện tại lớn ở giữa, hai cảnh khác nhỏ hai bên",
+       "axes": {
+        "composition": "grid",
+        "textPlacement": "top"
+       }
+      }
+     ],
+     "usage": {
+      "de": 0,
+      "en": 0,
+      "ko": 0,
+      "ja": 0
+     }
+    },
+    {
+     "id": "newspaper/tabloid-extra",
+     "name": "Tabloid EXTRA thập niên 50",
+     "status": "active",
+     "auto_assign": true,
+     "asset": "IMAGE_AI",
+     "compositions": [
+      {
+       "id": "diagonal_cover",
+       "describe": "Khối tiêu đề đỏ khổng lồ vát chéo trên cùng; ảnh đen trắng cắt xéo tràn ngang; sao nổ vàng 'độc quyền'; lời đọc trên dải đen viền đỏ dưới cùng",
+       "axes": {
+        "composition": "hero_image",
+        "textPlacement": "bottom"
+       }
+      },
+      {
+       "id": "split_front",
+       "describe": "Dải măng-sét đen ngang trên; ảnh đen trắng dọc nửa phải cắt mép xiên; lời đọc trong hộp trắng viền đỏ cột trái; sao nổ vàng dưới cột chữ",
+       "axes": {
+        "composition": "split_vertical",
+        "textPlacement": "left_column"
+       }
+      }
+     ],
+     "usage": {
+      "de": 0,
+      "en": 0,
+      "ko": 0,
+      "ja": 0
+     }
+    },
+    {
+     "id": "newspaper/telegram-wire",
+     "name": "Điện tín khẩn",
+     "status": "active",
+     "auto_assign": true,
+     "asset": "IMAGE_AI",
+     "compositions": [
+      {
+       "id": "telegram_form",
+       "describe": "Mẫu điện tín trên chồng điện tín cũ: tên mẫu + ô KHẨN, dòng tiêu đề, lời đọc là các dải băng giấy dán (kết bằng STOP); ảnh truyền điện kẹp ghim bên dưới",
+       "axes": {
+        "composition": "card_stack",
+        "textPlacement": "top"
+       }
+      },
+      {
+       "id": "ticker_tape",
+       "describe": "Tiêu đề trên bàn gỗ; ảnh truyền điện lớn viền trắng; băng giấy điện tín có lỗ đục chạy ngang giữa màn mang lời đọc; máy gõ điện tín bằng đồng bên dưới",
+       "axes": {
+        "composition": "scroll",
+        "textPlacement": "center"
+       }
+      }
+     ],
+     "usage": {
+      "de": 0,
+      "en": 0,
+      "ko": 0,
+      "ja": 0
+     }
+    },
+    {
+     "id": "newspaper/victorian-broadsheet",
+     "name": "Báo khổ lớn thời Victoria",
+     "status": "active",
+     "auto_assign": true,
+     "asset": "IMAGE_AI",
+     "compositions": [
+      {
+       "id": "columns_page",
+       "describe": "Măng-sét báo đôi viền trên cùng; ảnh khắc gỗ rộng 2 cột bên trái + 2 cột chữ lấp dưới ảnh; lời đọc là cột báo hẹp bên phải, có vạch chia cột",
+       "axes": {
+        "composition": "ledger_columns",
+        "textPlacement": "right_column"
+       }
+      },
+      {
+       "id": "fold_story",
+       "describe": "Măng-sét trên; bài báo khổ rộng có chữ hoa đầu đoạn ở nửa trên; nếp gấp ngang giữa trang; ảnh khắc gỗ khổ ngang ở nửa dưới",
+       "axes": {
+        "composition": "split_horizontal",
+        "textPlacement": "top"
+       }
+      }
+     ],
+     "usage": {
+      "de": 0,
+      "en": 0,
+      "ko": 0,
+      "ja": 0
+     }
+    },
+    {
+     "id": "newspaper/wanted-poster",
+     "name": "Tờ truy nã dán tường",
+     "status": "active",
+     "auto_assign": true,
+     "asset": "IMAGE_AI",
+     "compositions": [
+      {
+       "id": "wall_poster",
+       "describe": "Một tờ truy nã lớn đóng đinh trên tường gạch: chữ TRUY NÃ khổng lồ, tên vụ, ảnh viền đậm, lời đọc giữa tờ, dải tiền thưởng dưới; mỗi cảnh một tờ mới dán lên",
+       "axes": {
+        "composition": "poster",
+        "textPlacement": "center"
+       }
+      },
+      {
+       "id": "torn_overlap",
+       "describe": "Lời đọc trên mẩu thông báo dán phía trên; tờ truy nã cũ (cảnh khác) nghiêng phía sau bên trái; tờ mới mép trái xé dán đè bên phải",
+       "axes": {
+        "composition": "card_stack",
+        "textPlacement": "top"
+       }
+      }
+     ],
+     "usage": {
+      "de": 0,
+      "en": 0,
+      "ko": 0,
+      "ja": 0
+     }
+    }
+   ]
+  },
+  {
+   "engine": "science",
+   "channels": 62,
+   "variants": [
+    {
+     "id": "science/explainer-board",
+     "name": "Bảng giải thích (3 layout: bảng trắng / sổ thí nghiệm / màn HUD) + linh vật dẫn",
+     "status": "active",
+     "auto_assign": true,
+     "asset": "CANVAS",
+     "compositions": [
+      {
+       "id": "whiteboard",
+       "describe": "Bảng trắng viền màu, ý chính trên, sơ đồ quỹ đạo giữa, lời đọc trong thanh tối; linh vật đứng cạnh bảng",
+       "axes": {
+        "composition": "notebook_page",
+        "textPlacement": "bottom",
+        "background": "whiteboard"
+       }
+      },
+      {
+       "id": "lab_notebook",
+       "describe": "Trang sổ kẻ dòng có lề đỏ và băng dính, ý chính gạch chân, sơ đồ bên phải; linh vật góc trái",
+       "axes": {
+        "composition": "split_vertical",
+        "textPlacement": "left_column",
+        "background": "paper"
+       }
+      },
+      {
+       "id": "hud_panel",
+       "describe": "Nền tối lưới HUD, vòng đo lớn quay chứa ý chính, lời đọc trong khung phát sáng",
+       "axes": {
+        "composition": "radar",
+        "textPlacement": "center",
+        "background": "blueprint"
+       }
+      }
+     ],
+     "usage": {
+      "de": 36,
+      "en": 18,
+      "ko": 5,
+      "ja": 2
+     }
+    },
+    {
+     "id": "science/lab-notebook",
+     "name": "Sổ thí nghiệm",
+     "status": "active",
+     "auto_assign": true,
+     "asset": "TEXT",
+     "compositions": [
+      {
+       "id": "ruled_page",
+       "describe": "Trang sổ kẻ ô có lề đỏ + lỗ gáy xoắn; thẻ mẫu dán băng keo bên trái (FIG. n, từ khoá khoanh tay, con số trong ô); ghi chép mực xanh cột phải",
+       "axes": {
+        "composition": "notebook_page",
+        "textPlacement": "right_column"
+       }
+      },
+      {
+       "id": "experiment_log",
+       "describe": "Lời đọc đánh máy phía trên; bảng ghi kết quả kẹp trên bìa kẹp: mỗi cảnh một hàng (#, quan sát = từ khoá, giá trị = con số của câu), hàng hiện tại tô bút dạ vàng",
+       "axes": {
+        "composition": "ledger_columns",
+        "textPlacement": "top"
+       }
+      }
+     ],
+     "usage": {
+      "de": 0,
+      "en": 0,
+      "ko": 0,
+      "ja": 0
+     }
+    },
+    {
+     "id": "science/lecture-whiteboard",
+     "name": "Giảng đường bảng trắng",
+     "status": "active",
+     "auto_assign": true,
+     "asset": "TEXT",
+     "compositions": [
+      {
+       "id": "projector_screen",
+       "describe": "Màn chiếu kéo xuống bên phải bảng trắng (slide: đầu câu, từ khoá lớn, con số, số slide) + chùm sáng máy chiếu; lời đọc viết bút dạ xanh cột trái",
+       "axes": {
+        "composition": "device_frame",
+        "textPlacement": "left_column"
+       }
+      },
+      {
+       "id": "board_notes",
+       "describe": "Ghi chú bút dạ đỏ/xanh ở nửa trên bảng trắng; slide chiếu thẳng ở nửa dưới, máng bút nhôm dưới đáy bảng",
+       "axes": {
+        "composition": "split_horizontal",
+        "textPlacement": "top"
+       }
+      }
+     ],
+     "usage": {
+      "de": 1,
+      "en": 0,
+      "ko": 0,
+      "ja": 0
+     }
+    },
+    {
+     "id": "science/microscope-zoom",
+     "name": "Zoom xuyên cấp độ",
+     "status": "active",
+     "auto_assign": true,
+     "asset": "TEXT",
+     "compositions": [
+      {
+       "id": "zoom_levels",
+       "describe": "Ống kính tròn lớn: mẫu vật phóng to dần qua cả cảnh, từ khoá + độ phóng ×10ⁿ; thang cấp độ ngang (1 m → 1 nm) sáng theo cảnh; lời đọc hộp kính dưới",
+       "axes": {
+        "composition": "circle_frame",
+        "textPlacement": "bottom"
+       }
+      },
+      {
+       "id": "zoom_stack",
+       "describe": "Kiểu Powers of Ten: ô vuông cấp hiện tại lớn + ô nhỏ cấp trước nối bằng đường chiếu; thước tỉ lệ dưới ô; lời đọc phía trên",
+       "axes": {
+        "composition": "card_stack",
+        "textPlacement": "top"
+       }
+      }
+     ],
+     "usage": {
+      "de": 0,
+      "en": 0,
+      "ko": 0,
+      "ja": 0
+     }
+    },
+    {
+     "id": "science/periodic",
+     "name": "Bảng tuần hoàn",
+     "status": "active",
+     "auto_assign": true,
+     "asset": "TEXT",
+     "compositions": [
+      {
+       "id": "element_tile",
+       "describe": "Lời đọc phía trên; ô nguyên tố lớn bật ra giữa màn (số, ký hiệu 2 chữ từ từ khoá, tên); bảng tuần hoàn thu nhỏ bên dưới, ô của cảnh sáng lên",
+       "axes": {
+        "composition": "grid",
+        "textPlacement": "top"
+       }
+      },
+      {
+       "id": "tile_column",
+       "describe": "Cột trái xếp 6 ô nguyên tố nhỏ (mọi cảnh), ô của cảnh hiện tại lồi ra; ô lớn bên phải + lời đọc bên dưới ô lớn",
+       "axes": {
+        "composition": "card_stack",
+        "textPlacement": "right_column"
+       }
+      }
+     ],
+     "usage": {
+      "de": 0,
+      "en": 0,
+      "ko": 0,
+      "ja": 0
+     }
+    },
+    {
+     "id": "science/quiz-show",
+     "name": "Đố vui khoa học",
+     "status": "active",
+     "auto_assign": true,
+     "asset": "TEXT",
+     "compositions": [
+      {
+       "id": "three_answers",
+       "describe": "Câu hỏi (lời đọc) trên bảng tím phía trên + đồng hồ đếm ngược tròn; 3 thanh đáp án A/B/C (từ khoá của kịch bản) nửa dưới, thanh đúng hoá xanh lúc 62% cảnh",
+       "axes": {
+        "composition": "split_horizontal",
+        "textPlacement": "top"
+       }
+      },
+      {
+       "id": "podium",
+       "describe": "Ba ô đáp án xếp hình tháp (A trên, B–C dưới) như bục trò chơi, số câu lớn trên đỉnh; câu hỏi (lời đọc) trên dải băng phía dưới",
+       "axes": {
+        "composition": "pyramid",
+        "textPlacement": "bottom"
+       }
+      }
+     ],
+     "usage": {
+      "de": 0,
+      "en": 0,
+      "ko": 0,
+      "ja": 0
+     }
+    },
+    {
+     "id": "science/space-hud",
+     "name": "HUD tàu vũ trụ",
+     "status": "active",
+     "auto_assign": true,
+     "asset": "TEXT",
+     "compositions": [
+      {
+       "id": "viewport",
+       "describe": "Màn quan sát lớn gần toàn màn: hành tinh + quỹ đạo nét đứt + tâm ngắm, ô TARGET (từ khoá) và DATA (con số); khung góc hổ phách; lời đọc lower-third",
+       "axes": {
+        "composition": "hero_image",
+        "textPlacement": "lower_third"
+       }
+      },
+      {
+       "id": "cockpit_console",
+       "describe": "Bảng điều khiển buồng lái: màn chính hành tinh ở giữa, hai cột đồng hồ đo (tiến độ cảnh) hai bên, hàng nút dưới; lời đọc trên kính phía trên",
+       "axes": {
+        "composition": "device_frame",
+        "textPlacement": "top"
+       }
+      }
+     ],
+     "usage": {
+      "de": 0,
+      "en": 0,
+      "ko": 0,
+      "ja": 0
+     }
+    },
+    {
+     "id": "science/xray",
+     "name": "Soi X-quang",
+     "status": "active",
+     "auto_assign": true,
+     "asset": "TEXT",
+     "compositions": [
+      {
+       "id": "lightbox",
+       "describe": "Màn chia đôi dọc: trái là vật nhìn thường, phải là lớp X-quang (xương phát sáng), vạch quét sáng chạy ngang mỗi cảnh; lời đọc khối panel dưới",
+       "axes": {
+        "composition": "split_vertical",
+        "textPlacement": "bottom"
+       }
+      },
+      {
+       "id": "film_sheets",
+       "describe": "Hộp đèn đọc phim: phim X-quang lớn kẹp bên trái + hai phim nhỏ cảnh sau; lời đọc cột phải",
+       "axes": {
+        "composition": "film_strip",
+        "textPlacement": "right_column"
+       }
+      }
+     ],
+     "usage": {
+      "de": 0,
+      "en": 0,
+      "ko": 0,
+      "ja": 0
+     }
+    }
+   ]
+  },
+  {
+   "engine": "survival",
+   "channels": 43,
+   "variants": [
+    {
+     "id": "survival/deep-sea",
+     "name": "Lặn sâu chưa khám phá",
+     "status": "active",
+     "auto_assign": true,
+     "asset": "IMAGE_AI",
+     "compositions": [
+      {
+       "id": "ruler_right",
+       "describe": "Thước độ sâu dọc cao hết màn bên phải (vạch mỗi cấp, con trỏ vàng lặn dần); reactor thợ lặn trong nước; áp kế + thẻ cấp; 3 thanh chỉ số; lời đọc hộp kính",
+       "axes": {
+        "composition": "scale",
+        "textPlacement": "bottom"
+       }
+      },
+      {
+       "id": "ruler_left",
+       "describe": "Lời đọc ở trên; thước độ sâu dọc bên trái; reactor dưới vòm chuông lặn (khung vòm) bên phải; thẻ cấp + áp kế; chỉ số dưới cùng",
+       "axes": {
+        "composition": "split_horizontal",
+        "textPlacement": "top"
+       }
+      }
+     ],
+     "usage": {
+      "de": 0,
+      "en": 3,
+      "ko": 3,
+      "ja": 2
+     }
+    },
+    {
+     "id": "survival/endurance",
+     "name": "Giới hạn chịu đựng",
+     "status": "active",
+     "auto_assign": true,
+     "asset": "IMAGE_AI",
+     "compositions": [
+      {
+       "id": "stopwatch",
+       "describe": "Reactor băng đô bên trái; cột phải: đồng hồ bấm giờ (mốc thời gian thật của cảnh) + 3 thanh chỉ số dọc; thẻ cấp + mức độ; lời đọc dải ticker dưới",
+       "axes": {
+        "composition": "split_vertical",
+        "textPlacement": "bottom"
+       }
+      },
+      {
+       "id": "race_lane",
+       "describe": "Lời đọc ở trên; đường chạy ngang có vạch từng cấp và người chạy tiến dần; reactor trong vòng tròn trái + thẻ cấp phải; 3 thanh chỉ số ngang dưới",
+       "axes": {
+        "composition": "timeline_track",
+        "textPlacement": "top"
+       }
+      }
+     ],
+     "usage": {
+      "de": 1,
+      "en": 4,
+      "ko": 0,
+      "ja": 0
+     }
+    },
+    {
+     "id": "survival/extreme-cold",
+     "name": "Lạnh cực độ",
+     "status": "active",
+     "auto_assign": true,
+     "asset": "IMAGE_AI",
+     "compositions": [
+      {
+       "id": "frosted_glass",
+       "describe": "Reactor mũ len khăn quàng chiếm lớn giữa; băng giá bò vào từ 4 góc màn theo mức độ; thanh chỉ số (trái) + thẻ cấp (phải); lời đọc",
+       "axes": {
+        "composition": "hero_image",
+        "textPlacement": "bottom"
+       }
+      },
+      {
+       "id": "ice_card",
+       "describe": "Lời đọc trên cùng; reactor trên thẻ băng nghiêng giữa màn, chỉ số dọc như cột băng bên trái; thẻ cấp dưới; băng giá bò từ các góc",
+       "axes": {
+        "composition": "card_stack",
+        "textPlacement": "top"
+       }
+      }
+     ],
+     "usage": {
+      "de": 0,
+      "en": 4,
+      "ko": 2,
+      "ja": 1
+     }
+    },
+    {
+     "id": "survival/extreme-heat",
+     "name": "Nóng cực độ",
+     "status": "active",
+     "auto_assign": true,
+     "asset": "IMAGE_AI",
+     "compositions": [
+      {
+       "id": "thermo_left",
+       "describe": "Nhiệt kế lớn dọc bên trái (thuỷ ngân dâng theo mức độ) + lớp sóng nhiệt đậm dần; reactor mũ rộng vành; thẻ cấp; 3 thanh chỉ số; lời đọc",
+       "axes": {
+        "composition": "poster",
+        "textPlacement": "bottom"
+       }
+      },
+      {
+       "id": "mirage",
+       "describe": "Ảnh reactor ngang lớn trên cùng (mép giấy xé); nhiệt kế nhỏ dọc góc trái dưới, cạnh đó 3 thanh chỉ số + thẻ cấp; lời đọc lower-third cam dưới cùng",
+       "axes": {
+        "composition": "hero_image",
+        "textPlacement": "lower_third"
+       }
+      }
+     ],
+     "usage": {
+      "de": 1,
+      "en": 5,
+      "ko": 0,
+      "ja": 0
+     }
+    },
+    {
+     "id": "survival/lab-exposure",
+     "name": "Phơi nhiễm phòng thí nghiệm",
+     "status": "active",
+     "auto_assign": true,
+     "asset": "IMAGE_AI",
+     "compositions": [
+      {
+       "id": "bench",
+       "describe": "Lời đọc bảng trên cùng; reactor kính bảo hộ áo blouse trái, máy đếm Geiger vàng (kim, LCD mức độ, đèn tách) phải; thẻ cấp; 3 thanh chỉ số",
+       "axes": {
+        "composition": "split_horizontal",
+        "textPlacement": "top"
+       }
+      },
+      {
+       "id": "hazard_ring",
+       "describe": "Reactor trong vòng tròn viền sọc cảnh báo trên cùng; máy Geiger nằm ngang giữa màn; thẻ cấp (trái) + chỉ số (phải); lời đọc dưới",
+       "axes": {
+        "composition": "circle_frame",
+        "textPlacement": "bottom"
+       }
+      }
+     ],
+     "usage": {
+      "de": 4,
+      "en": 3,
+      "ko": 0,
+      "ja": 0
+     }
+    },
+    {
+     "id": "survival/mr-incredible",
+     "name": "Mr. Incredible (bố cục Sinh Tồn cũ)",
+     "status": "active",
+     "auto_assign": true,
+     "asset": "IMAGE_AI",
+     "compositions": [
+      {
+       "id": "legacy",
+       "describe": "Bố cục Sinh Tồn cũ: eyebrow + tiêu đề + thanh tiến độ LEVEL n/L; thẻ quét 4 góc với ảnh AI của cấp, tên cấp, trạng thái, ô mức độ; thẻ dưới là mặt Mr. Incredible (pha 1–9 theo mức độ, rung khi ≥ 7) với nhãn REACTION: UNCANNY METER; lời đọc dưới cùng",
+       "axes": {
+        "composition": "card_stack",
+        "textPlacement": "bottom"
+       }
+      },
+      {
+       "id": "face_card",
+       "describe": "Anh em: mặt Mr. Incredible bên trái cạnh thẻ cấp độ (nhãn cấp, trạng thái, N/10), ảnh AI của cấp rộng ở giữa, lời đọc dưới cùng",
+       "axes": {
+        "composition": "split_vertical",
+        "textPlacement": "bottom",
+        "background": "darkness"
+       }
+      }
+     ],
+     "usage": {
+      "de": 1,
+      "en": 1,
+      "ko": 0,
+      "ja": 0
+     }
+    },
+    {
+     "id": "survival/no-sleep",
+     "name": "Không ngủ, không ăn",
+     "status": "active",
+     "auto_assign": true,
+     "asset": "IMAGE_AI",
+     "compositions": [
+      {
+       "id": "desk",
+       "describe": "Bàn gỗ: lịch xé (số cấp) và pin cạn dần bên trái, reactor mắt thâm trong polaroid bên phải; thẻ cấp; 3 thanh chỉ số; lời đọc giấy đánh máy",
+       "axes": {
+        "composition": "grid",
+        "textPlacement": "bottom"
+       }
+      },
+      {
+       "id": "week_strip",
+       "describe": "Lời đọc giấy đánh máy trên cùng; dải lịch các cấp (trang hiện tại nổi bật); reactor trái, pin + thẻ cấp phải; chỉ số dưới",
+       "axes": {
+        "composition": "ledger_columns",
+        "textPlacement": "top"
+       }
+      }
+     ],
+     "usage": {
+      "de": 2,
+      "en": 1,
+      "ko": 0,
+      "ja": 0
+     }
+    },
+    {
+     "id": "survival/original",
+     "name": "Sinh tồn (giao diện gốc)",
+     "status": "active",
+     "auto_assign": true,
+     "asset": "IMAGE_AI",
+     "compositions": [
+      {
+       "id": "scanner",
+       "describe": "Khuôn gốc: eyebrow + tiêu đề phát sáng + thước tiến độ; nhãn cấp màu mức độ; thẻ scanner (chip cấp, trạng thái, nhãn cấp, 3 thanh chỉ số %) trên thẻ phản ứng (mức độ N/10 + vạch, reactor SVG gốc); lời đọc trắng dưới cùng; rung màn khi mức độ ≥ 4",
+       "axes": {
+        "composition": "card_stack",
+        "textPlacement": "bottom"
+       }
+      },
+      {
+       "id": "reactor_top",
+       "describe": "Anh em của khuôn gốc: lời đọc ngay dưới đầu trang, thẻ phản ứng (reactor + mức độ) lên trên, thẻ scanner với 3 thanh chỉ số xuống nửa dưới",
+       "axes": {
+        "composition": "split_horizontal",
+        "textPlacement": "top"
+       }
+      }
+     ],
+     "usage": {
+      "de": 0,
+      "en": 0,
+      "ko": 0,
+      "ja": 0
+     }
+    },
+    {
+     "id": "survival/space-exposure",
+     "name": "Sống sót ngoài không gian",
+     "status": "active",
+     "auto_assign": true,
+     "asset": "IMAGE_AI",
+     "compositions": [
+      {
+       "id": "visor",
+       "describe": "Reactor trong mũ phi hành gia giữa trời sao; hàng 3 cung đo HUD (chỉ số) dưới mũ; thẻ cấp + mức độ; lời đọc lower-third",
+       "axes": {
+        "composition": "device_frame",
+        "textPlacement": "lower_third"
+       }
+      },
+      {
+       "id": "telemetry_column",
+       "describe": "Cột trái 3 cung đo dọc; reactor mũ phi hành gia bên phải; dưới reactor là thẻ cấp và lời đọc cột phải",
+       "axes": {
+        "composition": "ring",
+        "textPlacement": "right_column"
+       }
+      }
+     ],
+     "usage": {
+      "de": 5,
+      "en": 0,
+      "ko": 0,
+      "ja": 0
+     }
+    }
+   ]
+  },
+  {
+   "engine": "tierlist",
+   "channels": 90,
+   "variants": [
+    {
+     "id": "tierlist/classic-rows",
+     "name": "Bảng tier kinh điển",
+     "status": "active",
+     "auto_assign": true,
+     "asset": "IMAGE_AI",
+     "compositions": [
+      {
+       "id": "rows_board",
+       "describe": "Bảng tier 6 hàng SSS→D (ô nhãn màu trái, khay tối phải), ứng viên (icon ảnh + tên) bật vào khay đúng bậc khi cảnh của nó bắt đầu; ảnh cảnh + thẻ ứng viên (tên, mô tả, huy hiệu bậc) giữa; lời đọc dưới",
+       "axes": {
+        "composition": "ledger_columns",
+        "textPlacement": "bottom"
+       }
+      },
+      {
+       "id": "tier_columns",
+       "describe": "Ảnh cảnh lớn nửa trên, lời đọc phụ đề đè trên ảnh, thẻ 'đang xếp' (huy hiệu bậc + tên) góc ảnh; nửa dưới là 6 cột tier đứng SSS…D, ứng viên hiện thành thẻ tên có icon trong cột của nó",
+       "axes": {
+        "composition": "split_horizontal",
+        "textPlacement": "on_image"
+       }
+      }
+     ],
+     "usage": {
+      "de": 0,
+      "en": 0,
+      "ko": 0,
+      "ja": 0
+     }
+    },
+    {
+     "id": "tierlist/orbit",
+     "name": "Quỹ đạo xếp hạng",
+     "status": "active",
+     "auto_assign": true,
+     "asset": "IMAGE_AI",
+     "compositions": [
+      {
+       "id": "solar_arcs",
+       "describe": "Mặt trời ở đáy màn, 6 nửa quỹ đạo đồng tâm (SSS trong cùng → D ngoài cùng, nhãn màu ở mép trái), ứng viên là hành tinh ảnh tròn + tên nằm trên cung của mình; ảnh cảnh trong khung tròn + thẻ thông tin phía trên; lời đọc lower-third",
+       "axes": {
+        "composition": "ring",
+        "textPlacement": "lower_third"
+       }
+      },
+      {
+       "id": "telescope",
+       "describe": "Ảnh cảnh trong ống kính thiên văn tròn lớn, lời đọc phụ đề ngay trong ống kính; dải 'đang quan sát' (bậc + tên); 6 dải quỹ đạo xếp chồng (SSS hẹp trên cùng → D rộng dưới), ứng viên là hành tinh ảnh tròn + tên chạy trên dải của mình",
+       "axes": {
+        "composition": "circle_frame",
+        "textPlacement": "on_image",
+        "background": "darkness"
+       }
+      }
+     ],
+     "usage": {
+      "de": 0,
+      "en": 1,
+      "ko": 0,
+      "ja": 0
+     }
+    },
+    {
+     "id": "tierlist/podium",
+     "name": "Bục trao giải",
+     "status": "active",
+     "auto_assign": true,
+     "asset": "IMAGE_AI",
+     "compositions": [
+      {
+       "id": "stairs",
+       "describe": "Nửa trên ảnh cảnh trong khung polaroid trên nền nhung; giữa màn là lời đọc kính mờ + dải đèn chiếu (bậc + tên ứng viên); nửa dưới là cầu thang 6 khối bục tăng dần D→SSS từ trái sang phải, ứng viên trồi lên trong khối của mình",
+       "axes": {
+        "composition": "split_horizontal",
+        "textPlacement": "center"
+       }
+      },
+      {
+       "id": "olympic",
+       "describe": "Poster lễ trao giải: lời đọc trên biển vàng ở trên cùng, ảnh cảnh tràn rộng giữa màn (tối đi), dải đèn chiếu ứng viên; bục Olympic 6 khối với SSS cao nhất ở giữa, S/A hai bên, rồi B/C, D ngoài cùng",
+       "axes": {
+        "composition": "poster",
+        "textPlacement": "top",
+        "background": "velvet"
+       }
+      }
+     ],
+     "usage": {
+      "de": 0,
+      "en": 0,
+      "ko": 0,
+      "ja": 0
+     }
+    },
+    {
+     "id": "tierlist/pyramid",
+     "name": "Kim tự tháp xếp hạng",
+     "status": "active",
+     "auto_assign": true,
+     "asset": "IMAGE_AI",
+     "compositions": [
+      {
+       "id": "stone_pyramid",
+       "describe": "Kim tự tháp đá 6 tầng (SSS đỉnh hẹp → D đáy rộng) ở nửa dưới, mỗi tầng có nhãn màu và huy chương ứng viên; lời đọc khắc đá trên cùng; ảnh cảnh trong khung vòm + bia đá ghi ứng viên đang xếp",
+       "axes": {
+        "composition": "pyramid",
+        "textPlacement": "top"
+       }
+      },
+      {
+       "id": "glass_apex",
+       "describe": "Ảnh cảnh tràn toàn màn (tối đi), kim tự tháp kính mờ 6 tầng ở giữa với huy chương ứng viên; thẻ 'đang xếp' (bậc + tên) phía trên; lời đọc phụ đề dưới cùng",
+       "axes": {
+        "composition": "hero_image",
+        "textPlacement": "bottom",
+        "background": "darkness"
+       }
+      }
+     ],
+     "usage": {
+      "de": 0,
+      "en": 0,
+      "ko": 0,
+      "ja": 0
+     }
+    },
+    {
+     "id": "tierlist/ranking-board",
+     "name": "Bảng xếp hạng (3 layout: hàng ngang / ảnh lớn + thang gọn / kim tự tháp) + linh vật",
+     "status": "active",
+     "auto_assign": true,
+     "asset": "IMAGE_AI",
+     "compositions": [
+      {
+       "id": "rows_board",
+       "describe": "Bảng 6 hàng SSS→D ở trên, ảnh ứng viên + lời đọc phía dưới, linh vật góc phải",
+       "axes": {
+        "composition": "ledger_columns",
+        "textPlacement": "bottom",
+        "background": "flat_color"
+       }
+      },
+      {
+       "id": "showcase_top",
+       "describe": "Ảnh ứng viên lớn phía trên có tên + con dấu bậc; thang bậc gọn góc dưới trái",
+       "axes": {
+        "composition": "hero_image",
+        "textPlacement": "top",
+        "background": "gradient"
+       }
+      },
+      {
+       "id": "pyramid",
+       "describe": "Bậc xếp thành kim tự tháp (SSS ở đỉnh), ảnh trong khung tròn phía trên",
+       "axes": {
+        "composition": "pyramid",
+        "textPlacement": "center",
+        "background": "paper"
+       }
+      }
+     ],
+     "usage": {
+      "de": 52,
+      "en": 28,
+      "ko": 6,
+      "ja": 3
+     }
+    },
+    {
+     "id": "tierlist/store-shelves",
+     "name": "Kệ cửa hàng",
+     "status": "active",
+     "auto_assign": true,
+     "asset": "IMAGE_AI",
+     "compositions": [
+      {
+       "id": "store_shelf",
+       "describe": "Ảnh cảnh bo tròn phía trên; kệ hàng 6 tầng bên trái (thẻ giá màu tier SSS…D ở mép kệ), ứng viên là hộp hàng (ảnh + tên) trượt vào đứng trên kệ của mình; cột phải là lời đọc bảng trắng và thẻ 'đang xếp' (tên + bậc)",
+       "axes": {
+        "composition": "diorama",
+        "textPlacement": "right_column"
+       }
+      },
+      {
+       "id": "receipt",
+       "describe": "Hoá đơn in dài bên phải: tiêu đề câu hỏi, 6 mục bậc SSS…D ngăn bằng gạch đứt, ứng viên được 'in' thành dòng (ảnh nhỏ + tên) dưới mục của mình khi cảnh bắt đầu; cột trái là ảnh cảnh, thẻ 'đang xếp' và lời đọc trên giấy kẻ dòng",
+       "axes": {
+        "composition": "scroll",
+        "textPlacement": "left_column",
+        "background": "paper"
+       }
+      }
+     ],
+     "usage": {
+      "de": 0,
+      "en": 0,
+      "ko": 0,
+      "ja": 0
+     }
+    },
+    {
+     "id": "tierlist/unsolved-cases",
+     "name": "Tủ hồ sơ chưa giải",
+     "status": "active",
+     "auto_assign": true,
+     "asset": "IMAGE_AI",
+     "compositions": [
+      {
+       "id": "drawer_cabinet",
+       "describe": "Tủ hồ sơ kim loại nhìn chính diện 2×3 ngăn kéo (khe nhãn đồng ghi SSS…D + tay nắm), ứng viên là bìa hồ sơ (ảnh + tên) rút lên trên mặt ngăn của mình; ảnh cảnh trong bìa folder phía trên, giấy note vàng lời đọc trôi nổi đè góc ảnh, dải 'hồ sơ đang mở' dưới ảnh",
+       "axes": {
+        "composition": "grid",
+        "textPlacement": "floating"
+       }
+      },
+      {
+       "id": "card_catalog",
+       "describe": "Hộp phiếu thư mục gỗ: 6 phiếu xếp tầng có tab chia so le (SSS…D), ứng viên được đóng dấu thành dòng (ảnh nhỏ + tên) lên phiếu của mình; dải 'hồ sơ đang mở' trên cùng rồi ảnh cảnh ghim; lời đọc tờ đánh máy dưới cùng",
+       "axes": {
+        "composition": "card_stack",
+        "textPlacement": "bottom",
+        "background": "wood_paper"
+       }
+      }
+     ],
+     "usage": {
+      "de": 0,
+      "en": 0,
+      "ko": 0,
+      "ja": 0
+     }
+    },
+    {
+     "id": "tierlist/weapon-rack",
+     "name": "Giá treo vũ khí",
+     "status": "active",
+     "auto_assign": true,
+     "asset": "IMAGE_AI",
+     "compositions": [
+      {
+       "id": "wall_rack",
+       "describe": "Tường gỗ với 6 thanh treo kim loại, mỗi thanh có biển gỗ màu tier (SSS…D); ứng viên là thẻ treo (ảnh + tên) đung đưa rồi móc vào thanh của mình; lời đọc giấy note cột trái, ảnh cảnh dán băng bên phải kèm dải 'đang xếp'",
+       "axes": {
+        "composition": "tilted_board",
+        "textPlacement": "left_column"
+       }
+      },
+      {
+       "id": "pegboard",
+       "describe": "Bảng lỗ kim loại chia 6 ô viền đứt màu tier với chữ stencil SSS…D (lưới 2×3), ứng viên là thẻ treo móc vào ô của mình; ảnh cảnh khung trơn phía trên + dải 'đang xếp'; lời đọc băng nhãn dưới cùng",
+       "axes": {
+        "composition": "grid",
+        "textPlacement": "bottom",
+        "background": "metal"
+       }
+      }
+     ],
+     "usage": {
+      "de": 0,
+      "en": 0,
+      "ko": 0,
+      "ja": 0
+     }
+    }
+   ]
+  },
+  {
+   "engine": "vox",
+   "channels": 72,
+   "variants": [
+    {
+     "id": "vox/data-card",
+     "name": "Thẻ số liệu",
+     "status": "active",
+     "auto_assign": true,
+     "asset": "IMAGE_AI",
+     "compositions": [
+      {
+       "id": "stat_top",
+       "describe": "Nửa trên: thẻ màu đặc với con số lớn của câu (hoặc từ khoá) bật lên + lời đọc; nửa dưới: ảnh bo góc",
+       "axes": {
+        "composition": "split_horizontal",
+        "textPlacement": "top"
+       }
+      },
+      {
+       "id": "ring_gauge",
+       "describe": "Con số lớn của câu ở trên; ảnh tròn nằm trong vòng tiến độ (cảnh k/n) tự chạy tới cảnh hiện tại; lời đọc trong khung dưới",
+       "axes": {
+        "composition": "ring",
+        "textPlacement": "bottom"
+       }
+      }
+     ],
+     "usage": {
+      "de": 6,
+      "en": 3,
+      "ko": 0,
+      "ja": 1
+     }
+    },
+    {
+     "id": "vox/documentary-lowerthird",
+     "name": "Phóng sự lower-third",
+     "status": "active",
+     "auto_assign": true,
+     "asset": "IMAGE_AI",
+     "compositions": [
+      {
+       "id": "full_bleed",
+       "describe": "Ảnh tràn toàn màn có lớp tối dưới; khối logo chương trình (nhãn đỏ + tiêu đề) góc trên trái; nhãn chương đỏ và lower-third tin tức phía dưới",
+       "axes": {
+        "composition": "hero_image",
+        "textPlacement": "lower_third"
+       }
+      },
+      {
+       "id": "letterbox",
+       "describe": "Tiêu đề căn giữa trên nền chuyển màu; khung phim 16:9 có dải đen trên/dưới ở giữa màn; số chương phía trên khung; lời đọc hộp tối phía dưới",
+       "axes": {
+        "composition": "split_horizontal",
+        "textPlacement": "bottom"
+       }
+      }
+     ],
+     "usage": {
+      "de": 6,
+      "en": 3,
+      "ko": 1,
+      "ja": 1
+     }
+    },
+    {
+     "id": "vox/map-route",
+     "name": "Bản đồ lộ trình",
+     "status": "active",
+     "auto_assign": true,
+     "asset": "IMAGE_AI",
+     "compositions": [
+      {
+       "id": "route_map",
+       "describe": "Bản đồ phẳng toàn màn; đường chấm đỏ zig-zag dọc nối 6 ghim số, tự vẽ xuống tới ghim của cảnh, vòng xanh nhảy theo ghim; thẻ ảnh bo góc nằm cạnh ghim hiện tại (đổi bên theo ghim); lời đọc thẻ trắng dưới",
+       "axes": {
+        "composition": "map_full",
+        "textPlacement": "bottom"
+       }
+      },
+      {
+       "id": "photo_inset",
+       "describe": "Ảnh tràn toàn màn; lời đọc thẻ trắng phía trên; thẻ bản đồ nhỏ góc phải dưới vẽ dần lộ trình và ghim hiện tại",
+       "axes": {
+        "composition": "hero_image",
+        "textPlacement": "top"
+       }
+      }
+     ],
+     "usage": {
+      "de": 6,
+      "en": 3,
+      "ko": 0,
+      "ja": 0
+     }
+    },
+    {
+     "id": "vox/original",
+     "name": "Ảnh xé cắt dán (giao diện gốc)",
+     "status": "active",
+     "auto_assign": true,
+     "asset": "IMAGE_AI",
+     "compositions": [
+      {
+       "id": "torn_bleed",
+       "describe": "Khuôn gốc: ảnh cảnh tràn màn xé thành 2–3 mảnh bay vào ghép lại (mép giấy trắng, 2 băng washi, con dấu ★ viền đỏ đứt nét); pill SERIES • TIÊU ĐỀ góc trên; lời đọc trong pill tối viền cam ở đáy; watermark góc dưới phải; vignette + halftone",
+       "axes": {
+        "composition": "hero_image",
+        "textPlacement": "bottom"
+       }
+      },
+      {
+       "id": "torn_card",
+       "describe": "Cùng bộ đồ vật, ảnh xé ghép trên một tấm poster giữa bàn tối (nửa dưới), pill lời đọc ngay dưới badge ở nửa trên",
+       "axes": {
+        "composition": "card_stack",
+        "textPlacement": "top"
+       }
+      }
+     ],
+     "usage": {
+      "de": 5,
+      "en": 2,
+      "ko": 0,
+      "ja": 0
+     }
+    },
+    {
+     "id": "vox/paper-collage",
+     "name": "Cắt dán giấy xé",
+     "status": "active",
+     "auto_assign": true,
+     "asset": "IMAGE_AI",
+     "compositions": [
+      {
+       "id": "torn_layers",
+       "describe": "Dải giấy trắng xé mang tiêu đề trên nền kraft; ảnh chính trên mảnh giấy xé ở giữa, hai mẩu ảnh cảnh khác đen trắng lót phía sau; lời đọc trên băng dính đen nổi phía dưới",
+       "axes": {
+        "composition": "card_stack",
+        "textPlacement": "floating"
+       }
+      },
+      {
+       "id": "cutout_column",
+       "describe": "Tiêu đề trên dải giấy xé; ảnh cắt dọc cao bên phải; lời đọc trên băng dính đen ở cột trái, mẩu ảnh cảnh khác dán dưới cột chữ",
+       "axes": {
+        "composition": "split_vertical",
+        "textPlacement": "left_column"
+       }
+      }
+     ],
+     "usage": {
+      "de": 6,
+      "en": 2,
+      "ko": 1,
+      "ja": 0
+     }
+    },
+    {
+     "id": "vox/split-then-now",
+     "name": "Chia đôi xưa và nay",
+     "status": "active",
+     "auto_assign": true,
+     "asset": "IMAGE_AI",
+     "compositions": [
+      {
+       "id": "side_by_side",
+       "describe": "Màn chia đôi dọc: nửa trái ảnh ngả sepia (XƯA), nửa phải ảnh màu (NAY); thanh chia trắng gạt từ trái vào giữa mỗi cảnh; lời đọc hộp tối giữa đường chia",
+       "axes": {
+        "composition": "split_vertical",
+        "textPlacement": "center"
+       }
+      },
+      {
+       "id": "lens_reveal",
+       "describe": "Ảnh XƯA sepia tối tràn toàn màn; một ống kính tròn NAY (ảnh màu) bật mở ở giữa; lời đọc hộp tối phía dưới",
+       "axes": {
+        "composition": "circle_frame",
+        "textPlacement": "bottom"
+       }
+      }
+     ],
+     "usage": {
+      "de": 6,
+      "en": 3,
+      "ko": 0,
+      "ja": 0
+     }
+    },
+    {
+     "id": "vox/timeline-explainer",
+     "name": "Trục thời gian giải thích",
+     "status": "active",
+     "auto_assign": true,
+     "asset": "IMAGE_AI",
+     "compositions": [
+      {
+       "id": "track_below",
+       "describe": "Thẻ ảnh bo góc phía trên nối dây xuống mốc hiện tại trên trục thời gian ngang (mốc = con số trong câu); vạch tiến độ chạy suốt video; lời đọc trong khung phía dưới",
+       "axes": {
+        "composition": "timeline_track",
+        "textPlacement": "bottom"
+       }
+      },
+      {
+       "id": "band_middle",
+       "describe": "Ảnh tràn toàn màn; tiêu đề trong hộp tối, lời đọc trên dải tối tràn ngang phía trên; trục thời gian ngang nằm trên dải sáng đặc gần đáy (mốc ở trên vạch)",
+       "axes": {
+        "composition": "hero_image",
+        "textPlacement": "top"
+       }
+      }
+     ],
+     "usage": {
+      "de": 6,
+      "en": 3,
+      "ko": 0,
+      "ja": 0
+     }
+    },
+    {
+     "id": "vox/zine-xerox",
+     "name": "Zine photocopy",
+     "status": "active",
+     "auto_assign": true,
+     "asset": "IMAGE_AI",
+     "compositions": [
+      {
+       "id": "xerox_page",
+       "describe": "Tiêu đề chữ cắt báo (mỗi mẩu một nền); cả trang là ảnh photocopy đen trắng tương phản cao, khoanh bút đỏ; lời đọc trên dải giấy trắng viền đen dán đè lên ảnh",
+       "axes": {
+        "composition": "poster",
+        "textPlacement": "on_image"
+       }
+      },
+      {
+       "id": "cutup_grid",
+       "describe": "Tiêu đề chữ cắt báo; lưới 2×2 ảnh photocopy (cảnh hiện tại viền đỏ + 3 cảnh khác); lời đọc trên dải đen chữ trắng cắt ngang giữa lưới",
+       "axes": {
+        "composition": "grid",
+        "textPlacement": "center"
+       }
+      }
+     ],
+     "usage": {
+      "de": 6,
+      "en": 2,
+      "ko": 0,
+      "ja": 0
+     }
+    }
+   ]
+  },
+  {
+   "engine": "wildlife",
+   "channels": 29,
+   "variants": [
+    {
+     "id": "wildlife/deep-ocean",
+     "name": "Ô cửa tàu lặn biển sâu",
+     "status": "active",
+     "auto_assign": true,
+     "asset": "IMAGE_AI",
+     "compositions": [
+      {
+       "id": "porthole_gauge",
+       "describe": "Ô cửa tàu lặn tròn có đinh tán bên trái; thước độ sâu dọc bên phải với mỗi chỉ số là một vạch theo mức, con trỏ lặn dần theo cảnh; bảng thép khắc tên loài; lời đọc hộp kính dưới",
+       "axes": {
+        "composition": "porthole",
+        "textPlacement": "bottom"
+       }
+      },
+      {
+       "id": "sub_capsule",
+       "describe": "Lời đọc hộp kính trên cùng; cửa sổ hình con nhộng dọc (khung thép) bên trái; cột phải: thẻ loài + thước độ sâu dọc dài với các vạch chỉ số",
+       "axes": {
+        "composition": "split_vertical",
+        "textPlacement": "top"
+       }
+      }
+     ],
+     "usage": {
+      "de": 2,
+      "en": 1,
+      "ko": 1,
+      "ja": 1
+     }
+    },
+    {
+     "id": "wildlife/field-guide",
+     "name": "Trang sách hướng dẫn thực địa",
+     "status": "active",
+     "auto_assign": true,
+     "asset": "IMAGE_AI",
+     "compositions": [
+      {
+       "id": "species_spread",
+       "describe": "Trang chia dọc: cột trái tên loài + lời đọc + khoá định danh + phân bố; cột phải bảng minh hoạ đứng cao, chú thích, thang IUCN 7 ô (ô của loài tô màu)",
+       "axes": {
+        "composition": "split_vertical",
+        "textPlacement": "left_column"
+       }
+      },
+      {
+       "id": "plate_page",
+       "describe": "Trang sách in: tiêu đề chạy + gạch; bảng minh hoạ ngang có chú thích 'Hình i'; tên loài đậm + Latin nghiêng; cột trái khoá định danh (vạch gạch chéo) + ô IUCN + phân bố; cột phải lời đọc",
+       "axes": {
+        "composition": "ledger_columns",
+        "textPlacement": "right_column"
+       }
+      }
+     ],
+     "usage": {
+      "de": 3,
+      "en": 1,
+      "ko": 0,
+      "ja": 0
+     }
+    },
+    {
+     "id": "wildlife/microscope",
+     "name": "Kính hiển vi sinh vật tí hon",
+     "status": "active",
+     "auto_assign": true,
+     "asset": "IMAGE_AI",
+     "compositions": [
+      {
+       "id": "eyepiece",
+       "describe": "Thị kính tròn viền đen dày giữa màn (tĩnh) có thước vi trắc µm ngang trong trường nhìn; lam kính: đầu nhãn mờ ghi tên/Latin/IUCN, phần kính ghi các số đo có thanh; lời đọc giấy đánh máy dưới",
+       "axes": {
+        "composition": "ring",
+        "textPlacement": "bottom"
+       }
+      },
+      {
+       "id": "slide_bench",
+       "describe": "Lời đọc giấy đánh máy phía trên; thị kính tròn bên trái + thước µm dọc; thẻ số đo tối màu bên phải (số lớn, thanh); nhãn lam kính mờ dài dưới cùng với tên/Latin/IUCN/phân bố",
+       "axes": {
+        "composition": "split_horizontal",
+        "textPlacement": "top"
+       }
+      }
+     ],
+     "usage": {
+      "de": 2,
+      "en": 1,
+      "ko": 0,
+      "ja": 0
+     }
+    },
+    {
+     "id": "wildlife/migration-map",
+     "name": "Bản đồ đường di cư",
+     "status": "active",
+     "auto_assign": true,
+     "asset": "IMAGE_AI",
+     "compositions": [
+      {
+       "id": "route_window",
+       "describe": "Nền bản đồ; lời đọc panel trên; cửa sổ ảnh ngang; đường di cư nét đứt qua N điểm dừng (điểm của cảnh hiện tại nổi bật); thẻ chú giải: tên/Latin/IUCN/phân bố + chỉ số dạng dòng chú giải",
+       "axes": {
+        "composition": "map_full",
+        "textPlacement": "top"
+       }
+      },
+      {
+       "id": "flyway_medallion",
+       "describe": "Đường bay dọc mép trái (điểm dừng xếp từ trên xuống, bộ đếm chặng); ảnh trong huy chương tròn bên phải; thẻ loài + lưới 2×2 chỉ số chú giải; lời đọc hộp kính dưới",
+       "axes": {
+        "composition": "circle_frame",
+        "textPlacement": "bottom"
+       }
+      }
+     ],
+     "usage": {
+      "de": 2,
+      "en": 1,
+      "ko": 0,
+      "ja": 0
+     }
+    },
+    {
+     "id": "wildlife/nature-doc",
+     "name": "Phim tài liệu thiên nhiên letterbox",
+     "status": "active",
+     "auto_assign": true,
+     "asset": "IMAGE_AI",
+     "compositions": [
+      {
+       "id": "letterbox_band",
+       "describe": "Nền đen; tiêu đề giữa kiểu phim; băng hình letterbox ngang giữa màn (tên loài trên vạch đen trên, chương + callout trên vạch đen dưới); phụ đề mảnh; khối tên loài + chỉ số chấm tròn 5 nấc",
+       "axes": {
+        "composition": "split_horizontal",
+        "textPlacement": "bottom"
+       }
+      },
+      {
+       "id": "fullframe_credits",
+       "describe": "Khung dọc gần tràn màn giữa 2 vạch đen; tiêu đề nhỏ trong vạch trên; thẻ loài kiểu credit mở đầu (tên, Latin, IUCN, chỉ số) góc trên ảnh; phụ đề đè ảnh; chương ở vạch dưới",
+       "axes": {
+        "composition": "poster",
+        "textPlacement": "on_image"
+       }
+      }
+     ],
+     "usage": {
+      "de": 3,
+      "en": 1,
+      "ko": 0,
+      "ja": 0
+     }
+    },
+    {
+     "id": "wildlife/savanna-hud",
+     "name": "HUD ống ngắm thảo nguyên",
+     "status": "active",
+     "auto_assign": true,
+     "asset": "IMAGE_AI",
+     "compositions": [
+      {
+       "id": "scope_center",
+       "describe": "Ống ngắm tròn có lưới chữ thập giữa màn; dải định danh loài + huy hiệu IUCN dưới ống; lưới 2×2 chỉ số dạng thanh; lời đọc lower-third",
+       "axes": {
+        "composition": "circle_frame",
+        "textPlacement": "lower_third"
+       }
+      },
+      {
+       "id": "rangefinder",
+       "describe": "Ảnh tràn màn qua kính đo xa (khung góc), lời đọc hộp kính phía trên, cột 4 ô đọc số chỉ số dọc mép phải, thẻ định danh loài dưới",
+       "axes": {
+        "composition": "hero_image",
+        "textPlacement": "top"
+       }
+      }
+     ],
+     "usage": {
+      "de": 3,
+      "en": 1,
+      "ko": 0,
+      "ja": 0
+     }
+    },
+    {
+     "id": "wildlife/stat-battle",
+     "name": "Thẻ chỉ số kỷ lục",
+     "status": "active",
+     "auto_assign": true,
+     "asset": "IMAGE_AI",
+     "compositions": [
+      {
+       "id": "trading_card",
+       "describe": "Ruy băng tiêu đề; lời đọc panel trên; thẻ bài viền vàng chứa ảnh bên trái, cột khối chỉ số (số lớn + thanh công suất + điểm /100) bên phải; bảng tên + huy hiệu IUCN lớn dưới",
+       "axes": {
+        "composition": "card_stack",
+        "textPlacement": "top"
+       }
+      },
+      {
+       "id": "stat_grid",
+       "describe": "Ảnh ngang rộng phía trên; dòng tên loài + huy hiệu IUCN; lưới 2×2 ô số khổng lồ có thanh công suất; lời đọc panel dưới",
+       "axes": {
+        "composition": "grid",
+        "textPlacement": "bottom"
+       }
+      }
+     ],
+     "usage": {
+      "de": 2,
+      "en": 1,
+      "ko": 0,
+      "ja": 0
+     }
+    },
+    {
+     "id": "wildlife/trail-cam",
+     "name": "Bẫy ảnh hồng ngoại",
+     "status": "active",
+     "auto_assign": true,
+     "asset": "IMAGE_AI",
+     "compositions": [
+      {
+       "id": "ir_still",
+       "describe": "Dải đầu đen; lời đọc trên nhãn dán; ảnh hồng ngoại đen trắng rộng hết ngang có khung phát hiện nét đứt + dải CAM/nhiệt độ/giờ; bảng nhật ký kích hoạt (thước ô 10 nấc) dưới",
+       "axes": {
+        "composition": "hero_image",
+        "textPlacement": "top"
+       }
+      },
+      {
+       "id": "burst_strip",
+       "describe": "Ảnh hồng ngoại chính + hàng 3 khung chụp liên tiếp (các cảnh khác) bên dưới; dòng định danh + lưới 2×2 thước ô; lời đọc nhãn dán cuối",
+       "axes": {
+        "composition": "film_strip",
+        "textPlacement": "bottom"
+       }
+      }
+     ],
+     "usage": {
+      "de": 2,
+      "en": 1,
+      "ko": 0,
+      "ja": 0
+     }
+    }
+   ]
+  }
+ ]
+}
