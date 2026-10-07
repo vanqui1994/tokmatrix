@@ -136,49 +136,53 @@ nav.side{position:sticky;top:78px;align-self:start;max-height:calc(100vh - 100px
 const LANGS = ["de", "en", "ko", "ja"];
 const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 const state = { q: "", status: "", country: "" };
-const picked = {};  // variant id → index bố cục đang xem
 let DATA = null, CARDS = {};
 
 const used = (v, c) => c ? (v.usage[c] || 0) : LANGS.reduce((n, l) => n + (v.usage[l] || 0), 0);
+// Mỗi bố cục là một thẻ riêng (1 skin = 1 acc): đếm tài khoản theo nước từ comp.accounts ("de channel_id").
+const compUsed = (c, lang) => (c.accounts || []).filter((a) => !lang || a.startsWith(lang + " ")).length;
 
-function card(v) {
-  const i = picked[v.id] || 0, comp = v.compositions[i] || {};
-  const total = used(v);
+function card(v, k) {
+  const comp = v.compositions[k] || {};
+  const total = compUsed(comp);
   const tags = [v.asset ? `<span class="tag">${esc(v.asset.replace("_", " "))}</span>` : "",
     v.status !== "active" ? `<span class="tag warn">${esc(v.status)}</span>` : "", v.auto_assign ? "" : '<span class="tag warn">opt-in</span>'].join(" ");
-  return `<article class="card ${total ? "" : "unused"}" data-id="${esc(v.id)}">
+  const accs = (comp.accounts || []);
+  return `<article class="card ${total ? "" : "unused"}" data-id="${esc(v.id)}" data-k="${k}">
     <div class="hero" data-act="zoom">${comp.thumb ? `<img loading="lazy" src="${esc(comp.thumb)}" alt="${esc(v.name)} – ${esc(comp.id)}">` : '<div class="noimg">Chưa có ảnh</div>'}
       <span class="badge ${total ? "used" : ""}">${total ? `${total} tài khoản` : "Chưa dùng"}</span>
-      <span class="count">${v.compositions.length} bố cục</span></div>
-    ${v.compositions.length > 1 ? `<div class="strip">${v.compositions.map((c, k) => `<button data-act="pick" data-k="${k}" aria-pressed="${k === i}" title="${esc(c.id)}">${c.thumb ? `<img loading="lazy" src="${esc(c.thumb)}" alt="">` : ""}</button>`).join("")}</div>` : ""}
+      <span class="count">${k + 1}/${v.compositions.length}</span></div>
     <div class="body">
-      <div class="title">${esc(v.name)}</div>
+      <div class="title">${esc(v.name)} · ${esc(comp.id || "")}</div>
       <div class="sub"><code>${esc(v.id)}</code>${tags}</div>
-      <div class="comp"><b>${esc(comp.id || "")}</b>${comp.describe ? ` — ${esc(comp.describe.length > 110 ? comp.describe.slice(0, 110) + "…" : comp.describe)}` : ""}</div>
-      <div class="langs">${LANGS.map((l) => `<div class="lang ${v.usage[l] ? "" : "zero"}"><b>${v.usage[l] || 0}</b>${l.toUpperCase()}</div>`).join("")}</div>
+      <div class="comp">${comp.describe ? esc(comp.describe.length > 110 ? comp.describe.slice(0, 110) + "…" : comp.describe) : ""}</div>
+      <div class="comp"><b>Tài khoản:</b> ${accs.length ? accs.map((a) => `<code>${esc(a)}</code>`).join(" ") : "chưa gán"}</div>
+      <div class="langs">${LANGS.map((l) => `<div class="lang ${compUsed(comp, l) ? "" : "zero"}"><b>${compUsed(comp, l)}</b>${l.toUpperCase()}</div>`).join("")}</div>
     </div></article>`;
 }
 
 function render() {
   const q = state.q, html = [], nav = [];
   for (const e of DATA.engines) {
-    const vs = e.variants.filter((v) => {
-      const n = used(v, state.country);
-      if (state.status === "used" && !n) return false;
-      if (state.status === "unused" && n) return false;
-      return !q || [v.id, v.name, ...v.compositions.flatMap((c) => [c.id, c.describe])].join(" ").toLowerCase().includes(q);
+    const items = [];
+    for (const v of e.variants) v.compositions.forEach((c, k) => {
+      const n = compUsed(c, state.country);
+      if (state.status === "used" && !n) return;
+      if (state.status === "unused" && n) return;
+      if (q && ![v.id, v.name, c.id, c.describe, ...(c.accounts || [])].join(" ").toLowerCase().includes(q)) return;
+      items.push(card(v, k));
     });
-    const inUse = e.variants.filter((v) => used(v)).length;
-    nav.push(`<a href="#e-${esc(e.engine)}" data-e="${esc(e.engine)}">${esc(e.engine)}<span>${vs.length}/${e.variants.length}</span></a>`);
-    if (!vs.length) continue;
     const comps = e.variants.reduce((n, v) => n + v.compositions.length, 0);
+    const inUse = e.variants.reduce((n, v) => n + v.compositions.filter((c) => compUsed(c)).length, 0);
+    nav.push(`<a href="#e-${esc(e.engine)}" data-e="${esc(e.engine)}">${esc(e.engine)}<span>${items.length}/${comps}</span></a>`);
+    if (!items.length) continue;
     html.push(`<section class="engine" id="e-${esc(e.engine)}"><div class="engine-head"><h2>${esc(e.engine)}</h2>
-      <span class="meta">${e.variants.length} skin · ${comps} bố cục · ${inUse} đang dùng · ${e.channels} kênh dùng engine</span>
-      <span class="bar" title="${inUse}/${e.variants.length} skin đang dùng"><i style="width:${Math.round(100 * inUse / e.variants.length)}%"></i></span></div>
-      <div class="grid">${vs.map(card).join("")}</div></section>`);
+      <span class="meta">${e.variants.length} skin · ${comps} bố cục · ${inUse} bố cục đang dùng · ${e.channels} kênh dùng engine</span>
+      <span class="bar" title="${inUse}/${comps} bố cục đang dùng"><i style="width:${Math.round(100 * inUse / comps)}%"></i></span></div>
+      <div class="grid">${items.join("")}</div></section>`);
   }
   document.getElementById("nav").innerHTML = nav.join("");
-  document.getElementById("list").innerHTML = html.join("") || '<div class="empty">Không có skin khớp bộ lọc.</div>';
+  document.getElementById("list").innerHTML = html.join("") || '<div class="empty">Không có bố cục khớp bộ lọc.</div>';
 }
 
 function lightbox(v, k) {
@@ -207,9 +211,8 @@ document.addEventListener("keydown", (e) => {
 });
 document.getElementById("list").addEventListener("click", (e) => {
   const el = e.target.closest("[data-act]"); if (!el) return;
-  const id = el.closest(".card").dataset.id, v = CARDS[id];
-  if (el.dataset.act === "pick") { picked[id] = Number(el.dataset.k); el.closest(".card").outerHTML = card(v); }
-  else lightbox(v, picked[id] || 0);
+  const box = el.closest(".card");
+  lightbox(CARDS[box.dataset.id], Number(box.dataset.k));
 });
 for (const g of ["state", "country"]) document.getElementById(g).addEventListener("click", (e) => {
   const b = e.target.closest("button"); if (!b) return;
