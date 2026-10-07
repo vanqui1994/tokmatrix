@@ -114,7 +114,7 @@ async def sync_channel_configs(db_path: str | Path | None = None) -> Dict[str, A
     for niche_id in niche_ids:
         # Resolve in per-niche chunks: a full 180-channel snapshot exceeds the
         # single-line JSON bridge's OS pipe buffer.
-        channels.extend(await cn.bridge("matrix.config.resolve", {"niche_id": niche_id}, timeout=45))
+        channels.extend(await cn.bridge("matrix.config.resolve", {"niche_id": niche_id}, timeout=180))  # VPS tải cao (load ~18/4 CPU): 45s làm hỏng batch
     if not isinstance(channels, list):
         raise ValueError("Matrix config resolver returned a non-list payload")
 
