@@ -9,7 +9,7 @@ audio:
   - freepd-natural-vibes
   - freepd-soundtrack-from-the-starcourt-mall
 channel_id: deep_space_12
-config_version: 11
+config_version: 12
 creative:
   cut_cadence_seconds: 2.9
   palette:
@@ -17,19 +17,21 @@ creative:
     primary: '#0B0C10'
     text: '#C5C6C7'
   preferred_engines:
-  - compare
+  - survival
   visual_style_id: cosmic_space_v1
-  variant_id: compare/race-track
-  dna:
-    dna_version: 2
-    variant_version: 1
-    composition: side_lanes
-    typography: condensed
-    treatment: clean
-    image_motion: still_grain
-    transition: slide
-    tone: 2
-    caption: fixed
+  skins:
+    survival:
+      variant_id: survival/space-exposure
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: visor
+        typography: condensed
+        treatment: vignette_dark
+        image_motion: ken_burns_slow
+        transition: fade_black
+        tone: 0
+        caption: fixed
 name: Kosmos & Physik 12
 niche_id: deep_space
 persona:

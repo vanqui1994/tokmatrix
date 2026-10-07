@@ -1,15 +1,15 @@
 {
- "generated_at": "2026-10-07T04:26:20.239Z",
+ "generated_at": "2026-10-07T15:35:29.512Z",
  "totals": {
   "engines": 11,
-  "variants": 89,
-  "compositions": 187,
-  "variants_in_use": 84
+  "variants": 92,
+  "compositions": 196,
+  "variants_in_use": 87
  },
  "engines": [
   {
    "engine": "chalk",
-   "channels": 18,
+   "channels": 14,
    "variants": [
     {
      "id": "chalk/atlas",
@@ -27,7 +27,7 @@
        },
        "thumb": "skins/chalk__atlas__scroll_plate.jpg",
        "accounts": [
-        "de economy_empires_13"
+        "en military_arsenal_09"
        ]
       },
       {
@@ -40,7 +40,7 @@
        },
        "thumb": "skins/chalk__atlas__torn_plate.jpg",
        "accounts": [
-        "en military_arsenal_09"
+        "de geopolitics_maps_05"
        ]
       }
      ],
@@ -67,7 +67,7 @@
        },
        "thumb": "skins/chalk__blueprint__title_block.jpg",
        "accounts": [
-        "ko philosophy_paradox_03"
+        "en philosophy_paradox_03"
        ]
       },
       {
@@ -86,8 +86,8 @@
      ],
      "usage": {
       "de": 0,
-      "en": 1,
-      "ko": 1,
+      "en": 2,
+      "ko": 0,
       "ja": 0
      }
     },
@@ -146,7 +146,7 @@
        },
        "thumb": "skins/chalk__satellite__feeds.jpg",
        "accounts": [
-        "en military_arsenal_05"
+        "de geopolitics_maps_06"
        ]
       },
       {
@@ -164,8 +164,8 @@
       }
      ],
      "usage": {
-      "de": 1,
-      "en": 1,
+      "de": 2,
+      "en": 0,
       "ko": 0,
       "ja": 0
      }
@@ -225,7 +225,7 @@
        },
        "thumb": "skins/chalk__war-room__board.jpg",
        "accounts": [
-        "en mega_catastrophes_06"
+        "de geopolitics_maps_01"
        ]
       },
       {
@@ -242,8 +242,8 @@
       }
      ],
      "usage": {
-      "de": 1,
-      "en": 1,
+      "de": 2,
+      "en": 0,
       "ko": 0,
       "ja": 0
      }
@@ -264,7 +264,7 @@
        },
        "thumb": "skins/chalk__whiteboard__marker_map.jpg",
        "accounts": [
-        "de lost_civilizations_07"
+        "de geopolitics_maps_07"
        ]
       },
       {
@@ -349,7 +349,7 @@
        },
        "thumb": "skins/compare__card-game__stat_cards.jpg",
        "accounts": [
-        "de space_08"
+        "en military_arsenal_05"
        ]
       },
       {
@@ -362,13 +362,13 @@
        },
        "thumb": "skins/compare__card-game__trick_grid.jpg",
        "accounts": [
-        "de space_10"
+        "en military_arsenal_06"
        ]
       }
      ],
      "usage": {
-      "de": 2,
-      "en": 0,
+      "de": 0,
+      "en": 2,
       "ko": 0,
       "ja": 0
      }
@@ -468,7 +468,7 @@
        },
        "thumb": "skins/compare__race-track__side_lanes.jpg",
        "accounts": [
-        "de deep_space_12"
+        "de economy_empires_13"
        ]
       },
       {
@@ -600,13 +600,13 @@
        },
        "thumb": "skins/compare__tier-duel__led_scoreboard.jpg",
        "accounts": [
-        "en military_arsenal_06"
+        "de geopolitics_maps_02"
        ]
       }
      ],
      "usage": {
-      "de": 1,
-      "en": 1,
+      "de": 2,
+      "en": 0,
       "ko": 0,
       "ja": 0
      }
@@ -1429,7 +1429,7 @@
   },
   {
    "engine": "newspaper",
-   "channels": 21,
+   "channels": 19,
    "variants": [
     {
      "id": "newspaper/court-sketch",
@@ -1540,7 +1540,7 @@
        },
        "thumb": "skins/newspaper__microfilm__reader_screen.jpg",
        "accounts": [
-        "de medical_anomalies_12"
+        "de geopolitics_maps_03"
        ]
       },
       {
@@ -1801,8 +1801,59 @@
   },
   {
    "engine": "science",
-   "channels": 30,
+   "channels": 39,
    "variants": [
+    {
+     "id": "science/doc-reel",
+     "name": "Cuộn phim tài liệu",
+     "status": "active",
+     "auto_assign": true,
+     "asset": "TEXT",
+     "compositions": [
+      {
+       "id": "reel_center",
+       "describe": "Dải phim dọc giữa màn: khung hiện tại lớn (số cuộn, tiêu đề = từ khoá, con số vàng); lời đọc khối kính giữa dưới khung",
+       "axes": {
+        "composition": "film_strip",
+        "textPlacement": "center"
+       },
+       "thumb": "skins/science__doc-reel__reel_center.jpg",
+       "accounts": [
+        "ja ocean_mysteries_01"
+       ]
+      },
+      {
+       "id": "projector_wall",
+       "describe": "Màn chiếu rộng gần toàn khung (khung phim hiện tại), chùm sáng máy chiếu từ dưới; lời đọc lower-third",
+       "axes": {
+        "composition": "hero_image",
+        "textPlacement": "lower_third"
+       },
+       "thumb": "skins/science__doc-reel__projector_wall.jpg",
+       "accounts": [
+        "de space_10"
+       ]
+      },
+      {
+       "id": "contact_sheet",
+       "describe": "Lời đọc trên; tờ in thử (contact sheet) 2×3 khung phim, khung của cảnh hiện tại khoanh bút đỏ",
+       "axes": {
+        "composition": "grid",
+        "textPlacement": "top"
+       },
+       "thumb": "skins/science__doc-reel__contact_sheet.jpg",
+       "accounts": [
+        "de space_08"
+       ]
+      }
+     ],
+     "usage": {
+      "de": 2,
+      "en": 0,
+      "ko": 0,
+      "ja": 1
+     }
+    },
     {
      "id": "science/explainer-board",
      "name": "Bảng giải thích (3 layout: bảng trắng / sổ thí nghiệm / màn HUD) + linh vật dẫn",
@@ -1833,7 +1884,7 @@
        },
        "thumb": "skins/science__explainer-board__lab_notebook.jpg",
        "accounts": [
-        "de mega_catastrophes_02"
+        "de lost_civilizations_07"
        ]
       },
       {
@@ -2077,6 +2128,57 @@
      }
     },
     {
+     "id": "science/museum-label",
+     "name": "Tủ kính bảo tàng",
+     "status": "active",
+     "auto_assign": true,
+     "asset": "TEXT",
+     "compositions": [
+      {
+       "id": "exhibit_case",
+       "describe": "Tủ kính bảo tàng lớn: hiện vật trên bệ dưới đèn rọi, thẻ tên ngà (từ khoá) + biển đồng số hiệu; lời đọc khối kính đè dưới tủ",
+       "axes": {
+        "composition": "folder_card",
+        "textPlacement": "on_image"
+       },
+       "thumb": "skins/science__museum-label__exhibit_case.jpg",
+       "accounts": [
+        "de space_09"
+       ]
+      },
+      {
+       "id": "label_wall",
+       "describe": "Lời đọc trên tờ ghi chú; tường trưng bày 3 hộp hiện vật (cảnh trước – hiện tại lớn – cảnh sau)",
+       "axes": {
+        "composition": "grid",
+        "textPlacement": "top"
+       },
+       "thumb": "skins/science__museum-label__label_wall.jpg",
+       "accounts": [
+        "de medical_anomalies_12"
+       ]
+      },
+      {
+       "id": "drawer_tray",
+       "describe": "Ngăn kéo lưu trữ mẫu vật kéo ra bên trái (hiện vật + thẻ), cột lời đọc bên phải như phiếu kiểm kê",
+       "axes": {
+        "composition": "ledger_columns",
+        "textPlacement": "right_column"
+       },
+       "thumb": "skins/science__museum-label__drawer_tray.jpg",
+       "accounts": [
+        "de extreme_survival_07"
+       ]
+      }
+     ],
+     "usage": {
+      "de": 3,
+      "en": 0,
+      "ko": 0,
+      "ja": 0
+     }
+    },
+    {
      "id": "science/orbit-diagram",
      "name": "Sơ đồ quỹ đạo",
      "status": "active",
@@ -2201,6 +2303,57 @@
      "usage": {
       "de": 2,
       "en": 0,
+      "ko": 0,
+      "ja": 0
+     }
+    },
+    {
+     "id": "science/relief-model",
+     "name": "Mô hình địa hình",
+     "status": "active",
+     "auto_assign": true,
+     "asset": "TEXT",
+     "compositions": [
+      {
+       "id": "relief_table",
+       "describe": "Bàn mô hình địa hình đồng mức chiếm bên trái, ghim tối mang từ khoá + độ cao (con số), thước tỉ lệ; lời đọc cột kính bên phải",
+       "axes": {
+        "composition": "diorama",
+        "textPlacement": "right_column"
+       },
+       "thumb": "skins/science__relief-model__relief_table.jpg",
+       "accounts": [
+        "en forbidden_experiments_03"
+       ]
+      },
+      {
+       "id": "contour_card",
+       "describe": "Lời đọc trên; tấm bản đồ đồng mức như thẻ khảo sát có viền giấy, số tấm dưới thẻ",
+       "axes": {
+        "composition": "card_stack",
+        "textPlacement": "top"
+       },
+       "thumb": "skins/science__relief-model__contour_card.jpg",
+       "accounts": [
+        "en mega_catastrophes_06"
+       ]
+      },
+      {
+       "id": "cross_section",
+       "describe": "Trên: bản đồ đồng mức nhìn từ trên; dưới: mặt cắt địa tầng các lớp đất với vạch đánh dấu cảnh hiện tại; lời đọc tấm biển dưới cùng",
+       "axes": {
+        "composition": "split_horizontal",
+        "textPlacement": "bottom"
+       },
+       "thumb": "skins/science__relief-model__cross_section.jpg",
+       "accounts": [
+        "de mega_catastrophes_02"
+       ]
+      }
+     ],
+     "usage": {
+      "de": 1,
+      "en": 2,
       "ko": 0,
       "ja": 0
      }
@@ -2665,7 +2818,7 @@
        },
        "thumb": "skins/survival__space-exposure__visor.jpg",
        "accounts": [
-        "de space_09"
+        "de deep_space_12"
        ]
       },
       {
@@ -3031,7 +3184,7 @@
   },
   {
    "engine": "vox",
-   "channels": 17,
+   "channels": 16,
    "variants": [
     {
      "id": "vox/data-card",
@@ -3088,7 +3241,7 @@
        },
        "thumb": "skins/vox__documentary-lowerthird__full_bleed.jpg",
        "accounts": [
-        "ko philosophy_paradox_02"
+        "en philosophy_paradox_02"
        ]
       },
       {
@@ -3106,8 +3259,8 @@
      ],
      "usage": {
       "de": 1,
-      "en": 0,
-      "ko": 1,
+      "en": 1,
+      "ko": 0,
       "ja": 0
      }
     },
@@ -3217,14 +3370,14 @@
        },
        "thumb": "skins/vox__paper-collage__cutout_column.jpg",
        "accounts": [
-        "ko philosophy_paradox_01"
+        "en philosophy_paradox_01"
        ]
       }
      ],
      "usage": {
       "de": 1,
-      "en": 0,
-      "ko": 1,
+      "en": 1,
+      "ko": 0,
       "ja": 0
      }
     },
@@ -3349,7 +3502,7 @@
   },
   {
    "engine": "wildlife",
-   "channels": 20,
+   "channels": 18,
    "variants": [
     {
      "id": "wildlife/deep-ocean",
@@ -3367,7 +3520,7 @@
        },
        "thumb": "skins/wildlife__deep-ocean__porthole_gauge.jpg",
        "accounts": [
-        "ko ocean_mysteries_13"
+        "en ocean_mysteries_13"
        ]
       },
       {
@@ -3385,8 +3538,8 @@
      ],
      "usage": {
       "de": 0,
-      "en": 1,
-      "ko": 1,
+      "en": 2,
+      "ko": 0,
       "ja": 0
      }
     },
@@ -3418,15 +3571,15 @@
        },
        "thumb": "skins/wildlife__field-guide__plate_page.jpg",
        "accounts": [
-        "ja ocean_mysteries_06"
+        "en ocean_mysteries_06"
        ]
       }
      ],
      "usage": {
       "de": 0,
-      "en": 1,
+      "en": 2,
       "ko": 0,
-      "ja": 1
+      "ja": 0
      }
     },
     {
@@ -3523,7 +3676,7 @@
        },
        "thumb": "skins/wildlife__nature-doc__letterbox_band.jpg",
        "accounts": [
-        "de extreme_survival_07"
+        "ja ocean_mysteries_07"
        ]
       },
       {
@@ -3540,10 +3693,10 @@
       }
      ],
      "usage": {
-      "de": 1,
+      "de": 0,
       "en": 1,
       "ko": 0,
-      "ja": 0
+      "ja": 1
      }
     },
     {

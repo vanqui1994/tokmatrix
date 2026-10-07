@@ -1,5 +1,5 @@
-# Kênh Matrix đang gắn tài khoản TikTok (autopilot_channel_map trên VPS, 07/10/2026), trừ tài khoản remake YouTube/Kuaishou.
-# Mỗi kênh ở đây có một bố cục không kênh nào khác dùng (tools/assign-unique-skins.mjs --global).
+# Kênh Matrix đang gắn tài khoản TikTok (autopilot_channel_map), trừ tài khoản remake YouTube/Kuaishou.
+# Ghi tự động bởi bkt_web/autopilot/unique_skins.py mỗi cycle; mỗi kênh có một bố cục không kênh nào khác dùng.
 ancient_mythology_01
 ancient_mythology_02
 ancient_mythology_03
@@ -96,7 +96,13 @@ forbidden_experiments_10
 forbidden_experiments_11
 forbidden_experiments_12
 forbidden_experiments_13
+geopolitics_maps_01
+geopolitics_maps_02
+geopolitics_maps_03
 geopolitics_maps_04
+geopolitics_maps_05
+geopolitics_maps_06
+geopolitics_maps_07
 geopolitics_maps_08
 geopolitics_maps_09
 geopolitics_maps_10

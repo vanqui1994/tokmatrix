@@ -3,5 +3,6 @@
 import variants from "./variants.mjs";
 import explainerBoard from "./explainer-board.mjs";
 import spacePack from "./space-pack.mjs";
+import extraPack from "./extra-pack.mjs";
 
-export default [...variants, explainerBoard, ...spacePack];
+export default [...variants, explainerBoard, ...spacePack, ...extraPack];

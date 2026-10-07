@@ -1,5 +1,5 @@
 channel_id: ocean_mysteries_10
-config_version: 11
+config_version: 12
 niche_id: ocean_mysteries
 name: 바다와 심해 해구 10
 tiktok_account_ref: null
@@ -26,7 +26,7 @@ creative:
     accent: '#D6A84F'
     text: '#F2EEE6'
 audio:
-  voice_id: ko-KR-HyunsuMultilingualNeural
+  voice_id: en-US-AndrewNeural
   voice_speed: 1.02
   voice_pitch: -1
   music_family: ocean_mysteries_editorial
@@ -36,7 +36,7 @@ audio:
   - freepd-mana-two-part-1
   - oga-november-snow
 publishing:
-  language: ko
+  language: en
   default_schedule_window: 19:30-20:30
   hashtags:
   - oceanmysteries

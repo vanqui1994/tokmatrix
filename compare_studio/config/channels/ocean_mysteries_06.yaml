@@ -1,5 +1,5 @@
 channel_id: ocean_mysteries_06
-config_version: 12
+config_version: 13
 niche_id: ocean_mysteries
 name: 海と深海海溝 06
 tiktok_account_ref: null
@@ -39,7 +39,7 @@ creative:
         tone: 1
         caption: fixed
 audio:
-  voice_id: ja-JP-KeitaNeural
+  voice_id: en-US-AndrewNeural
   voice_speed: 1.02
   voice_pitch: -1
   music_family: ocean_mysteries_editorial
@@ -49,7 +49,7 @@ audio:
   - freepd-desert-fox-underscore
   - freepd-satin-danger
 publishing:
-  language: ja
+  language: en
   default_schedule_window: 19:30-20:30
   hashtags:
   - oceanmysteries

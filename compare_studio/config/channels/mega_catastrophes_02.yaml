@@ -1,5 +1,5 @@
 channel_id: mega_catastrophes_02
-config_version: 13
+config_version: 15
 niche_id: mega_catastrophes
 name: Naturkatastrophen der Erde 02
 tiktok_account_ref: null
@@ -27,17 +27,17 @@ creative:
     text: '#F2EEE6'
   skins:
     science:
-      variant_id: science/explainer-board
+      variant_id: science/relief-model
       dna:
         dna_version: 2
         variant_version: 1
-        composition: lab_notebook
+        composition: cross_section
         typography: serif
-        treatment: vignette_dark
+        treatment: halftone
         image_motion: pan_lateral
-        transition: slide
-        tone: 6
-        caption: middle
+        transition: cut
+        tone: 5
+        caption: fixed
 audio:
   voice_id: DiT_de_female_jiangshi
   voice_speed: 1.05

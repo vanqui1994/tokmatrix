@@ -1,5 +1,5 @@
 channel_id: space_08
-config_version: 13
+config_version: 14
 niche_id: deep_space
 name: Kosmos & Physik 08
 tiktok_account_ref: null
@@ -18,24 +18,26 @@ story:
   pacing_beats: 12
 creative:
   preferred_engines:
-  - compare
+  - science
   visual_style_id: cosmic_space_v1
   cut_cadence_seconds: 2.8
   palette:
     primary: '#0B0C10'
     accent: '#66FCF1'
     text: '#C5C6C7'
-  variant_id: compare/card-game
-  dna:
-    dna_version: 2
-    variant_version: 1
-    composition: stat_cards
-    typography: rounded
-    treatment: halftone
-    image_motion: scan_light
-    transition: flip_3d
-    tone: 4
-    caption: fixed
+  skins:
+    science:
+      variant_id: science/doc-reel
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: contact_sheet
+        typography: heavy
+        treatment: sepia_grain
+        image_motion: ken_burns_fast
+        transition: fade_black
+        tone: 8
+        caption: fixed
 audio:
   voice_id: DiT_de_female_jiangshi
   voice_speed: 0.96

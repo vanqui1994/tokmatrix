@@ -2,14 +2,14 @@ audio:
   music_family: ocean_mysteries_editorial
   sfx_density: medium
   soundscape_id: mystery
-  voice_id: ko-KR-SunHiNeural
+  voice_id: en-US-AvaNeural
   voice_pitch: -1
   voice_speed: 0.99
   bgm_pool:
   - freepd-ice-and-snow
   - oga-underwater-theme
 channel_id: ocean_mysteries_13
-config_version: 13
+config_version: 15
 creative:
   cut_cadence_seconds: 2.4
   palette:
@@ -26,10 +26,10 @@ creative:
         dna_version: 2
         variant_version: 1
         composition: porthole_gauge
-        typography: rounded
-        treatment: duotone
-        image_motion: push_in
-        transition: ink_bleed
+        typography: slab
+        treatment: vignette_dark
+        image_motion: parallax
+        transition: wipe
         tone: 5
         caption: fixed
 name: 바다와 심해 해구 13
@@ -45,7 +45,7 @@ publishing:
   - oceanmysteries
   - khampha
   - facts
-  language: ko
+  language: en
 story:
   pacing_beats: 12
   preferred_blueprints:

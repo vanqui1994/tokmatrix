@@ -1,5 +1,5 @@
 channel_id: philosophy_paradox_03
-config_version: 11
+config_version: 13
 niche_id: philosophy_paradox
 name: 철학의 역설 03
 tiktok_account_ref: null
@@ -32,14 +32,14 @@ creative:
         dna_version: 2
         variant_version: 1
         composition: title_block
-        typography: mono
-        treatment: halftone
-        image_motion: ken_burns_slow
+        typography: typewriter
+        treatment: clean
+        image_motion: push_in
         transition: wipe
-        tone: 2
+        tone: 4
         caption: fixed
 audio:
-  voice_id: ko-KR-HyunsuMultilingualNeural
+  voice_id: en-US-AndrewNeural
   voice_speed: 0.99
   voice_pitch: -1
   music_family: philosophy_paradox_editorial
@@ -49,7 +49,7 @@ audio:
   - freepd-desert-fox-underscore
   - freepd-satin-danger
 publishing:
-  language: ko
+  language: en
   default_schedule_window: 19:30-20:30
   hashtags:
   - philosophyparadox

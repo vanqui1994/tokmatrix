@@ -1,5 +1,5 @@
 channel_id: philosophy_paradox_04
-config_version: 12
+config_version: 13
 niche_id: philosophy_paradox
 name: 철학의 역설 04
 tiktok_account_ref: null
@@ -26,7 +26,7 @@ creative:
     accent: '#D6A84F'
     text: '#F2EEE6'
 audio:
-  voice_id: ko-KR-SunHiNeural
+  voice_id: en-US-AvaNeural
   voice_speed: 1.05
   voice_pitch: -1
   music_family: philosophy_paradox_editorial
@@ -36,7 +36,7 @@ audio:
   - freepd-infinite-wonder
   - freepd-midnight-in-the-green-house
 publishing:
-  language: ko
+  language: en
   default_schedule_window: 19:30-20:30
   hashtags:
   - philosophyparadox

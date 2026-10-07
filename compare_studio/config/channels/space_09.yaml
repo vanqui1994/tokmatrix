@@ -1,5 +1,5 @@
 channel_id: space_09
-config_version: 14
+config_version: 15
 niche_id: deep_space
 name: Kosmos & Physik 09
 tiktok_account_ref: null
@@ -18,7 +18,7 @@ story:
   pacing_beats: 12
 creative:
   preferred_engines:
-  - survival
+  - science
   visual_style_id: cosmic_space_v1
   cut_cadence_seconds: 2.4
   palette:
@@ -26,16 +26,16 @@ creative:
     accent: '#66FCF1'
     text: '#C5C6C7'
   skins:
-    survival:
-      variant_id: survival/space-exposure
+    science:
+      variant_id: science/museum-label
       dna:
         dna_version: 2
         variant_version: 1
-        composition: visor
-        typography: grotesk
-        treatment: clean
-        image_motion: push_in
-        transition: shutter
+        composition: exhibit_case
+        typography: serif
+        treatment: paper_texture
+        image_motion: handheld
+        transition: folder_flip
         tone: 4
         caption: fixed
 audio:

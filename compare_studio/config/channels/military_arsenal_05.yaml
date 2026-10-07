@@ -1,5 +1,5 @@
 channel_id: military_arsenal_05
-config_version: 13
+config_version: 14
 niche_id: military_arsenal
 name: Weapons & War Machines 05
 tiktok_account_ref: null
@@ -18,26 +18,24 @@ story:
   pacing_beats: 12
 creative:
   preferred_engines:
-  - chalk
+  - compare
   visual_style_id: dark_mystery_v1
   cut_cadence_seconds: 2.8
   palette:
     primary: '#111318'
     accent: '#D6A84F'
     text: '#F2EEE6'
-  skins:
-    chalk:
-      variant_id: chalk/satellite
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: feeds
-        typography: grotesk
-        treatment: vignette_dark
-        image_motion: still_grain
-        transition: fade_black
-        tone: 4
-        caption: fixed
+  variant_id: compare/card-game
+  dna:
+    dna_version: 2
+    variant_version: 1
+    composition: stat_cards
+    typography: grotesk
+    treatment: clean
+    image_motion: handheld
+    transition: cut
+    tone: 0
+    caption: fixed
 audio:
   voice_id: DiT_en_female_jessie
   voice_speed: 0.99
