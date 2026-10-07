@@ -1470,6 +1470,28 @@ def _run_scan_worker_inner():
     with SCAN_LOCK:
         scan_status["current_account"] = "Hoàn tất"
 
+# Quét lại toàn bộ kênh định kỳ (owner 07/10: mỗi 1 giờ) — cùng hàm với nút "Quét tất cả"; bỏ lượt nếu đang có lần quét
+# khác. TOKMATRIX_CHANNEL_RESCAN_MINUTES (mặc định 60, 0 = tắt). Lần đầu chạy sau một chu kỳ, không chạy lúc khởi động.
+CHANNEL_RESCAN_MINUTES = int(os.environ.get("TOKMATRIX_CHANNEL_RESCAN_MINUTES", "60") or 0)
+
+
+def run_channel_rescan_loop(stop: threading.Event) -> None:
+    while not stop.wait(CHANNEL_RESCAN_MINUTES * 60):
+        with SCAN_LOCK:
+            if scan_status["is_scanning"]:
+                print("[Rescan] Đang có lần quét khác — bỏ lượt này")
+                continue
+            scan_status["is_scanning"] = True
+        try:
+            print("[Rescan] Quét lại toàn bộ kênh")
+            run_scan_worker()
+        except Exception as exc:  # noqa: BLE001 — thread nền không được chết
+            print(f"[Rescan] lỗi: {exc}")
+
+
+CHANNEL_RESCAN_STOP = threading.Event()
+
+
 @app.post("/api/channels/check-all")
 def check_all_channels(background_tasks: BackgroundTasks):
     global scan_status
@@ -3728,6 +3750,8 @@ def app_startup():
     if not SCHEDULER_THREAD or not SCHEDULER_THREAD.is_alive():
         SCHEDULER_THREAD = threading.Thread(target=run_upload_scheduler, name="upload-scheduler", daemon=True)
         SCHEDULER_THREAD.start()
+    if CHANNEL_RESCAN_MINUTES > 0 and not any(t.name == "channel-rescan" for t in threading.enumerate()):
+        threading.Thread(target=run_channel_rescan_loop, args=(CHANNEL_RESCAN_STOP,), name="channel-rescan", daemon=True).start()
     if not VERIFIER_THREAD or not VERIFIER_THREAD.is_alive():
         from bkt_web import needs_check_verifier
         VERIFIER_THREAD = threading.Thread(target=needs_check_verifier.run_verifier, args=(SCHEDULER_STOP, DB_PATH), name="needs-check-verifier", daemon=True)
@@ -3743,6 +3767,7 @@ def app_startup():
 
 def app_shutdown():
     global SCHEDULER_THREAD, VERIFIER_THREAD
+    CHANNEL_RESCAN_STOP.set()
     stop_image_queue_worker()
     script_bridge_worker.stop()
     stop_remake_queue_worker()
