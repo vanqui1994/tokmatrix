@@ -1355,6 +1355,7 @@ class CycleTest(AutopilotTestCase):
         calls = []
         for patch in (
             mock.patch.object(cycle.planner, "recover_plans", return_value={}),
+            mock.patch.object(cycle.unique_skins, "ensure", return_value={}),
             mock.patch.object(cycle.planner, "ensure_daily_plan", return_value={}),
             mock.patch.object(cycle.planner, "launch_pending_plans", side_effect=lambda *a, **k: calls.append("produce")),
             mock.patch.object(cycle.publisher, "publish_ready_jobs",

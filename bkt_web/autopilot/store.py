@@ -173,6 +173,8 @@ DEFAULT_CONFIG = {
     "topic_subject_gap_days": "3",
     # Dọn dung lượng định kỳ (autopilot/housekeeping.py), 0 = tắt từng mục.
     "housekeeping_interval_minutes": "60",
+    # 1 skin = 1 acc (owner 07/10): mỗi cycle gán bố cục riêng cho kênh vừa gắn tài khoản (autopilot/unique_skins.py).
+    "unique_skins": "true",
     "bridge_archive_keep_hours": "12",
     "generated_images_keep_days": "1",
     "purge_posted_after_days": "3",
@@ -186,7 +188,7 @@ ENGINE_IDS = ("mystery", "newspaper", "vox", "folklore", "kinetic", "science",
               "tierlist", "survival", "chalk", "wildlife", "compare", "vector")
 
 _BOOL_KEYS = {"enabled", "paused", "cleanup_enabled", "cleanup_without_backup", "auto_render", "spread_posting_hours",
-              "topic_per_channel"}
+              "topic_per_channel", "unique_skins"}
 _INT_RANGES = {
     "check_interval_seconds": (60, 86400),
     "plan_hour": (0, 23),

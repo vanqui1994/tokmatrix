@@ -3,7 +3,7 @@ from __future__ import annotations
 
 from typing import Any, Callable, Dict
 
-from . import cleanup, housekeeping, planner, publisher, revive, store
+from . import cleanup, housekeeping, planner, publisher, revive, store, unique_skins
 
 
 def run_cleanup(should_halt: Callable[[], bool], force: bool = False) -> Dict[str, Any]:
@@ -36,6 +36,15 @@ def _start_video_checks() -> Dict[str, Any]:
         return {"started": False, "error": f"{type(exc).__name__}: {exc}"}
 
 
+def _ensure_skins() -> Dict[str, Any]:
+    """1 skin = 1 acc: lỗi gán skin chỉ ghi log, không chặn đăng / lập plan của cycle."""
+    try:
+        return unique_skins.ensure()
+    except Exception as exc:  # noqa: BLE001
+        store.log_event(f"⚠️ 1 skin = 1 acc: {exc}", "warn")
+        return {"error": str(exc)[:300]}
+
+
 def run_cycle(should_halt: Callable[[], bool], set_step: Callable[[str], None]) -> Dict[str, Any]:
     """recover → đăng job đã xong → lập plan → (kiểm tra đĩa) → khởi động batch nền → đăng → dọn dẹp.
 
@@ -55,6 +64,7 @@ def run_cycle(should_halt: Callable[[], bool], set_step: Callable[[str], None]) 
     step("recover", lambda: planner.recover_plans(today))
     step("revive", lambda: revive.revive_failed_jobs(should_halt))
     _log_publish(step("publish", lambda: publisher.publish_ready_jobs(should_halt)))
+    step("skins", _ensure_skins)
     step("plan", lambda: planner.ensure_daily_plan(today))
 
     cleaned_early = False
