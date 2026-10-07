@@ -32,12 +32,17 @@
             ${v.upload_task_id ? `<div class="cell-sub"><i class="bi bi-calendar-check"></i> task đăng #${v.upload_task_id}</div>` : ''}
             <div class="d-flex gap-1 mt-2">
               ${v.has_mp4 ? `<button class="btn btn-sm btn-primary" data-action="play" data-id="${esc(v.id)}"><i class="bi bi-play-fill"></i> Xem</button>` : ''}
+              ${v.status === 'error' && v.url ? `<button class="btn btn-sm btn-outline-danger" data-action="retry" data-id="${esc(v.id)}" title="Làm lại video này"><i class="bi bi-arrow-clockwise"></i> Làm lại</button>` : ''}
               ${v.url ? `<a class="btn btn-sm btn-outline-secondary" href="${esc(v.url)}" target="_blank" rel="noopener" title="Video gốc"><i class="bi bi-youtube"></i></a>` : ''}
             </div>
           </div></div>`).join('')}</div>` : empty('Chưa có video nào'));
     }
     bindActions(el, {
       play: (b) => modal({ title: 'Video remake', body: `<video src="/api/story-remake/video/${encodeURIComponent(b.dataset.id)}" controls autoplay class="w-100 rounded" style="max-height:75vh"></video>` }),
+      async retry(b) {
+        try { await api.post(`/api/story-remake/retry/${encodeURIComponent(b.dataset.id)}`); toast('Đã bắt đầu làm lại video', 'success'); load(); }
+        catch (e) { toast(e.message, 'danger'); }
+      },
       async stop() { if (await confirm('Dừng lượt chạy hiện tại?')) { await api.post('/api/story-remake/stop'); toast('Đã dừng', 'success'); load(); } },
     });
     await load();

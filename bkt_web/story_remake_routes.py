@@ -261,10 +261,12 @@ def muse_idle() -> bool:
 
 
 def _launch(url: str, limit: int, jobs: int, lang: str, images: str, resumed: bool = False, resumes: int = 0,
-            account_id: Optional[int] = None, translate_to: str = "") -> int:
+            account_id: Optional[int] = None, translate_to: str = "", vid: str = "") -> int:
     ROOT.mkdir(parents=True, exist_ok=True)
     mode = "channel" if ("/@" in url or "/channel/" in url or "/c/" in url or "list=" in url) else "video"
     cmd = [sys.executable, str(TOOL), mode, url] + (["--limit", str(limit), "--jobs", str(jobs)] if mode == "channel" else []) + ["--lang", lang]
+    if vid and mode == "video":
+        cmd += ["--id", vid]  # làm lại đúng thư mục video cũ (state.json, ảnh đã vẽ được dùng lại)
     log = open(LOG, "a" if resumed else "w")
     if resumed:
         log.write(f"\n[{time.strftime('%H:%M:%S')}] tự chạy tiếp sau khi web app khởi động lại\n"); log.flush()
@@ -319,6 +321,29 @@ def run(req: RunRequest):
         raise HTTPException(409, "Đang có một lượt chạy — dừng lượt đó trước")
     _check_account(req.account_id)
     pid = _launch(req.url, req.limit, req.jobs, req.lang, req.images, account_id=req.account_id)
+    return {"started": True, "pid": pid}
+
+
+@router.post("/retry/{vid}")
+def retry(vid: str):
+    """Làm lại một video lỗi: xoá trạng thái lỗi + số lần thử, chạy lại đúng video đó (bước đã xong được dùng lại)."""
+    if not re.fullmatch(r"[A-Za-z0-9_-]{1,64}", vid):
+        raise HTTPException(400, "id video không hợp lệ")
+    if _runner().get("running"):
+        raise HTTPException(409, "Đang có một lượt chạy — chờ xong hoặc dừng lượt đó trước")
+    state_f = ROOT / vid / "state.json"
+    if not state_f.exists():
+        raise HTTPException(404, "Không có video này")
+    state = json.loads(state_f.read_text())
+    if state.get("status") not in ("error", "stopped") and state.get("status"):
+        raise HTTPException(400, f"Video đang ở trạng thái {state.get('status')}, chỉ làm lại video lỗi")
+    if not state.get("url"):
+        raise HTTPException(400, "Video không có link gốc để làm lại")
+    for key in ("status", "error", "attempts"):
+        state.pop(key, None)
+    state_f.write_text(json.dumps(state, ensure_ascii=False, indent=1))
+    pid = _launch(state["url"], 1, 1, state.get("lang") or "auto", "imagerouter", account_id=state.get("account_id"),
+                  translate_to=state.get("translate_to") or "", vid=vid)
     return {"started": True, "pid": pid}
 
 
