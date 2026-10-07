@@ -34,6 +34,14 @@ td.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
 .tag.warn{color:var(--warn);border-color:var(--warn)}
 .zero{color:var(--muted)}
 .total{font-weight:700;color:var(--ok)}
+.shots{display:flex;flex-wrap:wrap;gap:10px}
+.shot{width:150px;margin:0}
+.shot img{width:150px;aspect-ratio:9/16;object-fit:cover;border-radius:8px;border:1px solid var(--line);display:block;cursor:zoom-in;background:var(--line)}
+.shot figcaption{font-size:11px;color:var(--muted);margin-top:4px;line-height:1.3}
+.noimg{width:150px;aspect-ratio:9/16;border-radius:8px;border:1px dashed var(--line);display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:11px}
+.lb{position:fixed;inset:0;background:rgba(0,0,0,.8);display:flex;align-items:center;justify-content:center;z-index:9}
+.lb img{max-height:92vh;max-width:92vw;border-radius:10px}
+@media (max-width:560px){.shot,.shot img,.noimg{width:120px}}
 .foot{color:var(--muted);font-size:12px;margin-top:10px}
 </style>
 </head>
@@ -72,13 +80,13 @@ function render() {
     const comps = e.variants.reduce((n, v) => n + v.compositions.length, 0);
     const inUse = e.variants.filter((v) => LANGS.some((l) => v.usage[l])).length;
     html.push(`<section><h2>${esc(e.engine)} <small>${e.variants.length} skin · ${comps} bố cục · ${inUse} đang dùng · ${e.channels} kênh liệt kê engine</small></h2><div class="wrap"><table>
-      <thead><tr><th>Skin</th><th>Bố cục (rê chuột xem mô tả)</th>${LANGS.map((l) => `<th class="n">${l}</th>`).join("")}<th class="n">Tổng</th></tr></thead><tbody>`);
+      <thead><tr><th>Skin</th><th>Bố cục (bấm ảnh để xem lớn)</th>${LANGS.map((l) => `<th class="n">${l}</th>`).join("")}<th class="n">Tổng</th></tr></thead><tbody>`);
     for (const v of rows) {
       const total = LANGS.reduce((n, l) => n + (v.usage[l] || 0), 0);
       const tags = [v.status !== "active" ? `<span class="tag warn">${esc(v.status)}</span>` : "", v.auto_assign ? "" : '<span class="tag warn">opt-in</span>',
         v.asset ? `<span class="tag">${esc(v.asset)}</span>` : ""].join("");
       html.push(`<tr><td><b>${esc(v.name)}</b>${tags}<div class="id">${esc(v.id)}</div></td>
-        <td>${v.compositions.map((c) => `<span class="chip" title="${esc(c.describe)}">${esc(c.id)}</span>`).join("")}</td>
+        <td><div class="shots">${v.compositions.map((c) => `<figure class="shot">${c.thumb ? `<img loading="lazy" src="${esc(c.thumb)}" alt="${esc(v.name)} – ${esc(c.id)}" onclick="zoom(this.src)">` : '<div class="noimg">chưa có ảnh</div>'}<figcaption title="${esc(c.describe)}"><b>${esc(c.id)}</b><br>${esc(c.describe.slice(0, 80))}${c.describe.length > 80 ? "…" : ""}</figcaption></figure>`).join("")}</div></td>
         ${LANGS.map((l) => `<td class="n ${v.usage[l] ? "" : "zero"}">${v.usage[l] || 0}</td>`).join("")}
         <td class="n ${total ? "total" : "zero"}">${total}</td></tr>`);
     }
@@ -86,6 +94,12 @@ function render() {
   }
   document.getElementById("list").innerHTML = html.join("") || '<p class="sub">Không có skin khớp bộ lọc.</p>';
 }
+
+function zoom(src) {
+  const d = document.createElement("div"); d.className = "lb"; d.innerHTML = `<img src="${src}" alt="">`;
+  d.onclick = () => d.remove(); document.body.appendChild(d);
+}
+document.addEventListener("keydown", (e) => { if (e.key === "Escape") document.querySelector(".lb")?.remove(); });
 
 fetch("skins_data.json", { cache: "no-store" }).then((r) => r.json()).then((d) => {
   DATA = d;

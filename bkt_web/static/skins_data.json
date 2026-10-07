@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-07T02:04:12.881Z",
+ "generated_at": "2026-10-07T02:27:39.021Z",
  "totals": {
   "engines": 11,
   "variants": 85,
@@ -24,7 +24,8 @@
        "axes": {
         "composition": "scroll",
         "textPlacement": "bottom"
-       }
+       },
+       "thumb": "skins/chalk__atlas__scroll_plate.jpg"
       },
       {
        "id": "torn_plate",
@@ -33,7 +34,8 @@
         "composition": "hero_image",
         "textPlacement": "on_image",
         "background": "wood_paper"
-       }
+       },
+       "thumb": "skins/chalk__atlas__torn_plate.jpg"
       }
      ],
      "usage": {
@@ -56,7 +58,8 @@
        "axes": {
         "composition": "poster",
         "textPlacement": "bottom"
-       }
+       },
+       "thumb": "skins/chalk__blueprint__title_block.jpg"
       },
       {
        "id": "detail_grid",
@@ -65,7 +68,8 @@
         "composition": "grid",
         "textPlacement": "top",
         "background": "paper"
-       }
+       },
+       "thumb": "skins/chalk__blueprint__detail_grid.jpg"
       }
      ],
      "usage": {
@@ -88,7 +92,8 @@
        "axes": {
         "composition": "tilted_board",
         "textPlacement": "bottom"
-       }
+       },
+       "thumb": "skins/chalk__sand-table__tilted.jpg"
       },
       {
        "id": "orders_top",
@@ -96,7 +101,8 @@
        "axes": {
         "composition": "diorama",
         "textPlacement": "top"
-       }
+       },
+       "thumb": "skins/chalk__sand-table__orders_top.jpg"
       }
      ],
      "usage": {
@@ -119,7 +125,8 @@
        "axes": {
         "composition": "multi_cam",
         "textPlacement": "bottom"
-       }
+       },
+       "thumb": "skins/chalk__satellite__feeds.jpg"
       },
       {
        "id": "orbit_split",
@@ -128,7 +135,8 @@
         "composition": "split_horizontal",
         "textPlacement": "top",
         "background": "darkness"
-       }
+       },
+       "thumb": "skins/chalk__satellite__orbit_split.jpg"
       }
      ],
      "usage": {
@@ -151,7 +159,8 @@
        "axes": {
         "composition": "device_frame",
         "textPlacement": "lower_third"
-       }
+       },
+       "thumb": "skins/chalk__thermal__viewfinder.jpg"
       },
       {
        "id": "scope_top",
@@ -159,7 +168,8 @@
        "axes": {
         "composition": "circle_frame",
         "textPlacement": "top"
-       }
+       },
+       "thumb": "skins/chalk__thermal__scope_top.jpg"
       }
      ],
      "usage": {
@@ -182,7 +192,8 @@
        "axes": {
         "composition": "map_full",
         "textPlacement": "bottom"
-       }
+       },
+       "thumb": "skins/chalk__war-room__board.jpg"
       },
       {
        "id": "rail",
@@ -190,7 +201,8 @@
        "axes": {
         "composition": "split_vertical",
         "textPlacement": "right_column"
-       }
+       },
+       "thumb": "skins/chalk__war-room__rail.jpg"
       }
      ],
      "usage": {
@@ -213,7 +225,8 @@
        "axes": {
         "composition": "hero_image",
         "textPlacement": "bottom"
-       }
+       },
+       "thumb": "skins/chalk__whiteboard__marker_map.jpg"
       },
       {
        "id": "sticky_notes",
@@ -221,7 +234,8 @@
        "axes": {
         "composition": "card_stack",
         "textPlacement": "left_column"
-       }
+       },
+       "thumb": "skins/chalk__whiteboard__sticky_notes.jpg"
       }
      ],
      "usage": {
@@ -250,7 +264,8 @@
        "axes": {
         "composition": "ring",
         "textPlacement": "bottom"
-       }
+       },
+       "thumb": "skins/compare__boxing-ring__ring_ropes.jpg"
       },
       {
        "id": "tale_of_tape",
@@ -259,7 +274,8 @@
         "composition": "poster",
         "textPlacement": "top",
         "background": "velvet"
-       }
+       },
+       "thumb": "skins/compare__boxing-ring__tale_of_tape.jpg"
       }
      ],
      "usage": {
@@ -282,7 +298,8 @@
        "axes": {
         "composition": "card_stack",
         "textPlacement": "lower_third"
-       }
+       },
+       "thumb": "skins/compare__card-game__stat_cards.jpg"
       },
       {
        "id": "trick_grid",
@@ -291,7 +308,8 @@
         "composition": "grid",
         "textPlacement": "top",
         "background": "wood_paper"
-       }
+       },
+       "thumb": "skins/compare__card-game__trick_grid.jpg"
       }
      ],
      "usage": {
@@ -314,7 +332,8 @@
        "axes": {
         "composition": "diorama",
         "textPlacement": "right_column"
-       }
+       },
+       "thumb": "skins/compare__courtroom__bench.jpg"
       },
       {
        "id": "verdict_form",
@@ -323,7 +342,8 @@
         "composition": "folder_card",
         "textPlacement": "bottom",
         "background": "paper"
-       }
+       },
+       "thumb": "skins/compare__courtroom__verdict_form.jpg"
       }
      ],
      "usage": {
@@ -346,7 +366,8 @@
        "axes": {
         "composition": "card_stack",
         "textPlacement": "center"
-       }
+       },
+       "thumb": "skins/compare__original__arena.jpg"
       },
       {
        "id": "columns",
@@ -354,7 +375,8 @@
        "axes": {
         "composition": "split_vertical",
         "textPlacement": "bottom"
-       }
+       },
+       "thumb": "skins/compare__original__columns.jpg"
       }
      ],
      "usage": {
@@ -377,7 +399,8 @@
        "axes": {
         "composition": "split_horizontal",
         "textPlacement": "floating"
-       }
+       },
+       "thumb": "skins/compare__race-track__side_lanes.jpg"
       },
       {
        "id": "drag_strip",
@@ -385,7 +408,8 @@
        "axes": {
         "composition": "split_vertical",
         "textPlacement": "right_column"
-       }
+       },
+       "thumb": "skins/compare__race-track__drag_strip.jpg"
       }
      ],
      "usage": {
@@ -408,7 +432,8 @@
        "axes": {
         "composition": "scale",
         "textPlacement": "top"
-       }
+       },
+       "thumb": "skins/compare__scale-balance__beam_scale.jpg"
       },
       {
        "id": "spring_dials",
@@ -417,7 +442,8 @@
         "composition": "circle_frame",
         "textPlacement": "bottom",
         "background": "paper"
-       }
+       },
+       "thumb": "skins/compare__scale-balance__spring_dials.jpg"
       }
      ],
      "usage": {
@@ -440,7 +466,8 @@
        "axes": {
         "composition": "split_vertical",
         "textPlacement": "center"
-       }
+       },
+       "thumb": "skins/compare__split-screen__left_right.jpg"
       },
       {
        "id": "top_bottom",
@@ -449,7 +476,8 @@
         "composition": "split_horizontal",
         "textPlacement": "right_column",
         "background": "flat_color"
-       }
+       },
+       "thumb": "skins/compare__split-screen__top_bottom.jpg"
       }
      ],
      "usage": {
@@ -472,7 +500,8 @@
        "axes": {
         "composition": "ledger_columns",
         "textPlacement": "top"
-       }
+       },
+       "thumb": "skins/compare__tier-duel__butterfly.jpg"
       },
       {
        "id": "led_scoreboard",
@@ -481,7 +510,8 @@
         "composition": "grid",
         "textPlacement": "bottom",
         "background": "darkness"
-       }
+       },
+       "thumb": "skins/compare__tier-duel__led_scoreboard.jpg"
       }
      ],
      "usage": {
@@ -510,7 +540,8 @@
        "axes": {
         "composition": "notebook_page",
         "textPlacement": "right_column"
-       }
+       },
+       "thumb": "skins/folklore__european-grimoire__open_book.jpg"
       },
       {
        "id": "sigil_circle",
@@ -518,7 +549,8 @@
        "axes": {
         "composition": "circle_frame",
         "textPlacement": "top"
-       }
+       },
+       "thumb": "skins/folklore__european-grimoire__sigil_circle.jpg"
       }
      ],
      "usage": {
@@ -541,7 +573,8 @@
        "axes": {
         "composition": "device_frame",
         "textPlacement": "lower_third"
-       }
+       },
+       "thumb": "skins/folklore__haunted-vhs__tape_play.jpg"
       },
       {
        "id": "cassette",
@@ -550,7 +583,8 @@
         "composition": "split_horizontal",
         "textPlacement": "bottom",
         "background": "darkness"
-       }
+       },
+       "thumb": "skins/folklore__haunted-vhs__cassette.jpg"
       }
      ],
      "usage": {
@@ -573,7 +607,8 @@
        "axes": {
         "composition": "scroll",
         "textPlacement": "vertical_side"
-       }
+       },
+       "thumb": "skins/folklore__japanese-yokai-scroll__emaki.jpg"
       },
       {
        "id": "kakejiku",
@@ -582,7 +617,8 @@
         "composition": "poster",
         "textPlacement": "bottom",
         "background": "wood_paper"
-       }
+       },
+       "thumb": "skins/folklore__japanese-yokai-scroll__kakejiku.jpg"
       }
      ],
      "usage": {
@@ -605,7 +641,8 @@
        "axes": {
         "composition": "split_vertical",
         "textPlacement": "center"
-       }
+       },
+       "thumb": "skins/folklore__korean-gwishin__hanji_door.jpg"
       },
       {
        "id": "moon_window",
@@ -614,7 +651,8 @@
         "composition": "circle_frame",
         "textPlacement": "bottom",
         "background": "darkness"
-       }
+       },
+       "thumb": "skins/folklore__korean-gwishin__moon_window.jpg"
       }
      ],
      "usage": {
@@ -637,7 +675,8 @@
        "axes": {
         "composition": "ring",
         "textPlacement": "bottom"
-       }
+       },
+       "thumb": "skins/folklore__nordic-runestone__carved_slab.jpg"
       },
       {
        "id": "standing_stones",
@@ -645,7 +684,8 @@
        "axes": {
         "composition": "pyramid",
         "textPlacement": "top"
-       }
+       },
+       "thumb": "skins/folklore__nordic-runestone__standing_stones.jpg"
       }
      ],
      "usage": {
@@ -668,7 +708,8 @@
        "axes": {
         "composition": "diorama",
         "textPlacement": "bottom"
-       }
+       },
+       "thumb": "skins/folklore__shadow-puppet__paper_screen.jpg"
       },
       {
        "id": "tall_screen",
@@ -676,7 +717,8 @@
        "axes": {
         "composition": "hero_image",
         "textPlacement": "top"
-       }
+       },
+       "thumb": "skins/folklore__shadow-puppet__tall_screen.jpg"
       }
      ],
      "usage": {
@@ -699,7 +741,8 @@
        "axes": {
         "composition": "card_stack",
         "textPlacement": "on_image"
-       }
+       },
+       "thumb": "skins/folklore__tarot-deck__card_flip.jpg"
       },
       {
        "id": "three_card_spread",
@@ -707,7 +750,8 @@
        "axes": {
         "composition": "grid",
         "textPlacement": "bottom"
-       }
+       },
+       "thumb": "skins/folklore__tarot-deck__three_card_spread.jpg"
       }
      ],
      "usage": {
@@ -730,7 +774,8 @@
        "axes": {
         "composition": "hero_image",
         "textPlacement": "top"
-       }
+       },
+       "thumb": "skins/folklore__vn-original__night_stage.jpg"
       },
       {
        "id": "altar_niche",
@@ -738,7 +783,8 @@
        "axes": {
         "composition": "diorama",
         "textPlacement": "bottom"
-       }
+       },
+       "thumb": "skins/folklore__vn-original__altar_niche.jpg"
       }
      ],
      "usage": {
@@ -768,7 +814,8 @@
         "composition": "poster",
         "textPlacement": "center",
         "background": "flat_color"
-       }
+       },
+       "thumb": "skins/kinetic__type-poster__center_stack.jpg"
       },
       {
        "id": "split_band",
@@ -777,7 +824,8 @@
         "composition": "split_horizontal",
         "textPlacement": "top",
         "background": "gradient"
-       }
+       },
+       "thumb": "skins/kinetic__type-poster__split_band.jpg"
       },
       {
        "id": "tilted_board",
@@ -786,7 +834,8 @@
         "composition": "tilted_board",
         "textPlacement": "center",
         "background": "paper"
-       }
+       },
+       "thumb": "skins/kinetic__type-poster__tilted_board.jpg"
       }
      ],
      "usage": {
@@ -815,7 +864,8 @@
        "axes": {
         "composition": "folder_card",
         "textPlacement": "bottom"
-       }
+       },
+       "thumb": "skins/mystery__case-file__folder_card.jpg"
       },
       {
        "id": "polaroid_spread",
@@ -823,7 +873,8 @@
        "axes": {
         "composition": "card_stack",
         "textPlacement": "right_column"
-       }
+       },
+       "thumb": "skins/mystery__case-file__polaroid_spread.jpg"
       },
       {
        "id": "clipboard_top",
@@ -831,7 +882,8 @@
        "axes": {
         "composition": "split_horizontal",
         "textPlacement": "top"
-       }
+       },
+       "thumb": "skins/mystery__case-file__clipboard_top.jpg"
       }
      ],
      "usage": {
@@ -854,7 +906,8 @@
        "axes": {
         "composition": "multi_cam",
         "textPlacement": "top"
-       }
+       },
+       "thumb": "skins/mystery__cctv__quad_cam.jpg"
       },
       {
        "id": "single_monitor",
@@ -862,7 +915,8 @@
        "axes": {
         "composition": "device_frame",
         "textPlacement": "bottom"
-       }
+       },
+       "thumb": "skins/mystery__cctv__single_monitor.jpg"
       }
      ],
      "usage": {
@@ -885,7 +939,8 @@
        "axes": {
         "composition": "diorama",
         "textPlacement": "bottom"
-       }
+       },
+       "thumb": "skins/mystery__cursed-objects__glass_case.jpg"
       },
       {
        "id": "catalogue_card",
@@ -893,7 +948,8 @@
        "axes": {
         "composition": "card_stack",
         "textPlacement": "right_column"
-       }
+       },
+       "thumb": "skins/mystery__cursed-objects__catalogue_card.jpg"
       }
      ],
      "usage": {
@@ -916,7 +972,8 @@
        "axes": {
         "composition": "device_frame",
         "textPlacement": "on_image"
-       }
+       },
+       "thumb": "skins/mystery__decoded__crt_terminal.jpg"
       },
       {
        "id": "cipher_hex",
@@ -924,7 +981,8 @@
        "axes": {
         "composition": "grid",
         "textPlacement": "bottom"
-       }
+       },
+       "thumb": "skins/mystery__decoded__cipher_hex.jpg"
       }
      ],
      "usage": {
@@ -947,7 +1005,8 @@
        "axes": {
         "composition": "tilted_board",
         "textPlacement": "right_column"
-       }
+       },
+       "thumb": "skins/mystery__evidence-board__pinned_web.jpg"
       },
       {
        "id": "suspect_grid",
@@ -955,7 +1014,8 @@
        "axes": {
         "composition": "grid",
         "textPlacement": "bottom"
-       }
+       },
+       "thumb": "skins/mystery__evidence-board__suspect_grid.jpg"
       }
      ],
      "usage": {
@@ -978,7 +1038,8 @@
        "axes": {
         "composition": "notebook_page",
         "textPlacement": "left_column"
-       }
+       },
+       "thumb": "skins/mystery__field-journal__taped_page.jpg"
       },
       {
        "id": "torn_sketch",
@@ -986,7 +1047,8 @@
        "axes": {
         "composition": "hero_image",
         "textPlacement": "bottom"
-       }
+       },
+       "thumb": "skins/mystery__field-journal__torn_sketch.jpg"
       }
      ],
      "usage": {
@@ -1009,7 +1071,8 @@
        "axes": {
         "composition": "hero_image",
         "textPlacement": "center"
-       }
+       },
+       "thumb": "skins/mystery__lost-places__full_bleed.jpg"
       },
       {
        "id": "flashlight_circle",
@@ -1017,7 +1080,8 @@
        "axes": {
         "composition": "circle_frame",
         "textPlacement": "bottom"
-       }
+       },
+       "thumb": "skins/mystery__lost-places__flashlight_circle.jpg"
       }
      ],
      "usage": {
@@ -1040,7 +1104,8 @@
        "axes": {
         "composition": "hero_image",
         "textPlacement": "bottom"
-       }
+       },
+       "thumb": ""
       },
       {
        "id": "evidence_strip",
@@ -1049,7 +1114,8 @@
         "composition": "split_vertical",
         "textPlacement": "right_column",
         "background": "paper"
-       }
+       },
+       "thumb": ""
       }
      ],
      "usage": {
@@ -1072,7 +1138,8 @@
        "axes": {
         "composition": "hero_image",
         "textPlacement": "bottom"
-       }
+       },
+       "thumb": "skins/mystery__reference-dossier__hero_evidence.jpg"
       },
       {
        "id": "evidence_strip",
@@ -1081,7 +1148,8 @@
         "composition": "split_vertical",
         "textPlacement": "right_column",
         "background": "paper"
-       }
+       },
+       "thumb": "skins/mystery__reference-dossier__evidence_strip.jpg"
       }
      ],
      "usage": {
@@ -1104,7 +1172,8 @@
        "axes": {
         "composition": "map_full",
         "textPlacement": "bottom"
-       }
+       },
+       "thumb": "skins/mystery__sonar-log__sonar_full.jpg"
       },
       {
        "id": "ship_log",
@@ -1112,7 +1181,8 @@
        "axes": {
         "composition": "circle_frame",
         "textPlacement": "top"
-       }
+       },
+       "thumb": "skins/mystery__sonar-log__ship_log.jpg"
       }
      ],
      "usage": {
@@ -1135,7 +1205,8 @@
        "axes": {
         "composition": "radar",
         "textPlacement": "lower_third"
-       }
+       },
+       "thumb": "skins/mystery__ufo-radar__radar_scope.jpg"
       },
       {
        "id": "witness_phone",
@@ -1143,7 +1214,8 @@
        "axes": {
         "composition": "device_frame",
         "textPlacement": "top"
-       }
+       },
+       "thumb": "skins/mystery__ufo-radar__witness_phone.jpg"
       }
      ],
      "usage": {
@@ -1172,7 +1244,8 @@
        "axes": {
         "composition": "notebook_page",
         "textPlacement": "bottom"
-       }
+       },
+       "thumb": "skins/newspaper__court-sketch__sketch_pad.jpg"
       },
       {
        "id": "easel_board",
@@ -1180,7 +1253,8 @@
        "axes": {
         "composition": "tilted_board",
         "textPlacement": "floating"
-       }
+       },
+       "thumb": "skins/newspaper__court-sketch__easel_board.jpg"
       }
      ],
      "usage": {
@@ -1204,7 +1278,8 @@
         "composition": "ledger_columns",
         "textPlacement": "bottom",
         "background": "paper"
-       }
+       },
+       "thumb": "skins/newspaper__front-page__front_page.jpg"
       },
       {
        "id": "side_masthead",
@@ -1213,7 +1288,8 @@
         "composition": "split_vertical",
         "textPlacement": "right_column",
         "background": "paper"
-       }
+       },
+       "thumb": "skins/newspaper__front-page__side_masthead.jpg"
       },
       {
        "id": "magazine_cover",
@@ -1222,7 +1298,8 @@
         "composition": "poster",
         "textPlacement": "on_image",
         "background": "darkness"
-       }
+       },
+       "thumb": "skins/newspaper__front-page__magazine_cover.jpg"
       }
      ],
      "usage": {
@@ -1245,7 +1322,8 @@
        "axes": {
         "composition": "device_frame",
         "textPlacement": "bottom"
-       }
+       },
+       "thumb": "skins/newspaper__microfilm__reader_screen.jpg"
       },
       {
        "id": "film_reel",
@@ -1253,7 +1331,8 @@
        "axes": {
         "composition": "film_strip",
         "textPlacement": "right_column"
-       }
+       },
+       "thumb": "skins/newspaper__microfilm__film_reel.jpg"
       }
      ],
      "usage": {
@@ -1276,7 +1355,8 @@
        "axes": {
         "composition": "folder_card",
         "textPlacement": "bottom"
-       }
+       },
+       "thumb": "skins/newspaper__original__dossier.jpg"
       },
       {
        "id": "file_first",
@@ -1284,7 +1364,8 @@
        "axes": {
         "composition": "split_horizontal",
         "textPlacement": "top"
-       }
+       },
+       "thumb": "skins/newspaper__original__file_first.jpg"
       }
      ],
      "usage": {
@@ -1307,7 +1388,8 @@
        "axes": {
         "composition": "circle_frame",
         "textPlacement": "bottom"
-       }
+       },
+       "thumb": "skins/newspaper__police-gazette__medallion.jpg"
       },
       {
        "id": "oval_row",
@@ -1315,7 +1397,8 @@
        "axes": {
         "composition": "grid",
         "textPlacement": "top"
-       }
+       },
+       "thumb": "skins/newspaper__police-gazette__oval_row.jpg"
       }
      ],
      "usage": {
@@ -1338,7 +1421,8 @@
        "axes": {
         "composition": "hero_image",
         "textPlacement": "bottom"
-       }
+       },
+       "thumb": "skins/newspaper__tabloid-extra__diagonal_cover.jpg"
       },
       {
        "id": "split_front",
@@ -1346,7 +1430,8 @@
        "axes": {
         "composition": "split_vertical",
         "textPlacement": "left_column"
-       }
+       },
+       "thumb": "skins/newspaper__tabloid-extra__split_front.jpg"
       }
      ],
      "usage": {
@@ -1369,7 +1454,8 @@
        "axes": {
         "composition": "card_stack",
         "textPlacement": "top"
-       }
+       },
+       "thumb": "skins/newspaper__telegram-wire__telegram_form.jpg"
       },
       {
        "id": "ticker_tape",
@@ -1377,7 +1463,8 @@
        "axes": {
         "composition": "scroll",
         "textPlacement": "center"
-       }
+       },
+       "thumb": "skins/newspaper__telegram-wire__ticker_tape.jpg"
       }
      ],
      "usage": {
@@ -1400,7 +1487,8 @@
        "axes": {
         "composition": "ledger_columns",
         "textPlacement": "right_column"
-       }
+       },
+       "thumb": "skins/newspaper__victorian-broadsheet__columns_page.jpg"
       },
       {
        "id": "fold_story",
@@ -1408,7 +1496,8 @@
        "axes": {
         "composition": "split_horizontal",
         "textPlacement": "top"
-       }
+       },
+       "thumb": "skins/newspaper__victorian-broadsheet__fold_story.jpg"
       }
      ],
      "usage": {
@@ -1431,7 +1520,8 @@
        "axes": {
         "composition": "poster",
         "textPlacement": "center"
-       }
+       },
+       "thumb": "skins/newspaper__wanted-poster__wall_poster.jpg"
       },
       {
        "id": "torn_overlap",
@@ -1439,7 +1529,8 @@
        "axes": {
         "composition": "card_stack",
         "textPlacement": "top"
-       }
+       },
+       "thumb": "skins/newspaper__wanted-poster__torn_overlap.jpg"
       }
      ],
      "usage": {
@@ -1469,7 +1560,8 @@
         "composition": "notebook_page",
         "textPlacement": "bottom",
         "background": "whiteboard"
-       }
+       },
+       "thumb": "skins/science__explainer-board__whiteboard.jpg"
       },
       {
        "id": "lab_notebook",
@@ -1478,7 +1570,8 @@
         "composition": "split_vertical",
         "textPlacement": "left_column",
         "background": "paper"
-       }
+       },
+       "thumb": "skins/science__explainer-board__lab_notebook.jpg"
       },
       {
        "id": "hud_panel",
@@ -1487,7 +1580,8 @@
         "composition": "radar",
         "textPlacement": "center",
         "background": "blueprint"
-       }
+       },
+       "thumb": "skins/science__explainer-board__hud_panel.jpg"
       }
      ],
      "usage": {
@@ -1510,7 +1604,8 @@
        "axes": {
         "composition": "notebook_page",
         "textPlacement": "right_column"
-       }
+       },
+       "thumb": "skins/science__lab-notebook__ruled_page.jpg"
       },
       {
        "id": "experiment_log",
@@ -1518,7 +1613,8 @@
        "axes": {
         "composition": "ledger_columns",
         "textPlacement": "top"
-       }
+       },
+       "thumb": "skins/science__lab-notebook__experiment_log.jpg"
       }
      ],
      "usage": {
@@ -1541,7 +1637,8 @@
        "axes": {
         "composition": "device_frame",
         "textPlacement": "left_column"
-       }
+       },
+       "thumb": "skins/science__lecture-whiteboard__projector_screen.jpg"
       },
       {
        "id": "board_notes",
@@ -1549,7 +1646,8 @@
        "axes": {
         "composition": "split_horizontal",
         "textPlacement": "top"
-       }
+       },
+       "thumb": "skins/science__lecture-whiteboard__board_notes.jpg"
       }
      ],
      "usage": {
@@ -1572,7 +1670,8 @@
        "axes": {
         "composition": "circle_frame",
         "textPlacement": "bottom"
-       }
+       },
+       "thumb": "skins/science__microscope-zoom__zoom_levels.jpg"
       },
       {
        "id": "zoom_stack",
@@ -1580,7 +1679,8 @@
        "axes": {
         "composition": "card_stack",
         "textPlacement": "top"
-       }
+       },
+       "thumb": "skins/science__microscope-zoom__zoom_stack.jpg"
       }
      ],
      "usage": {
@@ -1603,7 +1703,8 @@
        "axes": {
         "composition": "grid",
         "textPlacement": "top"
-       }
+       },
+       "thumb": "skins/science__periodic__element_tile.jpg"
       },
       {
        "id": "tile_column",
@@ -1611,7 +1712,8 @@
        "axes": {
         "composition": "card_stack",
         "textPlacement": "right_column"
-       }
+       },
+       "thumb": "skins/science__periodic__tile_column.jpg"
       }
      ],
      "usage": {
@@ -1634,7 +1736,8 @@
        "axes": {
         "composition": "split_horizontal",
         "textPlacement": "top"
-       }
+       },
+       "thumb": "skins/science__quiz-show__three_answers.jpg"
       },
       {
        "id": "podium",
@@ -1642,7 +1745,8 @@
        "axes": {
         "composition": "pyramid",
         "textPlacement": "bottom"
-       }
+       },
+       "thumb": "skins/science__quiz-show__podium.jpg"
       }
      ],
      "usage": {
@@ -1665,7 +1769,8 @@
        "axes": {
         "composition": "hero_image",
         "textPlacement": "lower_third"
-       }
+       },
+       "thumb": "skins/science__space-hud__viewport.jpg"
       },
       {
        "id": "cockpit_console",
@@ -1673,7 +1778,8 @@
        "axes": {
         "composition": "device_frame",
         "textPlacement": "top"
-       }
+       },
+       "thumb": "skins/science__space-hud__cockpit_console.jpg"
       }
      ],
      "usage": {
@@ -1696,7 +1802,8 @@
        "axes": {
         "composition": "split_vertical",
         "textPlacement": "bottom"
-       }
+       },
+       "thumb": "skins/science__xray__lightbox.jpg"
       },
       {
        "id": "film_sheets",
@@ -1704,7 +1811,8 @@
        "axes": {
         "composition": "film_strip",
         "textPlacement": "right_column"
-       }
+       },
+       "thumb": "skins/science__xray__film_sheets.jpg"
       }
      ],
      "usage": {
@@ -1733,7 +1841,8 @@
        "axes": {
         "composition": "scale",
         "textPlacement": "bottom"
-       }
+       },
+       "thumb": "skins/survival__deep-sea__ruler_right.jpg"
       },
       {
        "id": "ruler_left",
@@ -1741,7 +1850,8 @@
        "axes": {
         "composition": "split_horizontal",
         "textPlacement": "top"
-       }
+       },
+       "thumb": "skins/survival__deep-sea__ruler_left.jpg"
       }
      ],
      "usage": {
@@ -1764,7 +1874,8 @@
        "axes": {
         "composition": "split_vertical",
         "textPlacement": "bottom"
-       }
+       },
+       "thumb": "skins/survival__endurance__stopwatch.jpg"
       },
       {
        "id": "race_lane",
@@ -1772,7 +1883,8 @@
        "axes": {
         "composition": "timeline_track",
         "textPlacement": "top"
-       }
+       },
+       "thumb": "skins/survival__endurance__race_lane.jpg"
       }
      ],
      "usage": {
@@ -1795,7 +1907,8 @@
        "axes": {
         "composition": "hero_image",
         "textPlacement": "bottom"
-       }
+       },
+       "thumb": "skins/survival__extreme-cold__frosted_glass.jpg"
       },
       {
        "id": "ice_card",
@@ -1803,7 +1916,8 @@
        "axes": {
         "composition": "card_stack",
         "textPlacement": "top"
-       }
+       },
+       "thumb": "skins/survival__extreme-cold__ice_card.jpg"
       }
      ],
      "usage": {
@@ -1826,7 +1940,8 @@
        "axes": {
         "composition": "poster",
         "textPlacement": "bottom"
-       }
+       },
+       "thumb": "skins/survival__extreme-heat__thermo_left.jpg"
       },
       {
        "id": "mirage",
@@ -1834,7 +1949,8 @@
        "axes": {
         "composition": "hero_image",
         "textPlacement": "lower_third"
-       }
+       },
+       "thumb": "skins/survival__extreme-heat__mirage.jpg"
       }
      ],
      "usage": {
@@ -1857,7 +1973,8 @@
        "axes": {
         "composition": "split_horizontal",
         "textPlacement": "top"
-       }
+       },
+       "thumb": "skins/survival__lab-exposure__bench.jpg"
       },
       {
        "id": "hazard_ring",
@@ -1865,7 +1982,8 @@
        "axes": {
         "composition": "circle_frame",
         "textPlacement": "bottom"
-       }
+       },
+       "thumb": "skins/survival__lab-exposure__hazard_ring.jpg"
       }
      ],
      "usage": {
@@ -1888,7 +2006,8 @@
        "axes": {
         "composition": "card_stack",
         "textPlacement": "bottom"
-       }
+       },
+       "thumb": "skins/survival__mr-incredible__legacy.jpg"
       },
       {
        "id": "face_card",
@@ -1897,7 +2016,8 @@
         "composition": "split_vertical",
         "textPlacement": "bottom",
         "background": "darkness"
-       }
+       },
+       "thumb": "skins/survival__mr-incredible__face_card.jpg"
       }
      ],
      "usage": {
@@ -1920,7 +2040,8 @@
        "axes": {
         "composition": "grid",
         "textPlacement": "bottom"
-       }
+       },
+       "thumb": "skins/survival__no-sleep__desk.jpg"
       },
       {
        "id": "week_strip",
@@ -1928,7 +2049,8 @@
        "axes": {
         "composition": "ledger_columns",
         "textPlacement": "top"
-       }
+       },
+       "thumb": "skins/survival__no-sleep__week_strip.jpg"
       }
      ],
      "usage": {
@@ -1951,7 +2073,8 @@
        "axes": {
         "composition": "card_stack",
         "textPlacement": "bottom"
-       }
+       },
+       "thumb": "skins/survival__original__scanner.jpg"
       },
       {
        "id": "reactor_top",
@@ -1959,7 +2082,8 @@
        "axes": {
         "composition": "split_horizontal",
         "textPlacement": "top"
-       }
+       },
+       "thumb": "skins/survival__original__reactor_top.jpg"
       }
      ],
      "usage": {
@@ -1982,7 +2106,8 @@
        "axes": {
         "composition": "device_frame",
         "textPlacement": "lower_third"
-       }
+       },
+       "thumb": "skins/survival__space-exposure__visor.jpg"
       },
       {
        "id": "telemetry_column",
@@ -1990,7 +2115,8 @@
        "axes": {
         "composition": "ring",
         "textPlacement": "right_column"
-       }
+       },
+       "thumb": "skins/survival__space-exposure__telemetry_column.jpg"
       }
      ],
      "usage": {
@@ -2019,7 +2145,8 @@
        "axes": {
         "composition": "ledger_columns",
         "textPlacement": "bottom"
-       }
+       },
+       "thumb": "skins/tierlist__classic-rows__rows_board.jpg"
       },
       {
        "id": "tier_columns",
@@ -2027,7 +2154,8 @@
        "axes": {
         "composition": "split_horizontal",
         "textPlacement": "on_image"
-       }
+       },
+       "thumb": "skins/tierlist__classic-rows__tier_columns.jpg"
       }
      ],
      "usage": {
@@ -2050,7 +2178,8 @@
        "axes": {
         "composition": "ring",
         "textPlacement": "lower_third"
-       }
+       },
+       "thumb": "skins/tierlist__orbit__solar_arcs.jpg"
       },
       {
        "id": "telescope",
@@ -2059,7 +2188,8 @@
         "composition": "circle_frame",
         "textPlacement": "on_image",
         "background": "darkness"
-       }
+       },
+       "thumb": "skins/tierlist__orbit__telescope.jpg"
       }
      ],
      "usage": {
@@ -2082,7 +2212,8 @@
        "axes": {
         "composition": "split_horizontal",
         "textPlacement": "center"
-       }
+       },
+       "thumb": "skins/tierlist__podium__stairs.jpg"
       },
       {
        "id": "olympic",
@@ -2091,7 +2222,8 @@
         "composition": "poster",
         "textPlacement": "top",
         "background": "velvet"
-       }
+       },
+       "thumb": "skins/tierlist__podium__olympic.jpg"
       }
      ],
      "usage": {
@@ -2114,7 +2246,8 @@
        "axes": {
         "composition": "pyramid",
         "textPlacement": "top"
-       }
+       },
+       "thumb": "skins/tierlist__pyramid__stone_pyramid.jpg"
       },
       {
        "id": "glass_apex",
@@ -2123,7 +2256,8 @@
         "composition": "hero_image",
         "textPlacement": "bottom",
         "background": "darkness"
-       }
+       },
+       "thumb": "skins/tierlist__pyramid__glass_apex.jpg"
       }
      ],
      "usage": {
@@ -2147,7 +2281,8 @@
         "composition": "ledger_columns",
         "textPlacement": "bottom",
         "background": "flat_color"
-       }
+       },
+       "thumb": "skins/tierlist__ranking-board__rows_board.jpg"
       },
       {
        "id": "showcase_top",
@@ -2156,7 +2291,8 @@
         "composition": "hero_image",
         "textPlacement": "top",
         "background": "gradient"
-       }
+       },
+       "thumb": "skins/tierlist__ranking-board__showcase_top.jpg"
       },
       {
        "id": "pyramid",
@@ -2165,7 +2301,8 @@
         "composition": "pyramid",
         "textPlacement": "center",
         "background": "paper"
-       }
+       },
+       "thumb": "skins/tierlist__ranking-board__pyramid.jpg"
       }
      ],
      "usage": {
@@ -2188,7 +2325,8 @@
        "axes": {
         "composition": "diorama",
         "textPlacement": "right_column"
-       }
+       },
+       "thumb": "skins/tierlist__store-shelves__store_shelf.jpg"
       },
       {
        "id": "receipt",
@@ -2197,7 +2335,8 @@
         "composition": "scroll",
         "textPlacement": "left_column",
         "background": "paper"
-       }
+       },
+       "thumb": "skins/tierlist__store-shelves__receipt.jpg"
       }
      ],
      "usage": {
@@ -2220,7 +2359,8 @@
        "axes": {
         "composition": "grid",
         "textPlacement": "floating"
-       }
+       },
+       "thumb": "skins/tierlist__unsolved-cases__drawer_cabinet.jpg"
       },
       {
        "id": "card_catalog",
@@ -2229,7 +2369,8 @@
         "composition": "card_stack",
         "textPlacement": "bottom",
         "background": "wood_paper"
-       }
+       },
+       "thumb": "skins/tierlist__unsolved-cases__card_catalog.jpg"
       }
      ],
      "usage": {
@@ -2252,7 +2393,8 @@
        "axes": {
         "composition": "tilted_board",
         "textPlacement": "left_column"
-       }
+       },
+       "thumb": "skins/tierlist__weapon-rack__wall_rack.jpg"
       },
       {
        "id": "pegboard",
@@ -2261,7 +2403,8 @@
         "composition": "grid",
         "textPlacement": "bottom",
         "background": "metal"
-       }
+       },
+       "thumb": "skins/tierlist__weapon-rack__pegboard.jpg"
       }
      ],
      "usage": {
@@ -2290,7 +2433,8 @@
        "axes": {
         "composition": "split_horizontal",
         "textPlacement": "top"
-       }
+       },
+       "thumb": "skins/vox__data-card__stat_top.jpg"
       },
       {
        "id": "ring_gauge",
@@ -2298,7 +2442,8 @@
        "axes": {
         "composition": "ring",
         "textPlacement": "bottom"
-       }
+       },
+       "thumb": "skins/vox__data-card__ring_gauge.jpg"
       }
      ],
      "usage": {
@@ -2321,7 +2466,8 @@
        "axes": {
         "composition": "hero_image",
         "textPlacement": "lower_third"
-       }
+       },
+       "thumb": "skins/vox__documentary-lowerthird__full_bleed.jpg"
       },
       {
        "id": "letterbox",
@@ -2329,7 +2475,8 @@
        "axes": {
         "composition": "split_horizontal",
         "textPlacement": "bottom"
-       }
+       },
+       "thumb": "skins/vox__documentary-lowerthird__letterbox.jpg"
       }
      ],
      "usage": {
@@ -2352,7 +2499,8 @@
        "axes": {
         "composition": "map_full",
         "textPlacement": "bottom"
-       }
+       },
+       "thumb": "skins/vox__map-route__route_map.jpg"
       },
       {
        "id": "photo_inset",
@@ -2360,7 +2508,8 @@
        "axes": {
         "composition": "hero_image",
         "textPlacement": "top"
-       }
+       },
+       "thumb": "skins/vox__map-route__photo_inset.jpg"
       }
      ],
      "usage": {
@@ -2383,7 +2532,8 @@
        "axes": {
         "composition": "hero_image",
         "textPlacement": "bottom"
-       }
+       },
+       "thumb": "skins/vox__original__torn_bleed.jpg"
       },
       {
        "id": "torn_card",
@@ -2391,7 +2541,8 @@
        "axes": {
         "composition": "card_stack",
         "textPlacement": "top"
-       }
+       },
+       "thumb": "skins/vox__original__torn_card.jpg"
       }
      ],
      "usage": {
@@ -2414,7 +2565,8 @@
        "axes": {
         "composition": "card_stack",
         "textPlacement": "floating"
-       }
+       },
+       "thumb": "skins/vox__paper-collage__torn_layers.jpg"
       },
       {
        "id": "cutout_column",
@@ -2422,7 +2574,8 @@
        "axes": {
         "composition": "split_vertical",
         "textPlacement": "left_column"
-       }
+       },
+       "thumb": "skins/vox__paper-collage__cutout_column.jpg"
       }
      ],
      "usage": {
@@ -2445,7 +2598,8 @@
        "axes": {
         "composition": "split_vertical",
         "textPlacement": "center"
-       }
+       },
+       "thumb": "skins/vox__split-then-now__side_by_side.jpg"
       },
       {
        "id": "lens_reveal",
@@ -2453,7 +2607,8 @@
        "axes": {
         "composition": "circle_frame",
         "textPlacement": "bottom"
-       }
+       },
+       "thumb": "skins/vox__split-then-now__lens_reveal.jpg"
       }
      ],
      "usage": {
@@ -2476,7 +2631,8 @@
        "axes": {
         "composition": "timeline_track",
         "textPlacement": "bottom"
-       }
+       },
+       "thumb": "skins/vox__timeline-explainer__track_below.jpg"
       },
       {
        "id": "band_middle",
@@ -2484,7 +2640,8 @@
        "axes": {
         "composition": "hero_image",
         "textPlacement": "top"
-       }
+       },
+       "thumb": "skins/vox__timeline-explainer__band_middle.jpg"
       }
      ],
      "usage": {
@@ -2507,7 +2664,8 @@
        "axes": {
         "composition": "poster",
         "textPlacement": "on_image"
-       }
+       },
+       "thumb": "skins/vox__zine-xerox__xerox_page.jpg"
       },
       {
        "id": "cutup_grid",
@@ -2515,7 +2673,8 @@
        "axes": {
         "composition": "grid",
         "textPlacement": "center"
-       }
+       },
+       "thumb": "skins/vox__zine-xerox__cutup_grid.jpg"
       }
      ],
      "usage": {
@@ -2544,7 +2703,8 @@
        "axes": {
         "composition": "porthole",
         "textPlacement": "bottom"
-       }
+       },
+       "thumb": "skins/wildlife__deep-ocean__porthole_gauge.jpg"
       },
       {
        "id": "sub_capsule",
@@ -2552,7 +2712,8 @@
        "axes": {
         "composition": "split_vertical",
         "textPlacement": "top"
-       }
+       },
+       "thumb": "skins/wildlife__deep-ocean__sub_capsule.jpg"
       }
      ],
      "usage": {
@@ -2575,7 +2736,8 @@
        "axes": {
         "composition": "split_vertical",
         "textPlacement": "left_column"
-       }
+       },
+       "thumb": "skins/wildlife__field-guide__species_spread.jpg"
       },
       {
        "id": "plate_page",
@@ -2583,7 +2745,8 @@
        "axes": {
         "composition": "ledger_columns",
         "textPlacement": "right_column"
-       }
+       },
+       "thumb": "skins/wildlife__field-guide__plate_page.jpg"
       }
      ],
      "usage": {
@@ -2606,7 +2769,8 @@
        "axes": {
         "composition": "ring",
         "textPlacement": "bottom"
-       }
+       },
+       "thumb": "skins/wildlife__microscope__eyepiece.jpg"
       },
       {
        "id": "slide_bench",
@@ -2614,7 +2778,8 @@
        "axes": {
         "composition": "split_horizontal",
         "textPlacement": "top"
-       }
+       },
+       "thumb": "skins/wildlife__microscope__slide_bench.jpg"
       }
      ],
      "usage": {
@@ -2637,7 +2802,8 @@
        "axes": {
         "composition": "map_full",
         "textPlacement": "top"
-       }
+       },
+       "thumb": "skins/wildlife__migration-map__route_window.jpg"
       },
       {
        "id": "flyway_medallion",
@@ -2645,7 +2811,8 @@
        "axes": {
         "composition": "circle_frame",
         "textPlacement": "bottom"
-       }
+       },
+       "thumb": "skins/wildlife__migration-map__flyway_medallion.jpg"
       }
      ],
      "usage": {
@@ -2668,7 +2835,8 @@
        "axes": {
         "composition": "split_horizontal",
         "textPlacement": "bottom"
-       }
+       },
+       "thumb": "skins/wildlife__nature-doc__letterbox_band.jpg"
       },
       {
        "id": "fullframe_credits",
@@ -2676,7 +2844,8 @@
        "axes": {
         "composition": "poster",
         "textPlacement": "on_image"
-       }
+       },
+       "thumb": "skins/wildlife__nature-doc__fullframe_credits.jpg"
       }
      ],
      "usage": {
@@ -2699,7 +2868,8 @@
        "axes": {
         "composition": "circle_frame",
         "textPlacement": "lower_third"
-       }
+       },
+       "thumb": "skins/wildlife__savanna-hud__scope_center.jpg"
       },
       {
        "id": "rangefinder",
@@ -2707,7 +2877,8 @@
        "axes": {
         "composition": "hero_image",
         "textPlacement": "top"
-       }
+       },
+       "thumb": "skins/wildlife__savanna-hud__rangefinder.jpg"
       }
      ],
      "usage": {
@@ -2730,7 +2901,8 @@
        "axes": {
         "composition": "card_stack",
         "textPlacement": "top"
-       }
+       },
+       "thumb": "skins/wildlife__stat-battle__trading_card.jpg"
       },
       {
        "id": "stat_grid",
@@ -2738,7 +2910,8 @@
        "axes": {
         "composition": "grid",
         "textPlacement": "bottom"
-       }
+       },
+       "thumb": "skins/wildlife__stat-battle__stat_grid.jpg"
       }
      ],
      "usage": {
@@ -2761,7 +2934,8 @@
        "axes": {
         "composition": "hero_image",
         "textPlacement": "top"
-       }
+       },
+       "thumb": "skins/wildlife__trail-cam__ir_still.jpg"
       },
       {
        "id": "burst_strip",
@@ -2769,7 +2943,8 @@
        "axes": {
         "composition": "film_strip",
         "textPlacement": "bottom"
-       }
+       },
+       "thumb": "skins/wildlife__trail-cam__burst_strip.jpg"
       }
      ],
      "usage": {

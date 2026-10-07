@@ -11,6 +11,7 @@ import { listVariants } from "../matrix/render/variants/index.mjs";
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const CHANNELS = path.resolve(HERE, "../config/channels");
 const LANGS = ["de", "en", "ko", "ja"];
+const THUMBS = path.resolve(HERE, "../../bkt_web/static/skins");  // ảnh chụp mỗi bố cục (preview-variants → hyperframes snapshot)
 
 export function buildSkinsData(channelDir = CHANNELS) {
   const usage = {};  // variant id → {de: n, …}
@@ -29,7 +30,10 @@ export function buildSkinsData(channelDir = CHANNELS) {
   }
   const engines = {};
   for (const v of listVariants()) {
-    const compositions = Object.entries(v.visualProfile?.compositions || {}).map(([id, c]) => ({ id, describe: c.describe || "", axes: c.axes || {} }));
+    const compositions = Object.entries(v.visualProfile?.compositions || {}).map(([id, c]) => {
+      const thumb = `${v.id.replace("/", "__")}__${id}.jpg`;
+      return { id, describe: c.describe || "", axes: c.axes || {}, thumb: fs.existsSync(path.join(THUMBS, thumb)) ? `skins/${thumb}` : "" };
+    });
     (engines[v.engine] ||= { engine: v.engine, channels: engineChannels[v.engine] || 0, variants: [] }).variants.push({
       id: v.id, name: v.name_vi || v.id, status: v.status, auto_assign: v.autoAssign !== false,
       asset: v.assetProfile?.type || "", compositions,
