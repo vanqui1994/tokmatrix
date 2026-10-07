@@ -32,20 +32,73 @@
     modal({ title: `Video của @${ch.username || ch.id}`, body, size: 'xl' });
     try {
       const r = await api.get(`/api/channels/${ch.id}/videos`);
-      const s = r.stats || {};
+      const s = r.health_summary || r.stats || {};
       body.innerHTML = `<div class="row g-2 mb-3">${[
         ['Video', s.total_videos, 'film'], ['Tổng view', s.total_views, 'eye'], ['Tổng like', s.total_likes, 'heart'],
-      ].map(([l, v, i]) => `<div class="col-md-4">${infoBox({ label: l, value: fmt.num(v), icon: i })}</div>`).join('')}</div><div data-t></div>`;
-      dataTable(body.querySelector('[data-t]'), {
+      ].map(([l, v, i]) => `<div class="col-md-4">${infoBox({ label: l, value: fmt.num(v), icon: i })}</div>`).join('')}</div>
+        <div class="d-flex flex-wrap gap-2 mb-3"><button type="button" class="btn btn-outline-primary btn-sm" data-duplicates>So trùng cover (tối đa 60)</button>
+        <span class="small text-body-secondary">Phân phối hiện tại là ước tính; kiểm tra từng video để xem indexEnabled và NFF thật.</span></div><div data-t></div>`;
+      const videoTable = dataTable(body.querySelector('[data-t]'), {
         rows: r.videos || [], pageSize: 15,
         columns: [
           { key: 'desc', label: 'Video', render: (v) => `<div class="d-flex gap-2 align-items-center">${v.cover_url ? `<img src="${esc(v.cover_url)}" alt="" width="36" height="64" class="rounded object-fit-cover" loading="lazy" referrerpolicy="no-referrer">` : ''}
             <span class="text-truncate-2">${esc(v.desc || v.video_id)}<span class="cell-sub">${fmt.date(v.create_time)} · ${fmt.dur(v.duration)}</span></span></div>` },
           { key: 'view_count', label: 'View', cls: 'text-end', render: (v) => fmt.num(v.view_count) },
           { key: 'like_count', label: 'Like', cls: 'text-end', render: (v) => fmt.num(v.like_count) },
-          { key: 'shadowban_status', label: 'Phân phối', render: (v) => { const [t, l] = SHADOW[v.shadowban_status] || ['secondary', v.shadowban_status || '—']; return `<span class="badge text-bg-${t}">${esc(l)}</span>`; } },
-          { key: 'is_original', label: 'Nguyên bản', render: (v) => (v.is_original ? '<i class="bi bi-check-lg text-success"></i>' : '<i class="bi bi-x-lg text-danger"></i>') },
+          { key: 'shadowban_status', label: 'Phân phối (ước tính)', render: (v) => { const [t, l] = SHADOW[v.shadowban_status] || ['secondary', v.shadowban_status || '—']; return `<span class="badge text-bg-${t}">${esc(l)}</span>`; } },
+          { key: 'is_original', label: 'Phạt reup', render: (v) => (v.is_original ? 'Chưa có cờ' : 'Có cờ') },
+          { key: 'video_id', label: 'Kiểm tra', sort: false, render: (v) => `<div class="d-flex flex-wrap gap-1">
+            <button type="button" class="btn btn-outline-primary btn-sm" data-video-action="verify" data-video-id="${esc(v.video_id)}">NFF / index</button>
+            <button type="button" class="btn btn-outline-secondary btn-sm" data-video-action="insight" data-video-id="${esc(v.video_id)}">Insight</button>
+            <button type="button" class="btn btn-outline-danger btn-sm" data-video-action="delete" data-video-id="${esc(v.video_id)}">Xóa</button></div>` },
         ],
+      });
+      const detail = document.createElement('div');
+      detail.className = 'mt-3';
+      detail.setAttribute('aria-live', 'polite');
+      body.append(detail);
+      body.addEventListener('click', async (event) => {
+        const button = event.target.closest('[data-duplicates], [data-video-action]');
+        if (!button || !body.contains(button)) return;
+        button.disabled = true;
+        detail.innerHTML = spinner('Đang kiểm tra qua VPN của kênh…');
+        try {
+          if (button.hasAttribute('data-duplicates')) {
+            const result = await api.post(`/api/channels/${ch.id}/videos/duplicates`);
+            detail.innerHTML = `<div class="alert alert-info">Đã so ${result.checked} cover, bỏ qua ${result.skipped}. dHash chỉ so ảnh cover, không phải phán quyết trùng của TikTok.</div>
+              ${result.pairs.length ? `<ul class="list-group">${result.pairs.map((p) => `<li class="list-group-item">${esc(p.duplicate_video_id)} giống ${esc(p.original_video_id)} (lệch ${p.distance}/64)</li>`).join('')}</ul>` : `<p class="small">${result.checked ? 'Không phát hiện cover giống nhau trong mẫu đã tải.' : 'Chưa tải được cover nào; không thể kết luận trùng lặp.'}</p>`}`;
+            return;
+          }
+          const id = button.dataset.videoId;
+          const action = button.dataset.videoAction;
+          if (action === 'delete') {
+            detail.innerHTML = `<div class="alert alert-danger">Xóa video ${esc(id)} khỏi TikTok? Không thể hoàn tác. <button type="button" class="btn btn-danger btn-sm ms-2" data-confirm-delete="${esc(id)}">Xác nhận xóa</button></div>`;
+            return;
+          }
+          const response = action === 'verify'
+            ? await api.get(`/api/channels/${ch.id}/videos/${id}/verify`)
+            : await api.get(`/api/channels/${ch.id}/tiktok-data`, { section: 'video', video_id: id });
+          if (action === 'verify') {
+            const p = response.public || {}; const o = response.official || {};
+            detail.innerHTML = `<div class="alert ${['deindexed', 'restricted', 'removed'].includes(p.verdict) || o.status === 'ineligible' ? 'alert-warning' : 'alert-info'}">
+              Video ${esc(id)} · indexEnabled: ${p.index_enabled == null ? 'chưa rõ' : esc(String(p.index_enabled))}
+              (${esc(p.reason || 'Không đọc được trang công khai')}) · NFF Studio: ${esc(o.status || 'unknown')}
+              ${o.reason ? `· ${esc(o.reason)}` : ''}${o.reason_codes?.length ? ` · Mã lý do: ${esc(o.reason_codes.join(', '))}` : ''}</div>`;
+          } else detail.innerHTML = `<h6>Insight video ${esc(id)}</h6><pre class="log-box">${esc(JSON.stringify(response.data, null, 2))}</pre>`;
+        } catch (e) { detail.innerHTML = `<div class="alert alert-danger">${esc(e.message)}</div>`; }
+        finally { button.disabled = false; }
+      });
+      body.addEventListener('click', async (event) => {
+        const button = event.target.closest('[data-confirm-delete]');
+        if (!button || !body.contains(button)) return;
+        const id = button.dataset.confirmDelete;
+        button.disabled = true;
+        detail.innerHTML = spinner('Đang chờ TikTok xác nhận xóa…');
+        try {
+          const response = await api.post(`/api/channels/${ch.id}/videos/${id}/delete`, { confirm: true });
+          if (response.cached_row_removed) videoTable.setRows((videoTable.rows || []).filter((v) => v.video_id !== id));
+          detail.innerHTML = `<div class="alert ${response.cached_row_removed ? 'alert-success' : 'alert-warning'}">TikTok đã xác nhận xóa video ${esc(id)}.${response.cached_row_removed ? ' Mở lại danh sách để cập nhật tổng chỉ số.' : ' Không cập nhật được bản ghi local; hãy quét lại kênh.'}</div>`;
+        } catch (e) { detail.innerHTML = `<div class="alert alert-danger">${esc(e.message)}. Video chưa bị xóa khỏi dữ liệu local.</div>`; }
       });
     } catch (e) { body.innerHTML = `<div class="alert alert-danger">${esc(e.message)}</div>`; }
   }
@@ -68,6 +121,33 @@
         { label: 'Follower', data: pts.map((p) => p.follower_count), tension: .3, yAxisID: 'y1' }] },
       options: { maintainAspectRatio: false, scales: { y: { beginAtZero: true }, y1: { position: 'right', beginAtZero: true, grid: { drawOnChartArea: false } } } } });
     } catch (e) { body.innerHTML = `<div class="alert alert-danger">${esc(e.message)}</div>`; }
+  }
+
+  function showStudio(ch) {
+    const body = h(`<div><div class="d-flex flex-wrap gap-2 mb-3" role="group" aria-label="Nguồn dữ liệu TikTok">
+      ${[['wallet', 'Ví'], ['rewards', 'Creator Rewards'], ['analytics', 'Analytics 7 ngày'], ['programs', 'Chương trình']]
+        .map(([key, label]) => `<button type="button" class="btn btn-outline-primary btn-sm" data-section="${key}">${label}</button>`).join('')}</div>
+      <div data-result aria-live="polite" class="small text-body-secondary">Chọn mục để đọc dữ liệu trực tiếp qua VPN của kênh. Không thay số liệu cũ khi thất bại.</div></div>`);
+    modal({ title: `TikTok Studio @${ch.username || ch.id}`, body, size: 'lg' });
+    body.addEventListener('click', async (event) => {
+      const button = event.target.closest('[data-section]');
+      if (!button || !body.contains(button)) return;
+      const result = body.querySelector('[data-result]');
+      button.disabled = true;
+      result.innerHTML = spinner('Đang đọc TikTok Studio…');
+      try {
+        const section = button.dataset.section;
+        const response = await api.get(`/api/channels/${ch.id}/tiktok-data`, { section });
+        const data = response.data || {};
+        const money = data.balance || {};
+        result.innerHTML = section === 'wallet'
+          ? `<div class="row g-2 mb-3"><div class="col-sm-6">${infoBox({ label: 'Số dư ví', value: money.amount == null ? '—' : `${money.amount} ${money.code || ''}`, icon: 'wallet2' })}</div>
+            <div class="col-sm-6">${infoBox({ label: 'Diamond', value: data.diamond == null ? '—' : fmt.num(data.diamond), icon: 'gem' })}</div></div>
+            <div class="small">KYC: ${esc(data.kyc_status ?? 'chưa rõ')} · Phương thức rút: ${esc(data.pi_bind_status ?? 'chưa rõ')}. Chưa hỗ trợ lịch sử giao dịch.</div>`
+          : `<h6>${esc(button.textContent)}</h6><pre class="log-box">${esc(JSON.stringify(data, null, 2))}</pre>`;
+      } catch (e) { result.innerHTML = `<div class="alert alert-danger">${esc(e.message)}</div>`; }
+      finally { button.disabled = false; }
+    });
   }
 
   async function assignVpn(ch, reload) {
@@ -146,6 +226,7 @@
                   <button class="btn btn-outline-secondary" data-action="videos" data-id="${c.id}" title="Video"><i class="bi bi-collection-play"></i></button>
                   <button class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-label="Thao tác khác"></button>
                   <ul class="dropdown-menu dropdown-menu-end">
+                    <li><a class="dropdown-item" href="#" data-action="studio" data-id="${c.id}"><i class="bi bi-bar-chart-line me-2"></i>Studio / Ví thật</a></li>
                     <li><a class="dropdown-item" href="#" data-action="history" data-id="${c.id}"><i class="bi bi-graph-up me-2"></i>Lịch sử</a></li>
                     <li><a class="dropdown-item" href="#" data-action="note" data-id="${c.id}"><i class="bi bi-pencil me-2"></i>Ghi chú</a></li>
                     <li><a class="dropdown-item" href="#" data-action="vpn" data-id="${c.id}"><i class="bi bi-shield-lock me-2"></i>Gán VPN</a></li>
@@ -211,6 +292,7 @@
           toast(`Đã quét xong @${c.username}`, 'success'); load();
         },
         videos: (el) => showVideos(byId(el)),
+        studio: (el) => showStudio(byId(el)),
         history: (el) => showHistory(byId(el)),
         async note(el) {
           const c = byId(el);

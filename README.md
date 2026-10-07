@@ -124,6 +124,31 @@ nhất mở profile: cùng binary `TOKMATRIX_CHROME_PATH`, cùng tham số, mộ
   qua kênh đang bận hoặc có lịch đăng trong ±45 phút.
 - **Không làm:** worker tự mở tài khoản định kỳ để "giữ phiên sống".
 
+## Dữ liệu TikTok Studio đã xác minh (chỉ đọc)
+
+`GET /api/channels/{id}/tiktok-data?section=analytics|video|rewards|programs|wallet`
+trả dữ liệu TikTok thật bằng cookie của kênh qua VPN riêng đã kiểm tra kết nối.
+Với `section=video` cần `video_id=<ID>`; `analytics` nhận `date_range=1|2|3|4`
+(tương ứng 7, 28, 60, 365 ngày). API không thay các thống kê đã lưu,
+không trả cookie, và báo lỗi nếu TikTok từ chối/thất bại thay vì điền số 0.
+Ví chỉ trả trường số dư/trạng thái an toàn, không trả định danh phương thức rút.
+Không có lịch sử giao dịch, rút tiền hoặc đăng video qua API này.
+
+Trong **Kênh TikTok → Video** có kiểm tra `indexEnabled` từ trang công khai và
+trạng thái NFF chính thức từ Studio (`GET /api/channels/{id}/videos/{video_id}/verify`).
+Hai tín hiệu độc lập: `indexEnabled=false` chỉ xác nhận de-index, không xác định
+nguyên nhân. Phân phối trong bảng cũ là **ước tính**, không phải NFF chính thức.
+Nút **So trùng cover** (`POST /api/channels/{id}/videos/duplicates`) dùng dHash
+trên tối đa 60 cover của chính kênh; ảnh không tải được bị bỏ qua, kết quả không
+phải kết luận vi phạm/reup của TikTok và chưa so sánh chéo các kênh.
+
+Xóa video dùng `POST /api/channels/{id}/videos/{video_id}/delete` với
+`{"confirm":true}` và xác nhận riêng trong UI. Chỉ video thuộc danh sách kênh
+được gọi, qua VPN và phiên Chrome hiện có, không thử lại khi TikTok trả rỗng
+hoặc bị ticket-guard; chỉ gỡ bản ghi local sau `status_code=0`.
+Không có lệnh xóa hàng loạt. Chưa xác minh live các endpoint mới trên cookie
+và VPN của một kênh trong SSMATool.
+
 ## Sơ đồ luồng live
 
 Tab **Hệ thống → Sơ Đồ Luồng (Live)** vẽ ba pipeline dạng node kiểu n8n, cập nhật

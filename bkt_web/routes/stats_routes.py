@@ -2,8 +2,13 @@
 
 from __future__ import annotations
 
+import asyncio
+import sqlite3
 import time
-from fastapi import APIRouter
+import uuid
+from contextlib import asynccontextmanager
+from fastapi import APIRouter, HTTPException, Query
+from pydantic import BaseModel
 try:
     from bkt_web.db_utils import connect_db
 except ImportError:
@@ -15,6 +20,149 @@ except ImportError:
     import paths
 
 router = APIRouter()
+
+
+@asynccontextmanager
+async def channel_tiktok_session(ch_id: int):
+    """Cookie + cổng SOCKS của tunnel RIÊNG của kênh (khoá = id kênh, như lúc quét/đăng bài).
+
+    Không dựng tunnel thứ hai cùng config: hai wireproxy cùng key/server cho một kênh làm phiên đăng bài đang chạy
+    chập chờn. Tunnel đang có thì dùng lại và không tắt; tunnel mở mới thì để reaper tự tắt sau
+    TOKMATRIX_CHANNEL_PROXY_IDLE_TTL (một lượt đăng bài dùng lại nó sẽ bỏ hạn này).
+    """
+    import os
+    from bkt_web import vpn_manager
+    from bkt_web.security import SecretStore
+
+    conn = connect_db(paths.DB_PATH)
+    try:
+        channel = conn.execute("SELECT * FROM channels WHERE id=?", (ch_id,)).fetchone()
+        names = [d[0] for d in conn.execute("SELECT * FROM channels LIMIT 0").description]
+    finally:
+        conn.close()
+    if not channel:
+        raise HTTPException(status_code=404, detail="Không tìm thấy kênh")
+    row = dict(zip(names, channel))
+    if not row.get("vpn_config"):
+        raise HTTPException(status_code=503, detail="Kênh chưa có VPN riêng")
+    cookie = SecretStore(paths.SECRET_KEY_PATH).decrypt(row["cookie"])
+    if not cookie:
+        raise HTTPException(status_code=503, detail="Kênh chưa có cookie")
+    with vpn_manager.TUNNEL_LOCK:
+        before = vpn_manager.ACTIVE_TUNNELS.get(ch_id)
+        existed, prior_expiry = before is not None, (before or {}).get("expires_at")
+    try:
+        tunnel = await asyncio.to_thread(vpn_manager.start_verified_wireguard_proxy, ch_id, row["vpn_config"])
+    except RuntimeError as exc:
+        raise HTTPException(status_code=503, detail="VPN của kênh không kết nối được TikTok") from exc
+    try:
+        yield cookie, tunnel["socks_port"], (row.get("original_country") or row.get("country") or "")
+    finally:
+        # Tunnel do lượt này mở, hoặc tunnel quét (có hạn) mà start_verified vừa bỏ hạn → đặt lại hạn để reaper tắt;
+        # tunnel đăng bài (không hạn) đang chạy thì giữ nguyên.
+        if not existed or prior_expiry:
+            ttl = int(os.environ.get("TOKMATRIX_CHANNEL_PROXY_IDLE_TTL", "300") or 300)
+            with vpn_manager.TUNNEL_LOCK:
+                info = vpn_manager.ACTIVE_TUNNELS.get(ch_id)
+                if info is not None and not info.get("expires_at"):
+                    info["expires_at"] = max(prior_expiry or 0, time.time() + ttl)
+
+
+@router.get("/api/channels/{ch_id}/tiktok-data")
+async def api_channel_tiktok_data(
+    ch_id: int, section: str = Query(pattern="^(analytics|video|rewards|programs|wallet)$"),
+    video_id: str = "", date_range: int = 1,
+):
+    from bkt_web import tiktok_verified
+
+    if section == "video" and (not video_id.isdecimal() or len(video_id) > 25):
+        raise HTTPException(status_code=400, detail="video_id không hợp lệ")
+    if date_range not in (1, 2, 3, 4):
+        raise HTTPException(status_code=400, detail="date_range không hợp lệ")
+    async with channel_tiktok_session(ch_id) as (cookie, port, country):
+        result = await asyncio.to_thread(tiktok_verified.fetch, cookie, port, section, video_id, date_range, country)
+    if not result["ok"]:
+        raise HTTPException(status_code=502, detail=result["error"])
+    return {"channel_id": ch_id, "section": section, "data": result["data"]}
+
+
+@router.get("/api/channels/{ch_id}/videos/{video_id}/verify")
+async def api_verify_channel_video(ch_id: int, video_id: str):
+    from bkt_web import tiktok_video_checks
+
+    if not video_id.isdecimal() or len(video_id) > 25:
+        raise HTTPException(status_code=400, detail="video_id không hợp lệ")
+    conn = connect_db(paths.DB_PATH)
+    try:
+        owned = conn.execute("SELECT 1 FROM channel_videos WHERE channel_id=? AND video_id=?",
+                             (ch_id, video_id)).fetchone()
+    finally:
+        conn.close()
+    if not owned:
+        raise HTTPException(status_code=404, detail="Video không thuộc kênh đang theo dõi")
+    async with channel_tiktok_session(ch_id) as (cookie, port, _country):
+        result = await asyncio.to_thread(tiktok_video_checks.check_video, cookie, port, video_id)
+    if not result["ok"]:
+        raise HTTPException(status_code=502, detail="Không xác minh được trạng thái video từ TikTok")
+    return result
+
+
+@router.post("/api/channels/{ch_id}/videos/duplicates")
+async def api_channel_video_duplicates(ch_id: int):
+    from bkt_web import tiktok_video_checks
+
+    conn = connect_db(paths.DB_PATH)
+    try:
+        rows = conn.execute(
+            "SELECT channel_id, video_id, cover_url, create_time FROM channel_videos "
+            "WHERE channel_id=? ORDER BY create_time DESC LIMIT 60", (ch_id,)
+        ).fetchall()
+    finally:
+        conn.close()
+    async with channel_tiktok_session(ch_id) as (_, port, _country):
+        return await asyncio.to_thread(tiktok_video_checks.compare_covers, rows, port)
+
+
+class VideoDeleteConfirmation(BaseModel):
+    confirm: bool = False
+
+
+@router.post("/api/channels/{ch_id}/videos/{video_id}/delete")
+async def api_delete_channel_video(ch_id: int, video_id: str, request: VideoDeleteConfirmation):
+    from bkt_web import profile_session, tiktok_video_ops
+
+    if not request.confirm:
+        raise HTTPException(status_code=400, detail="Phải xác nhận xóa video")
+    if not video_id.isdecimal() or len(video_id) > 25:
+        raise HTTPException(status_code=400, detail="video_id không hợp lệ")
+    conn = connect_db(paths.DB_PATH)
+    try:
+        owned = conn.execute("SELECT 1 FROM channel_videos WHERE channel_id=? AND video_id=?",
+                             (ch_id, video_id)).fetchone()
+    finally:
+        conn.close()
+    if not owned:
+        raise HTTPException(status_code=404, detail="Video không thuộc kênh đang theo dõi")
+    try:
+        async with channel_tiktok_session(ch_id) as (cookie, port, _country):
+            result = await tiktok_video_ops.delete_video(ch_id, video_id, cookie, port)
+    except profile_session.ProfileBusy as exc:
+        raise HTTPException(status_code=409, detail="Profile kênh đang bận; không xóa video") from exc
+    except profile_session.ProfileMissing as exc:
+        raise HTTPException(status_code=503, detail="Không mở được profile kênh") from exc
+    if not result["ok"]:
+        raise HTTPException(status_code=502, detail=result["error"])
+    conn = None
+    try:
+        conn = connect_db(paths.DB_PATH)
+        conn.execute("DELETE FROM channel_videos WHERE channel_id=? AND video_id=?", (ch_id, video_id))
+        conn.commit()
+    except sqlite3.DatabaseError:
+        return {"ok": True, "video_id": video_id, "cached_row_removed": False}
+    finally:
+        if conn:
+            conn.close()
+    return {"ok": True, "video_id": video_id, "cached_row_removed": True}
 
 
 @router.get("/api/channels/{ch_id}/history")
