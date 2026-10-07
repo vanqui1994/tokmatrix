@@ -218,9 +218,11 @@ def cleanup_posted_videos(should_halt: ShouldHalt = _never) -> Dict[str, Any]:
             continue
         _mark_archived(task_ids)
         archived += 1
-        if mp4s or project:
-            store.log_event(f"🧹 Đã dọn {slug}: {'backup + ' if backup else ''}xoá {len(mp4s)} MP4"
+        if mp4s:
+            store.log_event(f"🧹 Đã dọn {slug}: {'backup Drive/VPS + ' if backup else ''}xoá {len(mp4s)} MP4"
                             f"{' + project' if project else ''}")
+        elif project:  # MP4 đã bị xoá từ trước → không có gì để backup, đừng ghi "backup" (05/10: 196 dòng như vậy)
+            store.log_event(f"🧹 Đã dọn {slug}: không còn MP4 để backup, chỉ xoá project", "warn")
     return {"archived": archived, "failed": failed, "kept": kept, "total_checked": len(by_slug)}
 
 
