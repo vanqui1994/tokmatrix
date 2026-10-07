@@ -274,7 +274,9 @@ def _launch(url: str, limit: int, jobs: int, lang: str, images: str, resumed: bo
     images = "muse" if muse_idle() else "imagerouter"
     env = {**os.environ, "STORY_REMAKE_IMAGES": images, "STORY_REMAKE_ACCOUNT": str(account_id or ""),
            "STORY_REMAKE_TRANSLATE": translate_to or ""}
-    proc = subprocess.Popen(cmd, cwd=str(REPO), stdout=log, stderr=subprocess.STDOUT, start_new_session=True, env=env)
+    from bkt_web.autopilot.proc import lower_priority
+    proc = subprocess.Popen(cmd, cwd=str(REPO), stdout=log, stderr=subprocess.STDOUT, start_new_session=True, env=env,
+                            preexec_fn=lower_priority)
     RUNNER.write_text(json.dumps({"pid": proc.pid, "url": url, "limit": limit, "jobs": jobs, "lang": lang, "images": images,
                                   "started": int(time.time()), "active": True, "resumes": resumes, "account_id": account_id,
                                   "translate_to": translate_to}))

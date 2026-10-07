@@ -12,6 +12,18 @@ from . import store
 POLL_SECONDS = 1.0
 
 
+def lower_priority() -> None:
+    """preexec_fn cho việc nặng chạy nền (batch-matrix, render, remake): nice thêm TOKMATRIX_BG_NICE (10).
+
+    Chúng là tiến trình con của web server, chung cgroup và cùng nice; trên VPS 4 lõi (load 30+ khi render) web phản
+    hồi rất chậm (owner 07/10). Ưu tiên thấp hơn để web và trình đăng bài luôn được CPU trước.
+    """
+    try:
+        os.nice(int(os.environ.get("TOKMATRIX_BG_NICE", "10") or 0))
+    except (OSError, ValueError):
+        pass
+
+
 def _kill_group(proc: subprocess.Popen) -> None:
     # batch-matrix sinh thêm tiến trình con (Chromium, ffmpeg) → giết cả nhóm.
     for sig in (signal.SIGTERM, signal.SIGKILL):
@@ -37,7 +49,7 @@ def run(
     """Như subprocess.run(capture_output, text); raise store.Halted khi should_halt() bật."""
     proc = subprocess.Popen(
         args, cwd=cwd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True,
-        start_new_session=True, env=env,
+        start_new_session=True, env=env, preexec_fn=lower_priority,
     )
     deadline = time.monotonic() + timeout
     while True:

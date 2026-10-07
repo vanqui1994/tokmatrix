@@ -65,8 +65,21 @@ def _kuaishou(db: str, kind: str) -> Dict[int, Dict[str, Any]]:
             for r in rows if r.get("channel_id")}
 
 
+_CACHE: Dict[str, Any] = {"at": 0.0, "value": None}
+CACHE_SECONDS = 60
+
+
 def roles() -> Dict[int, List[Dict[str, Any]]]:
-    """channel id → danh sách việc (một acc có thể vừa Matrix vừa remake)."""
+    """channel id → danh sách việc (một acc có thể vừa Matrix vừa remake). Đọc ~190 YAML mất ~2,5 s trên VPS khi đang
+    render, nên kết quả được giữ CACHE_SECONDS giây."""
+    import time
+    if _CACHE["value"] is not None and time.time() - _CACHE["at"] < CACHE_SECONDS:
+        return _CACHE["value"]
+    _CACHE["value"], _CACHE["at"] = _roles(), time.time()
+    return _CACHE["value"]
+
+
+def _roles() -> Dict[int, List[Dict[str, Any]]]:
     out: Dict[int, List[Dict[str, Any]]] = {}
     for part in (_matrix(), _youtube(), _kuaishou("muse_remake.db", "kuaishou_muse"), _kuaishou("kuaishou_vector.db", "kuaishou_vector")):
         for cid, role in part.items():

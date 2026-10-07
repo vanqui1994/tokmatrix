@@ -231,7 +231,9 @@ def render(job: Dict[str, Any], work: Path) -> Dict[str, Any]:
     out_dir = work / "vector"
     cmd = ["node", str(ROOT / "compare_studio" / "tools" / "vector-sample.mjs"), "--channel", job["channel"],
            "--topic", job["title"] or job["id"], "--lines-file", str(lines_file), "--llm-storyboard", "--out", str(out_dir)]
-    r = subprocess.run(cmd, cwd=str(ROOT / "compare_studio"), capture_output=True, text=True, timeout=3600)
+    from bkt_web.autopilot.proc import lower_priority
+    r = subprocess.run(cmd, cwd=str(ROOT / "compare_studio"), capture_output=True, text=True, timeout=3600,
+                       preexec_fn=lower_priority)
     (work / "vector.log").write_text((r.stdout or "") + "\n" + (r.stderr or ""))
     m = re.search(r"\[vector-sample\] render (\S+) QA (passed|failed: .*)", r.stdout or "")
     if r.returncode != 0 or not m:
