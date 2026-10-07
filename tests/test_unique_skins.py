@@ -41,18 +41,25 @@ class UniqueSkinsTest(unittest.TestCase):
         with patch.object(us.subprocess, "run", lambda *a, **k: type("R", (), {"returncode": 0, "stdout": "", "stderr": ""})()), \
              patch("bkt_web.matrix_config.sync_channel_configs", self.sync):
             result = us.ensure()
-        self.assertEqual(self.calls, [("--apply",)])
+        self.assertEqual(self.calls, [("--apply", "--allow-missing")])
         self.assertEqual(result["changed"], 1)
 
     async def sync(self):
         return {"synced": 2}
 
-    def test_no_free_layout_never_applies(self):
+    def test_no_free_layout_still_assigns_the_rest_and_restores_on_invalid_config(self):
         self.plan["rows"] = [{"channel_id": "space_01", "status": "no_slot"}, {"channel_id": "vox_02", "status": "change"}]
-        result = us.ensure()
+        ok = type("R", (), {"returncode": 0, "stdout": "", "stderr": ""})()
+        with patch.object(us.subprocess, "run", lambda *a, **k: ok), patch("bkt_web.matrix_config.sync_channel_configs", self.sync):
+            result = us.ensure()
+        self.assertEqual(self.calls, [("--apply", "--allow-missing")])
         self.assertEqual(result["no_slot"], ["space_01"])
-        self.assertEqual(self.calls, [])
-
+        bad = type("R", (), {"returncode": 1, "stdout": "invalid", "stderr": ""})()
+        restored = []
+        with patch.object(us.subprocess, "run", lambda *a, **k: bad), patch.object(us, "_restore", restored.append), \
+             self.assertRaises(RuntimeError):
+            us.ensure()
+        self.assertEqual(len(restored), 1)
 
 if __name__ == "__main__":
     unittest.main()

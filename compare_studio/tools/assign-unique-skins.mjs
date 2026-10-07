@@ -6,7 +6,7 @@
 // variant phục vụ niche + ngôn ngữ của acc. Kênh vector giữ riêng vector (DNA cast riêng trong vector_dna.json).
 // Dry-run mặc định; --apply ghi YAML (+1 config_version). Chạy khi Autopilot tạm dừng, rồi matrix_config.sync_channel_configs.
 //
-//   node tools/assign-unique-skins.mjs [--global [--accounts list.txt]] [--json plan.json] [--apply]
+//   node tools/assign-unique-skins.mjs [--global [--accounts list.txt]] [--json plan.json] [--apply [--allow-missing]]
 //   --global: một bố cục cho đúng MỘT tài khoản trên mọi nước (owner 07/10), chỉ các kênh trong config/unique_skin_accounts.txt.
 import crypto from "node:crypto";
 import fs from "node:fs";
@@ -186,13 +186,19 @@ export function planUniqueSkins({ dir = CHANNEL_DIR, only = null, global = false
     }
     const cache = new Map(group.map((a) => [a.channel_id, slotsFor(a, variants, matrix, packs)]));
     const match = minCostMatch(group, (a) => cache.get(a.channel_id));
+    // Hết bố cục cho vài kênh (thêm tài khoản nhanh hơn thêm variant): kênh đó giữ skin đang có — có thể trùng bố cục
+    // một kênh khác tới khi có variant mới — và DNA của nó được tính trước, để DNA chọn cho kênh khác vẫn đạt luật.
+    group.forEach((a, i) => {
+      if (match[i] || (only && !only.has(a.channel_id))) return;
+      const engine = (a.data.creative?.preferred_engines || [])[0];
+      const stored = storedSkin(a, engine);
+      if (stored?.dna) (taken[`${a.lang}:${engine}`] ||= []).push(stored.dna);
+      rows.push({ channel_id: a.channel_id, country: a.lang, niche: a.niche, engine: stored?.dna ? engine : null,
+        variant_id: stored?.variant_id || null, composition: stored?.dna?.composition || null, dna: stored?.dna || null, status: "no_slot" });
+    });
     group.forEach((a, i) => {
       const slot = match[i];
-      if (!slot) {
-        if (only && !only.has(a.channel_id)) return;  // kênh ngoài danh sách hết chỗ: xử lý ở vòng "ngoài danh sách" dưới
-        rows.push({ channel_id: a.channel_id, country: a.lang, niche: a.niche, engine: null, status: "no_slot" });
-        return;
-      }
+      if (!slot) return;
       const engine = slot.variant.engine;
       const { dna, keep } = settle(a, slot.variant, slot.composition);
       const was = a.data.creative || {};
@@ -218,7 +224,7 @@ export function planUniqueSkins({ dir = CHANNEL_DIR, only = null, global = false
   for (const lang of LANGS) for (const engine of [...ENGINES, "compare"]) {
     violations.push(...skinViolations(rows.filter((r) => r.country === lang && r.engine === engine && r.dna)).map((v) => ({ ...v, engine })));
   }
-  const keys = rows.filter((r) => r.variant_id && !r.outside).map((r) => `${global ? "*" : r.country}:${r.variant_id}#${r.composition}`);
+  const keys = rows.filter((r) => r.variant_id && !r.outside && r.status !== "no_slot").map((r) => `${global ? "*" : r.country}:${r.variant_id}#${r.composition}`);
   const duplicates = keys.filter((k, i) => keys.indexOf(k) !== i);
   return { accounts: all, rows, violations, duplicates };
 }
@@ -282,7 +288,8 @@ export function main(argv = process.argv.slice(2)) {
     return;
   }
   if (!argv.includes("--apply")) { console.log("dry-run (use --apply)"); return; }
-  if (missing.length) { console.error("refusing to apply while accounts have no layout"); process.exitCode = 1; return; }
+  // --allow-missing: gán mọi kênh còn chỗ, kênh hết chỗ giữ skin cũ (Autopilot dùng; vẫn báo để thêm variant).
+  if (missing.length && !argv.includes("--allow-missing")) { console.error("refusing to apply while accounts have no layout (--allow-missing to apply the rest)"); process.exitCode = 1; return; }
   console.log(`wrote ${applyUniqueSkins(plan).length} channel config(s)`);
 }
 

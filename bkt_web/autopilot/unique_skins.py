@@ -80,6 +80,20 @@ def _plan() -> Dict[str, Any]:
         out.unlink(missing_ok=True)
 
 
+CHANNEL_DIR = store.COMPARE_DIR / "config" / "channels"
+
+
+def _snapshot() -> Dict[str, bytes]:
+    return {p.name: p.read_bytes() for p in CHANNEL_DIR.glob("*.yaml")}
+
+
+def _restore(snapshot: Dict[str, bytes]) -> None:
+    for name, data in snapshot.items():
+        path = CHANNEL_DIR / name
+        if not path.exists() or path.read_bytes() != data:
+            path.write_bytes(data)
+
+
 def ensure() -> Dict[str, Any]:
     if not store.get_bool("unique_skins"):
         return {"skipped": "off"}
@@ -100,16 +114,19 @@ def ensure() -> Dict[str, Any]:
         store.log_event(f"⚠️ 1 skin = 1 acc: hết bố cục cho {', '.join(missing)}", "warn")
     if not pending and not plan.get("violations") and not plan.get("duplicates"):
         return {"accounts": len(wanted), "list_changed": list_changed, "changed": 0, "no_slot": missing}
-    if missing:  # tool từ chối --apply khi còn kênh không có bố cục: gán phần còn lại sau khi có variant mới
-        return {"accounts": len(wanted), "changed": 0, "pending": len(pending), "no_slot": missing}
-    run = _tool("--apply")
+    # Kênh hết bố cục giữ skin cũ; mọi kênh khác vẫn được gán ngay (trước 07/10 thiếu một chỗ là không gán gì, 6 kênh
+    # geopolitics mới ở lại template chung). Config được chép ra trước, validator lỗi → trả lại nguyên trạng.
+    backup = _snapshot()
+    run = _tool("--apply", "--allow-missing")
     if run.returncode:
+        _restore(backup)
         raise RuntimeError(f"assign-unique-skins --apply: {(run.stderr or run.stdout)[-400:]}")
     check = subprocess.run(["node", "tools/validate-matrix-config.mjs"], cwd=str(store.COMPARE_DIR),
                            capture_output=True, text=True, timeout=300)
     if check.returncode:
+        _restore(backup)
         raise RuntimeError(f"config không hợp lệ sau khi gán skin: {(check.stdout + check.stderr)[-600:]}")
     from ..matrix_config import sync_channel_configs
     synced = asyncio.run(sync_channel_configs())
     store.log_event(f"🎨 1 skin = 1 acc: gán lại {len(pending)} kênh ({', '.join(r['channel_id'] for r in pending[:8])})")
-    return {"accounts": len(wanted), "changed": len(pending), "synced": synced.get("synced")}
+    return {"accounts": len(wanted), "changed": len(pending), "synced": synced.get("synced"), "no_slot": missing}
