@@ -10,6 +10,7 @@
     vox: ['📰', 'Vox phóng sự', '50–65s'], newspaper: ['📜', 'Báo cũ điều tra', '65s'], chalk: ['🗺️', 'Bản đồ bảng phấn', '>60s'],
     wildlife: ['🐾', 'Thế giới động vật', '50–60s'], kinetic: ['⚡', 'Kinetic editorial', '65s'], science: ['🪐', 'Khoa học vũ trụ', '65s'],
     mystery: ['🔍', 'Bí ẩn & kỳ án', '65s'], folklore: ['🕯️', 'Tâm linh dân gian', '70s'], matrix: ['🧬', 'AI Matrix', '25–90s'],
+    vector: ['🧸', 'Hoạt hình vector', '50–70s'],
   };
   const MARKET = { vi: ['🇻🇳', 'Việt Nam'], de: ['🇩🇪', 'Đức'], en: ['🇺🇸', 'Anh/Mỹ'], ko: ['🇰🇷', 'Hàn'], ja: ['🇯🇵', 'Nhật'], fr: ['🇫🇷', 'Pháp'] };
   const TABS = [['preview', 'play-btn', 'Xem trước'], ['script', 'file-text', 'Kịch bản'], ['seo', 'stars', 'SEO & phát hành'],
@@ -358,7 +359,7 @@
           const st = await api.get('/api/compare-videos/status');
           if (st.is_running) { toast('Đang có tiến trình tạo video chạy', 'warning'); return; }
           const v = await App.formModal({ title: 'Tạo video tự động', submit: 'Bắt đầu', fields: [
-            { name: 'style', label: 'Thể loại', type: 'select', options: Object.keys(STYLE).filter((k) => k !== 'matrix').map((k) => [k, `${STYLE[k][0]} ${STYLE[k][1]}`]), value: 'compare' },
+            { name: 'style', label: 'Thể loại', type: 'select', options: Object.keys(STYLE).filter((k) => k !== 'matrix' && k !== 'vector').map((k) => [k, `${STYLE[k][0]} ${STYLE[k][1]}`]), value: 'compare' },
             { name: 'category', label: 'Chủ đề / danh mục (để trống = tự chọn)' },
             { name: 'render', label: 'Render luôn sau khi tạo', type: 'checkbox', value: true }] });
           if (!v) return;
