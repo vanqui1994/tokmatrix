@@ -62,10 +62,10 @@ export function levelCard(scene, item, { data, ui, lang, region, cls, ramp, labe
   const has = (p) => parts.includes(p);
   const pips = Array.from({ length: 10 }, (_, k) => `<i style="background:${k < item.severity ? ramp[k] : "var(--sv-pip-off,rgba(127,127,127,.25))"}"></i>`).join("");
   const html = `<div class="sv-card ${cls}" id="${id}" style="${regionStyle(region)};--sev:${color};--sev-ink:${ink}">
-${has("eyebrow") ? `<div class="sv-eyebrow">${escapeHtml(data.eyebrow)}</div>` : ""}
+${has("eyebrow") ? `<div class="sv-eyebrow">${fitText("span", `class="sv-fit"`, data.eyebrow, 14)}</div>` : ""}
 ${has("tag") ? `<div class="sv-tag">${escapeHtml(tagText(item, ui, lang))}</div>` : ""}
 ${has("label") ? `<div class="sv-label-box">${fitText("div", `class="sv-label" id="${id}-label" style="font-size:${labelSize}px"`, item.label, 20)}</div>` : ""}
-<div class="sv-row">${has("status") ? `<div class="sv-status" id="${id}-status"><span>${escapeHtml(item.status)}</span></div>` : ""}${has("severity") ? `<div class="sv-sev"><b>${item.severity}</b><small>/10</small></div>` : ""}</div>
+<div class="sv-row">${has("status") ? `<div class="sv-status" id="${id}-status">${fitText("span", `class="sv-fit"`, item.status, 16)}</div>` : ""}${has("severity") ? `<div class="sv-sev"><b>${item.severity}</b><small>/10</small></div>` : ""}</div>
 ${has("severity") ? `<div class="sv-pips">${pips}</div>` : ""}
 </div>`;
   const at = t3(scene.visualStart + 0.1);
@@ -75,7 +75,7 @@ ${has("severity") ? `<div class="sv-pips">${pips}</div>` : ""}
   return { html, tweens };
 }
 
-export const CARD_CSS = ".sv-card{position:absolute;box-sizing:border-box;display:flex;flex-direction:column;gap:12px}.sv-eyebrow,.sv-tag{flex:none;white-space:nowrap;overflow:hidden;letter-spacing:3px}.sv-eyebrow{font-size:26px;opacity:.85}.sv-tag{font-size:34px;font-weight:700}.sv-label-box{position:relative;flex:1;min-height:0;display:flex;align-items:center}.sv-label{margin:0;width:100%;line-height:1.06;font-weight:700}.sv-row{flex:none;display:flex;align-items:center;justify-content:space-between;gap:16px;height:70px}.sv-status{flex:0 1 auto;min-width:0;height:62px;display:flex;align-items:center;padding:0 20px;background:var(--sev);color:var(--sev-ink);font-weight:700;font-size:32px;letter-spacing:2px}.sv-status span{white-space:nowrap;overflow:hidden}.sv-sev{flex:none;white-space:nowrap;line-height:1}.sv-sev b{font-size:64px;color:inherit;border-bottom:8px solid var(--sev)}.sv-sev small{font-size:28px;opacity:.7}.sv-pips{flex:none;display:flex;gap:6px;height:22px}.sv-pips i{flex:1}";
+export const CARD_CSS = ".sv-card{position:absolute;box-sizing:border-box;display:flex;flex-direction:column;gap:12px}.sv-eyebrow,.sv-tag{flex:none;white-space:nowrap;overflow:hidden;letter-spacing:3px}.sv-eyebrow{font-size:26px;opacity:.85}.sv-tag{font-size:34px;font-weight:700}.sv-label-box{position:relative;flex:1;min-height:0;display:flex;align-items:center}.sv-label{margin:0;width:100%;line-height:1.06;font-weight:700}.sv-row{flex:none;display:flex;align-items:center;justify-content:space-between;gap:16px;height:70px}.sv-status{flex:0 1 auto;min-width:0;height:62px;display:flex;align-items:center;padding:0 20px;background:var(--sev);color:var(--sev-ink);font-weight:700;font-size:32px;letter-spacing:2px}.sv-status span{white-space:nowrap;overflow:hidden}.sv-fit{display:block;white-space:nowrap}.sv-sev{flex:none;white-space:nowrap;line-height:1}.sv-sev b{font-size:64px;color:inherit;border-bottom:8px solid var(--sev)}.sv-sev small{font-size:28px;opacity:.7}.sv-pips{flex:none;display:flex;gap:6px;height:22px}.sv-pips i{flex:1}";
 
 /** 3 thanh chỉ số (nhãn + %), thanh chạy từ giá trị cảnh trước tới cảnh này. `orient` = "h" | "v". */
 export function metricBars(scene, i, { data, region, cls, orient = "h", colors }) {

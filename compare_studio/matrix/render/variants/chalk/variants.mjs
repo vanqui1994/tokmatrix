@@ -168,7 +168,8 @@ const blueprint = defineVariant({
       axes: { composition: "grid", textPlacement: "top", background: "paper" },
       describe: "Bản in diazo (nét xanh đậm trên giấy kem); đầu trang kiểu tiêu đề bản vẽ (kẻ đôi); thuyết minh ở trên; bản đồ chính + hàng 3 ô chi tiết (chú giải từng phần tử của cảnh) bên dưới",
       design: (ctx) => {
-        const map = chalkMap(ctx, LOOKS.whiteprint, { w: 972, h: 692 });
+        // Headline (x 70–770, y 660–730) nằm TRÊN bản đồ (panel từ 53, 643): nhãn bản đồ phải tránh vùng đó.
+        const map = chalkMap(ctx, LOOKS.whiteprint, { w: 972, h: 692 }, { reserve: [{ x: 0, y: 0, w: 740, h: 100 }] });
         return {
           header: { style: "masthead", region: { x: 60, y: 110, w: 960, h: 230 }, size: 60 },
           text: { style: "osd", region: { x: 50, y: 370, w: 980, h: 230 }, size: 42, enter: "type" },
@@ -448,7 +449,8 @@ const satellite = defineVariant({
       describe: "Màn điều khiển: khung vệ tinh chính + 2 ô zoom vào từng phần tử của cảnh (vùng/ghim/mũi tên); lời đọc hộp kính dưới",
       design: (ctx) => {
         const look = LOOKS.satellite;
-        const map = chalkMap(ctx, look, { w: 992, h: 672 });
+        // Headline (x 60–760, y 380–450) nằm trên khung vệ tinh chính (panel từ 48, 368).
+        const map = chalkMap(ctx, look, { w: 992, h: 672 }, { reserve: [{ x: 0, y: 0, w: 730, h: 95 }] });
         const insets = [0, 1].map((k) => chalkMap(ctx, look, { w: 474, h: 246 }, { prefix: `cz${k}-`, sceneFor: (s) => focusScene(s, k), minFrac: 0.18, sizes: { hl: 30, hl2: 26, marker: 24, arrow: 22, glyph: 18 } }));
         return {
           header: { style: "label_title", region: { x: 60, y: 110, w: 960, h: 220 } },
@@ -472,7 +474,8 @@ const satellite = defineVariant({
       axes: { composition: "split_horizontal", textPlacement: "top", background: "darkness" },
       describe: "Ảnh vệ tinh hồng ngoại màu giả (đất đỏ, biển đen); lời đọc hộp kính ở trên; ảnh vệ tinh vuông lớn tràn ngang nửa dưới, headline nhãn đen góc trên, thước quỹ đạo dọc bên phải",
       design: (ctx) => {
-        const map = chalkMap(ctx, LOOKS.satellite_ir, { w: 1080, h: 1080 });
+        // Headline (x 40–760, y 660–740) nằm trên ảnh vệ tinh tràn viền (panel từ 0, 630).
+        const map = chalkMap(ctx, LOOKS.satellite_ir, { w: 1080, h: 1080 }, { reserve: [{ x: 20, y: 10, w: 760, h: 115 }] });
         return {
           header: { style: "label_title", region: { x: 60, y: 110, w: 960, h: 210 }, size: 58 },
           text: { style: "glass", region: { x: 40, y: 340, w: 1000, h: 250 }, size: 44, enter: "fade_up" },

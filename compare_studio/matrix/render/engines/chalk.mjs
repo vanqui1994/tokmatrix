@@ -699,7 +699,7 @@ function baseMapSvg(map, mapType) {
         <path class="base-border" d="${map.borderPath}" fill="none" stroke="rgba(235, 240, 248, 0.6)" stroke-width="2" stroke-dasharray="9 7" />
         ${Object.entries(map.places).filter(([id]) => id.startsWith("sea")).map(([id, [x, y]]) =>
     `<path class="base-wave" d="M ${x - 34} ${y} q 8.5 -9 17 0 t 17 0 t 17 0 t 17 0 M ${x - 22} ${y + 16} q 8.5 -9 17 0 t 17 0 t 17 0" fill="none" stroke="rgba(235, 240, 248, 0.35)" stroke-width="2" id="wave-${id}" />`).join("\n        ")}
-        <g class="base-compass" transform="translate(930 110)"><path d="M 0 -44 L 12 0 L 0 -8 L -12 0 Z" fill="rgba(235, 240, 248, 0.75)" /><path d="M 0 44 L 12 0 L 0 8 L -12 0 Z" fill="none" stroke="rgba(235, 240, 248, 0.6)" stroke-width="2" /><text x="0" y="-54" font-size="26" font-weight="900" fill="rgba(235, 240, 248, 0.75)" text-anchor="middle">N</text></g>`
+        <g class="base-compass" transform="translate(930 110)"><path d="M 0 -44 L 12 0 L 0 -8 L -12 0 Z" fill="rgba(235, 240, 248, 0.75)" /><path d="M 0 44 L 12 0 L 0 8 L -12 0 Z" fill="none" stroke="rgba(235, 240, 248, 0.6)" stroke-width="2" /><text data-layout-allow-occlusion x="0" y="-54" font-size="26" font-weight="900" fill="rgba(235, 240, 248, 0.75)" text-anchor="middle">N</text></g>`
     : "";
   return `<svg class="map-svg" id="chalk-base" viewBox="${viewBox}" preserveAspectRatio="xMidYMid meet">
       ${CHALK_SVG_DEFS}

@@ -69,7 +69,7 @@ test("all six pilot-native template adapters assemble seekable projects from pre
       const result = await buildNativeVideoProject(fixture);
       const html = fs.readFileSync(path.join(result.video_dir, "index.html"), "utf8");
       const meta = JSON.parse(fs.readFileSync(path.join(result.video_dir, "meta.json"), "utf8"));
-      const compositionId = engineType === "vox" ? "main" : fixture.job.video_slug;
+      const compositionId = engineType === "vox" && !meta.creative ? "main" : fixture.job.video_slug;
       assert.ok(html.includes(`data-composition-id="${compositionId}"`), `missing composition root for ${engineType}`);
       assert.ok(html.includes("assets/audio/bgm.mp3"));
       assert.ok(html.includes("assets/vo/"));

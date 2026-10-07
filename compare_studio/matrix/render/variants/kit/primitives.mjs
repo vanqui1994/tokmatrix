@@ -50,9 +50,14 @@ ${timelineJs}
 </html>`;
 }
 
-/** Clip giọng đọc mỗi cảnh (track 20+), thời gian đo từ TTS — giữ nguyên. */
+/**
+ * Clip giọng đọc mỗi cảnh, thời gian đo từ TTS — giữ nguyên. Xen kẽ track 20/21 như engine legacy:
+ * `20 + index` đụng track BGM 30/31 (auto-sfx bgm-seg) từ cảnh 10, và HyperFrames check báo
+ * overlapping_clips_same_track vì mốc BGM làm tròn 2 chữ số còn giọng 3 chữ số.
+ */
+export const VOICE_TRACKS = Object.freeze([20, 21]);
 export function voiceClipsHtml(scenes, prefix = "vvo") {
-  return scenes.map((scene) => `<audio id="${prefix}-${scene.index}" class="clip" src="${escapeHtml(scene.voSrc)}" data-start="${scene.start}" data-duration="${scene.duration}" data-track-index="${20 + scene.index}"></audio>`).join("\n");
+  return scenes.map((scene) => `<audio id="${prefix}-${scene.index}" class="clip" src="${escapeHtml(scene.voSrc)}" data-start="${scene.start}" data-duration="${scene.duration}" data-track-index="${VOICE_TRACKS[scene.index % 2]}"></audio>`).join("\n");
 }
 
 /** Lớp phủ treatment toàn màn (tĩnh). */

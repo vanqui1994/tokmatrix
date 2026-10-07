@@ -303,7 +303,8 @@ const sonarLog = defineVariant({
         tag: { style: "osd", x: 60, y: 420 },
         decor: [
           { kind: "sonar", cx: 540, cy: 820, r: 520, layer: "over" },
-          { kind: "depth_gauge", x: 960, y: 420, h: 1160, labels: ["0 m", "1000 m", "2000 m", "3000 m", "4000 m"], layer: "over" },
+          // x 940: vạch 36 px + lề 10 px + nhãn "4000 m" (~77 px ở 22 px) phải nằm trong 1080 px (ở x 960 lố 3 px).
+          { kind: "depth_gauge", x: 940, y: 420, h: 1160, labels: ["0 m", "1000 m", "2000 m", "3000 m", "4000 m"], layer: "over" },
         ],
         vars: { "--scope-ink": "#7fe7ff" },
         css: ".d-gauge span{font-size:22px}",

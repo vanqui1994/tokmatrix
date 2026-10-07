@@ -10,6 +10,7 @@ import { SKIN_VARIANT_IDS } from "./skin-variant-ids.mjs";
 import { getVariant, validateRegistry } from "../matrix/render/variants/index.mjs";
 import { defaultDna } from "../matrix/render/variants/dna.mjs";
 import { lintVariantHtml } from "../matrix/render/variants/kit/lint.mjs";
+import { VOICE_TRACKS, voiceClipsHtml } from "../matrix/render/variants/kit/primitives.mjs";
 import { resolveCreativeContext } from "../matrix/render/variants/kit/resolve.mjs";
 import { MIN_SKIN_DISTANCE, assignSkins, skinDistance, skinPairOk, skinViolations } from "../matrix/render/variants/skins.mjs";
 import { channelCreative } from "../matrix/render/native-engine-adapter.mjs";
@@ -92,6 +93,41 @@ test("every skin variant builds clean, deterministic HTML for every layout × ca
           assert.equal(first.cfg.caption, caption, label);
         }
       }
+    }
+  }
+});
+
+// Job tierlist-infamous-figures-02 (12 cảnh): giọng cảnh 10–12 rơi vào track 30–32 của bgm-seg (auto-sfx) →
+// HyperFrames overlapping_clips_same_track.
+test("voice clips stay on tracks 20/21 and never reach the BGM tracks with many scenes", () => {
+  let start = 0;
+  const scenes = Array.from({ length: 16 }, (_, i) => {
+    const scene = { index: i + 1, start: Number(start.toFixed(3)), duration: 4.848, voSrc: `assets/vo/line-${i + 1}.mp3` };
+    start += 4.848;
+    return scene;
+  });
+  const tracks = [...voiceClipsHtml(scenes).matchAll(/data-track-index="(\d+)"/gu)].map((m) => Number(m[1]));
+  assert.equal(tracks.length, scenes.length);
+  assert.ok(tracks.every((t) => VOICE_TRACKS.includes(t)), `voice tracks ${tracks}`);
+  for (let i = 1; i < tracks.length; i += 1) assert.notEqual(tracks[i], tracks[i - 1], "consecutive lines share a track");
+});
+
+// Adapter không chạy prepareAssets của engine legacy cho variant: mọi file audio riêng (ngoài bgm.mp3, sfx/ chép từ project)
+// mà skin tham chiếu phải do chính variant chép (tierlist/ranking-board thiếu assets/audio/tierlist/sub_drop.mp3).
+test("every variant-specific audio file a skin references is copied by its prepareAssets", async () => {
+  for (const id of SKIN_VARIANT_IDS) {
+    const variant = getVariant(id);
+    const composition = Object.keys(variant.visualProfile.compositions)[0];
+    const { html } = await buildSample(variant, variant.compatibility.countries[0], defaultDna(variant, composition));
+    const own = [...new Set([...html.matchAll(/src="(assets\/audio\/[^"]+)"/gu)].map((m) => m[1]))]
+      .filter((src) => src !== "assets/audio/bgm.mp3" && !src.startsWith("assets/audio/sfx/"));
+    if (!own.length) continue;
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), "skin-assets-"));
+    try {
+      await variant.prepareAssets?.({ targetDir: dir, compareDir: COMPARE_DIR });
+      for (const src of own) assert.ok(fs.existsSync(path.join(dir, src)), `${id} references ${src} but does not copy it`);
+    } finally {
+      fs.rmSync(dir, { recursive: true, force: true });
     }
   }
 });

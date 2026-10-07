@@ -220,6 +220,8 @@ export default {
   costProfile: { aiImagesPerScene: 1, stockClipsPerScene: 0, reusableAssetRatio: 0 },
   compatibility: { countries: ["en", "de", "ja", "ko", "vi"], niches: null },
   renderer: { buildHtml, compositionId: (slug) => slug },
+  // Adapter không chạy prepareAssets của engine legacy cho variant → tự chép SFX slam (assets/audio/tierlist/sub_drop.mp3).
+  prepareAssets: (args) => tierlistEngine.prepareAssets(args),
   sample(lang) {
     const code = SAMPLE[lang] ? lang : "en";
     return { title: TITLES[code], lines: SAMPLE[code] };
