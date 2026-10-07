@@ -3,115 +3,229 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Skin video Matrix</title>
+<title>Thư viện skin</title>
 <style>
-:root{--bg:#f6f7f9;--card:#fff;--fg:#111827;--muted:#6b7280;--line:#e5e7eb;--accent:#2563eb;--ok:#047857;--warn:#b45309;--chip:#eef2ff}
-@media (prefers-color-scheme:dark){:root{--bg:#0f1115;--card:#171a21;--fg:#e5e7eb;--muted:#9ca3af;--line:#2a2f3a;--accent:#60a5fa;--ok:#34d399;--warn:#fbbf24;--chip:#1e2433}}
+:root{
+  --bg:#f4f5f7;--surface:#ffffff;--surface-2:#f9fafb;--fg:#0f172a;--muted:#64748b;--line:#e2e8f0;
+  --accent:#4f46e5;--accent-soft:#eef2ff;--ok:#047857;--ok-soft:#ecfdf5;--warn:#b45309;--warn-soft:#fffbeb;
+  --shadow:0 1px 2px rgba(15,23,42,.06),0 4px 16px rgba(15,23,42,.05);--radius:14px;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0b0d12;--surface:#141821;--surface-2:#1a1f2a;--fg:#e2e8f0;--muted:#94a3b8;--line:#262c38;
+  --accent:#818cf8;--accent-soft:#1e2140;--ok:#34d399;--ok-soft:#0f2a22;--warn:#fbbf24;--warn-soft:#2a210c;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 6px 20px rgba(0,0,0,.25);
+}}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--fg);font:14px/1.45 system-ui,-apple-system,"Segoe UI",sans-serif}
-main{max-width:1180px;margin:0 auto;padding:20px 16px 48px}
-h1{font-size:22px;margin:0 0 4px}
-.sub{color:var(--muted);margin:0 0 16px}
-.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:16px}
-.stat{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px}
-.stat b{display:block;font-size:24px}
-.stat span{color:var(--muted);font-size:12px}
-.bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:14px}
-.bar input[type=search]{flex:1 1 220px;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--fg)}
-.bar select{padding:8px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--fg)}
-.bar label{color:var(--muted);font-size:13px;display:flex;gap:6px;align-items:center}
-section{background:var(--card);border:1px solid var(--line);border-radius:12px;margin-bottom:14px;overflow:hidden}
-section h2{margin:0;padding:12px 14px;font-size:16px;border-bottom:1px solid var(--line);display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
-section h2 small{color:var(--muted);font-weight:400;font-size:12px}
-.wrap{overflow-x:auto}
-table{width:100%;border-collapse:collapse;min-width:760px}
-th,td{padding:8px 12px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
-th{font-size:12px;color:var(--muted);font-weight:600}
-td.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
-.id{color:var(--muted);font-size:12px}
-.chip{display:inline-block;margin:2px 4px 2px 0;padding:2px 8px;border-radius:999px;background:var(--chip);font-size:12px;cursor:help}
-.tag{font-size:11px;padding:1px 6px;border-radius:6px;border:1px solid var(--line);color:var(--muted);margin-left:4px}
-.tag.warn{color:var(--warn);border-color:var(--warn)}
-.zero{color:var(--muted)}
-.total{font-weight:700;color:var(--ok)}
-.shots{display:flex;flex-wrap:wrap;gap:10px}
-.shot{width:150px;margin:0}
-.shot img{width:150px;aspect-ratio:9/16;object-fit:cover;border-radius:8px;border:1px solid var(--line);display:block;cursor:zoom-in;background:var(--line)}
-.shot figcaption{font-size:11px;color:var(--muted);margin-top:4px;line-height:1.3}
-.noimg{width:150px;aspect-ratio:9/16;border-radius:8px;border:1px dashed var(--line);display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:11px}
-.lb{position:fixed;inset:0;background:rgba(0,0,0,.8);display:flex;align-items:center;justify-content:center;z-index:9}
-.lb img{max-height:92vh;max-width:92vw;border-radius:10px}
-@media (max-width:560px){.shot,.shot img,.noimg{width:120px}}
-.foot{color:var(--muted);font-size:12px;margin-top:10px}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--fg);font:14px/1.5 Inter,system-ui,-apple-system,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit}
+
+/* thanh trên */
+.top{position:sticky;top:0;z-index:5;background:color-mix(in srgb,var(--surface) 88%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.top-in{max-width:1440px;margin:0 auto;padding:12px 20px;display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.brand{display:flex;align-items:center;gap:10px;margin-right:auto}
+.logo{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,var(--accent),#ec4899);display:grid;place-items:center;color:#fff;font-weight:800}
+.brand h1{font-size:16px;margin:0;line-height:1.2}
+.brand p{margin:0;color:var(--muted);font-size:12px}
+.search{position:relative;flex:1 1 260px;max-width:420px}
+.search input{width:100%;padding:9px 12px 9px 34px;border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--fg);outline:none}
+.search input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.search svg{position:absolute;left:11px;top:50%;transform:translateY(-50%);color:var(--muted)}
+.seg{display:inline-flex;background:var(--surface-2);border:1px solid var(--line);border-radius:10px;padding:3px}
+.seg button{border:0;background:none;padding:6px 12px;border-radius:7px;cursor:pointer;color:var(--muted);font-size:13px}
+.seg button[aria-pressed="true"]{background:var(--surface);color:var(--fg);box-shadow:var(--shadow)}
+
+/* khung */
+.layout{max-width:1440px;margin:0 auto;padding:20px;display:grid;grid-template-columns:220px 1fr;gap:24px}
+nav.side{position:sticky;top:78px;align-self:start;max-height:calc(100vh - 100px);overflow:auto}
+.side h3{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 0 8px}
+.side a{display:flex;justify-content:space-between;align-items:center;padding:7px 10px;border-radius:9px;color:var(--fg);text-decoration:none;font-weight:500}
+.side a:hover{background:var(--surface)}
+.side a.on{background:var(--accent-soft);color:var(--accent)}
+.side a span{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:22px}
+.kpi{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px;box-shadow:var(--shadow)}
+.kpi b{display:block;font-size:26px;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.kpi span{color:var(--muted);font-size:12px}
+
+.engine{margin-bottom:34px;scroll-margin-top:84px}
+.engine-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:10px;margin-bottom:12px}
+.engine-head h2{margin:0;font-size:20px;letter-spacing:-.01em;text-transform:capitalize}
+.engine-head .meta{color:var(--muted);font-size:13px}
+.engine-head .bar{flex:1 1 160px;max-width:220px;height:6px;border-radius:99px;background:var(--line);overflow:hidden;margin-left:auto}
+.engine-head .bar i{display:block;height:100%;background:var(--ok)}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:16px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);display:flex;flex-direction:column;transition:transform .15s,box-shadow .15s}
+.card:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(15,23,42,.12)}
+.card.unused .hero img{filter:saturate(.45)}
+.hero{position:relative;aspect-ratio:4/5;background:var(--surface-2);cursor:zoom-in;overflow:hidden}
+.hero img{width:100%;height:100%;object-fit:cover;object-position:top;display:block}
+.hero .noimg{position:absolute;inset:0;display:grid;place-items:center;color:var(--muted);font-size:12px}
+.badge{position:absolute;top:10px;left:10px;font-size:11px;font-weight:600;padding:3px 8px;border-radius:99px;background:rgba(15,23,42,.72);color:#fff;backdrop-filter:blur(4px)}
+.badge.used{background:var(--ok);color:#fff}
+.count{position:absolute;top:10px;right:10px;font-size:11px;padding:3px 8px;border-radius:99px;background:rgba(15,23,42,.72);color:#fff}
+.strip{display:flex;gap:6px;padding:8px 10px 0;overflow-x:auto}
+.strip button{flex:0 0 auto;width:46px;aspect-ratio:9/16;border-radius:6px;border:2px solid transparent;padding:0;overflow:hidden;cursor:pointer;background:var(--surface-2)}
+.strip button[aria-pressed="true"]{border-color:var(--accent)}
+.strip img{width:100%;height:100%;object-fit:cover;display:block}
+.body{padding:10px 12px 12px;display:flex;flex-direction:column;gap:6px;flex:1}
+.title{font-weight:650;line-height:1.3}
+.sub{display:flex;justify-content:space-between;gap:8px;align-items:center;color:var(--muted);font-size:12px}
+.sub code{font-size:11px;color:var(--muted);background:var(--surface-2);padding:1px 6px;border-radius:5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tag{font-size:10.5px;font-weight:600;letter-spacing:.03em;padding:2px 7px;border-radius:6px;background:var(--accent-soft);color:var(--accent);white-space:nowrap}
+.tag.warn{background:var(--warn-soft);color:var(--warn)}
+.comp{font-size:12px;color:var(--muted);min-height:34px}
+.comp b{color:var(--fg);font-weight:600}
+.langs{display:flex;gap:6px;margin-top:auto;padding-top:4px}
+.lang{flex:1;text-align:center;border-radius:8px;padding:4px 0;background:var(--surface-2);font-size:11px;color:var(--muted);font-variant-numeric:tabular-nums}
+.lang b{display:block;font-size:14px;color:var(--fg)}
+.lang.zero b{color:var(--muted);font-weight:500}
+.empty{color:var(--muted);padding:40px;text-align:center}
+.foot{color:var(--muted);font-size:12px;border-top:1px solid var(--line);padding-top:14px;margin-top:10px}
+
+/* xem lớn */
+.lb{position:fixed;inset:0;z-index:20;background:rgba(2,6,23,.86);display:flex;align-items:center;justify-content:center;gap:16px;padding:20px}
+.lb figure{margin:0;display:flex;gap:22px;align-items:center;max-width:980px;width:100%}
+.lb img{max-height:88vh;max-width:min(52vw,480px);border-radius:12px;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+.lb figcaption{color:#e2e8f0;flex:1;min-width:0}
+.lb figcaption h4{margin:0 0 4px;font-size:18px}
+.lb figcaption p{margin:6px 0;color:#cbd5e1;font-size:14px}
+.lb .nav{border:0;background:rgba(255,255,255,.1);color:#fff;width:42px;height:42px;border-radius:50%;cursor:pointer;font-size:20px;flex:0 0 auto}
+.lb .x{position:absolute;top:16px;right:20px}
+
+@media (max-width:900px){
+  .layout{grid-template-columns:1fr;padding:16px}
+  .top{position:static}
+  nav.side{position:static;max-height:none;overflow-x:auto;padding-bottom:4px}
+  #nav{display:flex;gap:6px;width:max-content}
+  .side h3{display:none}
+  .side a{flex:0 0 auto;gap:8px;background:var(--surface);border:1px solid var(--line)}
+  .kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .lb figure{flex-direction:column}
+  .lb img{max-width:80vw;max-height:60vh}
+}
+@media (max-width:520px){.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.top-in{padding:10px 16px}}
 </style>
 </head>
 <body>
-<main>
-  <h1>Skin video Matrix</h1>
-  <p class="sub" id="sub">Đang tải…</p>
-  <div class="stats" id="stats"></div>
-  <div class="bar">
-    <input type="search" id="q" placeholder="Tìm skin, bố cục, mô tả…" aria-label="Tìm skin">
-    <select id="engine" aria-label="Lọc engine"><option value="">Mọi engine</option></select>
-    <label><input type="checkbox" id="unused"> Chỉ skin chưa dùng</label>
+<header class="top">
+  <div class="top-in">
+    <div class="brand"><div class="logo" aria-hidden="true">S</div><div><h1>Thư viện skin video</h1><p id="stamp">Đang tải…</p></div></div>
+    <label class="search"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input type="search" id="q" placeholder="Tìm skin, bố cục, mô tả…" aria-label="Tìm skin"></label>
+    <div class="seg" role="group" aria-label="Trạng thái" id="state">
+      <button data-v="" aria-pressed="true">Tất cả</button><button data-v="used" aria-pressed="false">Đang dùng</button><button data-v="unused" aria-pressed="false">Chưa dùng</button>
+    </div>
+    <div class="seg" role="group" aria-label="Nước" id="country">
+      <button data-v="" aria-pressed="true">Mọi nước</button><button data-v="de" aria-pressed="false">DE</button><button data-v="en" aria-pressed="false">EN</button><button data-v="ko" aria-pressed="false">KO</button><button data-v="ja" aria-pressed="false">JA</button>
+    </div>
   </div>
-  <div id="list"></div>
-  <p class="foot">Số tài khoản = kênh có skin đó (creative.skins hoặc variant_id), chỉ tính kênh de/en/ko/ja. Cập nhật: <code>node compare_studio/tools/skins-page-data.mjs</code>. Engine <code>vector</code> không dùng skin (mỗi kênh có Vector DNA riêng).</p>
-</main>
+</header>
+<div class="layout">
+  <nav class="side" aria-label="Engine"><h3>Engine</h3><div id="nav"></div></nav>
+  <main>
+    <div class="kpis" id="kpis"></div>
+    <div id="list"></div>
+    <p class="foot">Số tài khoản = kênh de/en/ko/ja có skin đó (creative.skins hoặc variant_id). Ảnh là khung xem trước (ô xanh có số = ảnh mẫu, video thật dùng ảnh AI).
+      Cập nhật: <code>node compare_studio/tools/skins-page-data.mjs</code>. Engine <code>vector</code> không dùng skin (mỗi kênh có Vector DNA riêng).</p>
+  </main>
+</div>
 <script>
 const LANGS = ["de", "en", "ko", "ja"];
 const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
-let DATA = null;
+const state = { q: "", status: "", country: "" };
+const picked = {};  // variant id → index bố cục đang xem
+let DATA = null, CARDS = {};
+
+const used = (v, c) => c ? (v.usage[c] || 0) : LANGS.reduce((n, l) => n + (v.usage[l] || 0), 0);
+
+function card(v) {
+  const i = picked[v.id] || 0, comp = v.compositions[i] || {};
+  const total = used(v);
+  const tags = [v.asset ? `<span class="tag">${esc(v.asset.replace("_", " "))}</span>` : "",
+    v.status !== "active" ? `<span class="tag warn">${esc(v.status)}</span>` : "", v.auto_assign ? "" : '<span class="tag warn">opt-in</span>'].join(" ");
+  return `<article class="card ${total ? "" : "unused"}" data-id="${esc(v.id)}">
+    <div class="hero" data-act="zoom">${comp.thumb ? `<img loading="lazy" src="${esc(comp.thumb)}" alt="${esc(v.name)} – ${esc(comp.id)}">` : '<div class="noimg">Chưa có ảnh</div>'}
+      <span class="badge ${total ? "used" : ""}">${total ? `${total} tài khoản` : "Chưa dùng"}</span>
+      <span class="count">${v.compositions.length} bố cục</span></div>
+    ${v.compositions.length > 1 ? `<div class="strip">${v.compositions.map((c, k) => `<button data-act="pick" data-k="${k}" aria-pressed="${k === i}" title="${esc(c.id)}">${c.thumb ? `<img loading="lazy" src="${esc(c.thumb)}" alt="">` : ""}</button>`).join("")}</div>` : ""}
+    <div class="body">
+      <div class="title">${esc(v.name)}</div>
+      <div class="sub"><code>${esc(v.id)}</code>${tags}</div>
+      <div class="comp"><b>${esc(comp.id || "")}</b>${comp.describe ? ` — ${esc(comp.describe.length > 110 ? comp.describe.slice(0, 110) + "…" : comp.describe)}` : ""}</div>
+      <div class="langs">${LANGS.map((l) => `<div class="lang ${v.usage[l] ? "" : "zero"}"><b>${v.usage[l] || 0}</b>${l.toUpperCase()}</div>`).join("")}</div>
+    </div></article>`;
+}
 
 function render() {
-  const q = document.getElementById("q").value.trim().toLowerCase();
-  const eng = document.getElementById("engine").value;
-  const onlyUnused = document.getElementById("unused").checked;
-  const html = [];
+  const q = state.q, html = [], nav = [];
   for (const e of DATA.engines) {
-    if (eng && e.engine !== eng) continue;
-    const rows = e.variants.filter((v) => {
-      const used = LANGS.reduce((n, l) => n + (v.usage[l] || 0), 0);
-      if (onlyUnused && used) return false;
-      if (!q) return true;
-      return [v.id, v.name, ...v.compositions.flatMap((c) => [c.id, c.describe])].join(" ").toLowerCase().includes(q);
+    const vs = e.variants.filter((v) => {
+      const n = used(v, state.country);
+      if (state.status === "used" && !n) return false;
+      if (state.status === "unused" && n) return false;
+      return !q || [v.id, v.name, ...v.compositions.flatMap((c) => [c.id, c.describe])].join(" ").toLowerCase().includes(q);
     });
-    if (!rows.length) continue;
+    const inUse = e.variants.filter((v) => used(v)).length;
+    nav.push(`<a href="#e-${esc(e.engine)}" data-e="${esc(e.engine)}">${esc(e.engine)}<span>${vs.length}/${e.variants.length}</span></a>`);
+    if (!vs.length) continue;
     const comps = e.variants.reduce((n, v) => n + v.compositions.length, 0);
-    const inUse = e.variants.filter((v) => LANGS.some((l) => v.usage[l])).length;
-    html.push(`<section><h2>${esc(e.engine)} <small>${e.variants.length} skin · ${comps} bố cục · ${inUse} đang dùng · ${e.channels} kênh liệt kê engine</small></h2><div class="wrap"><table>
-      <thead><tr><th>Skin</th><th>Bố cục (bấm ảnh để xem lớn)</th>${LANGS.map((l) => `<th class="n">${l}</th>`).join("")}<th class="n">Tổng</th></tr></thead><tbody>`);
-    for (const v of rows) {
-      const total = LANGS.reduce((n, l) => n + (v.usage[l] || 0), 0);
-      const tags = [v.status !== "active" ? `<span class="tag warn">${esc(v.status)}</span>` : "", v.auto_assign ? "" : '<span class="tag warn">opt-in</span>',
-        v.asset ? `<span class="tag">${esc(v.asset)}</span>` : ""].join("");
-      html.push(`<tr><td><b>${esc(v.name)}</b>${tags}<div class="id">${esc(v.id)}</div></td>
-        <td><div class="shots">${v.compositions.map((c) => `<figure class="shot">${c.thumb ? `<img loading="lazy" src="${esc(c.thumb)}" alt="${esc(v.name)} – ${esc(c.id)}" onclick="zoom(this.src)">` : '<div class="noimg">chưa có ảnh</div>'}<figcaption title="${esc(c.describe)}"><b>${esc(c.id)}</b><br>${esc(c.describe.slice(0, 80))}${c.describe.length > 80 ? "…" : ""}</figcaption></figure>`).join("")}</div></td>
-        ${LANGS.map((l) => `<td class="n ${v.usage[l] ? "" : "zero"}">${v.usage[l] || 0}</td>`).join("")}
-        <td class="n ${total ? "total" : "zero"}">${total}</td></tr>`);
-    }
-    html.push("</tbody></table></div></section>");
+    html.push(`<section class="engine" id="e-${esc(e.engine)}"><div class="engine-head"><h2>${esc(e.engine)}</h2>
+      <span class="meta">${e.variants.length} skin · ${comps} bố cục · ${inUse} đang dùng · ${e.channels} kênh dùng engine</span>
+      <span class="bar" title="${inUse}/${e.variants.length} skin đang dùng"><i style="width:${Math.round(100 * inUse / e.variants.length)}%"></i></span></div>
+      <div class="grid">${vs.map(card).join("")}</div></section>`);
   }
-  document.getElementById("list").innerHTML = html.join("") || '<p class="sub">Không có skin khớp bộ lọc.</p>';
+  document.getElementById("nav").innerHTML = nav.join("");
+  document.getElementById("list").innerHTML = html.join("") || '<div class="empty">Không có skin khớp bộ lọc.</div>';
 }
 
-function zoom(src) {
-  const d = document.createElement("div"); d.className = "lb"; d.innerHTML = `<img src="${src}" alt="">`;
-  d.onclick = () => d.remove(); document.body.appendChild(d);
+function lightbox(v, k) {
+  const c = v.compositions[k]; if (!c) return;
+  document.querySelector(".lb")?.remove();
+  const d = document.createElement("div"); d.className = "lb"; d.setAttribute("role", "dialog"); d.setAttribute("aria-label", v.name);
+  d.innerHTML = `<button class="nav x" aria-label="Đóng">✕</button>
+    ${v.compositions.length > 1 ? '<button class="nav" data-d="-1" aria-label="Bố cục trước">‹</button>' : ""}
+    <figure>${c.thumb ? `<img src="${esc(c.thumb)}" alt="">` : ""}<figcaption><h4>${esc(v.name)}</h4>
+      <p><b>${esc(c.id)}</b> · bố cục ${k + 1}/${v.compositions.length}</p><p>${esc(c.describe)}</p>
+      <p>${LANGS.map((l) => `${l.toUpperCase()} ${v.usage[l] || 0}`).join(" · ")} tài khoản</p><p><code>${esc(v.id)}</code></p></figcaption></figure>
+    ${v.compositions.length > 1 ? '<button class="nav" data-d="1" aria-label="Bố cục sau">›</button>' : ""}`;
+  d.addEventListener("click", (ev) => {
+    const b = ev.target.closest("button");
+    if (b?.dataset.d) return lightbox(v, (k + Number(b.dataset.d) + v.compositions.length) % v.compositions.length);
+    if (b || ev.target === d) d.remove();
+  });
+  d._step = (s) => lightbox(v, (k + s + v.compositions.length) % v.compositions.length);
+  document.body.appendChild(d);
 }
-document.addEventListener("keydown", (e) => { if (e.key === "Escape") document.querySelector(".lb")?.remove(); });
+
+document.addEventListener("keydown", (e) => {
+  const lb = document.querySelector(".lb"); if (!lb) return;
+  if (e.key === "Escape") lb.remove(); else if (e.key === "ArrowRight") lb._step(1); else if (e.key === "ArrowLeft") lb._step(-1);
+});
+document.getElementById("list").addEventListener("click", (e) => {
+  const el = e.target.closest("[data-act]"); if (!el) return;
+  const id = el.closest(".card").dataset.id, v = CARDS[id];
+  if (el.dataset.act === "pick") { picked[id] = Number(el.dataset.k); el.closest(".card").outerHTML = card(v); }
+  else lightbox(v, picked[id] || 0);
+});
+for (const g of ["state", "country"]) document.getElementById(g).addEventListener("click", (e) => {
+  const b = e.target.closest("button"); if (!b) return;
+  for (const x of e.currentTarget.querySelectorAll("button")) x.setAttribute("aria-pressed", String(x === b));
+  state[g === "state" ? "status" : "country"] = b.dataset.v; render();
+});
+document.getElementById("q").addEventListener("input", (e) => { state.q = e.target.value.trim().toLowerCase(); render(); });
 
 fetch("skins_data.json", { cache: "no-store" }).then((r) => r.json()).then((d) => {
   DATA = d;
+  for (const e of d.engines) for (const v of e.variants) CARDS[v.id] = v;
   const t = d.totals;
-  document.getElementById("sub").textContent = `Mọi bộ da (variant) và bố cục của từng engine, kèm số tài khoản đang dùng theo nước. Dữ liệu lúc ${new Date(d.generated_at).toLocaleString("vi-VN")}.`;
-  document.getElementById("stats").innerHTML = [["Engine", t.engines], ["Skin (variant)", t.variants], ["Bố cục", t.compositions], ["Skin đang dùng", t.variants_in_use]]
-    .map(([k, v]) => `<div class="stat"><b>${v}</b><span>${k}</span></div>`).join("");
-  const sel = document.getElementById("engine");
-  for (const e of d.engines) sel.insertAdjacentHTML("beforeend", `<option value="${esc(e.engine)}">${esc(e.engine)} (${e.variants.length})</option>`);
-  for (const id of ["q", "engine", "unused"]) document.getElementById(id).addEventListener("input", render);
+  document.getElementById("stamp").textContent = `Cập nhật ${new Date(d.generated_at).toLocaleString("vi-VN")}`;
+  document.getElementById("kpis").innerHTML = [["Engine", t.engines], ["Skin", t.variants], ["Bố cục", t.compositions], ["Skin đang dùng", `${t.variants_in_use}<small style="font-size:14px;color:var(--muted)"> / ${t.variants}</small>`]]
+    .map(([k, v]) => `<div class="kpi"><b>${v}</b><span>${k}</span></div>`).join("");
   render();
-}).catch((e) => { document.getElementById("sub").textContent = `Không tải được dữ liệu: ${e.message}`; });
+}).catch((e) => { document.getElementById("list").innerHTML = `<div class="empty">Không tải được dữ liệu: ${esc(e.message)}</div>`; });
 </script>
 </body>
 </html>
