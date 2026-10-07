@@ -1,5 +1,5 @@
 channel_id: military_arsenal_03
-config_version: 9
+config_version: 11
 niche_id: military_arsenal
 name: Weapons & War Machines 03
 tiktok_account_ref: null
@@ -40,6 +40,30 @@ creative:
         transition: wipe
         tone: 2
         caption: top
+    wildlife:
+      variant_id: wildlife/migration-map
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: flyway_medallion
+        typography: serif
+        treatment: sepia_grain
+        image_motion: ken_burns_slow
+        transition: slide
+        tone: 1
+        caption: fixed
+    vox:
+      variant_id: vox/original
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: torn_card
+        typography: condensed
+        treatment: halftone
+        image_motion: ken_burns_slow
+        transition: paper_tear
+        tone: 1
+        caption: fixed
 audio:
   voice_id: en_female_nail_artist
   voice_speed: 0.99

@@ -9,7 +9,7 @@ audio:
   - freepd-guerilla-tactics
   - freepd-hidden-truth
 channel_id: geopolitics_maps_13
-config_version: 9
+config_version: 10
 creative:
   cut_cadence_seconds: 2.8
   palette:
@@ -46,6 +46,18 @@ creative:
         transition: wipe
         tone: 1
         caption: bottom
+    wildlife:
+      variant_id: wildlife/microscope
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: eyepiece
+        typography: mono
+        treatment: clean
+        image_motion: still_grain
+        transition: cut
+        tone: 5
+        caption: fixed
 name: Geopolitik & Grenzen 13
 niche_id: geopolitics_maps
 persona:

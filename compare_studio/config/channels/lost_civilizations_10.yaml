@@ -1,5 +1,5 @@
 channel_id: lost_civilizations_10
-config_version: 9
+config_version: 11
 niche_id: lost_civilizations
 name: Antike Zivilisationen 10
 tiktok_account_ref: null
@@ -40,6 +40,30 @@ creative:
         transition: cut
         tone: 3
         caption: bottom
+    folklore:
+      variant_id: folklore/european-grimoire
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: sigil_circle
+        typography: slab
+        treatment: vignette_dark
+        image_motion: push_in
+        transition: ink_bleed
+        tone: 3
+        caption: fixed
+    vox:
+      variant_id: vox/timeline-explainer
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: track_below
+        typography: grotesk
+        treatment: film_grain
+        image_motion: parallax
+        transition: slide
+        tone: 2
+        caption: fixed
 audio:
   voice_id: de-DE-SeraphinaMultilingualNeural
   voice_speed: 0.96

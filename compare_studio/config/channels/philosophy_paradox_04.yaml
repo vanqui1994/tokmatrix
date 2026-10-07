@@ -1,5 +1,5 @@
 channel_id: philosophy_paradox_04
-config_version: 9
+config_version: 10
 niche_id: philosophy_paradox
 name: 철학의 역설 04
 tiktok_account_ref: null
@@ -52,6 +52,18 @@ creative:
         transition: shutter
         tone: 8
         caption: bottom
+    mystery:
+      variant_id: mystery/lost-places
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: flashlight_circle
+        typography: display_serif
+        treatment: vignette_dark
+        image_motion: parallax
+        transition: ink_bleed
+        tone: 4
+        caption: fixed
 audio:
   voice_id: ko-KR-SunHiNeural
   voice_speed: 1.05

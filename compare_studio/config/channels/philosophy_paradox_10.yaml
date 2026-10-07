@@ -1,5 +1,5 @@
 channel_id: philosophy_paradox_10
-config_version: 7
+config_version: 8
 niche_id: philosophy_paradox
 name: Nghịch Lý Triết Học 10
 tiktok_account_ref: null
@@ -52,6 +52,18 @@ creative:
         transition: wipe
         tone: 3
         caption: middle
+    mystery:
+      variant_id: mystery/ufo-radar
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: radar_scope
+        typography: grotesk
+        treatment: clean
+        image_motion: scan_light
+        transition: shutter
+        tone: 3
+        caption: fixed
 audio:
   voice_id: multi_female_richgirl_uranus_bigtts
   voice_speed: 0.99

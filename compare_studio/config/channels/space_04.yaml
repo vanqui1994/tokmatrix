@@ -1,5 +1,5 @@
 channel_id: space_04
-config_version: 10
+config_version: 12
 niche_id: deep_space
 name: Beyond The Event Horizon
 tiktok_account_ref: null
@@ -10,18 +10,17 @@ persona:
   catchphrase_prefix: 'Ở ranh giới này, trực giác của chúng ta bắt đầu thất bại:'
 story:
   preferred_blueprints:
-  - science_explainer
-  - mystery_reveal
+    - science_explainer
+    - mystery_reveal
   preferred_hook_types:
-  - cosmic_paradox
-  - boundary_question
+    - cosmic_paradox
+    - boundary_question
   target_duration_seconds: 54
   pacing_beats: 12
 creative:
   preferred_engines:
-  - mystery
-  - vox
-  - science
+    - mystery
+    - science
   visual_style_id: cosmic_space_v1
   cut_cadence_seconds: 3.0
   palette:
@@ -41,6 +40,18 @@ creative:
         transition: cut
         tone: 0
         caption: top
+    mystery:
+      variant_id: mystery/ufo-radar
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: witness_phone
+        typography: mono
+        treatment: clean
+        image_motion: push_in
+        transition: glitch
+        tone: 3
+        caption: fixed
 audio:
   voice_id: de-DE-FlorianMultilingualNeural
   voice_speed: 1.02
@@ -49,13 +60,13 @@ audio:
   soundscape_id: mystery
   sfx_density: medium
   bgm_pool:
-  - freepd-mysterious-lights
-  - freepd-satin-danger
+    - freepd-mysterious-lights
+    - freepd-satin-danger
 publishing:
   language: de
   default_schedule_window: 19:30-20:30
   hashtags:
-  - lo den
-  - vutrubian
-  - thuyettuongdoi
-  - eventhorizon
+    - lo den
+    - vutrubian
+    - thuyettuongdoi
+    - eventhorizon

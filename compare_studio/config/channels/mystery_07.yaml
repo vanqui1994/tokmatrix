@@ -1,5 +1,5 @@
 channel_id: mystery_07
-config_version: 6
+config_version: 8
 niche_id: unsolved_mysteries
 name: Bí Ẩn Chưa Lời Giải 07
 tiktok_account_ref: null
@@ -40,6 +40,30 @@ creative:
         transition: wipe
         tone: 6
         caption: bottom
+    mystery:
+      variant_id: mystery/cursed-objects
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: catalogue_card
+        typography: slab
+        treatment: sepia_grain
+        image_motion: push_in
+        transition: flip_3d
+        tone: 1
+        caption: fixed
+    vox:
+      variant_id: vox/split-then-now
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: side_by_side
+        typography: display_serif
+        treatment: film_grain
+        image_motion: ken_burns_fast
+        transition: fade_black
+        tone: 1
+        caption: fixed
 audio:
   voice_id: multi_male_felipe_uranus_bigtts
   voice_speed: 1.02

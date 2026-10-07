@@ -1,5 +1,5 @@
 channel_id: folklore_legends_01
-config_version: 8
+config_version: 10
 niche_id: folklore_legends
 name: Folklore & The Unseen 01
 tiktok_account_ref: null
@@ -41,6 +41,30 @@ creative:
         transition: wipe
         tone: 2
         caption: bottom
+    mystery:
+      variant_id: mystery/cursed-objects
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: catalogue_card
+        typography: serif
+        treatment: sepia_grain
+        image_motion: ken_burns_slow
+        transition: fade_black
+        tone: 1
+        caption: fixed
+    folklore:
+      variant_id: folklore/european-grimoire
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: sigil_circle
+        typography: display_serif
+        treatment: paper_texture
+        image_motion: scan_light
+        transition: fade_black
+        tone: 1
+        caption: fixed
 audio:
   voice_id: BV503_streaming
   voice_speed: 1.02

@@ -9,7 +9,7 @@ audio:
   - freepd-horroriffic
   - freepd-night-vigil
 channel_id: economy_empires_12
-config_version: 8
+config_version: 10
 creative:
   cut_cadence_seconds: 2.9
   palette:
@@ -34,6 +34,30 @@ creative:
         transition: shutter
         tone: 7
         caption: bottom
+    chalk:
+      variant_id: chalk/satellite
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: feeds
+        typography: heavy
+        treatment: clean
+        image_motion: ken_burns_fast
+        transition: cut
+        tone: 4
+        caption: fixed
+    wildlife:
+      variant_id: wildlife/migration-map
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: flyway_medallion
+        typography: display_serif
+        treatment: paper_texture
+        image_motion: parallax
+        transition: slide
+        tone: 0
+        caption: fixed
 name: Wirtschaft & Märkte 12
 niche_id: economy_empires
 persona:

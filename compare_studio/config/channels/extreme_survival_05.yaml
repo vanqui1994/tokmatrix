@@ -1,5 +1,5 @@
 channel_id: extreme_survival_05
-config_version: 9
+config_version: 11
 niche_id: extreme_survival
 name: Überleben & Katastrophen 05
 tiktok_account_ref: null
@@ -40,6 +40,30 @@ creative:
         transition: slide
         tone: 0
         caption: top
+    chalk:
+      variant_id: chalk/whiteboard
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: marker_map
+        typography: rounded
+        treatment: clean
+        image_motion: pan_lateral
+        transition: wipe
+        tone: 2
+        caption: fixed
+    vox:
+      variant_id: vox/timeline-explainer
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: band_middle
+        typography: rounded
+        treatment: clean
+        image_motion: pan_lateral
+        transition: slide
+        tone: 0
+        caption: fixed
 audio:
   voice_id: de-DE-SeraphinaMultilingualNeural
   voice_speed: 0.99

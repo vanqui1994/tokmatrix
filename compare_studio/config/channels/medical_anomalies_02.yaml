@@ -1,5 +1,5 @@
 channel_id: medical_anomalies_02
-config_version: 9
+config_version: 11
 niche_id: medical_anomalies
 name: Medizin & Biologische Rätsel 02
 tiktok_account_ref: null
@@ -40,6 +40,30 @@ creative:
         transition: wipe
         tone: 0
         caption: top
+    mystery:
+      variant_id: mystery/cursed-objects
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: glass_case
+        typography: serif
+        treatment: film_grain
+        image_motion: still_grain
+        transition: flip_3d
+        tone: 1
+        caption: fixed
+    vox:
+      variant_id: vox/original
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: torn_card
+        typography: condensed
+        treatment: halftone
+        image_motion: parallax
+        transition: cut
+        tone: 2
+        caption: fixed
 audio:
   voice_id: de-DE-AmalaNeural
   voice_speed: 1.02

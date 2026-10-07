@@ -1,5 +1,5 @@
 channel_id: economy_empires_09
-config_version: 9
+config_version: 10
 niche_id: economy_empires
 name: Wirtschaft & Märkte 09
 tiktok_account_ref: null
@@ -52,6 +52,18 @@ creative:
         transition: zoom_through
         tone: 8
         caption: middle
+    chalk:
+      variant_id: chalk/war-room
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: rail
+        typography: heavy
+        treatment: vignette_dark
+        image_motion: still_grain
+        transition: cut
+        tone: 2
+        caption: fixed
 audio:
   voice_id: de-DE-AmalaNeural
   voice_speed: 1.02

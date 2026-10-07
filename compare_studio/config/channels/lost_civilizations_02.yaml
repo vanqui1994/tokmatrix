@@ -1,5 +1,5 @@
 channel_id: lost_civilizations_02
-config_version: 8
+config_version: 11
 niche_id: lost_civilizations
 name: Antike Zivilisationen 02
 tiktok_account_ref: null
@@ -27,6 +27,43 @@ creative:
     primary: '#111318'
     accent: '#D6A84F'
     text: '#F2EEE6'
+  skins:
+    mystery:
+      variant_id: mystery/decoded
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: cipher_hex
+        typography: mono
+        treatment: vhs_noise
+        image_motion: still_grain
+        transition: tv_noise
+        tone: 5
+        caption: fixed
+    folklore:
+      variant_id: folklore/haunted-vhs
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: cassette
+        typography: mono
+        treatment: vhs_noise
+        image_motion: still_grain
+        transition: cut
+        tone: 2
+        caption: fixed
+    vox:
+      variant_id: vox/zine-xerox
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: xerox_page
+        typography: typewriter
+        treatment: halftone
+        image_motion: push_in
+        transition: glitch
+        tone: 5
+        caption: fixed
 audio:
   voice_id: DiT_de_female_jiangshi
   voice_speed: 0.99

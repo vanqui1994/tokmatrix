@@ -1,5 +1,5 @@
 channel_id: ocean_mysteries_04
-config_version: 9
+config_version: 10
 niche_id: ocean_mysteries
 name: 海と深海海溝 04
 tiktok_account_ref: null
@@ -52,6 +52,18 @@ creative:
         image_motion: still_grain
         transition: ink_bleed
         tone: 4
+        caption: fixed
+    vox:
+      variant_id: vox/documentary-lowerthird
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: letterbox
+        typography: grotesk
+        treatment: clean
+        image_motion: ken_burns_slow
+        transition: cut
+        tone: 2
         caption: fixed
 audio:
   voice_id: ja-JP-NanamiNeural

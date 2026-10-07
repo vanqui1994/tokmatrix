@@ -1,5 +1,5 @@
 channel_id: mystery_01
-config_version: 5
+config_version: 7
 niche_id: unsolved_mysteries
 name: The Unsolved File
 tiktok_account_ref: null
@@ -31,6 +31,30 @@ creative:
         transition: cut
         tone: 7
         caption: middle
+    mystery:
+      variant_id: mystery/case-file
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: folder_card
+        typography: typewriter
+        treatment: film_grain
+        image_motion: ken_burns_slow
+        transition: cut
+        tone: 3
+        caption: fixed
+    vox:
+      variant_id: vox/documentary-lowerthird
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: full_bleed
+        typography: condensed
+        treatment: vignette_dark
+        image_motion: push_in
+        transition: zoom_through
+        tone: 2
+        caption: fixed
 audio:
   voice_id: vi-VN-NamMinhNeural
   voice_speed: 1.02

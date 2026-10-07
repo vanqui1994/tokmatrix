@@ -1,5 +1,5 @@
 channel_id: lost_civilizations_03
-config_version: 9
+config_version: 11
 niche_id: lost_civilizations
 name: Antike Zivilisationen 03
 tiktok_account_ref: null
@@ -40,6 +40,30 @@ creative:
         transition: zoom_through
         tone: 6
         caption: top
+    folklore:
+      variant_id: folklore/nordic-runestone
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: standing_stones
+        typography: condensed
+        treatment: clean
+        image_motion: handheld
+        transition: zoom_through
+        tone: 2
+        caption: fixed
+    vox:
+      variant_id: vox/original
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: torn_card
+        typography: grotesk
+        treatment: film_grain
+        image_motion: push_in
+        transition: cut
+        tone: 1
+        caption: fixed
 audio:
   voice_id: de-DE-FlorianMultilingualNeural
   voice_speed: 0.96

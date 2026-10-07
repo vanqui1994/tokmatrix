@@ -1,5 +1,5 @@
 channel_id: mega_catastrophes_03
-config_version: 13
+config_version: 14
 niche_id: mega_catastrophes
 name: Naturkatastrophen der Erde 03
 tiktok_account_ref: null
@@ -52,6 +52,18 @@ creative:
         transition: cut
         tone: 4
         caption: top
+    vox:
+      variant_id: vox/zine-xerox
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: cutup_grid
+        typography: typewriter
+        treatment: halftone
+        image_motion: handheld
+        transition: cut
+        tone: 0
+        caption: fixed
 audio:
   voice_id: de-DE-AmalaNeural
   voice_speed: 1.05

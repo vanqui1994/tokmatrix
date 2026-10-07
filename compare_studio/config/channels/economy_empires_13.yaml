@@ -9,7 +9,7 @@ audio:
   - freepd-driving-concern
   - freepd-inspiration
 channel_id: economy_empires_13
-config_version: 8
+config_version: 10
 creative:
   cut_cadence_seconds: 2.7
   palette:
@@ -34,6 +34,30 @@ creative:
         transition: wipe
         tone: 4
         caption: top
+    chalk:
+      variant_id: chalk/atlas
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: torn_plate
+        typography: display_serif
+        treatment: sepia_grain
+        image_motion: still_grain
+        transition: page_turn
+        tone: 3
+        caption: fixed
+    wildlife:
+      variant_id: wildlife/deep-ocean
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: porthole_gauge
+        typography: slab
+        treatment: duotone
+        image_motion: parallax
+        transition: ink_bleed
+        tone: 2
+        caption: fixed
 name: Wirtschaft & Märkte 13
 niche_id: economy_empires
 persona:

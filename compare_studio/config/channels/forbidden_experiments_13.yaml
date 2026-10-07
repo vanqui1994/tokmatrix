@@ -9,7 +9,7 @@ audio:
   - freepd-abstract-anxiety
   - freepd-behind-enemy-lines
 channel_id: forbidden_experiments_13
-config_version: 8
+config_version: 9
 creative:
   cut_cadence_seconds: 2.7
   palette:
@@ -46,6 +46,18 @@ creative:
         transition: slide
         tone: 7
         caption: middle
+    vox:
+      variant_id: vox/original
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: torn_bleed
+        typography: heavy
+        treatment: clean
+        image_motion: ken_burns_slow
+        transition: paper_tear
+        tone: 2
+        caption: fixed
 name: Verrückte Experimente 13
 niche_id: forbidden_experiments
 persona:

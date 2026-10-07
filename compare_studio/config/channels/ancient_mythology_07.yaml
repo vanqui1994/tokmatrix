@@ -1,5 +1,5 @@
 channel_id: ancient_mythology_07
-config_version: 9
+config_version: 10
 niche_id: ancient_mythology
 name: Antike Mythen 07
 tiktok_account_ref: null
@@ -52,6 +52,18 @@ creative:
         transition: zoom_through
         tone: 6
         caption: top
+    mystery:
+      variant_id: mystery/reference-dossier
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: hero_evidence
+        typography: serif
+        treatment: paper_texture
+        image_motion: handheld
+        transition: folder_flip
+        tone: 1
+        caption: bottom
 audio:
   voice_id: DiT_de_female_qingsong
   voice_speed: 1.02

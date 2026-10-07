@@ -1,5 +1,5 @@
 channel_id: ocean_mysteries_07
-config_version: 10
+config_version: 11
 niche_id: ocean_mysteries
 name: 海と深海海溝 07
 tiktok_account_ref: null
@@ -52,6 +52,18 @@ creative:
         transition: wipe
         tone: 4
         caption: middle
+    wildlife:
+      variant_id: wildlife/deep-ocean
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: porthole_gauge
+        typography: rounded
+        treatment: vignette_dark
+        image_motion: parallax
+        transition: fade_black
+        tone: 0
+        caption: fixed
 audio:
   voice_id: ICL_jp_female_tanhua
   voice_speed: 1.02

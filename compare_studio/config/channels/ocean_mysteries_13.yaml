@@ -9,7 +9,7 @@ audio:
   - freepd-ice-and-snow
   - oga-underwater-theme
 channel_id: ocean_mysteries_13
-config_version: 10
+config_version: 11
 creative:
   cut_cadence_seconds: 2.4
   palette:
@@ -44,6 +44,18 @@ creative:
         treatment: film_grain
         image_motion: still_grain
         transition: fade_black
+        tone: 2
+        caption: fixed
+    mystery:
+      variant_id: mystery/cctv
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: single_monitor
+        typography: condensed
+        treatment: film_grain
+        image_motion: still_grain
+        transition: cut
         tone: 2
         caption: fixed
 name: 바다와 심해 해구 13

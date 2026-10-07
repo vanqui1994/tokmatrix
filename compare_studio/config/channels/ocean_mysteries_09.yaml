@@ -1,5 +1,5 @@
 channel_id: ocean_mysteries_09
-config_version: 9
+config_version: 10
 niche_id: ocean_mysteries
 name: 바다와 심해 해구 09
 tiktok_account_ref: null
@@ -52,6 +52,18 @@ creative:
         image_motion: pan_lateral
         transition: wipe
         tone: 0
+        caption: fixed
+    mystery:
+      variant_id: mystery/case-file
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: clipboard_top
+        typography: typewriter
+        treatment: film_grain
+        image_motion: handheld
+        transition: page_turn
+        tone: 3
         caption: fixed
 audio:
   voice_id: ko-KR-InJoonNeural

@@ -1,5 +1,5 @@
 channel_id: dark_psychology_01
-config_version: 7
+config_version: 9
 niche_id: dark_psychology
 name: Psychologie & Verhalten 01
 tiktok_account_ref: null
@@ -40,6 +40,30 @@ creative:
         transition: slide
         tone: 2
         caption: bottom
+    mystery:
+      variant_id: mystery/lost-places
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: flashlight_circle
+        typography: display_serif
+        treatment: film_grain
+        image_motion: parallax
+        transition: ink_bleed
+        tone: 4
+        caption: fixed
+    vox:
+      variant_id: vox/documentary-lowerthird
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: letterbox
+        typography: grotesk
+        treatment: film_grain
+        image_motion: pan_lateral
+        transition: fade_black
+        tone: 3
+        caption: fixed
 audio:
   voice_id: de-DE-ConradNeural
   voice_speed: 1.05

@@ -9,7 +9,7 @@ audio:
   - freepd-meditating-beat
   - freepd-night-vigil
 channel_id: forbidden_experiments_11
-config_version: 9
+config_version: 10
 creative:
   cut_cadence_seconds: 2.2
   palette:
@@ -46,6 +46,18 @@ creative:
         transition: wipe
         tone: 4
         caption: top
+    vox:
+      variant_id: vox/paper-collage
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: cutout_column
+        typography: heavy
+        treatment: halftone
+        image_motion: parallax
+        transition: paper_tear
+        tone: 0
+        caption: fixed
 name: Verrückte Experimente 11
 niche_id: forbidden_experiments
 persona:

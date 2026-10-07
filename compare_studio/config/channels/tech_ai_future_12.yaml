@@ -9,7 +9,7 @@ audio:
   - freepd-hidden-truth
   - freepd-meditating-beat
 channel_id: tech_ai_future_12
-config_version: 8
+config_version: 9
 creative:
   cut_cadence_seconds: 2.3
   palette:
@@ -46,6 +46,18 @@ creative:
         transition: zoom_through
         tone: 3
         caption: top
+    wildlife:
+      variant_id: wildlife/migration-map
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: route_window
+        typography: serif
+        treatment: paper_texture
+        image_motion: pan_lateral
+        transition: wipe
+        tone: 0
+        caption: fixed
 name: Công Nghệ & Tương Lai AI 12
 niche_id: tech_ai_future
 persona:

@@ -1,5 +1,5 @@
 channel_id: economy_empires_02
-config_version: 8
+config_version: 9
 niche_id: economy_empires
 name: Wirtschaft & Märkte 02
 tiktok_account_ref: null
@@ -52,6 +52,18 @@ creative:
         transition: wipe
         tone: 1
         caption: top
+    chalk:
+      variant_id: chalk/satellite
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: orbit_split
+        typography: mono
+        treatment: vignette_dark
+        image_motion: ken_burns_fast
+        transition: zoom_through
+        tone: 0
+        caption: fixed
 audio:
   voice_id: de-DE-ConradNeural
   voice_speed: 0.99

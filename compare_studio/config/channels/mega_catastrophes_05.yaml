@@ -1,5 +1,5 @@
 channel_id: mega_catastrophes_05
-config_version: 9
+config_version: 11
 niche_id: mega_catastrophes
 name: Earth's Great Disasters 05
 tiktok_account_ref: null
@@ -40,6 +40,30 @@ creative:
         transition: shutter
         tone: 0
         caption: middle
+    chalk:
+      variant_id: chalk/satellite
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: feeds
+        typography: mono
+        treatment: film_grain
+        image_motion: ken_burns_fast
+        transition: cut
+        tone: 3
+        caption: fixed
+    vox:
+      variant_id: vox/map-route
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: photo_inset
+        typography: heavy
+        treatment: paper_texture
+        image_motion: pan_lateral
+        transition: slide
+        tone: 4
+        caption: fixed
 audio:
   voice_id: en_female_sherry
   voice_speed: 1.02

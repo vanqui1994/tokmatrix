@@ -9,7 +9,7 @@ audio:
   - freepd-inspiration
   - oga-at-the-end-of-hope
 channel_id: ancient_mythology_14
-config_version: 9
+config_version: 10
 creative:
   cut_cadence_seconds: 2.9
   palette:
@@ -46,6 +46,18 @@ creative:
         transition: slide
         tone: 4
         caption: top
+    folklore:
+      variant_id: folklore/tarot-deck
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: three_card_spread
+        typography: display_serif
+        treatment: duotone
+        image_motion: still_grain
+        transition: zoom_through
+        tone: 0
+        caption: fixed
 name: Antike Mythen 14
 niche_id: ancient_mythology
 persona:

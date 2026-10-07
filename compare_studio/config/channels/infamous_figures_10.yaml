@@ -1,5 +1,5 @@
 channel_id: infamous_figures_10
-config_version: 7
+config_version: 10
 niche_id: infamous_figures
 name: Berüchtigte Gestalten 10
 tiktok_account_ref: null
@@ -27,6 +27,43 @@ creative:
     primary: '#111318'
     accent: '#D6A84F'
     text: '#F2EEE6'
+  skins:
+    mystery:
+      variant_id: mystery/field-journal
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: torn_sketch
+        typography: rounded
+        treatment: clean
+        image_motion: ken_burns_slow
+        transition: page_turn
+        tone: 3
+        caption: fixed
+    chalk:
+      variant_id: chalk/blueprint
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: detail_grid
+        typography: typewriter
+        treatment: paper_texture
+        image_motion: push_in
+        transition: cut
+        tone: 0
+        caption: fixed
+    vox:
+      variant_id: vox/timeline-explainer
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: band_middle
+        typography: condensed
+        treatment: film_grain
+        image_motion: pan_lateral
+        transition: wipe
+        tone: 4
+        caption: fixed
 audio:
   voice_id: DiT_de_female_qingsong
   voice_speed: 0.96

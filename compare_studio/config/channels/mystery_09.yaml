@@ -1,5 +1,5 @@
 channel_id: mystery_09
-config_version: 6
+config_version: 8
 niche_id: unsolved_mysteries
 name: Bí Ẩn Chưa Lời Giải 09
 tiktok_account_ref: null
@@ -40,6 +40,30 @@ creative:
         transition: wipe
         tone: 7
         caption: bottom
+    folklore:
+      variant_id: folklore/european-grimoire
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: open_book
+        typography: slab
+        treatment: vignette_dark
+        image_motion: push_in
+        transition: ink_bleed
+        tone: 3
+        caption: fixed
+    vox:
+      variant_id: vox/paper-collage
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: cutout_column
+        typography: grotesk
+        treatment: paper_texture
+        image_motion: parallax
+        transition: paper_tear
+        tone: 2
+        caption: fixed
 audio:
   voice_id: BV075_streaming
   voice_speed: 1.02

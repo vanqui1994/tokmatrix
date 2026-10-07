@@ -1,5 +1,5 @@
 channel_id: lost_civilizations_09
-config_version: 8
+config_version: 11
 niche_id: lost_civilizations
 name: Antike Zivilisationen 09
 tiktok_account_ref: null
@@ -27,6 +27,43 @@ creative:
     primary: '#111318'
     accent: '#D6A84F'
     text: '#F2EEE6'
+  skins:
+    mystery:
+      variant_id: mystery/reference-dossier
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: evidence_strip
+        typography: typewriter
+        treatment: paper_texture
+        image_motion: handheld
+        transition: cut
+        tone: 2
+        caption: bottom
+    folklore:
+      variant_id: folklore/tarot-deck
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: three_card_spread
+        typography: condensed
+        treatment: vignette_dark
+        image_motion: still_grain
+        transition: flip_3d
+        tone: 3
+        caption: fixed
+    vox:
+      variant_id: vox/data-card
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: ring_gauge
+        typography: condensed
+        treatment: clean
+        image_motion: still_grain
+        transition: cut
+        tone: 5
+        caption: fixed
 audio:
   voice_id: DiT_de_female_qingsong
   voice_speed: 0.96

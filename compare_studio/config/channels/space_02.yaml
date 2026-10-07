@@ -1,5 +1,5 @@
 channel_id: space_02
-config_version: 8
+config_version: 9
 niche_id: deep_space
 name: Scale Of The Cosmos
 tiktok_account_ref: null
@@ -10,17 +10,16 @@ persona:
   catchphrase_prefix: 'Nếu đặt Trái Đất cạnh vật thể này, mọi con số sẽ thay đổi:'
 story:
   preferred_blueprints:
-  - science_explainer
+    - science_explainer
   preferred_hook_types:
-  - scale_comparison
-  - record_breaking_distance
+    - scale_comparison
+    - record_breaking_distance
   target_duration_seconds: 50
   pacing_beats: 12
 creative:
   preferred_engines:
-  - vox
-  - science
-  - tierlist
+    - science
+    - tierlist
   visual_style_id: cosmic_space_v1
   cut_cadence_seconds: 2.5
   palette:
@@ -60,13 +59,13 @@ audio:
   soundscape_id: science
   sfx_density: low
   bgm_pool:
-  - freepd-horror-mytery
-  - freepd-inspiration
+    - freepd-horror-mytery
+    - freepd-inspiration
 publishing:
   language: de
   default_schedule_window: 19:30-20:30
   hashtags:
-  - thienvan
-  - khoangcachvutru
-  - hematroi
-  - scaleofthecosmos
+    - thienvan
+    - khoangcachvutru
+    - hematroi
+    - scaleofthecosmos

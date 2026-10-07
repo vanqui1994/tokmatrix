@@ -9,7 +9,7 @@ audio:
   - freepd-abstract-anxiety
   - freepd-guerilla-tactics
 channel_id: folklore_legends_11
-config_version: 9
+config_version: 11
 creative:
   cut_cadence_seconds: 2.9
   palette:
@@ -34,6 +34,30 @@ creative:
         transition: shutter
         tone: 3
         caption: top
+    mystery:
+      variant_id: mystery/sonar-log
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: sonar_full
+        typography: grotesk
+        treatment: film_grain
+        image_motion: ken_burns_fast
+        transition: wipe
+        tone: 4
+        caption: fixed
+    folklore:
+      variant_id: folklore/haunted-vhs
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: cassette
+        typography: condensed
+        treatment: vhs_noise
+        image_motion: still_grain
+        transition: glitch
+        tone: 3
+        caption: fixed
 name: Folklore & The Unseen 11
 niche_id: folklore_legends
 persona:

@@ -1,5 +1,5 @@
 channel_id: space_01
-config_version: 10
+config_version: 11
 niche_id: deep_space
 name: Cosmic Impossible
 tiktok_account_ref: null
@@ -10,18 +10,17 @@ persona:
   catchphrase_prefix: Bạn có dám đối mặt với sự thật rằng...
 story:
   preferred_blueprints:
-  - science_explainer
-  - mystery_reveal
+    - science_explainer
+    - mystery_reveal
   preferred_hook_types:
-  - impossible_scale
-  - paradox_question
+    - impossible_scale
+    - paradox_question
   target_duration_seconds: 52
   pacing_beats: 12
 creative:
   preferred_engines:
-  - science
-  - vox
-  - kinetic
+    - science
+    - kinetic
   visual_style_id: cosmic_space_v1
   cut_cadence_seconds: 2.8
   palette:
@@ -61,13 +60,13 @@ audio:
   soundscape_id: science
   sfx_density: medium
   bgm_pool:
-  - freepd-mana-two-part-1
-  - oga-november-snow
+    - freepd-mana-two-part-1
+    - oga-november-snow
 publishing:
   language: de
   default_schedule_window: 19:30-20:30
   hashtags:
-  - khoahoc
-  - vutru
-  - khampha
-  - cosmicimpossible
+    - khoahoc
+    - vutru
+    - khampha
+    - cosmicimpossible

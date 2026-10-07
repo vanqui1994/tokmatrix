@@ -1,5 +1,5 @@
 channel_id: extreme_survival_07
-config_version: 9
+config_version: 11
 niche_id: extreme_survival
 name: Überleben & Katastrophen 07
 tiktok_account_ref: null
@@ -40,6 +40,30 @@ creative:
         transition: slide
         tone: 6
         caption: bottom
+    mystery:
+      variant_id: mystery/sonar-log
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: sonar_full
+        typography: grotesk
+        treatment: clean
+        image_motion: ken_burns_fast
+        transition: wipe
+        tone: 4
+        caption: fixed
+    wildlife:
+      variant_id: wildlife/nature-doc
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: letterbox_band
+        typography: grotesk
+        treatment: clean
+        image_motion: parallax
+        transition: wipe
+        tone: 1
+        caption: fixed
 audio:
   voice_id: DiT_de_male_koubo
   voice_speed: 0.99

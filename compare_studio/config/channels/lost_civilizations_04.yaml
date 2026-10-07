@@ -1,5 +1,5 @@
 channel_id: lost_civilizations_04
-config_version: 10
+config_version: 11
 niche_id: lost_civilizations
 name: Antike Zivilisationen 04
 tiktok_account_ref: null
@@ -52,6 +52,18 @@ creative:
         transition: zoom_through
         tone: 0
         caption: bottom
+    vox:
+      variant_id: vox/documentary-lowerthird
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: full_bleed
+        typography: grotesk
+        treatment: clean
+        image_motion: ken_burns_slow
+        transition: cut
+        tone: 3
+        caption: fixed
 audio:
   voice_id: de-DE-SeraphinaMultilingualNeural
   voice_speed: 0.96

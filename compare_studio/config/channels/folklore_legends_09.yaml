@@ -1,5 +1,5 @@
 channel_id: folklore_legends_09
-config_version: 10
+config_version: 11
 niche_id: folklore_legends
 name: Folklore & The Unseen 09
 tiktok_account_ref: null
@@ -52,6 +52,18 @@ creative:
         transition: zoom_through
         tone: 5
         caption: bottom
+    folklore:
+      variant_id: folklore/tarot-deck
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: three_card_spread
+        typography: condensed
+        treatment: duotone
+        image_motion: ken_burns_slow
+        transition: flip_3d
+        tone: 1
+        caption: fixed
 audio:
   voice_id: en-US-AriaNeural
   voice_speed: 0.99

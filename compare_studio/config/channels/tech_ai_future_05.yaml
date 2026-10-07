@@ -1,5 +1,5 @@
 channel_id: tech_ai_future_05
-config_version: 6
+config_version: 9
 niche_id: tech_ai_future
 name: Công Nghệ & Tương Lai AI 05
 tiktok_account_ref: null
@@ -27,6 +27,43 @@ creative:
     primary: "#111318"
     accent: "#D6A84F"
     text: "#F2EEE6"
+  skins:
+    mystery:
+      variant_id: mystery/decoded
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: cipher_hex
+        typography: mono
+        treatment: vhs_noise
+        image_motion: scan_light
+        transition: glitch
+        tone: 0
+        caption: fixed
+    chalk:
+      variant_id: chalk/atlas
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: torn_plate
+        typography: slab
+        treatment: paper_texture
+        image_motion: parallax
+        transition: page_turn
+        tone: 0
+        caption: fixed
+    wildlife:
+      variant_id: wildlife/savanna-hud
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: rangefinder
+        typography: heavy
+        treatment: film_grain
+        image_motion: handheld
+        transition: zoom_through
+        tone: 0
+        caption: fixed
 audio:
   voice_id: multi_female_kiwi_uranus_bigtts
   voice_speed: 1.02

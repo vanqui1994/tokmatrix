@@ -1,5 +1,5 @@
 channel_id: military_arsenal_02
-config_version: 9
+config_version: 10
 niche_id: military_arsenal
 name: Weapons & War Machines 02
 tiktok_account_ref: null
@@ -52,6 +52,18 @@ creative:
         transition: cut
         tone: 4
         caption: bottom
+    vox:
+      variant_id: vox/zine-xerox
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: cutup_grid
+        typography: mono
+        treatment: film_grain
+        image_motion: handheld
+        transition: glitch
+        tone: 5
+        caption: fixed
 audio:
   voice_id: BV072_streaming
   voice_speed: 1.02

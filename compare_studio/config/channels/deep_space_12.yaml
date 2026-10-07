@@ -9,7 +9,7 @@ audio:
   - freepd-natural-vibes
   - freepd-soundtrack-from-the-starcourt-mall
 channel_id: deep_space_12
-config_version: 9
+config_version: 10
 creative:
   cut_cadence_seconds: 2.9
   palette:
@@ -45,6 +45,18 @@ creative:
         image_motion: scan_light
         transition: tv_noise
         tone: 5
+        caption: fixed
+    mystery:
+      variant_id: mystery/lost-places
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: full_bleed
+        typography: display_serif
+        treatment: clean
+        image_motion: parallax
+        transition: fade_black
+        tone: 1
         caption: fixed
 name: Kosmos & Physik 12
 niche_id: deep_space

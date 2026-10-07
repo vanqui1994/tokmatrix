@@ -1,5 +1,5 @@
 channel_id: extreme_wildlife_04
-config_version: 9
+config_version: 10
 niche_id: extreme_wildlife
 name: Creatures of the Deep 04
 tiktok_account_ref: null
@@ -51,6 +51,18 @@ creative:
         image_motion: still_grain
         transition: fade_black
         tone: 4
+        caption: fixed
+    vox:
+      variant_id: vox/data-card
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: stat_top
+        typography: heavy
+        treatment: duotone
+        image_motion: still_grain
+        transition: shutter
+        tone: 5
         caption: fixed
 audio:
   voice_id: en-US-AriaNeural

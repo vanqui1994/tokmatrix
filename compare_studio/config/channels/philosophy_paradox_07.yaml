@@ -1,5 +1,5 @@
 channel_id: philosophy_paradox_07
-config_version: 6
+config_version: 8
 niche_id: philosophy_paradox
 name: Nghịch Lý Triết Học 07
 tiktok_account_ref: null
@@ -40,6 +40,30 @@ creative:
         transition: slide
         tone: 3
         caption: top
+    chalk:
+      variant_id: chalk/war-room
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: board
+        typography: condensed
+        treatment: clean
+        image_motion: still_grain
+        transition: cut
+        tone: 1
+        caption: fixed
+    vox:
+      variant_id: vox/original
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: torn_card
+        typography: grotesk
+        treatment: halftone
+        image_motion: push_in
+        transition: fade_black
+        tone: 4
+        caption: fixed
 audio:
   voice_id: vi_female_huong
   voice_speed: 0.99

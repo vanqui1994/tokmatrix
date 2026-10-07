@@ -1,5 +1,5 @@
 channel_id: mystery_03
-config_version: 7
+config_version: 9
 niche_id: unsolved_mysteries
 name: Strange But Documented
 tiktok_account_ref: null
@@ -31,6 +31,30 @@ creative:
         transition: shutter
         tone: 1
         caption: middle
+    mystery:
+      variant_id: mystery/reference-dossier
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: hero_evidence
+        typography: serif
+        treatment: sepia_grain
+        image_motion: ken_burns_slow
+        transition: folder_flip
+        tone: 2
+        caption: bottom
+    vox:
+      variant_id: vox/data-card
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: stat_top
+        typography: grotesk
+        treatment: duotone
+        image_motion: ken_burns_slow
+        transition: shutter
+        tone: 5
+        caption: fixed
 audio:
   voice_id: multi_female_xyf04auto_uranus_bigtts
   voice_speed: 0.99

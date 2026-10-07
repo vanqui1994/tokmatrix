@@ -1,5 +1,5 @@
 channel_id: dark_psychology_07
-config_version: 8
+config_version: 10
 niche_id: dark_psychology
 name: Psychologie & Verhalten 07
 tiktok_account_ref: null
@@ -40,6 +40,30 @@ creative:
         transition: wipe
         tone: 6
         caption: middle
+    chalk:
+      variant_id: chalk/sand-table
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: tilted
+        typography: condensed
+        treatment: sepia_grain
+        image_motion: parallax
+        transition: zoom_through
+        tone: 1
+        caption: fixed
+    vox:
+      variant_id: vox/timeline-explainer
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: track_below
+        typography: rounded
+        treatment: halftone
+        image_motion: parallax
+        transition: wipe
+        tone: 4
+        caption: fixed
 audio:
   voice_id: de-DE-KillianNeural
   voice_speed: 1.02

@@ -9,7 +9,7 @@ audio:
   - freepd-midnight-in-the-green-house
   - freepd-mothership
 channel_id: dark_psychology_13
-config_version: 9
+config_version: 10
 creative:
   cut_cadence_seconds: 3.0
   palette:
@@ -46,6 +46,18 @@ creative:
         transition: cut
         tone: 4
         caption: bottom
+    mystery:
+      variant_id: mystery/decoded
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: crt_terminal
+        typography: grotesk
+        treatment: vhs_noise
+        image_motion: push_in
+        transition: glitch
+        tone: 5
+        caption: fixed
 name: Psychologie & Verhalten 13
 niche_id: dark_psychology
 persona:

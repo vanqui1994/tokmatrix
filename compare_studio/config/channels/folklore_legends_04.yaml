@@ -1,5 +1,5 @@
 channel_id: folklore_legends_04
-config_version: 10
+config_version: 11
 niche_id: folklore_legends
 name: Folklore & The Unseen 04
 tiktok_account_ref: null
@@ -52,6 +52,18 @@ creative:
         transition: shutter
         tone: 1
         caption: top
+    folklore:
+      variant_id: folklore/haunted-vhs
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: tape_play
+        typography: typewriter
+        treatment: film_grain
+        image_motion: still_grain
+        transition: tv_noise
+        tone: 5
+        caption: fixed
 audio:
   voice_id: en-US-EricNeural
   voice_speed: 0.99

@@ -1,5 +1,5 @@
 channel_id: geopolitics_maps_01
-config_version: 7
+config_version: 9
 niche_id: geopolitics_maps
 name: Geopolitik & Grenzen 01
 tiktok_account_ref: null
@@ -40,6 +40,30 @@ creative:
         transition: wipe
         tone: 0
         caption: bottom
+    chalk:
+      variant_id: chalk/blueprint
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: detail_grid
+        typography: mono
+        treatment: clean
+        image_motion: ken_burns_slow
+        transition: shutter
+        tone: 4
+        caption: fixed
+    vox:
+      variant_id: vox/map-route
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: photo_inset
+        typography: heavy
+        treatment: paper_texture
+        image_motion: ken_burns_slow
+        transition: wipe
+        tone: 1
+        caption: fixed
 audio:
   voice_id: de-DE-ConradNeural
   voice_speed: 0.96

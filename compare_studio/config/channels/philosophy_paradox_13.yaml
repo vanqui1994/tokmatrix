@@ -9,7 +9,7 @@ audio:
   - freepd-driving-concern
   - freepd-mothership
 channel_id: philosophy_paradox_13
-config_version: 6
+config_version: 7
 creative:
   cut_cadence_seconds: 2.9
   palette:
@@ -46,6 +46,18 @@ creative:
         transition: zoom_through
         tone: 2
         caption: middle
+    mystery:
+      variant_id: mystery/reference-dossier
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: evidence_strip
+        typography: serif
+        treatment: film_grain
+        image_motion: handheld
+        transition: page_turn
+        tone: 1
+        caption: bottom
 name: Nghịch Lý Triết Học 13
 niche_id: philosophy_paradox
 persona:

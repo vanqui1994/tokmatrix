@@ -1,5 +1,5 @@
 channel_id: folklore_legends_10
-config_version: 9
+config_version: 11
 niche_id: folklore_legends
 name: Folklore & The Unseen 10
 tiktok_account_ref: null
@@ -40,6 +40,30 @@ creative:
         transition: slide
         tone: 4
         caption: middle
+    mystery:
+      variant_id: mystery/field-journal
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: taped_page
+        typography: rounded
+        treatment: paper_texture
+        image_motion: pan_lateral
+        transition: paper_tear
+        tone: 3
+        caption: fixed
+    folklore:
+      variant_id: folklore/european-grimoire
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: open_book
+        typography: display_serif
+        treatment: sepia_grain
+        image_motion: ken_burns_slow
+        transition: ink_bleed
+        tone: 3
+        caption: fixed
 audio:
   voice_id: en-US-MichelleNeural
   voice_speed: 0.99

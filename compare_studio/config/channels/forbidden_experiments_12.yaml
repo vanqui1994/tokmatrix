@@ -9,7 +9,7 @@ audio:
   - freepd-evil-incoming
   - freepd-guerilla-tactics
 channel_id: forbidden_experiments_12
-config_version: 8
+config_version: 9
 creative:
   cut_cadence_seconds: 2.8
   palette:
@@ -46,6 +46,18 @@ creative:
         transition: shutter
         tone: 0
         caption: top
+    vox:
+      variant_id: vox/zine-xerox
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: xerox_page
+        typography: typewriter
+        treatment: vhs_noise
+        image_motion: still_grain
+        transition: tv_noise
+        tone: 0
+        caption: fixed
 name: Verrückte Experimente 12
 niche_id: forbidden_experiments
 persona:

@@ -1,5 +1,5 @@
 channel_id: geopolitics_maps_05
-config_version: 8
+config_version: 10
 niche_id: geopolitics_maps
 name: Geopolitik & Grenzen 05
 tiktok_account_ref: null
@@ -40,6 +40,30 @@ creative:
         transition: shutter
         tone: 6
         caption: middle
+    chalk:
+      variant_id: chalk/sand-table
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: tilted
+        typography: serif
+        treatment: film_grain
+        image_motion: parallax
+        transition: fade_black
+        tone: 3
+        caption: fixed
+    wildlife:
+      variant_id: wildlife/savanna-hud
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: rangefinder
+        typography: condensed
+        treatment: vignette_dark
+        image_motion: push_in
+        transition: zoom_through
+        tone: 3
+        caption: fixed
 audio:
   voice_id: DiT_de_female_qingsong
   voice_speed: 0.99

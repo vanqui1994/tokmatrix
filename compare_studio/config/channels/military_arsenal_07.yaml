@@ -1,5 +1,5 @@
 channel_id: military_arsenal_07
-config_version: 9
+config_version: 10
 niche_id: military_arsenal
 name: Weapons & War Machines 07
 tiktok_account_ref: null
@@ -51,6 +51,18 @@ creative:
         image_motion: push_in
         transition: cut
         tone: 0
+        caption: fixed
+    chalk:
+      variant_id: chalk/sand-table
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: tilted
+        typography: condensed
+        treatment: sepia_grain
+        image_motion: ken_burns_slow
+        transition: zoom_through
+        tone: 1
         caption: fixed
 audio:
   voice_id: en-GB-SoniaNeural

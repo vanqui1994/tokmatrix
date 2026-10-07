@@ -1,5 +1,5 @@
 channel_id: lost_civilizations_08
-config_version: 9
+config_version: 11
 niche_id: lost_civilizations
 name: Antike Zivilisationen 08
 tiktok_account_ref: null
@@ -40,6 +40,30 @@ creative:
         transition: cut
         tone: 1
         caption: bottom
+    mystery:
+      variant_id: mystery/evidence-board
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: suspect_grid
+        typography: grotesk
+        treatment: clean
+        image_motion: push_in
+        transition: zoom_through
+        tone: 1
+        caption: fixed
+    folklore:
+      variant_id: folklore/shadow-puppet
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: tall_screen
+        typography: grotesk
+        treatment: film_grain
+        image_motion: parallax
+        transition: fade_black
+        tone: 0
+        caption: fixed
 audio:
   voice_id: de-DE-AmalaNeural
   voice_speed: 0.96

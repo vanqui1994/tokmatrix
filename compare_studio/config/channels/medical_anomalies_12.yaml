@@ -6,10 +6,10 @@ audio:
   voice_pitch: 1
   voice_speed: 0.99
   bgm_pool:
-  - freepd-go-on-without-me
-  - freepd-infinite-wonder
+    - freepd-go-on-without-me
+    - freepd-infinite-wonder
 channel_id: medical_anomalies_12
-config_version: 10
+config_version: 11
 creative:
   cut_cadence_seconds: 2.3
   palette:
@@ -17,9 +17,8 @@ creative:
     primary: '#111318'
     text: '#F2EEE6'
   preferred_engines:
-  - kinetic
-  - vox
-  - newspaper
+    - kinetic
+    - newspaper
   visual_style_id: dark_mystery_v1
   skins:
     newspaper:
@@ -56,16 +55,16 @@ persona:
 publishing:
   default_schedule_window: 19:30-20:30
   hashtags:
-  - medicalanomalies
-  - khampha
-  - facts
+    - medicalanomalies
+    - khampha
+    - facts
   language: de
 story:
   pacing_beats: 12
   preferred_blueprints:
-  - mystery_reveal
+    - mystery_reveal
   preferred_hook_types:
-  - evidence_hook
-  - paradox_question
+    - evidence_hook
+    - paradox_question
   target_duration_seconds: 47
 tiktok_account_ref: null

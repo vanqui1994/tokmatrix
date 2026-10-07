@@ -9,7 +9,7 @@ audio:
   - freepd-midnight-in-the-green-house
   - oga-fantasy-orchestral-theme
 channel_id: philosophy_paradox_11
-config_version: 6
+config_version: 7
 creative:
   cut_cadence_seconds: 2.3
   palette:
@@ -46,6 +46,18 @@ creative:
         transition: cut
         tone: 0
         caption: top
+    mystery:
+      variant_id: mystery/case-file
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: clipboard_top
+        typography: slab
+        treatment: paper_texture
+        image_motion: handheld
+        transition: page_turn
+        tone: 3
+        caption: fixed
 name: Nghịch Lý Triết Học 11
 niche_id: philosophy_paradox
 persona:

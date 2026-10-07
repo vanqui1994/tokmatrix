@@ -9,7 +9,7 @@ audio:
   - freepd-release-the-hybrids
   - oga-fantasy-orchestral-theme
 channel_id: medical_anomalies_13
-config_version: 10
+config_version: 11
 creative:
   cut_cadence_seconds: 3.0
   palette:
@@ -46,6 +46,18 @@ creative:
         transition: zoom_through
         tone: 6
         caption: top
+    vox:
+      variant_id: vox/paper-collage
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: cutout_column
+        typography: grotesk
+        treatment: paper_texture
+        image_motion: ken_burns_slow
+        transition: paper_tear
+        tone: 4
+        caption: fixed
 name: Medizin & Biologische Rätsel 13
 niche_id: medical_anomalies
 persona:

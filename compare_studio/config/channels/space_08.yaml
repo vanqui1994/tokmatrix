@@ -1,5 +1,5 @@
 channel_id: space_08
-config_version: 11
+config_version: 12
 niche_id: deep_space
 name: Kosmos & Physik 08
 tiktok_account_ref: null
@@ -10,17 +10,16 @@ persona:
   catchphrase_prefix: 'Điều đáng chú ý trong câu chuyện này là:'
 story:
   preferred_blueprints:
-  - science_explainer
+    - science_explainer
   preferred_hook_types:
-  - evidence_hook
-  - paradox_question
+    - evidence_hook
+    - paradox_question
   target_duration_seconds: 48
   pacing_beats: 12
 creative:
   preferred_engines:
-  - vox
-  - kinetic
-  - tierlist
+    - kinetic
+    - tierlist
   visual_style_id: cosmic_space_v1
   cut_cadence_seconds: 2.8
   palette:
@@ -60,12 +59,12 @@ audio:
   soundscape_id: vox
   sfx_density: medium
   bgm_pool:
-  - freepd-inventing-flight
-  - freepd-lonely-mountain
+    - freepd-inventing-flight
+    - freepd-lonely-mountain
 publishing:
   language: de
   default_schedule_window: 19:30-20:30
   hashtags:
-  - deepspace
-  - khampha
-  - facts
+    - deepspace
+    - khampha
+    - facts

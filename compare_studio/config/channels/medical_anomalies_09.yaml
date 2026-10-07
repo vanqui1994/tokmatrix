@@ -1,5 +1,5 @@
 channel_id: medical_anomalies_09
-config_version: 9
+config_version: 11
 niche_id: medical_anomalies
 name: Medizin & Biologische Rätsel 09
 tiktok_account_ref: null
@@ -40,6 +40,30 @@ creative:
         transition: shutter
         tone: 8
         caption: middle
+    mystery:
+      variant_id: mystery/ufo-radar
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: radar_scope
+        typography: grotesk
+        treatment: film_grain
+        image_motion: handheld
+        transition: glitch
+        tone: 4
+        caption: fixed
+    vox:
+      variant_id: vox/timeline-explainer
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: track_below
+        typography: condensed
+        treatment: clean
+        image_motion: ken_burns_slow
+        transition: wipe
+        tone: 0
+        caption: fixed
 audio:
   voice_id: de-DE-SeraphinaMultilingualNeural
   voice_speed: 0.99

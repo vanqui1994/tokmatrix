@@ -9,7 +9,7 @@ audio:
   - freepd-big-eyes
   - freepd-motions
 channel_id: ocean_mysteries_12
-config_version: 9
+config_version: 10
 creative:
   cut_cadence_seconds: 2.7
   palette:
@@ -45,6 +45,18 @@ creative:
         image_motion: still_grain
         transition: cut
         tone: 4
+        caption: fixed
+    mystery:
+      variant_id: mystery/decoded
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: cipher_hex
+        typography: mono
+        treatment: vhs_noise
+        image_motion: scan_light
+        transition: tv_noise
+        tone: 0
         caption: fixed
 name: 바다와 심해 해구 12
 niche_id: ocean_mysteries

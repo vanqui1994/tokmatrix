@@ -9,7 +9,7 @@ audio:
   - freepd-horror-suspense
   - freepd-horroriffic
 channel_id: folklore_legends_12
-config_version: 8
+config_version: 10
 creative:
   cut_cadence_seconds: 2.5
   palette:
@@ -34,6 +34,30 @@ creative:
         transition: cut
         tone: 0
         caption: middle
+    mystery:
+      variant_id: mystery/ufo-radar
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: radar_scope
+        typography: grotesk
+        treatment: clean
+        image_motion: handheld
+        transition: zoom_through
+        tone: 3
+        caption: fixed
+    folklore:
+      variant_id: folklore/nordic-runestone
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: carved_slab
+        typography: slab
+        treatment: vignette_dark
+        image_motion: push_in
+        transition: cut
+        tone: 0
+        caption: fixed
 name: Folklore & The Unseen 12
 niche_id: folklore_legends
 persona:

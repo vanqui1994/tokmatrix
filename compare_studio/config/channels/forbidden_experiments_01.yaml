@@ -1,5 +1,5 @@
 channel_id: forbidden_experiments_01
-config_version: 8
+config_version: 9
 niche_id: forbidden_experiments
 name: Crazy Experiments 01
 tiktok_account_ref: null
@@ -52,6 +52,18 @@ creative:
         transition: slide
         tone: 3
         caption: middle
+    mystery:
+      variant_id: mystery/case-file
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: polaroid_spread
+        typography: mono
+        treatment: paper_texture
+        image_motion: handheld
+        transition: folder_flip
+        tone: 1
+        caption: fixed
 audio:
   voice_id: en-GB-ThomasNeural
   voice_speed: 1.02

@@ -9,7 +9,7 @@ audio:
   - freepd-horror-suspense
   - freepd-night-vigil
 channel_id: military_arsenal_11
-config_version: 10
+config_version: 11
 creative:
   cut_cadence_seconds: 2.7
   palette:
@@ -46,6 +46,18 @@ creative:
         transition: slide
         tone: 4
         caption: bottom
+    vox:
+      variant_id: vox/documentary-lowerthird
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: letterbox
+        typography: grotesk
+        treatment: clean
+        image_motion: pan_lateral
+        transition: zoom_through
+        tone: 2
+        caption: fixed
 name: Weapons & War Machines 11
 niche_id: military_arsenal
 persona:

@@ -1,5 +1,5 @@
 channel_id: extreme_wildlife_10
-config_version: 9
+config_version: 10
 niche_id: extreme_wildlife
 name: Creatures of the Deep 10
 tiktok_account_ref: null
@@ -51,6 +51,18 @@ creative:
         image_motion: handheld
         transition: fade_black
         tone: 3
+        caption: fixed
+    vox:
+      variant_id: vox/map-route
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: route_map
+        typography: rounded
+        treatment: paper_texture
+        image_motion: ken_burns_slow
+        transition: zoom_through
+        tone: 1
         caption: fixed
 audio:
   voice_id: en-US-GuyNeural

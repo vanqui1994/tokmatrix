@@ -1,5 +1,5 @@
 channel_id: economy_empires_07
-config_version: 9
+config_version: 10
 niche_id: economy_empires
 name: Wirtschaft & Märkte 07
 tiktok_account_ref: null
@@ -52,6 +52,18 @@ creative:
         transition: shutter
         tone: 7
         caption: middle
+    vox:
+      variant_id: vox/data-card
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: ring_gauge
+        typography: grotesk
+        treatment: halftone
+        image_motion: still_grain
+        transition: shutter
+        tone: 1
+        caption: fixed
 audio:
   voice_id: de-DE-KillianNeural
   voice_speed: 0.99

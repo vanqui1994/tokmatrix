@@ -1,5 +1,5 @@
 channel_id: ocean_mysteries_08
-config_version: 7
+config_version: 9
 niche_id: ocean_mysteries
 name: 바다와 심해 해구 08
 tiktok_account_ref: null
@@ -41,6 +41,30 @@ creative:
         transition: slide
         tone: 0
         caption: top
+    mystery:
+      variant_id: mystery/sonar-log
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: sonar_full
+        typography: slab
+        treatment: clean
+        image_motion: ken_burns_fast
+        transition: wipe
+        tone: 0
+        caption: fixed
+    wildlife:
+      variant_id: wildlife/deep-ocean
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: porthole_gauge
+        typography: grotesk
+        treatment: vignette_dark
+        image_motion: ken_burns_slow
+        transition: wipe
+        tone: 0
+        caption: fixed
 audio:
   voice_id: ko-KR-InJoonNeural
   voice_speed: 1.02

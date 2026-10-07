@@ -9,7 +9,7 @@ audio:
   - freepd-horror-suspense
   - freepd-travelers-notebook
 channel_id: geopolitics_maps_11
-config_version: 9
+config_version: 10
 creative:
   cut_cadence_seconds: 2.3
   palette:
@@ -46,6 +46,18 @@ creative:
         transition: slide
         tone: 5
         caption: top
+    wildlife:
+      variant_id: wildlife/migration-map
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: route_window
+        typography: grotesk
+        treatment: sepia_grain
+        image_motion: pan_lateral
+        transition: slide
+        tone: 4
+        caption: fixed
 name: Geopolitik & Grenzen 11
 niche_id: geopolitics_maps
 persona:

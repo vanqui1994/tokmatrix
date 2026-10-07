@@ -1,5 +1,5 @@
 channel_id: mega_catastrophes_07
-config_version: 10
+config_version: 11
 niche_id: mega_catastrophes
 name: Earth's Great Disasters 07
 tiktok_account_ref: null
@@ -52,6 +52,18 @@ creative:
         transition: tv_noise
         tone: 1
         caption: fixed
+    mystery:
+      variant_id: mystery/reference-dossier
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: evidence_strip
+        typography: typewriter
+        treatment: sepia_grain
+        image_motion: handheld
+        transition: folder_flip
+        tone: 2
+        caption: bottom
 audio:
   voice_id: en_us_007
   voice_speed: 1.02

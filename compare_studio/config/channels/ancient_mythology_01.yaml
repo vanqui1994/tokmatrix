@@ -1,5 +1,5 @@
 channel_id: ancient_mythology_01
-config_version: 7
+config_version: 9
 niche_id: ancient_mythology
 name: Antike Mythen 01
 tiktok_account_ref: null
@@ -41,6 +41,30 @@ creative:
         transition: shutter
         tone: 8
         caption: top
+    mystery:
+      variant_id: mystery/decoded
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: cipher_hex
+        typography: typewriter
+        treatment: clean
+        image_motion: scan_light
+        transition: tv_noise
+        tone: 0
+        caption: fixed
+    folklore:
+      variant_id: folklore/nordic-runestone
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: standing_stones
+        typography: slab
+        treatment: vignette_dark
+        image_motion: ken_burns_slow
+        transition: cut
+        tone: 0
+        caption: fixed
 audio:
   voice_id: de-DE-ConradNeural
   voice_speed: 1.02

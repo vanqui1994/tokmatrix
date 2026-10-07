@@ -9,7 +9,7 @@ audio:
   - freepd-night-attack
   - freepd-video-game-blockbuster
 channel_id: extreme_wildlife_13
-config_version: 10
+config_version: 11
 creative:
   cut_cadence_seconds: 2.7
   palette:
@@ -45,6 +45,18 @@ creative:
         image_motion: parallax
         transition: ink_bleed
         tone: 4
+        caption: fixed
+    vox:
+      variant_id: vox/original
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: torn_bleed
+        typography: heavy
+        treatment: film_grain
+        image_motion: parallax
+        transition: fade_black
+        tone: 2
         caption: fixed
 name: Creatures of the Deep 13
 niche_id: extreme_wildlife

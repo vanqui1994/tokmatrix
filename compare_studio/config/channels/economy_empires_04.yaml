@@ -1,5 +1,5 @@
 channel_id: economy_empires_04
-config_version: 8
+config_version: 10
 niche_id: economy_empires
 name: Wirtschaft & Märkte 04
 tiktok_account_ref: null
@@ -40,6 +40,30 @@ creative:
         transition: wipe
         tone: 2
         caption: top
+    chalk:
+      variant_id: chalk/thermal
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: scope_top
+        typography: mono
+        treatment: vhs_noise
+        image_motion: handheld
+        transition: glitch
+        tone: 1
+        caption: fixed
+    wildlife:
+      variant_id: wildlife/nature-doc
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: fullframe_credits
+        typography: display_serif
+        treatment: film_grain
+        image_motion: ken_burns_slow
+        transition: fade_black
+        tone: 4
+        caption: fixed
 audio:
   voice_id: DiT_de_male_koubo
   voice_speed: 1.02

@@ -1,5 +1,5 @@
 channel_id: forbidden_experiments_06
-config_version: 9
+config_version: 10
 niche_id: forbidden_experiments
 name: Verrückte Experimente 06
 tiktok_account_ref: null
@@ -50,6 +50,18 @@ creative:
         treatment: clean
         image_motion: push_in
         transition: cut
+        tone: 0
+        caption: fixed
+    mystery:
+      variant_id: mystery/case-file
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: folder_card
+        typography: mono
+        treatment: paper_texture
+        image_motion: push_in
+        transition: folder_flip
         tone: 0
         caption: fixed
 audio:

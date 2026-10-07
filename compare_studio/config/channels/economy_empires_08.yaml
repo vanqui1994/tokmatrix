@@ -1,5 +1,5 @@
 channel_id: economy_empires_08
-config_version: 9
+config_version: 10
 niche_id: economy_empires
 name: Wirtschaft & Märkte 08
 tiktok_account_ref: null
@@ -52,6 +52,18 @@ creative:
         transition: cut
         tone: 0
         caption: bottom
+    chalk:
+      variant_id: chalk/whiteboard
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: sticky_notes
+        typography: rounded
+        treatment: paper_texture
+        image_motion: pan_lateral
+        transition: slide
+        tone: 1
+        caption: fixed
 audio:
   voice_id: de-DE-FlorianMultilingualNeural
   voice_speed: 1.02

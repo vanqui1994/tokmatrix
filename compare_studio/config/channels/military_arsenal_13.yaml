@@ -9,7 +9,7 @@ audio:
   - freepd-mothership
   - freepd-release-the-hybrids
 channel_id: military_arsenal_13
-config_version: 10
+config_version: 11
 creative:
   cut_cadence_seconds: 3.0
   palette:
@@ -46,6 +46,18 @@ creative:
         transition: wipe
         tone: 8
         caption: bottom
+    vox:
+      variant_id: vox/split-then-now
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: lens_reveal
+        typography: condensed
+        treatment: vignette_dark
+        image_motion: ken_burns_fast
+        transition: wipe
+        tone: 2
+        caption: fixed
 name: Weapons & War Machines 13
 niche_id: military_arsenal
 persona:

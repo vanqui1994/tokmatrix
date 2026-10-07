@@ -1,5 +1,5 @@
 channel_id: infamous_figures_09
-config_version: 8
+config_version: 10
 niche_id: infamous_figures
 name: Berüchtigte Gestalten 09
 tiktok_account_ref: null
@@ -40,6 +40,30 @@ creative:
         transition: shutter
         tone: 5
         caption: middle
+    mystery:
+      variant_id: mystery/cursed-objects
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: catalogue_card
+        typography: slab
+        treatment: film_grain
+        image_motion: ken_burns_slow
+        transition: flip_3d
+        tone: 0
+        caption: fixed
+    vox:
+      variant_id: vox/data-card
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: stat_top
+        typography: condensed
+        treatment: halftone
+        image_motion: push_in
+        transition: slide
+        tone: 1
+        caption: fixed
 audio:
   voice_id: DiT_de_male_koubo
   voice_speed: 0.96

@@ -1,5 +1,5 @@
 channel_id: military_arsenal_05
-config_version: 10
+config_version: 11
 niche_id: military_arsenal
 name: Weapons & War Machines 05
 tiktok_account_ref: null
@@ -52,6 +52,18 @@ creative:
         transition: zoom_through
         tone: 7
         caption: middle
+    wildlife:
+      variant_id: wildlife/microscope
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: eyepiece
+        typography: typewriter
+        treatment: halftone
+        image_motion: scan_light
+        transition: cut
+        tone: 0
+        caption: fixed
 audio:
   voice_id: DiT_en_female_jessie
   voice_speed: 0.99

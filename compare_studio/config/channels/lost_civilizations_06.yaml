@@ -1,5 +1,5 @@
 channel_id: lost_civilizations_06
-config_version: 10
+config_version: 11
 niche_id: lost_civilizations
 name: Antike Zivilisationen 06
 tiktok_account_ref: null
@@ -52,6 +52,18 @@ creative:
         transition: cut
         tone: 2
         caption: middle
+    chalk:
+      variant_id: chalk/whiteboard
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: sticky_notes
+        typography: grotesk
+        treatment: paper_texture
+        image_motion: still_grain
+        transition: wipe
+        tone: 2
+        caption: fixed
 audio:
   voice_id: DiT_de_male_koubo
   voice_speed: 0.96

@@ -1,5 +1,5 @@
 channel_id: folklore_legends_07
-config_version: 9
+config_version: 10
 niche_id: folklore_legends
 name: Folklore & The Unseen 07
 tiktok_account_ref: null
@@ -52,6 +52,18 @@ creative:
         transition: zoom_through
         tone: 8
         caption: top
+    mystery:
+      variant_id: mystery/lost-places
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: full_bleed
+        typography: display_serif
+        treatment: clean
+        image_motion: parallax
+        transition: ink_bleed
+        tone: 4
+        caption: fixed
 audio:
   voice_id: en-US-AvaNeural
   voice_speed: 1.02

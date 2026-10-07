@@ -1,5 +1,5 @@
 channel_id: mystery_04
-config_version: 7
+config_version: 9
 niche_id: unsolved_mysteries
 name: Dấu Vết Trong Bóng Tối
 tiktok_account_ref: null
@@ -31,6 +31,30 @@ creative:
         transition: slide
         tone: 1
         caption: top
+    mystery:
+      variant_id: mystery/decoded
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: crt_terminal
+        typography: grotesk
+        treatment: halftone
+        image_motion: still_grain
+        transition: tv_noise
+        tone: 2
+        caption: fixed
+    folklore:
+      variant_id: folklore/haunted-vhs
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: tape_play
+        typography: mono
+        treatment: vhs_noise
+        image_motion: scan_light
+        transition: glitch
+        tone: 2
+        caption: fixed
 audio:
   voice_id: multi_female_daqi_uranus_bigtts
   voice_speed: 0.99

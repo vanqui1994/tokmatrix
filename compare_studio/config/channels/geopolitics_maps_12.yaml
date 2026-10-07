@@ -9,7 +9,7 @@ audio:
   - freepd-desert-conflict
   - freepd-driving-concern
 channel_id: geopolitics_maps_12
-config_version: 9
+config_version: 10
 creative:
   cut_cadence_seconds: 2.2
   palette:
@@ -46,6 +46,18 @@ creative:
         transition: shutter
         tone: 1
         caption: top
+    wildlife:
+      variant_id: wildlife/deep-ocean
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: sub_capsule
+        typography: slab
+        treatment: vignette_dark
+        image_motion: ken_burns_slow
+        transition: wipe
+        tone: 5
+        caption: fixed
 name: Geopolitik & Grenzen 12
 niche_id: geopolitics_maps
 persona:

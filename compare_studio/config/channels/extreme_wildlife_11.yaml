@@ -9,7 +9,7 @@ audio:
   - freepd-midnight-in-the-green-house
   - freepd-travelers-notebook
 channel_id: extreme_wildlife_11
-config_version: 9
+config_version: 10
 creative:
   cut_cadence_seconds: 2.6
   palette:
@@ -45,6 +45,18 @@ creative:
         image_motion: pan_lateral
         transition: wipe
         tone: 0
+        caption: fixed
+    vox:
+      variant_id: vox/paper-collage
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: cutout_column
+        typography: grotesk
+        treatment: paper_texture
+        image_motion: parallax
+        transition: paper_tear
+        tone: 3
         caption: fixed
 name: Creatures of the Deep 11
 niche_id: extreme_wildlife

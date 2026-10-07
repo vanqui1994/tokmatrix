@@ -1,5 +1,5 @@
 channel_id: tech_ai_future_01
-config_version: 7
+config_version: 8
 niche_id: tech_ai_future
 name: Công Nghệ & Tương Lai AI 01
 tiktok_account_ref: null
@@ -52,6 +52,18 @@ creative:
         transition: cut
         tone: 5
         caption: bottom
+    vox:
+      variant_id: vox/data-card
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: ring_gauge
+        typography: heavy
+        treatment: halftone
+        image_motion: still_grain
+        transition: slide
+        tone: 1
+        caption: fixed
 audio:
   voice_id: multi_female_yangguangnv_uranus_bigtts
   voice_speed: 1.02

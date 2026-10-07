@@ -9,7 +9,7 @@ audio:
   - freepd-night-vigil
   - freepd-travelers-notebook
 channel_id: ancient_mythology_13
-config_version: 10
+config_version: 11
 creative:
   cut_cadence_seconds: 2.4
   palette:
@@ -46,6 +46,18 @@ creative:
         transition: wipe
         tone: 1
         caption: middle
+    folklore:
+      variant_id: folklore/shadow-puppet
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: tall_screen
+        typography: rounded
+        treatment: paper_texture
+        image_motion: pan_lateral
+        transition: slide
+        tone: 4
+        caption: fixed
 name: Antike Mythen 13
 niche_id: ancient_mythology
 persona:

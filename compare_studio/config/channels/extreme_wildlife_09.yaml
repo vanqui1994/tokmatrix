@@ -1,5 +1,5 @@
 channel_id: extreme_wildlife_09
-config_version: 9
+config_version: 10
 niche_id: extreme_wildlife
 name: Creatures of the Deep 09
 tiktok_account_ref: null
@@ -50,6 +50,18 @@ creative:
         treatment: clean
         image_motion: ken_burns_slow
         transition: fade_black
+        tone: 4
+        caption: fixed
+    vox:
+      variant_id: vox/split-then-now
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: side_by_side
+        typography: display_serif
+        treatment: vignette_dark
+        image_motion: ken_burns_fast
+        transition: cut
         tone: 4
         caption: fixed
 audio:

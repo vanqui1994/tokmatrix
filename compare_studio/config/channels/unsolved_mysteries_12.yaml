@@ -9,7 +9,7 @@ audio:
   - freepd-goodnightmare
   - freepd-guerilla-tactics
 channel_id: unsolved_mysteries_12
-config_version: 9
+config_version: 10
 creative:
   cut_cadence_seconds: 2.9
   palette:
@@ -46,6 +46,18 @@ creative:
         transition: cut
         tone: 8
         caption: middle
+    folklore:
+      variant_id: folklore/tarot-deck
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: three_card_spread
+        typography: display_serif
+        treatment: duotone
+        image_motion: still_grain
+        transition: flip_3d
+        tone: 1
+        caption: fixed
 name: Bí Ẩn Chưa Lời Giải 12
 niche_id: unsolved_mysteries
 persona:

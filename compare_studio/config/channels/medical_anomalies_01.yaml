@@ -1,5 +1,5 @@
 channel_id: medical_anomalies_01
-config_version: 9
+config_version: 11
 niche_id: medical_anomalies
 name: Medizin & Biologische Rätsel 01
 tiktok_account_ref: null
@@ -40,6 +40,30 @@ creative:
         transition: cut
         tone: 0
         caption: middle
+    mystery:
+      variant_id: mystery/cctv
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: single_monitor
+        typography: condensed
+        treatment: vhs_noise
+        image_motion: still_grain
+        transition: cut
+        tone: 2
+        caption: fixed
+    vox:
+      variant_id: vox/zine-xerox
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: cutup_grid
+        typography: typewriter
+        treatment: film_grain
+        image_motion: still_grain
+        transition: glitch
+        tone: 2
+        caption: fixed
 audio:
   voice_id: DiT_de_female_qingsong
   voice_speed: 1.02

@@ -9,7 +9,7 @@ audio:
   - freepd-inventing-flight
   - oga-the-rush
 channel_id: extreme_wildlife_12
-config_version: 10
+config_version: 11
 creative:
   cut_cadence_seconds: 2.3
   palette:
@@ -45,6 +45,18 @@ creative:
         image_motion: still_grain
         transition: zoom_through
         tone: 2
+        caption: fixed
+    vox:
+      variant_id: vox/zine-xerox
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: xerox_page
+        typography: typewriter
+        treatment: vhs_noise
+        image_motion: handheld
+        transition: tv_noise
+        tone: 0
         caption: fixed
 name: Creatures of the Deep 12
 niche_id: extreme_wildlife

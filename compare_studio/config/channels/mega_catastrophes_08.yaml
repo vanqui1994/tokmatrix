@@ -1,5 +1,5 @@
 channel_id: mega_catastrophes_08
-config_version: 10
+config_version: 11
 niche_id: mega_catastrophes
 name: Earth's Great Disasters 08
 tiktok_account_ref: null
@@ -51,6 +51,18 @@ creative:
         image_motion: still_grain
         transition: tv_noise
         tone: 1
+        caption: fixed
+    mystery:
+      variant_id: mystery/decoded
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: crt_terminal
+        typography: typewriter
+        treatment: clean
+        image_motion: scan_light
+        transition: shutter
+        tone: 2
         caption: fixed
 audio:
   voice_id: en_us_010

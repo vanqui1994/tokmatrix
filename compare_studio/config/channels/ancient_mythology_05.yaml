@@ -1,5 +1,5 @@
 channel_id: ancient_mythology_05
-config_version: 9
+config_version: 10
 niche_id: ancient_mythology
 name: Antike Mythen 05
 tiktok_account_ref: null
@@ -52,6 +52,18 @@ creative:
         transition: wipe
         tone: 5
         caption: bottom
+    folklore:
+      variant_id: folklore/haunted-vhs
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: tape_play
+        typography: typewriter
+        treatment: vhs_noise
+        image_motion: still_grain
+        transition: tv_noise
+        tone: 5
+        caption: fixed
 audio:
   voice_id: de-DE-FlorianMultilingualNeural
   voice_speed: 1.02

@@ -1,5 +1,5 @@
 channel_id: ocean_mysteries_05
-config_version: 9
+config_version: 10
 niche_id: ocean_mysteries
 name: 海と深海海溝 05
 tiktok_account_ref: null
@@ -53,6 +53,18 @@ creative:
         transition: cut
         tone: 5
         caption: top
+    vox:
+      variant_id: vox/data-card
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: ring_gauge
+        typography: condensed
+        treatment: duotone
+        image_motion: still_grain
+        transition: slide
+        tone: 3
+        caption: fixed
 audio:
   voice_id: ICL_ja_female_narrator
   voice_speed: 1.02

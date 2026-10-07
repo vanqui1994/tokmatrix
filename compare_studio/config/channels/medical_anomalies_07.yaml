@@ -1,5 +1,5 @@
 channel_id: medical_anomalies_07
-config_version: 10
+config_version: 11
 niche_id: medical_anomalies
 name: Medizin & Biologische Rätsel 07
 tiktok_account_ref: null
@@ -52,6 +52,18 @@ creative:
         transition: shutter
         tone: 3
         caption: middle
+    mystery:
+      variant_id: mystery/field-journal
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: taped_page
+        typography: serif
+        treatment: clean
+        image_motion: parallax
+        transition: paper_tear
+        tone: 2
+        caption: fixed
 audio:
   voice_id: DiT_de_male_koubo
   voice_speed: 0.99

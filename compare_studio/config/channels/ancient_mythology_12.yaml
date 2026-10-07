@@ -9,7 +9,7 @@ audio:
   - freepd-arpent
   - oga-sirens-in-darkness
 channel_id: ancient_mythology_12
-config_version: 10
+config_version: 11
 creative:
   cut_cadence_seconds: 2.9
   palette:
@@ -46,6 +46,18 @@ creative:
         transition: cut
         tone: 7
         caption: top
+    folklore:
+      variant_id: folklore/haunted-vhs
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: cassette
+        typography: mono
+        treatment: film_grain
+        image_motion: handheld
+        transition: glitch
+        tone: 5
+        caption: fixed
 name: Antike Mythen 12
 niche_id: ancient_mythology
 persona:

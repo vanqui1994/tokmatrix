@@ -1,5 +1,5 @@
 channel_id: geopolitics_maps_02
-config_version: 8
+config_version: 9
 niche_id: geopolitics_maps
 name: Geopolitik & Grenzen 02
 tiktok_account_ref: null
@@ -52,6 +52,18 @@ creative:
         transition: zoom_through
         tone: 4
         caption: bottom
+    vox:
+      variant_id: vox/documentary-lowerthird
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: letterbox
+        typography: serif
+        treatment: clean
+        image_motion: ken_burns_slow
+        transition: zoom_through
+        tone: 1
+        caption: fixed
 audio:
   voice_id: de-DE-ConradNeural
   voice_speed: 0.96

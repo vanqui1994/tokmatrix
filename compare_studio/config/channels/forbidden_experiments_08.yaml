@@ -1,5 +1,5 @@
 channel_id: forbidden_experiments_08
-config_version: 9
+config_version: 10
 niche_id: forbidden_experiments
 name: Verrückte Experimente 08
 tiktok_account_ref: null
@@ -50,6 +50,18 @@ creative:
         treatment: halftone
         image_motion: still_grain
         transition: shutter
+        tone: 0
+        caption: bottom
+    mystery:
+      variant_id: mystery/reference-dossier
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: hero_evidence
+        typography: typewriter
+        treatment: film_grain
+        image_motion: push_in
+        transition: cut
         tone: 0
         caption: bottom
 audio:

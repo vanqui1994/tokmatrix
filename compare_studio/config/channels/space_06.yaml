@@ -1,5 +1,5 @@
 channel_id: space_06
-config_version: 10
+config_version: 12
 niche_id: deep_space
 name: Kosmos & Physik 06
 tiktok_account_ref: null
@@ -10,17 +10,16 @@ persona:
   catchphrase_prefix: 'Điều đáng chú ý trong câu chuyện này là:'
 story:
   preferred_blueprints:
-  - science_explainer
+    - science_explainer
   preferred_hook_types:
-  - evidence_hook
-  - paradox_question
+    - evidence_hook
+    - paradox_question
   target_duration_seconds: 52
   pacing_beats: 12
 creative:
   preferred_engines:
-  - mystery
-  - science
-  - vox
+    - mystery
+    - science
   visual_style_id: cosmic_space_v1
   cut_cadence_seconds: 2.4
   palette:
@@ -40,6 +39,18 @@ creative:
         transition: wipe
         tone: 6
         caption: top
+    mystery:
+      variant_id: mystery/case-file
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: polaroid_spread
+        typography: slab
+        treatment: film_grain
+        image_motion: push_in
+        transition: page_turn
+        tone: 1
+        caption: fixed
 audio:
   voice_id: DiT_de_female_jiangshi
   voice_speed: 1.05
@@ -48,12 +59,12 @@ audio:
   soundscape_id: mystery
   sfx_density: medium
   bgm_pool:
-  - freepd-aquatic-city-vanished
-  - freepd-travelers-notebook
+    - freepd-aquatic-city-vanished
+    - freepd-travelers-notebook
 publishing:
   language: de
   default_schedule_window: 19:30-20:30
   hashtags:
-  - deepspace
-  - khampha
-  - facts
+    - deepspace
+    - khampha
+    - facts

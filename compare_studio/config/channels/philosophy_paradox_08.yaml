@@ -1,5 +1,5 @@
 channel_id: philosophy_paradox_08
-config_version: 6
+config_version: 8
 niche_id: philosophy_paradox
 name: Nghịch Lý Triết Học 08
 tiktok_account_ref: null
@@ -40,6 +40,30 @@ creative:
         transition: wipe
         tone: 2
         caption: bottom
+    chalk:
+      variant_id: chalk/blueprint
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: title_block
+        typography: mono
+        treatment: halftone
+        image_motion: push_in
+        transition: wipe
+        tone: 4
+        caption: fixed
+    vox:
+      variant_id: vox/documentary-lowerthird
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: letterbox
+        typography: serif
+        treatment: clean
+        image_motion: pan_lateral
+        transition: cut
+        tone: 3
+        caption: fixed
 audio:
   voice_id: BV075_streaming
   voice_speed: 0.99

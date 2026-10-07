@@ -1,5 +1,5 @@
 channel_id: ancient_mythology_02
-config_version: 9
+config_version: 10
 niche_id: ancient_mythology
 name: Antike Mythen 02
 tiktok_account_ref: null
@@ -52,6 +52,18 @@ creative:
         transition: slide
         tone: 0
         caption: middle
+    mystery:
+      variant_id: mystery/cursed-objects
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: glass_case
+        typography: display_serif
+        treatment: vignette_dark
+        image_motion: ken_burns_slow
+        transition: fade_black
+        tone: 3
+        caption: fixed
 audio:
   voice_id: de-DE-ConradNeural
   voice_speed: 0.99

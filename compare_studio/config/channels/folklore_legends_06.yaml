@@ -1,5 +1,5 @@
 channel_id: folklore_legends_06
-config_version: 8
+config_version: 10
 niche_id: folklore_legends
 name: Folklore & The Unseen 06
 tiktok_account_ref: null
@@ -40,6 +40,30 @@ creative:
         transition: shutter
         tone: 0
         caption: bottom
+    mystery:
+      variant_id: mystery/cctv
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: single_monitor
+        typography: condensed
+        treatment: vhs_noise
+        image_motion: scan_light
+        transition: tv_noise
+        tone: 3
+        caption: fixed
+    folklore:
+      variant_id: folklore/shadow-puppet
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: tall_screen
+        typography: rounded
+        treatment: clean
+        image_motion: pan_lateral
+        transition: slide
+        tone: 4
+        caption: fixed
 audio:
   voice_id: en_female_janeamber_mars_bigtts
   voice_speed: 1.02

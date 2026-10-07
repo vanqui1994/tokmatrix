@@ -28,6 +28,37 @@ const CHANNEL_DIR = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "
  * Kênh mới nhận variant của niche đang ít kênh nhất CÙNG NƯỚC (hoà → thứ tự danh sách): một variant chỉ chứa được vài
  * acc/nước mà vẫn đạt luật khác biệt (2 layout × vài tone), nên phải rải đều theo nước.
  */
+// Engine có template gốc dùng chung cho mọi tài khoản (vox, mystery, chalk, wildlife, folklore — owner 07/10): mỗi niche
+// dùng mọi variant của engine (một variant chỉ chứa vài acc/nước mà vẫn đạt luật khác ≥ 4 trục), variant hợp chủ đề niche
+// đứng đầu. Không dùng variant gắn một nền văn hoá (folklore/japanese-yokai-scroll, korean-gwishin: gán theo niche nên tài
+// khoản Đức có thể nhận) và folklore/vn-original (giao diện tiếng Việt cũ).
+const SKIN_NICHES = ["ancient_mythology", "dark_psychology", "deep_space", "economy_empires", "extreme_survival", "extreme_wildlife",
+  "folklore_legends", "forbidden_experiments", "geopolitics_maps", "infamous_figures", "lost_civilizations", "medical_anomalies",
+  "mega_catastrophes", "military_arsenal", "ocean_mysteries", "philosophy_paradox", "tech_ai_future", "unsolved_mysteries"];
+const SKIN_POOLS = {
+  vox: ["documentary-lowerthird", "data-card", "timeline-explainer", "split-then-now", "map-route", "paper-collage", "zine-xerox", "original"],
+  mystery: ["case-file", "evidence-board", "reference-dossier", "decoded", "cctv", "lost-places", "cursed-objects", "field-journal", "sonar-log", "ufo-radar"],
+  chalk: ["war-room", "blueprint", "sand-table", "satellite", "atlas", "thermal", "whiteboard"],
+  wildlife: ["nature-doc", "field-guide", "savanna-hud", "trail-cam", "stat-battle", "migration-map", "deep-ocean", "microscope"],
+  folklore: ["european-grimoire", "haunted-vhs", "nordic-runestone", "shadow-puppet", "tarot-deck"],
+};
+const SKIN_FIRST = {
+  vox: { economy_empires: ["data-card", "split-then-now"], geopolitics_maps: ["map-route"], military_arsenal: ["map-route", "timeline-explainer"] },
+  mystery: { ocean_mysteries: ["sonar-log"], deep_space: ["ufo-radar"], extreme_wildlife: ["field-journal"], lost_civilizations: ["lost-places", "decoded"],
+    folklore_legends: ["cursed-objects"], ancient_mythology: ["decoded", "cursed-objects"], infamous_figures: ["case-file", "evidence-board"] },
+  chalk: { ancient_mythology: ["atlas"], lost_civilizations: ["atlas"], deep_space: ["satellite"], mega_catastrophes: ["thermal", "satellite"], tech_ai_future: ["blueprint"] },
+  wildlife: { ocean_mysteries: ["deep-ocean"], medical_anomalies: ["microscope"], deep_space: ["microscope"] },
+  folklore: { ancient_mythology: ["nordic-runestone"], unsolved_mysteries: ["haunted-vhs"] },
+};
+function pooled(engine) {
+  const out = {};
+  for (const niche of SKIN_NICHES) {
+    const first = (SKIN_FIRST[engine][niche] || []);
+    out[niche] = Object.freeze([...first, ...SKIN_POOLS[engine].filter((v) => !first.includes(v))].map((v) => `${engine}/${v}`));
+  }
+  return Object.freeze(out);
+}
+
 export const NICHE_VARIANTS = Object.freeze({
   survival: Object.freeze({
     ocean_mysteries: ["survival/deep-sea", "survival/extreme-cold"],
@@ -39,6 +70,11 @@ export const NICHE_VARIANTS = Object.freeze({
     military_arsenal: ["survival/endurance", "survival/extreme-heat", "survival/extreme-cold"],
     extreme_wildlife: ["survival/endurance", "survival/extreme-cold", "survival/extreme-heat", "survival/deep-sea"],
   }),
+  vox: pooled("vox"),
+  mystery: pooled("mystery"),
+  chalk: pooled("chalk"),
+  wildlife: pooled("wildlife"),
+  folklore: pooled("folklore"),
 });
 
 function args(argv) {

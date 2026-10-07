@@ -1,5 +1,5 @@
 channel_id: tech_ai_future_07
-config_version: 7
+config_version: 9
 niche_id: tech_ai_future
 name: Công Nghệ & Tương Lai AI 07
 tiktok_account_ref: null
@@ -40,6 +40,30 @@ creative:
         transition: cut
         tone: 5
         caption: top
+    mystery:
+      variant_id: mystery/lost-places
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: flashlight_circle
+        typography: display_serif
+        treatment: clean
+        image_motion: ken_burns_slow
+        transition: ink_bleed
+        tone: 0
+        caption: fixed
+    vox:
+      variant_id: vox/split-then-now
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: lens_reveal
+        typography: display_serif
+        treatment: vignette_dark
+        image_motion: still_grain
+        transition: wipe
+        tone: 0
+        caption: fixed
 audio:
   voice_id: multi_female_stokie_uranus_bigtts
   voice_speed: 1.02

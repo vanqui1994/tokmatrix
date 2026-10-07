@@ -9,7 +9,7 @@ audio:
   - freepd-midnight-in-the-green-house
   - oga-fantasy-orchestral-theme
 channel_id: tech_ai_future_13
-config_version: 9
+config_version: 10
 creative:
   cut_cadence_seconds: 2.9
   palette:
@@ -46,6 +46,18 @@ creative:
         transition: slide
         tone: 6
         caption: top
+    wildlife:
+      variant_id: wildlife/deep-ocean
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: porthole_gauge
+        typography: slab
+        treatment: duotone
+        image_motion: parallax
+        transition: ink_bleed
+        tone: 5
+        caption: fixed
 name: Công Nghệ & Tương Lai AI 13
 niche_id: tech_ai_future
 persona:

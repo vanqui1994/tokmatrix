@@ -1,5 +1,5 @@
 channel_id: philosophy_paradox_02
-config_version: 7
+config_version: 9
 niche_id: philosophy_paradox
 name: 철학의 역설 02
 tiktok_account_ref: null
@@ -40,6 +40,30 @@ creative:
         transition: wipe
         tone: 6
         caption: middle
+    chalk:
+      variant_id: chalk/war-room
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: board
+        typography: heavy
+        treatment: clean
+        image_motion: push_in
+        transition: cut
+        tone: 0
+        caption: fixed
+    vox:
+      variant_id: vox/documentary-lowerthird
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: letterbox
+        typography: serif
+        treatment: clean
+        image_motion: pan_lateral
+        transition: cut
+        tone: 0
+        caption: fixed
 audio:
   voice_id: ko-KR-InJoonNeural
   voice_speed: 0.96

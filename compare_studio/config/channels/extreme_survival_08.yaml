@@ -1,5 +1,5 @@
 channel_id: extreme_survival_08
-config_version: 7
+config_version: 9
 niche_id: extreme_survival
 name: Survival & Disaster 08
 tiktok_account_ref: null
@@ -40,6 +40,30 @@ creative:
         image_motion: handheld
         transition: slide
         tone: 0
+        caption: fixed
+    mystery:
+      variant_id: mystery/case-file
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: folder_card
+        typography: slab
+        treatment: film_grain
+        image_motion: handheld
+        transition: page_turn
+        tone: 2
+        caption: fixed
+    wildlife:
+      variant_id: wildlife/nature-doc
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: fullframe_credits
+        typography: grotesk
+        treatment: film_grain
+        image_motion: parallax
+        transition: fade_black
+        tone: 4
         caption: fixed
 audio:
   voice_id: en-US-AndrewNeural

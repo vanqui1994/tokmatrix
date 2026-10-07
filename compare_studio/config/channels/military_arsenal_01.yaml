@@ -1,5 +1,5 @@
 channel_id: military_arsenal_01
-config_version: 8
+config_version: 10
 niche_id: military_arsenal
 name: Weapons & War Machines 01
 tiktok_account_ref: null
@@ -40,6 +40,30 @@ creative:
         transition: wipe
         tone: 5
         caption: middle
+    chalk:
+      variant_id: chalk/blueprint
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: title_block
+        typography: typewriter
+        treatment: paper_texture
+        image_motion: push_in
+        transition: shutter
+        tone: 0
+        caption: fixed
+    vox:
+      variant_id: vox/paper-collage
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: torn_layers
+        typography: condensed
+        treatment: clean
+        image_motion: push_in
+        transition: paper_tear
+        tone: 3
+        caption: fixed
 audio:
   voice_id: ICL_en_female_lisa
   voice_speed: 1.02
