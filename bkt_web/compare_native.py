@@ -550,6 +550,32 @@ def _has(html: Optional[str], needle: str) -> bool:
     return bool(html) and needle in html
 
 
+def _matrix_scene_list(script: Any) -> list:
+    """Cảnh của video Matrix (spec.script) theo các tên trường mà video_detail của từng thể loại đọc."""
+    out = []
+    for i, sc in enumerate(script if isinstance(script, list) else []):
+        if not isinstance(sc, dict):
+            continue
+        line = sc.get("line") or ""
+        out.append({"line": line, "text": line, "caption": line, "spoken": line,
+                    "start": sc.get("start_seconds"), "duration": sc.get("duration_seconds"),
+                    "telemetry": sc.get("beat_id") or "", "imagePrompt": sc.get("image_prompt") or sc.get("visual_intent") or "",
+                    "visual": sc.get("visual_intent") or "", "n": sc.get("scene_index") or i + 1})
+    return out
+
+
+def _fix_variant_scenes(*docs: Any) -> None:
+    """Video Matrix dùng layout biến thể lưu `<x>Config.scenes` là SỐ cảnh (vd. mysteryConfig {variant_id, scenes: 12}),
+    danh sách thật ở spec.script → thay bằng danh sách dựng từ script (trước đây /api/videos/<slug> lỗi 500 với 79 video)."""
+    script = next((doc.get("script") for doc in docs if isinstance(doc, dict) and isinstance(doc.get("script"), list)), None)
+    for doc in docs:
+        if not isinstance(doc, dict):
+            continue
+        for key, cfg in doc.items():
+            if key.endswith("Config") and isinstance(cfg, dict) and "scenes" in cfg and not isinstance(cfg["scenes"], list):
+                cfg["scenes"] = _matrix_scene_list(script)
+
+
 async def video_detail(slug: str) -> Dict[str, Any]:
     d = _video_dir(slug)
     summary = await video_summary(slug)
@@ -560,6 +586,7 @@ async def video_detail(slug: str) -> Dict[str, Any]:
     brief = read_text(d / "BRIEF.md")
     spec_raw = read_json(d / "spec.json")
     meta = read_json(d / "meta.json")
+    _fix_variant_scenes(spec_raw, meta)
     brief_out = brief if brief is not None else ""
 
     def exists(rel: str) -> bool:
