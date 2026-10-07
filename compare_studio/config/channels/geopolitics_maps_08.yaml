@@ -1,5 +1,5 @@
 channel_id: geopolitics_maps_08
-config_version: 11
+config_version: 12
 niche_id: geopolitics_maps
 name: Geopolitik & Grenzen 08
 tiktok_account_ref: null
@@ -27,17 +27,17 @@ creative:
     text: '#F2EEE6'
   skins:
     newspaper:
-      variant_id: newspaper/front-page
+      variant_id: newspaper/tabloid-extra
       dna:
         dna_version: 2
         variant_version: 1
-        composition: front_page
-        typography: serif
-        treatment: paper_texture
-        image_motion: pan_lateral
-        transition: wipe
-        tone: 8
-        caption: top
+        composition: diagonal_cover
+        typography: heavy
+        treatment: film_grain
+        image_motion: handheld
+        transition: cut
+        tone: 1
+        caption: fixed
 audio:
   voice_id: de-DE-SeraphinaMultilingualNeural
   voice_speed: 1.05

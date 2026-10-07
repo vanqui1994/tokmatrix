@@ -9,7 +9,7 @@ audio:
   - freepd-horror-suspense
   - freepd-night-vigil
 channel_id: military_arsenal_11
-config_version: 12
+config_version: 13
 creative:
   cut_cadence_seconds: 2.7
   palette:
@@ -21,17 +21,17 @@ creative:
   visual_style_id: dark_mystery_v1
   skins:
     tierlist:
-      variant_id: tierlist/ranking-board
+      variant_id: tierlist/unsolved-cases
       dna:
         dna_version: 2
         variant_version: 1
-        composition: rows_board
-        typography: grotesk
-        treatment: film_grain
-        image_motion: push_in
-        transition: slide
-        tone: 3
-        caption: top
+        composition: card_catalog
+        typography: typewriter
+        treatment: sepia_grain
+        image_motion: scan_light
+        transition: cut
+        tone: 4
+        caption: fixed
 name: Weapons & War Machines 11
 niche_id: military_arsenal
 persona:

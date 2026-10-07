@@ -1,5 +1,5 @@
 channel_id: infamous_figures_09
-config_version: 11
+config_version: 12
 niche_id: infamous_figures
 name: Berüchtigte Gestalten 09
 tiktok_account_ref: null
@@ -27,17 +27,17 @@ creative:
     text: '#F2EEE6'
   skins:
     tierlist:
-      variant_id: tierlist/ranking-board
+      variant_id: tierlist/unsolved-cases
       dna:
         dna_version: 2
         variant_version: 1
-        composition: rows_board
-        typography: grotesk
-        treatment: vignette_dark
-        image_motion: parallax
-        transition: slide
-        tone: 6
-        caption: middle
+        composition: drawer_cabinet
+        typography: typewriter
+        treatment: sepia_grain
+        image_motion: scan_light
+        transition: page_turn
+        tone: 3
+        caption: fixed
 audio:
   voice_id: DiT_de_male_koubo
   voice_speed: 0.96

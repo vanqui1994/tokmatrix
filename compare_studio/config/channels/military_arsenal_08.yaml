@@ -1,5 +1,5 @@
 channel_id: military_arsenal_08
-config_version: 11
+config_version: 12
 niche_id: military_arsenal
 name: Weapons & War Machines 08
 tiktok_account_ref: null
@@ -18,24 +18,26 @@ story:
   pacing_beats: 12
 creative:
   preferred_engines:
-  - compare
+  - wildlife
   visual_style_id: dark_mystery_v1
   cut_cadence_seconds: 2.8
   palette:
     primary: '#111318'
     accent: '#D6A84F'
     text: '#F2EEE6'
-  variant_id: compare/courtroom
-  dna:
-    dna_version: 2
-    variant_version: 1
-    composition: bench
-    typography: typewriter
-    treatment: sepia_grain
-    image_motion: scan_light
-    transition: page_turn
-    tone: 3
-    caption: fixed
+  skins:
+    wildlife:
+      variant_id: wildlife/deep-ocean
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: sub_capsule
+        typography: rounded
+        treatment: duotone
+        image_motion: parallax
+        transition: ink_bleed
+        tone: 2
+        caption: fixed
 audio:
   voice_id: multi_female_wenjingmaomao_moon_bigtts_cc
   voice_speed: 1.02

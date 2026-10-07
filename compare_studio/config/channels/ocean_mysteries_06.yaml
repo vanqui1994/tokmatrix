@@ -1,5 +1,5 @@
 channel_id: ocean_mysteries_06
-config_version: 11
+config_version: 12
 niche_id: ocean_mysteries
 name: 海と深海海溝 06
 tiktok_account_ref: null
@@ -18,24 +18,26 @@ story:
   pacing_beats: 12
 creative:
   preferred_engines:
-  - compare
+  - wildlife
   visual_style_id: dark_mystery_v1
   cut_cadence_seconds: 2.4
   palette:
     primary: '#111318'
     accent: '#D6A84F'
     text: '#F2EEE6'
-  variant_id: compare/courtroom
-  dna:
-    dna_version: 2
-    variant_version: 1
-    composition: verdict_form
-    typography: display_serif
-    treatment: clean
-    image_motion: still_grain
-    transition: page_turn
-    tone: 1
-    caption: fixed
+  skins:
+    wildlife:
+      variant_id: wildlife/field-guide
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: plate_page
+        typography: rounded
+        treatment: sepia_grain
+        image_motion: pan_lateral
+        transition: cut
+        tone: 1
+        caption: fixed
 audio:
   voice_id: ja-JP-KeitaNeural
   voice_speed: 1.02

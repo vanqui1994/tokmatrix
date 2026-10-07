@@ -1,5 +1,5 @@
 channel_id: ancient_mythology_02
-config_version: 11
+config_version: 12
 niche_id: ancient_mythology
 name: Antike Mythen 02
 tiktok_account_ref: null
@@ -27,17 +27,17 @@ creative:
     text: '#F2EEE6'
   skins:
     tierlist:
-      variant_id: tierlist/ranking-board
+      variant_id: tierlist/orbit
       dna:
         dna_version: 2
         variant_version: 1
-        composition: pyramid
-        typography: rounded
-        treatment: duotone
-        image_motion: ken_burns_fast
-        transition: cut
-        tone: 8
-        caption: top
+        composition: solar_arcs
+        typography: grotesk
+        treatment: film_grain
+        image_motion: push_in
+        transition: zoom_through
+        tone: 2
+        caption: fixed
 audio:
   voice_id: de-DE-ConradNeural
   voice_speed: 0.99

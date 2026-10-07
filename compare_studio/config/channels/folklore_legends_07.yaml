@@ -1,5 +1,5 @@
 channel_id: folklore_legends_07
-config_version: 11
+config_version: 12
 niche_id: folklore_legends
 name: Folklore & The Unseen 07
 tiktok_account_ref: null
@@ -27,16 +27,16 @@ creative:
     text: '#F2EEE6'
   skins:
     mystery:
-      variant_id: mystery/lost-places
+      variant_id: mystery/ufo-radar
       dna:
         dna_version: 2
         variant_version: 1
-        composition: full_bleed
-        typography: condensed
+        composition: radar_scope
+        typography: grotesk
         treatment: film_grain
-        image_motion: parallax
-        transition: fade_black
-        tone: 0
+        image_motion: push_in
+        transition: glitch
+        tone: 4
         caption: fixed
 audio:
   voice_id: en-US-AvaNeural

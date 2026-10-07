@@ -1,5 +1,5 @@
 channel_id: forbidden_experiments_01
-config_version: 10
+config_version: 11
 niche_id: forbidden_experiments
 name: Crazy Experiments 01
 tiktok_account_ref: null
@@ -31,12 +31,12 @@ creative:
       dna:
         dna_version: 2
         variant_version: 1
-        composition: polaroid_spread
-        typography: slab
+        composition: clipboard_top
+        typography: mono
         treatment: sepia_grain
         image_motion: ken_burns_slow
-        transition: page_turn
-        tone: 1
+        transition: cut
+        tone: 0
         caption: fixed
 audio:
   voice_id: en-GB-ThomasNeural

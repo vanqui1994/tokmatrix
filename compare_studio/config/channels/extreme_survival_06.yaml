@@ -1,5 +1,5 @@
 channel_id: extreme_survival_06
-config_version: 12
+config_version: 13
 niche_id: extreme_survival
 name: Überleben & Katastrophen 06
 tiktok_account_ref: null
@@ -27,16 +27,16 @@ creative:
     text: '#F2EEE6'
   skins:
     chalk:
-      variant_id: chalk/war-room
+      variant_id: chalk/satellite
       dna:
         dna_version: 2
         variant_version: 1
-        composition: board
+        composition: orbit_split
         typography: heavy
-        treatment: vignette_dark
+        treatment: film_grain
         image_motion: push_in
         transition: cut
-        tone: 4
+        tone: 2
         caption: fixed
 audio:
   voice_id: de-DE-KillianNeural

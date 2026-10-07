@@ -6,20 +6,27 @@
 // variant phục vụ niche + ngôn ngữ của acc. Kênh vector giữ riêng vector (DNA cast riêng trong vector_dna.json).
 // Dry-run mặc định; --apply ghi YAML (+1 config_version). Chạy khi Autopilot tạm dừng, rồi matrix_config.sync_channel_configs.
 //
-//   node tools/assign-unique-skins.mjs [--json plan.json] [--apply]
+//   node tools/assign-unique-skins.mjs [--global [--accounts list.txt]] [--json plan.json] [--apply]
+//   --global: một bố cục cho đúng MỘT tài khoản trên mọi nước (owner 07/10), chỉ các kênh trong config/unique_skin_accounts.txt.
 import crypto from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import YAML from "yaml";
 import { listVariants, isAutoAssignable } from "../matrix/render/variants/index.mjs";
-import { SKIN_AXES, STRUCTURAL_AXES, skinCandidates, skinDistance, skinViolations } from "../matrix/render/variants/skins.mjs";
+import { SKIN_AXES, STRUCTURAL_AXES, skinCandidates, skinDistance, skinPairOk, skinViolations } from "../matrix/render/variants/skins.mjs";
 import { NICHE_VARIANTS, KEEP_ONLY_VARIANTS } from "./assign-skins.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const CHANNEL_DIR = path.join(ROOT, "config/channels");
 const LANGS = ["de", "en", "ko", "ja"];
 const ENGINES = ["mystery", "newspaper", "vox", "folklore", "kinetic", "science", "tierlist", "survival", "chalk", "wildlife"];
+
+/** Danh sách kênh của chế độ --global (mặc định): kênh gắn tài khoản TikTok, trừ tài khoản remake. */
+export const ACCOUNTS_FILE = path.join(ROOT, "config/unique_skin_accounts.txt");
+export function readAccounts(file = ACCOUNTS_FILE) {
+  return new Set(fs.readFileSync(file, "utf8").split("\n").map((l) => l.trim()).filter((l) => l && !l.startsWith("#")).map((l) => l.split(/\s+/u)[0]));
+}
 
 const hash = (...parts) => crypto.createHash("sha256").update(parts.join("|")).digest().readUInt32BE(0) / 2 ** 32;
 
@@ -141,48 +148,75 @@ function pickDna(account, variant, composition, taken) {
   return best.dna;
 }
 
-export function planUniqueSkins({ dir = CHANNEL_DIR } = {}) {
+/**
+ * `only` = danh sách channel_id được gán (tài khoản TikTok đang map trong Autopilot, trừ tài khoản remake); `global` =
+ * một bố cục chỉ thuộc MỘT tài khoản trên mọi nước (owner 07/10), thay vì một tài khoản mỗi nước.
+ */
+export function planUniqueSkins({ dir = CHANNEL_DIR, only = null, global = false } = {}) {
   const variants = listVariants().filter((v) => v.status === "active");
   const matrix = loadMatrix();
   const packs = loadPacks();
-  const accounts = loadAccounts(dir);
+  const all = loadAccounts(dir);
+  const accounts = all.filter((a) => !only || only.has(a.channel_id));
+  const isVector = (a) => (a.data.creative?.preferred_engines || []).includes("vector");
+  const storedSkin = (a, engine) => (engine === "compare" ? (a.data.creative?.dna ? { variant_id: a.data.creative.variant_id, dna: a.data.creative.dna } : null) : a.data.creative?.skins?.[engine]);
+  const taken = {};  // "<nước>:<engine>" → DNA đã gán (luật ≥ 4 trục của validator tính theo nước + engine)
+  // Giữ DNA đang lưu nếu đúng bố cục và còn đạt luật với các acc đã gán; không thì chọn DNA mới.
+  const settle = (a, variant, composition) => {
+    const bucket = `${a.lang}:${variant.engine}`;
+    taken[bucket] ||= [];
+    const stored = storedSkin(a, variant.engine);
+    const keep = stored?.variant_id === variant.id && stored.dna?.composition === composition
+      && taken[bucket].every((other) => skinPairOk(stored.dna, other));
+    const dna = keep ? stored.dna : pickDna(a, variant, composition, taken[bucket]);
+    taken[bucket].push(dna);
+    return { dna, keep };
+  };
   const rows = [];
-  for (const lang of LANGS) {
-    const group = accounts.filter((a) => a.lang === lang && !(a.data.creative?.preferred_engines || []).includes("vector"));
-    for (const a of accounts.filter((x) => x.lang === lang && (x.data.creative?.preferred_engines || []).includes("vector"))) {
-      rows.push({ channel_id: a.channel_id, country: lang, niche: a.niche, engine: "vector", variant_id: null, composition: null, dna: null, status: "vector" });
+  for (const lang of global ? ["*"] : LANGS) {
+    const inLang = (a) => lang === "*" || a.lang === lang;
+    const group = accounts.filter((a) => inLang(a) && !isVector(a));
+    for (const a of accounts.filter((x) => inLang(x) && isVector(x))) {
+      rows.push({ channel_id: a.channel_id, country: a.lang, niche: a.niche, engine: "vector", variant_id: null, composition: null, dna: null, status: "vector" });
     }
     const cache = new Map(group.map((a) => [a.channel_id, slotsFor(a, variants, matrix, packs)]));
     const match = minCostMatch(group, (a) => cache.get(a.channel_id));
-    const taken = {};  // engine → DNA đã gán cùng nước
     group.forEach((a, i) => {
       const slot = match[i];
-      if (!slot) { rows.push({ channel_id: a.channel_id, country: lang, niche: a.niche, engine: null, status: "no_slot" }); return; }
+      if (!slot) { rows.push({ channel_id: a.channel_id, country: a.lang, niche: a.niche, engine: null, status: "no_slot" }); return; }
       const engine = slot.variant.engine;
-      taken[engine] ||= [];
-      const dna = pickDna(a, slot.variant, slot.composition, taken[engine]);
-      taken[engine].push(dna);
+      const { dna, keep } = settle(a, slot.variant, slot.composition);
       const was = a.data.creative || {};
-      const same = (was.preferred_engines || []).length === 1 && was.preferred_engines[0] === engine
-        && (engine === "compare" ? was.variant_id === slot.variant.id : was.skins?.[engine]?.variant_id === slot.variant.id)
-        && (engine === "compare" ? was.dna : was.skins?.[engine]?.dna)?.composition === slot.composition;
-      rows.push({ channel_id: a.channel_id, country: lang, niche: a.niche, engine, variant_id: slot.variant.id, composition: slot.composition, dna, status: same ? "same" : "change" });
+      const same = keep && (was.preferred_engines || []).length === 1 && was.preferred_engines[0] === engine;
+      rows.push({ channel_id: a.channel_id, country: a.lang, niche: a.niche, engine, variant_id: slot.variant.id, composition: slot.composition, dna, status: same ? "same" : "change" });
     });
+  }
+  // Kênh ngoài danh sách (chưa gắn tài khoản TikTok, hoặc tài khoản remake): giữ engine + bố cục đang có (có thể trùng
+  // bố cục acc khác — kênh này không đăng Matrix), chỉ chọn lại DNA để config vẫn đạt luật của validator.
+  if (only) {
+    for (const a of all.filter((x) => !only.has(x.channel_id) && !isVector(x))) {
+      const engine = (a.data.creative?.preferred_engines || [])[0];
+      const stored = storedSkin(a, engine);
+      const variant = stored && variants.find((v) => v.id === stored.variant_id);
+      if (!variant) { rows.push({ channel_id: a.channel_id, country: a.lang, niche: a.niche, engine, status: "outside" }); continue; }
+      const { dna, keep } = settle(a, variant, stored.dna.composition);
+      rows.push({ channel_id: a.channel_id, country: a.lang, niche: a.niche, engine, variant_id: variant.id, composition: stored.dna.composition, dna, status: keep ? "same" : "change", outside: true });
+    }
   }
   const violations = [];
   for (const lang of LANGS) for (const engine of [...ENGINES, "compare"]) {
     violations.push(...skinViolations(rows.filter((r) => r.country === lang && r.engine === engine && r.dna)).map((v) => ({ ...v, engine })));
   }
-  const keys = rows.filter((r) => r.variant_id).map((r) => `${r.country}:${r.variant_id}#${r.composition}`);
+  const keys = rows.filter((r) => r.variant_id && !r.outside).map((r) => `${global ? "*" : r.country}:${r.variant_id}#${r.composition}`);
   const duplicates = keys.filter((k, i) => keys.indexOf(k) !== i);
-  return { accounts, rows, violations, duplicates };
+  return { accounts: all, rows, violations, duplicates };
 }
 
 export function applyUniqueSkins({ accounts, rows }) {
   const byId = new Map(accounts.map((a) => [a.channel_id, a]));
   const written = [];
   for (const row of rows) {
-    if (row.status === "same" || row.status === "no_slot") continue;
+    if (row.status === "same" || row.status === "no_slot" || row.status === "outside") continue;
     const { file, doc } = byId.get(row.channel_id);
     if (row.engine === "vector") {
       if ((doc.getIn(["creative", "preferred_engines"])?.toJSON?.() || []).length === 1) continue;
@@ -218,7 +252,11 @@ function summary(rows) {
 }
 
 export function main(argv = process.argv.slice(2)) {
-  const plan = planUniqueSkins();
+  // --accounts <file>: một channel_id mỗi dòng (cột đầu), vd `sqlite3 autopilot.db "select matrix_channel_id from autopilot_channel_map"`.
+  const accAt = argv.indexOf("--accounts");
+  const global = argv.includes("--global");
+  const only = accAt >= 0 ? readAccounts(argv[accAt + 1]) : global ? readAccounts(ACCOUNTS_FILE) : null;
+  const plan = planUniqueSkins({ only, global });
   const jsonAt = argv.indexOf("--json");
   if (jsonAt >= 0) fs.writeFileSync(argv[jsonAt + 1], `${JSON.stringify({ rows: plan.rows, violations: plan.violations, duplicates: plan.duplicates }, null, 1)}\n`);
   console.log(JSON.stringify(summary(plan.rows)));

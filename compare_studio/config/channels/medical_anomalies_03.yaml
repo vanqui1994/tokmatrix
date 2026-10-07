@@ -1,5 +1,5 @@
 channel_id: medical_anomalies_03
-config_version: 12
+config_version: 13
 niche_id: medical_anomalies
 name: Medizin & Biologische Rätsel 03
 tiktok_account_ref: null
@@ -18,7 +18,7 @@ story:
   pacing_beats: 12
 creative:
   preferred_engines:
-  - vox
+  - science
   visual_style_id: dark_mystery_v1
   cut_cadence_seconds: 2.4
   palette:
@@ -26,17 +26,17 @@ creative:
     accent: '#D6A84F'
     text: '#F2EEE6'
   skins:
-    vox:
-      variant_id: vox/documentary-lowerthird
+    science:
+      variant_id: science/mission-timeline
       dna:
         dna_version: 2
         variant_version: 1
-        composition: full_bleed
+        composition: patch_poster
         typography: condensed
-        treatment: vignette_dark
-        image_motion: push_in
-        transition: fade_black
-        tone: 1
+        treatment: clean
+        image_motion: still_grain
+        transition: wipe
+        tone: 7
         caption: fixed
 audio:
   voice_id: de-DE-SeraphinaMultilingualNeural

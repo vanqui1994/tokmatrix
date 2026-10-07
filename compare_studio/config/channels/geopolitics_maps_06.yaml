@@ -1,5 +1,5 @@
 channel_id: geopolitics_maps_06
-config_version: 11
+config_version: 12
 niche_id: geopolitics_maps
 name: Geopolitik & Grenzen 06
 tiktok_account_ref: null
@@ -33,10 +33,10 @@ creative:
         variant_version: 1
         composition: orbit_split
         typography: mono
-        treatment: film_grain
+        treatment: vignette_dark
         image_motion: ken_burns_fast
-        transition: cut
-        tone: 0
+        transition: fade_black
+        tone: 4
         caption: fixed
 audio:
   voice_id: de-DE-FlorianMultilingualNeural

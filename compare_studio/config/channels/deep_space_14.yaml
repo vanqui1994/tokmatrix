@@ -9,7 +9,7 @@ audio:
   - freepd-desert-fox-underscore
   - freepd-motions
 channel_id: deep_space_14
-config_version: 11
+config_version: 12
 creative:
   cut_cadence_seconds: 3.0
   palette:
@@ -17,19 +17,21 @@ creative:
     primary: '#0B0C10'
     text: '#C5C6C7'
   preferred_engines:
-  - compare
+  - survival
   visual_style_id: cosmic_space_v1
-  variant_id: compare/tier-duel
-  dna:
-    dna_version: 2
-    variant_version: 1
-    composition: led_scoreboard
-    typography: mono
-    treatment: halftone
-    image_motion: handheld
-    transition: glitch
-    tone: 5
-    caption: fixed
+  skins:
+    survival:
+      variant_id: survival/space-exposure
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: telemetry_column
+        typography: mono
+        treatment: vignette_dark
+        image_motion: still_grain
+        transition: fade_black
+        tone: 2
+        caption: fixed
 name: Kosmos & Physik 14
 niche_id: deep_space
 persona:

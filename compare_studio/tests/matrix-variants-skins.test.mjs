@@ -205,9 +205,10 @@ test("keep-only survival/mr-incredible stays on its trial channels and is never 
   assert.deepEqual(mri, ["extreme_survival_11:kept", "forbidden_experiments_06:kept"]);
 });
 
-test("one skin per account: every de/en/ko/ja account has one engine and a layout no other account of its country uses", async () => {
-  const { planUniqueSkins } = await import("../tools/assign-unique-skins.mjs");
-  const plan = planUniqueSkins({ dir: CHANNEL_DIR });
+test("one skin per account: every TikTok-mapped account (remake accounts excluded) has one engine and a layout no other account uses", async () => {
+  const { planUniqueSkins, readAccounts } = await import("../tools/assign-unique-skins.mjs");
+  const plan = planUniqueSkins({ dir: CHANNEL_DIR, only: readAccounts(), global: true });
+  assert.ok(plan.rows.length >= 180);
   assert.deepEqual(plan.rows.filter((row) => row.status !== "same" && row.status !== "vector").map((row) => `${row.channel_id}:${row.status}`), []);
   assert.deepEqual(plan.duplicates, []);
   assert.deepEqual(plan.violations, []);

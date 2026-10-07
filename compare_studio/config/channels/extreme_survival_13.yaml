@@ -9,7 +9,7 @@ audio:
   - freepd-go-on-without-me
   - oga-fantasy-orchestral-theme
 channel_id: extreme_survival_13
-config_version: 12
+config_version: 13
 creative:
   cut_cadence_seconds: 2.5
   palette:
@@ -17,20 +17,20 @@ creative:
     primary: '#111318'
     text: '#F2EEE6'
   preferred_engines:
-  - tierlist
+  - survival
   visual_style_id: dark_mystery_v1
   skins:
-    tierlist:
-      variant_id: tierlist/orbit
+    survival:
+      variant_id: survival/endurance
       dna:
         dna_version: 2
         variant_version: 1
-        composition: telescope
+        composition: race_lane
         typography: grotesk
-        treatment: clean
-        image_motion: parallax
-        transition: zoom_through
-        tone: 5
+        treatment: film_grain
+        image_motion: handheld
+        transition: slide
+        tone: 2
         caption: fixed
 name: Survival & Disaster 13
 niche_id: extreme_survival

@@ -34,9 +34,9 @@ function build(variant, composition, lang) {
   return { html: built.html, sample };
 }
 
-test("science registers 7 active TEXT base variants, valid and ≥ 4/6 axes apart", () => {
+test("science registers 11 active TEXT base variants (7 + 4 space variants for 1 skin = 1 acc), valid and ≥ 4/6 axes apart", () => {
   assert.deepEqual(validateRegistry().errors, []);
-  assert.equal(variants.length, 7);
+  assert.equal(variants.length, 11);
   for (const v of variants) {
     assert.equal(v.status, "active");
     assert.deepEqual(v.compatibility.countries, LANGS);

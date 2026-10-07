@@ -1,5 +1,5 @@
 channel_id: medical_anomalies_05
-config_version: 12
+config_version: 13
 niche_id: medical_anomalies
 name: Medizin & Biologische Rätsel 05
 tiktok_account_ref: null
@@ -32,11 +32,11 @@ creative:
         dna_version: 2
         variant_version: 1
         composition: week_strip
-        typography: typewriter
-        treatment: film_grain
-        image_motion: handheld
+        typography: rounded
+        treatment: paper_texture
+        image_motion: ken_burns_slow
         transition: folder_flip
-        tone: 3
+        tone: 0
         caption: fixed
 audio:
   voice_id: de-DE-KatjaNeural

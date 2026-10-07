@@ -1,5 +1,5 @@
 channel_id: mega_catastrophes_10
-config_version: 12
+config_version: 13
 niche_id: mega_catastrophes
 name: Earth's Great Disasters 10
 tiktok_account_ref: null
@@ -27,17 +27,17 @@ creative:
     text: '#F2EEE6'
   skins:
     science:
-      variant_id: science/explainer-board
+      variant_id: science/mission-control
       dna:
         dna_version: 2
         variant_version: 1
-        composition: whiteboard
-        typography: rounded
-        treatment: clean
-        image_motion: pan_lateral
-        transition: shutter
-        tone: 0
-        caption: middle
+        composition: telemetry_grid
+        typography: grotesk
+        treatment: film_grain
+        image_motion: still_grain
+        transition: glitch
+        tone: 3
+        caption: fixed
 audio:
   voice_id: BV540_streaming
   voice_speed: 1.02

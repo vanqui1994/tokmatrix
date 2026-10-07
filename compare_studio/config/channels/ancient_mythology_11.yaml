@@ -9,7 +9,7 @@ audio:
   - freepd-driving-concern
   - freepd-midnight-in-the-green-house
 channel_id: ancient_mythology_11
-config_version: 12
+config_version: 13
 creative:
   cut_cadence_seconds: 2.7
   palette:
@@ -17,20 +17,20 @@ creative:
     primary: '#111318'
     text: '#F2EEE6'
   preferred_engines:
-  - folklore
+  - tierlist
   visual_style_id: dark_mystery_v1
   skins:
-    folklore:
-      variant_id: folklore/european-grimoire
+    tierlist:
+      variant_id: tierlist/orbit
       dna:
         dna_version: 2
         variant_version: 1
-        composition: open_book
-        typography: display_serif
-        treatment: sepia_grain
-        image_motion: push_in
+        composition: telescope
+        typography: mono
+        treatment: clean
+        image_motion: parallax
         transition: ink_bleed
-        tone: 0
+        tone: 5
         caption: fixed
 name: Antike Mythen 11
 niche_id: ancient_mythology

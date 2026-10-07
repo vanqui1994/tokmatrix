@@ -1,5 +1,5 @@
 channel_id: forbidden_experiments_04
-config_version: 10
+config_version: 11
 niche_id: forbidden_experiments
 name: Crazy Experiments 04
 tiktok_account_ref: null
@@ -18,7 +18,7 @@ story:
   pacing_beats: 12
 creative:
   preferred_engines:
-  - vox
+  - science
   visual_style_id: dark_mystery_v1
   cut_cadence_seconds: 2.6
   palette:
@@ -26,17 +26,17 @@ creative:
     accent: '#D6A84F'
     text: '#F2EEE6'
   skins:
-    vox:
-      variant_id: vox/timeline-explainer
+    science:
+      variant_id: science/star-chart
       dna:
         dna_version: 2
         variant_version: 1
-        composition: band_middle
-        typography: condensed
-        treatment: clean
-        image_motion: parallax
-        transition: wipe
-        tone: 0
+        composition: plate_card
+        typography: display_serif
+        treatment: vignette_dark
+        image_motion: pan_lateral
+        transition: ink_bleed
+        tone: 2
         caption: fixed
 audio:
   voice_id: en-US-SteffanNeural

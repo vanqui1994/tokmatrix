@@ -1,5 +1,5 @@
 channel_id: extreme_wildlife_04
-config_version: 11
+config_version: 12
 niche_id: extreme_wildlife
 name: Creatures of the Deep 04
 tiktok_account_ref: null
@@ -18,24 +18,26 @@ story:
   pacing_beats: 12
 creative:
   preferred_engines:
-  - compare
+  - wildlife
   visual_style_id: dark_mystery_v1
   cut_cadence_seconds: 2.6
   palette:
     primary: '#111318'
     accent: '#D6A84F'
     text: '#F2EEE6'
-  variant_id: compare/scale-balance
-  dna:
-    dna_version: 2
-    variant_version: 1
-    composition: beam_scale
-    typography: serif
-    treatment: paper_texture
-    image_motion: ken_burns_slow
-    transition: fade_black
-    tone: 2
-    caption: fixed
+  skins:
+    wildlife:
+      variant_id: wildlife/trail-cam
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: burst_strip
+        typography: condensed
+        treatment: film_grain
+        image_motion: still_grain
+        transition: fade_black
+        tone: 2
+        caption: fixed
 audio:
   voice_id: en-US-AriaNeural
   voice_speed: 1.02

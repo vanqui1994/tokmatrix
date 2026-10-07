@@ -9,7 +9,7 @@ audio:
   - freepd-cornfield-chase
   - freepd-release-the-hybrids
 channel_id: mega_catastrophes_13
-config_version: 12
+config_version: 13
 creative:
   cut_cadence_seconds: 2.4
   palette:
@@ -21,17 +21,17 @@ creative:
   visual_style_id: dark_mystery_v1
   skins:
     science:
-      variant_id: science/explainer-board
+      variant_id: science/mission-timeline
       dna:
         dna_version: 2
         variant_version: 1
-        composition: hud_panel
-        typography: grotesk
+        composition: film_frames
+        typography: condensed
         treatment: halftone
-        image_motion: ken_burns_slow
-        transition: cut
-        tone: 3
-        caption: top
+        image_motion: still_grain
+        transition: wipe
+        tone: 7
+        caption: fixed
 name: Earth's Great Disasters 13
 niche_id: mega_catastrophes
 persona:

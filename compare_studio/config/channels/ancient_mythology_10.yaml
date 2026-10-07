@@ -1,5 +1,5 @@
 channel_id: ancient_mythology_10
-config_version: 12
+config_version: 13
 niche_id: ancient_mythology
 name: Antike Mythen 10
 tiktok_account_ref: null
@@ -18,7 +18,7 @@ story:
   pacing_beats: 12
 creative:
   preferred_engines:
-  - folklore
+  - tierlist
   visual_style_id: dark_mystery_v1
   cut_cadence_seconds: 2.6
   palette:
@@ -26,17 +26,17 @@ creative:
     accent: '#D6A84F'
     text: '#F2EEE6'
   skins:
-    folklore:
-      variant_id: folklore/nordic-runestone
+    tierlist:
+      variant_id: tierlist/classic-rows
       dna:
         dna_version: 2
         variant_version: 1
-        composition: standing_stones
+        composition: tier_columns
         typography: condensed
-        treatment: clean
-        image_motion: handheld
-        transition: zoom_through
-        tone: 0
+        treatment: film_grain
+        image_motion: ken_burns_slow
+        transition: slide
+        tone: 1
         caption: fixed
 audio:
   voice_id: de-DE-SeraphinaMultilingualNeural

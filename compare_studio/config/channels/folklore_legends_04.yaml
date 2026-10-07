@@ -1,5 +1,5 @@
 channel_id: folklore_legends_04
-config_version: 12
+config_version: 13
 niche_id: folklore_legends
 name: Folklore & The Unseen 04
 tiktok_account_ref: null
@@ -18,7 +18,7 @@ story:
   pacing_beats: 12
 creative:
   preferred_engines:
-  - folklore
+  - newspaper
   visual_style_id: dark_mystery_v1
   cut_cadence_seconds: 2.6
   palette:
@@ -26,17 +26,17 @@ creative:
     accent: '#D6A84F'
     text: '#F2EEE6'
   skins:
-    folklore:
-      variant_id: folklore/haunted-vhs
+    newspaper:
+      variant_id: newspaper/victorian-broadsheet
       dna:
         dna_version: 2
         variant_version: 1
-        composition: cassette
-        typography: typewriter
-        treatment: vignette_dark
-        image_motion: scan_light
-        transition: cut
-        tone: 3
+        composition: columns_page
+        typography: slab
+        treatment: halftone
+        image_motion: ken_burns_slow
+        transition: fade_black
+        tone: 0
         caption: fixed
 audio:
   voice_id: en-US-EricNeural

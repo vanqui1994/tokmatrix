@@ -1,5 +1,5 @@
 channel_id: medical_anomalies_04
-config_version: 12
+config_version: 13
 niche_id: medical_anomalies
 name: Medizin & Biologische Rätsel 04
 tiktok_account_ref: null
@@ -27,16 +27,16 @@ creative:
     text: '#F2EEE6'
   skins:
     survival:
-      variant_id: survival/lab-exposure
+      variant_id: survival/no-sleep
       dna:
         dna_version: 2
         variant_version: 1
-        composition: bench
-        typography: grotesk
-        treatment: halftone
-        image_motion: still_grain
-        transition: tv_noise
-        tone: 5
+        composition: desk
+        typography: typewriter
+        treatment: film_grain
+        image_motion: handheld
+        transition: cut
+        tone: 3
         caption: fixed
 audio:
   voice_id: de-DE-KillianNeural

@@ -1,5 +1,5 @@
 channel_id: folklore_legends_08
-config_version: 12
+config_version: 13
 niche_id: folklore_legends
 name: Folklore & The Unseen 08
 tiktok_account_ref: null
@@ -27,17 +27,17 @@ creative:
     text: '#F2EEE6'
   skins:
     newspaper:
-      variant_id: newspaper/front-page
+      variant_id: newspaper/police-gazette
       dna:
         dna_version: 2
         variant_version: 1
-        composition: side_masthead
-        typography: condensed
-        treatment: clean
-        image_motion: ken_burns_slow
-        transition: shutter
-        tone: 3
-        caption: middle
+        composition: medallion
+        typography: serif
+        treatment: paper_texture
+        image_motion: ken_burns_fast
+        transition: cut
+        tone: 1
+        caption: fixed
 audio:
   voice_id: en-US-GuyNeural
   voice_speed: 0.99

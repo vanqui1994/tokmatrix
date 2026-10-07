@@ -1,5 +1,5 @@
 channel_id: mega_catastrophes_05
-config_version: 12
+config_version: 13
 niche_id: mega_catastrophes
 name: Earth's Great Disasters 05
 tiktok_account_ref: null
@@ -18,7 +18,7 @@ story:
   pacing_beats: 12
 creative:
   preferred_engines:
-  - vox
+  - survival
   visual_style_id: dark_mystery_v1
   cut_cadence_seconds: 2.8
   palette:
@@ -26,17 +26,17 @@ creative:
     accent: '#D6A84F'
     text: '#F2EEE6'
   skins:
-    vox:
-      variant_id: vox/map-route
+    survival:
+      variant_id: survival/extreme-cold
       dna:
         dna_version: 2
         variant_version: 1
-        composition: route_map
-        typography: heavy
-        treatment: paper_texture
-        image_motion: ken_burns_slow
-        transition: zoom_through
-        tone: 1
+        composition: ice_card
+        typography: rounded
+        treatment: vignette_dark
+        image_motion: still_grain
+        transition: fade_black
+        tone: 4
         caption: fixed
 audio:
   voice_id: en_female_sherry

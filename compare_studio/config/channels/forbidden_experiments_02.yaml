@@ -1,5 +1,5 @@
 channel_id: forbidden_experiments_02
-config_version: 11
+config_version: 12
 niche_id: forbidden_experiments
 name: Crazy Experiments 02
 tiktok_account_ref: null
@@ -27,17 +27,17 @@ creative:
     text: '#F2EEE6'
   skins:
     newspaper:
-      variant_id: newspaper/front-page
+      variant_id: newspaper/original
       dna:
         dna_version: 2
         variant_version: 1
-        composition: magazine_cover
-        typography: serif
-        treatment: film_grain
-        image_motion: ken_burns_fast
-        transition: cut
-        tone: 5
-        caption: bottom
+        composition: dossier
+        typography: mono
+        treatment: sepia_grain
+        image_motion: push_in
+        transition: wipe
+        tone: 4
+        caption: fixed
 audio:
   voice_id: en-US-EmmaNeural
   voice_speed: 0.99

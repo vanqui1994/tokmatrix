@@ -1,5 +1,5 @@
 channel_id: military_arsenal_04
-config_version: 12
+config_version: 13
 niche_id: military_arsenal
 name: Weapons & War Machines 04
 tiktok_account_ref: null
@@ -18,24 +18,26 @@ story:
   pacing_beats: 12
 creative:
   preferred_engines:
-  - compare
+  - chalk
   visual_style_id: dark_mystery_v1
   cut_cadence_seconds: 2.6
   palette:
     primary: '#111318'
     accent: '#D6A84F'
     text: '#F2EEE6'
-  variant_id: compare/courtroom
-  dna:
-    dna_version: 2
-    variant_version: 1
-    composition: verdict_form
-    typography: typewriter
-    treatment: sepia_grain
-    image_motion: still_grain
-    transition: shutter
-    tone: 0
-    caption: fixed
+  skins:
+    chalk:
+      variant_id: chalk/sand-table
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: tilted
+        typography: serif
+        treatment: film_grain
+        image_motion: parallax
+        transition: zoom_through
+        tone: 3
+        caption: fixed
 audio:
   voice_id: BV540_streaming
   voice_speed: 0.99

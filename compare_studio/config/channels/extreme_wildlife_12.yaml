@@ -9,7 +9,7 @@ audio:
   - freepd-inventing-flight
   - oga-the-rush
 channel_id: extreme_wildlife_12
-config_version: 12
+config_version: 13
 creative:
   cut_cadence_seconds: 2.3
   palette:
@@ -17,19 +17,21 @@ creative:
     primary: '#111318'
     text: '#F2EEE6'
   preferred_engines:
-  - compare
+  - wildlife
   visual_style_id: dark_mystery_v1
-  variant_id: compare/race-track
-  dna:
-    dna_version: 2
-    variant_version: 1
-    composition: drag_strip
-    typography: slab
-    treatment: clean
-    image_motion: still_grain
-    transition: wipe
-    tone: 2
-    caption: fixed
+  skins:
+    wildlife:
+      variant_id: wildlife/stat-battle
+      dna:
+        dna_version: 2
+        variant_version: 1
+        composition: stat_grid
+        typography: grotesk
+        treatment: duotone
+        image_motion: push_in
+        transition: flip_3d
+        tone: 3
+        caption: fixed
 name: Creatures of the Deep 12
 niche_id: extreme_wildlife
 persona:

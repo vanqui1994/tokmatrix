@@ -1,5 +1,5 @@
 channel_id: medical_anomalies_02
-config_version: 12
+config_version: 13
 niche_id: medical_anomalies
 name: Medizin & Biologische Rätsel 02
 tiktok_account_ref: null
@@ -18,7 +18,7 @@ story:
   pacing_beats: 12
 creative:
   preferred_engines:
-  - mystery
+  - science
   visual_style_id: dark_mystery_v1
   cut_cadence_seconds: 2.8
   palette:
@@ -26,17 +26,17 @@ creative:
     accent: '#D6A84F'
     text: '#F2EEE6'
   skins:
-    mystery:
-      variant_id: mystery/cursed-objects
+    science:
+      variant_id: science/star-chart
       dna:
         dna_version: 2
         variant_version: 1
-        composition: glass_case
-        typography: display_serif
-        treatment: sepia_grain
+        composition: sky_atlas
+        typography: typewriter
+        treatment: paper_texture
         image_motion: still_grain
-        transition: fade_black
-        tone: 1
+        transition: ink_bleed
+        tone: 5
         caption: fixed
 audio:
   voice_id: de-DE-AmalaNeural
