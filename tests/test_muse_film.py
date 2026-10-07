@@ -88,3 +88,29 @@ class ParallelFilmTest(unittest.TestCase):
             self.assertEqual(done["status"], "done")
             self.assertEqual([s["status"] for s in done["scenes"]], ["done"] * 4)
             self.assertEqual(peak[0], 2)
+
+
+class RefusalRewriteTest(unittest.TestCase):
+    def test_retry_after_refusal_rewrites_the_shot_and_drops_the_reference(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            calls = []
+
+            def fake_clip(prompt, label="clip", ref=None):
+                calls.append((prompt, ref))
+                return {"raw": b"mp4", "w": 720, "h": 1280, "d": 5.0, "sec": 1, "account": "x"}
+
+            with mock.patch.object(muse_film, "BASE", Path(tmp)), mock.patch.object(muse_film, "_wake"), \
+                 mock.patch.object(muse_film, "make_clip", fake_clip), mock.patch.object(muse_film, "assemble", lambda p: None), \
+                 mock.patch.object(muse_film, "_gemini", lambda t: {"shot": "A seed mascot naps in a cosy pod."}):
+                p = muse_film.create_shots("t", [{"prompt": "Style: x. Shot: A baby wiggles its toes.", "text": "a", "ref": "/r.jpg"},
+                                                 {"prompt": "Style: x. Shot: A cat waves.", "text": "b"}])
+                p["scenes"][0].update(status="error", tries=2, error="Muse từ chối: I can't make that one.")
+                p["scenes"][1].update(status="done")
+                p["status"] = "partial"
+                muse_film.save(p)
+                muse_film.retry_scene(p["id"], 0)
+                muse_film.process(p["id"])
+                done = muse_film.load(p["id"])
+            self.assertEqual(calls, [("Style: x. Shot: A seed mascot naps in a cosy pod.", None)])
+            self.assertEqual(done["scenes"][0]["status"], "done")
+            self.assertEqual(done["scenes"][0]["softened"], 1)

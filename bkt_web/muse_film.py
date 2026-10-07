@@ -222,6 +222,30 @@ async def _clip(prompt: str, cdp: str, ref: Optional[str] = None) -> Dict[str, A
         raise RuntimeError(f"Muse không trả video sau {TIMEOUT}s")
 
 
+SOFTEN = """A video model (Muse) refused to generate this shot for a family-friendly cartoon. Its reply was:
+"{refusal}"
+Rewrite ONLY the shot description so it keeps the same story beat but is clearly safe: no babies or unborn babies,
+no bodies or body-part close-ups, no toilet/bathroom or bodily-function humour, no weapons, nobody hurt or scared,
+no real people or existing characters. Use cute mascot characters, objects or a visual metaphor instead.
+Keep it one or two sentences, English, about 5 seconds of action. Return JSON {{"shot": "..."}}.
+Shot: {shot}"""
+
+
+def soften(prompt: str, refusal: str) -> str:
+    """Prompt cảnh Muse từ chối → bản viết lại an toàn hơn (chỉ phần sau "Shot:"; phần đầu — khung, phong cách — giữ nguyên)."""
+    head, sep, shot = prompt.rpartition("Shot: ")
+    if not sep:
+        head, shot = "", prompt
+    new = str((_gemini(SOFTEN.format(refusal=refusal[:500], shot=shot[:1200])) or {}).get("shot") or "").strip()
+    if not new:
+        raise RuntimeError("Gemini không viết lại được cảnh Muse từ chối")
+    return f"{head}{sep}{new}" if sep else new
+
+
+def _is_refusal(error: str) -> bool:
+    return (error or "").startswith("Muse từ chối")
+
+
 def make_clip(prompt: str, label: str = "clip", ref: Optional[str] = None) -> Dict[str, Any]:
     with muse_image.account(label) as cdp:
         got = asyncio.run(_clip(prompt, cdp, ref))
@@ -307,6 +331,14 @@ def process(pid: str) -> None:
                     with guard:
                         p["status"] = "stopped"
                     return
+                if s.get("soften") or _is_refusal(s.get("error", "")):
+                    # Muse từ chối lần trước: viết lại cảnh an toàn hơn và bỏ ảnh mẫu (ảnh gốc có thể chính là lý do)
+                    try:
+                        new = soften(s["prompt"], s.get("error", ""))
+                        with guard:
+                            s.update(prompt=new, ref=None, soften=False, softened=s.get("softened", 0) + 1)
+                    except Exception as e:  # noqa: BLE001 — viết lại hỏng thì vẫn thử prompt cũ
+                        print(f"[muse-film] soften {pid}/{s['i']}: {e}", flush=True)
                 with guard:
                     s["status"] = "running"; save(p)
                 try:
@@ -364,7 +396,8 @@ def retry_scene(pid: str, i: int) -> Dict[str, Any]:
     p = load(pid)
     for s in p["scenes"]:
         if s["i"] == i:
-            s.update(status="pending", tries=0, error="")
+            # bấm "Quay lại" một cảnh Muse đã từ chối: gửi y nguyên thì Muse lại từ chối, nên lần quay tới viết lại cảnh
+            s.update(status="pending", tries=0, error="", soften=_is_refusal(s.get("error", "")) or bool(s.get("soften")))
             if s.get("prompt_edit"):
                 s["prompt"] = s["prompt_edit"]
     p["status"] = "rendering"

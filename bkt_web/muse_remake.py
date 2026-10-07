@@ -301,7 +301,9 @@ For EACH of the {n} scenes write:
    characters (describe their look), a gentle action, camera move, setting; about 5 seconds; no text, no subtitles, no
    speech bubbles. It must be family-friendly: no weapons (no swords, knives, guns), nobody hurt, cut, hit, burned or
    scared; turn any rough action into a gentle one (e.g. trimming leaves with garden shears, watering, pointing,
-   cheering). Do not name the source channel, brands or existing characters.
+   cheering). Do not name the source channel, brands or existing characters. Muse also refuses babies or unborn
+   babies, bodies or close-ups of body parts, and toilet/bathroom or bodily-function humour: show those ideas with cute
+   mascot characters, objects or a visual metaphor instead (e.g. a smiling seed in a cosy pod instead of a baby in a womb).
  - "line": ONE narration sentence in {lang} for that scene ({length}), teaching the same facts in your own words,
    flowing as one story; scene 1 is a hook question.
 Also "title" (short, {lang}) and "caption" (1-2 sentences, {lang}, no hashtags).
