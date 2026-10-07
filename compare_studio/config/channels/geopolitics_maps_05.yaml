@@ -1,5 +1,5 @@
 channel_id: geopolitics_maps_05
-config_version: 11
+config_version: 12
 niche_id: geopolitics_maps
 name: Geopolitik & Grenzen 05
 tiktok_account_ref: null
@@ -25,19 +25,6 @@ creative:
     primary: '#111318'
     accent: '#D6A84F'
     text: '#F2EEE6'
-  skins:
-    chalk:
-      variant_id: chalk/sand-table
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: orders_top
-        typography: condensed
-        treatment: film_grain
-        image_motion: parallax
-        transition: zoom_through
-        tone: 1
-        caption: fixed
 audio:
   voice_id: DiT_de_female_qingsong
   voice_speed: 0.99

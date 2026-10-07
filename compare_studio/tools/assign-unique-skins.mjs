@@ -173,9 +173,14 @@ export function planUniqueSkins({ dir = CHANNEL_DIR, only = null, global = false
     return { dna, keep };
   };
   const rows = [];
+  const placed = new Set();
   for (const lang of global ? ["*"] : LANGS) {
     const inLang = (a) => lang === "*" || a.lang === lang;
-    const group = accounts.filter((a) => inLang(a) && !isVector(a));
+    // Kênh có tài khoản TikTok đứng trước: ghép tăng dần không bao giờ bỏ một kênh đã ghép, nên kênh ngoài danh sách
+    // (chưa gắn tài khoản) chỉ lấy bố cục còn trống.
+    const pool = global && only ? all : accounts;
+    const group = pool.filter((a) => inLang(a) && !isVector(a))
+      .sort((a, b) => Number(!only?.has(a.channel_id)) - Number(!only?.has(b.channel_id)));
     for (const a of accounts.filter((x) => inLang(x) && isVector(x))) {
       rows.push({ channel_id: a.channel_id, country: a.lang, niche: a.niche, engine: "vector", variant_id: null, composition: null, dna: null, status: "vector" });
     }
@@ -183,24 +188,30 @@ export function planUniqueSkins({ dir = CHANNEL_DIR, only = null, global = false
     const match = minCostMatch(group, (a) => cache.get(a.channel_id));
     group.forEach((a, i) => {
       const slot = match[i];
-      if (!slot) { rows.push({ channel_id: a.channel_id, country: a.lang, niche: a.niche, engine: null, status: "no_slot" }); return; }
+      if (!slot) {
+        if (only && !only.has(a.channel_id)) return;  // kênh ngoài danh sách hết chỗ: xử lý ở vòng "ngoài danh sách" dưới
+        rows.push({ channel_id: a.channel_id, country: a.lang, niche: a.niche, engine: null, status: "no_slot" });
+        return;
+      }
       const engine = slot.variant.engine;
       const { dna, keep } = settle(a, slot.variant, slot.composition);
       const was = a.data.creative || {};
       const same = keep && (was.preferred_engines || []).length === 1 && was.preferred_engines[0] === engine;
       rows.push({ channel_id: a.channel_id, country: a.lang, niche: a.niche, engine, variant_id: slot.variant.id, composition: slot.composition, dna, status: same ? "same" : "change" });
+      placed.add(a.channel_id);
     });
   }
-  // Kênh ngoài danh sách (chưa gắn tài khoản TikTok, hoặc tài khoản remake): giữ engine + bố cục đang có (có thể trùng
-  // bố cục acc khác — kênh này không đăng Matrix), chỉ chọn lại DNA để config vẫn đạt luật của validator.
+  // Kênh ngoài danh sách (chưa gắn tài khoản TikTok, hoặc tài khoản remake) không còn bố cục trống: bỏ skin (đường
+  // legacy) để không kênh nào giữ bố cục của tài khoản đang đăng (owner 07/10: "tách ra những cái 2 tài khoản").
+  // Kênh compare chỉ chạy qua variant_id → về engine có điểm cao nhất của niche. Gắn tài khoản sau → chạy lại tool.
   if (only) {
-    for (const a of all.filter((x) => !only.has(x.channel_id) && !isVector(x))) {
-      const engine = (a.data.creative?.preferred_engines || [])[0];
-      const stored = storedSkin(a, engine);
-      const variant = stored && variants.find((v) => v.id === stored.variant_id);
-      if (!variant) { rows.push({ channel_id: a.channel_id, country: a.lang, niche: a.niche, engine, status: "outside" }); continue; }
-      const { dna, keep } = settle(a, variant, stored.dna.composition);
-      rows.push({ channel_id: a.channel_id, country: a.lang, niche: a.niche, engine, variant_id: variant.id, composition: stored.dna.composition, dna, status: keep ? "same" : "change", outside: true });
+    for (const a of all.filter((x) => !only.has(x.channel_id) && !isVector(x) && !placed.has(x.channel_id))) {
+      const c = a.data.creative || {};
+      const engines = c.preferred_engines || [];
+      const has = Boolean(c.skins && Object.keys(c.skins).length) || Boolean(c.variant_id);
+      const scores = matrix.scores[a.niche] || {};
+      const engine = engines[0] === "compare" ? ENGINES.filter((e) => (scores[e] ?? 0) >= matrix.min).sort((x, y) => scores[y] - scores[x])[0] : engines[0];
+      rows.push({ channel_id: a.channel_id, country: a.lang, niche: a.niche, engine, variant_id: null, composition: null, dna: null, status: has ? "unskin" : "same", outside: true });
     }
   }
   const violations = [];
@@ -218,7 +229,10 @@ export function applyUniqueSkins({ accounts, rows }) {
   for (const row of rows) {
     if (row.status === "same" || row.status === "no_slot" || row.status === "outside") continue;
     const { file, doc } = byId.get(row.channel_id);
-    if (row.engine === "vector") {
+    if (row.status === "unskin") {
+      doc.setIn(["creative", "preferred_engines"], doc.createNode([row.engine]));
+      for (const key of ["skins", "variant_id", "dna"]) doc.deleteIn(["creative", key]);
+    } else if (row.engine === "vector") {
       if ((doc.getIn(["creative", "preferred_engines"])?.toJSON?.() || []).length === 1) continue;
       doc.setIn(["creative", "preferred_engines"], doc.createNode(["vector"]));
       doc.deleteIn(["creative", "skins"]);

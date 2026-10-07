@@ -1,5 +1,5 @@
 channel_id: forbidden_experiments_03
-config_version: 10
+config_version: 11
 niche_id: forbidden_experiments
 name: Crazy Experiments 03
 tiktok_account_ref: null
@@ -25,19 +25,6 @@ creative:
     primary: '#111318'
     accent: '#D6A84F'
     text: '#F2EEE6'
-  skins:
-    vox:
-      variant_id: vox/data-card
-      dna:
-        dna_version: 2
-        variant_version: 1
-        composition: stat_top
-        typography: grotesk
-        treatment: duotone
-        image_motion: push_in
-        transition: cut
-        tone: 2
-        caption: fixed
 audio:
   voice_id: en_us_006
   voice_speed: 1.02

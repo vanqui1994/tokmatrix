@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-07T04:16:29.153Z",
+ "generated_at": "2026-10-07T04:26:20.239Z",
  "totals": {
   "engines": 11,
   "variants": 89,
@@ -40,13 +40,12 @@
        },
        "thumb": "skins/chalk__atlas__torn_plate.jpg",
        "accounts": [
-        "de geopolitics_maps_07",
         "en military_arsenal_09"
        ]
       }
      ],
      "usage": {
-      "de": 2,
+      "de": 1,
       "en": 1,
       "ko": 0,
       "ja": 0
@@ -68,7 +67,6 @@
        },
        "thumb": "skins/chalk__blueprint__title_block.jpg",
        "accounts": [
-        "de geopolitics_maps_01",
         "ko philosophy_paradox_03"
        ]
       },
@@ -87,7 +85,7 @@
       }
      ],
      "usage": {
-      "de": 1,
+      "de": 0,
       "en": 1,
       "ko": 1,
       "ja": 0
@@ -121,13 +119,12 @@
        },
        "thumb": "skins/chalk__sand-table__orders_top.jpg",
        "accounts": [
-        "de geopolitics_maps_05",
         "en military_arsenal_07"
        ]
       }
      ],
      "usage": {
-      "de": 1,
+      "de": 0,
       "en": 2,
       "ko": 0,
       "ja": 0
@@ -162,13 +159,12 @@
        },
        "thumb": "skins/chalk__satellite__orbit_split.jpg",
        "accounts": [
-        "de extreme_survival_06",
-        "de geopolitics_maps_06"
+        "de extreme_survival_06"
        ]
       }
      ],
      "usage": {
-      "de": 2,
+      "de": 1,
       "en": 1,
       "ko": 0,
       "ja": 0
@@ -295,7 +291,7 @@
   },
   {
    "engine": "compare",
-   "channels": 19,
+   "channels": 16,
    "variants": [
     {
      "id": "compare/boxing-ring",
@@ -366,7 +362,6 @@
        },
        "thumb": "skins/compare__card-game__trick_grid.jpg",
        "accounts": [
-        "ko ocean_mysteries_11",
         "de space_10"
        ]
       }
@@ -374,7 +369,7 @@
      "usage": {
       "de": 2,
       "en": 0,
-      "ko": 1,
+      "ko": 0,
       "ja": 0
      }
     },
@@ -394,8 +389,7 @@
        },
        "thumb": "skins/compare__courtroom__bench.jpg",
        "accounts": [
-        "de geopolitics_maps_04",
-        "ja ocean_mysteries_01"
+        "de geopolitics_maps_04"
        ]
       },
       {
@@ -416,7 +410,7 @@
       "de": 2,
       "en": 0,
       "ko": 0,
-      "ja": 1
+      "ja": 0
      }
     },
     {
@@ -447,15 +441,14 @@
        },
        "thumb": "skins/compare__original__columns.jpg",
        "accounts": [
-        "de economy_empires_10",
-        "ko ocean_mysteries_12"
+        "de economy_empires_10"
        ]
       }
      ],
      "usage": {
       "de": 2,
       "en": 0,
-      "ko": 1,
+      "ko": 0,
       "ja": 0
      }
     },
@@ -1664,7 +1657,6 @@
        },
        "thumb": "skins/newspaper__tabloid-extra__diagonal_cover.jpg",
        "accounts": [
-        "de geopolitics_maps_02",
         "de geopolitics_maps_08"
        ]
       },
@@ -1682,7 +1674,7 @@
       }
      ],
      "usage": {
-      "de": 3,
+      "de": 2,
       "en": 0,
       "ko": 0,
       "ja": 0
@@ -1743,8 +1735,7 @@
        },
        "thumb": "skins/newspaper__victorian-broadsheet__columns_page.jpg",
        "accounts": [
-        "en folklore_legends_04",
-        "de geopolitics_maps_03"
+        "en folklore_legends_04"
        ]
       },
       {
@@ -1761,7 +1752,7 @@
       }
      ],
      "usage": {
-      "de": 2,
+      "de": 1,
       "en": 1,
       "ko": 0,
       "ja": 0
@@ -1855,7 +1846,6 @@
        },
        "thumb": "skins/science__explainer-board__hud_panel.jpg",
        "accounts": [
-        "ko philosophy_paradox_04",
         "de space_05"
        ]
       }
@@ -1863,7 +1853,7 @@
      "usage": {
       "de": 3,
       "en": 0,
-      "ko": 1,
+      "ko": 0,
       "ja": 0
      }
     },
@@ -3059,8 +3049,7 @@
        },
        "thumb": "skins/vox__data-card__stat_top.jpg",
        "accounts": [
-        "de economy_empires_07",
-        "en forbidden_experiments_03"
+        "de economy_empires_07"
        ]
       },
       {
@@ -3078,7 +3067,7 @@
      ],
      "usage": {
       "de": 2,
-      "en": 1,
+      "en": 0,
       "ko": 0,
       "ja": 0
      }
@@ -3360,7 +3349,7 @@
   },
   {
    "engine": "wildlife",
-   "channels": 17,
+   "channels": 20,
    "variants": [
     {
      "id": "wildlife/deep-ocean",
@@ -3390,8 +3379,7 @@
        },
        "thumb": "skins/wildlife__deep-ocean__sub_capsule.jpg",
        "accounts": [
-        "en military_arsenal_08",
-        "ja ocean_mysteries_07"
+        "en military_arsenal_08"
        ]
       }
      ],
@@ -3399,7 +3387,7 @@
       "de": 0,
       "en": 1,
       "ko": 1,
-      "ja": 1
+      "ja": 0
      }
     },
     {
