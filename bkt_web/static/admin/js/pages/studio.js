@@ -31,35 +31,41 @@
     return list.sort(sorts[p.sort] || sorts.new);
   }
 
-  function sidebar(el, ctx, vids) {
+  // Thanh lọc ngang trên cùng ([data-bar]) + thư viện cao hết màn hình bên trái ([data-side]). `root` chứa cả hai.
+  function sidebar(root, ctx, vids) {
+    const bar = root.querySelector('[data-bar]'), el = root.querySelector('[data-side]');
     const p = ctx.params;
     const count = (k, v) => vids.filter((x) => x[k] === v).length;
     const markets = [...new Set(vids.map((v) => v.lang))].filter(Boolean);
     const styles = [...new Set(vids.map((v) => v.type))].filter(Boolean);
     const link = (patch) => { const q = new URLSearchParams({ ...p, ...patch }); [...q.keys()].forEach((k) => !q.get(k) && q.delete(k)); return `#/studio${ctx.sub ? '/' + encodeURIComponent(ctx.sub) + (ctx.rest[0] ? '/' + ctx.rest[0] : '') : ''}${q.toString() ? '?' + q : ''}`; };
     const list = filterList(vids, p);
-    el.innerHTML = `<div class="card st-lib mb-0"><div class="card-header"><h3 class="card-title"><i class="bi bi-collection-play me-2"></i>Thư viện</h3>
-      <div class="card-tools"><span class="badge text-bg-secondary">${vids.length} video · ${fmt.dur(vids.reduce((a, v) => a + (v.duration || 0), 0))}</span></div></div>
-      <div class="card-body p-2 border-bottom vstack gap-2">
-        <div class="d-flex flex-wrap gap-2"><button class="btn btn-sm btn-primary flex-grow-1" data-action="new-ai"><i class="bi bi-magic me-1"></i>Tạo video mới AI</button>
-          <button class="btn btn-sm btn-outline-secondary" data-action="matrix" title="Tạo một mẻ video theo Channel DNA"><i class="bi bi-diagram-3 me-1"></i>Matrix batch</button></div>
-        <a class="st-item st-template ${ctx.sub === '__template' ? 'active' : ''}" href="#/studio/__template"><i class="bi bi-layout-text-window-reverse fs-4 text-primary"></i>
-          <span><span class="st-item-title">Bố cục chuẩn & đánh giá mẫu</span><span class="cell-sub">Nhịp thời gian chuẩn của từng thể loại</span></span></a>
-        <div class="input-group input-group-sm"><span class="input-group-text"><i class="bi bi-search"></i></span><input type="search" class="form-control" placeholder="Tìm tiêu đề hoặc slug…" value="${esc(p.q || '')}" data-q></div>
-        <div class="d-flex gap-2"><select class="form-select form-select-sm" data-sort>${[['new', 'Mới nhất'], ['old', 'Cũ nhất'], ['title', 'Theo tên'], ['dur', 'Dài nhất']].map(([v, l]) => `<option value="${v}" ${v === (p.sort || 'new') ? 'selected' : ''}>${l}</option>`).join('')}</select>
-          <select class="form-select form-select-sm" data-rendered><option value="">Mọi trạng thái</option><option value="1" ${p.rendered === '1' ? 'selected' : ''}>Đã render</option><option value="0" ${p.rendered === '0' ? 'selected' : ''}>Chưa render</option></select></div>
-        <div class="st-chips"><a class="st-chip ${!p.market ? 'on' : ''}" href="${link({ market: '' })}">Mọi thị trường</a>${markets.map((m) => `<a class="st-chip ${p.market === m ? 'on' : ''}" href="${link({ market: m })}">${(MARKET[m] || ['🌐'])[0]} ${esc((MARKET[m] || [0, m])[1])} <b>${count('lang', m)}</b></a>`).join('')}</div>
-        <div class="st-chips"><a class="st-chip ${!p.style ? 'on' : ''}" href="${link({ style: '' })}">Mọi thể loại</a>${styles.map((s) => `<a class="st-chip ${p.style === s ? 'on' : ''}" href="${link({ style: s })}">${meta(s)[0]} ${esc(meta(s)[1])} <b>${count('type', s)}</b></a>`).join('')}</div>
-        <div class="d-flex justify-content-between small text-body-secondary"><span>${list.length} video</span><button class="btn btn-sm btn-link p-0" data-action="gen"><i class="bi bi-magic"></i> Tạo video tự động</button></div>
-      </div>
+    bar.innerHTML = `<div class="card st-bar mb-0"><div class="card-body p-2 vstack gap-2">
+      <div class="d-flex flex-wrap align-items-center gap-2">
+        <div class="input-group input-group-sm st-search"><span class="input-group-text"><i class="bi bi-search"></i></span><input type="search" class="form-control" placeholder="Tìm tiêu đề hoặc slug…" value="${esc(p.q || '')}" data-q></div>
+        <select class="form-select form-select-sm w-auto" data-sort>${[['new', 'Mới nhất'], ['old', 'Cũ nhất'], ['title', 'Theo tên'], ['dur', 'Dài nhất']].map(([v, l]) => `<option value="${v}" ${v === (p.sort || 'new') ? 'selected' : ''}>${l}</option>`).join('')}</select>
+        <select class="form-select form-select-sm w-auto" data-rendered><option value="">Mọi trạng thái</option><option value="1" ${p.rendered === '1' ? 'selected' : ''}>Đã render</option><option value="0" ${p.rendered === '0' ? 'selected' : ''}>Chưa render</option></select>
+        <span class="badge text-bg-secondary">${list.length}/${vids.length} video · ${fmt.dur(vids.reduce((a, v) => a + (v.duration || 0), 0))}</span>
+        <div class="ms-auto d-flex flex-wrap gap-2">
+          <a class="btn btn-sm btn-outline-secondary ${ctx.sub === '__template' ? 'active' : ''}" href="#/studio/__template" title="Nhịp thời gian chuẩn của từng thể loại"><i class="bi bi-layout-text-window-reverse me-1"></i>Bố cục chuẩn</a>
+          <button class="btn btn-sm btn-outline-secondary" data-action="gen"><i class="bi bi-lightning me-1"></i>Tạo tự động</button>
+          <button class="btn btn-sm btn-outline-secondary" data-action="matrix" title="Tạo một mẻ video theo Channel DNA"><i class="bi bi-diagram-3 me-1"></i>Matrix batch</button>
+          <button class="btn btn-sm btn-primary" data-action="new-ai"><i class="bi bi-magic me-1"></i>Tạo video mới AI</button></div></div>
+      <div class="d-flex flex-wrap align-items-center gap-2"><span class="st-bar-label">Thị trường</span><div class="st-chips"><a class="st-chip ${!p.market ? 'on' : ''}" href="${link({ market: '' })}">Tất cả</a>${markets.map((m) => `<a class="st-chip ${p.market === m ? 'on' : ''}" href="${link({ market: m })}">${(MARKET[m] || ['🌐'])[0]} ${esc((MARKET[m] || [0, m])[1])} <b>${count('lang', m)}</b></a>`).join('')}</div></div>
+      <div class="d-flex flex-wrap align-items-center gap-2"><span class="st-bar-label">Thể loại</span><div class="st-chips"><a class="st-chip ${!p.style ? 'on' : ''}" href="${link({ style: '' })}">Tất cả</a>${styles.map((s) => `<a class="st-chip ${p.style === s ? 'on' : ''}" href="${link({ style: s })}">${meta(s)[0]} ${esc(meta(s)[1])} <b>${count('type', s)}</b></a>`).join('')}</div></div>
+    </div></div>`;
+    el.innerHTML = `<div class="card st-lib mb-0"><div class="card-header py-2"><h3 class="card-title"><i class="bi bi-collection-play me-2"></i>Thư viện</h3>
+      <div class="card-tools"><span class="badge text-bg-light border">${list.length} video</span></div></div>
       <div class="st-list">${list.map((v) => `<a class="st-item ${v.slug === ctx.sub ? 'active' : ''}" href="#/studio/${encodeURIComponent(v.slug)}/${ctx.rest[0] || 'preview'}${location.hash.includes('?') ? '?' + location.hash.split('?')[1] : ''}">
         <img src="/api/compare-videos/video/${encodeURIComponent(v.slug)}/poster" alt="" loading="lazy" onerror="this.style.visibility='hidden'">
-        <span class="flex-grow-1 min-w-0"><span class="st-item-title">${esc(v.title)}</span>
-          <span class="cell-sub">${meta(v.type)[0]} ${esc(meta(v.type)[1])} · ${(MARKET[v.lang] || ['🌐'])[0]} · ${fmt.dur(v.duration)}</span>
-          <span class="d-flex gap-1 mt-1">${v.hasRender ? '<span class="badge text-bg-success">Đã render</span>' : '<span class="badge text-bg-warning">Chưa render</span>'}${v.imagesPending ? `<span class="badge text-bg-danger">${v.imagesPending} ảnh chờ</span>` : ''}</span></span></a>`).join('') || `<div class="p-3">${empty('Không có video khớp bộ lọc')}</div>`}</div></div>`;
-    el.querySelector('[data-q]').addEventListener('input', (e) => { clearTimeout(sidebar.t); sidebar.t = setTimeout(() => { ctx.setParams({ q: e.target.value.trim() }); sidebar(el, ctx, vids); const i = el.querySelector('[data-q]'); i.focus(); i.setSelectionRange(i.value.length, i.value.length); }, 250); });
-    el.querySelector('[data-sort]').addEventListener('change', (e) => { ctx.setParams({ sort: e.target.value }); sidebar(el, ctx, vids); });
-    el.querySelector('[data-rendered]').addEventListener('change', (e) => { ctx.setParams({ rendered: e.target.value }); sidebar(el, ctx, vids); });
+        <span class="flex-grow-1 min-w-0 d-flex flex-column"><span class="st-item-title">${esc(v.title)}</span>
+          <span class="st-item-meta">${meta(v.type)[0]} ${esc(meta(v.type)[1])}</span>
+          <span class="st-item-meta">${(MARKET[v.lang] || ['🌐'])[0]} ${esc((MARKET[v.lang] || [0, v.lang || '—'])[1])} · ${fmt.dur(v.duration)}${v.createdAt ? ` · ${esc(String(v.createdAt).slice(0, 10))}` : ''}</span>
+          <span class="d-flex flex-wrap gap-1 mt-auto pt-1">${v.hasRender ? '<span class="badge text-bg-success">Đã render</span>' : '<span class="badge text-bg-warning">Chưa render</span>'}${v.imagesPending ? `<span class="badge text-bg-danger">${v.imagesPending} ảnh chờ</span>` : ''}</span></span></a>`).join('') || `<div class="p-3">${empty('Không có video khớp bộ lọc')}</div>`}</div></div>`;
+    const redraw = () => sidebar(root, ctx, vids);
+    bar.querySelector('[data-q]').addEventListener('input', (e) => { clearTimeout(sidebar.t); sidebar.t = setTimeout(() => { ctx.setParams({ q: e.target.value.trim() }); redraw(); const i = bar.querySelector('[data-q]'); i.focus(); i.setSelectionRange(i.value.length, i.value.length); }, 250); });
+    bar.querySelector('[data-sort]').addEventListener('change', (e) => { ctx.setParams({ sort: e.target.value }); redraw(); });
+    bar.querySelector('[data-rendered]').addEventListener('change', (e) => { ctx.setParams({ rendered: e.target.value }); redraw(); });
     const act = el.querySelector('.st-item.active');
     if (act) act.scrollIntoView({ block: 'nearest' });
   }
@@ -340,12 +346,12 @@
     id: 'studio', group: 'production', title: 'Video Studio', icon: 'collection-play',
     desc: 'Compare Studio / Matrix: xem trước, sửa kịch bản, đổi ảnh, render, xếp lịch đăng',
     async render(ctx) {
-      ctx.el.innerHTML = '<div class="row g-3"><div class="col-xl-4 col-lg-5" data-side></div><div class="col-xl-8 col-lg-7" data-main></div></div>';
+      ctx.el.innerHTML = '<div class="mb-3" data-bar></div><div class="row g-3"><div class="col-xxl-4 col-xl-5 col-lg-5" data-side></div><div class="col-xxl-8 col-xl-7 col-lg-7" data-main></div></div>';
       const fresh = cache.at && Date.now() - cache.at < 60000 && !ctx.params.reload;
       const vids = fresh ? cache.vids : (cache.vids = await api.get('/api/videos'), cache.at = Date.now(), cache.vids);
-      const side = ctx.el.querySelector('[data-side]'), main = ctx.el.querySelector('[data-main]');
-      sidebar(side, ctx, vids);
-      bindActions(side, {
+      const main = ctx.el.querySelector('[data-main]');
+      sidebar(ctx.el, ctx, vids);
+      bindActions(ctx.el.querySelector('[data-bar]'), {
         'new-ai': () => window.LegacyStudio.openNew(),
         matrix: () => window.LegacyStudio.openMatrix(),
         async gen() {
@@ -368,7 +374,7 @@
       }
       const slug = ctx.sub || (filterList(vids, ctx.params)[0] || {}).slug;
       if (!slug) { main.innerHTML = empty('Chưa có video nào'); return; }
-      if (!ctx.sub) { history.replaceState(null, '', `#/studio/${encodeURIComponent(slug)}/preview${location.hash.includes('?') ? '?' + location.hash.split('?')[1] : ''}`); ctx.sub = slug; ctx.rest = ['preview']; sidebar(side, ctx, vids); }
+      if (!ctx.sub) { history.replaceState(null, '', `#/studio/${encodeURIComponent(slug)}/preview${location.hash.includes('?') ? '?' + location.hash.split('?')[1] : ''}`); ctx.sub = slug; ctx.rest = ['preview']; sidebar(ctx.el, ctx, vids); }
       try { await detail(main, ctx, slug); }
       catch (e) { main.innerHTML = `<div class="alert alert-danger">Không tải được video ${esc(slug)}: ${esc(e.message)}</div>`; }
     },
