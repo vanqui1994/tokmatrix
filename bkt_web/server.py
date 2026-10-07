@@ -1107,6 +1107,13 @@ class UpdateNoteItem(BaseModel):
     note: str = Field(max_length=500)
 
 # --- Endpoints ---
+@app.get("/api/channels/roles")
+def get_channel_roles():
+    """Thể loại / việc của từng tài khoản (badge ở trang Kênh)."""
+    from bkt_web import channel_roles
+    return {"roles": {str(k): v for k, v in channel_roles.roles().items()}}
+
+
 @app.get("/api/channels")
 def get_channels():
     conn = connect_db(DB_PATH)

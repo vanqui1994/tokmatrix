@@ -9,6 +9,24 @@
     return `<span class="badge text-bg-${tone}">${esc(s)}</span>`;
   }
 
+  // Thể loại / việc của acc: engine Matrix (+ skin) hoặc dòng remake; mỗi engine một màu cố định.
+  const ENGINE_COLORS = { mystery: '#6f42c1', newspaper: '#795548', vox: '#d63384', folklore: '#8d6e63', kinetic: '#fd7e14', science: '#0d6efd',
+    tierlist: '#e0a800', survival: '#dc3545', chalk: '#20806a', wildlife: '#198754', compare: '#0dcaf0', vector: '#6610f2' };
+  const REMAKE = { youtube: ['Remake YouTube', '#c4302b', 'youtube'], kuaishou_muse: ['Kuaishou → Muse', '#ff5000', 'film'], kuaishou_vector: ['Kuaishou → vector', '#ff8a00', 'vector-pen'] };
+  const roleKey = (r) => (r.kind === 'matrix' ? r.engine || 'matrix' : r.kind);
+  function roleBadges(list) {
+    if (!list || !list.length) return '<span class="badge text-bg-light border text-secondary">Chưa giao việc</span>';
+    return list.map((r) => {
+      if (r.kind === 'matrix') {
+        const skin = r.variant ? `${r.variant.split('/')[1]} · ${r.layout}` : 'không skin';
+        return `<span class="badge" style="background:${ENGINE_COLORS[r.engine] || '#6c757d'}" title="Matrix ${esc(r.matrix_channel)} · ${esc(r.niche)} · ${esc(skin)}">${esc(r.engine || 'matrix')}</span>`
+          + `<span class="cell-sub">${esc(skin)}</span>`;
+      }
+      const [label, color, icon] = REMAKE[r.kind] || [r.kind, '#6c757d', 'tag'];
+      return `<span class="badge${r.enabled === false ? ' opacity-50' : ''}" style="background:${color}" title="${esc(r.source || '')}"><i class="bi bi-${icon} me-1"></i>${esc(label)}${r.translate ? ' · dịch ' + esc(r.translate) : ''}</span>`;
+    }).join(' ');
+  }
+
   async function showVideos(ch) {
     const body = h(`<div>${spinner('Đang lấy video của kênh…')}</div>`);
     modal({ title: `Video của @${ch.username || ch.id}`, body, size: 'xl' });
@@ -73,6 +91,7 @@
     badge: async () => { const r = await api.get('/api/scan-status'); return r.is_scanning ? { text: `${r.completed}/${r.total}`, tone: 'primary' } : null; },
     async render(ctx) {
       const pub = ctx.params.pub || '';
+      const kind = ctx.params.kind || '';
       ctx.el.innerHTML = `<div class="row" data-stats></div><div data-scan></div><div data-list></div>`;
       const list = card({
         title: 'Danh sách kênh', icon: 'list-ul',
@@ -91,7 +110,8 @@
 
       let table;
       async function load() {
-        const r = await api.get('/api/channels');
+        const [r, rr] = await Promise.all([api.get('/api/channels'), api.get('/api/channels/roles').catch(() => ({ roles: {} }))]);
+        for (const c of r.channels) c.roles = rr.roles[String(c.id)] || [];
         const s = r.stats || {};
         ctx.el.querySelector('[data-stats]').innerHTML = [
           ['Tài khoản', fmt.num(s.total_accounts), 'people', 'primary'],
@@ -100,15 +120,20 @@
           ['Tổng view', fmt.num(s.total_views), 'eye', 'warning'],
         ].map(([l, v, i, t]) => `<div class="col-md-3 col-6">${infoBox({ label: l, value: v, icon: i, tone: t })}</div>`).join('');
         const pubs = [...new Set(r.channels.map((c) => c.publisher).filter(Boolean))].sort();
-        const rows = pub ? r.channels.filter((c) => c.publisher === pub) : r.channels;
+        const kinds = [...new Set(r.channels.flatMap((c) => (c.roles.length ? c.roles.map(roleKey) : ['none'])))].sort();
+        const rows = r.channels.filter((c) => (!pub || c.publisher === pub)
+          && (!kind || (kind === 'none' ? !c.roles.length : c.roles.some((x) => roleKey(x) === kind))));
         if (!table) {
           table = dataTable(list.querySelector('.card-body'), {
             rows, rowKey: 'id', pageSize: 30,
-            toolbar: `<select class="form-select form-select-sm" data-pub style="width:auto"><option value="">Mọi nguồn</option>${pubs.map((p) => `<option ${p === pub ? 'selected' : ''}>${esc(p)}</option>`).join('')}</select>`,
+            toolbar: `<div class="d-flex gap-2"><select class="form-select form-select-sm" data-pub style="width:auto"><option value="">Mọi nguồn</option>${pubs.map((p) => `<option ${p === pub ? 'selected' : ''}>${esc(p)}</option>`).join('')}</select>`
+              + `<select class="form-select form-select-sm" data-kind style="width:auto"><option value="">Mọi thể loại</option>${kinds.map((k) => `<option value="${esc(k)}" ${k === kind ? 'selected' : ''}>${esc(k === 'none' ? 'Chưa giao việc' : (REMAKE[k] || [k])[0])}</option>`).join('')}</select></div>`,
             columns: [
               { key: 'username', label: 'Kênh', text: (c) => `${c.username} ${c.nickname} ${c.note} ${c.country} ${c.publisher}`, render: (c) =>
                 `<a href="https://www.tiktok.com/@${esc(c.username)}" target="_blank" rel="noopener" class="fw-semibold">@${esc(c.username || '—')}</a>
                 <span class="cell-sub">#${c.id} · ${esc(c.nickname)} ${c.note ? '· ' + esc(c.note) : ''}</span>` },
+              { key: 'roles', label: 'Thể loại', sort: false, text: (c) => c.roles.map((x) => `${roleKey(x)} ${x.variant || ''} ${x.matrix_channel || ''}`).join(' ') || 'chưa giao việc',
+                render: (c) => roleBadges(c.roles) },
               { key: 'country', label: 'Nước', render: (c) => `${esc(c.original_country || c.country)}${c.publisher ? `<span class="cell-sub">${esc(c.publisher)}</span>` : ''}` },
               { key: 'status', label: 'BKT', render: (c) => statusBadge(c.status) + (c.kyc && c.kyc !== 'No' ? '<span class="cell-sub">KYC</span>' : '') },
               { key: 'earned', label: 'Doanh thu', cls: 'text-end', render: (c) => { const cur = c.currency && c.currency !== '#' ? c.currency : ''; return `${fmt.money(c.earned, cur)}<span class="cell-sub">số dư ${fmt.money(c.balance, cur)}</span>`; } },
@@ -135,7 +160,14 @@
                   </ul></div>` },
             ],
           });
-          table.toolbar.querySelector('[data-pub]').addEventListener('change', (e) => { location.hash = `#/channels${e.target.value ? '?pub=' + encodeURIComponent(e.target.value) : ''}`; });
+          const go = () => {
+            const q = new URLSearchParams();
+            const p = table.toolbar.querySelector('[data-pub]').value; const k = table.toolbar.querySelector('[data-kind]').value;
+            if (p) q.set('pub', p); if (k) q.set('kind', k);
+            location.hash = `#/channels${q.toString() ? '?' + q : ''}`;
+          };
+          table.toolbar.querySelector('[data-pub]').addEventListener('change', go);
+          table.toolbar.querySelector('[data-kind]').addEventListener('change', go);
         } else table.setRows(rows);
       }
       const byId = (el) => table.rows.find((c) => c.id === Number(el.dataset.id));
