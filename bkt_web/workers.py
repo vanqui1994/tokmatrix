@@ -56,6 +56,7 @@ WORKERS: Tuple[Worker, ...] = (
     Worker("source-remake", "Remake từ video nguồn (vector)", "Sản xuất video", "kuaishou_vector → source_remake"),
     Worker("vector-learner", "Học rig vector mới", "Sản xuất video", "vector_learner", "TOKMATRIX_VECTOR_LEARNER"),
     Worker("muse-remake", "Kuaishou → Muse", "Sản xuất video", "image_routes → muse_remake", "TOKMATRIX_MUSE_REMAKE"),
+    Worker("muse-remake-deepscan-*", "Quét video cũ Kuaishou", "Sản xuất video", "muse_remake", note="nút Quét video cũ, chạy một lần"),
     Worker("muse-film", "Phim AI (Muse)", "Sản xuất video", "image_routes → muse_film", "TOKMATRIX_MUSE"),
     Worker("dola-worker", "Video AI Dola", "Sản xuất video", "dola_routes", "TOKMATRIX_DOLA_WORKER"),
     Worker("compare-run-*", "Tác vụ Video Studio", "Sản xuất video", "compare_native", note="check/render/vo/fit đang chạy"),

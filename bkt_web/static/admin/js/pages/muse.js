@@ -55,7 +55,8 @@
       { key: 'enabled', label: 'Bật', render: (s) => `<div class="form-check form-switch"><input class="form-check-input" type="checkbox" data-action="toggle" data-id="${s.id}" ${s.enabled ? 'checked' : ''}></div>` },
       { key: 'id', label: '', cls: 'text-end', sort: false, render: (s) => `<div class="btn-group btn-group-sm">
         <a class="btn btn-outline-secondary" href="#/kuaishou/videos?source=${s.id}" title="Video"><i class="bi bi-collection-play"></i></a>
-        <button class="btn btn-outline-primary" data-action="scan" data-id="${s.id}" title="Quét ngay"><i class="bi bi-arrow-repeat"></i></button>
+        <button class="btn btn-outline-primary" data-action="scan" data-id="${s.id}" title="Quét video mới"><i class="bi bi-arrow-repeat"></i></button>
+        <button class="btn btn-outline-primary" data-action="deep" data-id="${s.id}" title="Quét video cũ (tới 300 video, bỏ qua video đã remake)"><i class="bi bi-clock-history"></i></button>
         <button class="btn btn-outline-secondary" data-action="edit" data-id="${s.id}" title="Sửa"><i class="bi bi-pencil"></i></button>
         <button class="btn btn-outline-danger" data-action="del" data-id="${s.id}" title="Xoá"><i class="bi bi-trash"></i></button></div>` },
     ] });
@@ -79,6 +80,19 @@
       },
       async toggle(b) { await api.patch(`/api/muse-remake/sources/${b.dataset.id}`, { enabled: b.checked }); toast(b.checked ? 'Đã bật' : 'Đã tắt', 'success'); },
       async scan(b) { const x = await api.post(`/api/muse-remake/sources/${b.dataset.id}/scan`); toast(`Thêm ${x.added} video mới`, 'success'); reload(); },
+      async deep(b) {
+        const id = b.dataset.id;
+        await api.post(`/api/muse-remake/sources/${id}/scan?deep=1`);
+        toast('Đang quét video cũ (1–2 phút), video đã remake được bỏ qua', 'info');
+        b.disabled = true;
+        const poll = setInterval(async () => {
+          const st = await api.get(`/api/muse-remake/sources/${id}/scan`).catch(() => ({}));
+          if (st.running) return;
+          clearInterval(poll); b.disabled = false;
+          toast(st.error ? `Quét lỗi: ${st.error}` : `Tìm thêm ${st.added} video cũ chưa remake (tổng ${st.total} video)`, st.error ? 'danger' : 'success');
+          reload();
+        }, 5000);
+      },
       async del(b) { if (await confirm('Xoá nguồn này?', { danger: true, ok: 'Xoá' })) { await api.del(`/api/muse-remake/sources/${b.dataset.id}`); reload(); } },
     });
   }

@@ -53,16 +53,24 @@ def delete_source(sid: int):
 
 
 @router.post("/sources/{sid}/scan")
-def scan_now(sid: int):
+def scan_now(sid: int, deep: bool = False):
+    """deep=1: quét video cũ (tới muse_remake.DEEP_SCAN) ở nền, trả trạng thái; video đã remake không bị làm lại."""
     src = next((s for s in muse_remake.sources() if s["id"] == sid), None)
     if not src:
         raise HTTPException(404, "Không có nguồn này")
+    if deep:
+        return muse_remake.deep_scan_async(src)
     try:
         added = muse_remake.scan(src)
     except Exception as e:  # noqa: BLE001
         raise HTTPException(502, f"Quét profile lỗi: {e}")
     muse_remake.wake()
     return {"added": added}
+
+
+@router.get("/sources/{sid}/scan")
+def scan_status(sid: int):
+    return muse_remake.deep_scan_status(sid)
 
 
 @router.get("/accounts")

@@ -186,8 +186,12 @@ def account_voice(channel_id: int) -> Dict[str, Any]:
 
 
 # ------------------------------------------------------------------ quét profile
-def scan(source: Dict[str, Any]) -> int:
-    items = multi_downloader.kuaishou_profile(source["profile_url"], 30)
+DEEP_SCAN = 300  # "Quét video cũ": cuộn profile tới ngần này video
+
+
+def scan(source: Dict[str, Any], depth: int = 30) -> int:
+    """Thêm video mới tìm thấy (status `available`); video đã có — đã remake, đang làm, đã xoá — giữ nguyên trạng thái."""
+    items = multi_downloader.kuaishou_profile(source["profile_url"], depth)
     now, added = int(time.time()), 0
     with _conn() as c:
         for it in items:
@@ -209,6 +213,34 @@ def _start_due() -> None:
             for v in c.execute("SELECT id FROM videos WHERE source_id=? AND status='available' ORDER BY posted DESC, id ASC LIMIT ?",
                                (s["id"], max(0, s["per_day"] - used))).fetchall():
                 c.execute("UPDATE videos SET status='new', started=?, updated=? WHERE id=?", (now, now, v["id"]))
+
+
+_deep: Dict[int, Dict[str, Any]] = {}
+
+
+def deep_scan_async(source: Dict[str, Any]) -> Dict[str, Any]:
+    """Quét tới DEEP_SCAN video ở luồng nền (1–2 phút, quá thời gian chờ của Cloudflare); kết quả ở deep_scan_status."""
+    sid = source["id"]
+    if (_deep.get(sid) or {}).get("running"):
+        return _deep[sid]
+    _deep[sid] = {"running": True, "started": int(time.time()), "added": 0, "error": ""}
+
+    def run():
+        try:
+            _deep[sid]["added"] = scan(source, DEEP_SCAN)
+            with _conn() as c:
+                _deep[sid]["total"] = c.execute("SELECT COUNT(*) FROM videos WHERE source_id=?", (sid,)).fetchone()[0]
+            _wake.set()
+        except Exception as e:  # noqa: BLE001
+            _deep[sid]["error"] = str(e)[:300]
+        finally:
+            _deep[sid]["running"] = False
+    threading.Thread(target=run, name=f"muse-remake-deepscan-{sid}", daemon=True).start()
+    return _deep[sid]
+
+
+def deep_scan_status(sid: int) -> Dict[str, Any]:
+    return _deep.get(sid) or {}
 
 
 # ------------------------------------------------------------------ một video
