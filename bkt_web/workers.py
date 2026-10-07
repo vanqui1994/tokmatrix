@@ -35,8 +35,8 @@ WORKERS: Tuple[Worker, ...] = (
     Worker("needs-check-verifier", "Xác minh bài cần kiểm tra", "Đăng bài", "server.app_startup → needs_check_verifier"),
     Worker("profile-maintenance", "Bảo trì profile Chrome", "Đăng bài", "server.app_startup → profile_workers"),
     Worker("vpn-tunnel-reaper", "Dọn tunnel VPN hết hạn", "Đăng bài", "vpn_manager"),
-    Worker("channel-rescan", "Quét lại kênh mỗi giờ", "Tài khoản", "server.app_startup", env="TOKMATRIX_CHANNEL_RESCAN_MINUTES",
-           note="cùng hàm nút 'Quét tất cả'; chu kỳ = TOKMATRIX_CHANNEL_RESCAN_MINUTES (60), 0 = tắt"),
+    Worker("channel-rescan", "Quét lại kênh mỗi 6 giờ", "Tài khoản", "server.app_startup", env="TOKMATRIX_CHANNEL_RESCAN_MINUTES",
+           note="cùng hàm nút 'Quét tất cả'; chu kỳ = TOKMATRIX_CHANNEL_RESCAN_MINUTES (360), 0 = tắt"),
     # Tự động hoá
     Worker("autopilot-daemon", "Autopilot", "Tự động hoá", "autopilot.start_autopilot", note="bật/tắt trong trang Autopilot"),
     Worker("autopilot-manual", "Autopilot (chạy tay)", "Tự động hoá", "autopilot.engine", note="chỉ có khi đang chạy một bước tay"),

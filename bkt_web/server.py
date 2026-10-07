@@ -1470,9 +1470,9 @@ def _run_scan_worker_inner():
     with SCAN_LOCK:
         scan_status["current_account"] = "Hoàn tất"
 
-# Quét lại toàn bộ kênh định kỳ (owner 07/10: mỗi 1 giờ) — cùng hàm với nút "Quét tất cả"; bỏ lượt nếu đang có lần quét
-# khác. TOKMATRIX_CHANNEL_RESCAN_MINUTES (mặc định 60, 0 = tắt). Lần đầu chạy sau một chu kỳ, không chạy lúc khởi động.
-CHANNEL_RESCAN_MINUTES = int(os.environ.get("TOKMATRIX_CHANNEL_RESCAN_MINUTES", "60") or 0)
+# Quét lại toàn bộ kênh định kỳ (owner 07/10: mỗi 6 giờ) — cùng hàm với nút "Quét tất cả"; bỏ lượt nếu đang có lần quét
+# khác. TOKMATRIX_CHANNEL_RESCAN_MINUTES (mặc định 360, 0 = tắt). Lần đầu chạy sau một chu kỳ, không chạy lúc khởi động.
+CHANNEL_RESCAN_MINUTES = int(os.environ.get("TOKMATRIX_CHANNEL_RESCAN_MINUTES", "360") or 0)
 
 
 def run_channel_rescan_loop(stop: threading.Event) -> None:
