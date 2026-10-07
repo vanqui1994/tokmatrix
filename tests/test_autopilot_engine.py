@@ -1565,3 +1565,11 @@ class RoutesTest(AutopilotTestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class VoiceLanguageTest(unittest.TestCase):
+    def test_edge_prefix_and_capcut_catalog(self):
+        from bkt_web.autopilot import safety
+        self.assertEqual(safety.voice_languages("de-DE-KatjaNeural"), {"de"})
+        self.assertIn("de", safety.voice_languages("DiT_de_female_jiangshi"))
+        self.assertEqual(safety.voice_languages("no_such_voice_xyz"), set())

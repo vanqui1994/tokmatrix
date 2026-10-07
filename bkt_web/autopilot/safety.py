@@ -19,6 +19,46 @@ class Verdict:
     reason: str = ""
 
 
+_VOICE_LANGS: Optional[Dict[str, set]] = None
+
+
+def _voice_catalog() -> Dict[str, set]:
+    """id giọng → mã ngôn ngữ, đọc từ tools/voices.mjs (khối `code:`) và capcut_auditioned.json."""
+    global _VOICE_LANGS
+    if _VOICE_LANGS is not None:
+        return _VOICE_LANGS
+    import re
+    langs: Dict[str, set] = {}
+    try:
+        text = (store.COMPARE_DIR / "tools" / "voices.mjs").read_text(encoding="utf-8")
+        code = None
+        for m in re.finditer(r'code:\s*"([a-z]{2})"|\bid:\s*"([^"]+)"', text):
+            if m.group(1):
+                code = m.group(1)
+            elif code:
+                langs.setdefault(m.group(2), set()).add(code)
+    except OSError:
+        pass
+    try:
+        data = json.loads((store.COMPARE_DIR / "config" / "voices" / "capcut_auditioned.json").read_text(encoding="utf-8"))
+        for v in data.get("voices") or []:
+            if v.get("id") and v.get("lang") and v.get("status", "pass") == "pass":
+                langs.setdefault(v["id"], set()).add(str(v["lang"]).split("-")[0].lower())
+    except (OSError, ValueError):
+        pass
+    _VOICE_LANGS = langs
+    return langs
+
+
+def voice_languages(voice: str) -> set:
+    """Ngôn ngữ của giọng: Edge `de-DE-…` theo tiền tố, CapCut theo catalog (có thể nhiều nước); rỗng = không rõ (không chặn)."""
+    import re
+    m = re.match(r"^([a-z]{2})-[A-Z]{2}-", voice)
+    if m:
+        return {m.group(1)}
+    return set(_voice_catalog().get(voice) or ())
+
+
 def check_niche_match(
     *,
     job: Mapping[str, Any],
@@ -74,8 +114,9 @@ def video_language_problem(slug: str, tiktok_id: int, job_id: str = "") -> Optio
     job = matrix_db.get_job(job_id) if job_id else None
     manifest: Dict[str, Any] = (job or {}).get("manifest") or {}
     voice = str((manifest.get("audio") or {}).get("voice_id") or "")
-    if voice and not voice.startswith(f"{expected}-"):
-        return f"giọng {voice} không phải {expected}"
+    voice_langs = voice_languages(voice) if voice else set()
+    if voice_langs and expected not in voice_langs:
+        return f"giọng {voice} là {'/'.join(sorted(voice_langs))}, không phải {expected}"
     if expected != "vi":
         texts = [str(meta.get("name") or "")]
         texts += [str(scene.get("line") or "") for scene in manifest.get("scenes") or [] if isinstance(scene, dict)]
