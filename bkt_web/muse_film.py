@@ -224,6 +224,10 @@ async def _clip(prompt: str, cdp: str, ref: Optional[str] = None) -> Dict[str, A
 
 BATCH = max(1, int(os.environ.get("TOKMATRIX_MUSE_BATCH", "4")))  # cảnh mỗi tin nhắn: Muse chạy mỗi clip một subagent song song
 BATCH_WAIT = int(os.environ.get("TOKMATRIX_MUSE_BATCH_WAIT", "900"))
+BATCH_REFS = os.environ.get("TOKMATRIX_MUSE_BATCH_REFS", "0") == "1"
+# Tin của mình chưa tới Muse (gửi hỏng): Muse hiện chữ này dưới tin.
+_UNDELIVERED = """()=>{const m=[...document.querySelectorAll('[class*="group/msg"]')]; const e=m[m.length-1];
+ return !!e && /Delivery not confirmed|Not delivered|Failed to send/i.test(e.innerText||'')}"""
 
 
 class BatchIncomplete(RuntimeError):
@@ -257,8 +261,9 @@ async def _clip_batch(prompts: List[str], cdp: str, refs: List[Optional[str]]) -
             raise RuntimeError("Muse chưa đăng nhập — đăng nhập lại qua noVNC")
         await muse_image.keep_awake(page)
         seen = set(await page.evaluate(_VIDEOS))
-        files = [r for r in refs if r and Path(r).is_file()]
-        with_refs = len(files) == len(prompts)
+        # Lô không kèm ảnh mẫu: tin kèm 4 ảnh đứng ở "Delivery not confirmed" (08/10); phong cách đã tả bằng chữ.
+        files = [r for r in refs if r and Path(r).is_file()] if BATCH_REFS else []
+        with_refs = bool(files) and len(files) == len(prompts)
         if with_refs:
             before = await page.evaluate("document.querySelectorAll('img').length")
             await page.locator("input[type=file]").first.set_input_files(files)
@@ -273,6 +278,8 @@ async def _clip_batch(prompts: List[str], cdp: str, refs: List[Optional[str]]) -
         while time.time() - t0 < BATCH_WAIT:
             await asyncio.sleep(5)
             new = [src for src in await page.evaluate(_VIDEOS) if src not in seen]
+            if not new and time.time() - t0 > 45 and await page.evaluate(_UNDELIVERED):
+                raise BatchIncomplete("tin nhắn lô không tới được Muse (Delivery not confirmed)")
             if len(new) != count:
                 count, last_new = len(new), time.time()
             if count >= len(prompts):
