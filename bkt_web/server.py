@@ -60,6 +60,7 @@ try:
     from bkt_web import dola_admin_proxy
     from bkt_web.muse_film_routes import router as muse_film_router
     from bkt_web.muse_remake_routes import router as muse_remake_router
+    from bkt_web.pov_routes import router as pov_router
     from bkt_web import chocode_routes
     from bkt_web import chocode_tiktok
     from bkt_web.autopilot import init_autopilot_db, start_autopilot, stop_autopilot
@@ -92,6 +93,7 @@ except ImportError:
     import dola_admin_proxy
     from muse_film_routes import router as muse_film_router
     from muse_remake_routes import router as muse_remake_router
+    from pov_routes import router as pov_router
     import chocode_routes
     import chocode_tiktok
     from autopilot import init_autopilot_db, start_autopilot, stop_autopilot
@@ -174,6 +176,7 @@ app.include_router(dola_routes.router)
 app.include_router(dola_admin_proxy.router)
 app.include_router(muse_film_router)
 app.include_router(muse_remake_router)
+app.include_router(pov_router)
 # Router tách khỏi server.py (bkt_web/routes/): số liệu, hệ thống, VPN, tải/biên tập video.
 try:
     from bkt_web.routes import media_routes, stats_routes, system_routes, vpn_routes

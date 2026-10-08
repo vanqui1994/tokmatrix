@@ -449,6 +449,11 @@ def start_image_queue_worker() -> None:
         import muse_remake
     muse_film.start()
     muse_remake.start()
+    try:
+        from bkt_web import pov_channel
+    except ImportError:
+        import pov_channel
+    pov_channel.start()
 
 
 def stop_image_queue_worker() -> None:

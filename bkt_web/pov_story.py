@@ -39,20 +39,30 @@ identically every time (age, hair, face, one signature outfit with colours, one 
 shirt, khaki trousers or dark curly hair (that look belongs to another channel).
 For each scene write "shot": an English illustration prompt (setting, what the main character does, other people,
 mood, time of day). No text, signs, numbers or screens with readable words in the picture.
-Return JSON {{"title": "...", "character": "...", "scenes": [{{"line": "...", "shot": "..."}}]}}"""
+Also write "caption": one or two {lang} sentences for the post (no hashtags).
+Return JSON {{"title": "...", "caption": "...", "character": "...", "scenes": [{{"line": "...", "shot": "..."}}]}}"""
+
+FIXED_CHARACTER = """The main character is FIXED (the channel's recurring character); use exactly this person in every scene and
+copy this description into "character" unchanged: {character}"""
 
 STYLE = ("Hand-drawn 2D editorial illustration, clean thin dark ink outlines, soft muted watercolor-like colors, "
          "gentle cel shading, warm natural light, calm storybook mood, detailed but uncluttered background, "
          "no text, no letters, no logos, no watermark")
 
 
-def plan(topic: str, language: str, n: int) -> Dict[str, Any]:
+def plan(topic: str, language: str, n: int, character: str = "") -> Dict[str, Any]:
     cjk = "count characters, 25 to 45 characters, no spaces between words" if language == "ja" else "plain sentences"
-    data = gemini.generate_json(PLAN.format(lang=LANG_NAMES[language], topic=topic, n=n, cjk=cjk), rounds=2)
+    prompt = PLAN.format(lang=LANG_NAMES[language], topic=topic, n=n, cjk=cjk)
+    if character:  # nhân vật cố định của kênh (pov_channel): không để Gemini nghĩ nhân vật mới
+        prompt += "\n" + FIXED_CHARACTER.format(character=character)
+    data = gemini.generate_json(prompt, rounds=2)
+    if character:
+        data["character"] = character
     scenes = [s for s in data.get("scenes") or [] if s.get("line") and s.get("shot")][:n]
     if len(scenes) < max(6, n // 2) or not data.get("character"):
         raise RuntimeError("Gemini trả kịch bản thiếu cảnh hoặc thiếu nhân vật")
-    return {"title": str(data.get("title") or topic)[:120], "character": str(data["character"])[:600], "scenes": scenes}
+    return {"title": str(data.get("title") or topic)[:120], "caption": str(data.get("caption") or "")[:300],
+            "character": str(data["character"])[:600], "scenes": scenes}
 
 
 def draw(work: Path, story: Dict[str, Any], ratio: str) -> List[Path]:
