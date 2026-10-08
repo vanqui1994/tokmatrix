@@ -41,9 +41,13 @@ _stop = threading.Event()
 _thread: Optional[threading.Thread] = None
 _lock = threading.Lock()
 
+# Giao diện 10/2026 bỏ data-message-author-role: mỗi lần hỏi là một chat tạm mới nên trang chỉ có câu trả lời của ta —
+# lấy khối code cuối + chữ cuối của <main>; "xong" = đã có nút Regenerate/Rate/Copy của lượt trả lời.
 _LAST_ANSWER = """()=>{const m=[...document.querySelectorAll('[data-message-author-role="assistant"]')].pop();
- if(!m) return null; const code=[...m.querySelectorAll('pre code')].map(c=>c.innerText);
- return {text:m.innerText, code}}"""
+ const root=m||document.querySelector('main')||document.body;
+ const code=[...root.querySelectorAll('pre code, pre')].map(c=>c.innerText).slice(-1);
+ const done=document.querySelectorAll('button[aria-label="Regenerate response"],button[aria-label="Rate response"],[data-testid="copy-turn-action-button"]').length;
+ return {text:(root.innerText||'').slice(-8000), code, done}}"""
 _GENERATING = """()=>!!document.querySelector('[data-testid="stop-button"],button[aria-label*="Stop"]')"""
 
 
@@ -102,7 +106,8 @@ async def _ask(prompt: str) -> Dict[str, Any]:
         except ImportError:
             from muse_image import keep_awake
         await keep_awake(page)
-        box = page.locator("#prompt-textarea")
+        # Ô nhập: #prompt-textarea (giao diện cũ) hoặc div contenteditable "Ask ChatGPT" (10/2026).
+        box = page.locator("#prompt-textarea, div[contenteditable='true'][aria-label], form textarea").first
         try:
             await box.wait_for(timeout=20000)
         except Exception as exc:  # noqa: BLE001
@@ -118,7 +123,7 @@ async def _ask(prompt: str) -> Dict[str, Any]:
             answer = await page.evaluate(_LAST_ANSWER)
             busy = await page.evaluate(_GENERATING)
             current = (answer or {}).get("text")
-            stable = stable + 1 if (current and current == last and not busy) else 0
+            stable = stable + 1 if (current and current == last and not busy and (answer or {}).get("done")) else 0
             last = current
             if stable >= 2:
                 return {**answer, "seconds": round(time.time() - t0, 1)}
