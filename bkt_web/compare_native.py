@@ -295,19 +295,19 @@ def _video_dir(slug: str) -> Path:
 # marker HTML chỉ là phương án cuối.
 # ---------------------------------------------------------------------------
 VIDEO_TYPES = ("compare", "survival", "tierlist", "vox", "newspaper", "chalk",
-               "wildlife", "kinetic", "science", "mystery", "folklore", "vector")
+               "wildlife", "kinetic", "science", "mystery", "folklore", "vector", "glow")
 _TYPE_CATEGORIES = {"vox-collage": "vox", "retro-newspaper": "newspaper", "dark-cyber-kinetic": "kinetic"}
 _TYPE_CONFIG_KEYS = (
     ("folkloreConfig", "folklore"), ("survivalConfig", "survival"), ("tierListConfig", "tierlist"),
     ("chalkConfig", "chalk"), ("wildlifeConfig", "wildlife"), ("mysteryConfig", "mystery"),
     ("scienceConfig", "science"), ("voxConfig", "vox"), ("newspaperConfig", "newspaper"),
-    ("kineticConfig", "kinetic"), ("vectorConfig", "vector"),
+    ("kineticConfig", "kinetic"), ("vectorConfig", "vector"), ("glowConfig", "glow"),
 )
 _TYPE_PREFIXES = (
     ("folklore-", "folklore"), ("survival-", "survival"), ("tierlist-", "tierlist"), ("chalk-", "chalk"),
     ("wildlife-", "wildlife"), ("dong-vat-", "wildlife"), ("mystery-", "mystery"), ("bi-an-", "mystery"),
     ("science-", "science"), ("vox-", "vox"), ("newspaper-", "newspaper"), ("kinetic-", "kinetic"),
-    ("vector-", "vector"),
+    ("vector-", "vector"), ("glow-", "glow"),
 )
 # Marker riêng của từng template trước, marker chung (mảng dữ liệu) sau.
 _TYPE_HTML_MARKERS = (

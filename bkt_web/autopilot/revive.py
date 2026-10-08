@@ -26,7 +26,7 @@ except ImportError:
 # = RENDERABLE_ENGINES của native-engine-adapter.mjs (test so với Node). Thiếu engine ở đây thì job hỏng
 # của engine đó bị chọn lại engine khác khi làm lại — mất đúng các thể loại mở rộng hiếm nhất.
 RENDERABLE_ENGINES = {"mystery", "newspaper", "vox", "folklore", "kinetic", "science",
-                      "tierlist", "survival", "chalk", "wildlife", "compare", "vector"}
+                      "tierlist", "survival", "chalk", "wildlife", "compare", "vector", "glow"}
 RARE_REVIVE_FACTOR = 2
 DEAD_STATES = {"FAILED", "DEAD_LETTER"}
 COOL_DOWN_SECONDS = 600  # chờ một lúc sau khi hỏng, tránh vòng lặp hỏng → làm lại → hỏng liên tục

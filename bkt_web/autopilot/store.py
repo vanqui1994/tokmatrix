@@ -185,7 +185,7 @@ DEFAULT_CONFIG = {
 }
 # = RENDERABLE_ENGINES của native-engine-adapter.mjs
 ENGINE_IDS = ("mystery", "newspaper", "vox", "folklore", "kinetic", "science",
-              "tierlist", "survival", "chalk", "wildlife", "compare", "vector")
+              "tierlist", "survival", "chalk", "wildlife", "compare", "vector", "glow")
 
 _BOOL_KEYS = {"enabled", "paused", "cleanup_enabled", "cleanup_without_backup", "auto_render", "spread_posting_hours",
               "topic_per_channel", "unique_skins"}

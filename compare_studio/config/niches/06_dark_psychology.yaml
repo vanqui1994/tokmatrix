@@ -2,4 +2,4 @@ niche_id: dark_psychology
 name: Tâm Lý Học & Hành Vi
 language: vi
 summary: Tâm lý, thiên kiến nhận thức và hành vi xã hội dựa trên bằng chứng.
-allowed_engines: [mystery, newspaper, vox, chalk, science, tierlist, kinetic]
+allowed_engines: [mystery, newspaper, vox, chalk, science, tierlist, kinetic, glow]

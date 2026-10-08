@@ -158,7 +158,8 @@ export function planUniqueSkins({ dir = CHANNEL_DIR, only = null, global = false
   const packs = loadPacks();
   const all = loadAccounts(dir);
   const accounts = all.filter((a) => !only || only.has(a.channel_id));
-  const isVector = (a) => (a.data.creative?.preferred_engines || []).includes("vector");
+  // Engine tự mang skin riêng theo kênh (vector: Vector DNA; glow: bảng màu × tiêu đề × phụ đề theo channel_id).
+  const isVector = (a) => (a.data.creative?.preferred_engines || []).some((e) => e === "vector" || e === "glow");
   const storedSkin = (a, engine) => (engine === "compare" ? (a.data.creative?.dna ? { variant_id: a.data.creative.variant_id, dna: a.data.creative.dna } : null) : a.data.creative?.skins?.[engine]);
   const taken = {};  // "<nước>:<engine>" → DNA đã gán (luật ≥ 4 trục của validator tính theo nước + engine)
   // Giữ DNA đang lưu nếu đúng bố cục và còn đạt luật với các acc đã gán; không thì chọn DNA mới.
@@ -182,7 +183,8 @@ export function planUniqueSkins({ dir = CHANNEL_DIR, only = null, global = false
     const group = pool.filter((a) => inLang(a) && !isVector(a))
       .sort((a, b) => Number(!only?.has(a.channel_id)) - Number(!only?.has(b.channel_id)));
     for (const a of accounts.filter((x) => inLang(x) && isVector(x))) {
-      rows.push({ channel_id: a.channel_id, country: a.lang, niche: a.niche, engine: "vector", variant_id: null, composition: null, dna: null, status: "vector" });
+      const own = (a.data.creative?.preferred_engines || []).find((e) => e === "vector" || e === "glow");
+      rows.push({ channel_id: a.channel_id, country: a.lang, niche: a.niche, engine: own, variant_id: null, composition: null, dna: null, status: "vector" });
     }
     const cache = new Map(group.map((a) => [a.channel_id, slotsFor(a, variants, matrix, packs)]));
     const match = minCostMatch(group, (a) => cache.get(a.channel_id));
@@ -238,9 +240,9 @@ export function applyUniqueSkins({ accounts, rows }) {
     if (row.status === "unskin") {
       doc.setIn(["creative", "preferred_engines"], doc.createNode([row.engine]));
       for (const key of ["skins", "variant_id", "dna"]) doc.deleteIn(["creative", key]);
-    } else if (row.engine === "vector") {
+    } else if (row.status === "vector") {
       if ((doc.getIn(["creative", "preferred_engines"])?.toJSON?.() || []).length === 1) continue;
-      doc.setIn(["creative", "preferred_engines"], doc.createNode(["vector"]));
+      doc.setIn(["creative", "preferred_engines"], doc.createNode([row.engine]));
       doc.deleteIn(["creative", "skins"]);
     } else {
       doc.setIn(["creative", "preferred_engines"], doc.createNode([row.engine]));
