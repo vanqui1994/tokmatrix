@@ -222,7 +222,7 @@ async def _clip(prompt: str, cdp: str, ref: Optional[str] = None) -> Dict[str, A
         raise RuntimeError(f"Muse không trả video sau {TIMEOUT}s")
 
 
-BATCH = max(1, int(os.environ.get("TOKMATRIX_MUSE_BATCH", "4")))  # cảnh mỗi tin nhắn: Muse chạy mỗi clip một subagent song song
+BATCH = max(1, min(10, int(os.environ.get("TOKMATRIX_MUSE_BATCH", "10"))))  # cảnh tối đa mỗi tin nhắn (Muse: ≤ 10 subagent)
 BATCH_WAIT = int(os.environ.get("TOKMATRIX_MUSE_BATCH_WAIT", "900"))
 BATCH_REFS = os.environ.get("TOKMATRIX_MUSE_BATCH_REFS", "0") == "1"
 # Tin của mình chưa tới Muse (gửi hỏng): Muse hiện chữ này dưới tin.
@@ -470,7 +470,9 @@ def process(pid: str) -> None:
                 if x["status"] != "done":
                     shoot(x)
 
-        chunks = [todo[k:k + BATCH] for k in range(0, len(todo), BATCH)]
+        # Chia đều cho các tài khoản Muse, mỗi lô tối đa BATCH (Muse chạy mỗi clip một subagent, tối đa 10 song song)
+        size = max(1, min(BATCH, -(-len(todo) // max(1, len(muse_image.ACCOUNTS)))))
+        chunks = [todo[k:k + size] for k in range(0, len(todo), size)]
         workers = max(1, min(len(muse_image.ACCOUNTS), len(chunks)))
         if chunks:
             from concurrent.futures import ThreadPoolExecutor

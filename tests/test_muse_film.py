@@ -145,10 +145,25 @@ class BatchShootTest(unittest.TestCase):
 
     def test_scenes_go_in_batches_and_keep_their_order(self):
         done, batches, single, clips = self._run(None)
-        self.assertEqual([len(b) for b in batches], [4])          # 4 cảnh một lô; cảnh lẻ cuối không cần lô
+        self.assertEqual([len(b) for b in batches], [4])          # BATCH=4, một tài khoản: 4 + cảnh lẻ cuối
         self.assertEqual(single, ["Style: x. Shot: s4"])
         self.assertEqual(clips[:4], [b"clip0", b"clip1", b"clip2", b"clip3"])
         self.assertEqual(done["status"], "done")
+
+    def test_scenes_are_split_evenly_over_the_accounts(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            batches = []
+
+            def fake_batch(prompts, label="batch", refs=None):
+                batches.append(len(prompts))
+                return [{"raw": b"c", "w": 720, "h": 1280, "d": 5.0, "sec": 70, "account": "a"} for _ in prompts]
+
+            with mock.patch.object(muse_film, "BASE", Path(tmp)), mock.patch.object(muse_film, "_wake"), \
+                 mock.patch.object(muse_film.muse_image, "ACCOUNTS", ["a", "b"]), mock.patch.object(muse_film, "BATCH", 10), \
+                 mock.patch.object(muse_film, "make_batch", fake_batch), mock.patch.object(muse_film, "assemble", lambda p: None):
+                p = muse_film.create_shots("t", [{"prompt": f"Shot: s{i}", "text": str(i)} for i in range(12)])
+                muse_film.process(p["id"])
+            self.assertEqual(sorted(batches), [6, 6])
 
     def test_incomplete_batch_falls_back_to_single_shots(self):
         done, batches, single, clips = self._run(muse_film.BatchIncomplete("lô về 3/4 clip"))
