@@ -58,6 +58,8 @@ WORKERS: Tuple[Worker, ...] = (
     Worker("source-remake", "Remake từ video nguồn (vector)", "Sản xuất video", "kuaishou_vector → source_remake"),
     Worker("vector-learner", "Học rig vector mới", "Sản xuất video", "vector_learner", "TOKMATRIX_VECTOR_LEARNER"),
     Worker("muse-remake", "Kuaishou → Muse", "Sản xuất video", "image_routes → muse_remake", "TOKMATRIX_MUSE_REMAKE"),
+    Worker("mascot-channel", "Heo & Rồng tự động", "Sản xuất video", "image_routes → mascot_channel", "TOKMATRIX_MASCOT",
+           note="mỗi ngày per_day video cho acc trong storage/mascot_explainer/channels.json"),
     Worker("pov-channel", "Kênh POV tự động", "Sản xuất video", "image_routes → pov_channel", "TOKMATRIX_POV"),
     Worker("muse-remake-deepscan-*", "Quét video cũ Kuaishou", "Sản xuất video", "muse_remake", note="nút Quét video cũ, chạy một lần"),
     Worker("muse-film", "Phim AI (Muse)", "Sản xuất video", "image_routes → muse_film", "TOKMATRIX_MUSE"),

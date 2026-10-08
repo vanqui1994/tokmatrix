@@ -454,6 +454,11 @@ def start_image_queue_worker() -> None:
     except ImportError:
         import pov_channel
     pov_channel.start()
+    try:
+        from bkt_web import mascot_channel
+    except ImportError:
+        import mascot_channel
+    mascot_channel.start()
 
 
 def stop_image_queue_worker() -> None:

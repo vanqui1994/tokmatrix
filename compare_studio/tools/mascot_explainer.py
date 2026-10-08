@@ -1,9 +1,10 @@
 """Video kiến thức hai linh vật Heo (hỏi) + Rồng (giải thích), tranh comic — bản thử nghiệm.
 
-Gemini viết hội thoại + mô tả cảnh cho từng câu → TTS mỗi câu bằng giọng của nhân vật → ảnh comic (ImageRouter trên VPS,
-cast cố định) → dựng bằng render_ffmpeg của Story Remake (camera, phụ đề). Phụ đề theo thời lượng đo được của từng câu.
+Gemini viết hội thoại + mô tả cảnh cho từng câu → TTS mỗi câu bằng giọng của nhân vật → ảnh comic bằng Gemini web
+(mọi cảnh trong một chat, cast cố định) → camera/màu từng cảnh như Story Remake, không phụ đề → (tuỳ chọn) 1 task đăng.
+Chạy được trên Mac (gọi VPS qua ssh) hoặc trên VPS (worker bkt_web.mascot_channel, mỗi ngày 1 video cho acc đã cấu hình).
 
-  python3 compare_studio/tools/mascot_explainer.py --topic "Why bubble tea took over Asia" --lang en [--id slug]
+  python3 compare_studio/tools/mascot_explainer.py --topic "Why bubble tea took over Asia" --lang en [--id slug] [--account 266]
 """
 from __future__ import annotations
 
@@ -143,9 +144,16 @@ AG_API = "http://127.0.0.1:8080/api/ai-images"
 AG_NEG = "photo, photorealistic, 3d render, text, letters, words, logo, watermark, extra limbs, deformed"
 
 
+def _on_vps(cmd, **kw):
+    """Chạy lệnh shell trên VPS: tại chỗ khi đang ở VPS (worker bkt_web.mascot_channel, user tokmatrix), không thì qua ssh."""
+    if sr.ON_VPS:
+        return subprocess.run(["bash", "-c", cmd], **kw)
+    return subprocess.run(["/usr/bin/ssh", sr.VPS, cmd], **kw)
+
+
 def _vps_curl(args, data=None):
     cmd = "curl -s -m 60 " + " ".join(args)
-    r = subprocess.run(["/usr/bin/ssh", sr.VPS, cmd], input=data, capture_output=True, text=True, timeout=120)
+    r = _on_vps(cmd, input=data, capture_output=True, text=True, timeout=120)
     return json.loads(r.stdout or "{}")
 
 
@@ -175,7 +183,7 @@ def draw_antigravity(vid, work, items, timeout_min=240):
                 if str(t.get("model") or "").startswith(("cf-worker", "imagerouter")):
                     sr.log(vid, f"{it['key']}: bỏ ảnh {t['model']}, xếp lại"); tasks.pop(it["key"]); continue
                 url = t["image_url"] if t["image_url"].startswith("http") else "http://127.0.0.1:8080" + t["image_url"]
-                png = subprocess.run(["/usr/bin/ssh", sr.VPS, f"curl -s -m 120 '{url}'"], capture_output=True, timeout=180).stdout
+                png = _on_vps(f"curl -s -m 120 '{url}'", capture_output=True, timeout=180).stdout
                 if len(png) > 2000:
                     (d / f"{it['key']}.png").write_bytes(png); sr.log(vid, f"{it['key']} xong")
             elif t["status"] == "failed":
@@ -197,9 +205,13 @@ def draw_gemini_web(vid, work, items):
              f"the same in every image: {CAST['pig']}. {CAST['dragon']}. For each of my messages, generate exactly ONE vertical "
              "9:16 image and no text reply.")
     prompts = [f"Draw image {k + 1} (vertical 9:16, comic style, both mascots): {it['scene']}" for k, it in enumerate(todo)]
-    cmd = ("cd /opt/tokmatrix && runuser -u tokmatrix -- env $(systemctl show tokmatrix-web -p Environment --value) "
-           "venv/bin/python -m bkt_web.chatgpt_web images")
-    proc = subprocess.Popen(["/usr/bin/ssh", sr.VPS, cmd], stdin=subprocess.PIPE, stdout=subprocess.PIPE, text=True)
+    if sr.ON_VPS:
+        proc = subprocess.Popen([str(sr.REPO / "venv" / "bin" / "python"), "-m", "bkt_web.chatgpt_web", "images"], cwd=str(sr.REPO),
+                                stdin=subprocess.PIPE, stdout=subprocess.PIPE, text=True)
+    else:
+        cmd = ("cd /opt/tokmatrix && runuser -u tokmatrix -- env $(systemctl show tokmatrix-web -p Environment --value) "
+               "venv/bin/python -m bkt_web.chatgpt_web images")
+        proc = subprocess.Popen(["/usr/bin/ssh", sr.VPS, cmd], stdin=subprocess.PIPE, stdout=subprocess.PIPE, text=True)
     proc.stdin.write(json.dumps({"intro": intro, "prompts": prompts})); proc.stdin.close()
     for line in proc.stdout:
         r = json.loads(line)
@@ -217,15 +229,18 @@ def draw_gemini_web(vid, work, items):
 def enqueue(vid, mp4, script, account, lang):
     """Chép MP4 vào storage trên VPS (uploader chỉ nhận file trong storage) và tạo 1 task đăng ở khung giờ kế tiếp của acc."""
     dest = f"/opt/tokmatrix/bkt_web/storage/mascot_explainer/{vid}.mp4"
-    subprocess.run(["/usr/bin/ssh", sr.VPS, f"install -d -o tokmatrix -g tokmatrix {Path(dest).parent} && cat > {dest} && chown tokmatrix:tokmatrix {dest}"],
-                   stdin=open(mp4, "rb"), check=True, timeout=600)
+    if sr.ON_VPS:
+        Path(dest).parent.mkdir(parents=True, exist_ok=True); shutil.copy(mp4, dest)
+    else:
+        subprocess.run(["/usr/bin/ssh", sr.VPS, f"install -d -o tokmatrix -g tokmatrix {Path(dest).parent} && cat > {dest} && chown tokmatrix:tokmatrix {dest}"],
+                       stdin=open(mp4, "rb"), check=True, timeout=600)
     caption = f"{script.get('title', '')} — {script['lines'][0]['text']}"[:150]
     code = (f"import json,sqlite3;from bkt_web import upload_tasks,paths\n"
             f"c=sqlite3.connect(str(paths.DB_PATH),timeout=30)\n"
             f"i=upload_tasks.enqueue_auto(c,{int(account)},{dest!r},{caption!r},niche={NICHE!r},language={lang!r},run_id={('mascot_explainer:' + vid)!r})\n"
             f"c.commit();print(json.dumps({{'task':i,'slot':c.execute('select schedule_time from upload_tasks where id=?',(i,)).fetchone()[0]}}))")
-    cmd = "cd /opt/tokmatrix && runuser -u tokmatrix -- venv/bin/python -"
-    r = subprocess.run(["/usr/bin/ssh", sr.VPS, cmd], input=code, capture_output=True, text=True, timeout=120)
+    cmd = "cd /opt/tokmatrix && " + ("venv/bin/python -" if sr.ON_VPS else "runuser -u tokmatrix -- venv/bin/python -")
+    r = _on_vps(cmd, input=code, capture_output=True, text=True, timeout=120)
     if r.returncode:
         raise RuntimeError(f"không tạo được task đăng: {r.stderr[-400:]}")
     return json.loads(r.stdout.strip().splitlines()[-1])
