@@ -209,17 +209,30 @@ async def _gemini_images(prompts: List[str], intro: str, per_image: int, on_imag
                 await asyncio.sleep(0.8)
                 await page.keyboard.press("Enter")
                 await asyncio.sleep(6)
-                t0, png, err = time.time(), None, "không thấy ảnh"
-                while time.time() - t0 < per_image:
-                    await asyncio.sleep(3)
-                    new = [u for u in await page.evaluate(_GEMINI_IMGS) if u not in seen]
-                    if new:
-                        await asyncio.sleep(2)
-                        data = await page.evaluate(_GEMINI_READ, new[-1])
-                        seen.update(new)
-                        if data:
-                            png, err = base64.b64decode(data), ""
+                png, err = None, "không thấy ảnh"
+                # Gemini đôi khi trả lời bằng chữ (hỏi lại / mô tả) thay vì vẽ: nhắc "vẽ ngay" một lần.
+                for nudge in (None, "Generate that image now, as an image, no text."):
+                    if nudge:
+                        await box.evaluate("e => e.focus()")
+                        await page.keyboard.insert_text(nudge)
+                        await asyncio.sleep(0.8)
+                        await page.keyboard.press("Enter")
+                        await asyncio.sleep(6)
+                    t0 = time.time()
+                    while time.time() - t0 < per_image / 2:
+                        await asyncio.sleep(3)
+                        new = [u for u in await page.evaluate(_GEMINI_IMGS) if u not in seen]
+                        if new:
+                            await asyncio.sleep(2)
+                            data = await page.evaluate(_GEMINI_READ, new[-1])
+                            seen.update(new)
+                            if data:
+                                png, err = base64.b64decode(data), ""
+                            break
+                    if png:
                         break
+                    reply = await page.evaluate(PROVIDERS["gemini"]["answer"]) or {}
+                    err = "không thấy ảnh; Gemini trả lời: " + " ".join(str(reply.get("text") or "").split())[-200:]
                 on_image(i, png, err)
                 _states["gemini"].update(day=_today(), count=(_states["gemini"]["count"] if _states["gemini"]["day"] == _today() else 0) + 1)
         finally:

@@ -18,6 +18,7 @@ except ImportError:
 MAX_CAPTION = 2200
 NICHE_TAGS: Dict[str, List[str]] = {
     "folklore_legends": ["#folklore", "#legends", "#mythology"],
+    "mascot_explainer": ["#funfacts", "#didyouknow", "#cartoon"],  # Heo & Rồng (compare_studio/tools/mascot_explainer.py)
     "unsolved_mysteries": ["#mystery", "#unsolved", "#truestory"],
     "deep_space": ["#space", "#astronomy", "#universe"],
     "extreme_wildlife": ["#wildlife", "#animals", "#nature"],
