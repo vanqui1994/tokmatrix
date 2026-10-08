@@ -53,5 +53,25 @@ class WorkerTest(unittest.TestCase):
             self.assertFalse(cg.accepting())
 
 
+
+class GeminiImageFallbackTest(unittest.TestCase):
+    def test_gemini_web_draws_before_imagerouter_and_is_marked_as_its_own_source(self):
+        import io
+        from PIL import Image
+        from bkt_web import cf_image_fallback as cf, compare_native
+        buf = io.BytesIO(); Image.new("RGB", (576, 1024), "navy").save(buf, "PNG")
+        delivered = {}
+        task = {"id": "img_1", "prompt": "a lighthouse", "negative_prompt": "", "aspect_ratio": "9:16"}
+        with mock.patch.object(cg, "image_ready", lambda: True), \
+             mock.patch.object(cg, "generate_image", return_value={"raw": buf.getvalue(), "size": (576, 1024), "prompt": "p"}), \
+             mock.patch.object(cf, "_deliver", lambda tid, res: delivered.update(tid=tid, **res)), \
+             mock.patch.object(cf.imagerouter_image, "available", side_effect=AssertionError("ImageRouter must not be called")):
+            self.assertTrue(cf.process_task(dict(task), token=""))
+        self.assertEqual((delivered["tid"], delivered["engine"], delivered["model"]), ("img_1", "gemini_web", "gemini-web"))
+        self.assertEqual(Image.open(io.BytesIO(delivered["png"])).size, (1080, 1920))
+        self.assertEqual(compare_native.task_image_source("gemini-web"), "gemini_web")
+        self.assertIn("gemini_web", cf.MARKER_ENGINES)
+
+
 if __name__ == "__main__":
     unittest.main()

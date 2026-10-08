@@ -404,7 +404,7 @@ IMAGE_STATE_FILE = "images.json"
 DEFAULT_IMAGE_NEGATIVE = "text, letters, words, watermark, logo, signature, frame border, blurry, low quality"
 # Nguồn ảnh dùng được để render/đăng: ảnh Antigravity, ảnh dự phòng ImageRouter / Cloudflare
 # Worker (khi Antigravity hết quota), ảnh cũ đang chờ thay, ảnh người dùng tự tải lên.
-READY_IMAGE_SOURCES = ("antigravity", "imagerouter", "cf_worker", "replacing", "manual")
+READY_IMAGE_SOURCES = ("antigravity", "imagerouter", "cf_worker", "gemini_web", "replacing", "manual")
 _TYPE_IMAGE_ASPECT = {"folklore": "1:1", "vox": "1:1", "newspaper": "1:1", "wildlife": "9:16", "mystery": "4:3", "compare": "1:1"}
 
 
@@ -1888,7 +1888,7 @@ async def api_video_images(slug: str):
 # ---------------------------------------------------------------------------
 IMAGE_MAX_ATTEMPTS = 3
 AUTO_ASSIGN_SECONDS = max(10, int(os.environ.get("TOKMATRIX_IMAGE_AUTOASSIGN_SECONDS", "30") or 30))
-_AI_DONE_SOURCES = ("antigravity", "imagerouter", "cf_worker", "manual")
+_AI_DONE_SOURCES = ("antigravity", "imagerouter", "cf_worker", "gemini_web", "manual")
 _AUTO_ASSIGN_STOP = threading.Event()
 _AUTO_ASSIGN_THREAD: Optional[threading.Thread] = None
 
@@ -1901,6 +1901,8 @@ def task_image_source(model: Any) -> str:
         return "imagerouter"
     if model == "muse":
         return "muse"
+    if model == "gemini-web":
+        return "gemini_web"
     return "antigravity"
 
 

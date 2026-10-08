@@ -33,8 +33,8 @@ const MAX_ATTEMPTS = 3; // lần đầu + tự xin lại tối đa 2 lần khi t
 const PLACEHOLDER_SIZE = { "1:1": "1024x1024", "9:16": "1080x1920", "16:9": "1920x1080", "4:3": "1024x768", "3:4": "768x1024" };
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 // Ảnh AI thật từ hàng đợi: Antigravity, hoặc dự phòng ImageRouter / Cloudflare Worker khi Antigravity hết quota.
-export const AI_IMAGE_SOURCES = ["antigravity", "imagerouter", "cf_worker"];
-const SOURCE_LABELS = { antigravity: "Antigravity", imagerouter: "dự phòng ImageRouter", cf_worker: "dự phòng Cloudflare Worker" };
+export const AI_IMAGE_SOURCES = ["antigravity", "imagerouter", "cf_worker", "gemini_web"];
+const SOURCE_LABELS = { antigravity: "Antigravity", imagerouter: "dự phòng ImageRouter", cf_worker: "dự phòng Cloudflare Worker", gemini_web: "dự phòng Gemini web" };
 // Nguồn ảnh dùng được để render: ảnh AI ở trên, ảnh cũ đang chờ thay, ảnh người dùng tự tải lên.
 export const READY_SOURCES = [...AI_IMAGE_SOURCES, "replacing", "manual"];
 
@@ -42,6 +42,7 @@ export const READY_SOURCES = [...AI_IMAGE_SOURCES, "replacing", "manual"];
 export const taskImageSource = (task) => {
   const model = String(task?.model || "");
   if (model === "cf-worker") return "cf_worker";
+  if (model === "gemini-web") return "gemini_web";
   if (model.startsWith("imagerouter:")) return "imagerouter";
   return "antigravity";
 };

@@ -55,7 +55,7 @@ logger = logging.getLogger("cf_image_fallback")
 KEY_NAME = "image.cf_worker"
 MODEL_ID = "cf-worker"
 SOURCE_ID = "cf_worker"
-MARKER_ENGINES = (SOURCE_ID, imagerouter_image.SOURCE_ID)
+MARKER_ENGINES = (SOURCE_ID, imagerouter_image.SOURCE_ID, "gemini_web")
 DEFAULT_URL = "https://free-image-generation-api.tomtran613.workers.dev/"
 QUOTA_HELPER = Path("/usr/local/bin/tokmatrix-agent-quota")
 # Email tài khoản Antigravity đang active (tokmatrix-rotator ghi). Có thì chỉ tính lỗi của
@@ -359,7 +359,7 @@ def _deliver(task_id: str, result: Dict[str, Any]) -> None:
     outbox = ir._bridge_dirs()["outbox"]
     engine = result.get("engine") or SOURCE_ID
     marker = {"engine": engine, "model": result.get("model") or MODEL_ID,
-              "url": imagerouter_image.API_URL if engine == imagerouter_image.SOURCE_ID else URL,
+              "url": {imagerouter_image.SOURCE_ID: imagerouter_image.API_URL, "gemini_web": "https://gemini.google.com/app"}.get(engine, URL),
               "prompt_sent": result["prompt"], "source_size": list(result["source_size"]),
               **({"cost_usd": result["cost"]} if "cost" in result else {}),
               "created_at": time.strftime("%Y-%m-%d %H:%M:%S")}
@@ -390,6 +390,19 @@ def process_task(task: Dict[str, Any], token: str, client: Optional[httpx.Client
     global _cooldown_until
     ir_error = ""
     try:
+        # Gemini web (miễn phí, Chrome đã đăng nhập — owner 08/10) trước ImageRouter trả phí.
+        try:
+            from bkt_web import chatgpt_web
+            if chatgpt_web.image_ready():
+                got = chatgpt_web.generate_image(task["prompt"], task["negative_prompt"], task["aspect_ratio"])
+                _deliver(task["id"], {"png": fit_to_ratio(got["raw"], task["aspect_ratio"]), "prompt": got["prompt"],
+                                      "source_size": got["size"], "engine": chatgpt_web.IMAGE_SOURCE_ID,
+                                      "model": chatgpt_web.IMAGE_MODEL})
+                logger.info("Gemini web vẽ xong %s", task["id"])
+                return True
+        except Exception as exc:  # noqa: BLE001 — chuyển ImageRouter / Cloudflare
+            ir_error = f"Gemini web: {exc}"
+            logger.warning("Gemini web lỗi %s: %s", task["id"], exc)
         if imagerouter_image.available():
             try:
                 result = generate_imagerouter(task["prompt"], task["negative_prompt"], task["aspect_ratio"], client)

@@ -671,12 +671,13 @@ def _bridge_auto_import() -> None:
             GENERATED_DIR.mkdir(parents=True, exist_ok=True)
             ext = image_path.suffix.lower()
             via_router = bool(fallback) and fallback.get("engine") == "imagerouter"
-            prefix = ("imagerouter" if via_router else "cfworker") if fallback else "antigravity"
+            via_gemini = bool(fallback) and fallback.get("engine") == "gemini_web"
+            prefix = ("gemini" if via_gemini else "imagerouter" if via_router else "cfworker") if fallback else "antigravity"
             filename = f"{prefix}_{int(time.time())}_{task_id.split('_')[-1]}{ext}"
             if fallback:
                 model = fallback.get("model") or cf_image_fallback.MODEL_ID
                 engine = fallback["engine"]
-                tags = "imagerouter,fallback" if via_router else "cf-worker,fallback"
+                tags = "gemini-web,fallback" if via_gemini else "imagerouter,fallback" if via_router else "cf-worker,fallback"
             else:
                 model, engine, tags = "antigravity-ide", "antigravity", "antigravity,ide-bridge"
             dest = GENERATED_DIR / filename
