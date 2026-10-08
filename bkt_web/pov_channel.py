@@ -35,6 +35,7 @@ CHECK_EVERY = 600
 RETRY_AFTER = 3600
 MAX_TRIES = 3
 SCENES = 18  # ~110 s: đủ > 60 s cho Creator Rewards
+STOCK_MAX = int(os.environ.get("TOKMATRIX_POV_STOCK", "3"))  # video làm sẵn chưa đăng tối đa mỗi nguồn (acc nghỉ/khởi động chậm)
 
 _thread: Optional[threading.Thread] = None
 _wake = threading.Event()
@@ -190,12 +191,28 @@ def retry_video(vid: int) -> None:
 
 
 # ------------------------------------------------------------------ luồng nền
+def _unposted(task_ids: List[int]) -> int:
+    """Số video đã xếp hàng nhưng chưa đăng (task QUEUED/PENDING/WAITING_RENDER)."""
+    if not task_ids:
+        return 0
+    with sqlite3.connect(str(CHANNELS_DB), timeout=30) as conn:
+        return conn.execute(f"SELECT COUNT(*) FROM upload_tasks WHERE id IN ({','.join('?' * len(task_ids))}) "
+                            "AND status IN ('QUEUED','PENDING','WAITING_RENDER')", task_ids).fetchone()[0]
+
+
 def _due() -> None:
+    """Thêm video cho nguồn chưa đủ per_day trong 24 giờ — nhưng không làm sẵn quá STOCK_MAX video chưa đăng
+    (acc đang nghỉ/khởi động chậm chỉ đăng 1 bài/ngày, làm tiếp chỉ dồn video chờ)."""
     now = int(time.time())
     with _conn() as c:
         for s in c.execute("SELECT * FROM sources WHERE enabled=1").fetchall():
             made = c.execute("SELECT COUNT(*) FROM videos WHERE source_id=? AND created>=?", (s["id"], now - 86400)).fetchone()[0]
-            for _ in range(max(0, s["per_day"] - made)):
+            in_work = c.execute("SELECT COUNT(*) FROM videos WHERE source_id=? AND status IN ('queued','writing','drawing','assembling')",
+                                (s["id"],)).fetchone()[0]
+            tasks = [r[0] for r in c.execute("SELECT upload_task_id FROM videos WHERE source_id=? AND status='queued_upload' "
+                                             "AND upload_task_id>0", (s["id"],))]
+            room = STOCK_MAX - in_work - _unposted(tasks)
+            for _ in range(max(0, min(s["per_day"] - made, room))):
                 c.execute("INSERT INTO videos(source_id, created, updated) VALUES (?,?,?)", (s["id"], now, now))
 
 

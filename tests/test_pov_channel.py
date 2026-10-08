@@ -74,5 +74,23 @@ class PovChannelTest(unittest.TestCase):
             self.assertEqual(c.execute("SELECT COUNT(*) FROM upload_tasks").fetchone()[0], 0)
 
 
+    def test_stock_cap_stops_production_while_videos_wait_to_be_posted(self):
+        src = pc.add_source(259, character="Leo")
+        now = int(time.time())
+        with sqlite3.connect(self.chdb) as c:
+            for tid in (1, 2, 3):
+                c.execute("INSERT INTO upload_tasks(id, channel_id, status) VALUES (?, 259, 'QUEUED')", (tid,))
+        with pc._conn() as c:
+            for tid in (1, 2, 3):  # 3 video cũ (quá 24 giờ) vẫn chờ đăng
+                c.execute("INSERT INTO videos(source_id, status, upload_task_id, created, updated) VALUES (?,?,?,?,?)",
+                          (src["id"], "queued_upload", tid, now - 3 * 86400, now))
+        pc._due()
+        self.assertEqual(sum(v["status"] == "queued" for v in pc.videos()), 0)
+        with sqlite3.connect(self.chdb) as c:
+            c.execute("UPDATE upload_tasks SET status='SUCCESS' WHERE id=1")
+        pc._due()
+        self.assertEqual(sum(v["status"] == "queued" for v in pc.videos()), 1)
+
+
 if __name__ == "__main__":
     unittest.main()
