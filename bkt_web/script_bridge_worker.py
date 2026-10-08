@@ -64,6 +64,13 @@ def _pending_ids(limit: int) -> list:
 def pull_once() -> int:
     """Đưa task pending vào inbox; trả số task vừa pull."""
     dirs = _dirs()
+    # ChatGPT web đang nhận task (chatgpt_web.accepting): để task pending cho nó, Antigravity chỉ nhận khi ChatGPT tắt/lỗi.
+    try:
+        from bkt_web import chatgpt_web
+        if chatgpt_web.accepting():
+            return 0
+    except Exception:  # noqa: BLE001 — module lỗi thì Antigravity làm như cũ
+        pass
     room = MAX_TASKS - len(list(dirs["inbox"].glob("*.json")))
     pulled = 0
     for task_id in _pending_ids(max(0, room)):

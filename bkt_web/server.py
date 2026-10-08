@@ -3760,6 +3760,11 @@ def app_startup():
     init_autopilot_db()
     start_image_queue_worker()
     script_bridge_worker.start()
+    try:  # ChatGPT web viết kịch bản (TOKMATRIX_CHATGPT_WEB=1)
+        from bkt_web import chatgpt_web as _cgw
+        _cgw.start()
+    except Exception as exc:  # noqa: BLE001
+        print(f"[chatgpt-web] start failed: {exc}")
     start_remake_queue_worker()
     SCHEDULER_STOP.clear()
     if not SCHEDULER_THREAD or not SCHEDULER_THREAD.is_alive():
