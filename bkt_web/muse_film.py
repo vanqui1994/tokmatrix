@@ -222,6 +222,90 @@ async def _clip(prompt: str, cdp: str, ref: Optional[str] = None) -> Dict[str, A
         raise RuntimeError(f"Muse không trả video sau {TIMEOUT}s")
 
 
+BATCH = max(1, int(os.environ.get("TOKMATRIX_MUSE_BATCH", "4")))  # cảnh mỗi tin nhắn: Muse chạy mỗi clip một subagent song song
+BATCH_WAIT = int(os.environ.get("TOKMATRIX_MUSE_BATCH_WAIT", "900"))
+
+
+class BatchIncomplete(RuntimeError):
+    """Lô không về đủ clip (Muse từ chối một cảnh, quá giờ…): các cảnh của lô quay lại từng cảnh một."""
+
+
+def batch_prompt(prompts: List[str], with_refs: bool) -> str:
+    """Một tin nhắn cho cả lô: phần chung (khung, phong cách, luật) một lần + từng cảnh đánh số."""
+    head = prompts[0].rpartition("Shot: ")[0] if "Shot: " in prompts[0] else ""
+    head = head.replace("Use the attached blurry picture only as a loose reference for the layout and colour mood, drawn in your own way. ", "")
+    shots = [pr.rpartition("Shot: ")[2] if "Shot: " in pr else pr for pr in prompts]
+    refs = (f"The {len(prompts)} attached blurry pictures are loose references for the layout and colour mood of the clips "
+            "in the same order (picture 1 for clip 1, …); draw them in your own way. ") if with_refs else ""
+    return (f"Generate these {len(prompts)} short video clips in parallel, one subagent per clip, and return them in exactly "
+            f"this order. Each clip: {head.replace('Generate one short video clip', 'one short video clip').strip()} {refs}\n"
+            + "\n".join(f"{i + 1}. {sh.strip()}" for i, sh in enumerate(shots)))
+
+
+async def _clip_batch(prompts: List[str], cdp: str, refs: List[Optional[str]]) -> List[Dict[str, Any]]:
+    """Một tin nhắn N cảnh → N clip theo đúng thứ tự (thứ tự video trong trang = thứ tự đã liệt kê, đã thử 08/10).
+    Chỉ nhận khi về ĐỦ N clip; thiếu (từ chối một cảnh, quá giờ) → BatchIncomplete, không đoán clip nào của cảnh nào."""
+    from playwright.async_api import async_playwright
+    async with async_playwright() as pw:
+        browser = await pw.chromium.connect_over_cdp(cdp)
+        pages = [pg for ctx in browser.contexts for pg in ctx.pages if "muse.ai" in pg.url]
+        if not pages:
+            raise RuntimeError("Chrome Muse chưa mở trang muse.ai")
+        page = pages[0]
+        box = page.locator("textarea[placeholder='Message']")
+        if await box.count() == 0:
+            raise RuntimeError("Muse chưa đăng nhập — đăng nhập lại qua noVNC")
+        await muse_image.keep_awake(page)
+        seen = set(await page.evaluate(_VIDEOS))
+        files = [r for r in refs if r and Path(r).is_file()]
+        with_refs = len(files) == len(prompts)
+        if with_refs:
+            before = await page.evaluate("document.querySelectorAll('img').length")
+            await page.locator("input[type=file]").first.set_input_files(files)
+            for _ in range(60):
+                await asyncio.sleep(0.5)
+                if await page.evaluate("document.querySelectorAll('img').length") >= before + len(files):
+                    break
+            await asyncio.sleep(3)
+        await box.fill(batch_prompt(prompts, with_refs))
+        await box.press("Enter")
+        t0, last_new, count = time.time(), time.time(), 0
+        while time.time() - t0 < BATCH_WAIT:
+            await asyncio.sleep(5)
+            new = [src for src in await page.evaluate(_VIDEOS) if src not in seen]
+            if len(new) != count:
+                count, last_new = len(new), time.time()
+            if count >= len(prompts):
+                await asyncio.sleep(8)  # clip cuối vừa hiện: đợi blob tải xong
+                new = [src for src in await page.evaluate(_VIDEOS) if src not in seen][:len(prompts)]
+                out = []
+                for src in new:
+                    data = None
+                    for _ in range(6):
+                        data = await page.evaluate(_GET_VIDEO, src)
+                        if data:
+                            break
+                        await asyncio.sleep(3)
+                    if not data:
+                        raise BatchIncomplete("không đọc được một clip của lô")
+                    out.append({"raw": base64.b64decode(data["b64"]), "w": data["w"], "h": data["h"], "d": data["d"],
+                                "sec": round(time.time() - t0)})
+                return out
+            last = await page.evaluate(_LAST_MSG)
+            refused = last and not last.startswith("You") and REFUSAL.search(last)
+            if refused and time.time() - last_new > 90:  # Muse đã trả lời (từ chối một phần) và không còn clip nào về thêm
+                raise BatchIncomplete(f"lô về {count}/{len(prompts)} clip, Muse: {last[:200]}")
+        raise BatchIncomplete(f"lô về {count}/{len(prompts)} clip sau {BATCH_WAIT}s")
+
+
+def make_batch(prompts: List[str], label: str = "batch", refs: Optional[List[Optional[str]]] = None) -> List[Dict[str, Any]]:
+    with muse_image.account(label) as cdp:
+        got = asyncio.run(_clip_batch(prompts, cdp, refs or [None] * len(prompts)))
+    for g_ in got:
+        g_["account"] = cdp
+    return got
+
+
 SOFTEN = """A video model (Muse) refused to generate this shot for a family-friendly cartoon. Its reply was:
 "{refusal}"
 Rewrite ONLY the shot description so it keeps the same story beat but is clearly safe: no babies or unborn babies,
@@ -351,11 +435,40 @@ def process(pid: str) -> None:
                 with guard:
                     s.update(upd); save(p)
 
-        workers = max(1, min(len(muse_image.ACCOUNTS), len(todo)))
-        if todo:
+        def shoot_batch(chunk):
+            """Một lô cảnh trong một tin nhắn (Muse chạy song song); lô thiếu clip → từng cảnh một như cũ."""
+            fresh = [x for x in chunk if not (x.get("soften") or _is_refusal(x.get("error", "")))]
+            if len(fresh) >= 2 and not _stopped(pid):
+                with guard:
+                    for x in fresh:
+                        x["status"] = "running"
+                    save(p)
+                try:
+                    got = make_batch([x["prompt"] for x in fresh], f"{pid} lô {fresh[0]['i'] + 1}-{fresh[-1]['i'] + 1}",
+                                     [x.get("ref") for x in fresh])
+                    with guard:
+                        for x, clip in zip(fresh, got):
+                            (_dir(pid) / "clips" / f"scene{x['i']:02d}.mp4").write_bytes(clip["raw"])
+                            x.update(status="done", error="", seconds=clip["sec"], size=[clip["w"], clip["h"]],
+                                     duration=round(clip["d"], 2), account=clip["account"], batch=len(fresh))
+                        save(p)
+                except Exception as e:  # noqa: BLE001 — lô hỏng: không mất cảnh nào, quay lẻ
+                    print(f"[muse-film] lô {pid}: {e}", flush=True)
+                    with guard:
+                        for x in fresh:
+                            if x["status"] != "done":
+                                x["status"] = "pending"
+                        save(p)
+            for x in chunk:
+                if x["status"] != "done":
+                    shoot(x)
+
+        chunks = [todo[k:k + BATCH] for k in range(0, len(todo), BATCH)]
+        workers = max(1, min(len(muse_image.ACCOUNTS), len(chunks)))
+        if chunks:
             from concurrent.futures import ThreadPoolExecutor
             with ThreadPoolExecutor(workers, thread_name_prefix=f"muse-film-{pid}") as pool:
-                list(pool.map(shoot, todo))
+                list(pool.map(shoot_batch, chunks))
         if p["status"] == "stopped" or _stopped(pid):
             p["status"] = "stopped"; save(p)
             return

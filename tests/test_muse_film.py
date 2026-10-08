@@ -81,6 +81,7 @@ class ParallelFilmTest(unittest.TestCase):
                  mock.patch.object(muse_film.muse_image, "ACCOUNTS", ["a", "b"]), \
                  mock.patch.object(muse_film, "make_clip", fake_clip), \
                  mock.patch.object(muse_film, "assemble", lambda p: None), \
+                 mock.patch.object(muse_film, "BATCH", 1), \
                  mock.patch.object(muse_film, "_wake"):
                 p = muse_film.create("first shot\n>\nsecond shot\nthird shot\nfourth shot", 6, "cinematic", "9:16", True)
                 muse_film.process(p["id"])
@@ -101,6 +102,7 @@ class RefusalRewriteTest(unittest.TestCase):
 
             with mock.patch.object(muse_film, "BASE", Path(tmp)), mock.patch.object(muse_film, "_wake"), \
                  mock.patch.object(muse_film, "make_clip", fake_clip), mock.patch.object(muse_film, "assemble", lambda p: None), \
+                 mock.patch.object(muse_film, "BATCH", 1), \
                  mock.patch.object(muse_film, "_gemini", lambda t: {"shot": "A seed mascot naps in a cosy pod."}):
                 p = muse_film.create_shots("t", [{"prompt": "Style: x. Shot: A baby wiggles its toes.", "text": "a", "ref": "/r.jpg"},
                                                  {"prompt": "Style: x. Shot: A cat waves.", "text": "b"}])
@@ -114,3 +116,51 @@ class RefusalRewriteTest(unittest.TestCase):
             self.assertEqual(calls, [("Style: x. Shot: A seed mascot naps in a cosy pod.", None)])
             self.assertEqual(done["scenes"][0]["status"], "done")
             self.assertEqual(done["scenes"][0]["softened"], 1)
+
+
+class BatchShootTest(unittest.TestCase):
+    def _run(self, batch_result):
+        with tempfile.TemporaryDirectory() as tmp:
+            single, batches = [], []
+
+            def fake_batch(prompts, label="batch", refs=None):
+                batches.append(list(prompts))
+                if isinstance(batch_result, Exception):
+                    raise batch_result
+                return [{"raw": f"clip{i}".encode(), "w": 720, "h": 1280, "d": 5.0, "sec": 70, "account": "a"} for i in range(len(prompts))]
+
+            def fake_clip(prompt, label="clip", ref=None):
+                single.append(prompt)
+                return {"raw": b"single", "w": 720, "h": 1280, "d": 5.0, "sec": 60, "account": "b"}
+
+            with mock.patch.object(muse_film, "BASE", Path(tmp)), mock.patch.object(muse_film, "_wake"), \
+                 mock.patch.object(muse_film.muse_image, "ACCOUNTS", ["a"]), mock.patch.object(muse_film, "BATCH", 4), \
+                 mock.patch.object(muse_film, "make_batch", fake_batch), mock.patch.object(muse_film, "make_clip", fake_clip), \
+                 mock.patch.object(muse_film, "assemble", lambda p: None):
+                p = muse_film.create_shots("t", [{"prompt": f"Style: x. Shot: s{i}", "text": str(i)} for i in range(5)])
+                muse_film.process(p["id"])
+                done = muse_film.load(p["id"])
+                clips = [(Path(tmp) / p["id"] / "clips" / f"scene{i:02d}.mp4").read_bytes() for i in range(5)]
+            return done, batches, single, clips
+
+    def test_scenes_go_in_batches_and_keep_their_order(self):
+        done, batches, single, clips = self._run(None)
+        self.assertEqual([len(b) for b in batches], [4])          # 4 cảnh một lô; cảnh lẻ cuối không cần lô
+        self.assertEqual(single, ["Style: x. Shot: s4"])
+        self.assertEqual(clips[:4], [b"clip0", b"clip1", b"clip2", b"clip3"])
+        self.assertEqual(done["status"], "done")
+
+    def test_incomplete_batch_falls_back_to_single_shots(self):
+        done, batches, single, clips = self._run(muse_film.BatchIncomplete("lô về 3/4 clip"))
+        self.assertEqual(len(batches), 1)
+        self.assertEqual(len(single), 5)
+        self.assertEqual(set(clips), {b"single"})
+        self.assertEqual(done["status"], "done")
+
+    def test_batch_prompt_lists_each_shot_once_with_shared_rules(self):
+        pr = muse_film.batch_prompt(["Generate one short video clip (about 5 seconds), vertical 9:16. Style: flat. Shot: A cat.",
+                                     "Generate one short video clip (about 5 seconds), vertical 9:16. Style: flat. Shot: A dog."], False)
+        self.assertIn("Generate these 2 short video clips in parallel", pr)
+        self.assertIn("1. A cat.", pr)
+        self.assertIn("2. A dog.", pr)
+        self.assertEqual(pr.count("Style: flat"), 1)
