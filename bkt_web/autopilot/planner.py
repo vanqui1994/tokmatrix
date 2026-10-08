@@ -166,7 +166,16 @@ def _ensure_channel_plans(plan_date: str) -> Dict[str, Any]:
     created, no_topic = [], []
     configs = channels.load_matrix_channel_configs()
     packs = topic_packs.load_packs()
+    # Acc đang nghỉ (account_pacing.channel_rest): không làm video mới cho nó — video sẽ cũ trước khi được đăng.
+    from bkt_web import account_pacing
+    rest = account_pacing.resting()
+    conn = store.adb()
+    try:
+        tiktok_of = {str(m): int(t) for m, t in conn.execute("SELECT matrix_channel_id, tiktok_channel_id FROM autopilot_channel_map")}
+    finally:
+        conn.close()
     for niche_id, channel_ids in sorted(channels.mapped_channels_by_niche().items()):
+        channel_ids = [cid for cid in channel_ids if tiktok_of.get(cid) not in rest]
         missing = [cid for cid in channel_ids if (niche_id, cid) not in have]
         if niche_id in whole_niche or not missing:
             continue

@@ -183,14 +183,46 @@ def _locale_for(country: str) -> str:
     return COUNTRY_LOCALES.get((country or "").strip().upper(), "en-US")
 
 
+# Màn hình phổ biến của máy bàn / laptop: mỗi kênh một cấu hình cố định (theo id), để ~250 profile trên cùng một VPS
+# không cùng độ phân giải / số nhân / RAM (owner 08/10: 41 acc bị bóp phân phối, TikTok dễ gom các profile giống hệt).
+DEVICE_SCREENS = ((1366, 768), (1440, 900), (1536, 864), (1600, 900), (1680, 1050), (1920, 1080), (1280, 800), (1280, 720),
+                  (1600, 1000), (1920, 1200))
+DEVICE_CORES = (4, 6, 8, 8, 12, 16)
+DEVICE_MEMORY = (4, 8, 8, 16)
+
+
+def device_for(channel_id: Any) -> Dict[str, Any]:
+    """Thiết bị cố định của kênh: màn hình, cửa sổ (trừ thanh tab/địa chỉ, thanh tác vụ), số nhân, RAM."""
+    import hashlib
+    h = hashlib.sha256(f"device|{channel_id}".encode()).digest()
+    sw, sh = DEVICE_SCREENS[h[0] % len(DEVICE_SCREENS)]
+    return {"screen": {"width": sw, "height": sh}, "viewport": {"width": sw, "height": sh - 85 - (h[1] % 3) * 12},
+            "cores": DEVICE_CORES[h[2] % len(DEVICE_CORES)], "memory": DEVICE_MEMORY[h[3] % len(DEVICE_MEMORY)]}
+
+
+def device_init_script(device: Dict[str, Any]) -> str:
+    return ("Object.defineProperty(Navigator.prototype,'hardwareConcurrency',{get:()=>%d,configurable:true});"
+            "Object.defineProperty(Navigator.prototype,'deviceMemory',{get:()=>%d,configurable:true});") % (device["cores"], device["memory"])
+
+
+def linux_user_agent(version: str = "120.0.0.0") -> str:
+    """User-Agent khớp máy thật (Chrome trên Linux): trước đây lượt quét khai Mac trong khi lượt đăng là Chrome Linux
+    trên cùng cookie + IP — TikTok thấy một phiên đổi thiết bị liên tục."""
+    major = (version or "120").split(".")[0]
+    return f"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/{major}.0.0.0 Safari/537.36"
+
+
 def launch_kwargs(cfg: Dict[str, Any], socks_port: Any = None, headless: bool = False,
-                  locale: str = "") -> Dict[str, Any]:
+                  locale: str = "", channel_id: Any = None) -> Dict[str, Any]:
+    device = device_for(channel_id) if channel_id is not None else None
     kw: Dict[str, Any] = {
         "headless": headless,
         "args": ["--disable-blink-features=AutomationControlled", "--no-sandbox",
                  "--disk-cache-size=52428800"] + profile_factory.chrome_launch_args(cfg),
-        "viewport": {"width": 1440, "height": 900},
+        "viewport": device["viewport"] if device else {"width": 1440, "height": 900},
     }
+    if device:
+        kw["screen"] = device["screen"]
     exe = getattr(vpn_manager, "CHROME_EXEC_PATH", "")
     if exe and os.path.exists(exe):
         kw["executable_path"] = exe
@@ -228,8 +260,9 @@ async def open_context(playwright, channel_id: int, socks_port: Any = None, head
     meta = profile_factory.read_profile_meta(p_dir) or profile_factory.resolve_profile_config(country or "", vpn_location or "")
     backup_once(channel_id, p_dir)
     context = await playwright.chromium.launch_persistent_context(
-        str(p_dir), **launch_kwargs(meta, socks_port, headless, _locale_for(country or ""))
+        str(p_dir), **launch_kwargs(meta, socks_port, headless, _locale_for(country or ""), channel_id=channel_id)
     )
+    await context.add_init_script(device_init_script(device_for(channel_id)))
     source = "profile"
     plain = SECRET_STORE.decrypt(stored_cookie or "")
     # Hash cookie DB khác lần đồng bộ cuối = người vừa nhập cookie mới từ ngoài → DB thắng.
@@ -344,13 +377,19 @@ async def scan_context(playwright, channel_id: Optional[int], socks_port: Any,
         kwargs["executable_path"] = exe
     browser = await playwright.chromium.launch(**kwargs)
     try:
+        device = device_for(channel_id) if channel_id is not None else None
         ctx_kwargs: Dict[str, Any] = {
-            "user_agent": LEGACY_SCAN_USER_AGENT,
-            "viewport": {"width": 1280, "height": 800},
+            # Cùng "máy" với lượt đăng: Chrome Linux đúng phiên bản, màn hình của kênh (trước: UA Mac cố định).
+            "user_agent": linux_user_agent(browser.version),
+            "viewport": device["viewport"] if device else {"width": 1280, "height": 800},
         }
+        if device:
+            ctx_kwargs["screen"] = device["screen"]
         if socks_port:
             ctx_kwargs["proxy"] = {"server": f"socks5://127.0.0.1:{socks_port}"}
         context = await browser.new_context(**ctx_kwargs)
+        if device:
+            await context.add_init_script(device_init_script(device))
         if cookie_list:
             await context.add_cookies(cookie_list)
         yield context, "clean"

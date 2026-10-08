@@ -67,6 +67,12 @@ def free_slots(tiktok_id: int, now: Optional[float] = None, extra_used: Iterable
     # Đang giữ đăng (publish_hold_until): không cấp slot trước mốc, nếu không các task remake xếp trong lúc giữ
     # (Story Remake, Kuaishou) đều quá hạn và đăng dồn một lúc khi mốc hết.
     now = max(now, float(store.get_int("publish_hold_until")))
+    # Nhịp theo acc (account_pacing): acc đang nghỉ không có slot trước khi hết nghỉ; acc khởi động (ít follower)
+    # tối đa 1 bài/ngày, cách nhau ≥ 20 giờ.
+    from bkt_web import account_pacing
+    now = max(now, float(account_pacing.rest_until(tiktok_id)))
+    max_videos = account_pacing.daily_limit(tiktok_id, max_videos)
+    gap_seconds = account_pacing.min_gap_seconds(tiktok_id, gap_seconds)
     tz = account_timezone(tiktok_id)[0]
     used = _used_times(tiktok_id, now) + [int(t) for t in extra_used]
     offset = slot_offset_seconds(tiktok_id)

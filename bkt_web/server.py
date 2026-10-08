@@ -105,8 +105,10 @@ CHROME_EXEC_PATH = os.environ.get(
 # Paths (định nghĩa trong paths.py; giữ tên cũ ở đây cho mã và test đang dùng server.X)
 try:
     from bkt_web import paths
+    from bkt_web import account_pacing
 except ImportError:
     import paths
+    import account_pacing
 BASE_DIR = paths.BASE_DIR
 PROJECT_ROOT = paths.PROJECT_ROOT
 STATIC_DIR = paths.STATIC_DIR
@@ -1003,7 +1005,9 @@ def check_single_cookie_live(cookie_str: str, note: str = "", socks_port: Option
         proxy_url = f"socks5h://127.0.0.1:{socks_port}"
         session.proxies = {"http": proxy_url, "https": proxy_url}
     session.headers.update({
-        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+        # Khớp TLS chrome120 của impersonate và máy thật (Linux): trước đây khai Mac Chrome 124 → cùng cookie + IP
+        # mà lượt quét là "Mac", lượt đăng là "Linux" (owner 08/10, điều tra shadowban).
+        "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
         "Referer": "https://www.tiktok.com/",
         "Accept": "application/json, text/plain, */*",
     })
@@ -3608,7 +3612,7 @@ def run_upload_scheduler():
             now = int(time.time())
             conn = connect_db(DB_PATH)
             conn.execute("BEGIN IMMEDIATE")
-            task = conn.execute(
+            candidates = conn.execute(
                 """
                 SELECT id, channel_id, video_path, caption, hashtags, attempt_count, COALESCE(ai_generated, 1)
                 FROM upload_tasks
@@ -3617,10 +3621,21 @@ def run_upload_scheduler():
                   AND (next_retry_at IS NULL OR next_retry_at <= ?)
                   AND attempt_count < 3
                 ORDER BY schedule_time, id
-                LIMIT 1
+                LIMIT 30
                 """,
                 (now, now),
-            ).fetchone()
+            ).fetchall()
+            # Nhịp theo acc (account_pacing, owner 08/10): acc đang nghỉ / acc khởi động chưa đủ giãn cách → dời task
+            # tới lúc được đăng (không huỷ), lấy task kế tiếp.
+            task = None
+            for cand in candidates:
+                allowed = account_pacing.next_allowed(cand[1], conn, now)
+                if allowed > now:
+                    conn.execute("UPDATE upload_tasks SET schedule_time=? WHERE id=? AND status IN ('QUEUED','PENDING')",
+                                 (int(allowed), cand[0]))
+                    continue
+                task = cand
+                break
             if task:
                 conn.execute(
                     """

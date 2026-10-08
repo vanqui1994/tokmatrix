@@ -877,6 +877,13 @@ class PlanMigrationTest(unittest.TestCase):
 
 
 class FreeSlotsTest(AutopilotTestCase):
+    def setUp(self):
+        super().setUp()
+        # Nhịp khởi động (account_pacing) có test riêng; ở đây acc coi như đã ấm và không nghỉ.
+        from bkt_web import account_pacing
+        for name, value in (("WARMUP_FOLLOWERS", 0), ("rest_until", lambda *a, **k: 0)):
+            p = mock.patch.object(account_pacing, name, value); p.start(); self.addCleanup(p.stop)
+
     def test_slots_respect_gap_daily_cap_and_account_timezone(self):
         import datetime as dt
         from zoneinfo import ZoneInfo

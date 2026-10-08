@@ -57,12 +57,16 @@ def official_penalty(payload: dict) -> dict:
     return {"status": "unknown", "reason": "TikTok chưa có kết luận NFF", "appeal_status": status}
 
 
+LINUX_UA = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+
+
 def check_video(cookie: str, socks_port: int, video_id: str) -> dict:
     if not cookie or not socks_port or not video_id.isdecimal() or len(video_id) > 25:
         return {"ok": False, "error": "Thiếu cookie, VPN hoặc video_id hợp lệ"}
     session = requests.Session(impersonate="chrome120")
     proxy = f"socks5h://127.0.0.1:{socks_port}"
     session.proxies = {"http": proxy, "https": proxy}
+    session.headers.update({"User-Agent": LINUX_UA})  # cùng "máy" với lượt đăng (Chrome Linux)
     public = {"verdict": "unknown", "index_enabled": None, "reason": "Không tải được trang video"}
     official = {"status": "unknown", "reason": "Không đọc được trạng thái NFF từ Studio"}
     try:

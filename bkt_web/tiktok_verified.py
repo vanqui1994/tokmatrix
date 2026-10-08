@@ -53,6 +53,8 @@ def fetch(cookie: str, socks_port: int, section: str, video_id: str = "", date_r
     proxy = f"socks5h://127.0.0.1:{socks_port}"
     session.proxies = {"http": proxy, "https": proxy}
     session.headers.update({
+        # Cùng "máy" với lượt đăng (Chrome Linux), không để curl_cffi tự khai Windows/Mac trên cùng cookie + IP.
+        "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
         "Cookie": cookie, "Referer": "https://www.tiktok.com/tiktokstudio/analytics",
         "Origin": "https://www.tiktok.com", "Accept": "application/json",
     })
