@@ -37,13 +37,16 @@ WORKERS: Tuple[Worker, ...] = (
     Worker("vpn-tunnel-reaper", "Dọn tunnel VPN hết hạn", "Đăng bài", "vpn_manager"),
     Worker("chatgpt-scripts", "ChatGPT web viết kịch bản", "Tự động hoá", "server.app_startup → chatgpt_web", env="TOKMATRIX_CHATGPT_WEB",
            default_on=False, note="nhận task Hàng Đợi Kịch Bản trước Antigravity khi Chrome ChatGPT (CDP 9343) sẵn sàng"),
+    Worker("chatgpt-scripts-*", "Gemini web tài khoản thêm", "Tự động hoá", "server.app_startup → chatgpt_web", env="TOKMATRIX_GEMINI2_CDP",
+           default_on=False, note="mỗi nguồn trong TOKMATRIX_WEB_LLMS ngoài nguồn đầu có một worker riêng (Chrome riêng, tài khoản riêng)"),
     Worker("channel-rescan", "Quét lại kênh mỗi 6 giờ", "Tài khoản", "server.app_startup", env="TOKMATRIX_CHANNEL_RESCAN_MINUTES",
            note="cùng hàm nút 'Quét tất cả'; chu kỳ = TOKMATRIX_CHANNEL_RESCAN_MINUTES (360), 0 = tắt"),
     # Tự động hoá
     Worker("autopilot-daemon", "Autopilot", "Tự động hoá", "autopilot.start_autopilot", note="bật/tắt trong trang Autopilot"),
     Worker("autopilot-manual", "Autopilot (chạy tay)", "Tự động hoá", "autopilot.engine", note="chỉ có khi đang chạy một bước tay"),
     Worker("matrix-*", "Matrix batch", "Tự động hoá", "matrix_routes", note="mỗi batch một thread"),
-    Worker("tiktok-dup-bot", "Kiểm tra video trùng", "Tự động hoá", "autopilot.cycle → tiktok_dup_bot"),
+    Worker("tiktok-dup-bot", "Kiểm tra video trùng", "Tự động hoá", "autopilot.cycle → tiktok_dup_bot", "TOKMATRIX_TELEGRAM_DUP_BOT",
+           note="bot @tiktok_check_video_bot qua Telegram Web; TOKMATRIX_TELEGRAM_DUP_BOT=0 = tắt"),
     # Ảnh & kịch bản
     Worker("image-queue-worker", "Hàng đợi ảnh (Pollinations)", "Ảnh & kịch bản", "image_routes.start_image_queue_worker"),
     Worker("bridge-auto-worker", "Antigravity bridge ảnh", "Ảnh & kịch bản", "image_routes._start_bridge_worker"),

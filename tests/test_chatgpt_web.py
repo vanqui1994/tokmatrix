@@ -19,7 +19,7 @@ class WorkerTest(unittest.TestCase):
         for name in cg.PROVIDERS:
             cg._states[name] = cg._new_state()
         for p in (mock.patch.dict("os.environ", {"TOKMATRIX_CHATGPT_WEB": "1", "TOKMATRIX_WEB_LLMS": "chatgpt,gemini"}),
-                  mock.patch.object(cg, "_reachable", lambda: True)):
+                  mock.patch.object(cg, "_reachable", lambda *_a: True)):
             p.start(); self.addCleanup(p.stop)
         self.routes = mock.MagicMock()
         self.claimed = []
@@ -75,3 +75,121 @@ class GeminiImageFallbackTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+class AskWaitsForJsonTest(unittest.TestCase):
+    """13/10: Gemini giữ nguyên chữ "đang nghĩ" vài giây rồi mới viết JSON; chốt sớm → "không có JSON object hợp lệ"."""
+
+    def _run(self, answers, need_json):
+        import asyncio
+
+        class Box:
+            first = None
+
+            async def wait_for(self, **_):
+                return None
+
+            async def evaluate(self, *_):
+                return None
+
+        class Loc(Box):
+            def __init__(self):
+                self.first = Box()
+
+        class Page:
+            url = "https://gemini.google.com/app"
+
+            def __init__(self):
+                self.calls = 0
+                self.keyboard = mock.Mock(press=mock.AsyncMock(), insert_text=mock.AsyncMock())
+
+            async def goto(self, *_, **__):
+                return None
+
+            def locator(self, *_):
+                return Loc()
+
+            async def evaluate(self, *_):
+                i = min(self.calls, len(answers) - 1)
+                self.calls += 1
+                return answers[i]
+
+        page = Page()
+        ctx = mock.Mock(pages=[page])
+        browser = mock.Mock(contexts=[ctx])
+
+        class PW:
+            chromium = mock.Mock(connect_over_cdp=mock.AsyncMock(return_value=browser))
+
+            async def __aenter__(self):
+                return self
+
+            async def __aexit__(self, *_):
+                return False
+
+        fake_muse = mock.Mock(keep_awake=mock.AsyncMock())
+        with mock.patch("playwright.async_api.async_playwright", lambda: PW()), \
+                mock.patch.dict("sys.modules", {"bkt_web.muse_image": fake_muse}), \
+                mock.patch.object(cg.asyncio, "sleep", mock.AsyncMock()):
+            return asyncio.run(cg._ask("gemini", "p", need_json=need_json))
+
+    def test_thinking_placeholder_is_not_accepted_when_json_is_required(self):
+        thinking = {"text": "Gemini said Thinking", "code": [], "done": True, "busy": False}
+        final = {"text": '{"angles":[1]}', "code": ['{"angles": [1]}'], "done": True, "busy": False}
+        got = self._run([thinking] * 6 + [final] * 4, need_json=True)
+        self.assertEqual(cg.extract_json(got), {"angles": [1]})
+
+    def test_without_need_json_the_first_stable_answer_is_returned(self):
+        thinking = {"text": "Gemini said Thinking", "code": [], "done": True, "busy": False}
+        final = {"text": '{"a":1}', "code": ['{"a": 1}'], "done": True, "busy": False}
+        got = self._run([thinking] * 6 + [final] * 4, need_json=False)
+        self.assertEqual(got["text"], "Gemini said Thinking")
+
+
+class SecondGeminiAccountTest(unittest.TestCase):
+    def setUp(self):
+        import importlib, os
+        self.importlib, self.os = importlib, os
+        self.env = mock.patch.dict(os.environ, {"TOKMATRIX_GEMINI2_CDP": "http://127.0.0.1:9344", "TOKMATRIX_CHATGPT_WEB": "1",
+                                                "TOKMATRIX_WEB_LLMS": "gemini,gemini2"})
+        self.env.start()
+        self.cg = importlib.reload(cg)
+
+    def tearDown(self):
+        self.env.stop()
+        self.importlib.reload(cg)
+
+    def test_second_account_has_its_own_chrome_lock_and_counters(self):
+        cg2 = self.cg
+        self.assertEqual(cg2.PROVIDERS["gemini2"]["cdp"], "http://127.0.0.1:9344")
+        self.assertNotEqual(cg2.PROVIDERS["gemini"]["cdp"], cg2.PROVIDERS["gemini2"]["cdp"])
+        self.assertIsNot(cg2._locks["gemini"], cg2._locks["gemini2"])
+        self.assertIs(cg2._locks["gemini"], cg2._lock)  # ảnh dùng chung Chrome chính
+        self.assertIsNot(cg2._states["gemini"], cg2._states["gemini2"])
+        self.assertEqual(cg2.GEMINI_ANSWER, cg2.PROVIDERS["gemini2"]["answer"])
+
+    def test_each_provider_is_checked_against_its_own_chrome(self):
+        cg2 = self.cg
+        seen = []
+        with mock.patch.object(cg2, "_reachable", side_effect=lambda cdp=None: (seen.append(cdp), cdp == "http://127.0.0.1:9344")[1]):
+            self.assertEqual(cg2.next_provider(), "gemini2")  # Chrome chính chết → chuyển sang tài khoản 2
+        self.assertEqual(seen, [cg2.CDP, "http://127.0.0.1:9344"])
+
+    def test_run_once_only_serves_the_requested_account(self):
+        cg2 = self.cg
+        task = {"id": "t1", "prompt": "p"}
+        routes = mock.Mock()
+        with mock.patch.object(cg2, "_reachable", return_value=True), mock.patch.object(cg2, "_claim_next", return_value=task) as claim, \
+                mock.patch.object(cg2, "_routes", return_value=routes), mock.patch.object(cg2, "ask_json", return_value={"ok": 1}) as ask:
+            self.assertTrue(cg2.run_once("gemini2"))
+        claim.assert_called_once_with("gemini2-web")
+        ask.assert_called_once_with("p", "gemini2")
+        self.assertEqual(cg2._states["gemini2"]["count"], 1)
+        self.assertEqual(cg2._states["gemini"]["count"], 0)
+
+    def test_start_runs_one_worker_per_provider_with_registered_names(self):
+        cg2 = self.cg
+        started = []
+        real = cg2.threading.Thread
+        with mock.patch.object(cg2.threading, "Thread", side_effect=lambda **kw: (started.append(kw["name"]), mock.Mock(is_alive=lambda: False, start=lambda: None))[1]):
+            cg2.start()
+        self.assertEqual(started, ["chatgpt-scripts", "chatgpt-scripts-gemini2"])

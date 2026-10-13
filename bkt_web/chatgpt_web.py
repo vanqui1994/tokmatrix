@@ -13,6 +13,9 @@ web nào nhận (tắt, Chrome chết, đăng xuất, hết hạn mức), script
   TOKMATRIX_CHATGPT_WEB      1 = bật (mặc định 0)
   TOKMATRIX_WEB_LLMS         thứ tự nguồn, mặc định "chatgpt,gemini"
   TOKMATRIX_CHATGPT_CDP      http://127.0.0.1:9343
+  TOKMATRIX_GEMINI2_CDP      CDP của Chrome thứ hai đã đăng nhập một tài khoản Gemini khác (vd http://127.0.0.1:9344);
+                             có biến này thì có thêm nguồn "gemini2" (đưa vào TOKMATRIX_WEB_LLMS để dùng), chạy song song
+                             với "gemini" và có hạn mức ngày / bộ đếm lỗi / khoá riêng
   TOKMATRIX_CHATGPT_DAILY / TOKMATRIX_GEMINI_WEB_DAILY   task/ngày mỗi nguồn (200 / 150)
   TOKMATRIX_CHATGPT_GAP      giây nghỉ giữa hai task (20)
   TOKMATRIX_CHATGPT_TIMEOUT  giây chờ một câu trả lời (240)
@@ -33,12 +36,20 @@ CDP = os.environ.get("TOKMATRIX_CHATGPT_CDP", "http://127.0.0.1:9343")
 GAP = int(os.environ.get("TOKMATRIX_CHATGPT_GAP", "20") or 20)
 TIMEOUT = int(os.environ.get("TOKMATRIX_CHATGPT_TIMEOUT", "240") or 240)
 FAIL_PAUSE = 30 * 60
+NO_JSON_GRACE = int(os.environ.get("TOKMATRIX_CHATGPT_NO_JSON_GRACE", "90") or 90)  # chờ thêm khi chữ đã đứng yên mà chưa có JSON
 JSON_RULE = ("\n\n---\nIMPORTANT: Reply with ONLY one valid JSON object that follows the schema above, inside a single "
              "```json code block. No explanation before or after it. Do not ask questions.")
 
+GEMINI_COMPOSER = "div.ql-editor[contenteditable='true'], rich-textarea [contenteditable='true']"
+GEMINI_ANSWER = """()=>{const m=[...document.querySelectorAll('model-response')].pop();
+ const root=m||document.querySelector('main')||document.body;
+ const code=[...root.querySelectorAll('pre code, code-block, pre')].map(c=>c.innerText).slice(-1);
+ const busy=!![...document.querySelectorAll('button[aria-label]')].find(b=>/stop|dừng/i.test(b.getAttribute('aria-label')));
+ return {text:(root.innerText||'').slice(-8000), code, done:!!m, busy}}"""
+
 PROVIDERS: Dict[str, Dict[str, Any]] = {
     "chatgpt": {
-        "label": "ChatGPT web", "host": "chatgpt.com", "url": "https://chatgpt.com/?temporary-chat=true",
+        "label": "ChatGPT web", "host": "chatgpt.com", "url": "https://chatgpt.com/?temporary-chat=true", "cdp": CDP,
         "daily": int(os.environ.get("TOKMATRIX_CHATGPT_DAILY", "200") or 200),
         # Ô nhập: #prompt-textarea (giao diện cũ) hoặc div contenteditable "Ask ChatGPT" (10/2026).
         "composer": "#prompt-textarea, div[contenteditable='true'][aria-label], form textarea",
@@ -51,16 +62,17 @@ PROVIDERS: Dict[str, Dict[str, Any]] = {
  return {text:(root.innerText||'').slice(-8000), code, done:done>0, busy}}""",
     },
     "gemini": {
-        "label": "Gemini web", "host": "gemini.google.com", "url": "https://gemini.google.com/app",
+        "label": "Gemini web", "host": "gemini.google.com", "url": "https://gemini.google.com/app", "cdp": CDP,
         "daily": int(os.environ.get("TOKMATRIX_GEMINI_WEB_DAILY", "150") or 150),
-        "composer": "div.ql-editor[contenteditable='true'], rich-textarea [contenteditable='true']",
-        "answer": """()=>{const m=[...document.querySelectorAll('model-response')].pop();
- const root=m||document.querySelector('main')||document.body;
- const code=[...root.querySelectorAll('pre code, code-block, pre')].map(c=>c.innerText).slice(-1);
- const busy=!![...document.querySelectorAll('button[aria-label]')].find(b=>/stop|dừng/i.test(b.getAttribute('aria-label')));
- return {text:(root.innerText||'').slice(-8000), code, done:!!m, busy}}""",
+        "composer": GEMINI_COMPOSER, "answer": GEMINI_ANSWER,
     },
 }
+
+
+GEMINI2_CDP = os.environ.get("TOKMATRIX_GEMINI2_CDP", "").strip()
+if GEMINI2_CDP:
+    PROVIDERS["gemini2"] = {**PROVIDERS["gemini"], "label": "Gemini web (tài khoản 2)", "cdp": GEMINI2_CDP,
+                            "daily": int(os.environ.get("TOKMATRIX_GEMINI2_WEB_DAILY", "") or PROVIDERS["gemini"]["daily"])}
 
 
 def _new_state() -> Dict[str, Any]:
@@ -70,8 +82,9 @@ def _new_state() -> Dict[str, Any]:
 _states: Dict[str, Dict[str, Any]] = {name: _new_state() for name in PROVIDERS}
 _state: Dict[str, Any] = {"busy": None, "last_provider": ""}
 _stop = threading.Event()
-_thread: Optional[threading.Thread] = None
-_lock = threading.Lock()
+_lock = threading.Lock()  # Chrome chính (CDP 9343): kịch bản, ảnh Gemini, ảnh dự phòng dùng chung một chat
+_locks: Dict[str, threading.Lock] = {name: (_lock if spec.get("cdp") == CDP else threading.Lock()) for name, spec in PROVIDERS.items()}
+_threads: Dict[str, threading.Thread] = {}
 
 
 def enabled() -> bool:
@@ -83,10 +96,10 @@ def order() -> List[str]:
     return [n for n in names if n in PROVIDERS]
 
 
-def _reachable() -> bool:
+def _reachable(cdp: Optional[str] = None) -> bool:
     import urllib.request
     try:
-        with urllib.request.urlopen(f"{CDP}/json/version", timeout=3) as r:
+        with urllib.request.urlopen(f"{cdp or CDP}/json/version", timeout=3) as r:
             return r.status == 200
     except Exception:  # noqa: BLE001
         return False
@@ -104,9 +117,9 @@ def provider_ready(name: str) -> bool:
 
 
 def next_provider() -> Optional[str]:
-    if not enabled() or not _reachable():
+    if not enabled():
         return None
-    return next((n for n in order() if provider_ready(n)), None)
+    return next((n for n in order() if provider_ready(n) and _reachable(PROVIDERS[n].get("cdp"))), None)
 
 
 def accepting() -> bool:
@@ -131,11 +144,11 @@ def extract_json(answer: Dict[str, Any]) -> Dict[str, Any]:
     raise ValueError("câu trả lời không có JSON object hợp lệ")
 
 
-async def _ask(name: str, prompt: str) -> Dict[str, Any]:
+async def _ask(name: str, prompt: str, need_json: bool = False) -> Dict[str, Any]:
     from playwright.async_api import async_playwright
     spec = PROVIDERS[name]
     async with async_playwright() as p:
-        browser = await p.chromium.connect_over_cdp(CDP)
+        browser = await p.chromium.connect_over_cdp(spec.get("cdp") or CDP)
         ctx = browser.contexts[0] if browser.contexts else await browser.new_context()
         page = next((pg for pg in ctx.pages if spec["host"] in pg.url), None) or await ctx.new_page()
         await page.goto(spec["url"], wait_until="domcontentloaded", timeout=60000)
@@ -155,7 +168,7 @@ async def _ask(name: str, prompt: str) -> Dict[str, Any]:
         await page.keyboard.insert_text(prompt)
         await asyncio.sleep(0.8)
         await page.keyboard.press("Enter")
-        t0, last, stable = time.time(), None, 0
+        t0, last, stable, nojson_since = time.time(), None, 0, 0.0
         await asyncio.sleep(4)
         while time.time() - t0 < TIMEOUT:
             await asyncio.sleep(2)
@@ -164,13 +177,23 @@ async def _ask(name: str, prompt: str) -> Dict[str, Any]:
             stable = stable + 1 if (current and current == last and answer.get("done") and not answer.get("busy")) else 0
             last = current
             if stable >= 2:
+                if need_json:
+                    # Chữ đứng yên chưa chắc là xong: Gemini giữ nguyên "đang nghĩ" vài giây rồi mới viết JSON (13/10 mọi task
+                    # lỗi dừng ở ~20 s dù câu trả lời đầy đủ hiện ra ngay sau đó). Chỉ chốt khi đã có JSON đọc được.
+                    try:
+                        extract_json(answer)
+                    except ValueError:
+                        nojson_since = nojson_since or time.time()
+                        if time.time() - nojson_since < NO_JSON_GRACE:
+                            stable = 0
+                            continue
                 return {**answer, "seconds": round(time.time() - t0, 1)}
         raise RuntimeError(f"{spec['label']} không trả lời xong sau {TIMEOUT}s")
 
 
 def ask_json(prompt: str, name: str = "chatgpt") -> Dict[str, Any]:
-    with _lock:
-        answer = asyncio.run(_ask(name, prompt + JSON_RULE))
+    with _locks.get(name, _lock):
+        answer = asyncio.run(_ask(name, prompt + JSON_RULE, need_json=True))
     return extract_json(answer)
 
 
@@ -372,8 +395,14 @@ def _claim_next(worker_id: str) -> Optional[Dict[str, Any]]:
         return None
 
 
-def run_once() -> bool:
-    name = next_provider()
+def run_once(only: Optional[str] = None) -> bool:
+    """Nhận một task và hỏi nguồn web. `only` = worker của đúng một nguồn (mỗi tài khoản một worker song song)."""
+    if only:
+        if not (enabled() and only in order() and provider_ready(only) and _reachable(PROVIDERS[only].get("cdp"))):
+            return False
+        name = only
+    else:
+        name = next_provider()
     if not name:
         return False
     task = _claim_next(f"{name}-web")
@@ -399,14 +428,15 @@ def run_once() -> bool:
             except Exception:  # noqa: BLE001
                 pass
     finally:
-        _state["busy"] = None
+        if _state.get("busy") == task["id"]:
+            _state["busy"] = None
     return True
 
 
-def _loop() -> None:
+def _loop(only: Optional[str] = None) -> None:
     while not _stop.is_set():
         try:
-            worked = run_once()
+            worked = run_once(only)
         except Exception as exc:  # noqa: BLE001
             _state["last_error"] = f"{time.strftime('%H:%M:%S')} loop: {exc}"
             worked = False
@@ -414,12 +444,17 @@ def _loop() -> None:
 
 
 def start() -> None:
-    global _thread
-    if not enabled() or (_thread and _thread.is_alive()):
+    """Một worker cho mỗi nguồn trong `order()`; nguồn đầu giữ tên cũ `chatgpt-scripts`, nguồn sau `chatgpt-scripts-<tên>`."""
+    if not enabled():
         return
     _stop.clear()
-    _thread = threading.Thread(target=_loop, name="chatgpt-scripts", daemon=True)
-    _thread.start()
+    for i, name in enumerate(order()):
+        running = _threads.get(name)
+        if running and running.is_alive():
+            continue
+        t = threading.Thread(target=_loop, args=(name,), name="chatgpt-scripts" if i == 0 else f"chatgpt-scripts-{name}", daemon=True)
+        _threads[name] = t
+        t.start()
 
 
 def stop() -> None:
@@ -427,9 +462,9 @@ def stop() -> None:
 
 
 def status() -> Dict[str, Any]:
-    return {"enabled": enabled(), "chrome": _reachable(), "order": order(), "next": next_provider(),
+    return {"enabled": enabled(), "chrome": _reachable(), "chromes": {n: _reachable(PROVIDERS[n].get("cdp")) for n in order()}, "order": order(), "next": next_provider(),
             "images": {**_image_state, "daily_cap": IMAGE_DAILY, "ready": image_ready()},
-            "running": bool(_thread and _thread.is_alive()), **_state,
+            "running": any(t.is_alive() for t in _threads.values()), "workers": {n: t.is_alive() for n, t in _threads.items()}, **_state,
             "providers": {n: {**_states[n], "daily_cap": PROVIDERS[n]["daily"], "ready": provider_ready(n)} for n in PROVIDERS}}
 
 

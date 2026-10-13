@@ -175,3 +175,16 @@ class ChannelReplyTest(unittest.TestCase):
                          ("7689543849525628163", GILBERT_LINKS[0]))            # điền link cho bài cũ
         self.assertEqual(conn.execute("SELECT shadowban, duplicate, original_task_id FROM video_checks WHERE task_id=62").fetchone(), (1, 1, 61))
         self.assertIsNone(conn.execute("SELECT task_id FROM channel_video_checks WHERE video_id='7684706032186084630'").fetchone()[0])  # video không phải của mình
+
+
+class SwitchTest(unittest.TestCase):
+    def test_env_off_disables_the_telegram_bot_even_when_logged_in(self):
+        with mock.patch.object(bot, "_creds", return_value={"session": "x"}), mock.patch.dict("os.environ", {"TOKMATRIX_TELEGRAM_DUP_BOT": "0"}):
+            self.assertFalse(bot.available())
+            self.assertFalse(bot.start_background())
+
+    def test_default_keeps_working(self):
+        with mock.patch.object(bot, "_creds", return_value={"session": "x"}), mock.patch.dict("os.environ", {}, clear=False):
+            import os
+            os.environ.pop("TOKMATRIX_TELEGRAM_DUP_BOT", None)
+            self.assertTrue(bot.available())

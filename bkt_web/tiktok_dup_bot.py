@@ -17,6 +17,7 @@ from __future__ import annotations
 import argparse
 import asyncio
 import json
+import os
 import re
 import sys
 import time
@@ -248,6 +249,9 @@ def check_url(url: str) -> Dict[str, Any]:
 
 
 def available() -> bool:
+    # TOKMATRIX_TELEGRAM_DUP_BOT=0: tắt hẳn bot @tiktok_check_video_bot (Autopilot, giao diện và CLI đều coi như không dùng được).
+    if os.environ.get("TOKMATRIX_TELEGRAM_DUP_BOT", "1") == "0":
+        return False
     if _creds().get("session"):
         return True
     try:
