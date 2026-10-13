@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Demo Rig Nhân Vật - Người Đàn Ông Nông Thôn Cổ Đại 2</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 36px 20px;
+    background: #f7f3ee;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+    color: #2c2520;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .header {
+    text-align: center;
+    max-width: 800px;
+    margin-bottom: 32px;
+  }
+  h1 {
+    font-size: 28px;
+    margin: 0 0 10px 0;
+    color: #3b2d22;
+    letter-spacing: -0.5px;
+  }
+  .sub {
+    font-size: 15px;
+    color: #7a6b5e;
+    line-height: 1.5;
+    margin: 0;
+  }
+  .code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    background: #ece4d8;
+    padding: 2px 7px;
+    border-radius: 5px;
+    font-size: 13px;
+    color: #553c29;
+  }
+  .grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    justify-content: center;
+    max-width: 1240px;
+    width: 100%;
+  }
+  .card {
+    background: #ffffff;
+    border-radius: 18px;
+    padding: 20px 18px 22px;
+    box-shadow: 0 10px 30px rgba(70, 50, 30, 0.07), 0 1px 3px rgba(0, 0, 0, 0.04);
+    text-align: center;
+    width: 275px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 40px rgba(70, 50, 30, 0.12);
+  }
+  .img-wrap {
+    width: 100%;
+    height: 380px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(circle at center, #faf7f2 0%, #f0e9df 100%);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 16px;
+  }
+  .img-wrap img {
+    max-width: 90%;
+    max-height: 90%;
+    object-fit: contain;
+    filter: drop-shadow(0 8px 16px rgba(0,0,0,0.08));
+  }
+  .card h3 {
+    margin: 0 0 8px 0;
+    font-size: 19px;
+    font-weight: 700;
+    color: #2d241c;
+  }
+  .desc {
+    font-size: 13px;
+    color: #8c7c6f;
+    margin: 0 0 12px 0;
+    min-height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .badge {
+    display: inline-block;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    background: #f0e6d8;
+    color: #634d3a;
+  }
+  .badge.loop {
+    background: #e2f2e3;
+    color: #1f6b28;
+  }
+</style>
+</head>
+<body>
+  <div class="header">
+    <h1>Articulated Rig Demo: Người Đàn Ông Nông Thôn Cổ Đại 2</h1>
+    <p class="sub">Tất cả các bộ phận (đầu, búi tóc, dải lụa, thân, tay, chân) đã được khớp nối chuẩn xác trong file <span class="code">flas/79 Người đàn ông nông thôn cổ đại 2_rigged.fla</span></p>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <div class="img-wrap">
+        <img src="demo_pose_idle.png" alt="Idle"/>
+      </div>
+      <h3>1. Đứng Nghỉ (Idle)</h3>
+      <p class="desc">Hai tay chắp tự nhiên trước bụng, tư thế đứng thẳng trang nhã</p>
+      <span class="badge">Frame 0 - 29</span>
+    </div>
+
+    <div class="card">
+      <div class="img-wrap">
+        <img src="demo_pose_point.png" alt="Point"/>
+      </div>
+      <h3>2. Chỉ Tay (Point)</h3>
+      <p class="desc">Tay phải đưa thẳng về phía trước chỉ hướng, tay áo vạt rộng mềm mại</p>
+      <span class="badge">Frame 30 - 59</span>
+    </div>
+
+    <div class="card">
+      <div class="img-wrap">
+        <img src="demo_pose_kneel.png" alt="Kneel"/>
+      </div>
+      <h3>3. Quỳ / Ngồi (Kneel)</h3>
+      <p class="desc">Hai chân quỳ gối, thân hơi cúi chào, hai tay chắp trang nghiêm</p>
+      <span class="badge">Frame 60 - 89</span>
+    </div>
+
+    <div class="card">
+      <div class="img-wrap">
+        <img src="walk_demo.gif" alt="Walk Cycle"/>
+      </div>
+      <h3>4. Bước Đi (Walk)</h3>
+      <p class="desc">Chu kỳ bước đi tự nhiên 28 frame (loop vô tận), nhịp bước chân mượt mà</p>
+      <span class="badge loop">Loop 28 Frames (Frame 90 - 117)</span>
+    </div>
+  </div>
+</body>
+</html>

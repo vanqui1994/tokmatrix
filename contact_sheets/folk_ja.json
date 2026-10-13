@@ -1,0 +1,454 @@
+{
+ "id": "preview-test_folk_ja",
+ "name": "日本の古い森には不思議な力を持つ妖狐キツネが現れます。",
+ "renderer": "native-vector-v1",
+ "fidelity": "technical-demo",
+ "note": "vector engine · niche folklore_legends · ja",
+ "duration": 15.88,
+ "characters": [
+  {
+   "id": "host",
+   "name": "Host",
+   "asset": "chibi_grandma"
+  },
+  {
+   "id": "buddy",
+   "name": "Buddy",
+   "asset": "cat"
+  },
+  {
+   "id": "subject_kitsune",
+   "name": "Kitsune fox",
+   "asset": "kitsune"
+  },
+  {
+   "id": "subject_yuki_onna",
+   "name": "Yuki-onna",
+   "asset": "yuki_onna"
+  },
+  {
+   "id": "subject_welsh_red_dragon",
+   "name": "Red Dragon",
+   "asset": "welsh_red_dragon"
+  }
+ ],
+ "scenes": [
+  {
+   "renderer": "native-vector-v1",
+   "kind": "scene",
+   "index": 0,
+   "start_time": 0.0,
+   "end_time": 5.02,
+   "characters_present": [
+    "host",
+    "subject_kitsune"
+   ],
+   "poses": {
+    "host": [
+     {
+      "time": 0.0,
+      "x": -90.0,
+      "y": 810.0,
+      "height": 235,
+      "flip": false,
+      "expression": "happy",
+      "opacity": 1.0,
+      "hand_r_x": 24,
+      "hand_r_y": -22,
+      "jump": 0,
+      "celebrate": 0
+     },
+     {
+      "time": 0.15,
+      "x": -90.0,
+      "y": 810.0,
+      "height": 235,
+      "flip": false,
+      "expression": "happy",
+      "opacity": 1.0,
+      "hand_r_x": 24,
+      "hand_r_y": -22,
+      "jump": 0,
+      "celebrate": 0
+     },
+     {
+      "time": 1.58,
+      "x": 124.5,
+      "y": 810.0,
+      "height": 235,
+      "flip": false,
+      "expression": "happy",
+      "opacity": 1.0,
+      "hand_r_x": 24,
+      "hand_r_y": -22,
+      "jump": 0,
+      "celebrate": 0
+     },
+     {
+      "time": 1.63,
+      "x": 124.5,
+      "y": 810.0,
+      "height": 235,
+      "flip": false,
+      "expression": "happy",
+      "opacity": 1.0,
+      "hand_r_x": 24,
+      "hand_r_y": -22,
+      "jump": 0,
+      "celebrate": 0
+     },
+     {
+      "time": 5.02,
+      "x": 124.5,
+      "y": 810.0,
+      "height": 235,
+      "flip": false,
+      "expression": "happy",
+      "opacity": 1.0,
+      "hand_r_x": 24,
+      "hand_r_y": -22,
+      "jump": 0,
+      "celebrate": 0
+     }
+    ],
+    "subject_kitsune": [
+     {
+      "time": 0.0,
+      "x": 365.5,
+      "y": 810.0,
+      "height": 279.3,
+      "opacity": 1.0,
+      "z": -1
+     },
+     {
+      "time": 5.02,
+      "x": 365.5,
+      "y": 810.0,
+      "height": 279.3,
+      "opacity": 1.0,
+      "z": -1
+     }
+    ]
+   },
+   "actions": [
+    {
+     "type": "emote",
+     "start": 2.66,
+     "end": 4.92,
+     "actor": "host",
+     "emote": "idea"
+    }
+   ],
+   "background": {
+    "preset": "misty_forest_night",
+    "time": "day"
+   },
+   "camera": [
+    {
+     "time": 0.0,
+     "x": 274,
+     "y": 540,
+     "zoom": 1.06
+    },
+    {
+     "time": 5.02,
+     "x": 302,
+     "y": 540,
+     "zoom": 1.06
+    }
+   ]
+  },
+  {
+   "renderer": "native-vector-v1",
+   "kind": "scene",
+   "index": 1,
+   "start_time": 5.02,
+   "end_time": 10.1,
+   "characters_present": [
+    "host",
+    "subject_yuki_onna"
+   ],
+   "poses": {
+    "host": [
+     {
+      "time": 5.02,
+      "x": 124.5,
+      "y": 810.0,
+      "height": 235,
+      "flip": false,
+      "expression": "neutral",
+      "opacity": 1.0,
+      "hand_r_x": 24,
+      "hand_r_y": -22,
+      "jump": 0,
+      "celebrate": 0
+     },
+     {
+      "time": 7.71,
+      "x": 124.5,
+      "y": 810.0,
+      "height": 235,
+      "flip": false,
+      "expression": "neutral",
+      "opacity": 1.0,
+      "hand_r_x": 24,
+      "hand_r_y": -22,
+      "jump": 0,
+      "celebrate": 0
+     },
+     {
+      "time": 8.06,
+      "x": 124.5,
+      "y": 810.0,
+      "height": 235,
+      "flip": false,
+      "expression": "neutral",
+      "opacity": 1.0,
+      "hand_r_x": 38,
+      "hand_r_y": -74,
+      "jump": 0,
+      "celebrate": 0
+     },
+     {
+      "time": 9.65,
+      "x": 124.5,
+      "y": 810.0,
+      "height": 235,
+      "flip": false,
+      "expression": "neutral",
+      "opacity": 1.0,
+      "hand_r_x": 38,
+      "hand_r_y": -74,
+      "jump": 0,
+      "celebrate": 0
+     },
+     {
+      "time": 10.0,
+      "x": 124.5,
+      "y": 810.0,
+      "height": 235,
+      "flip": false,
+      "expression": "neutral",
+      "opacity": 1.0,
+      "hand_r_x": 24,
+      "hand_r_y": -22,
+      "jump": 0,
+      "celebrate": 0
+     },
+     {
+      "time": 10.1,
+      "x": 124.5,
+      "y": 810.0,
+      "height": 235,
+      "flip": false,
+      "expression": "neutral",
+      "opacity": 1.0,
+      "hand_r_x": 24,
+      "hand_r_y": -22,
+      "jump": 0,
+      "celebrate": 0
+     }
+    ],
+    "subject_yuki_onna": [
+     {
+      "time": 5.02,
+      "x": 366.2,
+      "y": 810.0,
+      "height": 297.6,
+      "opacity": 0.0,
+      "z": -1
+     },
+     {
+      "time": 5.17,
+      "x": 366.2,
+      "y": 810.0,
+      "height": 163.7,
+      "opacity": 0.0,
+      "z": -1
+     },
+     {
+      "time": 5.87,
+      "x": 366.2,
+      "y": 810.0,
+      "height": 297.6,
+      "opacity": 1.0,
+      "z": -1
+     },
+     {
+      "time": 10.1,
+      "x": 366.2,
+      "y": 810.0,
+      "height": 297.6,
+      "opacity": 1.0,
+      "z": -1
+     }
+    ]
+   },
+   "actions": [],
+   "background": {
+    "preset": "misty_forest_night",
+    "time": "day"
+   },
+   "camera": [
+    {
+     "time": 5.02,
+     "x": 302,
+     "y": 540,
+     "zoom": 1.06
+    },
+    {
+     "time": 10.1,
+     "x": 274,
+     "y": 540,
+     "zoom": 1.06
+    }
+   ]
+  },
+  {
+   "renderer": "native-vector-v1",
+   "kind": "scene",
+   "index": 2,
+   "start_time": 10.1,
+   "end_time": 15.88,
+   "characters_present": [
+    "host",
+    "subject_welsh_red_dragon"
+   ],
+   "poses": {
+    "host": [
+     {
+      "time": 10.1,
+      "x": 124.5,
+      "y": 810.0,
+      "height": 235,
+      "flip": false,
+      "expression": "happy",
+      "opacity": 1.0,
+      "hand_r_x": 24,
+      "hand_r_y": -22,
+      "jump": 0,
+      "celebrate": 0
+     },
+     {
+      "time": 10.25,
+      "x": 124.5,
+      "y": 810.0,
+      "height": 235,
+      "flip": false,
+      "expression": "happy",
+      "opacity": 1.0,
+      "hand_r_x": 24,
+      "hand_r_y": -22,
+      "jump": 0,
+      "celebrate": 0
+     },
+     {
+      "time": 10.55,
+      "x": 124.5,
+      "y": 810.0,
+      "height": 235,
+      "flip": false,
+      "expression": "happy",
+      "opacity": 1.0,
+      "hand_r_x": 24,
+      "hand_r_y": -22,
+      "jump": 0,
+      "celebrate": 1
+     },
+     {
+      "time": 15.58,
+      "x": 124.5,
+      "y": 810.0,
+      "height": 235,
+      "flip": false,
+      "expression": "happy",
+      "opacity": 1.0,
+      "hand_r_x": 24,
+      "hand_r_y": -22,
+      "jump": 0,
+      "celebrate": 1
+     },
+     {
+      "time": 15.78,
+      "x": 124.5,
+      "y": 810.0,
+      "height": 235,
+      "flip": false,
+      "expression": "happy",
+      "opacity": 1.0,
+      "hand_r_x": 24,
+      "hand_r_y": -22,
+      "jump": 0,
+      "celebrate": 0
+     },
+     {
+      "time": 15.88,
+      "x": 124.5,
+      "y": 810.0,
+      "height": 235,
+      "flip": false,
+      "expression": "happy",
+      "opacity": 1.0,
+      "hand_r_x": 24,
+      "hand_r_y": -22,
+      "jump": 0,
+      "celebrate": 0
+     }
+    ],
+    "subject_welsh_red_dragon": [
+     {
+      "time": 10.1,
+      "x": 365.5,
+      "y": 810.0,
+      "height": 362.6,
+      "opacity": 1.0,
+      "z": -1
+     },
+     {
+      "time": 15.88,
+      "x": 365.5,
+      "y": 810.0,
+      "height": 362.6,
+      "opacity": 1.0,
+      "z": -1
+     }
+    ]
+   },
+   "actions": [],
+   "background": {
+    "preset": "misty_forest_night",
+    "time": "night"
+   },
+   "camera": [
+    {
+     "time": 10.1,
+     "x": 274,
+     "y": 540,
+     "zoom": 1.06
+    },
+    {
+     "time": 15.88,
+     "x": 302,
+     "y": 540,
+     "zoom": 1.06
+    }
+   ]
+  }
+ ],
+ "cues": [],
+ "vector_meta": {
+  "dna": {
+   "cast": [
+    2,
+    1
+   ],
+   "palette": "alternate",
+   "framing": "pan",
+   "pacing": "normal",
+   "caption": "outline"
+  },
+  "host": "storyteller",
+  "buddy": "cat",
+  "storyboard_source": "fallback"
+ }
+}

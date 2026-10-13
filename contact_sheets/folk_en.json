@@ -1,0 +1,489 @@
+{
+ "id": "preview-test_folk_en",
+ "name": "In Japanese folklore the legendary Kitsune spirit roams.",
+ "renderer": "native-vector-v1",
+ "fidelity": "technical-demo",
+ "note": "vector engine · niche folklore_legends · en",
+ "duration": 21.28,
+ "characters": [
+  {
+   "id": "host",
+   "name": "Host",
+   "asset": "chibi_teacher"
+  },
+  {
+   "id": "buddy",
+   "name": "Buddy",
+   "asset": "rabbit"
+  },
+  {
+   "id": "subject_kitsune",
+   "name": "Kitsune fox",
+   "asset": "kitsune"
+  },
+  {
+   "id": "subject_dokkaebi",
+   "name": "Dokkaebi",
+   "asset": "dokkaebi"
+  },
+  {
+   "id": "subject_yuki_onna",
+   "name": "Yuki-onna",
+   "asset": "yuki_onna"
+  }
+ ],
+ "scenes": [
+  {
+   "renderer": "native-vector-v1",
+   "kind": "scene",
+   "index": 0,
+   "start_time": 0.0,
+   "end_time": 6.76,
+   "characters_present": [
+    "host",
+    "buddy",
+    "subject_kitsune"
+   ],
+   "poses": {
+    "host": [
+     {
+      "time": 0.0,
+      "x": -90.0,
+      "y": 810.0,
+      "height": 230,
+      "flip": false,
+      "expression": "happy",
+      "opacity": 1.0,
+      "hand_r_x": 24,
+      "hand_r_y": -22,
+      "jump": 0,
+      "celebrate": 0
+     },
+     {
+      "time": 0.15,
+      "x": -90.0,
+      "y": 810.0,
+      "height": 230,
+      "flip": false,
+      "expression": "happy",
+      "opacity": 1.0,
+      "hand_r_x": 24,
+      "hand_r_y": -22,
+      "jump": 0,
+      "celebrate": 0
+     },
+     {
+      "time": 1.357,
+      "x": 91.0,
+      "y": 810.0,
+      "height": 230,
+      "flip": false,
+      "expression": "happy",
+      "opacity": 1.0,
+      "hand_r_x": 24,
+      "hand_r_y": -22,
+      "jump": 0,
+      "celebrate": 0
+     },
+     {
+      "time": 1.407,
+      "x": 91.0,
+      "y": 810.0,
+      "height": 230,
+      "flip": false,
+      "expression": "happy",
+      "opacity": 1.0,
+      "hand_r_x": 24,
+      "hand_r_y": -22,
+      "jump": 0,
+      "celebrate": 0
+     },
+     {
+      "time": 6.76,
+      "x": 91.0,
+      "y": 810.0,
+      "height": 230,
+      "flip": false,
+      "expression": "happy",
+      "opacity": 1.0,
+      "hand_r_x": 24,
+      "hand_r_y": -22,
+      "jump": 0,
+      "celebrate": 0
+     }
+    ],
+    "buddy": [
+     {
+      "time": 0.0,
+      "x": 514.3,
+      "y": 810.0,
+      "height": 115.1,
+      "flip": true,
+      "expression": "happy",
+      "opacity": 1.0,
+      "jump": 0
+     },
+     {
+      "time": 6.76,
+      "x": 514.3,
+      "y": 810.0,
+      "height": 115.1,
+      "flip": true,
+      "expression": "happy",
+      "opacity": 1.0,
+      "jump": 0
+     }
+    ],
+    "subject_kitsune": [
+     {
+      "time": 0.0,
+      "x": 317.9,
+      "y": 810.0,
+      "height": 279.3,
+      "opacity": 1.0,
+      "z": -1
+     },
+     {
+      "time": 6.76,
+      "x": 317.9,
+      "y": 810.0,
+      "height": 279.3,
+      "opacity": 1.0,
+      "z": -1
+     }
+    ]
+   },
+   "actions": [
+    {
+     "type": "emote",
+     "start": 3.53,
+     "end": 6.66,
+     "actor": "host",
+     "emote": "idea"
+    }
+   ],
+   "background": {
+    "preset": "misty_forest_night",
+    "time": "day"
+   }
+  },
+  {
+   "renderer": "native-vector-v1",
+   "kind": "scene",
+   "index": 1,
+   "start_time": 6.76,
+   "end_time": 13.4,
+   "characters_present": [
+    "host",
+    "buddy",
+    "subject_dokkaebi"
+   ],
+   "poses": {
+    "host": [
+     {
+      "time": 6.76,
+      "x": 91.0,
+      "y": 810.0,
+      "height": 230,
+      "flip": false,
+      "expression": "surprised",
+      "opacity": 1.0,
+      "hand_r_x": 24,
+      "hand_r_y": -22,
+      "jump": 0,
+      "celebrate": 0
+     },
+     {
+      "time": 10.23,
+      "x": 91.0,
+      "y": 810.0,
+      "height": 230,
+      "flip": false,
+      "expression": "surprised",
+      "opacity": 1.0,
+      "hand_r_x": 24,
+      "hand_r_y": -22,
+      "jump": 0,
+      "celebrate": 0
+     },
+     {
+      "time": 10.58,
+      "x": 91.0,
+      "y": 810.0,
+      "height": 230,
+      "flip": false,
+      "expression": "surprised",
+      "opacity": 1.0,
+      "hand_r_x": 38,
+      "hand_r_y": -74,
+      "jump": 0,
+      "celebrate": 0
+     },
+     {
+      "time": 12.95,
+      "x": 91.0,
+      "y": 810.0,
+      "height": 230,
+      "flip": false,
+      "expression": "surprised",
+      "opacity": 1.0,
+      "hand_r_x": 38,
+      "hand_r_y": -74,
+      "jump": 0,
+      "celebrate": 0
+     },
+     {
+      "time": 13.3,
+      "x": 91.0,
+      "y": 810.0,
+      "height": 230,
+      "flip": false,
+      "expression": "surprised",
+      "opacity": 1.0,
+      "hand_r_x": 24,
+      "hand_r_y": -22,
+      "jump": 0,
+      "celebrate": 0
+     },
+     {
+      "time": 13.4,
+      "x": 91.0,
+      "y": 810.0,
+      "height": 230,
+      "flip": false,
+      "expression": "surprised",
+      "opacity": 1.0,
+      "hand_r_x": 24,
+      "hand_r_y": -22,
+      "jump": 0,
+      "celebrate": 0
+     }
+    ],
+    "buddy": [
+     {
+      "time": 6.76,
+      "x": 514.3,
+      "y": 810.0,
+      "height": 115.1,
+      "flip": true,
+      "expression": "happy",
+      "opacity": 1.0,
+      "jump": 0
+     },
+     {
+      "time": 13.4,
+      "x": 514.3,
+      "y": 810.0,
+      "height": 115.1,
+      "flip": true,
+      "expression": "happy",
+      "opacity": 1.0,
+      "jump": 0
+     }
+    ],
+    "subject_dokkaebi": [
+     {
+      "time": 6.76,
+      "x": 300.4,
+      "y": 810.0,
+      "height": 268.8,
+      "opacity": 0.0,
+      "z": -1
+     },
+     {
+      "time": 6.91,
+      "x": 300.4,
+      "y": 810.0,
+      "height": 147.8,
+      "opacity": 0.0,
+      "z": -1
+     },
+     {
+      "time": 7.61,
+      "x": 300.4,
+      "y": 810.0,
+      "height": 268.8,
+      "opacity": 1.0,
+      "z": -1
+     },
+     {
+      "time": 13.4,
+      "x": 300.4,
+      "y": 810.0,
+      "height": 268.8,
+      "opacity": 1.0,
+      "z": -1
+     }
+    ]
+   },
+   "actions": [],
+   "background": {
+    "preset": "misty_forest_night",
+    "time": "day"
+   }
+  },
+  {
+   "renderer": "native-vector-v1",
+   "kind": "scene",
+   "index": 2,
+   "start_time": 13.4,
+   "end_time": 21.28,
+   "characters_present": [
+    "host",
+    "buddy",
+    "subject_yuki_onna"
+   ],
+   "poses": {
+    "host": [
+     {
+      "time": 13.4,
+      "x": 91.0,
+      "y": 810.0,
+      "height": 230,
+      "flip": false,
+      "expression": "happy",
+      "opacity": 1.0,
+      "hand_r_x": 24,
+      "hand_r_y": -22,
+      "jump": 0,
+      "celebrate": 0
+     },
+     {
+      "time": 13.55,
+      "x": 91.0,
+      "y": 810.0,
+      "height": 230,
+      "flip": false,
+      "expression": "happy",
+      "opacity": 1.0,
+      "hand_r_x": 24,
+      "hand_r_y": -22,
+      "jump": 0,
+      "celebrate": 0
+     },
+     {
+      "time": 13.85,
+      "x": 91.0,
+      "y": 810.0,
+      "height": 230,
+      "flip": false,
+      "expression": "happy",
+      "opacity": 1.0,
+      "hand_r_x": 24,
+      "hand_r_y": -22,
+      "jump": 0,
+      "celebrate": 1
+     },
+     {
+      "time": 17.04,
+      "x": 91.0,
+      "y": 810.0,
+      "height": 230,
+      "flip": false,
+      "expression": "happy",
+      "opacity": 1.0,
+      "hand_r_x": 24,
+      "hand_r_y": -22,
+      "jump": 0,
+      "celebrate": 1
+     },
+     {
+      "time": 17.24,
+      "x": 91.0,
+      "y": 810.0,
+      "height": 230,
+      "flip": false,
+      "expression": "happy",
+      "opacity": 1.0,
+      "hand_r_x": 24,
+      "hand_r_y": -22,
+      "jump": 0,
+      "celebrate": 0
+     },
+     {
+      "time": 21.28,
+      "x": 91.0,
+      "y": 810.0,
+      "height": 230,
+      "flip": false,
+      "expression": "happy",
+      "opacity": 1.0,
+      "hand_r_x": 24,
+      "hand_r_y": -22,
+      "jump": 0,
+      "celebrate": 0
+     }
+    ],
+    "buddy": [
+     {
+      "time": 13.4,
+      "x": 514.3,
+      "y": 810.0,
+      "height": 115.1,
+      "flip": true,
+      "expression": "happy",
+      "opacity": 1.0,
+      "jump": 0
+     },
+     {
+      "time": 21.28,
+      "x": 514.3,
+      "y": 810.0,
+      "height": 115.1,
+      "flip": true,
+      "expression": "happy",
+      "opacity": 1.0,
+      "jump": 0
+     }
+    ],
+    "subject_yuki_onna": [
+     {
+      "time": 13.4,
+      "x": 318.6,
+      "y": 810.0,
+      "height": 297.6,
+      "opacity": 1.0,
+      "z": -1
+     },
+     {
+      "time": 21.28,
+      "x": 318.6,
+      "y": 810.0,
+      "height": 297.6,
+      "opacity": 1.0,
+      "z": -1
+     }
+    ]
+   },
+   "actions": [
+    {
+     "type": "emote",
+     "start": 17.49,
+     "end": 21.18,
+     "actor": "buddy",
+     "emote": "heart"
+    }
+   ],
+   "background": {
+    "preset": "misty_forest_night",
+    "time": "night"
+   }
+  }
+ ],
+ "cues": [],
+ "vector_meta": {
+  "dna": {
+   "cast": [
+    5,
+    5
+   ],
+   "palette": "alternate",
+   "framing": "wide",
+   "pacing": "normal",
+   "caption": "pill"
+  },
+  "host": "teacher",
+  "buddy": "rabbit",
+  "storyboard_source": "fallback"
+ }
+}

@@ -1,0 +1,455 @@
+{
+ "id": "preview-test_ancient_en",
+ "name": "High in the Andes mountains lies Machu Picchu.",
+ "renderer": "native-vector-v1",
+ "fidelity": "technical-demo",
+ "note": "vector engine · niche lost_civilizations · en",
+ "duration": 21.28,
+ "characters": [
+  {
+   "id": "host",
+   "name": "Host",
+   "asset": "chibi_grandpa",
+   "outfit": "paleontologist"
+  },
+  {
+   "id": "buddy",
+   "name": "Buddy",
+   "asset": "capybara"
+  },
+  {
+   "id": "subject_machu_picchu",
+   "name": "Machu Picchu",
+   "asset": "machu_picchu"
+  },
+  {
+   "id": "subject_atlantis_ruins",
+   "name": "ancient sunken ruins",
+   "asset": "atlantis_ruins"
+  },
+  {
+   "id": "subject_underground_city",
+   "name": "underground city of Derinkuyu",
+   "asset": "underground_city"
+  }
+ ],
+ "scenes": [
+  {
+   "renderer": "native-vector-v1",
+   "kind": "scene",
+   "index": 0,
+   "start_time": 0.0,
+   "end_time": 6.16,
+   "characters_present": [
+    "host",
+    "subject_machu_picchu"
+   ],
+   "poses": {
+    "host": [
+     {
+      "time": 0.0,
+      "x": -90.0,
+      "y": 810.0,
+      "height": 245,
+      "flip": false,
+      "expression": "happy",
+      "opacity": 1.0,
+      "hand_r_x": 24,
+      "hand_r_y": -22,
+      "jump": 0,
+      "celebrate": 0
+     },
+     {
+      "time": 0.15,
+      "x": -90.0,
+      "y": 810.0,
+      "height": 245,
+      "flip": false,
+      "expression": "happy",
+      "opacity": 1.0,
+      "hand_r_x": 24,
+      "hand_r_y": -22,
+      "jump": 0,
+      "celebrate": 0
+     },
+     {
+      "time": 1.573,
+      "x": 123.5,
+      "y": 810.0,
+      "height": 245,
+      "flip": false,
+      "expression": "happy",
+      "opacity": 1.0,
+      "hand_r_x": 24,
+      "hand_r_y": -22,
+      "jump": 0,
+      "celebrate": 0
+     },
+     {
+      "time": 1.623,
+      "x": 123.5,
+      "y": 810.0,
+      "height": 245,
+      "flip": false,
+      "expression": "happy",
+      "opacity": 1.0,
+      "hand_r_x": 24,
+      "hand_r_y": -22,
+      "jump": 0,
+      "celebrate": 0
+     },
+     {
+      "time": 6.16,
+      "x": 123.5,
+      "y": 810.0,
+      "height": 245,
+      "flip": false,
+      "expression": "happy",
+      "opacity": 1.0,
+      "hand_r_x": 24,
+      "hand_r_y": -22,
+      "jump": 0,
+      "celebrate": 0
+     }
+    ],
+    "subject_machu_picchu": [
+     {
+      "time": 0.0,
+      "x": 368.5,
+      "y": 810.0,
+      "height": 346.2,
+      "opacity": 1.0,
+      "z": -1
+     },
+     {
+      "time": 6.16,
+      "x": 368.5,
+      "y": 810.0,
+      "height": 346.2,
+      "opacity": 1.0,
+      "z": -1
+     }
+    ]
+   },
+   "actions": [
+    {
+     "type": "emote",
+     "start": 3.23,
+     "end": 6.06,
+     "actor": "host",
+     "emote": "idea"
+    }
+   ],
+   "background": {
+    "preset": "andes_terraces",
+    "time": "day"
+   },
+   "camera": [
+    {
+     "time": 0.0,
+     "x": 288,
+     "y": 560,
+     "zoom": 1.0
+    },
+    {
+     "time": 6.16,
+     "x": 288,
+     "y": 600,
+     "zoom": 1.1
+    }
+   ]
+  },
+  {
+   "renderer": "native-vector-v1",
+   "kind": "scene",
+   "index": 1,
+   "start_time": 6.16,
+   "end_time": 13.4,
+   "characters_present": [
+    "host",
+    "subject_atlantis_ruins"
+   ],
+   "poses": {
+    "host": [
+     {
+      "time": 6.16,
+      "x": 123.5,
+      "y": 810.0,
+      "height": 245,
+      "flip": false,
+      "expression": "surprised",
+      "opacity": 1.0,
+      "hand_r_x": 24,
+      "hand_r_y": -22,
+      "jump": 0,
+      "celebrate": 0
+     },
+     {
+      "time": 9.93,
+      "x": 123.5,
+      "y": 810.0,
+      "height": 245,
+      "flip": false,
+      "expression": "surprised",
+      "opacity": 1.0,
+      "hand_r_x": 24,
+      "hand_r_y": -22,
+      "jump": 0,
+      "celebrate": 0
+     },
+     {
+      "time": 10.28,
+      "x": 123.5,
+      "y": 810.0,
+      "height": 245,
+      "flip": false,
+      "expression": "surprised",
+      "opacity": 1.0,
+      "hand_r_x": 38,
+      "hand_r_y": -74,
+      "jump": 0,
+      "celebrate": 0
+     },
+     {
+      "time": 12.95,
+      "x": 123.5,
+      "y": 810.0,
+      "height": 245,
+      "flip": false,
+      "expression": "surprised",
+      "opacity": 1.0,
+      "hand_r_x": 38,
+      "hand_r_y": -74,
+      "jump": 0,
+      "celebrate": 0
+     },
+     {
+      "time": 13.3,
+      "x": 123.5,
+      "y": 810.0,
+      "height": 245,
+      "flip": false,
+      "expression": "surprised",
+      "opacity": 1.0,
+      "hand_r_x": 24,
+      "hand_r_y": -22,
+      "jump": 0,
+      "celebrate": 0
+     },
+     {
+      "time": 13.4,
+      "x": 123.5,
+      "y": 810.0,
+      "height": 245,
+      "flip": false,
+      "expression": "surprised",
+      "opacity": 1.0,
+      "hand_r_x": 24,
+      "hand_r_y": -22,
+      "jump": 0,
+      "celebrate": 0
+     }
+    ],
+    "subject_atlantis_ruins": [
+     {
+      "time": 6.16,
+      "x": 368.5,
+      "y": 810.0,
+      "height": 403.8,
+      "opacity": 0.0,
+      "z": -1
+     },
+     {
+      "time": 6.31,
+      "x": 368.5,
+      "y": 810.0,
+      "height": 222.1,
+      "opacity": 0.0,
+      "z": -1
+     },
+     {
+      "time": 7.01,
+      "x": 368.5,
+      "y": 810.0,
+      "height": 403.8,
+      "opacity": 1.0,
+      "z": -1
+     },
+     {
+      "time": 13.4,
+      "x": 368.5,
+      "y": 810.0,
+      "height": 403.8,
+      "opacity": 1.0,
+      "z": -1
+     }
+    ]
+   },
+   "actions": [],
+   "background": {
+    "preset": "nile_bank",
+    "time": "day"
+   },
+   "camera": [
+    {
+     "time": 6.16,
+     "x": 288,
+     "y": 560,
+     "zoom": 1.0
+    },
+    {
+     "time": 13.4,
+     "x": 288,
+     "y": 600,
+     "zoom": 1.1
+    }
+   ]
+  },
+  {
+   "renderer": "native-vector-v1",
+   "kind": "scene",
+   "index": 2,
+   "start_time": 13.4,
+   "end_time": 21.28,
+   "characters_present": [
+    "host",
+    "subject_underground_city"
+   ],
+   "poses": {
+    "host": [
+     {
+      "time": 13.4,
+      "x": 123.5,
+      "y": 810.0,
+      "height": 245,
+      "flip": false,
+      "expression": "happy",
+      "opacity": 1.0,
+      "hand_r_x": 24,
+      "hand_r_y": -22,
+      "jump": 0,
+      "celebrate": 0
+     },
+     {
+      "time": 13.55,
+      "x": 123.5,
+      "y": 810.0,
+      "height": 245,
+      "flip": false,
+      "expression": "happy",
+      "opacity": 1.0,
+      "hand_r_x": 24,
+      "hand_r_y": -22,
+      "jump": 0,
+      "celebrate": 0
+     },
+     {
+      "time": 13.85,
+      "x": 123.5,
+      "y": 810.0,
+      "height": 245,
+      "flip": false,
+      "expression": "happy",
+      "opacity": 1.0,
+      "hand_r_x": 24,
+      "hand_r_y": -22,
+      "jump": 0,
+      "celebrate": 1
+     },
+     {
+      "time": 20.98,
+      "x": 123.5,
+      "y": 810.0,
+      "height": 245,
+      "flip": false,
+      "expression": "happy",
+      "opacity": 1.0,
+      "hand_r_x": 24,
+      "hand_r_y": -22,
+      "jump": 0,
+      "celebrate": 1
+     },
+     {
+      "time": 21.18,
+      "x": 123.5,
+      "y": 810.0,
+      "height": 245,
+      "flip": false,
+      "expression": "happy",
+      "opacity": 1.0,
+      "hand_r_x": 24,
+      "hand_r_y": -22,
+      "jump": 0,
+      "celebrate": 0
+     },
+     {
+      "time": 21.28,
+      "x": 123.5,
+      "y": 810.0,
+      "height": 245,
+      "flip": false,
+      "expression": "happy",
+      "opacity": 1.0,
+      "hand_r_x": 24,
+      "hand_r_y": -22,
+      "jump": 0,
+      "celebrate": 0
+     }
+    ],
+    "subject_underground_city": [
+     {
+      "time": 13.4,
+      "x": 368.5,
+      "y": 810.0,
+      "height": 347.4,
+      "opacity": 1.0,
+      "z": -1
+     },
+     {
+      "time": 21.28,
+      "x": 368.5,
+      "y": 810.0,
+      "height": 347.4,
+      "opacity": 1.0,
+      "z": -1
+     }
+    ]
+   },
+   "actions": [],
+   "background": {
+    "preset": "stone_age_cave",
+    "time": "night"
+   },
+   "camera": [
+    {
+     "time": 13.4,
+     "x": 288,
+     "y": 560,
+     "zoom": 1.0
+    },
+    {
+     "time": 21.28,
+     "x": 288,
+     "y": 600,
+     "zoom": 1.1
+    }
+   ]
+  }
+ ],
+ "cues": [],
+ "vector_meta": {
+  "dna": {
+   "cast": [
+    6,
+    3
+   ],
+   "palette": "alternate",
+   "framing": "close",
+   "pacing": "normal",
+   "caption": "band"
+  },
+  "host": "grandpa_explorer",
+  "buddy": "capybara",
+  "storyboard_source": "fallback"
+ }
+}

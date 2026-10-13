@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zakariya zDola30s Pro v2.0</title>
+    <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Claude-Style Header -->
+        <header class="app-header">
+            <div class="brand-group">
+                <div class="logo-wrapper">
+                    <img src="icon48.png" alt="Logo" class="app-logo">
+                    <span class="pulse-dot"></span>
+                </div>
+                <div class="brand-info">
+                    <h1 class="brand-title">Zakariya <span class="highlight">zDola30s</span></h1>
+                    <span class="engine-badge">⚡ 30S CLAUDE ENGINE • v2.0 Pro</span>
+                </div>
+            </div>
+            <div class="status-chip" id="connection-status" title="Connection to Dola tab">
+                <span class="status-indicator"></span>
+                <span class="status-text">Connected</span>
+            </div>
+        </header>
+
+        <!-- Master Extension ON/OFF Power Card -->
+        <div class="master-power-card" id="master-power-card">
+            <div class="power-left">
+                <div class="power-icon-wrapper" id="power-icon-wrapper">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M18.36 6.64a9 9 0 1 1-12.73 0"></path>
+                        <line x1="12" y1="2" x2="12" y2="12"></line>
+                    </svg>
+                </div>
+                <div class="power-text-group">
+                    <div class="power-title" id="power-title">Extension Master: <span class="power-status-text" id="power-status-text">ON</span></div>
+                    <div class="power-subtitle" id="power-subtitle">30s Force Engine & Auto-Download Active</div>
+                </div>
+            </div>
+            <label class="switch-toggle master-switch" title="Turn Extension ON or OFF">
+                <input type="checkbox" id="toggle-master-power" checked>
+                <span class="slider round"></span>
+            </label>
+        </div>
+
+        <!-- Extension Disabled Safe-Mode Banner (Shown when OFF) -->
+        <div class="disabled-safe-banner" id="disabled-safe-banner" style="display: none;">
+            <div class="banner-icon">🛡️</div>
+            <div class="banner-content">
+                <strong>Extension is Paused (Safe Mode)</strong>
+                <span>All page scripts, network hooks & overlays are OFF. Login, accounts & prompt pasting will work natively without interference.</span>
+                <button type="button" class="btn-enable-quick" id="btn-enable-quick">⚡ Turn ON Extension</button>
+            </div>
+        </div>
+
+        <!-- Main Workspace -->
+        <main class="workspace" id="main-workspace">
+            <!-- Configuration Row -->
+            <div class="config-row">
+                <!-- Ratio Selector -->
+                <div class="config-group">
+                    <span class="config-label">Ratio:</span>
+                    <div class="ratio-pill-group">
+                        <button type="button" class="ratio-btn active" data-ratio="9:16">9:16</button>
+                        <button type="button" class="ratio-btn" data-ratio="16:9">16:9</button>
+                        <button type="button" class="ratio-btn" data-ratio="1:1">1:1</button>
+                    </div>
+                </div>
+
+                <!-- Duration Fixed Badge -->
+                <div class="config-group">
+                    <span class="config-label">Duration:</span>
+                    <div class="duration-badge">
+                        <span class="lightning">⚡</span> <strong>30s Force</strong>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Auto-Download Status Card -->
+            <div class="auto-download-card">
+                <div class="download-info">
+                    <div class="icon-circle">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                    </div>
+                    <div class="download-text">
+                        <div class="download-title">Auto-Download Active</div>
+                        <div class="download-desc">Original unwatermarked 1080P video saves automatically</div>
+                    </div>
+                </div>
+                <label class="switch-toggle" title="Toggle Auto-Download">
+                    <input type="checkbox" id="toggle-auto-download" checked>
+                    <span class="slider"></span>
+                </label>
+            </div>
+
+            <!-- Action Status Message -->
+            <div class="action-alert" id="action-alert" style="display: none;">
+                <span class="alert-icon">ℹ️</span>
+                <span class="alert-text" id="alert-message">Ready</span>
+            </div>
+
+            <!-- Recent Auto-Downloads List Drawer -->
+            <div class="recent-downloads-section">
+                <div class="section-title-row">
+                    <span class="section-title">Recent Downloads</span>
+                    <span class="download-count" id="download-count-badge">0 saved</span>
+                </div>
+                <div class="downloads-list" id="downloads-list">
+                    <div class="empty-downloads">No videos generated in this session yet. Type directly in Dola AI!</div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="app-footer">
+            <span class="footer-credit">Developed by <strong>Zakariya</strong> • v2.0 Pro</span>
+        </footer>
+    </div>
+
+    <script src="popup.js"></script>
+</body>
+</html>

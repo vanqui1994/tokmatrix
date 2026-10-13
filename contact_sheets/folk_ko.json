@@ -1,0 +1,453 @@
+{
+ "id": "preview-test_folk_ko",
+ "name": "한국의 산속에는 여우구슬을 품은 신비로운 구미호가 전해집니다.",
+ "renderer": "native-vector-v1",
+ "fidelity": "technical-demo",
+ "note": "vector engine · niche folklore_legends · ko",
+ "duration": 17.02,
+ "characters": [
+  {
+   "id": "host",
+   "name": "Host",
+   "asset": "chibi_teacher",
+   "outfit": "pioneer"
+  },
+  {
+   "id": "buddy",
+   "name": "Buddy",
+   "asset": "hedgehog"
+  },
+  {
+   "id": "subject_gumiho",
+   "name": "Gumiho",
+   "asset": "gumiho"
+  },
+  {
+   "id": "subject_dokkaebi",
+   "name": "Dokkaebi",
+   "asset": "dokkaebi"
+  }
+ ],
+ "scenes": [
+  {
+   "renderer": "native-vector-v1",
+   "kind": "scene",
+   "index": 0,
+   "start_time": 0.0,
+   "end_time": 5.44,
+   "characters_present": [
+    "host",
+    "subject_gumiho"
+   ],
+   "poses": {
+    "host": [
+     {
+      "time": 0.0,
+      "x": -90.0,
+      "y": 810.0,
+      "height": 245,
+      "flip": false,
+      "expression": "happy",
+      "opacity": 1.0,
+      "hand_r_x": 24,
+      "hand_r_y": -22,
+      "jump": 0,
+      "celebrate": 0
+     },
+     {
+      "time": 0.15,
+      "x": -90.0,
+      "y": 810.0,
+      "height": 245,
+      "flip": false,
+      "expression": "happy",
+      "opacity": 1.0,
+      "hand_r_x": 24,
+      "hand_r_y": -22,
+      "jump": 0,
+      "celebrate": 0
+     },
+     {
+      "time": 1.573,
+      "x": 123.5,
+      "y": 810.0,
+      "height": 245,
+      "flip": false,
+      "expression": "happy",
+      "opacity": 1.0,
+      "hand_r_x": 24,
+      "hand_r_y": -22,
+      "jump": 0,
+      "celebrate": 0
+     },
+     {
+      "time": 1.623,
+      "x": 123.5,
+      "y": 810.0,
+      "height": 245,
+      "flip": false,
+      "expression": "happy",
+      "opacity": 1.0,
+      "hand_r_x": 24,
+      "hand_r_y": -22,
+      "jump": 0,
+      "celebrate": 0
+     },
+     {
+      "time": 5.44,
+      "x": 123.5,
+      "y": 810.0,
+      "height": 245,
+      "flip": false,
+      "expression": "happy",
+      "opacity": 1.0,
+      "hand_r_x": 24,
+      "hand_r_y": -22,
+      "jump": 0,
+      "celebrate": 0
+     }
+    ],
+    "subject_gumiho": [
+     {
+      "time": 0.0,
+      "x": 376.7,
+      "y": 810.0,
+      "height": 297.6,
+      "opacity": 1.0,
+      "z": -1
+     },
+     {
+      "time": 5.44,
+      "x": 376.7,
+      "y": 810.0,
+      "height": 297.6,
+      "opacity": 1.0,
+      "z": -1
+     }
+    ]
+   },
+   "actions": [
+    {
+     "type": "emote",
+     "start": 2.87,
+     "end": 5.34,
+     "actor": "host",
+     "emote": "idea"
+    }
+   ],
+   "background": {
+    "preset": "korean_mountain_night",
+    "time": "day",
+    "weather": "fog"
+   },
+   "camera": [
+    {
+     "time": 0.0,
+     "x": 288,
+     "y": 560,
+     "zoom": 1.0
+    },
+    {
+     "time": 5.44,
+     "x": 288,
+     "y": 600,
+     "zoom": 1.1
+    }
+   ]
+  },
+  {
+   "renderer": "native-vector-v1",
+   "kind": "scene",
+   "index": 1,
+   "start_time": 5.44,
+   "end_time": 10.82,
+   "characters_present": [
+    "host",
+    "subject_dokkaebi"
+   ],
+   "poses": {
+    "host": [
+     {
+      "time": 5.44,
+      "x": 123.5,
+      "y": 810.0,
+      "height": 245,
+      "flip": false,
+      "expression": "worried",
+      "opacity": 1.0,
+      "hand_r_x": 24,
+      "hand_r_y": -22,
+      "jump": 0,
+      "celebrate": 0
+     },
+     {
+      "time": 8.28,
+      "x": 123.5,
+      "y": 810.0,
+      "height": 245,
+      "flip": false,
+      "expression": "worried",
+      "opacity": 1.0,
+      "hand_r_x": 24,
+      "hand_r_y": -22,
+      "jump": 0,
+      "celebrate": 0
+     },
+     {
+      "time": 8.63,
+      "x": 123.5,
+      "y": 810.0,
+      "height": 245,
+      "flip": false,
+      "expression": "worried",
+      "opacity": 1.0,
+      "hand_r_x": 38,
+      "hand_r_y": -74,
+      "jump": 0,
+      "celebrate": 0
+     },
+     {
+      "time": 10.37,
+      "x": 123.5,
+      "y": 810.0,
+      "height": 245,
+      "flip": false,
+      "expression": "worried",
+      "opacity": 1.0,
+      "hand_r_x": 38,
+      "hand_r_y": -74,
+      "jump": 0,
+      "celebrate": 0
+     },
+     {
+      "time": 10.72,
+      "x": 123.5,
+      "y": 810.0,
+      "height": 245,
+      "flip": false,
+      "expression": "worried",
+      "opacity": 1.0,
+      "hand_r_x": 24,
+      "hand_r_y": -22,
+      "jump": 0,
+      "celebrate": 0
+     },
+     {
+      "time": 10.82,
+      "x": 123.5,
+      "y": 810.0,
+      "height": 245,
+      "flip": false,
+      "expression": "worried",
+      "opacity": 1.0,
+      "hand_r_x": 24,
+      "hand_r_y": -22,
+      "jump": 0,
+      "celebrate": 0
+     }
+    ],
+    "subject_dokkaebi": [
+     {
+      "time": 5.44,
+      "x": 351.0,
+      "y": 810.0,
+      "height": 268.8,
+      "opacity": 0.0,
+      "z": -1
+     },
+     {
+      "time": 5.59,
+      "x": 351.0,
+      "y": 810.0,
+      "height": 147.8,
+      "opacity": 0.0,
+      "z": -1
+     },
+     {
+      "time": 6.29,
+      "x": 351.0,
+      "y": 810.0,
+      "height": 268.8,
+      "opacity": 1.0,
+      "z": -1
+     },
+     {
+      "time": 10.82,
+      "x": 351.0,
+      "y": 810.0,
+      "height": 268.8,
+      "opacity": 1.0,
+      "z": -1
+     }
+    ]
+   },
+   "actions": [],
+   "background": {
+    "preset": "korean_mountain_night",
+    "time": "day",
+    "weather": "fog"
+   },
+   "camera": [
+    {
+     "time": 5.44,
+     "x": 288,
+     "y": 560,
+     "zoom": 1.0
+    },
+    {
+     "time": 10.82,
+     "x": 288,
+     "y": 600,
+     "zoom": 1.1
+    }
+   ]
+  },
+  {
+   "renderer": "native-vector-v1",
+   "kind": "scene",
+   "index": 2,
+   "start_time": 10.82,
+   "end_time": 17.02,
+   "characters_present": [
+    "host",
+    "subject_dokkaebi"
+   ],
+   "poses": {
+    "host": [
+     {
+      "time": 10.82,
+      "x": 123.5,
+      "y": 810.0,
+      "height": 245,
+      "flip": false,
+      "expression": "happy",
+      "opacity": 1.0,
+      "hand_r_x": 24,
+      "hand_r_y": -22,
+      "jump": 0,
+      "celebrate": 0
+     },
+     {
+      "time": 10.97,
+      "x": 123.5,
+      "y": 810.0,
+      "height": 245,
+      "flip": false,
+      "expression": "happy",
+      "opacity": 1.0,
+      "hand_r_x": 24,
+      "hand_r_y": -22,
+      "jump": 0,
+      "celebrate": 0
+     },
+     {
+      "time": 11.27,
+      "x": 123.5,
+      "y": 810.0,
+      "height": 245,
+      "flip": false,
+      "expression": "happy",
+      "opacity": 1.0,
+      "hand_r_x": 24,
+      "hand_r_y": -22,
+      "jump": 0,
+      "celebrate": 1
+     },
+     {
+      "time": 16.72,
+      "x": 123.5,
+      "y": 810.0,
+      "height": 245,
+      "flip": false,
+      "expression": "happy",
+      "opacity": 1.0,
+      "hand_r_x": 24,
+      "hand_r_y": -22,
+      "jump": 0,
+      "celebrate": 1
+     },
+     {
+      "time": 16.92,
+      "x": 123.5,
+      "y": 810.0,
+      "height": 245,
+      "flip": false,
+      "expression": "happy",
+      "opacity": 1.0,
+      "hand_r_x": 24,
+      "hand_r_y": -22,
+      "jump": 0,
+      "celebrate": 0
+     },
+     {
+      "time": 17.02,
+      "x": 123.5,
+      "y": 810.0,
+      "height": 245,
+      "flip": false,
+      "expression": "happy",
+      "opacity": 1.0,
+      "hand_r_x": 24,
+      "hand_r_y": -22,
+      "jump": 0,
+      "celebrate": 0
+     }
+    ],
+    "subject_dokkaebi": [
+     {
+      "time": 10.82,
+      "x": 351.0,
+      "y": 810.0,
+      "height": 268.8,
+      "opacity": 1.0,
+      "z": -1
+     },
+     {
+      "time": 17.02,
+      "x": 351.0,
+      "y": 810.0,
+      "height": 268.8,
+      "opacity": 1.0,
+      "z": -1
+     }
+    ]
+   },
+   "actions": [],
+   "background": {
+    "preset": "misty_forest_night",
+    "time": "day",
+    "weather": "fog"
+   },
+   "camera": [
+    {
+     "time": 10.82,
+     "x": 288,
+     "y": 560,
+     "zoom": 1.0
+    },
+    {
+     "time": 17.02,
+     "x": 288,
+     "y": 600,
+     "zoom": 1.1
+    }
+   ]
+  }
+ ],
+ "cues": [],
+ "vector_meta": {
+  "dna": {
+   "cast": [
+    4,
+    3
+   ],
+   "palette": "mist",
+   "framing": "close",
+   "pacing": "normal",
+   "caption": "pill"
+  },
+  "host": "ranger",
+  "buddy": "hedgehog",
+  "storyboard_source": "fallback"
+ }
+}

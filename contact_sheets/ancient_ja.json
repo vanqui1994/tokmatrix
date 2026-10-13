@@ -1,0 +1,464 @@
+{
+ "id": "preview-test_ancient_ja",
+ "name": "アンデス山脈の険しい尾根に築かれた空中都市マチュピチュです。",
+ "renderer": "native-vector-v1",
+ "fidelity": "technical-demo",
+ "note": "vector engine · niche lost_civilizations · ja",
+ "duration": 16.6,
+ "characters": [
+  {
+   "id": "host",
+   "name": "Host",
+   "asset": "chibi_boy",
+   "outfit": "greek_tunic"
+  },
+  {
+   "id": "buddy",
+   "name": "Buddy",
+   "asset": "owl"
+  },
+  {
+   "id": "subject_machu_picchu",
+   "name": "Machu Picchu",
+   "asset": "machu_picchu"
+  },
+  {
+   "id": "subject_petra_facade",
+   "name": "Petra",
+   "asset": "petra_facade"
+  },
+  {
+   "id": "subject_underground_city",
+   "name": "underground city of Derinkuyu",
+   "asset": "underground_city"
+  }
+ ],
+ "scenes": [
+  {
+   "renderer": "native-vector-v1",
+   "kind": "scene",
+   "index": 0,
+   "start_time": 0.0,
+   "end_time": 5.2,
+   "characters_present": [
+    "host",
+    "buddy",
+    "subject_machu_picchu"
+   ],
+   "poses": {
+    "host": [
+     {
+      "time": 0.0,
+      "x": -90.0,
+      "y": 810.0,
+      "height": 235,
+      "flip": false,
+      "expression": "happy",
+      "opacity": 1.0,
+      "hand_r_x": 24,
+      "hand_r_y": -22,
+      "jump": 0,
+      "celebrate": 0
+     },
+     {
+      "time": 0.15,
+      "x": -90.0,
+      "y": 810.0,
+      "height": 235,
+      "flip": false,
+      "expression": "happy",
+      "opacity": 1.0,
+      "hand_r_x": 24,
+      "hand_r_y": -22,
+      "jump": 0,
+      "celebrate": 0
+     },
+     {
+      "time": 1.58,
+      "x": 124.5,
+      "y": 810.0,
+      "height": 235,
+      "flip": false,
+      "expression": "happy",
+      "opacity": 1.0,
+      "hand_r_x": 24,
+      "hand_r_y": -22,
+      "jump": 0,
+      "celebrate": 0
+     },
+     {
+      "time": 1.63,
+      "x": 124.5,
+      "y": 810.0,
+      "height": 235,
+      "flip": false,
+      "expression": "happy",
+      "opacity": 1.0,
+      "hand_r_x": 24,
+      "hand_r_y": -22,
+      "jump": 0,
+      "celebrate": 0
+     },
+     {
+      "time": 5.2,
+      "x": 124.5,
+      "y": 810.0,
+      "height": 235,
+      "flip": false,
+      "expression": "happy",
+      "opacity": 1.0,
+      "hand_r_x": 24,
+      "hand_r_y": -22,
+      "jump": 0,
+      "celebrate": 0
+     }
+    ],
+    "buddy": [
+     {
+      "time": 0.0,
+      "x": 486.1,
+      "y": 810.0,
+      "height": 146.6,
+      "flip": true,
+      "expression": "happy",
+      "opacity": 1.0,
+      "jump": 0
+     },
+     {
+      "time": 5.2,
+      "x": 486.1,
+      "y": 810.0,
+      "height": 146.6,
+      "flip": true,
+      "expression": "happy",
+      "opacity": 1.0,
+      "jump": 0
+     }
+    ],
+    "subject_machu_picchu": [
+     {
+      "time": 0.0,
+      "x": 322.6,
+      "y": 810.0,
+      "height": 249.7,
+      "opacity": 1.0,
+      "z": -1
+     },
+     {
+      "time": 5.2,
+      "x": 322.6,
+      "y": 810.0,
+      "height": 249.7,
+      "opacity": 1.0,
+      "z": -1
+     }
+    ]
+   },
+   "actions": [],
+   "background": {
+    "preset": "andes_terraces",
+    "time": "night"
+   },
+   "camera": [
+    {
+     "time": 0.0,
+     "x": 274,
+     "y": 540,
+     "zoom": 1.06
+    },
+    {
+     "time": 5.2,
+     "x": 302,
+     "y": 540,
+     "zoom": 1.06
+    }
+   ]
+  },
+  {
+   "renderer": "native-vector-v1",
+   "kind": "scene",
+   "index": 1,
+   "start_time": 5.2,
+   "end_time": 10.34,
+   "characters_present": [
+    "host",
+    "buddy",
+    "subject_petra_facade"
+   ],
+   "poses": {
+    "host": [
+     {
+      "time": 5.2,
+      "x": 124.5,
+      "y": 810.0,
+      "height": 235,
+      "flip": false,
+      "expression": "happy",
+      "opacity": 1.0,
+      "hand_r_x": 24,
+      "hand_r_y": -22,
+      "jump": 0,
+      "celebrate": 0
+     },
+     {
+      "time": 10.34,
+      "x": 124.5,
+      "y": 810.0,
+      "height": 235,
+      "flip": false,
+      "expression": "happy",
+      "opacity": 1.0,
+      "hand_r_x": 24,
+      "hand_r_y": -22,
+      "jump": 0,
+      "celebrate": 0
+     }
+    ],
+    "buddy": [
+     {
+      "time": 5.2,
+      "x": 486.1,
+      "y": 810.0,
+      "height": 146.6,
+      "flip": true,
+      "expression": "happy",
+      "opacity": 1.0,
+      "jump": 0
+     },
+     {
+      "time": 10.34,
+      "x": 486.1,
+      "y": 810.0,
+      "height": 146.6,
+      "flip": true,
+      "expression": "happy",
+      "opacity": 1.0,
+      "jump": 0
+     }
+    ],
+    "subject_petra_facade": [
+     {
+      "time": 5.2,
+      "x": 322.6,
+      "y": 810.0,
+      "height": 255.3,
+      "opacity": 0.0,
+      "z": -1
+     },
+     {
+      "time": 5.35,
+      "x": 322.6,
+      "y": 810.0,
+      "height": 140.4,
+      "opacity": 0.0,
+      "z": -1
+     },
+     {
+      "time": 6.05,
+      "x": 322.6,
+      "y": 810.0,
+      "height": 255.3,
+      "opacity": 1.0,
+      "z": -1
+     },
+     {
+      "time": 10.34,
+      "x": 322.6,
+      "y": 810.0,
+      "height": 255.3,
+      "opacity": 1.0,
+      "z": -1
+     }
+    ]
+   },
+   "actions": [],
+   "background": {
+    "preset": "rock_canyon",
+    "time": "night"
+   },
+   "camera": [
+    {
+     "time": 5.2,
+     "x": 302,
+     "y": 540,
+     "zoom": 1.06
+    },
+    {
+     "time": 10.34,
+     "x": 274,
+     "y": 540,
+     "zoom": 1.06
+    }
+   ]
+  },
+  {
+   "renderer": "native-vector-v1",
+   "kind": "scene",
+   "index": 2,
+   "start_time": 10.34,
+   "end_time": 16.6,
+   "characters_present": [
+    "host",
+    "buddy",
+    "subject_underground_city"
+   ],
+   "poses": {
+    "host": [
+     {
+      "time": 10.34,
+      "x": 124.5,
+      "y": 810.0,
+      "height": 235,
+      "flip": false,
+      "expression": "happy",
+      "opacity": 1.0,
+      "hand_r_x": 24,
+      "hand_r_y": -22,
+      "jump": 0,
+      "celebrate": 0
+     },
+     {
+      "time": 10.49,
+      "x": 124.5,
+      "y": 810.0,
+      "height": 235,
+      "flip": false,
+      "expression": "happy",
+      "opacity": 1.0,
+      "hand_r_x": 24,
+      "hand_r_y": -22,
+      "jump": 0,
+      "celebrate": 0
+     },
+     {
+      "time": 10.79,
+      "x": 124.5,
+      "y": 810.0,
+      "height": 235,
+      "flip": false,
+      "expression": "happy",
+      "opacity": 1.0,
+      "hand_r_x": 24,
+      "hand_r_y": -22,
+      "jump": 0,
+      "celebrate": 1
+     },
+     {
+      "time": 16.3,
+      "x": 124.5,
+      "y": 810.0,
+      "height": 235,
+      "flip": false,
+      "expression": "happy",
+      "opacity": 1.0,
+      "hand_r_x": 24,
+      "hand_r_y": -22,
+      "jump": 0,
+      "celebrate": 1
+     },
+     {
+      "time": 16.5,
+      "x": 124.5,
+      "y": 810.0,
+      "height": 235,
+      "flip": false,
+      "expression": "happy",
+      "opacity": 1.0,
+      "hand_r_x": 24,
+      "hand_r_y": -22,
+      "jump": 0,
+      "celebrate": 0
+     },
+     {
+      "time": 16.6,
+      "x": 124.5,
+      "y": 810.0,
+      "height": 235,
+      "flip": false,
+      "expression": "happy",
+      "opacity": 1.0,
+      "hand_r_x": 24,
+      "hand_r_y": -22,
+      "jump": 0,
+      "celebrate": 0
+     }
+    ],
+    "buddy": [
+     {
+      "time": 10.34,
+      "x": 486.1,
+      "y": 810.0,
+      "height": 146.6,
+      "flip": true,
+      "expression": "happy",
+      "opacity": 1.0,
+      "jump": 0
+     },
+     {
+      "time": 16.6,
+      "x": 486.1,
+      "y": 810.0,
+      "height": 146.6,
+      "flip": true,
+      "expression": "happy",
+      "opacity": 1.0,
+      "jump": 0
+     }
+    ],
+    "subject_underground_city": [
+     {
+      "time": 10.34,
+      "x": 322.6,
+      "y": 810.0,
+      "height": 267.3,
+      "opacity": 1.0,
+      "z": -1
+     },
+     {
+      "time": 16.6,
+      "x": 322.6,
+      "y": 810.0,
+      "height": 267.3,
+      "opacity": 1.0,
+      "z": -1
+     }
+    ]
+   },
+   "actions": [],
+   "background": {
+    "preset": "rock_canyon",
+    "time": "night"
+   },
+   "camera": [
+    {
+     "time": 10.34,
+     "x": 274,
+     "y": 540,
+     "zoom": 1.06
+    },
+    {
+     "time": 16.6,
+     "x": 302,
+     "y": 540,
+     "zoom": 1.06
+    }
+   ]
+  }
+ ],
+ "cues": [],
+ "vector_meta": {
+  "dna": {
+   "cast": [
+    2,
+    1
+   ],
+   "palette": "night",
+   "framing": "pan",
+   "pacing": "calm",
+   "caption": "box"
+  },
+  "host": "greek",
+  "buddy": "owl",
+  "storyboard_source": "fallback"
+ }
+}
