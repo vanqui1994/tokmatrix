@@ -63,6 +63,7 @@ class WatchChannel(BaseModel):
 class WatchConfig(BaseModel):
     interval_min: int = Field(60, ge=15, le=1440)
     enabled: bool = True
+    jobs: Optional[int] = Field(None, ge=1, le=3)  # số video chạy song song trong một lượt theo dõi; None = giữ giá trị đang lưu
 
 
 def shorts_url(url: str) -> str:
@@ -88,6 +89,57 @@ def _watch_save(data: Dict[str, Any]) -> None:
     tmp = WATCH.with_suffix(".tmp"); tmp.write_text(json.dumps(data, ensure_ascii=False, indent=1)); tmp.replace(WATCH)
 
 
+def watch_jobs(data: Dict[str, Any], ch: Dict[str, Any]) -> int:
+    """Số luồng (video chạy song song) của một lượt theo dõi: kênh > cấu hình chung (`jobs` trong watch.json) > env > 1."""
+    try:
+        n = int(ch.get("jobs") or data.get("jobs") or os.environ.get("STORY_REMAKE_WATCH_JOBS") or 1)
+    except (TypeError, ValueError):
+        n = 1
+    return max(1, min(n, 3))
+
+
+PENDING_TASK_STATUSES = ("QUEUED", "PENDING", "WAITING_RENDER", "UPLOADING")
+
+
+def stock_cap(account_id: Any) -> int:
+    """Trần số bài đang chờ đăng của một tài khoản = số bài/ngày được phép × STORY_REMAKE_STOCK_DAYS ngày (0 = không giới hạn).
+
+    Tài khoản khởi động chỉ được 1 bài/ngày (account_pacing) nhưng Story Remake làm video không dừng: 13/10 mỗi acc có 55–70 bài
+    chờ, lịch kéo tới cuối tháng 12 và mỗi video tốn ảnh + TTS. Quá trần thì không mở lượt chạy mới cho kênh gán cho acc đó.
+    """
+    try:
+        days = float(os.environ.get("STORY_REMAKE_STOCK_DAYS", "0") or 0)
+    except ValueError:
+        return 0
+    if days <= 0 or not account_id:
+        return 0
+    try:
+        from bkt_web import account_pacing
+        from bkt_web.autopilot import store as autopilot_store
+        per_day = account_pacing.daily_limit(int(account_id), autopilot_store.get_int("videos_per_day_per_channel") or 6)
+    except Exception:  # noqa: BLE001 — không đọc được nhịp acc: dùng mức 1 bài/ngày (an toàn, ít video nhất)
+        per_day = 1
+    return max(1, int(per_day * days))
+
+
+def pending_count(account_id: Any) -> int:
+    marks = ",".join("?" for _ in PENDING_TASK_STATUSES)
+    with sqlite3.connect(str(CHANNELS_DB), timeout=30) as c:
+        return int(c.execute(f"SELECT COUNT(*) FROM upload_tasks WHERE channel_id=? AND status IN ({marks})",
+                             (int(account_id), *PENDING_TASK_STATUSES)).fetchone()[0])
+
+
+def at_stock_cap(ch: Dict[str, Any]) -> bool:
+    acc = ch.get("account_id")
+    cap = stock_cap(acc)
+    if not cap:
+        return False
+    try:
+        return pending_count(acc) >= cap
+    except Exception:  # noqa: BLE001 — không đếm được thì không chặn
+        return False
+
+
 def watch_tick(now: float | None = None) -> str | None:
     """Một nhịp: nếu rảnh, chạy kênh theo dõi đến hạn lâu nhất chưa chạy. Trả url đã chạy (hoặc None)."""
     now = now or time.time()
@@ -95,11 +147,12 @@ def watch_tick(now: float | None = None) -> str | None:
         data = _watch_load()
         if not data["enabled"] or _runner().get("running"):
             return None
-        due = [c for c in data["channels"] if c.get("enabled", True) and now - c.get("last_run", 0) >= data["interval_min"] * 60]
+        due = [c for c in data["channels"] if c.get("enabled", True) and now - c.get("last_run", 0) >= data["interval_min"] * 60
+               and not at_stock_cap(c)]  # acc đã đủ bài chờ đăng: kênh này nghỉ, không mất last_run nên tới lượt khi bớt bài
         if not due:
             return None
         ch = min(due, key=lambda c: c.get("last_run", 0))
-        _launch(ch["url"], ch.get("limit", 3), 1, ch.get("lang", "auto"), ch.get("images", "imagerouter"), account_id=ch.get("account_id"),
+        _launch(ch["url"], ch.get("limit", 3), watch_jobs(data, ch), ch.get("lang", "auto"), ch.get("images", "imagerouter"), account_id=ch.get("account_id"),
                 translate_to=ch.get("translate_to") or "")
         ch["last_run"] = int(now)
         _watch_save(data)
@@ -132,7 +185,8 @@ def _caption(state: Dict[str, Any], work: Path) -> str:
 
 def enqueue_done() -> int:
     """Video `done` có `account_id`, chưa có task đăng → chép MP4 vào storage và tạo upload_tasks QUEUED ở khung giờ
-    kế tiếp của tài khoản. Lời kể khác ngôn ngữ tài khoản (mỗi tài khoản một nước) → không đăng, ghi `upload_error`."""
+    kế tiếp của tài khoản. Ngôn ngữ caption/hashtag đi theo lời kể của video; không chặn
+    đăng chỉ vì ngôn ngữ video khác ngôn ngữ mặc định của tài khoản."""
     from bkt_web import upload_tasks
     n = 0
     for sf in ROOT.glob("*/state.json") if ROOT.exists() else []:
@@ -141,17 +195,17 @@ def enqueue_done() -> int:
         except Exception:
             continue
         acc = st.get("account_id")
-        if st.get("status") != "done" or not acc or st.get("upload_task_id") or st.get("upload_error"):
+        old_error = str(st.get("upload_error") or "")
+        language_block = old_error.startswith("Lời kể tiếng ") and old_error.endswith("— không đăng")
+        if st.get("status") != "done" or not acc or st.get("upload_task_id") or (old_error and not language_block):
             continue
         vid, work = st["id"], sf.parent
         src = ROOT / "out" / f"{vid}.mp4"
         if not src.exists():
             continue
         info, lang = _account_language(int(acc)), _video_lang(work)
-        if lang != info["language"]:
-            st["upload_error"] = f"Lời kể tiếng {lang or '?'}, tài khoản đăng tiếng {info['language']} — không đăng"
-            sf.write_text(json.dumps(st, ensure_ascii=False, indent=1))
-            continue
+        if language_block:
+            st.pop("upload_error", None)
         run_id = f"story_remake:{vid}"
         with sqlite3.connect(str(CHANNELS_DB), timeout=30) as c:
             row = c.execute("SELECT id FROM upload_tasks WHERE run_id=? AND channel_id=?", (run_id, int(acc))).fetchone()
@@ -162,7 +216,7 @@ def enqueue_done() -> int:
                 dest = UPLOAD_DIR / f"{vid}.mp4"
                 shutil.copy2(src, dest)
                 task_id = upload_tasks.enqueue_auto(c, int(acc), str(dest), _caption(st, work), niche=info["niche"],
-                                                    language=lang, run_id=run_id)
+                                                    language=lang or info["language"], run_id=run_id)
                 n += 1
         st["upload_task_id"] = task_id
         sf.write_text(json.dumps(st, ensure_ascii=False, indent=1))
@@ -288,16 +342,20 @@ def _launch(url: str, limit: int, jobs: int, lang: str, images: str, resumed: bo
 def resume_interrupted() -> None:
     """Gọi lúc server khởi động: lượt chạy chưa xong (active, tiến trình đã chết theo web app) → chạy lại, tool tự bỏ qua video đã xong.
     Cũng bật luồng theo dõi kênh Shorts."""
-    start_watch()
-    info = _runner()
-    if info.get("active") and not info.get("running") and info.get("url"):
-        n = int(info.get("resumes", 0)) + 1
-        if n > MAX_RESUMES:  # chết liên tục (SIGKILL/OOM) → thôi, không chạy lại mãi mỗi lần web app khởi động
-            info.pop("running", None); info["active"] = False
-            RUNNER.write_text(json.dumps(info))
-            return
-        _launch(info["url"], info.get("limit", 5), info.get("jobs", 1), info.get("lang", "auto"), info.get("images", "imagerouter"), resumed=True, resumes=n,
-                account_id=info.get("account_id"), translate_to=info.get("translate_to") or "")
+    try:
+        info = _runner()
+        if info.get("active") and not info.get("running") and info.get("url"):
+            n = int(info.get("resumes", 0)) + 1
+            if n > MAX_RESUMES:  # chết liên tục (SIGKILL/OOM) → thôi, không chạy lại mãi mỗi lần web app khởi động
+                info.pop("running", None); info["active"] = False
+                RUNNER.write_text(json.dumps(info))
+                return
+            _launch(info["url"], info.get("limit", 5), info.get("jobs", 1), info.get("lang", "auto"), info.get("images", "imagerouter"), resumed=True, resumes=n,
+                    account_id=info.get("account_id"), translate_to=info.get("translate_to") or "")
+    finally:
+        # Luồng theo dõi khởi động SAU khi lượt dở đã được chạy tiếp: nếu khởi động trước, nhịp đầu thấy chưa có lượt nào
+        # đang chạy và mở thêm một lượt nữa (13/10: Lichtenweit + StoryFunken chạy chồng sau khi web app restart).
+        start_watch()
 
 
 @router.get("/status")
@@ -446,7 +504,10 @@ def watch_toggle(ch: WatchChannel):
 @router.put("/watch/config")
 def watch_config(cfg: WatchConfig):
     with WATCH_LOCK:
-        data = _watch_load(); data.update(interval_min=cfg.interval_min, enabled=cfg.enabled); _watch_save(data)
+        data = _watch_load(); data.update(interval_min=cfg.interval_min, enabled=cfg.enabled)
+        if cfg.jobs:
+            data["jobs"] = cfg.jobs
+        _watch_save(data)
     return data
 
 

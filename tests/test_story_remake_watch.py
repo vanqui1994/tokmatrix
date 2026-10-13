@@ -55,6 +55,66 @@ class StoryWatchTest(unittest.TestCase):
         self.assertIsNone(srr.watch_tick(T + 2))  # chưa tới hạn (60 phút)
         self.assertEqual(srr.watch_tick(T + 3600), "https://www.youtube.com/@a/shorts")
 
+    def test_watch_runs_use_the_configured_number_of_parallel_jobs(self):
+        calls = []
+        patch.object(srr, "_launch", lambda url, limit, jobs, *a, **k: calls.append(jobs) or 1).start()
+        self.client.post("/api/story-remake/watch", json={"url": "https://www.youtube.com/@a"})
+        self.client.post("/api/story-remake/watch", json={"url": "https://www.youtube.com/@b"})
+        self.client.post("/api/story-remake/watch", json={"url": "https://www.youtube.com/@c"})
+        calls.clear()
+        srr.watch_tick(T)
+        self.assertEqual(calls, [1])  # mặc định giữ 1 luồng
+        r = self.client.put("/api/story-remake/watch/config", json={"interval_min": 60, "enabled": True, "jobs": 2})
+        self.assertEqual(r.json()["jobs"], 2)
+        srr.watch_tick(T + 1)
+        self.assertEqual(calls[-1], 2)
+        self.client.put("/api/story-remake/watch/config", json={"interval_min": 60, "enabled": True})  # không gửi jobs → giữ 2
+        srr.watch_tick(T + 2)
+        self.assertEqual(calls[-1], 2)
+        self.assertEqual(self.client.put("/api/story-remake/watch/config", json={"interval_min": 60, "jobs": 9}).status_code, 422)
+        self.assertEqual(srr.watch_jobs({"jobs": 3}, {"jobs": 1}), 1)  # cấu hình riêng của kênh thắng
+
+    def test_channel_pauses_while_its_account_has_enough_posts_waiting(self):
+        import sqlite3
+        db = self.tmp / "ch.db"
+        with sqlite3.connect(db) as c:
+            c.execute("CREATE TABLE upload_tasks(id INTEGER PRIMARY KEY AUTOINCREMENT, channel_id INT, status TEXT)")
+            c.executemany("INSERT INTO upload_tasks(channel_id, status) VALUES (?, ?)", [(7, "QUEUED")] * 3 + [(7, "SUCCESS")] * 5 + [(8, "QUEUED")])
+        patch.object(srr, "CHANNELS_DB", db).start()
+        patch.object(srr, "stock_cap", lambda acc: 3 if acc == 7 else 0).start()
+        data = srr._watch_load()
+        data["channels"] = [{"url": "https://www.youtube.com/@a/shorts", "account_id": 7, "last_run": 0},
+                            {"url": "https://www.youtube.com/@b/shorts", "account_id": 8, "last_run": 0}]
+        srr._watch_save(data)
+        self.assertEqual(srr.watch_tick(T), "https://www.youtube.com/@b/shorts")  # acc 7 đủ 3 bài chờ → bỏ qua, acc 8 chạy
+        self.assertEqual(srr.watch_tick(T + 1), None)  # chỉ còn kênh của acc 7, vẫn đủ bài
+        with sqlite3.connect(db) as c:
+            c.execute("UPDATE upload_tasks SET status='SUCCESS' WHERE channel_id=7 AND status='QUEUED' AND id=1")
+        self.assertEqual(srr.watch_tick(T + 2), "https://www.youtube.com/@a/shorts")  # bớt bài → tới lượt, last_run chưa bị tiêu
+
+    def test_stock_cap_follows_the_accounts_daily_limit(self):
+        import os
+        with patch.dict(os.environ, {"STORY_REMAKE_STOCK_DAYS": "7"}), \
+                patch("bkt_web.account_pacing.daily_limit", lambda acc, default: 1 if acc == 7 else default), \
+                patch("bkt_web.autopilot.store.get_int", lambda key: 6):
+            self.assertEqual(srr.stock_cap(7), 7)    # tài khoản khởi động: 1 bài/ngày × 7
+            self.assertEqual(srr.stock_cap(8), 42)   # tài khoản thường: 6 bài/ngày × 7
+            self.assertEqual(srr.stock_cap(None), 0)
+        with patch.dict(os.environ, {"STORY_REMAKE_STOCK_DAYS": "0"}):
+            self.assertEqual(srr.stock_cap(7), 0)    # tắt
+
+    def test_restart_resumes_the_interrupted_run_before_the_watcher_can_open_another(self):
+        order = []
+        patch.object(srr, "start_watch", lambda: order.append("watch")).start()
+        patch.object(srr, "_launch", lambda url, *a, **k: order.append("resume") or 1).start()
+        patch.object(srr, "_runner", lambda: {"active": True, "running": False, "url": "https://www.youtube.com/@a/shorts", "resumes": 0}).start()
+        srr.resume_interrupted()
+        self.assertEqual(order, ["resume", "watch"])
+        order.clear()
+        patch.object(srr, "_runner", lambda: {"active": True, "running": False, "url": "https://www.youtube.com/@a/shorts", "resumes": 9}).start()
+        srr.resume_interrupted()  # quá MAX_RESUMES: không chạy tiếp nhưng vẫn bật luồng theo dõi
+        self.assertEqual(order, ["watch"])
+
     def test_paused_channel_and_global_switch_are_skipped(self):
         self.running = True
         self.client.post("/api/story-remake/watch", json={"url": "https://www.youtube.com/@a"})
@@ -123,11 +183,18 @@ class StoryEnqueueTest(unittest.TestCase):
         self.assertTrue(self.state("a1")["upload_task_id"])
         self.assertNotIn("upload_task_id", self.state("a2"))
 
-    def test_narration_in_another_language_is_not_posted(self):
+    def test_narration_in_another_language_is_still_posted(self):
         self.video("b1", "de", account_id=8)
-        self.assertEqual(srr.enqueue_done(), 0)
-        self.assertEqual(self.tasks(), [])
-        self.assertIn("không đăng", self.state("b1")["upload_error"])
+        self.assertEqual(srr.enqueue_done(), 1)
+        self.assertEqual(self.tasks()[0][0], 8)
+        self.assertTrue(self.state("b1")["upload_task_id"])
+
+    def test_old_language_block_is_cleared_and_queued(self):
+        self.video("b2", "ja", account_id=7,
+                   upload_error="Lời kể tiếng ja, tài khoản đăng tiếng en — không đăng")
+        self.assertEqual(srr.enqueue_done(), 1)
+        self.assertNotIn("upload_error", self.state("b2"))
+        self.assertTrue(self.state("b2")["upload_task_id"])
 
 
 class SourcesByAccountTest(unittest.TestCase):
