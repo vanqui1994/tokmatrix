@@ -94,3 +94,17 @@ bkt_web/storage/muse_films/
 bkt_web/storage/source_remakes/
 bkt_web/storage/vector_learned/
 bkt_web/storage/vector_learning.db
+
+# Bí mật / bản sao DB / dữ liệu thu thập — không bao giờ commit (13/10: khoá NordVPN, cookie, bản sao bkt_channels.db)
+bkt_web/.nord_key
+bkt_web/.nord_token
+bkt_web/*.db.bak*
+bkt_web/deleted_channels_*.sql
+bkt_web/*.bak_*
+last_location/
+bkt_web/storage/guest_channel_*.json
+bkt_web/storage/guest_dumps/
+bkt_web/storage/guest_raw/
+bkt_web/storage/kbo_center_videos.json
+bkt_web/storage/k_tiger_nice97_videos.json
+/venv
