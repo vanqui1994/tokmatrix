@@ -210,22 +210,36 @@ export async function probeDuration(mp3Path) {
 /**
  * Synthesize speech with Edge TTS
  */
+// Một lần synthesize bình thường < 2 s (câu ngắn); lần treo thì không bao giờ xong. Hạn mỗi lần thử theo độ dài câu (hoặc cố định bằng
+// EDGE_TTS_TIMEOUT_MS); ~60% lần gọi từ VPS bị treo (13/10) nên cần nhiều lần thử ngắn thay vì ít lần dài.
+const EDGE_TTS_FIXED_MS = Number(process.env.EDGE_TTS_TIMEOUT_MS) || 0;
+const EDGE_TTS_ATTEMPTS = Math.max(1, Number(process.env.EDGE_TTS_ATTEMPTS) || 6);
+const edgeTimeoutMs = (text) => Math.max(5000, EDGE_TTS_FIXED_MS || 5000 + String(text).length * 120);
+
 export async function synthesizeEdge(opts) {
   const { text, voice, outPath, rate = "+15%" } = opts;
   const rateStr = typeof rate === "number" ? `${rate > 1 ? "+" : ""}${Math.round((rate - 1) * 100)}%` : String(rate);
 
-  for (let attempt = 1; attempt <= 4; attempt++) {
+  const timeoutMs = edgeTimeoutMs(text);
+  for (let attempt = 1; attempt <= EDGE_TTS_ATTEMPTS; attempt++) {
     try {
       const tts = new EdgeTTS(text, voice, { rate: rateStr.startsWith("+") || rateStr.startsWith("-") ? rateStr : `+${rateStr}` });
-      const result = await tts.synthesize();
+      // Edge TTS thỉnh thoảng không trả lời (WebSocket im lặng, không lỗi, không đóng): synthesize() không bao giờ settle và
+      // node thoát với "unsettled top-level await" (exit 13) — 387 video Story Remake ja-JP-KeitaNeural 13/10. Hết hạn → ném
+      // lỗi để vòng thử lại bên dưới chạy.
+      let timer;
+      const result = await Promise.race([
+        tts.synthesize(),
+        new Promise((_, reject) => { timer = setTimeout(() => reject(new Error(`edge tts timeout ${timeoutMs}ms`)), timeoutMs); }),
+      ]).finally(() => clearTimeout(timer));
       const audioBuffer = Buffer.from(await result.audio.arrayBuffer());
       if (audioBuffer.length === 0) throw new Error("empty audio buffer");
       fs.mkdirSync(path.dirname(outPath), { recursive: true });
       fs.writeFileSync(outPath, audioBuffer);
       return { success: true, bytes: audioBuffer.length, provider: "edge" };
     } catch (err) {
-      if (attempt === 4) throw err;
-      await new Promise((r) => setTimeout(r, attempt * 800));
+      if (attempt === EDGE_TTS_ATTEMPTS) throw err;
+      await new Promise((r) => setTimeout(r, Math.min(attempt, 3) * 400));
     }
   }
 }

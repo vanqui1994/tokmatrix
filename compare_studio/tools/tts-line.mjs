@@ -31,3 +31,5 @@ try {
   console.log(JSON.stringify({ ok: false, error: String(err.message || err) }));
   process.exitCode = 1;
 }
+// Một lần gọi = một câu: thoát hẳn, kể cả khi một WebSocket của lần thử hết hạn còn treo (nếu không node chờ mãi).
+process.exit(process.exitCode || 0);
