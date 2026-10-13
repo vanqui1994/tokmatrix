@@ -433,10 +433,16 @@
     const r = parseHash();
     const def = PAGES.get(r.id) || PAGES.get('dashboard');
     if (active) active.leave();
+    // Mỗi lần vào trang dùng một bản sao MỚI của #page. bindActions gắn click lên chính phần tử này và không bao giờ gỡ; nếu giữ
+    // nguyên, mọi phiên bản trang cũ (vd Lịch đăng mở ở tab Hàng đợi) vẫn xử lý click của trang mới và ghi giao diện của chúng đè
+    // lên (13/10: tab "Lịch tháng" sáng nhưng thân trang là Hàng đợi sau khi bấm sang tháng khác). cloneNode không sao chép
+    // listener; phiên bản cũ ghi tiếp vào phần tử đã tách khỏi cây nên vô hại. Giữ nội dung cũ (cloneNode(true)) cho hiệu ứng rời trang.
+    const oldPage = $('#page'), page = oldPage.cloneNode(true);
+    oldPage.replaceWith(page);
     const timers = [], leaves = [], ctrl = new AbortController();
     let alive = true;
     const ctx = {
-      id: def.id, sub: r.sub, rest: r.rest, params: r.params, el: $('#page'), signal: ctrl.signal,
+      id: def.id, sub: r.sub, rest: r.rest, params: r.params, el: page, signal: ctrl.signal,
       /** Lặp fn mỗi ms khi tab đang hiển thị; tự dừng khi rời trang. */
       every(ms, fn) {
         const t = setInterval(() => { if (!document.hidden && alive) quietly(fn); }, ms);

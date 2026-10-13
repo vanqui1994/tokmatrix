@@ -247,7 +247,7 @@
       const now = new Date();
       const st = { q: ctx.params.q || '', niche: ctx.params.niche || '', status: ctx.params.status || '',
         ym: ctx.params.month ? (([y, m]) => [Number(y), Number(m) - 1])(ctx.params.month.split('-')) : [now.getFullYear(), now.getMonth()] };
-      let tasks = [];
+      let tasks = [], loaded = false;  // loaded=false: dữ liệu chưa về — lịch vẫn hiện ngay (đổi tháng không phụ thuộc API chậm)
       ctx.el.innerHTML = `<div class="row g-3 mb-1" data-stats></div>
         <div class="d-flex flex-wrap gap-2 align-items-center mb-3">
           <div class="btn-group">${[['queue', 'list-ul', 'Hàng đợi'], ['calendar', 'calendar3', 'Lịch tháng'], ['agenda', 'list-check', 'Danh sách theo ngày']]
@@ -262,7 +262,7 @@
         const n = (list) => tasks.filter((t) => list.includes(t.status)).length;
         $('[data-stats]').innerHTML = [['Tổng lịch', tasks.length, 'calendar3', 'primary', ''], ['Chờ đăng', n(WAITING), 'hourglass-split', 'warning', 'QUEUED'],
           ['Đang xuất bản', n(['UPLOADING']), 'rocket-takeoff', 'info', 'UPLOADING'], ['Đã đăng', n(['SUCCESS']), 'check2-circle', 'success', 'SUCCESS'], ['Lỗi / cần kiểm tra', n(FAILED), 'x-octagon', 'danger', 'ERROR']]
-          .map(([l, v, i, tone, s]) => `<div class="col-6 col-md"><a class="text-decoration-none text-reset" href="#/upload/queue${s ? '?status=' + s : ''}">${App.infoBox({ label: l, value: fmt.num(v), icon: i, tone })}</a></div>`).join('');
+          .map(([l, v, i, tone, s]) => `<div class="col-6 col-md"><a class="text-decoration-none text-reset" href="#/upload/queue${s ? '?status=' + s : ''}">${App.infoBox({ label: l, value: loaded ? fmt.num(v) : '…', icon: i, tone })}</a></div>`).join('');
       }
       const filtered = () => {
         const q = st.q.toLowerCase();
@@ -274,8 +274,9 @@
       function render() {
         stats();
         const box = $('[data-view]');
-        if (view === 'calendar') { calendar(box, filtered(), st.ym); return; }
-        if (view === 'agenda') { agenda(box, filtered(), Number(ctx.params.days || 7)); return; }
+        const loading = '<div class="small text-body-secondary mb-2" data-loading><span class="spinner-border spinner-border-sm me-1"></span>Đang tải bài đăng…</div>';
+        if (view === 'calendar') { calendar(box, filtered(), st.ym); if (!loaded) box.insertAdjacentHTML('afterbegin', loading); return; }
+        if (view === 'agenda') { agenda(box, filtered(), Number(ctx.params.days || 7)); if (!loaded) box.insertAdjacentHTML('afterbegin', loading); return; }
         const all = groupByAccount(tasks), groups = groupByAccount(filtered());
         const niches = new Map(); let none = 0;
         all.forEach((g) => (g.nicheId ? niches.set(g.nicheId, g.nicheName || g.nicheId) : none++));
@@ -287,7 +288,7 @@
           ${st.status ? `<a class="btn btn-sm btn-outline-secondary" href="#/upload/queue">${esc(App.STATUS_LABEL[st.status] || st.status)} <i class="bi bi-x"></i></a>` : ''}
           <span class="small text-body-secondary">${groups.length === all.length ? `${all.length} acc` : `${groups.length}/${all.length} acc`}</span>
           <span class="ms-auto"></span><button class="btn btn-sm btn-outline-secondary" data-action="open-all">Mở tất cả</button><button class="btn btn-sm btn-outline-secondary" data-action="close-all">Thu gọn</button></div>
-          ${groups.length ? groups.map((g) => groupHtml(g, open.has(g.key))).join('') : App.empty(tasks.length ? 'Không có acc nào khớp bộ lọc' : 'Hàng đợi trống — bấm "Lên lịch video mới"')}`;
+          ${groups.length ? groups.map((g) => groupHtml(g, open.has(g.key))).join('') : !loaded ? loading : App.empty(tasks.length ? 'Không có acc nào khớp bộ lọc' : 'Hàng đợi trống — bấm "Lên lịch video mới"')}`;
         box.querySelector('[data-q]').addEventListener('input', (e) => {
           st.q = e.target.value; ctx.setParams({ q: st.q });
           clearTimeout(render.t);
@@ -295,7 +296,7 @@
         });
         box.querySelector('[data-niche]').addEventListener('change', (e) => { st.niche = e.target.value; ctx.setParams({ niche: st.niche }); render(); });
       }
-      async function load() { tasks = (await api.get('/api/upload/tasks')).tasks; render(); }
+      async function load() { tasks = (await api.get('/api/upload/tasks')).tasks; loaded = true; render(); }
 
       // Ngăn kéo log đăng trực tiếp (offcanvas)
       const drawer = h(`<div class="offcanvas offcanvas-end" tabindex="-1" style="width:min(560px,100%)"><div class="offcanvas-header"><h5 class="offcanvas-title"><i class="bi bi-terminal me-2"></i>Log đăng trực tiếp</h5>
@@ -364,6 +365,7 @@
         async confirm(b) { if (await confirm('Bạn đã kiểm tra và video thực sự đã lên kênh?')) { await api.post(`/api/upload/tasks/${b.dataset.id}/confirm`); toast('Đã đánh dấu đã đăng', 'success'); load(); } },
         async delete(b) { if (await confirm(`Xoá task #${b.dataset.id}?`, { danger: true, ok: 'Xoá' })) { await api.del(`/api/upload/tasks/${b.dataset.id}`); toast('Đã xoá', 'success'); load(); } },
       });
+      render();  // hiện khung ngay (lịch/ngày/hàng đợi ở trạng thái đang tải), dữ liệu về sẽ vẽ lại
       await Promise.all([load(), live()]);
       ctx.every(15000, () => { if (!$('[data-compose]').childElementCount) return load(); });
       ctx.every(3000, live);
