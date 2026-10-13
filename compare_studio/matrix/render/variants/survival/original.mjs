@@ -20,9 +20,11 @@ const sevColor = (s) => SEVERITY_COLORS[Math.min(10, Math.max(1, s)) - 1];
 const barColor = (v) => (v >= 66 ? "linear-gradient(90deg,#00C46A,#00FF88)" : v >= 36 ? "linear-gradient(90deg,#E09A00,#FFB800)" : "linear-gradient(90deg,#B0002A,#FF003C)");
 
 // Hình học theo composition (toạ độ 1080×1920 của template gốc).
+// Ảnh AI của cấp chiếm phần lớn thẻ scanner (owner 09/10: ảnh quá nhỏ); thẻ phản ứng là dải thấp; lời đọc kết thúc
+// trên y 1700 (vùng caption TikTok).
 const LAYOUT = {
-  scanner: { scanner: { x: 60, y: 350, w: 960, h: 720 }, meme: { x: 60, y: 1100, w: 960, h: 520 }, caption: { x: 60, y: 1648, w: 960, h: 180 }, glowY: 380 },
-  reactor_top: { caption: { x: 60, y: 340, w: 960, h: 170 }, meme: { x: 60, y: 530, w: 960, h: 520 }, scanner: { x: 60, y: 1080, w: 960, h: 720 }, glowY: 600 },
+  scanner: { scanner: { x: 40, y: 240, w: 1000, h: 995 }, meme: { x: 40, y: 1252, w: 1000, h: 268 }, caption: { x: 60, y: 1532, w: 960, h: 163 }, glowY: 300 },
+  reactor_top: { caption: { x: 60, y: 240, w: 960, h: 160 }, meme: { x: 40, y: 412, w: 1000, h: 268 }, scanner: { x: 40, y: 695, w: 1000, h: 1000 }, glowY: 600 },
 };
 
 /** Nhãn cấp của engine gốc theo nước (survival-languages: STUFE / PROLOG / FINALE…). */
@@ -58,17 +60,17 @@ const CSS = `
 .v-bg-fill{background:linear-gradient(rgba(0,240,255,.04) 1px,transparent 1px) 0 0/60px 60px,linear-gradient(90deg,rgba(0,240,255,.04) 1px,transparent 1px) 0 0/60px 60px,radial-gradient(circle at 50% 30%,#111827 0%,#07090E 80%)!important;box-shadow:inset 0 0 160px rgba(0,0,0,.95)}
 #root{color:#F0F6FC}
 .so-mono{font-family:"JetBrains Mono",monospace}
-.so-eyebrow{position:absolute;left:50%;top:56px;transform:translateX(-50%);max-width:960px;height:50px;box-sizing:border-box;display:flex;align-items:center;gap:12px;padding:0 24px;border-radius:999px;background:#0b2a33;border:1px solid rgba(0,240,255,.35);white-space:nowrap}
+.so-eyebrow{position:absolute;left:50%;top:34px;transform:translateX(-50%);max-width:960px;height:50px;box-sizing:border-box;display:flex;align-items:center;gap:12px;padding:0 24px;border-radius:999px;background:#0b2a33;border:1px solid rgba(0,240,255,.35);white-space:nowrap}
 .so-dot{width:10px;height:10px;border-radius:50%;background:#00F0FF;box-shadow:0 0 10px #00F0FF;flex:none}
 .so-eb{position:relative;height:30px;max-width:880px;display:flex;align-items:center}
 .so-eb-t{margin:0;font-weight:700;letter-spacing:2px;color:#00F0FF;white-space:nowrap}
-.so-title{position:absolute;left:60px;top:122px;width:960px;height:136px;display:flex;align-items:center;justify-content:center}
+.so-title{position:absolute;left:60px;top:94px;width:960px;height:104px;display:flex;align-items:center;justify-content:center}
 .so-title-t{margin:0;width:100%;line-height:1.18;font-weight:700;text-align:center;text-transform:uppercase;color:#FFFFFF;text-shadow:0 0 30px rgba(0,240,255,.35)}
-.so-meter{position:absolute;left:60px;top:286px;width:690px;height:12px;background:rgba(255,255,255,.1);border-radius:6px;overflow:hidden}
+.so-meter{position:absolute;left:60px;top:214px;width:690px;height:12px;background:rgba(255,255,255,.1);border-radius:6px;overflow:hidden}
 #so-meter-fill{width:100%;height:100%;background:linear-gradient(90deg,#00F0FF,#FF003C);transform-origin:0 50%}
 .so-w{position:absolute;inset:0}
 .so-glow{position:absolute;left:90px;width:900px;height:900px;border-radius:50%;filter:blur(80px)}
-.so-tier{position:absolute;left:780px;top:268px;width:240px;height:44px;display:flex;align-items:center;justify-content:flex-end}
+.so-tier{position:absolute;left:780px;top:198px;width:240px;height:44px;display:flex;align-items:center;justify-content:flex-end}
 .so-tier-t{margin:0;font-weight:700;letter-spacing:1px;white-space:nowrap;text-align:right}
 .so-card{position:absolute;box-sizing:border-box;padding:36px 40px;background:#0E131F;border:2px solid;border-radius:36px;box-shadow:0 20px 50px rgba(0,0,0,.6);display:flex;flex-direction:column}
 .so-corner{position:absolute;width:24px;height:24px;border-color:#00F0FF}
@@ -82,6 +84,7 @@ const CSS = `
 .so-label{position:relative;height:220px;margin-top:18px;flex:none;display:flex;align-items:center}
 .so-label-t{margin:0;width:100%;line-height:1.12;font-weight:700;text-transform:uppercase;color:#FFFFFF;text-shadow:0 2px 10px rgba(0,0,0,.5)}
 .so-metrics{margin-top:18px;display:flex;flex-direction:column;gap:22px}
+.so-card.so-big{padding:24px 24px 26px}.so-big .so-head{height:64px}.so-big .so-img{flex:1 1 auto;height:auto;min-height:0}.so-big .so-label.so-sm{height:104px}.so-metrics.so-row3{flex-direction:row;gap:22px}.so-row3 .so-metric{flex:1 1 0;min-width:0}
 .so-img{position:relative;height:250px;margin-top:14px;flex:none;border-radius:18px;overflow:hidden;background:#000;border:1px solid rgba(0,240,255,.25)}
 .so-img img{display:block;width:100%;height:100%;object-fit:cover}
 .so-label.so-sm{height:100px;margin-top:14px}
@@ -102,6 +105,7 @@ const CSS = `
 .so-sevval{height:200px;font-weight:700;font-size:190px;line-height:1;letter-spacing:-6px;white-space:nowrap}
 .so-sevval small{font-size:64px;letter-spacing:0;color:#8B949E}
 .so-pips{display:flex;gap:8px}.so-pips i{width:26px;height:40px;border-radius:6px}
+.so-meme.so-cmp .so-face{top:14px;right:30px;width:240px;height:240px}.so-cmp .so-sev{top:80px;left:36px;width:620px;height:170px;display:grid;grid-template-columns:auto minmax(0,1fr);grid-template-rows:56px 1fr;column-gap:30px;row-gap:12px}.so-cmp .so-sevval{grid-column:1;grid-row:1/3;height:auto;align-self:center;font-size:136px;letter-spacing:-4px}.so-cmp .so-sevval small{font-size:48px}.so-cmp .so-sevname{grid-column:2;grid-row:1;width:100%;height:56px;align-self:end}.so-cmp .so-pips{grid-column:2;grid-row:2;align-self:start;gap:6px}.so-cmp .so-pips i{width:24px;height:46px}
 .so-badge{position:absolute;top:22px;left:22px;width:380px;height:44px;box-sizing:border-box;padding:0 18px;display:flex;align-items:center;background:#000000;border:1px solid rgba(255,255,255,.2);border-radius:12px}
 .so-badge-t{margin:0;font-weight:700;color:#FFFFFF;letter-spacing:1px;white-space:nowrap}
 .t-subtitle{justify-content:center;text-align:center}
@@ -135,14 +139,14 @@ function sceneParts(scene, i, ctx, data, L) {
   const html = `<div class="so-w" id="so-w-${idx}">
 <div class="so-glow" style="top:${L.glowY}px;background:radial-gradient(circle,${color}44 0%,transparent 70%)"></div>
 ${fitIn("so-tier so-mono", tag, { size: 26, min: 14, style: `color:${color}` })}
-<div class="so-card" id="so-card-${idx}" style="${regionStyle(S)};border-color:${color}66">
+<div class="so-card${scene.imgSrc ? " so-big" : ""}" id="so-card-${idx}" style="${regionStyle(S)};border-color:${color}66">
 <i class="so-corner so-c-tl"></i><i class="so-corner so-c-tr"></i><i class="so-corner so-c-bl"></i><i class="so-corner so-c-br"></i>
 <div class="so-head">${fitIn("so-chip so-mono", tag, { size: 30, min: 16, style: `background:${color};color:${inkOn(color)}` })}${fitIn("so-status so-mono", item.status, { size: 30, min: 16, id: `so-status-${idx}`, style: `border-color:${color};color:${color};box-shadow:0 0 26px ${color}55` })}</div>
 ${scene.imgSrc ? `<div class="so-img"><img src="${escapeHtml(scene.imgSrc)}" alt=""></div>` : ""}
 ${fitIn(`so-label${scene.imgSrc ? " so-sm" : ""}`, item.label, { size: scene.imgSrc ? 52 : 68, min: 22, tag: "h2" })}
-<div class="so-metrics${scene.imgSrc ? " so-sm" : ""}">${metrics}</div>
+<div class="so-metrics${scene.imgSrc ? " so-sm so-row3" : ""}">${metrics}</div>
 </div>
-<div class="so-meme" style="${regionStyle(M)}">
+<div class="so-meme so-cmp" style="${regionStyle(M)}">
 <div class="so-sev">${fitIn("so-sevname so-mono", ctx.ui.severity, { size: 26 })}<div class="so-sevval" style="color:${color}">${item.severity}<small>/10</small></div><div class="so-pips">${pips}</div></div>
 <div class="so-face" id="so-face-${idx}">${reactorFace(ctx.lang, item.severity, `rx-${idx}`)}</div>
 ${fitIn("so-badge so-mono", ctx.ui.reaction, { size: 20 })}

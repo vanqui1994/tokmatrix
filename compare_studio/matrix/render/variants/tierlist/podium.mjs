@@ -75,9 +75,10 @@ const podium = defineVariant({
         const model = tierModel(ctx);
         return {
           header: { style: "centered", region: { x: 60, y: 96, w: 960, h: 170 }, size: 56 },
-          visual: { frame: "polaroid", region: { x: 190, y: 290, w: 700, h: 520 } },
-          text: { style: "glass", region: { x: 60, y: 840, w: 960, h: 190 }, size: 44, align: "center", enter: "fade_up" },
-          sceneExtra: (scene, i) => ({ html: spotlight(model, i, ctx.ui, { x: 140, y: 1046, w: 800, h: 80 }) }),
+          visual: { frame: "polaroid", region: { x: 60, y: 280, w: 960, h: 690 } },
+          text: { style: "glass", region: { x: 60, y: 1006, w: 960, h: 174 }, size: 44, align: "center", enter: "fade_up" },
+          // dải đèn chiếu nằm trong khoảng trống tam giác trên các bục thấp (D…A) của cầu thang
+          sceneExtra: (scene, i) => ({ html: spotlight(model, i, ctx.ui, { x: 40, y: 1198, w: 650, h: 80 }) }),
           overlay: (octx) => podiumOverlay(model, octx.scenes, { order: [...TIERS].reverse(), heights: STAIR_H, x0: 40, w: 158, gap: 10, bottom: 1680 }),
           vars: { "--frame-edge": "#d8b86a" },
           css: CSS,
@@ -91,10 +92,10 @@ const podium = defineVariant({
         const model = tierModel(ctx);
         return {
           header: { style: "ribbon", region: { x: 90, y: 96, w: 900, h: 130 }, size: 52 },
-          text: { style: "plaque", region: { x: 60, y: 250, w: 960, h: 210 }, size: 42, align: "center", enter: "fade_up" },
-          visual: { frame: "bleed", region: { x: 0, y: 480, w: 1080, h: 620 }, filter: "brightness(.8) saturate(1.05)" },
-          sceneExtra: (scene, i) => ({ html: spotlight(model, i, ctx.ui, { x: 60, y: 1000, w: 960, h: 80 }) }),
-          overlay: (octx) => podiumOverlay(model, octx.scenes, { order: ["D", "B", "S", "SSS", "A", "C"], heights: OLY_H, x0: 36, w: 160, gap: 8, bottom: 1740 }),
+          text: { style: "plaque", region: { x: 60, y: 246, w: 960, h: 200 }, size: 42, align: "center", enter: "fade_up" },
+          visual: { frame: "bleed", region: { x: 0, y: 466, w: 1080, h: 714 }, filter: "brightness(.8) saturate(1.05)" },
+          sceneExtra: (scene, i) => ({ html: spotlight(model, i, ctx.ui, { x: 60, y: 1086, w: 960, h: 80 }) }),
+          overlay: (octx) => podiumOverlay(model, octx.scenes, { order: ["D", "B", "S", "SSS", "A", "C"], heights: OLY_H, x0: 36, w: 160, gap: 8, bottom: 1720 }),
           css: CSS,
         };
       },

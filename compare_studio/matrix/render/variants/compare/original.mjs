@@ -16,24 +16,25 @@ const t3 = (value) => Number(value.toFixed(3));
 
 // Hình học theo composition (toạ độ 1080×1920 của template gốc).
 const LAYOUT = {
+  // emb = ô ảnh đối tượng trong thẻ (ảnh lớn ≥ 430×400; owner 09/10: ảnh trong skin quá nhỏ).
   arena: {
     head: { x: 70, y: 120, w: 940, h: 124 },
-    cardA: { x: 70, y: 262, w: 450, h: 400 }, cardB: { x: 560, y: 262, w: 450, h: 400 },
-    vs: { x: 480, y: 402 }, badgeY: 244,
-    plateA: { x: 70, y: 690, w: 360, h: 120 }, plateB: { x: 650, y: 690, w: 360, h: 120 },
-    score: { x: 440, y: 690, w: 200, h: 120 }, versus: { x: 70, y: 700, w: 940, h: 100 },
-    caption: { x: 90, y: 850, w: 900, h: 380 },
-    mascot: { left: 330, top: 1280, scale: 1 },
-    glowTop: { x: 230, y: 150, s: 620 }, glowBottom: { x: 220, y: 1085, s: 640 },
+    cardA: { x: 50, y: 262, w: 470, h: 584 }, cardB: { x: 560, y: 262, w: 470, h: 584 }, emb: { w: 430, h: 420 },
+    vs: { x: 480, y: 494 }, badgeY: 244,
+    plateA: { x: 50, y: 868, w: 380, h: 120 }, plateB: { x: 650, y: 868, w: 380, h: 120 },
+    score: { x: 440, y: 868, w: 200, h: 120 }, versus: { x: 70, y: 878, w: 940, h: 100 },
+    caption: { x: 90, y: 1010, w: 900, h: 320 },
+    mascot: { left: 330, top: 1240, scale: 0.8 },
+    glowTop: { x: 230, y: 150, s: 620 }, glowBottom: { x: 220, y: 1180, s: 640 },
   },
   columns: {
     head: { x: 70, y: 120, w: 940, h: 124 },
-    cardA: { x: 70, y: 262, w: 450, h: 700 }, cardB: { x: 560, y: 262, w: 450, h: 700 },
-    vs: { x: 480, y: 402 }, badgeY: 244,
-    plateA: { x: 90, y: 810, w: 410, h: 130 }, plateB: { x: 580, y: 810, w: 410, h: 130 },
-    score: { x: 340, y: 986, w: 400, h: 120 }, versus: { x: 70, y: 1000, w: 940, h: 100 },
-    caption: { x: 90, y: 1120, w: 900, h: 320 },
-    mascot: { left: 330, top: 1392, scale: 0.8 },
+    cardA: { x: 50, y: 262, w: 470, h: 716 }, cardB: { x: 560, y: 262, w: 470, h: 716 }, emb: { w: 430, h: 400 },
+    vs: { x: 480, y: 484 }, badgeY: 244,
+    plateA: { x: 70, y: 826, w: 430, h: 130 }, plateB: { x: 580, y: 826, w: 430, h: 130 },
+    score: { x: 340, y: 994, w: 400, h: 120 }, versus: { x: 70, y: 1004, w: 940, h: 100 },
+    caption: { x: 90, y: 1124, w: 900, h: 276 },
+    mascot: { left: 330, top: 1200, scale: 0.6 },
     glowTop: { x: 230, y: 150, s: 620 }, glowBottom: { x: 220, y: 1240, s: 640 },
   },
 };
@@ -46,12 +47,12 @@ function css(ctx, L) {
 #v-underlay{z-index:3}
 .oc-glow{position:absolute;border-radius:50%;filter:blur(60px)}
 .oc-card{position:absolute;box-sizing:border-box;border-radius:32px;background:var(--panel);border:3px solid var(--panel-edge-dim);padding:20px;transform-origin:50% 50%;display:flex;flex-direction:column;align-items:center}
-.oc-emb-panel{position:relative;width:404px;height:226px;border-radius:22px;background:linear-gradient(180deg,rgba(255,255,255,.08) 0%,rgba(0,0,0,.18) 100%);display:flex;align-items:center;justify-content:center}
+.oc-emb-panel{position:relative;flex:none;width:${L.emb.w}px;height:${L.emb.h}px;border-radius:22px;background:linear-gradient(180deg,rgba(255,255,255,.08) 0%,rgba(0,0,0,.18) 100%);display:flex;align-items:center;justify-content:center}
 .oc-emb{width:196px;height:196px;display:block}
 .oc-photo{position:absolute;inset:8px;border-radius:16px;overflow:hidden;border:4px solid var(--gold)}.oc-photo img{display:block;width:100%;height:100%;object-fit:cover}
-.oc-name{position:relative;margin-top:10px;width:404px;height:70px;display:flex;align-items:center;justify-content:center}
+.oc-name{position:relative;margin-top:10px;width:${L.emb.w}px;height:70px;display:flex;align-items:center;justify-content:center}
 .oc-name-t{margin:0;font-weight:700;line-height:1.05;text-transform:uppercase;color:var(--fg-on-panel);text-align:center}
-.oc-tag{position:relative;margin-top:4px;width:404px;height:36px;display:flex;align-items:center;justify-content:center}
+.oc-tag{position:relative;margin-top:4px;width:${L.emb.w}px;height:36px;display:flex;align-items:center;justify-content:center}
 .oc-tag-t{margin:0;font-family:${mono};letter-spacing:.06em;color:var(--fg-on-panel);white-space:nowrap;text-align:center}
 .oc-vs{position:absolute;width:120px;height:120px;border-radius:50%;background:var(--accent-terra-ink);display:flex;align-items:center;justify-content:center;box-shadow:0 8px 24px rgba(0,0,0,.28);transform-origin:50% 50%}
 .oc-vs b{font-weight:700;font-size:38px;color:var(--bg);letter-spacing:.02em}

@@ -168,21 +168,21 @@ const blueprint = defineVariant({
       axes: { composition: "grid", textPlacement: "top", background: "paper" },
       describe: "Bản in diazo (nét xanh đậm trên giấy kem); đầu trang kiểu tiêu đề bản vẽ (kẻ đôi); thuyết minh ở trên; bản đồ chính + hàng 3 ô chi tiết (chú giải từng phần tử của cảnh) bên dưới",
       design: (ctx) => {
-        // Headline (x 70–770, y 660–730) nằm TRÊN bản đồ (panel từ 53, 643): nhãn bản đồ phải tránh vùng đó.
-        const map = chalkMap(ctx, LOOKS.whiteprint, { w: 972, h: 692 }, { reserve: [{ x: 0, y: 0, w: 740, h: 100 }] });
+        // Headline (x 70–770, y 615–685) nằm TRÊN bản đồ (panel từ 53, 598): nhãn bản đồ phải tránh vùng đó.
+        const map = chalkMap(ctx, LOOKS.whiteprint, { w: 972, h: 842 }, { reserve: [{ x: 0, y: 0, w: 740, h: 100 }] });
         return {
           header: { style: "masthead", region: { x: 60, y: 110, w: 960, h: 230 }, size: 60 },
-          text: { style: "osd", region: { x: 50, y: 370, w: 980, h: 230 }, size: 42, enter: "type" },
-          visual: { allowOcclusion: true, frame: "plain", region: { x: 50, y: 640, w: 980, h: 700 } },
+          text: { style: "osd", region: { x: 50, y: 360, w: 980, h: 215 }, size: 42, enter: "type" },
+          visual: { allowOcclusion: true, frame: "plain", region: { x: 50, y: 595, w: 980, h: 850 } },
           panel: (scene, i) => map.svg(scene, i),
           sceneExtra: (scene, i, c) => {
             const rows = map.legend(i).slice(0, 3);
-            const cells = rows.map((row, k) => `<div class="bp-cell" id="bp-cell-${scene.index}-${k}" style="${regionStyle({ x: 50 + k * 334, y: 1370, w: 312, h: 290 })}"><div class="bp-cell-n">${escapeHtml(`${upper(c.ui.detail, ctx.lang)} ${String.fromCharCode(65 + k)}`)}</div><div class="bp-cell-sw" style="background:${LOOKS.whiteprint.palette[SWATCH[row.color]] || "#1d3f73"}"></div><div class="bp-cell-box">${fitText("div", `class="bp-cell-t" style="font-size:40px"`, row.text, 16)}</div></div>`).join("");
+            const cells = rows.map((row, k) => `<div class="bp-cell" id="bp-cell-${scene.index}-${k}" style="${regionStyle({ x: 50 + k * 334, y: 1465, w: 312, h: 215 })}"><div class="bp-cell-n">${escapeHtml(`${upper(c.ui.detail, ctx.lang)} ${String.fromCharCode(65 + k)}`)}</div><div class="bp-cell-sw" style="background:${LOOKS.whiteprint.palette[SWATCH[row.color]] || "#1d3f73"}"></div><div class="bp-cell-box">${fitText("div", `class="bp-cell-t" style="font-size:40px"`, row.text, 16)}</div></div>`).join("");
             const tweens = rows.map((_, k) => ({ method: "fromTo", target: `#bp-cell-${scene.index}-${k}`, from: { opacity: 0, y: 20 }, vars: { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" }, at: Number((scene.visualStart + 0.4 + k * 0.15).toFixed(3)) }));
-            return merge(headline(scene, map.headline(i), { region: { x: 70, y: 660, w: 700, h: 70 }, cls: "bp-hd", size: 36, enter: "slide" }), { html: cells, tweens }, { tweens: map.tweens(scene, i) });
+            return merge(headline(scene, map.headline(i), { region: { x: 70, y: 615, w: 700, h: 70 }, cls: "bp-hd", size: 36, enter: "slide" }), { html: cells, tweens }, { tweens: map.tweens(scene, i) });
           },
           vars: { "--frame-edge": "#1d3f73", "--scope-ink": "#1d3f73" },
-          css: `${HEAD_CSS}.f-plain{border-width:3px!important;box-shadow:none!important;background:transparent}.t-osd{background:#f4efe2!important;border-width:2px!important;border-style:dashed!important;border-color:#1d3f73!important}.t-osd .v-line{color:#10284d!important}.bp-hd{background:#1d3f73;border:2px solid #f4efe2;padding:0 16px}.bp-hd .cm-hd-t{color:#fff;text-transform:uppercase;font-weight:700}.bp-cell{position:absolute;box-sizing:border-box;border:2px solid #1d3f73;background:#f4efe2;color:#10284d}.bp-cell-n{position:absolute;left:14px;top:10px;font-size:24px;letter-spacing:3px;white-space:nowrap}.bp-cell-sw{position:absolute;right:14px;top:16px;width:40px;height:20px}.bp-cell-box{position:absolute;left:14px;right:14px;top:60px;bottom:14px;display:flex;align-items:center}.bp-cell-t{margin:0;width:100%;line-height:1.1;font-weight:700}`,
+          css: `${HEAD_CSS}.f-plain{border-width:3px!important;box-shadow:none!important;background:transparent}.t-osd{background:#f4efe2!important;border-width:2px!important;border-style:dashed!important;border-color:#1d3f73!important}.t-osd .v-line{color:#10284d!important}.bp-hd{background:#1d3f73;border:2px solid #f4efe2;padding:0 16px}.bp-hd .cm-hd-t{color:#fff;text-transform:uppercase;font-weight:700}.bp-cell{position:absolute;box-sizing:border-box;border:2px solid #1d3f73;background:#f4efe2;color:#10284d}.bp-cell-n{position:absolute;left:14px;top:10px;font-size:24px;letter-spacing:3px;white-space:nowrap}.bp-cell-sw{position:absolute;right:14px;top:16px;width:40px;height:20px}.bp-cell-box{position:absolute;left:14px;right:14px;top:50px;bottom:12px;display:flex;align-items:center}.bp-cell-t{margin:0;width:100%;line-height:1.1;font-weight:700}`,
         };
       },
     },
@@ -229,19 +229,19 @@ const whiteboard = defineVariant({
       axes: { composition: "card_stack", textPlacement: "left_column" },
       describe: "Bản đồ dạ phía trên; dưới là hai tờ giấy nhớ dán nghiêng: lời đọc (vàng, trái) và ghi chú các phần tử của cảnh (hồng, phải)",
       design: (ctx) => {
-        // Dải đáy bản đồ để trống: tiêu đề cảnh nằm ngay dưới khung (y 1010), nhãn sát đáy sẽ chạm nó.
-        const map = chalkMap(ctx, LOOKS.whiteboard, { w: 1000, h: 640 }, { reserve: [{ x: 0, y: 590, w: 1000, h: 50 }] });
+        // Dải đáy bản đồ để trống: tiêu đề cảnh nằm ngay dưới khung (y 1190), nhãn sát đáy sẽ chạm nó.
+        const map = chalkMap(ctx, LOOKS.whiteboard, { w: 1000, h: 820 }, { reserve: [{ x: 0, y: 770, w: 1000, h: 50 }] });
         return {
           header: { style: "centered", region: { x: 60, y: 120, w: 960, h: 220 } },
-          visual: { allowOcclusion: true, frame: "bleed", region: { x: 40, y: 360, w: 1000, h: 640 } },
+          visual: { allowOcclusion: true, frame: "bleed", region: { x: 40, y: 360, w: 1000, h: 820 } },
           panel: (scene, i) => map.svg(scene, i),
-          text: { style: "sticky", region: { x: 50, y: 1100, w: 500, h: 560 }, size: 46, enter: "drop" },
+          text: { style: "sticky", region: { x: 50, y: 1295, w: 500, h: 385 }, size: 46, enter: "drop" },
           sceneExtra: (scene, i, c) => merge(
-            headline(scene, map.headline(i), { region: { x: 60, y: 1010, w: 960, h: 76 }, cls: "wb-hd2", size: 44, enter: "slide" }),
-            legend(scene, map.legend(i), { region: { x: 600, y: 1140, w: 430, h: 480 }, cls: "wb-lg", look: LOOKS.whiteboard, rowH: 90, title: upper(c.ui.notes, ctx.lang) }),
+            headline(scene, map.headline(i), { region: { x: 60, y: 1192, w: 960, h: 76 }, cls: "wb-hd2", size: 44, enter: "slide" }),
+            legend(scene, map.legend(i), { region: { x: 600, y: 1310, w: 430, h: 370 }, cls: "wb-lg", look: LOOKS.whiteboard, rowH: 80, title: upper(c.ui.notes, ctx.lang) }),
             { tweens: map.tweens(scene, i) },
           ),
-          decor: [{ kind: "washi", x: 230, y: 1080, w: 170, rotate: -4, color: "rgba(80,140,230,.55)" }],
+          decor: [{ kind: "washi", x: 230, y: 1275, w: 170, rotate: -4, color: "rgba(80,140,230,.55)" }],
           css: `${HEAD_CSS}${LEGEND_CSS}.f-bleed{background:transparent!important}.wb-hd2 .cm-hd-t{color:#1d4ed8;font-weight:800}.h-rule{background:#d62828!important}.wb-lg{background:linear-gradient(180deg,#ffc9d9,#ffb3c9);padding:26px 26px;box-shadow:0 14px 24px rgba(0,0,0,.25);transform:rotate(2deg)}.wb-lg .cm-lg-row{left:26px;right:26px}.wb-lg .cm-lg-title{color:#8a1538;font-weight:800}.wb-lg .cm-lg-t{color:#2a1a20;font-weight:700}`,
         };
       },
@@ -450,15 +450,15 @@ const satellite = defineVariant({
       design: (ctx) => {
         const look = LOOKS.satellite;
         // Headline (x 60–760, y 380–450) nằm trên khung vệ tinh chính (panel từ 48, 368).
-        const map = chalkMap(ctx, look, { w: 992, h: 672 }, { reserve: [{ x: 0, y: 0, w: 730, h: 95 }] });
-        const insets = [0, 1].map((k) => chalkMap(ctx, look, { w: 474, h: 246 }, { prefix: `cz${k}-`, sceneFor: (s) => focusScene(s, k), minFrac: 0.18, sizes: { hl: 30, hl2: 26, marker: 24, arrow: 22, glyph: 18 } }));
+        const map = chalkMap(ctx, look, { w: 992, h: 802 }, { reserve: [{ x: 0, y: 0, w: 730, h: 95 }] });
+        const insets = [0, 1].map((k) => chalkMap(ctx, look, { w: 474, h: 176 }, { prefix: `cz${k}-`, sceneFor: (s) => focusScene(s, k), minFrac: 0.18, sizes: { hl: 30, hl2: 26, marker: 24, arrow: 22, glyph: 18 } }));
         return {
           header: { style: "label_title", region: { x: 60, y: 110, w: 960, h: 220 } },
-          visual: { allowOcclusion: true, frame: "plain", region: { x: 40, y: 360, w: 1000, h: 680 }, label: undefined },
+          visual: { allowOcclusion: true, frame: "plain", region: { x: 40, y: 360, w: 1000, h: 810 }, label: undefined },
           panel: (scene, i) => map.svg(scene, i),
-          text: { style: "glass", region: { x: 40, y: 1400, w: 1000, h: 270 }, size: 44, enter: "fade_up" },
+          text: { style: "glass", region: { x: 40, y: 1430, w: 1000, h: 250 }, size: 44, enter: "fade_up" },
           sceneExtra: (scene, i, c) => {
-            const boxes = insets.map((inset, k) => `<div class="sat-in" data-layout-allow-overflow="true" id="sat-in-${scene.index}-${k}" style="${regionStyle({ x: 40 + k * 510, y: 1070, w: 490, h: 300 })}"><div class="sat-map" data-layout-allow-overflow="true" data-layout-allow-overlap="true">${inset.svg(scene, i)}</div><b>${escapeHtml(`${upper(c.ui.zoom, ctx.lang)} ${k + 1}`)}</b></div>`).join("");
+            const boxes = insets.map((inset, k) => `<div class="sat-in" data-layout-allow-overflow="true" id="sat-in-${scene.index}-${k}" style="${regionStyle({ x: 40 + k * 510, y: 1190, w: 490, h: 230 })}"><div class="sat-map" data-layout-allow-overflow="true" data-layout-allow-overlap="true">${inset.svg(scene, i)}</div><b>${escapeHtml(`${upper(c.ui.zoom, ctx.lang)} ${k + 1}`)}</b></div>`).join("");
             return merge(
               headline(scene, map.headline(i), { region: { x: 60, y: 380, w: 700, h: 70 }, cls: "sat-hd", size: 34, enter: "slide" }),
               { html: boxes, tweens: insets.flatMap((inset) => inset.tweens(scene, i)) },
@@ -466,7 +466,7 @@ const satellite = defineVariant({
             );
           },
           vars: { "--frame-edge": "#1c2733" },
-          css: `${HEAD_CSS}.f-plain{border-width:8px!important;box-shadow:0 0 0 2px rgba(160,220,255,.4),0 20px 40px rgba(0,0,0,.5)!important}.sat-in{position:absolute;box-sizing:border-box;border:8px solid #1c2733;box-shadow:0 0 0 2px rgba(160,220,255,.4);overflow:hidden;background:#061526}.sat-map{position:absolute;left:0;right:0;bottom:0;height:246px;overflow:hidden}.sat-in b{position:absolute;left:0;right:0;top:0;height:38px;line-height:38px;font-size:24px;letter-spacing:2px;color:#9df0ff;background:#0b1622;border-bottom:2px solid rgba(160,220,255,.4);padding:0 12px;white-space:nowrap;box-sizing:border-box}.sat-hd{background:rgba(0,0,0,.78);border-left:8px solid #3de0ff;padding:0 16px}.sat-hd .cm-hd-t{color:#fff;text-transform:uppercase}`,
+          css: `${HEAD_CSS}.f-plain{border-width:8px!important;box-shadow:0 0 0 2px rgba(160,220,255,.4),0 20px 40px rgba(0,0,0,.5)!important}.sat-in{position:absolute;box-sizing:border-box;border:8px solid #1c2733;box-shadow:0 0 0 2px rgba(160,220,255,.4);overflow:hidden;background:#061526}.sat-map{position:absolute;left:0;right:0;bottom:0;height:176px;overflow:hidden}.sat-in b{position:absolute;left:0;right:0;top:0;height:38px;line-height:38px;font-size:24px;letter-spacing:2px;color:#9df0ff;background:#0b1622;border-bottom:2px solid rgba(160,220,255,.4);padding:0 12px;white-space:nowrap;box-sizing:border-box}.sat-hd{background:rgba(0,0,0,.78);border-left:8px solid #3de0ff;padding:0 16px}.sat-hd .cm-hd-t{color:#fff;text-transform:uppercase}`,
         };
       },
     },

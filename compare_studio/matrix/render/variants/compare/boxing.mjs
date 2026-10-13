@@ -132,6 +132,21 @@ const TAPE_CSS = `
 .cb-foot-t{margin:0;color:#fff;font-weight:900;letter-spacing:3px;text-align:center}
 `;
 
+// Poster cao (600): ảnh A/B tròn 410 ở trên (perScene), tên + tag xuống dưới ảnh, tia VS giữa hai ảnh; găng SVG (khi
+// chưa có ảnh) to ra đúng chỗ ảnh.
+const POSTER_TALL_CSS = `
+.cb-pside{top:432px;width:470px;height:160px}
+.cb-pside.a{left:10px}.cb-pside.b{right:10px}
+.cb-pside .cb-pname{top:0;height:96px;width:450px}
+.cb-pside.a .cb-pname{left:10px}.cb-pside.b .cb-pname{right:10px}
+.cb-pside .cb-ptag{top:104px;width:450px}
+.cb-pside.a .cb-ptag{left:10px}.cb-pside.b .cb-ptag{right:10px}
+.cb-pside svg.cb-glove{top:-380px;width:300px;height:320px}
+.cb-pside.a svg.cb-glove{left:80px}.cb-pside.b svg.cb-glove{right:80px}
+.cb-pside.win::after{bottom:-6px}
+.cb-burst{left:430px;top:146px}
+`;
+
 function tapeOverlay(model, scenes, ui, r) {
   const rows = model.scenes.map((s, i) => ({ s, i })).filter(({ s }) => s.role === "round");
   const inner = r.h - 74 - 20;
@@ -171,17 +186,18 @@ const boxingRing = defineVariant({
       design: (ctx) => {
         const model = compareModel(ctx, ctx.ui);
         return {
-          header: { style: "centered", region: { x: 60, y: 110, w: 960, h: 210 }, size: 64 },
-          visual: { frame: "bleed", region: { x: 40, y: 500, w: 1000, h: 780 } },
+          header: { style: "centered", region: { x: 60, y: 96, w: 960, h: 192 }, size: 64 },
+          // võ đài thấp hơn (góc găng nâng lên cạnh bảng tiêu chí) để hai ảnh đối tượng lớn nằm ngay dưới đài
+          visual: { frame: "bleed", region: { x: 40, y: 424, w: 1000, h: 600 } },
           panel: (scene, i) => ringPanel(model.scenes[i], i, model, ctx.ui),
-          text: { style: "subtitle", region: { x: 60, y: 1310, w: 960, h: 330 }, size: 54, align: "center", enter: "pop" },
+          text: { style: "subtitle", region: { x: 60, y: 1470, w: 960, h: 222 }, size: 54, align: "center", enter: "pop" },
           sceneExtra: (scene, i) => {
             const s = model.scenes[i];
-            return { html: fitBox("cb-tally", model.scored ? `${s.totalA}:${s.totalB}` : ctx.ui.vs, { id: `cb-tally-${scene.index}`, r: { x: 482, y: 346, w: 116, h: 116 }, size: 40, min: 16 }) };
+            return { html: fitBox("cb-tally", model.scored ? `${s.totalA}:${s.totalB}` : ctx.ui.vs, { id: `cb-tally-${scene.index}`, r: { x: 482, y: 300, w: 116, h: 116 }, size: 40, min: 16 }) };
           },
-          overlay: (octx) => healthOverlay(model, octx.scenes, { y: 344 }),
-          underlay: () => subjectPair(model, { x: 60, y: 1650, w: 460, h: 220 }, { x: 560, y: 1650, w: 460, h: 220 }, { shape: "square" }), // ảnh đối tượng A/B
-          css: RING_CSS,
+          overlay: (octx) => healthOverlay(model, octx.scenes, { y: 302 }),
+          underlay: () => subjectPair(model, { x: 60, y: 1038, w: 460, h: 420 }, { x: 560, y: 1038, w: 460, h: 420 }, { shape: "square" }), // ảnh đối tượng A/B
+          css: `${RING_CSS}.cb-card{top:16px}.cb-post{height:440px}.cb-floor{height:200px}.cb-corner{top:390px}`,
         };
       },
     },
@@ -191,9 +207,10 @@ const boxingRing = defineVariant({
       design: (ctx) => {
         const model = compareModel(ctx, ctx.ui);
         return {
-          header: { style: "ribbon", region: { x: 60, y: 110, w: 960, h: 140 }, size: 56 },
-          text: { style: "panel", region: { x: 60, y: 280, w: 960, h: 260 }, size: 46, enter: "fade_up" },
-          visual: { frame: "bleed", region: { x: 40, y: 570, w: 1000, h: 260 } },
+          header: { style: "ribbon", region: { x: 60, y: 96, w: 960, h: 130 }, size: 56 },
+          text: { style: "panel", region: { x: 60, y: 246, w: 960, h: 270 }, size: 46, enter: "fade_up" },
+          // poster cao: hai ảnh đối tượng lớn ở hai nửa chéo, tên + tag dưới ảnh, tia VS giữa
+          visual: { frame: "bleed", region: { x: 40, y: 532, w: 1000, h: 600 } },
           panel: (scene, i) => {
             const s = model.scenes[i];
             const winA = s.winner === "A" || (s.role === "verdict" && model.final.winner === "A") ? " win" : "";
@@ -207,11 +224,11 @@ const boxingRing = defineVariant({
             const s = model.scenes[i];
             const text = s.role === "verdict" ? `${ctx.ui.win}: ${model.final.winner === "A" ? model.a.name : model.final.winner === "B" ? model.b.name : ctx.ui.tie}`
               : `${model.a.name} ${s.totalA} : ${s.totalB} ${model.b.name}`;
-            return { html: fitBox("cb-foot", text, { id: `cb-foot-${scene.index}`, r: { x: 160, y: 1600, w: 760, h: 84 }, size: 38, min: 14 }) };
+            return { html: fitBox("cb-foot", text, { id: `cb-foot-${scene.index}`, r: { x: 160, y: 1606, w: 760, h: 84 }, size: 38, min: 14 }) };
           },
-          overlay: (octx) => tapeOverlay(model, octx.scenes, ctx.ui, { x: 60, y: 860, w: 960, h: 710 }),
-          perScene: subjectPair(model, { x: 24, y: 610, w: 116, h: 116 }, { x: 940, y: 610, w: 116, h: 116 }, { shape: "round" }), // ảnh đối tượng A/B
-          css: RING_CSS + TAPE_CSS,
+          overlay: (octx) => tapeOverlay(model, octx.scenes, ctx.ui, { x: 60, y: 1150, w: 960, h: 440 }),
+          perScene: subjectPair(model, { x: 56, y: 548, w: 410, h: 410 }, { x: 614, y: 548, w: 410, h: 410 }, { shape: "round" }), // ảnh đối tượng A/B
+          css: RING_CSS + TAPE_CSS + POSTER_TALL_CSS,
         };
       },
     },

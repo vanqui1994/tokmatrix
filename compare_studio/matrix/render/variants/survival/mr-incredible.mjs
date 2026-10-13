@@ -84,20 +84,21 @@ function fitIn(cls, text, { size, min = 14, tag = "span", id = "", style = "" })
 const pips = (severity) => Array.from({ length: 10 }, (_, p) => `<i style="background:${p < severity ? sevColor(p + 1) : "rgba(255,255,255,.12)"}"></i>`).join("");
 
 const LAYOUT = {
+  // Ảnh AI của cấp là khối lớn nhất (owner 09/10: ảnh quá nhỏ); lời đọc kết thúc trên y 1700 (vùng caption TikTok).
   legacy: {
-    scan: { x: 60, y: 300, w: 960, h: 700 },
-    image: { x: 110, y: 340, w: 860, h: 400 },
-    label: { x: 100, y: 758, w: 880, h: 84 },
-    status: { x: 100, y: 846, w: 880, h: 46 },
-    limit: { x: 150, y: 906, w: 780, h: 72 },
-    faceCard: { x: 60, y: 1030, w: 960, h: 640 },
-    caption: { x: 70, y: 1696, w: 940, h: 190 },
+    scan: { x: 40, y: 228, w: 1000, h: 1012 },
+    image: { x: 60, y: 248, w: 960, h: 770 },
+    label: { x: 70, y: 1026, w: 940, h: 84 },
+    status: { x: 70, y: 1112, w: 940, h: 44 },
+    limit: { x: 120, y: 1166, w: 840, h: 62 },
+    faceCard: { x: 40, y: 1258, w: 440, h: 437 },
+    caption: { x: 500, y: 1268, w: 520, h: 420 },
   },
   face_card: {
-    face: { x: 40, y: 290, w: 520, h: 520 },
-    card: { x: 584, y: 290, w: 456, h: 520 },
-    image: { x: 40, y: 850, w: 1000, h: 560 },
-    caption: { x: 60, y: 1450, w: 960, h: 360 },
+    face: { x: 40, y: 256, w: 300, h: 300 },
+    card: { x: 358, y: 256, w: 682, h: 300 },
+    image: { x: 0, y: 572, w: 1080, h: 935 },
+    caption: { x: 60, y: 1518, w: 960, h: 177 },
   },
 };
 
@@ -127,9 +128,9 @@ const CSS = `
 .mi-pips{display:flex;gap:8px;height:30px}.mi-pips i{flex:1;border-radius:4px}
 .mi-mname{position:relative;height:30px;width:100%;display:flex;align-items:center}
 .mi-mname-t{margin:0;letter-spacing:2px;color:#cfcfcf;white-space:nowrap}
-.mi-card{position:absolute;z-index:5;box-sizing:border-box;padding:28px 26px;background:rgba(0,0,0,.72);border:3px solid;border-radius:22px;display:flex;flex-direction:column;gap:16px}
+.mi-card{position:absolute;z-index:5;box-sizing:border-box;padding:20px 24px;background:rgba(0,0,0,.72);border:3px solid;border-radius:22px;display:flex;flex-direction:column;gap:10px}
 .mi-card .mi-tag,.mi-card .mi-label,.mi-card .mi-mname{position:relative}
-.mi-card .mi-tag{height:76px;justify-content:flex-start}
+.mi-card .mi-tag{height:54px;justify-content:flex-start}
 .mi-card .mi-label{flex:1;min-height:0;justify-content:flex-start}
 .mi-card .mi-label-t{text-align:left}
 .mi-card .mi-mrow{height:60px}
@@ -145,16 +146,16 @@ const CSS = `
 .mi-m-track{grid-column:1;grid-row:2;position:relative;overflow:hidden;border-radius:8px;background:rgba(255,255,255,.12)}
 .mi-m-fill{position:absolute;inset:0;display:block;transform-origin:0 50%}
 .t-subtitle .v-line{text-transform:none}
-.lg-head{position:absolute;left:0;top:0;width:1080px;height:290px;z-index:6}
-.lg-eyebrow{position:absolute;left:50%;top:86px;transform:translateX(-50%);height:44px;max-width:900px;box-sizing:border-box;padding:0 26px;display:flex;align-items:center;gap:12px;border-radius:999px;background:rgba(0,40,40,.55);border:2px solid rgba(64,224,208,.35);white-space:nowrap}
+.lg-head{position:absolute;left:0;top:0;width:1080px;height:222px;z-index:6}
+.lg-eyebrow{position:absolute;left:50%;top:40px;transform:translateX(-50%);height:44px;max-width:900px;box-sizing:border-box;padding:0 26px;display:flex;align-items:center;gap:12px;border-radius:999px;background:rgba(0,40,40,.55);border:2px solid rgba(64,224,208,.35);white-space:nowrap}
 .lg-eyebrow:before{content:"";width:10px;height:10px;border-radius:50%;background:#40e0d0;box-shadow:0 0 10px #40e0d0}
 .lg-eb{position:relative;height:28px;max-width:820px;display:flex;align-items:center}
 .lg-eb-t{margin:0;letter-spacing:4px;color:#40e0d0;white-space:nowrap;font-family:var(--mono-font,monospace)}
-.lg-title{position:absolute;left:60px;top:140px;width:960px;height:84px;display:flex;align-items:center;justify-content:center}
+.lg-title{position:absolute;left:60px;top:92px;width:960px;height:84px;display:flex;align-items:center;justify-content:center}
 .lg-title-t{margin:0;width:100%;text-align:center;text-transform:uppercase;line-height:1.05;color:#dfe9f2;text-shadow:0 0 24px rgba(120,200,255,.35)}
-.lg-bar{position:absolute;left:60px;top:236px;width:810px;height:8px;border-radius:4px;background:rgba(255,255,255,.1);overflow:hidden}
+.lg-bar{position:absolute;left:60px;top:198px;width:810px;height:8px;border-radius:4px;background:rgba(255,255,255,.1);overflow:hidden}
 .lg-bar i{position:absolute;left:0;top:0;bottom:0;border-radius:4px;background:linear-gradient(90deg,#40e0d0,#e0245e)}
-.lg-lvl{position:absolute;right:60px;top:222px;height:36px;width:150px;display:flex;align-items:center;justify-content:flex-end}
+.lg-lvl{position:absolute;right:60px;top:184px;height:36px;width:150px;display:flex;align-items:center;justify-content:flex-end}
 .lg-lvl-t{margin:0;letter-spacing:2px;color:#40e0d0;white-space:nowrap;font-family:var(--mono-font,monospace)}
 .lg-scan{position:absolute;z-index:1;box-sizing:border-box;border:2px solid rgba(64,224,208,.28);border-radius:30px;background:rgba(10,20,26,.72)}
 .lg-scan b{position:absolute;width:24px;height:24px;border-color:#dfe9f2;border-style:solid}
@@ -171,7 +172,8 @@ const CSS = `
 .lg-face{position:absolute;z-index:2;box-sizing:border-box;border:2px solid rgba(255,255,255,.1);border-radius:30px;overflow:hidden;background:#000}
 .lg-face .mi-shake{position:absolute;inset:0}
 .lg-badge{position:absolute;left:26px;top:24px;z-index:3;height:42px;padding:0 20px;display:flex;align-items:center;border-radius:10px;background:#000;border:2px solid rgba(255,255,255,.2)}
-.lg-badge-t{margin:0;letter-spacing:2px;color:#f4f4f4;white-space:nowrap;font-family:var(--mono-font,monospace)}
+.lg-badge-in{position:relative;height:30px;max-width:400px;display:flex;align-items:center}
+.lg-badge-t,.lg-badge-in-t{margin:0;letter-spacing:2px;color:#f4f4f4;white-space:nowrap;font-family:var(--mono-font,monospace)}
 .lg-lvw{font-weight:800}
 .fc-face{position:absolute;z-index:5;border-radius:22px;overflow:hidden;background:#000;box-shadow:0 0 0 2px rgba(255,255,255,.08),0 30px 70px rgba(0,0,0,.75)}
 .fc-face .mi-shake{position:absolute;inset:0}`;

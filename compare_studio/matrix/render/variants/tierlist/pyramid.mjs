@@ -83,12 +83,12 @@ const pyramid = defineVariant({
         const model = tierModel(ctx);
         return {
           header: { style: "plaque", region: { x: 140, y: 100, w: 800, h: 170 }, size: 52 },
-          text: { style: "engraved", region: { x: 60, y: 290, w: 960, h: 200 }, size: 44, enter: "fade_up" },
-          visual: { frame: "arch", region: { x: 60, y: 520, w: 400, h: 380 } },
-          sceneExtra: (scene, i) => ({ html: tablet(model, i, ctx.ui, { x: 490, y: 520, w: 530, h: 380 }) }),
-          overlay: (octx) => pyramidOverlay(model, octx.scenes, { top: 940, layerH: 112, gap: 6, minW: 440, maxW: 1000, look: "stone" }),
+          text: { style: "engraved", region: { x: 60, y: 286, w: 960, h: 176 }, size: 44, enter: "fade_up" },
+          visual: { frame: "arch", region: { x: 40, y: 480, w: 600, h: 536 } },
+          sceneExtra: (scene, i) => ({ html: tablet(model, i, ctx.ui, { x: 664, y: 480, w: 376, h: 536 }) }),
+          overlay: (octx) => pyramidOverlay(model, octx.scenes, { top: 1044, layerH: 96, gap: 6, minW: 440, maxW: 1000, look: "stone" }),
           vars: { "--frame-edge": "#8a8375" },
-          css: CSS,
+          css: `${CSS}.tp-tab .tp-t{height:270px}.tp-tab .tp-s{top:344px;height:90px}`,
         };
       },
     },

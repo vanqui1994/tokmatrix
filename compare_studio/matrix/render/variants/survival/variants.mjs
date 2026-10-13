@@ -40,11 +40,11 @@ function stopwatch(scene, { region, cls }) {
   const time = `${String(Math.floor(secs / 60)).padStart(2, "0")}:${String(secs % 60).padStart(2, "0")}`;
   const ticks = Array.from({ length: 12 }, (_, k) => `<i style="transform:rotate(${k * 30}deg)"></i>`).join("");
   return {
-    html: `<div class="en-sw ${cls}" id="${id}" style="${regionStyle(region)}"><div class="en-sw-face">${ticks}<b class="en-sw-hand" id="${id}-hand"></b><span>${time}</span></div></div>`,
+    html: `<div class="en-sw ${cls}" id="${id}" style="${regionStyle(region, `--sw:${region.w}px`)}"><div class="en-sw-face">${ticks}<b class="en-sw-hand" id="${id}-hand"></b><span>${time}</span></div></div>`,
     tweens: [{ method: "fromTo", target: `#${id}-hand`, from: { rotation: 0 }, vars: { rotation: 360, duration: t3(Math.max(0.5, scene.visualDuration - 0.1)), ease: "none" }, at: t3(scene.visualStart) }],
   };
 }
-const SW_CSS = ".en-sw{position:absolute;box-sizing:border-box}.en-sw-face{position:absolute;inset:0;border-radius:50%;background:#fff;border:14px solid #1f2933;box-shadow:0 12px 30px rgba(0,0,0,.3)}.en-sw-face::before{content:'';position:absolute;left:50%;top:-44px;width:60px;height:34px;margin-left:-30px;background:#1f2933;border-radius:8px}.en-sw-face i{position:absolute;left:50%;top:6px;width:6px;height:22px;margin-left:-3px;background:#1f2933;transform-origin:50% calc(50% * 0 + 132px)}.en-sw-hand{position:absolute;left:50%;top:18%;width:8px;height:32%;margin-left:-4px;background:#e8412f;transform-origin:50% 100%;border-radius:4px}.en-sw-face span{position:absolute;left:0;right:0;bottom:22%;text-align:center;font-size:48px;font-weight:700;color:#1f2933;letter-spacing:2px}";
+const SW_CSS = ".en-sw{position:absolute;box-sizing:border-box}.en-sw-face{position:absolute;inset:0;border-radius:50%;background:#fff;border:14px solid #1f2933;box-shadow:0 12px 30px rgba(0,0,0,.3)}.en-sw-face::before{content:'';position:absolute;left:50%;top:-44px;width:60px;height:34px;margin-left:-30px;background:#1f2933;border-radius:8px}.en-sw-face i{position:absolute;left:50%;top:6px;width:6px;height:22px;margin-left:-3px;background:#1f2933;transform-origin:50% calc((var(--sw,260px) - 28px) / 2 - 6px)}.en-sw-hand{position:absolute;left:50%;top:18%;width:8px;height:32%;margin-left:-4px;background:#e8412f;transform-origin:50% 100%;border-radius:4px}.en-sw-face span{position:absolute;left:0;right:0;bottom:20%;text-align:center;font-size:calc(var(--sw,260px) * .18);font-weight:700;color:#1f2933;letter-spacing:2px}";
 
 const endurance = defineVariant({
   ...base,
@@ -67,18 +67,19 @@ const endurance = defineVariant({
         const stage = reactorStage(ctx, { gear: "headband", accent: accent(ctx), outline: { color: "#1f1a1a", width: 5 }, stage: "background:radial-gradient(circle at 50% 70%,rgba(255,255,255,.55),transparent 70%)" });
         const colors = ["#1db954", "#f59e0b", "#3b82f6"];
         return {
-          header: { style: "label_title", region: { x: 60, y: 120, w: 960, h: 220 } },
-          visual: { frame: "plain", region: { x: 40, y: 370, w: 640, h: 760 } },
+          header: { style: "label_title", region: { x: 60, y: 90, w: 960, h: 180 } },
+          visual: { frame: "plain", region: { x: 300, y: 290, w: 740, h: 1010 } },
           panel: (scene, i) => stage.panel(scene, i),
-          text: { style: "ticker", region: { x: 40, y: 1450, w: 1000, h: 230 }, size: 46, enter: "slide" },
+          text: { style: "ticker", region: { x: 40, y: 1530, w: 1000, h: 165 }, size: 44, enter: "slide" },
           sceneExtra: (scene, i, c) => merge(
-            stopwatch(scene, { region: { x: 740, y: 400, w: 260, h: 260 }, cls: "" }),
-            metricBars(scene, i, { data: stage.data, region: { x: 710, y: 720, w: 330, h: 410 }, cls: "en-mx", orient: "v", colors }),
-            levelCard(scene, stage.data.items[i], { data: stage.data, ui: c.ui, lang: ctx.lang, region: { x: 40, y: 1150, w: 1000, h: 280 }, cls: "en-card", ramp: ENDURANCE_RAMP, labelSize: 50, parts: ["eyebrow", "tag", "label", "status", "severity"] }),
+            stopwatch(scene, { region: { x: 60, y: 330, w: 200, h: 200 }, cls: "" }),
+            stage.reactor(scene, i, { x: 40, y: 555, w: 240, h: 250 }, "en-rx"),
+            metricBars(scene, i, { data: stage.data, region: { x: 40, y: 825, w: 240, h: 475 }, cls: "en-mx sv-wrap", orient: "v", colors }),
+            levelCard(scene, stage.data.items[i], { data: stage.data, ui: c.ui, lang: ctx.lang, region: { x: 40, y: 1318, w: 1000, h: 197 }, cls: "en-card", ramp: ENDURANCE_RAMP, labelSize: 48, parts: ["eyebrow", "tag", "label", "status", "severity"] }),
             { tweens: stage.tweens(scene, i) },
           ),
           vars: { "--frame-edge": "#1f2933" },
-          css: `${BASE_CSS}${SW_CSS}.f-plain{background:linear-gradient(180deg,#bfe3ff,#f4f8fb)}.en-card{color:var(--fg)}.en-card .sv-tag{color:var(--accent-terra-ink)}.en-card .sv-row{position:absolute;right:0;top:0;width:440px}.en-card .sv-label-box,.en-card .sv-eyebrow,.en-card .sv-tag{margin-right:460px}.en-card .sv-eyebrow{font-size:24px;letter-spacing:2px;color:var(--fg)}.en-card{gap:8px}.en-card .sv-pips{position:absolute;right:0;bottom:0;width:440px}.en-mx .sv-m-t,.en-mx .sv-m-val{color:var(--fg)}.en-mx{--sv-track:rgba(31,41,51,.14)}`,
+          css: `${BASE_CSS}${SW_CSS}.f-plain{background:linear-gradient(180deg,#bfe3ff,#f4f8fb)}.en-card{color:var(--fg)}.en-card .sv-tag{color:var(--accent-terra-ink)}.en-card .sv-row{position:absolute;right:0;top:0;width:440px}.en-card .sv-label-box,.en-card .sv-eyebrow,.en-card .sv-tag{margin-right:460px}.en-card .sv-eyebrow{font-size:24px;letter-spacing:2px;color:var(--fg)}.en-card{gap:8px}.en-card .sv-pips{position:absolute;right:0;bottom:0;width:440px}.en-mx .sv-m-t,.en-mx .sv-m-val{color:var(--fg)}.en-mx{--sv-track:rgba(31,41,51,.14);gap:10px}.en-rx{border:8px solid #1f2933}`,
         };
       },
     },
@@ -89,13 +90,14 @@ const endurance = defineVariant({
         const stage = reactorStage(ctx, { gear: "headband", accent: accent(ctx, "--accent-sage"), outline: null, stage: "background:linear-gradient(180deg,#9fd3ff,#e9f5ff)" });
         const colors = ["#16a34a", "#ea580c", "#2563eb"];
         return {
-          header: { style: "centered", region: { x: 60, y: 110, w: 960, h: 220 } },
-          text: { style: "panel", region: { x: 40, y: 350, w: 1000, h: 240 }, size: 46, enter: "fade_up" },
-          visual: { frame: "circle", region: { x: 50, y: 800, w: 540, h: 540 } },
+          header: { style: "centered", region: { x: 60, y: 80, w: 960, h: 170 } },
+          text: { style: "panel", region: { x: 40, y: 265, w: 1000, h: 190 }, size: 44, enter: "fade_up" },
+          visual: { frame: "plain", region: { x: 40, y: 585, w: 1000, h: 745 } },
           panel: (scene, i) => stage.panel(scene, i),
           sceneExtra: (scene, i, c) => merge(
-            levelCard(scene, stage.data.items[i], { data: stage.data, ui: c.ui, lang: ctx.lang, region: { x: 620, y: 800, w: 420, h: 540 }, cls: "en-card2", ramp: ENDURANCE_RAMP, labelSize: 52 }),
-            metricBars(scene, i, { data: stage.data, region: { x: 50, y: 1380, w: 990, h: 290 }, cls: "en-mx2", colors }),
+            stage.reactor(scene, i, { x: 40, y: 1350, w: 245, h: 245 }, "rx-round en-rx2"),
+            levelCard(scene, stage.data.items[i], { data: stage.data, ui: c.ui, lang: ctx.lang, region: { x: 305, y: 1348, w: 735, h: 250 }, cls: "en-card2 sv-compact", ramp: ENDURANCE_RAMP, labelSize: 46 }),
+            metricBars(scene, i, { data: stage.data, region: { x: 40, y: 1612, w: 1000, h: 83 }, cls: "en-mx2 sv-row3", colors }),
             { tweens: stage.tweens(scene, i) },
           ),
           overlay: (c) => {
@@ -103,10 +105,10 @@ const endurance = defineVariant({
             const x = (k) => Math.round(80 + (k / Math.max(1, n - 1)) * 880);
             const marks = c.scenes.map((scene, k) => `<i class="en-lane-mark" style="left:${x(k)}px"></i>`).join("");
             const html = `<div class="en-lane"><div class="en-lane-track"></div>${marks}<div class="en-runner" id="en-runner"></div></div>`;
-            return { html, css: ".en-lane{position:absolute;left:40px;top:630px;width:1000px;height:130px}.en-lane-track{position:absolute;left:0;right:0;top:52px;height:34px;background:#c2410c;border-top:4px solid #fff;border-bottom:4px solid #fff}.en-lane-mark{position:absolute;top:40px;width:6px;height:58px;margin-left:-3px;background:#fff}.en-runner{position:absolute;left:0;top:20px;width:64px;height:64px;margin-left:-32px;border-radius:50%;background:#111;border:8px solid #fde047;box-sizing:border-box}", tweens: stepTweens("#en-runner", c.scenes, (k) => x(k), { prop: "x", initial: x(0) }) };
+            return { html, css: ".en-lane{position:absolute;left:40px;top:462px;width:1000px;height:110px}.en-lane-track{position:absolute;left:0;right:0;top:52px;height:34px;background:#c2410c;border-top:4px solid #fff;border-bottom:4px solid #fff}.en-lane-mark{position:absolute;top:40px;width:6px;height:58px;margin-left:-3px;background:#fff}.en-runner{position:absolute;left:0;top:20px;width:64px;height:64px;margin-left:-32px;border-radius:50%;background:#111;border:8px solid #fde047;box-sizing:border-box}", tweens: stepTweens("#en-runner", c.scenes, (k) => x(k), { prop: "x", initial: x(0) }) };
           },
           vars: { "--frame-edge": "#c2410c" },
-          css: `${BASE_CSS}.en-card2{color:var(--fg);padding:10px 0}.en-card2 .sv-tag{color:#7c2d12}.en-card2 .sv-eyebrow{color:var(--fg-dim)}.en-mx2 .sv-m-t,.en-mx2 .sv-m-val{color:var(--fg)}`,
+          css: `${BASE_CSS}.f-plain{border-radius:28px}.en-rx2{border:10px solid #c2410c}.en-card2{color:var(--fg);padding:4px 0}.en-card2 .sv-tag{color:#7c2d12}.en-card2 .sv-eyebrow{color:var(--fg-dim)}.en-mx2 .sv-m-t,.en-mx2 .sv-m-val{color:var(--fg)}`,
         };
       },
     },
@@ -161,18 +163,19 @@ const deepSea = defineVariant({
         const stage = reactorStage(ctx, { gear: "diving", accent: "#f59e0b", outline: { color: "#06121f", width: 4 }, stage: "background:radial-gradient(ellipse at 50% 0,rgba(125,211,252,.4),transparent 70%)" });
         const colors = ["#22d3ee", "#facc15", "#a78bfa"];
         return {
-          header: { style: "label_title", region: { x: 50, y: 120, w: 800, h: 220 } },
-          visual: { frame: "bleed", region: { x: 40, y: 360, w: 780, h: 640 } },
+          header: { style: "label_title", region: { x: 50, y: 90, w: 740, h: 180 } },
+          visual: { frame: "bleed", region: { x: 0, y: 295, w: 1080, h: 800 } },
           panel: (scene, i) => stage.panel(scene, i),
-          text: { style: "glass", region: { x: 40, y: 1530, w: 780, h: 170 }, size: 42, enter: "fade_up" },
+          text: { style: "glass", region: { x: 40, y: 1535, w: 760, h: 160 }, size: 40, enter: "fade_up" },
           sceneExtra: (scene, i, c) => merge(
-            pressureGauge(scene, i, stage, { region: { x: 40, y: 1020, w: 290, h: 290 }, cls: "", ui: c.ui, lang: ctx.lang }),
-            levelCard(scene, stage.data.items[i], { data: stage.data, ui: c.ui, lang: ctx.lang, region: { x: 350, y: 1020, w: 470, h: 290 }, cls: "ds-card", ramp: DEEP_RAMP, labelSize: 46 }),
-            metricBars(scene, i, { data: stage.data, region: { x: 40, y: 1330, w: 780, h: 186 }, cls: "ds-mx", colors }),
+            stage.reactor(scene, i, { x: 815, y: 62, w: 225, h: 220 }, "ds-rx"),
+            pressureGauge(scene, i, stage, { region: { x: 40, y: 1115, w: 215, h: 215 }, cls: "", ui: c.ui, lang: ctx.lang }),
+            levelCard(scene, stage.data.items[i], { data: stage.data, ui: c.ui, lang: ctx.lang, region: { x: 275, y: 1112, w: 525, h: 225 }, cls: "ds-card sv-compact", ramp: DEEP_RAMP, labelSize: 42 }),
+            metricBars(scene, i, { data: stage.data, region: { x: 40, y: 1350, w: 760, h: 174 }, cls: "ds-mx", colors }),
             { tweens: stage.tweens(scene, i) },
           ),
-          overlay: (c) => { const ruler = depthRuler(c, stage, { x: 1000, y: 380, h: 1280, side: "right" }); return { html: ruler.html, css: RULER_CSS, tweens: ruler.tweens }; },
-          css: `${BASE_CSS}${GAUGE_CSS}.ds-card{color:#e0f2fe}.ds-card .sv-tag{color:#7dd3fc}.ds-mx .sv-m-t,.ds-mx .sv-m-val{color:#e0f2fe}.ds-mx{--sv-track:rgba(224,242,254,.15)}.ds-mx .sv-m-h{grid-template-rows:34px 18px}`,
+          overlay: (c) => { const ruler = depthRuler(c, stage, { x: 1010, y: 1125, h: 555, side: "right" }); return { html: ruler.html, css: RULER_CSS, tweens: ruler.tweens }; },
+          css: `${BASE_CSS}${GAUGE_CSS}.ds-rx{border:3px solid rgba(125,211,252,.7);background:#06243a}.ds-card .sv-pips{display:none}.ds-card .sv-eyebrow{font-size:22px}.ds-card{color:#e0f2fe}.ds-card .sv-tag{color:#7dd3fc}.ds-mx .sv-m-t,.ds-mx .sv-m-val{color:#e0f2fe}.ds-mx{--sv-track:rgba(224,242,254,.15)}.ds-mx .sv-m-h{grid-template-rows:34px 18px}`,
         };
       },
     },
@@ -183,19 +186,20 @@ const deepSea = defineVariant({
         const stage = reactorStage(ctx, { gear: "diving", accent: "#22d3ee", outline: null, flat: true, stage: "background:linear-gradient(180deg,#0e7490,#082f49)" });
         const colors = ["#67e8f9", "#fde047", "#f0abfc"];
         return {
-          header: { style: "label_title", region: { x: 60, y: 110, w: 960, h: 210 } },
-          text: { style: "glass", region: { x: 40, y: 340, w: 1000, h: 230 }, size: 44, enter: "fade_up" },
-          visual: { frame: "arch", region: { x: 250, y: 600, w: 790, h: 580 } },
+          header: { style: "label_title", region: { x: 60, y: 90, w: 960, h: 180 } },
+          text: { style: "glass", region: { x: 40, y: 285, w: 1000, h: 190 }, size: 42, enter: "fade_up" },
+          visual: { frame: "arch", region: { x: 250, y: 495, w: 790, h: 905 } },
           panel: (scene, i) => stage.panel(scene, i),
           sceneExtra: (scene, i, c) => merge(
-            levelCard(scene, stage.data.items[i], { data: stage.data, ui: c.ui, lang: ctx.lang, region: { x: 250, y: 1200, w: 530, h: 290 }, cls: "ds-card", ramp: DEEP_RAMP, labelSize: 46 }),
-            pressureGauge(scene, i, stage, { region: { x: 800, y: 1210, w: 240, h: 240 }, cls: "", ui: c.ui, lang: ctx.lang }),
-            metricBars(scene, i, { data: stage.data, region: { x: 250, y: 1510, w: 790, h: 186 }, cls: "ds-mx", colors }),
+            pressureGauge(scene, i, stage, { region: { x: 30, y: 1135, w: 200, h: 200 }, cls: "", ui: c.ui, lang: ctx.lang }),
+            stage.reactor(scene, i, { x: 25, y: 1355, w: 210, h: 240 }, "ds-rx2"),
+            levelCard(scene, stage.data.items[i], { data: stage.data, ui: c.ui, lang: ctx.lang, region: { x: 250, y: 1415, w: 790, h: 185 }, cls: "ds-card ds-card2", ramp: DEEP_RAMP, labelSize: 44, parts: ["eyebrow", "tag", "label", "status", "severity"] }),
+            metricBars(scene, i, { data: stage.data, region: { x: 250, y: 1612, w: 790, h: 83 }, cls: "ds-mx sv-row3", colors }),
             { tweens: stage.tweens(scene, i) },
           ),
-          overlay: (c) => { const ruler = depthRuler(c, stage, { x: 36, y: 620, h: 1060, side: "left" }); return { html: ruler.html, css: RULER_CSS, tweens: ruler.tweens }; },
+          overlay: (c) => { const ruler = depthRuler(c, stage, { x: 36, y: 515, h: 590, side: "left" }); return { html: ruler.html, css: RULER_CSS, tweens: ruler.tweens }; },
           vars: { "--frame-edge": "#f59e0b" },
-          css: `${BASE_CSS}${GAUGE_CSS}.ds-card{color:#e0f2fe}.ds-card .sv-tag{color:#fde047}.ds-mx .sv-m-t,.ds-mx .sv-m-val{color:#e0f2fe}.ds-mx{--sv-track:rgba(224,242,254,.15)}.ds-mx .sv-m-h{grid-template-rows:34px 18px}`,
+          css: `${BASE_CSS}${GAUGE_CSS}.ds-rx2{border:6px solid #f59e0b;border-radius:105px 105px 14px 14px}.ds-card2{gap:6px}.ds-card2 .sv-eyebrow{font-size:22px}.ds-card2 .sv-row{position:absolute;right:0;top:0;width:330px}.ds-card2 .sv-label-box,.ds-card2 .sv-eyebrow,.ds-card2 .sv-tag{margin-right:350px}.ds-card2 .sv-pips{position:absolute;right:0;bottom:0;width:330px}.ds-card{color:#e0f2fe}.ds-card .sv-tag{color:#fde047}.ds-mx .sv-m-t,.ds-mx .sv-m-val{color:#e0f2fe}.ds-mx{--sv-track:rgba(224,242,254,.15)}.ds-mx .sv-m-h{grid-template-rows:34px 18px}`,
         };
       },
     },
@@ -241,18 +245,19 @@ const spaceExposure = defineVariant({
       design: (ctx) => {
         const stage = reactorStage(ctx, { gear: "helmet", accent: accent(ctx), outline: { color: "#0b1020", width: 4 }, stage: STARS });
         return {
-          header: { style: "osd_bar", region: { x: 0, y: 110, w: 1080, h: 96 } },
-          visual: { frame: "bleed", region: { x: 140, y: 240, w: 800, h: 760 } },
+          header: { style: "osd_bar", region: { x: 0, y: 100, w: 1080, h: 96 } },
+          visual: { frame: "bleed", region: { x: 40, y: 268, w: 1000, h: 800 } },
           panel: (scene, i) => stage.panel(scene, i),
-          text: { style: "lower_third", region: { x: 40, y: 1530, w: 1000, h: 160 }, size: 42, enter: "slide" },
+          text: { style: "lower_third", region: { x: 40, y: 1535, w: 1000, h: 160 }, size: 40, enter: "slide" },
           sceneExtra: (scene, i, c) => merge(
-            hudArcs(scene, i, stage, { region: { x: 40, y: 1020, w: 1000, h: 250 }, cls: "" }),
-            levelCard(scene, stage.data.items[i], { data: stage.data, ui: c.ui, lang: ctx.lang, region: { x: 40, y: 1290, w: 1000, h: 220 }, cls: "sp-card", ramp: SPACE_RAMP, labelSize: 46, parts: ["tag", "label", "status", "severity"] }),
+            stage.reactor(scene, i, { x: 40, y: 1088, w: 250, h: 262 }, "sp-rx"),
+            hudArcs(scene, i, stage, { region: { x: 310, y: 1095, w: 730, h: 250 }, cls: "" }),
+            levelCard(scene, stage.data.items[i], { data: stage.data, ui: c.ui, lang: ctx.lang, region: { x: 40, y: 1365, w: 1000, h: 160 }, cls: "sp-card", ramp: SPACE_RAMP, labelSize: 44, parts: ["tag", "label", "status", "severity"] }),
             { tweens: stage.tweens(scene, i) },
           ),
-          overlay: () => ({ html: `<div class="sp-eyebrow">${escapeHtml(stage.data.eyebrow)}</div>`, css: ".sp-eyebrow{position:absolute;left:40px;top:250px;font-size:26px;letter-spacing:4px;color:#67e8f9;border:2px solid #67e8f9;padding:4px 12px;background:rgba(2,6,23,.8);white-space:nowrap;max-width:420px;overflow:hidden}", tweens: [] }),
+          overlay: () => ({ html: `<div class="sp-eyebrow">${escapeHtml(stage.data.eyebrow)}</div>`, css: ".sp-eyebrow{position:absolute;left:40px;top:208px;font-size:26px;letter-spacing:4px;color:#67e8f9;border:2px solid #67e8f9;padding:4px 12px;background:rgba(2,6,23,.8);white-space:nowrap;max-width:420px;overflow:hidden}", tweens: [] }),
           vars: { "--scope-ink": "#67e8f9", "--accent-terra": "#67e8f9" },
-          css: `${BASE_CSS}${HUD_CSS}.sp-card{color:#f8fafc}.sp-card .sv-tag{color:#67e8f9}.sp-card .sv-row{position:absolute;right:0;top:0;width:430px}.sp-card .sv-label-box{margin-right:450px}.sp-card .sv-pips{position:absolute;right:0;bottom:0;width:430px}.t-lower_third{background:linear-gradient(90deg,rgba(2,6,23,.95),rgba(2,6,23,.85))!important}`,
+          css: `${BASE_CSS}${HUD_CSS}.sp-rx{border:4px solid #67e8f9;border-radius:125px 125px 20px 20px}.f-bleed{border-radius:26px}.sp-card{color:#f8fafc;gap:8px}.sp-card .sv-tag{color:#67e8f9}.sp-card .sv-row{position:absolute;right:0;top:0;width:430px}.sp-card .sv-label-box{margin-right:450px}.sp-card .sv-pips{position:absolute;right:0;bottom:0;width:430px}.t-lower_third{background:linear-gradient(90deg,rgba(2,6,23,.95),rgba(2,6,23,.85))!important}`,
         };
       },
     },
@@ -262,18 +267,19 @@ const spaceExposure = defineVariant({
       design: (ctx) => {
         const stage = reactorStage(ctx, { gear: "helmet", accent: "#f97316", outline: null, flat: true, stage: "background:radial-gradient(circle,#172554,#020617 70%)" });
         return {
-          header: { style: "label_title", region: { x: 60, y: 110, w: 960, h: 220 } },
-          visual: { frame: "circle", region: { x: 380, y: 370, w: 640, h: 640 } },
+          header: { style: "label_title", region: { x: 60, y: 90, w: 720, h: 180 } },
+          visual: { frame: "plain", region: { x: 40, y: 300, w: 1000, h: 765 } },
           panel: (scene, i) => stage.panel(scene, i),
-          text: { style: "osd", region: { x: 380, y: 1330, w: 660, h: 350 }, size: 42, enter: "type" },
+          text: { style: "osd", region: { x: 310, y: 1360, w: 730, h: 335 }, size: 42, enter: "type" },
           sceneExtra: (scene, i, c) => merge(
-            hudArcs(scene, i, stage, { region: { x: 40, y: 370, w: 300, h: 980 }, cls: "", dir: "col" }),
-            levelCard(scene, stage.data.items[i], { data: stage.data, ui: c.ui, lang: ctx.lang, region: { x: 380, y: 1030, w: 660, h: 280 }, cls: "sp-card2", ramp: SPACE_RAMP, labelSize: 44 }),
+            stage.reactor(scene, i, { x: 815, y: 58, w: 225, h: 225 }, "rx-round sp-rx2"),
+            hudArcs(scene, i, stage, { region: { x: 40, y: 1085, w: 250, h: 610 }, cls: "", dir: "col" }),
+            levelCard(scene, stage.data.items[i], { data: stage.data, ui: c.ui, lang: ctx.lang, region: { x: 310, y: 1085, w: 730, h: 255 }, cls: "sp-card2 sv-compact", ramp: SPACE_RAMP, labelSize: 44 }),
             { tweens: stage.tweens(scene, i) },
           ),
           decor: [{ kind: "dust", count: 60, area: { x: 0, y: 0, w: 1080, h: 1920 } }],
           vars: { "--scope-ink": "#fbbf24", "--frame-edge": "#94a3b8" },
-          css: `${BASE_CSS}${HUD_CSS}.sp-card2{color:#f8fafc}.sp-card2 .sv-tag{color:#fbbf24}.sp-card2 .sv-eyebrow{color:#94a3b8}.sp-hud.sp-col{border-right:2px solid rgba(148,163,184,.4);padding-right:18px}`,
+          css: `${BASE_CSS}${HUD_CSS}.f-plain{border-radius:30px}.sp-rx2{border:8px solid #94a3b8;box-shadow:0 0 0 6px rgba(251,191,36,.5)}.sp-card2{color:#f8fafc}.sp-card2 .sv-tag{color:#fbbf24}.sp-card2 .sv-eyebrow{color:#94a3b8}.sp-hud.sp-col{border-right:2px solid rgba(148,163,184,.4);padding-right:18px}`,
         };
       },
     },
@@ -329,19 +335,20 @@ const extremeHeat = defineVariant({
         const stage = reactorStage(ctx, { gear: "sunhat", accent: accent(ctx), outline: { color: "#3b2a1a", width: 5 }, stage: "background:radial-gradient(circle at 70% 20%,#fff7c2,#fbbf24 30%,rgba(251,146,60,.2) 70%)" });
         const colors = ["#0ea5e9", "#ef4444", "#a855f7"];
         return {
-          header: { style: "ribbon", region: { x: 60, y: 120, w: 960, h: 170 }, size: 54 },
-          visual: { frame: "plain", region: { x: 230, y: 330, w: 810, h: 670 } },
+          header: { style: "ribbon", region: { x: 60, y: 100, w: 960, h: 160 }, size: 54 },
+          visual: { frame: "plain", region: { x: 250, y: 285, w: 790, h: 895 } },
           panel: (scene, i) => stage.panel(scene, i),
-          text: { style: "paper_note", region: { x: 40, y: 1530, w: 1000, h: 160 }, size: 40, enter: "fade_up" },
+          text: { style: "paper_note", region: { x: 40, y: 1525, w: 1000, h: 170 }, size: 40, enter: "fade_up" },
           sceneExtra: (scene, i, c) => merge(
             heatHaze(scene, i, stage),
-            levelCard(scene, stage.data.items[i], { data: stage.data, ui: c.ui, lang: ctx.lang, region: { x: 230, y: 1020, w: 810, h: 280 }, cls: "ht-card", ramp: HEAT_RAMP, labelSize: 50 }),
-            metricBars(scene, i, { data: stage.data, region: { x: 40, y: 1320, w: 1000, h: 190 }, cls: "ht-mx", colors }),
+            stage.reactor(scene, i, { x: 40, y: 1198, w: 220, h: 220 }, "ht-rx"),
+            levelCard(scene, stage.data.items[i], { data: stage.data, ui: c.ui, lang: ctx.lang, region: { x: 278, y: 1196, w: 762, h: 222 }, cls: "ht-card sv-compact", ramp: HEAT_RAMP, labelSize: 46 }),
+            metricBars(scene, i, { data: stage.data, region: { x: 40, y: 1430, w: 1000, h: 80 }, cls: "ht-mx sv-row3", colors }),
             { tweens: stage.tweens(scene, i) },
           ),
-          overlay: (c) => { const th = thermometer(c, stage, { x: 50, y: 340, w: 150, h: 960 }); return { html: th.html, css: `${THERMO_CSS}.ht-th{--bulb:150px}`, tweens: th.tweens }; },
+          overlay: (c) => { const th = thermometer(c, stage, { x: 50, y: 295, w: 150, h: 885 }); return { html: th.html, css: `${THERMO_CSS}.ht-th{--bulb:150px}`, tweens: th.tweens }; },
           vars: { "--frame-edge": "#3b2a1a" },
-          css: `${BASE_CSS}.ht-card{color:#fff8eb;text-shadow:0 2px 6px rgba(0,0,0,.6)}.ht-card .sv-tag{color:#fde68a}.ht-card .sv-eyebrow{color:#fed7aa}.ht-mx .sv-m-t,.ht-mx .sv-m-val{color:#fff8eb;text-shadow:0 2px 4px rgba(0,0,0,.6)}.ht-mx{--sv-track:rgba(0,0,0,.35)}.ht-mx .sv-m-h{grid-template-rows:36px 20px}`,
+          css: `${BASE_CSS}.ht-rx{border:6px solid #3b2a1a}.ht-card{color:#fff8eb;text-shadow:0 2px 6px rgba(0,0,0,.6)}.ht-card .sv-tag{color:#fde68a}.ht-card .sv-eyebrow{color:#fed7aa}.ht-mx .sv-m-t,.ht-mx .sv-m-val{color:#fff8eb;text-shadow:0 2px 4px rgba(0,0,0,.6)}.ht-mx{--sv-track:rgba(0,0,0,.35)}.ht-mx .sv-m-h{grid-template-rows:36px 20px}`,
         };
       },
     },
@@ -352,19 +359,20 @@ const extremeHeat = defineVariant({
         const stage = reactorStage(ctx, { gear: "sunhat", accent: "#0f766e", outline: null, stage: "background:linear-gradient(180deg,#fde68a,#fb923c)" });
         const colors = ["#0284c7", "#dc2626", "#7c3aed"];
         return {
-          header: { style: "label_title", region: { x: 60, y: 110, w: 960, h: 220 } },
-          visual: { frame: "torn", region: { x: 40, y: 350, w: 1000, h: 580 } },
+          header: { style: "label_title", region: { x: 60, y: 90, w: 960, h: 180 } },
+          visual: { frame: "torn", region: { x: 40, y: 290, w: 1000, h: 810 } },
           panel: (scene, i) => stage.panel(scene, i),
-          text: { style: "lower_third", region: { x: 40, y: 1420, w: 1000, h: 260 }, size: 46, enter: "slide" },
+          text: { style: "lower_third", region: { x: 40, y: 1525, w: 1000, h: 170 }, size: 42, enter: "slide" },
           sceneExtra: (scene, i, c) => merge(
             heatHaze(scene, i, stage),
-            metricBars(scene, i, { data: stage.data, region: { x: 200, y: 960, w: 840, h: 190 }, cls: "ht-mx2", colors }),
-            levelCard(scene, stage.data.items[i], { data: stage.data, ui: c.ui, lang: ctx.lang, region: { x: 200, y: 1170, w: 840, h: 230 }, cls: "ht-card2", ramp: HEAT_RAMP, labelSize: 50 }),
+            metricBars(scene, i, { data: stage.data, region: { x: 180, y: 1120, w: 600, h: 168 }, cls: "ht-mx2", colors }),
+            stage.reactor(scene, i, { x: 800, y: 1118, w: 240, h: 240 }, "ht-rx2"),
+            levelCard(scene, stage.data.items[i], { data: stage.data, ui: c.ui, lang: ctx.lang, region: { x: 180, y: 1300, w: 600, h: 215 }, cls: "ht-card2 sv-compact", ramp: HEAT_RAMP, labelSize: 44 }),
             { tweens: stage.tweens(scene, i) },
           ),
-          overlay: (c) => { const th = thermometer(c, stage, { x: 50, y: 960, w: 110, h: 440 }); return { html: th.html, css: `${THERMO_CSS}.ht-th{--bulb:110px}.ht-tube i em{display:none}`, tweens: th.tweens }; },
+          overlay: (c) => { const th = thermometer(c, stage, { x: 45, y: 1120, w: 110, h: 395 }); return { html: th.html, css: `${THERMO_CSS}.ht-th{--bulb:110px}.ht-tube i em{display:none}`, tweens: th.tweens }; },
           vars: { "--accent-terra": "#f97316" },
-          css: `${BASE_CSS}.ht-card2{color:#fff8eb;text-shadow:0 2px 6px rgba(0,0,0,.6);background:rgba(44,18,6,.78);padding:10px 16px;border-radius:10px}.ht-card2 .sv-tag{color:#fde68a}.ht-card2 .sv-eyebrow{color:#fed7aa}.ht-card2 .sv-row{position:absolute;right:0;top:0;width:360px}.ht-card2 .sv-label-box,.ht-card2 .sv-eyebrow,.ht-card2 .sv-tag{margin-right:380px}.ht-card2 .sv-pips{position:absolute;right:0;bottom:0;width:360px}.ht-card2{gap:6px}.ht-mx2 .sv-m-t,.ht-mx2 .sv-m-val{color:#fff8eb;text-shadow:0 2px 4px rgba(0,0,0,.6)}.ht-mx2{--sv-track:rgba(0,0,0,.35)}.ht-mx2 .sv-m-val{font-size:30px}.ht-mx2 .sv-m-h{grid-template-rows:34px 18px}`,
+          css: `${BASE_CSS}.ht-card2{color:#fff8eb;text-shadow:0 2px 6px rgba(0,0,0,.6);background:rgba(44,18,6,.78);padding:10px 16px;border-radius:10px}.ht-card2 .sv-tag{color:#fde68a}.ht-card2 .sv-eyebrow{color:#fed7aa}.ht-card2 .sv-eyebrow{font-size:22px}.ht-card2 .sv-pips{display:none}.ht-rx2{border:5px solid #7c2d12;border-radius:120px 120px 16px 16px}.ht-mx2 .sv-m-t,.ht-mx2 .sv-m-val{color:#fff8eb;text-shadow:0 2px 4px rgba(0,0,0,.6)}.ht-mx2{--sv-track:rgba(0,0,0,.35)}.ht-mx2 .sv-m-val{font-size:30px}.ht-mx2 .sv-m-h{grid-template-rows:32px 16px}`,
         };
       },
     },
@@ -411,19 +419,19 @@ const extremeCold = defineVariant({
         const stage = reactorStage(ctx, { gear: "beanie", accent: accent(ctx), outline: { color: "#1e293b", width: 5 }, stage: "background:linear-gradient(180deg,#e0f2fe,#94a3b8)" });
         const colors = ["#38bdf8", "#f87171", "#a78bfa"];
         return {
-          header: { style: "label_title", region: { x: 60, y: 120, w: 960, h: 220 } },
-          visual: { frame: "plain", region: { x: 60, y: 360, w: 960, h: 840 } },
+          header: { style: "label_title", region: { x: 60, y: 90, w: 960, h: 180 } },
+          visual: { frame: "plain", region: { x: 60, y: 290, w: 960, h: 850 } },
           panel: (scene, i) => stage.panel(scene, i),
-          text: { style: "glass", region: { x: 60, y: 1500, w: 960, h: 190 }, size: 42, enter: "fade_up" },
+          text: { style: "glass", region: { x: 60, y: 1525, w: 960, h: 170 }, size: 40, enter: "fade_up" },
           sceneExtra: (scene, i, c) => merge(
             frostCreep(scene, i, stage),
-            metricBars(scene, i, { data: stage.data, region: { x: 60, y: 1230, w: 440, h: 240 }, cls: "cd-mx", colors }),
-            levelCard(scene, stage.data.items[i], { data: stage.data, ui: c.ui, lang: ctx.lang, region: { x: 530, y: 1225, w: 490, h: 250 }, cls: "cd-card", ramp: COLD_RAMP, labelSize: 44, parts: ["tag", "label", "status", "severity"] }),
+            stage.reactor(scene, i, { x: 60, y: 1158, w: 240, h: 252 }, "cd-rx"),
+            levelCard(scene, stage.data.items[i], { data: stage.data, ui: c.ui, lang: ctx.lang, region: { x: 320, y: 1158, w: 700, h: 252 }, cls: "cd-card sv-compact", ramp: COLD_RAMP, labelSize: 44, parts: ["eyebrow", "tag", "label", "status", "severity"] }),
+            metricBars(scene, i, { data: stage.data, region: { x: 60, y: 1422, w: 960, h: 92 }, cls: "cd-mx sv-row3", colors }),
             { tweens: stage.tweens(scene, i) },
           ),
-          overlay: () => ({ html: `<div class="cd-eyebrow">${escapeHtml(stage.data.eyebrow)}</div>`, css: ".cd-eyebrow{position:absolute;left:90px;top:380px;font-size:26px;letter-spacing:4px;color:#0c4a6e;background:rgba(240,249,255,.9);padding:4px 14px;border-radius:20px;white-space:nowrap;max-width:600px;overflow:hidden}", tweens: [] }),
           vars: { "--frame-edge": "#e0f2fe" },
-          css: `${BASE_CSS}${FROST_CSS}.f-plain{border-radius:24px}.cd-card,.cd-mx{background:rgba(15,23,42,.72);padding:14px 18px;border-radius:18px}.cd-card{color:#f0f9ff}.cd-card .sv-tag{color:#7dd3fc}.cd-mx .sv-m-t,.cd-mx .sv-m-val{color:#f0f9ff}.cd-mx{--sv-track:rgba(240,249,255,.18)}.cd-mx .sv-m-h{grid-template-rows:32px 18px}.cd-mx .sv-m-val{font-size:28px}`,
+          css: `${BASE_CSS}${FROST_CSS}.f-plain{border-radius:24px}.cd-rx{border:5px solid #e0f2fe}.cd-card,.cd-mx{background:rgba(15,23,42,.72);padding:14px 18px;border-radius:18px}.cd-card{color:#f0f9ff}.cd-card .sv-tag{color:#7dd3fc}.cd-card .sv-eyebrow{font-size:22px;color:#bae6fd}.cd-mx .sv-m-t,.cd-mx .sv-m-val{color:#f0f9ff}.cd-mx{--sv-track:rgba(240,249,255,.18)}.cd-mx .sv-m-h{grid-template-rows:32px 18px}.cd-mx .sv-m-val{font-size:28px}`,
         };
       },
     },
@@ -434,18 +442,19 @@ const extremeCold = defineVariant({
         const stage = reactorStage(ctx, { gear: "beanie", accent: "#be123c", outline: null, stage: "background:radial-gradient(circle at 50% 30%,#f8fafc,#bae6fd 70%)" });
         const colors = ["#7dd3fc", "#fda4af", "#c4b5fd"];
         return {
-          header: { style: "centered", region: { x: 60, y: 110, w: 960, h: 210 } },
-          text: { style: "marker", region: { x: 60, y: 350, w: 960, h: 200 }, size: 44, enter: "fade_up" },
-          visual: { frame: "card", region: { x: 290, y: 600, w: 680, h: 680 } },
+          header: { style: "centered", region: { x: 60, y: 80, w: 960, h: 170 } },
+          text: { style: "marker", region: { x: 60, y: 265, w: 960, h: 190 }, size: 42, enter: "fade_up" },
+          visual: { frame: "card", region: { x: 250, y: 478, w: 790, h: 890 } },
           panel: (scene, i) => `${stage.panel(scene, i)}${frostCreep(scene, i, stage, { cls: "cd-frost-in" }).html}`,
           sceneExtra: (scene, i, c) => merge(
             { tweens: frostCreep(scene, i, stage).tweens },
-            metricBars(scene, i, { data: stage.data, region: { x: 40, y: 590, w: 200, h: 700 }, cls: "cd-mx2", orient: "v", colors }),
-            levelCard(scene, stage.data.items[i], { data: stage.data, ui: c.ui, lang: ctx.lang, region: { x: 60, y: 1340, w: 960, h: 340 }, cls: "cd-card2", ramp: COLD_RAMP, labelSize: 52 }),
+            metricBars(scene, i, { data: stage.data, region: { x: 40, y: 478, w: 190, h: 890 }, cls: "cd-mx2", orient: "v", colors }),
+            stage.reactor(scene, i, { x: 40, y: 1392, w: 240, h: 255 }, "cd-rx2"),
+            levelCard(scene, stage.data.items[i], { data: stage.data, ui: c.ui, lang: ctx.lang, region: { x: 300, y: 1392, w: 740, h: 303 }, cls: "cd-card2", ramp: COLD_RAMP, labelSize: 48 }),
             { tweens: stage.tweens(scene, i) },
           ),
           vars: { "--gold": "#93c5fd" },
-          css: `${BASE_CSS}${FROST_CSS}.cd-card2{background:rgba(15,23,42,.78);padding:18px 24px;border-radius:22px;color:#f0f9ff}.cd-card2 .sv-tag{color:#93c5fd}.cd-card2 .sv-eyebrow{color:#bae6fd}.cd-mx2{background:rgba(15,23,42,.72);padding:14px 8px;border-radius:18px;gap:8px}.cd-mx2 .sv-m-t,.cd-mx2 .sv-m-val{color:#f0f9ff}.cd-mx2 .sv-m-val{font-size:20px}.cd-mx2 .sv-m-v{grid-template-rows:1fr 34px 66px}.cd-mx2 .sv-m-t{white-space:normal;line-height:1.05;text-align:center;letter-spacing:0}.cd-frost.cd-frost-in{inset:0;z-index:2}.cd-frost-in.cd-f2,.cd-frost-in.cd-f3{display:none}.cd-mx2 .sv-m-v .sv-m-track{width:30px;border-radius:0 0 15px 15px}.cd-mx2{--sv-track:rgba(240,249,255,.18)}.t-marker .v-line{color:#0c4a6e!important}`,
+          css: `${BASE_CSS}${FROST_CSS}.cd-rx2{border:6px solid #93c5fd;border-radius:22px;transform:rotate(-2deg)}.cd-card2{gap:8px;background:rgba(15,23,42,.78);padding:16px 24px;border-radius:22px;color:#f0f9ff}.cd-card2 .sv-tag{color:#93c5fd}.cd-card2 .sv-eyebrow{color:#bae6fd}.cd-mx2{background:rgba(15,23,42,.72);padding:14px 8px;border-radius:18px;gap:8px}.cd-mx2 .sv-m-t,.cd-mx2 .sv-m-val{color:#f0f9ff}.cd-mx2 .sv-m-val{font-size:20px}.cd-mx2 .sv-m-v{grid-template-rows:1fr 34px 66px}.cd-mx2 .sv-m-t{white-space:normal;line-height:1.05;text-align:center;letter-spacing:0}.cd-frost.cd-frost-in{inset:0;z-index:2}.cd-frost-in.cd-f2,.cd-frost-in.cd-f3{display:none}.cd-mx2 .sv-m-v .sv-m-track{width:30px;border-radius:0 0 15px 15px}.cd-mx2{--sv-track:rgba(240,249,255,.18)}.t-marker .v-line{color:#0c4a6e!important}`,
         };
       },
     },
@@ -498,18 +507,19 @@ const noSleep = defineVariant({
         const stage = reactorStage(ctx, { gear: "sleepy", accent: accent(ctx), outline: { color: "#1c1917", width: 4 }, stage: "background:linear-gradient(180deg,#312e81,#1e1b4b)" });
         const colors = ["#16a34a", "#d97706", "#2563eb"];
         return {
-          header: { style: "tab", region: { x: 60, y: 120, w: 960, h: 220 } },
-          visual: { frame: "polaroid", region: { x: 520, y: 380, w: 500, h: 640 } },
+          header: { style: "tab", region: { x: 60, y: 100, w: 960, h: 180 } },
+          visual: { frame: "polaroid", region: { x: 330, y: 300, w: 710, h: 920 } },
           panel: (scene, i) => stage.panel(scene, i),
-          text: { style: "typed_sheet", region: { x: 60, y: 1500, w: 960, h: 190 }, size: 40, enter: "type" },
+          text: { style: "typed_sheet", region: { x: 40, y: 1520, w: 1000, h: 175 }, size: 40, enter: "type" },
           sceneExtra: (scene, i, c) => merge(
-            calendarPage(scene, i, stage, { region: { x: 60, y: 390, w: 400, h: 400 }, cls: "", ui: c.ui, lang: ctx.lang }),
-            levelCard(scene, stage.data.items[i], { data: stage.data, ui: c.ui, lang: ctx.lang, region: { x: 60, y: 1070, w: 960, h: 220 }, cls: "ns-card", ramp: SLEEP_RAMP, labelSize: 48, parts: ["eyebrow", "label", "status", "severity"] }),
-            metricBars(scene, i, { data: stage.data, region: { x: 60, y: 1300, w: 960, h: 186 }, cls: "ns-mx", colors }),
+            calendarPage(scene, i, stage, { region: { x: 45, y: 305, w: 260, h: 290 }, cls: "ns-cal-s", ui: c.ui, lang: ctx.lang }),
+            stage.reactor(scene, i, { x: 40, y: 820, w: 270, h: 400 }, "ns-rx"),
+            levelCard(scene, stage.data.items[i], { data: stage.data, ui: c.ui, lang: ctx.lang, region: { x: 40, y: 1242, w: 1000, h: 170 }, cls: "ns-card", ramp: SLEEP_RAMP, labelSize: 44, parts: ["eyebrow", "label", "status", "severity"] }),
+            metricBars(scene, i, { data: stage.data, region: { x: 40, y: 1422, w: 1000, h: 88 }, cls: "ns-mx sv-row3", colors }),
             { tweens: stage.tweens(scene, i) },
           ),
-          overlay: (c) => { const b = battery(c, stage, { x: 60, y: 850, w: 400, h: 170 }); return { html: `${b.html}<div class="ns-bat-l">${escapeHtml(upper(c.ui.battery, ctx.lang))}</div>`, css: `${BAT_CSS}.ns-bat-l{position:absolute;left:70px;top:1025px;font-size:26px;letter-spacing:3px;color:#fef3c7;white-space:nowrap}`, tweens: b.tweens }; },
-          css: `${BASE_CSS}${CAL_CSS}.ns-card{background:rgba(28,25,23,.82);padding:12px 20px;color:#fef3c7}.ns-card .sv-row{position:absolute;right:20px;top:12px;width:400px}.ns-card .sv-label-box{margin-right:420px}.ns-card .sv-pips{position:absolute;right:20px;bottom:12px;width:400px}.ns-mx{background:rgba(254,243,199,.92);padding:10px 18px}.ns-mx .sv-m-t,.ns-mx .sv-m-val{color:#1c1917}.ns-mx .sv-m-h{grid-template-rows:34px 18px}.ns-mx .sv-m-val{font-size:30px}`,
+          overlay: (c) => { const b = battery(c, stage, { x: 50, y: 625, w: 255, h: 110 }); return { html: `${b.html}<div class="ns-bat-l">${escapeHtml(upper(c.ui.battery, ctx.lang))}</div>`, css: `${BAT_CSS}.ns-bat-l{position:absolute;left:55px;top:742px;max-width:250px;overflow:hidden;font-size:26px;letter-spacing:3px;color:#fef3c7;white-space:nowrap}`, tweens: b.tweens }; },
+          css: `${BASE_CSS}${CAL_CSS}.f-polaroid{padding:22px 22px 64px}.ns-cal-s .ns-cal-top{font-size:28px;letter-spacing:2px}.ns-cal-s .ns-cal-num{font-size:120px}.ns-cal-s .ns-cal-sub{font-size:22px}.ns-rx{border:8px solid #fffdf7;border-radius:10px;transform:rotate(-1.2deg)}.ns-card{gap:6px;background:rgba(28,25,23,.82);padding:12px 20px;color:#fef3c7}.ns-card .sv-row{position:absolute;right:20px;top:12px;width:400px}.ns-card .sv-label-box{margin-right:420px}.ns-card .sv-pips{position:absolute;right:20px;bottom:12px;width:400px}.ns-mx{background:rgba(254,243,199,.92);padding:10px 18px}.ns-mx .sv-m-t,.ns-mx .sv-m-val{color:#1c1917}`,
         };
       },
     },
@@ -520,9 +530,9 @@ const noSleep = defineVariant({
         const stage = reactorStage(ctx, { gear: "sleepy", accent: "#0f766e", outline: null, flat: true, stage: "background:radial-gradient(circle at 50% 20%,#fde68a,#78350f 80%)" });
         const colors = ["#15803d", "#b45309", "#1d4ed8"];
         return {
-          header: { style: "tab", region: { x: 60, y: 110, w: 960, h: 210 } },
-          text: { style: "typed_sheet", region: { x: 60, y: 340, w: 960, h: 230 }, size: 42, enter: "type" },
-          visual: { frame: "tape_photo", region: { x: 60, y: 800, w: 520, h: 600 } },
+          header: { style: "tab", region: { x: 60, y: 100, w: 700, h: 180 } },
+          text: { style: "typed_sheet", region: { x: 40, y: 295, w: 1000, h: 200 }, size: 42, enter: "type" },
+          visual: { frame: "tape_photo", region: { x: 40, y: 690, w: 1000, h: 690 } },
           panel: (scene, i) => stage.panel(scene, i),
           sceneExtra: (scene, i, c) => {
             const n = c.scenes.length;
@@ -530,13 +540,14 @@ const noSleep = defineVariant({
             const days = stage.data.items.map((item, k) => `<div class="ns-day${k === i ? " on" : ""}${k < i ? " done" : ""}" style="left:${60 + k * (w + 12)}px;width:${w}px"><b>${item.role === "prologue" ? 0 : item.role === "outro" ? item.levelTotal : item.levelNo}</b></div>`).join("");
             return merge(
               { html: `<div class="ns-week">${days}</div>`, tweens: [] },
-              levelCard(scene, stage.data.items[i], { data: stage.data, ui: c.ui, lang: ctx.lang, region: { x: 620, y: 1010, w: 400, h: 400 }, cls: "ns-card2", ramp: SLEEP_RAMP, labelSize: 44 }),
-              metricBars(scene, i, { data: stage.data, region: { x: 60, y: 1440, w: 960, h: 230 }, cls: "ns-mx2", colors }),
+              stage.reactor(scene, i, { x: 40, y: 1402, w: 250, h: 290 }, "ns-rx2"),
+              levelCard(scene, stage.data.items[i], { data: stage.data, ui: c.ui, lang: ctx.lang, region: { x: 310, y: 1398, w: 730, h: 205 }, cls: "ns-card2 sv-compact", ramp: SLEEP_RAMP, labelSize: 42 }),
+              metricBars(scene, i, { data: stage.data, region: { x: 310, y: 1613, w: 730, h: 82 }, cls: "ns-mx2 sv-row3", colors }),
               { tweens: stage.tweens(scene, i) },
             );
           },
-          overlay: (c) => { const b = battery(c, stage, { x: 620, y: 810, w: 400, h: 170 }); return { html: b.html, css: BAT_CSS, tweens: b.tweens }; },
-          css: `${BASE_CSS}.ns-week{position:absolute;left:0;top:600px;width:1080px;height:170px}.ns-day{position:absolute;top:0;height:170px;box-sizing:border-box;background:#fffdf7;border-top:30px solid #dc2626;border-radius:10px;text-align:center;box-shadow:0 8px 16px rgba(0,0,0,.35)}.ns-day b{display:block;font-size:72px;line-height:110px;color:#1c1917}.ns-day.done{background:#e7e0d2}.ns-day.done b{color:#57534e;text-decoration:line-through;text-decoration-color:#dc2626;text-decoration-thickness:8px}.ns-day.on{transform:translateY(-12px) scale(1.06);box-shadow:0 0 0 6px #fde047,0 12px 20px rgba(0,0,0,.4)}.ns-card2{background:rgba(28,25,23,.85);padding:16px 20px;color:#fef3c7}.ns-card2 .sv-eyebrow{color:#fcd34d}.ns-card2 .sv-tag{color:#fde68a}.ns-mx2{background:rgba(254,243,199,.92);padding:14px 20px}.ns-mx2 .sv-m-t,.ns-mx2 .sv-m-val{color:#1c1917}`,
+          overlay: (c) => { const b = battery(c, stage, { x: 790, y: 150, w: 250, h: 100 }); return { html: b.html, css: `${BAT_CSS}.ns-bat-cell{border-width:8px;padding:7px}`, tweens: b.tweens }; },
+          css: `${BASE_CSS}.ns-rx2{border:10px solid #fffdf7;box-shadow:0 10px 22px rgba(0,0,0,.4)}.ns-card2.sv-compact{padding:10px 18px}.ns-card2 .sv-pips{display:none}.ns-card2 .sv-eyebrow{font-size:22px}.ns-week{position:absolute;left:0;top:522px;width:1080px;height:140px}.ns-day{position:absolute;top:0;height:140px;box-sizing:border-box;background:#fffdf7;border-top:30px solid #dc2626;border-radius:10px;text-align:center;box-shadow:0 8px 16px rgba(0,0,0,.35)}.ns-day b{display:block;font-size:64px;line-height:100px;color:#1c1917}.ns-day.done{background:#e7e0d2}.ns-day.done b{color:#57534e;text-decoration:line-through;text-decoration-color:#dc2626;text-decoration-thickness:8px}.ns-day.on{transform:translateY(-12px) scale(1.06);box-shadow:0 0 0 6px #fde047,0 12px 20px rgba(0,0,0,.4)}.ns-card2{background:rgba(28,25,23,.85);padding:16px 20px;color:#fef3c7}.ns-card2 .sv-eyebrow{color:#fcd34d}.ns-card2 .sv-tag{color:#fde68a}.ns-mx2{background:rgba(254,243,199,.92);padding:8px 16px}.ns-mx2 .sv-m-t,.ns-mx2 .sv-m-val{color:#1c1917}`,
         };
       },
     },
@@ -585,18 +596,19 @@ const labExposure = defineVariant({
         const stage = reactorStage(ctx, { gear: "goggles", accent: accent(ctx), outline: { color: "#1c1917", width: 5 }, stage: "background:repeating-linear-gradient(135deg,#f1f5f9 0 40px,#e2e8f0 40px 80px)" });
         const colors = ["#65a30d", "#dc2626", "#0891b2"];
         return {
-          header: { style: "label_title", region: { x: 60, y: 110, w: 960, h: 220 } },
-          text: { style: "panel", region: { x: 60, y: 350, w: 960, h: 230 }, size: 44, enter: "clip" },
-          visual: { frame: "plain", region: { x: 60, y: 610, w: 560, h: 640 } },
+          header: { style: "label_title", region: { x: 60, y: 90, w: 960, h: 180 } },
+          text: { style: "panel", region: { x: 40, y: 285, w: 1000, h: 185 }, size: 42, enter: "clip" },
+          visual: { frame: "plain", region: { x: 40, y: 490, w: 740, h: 875 } },
           panel: (scene, i) => stage.panel(scene, i),
           sceneExtra: (scene, i, c) => merge(
-            geiger(scene, i, stage, { region: { x: 650, y: 610, w: 370, h: 640 }, cls: "", ui: c.ui, lang: ctx.lang }),
-            levelCard(scene, stage.data.items[i], { data: stage.data, ui: c.ui, lang: ctx.lang, region: { x: 60, y: 1280, w: 960, h: 210 }, cls: "lb-card", ramp: LAB_RAMP, labelSize: 46, parts: ["eyebrow", "tag", "label", "status"] }),
-            metricBars(scene, i, { data: stage.data, region: { x: 60, y: 1500, w: 960, h: 186 }, cls: "lb-mx", colors }),
+            geiger(scene, i, stage, { region: { x: 800, y: 490, w: 240, h: 450 }, cls: "lb-gc-s", ui: c.ui, lang: ctx.lang }),
+            stage.reactor(scene, i, { x: 800, y: 960, w: 240, h: 405 }, "lb-rx"),
+            levelCard(scene, stage.data.items[i], { data: stage.data, ui: c.ui, lang: ctx.lang, region: { x: 40, y: 1393, w: 1000, h: 207 }, cls: "lb-card", ramp: LAB_RAMP, labelSize: 44, parts: ["eyebrow", "tag", "label", "status"] }),
+            metricBars(scene, i, { data: stage.data, region: { x: 40, y: 1610, w: 1000, h: 85 }, cls: "lb-mx sv-row3", colors }),
             { tweens: stage.tweens(scene, i) },
           ),
-          decor: [{ kind: "rule_lines", x: 60, y: 1262, w: 960, color: "#eab308", count: 2, gap: 10 }],
-          css: `${BASE_CSS}${GEIGER_CSS}.lb-card{color:var(--fg)}.lb-card .sv-tag{color:var(--head-ink);border-left:6px solid var(--accent-terra-ink);padding-left:10px}.lb-card .sv-eyebrow{position:absolute;right:0;top:4px}.lb-card .sv-row{position:absolute;right:0;bottom:0;width:360px;justify-content:flex-end}.lb-card .sv-label-box{margin-right:380px}.lb-mx .sv-m-t,.lb-mx .sv-m-val{color:var(--fg)}.lb-mx .sv-m-h{grid-template-rows:34px 18px}.lb-mx{--sv-track:rgba(0,0,0,.12)}`,
+          decor: [{ kind: "rule_lines", x: 40, y: 1374, w: 1000, color: "#eab308", count: 2, gap: 8 }],
+          css: `${BASE_CSS}${GEIGER_CSS}.lb-gc-s{padding:16px;gap:10px;grid-template-rows:auto 70px 30px 34px;border-width:6px}.lb-gc-s .lb-lcd{font-size:48px;line-height:70px;letter-spacing:2px}.lb-gc-s .lb-clicks{gap:4px}.lb-gc-s .lb-clicks em{height:22px}.lb-gc-s .lb-name{font-size:24px;letter-spacing:2px}.lb-rx{border:6px solid #1c1917}.lb-card{color:var(--fg)}.lb-card .sv-tag{color:var(--head-ink);border-left:6px solid var(--accent-terra-ink);padding-left:10px}.lb-card .sv-eyebrow{position:absolute;right:0;top:4px}.lb-card .sv-row{position:absolute;right:0;bottom:0;width:360px;justify-content:flex-end}.lb-card .sv-label-box{margin-right:380px}.lb-mx .sv-m-t,.lb-mx .sv-m-val{color:var(--fg)}.lb-mx{--sv-track:rgba(0,0,0,.12)}`,
         };
       },
     },
@@ -607,18 +619,19 @@ const labExposure = defineVariant({
         const stage = reactorStage(ctx, { gear: "goggles", accent: "#7c3aed", outline: null, stage: "background:radial-gradient(circle,#ecfccb,#84cc16 90%)" });
         const colors = ["#4d7c0f", "#b91c1c", "#0e7490"];
         return {
-          header: { style: "ribbon", region: { x: 90, y: 110, w: 900, h: 150 }, size: 50 },
-          visual: { frame: "circle", region: { x: 290, y: 290, w: 500, h: 500 } },
+          header: { style: "ribbon", region: { x: 90, y: 100, w: 900, h: 140 }, size: 48 },
+          visual: { frame: "circle", region: { x: 140, y: 268, w: 800, h: 800 } },
           panel: (scene, i) => stage.panel(scene, i),
-          text: { style: "panel", region: { x: 60, y: 1450, w: 960, h: 230 }, size: 44, enter: "clip" },
+          text: { style: "panel", region: { x: 40, y: 1530, w: 1000, h: 165 }, size: 42, enter: "clip" },
           sceneExtra: (scene, i, c) => merge(
-            geiger(scene, i, stage, { region: { x: 60, y: 820, w: 960, h: 290 }, cls: "", ui: c.ui, lang: ctx.lang, horizontal: true }),
-            levelCard(scene, stage.data.items[i], { data: stage.data, ui: c.ui, lang: ctx.lang, region: { x: 60, y: 1130, w: 470, h: 300 }, cls: "lb-card2", ramp: LAB_RAMP, labelSize: 42, parts: ["eyebrow", "tag", "label", "status"] }),
-            metricBars(scene, i, { data: stage.data, region: { x: 560, y: 1140, w: 460, h: 280 }, cls: "lb-mx2", colors }),
+            geiger(scene, i, stage, { region: { x: 40, y: 1095, w: 700, h: 218 }, cls: "lb-gc-h", ui: c.ui, lang: ctx.lang, horizontal: true }),
+            stage.reactor(scene, i, { x: 760, y: 1095, w: 280, h: 218 }, "lb-rx2"),
+            levelCard(scene, stage.data.items[i], { data: stage.data, ui: c.ui, lang: ctx.lang, region: { x: 40, y: 1330, w: 490, h: 188 }, cls: "lb-card2 sv-compact", ramp: LAB_RAMP, labelSize: 40, parts: ["eyebrow", "tag", "label", "status"] }),
+            metricBars(scene, i, { data: stage.data, region: { x: 550, y: 1338, w: 490, h: 172 }, cls: "lb-mx2", colors }),
             { tweens: stage.tweens(scene, i) },
           ),
           vars: { "--frame-edge": "#eab308" },
-          css: `${BASE_CSS}${GEIGER_CSS}.f-circle{border-style:dashed!important;border-width:18px!important;border-color:#1c1917!important;box-shadow:0 0 0 14px #eab308,0 30px 60px rgba(0,0,0,.35)!important}.lb-card2{color:var(--fg)}.lb-card2 .sv-tag{color:var(--head-ink);border-left:6px solid var(--accent-terra-ink);padding-left:10px}.lb-mx2 .sv-m-t,.lb-mx2 .sv-m-val{color:var(--fg)}.lb-mx2{--sv-track:rgba(0,0,0,.12)}`,
+          css: `${BASE_CSS}${GEIGER_CSS}.f-circle{border-style:dashed!important;border-width:18px!important;border-color:#1c1917!important;box-shadow:0 0 0 14px #eab308,0 30px 60px rgba(0,0,0,.35)!important}.lb-gc-h{padding:14px 22px;row-gap:8px}.lb-gc-h .lb-lcd{font-size:50px;line-height:70px}.lb-rx2{border:8px dashed #1c1917;box-shadow:0 0 0 6px #eab308}.lb-card2{gap:6px;color:var(--fg)}.lb-card2 .sv-eyebrow{font-size:22px}.lb-mx2 .sv-m-h{grid-template-rows:32px 16px}.lb-card2 .sv-tag{color:var(--head-ink);border-left:6px solid var(--accent-terra-ink);padding-left:10px}.lb-mx2 .sv-m-t,.lb-mx2 .sv-m-val{color:var(--fg)}.lb-mx2{--sv-track:rgba(0,0,0,.12)}`,
         };
       },
     },

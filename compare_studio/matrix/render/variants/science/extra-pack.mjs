@@ -63,22 +63,23 @@ const museumLabel = defineVariant({
     label_wall: {
       axes: { composition: "grid", textPlacement: "top" },
       describe: "Lời đọc trên tờ ghi chú; tường trưng bày 3 hộp hiện vật (cảnh trước – hiện tại lớn – cảnh sau)",
+      // Hộp hiện tại chiếm phần lớn tường; hai hộp cảnh trước/sau xếp dọc ở cột hẹp bên phải.
       design: () => ({
         header: { style: "label_title", region: { x: 70, y: 100, w: 940, h: 210 }, size: 52 },
         text: { style: "paper_note", region: { x: 80, y: 340, w: 920, h: 290 }, size: 44, enter: "fade_up" },
-        visual: { frame: "plain", region: { x: 200, y: 680, w: 680, h: 680 } },
+        visual: { frame: "plain", region: { x: 50, y: 665, w: 770, h: 1015 } },
         panel: (scene, i, ctx) => exhibit(scene, i, ctx, `sm-c-${scene.index}`),
         sceneExtra: (scene, i, ctx) => ({
           html: [-1, 1].map((d) => {
             const k = i + d;
             if (k < 0 || k >= ctx.scenes.length) return "";
-            return `<div class="sm-side" style="${regionStyle({ x: d < 0 ? 200 : 560, y: 1400, w: 320, h: 300 })}">${exhibit(ctx.scenes[k], k, ctx, `sm-s-${scene.index}-${d < 0 ? "a" : "b"}`)}</div>`;
+            return `<div class="sm-side" style="${regionStyle({ x: 845, y: d < 0 ? 665 : 1180, w: 195, h: 500 })}">${exhibit(ctx.scenes[k], k, ctx, `sm-s-${scene.index}-${d < 0 ? "a" : "b"}`)}</div>`;
           }).join(""),
           tweens: [pop(`sm-c-${scene.index}`, scene.visualStart + 0.2)],
         }),
         vars: { "--frame-edge": "#b08d4a" },
         css: EXHIBIT_CSS + "#root .f-plain{transform:none!important}.sm-side{position:absolute;overflow:hidden;border:5px solid #b08d4a}"
-          + ".sm-side .sm-card-t{font-size:18px!important}.sm-side .sm-card span{font-size:12px}.sm-side .sm-plate{font-size:16px;padding:2px 6px}",
+          + ".sm-side .sm-card-t{font-size:18px!important}.sm-side .sm-card{left:5%;right:5%;padding:0 6px}.sm-side .sm-card span{font-size:12px;letter-spacing:2px}.sm-side .sm-plate{font-size:16px;padding:2px 6px}",
       }),
     },
     drawer_tray: {
@@ -86,10 +87,10 @@ const museumLabel = defineVariant({
       describe: "Ngăn kéo lưu trữ mẫu vật kéo ra bên trái (hiện vật + thẻ), cột lời đọc bên phải như phiếu kiểm kê",
       design: () => ({
         header: { style: "tab", region: { x: 60, y: 100, w: 960, h: 220 }, size: 52 },
-        visual: { frame: "folder", region: { x: 60, y: 400, w: 560, h: 1100 } },
+        visual: { frame: "folder", region: { x: 40, y: 395, w: 590, h: 1285 } },
         panel: (scene, i, ctx) => exhibit(scene, i, ctx, `sm-c-${scene.index}`),
         sceneExtra: (scene) => ({ tweens: [pop(`sm-c-${scene.index}`, scene.visualStart + 0.2)] }),
-        text: { style: "column", region: { x: 650, y: 420, w: 370, h: 1080 }, size: 42, enter: "clip" },
+        text: { style: "column", region: { x: 654, y: 400, w: 386, h: 1280 }, size: 42, enter: "clip" },
         vars: { "--frame-edge": "#b08d4a" },
         css: EXHIBIT_CSS,
       }),
@@ -191,14 +192,14 @@ const reliefModel = defineVariant({
 function reel(scene, i, ctx, id) {
   const n = num(scene);
   return `<div class="sd-frame"><div class="sd-count">${escapeHtml(ctx.ui.reel)} ${pad2(i + 1)}</div>`
-    + `<div class="sd-title" id="${id}">${fit("sd-title-t", upper(key(scene, ctx), ctx.lang), 52)}</div>`
+    + `<div class="sd-title" id="${id}">${fit("sd-title-t", upper(key(scene, ctx), ctx.lang), 64)}</div>`
     + `<div class="sd-num">${escapeHtml(n || "—")}</div></div>`;
 }
 const REEL_CSS = ".sd-frame{position:absolute;inset:0;overflow:hidden;background:radial-gradient(ellipse,#3a3530,#0e0c0a 80%);display:flex;flex-direction:column;align-items:center;justify-content:space-around;padding:30px;box-sizing:border-box}"
   + ".sd-count{font-size:30px;letter-spacing:6px;color:#0e0c0a;background:#e8e0cc;padding:4px 18px;white-space:nowrap}"
-  + ".sd-title{width:88%;min-height:150px;display:flex;align-items:center;justify-content:center;border-top:4px double #e8e0cc;border-bottom:4px double #e8e0cc;padding:0 16px;box-sizing:border-box}"
+  + ".sd-title{width:88%;min-height:180px;display:flex;align-items:center;justify-content:center;border-top:4px double #e8e0cc;border-bottom:4px double #e8e0cc;padding:0 16px;box-sizing:border-box}"
   + ".sd-title-t{color:#f4ecd8;font-weight:700;white-space:nowrap;max-width:100%;text-align:center;letter-spacing:2px}"
-  + ".sd-num{font-size:64px;font-weight:700;color:#e8c56a;white-space:nowrap}";
+  + ".sd-num{font-size:84px;font-weight:700;color:#e8c56a;white-space:nowrap}";
 
 const docReel = defineVariant({
   ...base,
@@ -218,10 +219,10 @@ const docReel = defineVariant({
       describe: "Dải phim dọc giữa màn: khung hiện tại lớn (số cuộn, tiêu đề = từ khoá, con số vàng); lời đọc khối kính giữa dưới khung",
       design: () => ({
         header: { style: "masthead", region: { x: 60, y: 90, w: 960, h: 220 }, size: 54 },
-        visual: { frame: "film", region: { x: 190, y: 360, w: 700, h: 900 } },
+        visual: { frame: "film", region: { x: 100, y: 340, w: 880, h: 1010 } },
         panel: (scene, i, ctx) => reel(scene, i, ctx, `sd-t-${scene.index}`),
         sceneExtra: (scene) => ({ tweens: [pop(`sd-t-${scene.index}`, scene.visualStart + 0.2)] }),
-        text: { style: "glass", region: { x: 90, y: 1320, w: 900, h: 330 }, size: 46, enter: "fade_up" },
+        text: { style: "glass", region: { x: 90, y: 1385, w: 900, h: 295 }, size: 46, enter: "fade_up" },
         vars: { "--frame-edge": "#111" },
         css: REEL_CSS,
       }),

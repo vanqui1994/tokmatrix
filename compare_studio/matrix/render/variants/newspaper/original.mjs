@@ -65,8 +65,9 @@ const UI = {
 
 // Hình học (px trên khung 1080×1920). dossier = khuôn legacy (ảnh giữa, hồ sơ dưới); file_first = hồ sơ lên trên ảnh.
 const LAYOUTS = {
-  dossier: { mast: { x: 50, y: 20 }, folder: { x: 50, y: 380, w: 980, h: 780 }, file: { x: 50, y: 1180, w: 980, h: 680 } },
-  file_first: { mast: { x: 50, y: 20 }, file: { x: 50, y: 316, w: 980, h: 640 }, folder: { x: 50, y: 986, w: 980, h: 760 } },
+  // Polaroid gần hết bìa hồ sơ (ảnh là nội dung chính); tờ classified file thấp hơn bản gốc nhưng vẫn chứa cả kịch bản.
+  dossier: { mast: { x: 50, y: 20 }, folder: { x: 50, y: 300, w: 980, h: 990 }, file: { x: 50, y: 1306, w: 980, h: 594 } },
+  file_first: { mast: { x: 50, y: 20 }, file: { x: 50, y: 300, w: 980, h: 540 }, folder: { x: 50, y: 850, w: 980, h: 910 } },
 };
 
 const PUSH_PIN = '<svg viewBox="0 0 48 56" width="48" height="56"><circle cx="24" cy="22" r="14" fill="#7F1414" opacity=".45"/><circle cx="24" cy="20" r="14" fill="#B91C1C"/><ellipse cx="24" cy="18" rx="10" ry="7" fill="#DC2626"/><circle cx="21" cy="15" r="4" fill="#FCA5A5"/><path d="M 22 28 L 24 50 L 26 28 Z" fill="#64748B"/></svg>';
@@ -78,7 +79,7 @@ const upperUi = (text, lang) => escapeHtml(upper(text || "", lang));
 
 /** Polaroid trong bìa hồ sơ: vùng thẻ + cửa sổ ảnh + dải cằm, tâm xoay chung = tâm thẻ. */
 function polaroidGeometry(folder) {
-  const card = { x: folder.x + 70, y: folder.y + 45, w: 840, h: folder.h - 100 };
+  const card = { x: folder.x + 30, y: folder.y + 40, w: folder.w - 60, h: folder.h - 90 };
   const center = { x: card.x + card.w / 2, y: card.y + card.h / 2 };
   return {
     card, center,
@@ -122,8 +123,8 @@ function dossierDesign(ctx, layoutId) {
   const tilt = (i) => TILTS[i % TILTS.length];
   const rot = (i, region) => `transform:rotate(${tilt(i)}deg)!important;transform-origin:${center.x - region.x}px ${center.y - region.y}px`;
   // Chỉ đỏ giữa hai ghim ở góc trên bìa hồ sơ (đo trên ảnh render legacy), võng xuống giữa ảnh.
-  const pinA = [folder.x + 50, folder.y + 76];
-  const pinB = [folder.x + folder.w - 50, folder.y + 100];
+  const pinA = [folder.x + 15, folder.y + 70];
+  const pinB = [folder.x + folder.w - 15, folder.y + 94];
   const sag = [540, folder.y + 344];
   const stringSvg = `<svg viewBox="0 0 1080 1920" width="1080" height="1920"><path id="no-string" d="M ${pinA.join(" ")} Q ${sag.join(" ")} ${pinB.join(" ")}" stroke="#EF4444" stroke-width="4" stroke-linecap="round" fill="none" stroke-dasharray="1100" stroke-dashoffset="1100"/>${[pinA, pinB].map(([cx, cy]) => `<circle cx="${cx}" cy="${cy + 3}" r="12" fill="#3b0b0b" opacity=".45"/><circle cx="${cx}" cy="${cy}" r="12" fill="#991B1B"/><circle cx="${cx - 3}" cy="${cy - 4}" r="4" fill="#FCA5A5"/>`).join("")}</svg>`;
   const stringAt = r3((scenes[1]?.start ?? 0) + 0.2);

@@ -28,7 +28,7 @@ const CSS = `
 
 // --- Composition 1: nửa quỹ đạo quanh mặt trời dưới đáy -------------------------------------------------------
 const SUN = { x: 540, y: 1470 };
-const radius = (t) => 150 + t * 108;
+const radius = (t) => 120 + t * 84;
 
 function arcsOverlay(model, scenes) {
   const tweens = [];
@@ -132,12 +132,12 @@ const orbit = defineVariant({
         const model = tierModel(ctx);
         return {
           header: { style: "centered", region: { x: 60, y: 100, w: 960, h: 180 }, size: 56 },
-          visual: { frame: "circle", region: { x: 60, y: 310, w: 380, h: 380 } },
-          sceneExtra: (scene, i) => ({ html: infoCard(model, i, ctx.ui, { x: 470, y: 310, w: 570, h: 380 }) }),
+          visual: { frame: "circle", region: { x: 40, y: 290, w: 600, h: 600 } },
+          sceneExtra: (scene, i) => ({ html: infoCard(model, i, ctx.ui, { x: 660, y: 330, w: 380, h: 520 }) }),
           overlay: (octx) => arcsOverlay(model, octx.scenes),
           text: { style: "lower_third", region: { x: 40, y: 1520, w: 1000, h: 170 }, size: 42, enter: "slide" },
           vars: { "--head-ink": "#f2f4ff", "--frame-edge": "#ffc94a" },
-          css: CSS + SPACE_BG,
+          css: CSS + SPACE_BG + ".to-card .to-t{height:220px}.to-card .to-s{top:290px;right:28px;height:88px}",
         };
       },
     },
@@ -147,15 +147,15 @@ const orbit = defineVariant({
       design: (ctx) => {
         const model = tierModel(ctx);
         return {
-          header: { style: "label_title", region: { x: 60, y: 90, w: 960, h: 180 }, size: 52 },
-          visual: { frame: "circle", region: { x: 160, y: 290, w: 760, h: 760 } },
-          text: { style: "subtitle", region: { x: 230, y: 790, w: 620, h: 200 }, size: 46, align: "center", enter: "fade_up" },
+          header: { style: "label_title", region: { x: 60, y: 86, w: 960, h: 168 }, size: 52 },
+          visual: { frame: "circle", region: { x: 100, y: 262, w: 880, h: 880 } },
+          text: { style: "subtitle", region: { x: 230, y: 840, w: 620, h: 200 }, size: 46, align: "center", enter: "fade_up" },
           sceneExtra: (scene, i) => {
             const c = sceneCaption(model, i, ctx.ui);
             const st = c.tier ? TIER_STYLE[c.tier] : null;
-            return { html: `<div class="to-now" style="${box({ x: 60, y: 1080, w: 960, h: 88 })}">${st ? `<div class="to-orb" style="background:${st.bg}"><b style="color:${st.ink}">${esc(c.tier)}</b></div>` : ""}${fitBox("to-nt", c.title, { size: 40, min: 14 })}</div>` };
+            return { html: `<div class="to-now" style="${box({ x: 60, y: 1150, w: 960, h: 88 })}">${st ? `<div class="to-orb" style="background:${st.bg}"><b style="color:${st.ink}">${esc(c.tier)}</b></div>` : ""}${fitBox("to-nt", c.title, { size: 40, min: 14 })}</div>` };
           },
-          overlay: (octx) => bandsOverlay(model, octx.scenes, 1190, 70, 10),
+          overlay: (octx) => bandsOverlay(model, octx.scenes, 1250, 66, 8),
           vars: { "--frame-edge": "#a9b6ff" },
           css: CSS + BAND_CSS,
         };

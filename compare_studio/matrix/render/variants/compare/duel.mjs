@@ -118,19 +118,20 @@ const tierDuel = defineVariant({
       design: (ctx) => {
         const model = compareModel(ctx, ctx.ui);
         return {
-          header: { style: "label_title", region: { x: 60, y: 110, w: 960, h: 190 }, size: 56 },
-          text: { style: "panel", region: { x: 60, y: 320, w: 960, h: 240 }, size: 46, enter: "clip" },
+          header: { style: "label_title", region: { x: 60, y: 96, w: 960, h: 180 }, size: 56 },
+          text: { style: "panel", region: { x: 60, y: 290, w: 960, h: 200 }, size: 46, enter: "clip" },
           sceneExtra: (scene, i) => {
             const s = model.scenes[i];
             const fa = s.role === "verdict" && (model.final.winner === "A" || model.final.winner === "TIE") ? " w" : "";
             const fb = s.role === "verdict" && (model.final.winner === "B" || model.final.winner === "TIE") ? " w" : "";
             const mid = s.role === "verdict" ? ctx.ui.win : ctx.ui.score;
             return {
-              html: `${fitBox(`cd-tot a${fa}`, String(s.totalA), { r: { x: 60, y: 1510, w: 360, h: 140 }, size: 110, min: 30 })}${fitBox("cd-mid", mid, { r: { x: 430, y: 1550, w: 220, h: 60 }, size: 30, min: 11 })}${fitBox(`cd-tot b${fb}`, String(s.totalB), { r: { x: 660, y: 1510, w: 360, h: 140 }, size: 110, min: 30 })}`,
+              html: `${fitBox(`cd-tot a${fa}`, String(s.totalA), { r: { x: 60, y: 1560, w: 360, h: 126 }, size: 100, min: 30 })}${fitBox("cd-mid", mid, { r: { x: 430, y: 1593, w: 220, h: 60 }, size: 30, min: 11 })}${fitBox(`cd-tot b${fb}`, String(s.totalB), { r: { x: 660, y: 1560, w: 360, h: 126 }, size: 100, min: 30 })}`,
             };
           },
-          overlay: (octx) => butterflyOverlay(model, octx.scenes, { x: 40, y: 590, w: 1000, h: 900 }),
-          underlay: () => subjectPair(model, { x: 60, y: 1680, w: 440, h: 195 }, { x: 580, y: 1680, w: 440, h: 195 }, { shape: "square" }), // ảnh đối tượng A/B
+          // ảnh A/B lớn ngay trên tên hai bên của biểu đồ cánh bướm
+          overlay: (octx) => butterflyOverlay(model, octx.scenes, { x: 40, y: 940, w: 1000, h: 610 }),
+          underlay: () => subjectPair(model, { x: 40, y: 504, w: 470, h: 420 }, { x: 570, y: 504, w: 470, h: 420 }, { shape: "square" }), // ảnh đối tượng A/B
           css: CSS,
         };
       },
@@ -141,17 +142,18 @@ const tierDuel = defineVariant({
       design: (ctx) => {
         const model = compareModel(ctx, ctx.ui);
         return {
-          header: { style: "centered", region: { x: 60, y: 100, w: 960, h: 190 }, size: 56 },
-          visual: { frame: "bleed", region: { x: 40, y: 320, w: 1000, h: 1010 } },
+          header: { style: "centered", region: { x: 60, y: 96, w: 960, h: 180 }, size: 56 },
+          // ảnh A/B lớn trên bảng điểm; bảng LED ngắn lại phía dưới
+          visual: { frame: "bleed", region: { x: 40, y: 718, w: 1000, h: 764 } },
           panel: (scene, i) => {
             const s = model.scenes[i];
             return `<div class="cd-board">${fitBox("cd-team a", model.a.name, { size: 40, min: 12 })}${fitBox("cd-team b", model.b.name, { size: 40, min: 12 })}
 ${fitBox("cd-dig a", String(s.totalA), { size: 180, min: 40 })}<i class="cd-dash"></i>${fitBox("cd-dig b", String(s.totalB), { size: 180, min: 40 })}
 ${fitBox("cd-now", `${s.kicker} · ${s.criterion}`, { size: 30, min: 11 })}</div>`;
           },
-          overlay: (octx) => ledRows(model, octx.scenes, { x: 40, y: 740, w: 1000, h: 560 }),
-          underlay: () => subjectPair(model, { x: 60, y: 1680, w: 440, h: 200 }, { x: 580, y: 1680, w: 440, h: 200 }, { shape: "square" }), // ảnh đối tượng A/B
-          text: { style: "ticker", region: { x: 40, y: 1370, w: 1000, h: 270 }, size: 44, enter: "slide" },
+          overlay: (octx) => ledRows(model, octx.scenes, { x: 40, y: 1110, w: 1000, h: 360 }),
+          underlay: () => subjectPair(model, { x: 40, y: 290, w: 480, h: 420 }, { x: 560, y: 290, w: 480, h: 420 }, { shape: "square" }), // ảnh đối tượng A/B
+          text: { style: "ticker", region: { x: 40, y: 1494, w: 1000, h: 196 }, size: 44, enter: "slide" },
           css: CSS + LED_CSS,
         };
       },

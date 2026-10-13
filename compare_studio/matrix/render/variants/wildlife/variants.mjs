@@ -67,24 +67,24 @@ const savannaHud = defineVariant({
       design: (ctx) => {
         const sp = species(ctx.extras, ctx.lang);
         return {
-          header: { style: "label_title", region: { x: 60, y: 110, w: 960, h: 220 }, size: 58 },
-          visual: { frame: "scope", region: { x: 170, y: 350, w: 740, h: 740 } },
-          text: { style: "lower_third", region: { x: 40, y: 1446, w: 1000, h: 214 }, size: 46, enter: "slide" },
-          decor: [{ kind: "corner_brackets", region: { x: 130, y: 340, w: 820, h: 760 }, color: "var(--scope-ink)" }],
+          header: { style: "label_title", region: { x: 60, y: 100, w: 960, h: 200 }, size: 56 },
+          visual: { frame: "scope", region: { x: 100, y: 312, w: 880, h: 880 } },
+          text: { style: "lower_third", region: { x: 40, y: 1494, w: 1000, h: 196 }, size: 46, enter: "slide" },
+          decor: [{ kind: "corner_brackets", region: { x: 60, y: 304, w: 960, h: 896 }, color: "var(--scope-ink)" }],
           vars: { "--scope-ink": "#ffc857" },
           overlay: () => {
-            const stats = statCellsInline(sp, { x: 40, y: 1244, w: 1000, h: 186 }, { gap: 12, prefix: "wl-sv" });
+            const stats = statCellsInline(sp, { x: 40, y: 1324, w: 1000, h: 156 }, { gap: 10, prefix: "wl-sv" });
             return {
-              html: fitBox({ x: 40, y: 1106, w: 560, h: 76 }, upper(sp.name, ctx.lang), { cls: "wl-sv-panel", size: 52 })
-                + iucnBadge({ x: 616, y: 1106, w: 424, h: 76 }, sp, { size: 30, text: `IUCN ${sp.code} · ${sp.label}` })
-                + fitBox({ x: 40, y: 1190, w: 480, h: 44 }, sp.latin || "—", { cls: "wl-sv-dim wl-sv-ital", size: 28 })
-                + fitBox({ x: 530, y: 1190, w: 510, h: 44 }, sp.habitat || "—", { cls: "wl-sv-dim", size: 26 })
+              html: fitBox({ x: 40, y: 1206, w: 560, h: 70 }, upper(sp.name, ctx.lang), { cls: "wl-sv-panel", size: 50 })
+                + iucnBadge({ x: 616, y: 1206, w: 424, h: 70 }, sp, { size: 30, text: `IUCN ${sp.code} · ${sp.label}` })
+                + fitBox({ x: 40, y: 1282, w: 480, h: 36 }, sp.latin || "—", { cls: "wl-sv-dim wl-sv-ital", size: 26 })
+                + fitBox({ x: 530, y: 1282, w: 510, h: 36 }, sp.habitat || "—", { cls: "wl-sv-dim", size: 24 })
                 + stats.html,
               tweens: barTweens(stats.ids),
             };
           },
           sceneExtra: (scene, i, c) => ({
-            html: fitBox({ x: 300, y: 1012, w: 480, h: 50 }, `◎ ${calloutOr(sp, i, `${c.ui.scene} ${pad2(i + 1)}/${pad2(c.scenes.length)}`)}`, { cls: "wl-sv-lock", size: 28, id: `wl-lock-${scene.index}` }),
+            html: fitBox({ x: 300, y: 1124, w: 480, h: 50 }, `◎ ${calloutOr(sp, i, `${c.ui.scene} ${pad2(i + 1)}/${pad2(c.scenes.length)}`)}`, { cls: "wl-sv-lock", size: 28, id: `wl-lock-${scene.index}` }),
             tweens: [{ method: "fromTo", target: `#wl-lock-${scene.index}`, from: { scale: 1.3 }, vars: { scale: 1, duration: 0.35, ease: "back.out(2)" }, at: Number((scene.visualStart + 0.2).toFixed(3)) }],
           }),
           css: `${HUD_CSS}${SAVANNA_CSS}`,
@@ -189,24 +189,24 @@ const deepOcean = defineVariant({
       design: (ctx) => {
         const sp = species(ctx.extras, ctx.lang);
         return {
-          header: { style: "plaque", region: { x: 60, y: 100, w: 960, h: 210 }, size: 52 },
-          visual: { frame: "porthole", region: { x: 30, y: 380, w: 740, h: 740 } },
-          text: { style: "glass", region: { x: 40, y: 1372, w: 1000, h: 280 }, size: 46, enter: "fade_up" },
+          header: { style: "plaque", region: { x: 60, y: 96, w: 960, h: 186 }, size: 50 },
+          visual: { frame: "porthole", region: { x: 16, y: 300, w: 860, h: 860 } },
+          text: { style: "glass", region: { x: 40, y: 1384, w: 1000, h: 290 }, size: 46, enter: "fade_up" },
           overlay: (c) => {
-            const gauge = depthGauge(sp, { railX: 800, top: 390, height: 730, labelX: 830, labelW: 210, minGap: 128, prefix: "wl-dg" });
+            const gauge = depthGauge(sp, { railX: 896, top: 310, height: 840, labelX: 920, labelW: 150, minGap: 128, prefix: "wl-dg" });
             return {
               html: gauge.html
-                + box({ x: 40, y: 1146, w: 1000, h: 206 }, "", { cls: "wl-oc-plate" })
-                + fitBox({ x: 66, y: 1160, w: 620, h: 70 }, sp.name, { cls: "wl-oc-name", size: 54 })
-                + iucnBadge({ x: 700, y: 1164, w: 316, h: 62 }, sp, { size: 34, text: `IUCN ${sp.code}` })
-                + fitBox({ x: 66, y: 1238, w: 500, h: 46 }, sp.latin || "—", { cls: "wl-oc-sub wl-oc-ital", size: 32 })
-                + fitBox({ x: 580, y: 1238, w: 436, h: 46 }, sp.label, { cls: "wl-oc-sub", size: 28 })
-                + fitBox({ x: 66, y: 1292, w: 950, h: 46 }, sp.habitat || "—", { cls: "wl-oc-sub", size: 28 }),
-              tweens: cursorTweens(c.scenes, "wl-dg-cursor", 620),
+                + box({ x: 40, y: 1176, w: 1000, h: 192 }, "", { cls: "wl-oc-plate" })
+                + fitBox({ x: 66, y: 1186, w: 620, h: 66 }, sp.name, { cls: "wl-oc-name", size: 52 })
+                + iucnBadge({ x: 700, y: 1190, w: 316, h: 58 }, sp, { size: 32, text: `IUCN ${sp.code}` })
+                + fitBox({ x: 66, y: 1258, w: 500, h: 44 }, sp.latin || "—", { cls: "wl-oc-sub wl-oc-ital", size: 30 })
+                + fitBox({ x: 580, y: 1258, w: 436, h: 44 }, sp.label, { cls: "wl-oc-sub", size: 28 })
+                + fitBox({ x: 66, y: 1310, w: 950, h: 44 }, sp.habitat || "—", { cls: "wl-oc-sub", size: 28 }),
+              tweens: cursorTweens(c.scenes, "wl-dg-cursor", 730),
             };
           },
           sceneExtra: (scene, i, c) => ({
-            html: fitBox({ x: 40, y: 326, w: 700, h: 44 }, `${c.ui.scene} ${pad2(i + 1)} · ${calloutOr(sp, i, salient(scene.line, ctx.lang))}`, { cls: "wl-oc-chip", size: 26 }),
+            html: fitBox({ x: 30, y: 1112, w: 560, h: 44 }, `${c.ui.scene} ${pad2(i + 1)} · ${calloutOr(sp, i, salient(scene.line, ctx.lang))}`, { cls: "wl-oc-chip", size: 26 }),
           }),
           css: `${HUD_CSS}${OCEAN_CSS}`,
         };
@@ -218,25 +218,25 @@ const deepOcean = defineVariant({
       design: (ctx) => {
         const sp = species(ctx.extras, ctx.lang);
         return {
-          header: { style: "plaque", region: { x: 60, y: 100, w: 960, h: 200 }, size: 50 },
-          text: { style: "glass", region: { x: 40, y: 330, w: 1000, h: 250 }, size: 46, enter: "fade_up" },
-          visual: { frame: "bleed", region: { x: 40, y: 610, w: 600, h: 1040 } },
+          header: { style: "plaque", region: { x: 60, y: 96, w: 960, h: 186 }, size: 50 },
+          text: { style: "glass", region: { x: 40, y: 298, w: 1000, h: 236 }, size: 46, enter: "fade_up" },
+          visual: { frame: "bleed", region: { x: 20, y: 552, w: 700, h: 1140 } },
           overlay: (c) => {
-            const gauge = depthGauge(sp, { railX: 690, top: 980, height: 670, labelX: 720, labelW: 320, minGap: 124, prefix: "wl-dg" });
+            const gauge = depthGauge(sp, { railX: 760, top: 920, height: 740, labelX: 788, labelW: 270, minGap: 124, prefix: "wl-dg" });
             return {
-              html: box({ x: 670, y: 610, w: 370, h: 344 }, "", { cls: "wl-oc-plate" })
-                + fitBox({ x: 688, y: 624, w: 334, h: 130 }, sp.name, { cls: "wl-oc-name", size: 46, wrap: true })
-                + fitBox({ x: 688, y: 760, w: 334, h: 44 }, sp.latin || "—", { cls: "wl-oc-sub wl-oc-ital", size: 30 })
-                + iucnBadge({ x: 688, y: 812, w: 334, h: 58 }, sp, { size: 28, text: `${sp.code} · ${sp.label}` })
-                + fitBox({ x: 688, y: 880, w: 334, h: 58 }, sp.habitat || "—", { cls: "wl-oc-sub", size: 24, wrap: true })
+              html: box({ x: 740, y: 552, w: 320, h: 344 }, "", { cls: "wl-oc-plate" })
+                + fitBox({ x: 756, y: 566, w: 288, h: 130 }, sp.name, { cls: "wl-oc-name", size: 44, wrap: true })
+                + fitBox({ x: 756, y: 702, w: 288, h: 44 }, sp.latin || "—", { cls: "wl-oc-sub wl-oc-ital", size: 28 })
+                + iucnBadge({ x: 756, y: 754, w: 288, h: 58 }, sp, { size: 26, text: `${sp.code} · ${sp.label}` })
+                + fitBox({ x: 756, y: 822, w: 288, h: 58 }, sp.habitat || "—", { cls: "wl-oc-sub", size: 24, wrap: true })
                 + gauge.html,
-              tweens: cursorTweens(c.scenes, "wl-dg-cursor", 560),
+              tweens: cursorTweens(c.scenes, "wl-dg-cursor", 630),
             };
           },
           sceneExtra: (scene, i, c) => ({
-            html: fitBox({ x: 90, y: 1556, w: 500, h: 46 }, `${c.ui.scene} ${pad2(i + 1)} · ${calloutOr(sp, i, salient(scene.line, ctx.lang))}`, { cls: "wl-oc-chip", size: 26 }),
+            html: fitBox({ x: 130, y: 1520, w: 460, h: 46 }, `${c.ui.scene} ${pad2(i + 1)} · ${calloutOr(sp, i, salient(scene.line, ctx.lang))}`, { cls: "wl-oc-chip", size: 26 }),
           }),
-          css: `${HUD_CSS}${OCEAN_CSS}#root .f-bleed{box-sizing:border-box;border-radius:300px;border:22px solid #8b949c;box-shadow:0 0 0 6px #39444d,0 30px 60px rgba(0,0,0,.6),inset 0 0 80px rgba(0,20,40,.9)}`,
+          css: `${HUD_CSS}${OCEAN_CSS}#root .f-bleed{box-sizing:border-box;border-radius:350px;border:22px solid #8b949c;box-shadow:0 0 0 6px #39444d,0 30px 60px rgba(0,0,0,.6),inset 0 0 80px rgba(0,20,40,.9)}`,
         };
       },
     },
@@ -334,10 +334,10 @@ const trailCam = defineVariant({
         const sp = species(ctx.extras, ctx.lang);
         const temp = rngRange(ctx.creative.rng, -6, 12, 0);
         return {
-          visual: { frame: "bleed", region: { x: 40, y: 330, w: 1000, h: 640 }, filter: IR_FILTER },
-          text: { style: "tape_label", region: { x: 40, y: 1494, w: 1000, h: 166 }, size: 40, enter: "type" },
+          visual: { frame: "bleed", region: { x: 0, y: 320, w: 1080, h: 760 }, filter: IR_FILTER },
+          text: { style: "tape_label", region: { x: 40, y: 1530, w: 1000, h: 166 }, size: 40, enter: "type" },
           overlay: () => {
-            const cells = gridRegions({ x: 40, y: 1350, w: 1000, h: 128 }, sp.stats.length, 12);
+            const cells = gridRegions({ x: 40, y: 1394, w: 1000, h: 124 }, sp.stats.length, 12);
             const stats = sp.stats.map((stat, k) => {
               const r = cells[k];
               return fitBox({ x: r.x, y: r.y, w: r.w - 170, h: 30 }, stat.label, { cls: "wl-tc-row", size: 22 })
@@ -346,24 +346,24 @@ const trailCam = defineVariant({
             }).join("");
             return {
               html: trailHead(ctx.title, ctx.ui)
-                + box({ x: 40, y: 1226, w: 1000, h: 116 }, "", { cls: "wl-tc-log" })
-                + fitBox({ x: 56, y: 1234, w: 560, h: 56 }, sp.name, { cls: "wl-tc-row wl-tc-title", size: 44 })
-                + iucnBadge({ x: 630, y: 1236, w: 394, h: 52 }, sp, { size: 26, text: `IUCN ${sp.code} · ${sp.label}` })
-                + fitBox({ x: 56, y: 1294, w: 968, h: 40 }, `${sp.latin || "—"} · ${sp.habitat || "—"}`, { cls: "wl-tc-row wl-tc-ital", size: 26 })
+                + box({ x: 40, y: 1272, w: 1000, h: 114 }, "", { cls: "wl-tc-log" })
+                + fitBox({ x: 56, y: 1278, w: 560, h: 56 }, sp.name, { cls: "wl-tc-row wl-tc-title", size: 44 })
+                + iucnBadge({ x: 630, y: 1280, w: 394, h: 52 }, sp, { size: 26, text: `IUCN ${sp.code} · ${sp.label}` })
+                + fitBox({ x: 56, y: 1338, w: 968, h: 40 }, `${sp.latin || "—"} · ${sp.habitat || "—"}`, { cls: "wl-tc-row wl-tc-ital", size: 26 })
                 + stats,
             };
           },
           sceneExtra: (scene, i, c) => {
             const thumbs = neighbours(c.scenes, i, 3).map((other, k) => {
-              const r = { x: 40 + k * 340, y: 990, w: 320, h: 220 };
+              const r = { x: 40 + k * 340, y: 1092, w: 320, h: 168 };
               return frameHtml("bleed", { id: `wl-burst-${scene.index}-${k}`, region: r, inner: `<img class="v-img" src="${esc(other.imgSrc)}" alt="" style="filter:${IR_FILTER}">` })
                 + fitBox({ x: r.x, y: r.y + r.h - 40, w: 150, h: 40 }, `${k + 2}/4`, { cls: "wl-tc-chip", size: 24 });
             }).join("");
             return {
               html: thumbs
-                + detection(sp, scene, c.creative.rng, { x: [160, 340], y: [430, 480], w: [380, 470], h: [300, 350] })
-                + fitBox({ x: 60, y: 346, w: 620, h: 46 }, `${c.ui.scene} ${pad2(i + 1)} · ${calloutOr(sp, i, salient(scene.line, ctx.lang))}`, { cls: "wl-tc-chip", size: 26 })
-                + trailInfo(scene, i, temp, { x: 40, y: 910, w: 1000, h: 60 }),
+                + detection(sp, scene, c.creative.rng, { x: [140, 380], y: [440, 520], w: [420, 520], h: [340, 400] })
+                + fitBox({ x: 40, y: 336, w: 620, h: 46 }, `${c.ui.scene} ${pad2(i + 1)} · ${calloutOr(sp, i, salient(scene.line, ctx.lang))}`, { cls: "wl-tc-chip", size: 26 })
+                + trailInfo(scene, i, temp, { x: 0, y: 1020, w: 1080, h: 60 }),
             };
           },
           css: `${HUD_CSS}${TRAIL_CSS}`,
@@ -497,27 +497,27 @@ const statBattle = defineVariant({
       design: (ctx) => {
         const sp = species(ctx.extras, ctx.lang);
         return {
-          header: { style: "ribbon", region: { x: 60, y: 110, w: 960, h: 150 }, size: 52 },
-          text: { style: "panel", region: { x: 60, y: 290, w: 960, h: 220 }, size: 46, enter: "pop" },
-          visual: { frame: "card", region: { x: 50, y: 540, w: 560, h: 800 } },
+          header: { style: "ribbon", region: { x: 60, y: 100, w: 960, h: 140 }, size: 50 },
+          text: { style: "panel", region: { x: 60, y: 256, w: 960, h: 210 }, size: 46, enter: "pop" },
+          visual: { frame: "card", region: { x: 30, y: 484, w: 660, h: 980 } },
           vars: { "--wl-hot": "#ff5a36" },
           overlay: () => {
-            const cells = stackRegions({ x: 640, y: 540, w: 390, h: 800 }, sp.stats.length, 16);
+            const cells = stackRegions({ x: 710, y: 484, w: 330, h: 980 }, sp.stats.length, 16);
             const ids = sp.stats.map((_, k) => `wl-sb-bar-${k}`);
             return {
               html: sp.stats.map((stat, k) => battleBlock(stat, cells[k], ids[k], { valueSize: 60, labelSize: 24 })).join("")
-                + box({ x: 50, y: 1370, w: 980, h: 130 }, "", { cls: "wl-sb-plate" })
+                + box({ x: 50, y: 1480, w: 980, h: 130 }, "", { cls: "wl-sb-plate" })
                 // Hộp chữ font CJK/chữ có dấu cao ~1.45× cỡ chữ: tên 52 px trong 74 px, dòng Latin bắt đầu sau đó (không chồng).
-                + fitBox({ x: 74, y: 1374, w: 650, h: 74 }, upper(sp.name, ctx.lang), { cls: "wl-sb-name", size: 52 })
-                + fitBox({ x: 74, y: 1452, w: 650, h: 42 }, sp.latin || "—", { cls: "wl-sb-sub wl-sb-ital", size: 28 })
-                + iucnBadge({ x: 746, y: 1384, w: 266, h: 102 }, sp, { size: 64 })
-                + fitBox({ x: 50, y: 1512, w: 600, h: 44 }, sp.habitat || "—", { cls: "wl-sb-sub", size: 28 })
-                + fitBox({ x: 660, y: 1512, w: 370, h: 44 }, `IUCN · ${sp.label}`, { cls: "wl-sb-sub wl-sb-right", size: 28 }),
+                + fitBox({ x: 74, y: 1484, w: 650, h: 74 }, upper(sp.name, ctx.lang), { cls: "wl-sb-name", size: 52 })
+                + fitBox({ x: 74, y: 1562, w: 650, h: 42 }, sp.latin || "—", { cls: "wl-sb-sub wl-sb-ital", size: 28 })
+                + iucnBadge({ x: 746, y: 1494, w: 266, h: 102 }, sp, { size: 64 })
+                + fitBox({ x: 50, y: 1620, w: 600, h: 44 }, sp.habitat || "—", { cls: "wl-sb-sub", size: 28 })
+                + fitBox({ x: 660, y: 1620, w: 370, h: 44 }, `IUCN · ${sp.label}`, { cls: "wl-sb-sub wl-sb-right", size: 28 }),
               tweens: barTweens(ids),
             };
           },
           sceneExtra: (scene, i, c) => ({
-            html: fitBox({ x: 86, y: 1262, w: 490, h: 48 }, `${c.ui.scene} ${i + 1} · ${calloutOr(sp, i, salient(scene.line, ctx.lang))}`, { cls: "wl-sb-chip", size: 26 }),
+            html: fitBox({ x: 70, y: 1392, w: 560, h: 48 }, `${c.ui.scene} ${i + 1} · ${calloutOr(sp, i, salient(scene.line, ctx.lang))}`, { cls: "wl-sb-chip", size: 26 }),
           }),
           css: `${HUD_CSS}${BATTLE_CSS}`,
         };
@@ -529,25 +529,25 @@ const statBattle = defineVariant({
       design: (ctx) => {
         const sp = species(ctx.extras, ctx.lang);
         return {
-          header: { style: "ribbon", region: { x: 60, y: 110, w: 960, h: 150 }, size: 52 },
-          visual: { frame: "plain", region: { x: 60, y: 290, w: 960, h: 600 } },
-          text: { style: "panel", region: { x: 60, y: 1414, w: 960, h: 240 }, size: 46, enter: "pop" },
+          header: { style: "ribbon", region: { x: 60, y: 100, w: 960, h: 140 }, size: 50 },
+          visual: { frame: "plain", region: { x: 20, y: 256, w: 1040, h: 730 } },
+          text: { style: "panel", region: { x: 60, y: 1480, w: 960, h: 210 }, size: 46, enter: "pop" },
           vars: { "--wl-hot": "#ff5a36", "--frame-edge": "#ff5a36" },
           overlay: () => {
-            const cells = gridRegions({ x: 60, y: 1060, w: 960, h: 336 }, sp.stats.length, 16);
+            const cells = gridRegions({ x: 60, y: 1150, w: 960, h: 316 }, sp.stats.length, 16);
             const ids = sp.stats.map((_, k) => `wl-sb-bar-${k}`);
             return {
-              html: box({ x: 60, y: 910, w: 960, h: 134 }, "", { cls: "wl-sb-plate" })
-                + fitBox({ x: 84, y: 918, w: 680, h: 70 }, upper(sp.name, ctx.lang), { cls: "wl-sb-name", size: 56 })
-                + iucnBadge({ x: 780, y: 924, w: 224, h: 64 }, sp, { size: 40 })
-                + fitBox({ x: 84, y: 990, w: 440, h: 44 }, sp.latin || "—", { cls: "wl-sb-sub wl-sb-ital", size: 28 })
-                + fitBox({ x: 534, y: 990, w: 470, h: 44 }, `${sp.label} · ${sp.habitat || "—"}`, { cls: "wl-sb-sub wl-sb-right", size: 24 })
+              html: box({ x: 60, y: 1002, w: 960, h: 134 }, "", { cls: "wl-sb-plate" })
+                + fitBox({ x: 84, y: 1010, w: 680, h: 70 }, upper(sp.name, ctx.lang), { cls: "wl-sb-name", size: 56 })
+                + iucnBadge({ x: 780, y: 1016, w: 224, h: 64 }, sp, { size: 40 })
+                + fitBox({ x: 84, y: 1082, w: 440, h: 44 }, sp.latin || "—", { cls: "wl-sb-sub wl-sb-ital", size: 28 })
+                + fitBox({ x: 534, y: 1082, w: 470, h: 44 }, `${sp.label} · ${sp.habitat || "—"}`, { cls: "wl-sb-sub wl-sb-right", size: 24 })
                 + sp.stats.map((stat, k) => battleBlock(stat, cells[k], ids[k], { valueSize: 58, labelSize: 22 })).join(""),
               tweens: barTweens(ids),
             };
           },
           sceneExtra: (scene, i, c) => ({
-            html: fitBox({ x: 90, y: 318, w: 560, h: 48 }, `${c.ui.scene} ${i + 1} · ${calloutOr(sp, i, salient(scene.line, ctx.lang))}`, { cls: "wl-sb-chip", size: 26 }),
+            html: fitBox({ x: 50, y: 284, w: 560, h: 48 }, `${c.ui.scene} ${i + 1} · ${calloutOr(sp, i, salient(scene.line, ctx.lang))}`, { cls: "wl-sb-chip", size: 26 }),
           }),
           css: `${HUD_CSS}${BATTLE_CSS}`,
         };
@@ -619,23 +619,23 @@ const fieldGuide = defineVariant({
       design: (ctx) => {
         const sp = species(ctx.extras, ctx.lang);
         return {
-          visual: { frame: "plain", region: { x: 580, y: 200, w: 440, h: 980 } },
-          text: { style: "ink", region: { x: 60, y: 380, w: 490, h: 770 }, size: 46, enter: "clip" },
+          visual: { frame: "plain", region: { x: 450, y: 196, w: 590, h: 1220 } },
+          text: { style: "ink", region: { x: 60, y: 376, w: 360, h: 760 }, size: 44, enter: "clip" },
           vars: guideVars,
           overlay: () => ({
             html: guideHead(ctx.title, ctx.ui)
-              + fitBox({ x: 60, y: 196, w: 490, h: 120 }, sp.name, { cls: "wl-fg-name", size: 58, wrap: true })
-              + fitBox({ x: 60, y: 320, w: 490, h: 48 }, sp.latin || "—", { cls: "wl-fg-latin", size: 34 })
-              + guideKey(sp, { x: 60, y: 1170, w: 490, h: 350 }, ctx.ui.key)
-              + fitBox({ x: 60, y: 1540, w: 490, h: 32 }, ctx.ui.range, { cls: "wl-fg-h", size: 22 })
-              + fitBox({ x: 60, y: 1576, w: 490, h: 60 }, sp.habitat || "—", { cls: "wl-fg-t", size: 28, wrap: true })
-              + fitBox({ x: 580, y: 1260, w: 440, h: 36 }, ctx.ui.status, { cls: "wl-fg-h", size: 24 })
-              + iucnScale(sp, { x: 580, y: 1302, w: 440, h: 64 })
-              + fitBox({ x: 580, y: 1378, w: 440, h: 48 }, `${sp.label} (${sp.code})`, { cls: "wl-fg-t", size: 28 }),
+              + fitBox({ x: 60, y: 196, w: 360, h: 120 }, sp.name, { cls: "wl-fg-name", size: 52, wrap: true })
+              + fitBox({ x: 60, y: 320, w: 360, h: 44 }, sp.latin || "—", { cls: "wl-fg-latin", size: 30 })
+              + guideKey(sp, { x: 60, y: 1156, w: 360, h: 340 }, ctx.ui.key)
+              + fitBox({ x: 60, y: 1516, w: 360, h: 32 }, ctx.ui.range, { cls: "wl-fg-h", size: 22 })
+              + fitBox({ x: 60, y: 1552, w: 360, h: 80 }, sp.habitat || "—", { cls: "wl-fg-t", size: 26, wrap: true })
+              + fitBox({ x: 450, y: 1484, w: 490, h: 34 }, ctx.ui.status, { cls: "wl-fg-h", size: 24 })
+              + iucnScale(sp, { x: 450, y: 1522, w: 490, h: 60 })
+              + fitBox({ x: 450, y: 1590, w: 490, h: 44 }, `${sp.label} (${sp.code})`, { cls: "wl-fg-t", size: 28 }),
             tweens: barTweens(sp.stats.map((_, k) => `wl-fg-bar-${k}`)),
           }),
           sceneExtra: (scene, i, c) => ({
-            html: fitBox({ x: 580, y: 1192, w: 440, h: 50 }, `${c.ui.scene} ${i + 1} — ${calloutOr(sp, i, salient(scene.line, ctx.lang))}`, { cls: "wl-fg-cap", size: 26 }),
+            html: fitBox({ x: 450, y: 1428, w: 590, h: 46 }, `${c.ui.scene} ${i + 1} — ${calloutOr(sp, i, salient(scene.line, ctx.lang))}`, { cls: "wl-fg-cap", size: 26 }),
           }),
           css: `${HUD_CSS}${GUIDE_CSS}.t-ink .v-line{color:var(--wl-ink)}`,
         };
@@ -647,24 +647,24 @@ const fieldGuide = defineVariant({
       design: (ctx) => {
         const sp = species(ctx.extras, ctx.lang);
         return {
-          visual: { frame: "plain", region: { x: 70, y: 200, w: 940, h: 680 } },
-          text: { style: "column", region: { x: 500, y: 1110, w: 510, h: 540 }, size: 42, enter: "clip" },
+          visual: { frame: "plain", region: { x: 40, y: 190, w: 1000, h: 840 } },
+          text: { style: "column", region: { x: 500, y: 1228, w: 510, h: 440 }, size: 42, enter: "clip" },
           vars: guideVars,
           overlay: () => ({
             html: guideHead(ctx.title, ctx.ui)
-              + fitBox({ x: 70, y: 950, w: 940, h: 80 }, sp.name, { cls: "wl-fg-name", size: 64 })
-              + fitBox({ x: 70, y: 1032, w: 940, h: 50 }, sp.latin || "—", { cls: "wl-fg-latin", size: 36 })
-              + `<i class="wl-fg-rule" style="left:70px;top:1092px;width:940px"></i>`
-              + guideKey(sp, { x: 70, y: 1110, w: 400, h: 340 }, ctx.ui.key)
-              + fitBox({ x: 70, y: 1466, w: 400, h: 36 }, ctx.ui.status, { cls: "wl-fg-h", size: 24 })
-              + iucnBadge({ x: 70, y: 1506, w: 96, h: 52 }, sp, { size: 30 })
-              + fitBox({ x: 180, y: 1506, w: 290, h: 52 }, sp.label, { cls: "wl-fg-t", size: 26 })
-              + fitBox({ x: 70, y: 1570, w: 400, h: 32 }, ctx.ui.range, { cls: "wl-fg-h", size: 22 })
-              + fitBox({ x: 70, y: 1606, w: 400, h: 44 }, sp.habitat || "—", { cls: "wl-fg-t", size: 26 }),
+              + fitBox({ x: 70, y: 1090, w: 940, h: 70 }, sp.name, { cls: "wl-fg-name", size: 58 })
+              + fitBox({ x: 70, y: 1162, w: 940, h: 44 }, sp.latin || "—", { cls: "wl-fg-latin", size: 34 })
+              + `<i class="wl-fg-rule" style="left:70px;top:1214px;width:940px"></i>`
+              + guideKey(sp, { x: 70, y: 1228, w: 400, h: 282 }, ctx.ui.key)
+              + fitBox({ x: 70, y: 1516, w: 400, h: 30 }, ctx.ui.status, { cls: "wl-fg-h", size: 22 })
+              + iucnBadge({ x: 70, y: 1550, w: 96, h: 48 }, sp, { size: 28 })
+              + fitBox({ x: 180, y: 1550, w: 290, h: 48 }, sp.label, { cls: "wl-fg-t", size: 26 })
+              + fitBox({ x: 70, y: 1604, w: 400, h: 28 }, ctx.ui.range, { cls: "wl-fg-h", size: 20 })
+              + fitBox({ x: 70, y: 1634, w: 400, h: 40 }, sp.habitat || "—", { cls: "wl-fg-t", size: 24 }),
             tweens: barTweens(sp.stats.map((_, k) => `wl-fg-bar-${k}`)),
           }),
           sceneExtra: (scene, i, c) => ({
-            html: fitBox({ x: 70, y: 892, w: 940, h: 46 }, `${c.ui.scene} ${i + 1} — ${calloutOr(sp, i, salient(scene.line, ctx.lang))}`, { cls: "wl-fg-cap", size: 28 }),
+            html: fitBox({ x: 70, y: 1040, w: 940, h: 44 }, `${c.ui.scene} ${i + 1} — ${calloutOr(sp, i, salient(scene.line, ctx.lang))}`, { cls: "wl-fg-cap", size: 28 }),
           }),
           css: `${HUD_CSS}${GUIDE_CSS}`,
         };
@@ -713,21 +713,21 @@ const microscope = defineVariant({
       design: (ctx) => {
         const sp = species(ctx.extras, ctx.lang);
         return {
-          header: { style: "label_title", region: { x: 60, y: 110, w: 960, h: 210 }, size: 56 },
-          visual: { frame: "circle", region: { x: 160, y: 350, w: 760, h: 760 } },
-          text: { style: "typed_sheet", region: { x: 40, y: 1372, w: 1000, h: 280 }, size: 42, enter: "type" },
+          header: { style: "label_title", region: { x: 60, y: 100, w: 960, h: 200 }, size: 56 },
+          visual: { frame: "circle", region: { x: 100, y: 316, w: 880, h: 880 } },
+          text: { style: "typed_sheet", region: { x: 40, y: 1414, w: 1000, h: 270 }, size: 42, enter: "type" },
           overlay: () => {
-            const rows = stackRegions({ x: 424, y: 1152, w: 600, h: 180 }, sp.stats.length, 6);
+            const rows = stackRegions({ x: 424, y: 1220, w: 600, h: 172 }, sp.stats.length, 6);
             const ids = sp.stats.map((_, k) => `wl-mc-bar-${k}`);
             return {
-              html: micrometer({ x: 290, y: 972, w: 500, h: 40 }, false)
-                + fitBox({ x: 690, y: 924, w: 100, h: 40 }, "µm", { cls: "wl-mc-unit", size: 24 })
-                + box({ x: 40, y: 1140, w: 1000, h: 204 }, "", { cls: "wl-mc-glass" })
-                + box({ x: 40, y: 1140, w: 370, h: 204 }, "", { cls: "wl-mc-frost" })
-                + fitBox({ x: 58, y: 1148, w: 334, h: 54 }, sp.name, { cls: "wl-mc-name", size: 40 })
-                + fitBox({ x: 58, y: 1204, w: 334, h: 36 }, sp.latin || "—", { cls: "wl-mc-t wl-mc-ital", size: 26 })
-                + fitBox({ x: 58, y: 1242, w: 334, h: 36 }, sp.habitat || "—", { cls: "wl-mc-t", size: 22 })
-                + iucnBadge({ x: 58, y: 1282, w: 334, h: 50 }, sp, { size: 24, text: `${sp.code} · ${sp.label}` })
+              html: micrometer({ x: 300, y: 1036, w: 480, h: 40 }, false)
+                + fitBox({ x: 680, y: 988, w: 100, h: 40 }, "µm", { cls: "wl-mc-unit", size: 24 })
+                + box({ x: 40, y: 1210, w: 1000, h: 190 }, "", { cls: "wl-mc-glass" })
+                + box({ x: 40, y: 1210, w: 370, h: 190 }, "", { cls: "wl-mc-frost" })
+                + fitBox({ x: 58, y: 1216, w: 334, h: 50 }, sp.name, { cls: "wl-mc-name", size: 38 })
+                + fitBox({ x: 58, y: 1268, w: 334, h: 34 }, sp.latin || "—", { cls: "wl-mc-t wl-mc-ital", size: 26 })
+                + fitBox({ x: 58, y: 1304, w: 334, h: 34 }, sp.habitat || "—", { cls: "wl-mc-t", size: 22 })
+                + iucnBadge({ x: 58, y: 1342, w: 334, h: 50 }, sp, { size: 24, text: `${sp.code} · ${sp.label}` })
                 + sp.stats.map((stat, k) => {
                   const r = rows[k];
                   return fitBox({ x: r.x, y: r.y, w: 250, h: r.h }, stat.label, { cls: "wl-mc-t", size: 22 })
@@ -738,7 +738,7 @@ const microscope = defineVariant({
             };
           },
           sceneExtra: (scene, i, c) => ({
-            html: fitBox({ x: 40, y: 1066, w: 330, h: 46 }, `${c.ui.scene} ${pad2(i + 1)} · ${calloutOr(sp, i, salient(scene.line, ctx.lang))}`, { cls: "wl-mc-chip", size: 24 }),
+            html: fitBox({ x: 40, y: 1154, w: 300, h: 44 }, `${c.ui.scene} ${pad2(i + 1)} · ${calloutOr(sp, i, salient(scene.line, ctx.lang))}`, { cls: "wl-mc-chip", size: 24 }),
           }),
           css: `${HUD_CSS}${MICRO_CSS}`,
         };
@@ -746,39 +746,38 @@ const microscope = defineVariant({
     },
     slide_bench: {
       axes: { composition: "split_horizontal", textPlacement: "top" },
-      describe: "Lời đọc giấy đánh máy phía trên; thị kính tròn bên trái + thước µm dọc; thẻ số đo tối màu bên phải (số lớn, thanh); nhãn lam kính mờ dài dưới cùng với tên/Latin/IUCN/phân bố",
+      describe: "Lời đọc giấy đánh máy phía trên; thị kính tròn lớn lệch trái + thước µm dọc bên phải; dưới cùng: nhãn lam kính mờ (số lam + tên/Latin/IUCN/phân bố) cạnh thẻ số đo tối màu (dòng số + thanh)",
       design: (ctx) => {
         const sp = species(ctx.extras, ctx.lang);
         return {
-          header: { style: "label_title", region: { x: 60, y: 110, w: 960, h: 200 }, size: 54 },
-          text: { style: "typed_sheet", region: { x: 40, y: 330, w: 1000, h: 260 }, size: 42, enter: "type" },
-          visual: { frame: "circle", region: { x: 40, y: 630, w: 630, h: 630 } },
+          header: { style: "label_title", region: { x: 60, y: 100, w: 960, h: 190 }, size: 54 },
+          text: { style: "typed_sheet", region: { x: 40, y: 306, w: 1000, h: 236 }, size: 42, enter: "type" },
+          visual: { frame: "circle", region: { x: 16, y: 556, w: 830, h: 830 } },
           overlay: () => {
-            const rows = stackRegions({ x: 786, y: 684, w: 238, h: 560 }, sp.stats.length, 10);
+            const rows = stackRegions({ x: 628, y: 1452, w: 376, h: 226 }, sp.stats.length, 6);
             const ids = sp.stats.map((_, k) => `wl-mc-bar-${k}`);
             return {
-              html: micrometer({ x: 700, y: 650, w: 40, h: 500 }, true)
-                + fitBox({ x: 690, y: 1160, w: 70, h: 36 }, "µm", { cls: "wl-mc-unit", size: 22 })
-                + box({ x: 770, y: 630, w: 270, h: 630 }, "", { cls: "wl-mc-card" })
-                + fitBox({ x: 786, y: 642, w: 238, h: 34 }, ctx.ui.measures, { cls: "wl-mc-lab", size: 22 })
+              html: micrometer({ x: 874, y: 580, w: 40, h: 540 }, true)
+                + fitBox({ x: 862, y: 1136, w: 70, h: 36 }, "µm", { cls: "wl-mc-unit", size: 22 })
+                + box({ x: 612, y: 1404, w: 408, h: 286 }, "", { cls: "wl-mc-card" })
+                + fitBox({ x: 628, y: 1412, w: 376, h: 32 }, ctx.ui.measures, { cls: "wl-mc-lab", size: 22 })
                 + sp.stats.map((stat, k) => {
                   const r = rows[k];
-                  const mid = Math.round(r.h / 2);
-                  return fitBox({ x: r.x, y: r.y + mid - 50, w: r.w, h: 32 }, stat.label, { cls: "wl-mc-lab", size: 20 })
-                    + fitBox({ x: r.x, y: r.y + mid - 16, w: r.w, h: 48 }, stat.value, { cls: "wl-mc-val", size: 36 })
-                    + bar({ x: r.x, y: r.y + mid + 38, w: r.w, h: 10 }, stat.level, { cls: "wl-mc-bar", id: ids[k] });
+                  return fitBox({ x: r.x, y: r.y, w: 206, h: r.h - 14 }, stat.label, { cls: "wl-mc-lab", size: 20 })
+                    + fitBox({ x: r.x + 212, y: r.y, w: r.w - 212, h: r.h - 14 }, stat.value, { cls: "wl-mc-val wl-mc-t wl-mc-right", size: 26 })
+                    + bar({ x: r.x, y: r.y + r.h - 12, w: r.w, h: 8 }, stat.level, { cls: "wl-mc-bar", id: ids[k] });
                 }).join("")
-                + box({ x: 40, y: 1290, w: 1000, h: 196 }, "", { cls: "wl-mc-glass wl-mc-frost" })
-                + fitBox({ x: 60, y: 1300, w: 600, h: 70 }, sp.name, { cls: "wl-mc-name", size: 52 })
-                + fitBox({ x: 60, y: 1374, w: 600, h: 42 }, sp.latin || "—", { cls: "wl-mc-t wl-mc-ital", size: 30 })
-                + fitBox({ x: 60, y: 1424, w: 600, h: 44 }, sp.habitat || "—", { cls: "wl-mc-t", size: 26 })
-                + iucnBadge({ x: 680, y: 1310, w: 340, h: 70 }, sp, { size: 40, text: `IUCN ${sp.code}` })
-                + fitBox({ x: 680, y: 1392, w: 340, h: 60 }, sp.label, { cls: "wl-mc-t", size: 28, wrap: true }),
+                + box({ x: 40, y: 1450, w: 556, h: 240 }, "", { cls: "wl-mc-glass wl-mc-frost" })
+                + fitBox({ x: 60, y: 1458, w: 520, h: 58 }, sp.name, { cls: "wl-mc-name", size: 46 })
+                + fitBox({ x: 60, y: 1518, w: 520, h: 38 }, sp.latin || "—", { cls: "wl-mc-t wl-mc-ital", size: 28 })
+                + fitBox({ x: 60, y: 1558, w: 520, h: 38 }, sp.habitat || "—", { cls: "wl-mc-t", size: 24 })
+                + iucnBadge({ x: 60, y: 1602, w: 250, h: 56 }, sp, { size: 30, text: `IUCN ${sp.code}` })
+                + fitBox({ x: 322, y: 1602, w: 258, h: 56 }, sp.label, { cls: "wl-mc-t", size: 24, wrap: true }),
               tweens: barTweens(ids),
             };
           },
           sceneExtra: (scene, i, c) => ({
-            html: fitBox({ x: 40, y: 1506, w: 640, h: 48 }, `${c.ui.scene} ${pad2(i + 1)} · ${calloutOr(sp, i, salient(scene.line, ctx.lang))}`, { cls: "wl-mc-chip", size: 26 }),
+            html: fitBox({ x: 40, y: 1404, w: 556, h: 46 }, `${c.ui.scene} ${pad2(i + 1)} · ${calloutOr(sp, i, salient(scene.line, ctx.lang))}`, { cls: "wl-mc-chip", size: 26 }),
           }),
           css: `${HUD_CSS}${MICRO_CSS}`,
         };
@@ -848,27 +847,27 @@ const migrationMap = defineVariant({
       describe: "Nền bản đồ; lời đọc panel trên; cửa sổ ảnh ngang; đường di cư nét đứt qua N điểm dừng (điểm của cảnh hiện tại nổi bật); thẻ chú giải: tên/Latin/IUCN/phân bố + chỉ số dạng dòng chú giải",
       design: (ctx) => {
         const sp = species(ctx.extras, ctx.lang);
-        const pts = routePoints(ctx.scenes.length, { x: 60, y: 1110, w: 960, h: 310 }, ctx.creative.rng, false);
+        const pts = routePoints(ctx.scenes.length, { x: 60, y: 1280, w: 960, h: 150 }, ctx.creative.rng, false);
         return {
-          header: { style: "tab", region: { x: 60, y: 110, w: 960, h: 230 }, size: 58 },
-          text: { style: "panel", region: { x: 60, y: 360, w: 960, h: 210 }, size: 44, enter: "fade_up" },
-          visual: { frame: "plain", region: { x: 60, y: 590, w: 960, h: 500 } },
+          header: { style: "tab", region: { x: 60, y: 100, w: 960, h: 200 }, size: 56 },
+          text: { style: "panel", region: { x: 60, y: 316, w: 960, h: 200 }, size: 44, enter: "fade_up" },
+          visual: { frame: "plain", region: { x: 40, y: 536, w: 1000, h: 734 } },
           vars: { "--wl-route": "#d9480f", "--frame-edge": "#23313a" },
           overlay: () => {
-            const legend = legendRows(sp, { x: 660, y: 1452, w: 350, h: 190 }, "wl-mg-bar");
+            const legend = legendRows(sp, { x: 660, y: 1458, w: 350, h: 190 }, "wl-mg-bar");
             return {
-              html: box({ x: 60, y: 1440, w: 960, h: 214 }, "", { cls: "wl-mg-card" })
-                + fitBox({ x: 80, y: 1450, w: 560, h: 66 }, sp.name, { cls: "wl-mg-name", size: 52 })
-                + fitBox({ x: 80, y: 1518, w: 560, h: 42 }, sp.latin || "—", { cls: "wl-mg-t wl-mg-ital", size: 30 })
-                + iucnBadge({ x: 80, y: 1570, w: 250, h: 66 }, sp, { size: 26, text: `${sp.code} · ${sp.label}` })
-                + fitBox({ x: 344, y: 1570, w: 300, h: 66 }, sp.habitat || "—", { cls: "wl-mg-t", size: 24, wrap: true })
+              html: box({ x: 60, y: 1446, w: 960, h: 214 }, "", { cls: "wl-mg-card" })
+                + fitBox({ x: 80, y: 1456, w: 560, h: 66 }, sp.name, { cls: "wl-mg-name", size: 52 })
+                + fitBox({ x: 80, y: 1524, w: 560, h: 42 }, sp.latin || "—", { cls: "wl-mg-t wl-mg-ital", size: 30 })
+                + iucnBadge({ x: 80, y: 1576, w: 250, h: 66 }, sp, { size: 26, text: `${sp.code} · ${sp.label}` })
+                + fitBox({ x: 344, y: 1576, w: 300, h: 66 }, sp.habitat || "—", { cls: "wl-mg-t", size: 24, wrap: true })
                 + legend.html,
               tweens: barTweens(legend.ids),
             };
           },
           sceneExtra: (scene, i, c) => ({
             html: routeSvg(pts, i, `wl-route-${scene.index}`)
-              + fitBox({ x: 80, y: 1024, w: 600, h: 48 }, `${c.ui.scene} ${pad2(i + 1)}/${pad2(c.scenes.length)} · ${calloutOr(sp, i, salient(scene.line, ctx.lang))}`, { cls: "wl-mg-chip", size: 26 }),
+              + fitBox({ x: 60, y: 1206, w: 600, h: 48 }, `${c.ui.scene} ${pad2(i + 1)}/${pad2(c.scenes.length)} · ${calloutOr(sp, i, salient(scene.line, ctx.lang))}`, { cls: "wl-mg-chip", size: 26 }),
           }),
           css: `${HUD_CSS}${MIGRATION_CSS}`,
         };
@@ -879,14 +878,14 @@ const migrationMap = defineVariant({
       describe: "Đường bay dọc mép trái (điểm dừng xếp từ trên xuống, bộ đếm chặng); ảnh trong huy chương tròn bên phải; thẻ loài + lưới 2×2 chỉ số chú giải; lời đọc hộp kính dưới",
       design: (ctx) => {
         const sp = species(ctx.extras, ctx.lang);
-        const pts = routePoints(ctx.scenes.length, { x: 50, y: 360, w: 220, h: 880 }, ctx.creative.rng, true);
+        const pts = routePoints(ctx.scenes.length, { x: 30, y: 330, w: 220, h: 1000 }, ctx.creative.rng, true);
         return {
-          header: { style: "tab", region: { x: 60, y: 110, w: 960, h: 220 }, size: 56 },
-          visual: { frame: "circle", region: { x: 330, y: 360, w: 640, h: 640 } },
-          text: { style: "glass", region: { x: 60, y: 1346, w: 960, h: 300 }, size: 46, enter: "fade_up" },
+          header: { style: "tab", region: { x: 60, y: 100, w: 960, h: 210 }, size: 56 },
+          visual: { frame: "circle", region: { x: 270, y: 330, w: 780, h: 780 } },
+          text: { style: "glass", region: { x: 60, y: 1440, w: 960, h: 250 }, size: 46, enter: "fade_up" },
           vars: { "--wl-route": "#d9480f", "--frame-edge": "#23313a" },
           overlay: () => {
-            const cells = gridRegions({ x: 316, y: 1180, w: 688, h: 132 }, sp.stats.length, 10);
+            const cells = gridRegions({ x: 286, y: 1284, w: 718, h: 128 }, sp.stats.length, 10);
             const ids = sp.stats.map((_, k) => `wl-mg-bar-${k}`);
             const stats = sp.stats.map((stat, k) => {
               const r = cells[k];
@@ -895,19 +894,19 @@ const migrationMap = defineVariant({
                 + bar({ x: r.x, y: r.y + r.h - 12, w: r.w, h: 8 }, stat.level, { cls: "wl-mg-bar", id: ids[k] });
             }).join("");
             return {
-              html: box({ x: 300, y: 1020, w: 720, h: 306 }, "", { cls: "wl-mg-card" })
-                + fitBox({ x: 316, y: 1030, w: 688, h: 62 }, sp.name, { cls: "wl-mg-name", size: 50 })
-                + fitBox({ x: 316, y: 1094, w: 420, h: 38 }, sp.latin || "—", { cls: "wl-mg-t wl-mg-ital", size: 28 })
-                + iucnBadge({ x: 746, y: 1094, w: 258, h: 38 }, sp, { size: 22, text: `IUCN ${sp.code}` })
-                + fitBox({ x: 316, y: 1136, w: 688, h: 38 }, `${sp.label} · ${sp.habitat || "—"}`, { cls: "wl-mg-t", size: 24 })
+              html: box({ x: 270, y: 1126, w: 750, h: 296 }, "", { cls: "wl-mg-card" })
+                + fitBox({ x: 286, y: 1134, w: 718, h: 60 }, sp.name, { cls: "wl-mg-name", size: 50 })
+                + fitBox({ x: 286, y: 1198, w: 420, h: 38 }, sp.latin || "—", { cls: "wl-mg-t wl-mg-ital", size: 28 })
+                + iucnBadge({ x: 716, y: 1198, w: 288, h: 38 }, sp, { size: 22, text: `IUCN ${sp.code}` })
+                + fitBox({ x: 286, y: 1240, w: 718, h: 38 }, `${sp.label} · ${sp.habitat || "—"}`, { cls: "wl-mg-t", size: 24 })
                 + stats,
               tweens: barTweens(ids),
             };
           },
           sceneExtra: (scene, i, c) => ({
             html: routeSvg(pts, i, `wl-route-${scene.index}`)
-              + fitBox({ x: 50, y: 1256, w: 220, h: 50 }, `${pad2(i + 1)}/${pad2(c.scenes.length)}`, { cls: "wl-mg-count", size: 30 })
-              + fitBox({ x: 350, y: 940, w: 600, h: 46 }, `${c.ui.scene} ${pad2(i + 1)} · ${calloutOr(sp, i, salient(scene.line, ctx.lang))}`, { cls: "wl-mg-chip", size: 26 }),
+              + fitBox({ x: 30, y: 1360, w: 220, h: 50 }, `${pad2(i + 1)}/${pad2(c.scenes.length)}`, { cls: "wl-mg-count", size: 30 })
+              + fitBox({ x: 360, y: 1068, w: 600, h: 46 }, `${c.ui.scene} ${pad2(i + 1)} · ${calloutOr(sp, i, salient(scene.line, ctx.lang))}`, { cls: "wl-mg-chip", size: 26 }),
           }),
           css: `${HUD_CSS}${MIGRATION_CSS}`,
         };

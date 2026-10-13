@@ -3,6 +3,7 @@
 // compare làm sạch từng hiệp thay vì từ chối).
 import assert from "node:assert/strict";
 import test from "node:test";
+import { fileURLToPath } from "node:url";
 import compareEngine from "../matrix/render/engines/compare.mjs";
 import { getVariant, listVariants, validateRegistry } from "../matrix/render/variants/index.mjs";
 import { compareVariantAxes } from "../matrix/render/variants/schema.mjs";
@@ -150,7 +151,7 @@ test("compare subject images: exhausted Antigravity attempts fall back to the em
     projectDir: fsm.mkdtempSync(pathm.join(os.tmpdir(), "subject-")),
     channel,
     engineType: "compare",
-    manifest: { topic: { title: "Lion vs Tiger" }, scenes: [{ scene_index: 1, asset_type: "EXISTING_ASSET", asset_path: import.meta.filename, visual_intent: "Lion and tiger side by side" }] },
+    manifest: { topic: { title: "Lion vs Tiger" }, scenes: [{ scene_index: 1, asset_type: "EXISTING_ASSET", asset_path: fileURLToPath(import.meta.url), visual_intent: "Lion and tiger side by side" }] },
     imageGenerator: async ({ items }) => ({ ready: [], pending: items.map((i) => i.key), exhausted: exhausted ? items.map((i) => i.key) : [] }),
     recordArtifact: async (args) => ({ ...args, status: "READY" }),
   });

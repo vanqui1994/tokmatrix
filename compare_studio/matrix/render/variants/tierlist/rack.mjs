@@ -96,11 +96,11 @@ const weaponRack = defineVariant({
       design: (ctx) => {
         const model = tierModel(ctx);
         return {
-          header: { style: "tab", region: { x: 60, y: 100, w: 960, h: 200 }, size: 52 },
-          text: { style: "paper_note", region: { x: 40, y: 340, w: 400, h: 520 }, size: 44, enter: "fade_up" },
-          visual: { frame: "tape_photo", region: { x: 480, y: 340, w: 560, h: 420 } },
-          sceneExtra: (scene, i) => ({ html: nowStrip(model, i, ctx.ui, { x: 480, y: 780, w: 560, h: 80 }) }),
-          overlay: (octx) => rackOverlay(model, octx.scenes, { x: 40, y: 890, w: 1000, h: 780 }),
+          header: { style: "tab", region: { x: 60, y: 96, w: 960, h: 180 }, size: 52 },
+          text: { style: "paper_note", region: { x: 40, y: 300, w: 340, h: 720 }, size: 44, enter: "fade_up" },
+          visual: { frame: "tape_photo", region: { x: 404, y: 300, w: 636, h: 640 } },
+          sceneExtra: (scene, i) => ({ html: nowStrip(model, i, ctx.ui, { x: 404, y: 952, w: 636, h: 72 }) }),
+          overlay: (octx) => rackOverlay(model, octx.scenes, { x: 40, y: 1040, w: 1000, h: 640 }),
           vars: { "--head-ink": "#f6ead0" },
           css: CSS,
         };
@@ -112,11 +112,11 @@ const weaponRack = defineVariant({
       design: (ctx) => {
         const model = tierModel(ctx);
         return {
-          header: { style: "label_title", region: { x: 60, y: 100, w: 960, h: 190 }, size: 52 },
-          visual: { frame: "plain", region: { x: 40, y: 310, w: 1000, h: 480 } },
-          overlay: (octx) => pegOverlay(model, octx.scenes, { x: 40, y: 810, w: 1000, h: 540 }),
-          sceneExtra: (scene, i) => ({ html: nowStrip(model, i, ctx.ui, { x: 40, y: 1364, w: 1000, h: 74 }) }),
-          text: { style: "tape_label", region: { x: 40, y: 1456, w: 1000, h: 210 }, size: 40, enter: "type" },
+          header: { style: "label_title", region: { x: 60, y: 96, w: 960, h: 170 }, size: 52 },
+          visual: { frame: "plain", region: { x: 40, y: 282, w: 1000, h: 720 } },
+          overlay: (octx) => pegOverlay(model, octx.scenes, { x: 40, y: 1016, w: 1000, h: 420 }),
+          sceneExtra: (scene, i) => ({ html: nowStrip(model, i, ctx.ui, { x: 40, y: 1446, w: 1000, h: 72 }) }),
+          text: { style: "tape_label", region: { x: 40, y: 1530, w: 1000, h: 162 }, size: 40, enter: "type" },
           vars: { "--frame-edge": "#50565d" },
           css: CSS + PEG_CSS,
         };

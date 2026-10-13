@@ -67,9 +67,8 @@ const CARD_CSS = `
 .tu-rn-t{margin:0;color:#22201b;font-weight:700;line-height:1.02}
 `;
 
-function catalogOverlay(model, scenes, r) {
+function catalogOverlay(model, scenes, r, band = 118) {
   const tweens = [];
-  const band = 118;
   const cards = TIERS.map((tier, k) => {
     const y = r.y + 40 + k * band;
     const h = r.y + r.h - 16 - y;
@@ -107,10 +106,12 @@ const unsolvedCases = defineVariant({
         const model = tierModel(ctx);
         return {
           header: { style: "tab", region: { x: 60, y: 96, w: 960, h: 180 }, size: 52 },
-          visual: { frame: "folder", region: { x: 40, y: 300, w: 640, h: 470 } },
-          text: { style: "sticky", region: { x: 616, y: 460, w: 424, h: 340 }, size: 32, enter: "type" },
-          sceneExtra: (scene, i) => ({ html: caseStrip(model, i, ctx.ui, { x: 40, y: 800, w: 560, h: 70 }) }),
-          overlay: (octx) => cabinetOverlay(model, octx.scenes, { x: 40, y: 900, w: 1000, h: 820 }),
+          visual: { frame: "folder", region: { x: 40, y: 372, w: 1000, h: 650 } },
+          // giấy note lời đọc trôi nổi đè góc dưới phải của ảnh (như bản cũ đè góc phải)
+          text: { style: "sticky", region: { x: 630, y: 900, w: 410, h: 262 }, size: 32, enter: "type" },
+          // dải "hồ sơ đang mở" phía trên ảnh, bên phải tab của bìa folder (khi lật cảnh nó không chui dưới tủ)
+          sceneExtra: (scene, i) => ({ html: caseStrip(model, i, ctx.ui, { x: 480, y: 292, w: 560, h: 66 }) }),
+          overlay: (octx) => cabinetOverlay(model, octx.scenes, { x: 40, y: 1176, w: 1000, h: 524 }),
           vars: { "--head-ink": "#f1f3f5" },
           css: CSS,
         };
@@ -122,11 +123,11 @@ const unsolvedCases = defineVariant({
       design: (ctx) => {
         const model = tierModel(ctx);
         return {
-          header: { style: "plaque", region: { x: 140, y: 96, w: 800, h: 160 }, size: 50 },
-          sceneExtra: (scene, i) => ({ html: caseStrip(model, i, ctx.ui, { x: 100, y: 284, w: 880, h: 70 }) }),
-          visual: { frame: "pinned", region: { x: 100, y: 384, w: 880, h: 370 } },
-          overlay: (octx) => catalogOverlay(model, octx.scenes, { x: 40, y: 780, w: 1000, h: 800 }),
-          text: { style: "typed_sheet", region: { x: 60, y: 1600, w: 960, h: 190 }, size: 38, enter: "type" },
+          header: { style: "plaque", region: { x: 140, y: 96, w: 800, h: 140 }, size: 50 },
+          sceneExtra: (scene, i) => ({ html: caseStrip(model, i, ctx.ui, { x: 100, y: 252, w: 880, h: 66 }) }),
+          visual: { frame: "pinned", region: { x: 40, y: 346, w: 1000, h: 548 } },
+          overlay: (octx) => catalogOverlay(model, octx.scenes, { x: 40, y: 910, w: 1000, h: 632 }, 96),
+          text: { style: "typed_sheet", region: { x: 60, y: 1552, w: 960, h: 142 }, size: 38, enter: "type" },
           css: CSS + CARD_CSS,
         };
       },

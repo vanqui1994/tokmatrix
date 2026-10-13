@@ -35,16 +35,15 @@ const broadsheet = defineVariant({
       axes: { composition: "ledger_columns", textPlacement: "right_column" },
       describe: "Măng-sét báo đôi viền trên cùng; ảnh khắc gỗ rộng 2 cột bên trái + 2 cột chữ lấp dưới ảnh; lời đọc là cột báo hẹp bên phải, có vạch chia cột",
       design: ({ ui, lang }) => ({
-        header: { style: "masthead", region: { x: 50, y: 120, w: 980, h: 300 }, size: 72 },
-        visual: { frame: "plain", region: { x: 50, y: 482, w: 610, h: 736 }, filter: ENGRAVING },
-        text: { style: "column", region: { x: 684, y: 482, w: 346, h: 1168 }, size: 42, enter: "clip" },
-        tag: { style: "chip", x: 50, y: 1232, format: (i, n, u) => `${u.scene} ${ROMAN[i] || i + 1}` },
+        header: { style: "masthead", region: { x: 50, y: 100, w: 980, h: 260 }, size: 72 },
+        visual: { frame: "plain", region: { x: 40, y: 420, w: 670, h: 1200 }, filter: ENGRAVING },
+        text: { style: "column", region: { x: 732, y: 420, w: 308, h: 1230 }, size: 42, enter: "clip" },
+        tag: { style: "chip", x: 40, y: 1636, format: (i, n, u) => `${u.scene} ${ROMAN[i] || i + 1}` },
         overlay: () => ({
           html: [
-            box({ x: 50, y: 432, w: 980, h: 36 }, "n1-dateline", `<span>${label(ui.edition, lang)}</span>`),
-            fillerColumn({ x: 50, y: 1300, w: 290, h: 350 }, "n1-fill-a"),
-            fillerColumn({ x: 368, y: 1300, w: 292, h: 350 }, "n1-fill-b"),
-            box({ x: 670, y: 482, w: 3, h: 1168 }, "n1-rule"),
+            box({ x: 50, y: 370, w: 980, h: 36 }, "n1-dateline", `<span>${label(ui.edition, lang)}</span>`),
+            fillerColumn({ x: 300, y: 1636, w: 410, h: 50 }, "n1-fill-a"),
+            box({ x: 720, y: 420, w: 3, h: 1230 }, "n1-rule"),
           ].join(""),
           css: `${FILLER_CSS}.n1-dateline{position:absolute;border-bottom:3px solid ${INK};text-align:center;font-size:24px;line-height:32px;letter-spacing:6px;color:${INK}}.n1-rule{position:absolute;background:${INK}}`,
         }),
@@ -56,11 +55,11 @@ const broadsheet = defineVariant({
       axes: { composition: "split_horizontal", textPlacement: "top" },
       describe: "Măng-sét trên; bài báo khổ rộng có chữ hoa đầu đoạn ở nửa trên; nếp gấp ngang giữa trang; ảnh khắc gỗ khổ ngang ở nửa dưới",
       design: () => ({
-        header: { style: "masthead", region: { x: 50, y: 110, w: 980, h: 262 }, size: 62 },
-        text: { style: "column", region: { x: 50, y: 408, w: 980, h: 400 }, size: 50, enter: "clip" },
-        visual: { frame: "plain", region: { x: 50, y: 872, w: 980, h: 700 }, filter: ENGRAVING },
-        tag: { style: "chip", x: 50, y: 1590, format: (i, n, u) => `${u.scene} ${ROMAN[i] || i + 1}` },
-        overlay: () => ({ html: box({ x: 0, y: 832, w: 1080, h: 18 }, "n1-crease"), css: ".n1-crease{position:absolute;background:linear-gradient(180deg,rgba(0,0,0,0),rgba(0,0,0,.22) 45%,rgba(255,255,255,.5) 55%,rgba(0,0,0,0))}" }),
+        header: { style: "masthead", region: { x: 50, y: 100, w: 980, h: 240 }, size: 62 },
+        text: { style: "column", region: { x: 50, y: 360, w: 980, h: 350 }, size: 50, enter: "clip" },
+        visual: { frame: "plain", region: { x: 30, y: 756, w: 1020, h: 870 }, filter: ENGRAVING },
+        tag: { style: "chip", x: 50, y: 1640, format: (i, n, u) => `${u.scene} ${ROMAN[i] || i + 1}` },
+        overlay: () => ({ html: box({ x: 0, y: 724, w: 1080, h: 18 }, "n1-crease"), css: ".n1-crease{position:absolute;background:linear-gradient(180deg,rgba(0,0,0,0),rgba(0,0,0,.22) 45%,rgba(255,255,255,.5) 55%,rgba(0,0,0,0))}" }),
         vars: { "--frame-edge": INK },
         css: `.h-mast{border-color:${INK}}#root .f-plain{border-width:4px;box-shadow:none}.g-chip{background:${INK};color:#f4efe1;font-size:26px}.t-column{background:#f7f2e4}.t-column:not(.is-cjk) .v-line::first-letter{float:left;font-size:2.6em;line-height:.86;padding:4px 10px 0 0;font-weight:700}`,
       }),
@@ -174,15 +173,15 @@ const wanted = defineVariant({
       axes: { composition: "poster", textPlacement: "center" },
       describe: "Một tờ truy nã lớn đóng đinh trên tường gạch: chữ TRUY NÃ khổng lồ, tên vụ, ảnh viền đậm, lời đọc giữa tờ, dải tiền thưởng dưới; mỗi cảnh một tờ mới dán lên",
       design: () => ({
-        visual: { frame: "plain", region: { x: 210, y: 548, w: 660, h: 612 }, filter: "sepia(.6) grayscale(.4) contrast(1.2)" },
-        text: { style: "ink", region: { x: 140, y: 1186, w: 800, h: 300 }, size: 46, align: "center", enter: "fade_up" },
+        visual: { frame: "plain", region: { x: 80, y: 410, w: 920, h: 900 }, filter: "sepia(.6) grayscale(.4) contrast(1.2)" },
+        text: { style: "ink", region: { x: 110, y: 1326, w: 840, h: 206 }, size: 46, align: "center", enter: "fade_up" },
         sceneExtra: (scene, i, ctx) => ({
           html: posterSheet(scene, ctx, {
-            sheet: { x: 90, y: 130, w: 900, h: 1540 },
-            wanted: { x: 130, y: 170, w: 820, h: 170 },
-            title: { x: 130, y: 352, w: 820, h: 170 },
-            reward: { x: 130, y: 1508, w: 820, h: 120 },
-            nails: [[112, 150], [942, 150], [112, 1624], [942, 1624]],
+            sheet: { x: 40, y: 110, w: 1000, h: 1580 },
+            wanted: { x: 90, y: 136, w: 900, h: 130 },
+            title: { x: 90, y: 276, w: 900, h: 116 },
+            reward: { x: 90, y: 1548, w: 900, h: 104 },
+            nails: [[62, 128], [992, 128], [62, 1650], [992, 1650]],
             clip: "polygon(0 0,100% 0,100% 95%,94% 100%,0 100%)",
           }),
         }),
@@ -193,23 +192,23 @@ const wanted = defineVariant({
       axes: { composition: "card_stack", textPlacement: "top" },
       describe: "Lời đọc trên mẩu thông báo dán phía trên; tờ truy nã cũ (cảnh khác) nghiêng phía sau bên trái; tờ mới mép trái xé dán đè bên phải",
       design: () => ({
-        text: { style: "ink", region: { x: 60, y: 132, w: 960, h: 340 }, size: 46, enter: "fade_up" },
-        visual: { frame: "plain", region: { x: 410, y: 800, w: 560, h: 610 }, filter: "sepia(.6) grayscale(.4) contrast(1.2)" },
+        text: { style: "ink", region: { x: 60, y: 120, w: 960, h: 290 }, size: 46, enter: "fade_up" },
+        visual: { frame: "plain", region: { x: 220, y: 696, w: 820, h: 890 }, filter: "sepia(.6) grayscale(.4) contrast(1.2)" },
         sceneExtra: (scene, i, ctx) => {
           const [old] = neighbours(ctx.scenes, i, 1);
           return {
-            html: box({ x: 40, y: 560, w: 540, h: 860 }, "nw-sheet", sideImage(old, { id: `nw-old-img-${scene.index}`, region: { x: 50, y: 60, w: 440, h: 520 }, cls: "nw-old-win", filter: "sepia(.7) grayscale(.5) brightness(.8)" }) + fillerStrip(), { id: `nw-old-${scene.index}`, style: `transform:rotate(${rngRange(ctx.creative.rng, -6, -3, 2)}deg)` })
+            html: box({ x: 20, y: 440, w: 500, h: 820 }, "nw-sheet", sideImage(old, { id: `nw-old-img-${scene.index}`, region: { x: 40, y: 50, w: 420, h: 480 }, cls: "nw-old-win", filter: "sepia(.7) grayscale(.5) brightness(.8)" }) + fillerStrip(), { id: `nw-old-${scene.index}`, style: `transform:rotate(${rngRange(ctx.creative.rng, -6, -3, 2)}deg)` })
               + posterSheet(scene, ctx, {
-                sheet: { x: 340, y: 512, w: 700, h: 1160 },
-                wanted: { x: 400, y: 540, w: 600, h: 124 },
-                title: { x: 400, y: 670, w: 600, h: 118 },
-                reward: { x: 400, y: 1440, w: 600, h: 96 },
-                nails: [[372, 530], [1000, 530]],
+                sheet: { x: 170, y: 440, w: 890, h: 1250 },
+                wanted: { x: 240, y: 464, w: 780, h: 110 },
+                title: { x: 240, y: 580, w: 780, h: 100 },
+                reward: { x: 240, y: 1598, w: 780, h: 76 },
+                nails: [[200, 456], [1020, 456]],
                 clip: jagged(ctx.creative.rng, "left", 26, 3),
               }),
           };
         },
-        css: `${POSTER_CSS}.nw-old-win{position:absolute;overflow:hidden;border:6px solid #2a1a0e}.nw-strip{position:absolute;left:50px;right:50px;top:620px;height:180px;background:repeating-linear-gradient(180deg,rgba(42,26,14,.4) 0 10px,transparent 10px 26px)}.t-ink{background:#f5ecd2;border:4px dashed #2a1a0e;box-shadow:0 14px 26px rgba(0,0,0,.45)}`,
+        css: `${POSTER_CSS}.nw-old-win{position:absolute;overflow:hidden;border:6px solid #2a1a0e}.nw-strip{position:absolute;left:40px;right:40px;top:570px;height:180px;background:repeating-linear-gradient(180deg,rgba(42,26,14,.4) 0 10px,transparent 10px 26px)}.t-ink{background:#f5ecd2;border:4px dashed #2a1a0e;box-shadow:0 14px 26px rgba(0,0,0,.45)}`,
       }),
     },
   },
@@ -251,16 +250,16 @@ const telegram = defineVariant({
       axes: { composition: "card_stack", textPlacement: "top" },
       describe: "Mẫu điện tín trên chồng điện tín cũ: tên mẫu + ô KHẨN, dòng tiêu đề, lời đọc là các dải băng giấy dán (kết bằng STOP); ảnh truyền điện kẹp ghim bên dưới",
       design: ({ ui, lang }) => ({
-        text: { style: "ink", region: { x: 100, y: 462, w: 880, h: 640 }, size: 48, enter: "type" },
-        visual: { frame: "plain", region: { x: 250, y: 1196, w: 620, h: 456 }, filter: "grayscale(1) contrast(1.15)" },
+        text: { style: "ink", region: { x: 80, y: 384, w: 920, h: 420 }, size: 48, enter: "type" },
+        visual: { frame: "plain", region: { x: 60, y: 850, w: 960, h: 850 }, filter: "grayscale(1) contrast(1.15)" },
         sceneExtra: (scene, i, ctx) => ({
           html: [
-            box({ x: 84, y: 176, w: 950, h: 1010 }, "nx-back", "", { id: `nx-back-${scene.index}`, style: `transform:rotate(${rngRange(ctx.creative.rng, 1.5, 3, 2)}deg)` }),
-            box({ x: 60, y: 140, w: 960, h: 1000 }, "nx-form", "", { id: `nx-form-${scene.index}` }),
-            fitBox({ x: 100, y: 176, w: 620, h: 96 }, "nx-brand", upperLabel(ui.label, lang), 70, { min: 28, id: `nx-brand-${scene.index}` }),
-            fitBox({ x: 744, y: 188, w: 236, h: 76 }, "nx-urgent", upperLabel(ui.urgent, lang), 34, { min: 18, id: `nx-urg-${scene.index}` }),
-            fitBox({ x: 100, y: 296, w: 880, h: 136 }, "nx-subj", ctx.title, 50, { min: 22, id: `nx-subj-${scene.index}` }),
-            box({ x: 520, y: 1150, w: 64, h: 130 }, "nx-clip", "", { id: `nx-clip-${scene.index}` }),
+            box({ x: 64, y: 140, w: 960, h: 700 }, "nx-back", "", { id: `nx-back-${scene.index}`, style: `transform:rotate(${rngRange(ctx.creative.rng, 1.5, 3, 2)}deg)` }),
+            box({ x: 40, y: 110, w: 1000, h: 720 }, "nx-form", "", { id: `nx-form-${scene.index}` }),
+            fitBox({ x: 80, y: 140, w: 640, h: 90 }, "nx-brand", upperLabel(ui.label, lang), 70, { min: 28, id: `nx-brand-${scene.index}` }),
+            fitBox({ x: 764, y: 150, w: 236, h: 72 }, "nx-urgent", upperLabel(ui.urgent, lang), 34, { min: 18, id: `nx-urg-${scene.index}` }),
+            fitBox({ x: 80, y: 248, w: 920, h: 120 }, "nx-subj", ctx.title, 50, { min: 22, id: `nx-subj-${scene.index}` }),
+            box({ x: 520, y: 796, w: 64, h: 130 }, "nx-clip", "", { id: `nx-clip-${scene.index}` }),
           ].join(""),
         }),
         css: `${WIRE_CSS}.t-ink{z-index:8}.t-ink .v-line{line-height:1.34;color:#1f1a10;text-transform:uppercase;background:repeating-linear-gradient(180deg,#fbf1b8 0 1.12em,transparent 1.12em 1.34em)}${ui.stop ? `.t-ink .v-line::after{content:" ${ui.stop}";font-weight:700}` : ""}${lang === "ja" || lang === "ko" ? ".t-ink .v-line{text-transform:none}" : ""}`,
@@ -270,12 +269,12 @@ const telegram = defineVariant({
       axes: { composition: "scroll", textPlacement: "center" },
       describe: "Tiêu đề trên bàn gỗ; ảnh truyền điện lớn viền trắng; băng giấy điện tín có lỗ đục chạy ngang giữa màn mang lời đọc; máy gõ điện tín bằng đồng bên dưới",
       design: ({ ui, lang }) => ({
-        header: { style: "label_title", region: { x: 60, y: 110, w: 960, h: 216 }, size: 60 },
-        visual: { frame: "plain", region: { x: 60, y: 356, w: 960, h: 712 }, filter: "grayscale(1) sepia(.25) contrast(1.15)" },
-        text: { style: "ink", region: { x: 0, y: 1136, w: 1080, h: 262 }, size: 48, enter: "slide" },
-        tag: { style: "chip", x: 60, y: 1080, format: (i, n, u) => `${upperLabel(u.scene, lang)} ${pad2(i + 1)}` },
+        header: { style: "label_title", region: { x: 40, y: 100, w: 1000, h: 200 }, size: 60 },
+        visual: { frame: "plain", region: { x: 40, y: 320, w: 1000, h: 940 }, filter: "grayscale(1) sepia(.25) contrast(1.15)" },
+        text: { style: "ink", region: { x: 0, y: 1330, w: 1080, h: 250 }, size: 48, enter: "slide" },
+        tag: { style: "chip", x: 40, y: 1274, format: (i, n, u) => `${upperLabel(u.scene, lang)} ${pad2(i + 1)}` },
         overlay: () => ({
-          html: box({ x: 360, y: 1452, w: 360, h: 190 }, "nx-key", '<i class="k1"></i><i class="k2"></i><i class="k3"></i>'),
+          html: box({ x: 380, y: 1594, w: 320, h: 150 }, "nx-key", '<i class="k1"></i><i class="k2"></i><i class="k3"></i>'),
           css: ".nx-key{position:absolute}.nx-key i{position:absolute;display:block}.nx-key .k1{left:0;right:0;bottom:0;height:46px;border-radius:10px;background:linear-gradient(180deg,#5b3b22,#2f1d10)}.nx-key .k2{left:40px;right:60px;bottom:52px;height:22px;border-radius:11px;background:linear-gradient(180deg,#e4c276,#9c7a2c);transform:rotate(-6deg);transform-origin:100% 50%}.nx-key .k3{left:22px;bottom:62px;width:70px;height:70px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#3a3a3a,#050505)}",
         }),
         css: `${WIRE_CSS}.t-ink{background:#f6efd6;box-shadow:0 12px 22px rgba(0,0,0,.45);padding:44px 60px 28px}.t-ink::before{content:"";position:absolute;left:0;right:0;top:12px;height:14px;background:radial-gradient(circle,#5a3d25 5px,transparent 6px) 0 0/28px 14px repeat-x}.t-ink .v-line{color:#1f1a10;text-transform:uppercase}${ui.stop ? `.t-ink .v-line::after{content:" ${ui.stop}";font-weight:700}` : ""}${lang === "ja" || lang === "ko" ? ".t-ink .v-line{text-transform:none}" : ""}.g-chip{background:#f6efd6;color:#1f1a10;font-size:26px}`,
@@ -312,11 +311,11 @@ const gazette = defineVariant({
       axes: { composition: "circle_frame", textPlacement: "bottom" },
       describe: "Măng-sét đỏ đen; ảnh trong huy chương tròn có vành răng cưa đỏ đen; số hiệu dưới huy chương; lời đọc trong khung viền đôi đỏ",
       design: () => ({
-        header: { style: "masthead", region: { x: 50, y: 110, w: 980, h: 300 }, size: 72 },
-        visual: { frame: "circle", region: { x: 200, y: 480, w: 680, h: 680 } },
-        text: { style: "ink", region: { x: 70, y: 1290, w: 940, h: 356 }, size: 48, align: "center", enter: "fade_up" },
-        tag: { style: "chip", x: 470, y: 1214, format: (i, n, u) => `${u.scene} ${i + 1}` },
-        sceneExtra: (scene) => ({ html: box({ x: 160, y: 440, w: 760, h: 760 }, "ng-ring", "", { id: `ng-ring-${scene.index}` }) }),
+        header: { style: "masthead", region: { x: 50, y: 100, w: 980, h: 240 }, size: 72 },
+        visual: { frame: "circle", region: { x: 80, y: 390, w: 920, h: 920 } },
+        text: { style: "ink", region: { x: 70, y: 1420, w: 940, h: 250 }, size: 48, align: "center", enter: "fade_up" },
+        tag: { style: "chip", x: 470, y: 1362, format: (i, n, u) => `${u.scene} ${i + 1}` },
+        sceneExtra: (scene) => ({ html: box({ x: 40, y: 350, w: 1000, h: 1000 }, "ng-ring", "", { id: `ng-ring-${scene.index}` }) }),
         vars: { "--frame-edge": "#f3e6b8" },
         css: GAZETTE_CSS,
       }),
@@ -325,14 +324,14 @@ const gazette = defineVariant({
       axes: { composition: "grid", textPlacement: "top" },
       describe: "Măng-sét trên; lời đọc trong khung viền đôi ngay dưới; hàng ba chân dung bầu dục: cảnh hiện tại lớn ở giữa, hai cảnh khác nhỏ hai bên",
       design: () => ({
-        header: { style: "masthead", region: { x: 50, y: 110, w: 980, h: 262 }, size: 64 },
-        text: { style: "ink", region: { x: 60, y: 404, w: 960, h: 330 }, size: 46, enter: "fade_up" },
-        visual: { frame: "circle", region: { x: 280, y: 800, w: 520, h: 740 } },
-        tag: { style: "chip", x: 470, y: 1596, format: (i, n, u) => `${u.scene} ${i + 1}` },
+        header: { style: "masthead", region: { x: 50, y: 100, w: 980, h: 240 }, size: 64 },
+        text: { style: "ink", region: { x: 60, y: 356, w: 960, h: 290 }, size: 46, enter: "fade_up" },
+        visual: { frame: "circle", region: { x: 180, y: 680, w: 720, h: 1000 } },
+        tag: { style: "chip", x: 14, y: 1250, format: (i, n, u) => `${u.scene} ${i + 1}` },
         sceneExtra: (scene, i, ctx) => ({
-          html: box({ x: 250, y: 770, w: 580, h: 800 }, "ng-ring", "", { id: `ng-ring-${scene.index}` })
+          html: box({ x: 162, y: 662, w: 756, h: 1036 }, "ng-ring", "", { id: `ng-ring-${scene.index}` })
             + neighbours(ctx.scenes, i, 2).map((other, k) => thumbFrame("circle", {
-              id: `ng-side-${scene.index}-${k}`, region: { x: k ? 840 : 40, y: 1000, w: 200, h: 290 }, scene: other, rng: ctx.creative.rng, filter: "grayscale(1) contrast(1.2)",
+              id: `ng-side-${scene.index}-${k}`, region: { x: k ? 924 : 6, y: 1000, w: 150, h: 230 }, scene: other, rng: ctx.creative.rng, filter: "grayscale(1) contrast(1.2)",
             })).join(""),
         }),
         vars: { "--frame-edge": "#f3e6b8" },
@@ -390,24 +389,24 @@ const microfilm = defineVariant({
       axes: { composition: "film_strip", textPlacement: "right_column" },
       describe: "Dải phim dọc bên trái: khung trước và sau (cảnh khác, âm bản) kẹp khung hiện tại lớn chuyển âm→dương; tiêu đề và lời đọc trong cột phải",
       design: ({ lang }) => ({
-        header: { style: "label_title", region: { x: 640, y: 130, w: 400, h: 430 }, size: 54 },
-        visual: { frame: "film", region: { x: 40, y: 560, w: 560, h: 760 }, filter: "grayscale(1) contrast(1.15)" },
-        text: { style: "panel", region: { x: 640, y: 600, w: 400, h: 1050 }, size: 44, enter: "type" },
-        tag: { style: "osd", x: 132, y: 580, format: (i, n, u) => `${upperLabel(u.scene, lang)} ${pad2(i + 1)}` },
+        header: { style: "label_title", region: { x: 676, y: 110, w: 374, h: 440 }, size: 54 },
+        visual: { frame: "film", region: { x: 16, y: 430, w: 640, h: 1210 }, filter: "grayscale(1) contrast(1.15)" },
+        text: { style: "panel", region: { x: 676, y: 580, w: 374, h: 1070 }, size: 44, enter: "type" },
+        tag: { style: "osd", x: 108, y: 450, format: (i, n, u) => `${upperLabel(u.scene, lang)} ${pad2(i + 1)}` },
         sceneExtra: (scene, i, ctx) => {
-          const flip = negativeFlip(scene, { x: 114, y: 560, w: 412, h: 760 });
+          const flip = negativeFlip(scene, { x: 90, y: 430, w: 492, h: 1210 });
           const [next, prev] = neighbours(ctx.scenes, i, 2);
           return {
             html: [
-              thumbFrame("film", { id: `nm-prev-${scene.index}`, region: { x: 40, y: 110, w: 560, h: 420 }, scene: prev, rng: ctx.creative.rng, filter: "grayscale(1) invert(1)" }),
-              thumbFrame("film", { id: `nm-next-${scene.index}`, region: { x: 40, y: 1350, w: 560, h: 320 }, scene: next, rng: ctx.creative.rng, filter: "grayscale(1) invert(1)" }),
+              thumbFrame("film", { id: `nm-prev-${scene.index}`, region: { x: 16, y: 110, w: 640, h: 300 }, scene: prev, rng: ctx.creative.rng, filter: "grayscale(1) invert(1)" }),
+              thumbFrame("film", { id: `nm-next-${scene.index}`, region: { x: 16, y: 1660, w: 640, h: 240 }, scene: next, rng: ctx.creative.rng, filter: "grayscale(1) invert(1)" }),
               flip.html,
             ].join(""),
             tweens: flip.tweens,
           };
         },
         vars: { "--scope-ink": "#f1eee6" },
-        css: `${MICRO_CSS}.h-label{font-size:24px;letter-spacing:3px;white-space:nowrap;max-width:400px;box-sizing:border-box;overflow:hidden}`,
+        css: `${MICRO_CSS}.t-panel{padding:26px 24px}.h-label{font-size:24px;letter-spacing:3px;white-space:nowrap;max-width:374px;box-sizing:border-box;overflow:hidden}`,
       }),
     },
   },

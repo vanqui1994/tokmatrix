@@ -21,7 +21,7 @@ const CSS = `
 .th-card{position:absolute;box-sizing:border-box;background:#3a4a5c;border-radius:22px}
 .th-k{position:absolute;left:22px;right:22px;top:16px;height:32px;display:flex;align-items:center}
 .th-k-t{margin:0;color:#c9d6e3;letter-spacing:3px}
-.th-t{position:absolute;left:22px;right:22px;top:52px;height:110px;display:flex;align-items:center}
+.th-t{position:absolute;left:22px;right:22px;top:52px;height:88px;display:flex;align-items:center}
 .th-t-t{margin:0;color:#ffffff;font-weight:800;line-height:1.05}
 .th-tag{position:absolute;right:20px;bottom:18px;min-width:96px;height:58px;padding:0 10px;box-sizing:border-box;display:flex;align-items:center;justify-content:center;border-radius:12px}
 .th-tag b{font-size:34px;font-weight:900}
@@ -115,10 +115,10 @@ const shelves = defineVariant({
         const model = tierModel(ctx);
         return {
           header: { style: "label_title", region: { x: 60, y: 96, w: 960, h: 180 }, size: 54 },
-          visual: { frame: "card", region: { x: 40, y: 300, w: 1000, h: 440 } },
-          overlay: (octx) => shelfOverlay(model, octx.scenes, { x: 40, y: 770, w: 640, h: 930 }),
-          text: { style: "marker", region: { x: 700, y: 770, w: 340, h: 620 }, size: 38, enter: "fade_up" },
-          sceneExtra: (scene, i) => ({ html: shelfCard(model, i, ctx.ui, { x: 700, y: 1410, w: 340, h: 290 }) }),
+          visual: { frame: "card", region: { x: 40, y: 296, w: 1000, h: 750 } },
+          overlay: (octx) => shelfOverlay(model, octx.scenes, { x: 40, y: 1070, w: 640, h: 630 }),
+          text: { style: "marker", region: { x: 700, y: 1070, w: 340, h: 390 }, size: 38, enter: "fade_up" },
+          sceneExtra: (scene, i) => ({ html: shelfCard(model, i, ctx.ui, { x: 700, y: 1476, w: 340, h: 224 }) }),
           css: CSS,
         };
       },
@@ -130,14 +130,14 @@ const shelves = defineVariant({
         const model = tierModel(ctx);
         return {
           header: { style: "masthead", region: { x: 60, y: 96, w: 960, h: 180 }, size: 56 },
-          visual: { frame: "plain", region: { x: 40, y: 300, w: 480, h: 470 } },
+          visual: { frame: "plain", region: { x: 40, y: 296, w: 520, h: 804 } },
           sceneExtra: (scene, i) => {
             const c = sceneCaption(model, i, ctx.ui);
             const st = c.tier ? TIER_STYLE[c.tier] : null;
-            return { html: `<div class="th-now" style="${box({ x: 40, y: 790, w: 480, h: 76 })}">${st ? `<div class="th-nb" style="background:${st.bg}"><b style="color:${st.ink}">${esc(c.tier)}</b></div>` : ""}${fitBox("th-nt", c.title, { size: 32, min: 12 })}</div>` };
+            return { html: `<div class="th-now" style="${box({ x: 40, y: 1112, w: 520, h: 76 })}">${st ? `<div class="th-nb" style="background:${st.bg}"><b style="color:${st.ink}">${esc(c.tier)}</b></div>` : ""}${fitBox("th-nt", c.title, { size: 32, min: 12 })}</div>` };
           },
-          text: { style: "typed_sheet", region: { x: 40, y: 890, w: 480, h: 800 }, size: 42, enter: "type" },
-          overlay: (octx) => receiptOverlay(model, octx.scenes, { x: 560, y: 300, w: 480, h: 1400 }),
+          text: { style: "typed_sheet", region: { x: 40, y: 1202, w: 520, h: 490 }, size: 42, enter: "type" },
+          overlay: (octx) => receiptOverlay(model, octx.scenes, { x: 584, y: 296, w: 456, h: 1404 }),
           vars: { "--frame-edge": "#243142" },
           css: RECEIPT_CSS,
         };

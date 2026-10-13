@@ -54,17 +54,17 @@ const vnOriginal = defineVariant({
       axes: { composition: "diorama", textPlacement: "bottom" },
       describe: "Bàn thờ: ảnh trong khám vòm sơn son giữa hai dải câu đối đỏ, bát hương ba nén nhang phía dưới; lời đọc trong hộp kính đáy",
       design: () => ({
-        header: { style: "ribbon", region: { x: 60, y: 140, w: 960, h: 170 }, size: 50 },
-        visual: { frame: "arch", region: { x: 200, y: 380, w: 680, h: 860 }, filter: "sepia(.25) brightness(.9)" },
-        text: { style: "glass", region: { x: 70, y: 1420, w: 940, h: 270 }, size: 48, enter: "fade_up" },
-        decor: [{ kind: "candle_glow", cx: 540, cy: 1300, r: 460 }],
+        header: { style: "ribbon", region: { x: 60, y: 110, w: 960, h: 166 }, size: 50 },
+        visual: { frame: "arch", region: { x: 96, y: 300, w: 888, h: 1100 }, filter: "sepia(.25) brightness(.9)" },
+        text: { style: "glass", region: { x: 70, y: 1448, w: 940, h: 246 }, size: 48, enter: "fade_up" },
+        decor: [{ kind: "candle_glow", cx: 540, cy: 1360, r: 480 }],
         vars: { "--frame-edge": "#8a1c14" },
         overlay: () => ({
           html: `<div class="fk-couplet l"></div><div class="fk-couplet r"></div><div class="fk-bowl"></div>${[0, 1, 2].map((k) => `<i class="fk-stick" style="left:${504 + k * 34}px;transform:rotate(${(k - 1) * 7}deg)"></i>`).join("")}`,
-          css: ".fk-couplet{position:absolute;top:380px;width:96px;height:860px;background:linear-gradient(180deg,#9c1f16,#6d130d);border:5px solid #d4a64a;box-shadow:0 18px 30px rgba(0,0,0,.5)}.fk-couplet.l{left:70px}.fk-couplet.r{right:70px}"
-            + ".fk-couplet::after{content:'';position:absolute;left:18px;right:18px;top:30px;bottom:30px;background:repeating-linear-gradient(180deg,rgba(212,166,74,.55) 0 4px,transparent 4px 120px)}"
-            + ".fk-bowl{position:absolute;left:430px;top:1300px;width:220px;height:90px;border-radius:0 0 110px 110px;background:linear-gradient(180deg,#b88a3a,#6e4c17);box-shadow:0 10px 18px rgba(0,0,0,.5)}"
-            + ".fk-stick{position:absolute;top:1200px;width:6px;height:110px;background:linear-gradient(180deg,#ff9a3c 0 8px,#7a2d18 8px);transform-origin:50% 100%}",
+          css: ".fk-couplet{position:absolute;top:300px;width:72px;height:1100px;background:linear-gradient(180deg,#9c1f16,#6d130d);border:5px solid #d4a64a;box-shadow:0 18px 30px rgba(0,0,0,.5)}.fk-couplet.l{left:12px}.fk-couplet.r{right:12px}"
+            + ".fk-couplet::after{content:'';position:absolute;left:12px;right:12px;top:30px;bottom:30px;background:repeating-linear-gradient(180deg,rgba(212,166,74,.55) 0 4px,transparent 4px 120px)}"
+            + ".fk-bowl{position:absolute;left:430px;top:1346px;width:220px;height:84px;border-radius:0 0 110px 110px;background:linear-gradient(180deg,#b88a3a,#6e4c17);box-shadow:0 10px 18px rgba(0,0,0,.5)}"
+            + ".fk-stick{position:absolute;top:1246px;width:6px;height:110px;background:linear-gradient(180deg,#ff9a3c 0 8px,#7a2d18 8px);transform-origin:50% 100%}",
         }),
       }),
     },
@@ -109,14 +109,14 @@ const yokaiScroll = defineVariant({
       describe: "Cuộn emaki có trục gỗ hai đầu + dấu triện đỏ. ja: ảnh cao bên trái + cột chữ dọc bên phải; Latin/Hàn: dải cuộn ngang + dải giấy washi chữ ngang bên dưới",
       design: (ctx) => {
         const ja = isJa(ctx);
-        const region = ja ? { x: 70, y: 420, w: 700, h: 1200 } : { x: 70, y: 430, w: 940, h: 760 };
+        const region = ja ? { x: 70, y: 370, w: 700, h: 1280 } : { x: 70, y: 360, w: 940, h: 900 };
         const rollers = emakiRollers(region);
         return {
-          header: { style: "centered", region: { x: 60, y: 120, w: 960, h: 250 }, size: 64 },
+          header: { style: "centered", region: { x: 60, y: 110, w: 960, h: 226 }, size: 62 },
           visual: { frame: "plain", region },
           text: ja
-            ? { style: "vertical", region: { x: 830, y: 420, w: 200, h: 1200 }, size: 54, enter: "drop" }
-            : { style: "ink", region: { x: 70, y: 1260, w: 940, h: 380 }, size: 50, enter: "clip" },
+            ? { style: "vertical", region: { x: 830, y: 370, w: 200, h: 1280 }, size: 54, enter: "drop" }
+            : { style: "ink", region: { x: 70, y: 1300, w: 940, h: 360 }, size: 50, enter: "clip" },
           overlay: () => rollers,
           css: EMAKI_CSS,
         };
@@ -126,12 +126,12 @@ const yokaiScroll = defineVariant({
       axes: { composition: "poster", textPlacement: "bottom", background: "wood_paper" },
       describe: "Tranh treo kakejiku (trục trên/dưới) trên vách gỗ tokonoma; lời đọc dưới tranh — ja: khối cột chữ dọc đọc phải→trái, Latin/Hàn: chữ ngang",
       design: (ctx) => ({
-        header: { style: "label_title", region: { x: 70, y: 120, w: 940, h: 230 }, size: 58 },
-        visual: { frame: "scroll", region: { x: 200, y: 420, w: 680, h: 880 } },
+        header: { style: "label_title", region: { x: 70, y: 106, w: 940, h: 200 }, size: 56 },
+        visual: { frame: "scroll", region: { x: 150, y: 340, w: 780, h: 1070 } },
         text: isJa(ctx)
-          ? { style: "vertical", region: { x: 110, y: 1370, w: 860, h: 300 }, size: 46, enter: "drop" }
-          : { style: "ink", region: { x: 110, y: 1370, w: 860, h: 300 }, size: 48, enter: "fade_up" },
-        decor: [{ kind: "candle_glow", cx: 540, cy: 860, r: 560 }],
+          ? { style: "vertical", region: { x: 110, y: 1446, w: 860, h: 250 }, size: 46, enter: "drop" }
+          : { style: "ink", region: { x: 110, y: 1446, w: 860, h: 250 }, size: 48, enter: "fade_up" },
+        decor: [{ kind: "candle_glow", cx: 540, cy: 875, r: 620 }],
         css: EMAKI_CSS + ".t-vertical.is-cjk .v-line{margin:0 auto}",
       }),
     },
@@ -193,14 +193,14 @@ const gwishin = defineVariant({
       axes: { composition: "circle_frame", textPlacement: "bottom", background: "darkness" },
       describe: "Cửa sổ trăng tròn khung gỗ có song hoa văn trong phòng tối; phụ đề dưới cửa; ánh đèn lồng hắt từ dưới",
       design: () => ({
-        header: { style: "label_title", region: { x: 70, y: 120, w: 940, h: 230 }, size: 58 },
-        visual: { frame: "circle", region: { x: 150, y: 410, w: 780, h: 780 }, filter: "sepia(.3) brightness(.85)" },
-        text: { style: "subtitle", region: { x: 70, y: 1270, w: 940, h: 360 }, size: 52, align: "center", enter: "fade_up" },
+        header: { style: "label_title", region: { x: 70, y: 110, w: 940, h: 216 }, size: 58 },
+        visual: { frame: "circle", region: { x: 60, y: 346, w: 960, h: 960 }, filter: "sepia(.3) brightness(.85)" },
+        text: { style: "subtitle", region: { x: 70, y: 1336, w: 940, h: 320 }, size: 52, align: "center", enter: "fade_up" },
         decor: [{ kind: "candle_glow", cx: 540, cy: 1700, r: 520 }],
         vars: { "--frame-edge": "#5a3219" },
         overlay: () => ({
           html: `<div class="fk-moonbars"></div>${LANTERN.html}`,
-          css: `${LANTERN.css}.fk-moonbars{position:absolute;left:162px;top:422px;width:756px;height:756px;border-radius:50%;background:linear-gradient(#5a3219,#5a3219) 50% 0/12px 100% no-repeat,linear-gradient(90deg,#5a3219,#5a3219) 0 50%/100% 12px no-repeat,linear-gradient(#5a3219,#5a3219) 25% 0/6px 100% no-repeat,linear-gradient(#5a3219,#5a3219) 75% 0/6px 100% no-repeat;opacity:.85}`,
+          css: `${LANTERN.css}.fk-moonbars{position:absolute;left:72px;top:358px;width:936px;height:936px;border-radius:50%;background:linear-gradient(#5a3219,#5a3219) 50% 0/12px 100% no-repeat,linear-gradient(90deg,#5a3219,#5a3219) 0 50%/100% 12px no-repeat,linear-gradient(#5a3219,#5a3219) 25% 0/6px 100% no-repeat,linear-gradient(#5a3219,#5a3219) 75% 0/6px 100% no-repeat;opacity:.85}`,
         }),
       }),
     },
@@ -213,7 +213,7 @@ const gwishin = defineVariant({
 
 // ---------------------------------------------------------------------------------------------------------------------
 // 4. european-grimoire — sách phép mở, ảnh là tranh minh hoạ, chữ trên trang phải; hoặc vòng ấn phù.
-const BOOK_CSS = "#v-bg::after{content:'';position:absolute;left:30px;top:400px;width:1020px;height:1230px;border-radius:14px;"
+const BOOK_CSS = "#v-bg::after{content:'';position:absolute;left:30px;top:330px;width:1020px;height:1360px;border-radius:14px;"
   + "background:linear-gradient(90deg,rgba(0,0,0,.28) 0,transparent 5%,transparent 45%,rgba(60,35,10,.45) 49.4%,rgba(0,0,0,.6) 50%,rgba(60,35,10,.45) 50.6%,transparent 55%,transparent 95%,rgba(0,0,0,.28) 100%),"
   + "radial-gradient(ellipse at 50% 50%,#efdcb0,#cfb27a 90%);box-shadow:0 0 0 16px #3b1d10,0 40px 70px rgba(0,0,0,.7)}";
 
@@ -231,15 +231,15 @@ const grimoire = defineVariant({
   compositions: {
     open_book: {
       axes: { composition: "notebook_page", textPlacement: "right_column" },
-      describe: "Sách phép mở hai trang dưới ánh nến: tranh minh hoạ khung khắc ở trang trái + số folio La Mã đỏ; lời đọc mực nâu ở trang phải",
+      describe: "Sách phép mở hai trang dưới ánh nến: tranh minh hoạ khung khắc trải ngang hai trang ở nửa trên; dưới tranh số folio La Mã đỏ ở trang trái, lời đọc mực nâu ở trang phải",
       design: () => ({
-        header: { style: "centered", region: { x: 60, y: 120, w: 960, h: 240 }, size: 62 },
-        visual: { frame: "plain", region: { x: 90, y: 470, w: 420, h: 640 }, filter: "sepia(.55) contrast(1.1)" },
-        text: { style: "ink", region: { x: 570, y: 470, w: 430, h: 1080 }, size: 46, enter: "clip" },
-        tag: { style: "counter", x: 110, y: 1200, format: (i) => ROMAN[i] || String(i + 1) },
+        header: { style: "centered", region: { x: 60, y: 100, w: 960, h: 216 }, size: 60 },
+        visual: { frame: "plain", region: { x: 70, y: 360, w: 940, h: 860 }, filter: "sepia(.55) contrast(1.1)" },
+        text: { style: "ink", region: { x: 566, y: 1250, w: 400, h: 420 }, size: 44, enter: "clip" },
+        tag: { style: "counter", x: 110, y: 1280, format: (i) => ROMAN[i] || String(i + 1) },
         decor: [{ kind: "candle_glow", cx: 540, cy: 360, r: 620 }],
         vars: { "--frame-edge": "#4a2612" },
-        css: `${BOOK_CSS}.t-ink .v-line{color:#2e1a0b!important}.g-counter{color:#8e1b12!important;font-size:170px!important}`,
+        css: `${BOOK_CSS}.t-ink .v-line{color:#2e1a0b!important}.g-counter{color:#8e1b12!important;font-size:150px!important}`,
       }),
     },
     sigil_circle: {
@@ -247,22 +247,23 @@ const grimoire = defineVariant({
       describe: "Lời đọc trên mảnh da thuộc ngay dưới tiêu đề; ảnh trong vòng tròn phép ở nửa dưới giữa ấn phù (hai vòng + ngôi sao nối 5 điểm)",
       design: () => {
         const cx = 540;
-        const cy = 1110;
+        const cy = 1140;
+        const R = 506;
         const pts = Array.from({ length: 5 }, (_, k) => {
           const a = -Math.PI / 2 + (k * 4 * Math.PI) / 5;
-          return [Number((cx + 430 * Math.cos(a)).toFixed(1)), Number((cy + 430 * Math.sin(a)).toFixed(1))];
+          return [Number((cx + R * Math.cos(a)).toFixed(1)), Number((cy + R * Math.sin(a)).toFixed(1))];
         });
         const star = pts.map((p) => p.join(",")).join(" ");
         return {
-          header: { style: "centered", region: { x: 60, y: 100, w: 960, h: 220 }, size: 58 },
-          visual: { frame: "circle", region: { x: 200, y: 770, w: 680, h: 680 }, filter: "sepia(.4) contrast(1.1)" },
-          text: { style: "paper_note", region: { x: 90, y: 350, w: 900, h: 280 }, size: 48, enter: "fade_up" },
+          header: { style: "centered", region: { x: 60, y: 96, w: 960, h: 220 }, size: 58 },
+          visual: { frame: "circle", region: { x: 80, y: 680, w: 920, h: 920 }, filter: "sepia(.4) contrast(1.1)" },
+          text: { style: "paper_note", region: { x: 90, y: 336, w: 900, h: 270 }, size: 48, enter: "fade_up" },
           decor: [
-            { kind: "candle_glow", cx: 540, cy: 1110, r: 600 },
+            { kind: "candle_glow", cx, cy, r: 640 },
           ],
           vars: { "--frame-edge": "#b08a3a" },
           overlay: () => ({
-            html: `<svg class="fk-sigil" width="1080" height="1920" viewBox="0 0 1080 1920"><circle cx="${cx}" cy="${cy}" r="430" fill="none" stroke="#c9a24d" stroke-width="4"/><circle cx="${cx}" cy="${cy}" r="398" fill="none" stroke="#c9a24d" stroke-width="2" stroke-dasharray="10 14"/><polygon points="${star}" fill="none" stroke="rgba(201,162,77,.55)" stroke-width="3"/>${pts.map(([x, y]) => `<circle cx="${x}" cy="${y}" r="16" fill="#8e1b12" stroke="#c9a24d" stroke-width="3"/>`).join("")}</svg>`,
+            html: `<svg class="fk-sigil" width="1080" height="1920" viewBox="0 0 1080 1920"><circle cx="${cx}" cy="${cy}" r="${R}" fill="none" stroke="#c9a24d" stroke-width="4"/><circle cx="${cx}" cy="${cy}" r="${R - 22}" fill="none" stroke="#c9a24d" stroke-width="2" stroke-dasharray="10 14"/><polygon points="${star}" fill="none" stroke="rgba(201,162,77,.55)" stroke-width="3"/>${pts.map(([x, y]) => `<circle cx="${x}" cy="${y}" r="16" fill="#8e1b12" stroke="#c9a24d" stroke-width="3"/>`).join("")}</svg>`,
             css: ".fk-sigil{position:absolute;left:0;top:0}",
           }),
           css: ".t-paper_note{background:linear-gradient(180deg,#e9d3a4,#cfae70)!important}.t-paper_note .v-line{color:#2e1a0b!important}",
@@ -278,18 +279,23 @@ const grimoire = defineVariant({
 
 // ---------------------------------------------------------------------------------------------------------------------
 // 5. nordic-runestone — phiến đá khắc, dải rắn quấn quanh ảnh, chữ khắc.
+// Hình học dải rắn: hai cột dọc x = L / 1080 − L, vòm trên đỉnh `top`, kéo xuống tới `bottom` (ôm khung ảnh vòm).
+const BAND = { L: 92, top: 372, shoulder: 760, bottom: 1400, stroke: 44 };
+
 function runeBand(rng) {
   // Dải rắn (sơn đỏ son như đá rune Thuỵ Điển) ôm vòm ảnh; vạch rune ngắn là nét vẽ, không phải ký tự (không cần font).
-  const path = "M190 1270 L190 640 Q190 380 540 380 Q890 380 890 640 L890 1270";
+  const { L, top, shoulder, bottom, stroke } = BAND;
+  const R = 1080 - L;
+  const path = `M${L} ${bottom} L${L} ${shoulder} Q${L} ${top} 540 ${top} Q${R} ${top} ${R} ${shoulder} L${R} ${bottom}`;
+  const span = bottom - 20 - shoulder;
   const ticks = Array.from({ length: 30 }, (_, k) => {
     const t = k / 29;
-    const y = 1250 - t * 600;
-    const left = t < 1 ? [190, y] : [190, 640];
+    const y = Math.round(bottom - 20 - t * span);
     const tilt = rngRange(rng, -30, 30, 0);
-    return `<line x1="${left[0] - 14}" y1="${left[1]}" x2="${left[0] + 14}" y2="${left[1] - 10}" transform="rotate(${tilt} ${left[0]} ${left[1]})"/>`
-      + `<line x1="${1080 - left[0] - 14}" y1="${left[1] - 10}" x2="${1080 - left[0] + 14}" y2="${left[1]}" transform="rotate(${-tilt} ${1080 - left[0]} ${left[1]})"/>`;
+    return `<line x1="${L - 12}" y1="${y}" x2="${L + 12}" y2="${y - 9}" transform="rotate(${tilt} ${L} ${y})"/>`
+      + `<line x1="${R - 12}" y1="${y - 9}" x2="${R + 12}" y2="${y}" transform="rotate(${-tilt} ${R} ${y})"/>`;
   }).join("");
-  return `<svg class="fk-band" width="1080" height="1920" viewBox="0 0 1080 1920"><path d="${path}" fill="none" stroke="#9c2f1c" stroke-width="54" stroke-linecap="round"/><path d="${path}" fill="none" stroke="#2b2622" stroke-width="3" stroke-dasharray="2 0"/><g stroke="#f1dcc2" stroke-width="4" stroke-linecap="round">${ticks}</g><circle cx="190" cy="1270" r="30" fill="#9c2f1c"/><circle cx="890" cy="1270" r="30" fill="#9c2f1c"/></svg>`;
+  return `<svg class="fk-band" width="1080" height="1920" viewBox="0 0 1080 1920"><path d="${path}" fill="none" stroke="#9c2f1c" stroke-width="${stroke}" stroke-linecap="round"/><path d="${path}" fill="none" stroke="#2b2622" stroke-width="3" stroke-dasharray="2 0"/><g stroke="#f1dcc2" stroke-width="4" stroke-linecap="round">${ticks}</g><circle cx="${L}" cy="${bottom}" r="28" fill="#9c2f1c"/><circle cx="${R}" cy="${bottom}" r="28" fill="#9c2f1c"/></svg>`;
 }
 
 const runestone = defineVariant({
@@ -310,12 +316,12 @@ const runestone = defineVariant({
       design: (ctx) => {
         const band = runeBand(ctx.creative.rng);
         return {
-          header: { style: "centered", region: { x: 60, y: 110, w: 960, h: 230 }, size: 62 },
-          visual: { frame: "arch", region: { x: 250, y: 440, w: 580, h: 800 }, filter: "grayscale(.5) sepia(.3) contrast(1.15)" },
-          text: { style: "engraved", region: { x: 150, y: 1350, w: 780, h: 300 }, size: 46, enter: "fade_up" },
+          header: { style: "centered", region: { x: 60, y: 104, w: 960, h: 226 }, size: 62 },
+          visual: { frame: "arch", region: { x: 130, y: 400, w: 820, h: 1000 }, filter: "grayscale(.5) sepia(.3) contrast(1.15)" },
+          text: { style: "engraved", region: { x: 130, y: 1440, w: 820, h: 250 }, size: 46, enter: "fade_up" },
           vars: { "--frame-edge": "#4c4841" },
           overlay: () => ({ html: band, css: ".fk-band{position:absolute;left:0;top:0}" }),
-          css: "#v-bg::after{content:'';position:absolute;left:100px;top:330px;width:880px;height:1400px;border-radius:440px 440px 40px 40px;background:radial-gradient(ellipse at 40% 30%,rgba(255,255,255,.12),transparent 60%),linear-gradient(180deg,#8d887d,#5f5b53);box-shadow:inset 0 0 60px rgba(0,0,0,.5),0 30px 60px rgba(0,0,0,.6)}",
+          css: "#v-bg::after{content:'';position:absolute;left:30px;top:320px;width:1020px;height:1420px;border-radius:510px 510px 40px 40px;background:radial-gradient(ellipse at 40% 30%,rgba(255,255,255,.12),transparent 60%),linear-gradient(180deg,#8d887d,#5f5b53);box-shadow:inset 0 0 60px rgba(0,0,0,.5),0 30px 60px rgba(0,0,0,.6)}",
         };
       },
     },
@@ -323,14 +329,14 @@ const runestone = defineVariant({
       axes: { composition: "pyramid", textPlacement: "top" },
       describe: "Vòng đá đứng: ảnh chính trong phiến đá cao giữa, hai phiến thấp hai bên chiếu cảnh trước/sau; lời đọc khắc trên phiến ngang phía trên",
       design: () => ({
-        header: { style: "label_title", region: { x: 70, y: 110, w: 940, h: 220 }, size: 56 },
-        text: { style: "engraved", region: { x: 80, y: 380, w: 920, h: 300 }, size: 46, enter: "fade_up" },
-        visual: { frame: "arch", region: { x: 320, y: 760, w: 440, h: 900 }, filter: "grayscale(.4) sepia(.25) contrast(1.1)" },
+        header: { style: "label_title", region: { x: 70, y: 104, w: 940, h: 216 }, size: 56 },
+        text: { style: "engraved", region: { x: 80, y: 344, w: 920, h: 286 }, size: 46, enter: "fade_up" },
+        visual: { frame: "arch", region: { x: 200, y: 660, w: 680, h: 1060 }, filter: "grayscale(.4) sepia(.25) contrast(1.1)" },
         sceneExtra: (scene, i, ctx) => ({
-          html: neighbours(ctx.scenes, i, 2).map((other, k) => `<div class="fk-side" style="left:${k ? 800 : 60}px;top:1060px;width:220px;height:600px"><img class="v-img" src="${escapeHtml(other.imgSrc)}" alt=""></div>`).join(""),
+          html: neighbours(ctx.scenes, i, 2).map((other, k) => `<div class="fk-side" style="left:${k ? 900 : 30}px;top:1080px;width:150px;height:640px"><img class="v-img" src="${escapeHtml(other.imgSrc)}" alt=""></div>`).join(""),
         }),
         vars: { "--frame-edge": "#57534b" },
-        css: ".fk-side{position:absolute;overflow:hidden;border-radius:110px 110px 12px 12px;border:14px solid #57534b;box-shadow:0 20px 40px rgba(0,0,0,.55);filter:grayscale(.8) brightness(.7)}",
+        css: ".fk-side{position:absolute;overflow:hidden;border-radius:75px 75px 12px 12px;border:12px solid #57534b;box-shadow:0 20px 40px rgba(0,0,0,.55);filter:grayscale(.8) brightness(.7)}",
       }),
     },
   },
@@ -377,22 +383,22 @@ const tarot = defineVariant({
     },
     three_card_spread: {
       axes: { composition: "grid", textPlacement: "bottom" },
-      describe: "Trải ba lá: quá khứ / hiện tại / tương lai — lá giữa là ảnh cảnh này, hai lá bên là cảnh trước/sau; nhãn vị trí dưới mỗi lá; lời đọc trên dải lụa đỏ",
+      describe: "Trải ba lá: quá khứ / hiện tại / tương lai — lá giữa lớn là ảnh cảnh này, hai lá bên (cảnh trước/sau) nhỏ hơn nằm lấp sau mép lá giữa; nhãn vị trí trên hai lá bên và dưới lá giữa; lời đọc trên dải lụa đỏ",
       design: (ctx) => ({
-        header: { style: "label_title", region: { x: 70, y: 110, w: 940, h: 220 }, size: 56 },
-        visual: { frame: "card", region: { x: 360, y: 440, w: 360, h: 620 } },
-        text: { style: "ribbon", region: { x: 60, y: 1300, w: 960, h: 320 }, size: 46, enter: "fade_up" },
+        header: { style: "label_title", region: { x: 70, y: 104, w: 940, h: 200 }, size: 54 },
+        visual: { frame: "card", region: { x: 230, y: 324, w: 620, h: 1020 } },
+        text: { style: "ribbon", region: { x: 60, y: 1440, w: 960, h: 250 }, size: 46, enter: "fade_up" },
         sceneExtra: (scene, i, c) => {
           const [next, prev] = neighbours(c.scenes, i, 2);
-          const thumbs = [[prev, 40], [next, 760]].map(([other, x], k) => thumbFrame("card", {
-            id: `fk-spread-${scene.index}-${k}`, region: { x, y: 520, w: 280, h: 480 }, scene: other, rng: c.creative.rng, filter: "brightness(.75)",
+          const thumbs = [[prev, 16], [next, 764]].map(([other, x], k) => thumbFrame("card", {
+            id: `fk-spread-${scene.index}-${k}`, region: { x, y: 560, w: 300, h: 520 }, scene: other, rng: c.creative.rng, filter: "brightness(.75)",
           })).join("");
-          const labels = [[ctx.ui.past, 40, 280], [ctx.ui.present, 360, 360], [ctx.ui.future, 760, 280]]
-            .map(([text, x, w]) => `<div class="fk-pos" style="left:${x}px;width:${w}px">${escapeHtml(text)}</div>`).join("");
+          const labels = [[ctx.ui.past, 16, 206, 486], [ctx.ui.present, 390, 300, 1362], [ctx.ui.future, 858, 206, 486]]
+            .map(([text, x, w, y]) => `<div class="fk-pos" style="left:${x}px;top:${y}px;width:${w}px">${escapeHtml(text)}</div>`).join("");
           return { html: thumbs + labels };
         },
         vars: { "--gold": "#d4a64a" },
-        css: ".fk-pos{position:absolute;top:1120px;height:60px;line-height:60px;text-align:center;font-size:32px;letter-spacing:5px;color:#f3dfa6;background:#2a1240;border:3px solid #d4a64a;border-radius:30px;white-space:nowrap;overflow:hidden}",
+        css: "[id^='fk-spread-']{z-index:0}[id^='v-frame-']{z-index:2}.fk-pos{position:absolute;z-index:3;height:60px;line-height:60px;text-align:center;font-size:30px;letter-spacing:3px;color:#f3dfa6;background:#2a1240;border:3px solid #d4a64a;border-radius:30px;white-space:nowrap;overflow:hidden}",
       }),
     },
   },
@@ -424,15 +430,15 @@ const shadowPuppet = defineVariant({
       describe: "Sân khấu rối bóng: màn giấy sáng cam giữa hai tấm rèm nhung đỏ, ảnh thành bóng đen; sàn gỗ phía dưới mang phụ đề",
       design: () => ({
         header: { style: "centered", region: { x: 60, y: 110, w: 960, h: 230 }, size: 60 },
-        visual: { frame: "plain", region: { x: 130, y: 450, w: 820, h: 880 } },
-        text: { style: "subtitle", region: { x: 80, y: 1420, w: 920, h: 260 }, size: 50, align: "center", enter: "fade_up" },
-        tag: { style: "chip", x: 150, y: 1350 },
+        visual: { frame: "plain", region: { x: 106, y: 450, w: 868, h: 920 } },
+        text: { style: "subtitle", region: { x: 80, y: 1450, w: 920, h: 240 }, size: 50, align: "center", enter: "fade_up" },
+        tag: { style: "chip", x: 126, y: 1386 },
         overlay: () => ({
           html: "<i class=\"fk-drape l\"></i><i class=\"fk-drape r\"></i><i class=\"fk-valance\"></i>",
-          css: ".fk-drape{position:absolute;top:380px;width:150px;height:1000px;background:repeating-linear-gradient(90deg,#5e0f14 0 18px,#8f1c22 18px 40px,#5e0f14 40px 52px);box-shadow:0 20px 40px rgba(0,0,0,.6)}.fk-drape.l{left:0;border-radius:0 0 80px 0}.fk-drape.r{right:0;border-radius:0 0 0 80px}"
+          css: ".fk-drape{position:absolute;top:380px;width:100px;height:1010px;background:repeating-linear-gradient(90deg,#5e0f14 0 18px,#8f1c22 18px 40px,#5e0f14 40px 52px);box-shadow:0 20px 40px rgba(0,0,0,.6)}.fk-drape.l{left:0;border-radius:0 0 80px 0}.fk-drape.r{right:0;border-radius:0 0 0 80px}"
             + ".fk-valance{position:absolute;left:0;top:370px;width:1080px;height:80px;background:repeating-linear-gradient(90deg,#8f1c22 0 60px,#6d1419 60px 120px);border-bottom:8px solid #d4a64a}",
         }),
-        css: `${SCREEN_CSS}#v-bg::after{content:'';position:absolute;left:0;top:1340px;width:1080px;height:580px;background:repeating-linear-gradient(90deg,rgba(0,0,0,.18) 0 4px,transparent 4px 90px),linear-gradient(180deg,#4a2c18,#1d110a)}`,
+        css: `${SCREEN_CSS}#v-bg::after{content:'';position:absolute;left:0;top:1380px;width:1080px;height:540px;background:repeating-linear-gradient(90deg,rgba(0,0,0,.18) 0 4px,transparent 4px 90px),linear-gradient(180deg,#4a2c18,#1d110a)}`,
       }),
     },
     tall_screen: {
@@ -521,12 +527,12 @@ const hauntedVhs = defineVariant({
       axes: { composition: "split_horizontal", textPlacement: "bottom", background: "darkness" },
       describe: "Màn 4:3 phía trên; phía dưới là băng cassette VHS, lời đọc viết tay trên nhãn băng, hai bánh cuộn quay (tua) mỗi cảnh",
       design: (ctx) => {
-        const region = { x: 60, y: 400, w: 960, h: 720 };
+        const region = { x: 0, y: 360, w: 1080, h: 810 };
         const date = rngPick(ctx.creative.rng, VHS_DATES);
         return {
-          header: { style: "centered", region: { x: 60, y: 110, w: 960, h: 240 }, size: 58 },
+          header: { style: "centered", region: { x: 60, y: 104, w: 960, h: 230 }, size: 58 },
           visual: { frame: "plain", region },
-          text: { style: "paper_note", region: { x: 150, y: 1250, w: 780, h: 220 }, size: 44, align: "center", enter: "clip" },
+          text: { style: "paper_note", region: { x: 150, y: 1250, w: 780, h: 230 }, size: 44, align: "center", enter: "clip" },
           sceneExtra: (scene, i, c) => {
             const osd = vhsExtra(scene, i, region, date, c.ui);
             const id = `fk-reel-${scene.index}`;
@@ -537,9 +543,9 @@ const hauntedVhs = defineVariant({
             };
           },
           css: VHS_CSS
-            + "#v-bg::after{content:'';position:absolute;left:80px;top:1200px;width:920px;height:520px;border-radius:26px;background:linear-gradient(180deg,#26262a,#101012);box-shadow:inset 0 0 0 6px #3a3a40,0 30px 50px rgba(0,0,0,.6)}"
-            + "#v-bg::before{content:'';position:absolute;left:220px;top:1500px;width:640px;height:170px;border-radius:14px;background:#0a0a0b;box-shadow:inset 0 0 0 4px #444;z-index:1}"
-            + ".fk-reel{position:absolute;top:1515px;width:140px;height:140px;border-radius:50%;z-index:5;background:conic-gradient(#ddd 0 20deg,#333 20deg 120deg,#ddd 120deg 140deg,#333 140deg 240deg,#ddd 240deg 260deg,#333 260deg 360deg);box-shadow:0 0 0 10px #1a1a1a}"
+            + "#v-bg::after{content:'';position:absolute;left:80px;top:1206px;width:920px;height:520px;border-radius:26px;background:linear-gradient(180deg,#26262a,#101012);box-shadow:inset 0 0 0 6px #3a3a40,0 30px 50px rgba(0,0,0,.6)}"
+            + "#v-bg::before{content:'';position:absolute;left:220px;top:1508px;width:640px;height:170px;border-radius:14px;background:#0a0a0b;box-shadow:inset 0 0 0 4px #444;z-index:1}"
+            + ".fk-reel{position:absolute;top:1523px;width:140px;height:140px;border-radius:50%;z-index:5;background:conic-gradient(#ddd 0 20deg,#333 20deg 120deg,#ddd 120deg 140deg,#333 140deg 240deg,#ddd 240deg 260deg,#333 260deg 360deg);box-shadow:0 0 0 10px #1a1a1a}"
             + ".t-paper_note{transform:none!important}",
         };
       },

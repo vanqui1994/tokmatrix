@@ -48,6 +48,8 @@ function jurySeats(s) {
 const SEAT_COLOR = { n: "#8f8a80", a: "var(--accent-sage)", b: "var(--accent-terra)" };
 
 function benchOverlay(model, scenes, ui) {
+  // Bục thẩm phán cao: ảnh A/B lớn hai bên con dấu, tên đương sự dưới ảnh (ảnh nằm trong overlay vì bục che underlay).
+  const photos = subjectPair(model, { x: 56, y: 296, w: 410, h: 410 }, { x: 614, y: 296, w: 410, h: 410 }, { shape: "square" });
   const tweens = [];
   let prev = Array(12).fill("n");
   scenes.forEach((scene, i) => {
@@ -58,11 +60,12 @@ function benchOverlay(model, scenes, ui) {
     prev = seats;
   });
   const jurors = Array.from({ length: 12 }, (_, k) => `<div class="ct-juror" style="left:${30 + (k % 6) * 86}px;top:${70 + Math.floor(k / 6) * 110}px"><i></i><b id="ct-j-${k}"></b></div>`).join("");
-  const html = `<div class="ct-bench" style="${box({ x: 40, y: 320, w: 1000, h: 210 })}"></div>
-<div style="position:absolute;left:465px;top:350px">${SEAL}</div>
-${fitBox("ct-party a", model.a.name, { r: { x: 70, y: 380, w: 370, h: 90 }, size: 46, min: 14 })}
-${fitBox("ct-party b", model.b.name, { r: { x: 640, y: 380, w: 370, h: 90 }, size: 46, min: 14 })}
-<div class="ct-jury" style="${box({ x: 40, y: 1010, w: 560, h: 330 })}">${fitBox("ct-cap", ui.jury, { r: { x: 20, y: 14, w: 520, h: 44 }, size: 30, min: 12 })}${jurors}</div>`;
+  const html = `<div class="ct-bench" style="${box({ x: 40, y: 280, w: 1000, h: 520 })}"></div>
+${photos ? photos.html : ""}
+<div style="position:absolute;left:465px;top:426px">${SEAL}</div>
+${fitBox("ct-party a", model.a.name, { r: { x: 56, y: 718, w: 410, h: 70 }, size: 42, min: 14 })}
+${fitBox("ct-party b", model.b.name, { r: { x: 614, y: 718, w: 410, h: 70 }, size: 42, min: 14 })}
+<div class="ct-jury" style="${box({ x: 40, y: 1196, w: 560, h: 330 })}">${fitBox("ct-cap", ui.jury, { r: { x: 20, y: 14, w: 520, h: 44 }, size: 30, min: 12 })}${jurors}</div>`;
   return { html, tweens };
 }
 
@@ -139,20 +142,19 @@ const courtroom = defineVariant({
       design: (ctx) => {
         const model = compareModel(ctx, ctx.ui);
         return {
-          header: { style: "plaque", region: { x: 140, y: 100, w: 800, h: 190 }, size: 54 },
-          visual: { frame: "plain", region: { x: 40, y: 580, w: 560, h: 380 } },
+          header: { style: "plaque", region: { x: 140, y: 96, w: 800, h: 170 }, size: 54 },
+          visual: { frame: "plain", region: { x: 40, y: 820, w: 560, h: 360 } },
           panel: (scene, i) => exhibit(model.scenes[i], model),
-          text: { style: "typed_sheet", region: { x: 630, y: 580, w: 410, h: 900 }, size: 42, enter: "type" },
+          text: { style: "typed_sheet", region: { x: 630, y: 820, w: 410, h: 786 }, size: 42, enter: "type" },
           sceneExtra: (scene, i) => {
             const s = model.scenes[i];
-            const tally = fitBox("ct-tally", `${model.a.name} ${s.totalA} · ${s.totalB} ${model.b.name}`, { r: { x: 40, y: 1360, w: 560, h: 70 }, size: 32, min: 12 });
-            const gavel = s.role === "verdict" ? fitBox("ct-gavel", verdictText(model, ctx.ui), { id: `ct-gavel-${scene.index}`, r: { x: 150, y: 1470, w: 780, h: 100 }, size: 44, min: 14 }) : "";
+            const tally = fitBox("ct-tally", `${model.a.name} ${s.totalA} · ${s.totalB} ${model.b.name}`, { r: { x: 40, y: 1540, w: 560, h: 66 }, size: 32, min: 12 });
+            const gavel = s.role === "verdict" ? fitBox("ct-gavel", verdictText(model, ctx.ui), { id: `ct-gavel-${scene.index}`, r: { x: 150, y: 1614, w: 780, h: 80 }, size: 44, min: 14 }) : "";
             return { html: tally + gavel, tweens: gavel ? [pop(`#ct-gavel-${scene.index}`, scene.visualStart + 0.3, { from: 1.8, ease: "power4.out" })] : [] };
           },
           overlay: (octx) => benchOverlay(model, octx.scenes, ctx.ui),
-          underlay: () => subjectPair(model, { x: 40, y: 1460, w: 490, h: 400 }, { x: 550, y: 1460, w: 490, h: 400 }, { shape: "square" }), // ảnh đối tượng A/B
           vars: { "--frame-edge": "#d8b56a" },
-          css: CSS,
+          css: CSS + (subjectPair(model, { x: 0, y: 0, w: 1, h: 1 }, { x: 0, y: 0, w: 1, h: 1 })?.css || ""), // ảnh đối tượng A/B: trong benchOverlay
         };
       },
     },
@@ -162,15 +164,15 @@ const courtroom = defineVariant({
       design: (ctx) => {
         const model = compareModel(ctx, ctx.ui);
         return {
-          header: { style: "masthead", region: { x: 60, y: 100, w: 960, h: 230 }, size: 64 },
+          header: { style: "masthead", region: { x: 60, y: 96, w: 960, h: 200 }, size: 64 },
           sceneExtra: (scene, i) => {
             const s = model.scenes[i];
             const text = s.role === "verdict" ? verdictText(model, ctx.ui) : `${model.a.name} ${s.totalA} : ${s.totalB} ${model.b.name}`;
-            return { html: fitBox("ct-sign", text, { r: { x: 200, y: 1300, w: 680, h: 70 }, size: 36, min: 12 }) };
+            return { html: fitBox("ct-sign", text, { r: { x: 200, y: 1396, w: 680, h: 64 }, size: 36, min: 12 }) };
           },
-          text: { style: "typed_sheet", region: { x: 60, y: 1400, w: 960, h: 260 }, size: 44, enter: "type" },
-          overlay: (octx) => formOverlay(model, octx.scenes, ctx.ui, { x: 60, y: 360, w: 960, h: 920 }),
-          perScene: subjectPair(model, { x: 60, y: 1590, w: 460, h: 280 }, { x: 560, y: 1590, w: 460, h: 280 }, { shape: "square" }), // ảnh đối tượng A/B
+          text: { style: "typed_sheet", region: { x: 60, y: 1470, w: 960, h: 220 }, size: 44, enter: "type" },
+          overlay: (octx) => formOverlay(model, octx.scenes, ctx.ui, { x: 60, y: 744, w: 960, h: 640 }),
+          perScene: subjectPair(model, { x: 60, y: 308, w: 460, h: 420 }, { x: 560, y: 308, w: 460, h: 420 }, { shape: "square" }), // ảnh đối tượng A/B
           css: CSS + FORM_CSS,
         };
       },

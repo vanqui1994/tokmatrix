@@ -44,12 +44,12 @@ const collage = defineVariant({
       axes: { composition: "card_stack", textPlacement: "floating" },
       describe: "Dải giấy trắng xé mang tiêu đề trên nền kraft; ảnh chính trên mảnh giấy xé ở giữa, hai mẩu ảnh cảnh khác đen trắng lót phía sau; lời đọc trên băng dính đen nổi phía dưới",
       design: (ctx) => ({
-        visual: { frame: "torn", region: { x: 150, y: 470, w: 780, h: 840 } },
-        text: { style: "tape_label", region: { x: 70, y: 1374, w: 940, h: 276 }, size: 46, enter: "pop" },
+        visual: { frame: "torn", region: { x: 110, y: 400, w: 880, h: 950 } },
+        text: { style: "tape_label", region: { x: 70, y: 1394, w: 940, h: 270 }, size: 46, enter: "pop" },
         sceneExtra: (scene, i, c) => ({
           html: neighbours(c.scenes, i, 2).map((other, k) => thumbFrame("torn", {
-            id: `vc-scrap-${scene.index}-${k}`, region: k ? { x: 650, y: 870, w: 410, h: 470 } : { x: 30, y: 420, w: 420, h: 520 }, scene: other, rng: c.creative.rng, filter: "grayscale(1) contrast(1.3)",
-          })).join("") + washi(`vc-washi-${scene.index}`, { x: 420, y: 446, w: 240, h: 56 }, c.creative.rng),
+            id: `vc-scrap-${scene.index}-${k}`, region: k ? { x: 680, y: 860, w: 390, h: 480 } : { x: 14, y: 384, w: 400, h: 500 }, scene: other, rng: c.creative.rng, filter: "grayscale(1) contrast(1.3)",
+          })).join("") + washi(`vc-washi-${scene.index}`, { x: 420, y: 376, w: 240, h: 56 }, c.creative.rng),
         }),
         overlay: () => collageHead({ ...ctx, rng: ctx.creative.rng }),
         css: `${KRAFT_CSS}${WASHI_CSS}[id^='vc-scrap-']{z-index:0}[id^='v-frame-']{z-index:2}`,
@@ -59,12 +59,12 @@ const collage = defineVariant({
       axes: { composition: "split_vertical", textPlacement: "left_column" },
       describe: "Tiêu đề trên dải giấy xé; ảnh cắt dọc cao bên phải; lời đọc trên băng dính đen ở cột trái, mẩu ảnh cảnh khác dán dưới cột chữ",
       design: (ctx) => ({
-        visual: { frame: "torn", region: { x: 490, y: 400, w: 560, h: 1260 } },
-        text: { style: "tape_label", region: { x: 40, y: 470, w: 420, h: 770 }, size: 46, enter: "pop" },
+        visual: { frame: "torn", region: { x: 420, y: 390, w: 640, h: 1290 } },
+        text: { style: "tape_label", region: { x: 30, y: 440, w: 370, h: 860 }, size: 44, enter: "pop" },
         sceneExtra: (scene, i, c) => ({
           html: neighbours(c.scenes, i, 1).map((other) => thumbFrame("torn", {
-            id: `vc-scrap-${scene.index}-0`, region: { x: 50, y: 1290, w: 400, h: 360 }, scene: other, rng: c.creative.rng, filter: "grayscale(1) contrast(1.3)",
-          })).join("") + washi(`vc-washi-${scene.index}`, { x: 660, y: 378, w: 230, h: 54 }, c.creative.rng),
+            id: `vc-scrap-${scene.index}-0`, region: { x: 30, y: 1340, w: 370, h: 320 }, scene: other, rng: c.creative.rng, filter: "grayscale(1) contrast(1.3)",
+          })).join("") + washi(`vc-washi-${scene.index}`, { x: 640, y: 366, w: 230, h: 54 }, c.creative.rng),
         }),
         overlay: () => collageHead({ ...ctx, rng: ctx.creative.rng }),
         css: `${KRAFT_CSS}${WASHI_CSS}[id^='vc-scrap-']{z-index:0}[id^='v-frame-']{z-index:2}`,
@@ -111,15 +111,15 @@ const timeline = defineVariant({
       axes: { composition: "timeline_track", textPlacement: "bottom" },
       describe: "Thẻ ảnh bo góc phía trên nối dây xuống mốc hiện tại trên trục thời gian ngang (mốc = con số trong câu); vạch tiến độ chạy suốt video; lời đọc trong khung phía dưới",
       design: (ctx) => ({
-        header: { style: "label_title", region: { x: 60, y: 110, w: 960, h: 236 }, size: 62 },
-        visual: { frame: "plain", region: { x: 90, y: 390, w: 900, h: 690 } },
-        text: { style: "panel", region: { x: 60, y: 1310, w: 960, h: 340 }, size: 48, enter: "slide" },
+        header: { style: "label_title", region: { x: 60, y: 104, w: 960, h: 226 }, size: 62 },
+        visual: { frame: "plain", region: { x: 40, y: 356, w: 1000, h: 830 } },
+        text: { style: "panel", region: { x: 60, y: 1340, w: 960, h: 330 }, size: 48, enter: "slide" },
         sceneExtra: (scene, i, c) => {
           const n = c.scenes.length;
           const x = Math.round(80 + (i * 920) / Math.max(1, n - 1));
-          return { html: `<svg class="vt-link" id="vt-link-${scene.index}" width="1080" height="1920" viewBox="0 0 1080 1920"><path d="M540 1080 C540 1140 ${x} 1120 ${x} 1170" stroke="var(--accent-terra-ink)" stroke-width="6" fill="none" stroke-dasharray="14 10"/></svg>` };
+          return { html: `<svg class="vt-link" id="vt-link-${scene.index}" width="1080" height="1920" viewBox="0 0 1080 1920"><path d="M540 1186 C540 1216 ${x} 1206 ${x} 1226" stroke="var(--accent-terra-ink)" stroke-width="6" fill="none" stroke-dasharray="14 10"/></svg>` };
         },
-        overlay: (c) => timelineOverlay(c, { y: 1200 }),
+        overlay: (c) => timelineOverlay(c, { y: 1250 }),
         vars: { "--frame-edge": "var(--fg)" },
         css: ".vt-link{position:absolute;left:0;top:0;z-index:0}#root .f-plain{border-radius:28px;border-width:8px}",
       }),
@@ -153,9 +153,9 @@ function routeSvg(points, { id, width = 1080, height = 1920, stroke = 8 }) {
   const d = points.map(([x, y], k) => `${k ? "L" : "M"}${x} ${y}`).join(" ");
   return `<svg class="vm-svg" id="${id}" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}"><path d="${d}" stroke="#d62b1f" stroke-width="${stroke}" fill="none" stroke-dasharray="${stroke * 2.4} ${stroke * 1.6}" stroke-linecap="round"/></svg>`;
 }
-/** Lộ trình dọc zig-zag (tất định, không jitter) — để vị trí thẻ ảnh của từng cảnh tính được ngay trong design. */
+/** Lộ trình dọc zig-zag (tất định, không jitter) trong dải bản đồ bên trái, cạnh thẻ ảnh lớn. */
 function zigzagPoints(n) {
-  return Array.from({ length: n }, (_, k) => [k % 2 ? 900 : 180, Math.round(470 + (k * 760) / Math.max(1, n - 1))]);
+  return Array.from({ length: n }, (_, k) => [k % 2 ? 222 : 82, Math.round(440 + (k * 800) / Math.max(1, n - 1))]);
 }
 function routeOverlay(ctx, { region, bounds, pin = 54, card = false, vertical = false }) {
   const { scenes } = ctx;
@@ -196,21 +196,18 @@ const mapRoute = defineVariant({
   compositions: {
     route_map: {
       axes: { composition: "map_full", textPlacement: "bottom" },
-      describe: "Bản đồ phẳng toàn màn; đường chấm đỏ zig-zag dọc nối 6 ghim số, tự vẽ xuống tới ghim của cảnh, vòng xanh nhảy theo ghim; thẻ ảnh bo góc nằm cạnh ghim hiện tại (đổi bên theo ghim); lời đọc thẻ trắng dưới",
-      design: ({ scenes }) => {
-        const pts = zigzagPoints(scenes.length);
-        const place = (k) => ({ x: pts[k][0] < 540 ? 330 : 90, y: Math.max(380, Math.min(1290 - 470, pts[k][1] - 220)) });
-        const first = place(0);
+      describe: "Bản đồ phẳng toàn màn; đường chấm đỏ zig-zag dọc trong dải bên trái nối các ghim số, tự vẽ xuống tới ghim của cảnh, vòng xanh nhảy theo ghim; thẻ ảnh bo góc lớn chiếm phần phải bản đồ; lời đọc thẻ trắng dưới, la bàn góc phải",
+      design: () => {
         return {
-          header: { style: "centered", region: { x: 60, y: 120, w: 960, h: 236 }, size: 64 },
-          visual: { frame: "plain", region: { x: first.x, y: first.y, w: 660, h: 470 } },
-          text: { style: "ink", region: { x: 40, y: 1296, w: 760, h: 364 }, size: 46, enter: "fade_up" },
+          header: { style: "centered", region: { x: 60, y: 110, w: 960, h: 226 }, size: 62 },
+          visual: { frame: "plain", region: { x: 290, y: 366, w: 760, h: 920 } },
+          text: { style: "ink", region: { x: 40, y: 1316, w: 760, h: 350 }, size: 46, enter: "fade_up" },
           overlay: (c) => {
             const route = routeOverlay(c, { region: { x: 0, y: 0, w: 1080, h: 1920 }, vertical: true });
-            return { ...route, html: route.html + box({ x: 830, y: 1400, w: 200, h: 200 }, "vm-compass"), css: `${route.css}.vm-compass{position:absolute;border-radius:50%;border:6px solid #18202c;background:conic-gradient(from -22.5deg,#d62b1f 0 45deg,transparent 45deg 180deg,#18202c 180deg 225deg,transparent 225deg);box-shadow:0 10px 20px rgba(0,0,0,.25)}` };
+            return { ...route, html: route.html + box({ x: 836, y: 1360, w: 190, h: 190 }, "vm-compass"), css: `${route.css}.vm-compass{position:absolute;border-radius:50%;border:6px solid #18202c;background:conic-gradient(from -22.5deg,#d62b1f 0 45deg,transparent 45deg 180deg,#18202c 180deg 225deg,transparent 225deg);box-shadow:0 10px 20px rgba(0,0,0,.25)}` };
           },
           vars: { "--frame-edge": "#fff" },
-          css: `${MAP_TEXT_CSS}.h-rule{background:#8a1c14}#root .f-plain{border-radius:26px;border-width:12px}#v-overlay .vm-layer{pointer-events:none}${scenes.map((scene, k) => { const p = place(k); return `#v-frame-${scene.index}{left:${p.x}px!important;top:${p.y}px!important}`; }).join("")}`,
+          css: `${MAP_TEXT_CSS}.h-rule{background:#8a1c14}#root .f-plain{border-radius:26px;border-width:12px}#v-overlay .vm-layer{pointer-events:none}`,
         };
       },
     },
@@ -282,14 +279,14 @@ const thenNow = defineVariant({
       describe: "Ảnh XƯA sepia tối tràn toàn màn; một ống kính tròn NAY (ảnh màu) bật mở ở giữa; lời đọc hộp tối phía dưới",
       design: ({ ui, lang }) => ({
         header: { style: "label_title", region: { x: 60, y: 110, w: 960, h: 214 }, size: 60 },
-        visual: { frame: "circle", region: { x: 190, y: 500, w: 700, h: 700 } },
-        text: { style: "glass", region: { x: 60, y: 1330, w: 960, h: 320 }, size: 48, enter: "fade_up" },
+        visual: { frame: "circle", region: { x: 60, y: 350, w: 960, h: 960 } },
+        text: { style: "glass", region: { x: 60, y: 1384, w: 960, h: 290 }, size: 48, enter: "fade_up" },
         sceneExtra: (scene, i, c) => {
           const idx = scene.index;
           return {
             html: imageBox(scene, { id: `vs-thenw-${idx}`, imgId: `vs-then-${idx}`, region: { x: 0, y: 0, w: 1080, h: 1920 }, cls: "vs-then", filter: `${THEN_FILTER} brightness(.55)` })
-              + labelChip({ x: 40, y: 380, w: 1, h: 1 }, "then", upperText(ui.then, lang), `vs-lt-${idx}`)
-              + labelChip({ x: 470, y: 1222, w: 1, h: 1 }, "now", upperText(ui.now, lang), `vs-ln-${idx}`),
+              + labelChip({ x: 40, y: 344, w: 1, h: 1 }, "then", upperText(ui.then, lang), `vs-lt-${idx}`)
+              + labelChip({ x: 470, y: 1300, w: 1, h: 1 }, "now", upperText(ui.now, lang), `vs-ln-${idx}`),
             tweens: [
               kenBurnsReverse(`#vs-then-${idx}`, scene, c.creative.rng),
               { method: "fromTo", target: `#v-frame-${idx}`, from: { scale: 0.6 }, vars: { scale: 1, duration: 0.6, ease: "back.out(1.6)" }, at: r3(scene.visualStart + 0.05) },
@@ -328,13 +325,13 @@ const dataCard = defineVariant({
       axes: { composition: "split_horizontal", textPlacement: "top" },
       describe: "Nửa trên: thẻ màu đặc với con số lớn của câu (hoặc từ khoá) bật lên + lời đọc; nửa dưới: ảnh bo góc",
       design: ({ ui, lang }) => ({
-        header: { style: "label_title", region: { x: 60, y: 110, w: 960, h: 200 }, size: 56 },
-        text: { style: "ink", region: { x: 80, y: 690, w: 920, h: 270 }, size: 46, enter: "fade_up" },
-        visual: { frame: "plain", region: { x: 40, y: 1010, w: 1000, h: 640 } },
+        header: { style: "label_title", region: { x: 60, y: 104, w: 960, h: 196 }, size: 56 },
+        text: { style: "ink", region: { x: 80, y: 590, w: 920, h: 244 }, size: 46, enter: "fade_up" },
+        visual: { frame: "plain", region: { x: 40, y: 870, w: 1000, h: 800 } },
         sceneExtra: (scene, i) => ({
-          html: box({ x: 40, y: 340, w: 1000, h: 640 }, "vd-card", "", { id: `vd-card-${scene.index}` })
-            + fitBox({ x: 80, y: 356, w: 920, h: 46 }, "vd-kick", `${upperText(ui.scene, lang)} ${pad2(i + 1)}`, 30, { id: `vd-kick-${scene.index}` })
-            + fitBox({ x: 80, y: 440, w: 920, h: 230 }, "vd-num", statOf(scene.line, lang), 190, { min: 40, id: `vd-num-${scene.index}` }),
+          html: box({ x: 40, y: 318, w: 1000, h: 528 }, "vd-card", "", { id: `vd-card-${scene.index}` })
+            + fitBox({ x: 80, y: 332, w: 920, h: 46 }, "vd-kick", `${upperText(ui.scene, lang)} ${pad2(i + 1)}`, 30, { id: `vd-kick-${scene.index}` })
+            + fitBox({ x: 80, y: 418, w: 920, h: 160 }, "vd-num", statOf(scene.line, lang), 150, { min: 40, id: `vd-num-${scene.index}` }),
           tweens: [statPop(`vd-num-${scene.index}`, scene)],
         }),
         vars: { "--frame-edge": "#fff" },
@@ -345,17 +342,17 @@ const dataCard = defineVariant({
       axes: { composition: "ring", textPlacement: "bottom" },
       describe: "Con số lớn của câu ở trên; ảnh tròn nằm trong vòng tiến độ (cảnh k/n) tự chạy tới cảnh hiện tại; lời đọc trong khung dưới",
       design: ({ lang }) => ({
-        header: { style: "label_title", region: { x: 60, y: 110, w: 960, h: 200 }, size: 56 },
-        visual: { frame: "circle", region: { x: 250, y: 620, w: 580, h: 580 } },
-        text: { style: "panel", region: { x: 60, y: 1350, w: 960, h: 300 }, size: 46, enter: "fade_up" },
-        tag: { style: "chip", x: 486, y: 1282, format: (i, n) => `${i + 1}/${n}` },
+        header: { style: "label_title", region: { x: 60, y: 104, w: 960, h: 196 }, size: 56 },
+        visual: { frame: "circle", region: { x: 150, y: 572, w: 780, h: 780 } },
+        text: { style: "panel", region: { x: 60, y: 1450, w: 960, h: 240 }, size: 46, enter: "fade_up" },
+        tag: { style: "chip", x: 486, y: 1388, format: (i, n) => `${i + 1}/${n}` },
         sceneExtra: (scene, i, c) => {
           const n = c.scenes.length;
-          const C = 2 * Math.PI * 330;
+          const C = 2 * Math.PI * 436;
           const idx = scene.index;
           return {
-            html: fitBox({ x: 60, y: 340, w: 960, h: 210 }, "vd-num", statOf(scene.line, lang), 180, { min: 40, id: `vd-num-${idx}` })
-              + `<svg class="vd-ring" style="left:190px;top:560px" width="700" height="700" viewBox="0 0 700 700"><circle cx="350" cy="350" r="330" stroke="color-mix(in srgb,var(--fg) 16%,transparent)" stroke-width="28" fill="none"/><circle id="vd-arc-${idx}" cx="350" cy="350" r="330" stroke="var(--accent-terra-ink)" stroke-width="28" fill="none" stroke-linecap="round" stroke-dasharray="${C.toFixed(2)}" transform="rotate(-90 350 350)"/></svg>`,
+            html: fitBox({ x: 60, y: 318, w: 960, h: 180 }, "vd-num", statOf(scene.line, lang), 160, { min: 40, id: `vd-num-${idx}` })
+              + `<svg class="vd-ring" style="left:90px;top:512px" width="900" height="900" viewBox="0 0 900 900"><circle cx="450" cy="450" r="436" stroke="color-mix(in srgb,var(--fg) 16%,transparent)" stroke-width="28" fill="none"/><circle id="vd-arc-${idx}" cx="450" cy="450" r="436" stroke="var(--accent-terra-ink)" stroke-width="28" fill="none" stroke-linecap="round" stroke-dasharray="${C.toFixed(2)}" transform="rotate(-90 450 450)"/></svg>`,
             tweens: [
               statPop(`vd-num-${idx}`, scene),
               { method: "fromTo", target: `#vd-arc-${idx}`, from: { strokeDashoffset: Number((C * (1 - i / n)).toFixed(2)) }, vars: { strokeDashoffset: Number((C * (1 - (i + 1) / n)).toFixed(2)), duration: 0.8, ease: "power2.out" }, at: r3(scene.visualStart + 0.1) },
@@ -461,13 +458,13 @@ const zine = defineVariant({
     },
     cutup_grid: {
       axes: { composition: "grid", textPlacement: "center" },
-      describe: "Tiêu đề chữ cắt báo; lưới 2×2 ảnh photocopy (cảnh hiện tại viền đỏ + 3 cảnh khác); lời đọc trên dải đen chữ trắng cắt ngang giữa lưới",
+      describe: "Tiêu đề chữ cắt báo; lưới ảnh photocopy: ô lớn trên là cảnh hiện tại viền đỏ, hàng 3 ô nhỏ dưới là cảnh khác; lời đọc trên dải đen chữ trắng cắt ngang giữa ô lớn và hàng ô nhỏ",
       design: (ctx) => ({
-        visual: { frame: "plain", region: { x: 40, y: 392, w: 490, h: 620 }, filter: XEROX },
-        text: { style: "ink", region: { x: 60, y: 860, w: 960, h: 320 }, size: 48, align: "center", enter: "clip" },
+        visual: { frame: "plain", region: { x: 40, y: 386, w: 1000, h: 800 }, filter: XEROX },
+        text: { style: "ink", region: { x: 60, y: 1150, w: 960, h: 250 }, size: 48, align: "center", enter: "clip" },
         sceneExtra: (scene, i, c) => ({
           html: neighbours(c.scenes, i, 3).map((other, k) => thumbFrame("plain", {
-            id: `vz-cell-${scene.index}-${k}`, region: [{ x: 550, y: 392 }, { x: 40, y: 1032 }, { x: 550, y: 1032 }].map((p) => ({ ...p, w: 490, h: 620 }))[k], scene: other, rng: c.creative.rng, filter: XEROX,
+            id: `vz-cell-${scene.index}-${k}`, region: { x: 40 + k * 340, y: 1420, w: 320, h: 240 }, scene: other, rng: c.creative.rng, filter: XEROX,
           })).join(""),
         }),
         overlay: () => zineHead(ctx),

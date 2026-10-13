@@ -75,7 +75,9 @@ ${has("severity") ? `<div class="sv-pips">${pips}</div>` : ""}
   return { html, tweens };
 }
 
-export const CARD_CSS = ".sv-card{position:absolute;box-sizing:border-box;display:flex;flex-direction:column;gap:12px}.sv-eyebrow,.sv-tag{flex:none;white-space:nowrap;overflow:hidden;letter-spacing:3px}.sv-eyebrow{font-size:26px;opacity:.85}.sv-tag{font-size:34px;font-weight:700}.sv-label-box{position:relative;flex:1;min-height:0;display:flex;align-items:center}.sv-label{margin:0;width:100%;line-height:1.06;font-weight:700}.sv-row{flex:none;display:flex;align-items:center;justify-content:space-between;gap:16px;height:70px}.sv-status{flex:0 1 auto;min-width:0;height:62px;display:flex;align-items:center;padding:0 20px;background:var(--sev);color:var(--sev-ink);font-weight:700;font-size:32px;letter-spacing:2px}.sv-status span{white-space:nowrap;overflow:hidden}.sv-fit{display:block;white-space:nowrap}.sv-sev{flex:none;white-space:nowrap;line-height:1}.sv-sev b{font-size:64px;color:inherit;border-bottom:8px solid var(--sev)}.sv-sev small{font-size:28px;opacity:.7}.sv-pips{flex:none;display:flex;gap:6px;height:22px}.sv-pips i{flex:1}";
+export const CARD_CSS = ".sv-card{position:absolute;box-sizing:border-box;display:flex;flex-direction:column;gap:12px}.sv-eyebrow,.sv-tag{flex:none;white-space:nowrap;overflow:hidden;letter-spacing:3px}.sv-eyebrow{font-size:26px;opacity:.85}.sv-tag{font-size:34px;font-weight:700}.sv-label-box{position:relative;flex:1;min-height:0;display:flex;align-items:center}.sv-label{margin:0;width:100%;line-height:1.06;font-weight:700}.sv-row{flex:none;display:flex;align-items:center;justify-content:space-between;gap:16px;height:70px}.sv-status{flex:0 1 auto;min-width:0;height:62px;display:flex;align-items:center;padding:0 20px;background:var(--sev);color:var(--sev-ink);font-weight:700;font-size:32px;letter-spacing:2px}.sv-status span{white-space:nowrap;overflow:hidden}.sv-fit{display:block;white-space:nowrap}.sv-sev{flex:none;white-space:nowrap;line-height:1}.sv-sev b{font-size:64px;color:inherit;border-bottom:8px solid var(--sev)}.sv-sev small{font-size:28px;opacity:.7}.sv-pips{flex:none;display:flex;gap:6px;height:22px}.sv-pips i{flex:1}"
+  // sv-compact: thẻ thấp — nhãn cấp + eyebrow chung một dòng, nhãn cảnh, trạng thái + mức độ, vạch.
+  + ".sv-compact{display:grid;grid-template-columns:auto minmax(0,1fr);grid-template-rows:46px minmax(0,1fr) 58px auto;gap:8px 18px}.sv-compact .sv-tag{grid-column:1;grid-row:1;font-size:30px;line-height:46px;height:46px}.sv-compact .sv-eyebrow{grid-column:2;grid-row:1;line-height:46px;height:46px;text-align:right}.sv-compact .sv-label-box{grid-column:1/3;grid-row:2}.sv-compact .sv-row{grid-column:1/3;grid-row:3;height:58px}.sv-compact .sv-status{height:54px}.sv-compact .sv-sev b{font-size:50px;border-bottom-width:6px}.sv-compact .sv-pips{grid-column:1/3;grid-row:4;height:16px}";
 
 /** 3 thanh chỉ số (nhãn + %), thanh chạy từ giá trị cảnh trước tới cảnh này. `orient` = "h" | "v". */
 export function metricBars(scene, i, { data, region, cls, orient = "h", colors }) {
@@ -91,22 +93,32 @@ export function metricBars(scene, i, { data, region, cls, orient = "h", colors }
   return { html: `<div class="sv-mx sv-mx-${orient} ${cls}" id="${id}" style="${regionStyle(region)}">${rows}</div>`, tweens };
 }
 
-export const METRIC_CSS = ".sv-mx{position:absolute;box-sizing:border-box;display:flex}.sv-mx-h{flex-direction:column;justify-content:space-between}.sv-mx-v{flex-direction:row;justify-content:space-between;gap:18px}.sv-m{position:relative;display:grid}.sv-m-h{grid-template-columns:1fr 110px;grid-template-rows:38px 24px;column-gap:14px;row-gap:6px}.sv-m-h .sv-m-name{grid-column:1;grid-row:1}.sv-m-h .sv-m-val{grid-column:2;grid-row:1/3;align-self:center;text-align:right}.sv-m-h .sv-m-track{grid-column:1;grid-row:2}.sv-m-v{flex:1;grid-template-rows:1fr 44px 40px;row-gap:8px;justify-items:center}.sv-m-v .sv-m-track{grid-row:1;width:46px;height:100%}.sv-m-v .sv-m-val{grid-row:2;align-self:center}.sv-m-v .sv-m-name{grid-row:3;width:100%}.sv-m-name{position:relative;display:flex;align-items:center;min-width:0;overflow:hidden}.sv-m-v .sv-m-name{justify-content:center;text-align:center}.sv-m-t{margin:0;white-space:nowrap;letter-spacing:1px}.sv-m-val{font-size:34px;font-weight:700;white-space:nowrap}.sv-m-track{position:relative;overflow:hidden;background:var(--sv-track,rgba(127,127,127,.22))}.sv-m-fill{position:absolute;inset:0;display:block}.sv-m-h .sv-m-fill{transform-origin:0 50%}.sv-m-v .sv-m-fill{transform-origin:50% 100%}";
+export const METRIC_CSS = ".sv-mx{position:absolute;box-sizing:border-box;display:flex}.sv-mx-h{flex-direction:column;justify-content:space-between}.sv-mx-v{flex-direction:row;justify-content:space-between;gap:18px}.sv-m{position:relative;display:grid}.sv-m-h{grid-template-columns:1fr 110px;grid-template-rows:38px 24px;column-gap:14px;row-gap:6px}.sv-m-h .sv-m-name{grid-column:1;grid-row:1}.sv-m-h .sv-m-val{grid-column:2;grid-row:1/3;align-self:center;text-align:right}.sv-m-h .sv-m-track{grid-column:1;grid-row:2}.sv-m-v{flex:1;grid-template-rows:1fr 44px 40px;row-gap:8px;justify-items:center}.sv-m-v .sv-m-track{grid-row:1;width:46px;height:100%}.sv-m-v .sv-m-val{grid-row:2;align-self:center}.sv-m-v .sv-m-name{grid-row:3;width:100%}.sv-m-name{position:relative;display:flex;align-items:center;min-width:0;overflow:hidden}.sv-m-v .sv-m-name{justify-content:center;text-align:center}.sv-m-t{margin:0;white-space:nowrap;letter-spacing:1px}.sv-m-val{font-size:34px;font-weight:700;white-space:nowrap}.sv-m-track{position:relative;overflow:hidden;background:var(--sv-track,rgba(127,127,127,.22))}.sv-m-fill{position:absolute;inset:0;display:block}.sv-m-h .sv-m-fill{transform-origin:0 50%}.sv-m-v .sv-m-fill{transform-origin:50% 100%}"
+  // sv-row3: 3 chỉ số NẰM NGANG một hàng (tên + % trên, thanh dưới) — hàng thấp ~70 px.
+  + ".sv-row3.sv-mx-h{flex-direction:row;justify-content:flex-start;align-items:center;gap:26px}.sv-row3 .sv-m{flex:1 1 0;min-width:0}.sv-row3 .sv-m-h{grid-template-columns:minmax(0,1fr) auto;grid-template-rows:36px 16px;column-gap:10px}.sv-row3 .sv-m-h .sv-m-val{grid-row:1;font-size:30px}.sv-row3 .sv-m-h .sv-m-track{grid-column:1/3}"
+  // sv-wrap: chỉ số dọc hẹp, tên xuống dòng.
+  + ".sv-wrap .sv-m-v{grid-template-rows:1fr 36px 62px;row-gap:6px}.sv-wrap .sv-m-val{font-size:24px}.sv-wrap .sv-m-t{white-space:normal;line-height:1.05;text-align:center;letter-spacing:0}.sv-wrap .sv-m-v .sv-m-track{width:34px}";
 
-/** Sân khấu reactor (panel của khung visual) + tween theo biểu cảm (lắc khi hoảng, nhún nhẹ khi bình thản). */
+/**
+ * Sân khấu reactor + tween theo biểu cảm (lắc khi hoảng, nhún nhẹ khi bình thản).
+ * Có ảnh AI của cảnh: khung visual chỉ chứa ẢNH (to, owner 09/10: ảnh quá nhỏ khi chia đôi khung với reactor) và
+ * reactor là hộp riêng `reactor(scene, i, region, cls)` do composition đặt cạnh ảnh — KHÔNG đè nhau (owner 29/09).
+ * Không có ảnh (preview cũ, dữ liệu thiếu): khung visual là sân khấu reactor như trước và hộp riêng không vẽ gì.
+ */
 export function reactorStage(ctx, look) {
   const identity = reactorIdentity(ctx.creative.variant.id, ctx.lang);
   const data = resolveSurvival(ctx);
+  const face = (scene, i) => `<div class="rx-w" id="rx-w-${scene.index}">${reactorSvg({ identity, severity: data.items[i].severity, look, id: `rx-${scene.index}` })}</div>`;
   return {
     identity,
     data,
-    // Có ảnh AI của cảnh (assetProfile IMAGE_AI): khung chia đôi, KHÔNG đè nhau (owner 29/09) — khung đứng/tròn: ảnh
-    // trên (58%), reactor dưới; khung ngang: ảnh trái, reactor phải (container query theo tỉ lệ khung).
-    // Không có ảnh (preview cũ, dữ liệu thiếu): sân khấu reactor như trước.
     panel: (scene, i) => {
-      const face = `<div class="rx-w" id="rx-w-${scene.index}">${reactorSvg({ identity, severity: data.items[i].severity, look, id: `rx-${scene.index}` })}</div>`;
-      if (!scene.imgSrc) return `<div class="rx-bg" style="${look.stage || ""}"></div>${face}`;
-      return `<div class="rx-box"><div class="rx-split"><div class="rx-shot"><img class="rx-scene" src="${escapeHtml(scene.imgSrc)}" alt=""></div><div class="rx-react"><div class="rx-bg" style="${look.stage || ""}"></div>${face}</div></div></div>`;
+      if (!scene.imgSrc) return `<div class="rx-bg" style="${look.stage || ""}"></div>${face(scene, i)}`;
+      return `<img class="rx-scene" src="${escapeHtml(scene.imgSrc)}" alt="">`;
+    },
+    reactor: (scene, i, region, cls = "") => {
+      if (!scene.imgSrc) return { html: "" };
+      return { html: `<div class="rx-solo ${cls}" style="${regionStyle(region)}"><div class="rx-bg" style="${look.stage || ""}"></div>${face(scene, i)}</div>` };
     },
     tweens: (scene, i) => {
       const expr = data.items[i].expr;
@@ -123,7 +135,7 @@ export function reactorStage(ctx, look) {
   };
 }
 
-export const STAGE_CSS = ".rx-bg{position:absolute;inset:0}.rx-w{position:absolute;left:4%;right:4%;top:6%;bottom:0}.rx-svg{display:block}.rx-box{position:absolute;inset:0;container-type:size;container-name:rx}.rx-split{position:absolute;inset:0;display:flex;flex-direction:column}.rx-shot{position:relative;flex:0 0 58%;overflow:hidden;background:#000}.rx-scene{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}.rx-react{position:relative;flex:1 1 auto;min-height:0;overflow:hidden;border-top:4px solid rgba(255,255,255,.85)}.rx-react .rx-w{left:14%;right:14%;top:4%;bottom:0}@container rx (min-aspect-ratio: 11/10){.rx-split{flex-direction:row}.rx-shot{flex-basis:56%}.rx-react{border-top:0;border-left:4px solid rgba(255,255,255,.85)}.rx-react .rx-w{left:2%;right:2%;top:14%}}";
+export const STAGE_CSS = ".rx-bg{position:absolute;inset:0}.rx-w{position:absolute;left:4%;right:4%;top:6%;bottom:0}.rx-svg{display:block}.rx-scene{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}.rx-solo{position:absolute;box-sizing:border-box;overflow:hidden;border-radius:18px;box-shadow:0 14px 30px rgba(0,0,0,.35)}.rx-solo .rx-w{left:5%;right:5%;top:5%;bottom:0}.rx-round{border-radius:50%}.rx-round .rx-w{left:12%;right:12%;top:10%;bottom:4%}";
 
 export function merge(...parts) {
   return { html: parts.map((p) => p.html || "").join(""), tweens: parts.flatMap((p) => p.tweens || []) };

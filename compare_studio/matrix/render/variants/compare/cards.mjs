@@ -10,13 +10,13 @@ const CARD_B = "linear-gradient(160deg,color-mix(in srgb,var(--accent-terra) 70%
 const CSS = `
 .cg-card{position:absolute;box-sizing:border-box;border-radius:30px;border:8px solid #f6d27a;box-shadow:0 24px 44px rgba(0,0,0,.5)}
 .cg-card.a{background:${CARD_A}}.cg-card.b{background:${CARD_B}}
-.cg-emb{position:absolute;left:127px;top:22px;width:200px;height:200px}
+.cg-emb{position:absolute;left:17px;top:18px;width:420px;height:420px}
 .cg-photo{border-radius:50%;overflow:hidden;border:6px solid #f6d27a;box-sizing:border-box;background:#111}.cg-photo img{display:block;width:100%;height:100%;object-fit:cover}
-.cg-nm{position:absolute;left:18px;right:18px;top:232px;height:72px;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.55);border-radius:14px;box-sizing:border-box;padding:0 12px}
+.cg-nm{position:absolute;left:18px;right:18px;top:448px;height:72px;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.55);border-radius:14px;box-sizing:border-box;padding:0 12px}
 .cg-nm-t{margin:0;color:#fff;font-weight:800;text-align:center;line-height:1.05}
-.cg-tg{position:absolute;left:18px;right:18px;top:308px;height:38px;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.45);border-radius:10px}
+.cg-tg{position:absolute;left:18px;right:18px;top:524px;height:38px;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.45);border-radius:10px}
 .cg-tg-t{margin:0;color:#fff;font-style:italic;text-align:center}
-.cg-stats{position:absolute;left:18px;right:18px;top:356px;height:340px}
+.cg-stats{position:absolute;left:18px;right:18px;top:572px;height:340px}
 .cg-row{position:absolute;left:0;right:0;display:flex;gap:8px;box-sizing:border-box;padding:0 8px;background:rgba(255,255,255,.9);border-radius:10px}
 .cg-row.w{background:#fff3c4;box-shadow:inset 0 0 0 3px #e0a800}
 .cg-rc{position:relative;flex:1.15;min-width:0;display:flex;align-items:center}
@@ -61,7 +61,7 @@ function cardsOverlay(model, scenes) {
       tweens.push({ method: "fromTo", target: `#cg-gem-${side}-${n}`, from: { autoAlpha: 0, scale: 0.2 }, vars: { autoAlpha: 1, scale: 1, duration: 0.4, ease: "back.out(2)" }, at: Number((scenes[i].visualStart + 0.5).toFixed(3)) });
       n += 1;
     });
-    return `<div class="cg-card ${side}" style="${box({ x, y: 330, w: 470, h: 800 })}">${subj.img ? `<div class="cg-emb cg-photo ${side}"><img src="${esc(subj.img)}" alt=""></div>` : emblem(side, subj.mono)}${fitBox("cg-nm", subj.name, { size: 46, min: 16 })}${fitBox("cg-tg", subj.tag, { size: 26, min: 12 })}<div class="cg-stats">${statRows}</div><div class="cg-gems">${gems}</div></div>`;
+    return `<div class="cg-card ${side}" style="${box({ x, y: 288, w: 470, h: 1000 })}">${subj.img ? `<div class="cg-emb cg-photo ${side}"><img src="${esc(subj.img)}" alt=""></div>` : emblem(side, subj.mono)}${fitBox("cg-nm", subj.name, { size: 46, min: 16 })}${fitBox("cg-tg", subj.tag, { size: 26, min: 12 })}<div class="cg-stats">${statRows}</div><div class="cg-gems">${gems}</div></div>`;
   };
   return { html: card("a", model.a, 50) + card("b", model.b, 560), tweens };
 }
@@ -131,10 +131,10 @@ const cardGame = defineVariant({
       design: (ctx) => {
         const model = compareModel(ctx, ctx.ui);
         return {
-          header: { style: "label_title", region: { x: 60, y: 110, w: 960, h: 200 }, size: 56 },
-          visual: { frame: "plain", region: { x: 140, y: 1160, w: 800, h: 200 } },
+          header: { style: "label_title", region: { x: 60, y: 96, w: 960, h: 180 }, size: 56 },
+          visual: { frame: "plain", region: { x: 140, y: 1302, w: 800, h: 176 } },
           panel: (scene, i) => callout(model.scenes[i], model, ctx.ui),
-          text: { style: "lower_third", region: { x: 40, y: 1400, w: 1000, h: 260 }, size: 48, enter: "slide" },
+          text: { style: "lower_third", region: { x: 40, y: 1490, w: 1000, h: 200 }, size: 48, enter: "slide" },
           overlay: (octx) => cardsOverlay(model, octx.scenes),
           vars: { "--frame-edge": "#f6d27a" },
           css: CSS,
@@ -147,18 +147,19 @@ const cardGame = defineVariant({
       design: (ctx) => {
         const model = compareModel(ctx, ctx.ui);
         return {
-          header: { style: "tab", region: { x: 60, y: 110, w: 960, h: 220 }, size: 56 },
-          text: { style: "tape_label", region: { x: 60, y: 350, w: 960, h: 250 }, size: 42, enter: "type" },
+          header: { style: "tab", region: { x: 60, y: 96, w: 960, h: 196 }, size: 56 },
+          text: { style: "tape_label", region: { x: 60, y: 306, w: 960, h: 200 }, size: 42, enter: "type" },
           sceneExtra: (scene, i) => {
             const s = model.scenes[i];
             const finalA = s.role === "verdict" && (model.final.winner === "A" || model.final.winner === "TIE") ? " w" : "";
             const finalB = s.role === "verdict" && (model.final.winner === "B" || model.final.winner === "TIE") ? " w" : "";
             return {
-              html: `${fitBox(`cg-hand a${finalA}`, `${model.a.name} × ${s.totalA}`, { r: { x: 60, y: 1540, w: 460, h: 100 }, size: 44, min: 14 })}${fitBox(`cg-hand b${finalB}`, `${model.b.name} × ${s.totalB}`, { r: { x: 560, y: 1540, w: 460, h: 100 }, size: 44, min: 14 })}`,
+              html: `${fitBox(`cg-hand a${finalA}`, `${model.a.name} × ${s.totalA}`, { r: { x: 60, y: 948, w: 460, h: 84 }, size: 42, min: 14 })}${fitBox(`cg-hand b${finalB}`, `${model.b.name} × ${s.totalB}`, { r: { x: 560, y: 948, w: 460, h: 84 }, size: 42, min: 14 })}`,
             };
           },
-          overlay: (octx) => tricksOverlay(model, octx.scenes, { x: 60, y: 640, w: 960, h: 860 }),
-          underlay: () => subjectPair(model, { x: 60, y: 1665, w: 460, h: 210 }, { x: 560, y: 1665, w: 460, h: 210 }, { shape: "square" }), // ảnh đối tượng A/B
+          // ảnh A/B lớn ngay dưới lời đọc, nhãn "tên × số nước thắng" dưới mỗi ảnh, lưới nước bài phía dưới
+          overlay: (octx) => tricksOverlay(model, octx.scenes, { x: 60, y: 1048, w: 960, h: 640 }),
+          underlay: () => subjectPair(model, { x: 60, y: 520, w: 460, h: 420 }, { x: 560, y: 520, w: 460, h: 420 }, { shape: "square" }), // ảnh đối tượng A/B
           vars: { "--head-ink": "#fff4d6" },
           css: CSS + TRICK_CSS,
         };

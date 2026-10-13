@@ -73,13 +73,13 @@ const starChart = defineVariant({
       describe: "Tấm bản đồ sao như thẻ in (viền vàng, số tấm), số tấm / tổng số dưới thẻ; lời đọc giấy ngà ở dưới",
       design: () => ({
         header: { style: "label_title", region: { x: 70, y: 110, w: 940, h: 220 }, size: 56 },
-        visual: { frame: "card", region: { x: 150, y: 400, w: 780, h: 900 } },
+        visual: { frame: "card", region: { x: 80, y: 375, w: 920, h: 965 } },
         panel: (scene, i, ctx) => constellation(scene, i, ctx, `ss-n-${scene.index}`),
         sceneExtra: (scene, i, ctx) => ({
-          html: `<div class="ss-plate" style="left:150px;top:1320px">${escapeHtml(ctx.ui.scene)} ${pad2(i + 1)} / ${pad2(ctx.scenes.length)}</div>`,
+          html: `<div class="ss-plate" style="left:90px;top:1352px">${escapeHtml(ctx.ui.scene)} ${pad2(i + 1)} / ${pad2(ctx.scenes.length)}</div>`,
           tweens: [pop(`ss-n-${scene.index}`, scene.visualStart + 0.2)],
         }),
-        text: { style: "paper_note", region: { x: 80, y: 1420, w: 920, h: 270 }, size: 44, enter: "fade_up" },
+        text: { style: "paper_note", region: { x: 80, y: 1415, w: 920, h: 265 }, size: 44, enter: "fade_up" },
         vars: { "--frame-edge": "#c9a95a" },
         css: CHART_CSS + ".ss-plate{position:absolute;font-size:32px;letter-spacing:4px;color:#e8d9a8;white-space:nowrap}",
       }),
@@ -140,18 +140,18 @@ const missionControl = defineVariant({
       describe: "Tường 4 màn hình phosphor xanh: màn lớn là cảnh hiện tại (từ khoá + con số), 3 màn nhỏ là các cảnh kế; lời đọc lower-third",
       design: () => ({
         header: { style: "osd_bar", region: { x: 40, y: 110, w: 1000, h: 150 }, size: 42 },
-        visual: { frame: "crt", region: { x: 60, y: 320, w: 960, h: 700 } },
+        visual: { frame: "crt", region: { x: 40, y: 290, w: 1000, h: 870 } },
         panel: (scene, i, ctx) => screen(scene, i, ctx, ctx.ui.feed, `ss-k-${scene.index}`),
         sceneExtra: (scene, i, ctx) => ({
           html: [1, 2, 3].map((k) => {
             const other = ctx.scenes[(i + k) % ctx.scenes.length];
-            return `<div class="ss-mini" style="${regionStyle({ x: 60 + (k - 1) * 330, y: 1060, w: 300, h: 260 })}">${screen(other, (i + k) % ctx.scenes.length, ctx, ctx.ui.feed, `ss-m-${scene.index}-${k}`)}</div>`;
+            return `<div class="ss-mini" style="${regionStyle({ x: 40 + (k - 1) * 345, y: 1185, w: 310, h: 200 })}">${screen(other, (i + k) % ctx.scenes.length, ctx, ctx.ui.feed, `ss-m-${scene.index}-${k}`)}</div>`;
           }).join(""),
           tweens: [pop(`ss-k-${scene.index}`, scene.visualStart + 0.15)],
         }),
-        text: { style: "lower_third", region: { x: 40, y: 1390, w: 1000, h: 270 }, size: 46, enter: "slide" },
+        text: { style: "lower_third", region: { x: 40, y: 1410, w: 1000, h: 270 }, size: 46, enter: "slide" },
         vars: { "--frame-edge": "#2f3a3f" },
-        css: MONITOR_CSS + ".ss-mini{position:absolute;overflow:hidden;border:5px solid #2f3a3f;box-shadow:0 10px 18px rgba(0,0,0,.5)}.ss-mini .ss-mon-t{font-size:22px!important}.ss-mini .ss-mon-v{font-size:30px!important}.ss-mini .ss-mon-h{font-size:14px!important}.ss-mini .ss-mon-wave{height:20px}",
+        css: MONITOR_CSS + ".ss-mini{position:absolute;overflow:hidden;border:5px solid #2f3a3f;box-shadow:0 10px 18px rgba(0,0,0,.5)}.ss-mini .ss-mon-t{font-size:22px!important}.ss-mini .ss-mon-v{font-size:30px!important}.ss-mini .ss-mon-h{font-size:14px!important}.ss-mini .ss-mon{padding:12px 16px}.ss-mini .ss-mon-wave{height:14px}",
       }),
     },
     radar_desk: {
@@ -159,15 +159,15 @@ const missionControl = defineVariant({
       describe: "Lời đọc trên kính phía trên; bàn điều khiển với màn radar tròn quét (mục tiêu = từ khoá), hai cột đèn trạng thái hai bên",
       design: () => ({
         header: { style: "tab", region: { x: 60, y: 110, w: 960, h: 220 }, size: 54 },
-        text: { style: "osd", region: { x: 60, y: 370, w: 960, h: 300 }, size: 44, enter: "type" },
-        visual: { frame: "circle", region: { x: 190, y: 740, w: 700, h: 700 } },
+        text: { style: "osd", region: { x: 60, y: 360, w: 960, h: 290 }, size: 44, enter: "type" },
+        visual: { frame: "circle", region: { x: 90, y: 690, w: 900, h: 900 } },
         panel: (scene, i, ctx) => screen(scene, i, ctx, ctx.ui.tel, `ss-k-${scene.index}`),
         sceneExtra: (scene, i, ctx) => ({
-          html: [0, 1].map((side) => `<div class="ss-lamps" style="left:${side ? 940 : 60}px">${ctx.scenes.map((_, k) => `<i class="${k === i ? "on" : k < i ? "done" : ""}"></i>`).join("")}</div>`).join(""),
+          html: [0, 1].map((side) => `<div class="ss-lamps" style="left:${side ? 1004 : 12}px">${ctx.scenes.map((_, k) => `<i class="${k === i ? "on" : k < i ? "done" : ""}"></i>`).join("")}</div>`).join(""),
           tweens: [pop(`ss-k-${scene.index}`, scene.visualStart + 0.15)],
         }),
         vars: { "--frame-edge": "#5dff9c", "--scope-ink": "#5dff9c" },
-        css: MONITOR_CSS + ".ss-lamps{position:absolute;top:760px;width:80px;height:660px;display:flex;flex-direction:column;justify-content:space-around;align-items:center;background:#1b2226;border:3px solid #39454b}"
+        css: MONITOR_CSS + ".ss-lamps{position:absolute;top:730px;width:64px;height:820px;display:flex;flex-direction:column;justify-content:space-around;align-items:center;background:#1b2226;border:3px solid #39454b}"
           + ".ss-lamps i{width:34px;height:34px;border-radius:50%;background:#2a3338}.ss-lamps i.done{background:#2f7a52}.ss-lamps i.on{background:#5dff9c;box-shadow:0 0 18px #5dff9c}",
       }),
     },
@@ -246,15 +246,15 @@ const orbitDiagram = defineVariant({
       describe: "Ô cửa sổ tàu tròn đinh tán nhìn ra sơ đồ quỹ đạo; số quỹ đạo khắc trên vành; lời đọc tấm biển đồng dưới",
       design: () => ({
         header: { style: "label_title", region: { x: 70, y: 110, w: 940, h: 220 }, size: 56 },
-        visual: { frame: "porthole", region: { x: 150, y: 400, w: 780, h: 780 } },
+        visual: { frame: "porthole", region: { x: 70, y: 355, w: 940, h: 940 } },
         panel: (scene, i, ctx) => orbits(scene, i, ctx, `ss-o-${scene.index}`),
         sceneExtra: (scene, i, ctx) => ({
           html: `<div class="ss-rim">${escapeHtml(ctx.ui.scene)} ${pad2(i + 1)}</div>`,
           tweens: [pop(`ss-o-${scene.index}`, scene.visualStart + 0.2)],
         }),
-        text: { style: "plaque", region: { x: 80, y: 1360, w: 920, h: 300 }, size: 44, enter: "fade_up" },
+        text: { style: "plaque", region: { x: 80, y: 1385, w: 920, h: 295 }, size: 44, enter: "fade_up" },
         vars: { "--frame-edge": "#8d7a5a" },
-        css: ORBIT_CSS + ".ss-orb-k{top:20%;left:16%;right:16%;height:84px}.ss-orb-n{bottom:16%}" + ".ss-rim{position:absolute;left:390px;top:1215px;width:300px;text-align:center;font-size:34px;letter-spacing:4px;color:#d9c7a0;white-space:nowrap}",
+        css: ORBIT_CSS + ".ss-orb-k{top:21%;left:18%;right:18%;height:90px}.ss-orb-n{bottom:17%}" + ".ss-rim{position:absolute;left:390px;top:1310px;width:300px;text-align:center;font-size:34px;letter-spacing:4px;color:#d9c7a0;white-space:nowrap}",
       }),
     },
     size_scale: {
@@ -263,7 +263,7 @@ const orbitDiagram = defineVariant({
       design: () => ({
         header: { style: "ribbon", region: { x: 90, y: 110, w: 900, h: 170 }, size: 54 },
         text: { style: "glass", region: { x: 80, y: 320, w: 920, h: 320 }, size: 46, enter: "clip" },
-        visual: { frame: "circle", region: { x: 290, y: 700, w: 500, h: 500 } },
+        visual: { frame: "circle", region: { x: 105, y: 665, w: 870, h: 870 } },
         panel: (scene, i, ctx) => orbits(scene, i, ctx, `ss-o-${scene.index}`),
         sceneExtra: (scene, i, ctx) => {
           const frac = ctx.scenes.length > 1 ? i / (ctx.scenes.length - 1) : 0.5;
@@ -274,9 +274,9 @@ const orbitDiagram = defineVariant({
           };
         },
         vars: { "--frame-edge": "#c8aaff" },
-        css: ORBIT_CSS + ".ss-orb-k{top:20%;left:14%;right:14%;height:70px}.ss-orb-n{bottom:14%;font-size:44px}" + ".ss-scale{position:absolute;left:60px;top:1330px;width:960px;display:flex;align-items:center;gap:20px}.ss-scale span{font-size:32px;letter-spacing:3px;color:#c8aaff;white-space:nowrap}"
+        css: ORBIT_CSS + ".ss-orb-k{top:22%;left:20%;right:20%;height:90px}.ss-orb-n{bottom:16%}" + ".ss-scale{position:absolute;left:60px;top:1615px;width:960px;display:flex;align-items:center;gap:20px}.ss-scale span{font-size:32px;letter-spacing:3px;color:#c8aaff;white-space:nowrap}"
           + ".ss-track{flex:1;height:18px;background:linear-gradient(90deg,#3b6fd8,#ffb02e);border-radius:9px}"
-          + ".ss-needle{position:absolute;top:1230px;width:40px;height:80px;margin-left:-20px;background:linear-gradient(180deg,#ffcf6e,#d9530f);clip-path:polygon(50% 100%,0 0,100% 0)}",
+          + ".ss-needle{position:absolute;top:1550px;width:40px;height:60px;margin-left:-20px;background:linear-gradient(180deg,#ffcf6e,#d9530f);clip-path:polygon(50% 100%,0 0,100% 0)}",
       }),
     },
   },
@@ -319,18 +319,18 @@ const missionTimeline = defineVariant({
       axes: { composition: "timeline_track", textPlacement: "vertical_side" },
       describe: "Trục thời gian dọc bên trái (mốc từng cảnh, mốc hiện tại sáng), huy hiệu sứ mệnh + từ khoá bên phải; lời đọc khung cao bên phải dưới",
       design: () => ({
-        header: { style: "label_title", region: { x: 60, y: 110, w: 960, h: 220 }, size: 54 },
-        visual: { frame: "plain", region: { x: 300, y: 360, w: 720, h: 720 } },
+        header: { style: "label_title", region: { x: 60, y: 110, w: 960, h: 200 }, size: 54 },
+        visual: { frame: "plain", region: { x: 200, y: 340, w: 830, h: 1050 } },
         panel: (scene, i, ctx) => patch(scene, i, ctx, `ss-p-${scene.index}`),
         sceneExtra: (scene, i, ctx) => ({
           html: `<div class="ss-track">${ctx.scenes.map((_, k) => `<div class="${k === i ? "on" : k < i ? "past" : ""}"><i></i><span>${pad2(k + 1)}</span></div>`).join("")}</div>`,
           tweens: [pop(`ss-p-${scene.index}`, scene.visualStart + 0.2)],
         }),
-        text: { style: "panel", region: { x: 300, y: 1130, w: 720, h: 540 }, size: 46, enter: "fade_up" },
+        text: { style: "panel", region: { x: 200, y: 1420, w: 830, h: 260 }, size: 46, enter: "fade_up" },
         vars: { "--frame-edge": "#f4e7c5" },
         css: PATCH_CSS + "#root .f-plain{transform:none!important}"
-          + ".ss-track{position:absolute;left:60px;top:360px;width:200px;height:1310px;display:flex;flex-direction:column;justify-content:space-between;background:linear-gradient(#f4e7c5,#f4e7c5) 36px 0/4px 100% no-repeat}"
-          + ".ss-track div{display:flex;align-items:center;gap:20px}.ss-track i{width:36px;height:36px;margin-left:20px;border-radius:50%;background:#1a2030;border:4px solid #f4e7c5;box-sizing:border-box}"
+          + ".ss-track{position:absolute;left:24px;top:340px;width:160px;height:1340px;display:flex;flex-direction:column;justify-content:space-between;background:linear-gradient(#f4e7c5,#f4e7c5) 36px 0/4px 100% no-repeat}"
+          + ".ss-track div{display:flex;align-items:center;gap:14px}.ss-track i{width:36px;height:36px;margin-left:20px;border-radius:50%;background:#1a2030;border:4px solid #f4e7c5;box-sizing:border-box}"
           + ".ss-track .past i{background:#8a7f62}.ss-track .on i{background:#ffcf6e;box-shadow:0 0 18px #ffcf6e}.ss-track span{font-size:34px;color:#f4e7c5;background:#151a26;padding:2px 10px;white-space:nowrap}.ss-track .on span{color:#151a26;background:#ffcf6e}",
       }),
     },
@@ -339,19 +339,19 @@ const missionTimeline = defineVariant({
       describe: "Dải phim ngang ba khung (cảnh trước, hiện tại lớn, cảnh sau) với huy hiệu từng mốc; lời đọc thanh ticker dưới",
       design: () => ({
         header: { style: "label_title", region: { x: 60, y: 110, w: 960, h: 220 }, size: 54 },
-        visual: { frame: "film", region: { x: 230, y: 420, w: 620, h: 820 } },
+        visual: { frame: "film", region: { x: 120, y: 345, w: 840, h: 1015 } },
         panel: (scene, i, ctx) => patch(scene, i, ctx, `ss-p-${scene.index}`),
         sceneExtra: (scene, i, ctx) => ({
           html: [-1, 1].map((d) => {
             const k = i + d;
             if (k < 0 || k >= ctx.scenes.length) return "";
-            return `<div class="ss-side" style="${regionStyle({ x: d < 0 ? 20 : 870, y: 560, w: 190, h: 540 })}">${patch(ctx.scenes[k], k, ctx, `ss-s-${scene.index}-${d < 0 ? "a" : "b"}`)}</div>`;
+            return `<div class="ss-side" style="${regionStyle({ x: d < 0 ? 0 : 970, y: 560, w: 110, h: 580 })}">${patch(ctx.scenes[k], k, ctx, `ss-s-${scene.index}-${d < 0 ? "a" : "b"}`)}</div>`;
           }).join(""),
           tweens: [pop(`ss-p-${scene.index}`, scene.visualStart + 0.2)],
         }),
-        text: { style: "ticker", region: { x: 40, y: 1380, w: 1000, h: 280 }, size: 44, enter: "fade_up" },
+        text: { style: "ticker", region: { x: 40, y: 1395, w: 1000, h: 285 }, size: 44, enter: "fade_up" },
         vars: { "--frame-edge": "#111" },
-        css: PATCH_CSS + ".ss-side{position:absolute;overflow:hidden;border:6px solid #111}.ss-side .ss-pk-t{font-size:16px!important}.ss-side .ss-pn{font-size:20px}.ss-side .ss-pk{height:44px}.ss-side .ss-badge{border-width:4px}",
+        css: PATCH_CSS + ".ss-side{position:absolute;overflow:hidden;border:6px solid #111}.ss-side .ss-patch{padding:10px 6px}.ss-side .ss-pk-t{font-size:14px!important}.ss-side .ss-pn{font-size:18px}.ss-side .ss-pk{height:40px;padding:0 4px}.ss-side .ss-badge{width:70%;border-width:4px;box-shadow:0 0 0 3px hsl(var(--h),45%,22%),0 0 0 6px #f4e7c5}",
       }),
     },
     patch_poster: {

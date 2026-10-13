@@ -7,24 +7,24 @@ import { compareSample } from "./sample.mjs";
 const BRASS = "#b8862f";
 
 // --- Composition 1: cán cân đòn ----------------------------------------------------------------------------------
-const BEAM = { cx: 540, y: 700, half: 370 };
+const BEAM = { cx: 540, y: 990, half: 370 };
 const tilt = (s) => Math.max(-16, Math.min(16, (s.totalB - s.totalA) * 6));
 const drop = (deg) => Number((BEAM.half * Math.sin((deg * Math.PI) / 180)).toFixed(1));
 
 const BEAM_CSS = `
-.cs-post{position:absolute;left:520px;top:${BEAM.y}px;width:40px;height:600px;background:linear-gradient(90deg,#8a6a2a,#e9c877 50%,#8a6a2a);border-radius:8px}
-.cs-foot{position:absolute;left:330px;top:1290px;width:420px;height:44px;border-radius:12px 12px 4px 4px;background:linear-gradient(180deg,#e9c877,#8a6a2a)}
+.cs-post{position:absolute;left:520px;top:${BEAM.y}px;width:40px;height:350px;background:linear-gradient(90deg,#8a6a2a,#e9c877 50%,#8a6a2a);border-radius:8px}
+.cs-foot{position:absolute;left:330px;top:${BEAM.y + 340}px;width:420px;height:44px;border-radius:12px 12px 4px 4px;background:linear-gradient(180deg,#e9c877,#8a6a2a)}
 .cs-beam{position:absolute;left:${BEAM.cx - BEAM.half - 20}px;top:${BEAM.y - 10}px;width:${BEAM.half * 2 + 40}px;height:20px;border-radius:10px;background:linear-gradient(180deg,#f3d98f,${BRASS} 60%,#6d4f17);transform-origin:50% 50%;box-shadow:0 6px 10px rgba(0,0,0,.35)}
 .cs-knob{position:absolute;left:${BEAM.cx - 26}px;top:${BEAM.y - 26}px;width:52px;height:52px;border-radius:50%;background:radial-gradient(circle at 40% 35%,#fff3c4,${BRASS} 60%,#6d4f17)}
-.cs-pan{position:absolute;top:${BEAM.y}px;width:300px;height:430px}
-.cs-chain{position:absolute;left:0;top:0;width:300px;height:230px}
-.cs-bowl{position:absolute;left:0;top:222px;width:300px;height:56px;border-radius:0 0 150px 150px/0 0 56px 56px;background:linear-gradient(180deg,#f3d98f,${BRASS} 55%,#6d4f17)}
-.cs-weights{position:absolute;left:30px;top:118px;width:240px;height:104px}
+.cs-pan{position:absolute;top:${BEAM.y}px;width:300px;height:330px}
+.cs-chain{position:absolute;left:0;top:0;width:300px;height:150px}
+.cs-bowl{position:absolute;left:0;top:146px;width:300px;height:56px;border-radius:0 0 150px 150px/0 0 56px 56px;background:linear-gradient(180deg,#f3d98f,${BRASS} 55%,#6d4f17)}
+.cs-weights{position:absolute;left:30px;top:42px;width:240px;height:104px}
 .cs-w{position:absolute;width:44px;height:48px;border-radius:8px 8px 3px 3px;background:linear-gradient(180deg,#5b5f66,#2b2e33);box-shadow:inset 0 3px 0 rgba(255,255,255,.25)}
 .cs-w::before{content:'';position:absolute;left:14px;top:-10px;width:16px;height:12px;border:4px solid #2b2e33;border-bottom:0;border-radius:10px 10px 0 0}
-.cs-plate{position:absolute;left:0;top:292px;width:300px;height:78px;display:flex;align-items:center;justify-content:center;box-sizing:border-box;padding:0 14px;background:#1d1b18;border:3px solid ${BRASS};border-radius:10px}
+.cs-plate{position:absolute;left:0;top:212px;width:300px;height:70px;display:flex;align-items:center;justify-content:center;box-sizing:border-box;padding:0 14px;background:#1d1b18;border:3px solid ${BRASS};border-radius:10px}
 .cs-plate-t{margin:0;color:#f6ecd2;font-weight:700;text-align:center;line-height:1.05}
-.cs-ptag{position:absolute;left:0;top:376px;width:300px;height:40px;display:flex;align-items:center;justify-content:center;background:rgba(20,18,15,.78);border-radius:8px}
+.cs-ptag{position:absolute;left:0;top:288px;width:300px;height:38px;display:flex;align-items:center;justify-content:center;background:rgba(20,18,15,.78);border-radius:8px}
 .cs-ptag-t{margin:0;color:#e9dcc0;font-style:italic;text-align:center}
 .cs-card{position:absolute;inset:0;box-sizing:border-box;background:linear-gradient(180deg,#f6f1e4,#e6dcc4);border:4px solid ${BRASS};border-radius:18px;box-shadow:0 18px 30px rgba(0,0,0,.4)}
 .cs-kick{position:absolute;left:30px;right:30px;top:14px;height:36px;display:flex;align-items:center;justify-content:center}
@@ -40,7 +40,7 @@ const BEAM_CSS = `
 `;
 
 function chainSvg() {
-  return `<svg class="cs-chain" viewBox="0 0 300 230" aria-hidden="true"><path d="M150 0 L20 226 M150 0 L280 226 M150 0 L150 226" stroke="#6d4f17" stroke-width="4" stroke-dasharray="10 6" fill="none"/></svg>`;
+  return `<svg class="cs-chain" viewBox="0 0 300 230" preserveAspectRatio="none" aria-hidden="true"><path d="M150 0 L20 226 M150 0 L280 226 M150 0 L150 226" stroke="#6d4f17" stroke-width="4" stroke-dasharray="10 6" fill="none"/></svg>`;
 }
 
 function weightsHtml(side, model, scenes) {
@@ -140,9 +140,9 @@ function dialOverlay(model, scenes) {
       prev[side] = total;
     }
   });
-  const dial = (side, subject, x) => `<div class="cs-dial" style="${box({ x, y: 370, w: 460, h: 460 })}">${dialFace(max)}<i class="cs-needle" id="cs-needle-${side}"></i><i class="cs-hub"></i></div>
-${fitBox("cs-dname", subject.name, { r: { x: x + 30, y: 850, w: 400, h: 76 }, size: 46, min: 16 })}
-${fitBox("cs-dtag", subject.tag, { r: { x: x + 30, y: 932, w: 400, h: 40 }, size: 26, min: 12 })}`;
+  const dial = (side, subject, x) => `<div class="cs-dial" style="${box({ x: x + 50, y: 722, w: 360, h: 360 })}">${dialFace(max)}<i class="cs-needle" id="cs-needle-${side}"></i><i class="cs-hub"></i></div>
+${fitBox("cs-dname", subject.name, { r: { x: x + 30, y: 1092, w: 400, h: 66 }, size: 44, min: 16 })}
+${fitBox("cs-dtag", subject.tag, { r: { x: x + 30, y: 1162, w: 400, h: 38 }, size: 26, min: 12 })}`;
   return { html: `${dial("a", model.a, 60)}${dial("b", model.b, 560)}`, tweens, css: "" };
 }
 
@@ -165,12 +165,13 @@ const scaleBalance = defineVariant({
       design: (ctx) => {
         const model = compareModel(ctx, ctx.ui);
         return {
-          header: { style: "plaque", region: { x: 140, y: 110, w: 800, h: 170 }, size: 54 },
-          text: { style: "engraved", region: { x: 60, y: 310, w: 960, h: 300 }, size: 46, enter: "fade_up" },
-          visual: { frame: "bleed", region: { x: 140, y: 1360, w: 800, h: 280 } },
+          header: { style: "plaque", region: { x: 140, y: 96, w: 800, h: 150 }, size: 54 },
+          text: { style: "engraved", region: { x: 60, y: 260, w: 960, h: 180 }, size: 46, enter: "fade_up" },
+          visual: { frame: "bleed", region: { x: 140, y: 1432, w: 800, h: 258 } },
           panel: (scene, i) => weighCard(model.scenes[i], model, ctx.ui),
           overlay: (octx) => beamOverlay(model, octx.scenes),
-          underlay: () => subjectPair(model, { x: 140, y: 1665, w: 390, h: 210 }, { x: 550, y: 1665, w: 390, h: 210 }, { shape: "square" }), // ảnh đối tượng A/B
+          // ảnh A/B lớn phía trên đòn cân (đòn nghiêng tối đa 16° vẫn dưới ảnh)
+          underlay: () => subjectPair(model, { x: 60, y: 452, w: 440, h: 420 }, { x: 580, y: 452, w: 440, h: 420 }, { shape: "square" }), // ảnh đối tượng A/B
           css: `${BEAM_CSS}#root .f-bleed{background:transparent}`,
         };
       },
@@ -181,12 +182,13 @@ const scaleBalance = defineVariant({
       design: (ctx) => {
         const model = compareModel(ctx, ctx.ui);
         return {
-          header: { style: "label_title", region: { x: 60, y: 110, w: 960, h: 220 }, size: 60 },
-          visual: { frame: "plain", region: { x: 70, y: 1010, w: 940, h: 330 } },
+          header: { style: "label_title", region: { x: 60, y: 96, w: 960, h: 180 }, size: 60 },
+          visual: { frame: "plain", region: { x: 70, y: 1208, w: 940, h: 304 } },
           panel: (scene, i) => weighCard(model.scenes[i], model, ctx.ui).replace('class="cs-card"', 'class="cs-slip"'),
-          text: { style: "paper_note", region: { x: 70, y: 1390, w: 940, h: 270 }, size: 46, enter: "fade_up" },
+          text: { style: "paper_note", region: { x: 70, y: 1524, w: 940, h: 168 }, size: 46, enter: "fade_up" },
           overlay: (octx) => dialOverlay(model, octx.scenes),
-          underlay: () => subjectPair(model, { x: 60, y: 1650, w: 440, h: 225 }, { x: 580, y: 1650, w: 440, h: 225 }, { shape: "square" }), // ảnh đối tượng A/B
+          // ảnh A/B lớn trên cùng, mặt cân lò xo nhỏ lại ngay dưới ảnh của bên đó
+          underlay: () => subjectPair(model, { x: 60, y: 290, w: 460, h: 420 }, { x: 560, y: 290, w: 460, h: 420 }, { shape: "square" }), // ảnh đối tượng A/B
           css: BEAM_CSS + DIAL_CSS,
         };
       },

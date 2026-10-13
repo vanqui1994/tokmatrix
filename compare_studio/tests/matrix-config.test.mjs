@@ -33,7 +33,12 @@ test("all matrix YAML files validate against schemas and cross-references", () =
   assert.equal(result.documents.channels.length, channelFiles.length);
   assert.equal(result.files, yamlCount(configDir));
   assert.equal(result.documents.compatibility_matrix[0].data.niches.length, 18);
-  assert.equal(result.documents.compatibility_matrix[0].data.engines.length, 12);
+  // Engine catalog grows with new renderers (for example, `vector`). Keep this
+  // assertion coupled to the declared compatibility matrix instead of a stale
+  // fixed count.
+  const declaredEngineIds = new Set(result.documents.compatibility_matrix[0].data.engines.map((engine) => engine.id));
+  assert.equal(declaredEngineIds.size, result.documents.compatibility_matrix[0].data.engines.length);
+  assert.ok(declaredEngineIds.size >= 12);
 });
 
 test("Channel DNA schema rejects invalid persona ranges and missing required fields", () => {

@@ -26,29 +26,29 @@ const UI = {
 
 // board = bảng bậc; photo = ảnh cảnh; caption = lời đọc (theo bộ da); mascot = linh vật.
 const LAYOUTS = {
-  // Bảng hàng ngang cổ điển ở trên, ảnh + lời đọc phía dưới.
+  // Bảng hàng ngang cổ điển ở trên (gọn), ảnh lớn + lời đọc phía dưới; linh vật theo từng vị trí lời đọc.
   rows_board: {
-    board: [50, 150, 980, 780],
-    top: { photo: [60, 1230, 470, 420], caption: [60, 960, 960, 250] },
-    middle: { photo: [60, 960, 470, 470], caption: [550, 960, 470, 470] },
-    bottom: { photo: [60, 960, 470, 440], caption: [60, 1420, 960, 220] },
-    mascot: { left: 660, top: 1250, scale: 0.55, flip: true },
+    board: [50, 150, 980, 600],
+    top: { photo: [60, 1000, 700, 690], caption: [60, 770, 960, 210], mascot: { left: 690, top: 1170, scale: 0.55, flip: true } },
+    middle: { photo: [60, 770, 560, 720], caption: [640, 770, 380, 470], mascot: { left: 620, top: 1040, scale: 0.55, flip: true } },
+    bottom: { photo: [60, 770, 700, 620], caption: [60, 1410, 960, 250], mascot: { left: 690, top: 870, scale: 0.55, flip: true } },
+    mascot: { left: 690, top: 1170, scale: 0.55, flip: true },
   },
   // Ảnh lớn phía trên, thang bậc gọn phía dưới bên trái.
   showcase_top: {
-    board: [60, 1060, 560, 560],
-    top: { photo: [60, 400, 960, 620], caption: [60, 130, 960, 250] },
-    middle: { photo: [60, 130, 960, 900], caption: [100, 760, 880, 240] },
-    bottom: { photo: [60, 130, 960, 740], caption: [60, 890, 960, 150] },
+    board: [60, 1160, 560, 520],
+    top: { photo: [60, 380, 960, 760], caption: [60, 130, 960, 230] },
+    middle: { photo: [60, 130, 960, 1010], caption: [100, 860, 880, 240] },
+    bottom: { photo: [60, 130, 960, 830], caption: [60, 980, 960, 160] },
     mascot: { left: 620, top: 1180, scale: 0.6 },
   },
-  // Kim tự tháp bậc (SSS hẹp nhất ở đỉnh), ảnh trong khung tròn.
+  // Kim tự tháp bậc (SSS hẹp nhất ở đỉnh), ảnh trong khung tròn lớn phía trên.
   pyramid: {
-    board: [40, 820, 1000, 800],
-    top: { photo: [290, 330, 500, 500], caption: [60, 130, 960, 190] },
-    middle: { photo: [60, 150, 520, 520], caption: [600, 180, 420, 480] },
-    bottom: { photo: [290, 130, 500, 500], caption: [60, 640, 960, 170] },
-    mascot: { left: 790, top: 640, scale: 0.5, flip: true },
+    board: [40, 1010, 1000, 650],
+    top: { photo: [200, 326, 680, 680], caption: [60, 130, 960, 186], mascot: { left: 750, top: 480, scale: 0.4, flip: true } },
+    middle: { photo: [30, 146, 680, 680], caption: [710, 160, 330, 600], mascot: { left: 665, top: 480, scale: 0.4, flip: true } },
+    bottom: { photo: [210, 132, 660, 660], caption: [60, 806, 960, 194], mascot: { left: 740, top: 260, scale: 0.4, flip: true } },
+    mascot: { left: 750, top: 480, scale: 0.4, flip: true },
   },
 };
 
@@ -149,7 +149,7 @@ ${items.map((item, i) => `<audio id="t-slam-${i + 1}" class="clip" src="${SFX_DI
 .t-title{position:absolute;left:60px;top:40px;width:820px;height:90px}
 .t-title-text{margin:0;font-size:52px;line-height:1.05;font-weight:900;font-family:${creative.theme.displayFont};color:var(--fg)}
 ${compositionId === "pyramid" ? ".t-name{bottom:40px;left:40px;right:40px;border-radius:12px}.t-stamp{right:60px;top:60px}" : ""}
-${mascotCss(creative.theme, layout.mascot)}`;
+${mascotCss(creative.theme, geometry.mascot || layout.mascot)}`;
 
   const tweens = [];
   scenes.forEach((scene, i) => {

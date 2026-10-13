@@ -29,17 +29,28 @@ function badge(tier, cls = "tc-badge", r = null) {
   return `<div class="${cls}" style="${r ? box(r) : ""}background:${st.bg}"><b style="color:${st.ink}">${esc(tier)}</b></div>`;
 }
 
-function captionCard(model, i, ui, r) {
+// Dải thông tin ứng viên dưới ảnh lớn (composition 1): huy hiệu bậc + kicker / tên.
+const STRIP_CSS = `
+.tc-strip{position:absolute;box-sizing:border-box;display:flex;align-items:center;gap:18px;padding:10px 20px 10px 10px;background:#141821;border:3px solid rgba(255,255,255,.18);border-radius:16px}
+.tc-strip .tc-badge{position:relative;right:auto;bottom:auto;flex:none;width:110px;height:72px}
+.tc-strip .tc-badge b{font-size:44px}
+.tc-sx{position:relative;flex:1;min-width:0;height:100%}
+.tc-strip .tc-k{left:0;right:0;top:0;height:28px}
+.tc-strip .tc-k-t{line-height:1.1}
+.tc-strip .tc-t{left:0;right:0;top:38px;height:auto;bottom:0}
+`;
+
+function captionStrip(model, i, ui, r) {
   const c = sceneCaption(model, i, ui);
-  return `<div class="tc-card" style="${box(r)}">${fitBox("tc-k", c.kicker, { size: 26, min: 11 })}${fitBox("tc-t", c.title, { size: 54, min: 18 })}${c.sub ? fitBox("tc-s", c.sub, { size: 30, min: 12 }) : ""}${badge(c.tier)}</div>`;
+  const title = c.sub ? `${c.title} — ${c.sub}` : c.title;
+  return `<div class="tc-strip" style="${box(r)}">${badge(c.tier)}<div class="tc-sx">${fitBox("tc-k", c.kicker, { size: 22, min: 10 })}${fitBox("tc-t", title, { size: 36, min: 14 })}</div></div>`;
 }
 
 // --- Composition 1: hàng ngang ---------------------------------------------------------------------------------
-function rowsOverlay(model, scenes, top) {
-  const rowH = 110;
+function rowsOverlay(model, scenes, top, rowH = 110, gap = 10) {
   const tweens = [];
   const html = TIERS.map((tier, r) => {
-    const y = top + r * (rowH + 10);
+    const y = top + r * (rowH + gap);
     const st = TIER_STYLE[tier];
     const slots = cells(model.byTier[tier].length, { x: 214, y: y + 7, w: 812, h: rowH - 14 }, { max: 230, gap: 10, ratio: 0.42 });
     const chips = model.byTier[tier].map((item, k) => {
@@ -105,13 +116,13 @@ const classicRows = defineVariant({
       design: (ctx) => {
         const model = tierModel(ctx);
         return {
-          header: { style: "label_title", region: { x: 60, y: 100, w: 960, h: 190 }, size: 54 },
-          visual: { frame: "plain", region: { x: 40, y: 1050, w: 560, h: 400 } },
-          sceneExtra: (scene, i) => ({ html: captionCard(model, i, ctx.ui, { x: 620, y: 1050, w: 420, h: 400 }) }),
-          text: { style: "panel", region: { x: 40, y: 1480, w: 1000, h: 190 }, size: 44, enter: "fade_up" },
-          overlay: (octx) => rowsOverlay(model, octx.scenes, 310),
+          header: { style: "label_title", region: { x: 60, y: 96, w: 960, h: 184 }, size: 54 },
+          visual: { frame: "plain", region: { x: 40, y: 838, w: 1000, h: 544 } },
+          sceneExtra: (scene, i) => ({ html: captionStrip(model, i, ctx.ui, { x: 40, y: 1392, w: 1000, h: 106 }) }),
+          text: { style: "panel", region: { x: 40, y: 1512, w: 1000, h: 178 }, size: 44, enter: "fade_up" },
+          overlay: (octx) => rowsOverlay(model, octx.scenes, 296, 82, 8),
           vars: { "--frame-edge": "#2a2f3a" },
-          css: CSS,
+          css: CSS + STRIP_CSS,
         };
       },
     },

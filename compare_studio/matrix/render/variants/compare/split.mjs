@@ -11,7 +11,7 @@ const CSS = `
 .cx-bg{position:absolute;inset:0;background:${COL_B}}
 .cx-ha{position:absolute;left:0;top:0;height:100%;background:${COL_A}}
 .cx-ha::after{content:'';position:absolute;right:-6px;top:0;bottom:0;width:12px;background:#fff}
-.cx-knob{position:absolute;right:-56px;top:980px;width:112px;height:112px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 10px 24px rgba(0,0,0,.4)}
+.cx-knob{position:absolute;right:-56px;top:1212px;width:112px;height:112px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 10px 24px rgba(0,0,0,.4)}
 .cx-knob b{font-size:46px;font-weight:900;color:#111}
 .cx-ring{position:absolute;width:400px;height:400px}
 .v-bg-fill{background:linear-gradient(160deg,${COL_A},${COL_B})}
@@ -48,18 +48,18 @@ function verticalExtra(scene, i, model, ui) {
     { k: "b", subj: model.b, v: s.valueB, sc: s.scoreB, tot: s.totalB, win: s.winner === "B" || s.winner === "TIE", x: 720, cls: " cx-r" },
   ];
   const parts = sides.map((d) => `<div class="cx-side${d.cls}">
-${fitBox("cx-name", d.subj.name, { r: { x: d.x, y: 350, w: 320, h: 96 }, size: 72, min: 20 })}
-${fitBox("cx-tag", d.subj.tag, { r: { x: d.x, y: 450, w: 320, h: 40 }, size: 26, min: 12 })}
-${fitBox(`cx-val${d.win ? " w" : ""}`, val(d.v), { r: { x: d.x, y: 780, w: 320, h: 170 }, size: 84, min: 20 })}
-<div class="cx-sbar" style="left:${d.x}px;top:960px;width:320px"><i style="${d.k === "a" ? "left" : "right"}:0;width:${d.sc * 10}%"></i></div>
-${fitBox("cx-lab", ui.score, { r: { x: d.x, y: 1410, w: 320, h: 40 }, size: 26, min: 12 })}
-${fitBox("cx-tot", String(d.tot), { r: { x: d.x, y: 1470, w: 320, h: 140 }, size: 110, min: 40 })}
+${fitBox("cx-name", d.subj.name, { r: { x: d.x, y: 296, w: 320, h: 86 }, size: 72, min: 20 })}
+${fitBox("cx-tag", d.subj.tag, { r: { x: d.x, y: 386, w: 320, h: 40 }, size: 26, min: 12 })}
+${fitBox(`cx-val${d.win ? " w" : ""}`, val(d.v), { r: { x: d.x, y: 1068, w: 320, h: 116 }, size: 84, min: 20 })}
+<div class="cx-sbar" style="left:${d.x}px;top:1190px;width:320px"><i style="${d.k === "a" ? "left" : "right"}:0;width:${d.sc * 10}%"></i></div>
+${fitBox("cx-lab", ui.score, { r: { x: d.x, y: 1540, w: 320, h: 34 }, size: 26, min: 12 })}
+${fitBox("cx-tot", String(d.tot), { r: { x: d.x, y: 1590, w: 320, h: 96 }, size: 88, min: 40 })}
 </div>`).join("");
   const res = s.role === "verdict" ? `${ui.win}: ${model.final.winner === "A" ? model.a.name : model.final.winner === "B" ? model.b.name : ui.tie}` : winnerLabel(s, ui, model);
   return {
     html: `${parts}
-<div class="cx-crit" style="left:160px;top:540px;width:760px;height:200px">${fitBox("cx-kick", s.kicker, { size: 26, min: 12 })}${fitBox("cx-ct", s.criterion, { size: 58, min: 20 })}</div>
-${res ? fitBox("cx-res", res, { r: { x: 340, y: 1640, w: 400, h: 70 }, size: 32, min: 12 }) : ""}`,
+<div class="cx-crit" style="left:160px;top:874px;width:760px;height:184px">${fitBox("cx-kick", s.kicker, { size: 26, min: 12 })}${fitBox("cx-ct", s.criterion, { size: 58, min: 20 })}</div>
+${res ? fitBox("cx-res", res, { r: { x: 370, y: 1606, w: 340, h: 64 }, size: 30, min: 12 }) : ""}`,
   };
 }
 
@@ -83,16 +83,16 @@ function horizontalExtra(scene, i, model, ui, scenes) {
   const winA = s.winner === "A" || s.winner === "TIE" ? " w" : "";
   const winB = s.winner === "B" || s.winner === "TIE" ? " w" : "";
   return {
-    html: `${fitBox("cx-name", model.a.name, { r: { x: 60, y: 330, w: 600, h: 90 }, size: 76, min: 20 })}
-${fitBox("cx-tag", model.a.tag, { r: { x: 60, y: 424, w: 600, h: 40 }, size: 26, min: 12 })}
-${fitBox(`cx-val${winA}`, val(s.valueA), { r: { x: 60, y: 500, w: 600, h: 180 }, size: 96, min: 22 })}
-${fitBox("cx-tot", `${ui.score} ${s.totalA}`, { r: { x: 60, y: 700, w: 600, h: 100 }, size: 64, min: 20 })}
-<div class="cx-chip" id="${id}" style="left:60px;top:${prev - 53}px;width:600px;height:106px">${fitBox("cx-kick", s.kicker, { size: 22, min: 10 })}${fitBox("cx-ct", s.criterion, { size: 40, min: 14 })}</div>
-${fitBox(`cx-val${winB}`, val(s.valueB), { r: { x: 60, y: 1150, w: 600, h: 180 }, size: 96, min: 22 })}
-${fitBox("cx-name", model.b.name, { r: { x: 60, y: 1350, w: 600, h: 90 }, size: 76, min: 20 })}
-${fitBox("cx-tag", model.b.tag, { r: { x: 60, y: 1444, w: 600, h: 40 }, size: 26, min: 12 })}
-${fitBox("cx-tot", `${ui.score} ${s.totalB}`, { r: { x: 60, y: 1500, w: 600, h: 100 }, size: 64, min: 20 })}
-${res ? fitBox("cx-res", res, { r: { x: 60, y: 1620, w: 600, h: 64 }, size: 30, min: 12 }) : ""}`,
+    html: `${fitBox("cx-name", model.a.name, { r: { x: 60, y: 330, w: 510, h: 90 }, size: 76, min: 20 })}
+${fitBox("cx-tag", model.a.tag, { r: { x: 60, y: 424, w: 510, h: 40 }, size: 26, min: 12 })}
+${fitBox(`cx-val${winA}`, val(s.valueA), { r: { x: 60, y: 500, w: 510, h: 180 }, size: 96, min: 22 })}
+${fitBox("cx-tot", `${ui.score} ${s.totalA}`, { r: { x: 60, y: 700, w: 510, h: 100 }, size: 64, min: 20 })}
+<div class="cx-chip" id="${id}" style="left:60px;top:${prev - 53}px;width:510px;height:106px">${fitBox("cx-kick", s.kicker, { size: 22, min: 10 })}${fitBox("cx-ct", s.criterion, { size: 40, min: 14 })}</div>
+${fitBox(`cx-val${winB}`, val(s.valueB), { r: { x: 60, y: 1150, w: 510, h: 180 }, size: 96, min: 22 })}
+${fitBox("cx-name", model.b.name, { r: { x: 60, y: 1350, w: 510, h: 90 }, size: 76, min: 20 })}
+${fitBox("cx-tag", model.b.tag, { r: { x: 60, y: 1444, w: 510, h: 40 }, size: 26, min: 12 })}
+${fitBox("cx-tot", `${ui.score} ${s.totalB}`, { r: { x: 60, y: 1500, w: 510, h: 100 }, size: 64, min: 20 })}
+${res ? fitBox("cx-res", res, { r: { x: 60, y: 1620, w: 510, h: 64 }, size: 30, min: 12 }) : ""}`,
     tweens,
   };
 }
@@ -116,8 +116,9 @@ const splitScreen = defineVariant({
       design: (ctx) => {
         const model = compareModel(ctx, ctx.ui);
         return {
-          perScene: subjectPair(model, { x: 150, y: 1390, w: 190, h: 190 }, { x: 740, y: 1390, w: 190, h: 190 }, { shape: "round" }), // ảnh đối tượng A/B
-          header: { style: "centered", region: { x: 60, y: 110, w: 960, h: 210 }, size: 64 },
+          // ảnh A/B tròn lớn ngay dưới tên mỗi bên (trên vạch chia trượt)
+          perScene: subjectPair(model, { x: 50, y: 440, w: 420, h: 420 }, { x: 610, y: 440, w: 420, h: 420 }, { shape: "round" }), // ảnh đối tượng A/B
+          header: { style: "centered", region: { x: 60, y: 96, w: 960, h: 190 }, size: 64 },
           visual: { frame: "bleed", region: { x: 0, y: 0, w: 1080, h: 1920 } },
           panel: (scene, i) => {
             const from = i > 0 ? widthA(model.scenes[i - 1]) : 540;
@@ -131,7 +132,7 @@ const splitScreen = defineVariant({
             const tweens = widthA(s) !== from ? [to(`#cx-ha-${scene.index}`, { width: widthA(s) }, scene.visualStart + 0.2, span(sctx.scenes[i], 0.7))] : [];
             return { html: extra.html, tweens };
           },
-          text: { style: "glass", region: { x: 90, y: 1090, w: 900, h: 300 }, size: 48, align: "center", enter: "fade_up" },
+          text: { style: "glass", region: { x: 90, y: 1330, w: 900, h: 200 }, size: 48, align: "center", enter: "fade_up" },
           vars: { "--head-ink": "#ffffff" },
           css: CSS,
         };
@@ -143,8 +144,9 @@ const splitScreen = defineVariant({
       design: (ctx) => {
         const model = compareModel(ctx, ctx.ui);
         return {
-          perScene: subjectPair(model, { x: 780, y: 300, w: 240, h: 240 }, { x: 780, y: 1340, w: 240, h: 240 }, { shape: "round" }), // ảnh đối tượng A/B
-          header: { style: "label_title", region: { x: 60, y: 110, w: 960, h: 200 }, size: 58 },
+          // cột phải: ảnh A (nửa trên), lời đọc kính vắt qua vạch chia, ảnh B (nửa dưới)
+          perScene: subjectPair(model, { x: 596, y: 296, w: 440, h: 440 }, { x: 596, y: 1200, w: 440, h: 440 }, { shape: "round" }), // ảnh đối tượng A/B
+          header: { style: "label_title", region: { x: 60, y: 96, w: 960, h: 190 }, size: 58 },
           visual: { frame: "bleed", region: { x: 0, y: 0, w: 1080, h: 1920 } },
           panel: (scene, i) => {
             const from = i > 0 ? dividerY(model.scenes[i - 1]) : 960;
@@ -157,7 +159,7 @@ const splitScreen = defineVariant({
             if (dividerY(s) !== from) extra.tweens.push(to(`#cx-ht-${scene.index}`, { height: dividerY(s) }, scene.visualStart + 0.2, span(sctx.scenes[i], 0.7)));
             return extra;
           },
-          text: { style: "glass", region: { x: 700, y: 560, w: 340, h: 760 }, size: 48, enter: "fade_up" },
+          text: { style: "glass", region: { x: 596, y: 752, w: 444, h: 432 }, size: 48, enter: "fade_up" },
           vars: { "--head-ink": "#ffffff" },
           css: CSS + CSS_H,
         };

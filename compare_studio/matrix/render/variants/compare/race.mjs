@@ -74,7 +74,7 @@ function standings(s, model, ui, rects) {
 }
 
 // --- Composition 1: hai làn ngang ------------------------------------------------------------------------------
-const H = { x: 40, y: 680, w: 1000, laneH: 200, carX: 240, run: 560 };
+const H = { x: 40, y: 994, w: 1000, laneH: 150, carX: 240, run: 560 };
 function lanesOverlay(model, scenes) {
   const laneY = (k) => H.y + 20 + k * (H.laneH + 20);
   const html = `<div class="cr-track" style="${box({ x: H.x, y: H.y, w: H.w, h: 2 * H.laneH + 60 })}"></div>
@@ -89,7 +89,7 @@ ${fitBox("cr-lab b", model.b.name, { r: { x: 56, y: laneY(1) + 10, w: 160, h: H.
 }
 
 // --- Composition 2: drag strip dọc -----------------------------------------------------------------------------
-const V = { x: 60, y: 330, laneW: 220, h: 1230, carY: 1380, run: 1000 };
+const V = { x: 60, y: 290, laneW: 220, h: 790, carY: 900, run: 560 };
 function stripOverlay(model, scenes) {
   const laneX = (k) => V.x + k * (V.laneW + 20);
   const html = `<div class="cr-track" style="${box({ x: V.x - 20, y: V.y, w: 2 * V.laneW + 60, h: V.h })}"></div>
@@ -122,13 +122,14 @@ const raceTrack = defineVariant({
       design: (ctx) => {
         const model = compareModel(ctx, ctx.ui);
         return {
-          header: { style: "label_title", region: { x: 60, y: 110, w: 960, h: 200 }, size: 58 },
-          visual: { frame: "plain", region: { x: 60, y: 340, w: 960, h: 300 } },
+          header: { style: "label_title", region: { x: 60, y: 96, w: 960, h: 180 }, size: 58 },
+          visual: { frame: "plain", region: { x: 60, y: 290, w: 960, h: 256 } },
           panel: (scene, i) => boardHtml(model.scenes[i], model),
-          sceneExtra: (scene, i) => ({ html: standings(model.scenes[i], model, ctx.ui, [{ x: 60, y: 1170, w: 560, h: 84 }, { x: 640, y: 1170, w: 380, h: 84 }]) }),
-          text: { style: "bubble", region: { x: 90, y: 1300, w: 900, h: 300 }, size: 48, enter: "pop" },
+          sceneExtra: (scene, i) => ({ html: standings(model.scenes[i], model, ctx.ui, [{ x: 60, y: 1366, w: 560, h: 76 }, { x: 640, y: 1366, w: 380, h: 76 }]) }),
+          text: { style: "bubble", region: { x: 90, y: 1454, w: 900, h: 234 }, size: 48, enter: "pop" },
           overlay: (octx) => lanesOverlay(model, octx.scenes),
-          underlay: () => subjectPair(model, { x: 60, y: 1640, w: 460, h: 235 }, { x: 560, y: 1640, w: 460, h: 235 }, { shape: "square" }), // ảnh đối tượng A/B
+          // ảnh A/B lớn giữa bảng pit và đường đua
+          underlay: () => subjectPair(model, { x: 60, y: 560, w: 460, h: 420 }, { x: 560, y: 560, w: 460, h: 420 }, { shape: "square" }), // ảnh đối tượng A/B
           vars: { "--frame-edge": "#ffcc00" },
           css: CSS,
         };
@@ -140,13 +141,14 @@ const raceTrack = defineVariant({
       design: (ctx) => {
         const model = compareModel(ctx, ctx.ui);
         return {
-          header: { style: "label_title", region: { x: 60, y: 110, w: 960, h: 200 }, size: 58 },
-          visual: { frame: "plain", region: { x: 580, y: 330, w: 460, h: 300 } },
+          header: { style: "label_title", region: { x: 60, y: 96, w: 960, h: 180 }, size: 58 },
+          visual: { frame: "plain", region: { x: 580, y: 290, w: 460, h: 256 } },
           panel: (scene, i) => boardHtml(model.scenes[i], model).replace('class="cr-board"', 'class="cr-board narrow"'),
-          text: { style: "panel", region: { x: 580, y: 660, w: 460, h: 640 }, size: 46, enter: "fade_up" },
-          sceneExtra: (scene, i) => ({ html: standings(model.scenes[i], model, ctx.ui, [{ x: 580, y: 1330, w: 460, h: 100 }, { x: 580, y: 1450, w: 460, h: 100 }]) }),
+          text: { style: "panel", region: { x: 580, y: 562, w: 460, h: 518 }, size: 46, enter: "fade_up" },
+          sceneExtra: (scene, i) => ({ html: standings(model.scenes[i], model, ctx.ui, [{ x: 40, y: 1612, w: 480, h: 76 }, { x: 560, y: 1612, w: 480, h: 76 }]) }),
           overlay: (octx) => stripOverlay(model, octx.scenes),
-          underlay: () => subjectPair(model, { x: 40, y: 1665, w: 480, h: 210 }, { x: 560, y: 1665, w: 480, h: 210 }, { shape: "square" }), // ảnh đối tượng A/B
+          // đường drag ngắn lại; ảnh A/B lớn dưới đường đua, bảng P1/P2 dưới ảnh
+          underlay: () => subjectPair(model, { x: 40, y: 1180, w: 480, h: 420 }, { x: 560, y: 1180, w: 480, h: 420 }, { shape: "square" }), // ảnh đối tượng A/B
           vars: { "--frame-edge": "#ffcc00" },
           css: `${CSS}.cr-board.narrow .cr-bk,.cr-board.narrow .cr-bc{left:20px;right:20px}.cr-board.narrow .cr-bv{width:44%}.cr-board.narrow .cr-bv.a{left:14px}.cr-board.narrow .cr-bv.b{right:14px}`,
         };

@@ -20,9 +20,10 @@ const LAYOUTS = {
   },
   // Măng-sét dọc bên trái (dải hoa văn nước), nội dung ở cột phải.
   side_masthead: {
-    top: { photo: [230, 800, 790, 820], caption: [230, 470, 790, 310] },
-    middle: { photo: [230, 470, 790, 1150], caption: [260, 1290, 730, 300] },
-    bottom: { photo: [230, 470, 790, 820], caption: [230, 1310, 790, 310] },
+    // Ảnh rộng tới mép phải (vùng nút TikTok chỉ cấm chữ), tiêu đề thấp hơn để ảnh cao ~1000px.
+    top: { photo: [230, 700, 830, 1000], caption: [230, 400, 790, 280] },
+    middle: { photo: [230, 400, 830, 1240], caption: [260, 1310, 740, 300] },
+    bottom: { photo: [230, 400, 830, 1000], caption: [230, 1420, 790, 280] },
   },
   // Bìa tạp chí: ảnh tràn màn, măng-sét lớn đè lên ảnh, lời đọc như dòng tít bìa.
   magazine_cover: {
@@ -50,7 +51,7 @@ const COMPOSITION_CSS = {
 .n-mast-name{position:absolute;left:0;top:120px;width:190px;height:1500px;display:flex;align-items:center;justify-content:center}
 .n-mast-name h2{margin:0;writing-mode:vertical-rl;transform:rotate(180deg);font-size:92px;line-height:1;letter-spacing:4px;color:var(--fg-on-panel);white-space:nowrap}
 .n-mast-meta{position:absolute;left:0;width:190px;top:1640px;text-align:center;font-size:24px;letter-spacing:3px;color:var(--fg-on-panel)}
-.n-head{position:absolute;left:230px;top:150px;width:790px;height:290px;border-bottom:6px solid var(--panel-edge)}
+.n-head{position:absolute;left:230px;top:120px;width:790px;height:250px;border-bottom:6px solid var(--panel-edge)}
 .n-head h1{margin:0;font-size:72px;line-height:1.15}
 .n-photo{box-shadow:18px 18px 0 var(--panel-edge-dim)}
 .n-caption{background:var(--fg-on-panel);border-top:12px solid var(--panel)}`,
