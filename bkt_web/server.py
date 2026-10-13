@@ -63,6 +63,8 @@ try:
     from bkt_web.pov_routes import router as pov_router
     from bkt_web import chocode_routes
     from bkt_web import chocode_tiktok
+    from bkt_web import tiktok_metadata
+    from bkt_web import tiktok_guest
     from bkt_web.autopilot import init_autopilot_db, start_autopilot, stop_autopilot
     from bkt_web.remake_routes import remake_router, start_remake_queue_worker, stop_remake_queue_worker
 except ImportError:
@@ -96,6 +98,8 @@ except ImportError:
     from pov_routes import router as pov_router
     import chocode_routes
     import chocode_tiktok
+    import tiktok_metadata
+    import tiktok_guest
     from autopilot import init_autopilot_db, start_autopilot, stop_autopilot
     from remake_routes import remake_router, start_remake_queue_worker, stop_remake_queue_worker
 
@@ -750,6 +754,12 @@ def init_db():
     if legacy_index and legacy_index[0] and "WHERE" in legacy_index[0].upper():
         cursor.execute("DROP INDEX idx_channels_cookie_hash")
     cursor.execute("CREATE UNIQUE INDEX IF NOT EXISTS idx_channels_cookie_hash ON channels(cookie_hash)")
+    # Metadata nội bộ của video TikTok (bkt_web/tiktok_metadata.py); NULL = TikTok không trả.
+    video_cols = {r[1] for r in cursor.execute("PRAGMA table_info(channel_videos)").fetchall()}
+    for col, decl in (("category_type", "INTEGER"), ("diversification_id", "INTEGER"),
+                      ("meta_action", "TEXT DEFAULT ''"), ("penalty_context", "TEXT DEFAULT ''")):
+        if col not in video_cols:
+            cursor.execute(f"ALTER TABLE channel_videos ADD COLUMN {col} {decl}")
     cursor.execute("CREATE INDEX IF NOT EXISTS idx_channel_videos_channel_time ON channel_videos(channel_id, create_time DESC)")
     cursor.execute("CREATE INDEX IF NOT EXISTS idx_upload_tasks_due ON upload_tasks(status, schedule_time, next_retry_at)")
     cursor.execute("""CREATE TABLE IF NOT EXISTS channel_session_events (
@@ -990,10 +1000,12 @@ def check_single_cookie_live(cookie_str: str, note: str = "", socks_port: Option
     }
 
     # If it's a demo/mock cookie with prefilled notes from user screenshot
-    if "demo" in cookie_str.lower() or "mock" in cookie_str.lower() or len(cookie_str) < 30:
-        res["status"] = "BKT"
-        res["country"] = country or "KR"
-        res["currency"] = "#"
+    # Cookie rỗng/quá ngắn => không thể đăng nhập, KHÔNG được tự gán BKT.
+    # (Trước đây có lối tắt "demo"/"mock" khiến cookie thật chứa chuỗi ngẫu
+    #  nhiên "demo" trong odin_tt bị báo BKT sai.)
+    if not cookie_str or len(cookie_str) < 30:
+        res["status"] = "DIE"
+        res["error"] = "Cookie rỗng hoặc không hợp lệ"
         return res
 
     if not socks_port:
@@ -1050,8 +1062,11 @@ def check_single_cookie_live(cookie_str: str, note: str = "", socks_port: Option
             r = session.get(url, timeout=10)
             if r.status_code == 200:
                 data = r.json()
-                if "data" in data and isinstance(data["data"], dict):
-                    d = data["data"]
+                code = data.get("status_code", data.get("code", 0))
+                d = data.get("data")
+                reward_keys = ("estimated_rewards", "total_earned", "rpm", "qualified_views_rpm")
+                if (str(code) == "0" and isinstance(d, dict)
+                        and any(k in d for k in reward_keys)):
                     res["status"] = "BKT"
                     res["earned"] = float(d.get("estimated_rewards", d.get("total_earned", 0.0)) or 0.0)
                     res["rpm"] = float(d.get("rpm", d.get("qualified_views_rpm", 0.0)) or 0.0)
@@ -1623,6 +1638,7 @@ def evaluate_video_diagnostics(video_item: dict, channel_country: str = "DE", au
         country = lang_to_country.get(text_lang) or "KR"
         
     v_url = video_item.get("video_url") or (f"https://www.tiktok.com/@{author_username}/video/{v_id}" if author_username and v_id else "")
+    meta = tiktok_metadata.evaluate(video_item)
 
     return {
         "video_id": v_id,
@@ -1639,7 +1655,11 @@ def evaluate_video_diagnostics(video_item: dict, channel_country: str = "DE", au
         "is_reviewing": is_review,
         "shadowban_status": shadow_status,
         "country": country.upper(),
-        "video_url": v_url
+        "video_url": v_url,
+        "category_type": (meta["category"] or {}).get("id"),
+        "diversification_id": (meta["sub_niche"] or {}).get("id"),
+        "meta_action": meta["action"],
+        "penalty_context": meta["penalty"],
     }
 
 async def fetch_tiktok_videos_real(username: str, cookie_str: str, max_wait: float = 45.0, socks_port: Optional[int] = None, channel_id: Optional[int] = None) -> tuple[list, bool, str]:
@@ -1759,8 +1779,8 @@ def store_channel_videos(cursor, ch_id: int, found_videos: List[dict], replace: 
                 channel_id, video_id, desc, cover_url, duration, create_time,
                 view_count, like_count, comment_count, share_count,
                 is_original, is_prohibited, is_reviewing, shadowban_status,
-                country, video_url
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                country, video_url, category_type, diversification_id, meta_action, penalty_context
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             ON CONFLICT(channel_id, video_id) DO UPDATE SET
                 desc=excluded.desc,
                 cover_url=excluded.cover_url,
@@ -1774,12 +1794,17 @@ def store_channel_videos(cursor, ch_id: int, found_videos: List[dict], replace: 
                 is_reviewing=excluded.is_reviewing,
                 shadowban_status=excluded.shadowban_status,
                 country=excluded.country,
-                video_url=excluded.video_url
+                video_url=excluded.video_url,
+                category_type=excluded.category_type,
+                diversification_id=excluded.diversification_id,
+                meta_action=excluded.meta_action,
+                penalty_context=excluded.penalty_context
         """, (
             ch_id, v["video_id"], v["desc"], v["cover_url"], v["duration"], v["create_time"],
             v["view_count"], v["like_count"], v["comment_count"], v["share_count"],
             v["is_original"], v["is_prohibited"], v["is_reviewing"], v["shadowban_status"],
-            v["country"], v["video_url"]
+            v["country"], v["video_url"], v.get("category_type"), v.get("diversification_id"),
+            v.get("meta_action") or "", json.dumps(v.get("penalty_context") or {}, ensure_ascii=False)
         ))
 
     if found_videos:
@@ -1816,7 +1841,8 @@ async def fetch_channel_videos_authentic(ch_id: int, force_refresh: bool = False
         cursor.execute("""
             SELECT video_id, desc, cover_url, duration, create_time, view_count, like_count,
                    comment_count, share_count, is_original, is_prohibited, is_reviewing,
-                   shadowban_status, country, video_url
+                   shadowban_status, country, video_url, category_type, diversification_id,
+                   meta_action, penalty_context
             FROM channel_videos WHERE channel_id=? ORDER BY create_time DESC
         """, (ch_id,))
         existing_rows = cursor.fetchall()
@@ -1840,6 +1866,10 @@ async def fetch_channel_videos_authentic(ch_id: int, force_refresh: bool = False
                     "shadowban_status": r[12],
                     "country": r[13],
                     "video_url": r[14],
+                    "category_type": r[15],
+                    "diversification_id": r[16],
+                    "meta_action": r[17] or "NO_PENALTY_DATA",
+                    "penalty_context": json.loads(r[18]) if r[18] else {},
                 })
             return videos
         elif video_count == 0:
@@ -2262,6 +2292,43 @@ def scan_all_channel_videos_api_status():
 async def scan_channel_videos_endpoint(ch_id: int):
     videos = await fetch_channel_videos_authentic(ch_id, force_refresh=True)
     return {"message": f"Đã quét và cập nhật thành công {len(videos)} video thật từ TikTok!", "count": len(videos)}
+
+@app.post("/api/channels/{ch_id}/scan-videos-guest")
+async def scan_channel_videos_guest(ch_id: int, max_items: int = 60):
+    """Quét danh sách video như khách, không cookie (tiktok_guest); TikTok chặn mềm thì quét lại qua VPN riêng của kênh.
+
+    Video đã lưu chỉ bị thay khi TikTok trả danh sách; lỗi thì giữ nguyên cache.
+    """
+    conn = connect_db(DB_PATH)
+    try:
+        row = conn.execute("SELECT username, note, original_country, country FROM channels WHERE id=?", (ch_id,)).fetchone()
+    finally:
+        conn.close()
+    if not row:
+        raise HTTPException(status_code=404, detail="Kênh không tồn tại")
+    username = (row[0] or "").strip() or (row[1] or "").split(" ")[0].split("(")[0].strip().replace("@", "")
+    try:
+        result = await stats_routes.guest_items(username, max_items=max_items)
+    except tiktok_guest.GuestScanError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
+    except HTTPException as exc:
+        raise HTTPException(status_code=exc.status_code, detail=f"{exc.detail}. Dữ liệu cache cũ được giữ nguyên.") from exc
+    country = row[2] or row[3] or "DE"
+    videos = [evaluate_video_diagnostics(item, channel_country=country, author_username=result["username"])
+              for item in result["items"]]
+    conn = connect_db(DB_PATH)
+    try:
+        store_channel_videos(conn.cursor(), ch_id, videos, replace=True)
+        conn.commit()
+    finally:
+        conn.close()
+    actions: Dict[str, int] = {}
+    for v in videos:
+        actions[v["meta_action"]] = actions.get(v["meta_action"], 0) + 1
+    return {"count": len(videos), "pages": result["pages"], "has_more": result["has_more"], "actions": actions,
+            "via": result["via"],
+            "message": f"Đã quét {len(videos)} video của @{result['username']} "
+                       f"(khách, {'qua VPN của kênh' if result['via'] == 'vpn' else 'không VPN'})"}
 
 @app.put("/api/channels/{ch_id:int}")
 def update_channel_note(ch_id: int, item: UpdateNoteItem):

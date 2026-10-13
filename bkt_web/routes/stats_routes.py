@@ -30,8 +30,6 @@ async def channel_tiktok_session(ch_id: int):
     chập chờn. Tunnel đang có thì dùng lại và không tắt; tunnel mở mới thì để reaper tự tắt sau
     TOKMATRIX_CHANNEL_PROXY_IDLE_TTL (một lượt đăng bài dùng lại nó sẽ bỏ hạn này).
     """
-    import os
-    from bkt_web import vpn_manager
     from bkt_web.security import SecretStore
 
     conn = connect_db(paths.DB_PATH)
@@ -48,15 +46,29 @@ async def channel_tiktok_session(ch_id: int):
     cookie = SecretStore(paths.SECRET_KEY_PATH).decrypt(row["cookie"])
     if not cookie:
         raise HTTPException(status_code=503, detail="Kênh chưa có cookie")
+    async with channel_tunnel(ch_id, row["vpn_config"]) as port:
+        yield cookie, port, (row.get("original_country") or row.get("country") or "")
+
+
+@asynccontextmanager
+async def channel_tunnel(ch_id: int, vpn_config: str):
+    """Cổng SOCKS của tunnel WireGuard riêng của kênh (khoá = id kênh), đã kiểm tra tới TikTok.
+
+    Tunnel đang có thì dùng lại và không tắt; tunnel mở mới thì để reaper tự tắt sau
+    TOKMATRIX_CHANNEL_PROXY_IDLE_TTL (một lượt đăng bài dùng lại nó sẽ bỏ hạn này).
+    """
+    import os
+    from bkt_web import vpn_manager
+
     with vpn_manager.TUNNEL_LOCK:
         before = vpn_manager.ACTIVE_TUNNELS.get(ch_id)
         existed, prior_expiry = before is not None, (before or {}).get("expires_at")
     try:
-        tunnel = await asyncio.to_thread(vpn_manager.start_verified_wireguard_proxy, ch_id, row["vpn_config"])
+        tunnel = await asyncio.to_thread(vpn_manager.start_verified_wireguard_proxy, ch_id, vpn_config)
     except RuntimeError as exc:
         raise HTTPException(status_code=503, detail="VPN của kênh không kết nối được TikTok") from exc
     try:
-        yield cookie, tunnel["socks_port"], (row.get("original_country") or row.get("country") or "")
+        yield tunnel["socks_port"]
     finally:
         # Tunnel do lượt này mở, hoặc tunnel quét (có hạn) mà start_verified vừa bỏ hạn → đặt lại hạn để reaper tắt;
         # tunnel đăng bài (không hạn) đang chạy thì giữ nguyên.
@@ -66,6 +78,34 @@ async def channel_tiktok_session(ch_id: int):
                 info = vpn_manager.ACTIVE_TUNNELS.get(ch_id)
                 if info is not None and not info.get("expires_at"):
                     info["expires_at"] = max(prior_expiry or 0, time.time() + ttl)
+
+
+async def guest_items(username: str, max_items: int = 60) -> dict:
+    """Danh sách video như khách (không cookie): đi thẳng trước, TikTok chặn mềm thì quét lại qua VPN riêng của
+    kênh có username này. Username không thuộc kênh nào / kênh chưa có VPN thì báo lỗi, không dùng tunnel khác."""
+    from bkt_web import tiktok_guest
+
+    try:
+        return {**await tiktok_guest.fetch_guest_items(username, max_items=max_items), "via": "direct"}
+    except tiktok_guest.GuestBlocked as exc:
+        blocked = exc
+    except tiktok_guest.GuestScanError as exc:
+        raise HTTPException(status_code=502, detail=str(exc)) from exc
+    name = tiktok_guest.clean_username(username)
+    conn = connect_db(paths.DB_PATH)
+    try:
+        row = conn.execute("SELECT id, vpn_config FROM channels WHERE lower(username)=lower(?) "
+                           "AND COALESCE(vpn_config, '')!='' ORDER BY id LIMIT 1", (name,)).fetchone()
+    finally:
+        conn.close()
+    if not row:
+        raise HTTPException(status_code=502, detail=f"{blocked}; @{name} không phải kênh có VPN riêng nên không quét lại qua VPN")
+    async with channel_tunnel(row[0], row[1]) as port:
+        try:
+            result = await tiktok_guest.fetch_guest_items(name, max_items=max_items, socks_port=port)
+        except tiktok_guest.GuestScanError as exc:
+            raise HTTPException(status_code=502, detail=f"{blocked}; qua VPN của kênh: {exc}") from exc
+    return {**result, "via": "vpn"}
 
 
 @router.get("/api/channels/{ch_id}/tiktok-data")
@@ -121,6 +161,49 @@ async def api_channel_video_duplicates(ch_id: int):
         conn.close()
     async with channel_tiktok_session(ch_id) as (_, port, _country):
         return await asyncio.to_thread(tiktok_video_checks.compare_covers, rows, port)
+
+
+class MetadataSource(BaseModel):
+    text: str = ""
+
+
+@router.get("/api/tiktok-metadata/catalog")
+def api_tiktok_metadata_catalog():
+    from bkt_web import tiktok_metadata as tm
+
+    return {
+        "categories": [{"id": k, "identifier": v[0], "name": v[1]} for k, v in tm.CATEGORY_TYPES.items()],
+        "sub_niche_ranges": [{"from": lo, "to": hi, "group": g} for lo, hi, g in tm.SUB_NICHE_RANGES],
+        "sub_niches": tm.SUB_NICHE_CODES,
+        "actions": tm.ACTIONS,
+    }
+
+
+@router.get("/api/tiktok-metadata/guest")
+async def api_tiktok_metadata_guest(username: str, max_items: int = Query(60, ge=1, le=500)):
+    """Danh sách video công khai của @username đọc như khách (không cookie; VPN của kênh chỉ khi bị chặn) + phán quyết; không ghi DB."""
+    from bkt_web import tiktok_guest, tiktok_metadata
+
+    try:
+        result = await guest_items(username, max_items=max_items)
+    except tiktok_guest.GuestScanError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
+    return {"username": result["username"], "pages": result["pages"], "has_more": result["has_more"], "via": result["via"],
+            **tiktok_metadata.summarize(result["items"])}
+
+
+@router.post("/api/tiktok-metadata/evaluate")
+def api_tiktok_metadata_evaluate(source: MetadataSource):
+    """Phân tích JSON danh sách video (item_list / itemList) hoặc HTML view-source dán vào; không ghi DB."""
+    from bkt_web import tiktok_metadata
+
+    if len(source.text) > 20_000_000:
+        raise HTTPException(status_code=413, detail="Nội dung quá lớn (tối đa 20 MB)")
+    try:
+        items = tiktok_metadata.extract_items(source.text)
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
+    return tiktok_metadata.summarize(items)
 
 
 class VideoDeleteConfirmation(BaseModel):

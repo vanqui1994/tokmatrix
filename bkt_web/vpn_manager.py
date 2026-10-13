@@ -6,6 +6,7 @@ import socket
 import tempfile
 import subprocess
 import re
+import sys
 import threading
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
@@ -1326,7 +1327,11 @@ def launch_channel_browser_profile(channel_id: int, start_url: str = "https://ww
         f"--proxy-server=socks5://127.0.0.1:{socks_port}",
         "--no-first-run",
         "--no-default-browser-check",
-    ] + profile_factory.chrome_launch_args(cfg) + [
+    ] + (
+        # macOS: cookie được Playwright ghi với --use-mock-keychain (Playwright tự thêm cờ này).
+        # Chrome thật phải dùng CÙNG khoá, nếu không sẽ không giải mã được và bỏ hết cookie.
+        ["--use-mock-keychain"] if sys.platform == "darwin" else []
+    ) + profile_factory.chrome_launch_args(cfg) + [
         start_url
     ]
 
@@ -1348,3 +1353,49 @@ def launch_channel_browser_profile(channel_id: int, start_url: str = "https://ww
             "success": False,
             "error": f"Lỗi khởi chạy trình duyệt: {e}"
         }
+
+
+# ---------------------------------------------------------------------------
+# 1 VPN -> nhiều proxy (12/10): các kênh cùng một file .conf dùng CHUNG một
+# tunnel wireproxy (một cổng SOCKS5, một IP) để chỉ tốn 1 slot thiết bị Nord.
+# Tắt bằng TOKMATRIX_SHARE_TUNNEL=0.
+# ---------------------------------------------------------------------------
+SHARE_TUNNEL = os.environ.get("TOKMATRIX_SHARE_TUNNEL", "1") != "0"
+_TUNNEL_ALIAS: Dict[Any, str] = {}
+_raw_start_wireguard_proxy = start_wireguard_proxy
+_raw_stop_wireguard_proxy = stop_wireguard_proxy
+
+
+def _shared_key(conf_rel_path: str) -> str:
+    # Không được chứa "/" vì key được dùng làm hậu tố tên file tạm của wireproxy.
+    return "conf:" + re.sub(r"[^A-Za-z0-9._-]", "_", conf_rel_path)
+
+
+def start_wireguard_proxy(channel_id: Any, conf_rel_path: str, idle_ttl: Optional[int] = None) -> Dict[str, Any]:  # noqa: F811
+    if not SHARE_TUNNEL or not conf_rel_path:
+        return _raw_start_wireguard_proxy(channel_id, conf_rel_path, idle_ttl=idle_ttl)
+    key = _shared_key(conf_rel_path)
+    old = _TUNNEL_ALIAS.get(channel_id)
+    _TUNNEL_ALIAS[channel_id] = key
+    if old and old != key:
+        _release_key_if_unused(old)
+    info = dict(_raw_start_wireguard_proxy(key, conf_rel_path, idle_ttl=idle_ttl))
+    info["channel_id"] = channel_id
+    info["shared_users"] = sum(1 for v in _TUNNEL_ALIAS.values() if v == key)
+    return info
+
+
+def _release_key_if_unused(key: str) -> None:
+    if key not in _TUNNEL_ALIAS.values():
+        _raw_stop_wireguard_proxy(key)
+
+
+def stop_wireguard_proxy(channel_id: Any):  # noqa: F811
+    if isinstance(channel_id, str) and channel_id.startswith("conf:"):
+        for cid in [c for c, k in _TUNNEL_ALIAS.items() if k == channel_id]:
+            _TUNNEL_ALIAS.pop(cid, None)
+        return _raw_stop_wireguard_proxy(channel_id)
+    key = _TUNNEL_ALIAS.pop(channel_id, None)
+    if key:
+        return _release_key_if_unused(key)
+    return _raw_stop_wireguard_proxy(channel_id)

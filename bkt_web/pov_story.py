@@ -6,24 +6,24 @@ Một nhân vật chính cố định (mô tả trong `character`, gắn vào m�
 
   python3 -m bkt_web.pov_story --topic "You quietly stopped chasing status" --lang en --scenes 18 [--out DIR]
 
-Ảnh: ImageRouter (imagerouter_image.generate). Lời: compare_studio/tools/tts-line.mjs (muse_remake._tts).
+Ảnh: hàng đợi Antigravity dùng chung. Lời: compare_studio/tools/tts-line.mjs (muse_remake._tts).
 """
 from __future__ import annotations
 
 import argparse
 import json
 import subprocess
-import time
 import uuid
-from concurrent.futures import ThreadPoolExecutor
+import os
+import shutil
+import time
 from pathlib import Path
 from typing import Any, Dict, List
 
 try:
-    from bkt_web import imagerouter_image, muse_remake
+    from bkt_web import muse_remake
     from bkt_web.services import gemini
 except ImportError:
-    import imagerouter_image
     import muse_remake
     from services import gemini
 
@@ -49,6 +49,20 @@ STYLE = ("Hand-drawn 2D editorial illustration, clean thin dark ink outlines, so
          "gentle cel shading, warm natural light, calm storybook mood, detailed but uncluttered background, "
          "no text, no letters, no logos, no watermark")
 
+IMAGE_POLL_SECONDS = max(1, int(os.environ.get("TOKMATRIX_POV_IMAGE_POLL_SECONDS", "15")))
+IMAGE_WAIT_MINUTES = max(1, int(os.environ.get("TOKMATRIX_POV_IMAGE_WAIT_MINUTES", "240")))
+IMAGE_MAX_ATTEMPTS = 3
+IMAGE_STATE_FILE = "antigravity_images.json"
+
+
+def _image_backend():
+    """Import lazily so script/planner-only hosts do not need image-worker dependencies."""
+    try:
+        from bkt_web import image_routes
+    except ImportError:
+        import image_routes
+    return image_routes
+
 
 def plan(topic: str, language: str, n: int, character: str = "") -> Dict[str, Any]:
     cjk = "count characters, 25 to 45 characters, no spaces between words" if language == "ja" else "plain sentences"
@@ -65,31 +79,104 @@ def plan(topic: str, language: str, n: int, character: str = "") -> Dict[str, An
             "character": str(data["character"])[:600], "scenes": scenes}
 
 
+def _image_task(task_id: str) -> Dict[str, Any]:
+    """Read one shared image-queue task without going through the HTTP server."""
+    image_routes = _image_backend()
+    conn = image_routes._db()
+    try:
+        row = conn.execute(
+            "SELECT status, image_filename, model, error_message FROM image_queue WHERE id=?", (task_id,)
+        ).fetchone()
+    finally:
+        conn.close()
+    return dict(zip(("status", "image_filename", "model", "error_message"), row)) if row else {}
+
+
+def _write_image_state(path: Path, state: Dict[str, Any]) -> None:
+    tmp = path.with_suffix(".tmp")
+    tmp.write_text(json.dumps(state, ensure_ascii=False, indent=1), encoding="utf-8")
+    tmp.replace(path)
+
+
 def draw(work: Path, story: Dict[str, Any], ratio: str) -> List[Path]:
-    """Một ảnh mỗi cảnh cho khung `ratio`; ảnh đã có thì giữ (chạy lại không vẽ lại)."""
+    """One image per scene, submitted to the shared Antigravity queue.
+
+    Task ids are persisted next to the frames, so a worker retry or server restart
+    resumes the same requests instead of charging/drawing duplicates.
+    """
+    image_routes = _image_backend()
     folder = work / ratio.replace(":", "x")
     folder.mkdir(parents=True, exist_ok=True)
+    state_path = folder / IMAGE_STATE_FILE
+    try:
+        state = json.loads(state_path.read_text(encoding="utf-8")) if state_path.is_file() else {"items": {}}
+    except (OSError, json.JSONDecodeError):
+        state = {"items": {}}
+    items = state.setdefault("items", {})
     composition = "vertical portrait composition, main character large in the lower half" if ratio == "9:16" else \
         "wide cinematic composition, main character on one third of the frame"
 
-    def one(i_scene):
-        i, sc = i_scene
+    outputs: List[Path] = []
+    for i, sc in enumerate(story["scenes"]):
         out = folder / f"scene{i:02d}.png"
+        outputs.append(out)
         if out.is_file():
-            return out
+            continue
+        key = f"scene{i:02d}"
         prompt = f"{STYLE}. {composition}. Main character (always the same person): {story['character']}. Scene: {sc['shot']}"
-        for attempt in range(3):
-            try:
-                got = imagerouter_image.generate(prompt, ratio)
-                out.write_bytes(got["raw"])
-                return out
-            except Exception as e:  # noqa: BLE001
-                last = e
-                time.sleep(5 * (attempt + 1))
-        raise RuntimeError(f"vẽ cảnh {i + 1} ({ratio}) lỗi: {last}")
+        item = items.get(key) or {}
+        if not item.get("task_id"):
+            result = image_routes.enqueue_image(image_routes.EnqueueRequest(
+                prompt=prompt, aspect_ratio=ratio, engine="antigravity",
+                notes=f"Kênh POV · {work.name} · {key}",
+            ))
+            task_id = (result.get("task_ids") or [None])[0]
+            if not task_id:
+                raise RuntimeError(f"không xếp được Antigravity cho cảnh {i + 1}")
+            items[key] = {"task_id": task_id, "attempts": 1, "prompt": prompt}
+            _write_image_state(state_path, state)
 
-    with ThreadPoolExecutor(4) as pool:
-        return list(pool.map(one, enumerate(story["scenes"])))
+    deadline = time.time() + IMAGE_WAIT_MINUTES * 60
+    while time.time() < deadline:
+        waiting = []
+        for i, out in enumerate(outputs):
+            if out.is_file():
+                continue
+            key = f"scene{i:02d}"
+            item = items[key]
+            task = _image_task(str(item["task_id"]))
+            if task.get("status") == "completed" and task.get("image_filename"):
+                src = image_routes.GENERATED_DIR / Path(str(task["image_filename"])).name
+                if src.is_file() and src.stat().st_size:
+                    tmp = out.with_suffix(".tmp")
+                    shutil.copyfile(src, tmp)
+                    tmp.replace(out)
+                    item.update(source_model=task.get("model") or "", image_filename=src.name, error="")
+                    _write_image_state(state_path, state)
+                    continue
+            if task.get("status") == "failed" or not task:
+                attempts = int(item.get("attempts") or 1)
+                if attempts < IMAGE_MAX_ATTEMPTS:
+                    result = image_routes.enqueue_image(image_routes.EnqueueRequest(
+                        prompt=item["prompt"], aspect_ratio=ratio, engine="antigravity",
+                        notes=f"Kênh POV · {work.name} · {key} · thử lại",
+                    ))
+                    new_task_id = (result.get("task_ids") or [None])[0]
+                    if not new_task_id:
+                        raise RuntimeError(f"không xếp lại được Antigravity cho cảnh {i + 1}")
+                    item["task_id"] = new_task_id
+                    item["attempts"] = attempts + 1
+                    item["error"] = str(task.get("error_message") or "task không còn")[:300]
+                    _write_image_state(state_path, state)
+                else:
+                    error = str(task.get("error_message") or "task không còn")[:300]
+                    raise RuntimeError(f"Antigravity vẽ cảnh {i + 1} lỗi sau {attempts} lần: {error}")
+            waiting.append(key)
+        if not waiting:
+            return outputs
+        time.sleep(IMAGE_POLL_SECONDS)
+    missing = [f"scene{i:02d}" for i, out in enumerate(outputs) if not out.is_file()]
+    raise RuntimeError(f"Antigravity chưa vẽ xong sau {IMAGE_WAIT_MINUTES} phút: {', '.join(missing)}")
 
 
 def wrap(text: str, language: str, ratio: str) -> str:

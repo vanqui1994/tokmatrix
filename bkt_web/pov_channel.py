@@ -3,7 +3,7 @@
 Nguồn ở storage/pov_channel.db (bảng `sources`: tài khoản, ngôn ngữ, niche, nhân vật, số video/ngày; bảng `videos`).
 Luồng nền `pov-channel` (off: TOKMATRIX_POV=0) cứ CHECK_EVERY giây xem nguồn nào chưa đủ video trong 24 giờ:
   Gemini chọn một chủ đề POV mới (không trùng chủ đề đã làm của kênh) → pov_story.plan với nhân vật cố định
-  → ImageRouter vẽ ảnh 9:16 → ghép (lia/zoom, TTS giọng tài khoản, phụ đề, nhạc êm)
+  → hàng đợi Antigravity vẽ ảnh 9:16 → ghép (lia/zoom, TTS giọng tài khoản, phụ đề, nhạc êm)
   → upload_tasks.enqueue_auto (khung giờ kế tiếp của tài khoản, run_id `pov:<id>`).
 Xoá video = xoá file + task đăng chưa đăng. Lỗi thì thử lại sau RETRY_AFTER, tối đa MAX_TRIES lần.
 """

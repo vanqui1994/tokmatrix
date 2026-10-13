@@ -4,6 +4,60 @@
 
   const SHADOW = { NORMAL: ['success', 'Bình thường'], FLOP_0VIEW: ['warning', '0 view'], LOW_REACH: ['warning', 'Ít tiếp cận'], UNORIGINAL_RESTRICTED: ['danger', 'Không nguyên bản'], BANNED: ['danger', 'Bị cấm'] };
 
+  // Phán quyết metadata (bkt_web/tiktok_metadata.py, theo tiktok.md — bảng mã tham khảo, không phải công bố của TikTok).
+  const META_TONE = { QUALIFIED_NORMAL: 'success', PENDING_REVIEW: 'info', NO_PENALTY_DATA: 'secondary', DISCARD_UNAVAILABLE: 'dark' };
+  let metaCatalog = null;
+  const loadMetaCatalog = async () => (metaCatalog = metaCatalog || await api.get('/api/tiktok-metadata/catalog'));
+  function metaCell(cat, v) {
+    const c = (cat?.categories || []).find((x) => x.id === v.category_type);
+    const action = v.meta_action || 'NO_PENALTY_DATA';
+    const label = cat?.actions?.[action] || action;
+    const codes = Object.entries(v.penalty_context || v.penalty || {}).map(([k, x]) => `${k}=${x}`).join(', ');
+    return `<span class="badge text-bg-${META_TONE[action] || 'danger'}" title="${esc(codes || 'Không có penaltyContext')}">${esc(label)}</span>`
+      + `<span class="cell-sub">${v.category_type == null ? 'Danh mục: —' : esc(c ? c.name : `categoryType ${v.category_type}`)}${v.diversification_id == null ? '' : ` · div ${esc(String(v.diversification_id))}`}</span>`;
+  }
+
+  async function showMetadataTool(container, username = '') {
+    const cat = await loadMetaCatalog().catch(() => null);
+    container.innerHTML = `<div class="card card-body mb-3">
+      <label class="form-label small" for="meta-user">Lấy danh sách như khách (không cookie; bị chặn thì qua VPN của kênh) theo username hoặc link kênh</label>
+      <div class="input-group input-group-sm mb-3"><span class="input-group-text">@</span>
+        <input id="meta-user" class="form-control" value="${esc(username)}" placeholder="username" data-meta-user>
+        <button type="button" class="btn btn-primary" data-meta-guest>Lấy &amp; phân tích</button></div>
+      <label class="form-label small" for="meta-src">Dán JSON của <code>api/post/item_list</code> (DevTools → Network → Response) hoặc toàn bộ view-source trang TikTok</label>
+      <textarea id="meta-src" class="form-control font-monospace small" rows="6" placeholder='{"itemList":[...]}' data-meta-src></textarea>
+      <div class="d-flex gap-2 mt-2"><button type="button" class="btn btn-primary btn-sm" data-meta-run>Phân tích</button>
+      <span class="small text-body-secondary">Không ghi DB. Mã theo tài liệu tham chiếu tiktok.md; thiếu mã thì không kết luận "sạch".</span></div>
+      <div class="mt-3" data-meta-out aria-live="polite"></div></div>`;
+    const out = container.querySelector('[data-meta-out]');
+    const run = async (button, load, waiting) => {
+      button.disabled = true;
+      out.innerHTML = spinner(waiting);
+      try {
+        const r = await load();
+        out.innerHTML = `<p class="small">${r.username ? `@${esc(r.username)} · ${r.pages} trang${r.has_more ? ' (còn nữa)' : ''}${r.via === 'vpn' ? ' · qua VPN kênh' : ''} · ` : ''}${r.total} video · ${Object.entries(r.actions).map(([a, n]) => `${esc(cat?.actions?.[a] || a)}: ${n}`).join(' · ')}</p><div data-meta-table></div>`;
+        dataTable(out.querySelector('[data-meta-table]'), {
+          rows: r.videos.map((v) => ({ ...v, category_type: v.category?.id ?? null, diversification_id: v.sub_niche?.id ?? null, meta_action: v.action })),
+          pageSize: 15,
+          columns: [
+            { key: 'desc', label: 'Video', render: (v) => `<span class="text-truncate-2">${esc(v.desc || v.video_id)}<span class="cell-sub">${esc(v.video_id)}${v.create_time ? ' · ' + fmt.date(v.create_time) : ''}</span></span>` },
+            { key: 'view_count', label: 'View', cls: 'text-end', render: (v) => (v.view_count == null ? '—' : fmt.num(v.view_count)) },
+            { key: 'meta_action', label: 'Phán quyết / danh mục', render: (v) => metaCell(cat, v) },
+            { key: 'sub_niche', label: 'Ngách', render: (v) => (v.sub_niche ? esc(v.sub_niche.name || v.sub_niche.group) : '—') },
+            { key: 'index_enabled', label: 'indexEnabled', render: (v) => (v.index_enabled == null ? '—' : esc(String(v.index_enabled))) },
+            { key: 'is_shop_eligible', label: 'Shop', render: (v) => (v.is_shop_eligible ? 'Đủ điều kiện' : '—') },
+          ],
+        });
+      } catch (e) { out.innerHTML = `<div class="alert alert-danger">${esc(e.message)}</div>`; }
+      finally { button.disabled = false; }
+    };
+    container.querySelector('[data-meta-run]').addEventListener('click', (event) => run(event.currentTarget,
+      () => api.post('/api/tiktok-metadata/evaluate', { text: container.querySelector('[data-meta-src]').value }), 'Đang phân tích…'));
+    container.querySelector('[data-meta-guest]').addEventListener('click', (event) => run(event.currentTarget,
+      () => api.get('/api/tiktok-metadata/guest', { username: container.querySelector('[data-meta-user]').value, max_items: 100 }),
+      'Đang mở TikTok như khách và cuộn danh sách (≈30–60 s)…'));
+  }
+
   function statusBadge(s) {
     const tone = s === 'BKT' || /Đã bật/i.test(s) ? 'success' : /DIE|LỖI|ERROR|Cookie/i.test(s) ? 'danger' : s === 'CHƯA CHECK' ? 'secondary' : 'warning';
     return `<span class="badge text-bg-${tone}">${esc(s)}</span>`;
@@ -31,13 +85,29 @@
     const body = h(`<div>${spinner('Đang lấy video của kênh…')}</div>`);
     modal({ title: `Video của @${ch.username || ch.id}`, body, size: 'xl' });
     try {
-      const r = await api.get(`/api/channels/${ch.id}/videos`);
+      const [r, cat] = await Promise.all([api.get(`/api/channels/${ch.id}/videos`), loadMetaCatalog().catch(() => null)]);
       const s = r.health_summary || r.stats || {};
       body.innerHTML = `<div class="row g-2 mb-3">${[
         ['Video', s.total_videos, 'film'], ['Tổng view', s.total_views, 'eye'], ['Tổng like', s.total_likes, 'heart'],
       ].map(([l, v, i]) => `<div class="col-md-4">${infoBox({ label: l, value: fmt.num(v), icon: i })}</div>`).join('')}</div>
         <div class="d-flex flex-wrap gap-2 mb-3"><button type="button" class="btn btn-outline-primary btn-sm" data-duplicates>So trùng cover (tối đa 60)</button>
-        <span class="small text-body-secondary">Phân phối hiện tại là ước tính; kiểm tra từng video để xem indexEnabled và NFF thật.</span></div><div data-t></div>`;
+        <button type="button" class="btn btn-outline-success btn-sm" data-guest-scan>Quét lại như khách</button>
+        <button type="button" class="btn btn-outline-secondary btn-sm" data-meta-tool>Phân tích JSON / view-source</button>
+        <span class="small text-body-secondary">Phân phối hiện tại là ước tính; kiểm tra từng video để xem indexEnabled và NFF thật.</span></div><div data-meta-box></div><div data-t></div>`;
+      body.querySelector('[data-meta-tool]').addEventListener('click', () => showMetadataTool(body.querySelector('[data-meta-box]'), ch.username || ''));
+      body.querySelector('[data-guest-scan]').addEventListener('click', async (event) => {
+        const button = event.currentTarget;
+        const box = body.querySelector('[data-meta-box]');
+        button.disabled = true;
+        box.innerHTML = spinner('Đang quét như khách (≈30–60 s)…');
+        try {
+          const res = await api.post(`/api/channels/${ch.id}/scan-videos-guest?max_items=100`);
+          const fresh = await api.get(`/api/channels/${ch.id}/videos`);
+          videoTable.setRows(fresh.videos || []);
+          box.innerHTML = `<div class="alert alert-success">${esc(res.message)} · ${Object.entries(res.actions).map(([a, n]) => `${esc(cat?.actions?.[a] || a)}: ${n}`).join(' · ')}</div>`;
+        } catch (e) { box.innerHTML = `<div class="alert alert-danger">${esc(e.message)}</div>`; }
+        finally { button.disabled = false; }
+      });
       const videoTable = dataTable(body.querySelector('[data-t]'), {
         rows: r.videos || [], pageSize: 15,
         columns: [
@@ -47,6 +117,7 @@
           { key: 'like_count', label: 'Like', cls: 'text-end', render: (v) => fmt.num(v.like_count) },
           { key: 'shadowban_status', label: 'Phân phối (ước tính)', render: (v) => { const [t, l] = SHADOW[v.shadowban_status] || ['secondary', v.shadowban_status || '—']; return `<span class="badge text-bg-${t}">${esc(l)}</span>`; } },
           { key: 'is_original', label: 'Phạt reup', render: (v) => (v.is_original ? 'Chưa có cờ' : 'Có cờ') },
+          { key: 'meta_action', label: 'Metadata TikTok', render: (v) => metaCell(cat, v) },
           { key: 'video_id', label: 'Kiểm tra', sort: false, render: (v) => `<div class="d-flex flex-wrap gap-1">
             <button type="button" class="btn btn-outline-primary btn-sm" data-video-action="verify" data-video-id="${esc(v.video_id)}">NFF / index</button>
             <button type="button" class="btn btn-outline-secondary btn-sm" data-video-action="insight" data-video-id="${esc(v.video_id)}">Insight</button>

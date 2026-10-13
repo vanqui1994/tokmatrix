@@ -22,7 +22,7 @@ button{font:inherit;color:inherit}
 
 /* thanh trên */
 .top{position:sticky;top:0;z-index:5;background:color-mix(in srgb,var(--surface) 88%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
-.top-in{max-width:1440px;margin:0 auto;padding:12px 20px;display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.top-in{max-width:1720px;margin:0 auto;padding:12px 24px;display:flex;flex-wrap:wrap;gap:12px;align-items:center}
 .brand{display:flex;align-items:center;gap:10px;margin-right:auto}
 .logo{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,var(--accent),#ec4899);display:grid;place-items:center;color:#fff;font-weight:800}
 .brand h1{font-size:16px;margin:0;line-height:1.2}
@@ -36,7 +36,7 @@ button{font:inherit;color:inherit}
 .seg button[aria-pressed="true"]{background:var(--surface);color:var(--fg);box-shadow:var(--shadow)}
 
 /* khung */
-.layout{max-width:1440px;margin:0 auto;padding:20px;display:grid;grid-template-columns:220px 1fr;gap:24px}
+.layout{max-width:1720px;margin:0 auto;padding:24px;display:grid;grid-template-columns:232px 1fr;gap:28px}
 nav.side{position:sticky;top:78px;align-self:start;max-height:calc(100vh - 100px);overflow:auto}
 .side h3{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 0 8px}
 .side a{display:flex;justify-content:space-between;align-items:center;padding:7px 10px;border-radius:9px;color:var(--fg);text-decoration:none;font-weight:500}
@@ -56,12 +56,12 @@ nav.side{position:sticky;top:78px;align-self:start;max-height:calc(100vh - 100px
 .engine-head .bar{flex:1 1 160px;max-width:220px;height:6px;border-radius:99px;background:var(--line);overflow:hidden;margin-left:auto}
 .engine-head .bar i{display:block;height:100%;background:var(--ok)}
 
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:16px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:20px}
 .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);display:flex;flex-direction:column;transition:transform .15s,box-shadow .15s}
 .card:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(15,23,42,.12)}
 .card.unused .hero img{filter:saturate(.45)}
-.hero{position:relative;aspect-ratio:4/5;background:var(--surface-2);cursor:zoom-in;overflow:hidden}
-.hero img{width:100%;height:100%;object-fit:cover;object-position:top;display:block}
+.hero{position:relative;aspect-ratio:9/16;background:var(--surface-2);cursor:zoom-in;overflow:hidden}
+.hero img{width:100%;height:100%;object-fit:contain;object-position:center;background:#0f172a;display:block}
 .hero .noimg{position:absolute;inset:0;display:grid;place-items:center;color:var(--muted);font-size:12px}
 .badge{position:absolute;top:10px;left:10px;font-size:11px;font-weight:600;padding:3px 8px;border-radius:99px;background:rgba(15,23,42,.72);color:#fff;backdrop-filter:blur(4px)}
 .badge.used{background:var(--ok);color:#fff}
@@ -106,7 +106,7 @@ nav.side{position:sticky;top:78px;align-self:start;max-height:calc(100vh - 100px
   .lb figure{flex-direction:column}
   .lb img{max-width:80vw;max-height:60vh}
 }
-@media (max-width:520px){.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.top-in{padding:10px 16px}}
+@media (max-width:520px){.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.hero{aspect-ratio:9/16}.top-in{padding:10px 16px}}
 </style>
 </head>
 <body>

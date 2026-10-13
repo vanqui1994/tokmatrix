@@ -63,7 +63,9 @@
         { id: 'blocked', kind: 'sink', x: 1430, y: 330, icon: 'pause', tone: 'amber', label: 'Bị giữ lại', sub: 'chưa lên lịch',
           desc: 'Job ở READY_TO_PUBLISH quá một chu kỳ.' },
         { id: 'failed', kind: 'sink', x: 840, y: 60, icon: 'alert', tone: 'red', label: 'Job lỗi', sub: 'FAILED · DEAD_LETTER',
-          desc: 'Job hết lượt thử lại hoặc bị bỏ.' },
+          desc: 'Job hết lượt thử lại hoặc vào dead letter.' },
+        { id: 'cancelled', kind: 'sink', x: 650, y: 60, icon: 'x', tone: 'gray', label: 'Job đã hủy', sub: 'CANCELLED',
+          desc: 'Job đã chủ động hủy; tách riêng, không tính vào Job lỗi.' },
         { id: 'script_ai', kind: 'sub', x: 600, y: 390, icon: 'sparkles', tone: 'teal', label: 'AI viết kịch bản', port: 'Model', parent: 'script' },
         { id: 'registry', kind: 'sub', x: 700, y: 390, icon: 'db', tone: 'teal', label: 'Chống trùng lặp', port: 'Registry', parent: 'script' },
         { id: 'images', kind: 'sub', x: 790, y: 390, icon: 'image', tone: 'pink', label: 'Antigravity', port: 'Ảnh', parent: 'assets',
@@ -75,6 +77,7 @@
         ['render', 'publish_check'], ['publish_check', 'scheduled', 'true'], ['publish_check', 'blocked', 'false'],
         ['scheduled', 'upload'], ['upload', 'cleanup'],
         ['script', 'failed', 'error'], ['assets', 'failed', 'error'], ['render', 'failed', 'error'],
+        ['batch', 'cancelled', 'cancel'],
       ],
     },
     publish: {

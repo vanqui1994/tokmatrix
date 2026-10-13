@@ -42,6 +42,7 @@ MATRIX_STATE_NODE = {
     "SCHEDULED": "scheduled", "PUBLISHED": "scheduled",
     "ANALYTICS_PENDING": "scheduled", "COMPLETED": "scheduled",
     "FAILED": "failed", "DEAD_LETTER": "failed",
+    "CANCELLED": "cancelled",
 }
 MATRIX_STATE_LABEL = {
     "CREATED": "Chờ lập kế hoạch", "PLANNING": "Chờ viết kịch bản", "SCRIPTING": "Chờ QA kịch bản",
@@ -51,6 +52,7 @@ MATRIX_STATE_LABEL = {
     "READY_TO_PUBLISH": "Chờ kiểm tra đăng", "SCHEDULED": "Đã lên lịch",
     "PUBLISHED": "Đã đăng", "ANALYTICS_PENDING": "Chờ thống kê", "COMPLETED": "Hoàn tất",
     "RETRY_WAIT": "Chờ thử lại", "FAILED": "Lỗi", "DEAD_LETTER": "Bỏ (dead letter)",
+    "CANCELLED": "Đã hủy",
 }
 
 
@@ -129,7 +131,7 @@ def autopilot_snapshot(hours: int) -> Dict[str, Any]:
 
         nodes: Dict[str, Dict[str, Any]] = {k: _node() for k in (
             "trigger", "plan", "batch", "script", "script_ai", "registry", "assets", "images", "tts",
-            "render", "publish_check", "scheduled", "blocked", "failed", "upload", "cleanup",
+            "render", "publish_check", "scheduled", "blocked", "failed", "cancelled", "upload", "cleanup",
         )}
 
         trig = nodes["trigger"]
@@ -207,6 +209,8 @@ def autopilot_snapshot(hours: int) -> Dict[str, Any]:
                 key = "retry"
             elif node_id in ("scheduled",):
                 key = "done"
+            elif node_id == "cancelled":
+                key = "CANCELLED"
             elif node_id == "failed":
                 key = "failed"
             elif j.get("locked_by"):
@@ -257,6 +261,7 @@ def autopilot_snapshot(hours: int) -> Dict[str, Any]:
             + "map kênh 1:1 · đúng niche · đúng ngôn ngữ/giọng · còn slot trong 7 ngày")
         nodes["blocked"]["note"] = ("Job nằm ở READY_TO_PUBLISH quá một chu kỳ mà chưa được lên lịch "
                                     "(sai niche/ngôn ngữ, chưa map kênh hoặc hết slot) — xem log Autopilot")
+        nodes["cancelled"]["note"] = "Job đã chủ động hủy; không tính là lỗi và không được làm lại."
 
         # Upload tasks sinh ra từ Autopilot
         up = nodes["upload"]
