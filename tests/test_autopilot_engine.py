@@ -628,6 +628,43 @@ class PlannerTest(AutopilotTestCase):
             self.assertTrue(planner.wait_running(5))
         self.assertEqual({p["status"] for p in store.get_plans_for_date(today)}, {"producing"})
 
+    def test_new_plan_slots_let_several_new_plans_run_beside_resumed_ones(self):
+        today = store.today()
+        olds = []
+        for i in range(4):  # plan cũ đang producing, còn job chờ → luôn được resume trước plan mới
+            pid = store.create_plan(today, f"old{i}", "t", 1)
+            store.update_plan(pid, status="producing", batch_id=f"autopilot-old{i}")
+            olds.append(pid)
+        news = [store.create_plan(today, f"new{i}", "t", 1) for i in range(5)]
+        store.set_config("max_concurrent_batches", "5")
+        planner._last_launch.clear()  # id plan được dùng lại giữa các test; thứ tự phụ thuộc lần chạy gần nhất
+
+        def run(env):
+            gate = threading.Event()
+            with mock.patch.dict("os.environ", env), mock.patch.object(planner, "has_unfinished_jobs", return_value=True), \
+                    mock.patch.object(planner, "trigger_matrix_batch", side_effect=lambda **kw: (gate.wait(5), {})[1]):
+                planner.launch_pending_plans(today=today)
+                running = planner.running_plan_ids()
+                gate.set()
+                self.assertTrue(planner.wait_running(5))
+            return sum(1 for pid in running if pid in news), running
+
+        one, running = run({"TOKMATRIX_AUTOPILOT_NEW_SLOTS": "1"})
+        self.assertEqual(one, 1)  # hành vi cũ: đúng một plan mới
+        self.assertEqual(len(running), 5)
+        for pid in news:  # đưa các plan mới đã chạy về planned để chạy lại phép thử
+            store.update_plan(pid, status="planned", batch_id="")
+        for pid in olds:
+            store.update_plan(pid, status="producing", batch_id=f"autopilot-old{olds.index(pid)}")
+        planner._last_launch.clear()
+        three, running = run({"TOKMATRIX_AUTOPILOT_NEW_SLOTS": "3"})
+        self.assertEqual(three, 3)
+        self.assertEqual(len(running), 5)
+        with mock.patch.dict("os.environ", {"TOKMATRIX_AUTOPILOT_NEW_SLOTS": "99"}):
+            self.assertEqual(planner.new_plan_slots(), 5)  # không vượt max_concurrent_batches
+        with mock.patch.dict("os.environ", {"TOKMATRIX_AUTOPILOT_NEW_SLOTS": "abc"}):
+            self.assertEqual(planner.new_plan_slots(), 1)
+
     def test_launch_order_round_robins_so_old_producing_plans_are_not_starved(self):
         old_a = {"id": 1, "status": "producing"}
         old_b = {"id": 2, "status": "producing"}

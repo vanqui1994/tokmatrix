@@ -524,6 +524,15 @@ def _run_in_background(plan: Dict[str, Any], should_halt: ShouldHalt) -> None:
         store.log_event(f"❌ Batch {plan['niche_id']} lỗi bất ngờ, sẽ thử lại: {type(exc).__name__}: {exc}", "error")
 
 
+def new_plan_slots() -> int:
+    """Số slot giữ cho plan MỚI (planned) mỗi cycle; không vượt max_concurrent_batches."""
+    try:
+        want = int(os.environ.get("TOKMATRIX_AUTOPILOT_NEW_SLOTS", "1") or 1)
+    except ValueError:
+        want = 1
+    return max(1, min(want, store.get_int("max_concurrent_batches")))
+
+
 def launch_pending_plans(should_halt: ShouldHalt = _never, today: Optional[str] = None) -> Dict[str, int]:
     """Khởi động batch cho plan đang chờ tới khi đủ max_concurrent_batches; không chờ chúng xong."""
     running = running_plan_ids()
@@ -541,9 +550,12 @@ def launch_pending_plans(should_halt: ShouldHalt = _never, today: Optional[str] 
     # Giữ ít nhất một slot cho plan MỚI (planned): thể loại mới (survival/tierlist/wildlife/compare, engine mở
     # rộng) chỉ ra từ batch mới; nếu plan cũ còn job hiếm thì chúng chiếm hết slot và batch mới chờ mãi.
     new_ids = {p["id"] for p in store.get_plans_by_status("planned", "starting")}
-    if not any(pid in new_ids for pid in running):
-        first_new = next((p for p in ordered if is_new(p) and p["id"] not in running), None)
-        if first_new:
+    # TOKMATRIX_AUTOPILOT_NEW_SLOTS (mặc định 1): số plan mới chạy song song. Với 1, mỗi lúc chỉ một plan mới đang chạy và
+    # các plan producing (resume mỗi cycle) chiếm phần còn lại — hàng trăm plan chờ ra với tốc độ ~1 video / batch.
+    need_new = new_plan_slots() - sum(1 for pid in running if pid in new_ids)
+    if need_new > 0:
+        firsts = [p for p in ordered if is_new(p) and p["id"] not in running][:need_new]
+        for first_new in reversed(firsts):
             ordered.remove(first_new)
             ordered.insert(0, first_new)
     for plan in ordered:
